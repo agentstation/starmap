@@ -14,9 +14,23 @@ import (
 var nullableCapabilityProperties = []string{"features", "attachments", "generation", "reasoning", "reasoning_tokens", "verbosity", "tools", "delivery"}
 
 func markNullableCapabilityRecords(document map[string]any) ([][]string, error) {
+	capability, err := markNullableRecordProperties(document, "catalogs.ModelDefinitionCapabilities", nullableCapabilityProperties)
+	if err != nil {
+		return nil, err
+	}
+	generation, err := markNullableRecordProperties(document, "catalogs.ModelGeneration", nullableGenerationProperties)
+	if err != nil {
+		return nil, err
+	}
+	return append(capability, generation...), nil
+}
+
+var nullableGenerationProperties = []string{"temperature", "top_p", "top_k", "top_a", "min_p", "typical_p", "tfs", "frequency_penalty", "presence_penalty", "repetition_penalty", "no_repeat_ngram_size", "length_penalty", "n", "best_of", "mirostat_tau", "mirostat_eta", "contrastive_search_penalty_alpha", "num_beams", "diversity_penalty"}
+
+func markNullableRecordProperties(document map[string]any, schemaName string, fields []string) ([][]string, error) {
 	components, _ := document["components"].(map[string]any)
 	schemas, _ := components["schemas"].(map[string]any)
-	definition, exists := schemas["catalogs.ModelDefinitionCapabilities"]
+	definition, exists := schemas[schemaName]
 	if !exists {
 		return nil, nil
 	}
@@ -29,7 +43,7 @@ func markNullableCapabilityRecords(document map[string]any) ([][]string, error) 
 		return nil, fmt.Errorf("capability definition has no properties")
 	}
 	var paths [][]string
-	for _, field := range nullableCapabilityProperties {
+	for _, field := range fields {
 		property, ok := properties[field].(map[string]any)
 		if !ok {
 			return nil, fmt.Errorf("capability %s has no property schema", field)
@@ -61,7 +75,7 @@ func markNullableCapabilityRecords(document map[string]any) ([][]string, error) 
 		}
 		delete(property, "$ref")
 		property["anyOf"] = []any{map[string]any{"$ref": ref}, map[string]any{"type": "null"}}
-		paths = append(paths, []string{"components", "schemas", "catalogs.ModelDefinitionCapabilities", "properties", field})
+		paths = append(paths, []string{"components", "schemas", schemaName, "properties", field})
 	}
 	return paths, nil
 }

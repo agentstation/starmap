@@ -693,6 +693,14 @@ func main() {
 - [type EndpointType](<#EndpointType>)
 - [type FieldMapping](<#FieldMapping>)
 - [type FloatRange](<#FloatRange>)
+  - [func \(r FloatRange\) MarshalJSON\(\) \(\[\]byte, error\)](<#FloatRange.MarshalJSON>)
+  - [func \(r FloatRange\) MarshalYAML\(\) \(any, error\)](<#FloatRange.MarshalYAML>)
+  - [func \(r \*FloatRange\) SetValue\(field RangeField, value float64\) bool](<#FloatRange.SetValue>)
+  - [func \(r \*FloatRange\) SetValueUnknown\(field RangeField\) bool](<#FloatRange.SetValueUnknown>)
+  - [func \(r \*FloatRange\) UnmarshalJSON\(data \[\]byte\) error](<#FloatRange.UnmarshalJSON>)
+  - [func \(r \*FloatRange\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#FloatRange.UnmarshalYAML>)
+  - [func \(r \*FloatRange\) UnsetValue\(field RangeField\) bool](<#FloatRange.UnsetValue>)
+  - [func \(r \*FloatRange\) Value\(field RangeField\) \(float64, ValuePresence\)](<#FloatRange.Value>)
 - [type Generation](<#Generation>)
   - [func \(g Generation\) Copy\(\) Generation](<#Generation.Copy>)
   - [func \(g Generation\) SemanticChecksum\(\) \(string, error\)](<#Generation.SemanticChecksum>)
@@ -702,12 +710,22 @@ func main() {
   - [func ParseGenerationManifestJSON\(data \[\]byte\) \(GenerationManifest, error\)](<#ParseGenerationManifestJSON>)
   - [func \(m GenerationManifest\) Copy\(\) GenerationManifest](<#GenerationManifest.Copy>)
   - [func \(m GenerationManifest\) Validate\(\) error](<#GenerationManifest.Validate>)
+- [type GenerationParameter](<#GenerationParameter>)
+  - [func PublishedGenerationParameters\(\) \[\]GenerationParameter](<#PublishedGenerationParameters>)
 - [type GenerationValidationCheck](<#GenerationValidationCheck>)
 - [type GenerationValidationCheckStatus](<#GenerationValidationCheckStatus>)
 - [type GenerationValidationReport](<#GenerationValidationReport>)
 - [type GenerationValidationStatus](<#GenerationValidationStatus>)
 - [type HealthAPIKind](<#HealthAPIKind>)
 - [type IntRange](<#IntRange>)
+  - [func \(r IntRange\) MarshalJSON\(\) \(\[\]byte, error\)](<#IntRange.MarshalJSON>)
+  - [func \(r IntRange\) MarshalYAML\(\) \(any, error\)](<#IntRange.MarshalYAML>)
+  - [func \(r \*IntRange\) SetValue\(field RangeField, value int\) bool](<#IntRange.SetValue>)
+  - [func \(r \*IntRange\) SetValueUnknown\(field RangeField\) bool](<#IntRange.SetValueUnknown>)
+  - [func \(r \*IntRange\) UnmarshalJSON\(data \[\]byte\) error](<#IntRange.UnmarshalJSON>)
+  - [func \(r \*IntRange\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#IntRange.UnmarshalYAML>)
+  - [func \(r \*IntRange\) UnsetValue\(field RangeField\) bool](<#IntRange.UnsetValue>)
+  - [func \(r \*IntRange\) Value\(field RangeField\) \(int, ValuePresence\)](<#IntRange.Value>)
 - [type LoadIssue](<#LoadIssue>)
 - [type LoadReport](<#LoadReport>)
   - [func \(r LoadReport\) Err\(\) error](<#LoadReport.Err>)
@@ -782,6 +800,13 @@ func main() {
   - [func \(f \*ModelFeatures\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#ModelFeatures.UnmarshalYAML>)
   - [func \(f \*ModelFeatures\) UnsetSupport\(feature ModelFeature\) bool](<#ModelFeatures.UnsetSupport>)
 - [type ModelGeneration](<#ModelGeneration>)
+  - [func \(g ModelGeneration\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelGeneration.MarshalJSON>)
+  - [func \(g ModelGeneration\) MarshalYAML\(\) \(any, error\)](<#ModelGeneration.MarshalYAML>)
+  - [func \(g \*ModelGeneration\) ParameterPresence\(parameter GenerationParameter\) ValuePresence](<#ModelGeneration.ParameterPresence>)
+  - [func \(g \*ModelGeneration\) SetParameterUnknown\(parameter GenerationParameter\) bool](<#ModelGeneration.SetParameterUnknown>)
+  - [func \(g \*ModelGeneration\) UnmarshalJSON\(data \[\]byte\) error](<#ModelGeneration.UnmarshalJSON>)
+  - [func \(g \*ModelGeneration\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#ModelGeneration.UnmarshalYAML>)
+  - [func \(g \*ModelGeneration\) UnsetParameter\(parameter GenerationParameter\) bool](<#ModelGeneration.UnsetParameter>)
 - [type ModelLimit](<#ModelLimit>)
   - [func PublishedModelLimits\(\) \[\]ModelLimit](<#PublishedModelLimits>)
 - [type ModelLimits](<#ModelLimits>)
@@ -979,6 +1004,7 @@ func main() {
 - [type ProvidersReader](<#ProvidersReader>)
 - [type Quantization](<#Quantization>)
   - [func \(q Quantization\) String\(\) string](<#Quantization.String>)
+- [type RangeField](<#RangeField>)
 - [type Reader](<#Reader>)
 - [type RouteAlias](<#RouteAlias>)
   - [func \(a RouteAlias\) Validate\(\) error](<#RouteAlias.Validate>)
@@ -2306,17 +2332,90 @@ type FieldMapping struct {
 ```
 
 <a name="FloatRange"></a>
-## type [FloatRange](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_generation.go#L43-L47>)
+## type [FloatRange](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_generation.go#L44-L50>)
 
 FloatRange represents a range of float values.
 
 ```go
 type FloatRange struct {
-    Min     float64 `json:"min" yaml:"min"`         // Minimum value
-    Max     float64 `json:"max" yaml:"max"`         // Maximum value
-    Default float64 `json:"default" yaml:"default"` // Default value
+    Min     float64 `json:"min" yaml:"min" extensions:"x-starmap-nullable"`         // Minimum value
+    Max     float64 `json:"max" yaml:"max" extensions:"x-starmap-nullable"`         // Maximum value
+    Default float64 `json:"default" yaml:"default" extensions:"x-starmap-nullable"` // Default value
+    // contains filtered or unexported fields
 }
 ```
+
+<a name="FloatRange.MarshalJSON"></a>
+### func \(FloatRange\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L9>)
+
+```go
+func (r FloatRange) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON preserves observed range fields and legacy field order.
+
+<a name="FloatRange.MarshalYAML"></a>
+### func \(FloatRange\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L41>)
+
+```go
+func (r FloatRange) MarshalYAML() (any, error)
+```
+
+MarshalYAML preserves observed range fields without numeric conversion.
+
+<a name="FloatRange.SetValue"></a>
+### func \(\*FloatRange\) [SetValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L42>)
+
+```go
+func (r *FloatRange) SetValue(field RangeField, value float64) bool
+```
+
+SetValue records a known field, including zero. Invalid fields return false.
+
+<a name="FloatRange.SetValueUnknown"></a>
+### func \(\*FloatRange\) [SetValueUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L54>)
+
+```go
+func (r *FloatRange) SetValueUnknown(field RangeField) bool
+```
+
+SetValueUnknown records an explicit unknown field. Invalid fields return false.
+
+<a name="FloatRange.UnmarshalJSON"></a>
+### func \(\*FloatRange\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L18>)
+
+```go
+func (r *FloatRange) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores range field presence and clears reused state.
+
+<a name="FloatRange.UnmarshalYAML"></a>
+### func \(\*FloatRange\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L50>)
+
+```go
+func (r *FloatRange) UnmarshalYAML(unmarshal func(any) error) error
+```
+
+UnmarshalYAML restores range field presence and clears reused state.
+
+<a name="FloatRange.UnsetValue"></a>
+### func \(\*FloatRange\) [UnsetValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L66>)
+
+```go
+func (r *FloatRange) UnsetValue(field RangeField) bool
+```
+
+UnsetValue removes a field claim. Invalid fields return false.
+
+<a name="FloatRange.Value"></a>
+### func \(\*FloatRange\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L24>)
+
+```go
+func (r *FloatRange) Value(field RangeField) (float64, ValuePresence)
+```
+
+Value returns a range field and its observed presence. Legacy Go literals retain known\-zero behavior. Use SetValue after decoding to replace a missing or unknown field with zero.
 
 <a name="Generation"></a>
 ## type [Generation](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L6-L9>)
@@ -2428,6 +2527,75 @@ func (m GenerationManifest) Validate() error
 
 Validate verifies that a manifest is complete and eligible for publication.
 
+<a name="GenerationParameter"></a>
+## type [GenerationParameter](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_presence.go#L6>)
+
+GenerationParameter identifies one optional generation control.
+
+```go
+type GenerationParameter string
+```
+
+<a name="GenerationTemperature"></a>
+
+```go
+const (
+    // GenerationTemperature identifies the temperature parameter.
+    GenerationTemperature GenerationParameter = "temperature"
+    // GenerationTopP identifies the top_p parameter.
+    GenerationTopP GenerationParameter = "top_p"
+    // GenerationTopK identifies the top_k parameter.
+    GenerationTopK GenerationParameter = "top_k"
+    // GenerationTopA identifies the top_a parameter.
+    GenerationTopA GenerationParameter = "top_a"
+    // GenerationMinP identifies the min_p parameter.
+    GenerationMinP GenerationParameter = "min_p"
+    // GenerationTypicalP identifies the typical_p parameter.
+    GenerationTypicalP GenerationParameter = "typical_p"
+    // GenerationTFS identifies the tfs parameter.
+    GenerationTFS GenerationParameter = "tfs"
+    // GenerationMaxTokens identifies the max_tokens parameter.
+    GenerationMaxTokens GenerationParameter = "max_tokens"
+    // GenerationMaxOutputTokens identifies the max_output_tokens parameter.
+    GenerationMaxOutputTokens GenerationParameter = "max_output_tokens"
+    // GenerationFrequencyPenalty identifies the frequency_penalty parameter.
+    GenerationFrequencyPenalty GenerationParameter = "frequency_penalty"
+    // GenerationPresencePenalty identifies the presence_penalty parameter.
+    GenerationPresencePenalty GenerationParameter = "presence_penalty"
+    // GenerationRepetitionPenalty identifies the repetition_penalty parameter.
+    GenerationRepetitionPenalty GenerationParameter = "repetition_penalty"
+    // GenerationNoRepeatNgramSize identifies the no_repeat_ngram_size parameter.
+    GenerationNoRepeatNgramSize GenerationParameter = "no_repeat_ngram_size"
+    // GenerationLengthPenalty identifies the length_penalty parameter.
+    GenerationLengthPenalty GenerationParameter = "length_penalty"
+    // GenerationTopLogprobs identifies the top_logprobs parameter.
+    GenerationTopLogprobs GenerationParameter = "top_logprobs"
+    // GenerationN identifies the n parameter.
+    GenerationN GenerationParameter = "n"
+    // GenerationBestOf identifies the best_of parameter.
+    GenerationBestOf GenerationParameter = "best_of"
+    // GenerationMirostatTau identifies the mirostat_tau parameter.
+    GenerationMirostatTau GenerationParameter = "mirostat_tau"
+    // GenerationMirostatEta identifies the mirostat_eta parameter.
+    GenerationMirostatEta GenerationParameter = "mirostat_eta"
+    // GenerationContrastiveSearchPenaltyAlpha identifies the contrastive_search_penalty_alpha parameter.
+    GenerationContrastiveSearchPenaltyAlpha GenerationParameter = "contrastive_search_penalty_alpha"
+    // GenerationNumBeams identifies the num_beams parameter.
+    GenerationNumBeams GenerationParameter = "num_beams"
+    // GenerationDiversityPenalty identifies the diversity_penalty parameter.
+    GenerationDiversityPenalty GenerationParameter = "diversity_penalty"
+)
+```
+
+<a name="PublishedGenerationParameters"></a>
+### func [PublishedGenerationParameters](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_presence.go#L82>)
+
+```go
+func PublishedGenerationParameters() []GenerationParameter
+```
+
+PublishedGenerationParameters returns the supported generation controls. The caller owns the returned slice.
+
 <a name="GenerationValidationCheck"></a>
 ## type [GenerationValidationCheck](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L125-L129>)
 
@@ -2529,17 +2697,90 @@ const (
 ```
 
 <a name="IntRange"></a>
-## type [IntRange](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_generation.go#L50-L54>)
+## type [IntRange](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_generation.go#L53-L59>)
 
 IntRange represents a range of integer values.
 
 ```go
 type IntRange struct {
-    Min     int `json:"min" yaml:"min"`         // Minimum value
-    Max     int `json:"max" yaml:"max"`         // Maximum value
-    Default int `json:"default" yaml:"default"` // Default value
+    Min     int `json:"min" yaml:"min" extensions:"x-starmap-nullable"`         // Minimum value
+    Max     int `json:"max" yaml:"max" extensions:"x-starmap-nullable"`         // Maximum value
+    Default int `json:"default" yaml:"default" extensions:"x-starmap-nullable"` // Default value
+    // contains filtered or unexported fields
 }
 ```
+
+<a name="IntRange.MarshalJSON"></a>
+### func \(IntRange\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L73>)
+
+```go
+func (r IntRange) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON preserves observed range fields and legacy field order.
+
+<a name="IntRange.MarshalYAML"></a>
+### func \(IntRange\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L105>)
+
+```go
+func (r IntRange) MarshalYAML() (any, error)
+```
+
+MarshalYAML preserves observed range fields without numeric conversion.
+
+<a name="IntRange.SetValue"></a>
+### func \(\*IntRange\) [SetValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L114>)
+
+```go
+func (r *IntRange) SetValue(field RangeField, value int) bool
+```
+
+SetValue records a known field, including zero. Invalid fields return false.
+
+<a name="IntRange.SetValueUnknown"></a>
+### func \(\*IntRange\) [SetValueUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L126>)
+
+```go
+func (r *IntRange) SetValueUnknown(field RangeField) bool
+```
+
+SetValueUnknown records an explicit unknown field. Invalid fields return false.
+
+<a name="IntRange.UnmarshalJSON"></a>
+### func \(\*IntRange\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L82>)
+
+```go
+func (r *IntRange) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores range field presence and clears reused state.
+
+<a name="IntRange.UnmarshalYAML"></a>
+### func \(\*IntRange\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_codec.go#L114>)
+
+```go
+func (r *IntRange) UnmarshalYAML(unmarshal func(any) error) error
+```
+
+UnmarshalYAML restores range field presence and clears reused state.
+
+<a name="IntRange.UnsetValue"></a>
+### func \(\*IntRange\) [UnsetValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L138>)
+
+```go
+func (r *IntRange) UnsetValue(field RangeField) bool
+```
+
+UnsetValue removes a field claim. Invalid fields return false.
+
+<a name="IntRange.Value"></a>
+### func \(\*IntRange\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L96>)
+
+```go
+func (r *IntRange) Value(field RangeField) (int, ValuePresence)
+```
+
+Value returns a range field and its observed presence. Legacy Go literals retain known\-zero behavior. Use SetValue after decoding to replace a missing or unknown field with zero.
 
 <a name="LoadIssue"></a>
 ## type [LoadIssue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/load.go#L17-L25>)
@@ -3501,12 +3742,13 @@ func (f *ModelFeatures) UnsetSupport(feature ModelFeature) bool
 UnsetSupport removes a capability claim.
 
 <a name="ModelGeneration"></a>
-## type [ModelGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_generation.go#L4-L40>)
+## type [ModelGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_generation.go#L4-L41>)
 
 ModelGeneration \- core chat completions generation controls.
 
 ```go
 type ModelGeneration struct {
+
     // Core sampling and decoding
     Temperature *FloatRange `json:"temperature,omitempty" yaml:"temperature,omitempty"`
     TopP        *FloatRange `json:"top_p,omitempty" yaml:"top_p,omitempty"`
@@ -3517,8 +3759,8 @@ type ModelGeneration struct {
     TFS         *FloatRange `json:"tfs,omitempty" yaml:"tfs,omitempty"`
 
     // Length and termination
-    MaxTokens       *int `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty"`
-    MaxOutputTokens *int `json:"max_output_tokens,omitempty" yaml:"max_output_tokens,omitempty"`
+    MaxTokens       *int `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty" extensions:"x-starmap-nullable"`
+    MaxOutputTokens *int `json:"max_output_tokens,omitempty" yaml:"max_output_tokens,omitempty" extensions:"x-starmap-nullable"`
 
     // Repetition control
     FrequencyPenalty  *FloatRange `json:"frequency_penalty,omitempty" yaml:"frequency_penalty,omitempty"`
@@ -3528,7 +3770,7 @@ type ModelGeneration struct {
     LengthPenalty     *FloatRange `json:"length_penalty,omitempty" yaml:"length_penalty,omitempty"`
 
     // Observability
-    TopLogprobs *int `json:"top_logprobs,omitempty" yaml:"top_logprobs,omitempty"` // Number of top log probabilities to return
+    TopLogprobs *int `json:"top_logprobs,omitempty" yaml:"top_logprobs,omitempty" extensions:"x-starmap-nullable"` // Number of top log probabilities to return
 
     // Multiplicity and reranking
     N      *IntRange `json:"n,omitempty" yaml:"n,omitempty"`             // Number of candidates to generate
@@ -3542,8 +3784,72 @@ type ModelGeneration struct {
     // Beam search (niche)
     NumBeams         *IntRange   `json:"num_beams,omitempty" yaml:"num_beams,omitempty"`
     DiversityPenalty *FloatRange `json:"diversity_penalty,omitempty" yaml:"diversity_penalty,omitempty"`
+    // contains filtered or unexported fields
 }
 ```
+
+<a name="ModelGeneration.MarshalJSON"></a>
+### func \(ModelGeneration\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_codec.go#L9>)
+
+```go
+func (g ModelGeneration) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON retains explicit unknown generation controls.
+
+<a name="ModelGeneration.MarshalYAML"></a>
+### func \(ModelGeneration\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_codec.go#L48>)
+
+```go
+func (g ModelGeneration) MarshalYAML() (any, error)
+```
+
+MarshalYAML retains unknown controls without numeric conversion.
+
+<a name="ModelGeneration.ParameterPresence"></a>
+### func \(\*ModelGeneration\) [ParameterPresence](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_presence.go#L136>)
+
+```go
+func (g *ModelGeneration) ParameterPresence(parameter GenerationParameter) ValuePresence
+```
+
+ParameterPresence reports an optional generation control's observed presence.
+
+<a name="ModelGeneration.SetParameterUnknown"></a>
+### func \(\*ModelGeneration\) [SetParameterUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_presence.go#L199>)
+
+```go
+func (g *ModelGeneration) SetParameterUnknown(parameter GenerationParameter) bool
+```
+
+SetParameterUnknown records an explicit unknown control. Invalid controls return false.
+
+<a name="ModelGeneration.UnmarshalJSON"></a>
+### func \(\*ModelGeneration\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_codec.go#L28>)
+
+```go
+func (g *ModelGeneration) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores generation control presence and clears reused state.
+
+<a name="ModelGeneration.UnmarshalYAML"></a>
+### func \(\*ModelGeneration\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_codec.go#L70>)
+
+```go
+func (g *ModelGeneration) UnmarshalYAML(unmarshal func(any) error) error
+```
+
+UnmarshalYAML restores generation control presence and clears reused state.
+
+<a name="ModelGeneration.UnsetParameter"></a>
+### func \(\*ModelGeneration\) [UnsetParameter](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_parameter_presence.go#L256>)
+
+```go
+func (g *ModelGeneration) UnsetParameter(parameter GenerationParameter) bool
+```
+
+UnsetParameter removes a control claim. Invalid controls return false.
 
 <a name="ModelLimit"></a>
 ## type [ModelLimit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L63>)
@@ -6081,6 +6387,28 @@ func (q Quantization) String() string
 ```
 
 String returns text for Quantization.
+
+<a name="RangeField"></a>
+## type [RangeField](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/parameter_range_presence.go#L4>)
+
+RangeField identifies one bound or default in a numeric parameter range.
+
+```go
+type RangeField string
+```
+
+<a name="RangeMinimum"></a>
+
+```go
+const (
+    // RangeMinimum identifies the minimum value.
+    RangeMinimum RangeField = "min"
+    // RangeMaximum identifies the maximum value.
+    RangeMaximum RangeField = "max"
+    // RangeDefault identifies the default value.
+    RangeDefault RangeField = "default"
+)
+```
 
 <a name="Reader"></a>
 ## type [Reader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/interfaces.go#L54-L64>)

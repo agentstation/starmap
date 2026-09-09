@@ -230,13 +230,16 @@ components:
       properties:
         default:
           description: Default value
-          type: number
+          type: [number, "null"]
+          x-starmap-nullable: true
         max:
           description: Maximum value
-          type: number
+          type: [number, "null"]
+          x-starmap-nullable: true
         min:
           description: Minimum value
-          type: number
+          type: [number, "null"]
+          x-starmap-nullable: true
       type: object
     catalogs.HealthAPIKind:
       type: string
@@ -250,13 +253,16 @@ components:
       properties:
         default:
           description: Default value
-          type: integer
+          type: [integer, "null"]
+          x-starmap-nullable: true
         max:
           description: Maximum value
-          type: integer
+          type: [integer, "null"]
+          x-starmap-nullable: true
         min:
           description: Minimum value
-          type: integer
+          type: [integer, "null"]
+          x-starmap-nullable: true
       type: object
     catalogs.ModelArchitecture:
       properties:
@@ -627,51 +633,92 @@ components:
     catalogs.ModelGeneration:
       properties:
         best_of:
-          $ref: '#/components/schemas/catalogs.IntRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.IntRange'
+            - type: "null"
         contrastive_search_penalty_alpha:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         diversity_penalty:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         frequency_penalty:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         length_penalty:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         max_output_tokens:
-          type: integer
+          type: [integer, "null"]
+          x-starmap-nullable: true
         max_tokens:
           description: Length and termination
-          type: integer
+          type: [integer, "null"]
+          x-starmap-nullable: true
         min_p:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         mirostat_eta:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         mirostat_tau:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         "n":
-          $ref: '#/components/schemas/catalogs.IntRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.IntRange'
+            - type: "null"
         no_repeat_ngram_size:
-          $ref: '#/components/schemas/catalogs.IntRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.IntRange'
+            - type: "null"
         num_beams:
-          $ref: '#/components/schemas/catalogs.IntRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.IntRange'
+            - type: "null"
         presence_penalty:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         repetition_penalty:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         temperature:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         tfs:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         top_a:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         top_k:
-          $ref: '#/components/schemas/catalogs.IntRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.IntRange'
+            - type: "null"
         top_logprobs:
           description: Observability
-          type: integer
+          type: [integer, "null"]
+          x-starmap-nullable: true
         top_p:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
         typical_p:
-          $ref: '#/components/schemas/catalogs.FloatRange'
+          anyOf:
+            - $ref: '#/components/schemas/catalogs.FloatRange'
+            - type: "null"
       type: object
     catalogs.ModelModalities:
       description: Input/Output modalities
