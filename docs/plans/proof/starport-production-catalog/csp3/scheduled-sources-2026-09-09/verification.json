@@ -1,0 +1,263 @@
+{
+  "updated_at": "2026-09-09T07:56:28.561399+00:00",
+  "task": "CSP3",
+  "status": "in_progress",
+  "merged": false,
+  "task_completion_credit": false,
+  "worktree": "/tmp/starmap-scheduled-sources-2026-09-09",
+  "branch": "codex/catalog-scheduled-sources",
+  "base_commit": "bbde3ac42874372f383345a7cebdada482e00de5",
+  "implementation": "Uncommitted candidate. Eighteen focused race events pass across three packages. A separate final runtime race command passes nine further events. Ago, Golangci-lint, and final prose checks pass. Full verification is running. Review, publication, and merge remain required.",
+  "fail_before": "Connected runtime acquisition made zero metadata requests. The regression requires one metadata request beside provider acquisition.",
+  "test_repair": "The first scheduler test used LastRunID, which already identified the required upstream startup fetch. It now waits for acquisition health. Original failed output is retained.",
+  "startup_behavior": "A configured source acquirer rechecks after the startup spread on every restart. Provider timestamps do not establish non-provider freshness.",
+  "remaining_scope": [
+    "Full CSP3 acceptance, including other A20 compositions and source configuration",
+    "CSP5 owns bounded input history compaction and recovery",
+    "Final repository verification, review, publication, and merge"
+  ],
+  "checks": [
+    {
+      "name": "fail-before",
+      "path": "fail-before.jsonl.gz",
+      "sha256": "6f5e85683dc23082d47e35393a963f7337ac1cc829fd0422702a5be41fdc24b0",
+      "counts": {
+        "test": {
+          "fail": 1
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/internal/cli/app": 2.259
+      }
+    },
+    {
+      "name": "first-check",
+      "path": "first-check.jsonl.gz",
+      "sha256": "ef853343017935b5c52adf53238083093923f6338142e6b6b1af9fe5e1cdd93d",
+      "counts": {
+        "test": {
+          "pass": 1
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/internal/cli/app": 3.863
+      }
+    },
+    {
+      "name": "runtime-race",
+      "path": "runtime-race.jsonl.gz",
+      "sha256": "3a40e50adb8513ee5d792269759f084418e9acf08591f7fdf92d485317c82869",
+      "counts": {
+        "test": {
+          "pass": 10
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/runtime": 83.342
+      }
+    },
+    {
+      "name": "runtime-minimum",
+      "path": "runtime-minimum.jsonl.gz",
+      "sha256": "dd87238ac1eb17b2e61cef8bb8e916c1b747e11db91011e97c101d39492b4350",
+      "counts": {
+        "test": {
+          "pass": 10
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/runtime": 11.055
+      }
+    },
+    {
+      "name": "app-race",
+      "path": "app-race.jsonl.gz",
+      "sha256": "a4680d93a211c60082b05dbe8f5a1c1b4e425369fe9e727c42ddd31453bd58e2",
+      "counts": {
+        "test": {
+          "pass": 1,
+          "fail": 1
+        },
+        "package": {
+          "fail": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/internal/cli/app": 25.643
+      }
+    },
+    {
+      "name": "app-final-race",
+      "path": "app-final-race.jsonl.gz",
+      "sha256": "163bd23678d271c0c614eeb63a8bbcf55c36a9a4c854c92a7a22297e908fca8c",
+      "counts": {
+        "test": {
+          "pass": 2
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/internal/cli/app": 39.193
+      }
+    },
+    {
+      "name": "startup-minimum",
+      "path": "startup-minimum.jsonl.gz",
+      "sha256": "1d778c03121b998aeffafc02d427c9e14f4e14e9c42c3c9ac6ffc90f0638e21d",
+      "counts": {
+        "test": {
+          "pass": 9
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/runtime": 8.631
+      }
+    },
+    {
+      "name": "collector-minimum",
+      "path": "collector-minimum.jsonl.gz",
+      "sha256": "bd7eb06f41c15c4fb51f7bc115712e1ec2214c6d43abca3014572faf4dedb36c",
+      "counts": {
+        "test": {
+          "pass": 13
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/acquisition": 7.367
+      }
+    },
+    {
+      "name": "focused-final-race",
+      "path": "focused-final-race.jsonl.gz",
+      "sha256": "305ef2a1bebcc5716c34f935e30cba89709f779f94082198c7b9fcc612a4f64e",
+      "counts": {
+        "test": {
+          "pass": 18
+        },
+        "package": {
+          "pass": 3
+        }
+      },
+      "elapsed_seconds": {
+        "github.com/agentstation/starmap/runtime": 49.215,
+        "github.com/agentstation/starmap/acquisition": 54.524,
+        "github.com/agentstation/starmap/internal/cli/app": 40.597
+      }
+    },
+    {
+      "name": "runtime-final-race",
+      "path": "runtime-final-race.jsonl.gz",
+      "sha256": "2c011ea26189fa212f9404b97f6707ae67e5ba6b72281cbf1fd9730c63f0dcb4",
+      "counts": {
+        "test": {
+          "pass": 9
+        },
+        "package": {
+          "pass": 1
+        }
+      },
+      "elapsed_seconds": 67.476
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "lint.log",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "prose.log",
+      "sha256": "deb8dfac890d51cb688e7dfae66b396f3d0562eb5a379b1968135fd3db4302e1"
+    },
+    {
+      "path": "prose-final.log",
+      "sha256": "139d3d98ee8c3406195a359b6490368c617d3df72f13f06482ccb267d758b528"
+    },
+    {
+      "path": "godoc-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "acquisition/source_acquirer.go",
+      "sha256": "c9379268c71237485339a662fbde0f1e101a796af0cdd654369eebe130098dae"
+    },
+    {
+      "path": "acquisition/source_acquirer_test.go",
+      "sha256": "42ed3ff35e5d011215982caf0493d565e347426525254dc0064d525c0571a341"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "f5c55fd651e3aaae6bdc63009570522385db685a5fe7a9689a9c50f2d0be0d97"
+    },
+    {
+      "path": "internal/cli/app/catalog_runtime.go",
+      "sha256": "6d37b680954e417c79811a3d8db6ec12c6a22140fdbdbbb007dfb25380c3f729"
+    },
+    {
+      "path": "internal/cli/app/catalog_scheduled_sources_test.go",
+      "sha256": "bd29982ccadf2ccb3459bba269a92633bca3aaf171091eadd3872ba7b8aea151"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "df639cac8cb2bc934d6b960598b96543616b86a8c6d78a60c17f34e66c660014"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "4ae450e22b2eb78f79753189337046405bc0c3b8638b9d8f444f8674ec5f7503"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "8368e3eb0be6b2d1c85e1958ab17fa8d3621f36d5533f6ccdab8db4e89dcbf89"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "sha256": "4d6715c6513a48bc48fef017b4afb7920c89671cb684381eacdd253f116080d2"
+    },
+    {
+      "path": "runtime/source_acquisition.go",
+      "sha256": "eaef59c3a8b39e10af063aeab7ecc9b54542c9176ccd40de1174fb1da3d782f7"
+    },
+    {
+      "path": "runtime/source_acquisition_test.go",
+      "sha256": "1c6eec4b615e2325d8c0eb9c545088ae8fbe8dbe58149125a396b4109224dbe6"
+    },
+    {
+      "path": "runtime/status.go",
+      "sha256": "eb73a567ba5b90f79ba3aa7a7d44bebe513c88c76285232c5531ae5560899bec"
+    },
+    {
+      "path": "runtime/status/README.md",
+      "sha256": "51da2d5a16fb634907df2cd50148d91ce0d0822da7ccce1dc3d39b1a8dfefb26"
+    },
+    {
+      "path": "runtime/status/status.go",
+      "sha256": "fc73351b80e643654c6ccfce35b064bb526aef348a62fe9fde2aa77067793c00"
+    }
+  ],
+  "publication_scope": "One PR combines the previously reviewed ingestion tests with the scheduled-source implementation. The ingestion candidate bbde3ac4 is an ancestor. Publish against main after PR 139 merges; no separate ingestion PR."
+}
