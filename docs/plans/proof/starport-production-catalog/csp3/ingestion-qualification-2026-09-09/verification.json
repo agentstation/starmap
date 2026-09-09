@@ -105,5 +105,21 @@
       "role": "current draft or diagnostic overlay; not yet committed to the product"
     }
   ],
-  "next_action": "Merge publisher PR #140 after CI. Integrate it into the committed source branch, install the prepared publisher regression, and run full integrated verification and required review. Keep A20 and CSP3 incomplete until all required source forms and remaining acceptance contracts have evidence."
+  "next_action": "Merge publisher PR #140 after CI. Integrate it into the committed source branch, install the prepared publisher regression, and run full integrated verification and required review. Keep A20 and CSP3 incomplete until all required source forms and remaining acceptance contracts have evidence.",
+  "integrated_candidate": {
+    "head": "f3953bb490352072f36d6f70735c72e383a626be",
+    "publisher_head": "27b56e8d84cb37c9996be41327b65022efb07e56",
+    "status": "Local dependency merge only; PR #140 remains open. Intended uncommitted publisher regression installed.",
+    "lint": {
+      "exit_code": 0,
+      "findings": 0,
+      "log": "/tmp/starmap-combined-acquisition-final-lint.log"
+    },
+    "full_verification": {
+      "session": 60527,
+      "status": "running",
+      "log": "/tmp/starmap-combined-acquisition-final-verification.log"
+    },
+    "publication_gate": "Confirm publisher merge and reviewed tree, then complete final checks and required review before the combined PR."
+  }
 }
