@@ -1,0 +1,227 @@
+{
+  "status": "committed; focused minimum-Go and race matrices pass; full repository verification pending",
+  "worktree": "/tmp/starmap-git-qualification-2026-09-09",
+  "branch": "codex/catalog-git-qualification",
+  "base_commit": "b72d07641692f8e1abc8bf2939b738f62f872683",
+  "implementation_commit": "92db21a1587b13f8758f56d805ccd06e6f37f41e",
+  "inputs": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "edcfc87dea7f9c05f30b82aa1a32a78a56662e62e1f1719a493a4d107b523646"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/ingestion_test.go",
+      "sha256": "37591d5ec9a752bd30594e7d6601d359585daa704e194c5559f53bae5bf3b673"
+    },
+    {
+      "path": "docs/TESTING.md",
+      "sha256": "c45359ebaefb8bfdee14d0b0c16c85ce965fc2b1e0f5e1ebc9a71e17e1e4b78a"
+    },
+    {
+      "path": "internal/ciworkflow/git_qualification_test.go",
+      "sha256": "ac089108d8a6ba2e0c79398e7920e4f62fe9f6d379e7f7486f58a113e25748e4"
+    },
+    {
+      "path": "internal/cli/app/catalog_ingestion_test.go",
+      "sha256": "fc13b1affd5458e826d66f961e7cd7fa5d42e428fc58c9afb77847a0d5c44177"
+    },
+    {
+      "path": "internal/cli/app/catalog_metadata_fixture_test.go",
+      "sha256": "2a18a1e36c54839e52effe41fd95e5f06cff178bcb0103f0ac3fb6684396d319"
+    },
+    {
+      "path": "internal/cli/app/catalog_scheduled_sources_test.go",
+      "sha256": "b7913d90b0036331dbc34128af5bf9a5e1a3fee37f9faba61ddd1f732be24673"
+    },
+    {
+      "path": "scripts/catalog-product-checks.json",
+      "sha256": "fabe65891d864f248387882c8de9f0bde3a5174fdb61a75acea9a4e9cfa9f863"
+    }
+  ],
+  "scope": [
+    "HTTP and real Git inputs through CLI and HTTP update",
+    "Connected, startup and repeated timer acquisition",
+    "Source exclusion, partial provider replies, failure and restart",
+    "Scoped and all-provider publisher ingestion",
+    "Exact staged artifact equality and changed-field receipt binding"
+  ],
+  "minimum_go": "16 application test events and four publisher tests pass on Go 1.25.12.",
+  "publisher_race": "Four tests pass in 539.517 seconds.",
+  "application_race": {
+    "session": 37786,
+    "status": "passed",
+    "exit_code": 0,
+    "test_events": 16,
+    "packages": 1,
+    "elapsed_seconds": 719.929,
+    "log": "application-race.jsonl.gz"
+  },
+  "periodic_contract": "Each completed timer cycle requires a new successful metadata receipt. Git keeps its configured commit. Changed pins use restart in separate tests.",
+  "publisher_isolation": "The child retains CATALOG_GIT_FIXTURE_REQUIRED and propagates a local missing-tool skip. Required qualification rejects a skipped child.",
+  "initial_compile": "The first application command ran no tests because an obsolete fmt import remained after fixture extraction. The corrected code passes. This is not a product fail-before regression.",
+  "registered_cases": [
+    "A20.cli_provider_nonprovider",
+    "A20.publisher_provider_nonprovider",
+    "A20.server_provider_nonprovider",
+    "A20.receipt_artifact_binding"
+  ],
+  "remaining": [
+    "A20.dependency_disabled_partial registration and complete contract assessment",
+    "Required native evidence for this candidate",
+    "Full repository verification, pre-PR review, publication and merge",
+    "A08 scoped deletion and alias decisions and implementation",
+    "Starport A20 and released-pair acceptance"
+  ],
+  "additional_checks": {
+    "verifier_tests": 73,
+    "lint_findings": 0,
+    "ago_findings": 0,
+    "prose_files": 1261
+  },
+  "task_completion_credit": false,
+  "artifacts": [
+    {
+      "path": "application-minimum.jsonl.gz",
+      "sha256": "111d772b9e8b73d9777a528a938cbadf67429f344b11a5a39e3a0e6736074932",
+      "tests": {
+        "pass": 16
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "publisher-git-minimum.jsonl.gz",
+      "sha256": "fd4341a5bc7971081d930c9ac2f18f6e77d2fdacb3ab78eb485e633c7dd55ab7",
+      "tests": {
+        "pass": 2
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "publisher-http-minimum.jsonl.gz",
+      "sha256": "2d169fd2bb2e1325cda80d28edd9648bc0d68636771900a90e14e51a69196213",
+      "tests": {
+        "pass": 2
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "publisher-race.jsonl.gz",
+      "sha256": "51f5c4b6885b24bd8068bc5aec8cdb32cd6e38c18514ca2dbb06577c5d7c0dd2",
+      "tests": {
+        "pass": 4
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "periodic-minimum.jsonl.gz",
+      "sha256": "632ee8cda2d28d48979d5e6329c904aa0bd72bfdf042aeec55561301728ae5ee",
+      "tests": {
+        "pass": 2
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "initial-compile.jsonl.gz",
+      "sha256": "8b97785f98e075c3e9c62f133e1dbc962ba3334a3367a0fe15ea25fbf4d1a42a",
+      "tests": {},
+      "packages": {
+        "fail": 1
+      }
+    },
+    {
+      "path": "verifier-tests.log.gz",
+      "sha256": "9dce66a3e945785aa94b29bf048da1d6fa14c28a178a07a6d00dbdd5fd202f20"
+    },
+    {
+      "path": "ci-contract.log.gz",
+      "sha256": "7956140b44d0280b76f19f5f7440dbef0ce5d2868630e9be9636fab517f5553e"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "f0ef1000fb2596d5c7360440c6945e66c2173870236daa811da32f544d690cac"
+    },
+    {
+      "path": "application-race.jsonl.gz",
+      "sha256": "7d7d82b7a8c390501a83785e8d8e61f15aeeac6ffcba6c0b34184ea6032f58a0",
+      "tests": {
+        "pass": 16
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "independent-docs.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    }
+  ],
+  "implementation_tree": "26245e6e875b2c1bf52becc7673ebfdb407e3173",
+  "full_repository_verification": {
+    "session": 68754,
+    "status": "running",
+    "source_commit": "92db21a1587b13f8758f56d805ccd06e6f37f41e",
+    "log": "/tmp/starmap-permanent-ingestion-full-verification.log"
+  },
+  "independent_docs": {
+    "status": "passed",
+    "exit_code": 0,
+    "command": "env -u GOFLAGS GOTOOLCHAIN=go1.26.6 make HAS_DEVBOX= RUN_PREFIX= docs-check"
+  },
+  "cache_cleanup": {
+    "cache": "/Users/jack/Library/Caches/go-build",
+    "cutoff_unix": 1788792814.628221,
+    "deleted_generated_files": 149823,
+    "bytes_removed": 14464617766,
+    "free_bytes_after": 17980645376
+  },
+  "dependency_disabled_partial_assessment": {
+    "source_commit": "92db21a1587b13f8758f56d805ccd06e6f37f41e",
+    "contract": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md section 6.3",
+    "verified_existing_coverage": [
+      {
+        "test": "TestSourceAcquirerReportsMissingDependencies",
+        "file": "acquisition/source_acquirer_test.go",
+        "proves": "Missing Git dependencies return ConfigError naming the selected source and no successful observation."
+      },
+      {
+        "test": "TestAcquisitionSourceSelectionRebuildsRetainedEvidence",
+        "file": "runtime/acquisition_source_policy_test.go",
+        "proves": "Restart excludes retained evidence from disabled sources, preserves enabled evidence, and rejects new excluded observations."
+      },
+      {
+        "test": "TestAcquisitionSourceSelectionRefusesFailedStartupPublication",
+        "file": "runtime/acquisition_source_policy_test.go",
+        "proves": "Startup refuses to open if it cannot publish the enforced selection."
+      },
+      {
+        "tests": "CLI and HTTP ingestion matrix",
+        "file": "internal/cli/app/catalog_ingestion_test.go",
+        "proves": "Partial provider values retain partial immutable receipts and degraded health across restart. Failed fresh acquisition preserves the accepted generation."
+      }
+    ],
+    "remaining_evidence": [
+      "Exercise missing dependencies through application entry points with actionable operator results.",
+      "Exercise enabled-to-disabled source transitions through application entry points and prove no revoked effective scope survives restart.",
+      "Complete distinct source-state reporting for supported, enabled, eligible, attempted, and accepted inputs. Current runtime status exposes aggregate acquisition health, provider attempts, and accepted non-provider receipts. It does not expose that complete non-provider state inventory."
+    ],
+    "registration": "A20.dependency_disabled_partial remains unregistered; component checks do not establish the complete application contract."
+  }
+}
