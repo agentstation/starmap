@@ -167,7 +167,7 @@ func TestProviderBindingReceiptPreservesIdentityAndOwnership(t *testing.T) {
 	binding := validProviderBinding()
 	expected := binding
 	observation := scopedProviderObservation(t, &binding)
-	if !strings.HasPrefix(observation.ID, "observation:v3:") {
+	if !strings.HasPrefix(observation.ID, "observation:v4:") {
 		t.Fatalf("scoped identity=%s", observation.ID)
 	}
 	binding.AccountID = "caller-change"
@@ -289,7 +289,7 @@ func TestProviderBindingJSONRejectsUnknownFieldsAndSchemas(t *testing.T) {
 		change func(map[string]any)
 	}{
 		{"unknown field", func(w map[string]any) { w["organization_id"] = "unrecognized" }},
-		{"unknown schema", func(w map[string]any) { w["schema_version"] = 2 }},
+		{"unknown schema", func(w map[string]any) { w["schema_version"] = 3 }},
 		{"invalid field type", func(w map[string]any) { w["public"] = "true" }},
 	} {
 		t.Run(test.name, func(t *testing.T) {

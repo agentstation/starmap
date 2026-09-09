@@ -13,6 +13,9 @@ func observationID(observation Observation) string {
 	version := "v2"
 	if observation.ProviderBinding != nil {
 		version = "v3"
+		if observation.ProviderBinding.SchemaVersion >= 2 {
+			version = "v4"
+		}
 	}
 	identity.WriteString("starmap/source-observation/" + version)
 	for _, field := range observationIdentityFields(observation) {
@@ -46,7 +49,7 @@ func observationIdentityFields(observation Observation) []string {
 	}
 	if observation.ProviderBinding != nil {
 		bindingFields := observation.ProviderBinding.identityFields()
-		fields = append(fields, bindingFields[:]...)
+		fields = append(fields, bindingFields...)
 	}
 	return fields
 }

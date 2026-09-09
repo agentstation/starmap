@@ -14,7 +14,7 @@ import (
 )
 
 // ProviderAcquisitionBindingSchemaVersion identifies the supported binding format.
-const ProviderAcquisitionBindingSchemaVersion = 1
+const ProviderAcquisitionBindingSchemaVersion = 2
 
 // MaxProviderBindingFieldBytes bounds each declared binding identifier or selector.
 const MaxProviderBindingFieldBytes = 4096
@@ -24,6 +24,19 @@ type ProviderBindingCredentialRole string
 
 // ProviderBindingCatalogAcquisition identifies catalog-acquisition credentials.
 const ProviderBindingCatalogAcquisition ProviderBindingCredentialRole = "catalog_acquisition"
+
+// ProviderMembershipAuthority declares which serving membership a binding may replace.
+// Completeness remains a separate requirement for each observation.
+type ProviderMembershipAuthority string
+
+const (
+	// ProviderMembershipEvidenceOnly grants no membership replacement authority.
+	ProviderMembershipEvidenceOnly ProviderMembershipAuthority = ""
+	// ProviderMembershipScope permits a binding to replace membership only within its declared scope.
+	ProviderMembershipScope ProviderMembershipAuthority = "scope"
+	// ProviderMembershipProvider permits a binding to replace the provider's public membership.
+	ProviderMembershipProvider ProviderMembershipAuthority = "provider"
+)
 
 // ProviderAcquisitionBinding declares one provider scope under a deployment-owned revision.
 // It contains no credential material and does not prove upstream account ownership or completeness.
@@ -46,6 +59,8 @@ type ProviderAcquisitionBinding struct {
 	Region string `json:"region" yaml:"region"`
 	// APISurface names the provider operation that produced the observed records.
 	APISurface string `json:"api_surface" yaml:"api_surface"`
+	// MembershipAuthority declares replacement permission independently of reply completeness.
+	MembershipAuthority ProviderMembershipAuthority `json:"membership_authority,omitempty" yaml:"membership_authority,omitempty"`
 	// CredentialRole identifies catalog acquisition, never inference.
 	CredentialRole ProviderBindingCredentialRole `json:"credential_role" yaml:"credential_role"`
 	// CredentialProfileID names the declared authentication profile, without credential material.
@@ -77,7 +92,7 @@ func (b *ProviderAcquisitionBinding) UnmarshalJSON(data []byte) error {
 // Validate checks the binding's format and requires an explicit public or account/project scope.
 // Errors identify fields without exposing their values.
 func (b ProviderAcquisitionBinding) Validate() error {
-	if b.SchemaVersion != ProviderAcquisitionBindingSchemaVersion {
+	if b.SchemaVersion != 1 && b.SchemaVersion != ProviderAcquisitionBindingSchemaVersion {
 		return providerBindingError("schema_version", "is not supported")
 	}
 	required := []struct{ name, value string }{
@@ -102,6 +117,18 @@ func (b ProviderAcquisitionBinding) Validate() error {
 	}
 	if !b.Public && b.AccountID == "" && b.ProjectID == "" {
 		return providerBindingError("scope", "must declare public scope or an account or project")
+	}
+	if b.SchemaVersion == 1 && b.MembershipAuthority != ProviderMembershipEvidenceOnly {
+		return providerBindingError("membership_authority", "requires binding schema version 2")
+	}
+	switch b.MembershipAuthority {
+	case ProviderMembershipEvidenceOnly, ProviderMembershipScope:
+	case ProviderMembershipProvider:
+		if !b.Public {
+			return providerBindingError("membership_authority", "provider replacement requires public scope")
+		}
+	default:
+		return providerBindingError("membership_authority", "is not supported")
 	}
 	return nil
 }
@@ -128,8 +155,12 @@ func cloneProviderBinding(binding *ProviderAcquisitionBinding) *ProviderAcquisit
 	return &clone
 }
 
-func (b ProviderAcquisitionBinding) identityFields() [11]string {
-	return [11]string{strconv.Itoa(b.SchemaVersion), b.ID, b.Revision, string(b.ProviderID), strconv.FormatBool(b.Public), b.AccountID, b.ProjectID, b.Region, b.APISurface, string(b.CredentialRole), string(b.CredentialProfileID)}
+func (b ProviderAcquisitionBinding) identityFields() []string {
+	fields := []string{strconv.Itoa(b.SchemaVersion), b.ID, b.Revision, string(b.ProviderID), strconv.FormatBool(b.Public), b.AccountID, b.ProjectID, b.Region, b.APISurface, string(b.CredentialRole), string(b.CredentialProfileID)}
+	if b.SchemaVersion >= 2 {
+		fields = append(fields, string(b.MembershipAuthority))
+	}
+	return fields
 }
 
 func (o Observation) validateProviderBinding() error {
