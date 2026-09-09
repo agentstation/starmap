@@ -1,0 +1,146 @@
+{
+  "status": "committed local checkpoint; application matrix and publication remain open",
+  "worktree": "/tmp/starmap-git-qualification-2026-09-09",
+  "branch": "codex/catalog-git-qualification",
+  "base": "63cfc2be8a6bb885979eec72af3b2650a81744a9",
+  "scope": [
+    "Reusable local Git and Bun fixture",
+    "Two real pinned source revisions and exact lockfile receipts",
+    "Native Bun version and architecture check",
+    "Mandatory-tool failure without a skip",
+    "Pinned Bun in full and six-platform CI jobs"
+  ],
+  "fail_before": "One workflow contract test fails because both required jobs omit Bun and mandatory-tool qualification. The final guard parses each job and also checks installation order.",
+  "focused_result": "Three tests pass in two packages on Go 1.25.12 and with Go 1.26.6 race detection.",
+  "package_race": {
+    "session": 19463,
+    "status": "passed",
+    "log": "/tmp/starmap-permanent-git-packages-race.jsonl",
+    "scope": "Both complete packages before the final qualification flag and negative subprocess test. The final focused checks cover those changes.",
+    "exit_code": 0,
+    "tests": 105,
+    "packages": 2
+  },
+  "source_lint": "Zero issues. The two G204 exceptions use the repository instruction for test-owned subprocess arguments and fixed executable names.",
+  "go_restrictions": "No findings, stale ignores, or incomplete errors.",
+  "prose": "1260 files pass.",
+  "workflow_validation": "Workflow syntax passes. Full actionlint reports the same SC2024 warning on the unchanged administrator test in both base and candidate.",
+  "qualification_flag": "CATALOG_GIT_FIXTURE_REQUIRED avoids product STARMAP_* environment cleanup. The publisher child must forward it when the Git application tests are added.",
+  "native_scope": "Not yet run for this new candidate. PR #141 native success covers its different reviewed source tree.",
+  "pending": [
+    "Promote CLI, HTTP, server and publisher Git variants with the shared fixture",
+    "Qualify repeated scheduled acquisition",
+    "Run full repository verification and required pre-PR review",
+    "Publish, obtain native evidence and merge",
+    "Complete the remaining A08 and A20 cases"
+  ],
+  "task_completion_credit": false,
+  "artifacts": [
+    {
+      "path": "ci-fail-before.log.gz",
+      "sha256": "4c4979153e040c3dca9ff154aebcc4adca781aa79205c5d963f7e57c6c171a00"
+    },
+    {
+      "path": "required-minimum.jsonl.gz",
+      "sha256": "f598ac5369c633a3d662fed0ac04ab12ccb5dbc3bd0ad34bd6fa9e3e107e65ec",
+      "tests": {
+        "pass": 3
+      },
+      "packages": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "required-race.jsonl.gz",
+      "sha256": "0e6c4e3cc0b9836200f101b5ddd89dc8d14f6fac67305fe46997f68cb4eb3d6d",
+      "tests": {
+        "pass": 3
+      },
+      "packages": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "ci-contract.log.gz",
+      "sha256": "93f32d92a9a857628f8b64e69fb728cd61211fe5afbdeab9bf61878d8fb44a55"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "f364abff3a0e6abc831b6e1b654129c818e150a07c98f5303d35c06e50236a68"
+    },
+    {
+      "path": "actionlint-base.log.gz",
+      "sha256": "e2921325b87f7453318afe5b827f941c5a7e83e0b4d88f773b46a4e41a202ac6"
+    },
+    {
+      "path": "actionlint.log.gz",
+      "sha256": "f8d8627edf00ea832de11c19e19de5e4524cab787581570c617c4ebb923ae2f5"
+    },
+    {
+      "path": "actionlint-syntax.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "packages-race.jsonl.gz",
+      "sha256": "10da7ccd95cb169b2118cac7ad8cf17efde8822d010a799708cc7035827a972b",
+      "tests": {
+        "pass": 105
+      },
+      "packages": {
+        "pass": 2
+      }
+    }
+  ],
+  "commit": "b72d07641692f8e1abc8bf2939b738f62f872683",
+  "tree": "e6dd8ca80d102e0600e08696e9ea9da5e12d98fd",
+  "source_files": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "32a021fecd35dd685685735e70025c7738f6552458d327ea210a591e5346547a"
+    },
+    {
+      "path": "acquisition/source_acquirer_git_test.go",
+      "sha256": "afb04ad202f6e318d10ac53c05b8782c2e5354f959b2c852888064b8f4ab6c30"
+    },
+    {
+      "path": "docs/TESTING.md",
+      "sha256": "e6e9045486470adc176488130759f8b7393dc21bc2c02cf727efca53955147ee"
+    },
+    {
+      "path": "internal/ciworkflow/current_actions_test.go",
+      "sha256": "cb2285b27a95e3187fd403955c9de35404ac236e5e5c1c1716374326cd95d0ad"
+    },
+    {
+      "path": "internal/ciworkflow/git_qualification_test.go",
+      "sha256": "f14df98b42c2f5a8706f99b08f4af697779e77a094e35c1a3c60375c7c8a186d"
+    },
+    {
+      "path": "internal/test/gitfixture/fixture.go",
+      "sha256": "9f7a38ef7e9542880121b8ff380f0e2f507bd9de74c6249f3d6ebb6c70839e8d"
+    },
+    {
+      "path": "internal/test/gitfixture/testdata/build.ts",
+      "sha256": "d2ec693b67263495ba67f736349599ea7851cecfd5af9317023451def705b877"
+    },
+    {
+      "path": "internal/test/gitfixture/testdata/bun.lock",
+      "sha256": "c7824f6ea247216f51bb11bdc4d0053ed7509c99e7a29002a67736ea5516e36a"
+    },
+    {
+      "path": "internal/test/gitfixture/testdata/package.json",
+      "sha256": "b4079eab716c8e5ad1dc215397749a6c130ce5a71e609bd9b0f201bb1c68c7d1"
+    },
+    {
+      "path": "internal/test/gitfixture/testdata/web-package.json",
+      "sha256": "b4f65b4b03b93834884c3f06921fb2967da727f534256e5c031e1ff5baf292a4"
+    }
+  ]
+}
