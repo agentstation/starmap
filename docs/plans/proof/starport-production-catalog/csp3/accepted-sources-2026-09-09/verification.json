@@ -1,0 +1,153 @@
+{
+  "status": "committed; focused race and minimum-Go checks, lint, Ago, docs and prose pass",
+  "worktree": "/tmp/starmap-source-revocation-2026-09-09",
+  "branch": "codex/catalog-source-revocation",
+  "base": "23b63a7251b74bf0172e417c3f6a6cd98cea5fe7",
+  "contract": "CSP3; A20 source reporting",
+  "behavior": [
+    "Cache the bounded local source receipt set during generation reconstruction; status copies the set under the generation lock.",
+    "Failed publication does not install candidate source status. Journal recovery precedes publication retry.",
+    "Failed acquisition preserves accepted sources; restart restores them; replacement source policy removes revoked sources.",
+    "Distribution receipts and unknown source IDs do not enter the local acquisition set.",
+    "Accepted means evidence in the active generation, including partial receipts; it does not imply source health, a contributing field, or a routable model.",
+    "Readiness exposes the same source set without network or source reconstruction."
+  ],
+  "fail_before": {
+    "exit_code": 1,
+    "test": "TestAcceptedSourcesSurviveFailureAndRespectRestartPolicy",
+    "replay": "Use original-test.go.gz at the base commit and run the named test. It fails because status omits the accepted local source."
+  },
+  "method_corrections": [
+    "The expanded test first retried a failed publication without recovery. The retention guard correctly rejected that retry on both toolchains. The final test closes and reopens the runtime before retry; no guard changed.",
+    "The final prose check found seven sentences in one paragraph. The final text splits that paragraph.",
+    "Review considered filtering degraded receipts. The manifest accepts succeeded or degraded observations, has no failed status or record counts, and retains partial evidence intentionally. Filtering degraded receipts would incorrectly hide accepted evidence."
+  ],
+  "focused": {
+    "race": {
+      "toolchain": "go1.26.6",
+      "tests_passed": 3,
+      "packages_passed": 2,
+      "exit_code": 0
+    },
+    "minimum": {
+      "toolchain": "go1.25.12",
+      "tests_passed": 3,
+      "packages_passed": 2,
+      "exit_code": 0
+    }
+  },
+  "checks": {
+    "lint_findings": 0,
+    "ago_errors": 0,
+    "ago_findings": 0,
+    "docs": "current",
+    "prose": {
+      "files": 1276,
+      "diagnostics": 0,
+      "exit_code": 0
+    }
+  },
+  "remaining": [
+    "Full supported, enabled, eligible and attempted source inventory across each application composition.",
+    "Final combined verification, required review, native CI and merge."
+  ],
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "e626142ee6ae1430df8cff884c4ba0e982cb74fc2287e81fd5db3111804c4095"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "sha256": "922b4f2f19229c0e5a4c6d604fef3f86dd858f645ff576060ba919b499c3d461"
+    },
+    {
+      "path": "minimum.jsonl.gz",
+      "sha256": "3b771cfcdfa4c80f5fb3f55ec622d9394acaf81cf1d8b3a1764c821c62ed82e9"
+    },
+    {
+      "path": "recovery-race.jsonl.gz",
+      "sha256": "c7d183694fe889d1958f29f63f66c85ea82075f21ed43bb8de2a91b0675ab7b0"
+    },
+    {
+      "path": "recovery-minimum.jsonl.gz",
+      "sha256": "6b4b7fdfcf14c220ea9d49828306411046726a516df88d039a59eb2051610b4c"
+    },
+    {
+      "path": "qualified-race.jsonl.gz",
+      "sha256": "cf849463b285ab7d9b3208f1f6cf23e4b15d0d02e872043d17993582f1da5a73"
+    },
+    {
+      "path": "qualified-minimum.jsonl.gz",
+      "sha256": "43e52a7e01b7c489fa6d4281539c37d618a9d9edb264bc8eaf586050101f0243"
+    },
+    {
+      "path": "qualified-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "qualified-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "qualified-prose.log.gz",
+      "sha256": "a7b89c03bb2151208358a0d488001476bfa954abbfc8b52dda202366e78c30e9"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    },
+    {
+      "path": "original-test.go.gz",
+      "sha256": "0e1ee8b84cde580669786322015a6070f7aa79d50688d09309a4df36010776e6"
+    },
+    {
+      "path": "final-prose.log.gz",
+      "sha256": "30fafddd19a8b1a25d6c9d48b1f2753e9e7c2aa6ed7c5ed8a276dba518f25a87"
+    },
+    {
+      "path": "plan-prose.log.gz",
+      "sha256": "0963b2bd796bde699c64df9e575228014d077470b7d408409c30ee56e5513832"
+    },
+    {
+      "path": "plan-final-prose.log.gz",
+      "sha256": "94582adf3b0433b2738f903af4f24c85e6fdf11092fd4d86293ec55609677b30"
+    },
+    {
+      "path": "plan-corrected-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    }
+  ],
+  "task_completion_credit": false,
+  "head": "6a88f10d375aebcf87bbe60f354e1610a7e956a4",
+  "running": {
+    "affected_race": {
+      "session": 19426,
+      "head": "6a88f10d375aebcf87bbe60f354e1610a7e956a4",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -timeout=20m ./runtime ./internal/server/handlers",
+      "log": "/tmp/starmap-accepted-sources-affected.log"
+    }
+  },
+  "next_implementation": {
+    "owner": "source acquisition reporting",
+    "requirements": [
+      "Report supported and configured selection without probing source dependencies during status reads.",
+      "Record eligibility during real dependency and credential checks; distinguish unknown from false before those checks.",
+      "Record attempts at the Observe boundary, including failed attempts that produce no receipt.",
+      "Carry per-run reports through manual pipeline results and connected runtime acquisition without reading a mutable collector-global last result.",
+      "Keep accepted generation receipts independent of last-attempt outcomes and preserve baseline provenance separation."
+    ],
+    "evidence": [
+      "Pipeline.Prepare can exit before Prepared exists on fatal dependency or observe errors. A successful-result-only report cannot satisfy failed-attempt diagnostics.",
+      "SourceAcquirer.AcquireSources returns observations plus an error; this interface currently has no separate attempt inventory.",
+      "Runtime.AcquisitionReport reports provider attempts and non-provider receipts. It lacks non-provider eligibility and attempt records."
+    ],
+    "remaining": "Implement and qualify each dimension across CLI, HTTP, publisher, and Starport embedded runtime."
+  },
+  "plan_prose": {
+    "repository_files": 1270,
+    "repository_diagnostics": 0,
+    "later_plan_edit_files": 1,
+    "later_plan_edit_diagnostics": 0,
+    "method": "The later running-session paragraph exceeded six sentences; splitting it passes the final file check."
+  }
+}
