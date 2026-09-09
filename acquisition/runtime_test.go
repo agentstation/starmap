@@ -3,6 +3,7 @@ package acquisition
 import (
 	"context"
 	"path/filepath"
+	"slices"
 	"testing"
 
 	"github.com/agentstation/starmap"
@@ -58,6 +59,16 @@ func TestRuntimeAcquisitionFreshPreservesBaselineAndRestart(t *testing.T) {
 	preview, err := syncer.Sync(t.Context(), append(fresh, pkgsync.WithDryRun(true))...)
 	if err != nil {
 		t.Fatal(err)
+	}
+	{
+		report := preview
+		index := slices.IndexFunc(report.SourceActivities, func(activity sources.SourceActivity) bool { return activity.Source == sources.ProvidersID })
+		if index < 0 || !report.SourceActivities[index].Attempted || report.SourceActivities[index].Eligibility != sources.EligibilityEligible {
+			t.Fatalf("runtime preview lost provider activity: %+v", report.SourceActivities)
+		}
+		if len(report.ProviderAttempts) != 1 || !report.ProviderAttempts[0].Requested {
+			t.Fatalf("runtime preview lost provider requests: %+v", report.ProviderAttempts)
+		}
 	}
 	if !preview.HasChanges() || preview.ResetCount != 1 || connected.State().GenerationID != acquired.GenerationID {
 		t.Fatal("preview did not expose reset without activation")

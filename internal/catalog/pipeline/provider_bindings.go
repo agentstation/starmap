@@ -85,30 +85,35 @@ type boundProviderSource struct {
 func (s *boundProviderSource) providerBinding() sources.ProviderAcquisitionBinding { return s.binding }
 
 func (s *boundProviderSource) Observe(ctx context.Context, opts ...sources.Option) (sources.Observation, error) {
+	observation, _, err := s.ObserveAttempts(ctx, opts...)
+	return observation, err
+}
+
+func (s *boundProviderSource) ObserveAttempts(ctx context.Context, opts ...sources.Option) (sources.Observation, []sources.ProviderAttempt, error) {
 	options := (&sources.Options{}).Apply(opts...)
 	if options.ProviderID != nil && *options.ProviderID != s.binding.ProviderID {
-		return sources.Observation{}, bindingPipelineError("provider filter does not match the selected binding")
+		return sources.Observation{}, nil, bindingPipelineError("provider filter does not match the selected binding")
 	}
 	select {
 	case s.gate <- struct{}{}:
 		defer func() { <-s.gate }()
 	case <-ctx.Done():
-		return sources.Observation{}, ctx.Err()
+		return sources.Observation{}, nil, ctx.Err()
 	}
-	observation, _, err := s.ObserveBinding(ctx, s.binding)
+	observation, attempts, err := s.ObserveBinding(ctx, s.binding)
 	if err == nil || ctx.Err() != nil {
-		return observation, err
+		return observation, attempts, err
 	}
 	// Failed calls retain a scoped receipt, never an unscoped replacement.
 	provider := catalogs.DeepCopyProvider(s.provider)
 	provider.Models = nil
 	builder := catalogs.NewEmpty()
 	if buildErr := builder.SetProvider(provider); buildErr != nil {
-		return sources.Observation{}, buildErr
+		return sources.Observation{}, attempts, buildErr
 	}
 	candidate, buildErr := catalogs.NewObservationCatalog(builder)
 	if buildErr != nil {
-		return sources.Observation{}, buildErr
+		return sources.Observation{}, attempts, buildErr
 	}
 	failed, receiptErr := sources.NewObservation(sources.ProvidersID, candidate, sources.ObservationMetadata{
 		ProviderBinding: &s.binding, ObservedAt: time.Now().UTC(),
@@ -117,9 +122,9 @@ func (s *boundProviderSource) Observe(ctx context.Context, opts ...sources.Optio
 		Issues: []sources.ObservationIssue{{Scope: sources.ObservationIssueScopeProvider, Code: sources.ObservationIssueCodeFetchFailed, Subject: string(s.binding.ProviderID), Message: "selected provider binding returned no valid observation"}},
 	})
 	if receiptErr != nil {
-		return sources.Observation{}, receiptErr
+		return sources.Observation{}, attempts, receiptErr
 	}
-	return failed, err
+	return failed, attempts, err
 }
 
 type sourceObservationKey struct {

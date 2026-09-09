@@ -165,12 +165,12 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	return prepared.Result, nil
 }
 
-// Prepare observes and reconciles sources against existing without mutating
+// prepare observes and reconciles sources against existing without mutating
 // shared state. Publication remains the root client's responsibility.
-func (p *Pipeline) Prepare(
+func (p *Pipeline) prepare(
 	ctx context.Context,
 	existing *catalogs.Catalog,
-	opts ...pkgsync.Option,
+	options *pkgsync.Options,
 ) (*Prepared, error) {
 	if p == nil {
 		return nil, &pkgerrors.ValidationError{
@@ -185,7 +185,6 @@ func (p *Pipeline) Prepare(
 		}
 	}
 
-	options := pkgsync.Defaults().Apply(opts...)
 	if err := options.ValidateFilesystemLayout(); err != nil {
 		return nil, err
 	}

@@ -111,7 +111,9 @@ func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, pa
 	result.Fresh, result.ResetCount = parsed.Fresh, len(update.Resets)
 	result.SourceObservations = prepared.Result.SourceObservations
 	result.Partial = prepared.Result.Partial
-	result.SourceFailures = prepared.Result.SourceFailures
+	result.SourceFailures = slices.Clone(prepared.Result.SourceFailures)
+	result.SourceActivities = slices.Clone(prepared.Result.SourceActivities)
+	result.ProviderAttempts = slices.Clone(prepared.Result.ProviderAttempts)
 	result.ReviewCandidates = prepared.Result.ReviewCandidates
 	result.SyncRunID = logging.RunID(ctx)
 	if !parsed.DryRun {
