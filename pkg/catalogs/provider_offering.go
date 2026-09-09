@@ -128,6 +128,7 @@ type ProviderOfferingServiceCapabilities struct {
 // Provider-specific price, limits, availability, regions, lifecycle, endpoint,
 // modes, and request overrides live here rather than on the definition.
 type ProviderOffering struct {
+	recordUnknown   uint16
 	ProviderID      ProviderID                          `json:"provider_id" yaml:"provider_id"`
 	ProviderModelID ProviderModelID                     `json:"provider_model_id" yaml:"provider_model_id"`
 	DefinitionID    ModelDefinitionID                   `json:"definition_id" yaml:"definition_id"`

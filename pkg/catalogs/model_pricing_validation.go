@@ -168,6 +168,11 @@ func validateRerankBasis(path string, tokens *ModelTokenPricing, operations *Mod
 }
 
 func validateTokenCost(path string, cost *ModelTokenCost) error {
+	_, tokenState := cost.Amount(CostUnitPerToken)
+	_, millionState := cost.Amount(CostUnitPerMillion)
+	if tokenState != ValueKnown && millionState != ValueKnown {
+		return pricingValidationError(path, cost, "must contain at least one known amount")
+	}
 	if err := validatePrice(path+".per_token", cost.PerToken); err != nil {
 		return err
 	}

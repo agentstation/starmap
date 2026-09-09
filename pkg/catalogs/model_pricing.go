@@ -158,24 +158,16 @@ func (t *ModelTokenPricing) MarshalYAML() (any, error) {
 }
 
 // ModelTokenCost represents cost per token with flexible units.
+// Use Amount to check presence before using values from decoded observations.
+// A constructed zero value retains legacy free-price behavior.
+// Decoded absent fields remain missing.
+// A legacy zero beside a nonzero alternate unit is an unused placeholder.
 type ModelTokenCost struct {
 	PerToken float64 `json:"per_token" yaml:"per_token"`  // Cost per individual token
 	Per1M    float64 `json:"per_1m_tokens" yaml:"per_1m"` // Cost per 1M tokens
-}
 
-// MarshalYAML implements custom YAML marshaling for TokenCost to format decimals consistently.
-func (t *ModelTokenCost) MarshalYAML() (any, error) {
-	result := make(map[string]float64)
-
-	if t.PerToken != 0 {
-		result["per_token"] = t.PerToken
-	}
-
-	if t.Per1M != 0 {
-		result["per_1m"] = t.Per1M
-	}
-
-	return result, nil
+	absentUnits  uint8
+	unknownUnits uint8
 }
 
 // ModelOperationPricing represents fixed costs for operations.

@@ -160,7 +160,7 @@ jobs:
   native-runtime:
     name: Runtime ${{ matrix.runner }}
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 20
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -201,7 +201,8 @@ jobs:
           if [ "$EXPECTED_OS" = windows ]; then
             native_packages+=(./internal/test/windowstoken)
           fi
-          go test -json -count=1 -timeout=10m "${native_packages[@]}" > native-evidence/tests.jsonl
+          # The complete runtime suite uses the repository verification limit.
+          go test -json -count=1 -timeout=20m "${native_packages[@]}" > native-evidence/tests.jsonl
       - name: Test administrator-owned Linux configuration
         if: matrix.os == 'linux'
         shell: bash

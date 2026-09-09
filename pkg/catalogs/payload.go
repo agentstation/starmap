@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/provenance"
+	sourcepayload "github.com/agentstation/starmap/pkg/sources/payload"
 )
 
 // CatalogPayload is the canonical construction-record JSON representation.
@@ -31,6 +33,9 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 	data, err := json.Marshal(payload)
 	if err != nil {
 		return nil, &errors.ValidationError{Field: "catalog", Message: fmt.Sprintf("cannot encode payload: %v", err)}
+	}
+	if err := sourcepayload.ValidateJSONWithMaxBytes(data, resourcepolicy.MaxPayloadBytes); err != nil {
+		return nil, err
 	}
 	return data, nil
 }

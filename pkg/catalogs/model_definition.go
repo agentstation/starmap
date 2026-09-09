@@ -52,6 +52,7 @@ type ModelDefinitionWeights struct {
 // ModelDefinitionCapabilities groups intrinsic model behavior independently of
 // any provider's service limits, price, endpoint, or availability.
 type ModelDefinitionCapabilities struct {
+	recordUnknown   uint16
 	Features        *ModelFeatures      `json:"features,omitempty" yaml:"features,omitempty"`
 	Attachments     *ModelAttachments   `json:"attachments,omitempty" yaml:"attachments,omitempty"`
 	Generation      *ModelGeneration    `json:"generation,omitempty" yaml:"generation,omitempty"`

@@ -730,12 +730,28 @@ func main() {
   - [func \(m \*Model\) FormatYAMLHeaderComment\(\) string](<#Model.FormatYAMLHeaderComment>)
   - [func \(m Model\) MarshalJSON\(\) \(\[\]byte, error\)](<#Model.MarshalJSON>)
   - [func \(m Model\) MarshalYAML\(\) \(any, error\)](<#Model.MarshalYAML>)
+  - [func \(m \*Model\) RecordPresence\(record ModelRecord\) ValuePresence](<#Model.RecordPresence>)
   - [func \(m \*Model\) SetDescription\(description string\)](<#Model.SetDescription>)
   - [func \(m \*Model\) SetDescriptionUnknown\(\)](<#Model.SetDescriptionUnknown>)
+  - [func \(m \*Model\) SetRecordUnknown\(record ModelRecord\) bool](<#Model.SetRecordUnknown>)
   - [func \(m \*Model\) UnmarshalJSON\(data \[\]byte\) error](<#Model.UnmarshalJSON>)
   - [func \(m \*Model\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#Model.UnmarshalYAML>)
   - [func \(m \*Model\) UnsetDescription\(\)](<#Model.UnsetDescription>)
+  - [func \(m \*Model\) UnsetRecord\(record ModelRecord\) bool](<#Model.UnsetRecord>)
 - [type ModelArchitecture](<#ModelArchitecture>)
+  - [func \(a ModelArchitecture\) Equal\(other ModelArchitecture\) bool](<#ModelArchitecture.Equal>)
+  - [func \(a \*ModelArchitecture\) FineTunedValue\(\) \(bool, ValuePresence\)](<#ModelArchitecture.FineTunedValue>)
+  - [func \(a ModelArchitecture\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelArchitecture.MarshalJSON>)
+  - [func \(a ModelArchitecture\) MarshalYAML\(\) \(any, error\)](<#ModelArchitecture.MarshalYAML>)
+  - [func \(a \*ModelArchitecture\) QuantizedValue\(\) \(bool, ValuePresence\)](<#ModelArchitecture.QuantizedValue>)
+  - [func \(a \*ModelArchitecture\) SetFineTuned\(value bool\)](<#ModelArchitecture.SetFineTuned>)
+  - [func \(a \*ModelArchitecture\) SetFineTunedUnknown\(\)](<#ModelArchitecture.SetFineTunedUnknown>)
+  - [func \(a \*ModelArchitecture\) SetQuantized\(value bool\)](<#ModelArchitecture.SetQuantized>)
+  - [func \(a \*ModelArchitecture\) SetQuantizedUnknown\(\)](<#ModelArchitecture.SetQuantizedUnknown>)
+  - [func \(a \*ModelArchitecture\) UnmarshalJSON\(data \[\]byte\) error](<#ModelArchitecture.UnmarshalJSON>)
+  - [func \(a \*ModelArchitecture\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#ModelArchitecture.UnmarshalYAML>)
+  - [func \(a \*ModelArchitecture\) UnsetFineTuned\(\)](<#ModelArchitecture.UnsetFineTuned>)
+  - [func \(a \*ModelArchitecture\) UnsetQuantized\(\)](<#ModelArchitecture.UnsetQuantized>)
 - [type ModelAttachments](<#ModelAttachments>)
 - [type ModelControlLevel](<#ModelControlLevel>)
   - [func \(mcl ModelControlLevel\) String\(\) string](<#ModelControlLevel.String>)
@@ -743,6 +759,11 @@ func main() {
 - [type ModelDefinition](<#ModelDefinition>)
   - [func \(d ModelDefinition\) Validate\(\) error](<#ModelDefinition.Validate>)
 - [type ModelDefinitionCapabilities](<#ModelDefinitionCapabilities>)
+  - [func \(c ModelDefinitionCapabilities\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelDefinitionCapabilities.MarshalJSON>)
+  - [func \(c ModelDefinitionCapabilities\) MarshalYAML\(\) \(any, error\)](<#ModelDefinitionCapabilities.MarshalYAML>)
+  - [func \(c ModelDefinitionCapabilities\) RecordPresence\(record ModelRecord\) ValuePresence](<#ModelDefinitionCapabilities.RecordPresence>)
+  - [func \(c \*ModelDefinitionCapabilities\) UnmarshalJSON\(data \[\]byte\) error](<#ModelDefinitionCapabilities.UnmarshalJSON>)
+  - [func \(c \*ModelDefinitionCapabilities\) UnmarshalYAML\(data \[\]byte\) error](<#ModelDefinitionCapabilities.UnmarshalYAML>)
 - [type ModelDefinitionID](<#ModelDefinitionID>)
   - [func AuthoredModelID\(authorID AuthorID, slug string\) ModelDefinitionID](<#AuthoredModelID>)
 - [type ModelDefinitionLineage](<#ModelDefinitionLineage>)
@@ -750,6 +771,7 @@ func main() {
 - [type ModelDefinitionWeights](<#ModelDefinitionWeights>)
 - [type ModelDelivery](<#ModelDelivery>)
 - [type ModelFeature](<#ModelFeature>)
+  - [func PublishedModelFeatures\(\) \[\]ModelFeature](<#PublishedModelFeatures>)
 - [type ModelFeatures](<#ModelFeatures>)
   - [func \(f ModelFeatures\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelFeatures.MarshalJSON>)
   - [func \(f ModelFeatures\) MarshalYAML\(\) \(any, error\)](<#ModelFeatures.MarshalYAML>)
@@ -798,6 +820,8 @@ func main() {
 - [type ModelProviderMode](<#ModelProviderMode>)
   - [func \(m ModelProviderMode\) MarshalYAML\(\) \(any, error\)](<#ModelProviderMode.MarshalYAML>)
   - [func \(m \*ModelProviderMode\) UnmarshalYAML\(data \[\]byte\) error](<#ModelProviderMode.UnmarshalYAML>)
+- [type ModelRecord](<#ModelRecord>)
+  - [func PublishedModelRecords\(\) \[\]ModelRecord](<#PublishedModelRecords>)
 - [type ModelRerankBasis](<#ModelRerankBasis>)
   - [func \(m ModelRerankBasis\) String\(\) string](<#ModelRerankBasis.String>)
 - [type ModelResponseFormat](<#ModelResponseFormat>)
@@ -810,7 +834,14 @@ func main() {
 - [type ModelTag](<#ModelTag>)
   - [func \(tag ModelTag\) String\(\) string](<#ModelTag.String>)
 - [type ModelTokenCost](<#ModelTokenCost>)
-  - [func \(t \*ModelTokenCost\) MarshalYAML\(\) \(any, error\)](<#ModelTokenCost.MarshalYAML>)
+  - [func \(cost \*ModelTokenCost\) Amount\(unit TokenCostUnit\) \(float64, ValuePresence\)](<#ModelTokenCost.Amount>)
+  - [func \(cost ModelTokenCost\) MarshalJSON\(\) \(\[\]byte, error\)](<#ModelTokenCost.MarshalJSON>)
+  - [func \(cost ModelTokenCost\) MarshalYAML\(\) \(any, error\)](<#ModelTokenCost.MarshalYAML>)
+  - [func \(cost \*ModelTokenCost\) SetAmount\(unit TokenCostUnit, amount float64\) bool](<#ModelTokenCost.SetAmount>)
+  - [func \(cost \*ModelTokenCost\) SetAmountUnknown\(unit TokenCostUnit\) bool](<#ModelTokenCost.SetAmountUnknown>)
+  - [func \(cost \*ModelTokenCost\) UnmarshalJSON\(data \[\]byte\) error](<#ModelTokenCost.UnmarshalJSON>)
+  - [func \(cost \*ModelTokenCost\) UnmarshalYAML\(unmarshal func\(any\) error\) error](<#ModelTokenCost.UnmarshalYAML>)
+  - [func \(cost \*ModelTokenCost\) UnsetAmount\(unit TokenCostUnit\) bool](<#ModelTokenCost.UnsetAmount>)
 - [type ModelTokenPricing](<#ModelTokenPricing>)
   - [func \(t \*ModelTokenPricing\) MarshalYAML\(\) \(any, error\)](<#ModelTokenPricing.MarshalYAML>)
 - [type ModelTools](<#ModelTools>)
@@ -904,7 +935,12 @@ func main() {
 - [type ProviderOffering](<#ProviderOffering>)
   - [func \(o ProviderOffering\) Endpoint\(operation ProviderOperation\) \(ProviderOfferingEndpoint, bool\)](<#ProviderOffering.Endpoint>)
   - [func \(o ProviderOffering\) Key\(\) OfferingKey](<#ProviderOffering.Key>)
+  - [func \(o ProviderOffering\) MarshalJSON\(\) \(\[\]byte, error\)](<#ProviderOffering.MarshalJSON>)
+  - [func \(o ProviderOffering\) MarshalYAML\(\) \(any, error\)](<#ProviderOffering.MarshalYAML>)
+  - [func \(o ProviderOffering\) RecordPresence\(record ModelRecord\) ValuePresence](<#ProviderOffering.RecordPresence>)
   - [func \(o ProviderOffering\) Supports\(operation ProviderOperation\) bool](<#ProviderOffering.Supports>)
+  - [func \(o \*ProviderOffering\) UnmarshalJSON\(data \[\]byte\) error](<#ProviderOffering.UnmarshalJSON>)
+  - [func \(o \*ProviderOffering\) UnmarshalYAML\(data \[\]byte\) error](<#ProviderOffering.UnmarshalYAML>)
   - [func \(o ProviderOffering\) Validate\(\) error](<#ProviderOffering.Validate>)
 - [type ProviderOfferingEndpoint](<#ProviderOfferingEndpoint>)
 - [type ProviderOfferingMode](<#ProviderOfferingMode>)
@@ -960,6 +996,7 @@ func main() {
   - [func \(se SourceExtensions\) Copy\(\) SourceExtensions](<#SourceExtensions.Copy>)
 - [type SourceObservationLink](<#SourceObservationLink>)
   - [func \(o SourceObservationLink\) Validate\(\) error](<#SourceObservationLink.Validate>)
+- [type TokenCostUnit](<#TokenCostUnit>)
 - [type Tokenizer](<#Tokenizer>)
   - [func \(t Tokenizer\) String\(\) string](<#Tokenizer.String>)
 - [type ToolChoice](<#ToolChoice>)
@@ -994,7 +1031,7 @@ const CurrentBootstrapManifestVersion uint64 = 2
 ```
 
 <a name="CatalogSemanticChecksum"></a>
-## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L41>)
+## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L46>)
 
 ```go
 func CatalogSemanticChecksum(reader Reader) (string, error)
@@ -1021,7 +1058,7 @@ func DerivedCredentialEnvironmentName(product string, providerID ProviderID, fie
 DerivedCredentialEnvironmentName derives a product\-specific ambient name. It validates all components before it replaces ID separators with underscores.
 
 <a name="EncodeCatalogPayload"></a>
-## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L26>)
+## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L28>)
 
 ```go
 func EncodeCatalogPayload(reader Reader) ([]byte, error)
@@ -1066,7 +1103,7 @@ func ValidateReviewCandidates(candidates []evidence.ReviewCandidate, observation
 ValidateReviewCandidates verifies durable review candidates against the exact source observations that supplied their evidence.
 
 <a name="ArchitectureType"></a>
-## type [ArchitectureType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L15>)
+## type [ArchitectureType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L17>)
 
 ArchitectureType represents the type of model architecture.
 
@@ -1091,7 +1128,7 @@ const (
 ```
 
 <a name="ArchitectureType.String"></a>
-### func \(ArchitectureType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L18>)
+### func \(ArchitectureType\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L20>)
 
 ```go
 func (at ArchitectureType) String() string
@@ -2187,7 +2224,7 @@ func (r *Catalog) Providers() ProvidersReader
 Providers returns the immutable catalog's provider collection reader.
 
 <a name="CatalogPayload"></a>
-## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L16-L23>)
+## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L25>)
 
 CatalogPayload is the canonical construction\-record JSON representation. Author models own provider\-independent facts. Provider models own serving facts and link to author models through Model.ModelRef.
 
@@ -2664,7 +2701,7 @@ const (
 ```
 
 <a name="Model"></a>
-## type [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L16-L76>)
+## type [Model](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L16-L77>)
 
 Model represents a model configuration.
 
@@ -2750,7 +2787,7 @@ func MergeModels(existing, updated Model) Model
 MergeModels combines two models and retains existing values when updated has an empty or nil value. Valid pricing replaces the complete pricing object, including explicit zero prices. Invalid pricing retains the existing object.
 
 <a name="Model.DescriptionValue"></a>
-### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L366>)
+### func \(\*Model\) [DescriptionValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L372>)
 
 ```go
 func (m *Model) DescriptionValue() (string, ValuePresence)
@@ -2768,7 +2805,7 @@ func (m *Model) EncodeYAML() (string, error)
 EncodeYAML returns formatted YAML. It returns a typed parse error for values that YAML cannot represent safely.
 
 <a name="Model.Equal"></a>
-### func \(Model\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L418>)
+### func \(Model\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L424>)
 
 ```go
 func (m Model) Equal(other Model) bool
@@ -2795,7 +2832,7 @@ func (m *Model) FormatYAMLHeaderComment() string
 FormatYAMLHeaderComment returns a descriptive string for the model header comment.
 
 <a name="Model.MarshalJSON"></a>
-### func \(Model\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L386>)
+### func \(Model\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L391>)
 
 ```go
 func (m Model) MarshalJSON() ([]byte, error)
@@ -2812,8 +2849,17 @@ func (m Model) MarshalYAML() (any, error)
 
 MarshalYAML preserves an explicit empty or unknown description.
 
+<a name="Model.RecordPresence"></a>
+### func \(\*Model\) [RecordPresence](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_record_presence.go#L65>)
+
+```go
+func (m *Model) RecordPresence(record ModelRecord) ValuePresence
+```
+
+RecordPresence distinguishes missing, unknown, and known optional records. Non\-nil records represent known data, including explicitly empty records.
+
 <a name="Model.SetDescription"></a>
-### func \(\*Model\) [SetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L348>)
+### func \(\*Model\) [SetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L354>)
 
 ```go
 func (m *Model) SetDescription(description string)
@@ -2822,7 +2868,7 @@ func (m *Model) SetDescription(description string)
 SetDescription records an explicit model description, including an empty description.
 
 <a name="Model.SetDescriptionUnknown"></a>
-### func \(\*Model\) [SetDescriptionUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L354>)
+### func \(\*Model\) [SetDescriptionUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L360>)
 
 ```go
 func (m *Model) SetDescriptionUnknown()
@@ -2830,8 +2876,17 @@ func (m *Model) SetDescriptionUnknown()
 
 SetDescriptionUnknown records that the description is explicitly unknown.
 
+<a name="Model.SetRecordUnknown"></a>
+### func \(\*Model\) [SetRecordUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_record_presence.go#L113>)
+
+```go
+func (m *Model) SetRecordUnknown(record ModelRecord) bool
+```
+
+SetRecordUnknown replaces one record with an explicit unknown claim. It returns false for a nil receiver or an unsupported record.
+
 <a name="Model.UnmarshalJSON"></a>
-### func \(\*Model\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L412>)
+### func \(\*Model\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence_codec.go#L422>)
 
 ```go
 func (m *Model) UnmarshalJSON(data []byte) error
@@ -2849,7 +2904,7 @@ func (m *Model) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores description presence from the human YAML record.
 
 <a name="Model.UnsetDescription"></a>
-### func \(\*Model\) [UnsetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L360>)
+### func \(\*Model\) [UnsetDescription](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L366>)
 
 ```go
 func (m *Model) UnsetDescription()
@@ -2857,8 +2912,17 @@ func (m *Model) UnsetDescription()
 
 UnsetDescription removes the model's description claim.
 
+<a name="Model.UnsetRecord"></a>
+### func \(\*Model\) [UnsetRecord](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_record_presence.go#L154>)
+
+```go
+func (m *Model) UnsetRecord(record ModelRecord) bool
+```
+
+UnsetRecord removes one record claim. It does not withdraw the offering.
+
 <a name="ModelArchitecture"></a>
-## type [ModelArchitecture](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L4-L12>)
+## type [ModelArchitecture](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L4-L14>)
 
 ModelArchitecture represents the technical architecture details of a model.
 
@@ -2868,14 +2932,132 @@ type ModelArchitecture struct {
     Type           ArchitectureType `json:"type,omitempty" yaml:"type,omitempty"`                 // Type of architecture
     Tokenizer      Tokenizer        `json:"tokenizer,omitempty" yaml:"tokenizer,omitempty"`       // Tokenizer type used by the model
     Quantization   Quantization     `json:"quantization,omitempty" yaml:"quantization,omitempty"` // Quantization level used by the model
-    Quantized      bool             `json:"quantized" yaml:"quantized"`
-    FineTuned      bool             `json:"fine_tuned" yaml:"fine_tuned"`                     // Whether this is a fine-tuned variant
-    BaseModel      *string          `json:"base_model,omitempty" yaml:"base_model,omitempty"` // Base model ID if fine-tuned
+    Quantized      bool             `json:"quantized" yaml:"quantized" extensions:"x-starmap-nullable"`
+    FineTuned      bool             `json:"fine_tuned" yaml:"fine_tuned" extensions:"x-starmap-nullable"` // Whether this is a fine-tuned variant
+    BaseModel      *string          `json:"base_model,omitempty" yaml:"base_model,omitempty"`             // Base model ID if fine-tuned
+    // contains filtered or unexported fields
 }
 ```
 
+<a name="ModelArchitecture.Equal"></a>
+### func \(ModelArchitecture\) [Equal](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L72>)
+
+```go
+func (a ModelArchitecture) Equal(other ModelArchitecture) bool
+```
+
+Equal compares architecture facts and Boolean presence states.
+
+<a name="ModelArchitecture.FineTunedValue"></a>
+### func \(\*ModelArchitecture\) [FineTunedValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L58>)
+
+```go
+func (a *ModelArchitecture) FineTunedValue() (bool, ValuePresence)
+```
+
+FineTunedValue returns the fine\-tuning claim and its presence. Nil receivers and false values without recorded presence return ValueMissing.
+
+<a name="ModelArchitecture.MarshalJSON"></a>
+### func \(ModelArchitecture\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L10>)
+
+```go
+func (a ModelArchitecture) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON preserves Boolean presence and the legacy field order.
+
+<a name="ModelArchitecture.MarshalYAML"></a>
+### func \(ModelArchitecture\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L63>)
+
+```go
+func (a ModelArchitecture) MarshalYAML() (any, error)
+```
+
+MarshalYAML preserves architecture claim presence in the authoring workspace.
+
+<a name="ModelArchitecture.QuantizedValue"></a>
+### func \(\*ModelArchitecture\) [QuantizedValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L24>)
+
+```go
+func (a *ModelArchitecture) QuantizedValue() (bool, ValuePresence)
+```
+
+QuantizedValue returns the quantization claim and its presence. Nil receivers and false values without recorded presence return ValueMissing.
+
+<a name="ModelArchitecture.SetFineTuned"></a>
+### func \(\*ModelArchitecture\) [SetFineTuned](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L39>)
+
+```go
+func (a *ModelArchitecture) SetFineTuned(value bool)
+```
+
+SetFineTuned records a known fine\-tuning claim, including false. Use this method to replace a previously decoded claim.
+
+<a name="ModelArchitecture.SetFineTunedUnknown"></a>
+### func \(\*ModelArchitecture\) [SetFineTunedUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L45>)
+
+```go
+func (a *ModelArchitecture) SetFineTunedUnknown()
+```
+
+SetFineTunedUnknown records an unknown fine\-tuning claim.
+
+<a name="ModelArchitecture.SetQuantized"></a>
+### func \(\*ModelArchitecture\) [SetQuantized](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L5>)
+
+```go
+func (a *ModelArchitecture) SetQuantized(value bool)
+```
+
+SetQuantized records a known quantization claim, including false. Use this method to replace a previously decoded claim.
+
+<a name="ModelArchitecture.SetQuantizedUnknown"></a>
+### func \(\*ModelArchitecture\) [SetQuantizedUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L11>)
+
+```go
+func (a *ModelArchitecture) SetQuantizedUnknown()
+```
+
+SetQuantizedUnknown records an unknown quantization claim.
+
+<a name="ModelArchitecture.UnmarshalJSON"></a>
+### func \(\*ModelArchitecture\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L40>)
+
+```go
+func (a *ModelArchitecture) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores architecture claim presence.
+
+<a name="ModelArchitecture.UnmarshalYAML"></a>
+### func \(\*ModelArchitecture\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_codec.go#L96>)
+
+```go
+func (a *ModelArchitecture) UnmarshalYAML(unmarshal func(any) error) error
+```
+
+UnmarshalYAML restores architecture claim presence from an authoring record.
+
+<a name="ModelArchitecture.UnsetFineTuned"></a>
+### func \(\*ModelArchitecture\) [UnsetFineTuned](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L51>)
+
+```go
+func (a *ModelArchitecture) UnsetFineTuned()
+```
+
+UnsetFineTuned removes the fine\-tuning claim.
+
+<a name="ModelArchitecture.UnsetQuantized"></a>
+### func \(\*ModelArchitecture\) [UnsetQuantized](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture_presence.go#L17>)
+
+```go
+func (a *ModelArchitecture) UnsetQuantized()
+```
+
+UnsetQuantized removes the quantization claim.
+
 <a name="ModelAttachments"></a>
-## type [ModelAttachments](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L318-L322>)
+## type [ModelAttachments](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L319-L323>)
 
 ModelAttachments represents the attachment capabilities of a model.
 
@@ -2888,7 +3070,7 @@ type ModelAttachments struct {
 ```
 
 <a name="ModelControlLevel"></a>
-## type [ModelControlLevel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L301>)
+## type [ModelControlLevel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L302>)
 
 ModelControlLevel represents an effort/intensity level for model controls.
 
@@ -2909,7 +3091,7 @@ const (
 ```
 
 <a name="ModelControlLevel.String"></a>
-### func \(ModelControlLevel\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L304>)
+### func \(ModelControlLevel\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L305>)
 
 ```go
 func (mcl ModelControlLevel) String() string
@@ -2918,7 +3100,7 @@ func (mcl ModelControlLevel) String() string
 String returns text for ModelControlLevel.
 
 <a name="ModelControlLevels"></a>
-## type [ModelControlLevels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L295-L298>)
+## type [ModelControlLevels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L296-L299>)
 
 ModelControlLevels represents a set of effort/intensity levels for model controls.
 
@@ -2952,7 +3134,7 @@ type ModelDefinition struct {
 ```
 
 <a name="ModelDefinition.Validate"></a>
-### func \(ModelDefinition\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L66>)
+### func \(ModelDefinition\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L67>)
 
 ```go
 func (d ModelDefinition) Validate() error
@@ -2961,7 +3143,7 @@ func (d ModelDefinition) Validate() error
 Validate verifies canonical identity and authorship invariants.
 
 <a name="ModelDefinitionCapabilities"></a>
-## type [ModelDefinitionCapabilities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L54-L63>)
+## type [ModelDefinitionCapabilities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_definition.go#L54-L64>)
 
 ModelDefinitionCapabilities groups intrinsic model behavior independently of any provider's service limits, price, endpoint, or availability.
 
@@ -2975,8 +3157,54 @@ type ModelDefinitionCapabilities struct {
     Verbosity       *ModelControlLevels `json:"verbosity,omitempty" yaml:"verbosity,omitempty"`
     Tools           *ModelTools         `json:"tools,omitempty" yaml:"tools,omitempty"`
     Delivery        *ModelDelivery      `json:"delivery,omitempty" yaml:"delivery,omitempty"`
+    // contains filtered or unexported fields
 }
 ```
+
+<a name="ModelDefinitionCapabilities.MarshalJSON"></a>
+### func \(ModelDefinitionCapabilities\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/definition_record_presence.go#L64>)
+
+```go
+func (c ModelDefinitionCapabilities) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON retains explicit unknown records in the definition read view.
+
+<a name="ModelDefinitionCapabilities.MarshalYAML"></a>
+### func \(ModelDefinitionCapabilities\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/definition_record_presence.go#L103>)
+
+```go
+func (c ModelDefinitionCapabilities) MarshalYAML() (any, error)
+```
+
+MarshalYAML retains explicit unknown records without numeric conversion.
+
+<a name="ModelDefinitionCapabilities.RecordPresence"></a>
+### func \(ModelDefinitionCapabilities\) [RecordPresence](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/definition_record_presence.go#L17>)
+
+```go
+func (c ModelDefinitionCapabilities) RecordPresence(record ModelRecord) ValuePresence
+```
+
+RecordPresence reports an intrinsic capability record's observed presence. Records outside Capabilities return ValueMissing.
+
+<a name="ModelDefinitionCapabilities.UnmarshalJSON"></a>
+### func \(\*ModelDefinitionCapabilities\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/definition_record_presence.go#L83>)
+
+```go
+func (c *ModelDefinitionCapabilities) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores capability presence and clears earlier claims.
+
+<a name="ModelDefinitionCapabilities.UnmarshalYAML"></a>
+### func \(\*ModelDefinitionCapabilities\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/definition_record_presence.go#L125>)
+
+```go
+func (c *ModelDefinitionCapabilities) UnmarshalYAML(data []byte) error
+```
+
+UnmarshalYAML restores capability presence and clears earlier claims.
 
 <a name="ModelDefinitionID"></a>
 ## type [ModelDefinitionID](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L18>)
@@ -3112,8 +3340,17 @@ const (
 )
 ```
 
+<a name="PublishedModelFeatures"></a>
+### func [PublishedModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L217>)
+
+```go
+func PublishedModelFeatures() []ModelFeature
+```
+
+PublishedModelFeatures returns every Boolean capability in published order. Callers own the returned slice.
+
 <a name="ModelFeatures"></a>
-## type [ModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L163-L235>)
+## type [ModelFeatures](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L164-L236>)
 
 ModelFeatures represents a set of feature flags that describe what a model can do.
 
@@ -3340,7 +3577,7 @@ func PublishedModelLimits() []ModelLimit
 PublishedModelLimits returns every model limit in published order. External consumers use this list so they report the same limits.
 
 <a name="ModelLimits"></a>
-## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L325-L341>)
+## type [ModelLimits](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L326-L342>)
 
 ModelLimits represents the limits for a model.
 
@@ -3381,7 +3618,7 @@ func (l ModelLimits) MarshalYAML() (any, error)
 MarshalYAML preserves explicit zero and unknown limits while omitting unobserved limits.
 
 <a name="ModelLimits.Set"></a>
-### func \(\*ModelLimits\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L216>)
+### func \(\*ModelLimits\) [Set](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L222>)
 
 ```go
 func (l *ModelLimits) Set(limit ModelLimit, value int64) bool
@@ -3390,7 +3627,7 @@ func (l *ModelLimits) Set(limit ModelLimit, value int64) bool
 Set records an explicit model limit, including zero.
 
 <a name="ModelLimits.SetUnknown"></a>
-### func \(\*ModelLimits\) [SetUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L228>)
+### func \(\*ModelLimits\) [SetUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L234>)
 
 ```go
 func (l *ModelLimits) SetUnknown(limit ModelLimit) bool
@@ -3417,7 +3654,7 @@ func (l *ModelLimits) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores per\-limit presence from the human YAML record.
 
 <a name="ModelLimits.Unset"></a>
-### func \(\*ModelLimits\) [Unset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L240>)
+### func \(\*ModelLimits\) [Unset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L246>)
 
 ```go
 func (l *ModelLimits) Unset(limit ModelLimit) bool
@@ -3426,7 +3663,7 @@ func (l *ModelLimits) Unset(limit ModelLimit) bool
 Unset removes a model limit claim.
 
 <a name="ModelLimits.Value"></a>
-### func \(\*ModelLimits\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L254>)
+### func \(\*ModelLimits\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L260>)
 
 ```go
 func (l *ModelLimits) Value(limit ModelLimit) (int64, ValuePresence)
@@ -3435,7 +3672,7 @@ func (l *ModelLimits) Value(limit ModelLimit) (int64, ValuePresence)
 Value returns a model limit and its presence state.
 
 <a name="ModelLineage"></a>
-## type [ModelLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L93-L97>)
+## type [ModelLineage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L94-L98>)
 
 ModelLineage represents model family and derivation metadata.
 
@@ -3448,7 +3685,7 @@ type ModelLineage struct {
 ```
 
 <a name="ModelMetadata"></a>
-## type [ModelMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L79-L90>)
+## type [ModelMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L80-L91>)
 
 ModelMetadata represents the metadata for a model.
 
@@ -3485,7 +3722,7 @@ func (m ModelMetadata) MarshalYAML() (any, error)
 MarshalYAML preserves explicit false and unknown open\-weights claims.
 
 <a name="ModelMetadata.OpenWeightsValue"></a>
-### func \(\*ModelMetadata\) [OpenWeightsValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L399>)
+### func \(\*ModelMetadata\) [OpenWeightsValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L405>)
 
 ```go
 func (m *ModelMetadata) OpenWeightsValue() (bool, ValuePresence)
@@ -3494,7 +3731,7 @@ func (m *ModelMetadata) OpenWeightsValue() (bool, ValuePresence)
 OpenWeightsValue returns open\-weights support and its presence state.
 
 <a name="ModelMetadata.SetOpenWeights"></a>
-### func \(\*ModelMetadata\) [SetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L380>)
+### func \(\*ModelMetadata\) [SetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L386>)
 
 ```go
 func (m *ModelMetadata) SetOpenWeights(open bool)
@@ -3503,7 +3740,7 @@ func (m *ModelMetadata) SetOpenWeights(open bool)
 SetOpenWeights records an explicit open\-weights value.
 
 <a name="ModelMetadata.SetOpenWeightsUnknown"></a>
-### func \(\*ModelMetadata\) [SetOpenWeightsUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L387>)
+### func \(\*ModelMetadata\) [SetOpenWeightsUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L393>)
 
 ```go
 func (m *ModelMetadata) SetOpenWeightsUnknown()
@@ -3530,7 +3767,7 @@ func (m *ModelMetadata) UnmarshalYAML(unmarshal func(any) error) error
 UnmarshalYAML restores open\-weights presence from the human YAML record.
 
 <a name="ModelMetadata.UnsetOpenWeights"></a>
-### func \(\*ModelMetadata\) [UnsetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L393>)
+### func \(\*ModelMetadata\) [UnsetOpenWeights](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_presence.go#L399>)
 
 ```go
 func (m *ModelMetadata) UnsetOpenWeights()
@@ -3539,7 +3776,7 @@ func (m *ModelMetadata) UnsetOpenWeights()
 UnsetOpenWeights removes the open\-weights claim.
 
 <a name="ModelModalities"></a>
-## type [ModelModalities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L255-L258>)
+## type [ModelModalities](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L256-L259>)
 
 ModelModalities represents the input/output modalities supported by a model.
 
@@ -3551,7 +3788,7 @@ type ModelModalities struct {
 ```
 
 <a name="ModelModality"></a>
-## type [ModelModality](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L261>)
+## type [ModelModality](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L262>)
 
 ModelModality represents a supported input or output modality for AI models.
 
@@ -3573,7 +3810,7 @@ const (
 ```
 
 <a name="ModelModality.String"></a>
-### func \(ModelModality\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L264>)
+### func \(ModelModality\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L265>)
 
 ```go
 func (m ModelModality) String() string
@@ -3582,7 +3819,7 @@ func (m ModelModality) String() string
 String returns text for ModelModality.
 
 <a name="ModelMode"></a>
-## type [ModelMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L100-L103>)
+## type [ModelMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L101-L104>)
 
 ModelMode represents an alternate provider service mode for a model.
 
@@ -3594,7 +3831,7 @@ type ModelMode struct {
 ```
 
 <a name="ModelOperationPricing"></a>
-## type [ModelOperationPricing](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L182-L208>)
+## type [ModelOperationPricing](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L174-L200>)
 
 ModelOperationPricing represents fixed costs for operations.
 
@@ -3756,7 +3993,7 @@ func (m ModelPricingTierType) String() string
 String returns text for ModelPricingTierType.
 
 <a name="ModelProviderMode"></a>
-## type [ModelProviderMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L106-L109>)
+## type [ModelProviderMode](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L107-L110>)
 
 ModelProviderMode represents provider request overrides for a model mode.
 
@@ -3768,7 +4005,7 @@ type ModelProviderMode struct {
 ```
 
 <a name="ModelProviderMode.MarshalYAML"></a>
-### func \(ModelProviderMode\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L114>)
+### func \(ModelProviderMode\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L115>)
 
 ```go
 func (m ModelProviderMode) MarshalYAML() (any, error)
@@ -3777,7 +4014,7 @@ func (m ModelProviderMode) MarshalYAML() (any, error)
 MarshalYAML preserves request\-body values as native YAML scalars, sequences, mappings, and nulls. The body is a JSON request fragment, so SetExtension rejects values that JSON cannot represent.
 
 <a name="ModelProviderMode.UnmarshalYAML"></a>
-### func \(\*ModelProviderMode\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L148>)
+### func \(\*ModelProviderMode\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L149>)
 
 ```go
 func (m *ModelProviderMode) UnmarshalYAML(data []byte) error
@@ -3785,8 +4022,47 @@ func (m *ModelProviderMode) UnmarshalYAML(data []byte) error
 
 UnmarshalYAML restores request\-body values through JSON so YAML library implementation types such as \[\]byte cannot leak into the provider request contract.
 
+<a name="ModelRecord"></a>
+## type [ModelRecord](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_record_presence.go#L6>)
+
+ModelRecord identifies one optional model record.
+
+```go
+type ModelRecord string
+```
+
+<a name="ModelRecordDeprecatedAt"></a>Optional model records.
+
+```go
+const (
+    ModelRecordDeprecatedAt    ModelRecord = "deprecated_at"
+    ModelRecordRetiresAt       ModelRecord = "retires_at"
+    ModelRecordMetadata        ModelRecord = "metadata"
+    ModelRecordLineage         ModelRecord = "lineage"
+    ModelRecordFeatures        ModelRecord = "features"
+    ModelRecordAttachments     ModelRecord = "attachments"
+    ModelRecordGeneration      ModelRecord = "generation"
+    ModelRecordReasoning       ModelRecord = "reasoning"
+    ModelRecordReasoningTokens ModelRecord = "reasoning_tokens"
+    ModelRecordVerbosity       ModelRecord = "verbosity"
+    ModelRecordTools           ModelRecord = "tools"
+    ModelRecordDelivery        ModelRecord = "response"
+    ModelRecordPricing         ModelRecord = "pricing"
+    ModelRecordLimits          ModelRecord = "limits"
+)
+```
+
+<a name="PublishedModelRecords"></a>
+### func [PublishedModelRecords](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_record_presence.go#L61>)
+
+```go
+func PublishedModelRecords() []ModelRecord
+```
+
+PublishedModelRecords returns every optional record in published order.
+
 <a name="ModelRerankBasis"></a>
-## type [ModelRerankBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L211>)
+## type [ModelRerankBasis](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L203>)
 
 ModelRerankBasis names the unit a provider bills one rerank call in.
 
@@ -3808,7 +4084,7 @@ const (
 ```
 
 <a name="ModelRerankBasis.String"></a>
-### func \(ModelRerankBasis\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L223>)
+### func \(ModelRerankBasis\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L215>)
 
 ```go
 func (m ModelRerankBasis) String() string
@@ -3875,7 +4151,7 @@ const (
 ```
 
 <a name="ModelStatus"></a>
-## type [ModelStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L238>)
+## type [ModelStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L239>)
 
 ModelStatus represents a model lifecycle or availability state.
 
@@ -3896,7 +4172,7 @@ const (
 ```
 
 <a name="ModelStatus.String"></a>
-### func \(ModelStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L241>)
+### func \(ModelStatus\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L242>)
 
 ```go
 func (ms ModelStatus) String() string
@@ -3994,25 +4270,89 @@ func (tag ModelTag) String() string
 String returns text for ModelTag.
 
 <a name="ModelTokenCost"></a>
-## type [ModelTokenCost](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L161-L164>)
+## type [ModelTokenCost](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L165-L171>)
 
-ModelTokenCost represents cost per token with flexible units.
+ModelTokenCost represents cost per token with flexible units. Use Amount to check presence before using values from decoded observations. A constructed zero value retains legacy free\-price behavior. Decoded absent fields remain missing. A legacy zero beside a nonzero alternate unit is an unused placeholder.
 
 ```go
 type ModelTokenCost struct {
     PerToken float64 `json:"per_token" yaml:"per_token"`  // Cost per individual token
     Per1M    float64 `json:"per_1m_tokens" yaml:"per_1m"` // Cost per 1M tokens
+    // contains filtered or unexported fields
 }
 ```
 
-<a name="ModelTokenCost.MarshalYAML"></a>
-### func \(\*ModelTokenCost\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L167>)
+<a name="ModelTokenCost.Amount"></a>
+### func \(\*ModelTokenCost\) [Amount](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L27>)
 
 ```go
-func (t *ModelTokenCost) MarshalYAML() (any, error)
+func (cost *ModelTokenCost) Amount(unit TokenCostUnit) (float64, ValuePresence)
 ```
 
-MarshalYAML implements custom YAML marshaling for TokenCost to format decimals consistently.
+Amount returns the amount and its observed presence without unit conversion. Go values constructed without presence setters retain legacy known\-zero behavior. After decoding, callers use SetAmount to replace a missing or unknown amount with zero.
+
+<a name="ModelTokenCost.MarshalJSON"></a>
+### func \(ModelTokenCost\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L103>)
+
+```go
+func (cost ModelTokenCost) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON preserves unit presence, legacy zero placeholders, and field order.
+
+<a name="ModelTokenCost.MarshalYAML"></a>
+### func \(ModelTokenCost\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L158>)
+
+```go
+func (cost ModelTokenCost) MarshalYAML() (any, error)
+```
+
+MarshalYAML preserves token amount presence and legacy zero placeholders. A cost with no claimed units cannot use YAML, where an empty mapping means free.
+
+<a name="ModelTokenCost.SetAmount"></a>
+### func \(\*ModelTokenCost\) [SetAmount](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L46>)
+
+```go
+func (cost *ModelTokenCost) SetAmount(unit TokenCostUnit, amount float64) bool
+```
+
+SetAmount records a known amount, including zero, and clears the alternate unit. Invalid units return false.
+
+<a name="ModelTokenCost.SetAmountUnknown"></a>
+### func \(\*ModelTokenCost\) [SetAmountUnknown](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L63>)
+
+```go
+func (cost *ModelTokenCost) SetAmountUnknown(unit TokenCostUnit) bool
+```
+
+SetAmountUnknown records an explicit unknown amount. Invalid units return false.
+
+<a name="ModelTokenCost.UnmarshalJSON"></a>
+### func \(\*ModelTokenCost\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L134>)
+
+```go
+func (cost *ModelTokenCost) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores observed unit presence and clears reused state.
+
+<a name="ModelTokenCost.UnmarshalYAML"></a>
+### func \(\*ModelTokenCost\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L189>)
+
+```go
+func (cost *ModelTokenCost) UnmarshalYAML(unmarshal func(any) error) error
+```
+
+UnmarshalYAML restores observed unit presence and clears reused state. An empty mapping retains the free\-price meaning of the legacy YAML encoder.
+
+<a name="ModelTokenCost.UnsetAmount"></a>
+### func \(\*ModelTokenCost\) [UnsetAmount](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L76>)
+
+```go
+func (cost *ModelTokenCost) UnsetAmount(unit TokenCostUnit) bool
+```
+
+UnsetAmount removes an observed claim. Invalid units return false.
 
 <a name="ModelTokenPricing"></a>
 ## type [ModelTokenPricing](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_pricing.go#L111-L123>)
@@ -4045,7 +4385,7 @@ func (t *ModelTokenPricing) MarshalYAML() (any, error)
 MarshalYAML implements custom YAML marshaling for token pricing.
 
 <a name="ModelTools"></a>
-## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L344-L354>)
+## type [ModelTools](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L345-L355>)
 
 ModelTools represents external tool and capability integrations.
 
@@ -4064,7 +4404,7 @@ type ModelTools struct {
 ```
 
 <a name="ModelWebSearch"></a>
-## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L357-L365>)
+## type [ModelWebSearch](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L358-L366>)
 
 ModelWebSearch represents web search configuration for search\-enabled models.
 
@@ -5191,7 +5531,7 @@ func (pm ProviderModerator) String() string
 String returns text for ProviderModerator.
 
 <a name="ProviderOffering"></a>
-## type [ProviderOffering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L130-L144>)
+## type [ProviderOffering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L130-L145>)
 
 ProviderOffering is one provider's service contract for a model definition. Provider\-specific price, limits, availability, regions, lifecycle, endpoint, modes, and request overrides live here rather than on the definition.
 
@@ -5210,11 +5550,12 @@ type ProviderOffering struct {
     RetiresAt       *utc.Time                           `json:"retires_at,omitempty" yaml:"retires_at,omitempty"`
     Service         ProviderOfferingServiceCapabilities `json:"service" yaml:"service"`
     Modes           map[string]ProviderOfferingMode     `json:"modes,omitempty" yaml:"modes,omitempty"`
+    // contains filtered or unexported fields
 }
 ```
 
 <a name="ProviderOffering.Endpoint"></a>
-### func \(ProviderOffering\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L157>)
+### func \(ProviderOffering\) [Endpoint](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L158>)
 
 ```go
 func (o ProviderOffering) Endpoint(operation ProviderOperation) (ProviderOfferingEndpoint, bool)
@@ -5223,7 +5564,7 @@ func (o ProviderOffering) Endpoint(operation ProviderOperation) (ProviderOfferin
 Endpoint returns the endpoint for an exact supported operation.
 
 <a name="ProviderOffering.Key"></a>
-### func \(ProviderOffering\) [Key](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L147>)
+### func \(ProviderOffering\) [Key](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L148>)
 
 ```go
 func (o ProviderOffering) Key() OfferingKey
@@ -5231,8 +5572,35 @@ func (o ProviderOffering) Key() OfferingKey
 
 Key returns the provider\-scoped immutable offering identity.
 
+<a name="ProviderOffering.MarshalJSON"></a>
+### func \(ProviderOffering\) [MarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/offering_record_presence.go#L45>)
+
+```go
+func (o ProviderOffering) MarshalJSON() ([]byte, error)
+```
+
+MarshalJSON retains explicit unknown records in the provider offering read view.
+
+<a name="ProviderOffering.MarshalYAML"></a>
+### func \(ProviderOffering\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/offering_record_presence.go#L84>)
+
+```go
+func (o ProviderOffering) MarshalYAML() (any, error)
+```
+
+MarshalYAML retains explicit unknown records without numeric conversion.
+
+<a name="ProviderOffering.RecordPresence"></a>
+### func \(ProviderOffering\) [RecordPresence](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/offering_record_presence.go#L13>)
+
+```go
+func (o ProviderOffering) RecordPresence(record ModelRecord) ValuePresence
+```
+
+RecordPresence reports an optional provider service record's observed presence. Intrinsic capability records return ValueMissing.
+
 <a name="ProviderOffering.Supports"></a>
-### func \(ProviderOffering\) [Supports](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L152>)
+### func \(ProviderOffering\) [Supports](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L153>)
 
 ```go
 func (o ProviderOffering) Supports(operation ProviderOperation) bool
@@ -5240,8 +5608,26 @@ func (o ProviderOffering) Supports(operation ProviderOperation) bool
 
 Supports reports whether this exact offering supports an operation.
 
+<a name="ProviderOffering.UnmarshalJSON"></a>
+### func \(\*ProviderOffering\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/offering_record_presence.go#L64>)
+
+```go
+func (o *ProviderOffering) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON restores provider record presence and clears earlier claims.
+
+<a name="ProviderOffering.UnmarshalYAML"></a>
+### func \(\*ProviderOffering\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/offering_record_presence.go#L106>)
+
+```go
+func (o *ProviderOffering) UnmarshalYAML(data []byte) error
+```
+
+UnmarshalYAML restores provider record presence and clears earlier claims.
+
 <a name="ProviderOffering.Validate"></a>
-### func \(ProviderOffering\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L167>)
+### func \(ProviderOffering\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider_offering.go#L168>)
 
 ```go
 func (o ProviderOffering) Validate() error
@@ -5663,7 +6049,7 @@ type ProvidersReader interface {
 ```
 
 <a name="Quantization"></a>
-## type [Quantization](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L65>)
+## type [Quantization](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L67>)
 
 Quantization represents the quantization level used by a model. Quantization reduces model size and computational requirements while aiming to preserve performance.
 
@@ -5688,7 +6074,7 @@ const (
 ```
 
 <a name="Quantization.String"></a>
-### func \(Quantization\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L68>)
+### func \(Quantization\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L70>)
 
 ```go
 func (q Quantization) String() string
@@ -5892,8 +6278,28 @@ func (o SourceObservationLink) Validate() error
 
 Validate verifies one complete source\-observation link.
 
+<a name="TokenCostUnit"></a>
+## type [TokenCostUnit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L10>)
+
+TokenCostUnit identifies one observed token price unit.
+
+```go
+type TokenCostUnit string
+```
+
+<a name="CostUnitPerToken"></a>
+
+```go
+const (
+    // CostUnitPerToken identifies the amount for one token.
+    CostUnitPerToken TokenCostUnit = "per_token"
+    // CostUnitPerMillion identifies the amount for one million tokens.
+    CostUnitPerMillion TokenCostUnit = "per_1m_tokens"
+)
+```
+
 <a name="Tokenizer"></a>
-## type [Tokenizer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L36>)
+## type [Tokenizer](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L38>)
 
 Tokenizer represents the tokenizer type used by a model.
 
@@ -5925,7 +6331,7 @@ const (
 ```
 
 <a name="Tokenizer.String"></a>
-### func \(Tokenizer\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L39>)
+### func \(Tokenizer\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_architecture.go#L41>)
 
 ```go
 func (t Tokenizer) String() string
@@ -5934,7 +6340,7 @@ func (t Tokenizer) String() string
 String returns text for Tokenizer.
 
 <a name="ToolChoice"></a>
-## type [ToolChoice](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L280>)
+## type [ToolChoice](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L281>)
 
 ToolChoice represents the strategy for selecting tools. Used in API requests as the "tool\_choice" parameter value.
 
@@ -5953,7 +6359,7 @@ const (
 ```
 
 <a name="ToolChoice.String"></a>
-### func \(ToolChoice\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L283>)
+### func \(ToolChoice\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model.go#L284>)
 
 ```go
 func (tc ToolChoice) String() string

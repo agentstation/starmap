@@ -323,12 +323,14 @@ func (merger *merger) model(providerID catalogs.ProviderID, modelID string, sour
 
 	for _, policy := range merger.authorities.Policies(evidence.ResourceTypeModel) {
 		policySources := sourceModels
-		if policy.Path != "Limits" {
+		if policy.Path != "Description" && policy.Path != "Limits" && policy.Path != "Features" && policy.Path != "Metadata" && policy.Path != "Modes" && policy.Path != "Extensions" && policy.Path != "Authors" {
 			policySources = merger.modelSourcesForPolicy(providerID, modelID, policy, sourceModels)
 		}
 		merger.applyModelPolicy(identity, merged, policy, policySources, &history)
 	}
+	merger.mergeModelRecordPresence(identity, merged, sourceModels, &history)
 	dropOrphanedReasoningFacts(merged)
+	merger.clearOrphanedReasoningEvidence(identity, merged, history)
 
 	// Handle timestamps with change detection
 	// Store baseline model for comparison (before it gets overwritten)
@@ -673,33 +675,6 @@ func (merger *merger) setFieldValue(v reflect.Value, fieldPath string, value any
 	}
 }
 
-func mergeSupplementalMetadata(target, source *catalogs.ModelMetadata) *catalogs.ModelMetadata {
-	if source == nil {
-		return target
-	}
-	if target == nil {
-		return copyModelMetadata(source)
-	}
-	if target.ReleaseDate.IsZero() && !source.ReleaseDate.IsZero() {
-		target.ReleaseDate = source.ReleaseDate
-	}
-	if target.KnowledgeCutoff == nil && source.KnowledgeCutoff != nil && !source.KnowledgeCutoff.IsZero() {
-		knowledgeCutoff := *source.KnowledgeCutoff
-		target.KnowledgeCutoff = &knowledgeCutoff
-	}
-	openWeights, sourcePresence := source.OpenWeightsValue()
-	_, targetPresence := target.OpenWeightsValue()
-	switch {
-	case sourcePresence == catalogs.ValueKnown && targetPresence != catalogs.ValueKnown:
-		target.SetOpenWeights(openWeights)
-	case sourcePresence == catalogs.ValueUnknown && targetPresence == catalogs.ValueMissing:
-		target.SetOpenWeightsUnknown()
-	}
-	target.Tags = mergeModelTags(target.Tags, source.Tags)
-	target.Architecture = mergeModelArchitecture(target.Architecture, source.Architecture)
-	return target
-}
-
 func copyModelPricing(source *catalogs.ModelPricing) *catalogs.ModelPricing {
 	if source == nil {
 		return nil
@@ -783,37 +758,6 @@ func copyModelArchitecture(source *catalogs.ModelArchitecture) *catalogs.ModelAr
 	copied := *source
 	copied.BaseModel = copyValuePtr(source.BaseModel)
 	return &copied
-}
-
-func mergeModelArchitecture(target, source *catalogs.ModelArchitecture) *catalogs.ModelArchitecture {
-	if source == nil {
-		return target
-	}
-	if target == nil {
-		return copyModelArchitecture(source)
-	}
-	if target.ParameterCount == "" {
-		target.ParameterCount = source.ParameterCount
-	}
-	if target.Type == "" {
-		target.Type = source.Type
-	}
-	if target.Tokenizer == "" {
-		target.Tokenizer = source.Tokenizer
-	}
-	if target.Quantization == "" {
-		target.Quantization = source.Quantization
-	}
-	if source.Quantized {
-		target.Quantized = true
-	}
-	if source.FineTuned {
-		target.FineTuned = true
-	}
-	if target.BaseModel == nil {
-		target.BaseModel = copyValuePtr(source.BaseModel)
-	}
-	return target
 }
 
 func mergeModelTags(target, source []catalogs.ModelTag) []catalogs.ModelTag {

@@ -14,11 +14,12 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
-const pinnedArchiveSHA256 = "a9144f852d6c5fc3574c61aca5b4b8bc6f34e76d5065fb68114c8af3fb6fb02b"
+const pinnedArchiveSHA256 = "4e170a3d05e48c20017f412347439623210e551c8fcec6d5c7f713f29b2b0eb9"
 
-// ActivatePinned builds a portable fixture from the embedded generation, pins
-// its exact archive digest as the offline trust root, and activates it in a
-// caller-selected store without network access or provider credentials.
+// ActivatePinned builds a portable fixture from the embedded generation.
+// It pins the exact archive digest as the offline trust root.
+// It activates the fixture in a caller-selected store without network access
+// or provider credentials.
 func ActivatePinned(ctx context.Context) error {
 	embedded, err := starmap.New()
 	if err != nil {

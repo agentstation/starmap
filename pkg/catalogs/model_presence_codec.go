@@ -304,10 +304,10 @@ func (m Model) MarshalYAML() (any, error) {
 	if m.Status != "" {
 		entries = append(entries, yaml.MapItem{Key: "status", Value: m.Status})
 	}
-	if m.DeprecatedAt != nil {
+	if m.RecordPresence(ModelRecordDeprecatedAt) != ValueMissing {
 		entries = append(entries, yaml.MapItem{Key: "deprecated_at", Value: m.DeprecatedAt})
 	}
-	if m.RetiresAt != nil {
+	if m.RecordPresence(ModelRecordRetiresAt) != ValueMissing {
 		entries = append(entries, yaml.MapItem{Key: "retires_at", Value: m.RetiresAt})
 	}
 	for _, field := range []struct {
@@ -325,7 +325,7 @@ func (m Model) MarshalYAML() (any, error) {
 		{key: "tools", value: m.Tools},
 		{key: "response", value: m.Delivery},
 	} {
-		if !isNilPresenceValue(field.value) {
+		if m.RecordPresence(ModelRecord(field.key)) != ValueMissing {
 			entries = append(entries, yaml.MapItem{Key: field.key, Value: field.value})
 		}
 	}
@@ -339,7 +339,7 @@ func (m Model) MarshalYAML() (any, error) {
 		{key: "pricing", value: m.Pricing},
 		{key: "limits", value: m.Limits},
 	} {
-		if !isNilPresenceValue(field.value) {
+		if m.RecordPresence(ModelRecord(field.key)) != ValueMissing {
 			entries = append(entries, yaml.MapItem{Key: field.key, Value: field.value})
 		}
 	}
@@ -373,6 +373,11 @@ func (m *Model) UnmarshalYAML(unmarshal func(any) error) error {
 		return err
 	}
 	*m = Model(decoded)
+	for _, record := range modelRecordOrder {
+		if value, present := raw[string(record)]; present && value == nil {
+			m.SetRecordUnknown(record)
+		}
+	}
 	if value, present := raw["description"]; present {
 		m.descriptionPresence = ValueKnown
 		if value == nil {
@@ -405,6 +410,11 @@ func (m Model) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	for _, record := range modelRecordOrder {
+		if m.RecordPresence(record) == ValueUnknown {
+			raw[string(record)] = json.RawMessage("null")
+		}
+	}
 	return json.Marshal(raw)
 }
 
@@ -420,6 +430,11 @@ func (m *Model) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*m = Model(decoded)
+	for _, record := range modelRecordOrder {
+		if value, present := raw[string(record)]; present && isJSONNull(value) {
+			m.SetRecordUnknown(record)
+		}
+	}
 	if value, present := raw["description"]; present {
 		m.descriptionPresence = ValueKnown
 		if isJSONNull(value) {

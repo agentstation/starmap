@@ -14,6 +14,7 @@ Package payload enforces bounded resource use before source decoding.
 
 - [Constants](<#constants>)
 - [func ValidateJSON\(data \[\]byte\) error](<#ValidateJSON>)
+- [func ValidateJSONWithMaxBytes\(data \[\]byte, maxBytes int\) error](<#ValidateJSONWithMaxBytes>)
 - [type QuarantineError](<#QuarantineError>)
   - [func \(e \*QuarantineError\) Error\(\) string](<#QuarantineError.Error>)
   - [func \(e \*QuarantineError\) Unwrap\(\) error](<#QuarantineError.Unwrap>)
@@ -33,7 +34,7 @@ Package payload enforces bounded resource use before source decoding.
 
 ```go
 const (
-    // MaxBytes bounds one provider or catalog source JSON payload.
+    // MaxBytes is the default byte limit for source JSON payloads.
     MaxBytes = 16 << 20
     // MaxJSONNestingDepth bounds object/array nesting before JSON decode.
     MaxJSONNestingDepth = 64
@@ -48,6 +49,15 @@ func ValidateJSON(data []byte) error
 ```
 
 ValidateJSON enforces source byte and nesting limits before decoding.
+
+<a name="ValidateJSONWithMaxBytes"></a>
+## func [ValidateJSONWithMaxBytes](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L35>)
+
+```go
+func ValidateJSONWithMaxBytes(data []byte, maxBytes int) error
+```
+
+ValidateJSONWithMaxBytes applies the caller's byte limit and the shared nesting limit.
 
 <a name="QuarantineError"></a>
 ## type [QuarantineError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/records.go#L34-L39>)
@@ -153,7 +163,7 @@ type UnknownJSONField struct {
 ```
 
 <a name="FingerprintValue"></a>
-### func [FingerprintValue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L93>)
+### func [FingerprintValue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L105>)
 
 ```go
 func FingerprintValue(path string, value any) UnknownJSONField
@@ -162,7 +172,7 @@ func FingerprintValue(path string, value any) UnknownJSONField
 FingerprintValue returns path/digest evidence for an unrecognized typed value.
 
 <a name="UnknownJSONFields"></a>
-### func [UnknownJSONFields](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L70>)
+### func [UnknownJSONFields](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L82>)
 
 ```go
 func UnknownJSONFields(data []byte, schema any, prefix string) ([]UnknownJSONField, error)
