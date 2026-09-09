@@ -1,0 +1,89 @@
+{
+  "task": "CSP3",
+  "status": "in_progress",
+  "pr": "https://github.com/agentstation/starmap/pull/139",
+  "failed_run": "https://github.com/agentstation/starmap/actions/runs/34323117948",
+  "failed_head": "a5ecb9946f65027610dbdb2f62d1f8506606daf3",
+  "failed_job": "Verification Gate",
+  "failure": "TestSubscriberHonorsRetryAfterNotBefore timed out waiting for subscriber condition.",
+  "cause": "nextReconnectDelay published the internal retry boundary after next consumed it. Health therefore lost the boundary while the subscriber still waited.",
+  "repair": "Capture the refusal boundary before consuming the pacing state. Clear the published boundary when retry starts, startup aborts, or the subscriber stops.",
+  "worktree": "/tmp/starmap-presence-integration-2026-09-09",
+  "branch": "codex/catalog-ranges-main",
+  "candidate": "Uncommitted repair. Full verification session 18580 is running. Required review, push, native CI, and merge remain open.",
+  "merge_worker": "Session 17325 exited 1 and performed no merge. Start a new bounded merge operation only after the repaired head passes all required checks.",
+  "task_completion_credit": false,
+  "ci_artifact": {
+    "path": "failed-ci.log.gz",
+    "sha256": "fa7a7d8a4dd83415dfa05b2e5743f13e3283705b314c2c54ea8531d992f7f0c0"
+  },
+  "checks": [
+    {
+      "name": "fail-before",
+      "path": "fail-before.jsonl.gz",
+      "sha256": "2c9ccb0656e7c035414a055970d082e09147eafe2851d9f1fa2f6dfcece7a09a",
+      "counts": {
+        "tests": {
+          "fail": 1
+        },
+        "packages": {
+          "fail": 1
+        }
+      }
+    },
+    {
+      "name": "remote-race",
+      "path": "remote-race.jsonl.gz",
+      "sha256": "0295fdc3765a07ed9d2e39a531d3f40a327a5dd3c8014641911c75ffb763f50f",
+      "counts": {
+        "tests": {
+          "pass": 44
+        },
+        "packages": {
+          "pass": 1
+        }
+      }
+    },
+    {
+      "name": "minimum",
+      "path": "minimum.jsonl.gz",
+      "sha256": "2521d1c80a0148de038174faa76e502af944c076a166b2336a9f0e44a35b452b",
+      "counts": {
+        "tests": {
+          "pass": 3
+        },
+        "packages": {
+          "pass": 1
+        }
+      }
+    },
+    {
+      "name": "final-remote-race",
+      "path": "final-remote-race.jsonl.gz",
+      "sha256": "ccc97888a9bf4bf43a7ab80cc1ea761c8556317ab46c08495e990767685ea666",
+      "counts": {
+        "tests": {
+          "pass": 44
+        },
+        "packages": {
+          "pass": 1
+        }
+      }
+    }
+  ],
+  "updated_at": "2026-09-09T08:48:19.950866+00:00",
+  "candidate_files": [
+    {
+      "path": "remote/subscriber.go",
+      "sha256": "009183346f93d363313c3e2fc6d8071707d28eb021dbcf7b5c60941e7d3fa445"
+    },
+    {
+      "path": "remote/pacing_test.go",
+      "sha256": "117a02c2fa82fada303133b7cbc59ab9370f38f85110b54be83474a674707cb0"
+    },
+    {
+      "path": "remote/README.md",
+      "sha256": "cd0ef299abc462779e1b38a96026472c79a78e990927f6e00db3e395b12c71f1"
+    }
+  ]
+}

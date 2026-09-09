@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-09T07:56:28.561399+00:00",
+  "updated_at": "2026-09-09T08:48:19.950001+00:00",
   "task": "CSP3",
   "status": "in_progress",
   "merged": false,
@@ -7,14 +7,14 @@
   "worktree": "/tmp/starmap-scheduled-sources-2026-09-09",
   "branch": "codex/catalog-scheduled-sources",
   "base_commit": "bbde3ac42874372f383345a7cebdada482e00de5",
-  "implementation": "Uncommitted candidate. Eighteen focused race events pass across three packages. A separate final runtime race command passes nine further events. Ago, Golangci-lint, and final prose checks pass. Full verification is running. Review, publication, and merge remain required.",
+  "implementation": "Committed candidate. All 39 repository stages pass. Full ordinary and race suites each pass 80 packages. The verifier regression suite passes 73 tests. Review, publication, and merge remain required.",
   "fail_before": "Connected runtime acquisition made zero metadata requests. The regression requires one metadata request beside provider acquisition.",
   "test_repair": "The first scheduler test used LastRunID, which already identified the required upstream startup fetch. It now waits for acquisition health. Original failed output is retained.",
   "startup_behavior": "A configured source acquirer rechecks after the startup spread on every restart. Provider timestamps do not establish non-provider freshness.",
   "remaining_scope": [
-    "Full CSP3 acceptance, including other A20 compositions and source configuration",
-    "CSP5 owns bounded input history compaction and recovery",
-    "Final repository verification, review, publication, and merge"
+    "A08 and remaining Starmap A20 compositions and source configuration",
+    "Integrate the reviewed PR 139 repair, then complete review, publication, native CI, and merge",
+    "CSP5 owns bounded input history compaction and recovery"
   ],
   "checks": [
     {
@@ -199,6 +199,22 @@
     {
       "path": "godoc-final.log",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full-verification.log.gz",
+      "sha256": "cdc585f6a75c5ead37a1361326a3d62d5548be5e451c156adb8a74b87ba0b0d4"
+    },
+    {
+      "path": "final-docs-check.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    },
+    {
+      "path": "ago-final.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "prose-complete.log",
+      "sha256": "139d3d98ee8c3406195a359b6490368c617d3df72f13f06482ccb267d758b528"
     }
   ],
   "candidate_files": [
@@ -215,6 +231,14 @@
       "sha256": "f5c55fd651e3aaae6bdc63009570522385db685a5fe7a9689a9c50f2d0be0d97"
     },
     {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "sha256": "45e07091fed06a7c2755fc5a494f73e39091e9a849af2d8d4b599e5f43c6e6cd"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "sha256": "85d1911f3291c843ad64d4a154226369d2912cc418fd210a9f272d8641292e90"
+    },
+    {
       "path": "internal/cli/app/catalog_runtime.go",
       "sha256": "6d37b680954e417c79811a3d8db6ec12c6a22140fdbdbbb007dfb25380c3f729"
     },
@@ -223,16 +247,28 @@
       "sha256": "bd29982ccadf2ccb3459bba269a92633bca3aaf171091eadd3872ba7b8aea151"
     },
     {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "b0a86c81493c4ccb090dfa30160b2be43e16d2a10c4fe0cac3dfe342d35661c4"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "824bee006f9edcf2dcd349a72e3096306fef78bc03683be395f953e7ea97bad1"
+    },
+    {
       "path": "runtime/README.md",
-      "sha256": "df639cac8cb2bc934d6b960598b96543616b86a8c6d78a60c17f34e66c660014"
+      "sha256": "34c54339890f437bc2b3590c85a0c13079f00247c1977815ae4ae446cc61632d"
     },
     {
       "path": "runtime/options.go",
-      "sha256": "4ae450e22b2eb78f79753189337046405bc0c3b8638b9d8f444f8674ec5f7503"
+      "sha256": "3b86c9e3d2ded3c96120df28c95998d558a3ac262cc927495f65abcfaf8d67a3"
+    },
+    {
+      "path": "runtime/policy.go",
+      "sha256": "314fab00843d9592f00448d52882746df88565a42f55cd1fe52f59903f315fa7"
     },
     {
       "path": "runtime/refresh.go",
-      "sha256": "8368e3eb0be6b2d1c85e1958ab17fa8d3621f36d5533f6ccdab8db4e89dcbf89"
+      "sha256": "fe3c7b820165991f046c6fe418a613ee307e37f74038073dcfe28b591e3437dc"
     },
     {
       "path": "runtime/scheduler.go",
@@ -259,5 +295,66 @@
       "sha256": "fc73351b80e643654c6ccfce35b064bb526aef348a62fe9fde2aa77067793c00"
     }
   ],
-  "publication_scope": "One PR combines the previously reviewed ingestion tests with the scheduled-source implementation. The ingestion candidate bbde3ac4 is an ancestor. Publish against main after PR 139 merges; no separate ingestion PR."
+  "publication_scope": "One PR combines the previously reviewed ingestion tests with the scheduled-source implementation. The ingestion candidate bbde3ac4 is an ancestor. Publish against main after PR 139 merges; no separate ingestion PR.",
+  "work_commit": "7b275966c6681d2d40fdbc255eaaf2979cb95722",
+  "full_verification": {
+    "command": "env GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify.sh",
+    "exit_code": 0,
+    "stages": [
+      "go test ./...",
+      "make test-pure-go",
+      "make test-file-sizes",
+      "./scripts/verify-package-layout.sh",
+      "./scripts/test-package-layout-verifier.sh",
+      "./scripts/verify-catalog-package-ownership.sh",
+      "./scripts/test-catalog-package-ownership-verifier.sh",
+      "./scripts/verify-catalog-dependency-direction.sh",
+      "./scripts/test-catalog-dependency-direction-verifier.sh",
+      "python3 ./scripts/test_catalog_product_verify.py",
+      "env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=2",
+      "go vet ./...",
+      "./scripts/verify-catalog-performance.sh",
+      "./scripts/verify-container-smoke.sh",
+      "devbox run golangci-lint run",
+      "go tool ago -stale-ignores ./...",
+      "coverage ./internal/catalog/pipeline >= 70%",
+      "coverage ./internal/catalog/query >= 75%",
+      "coverage ./internal/providers/clients >= 80%",
+      "coverage ./internal/sources/providers >= 75%",
+      "coverage ./internal/server/middleware >= 90%",
+      "coverage ./internal/server/openrouter >= 85%",
+      "coverage ./internal/server/params >= 95%",
+      "coverage ./internal/server/response >= 95%",
+      "coverage ./internal/server/sse >= 90%",
+      "coverage ./internal/transport >= 40%",
+      "coverage ./pkg/catalogs/authority >= 90%",
+      "coverage ./pkg/catalogs >= 55%",
+      "coverage ./pkg/errors >= 80%",
+      "coverage ./internal/catalog/reconciler >= 75%",
+      "coverage ./pkg/sources >= 35%",
+      "make docs-check",
+      "make technical-writing-check",
+      "git diff --check",
+      "go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.gC7zEJ/starmap ./cmd/starmap",
+      "run_cli version",
+      "run_cli validate catalog",
+      "run_cli providers",
+      "run_cli models list --limit 5"
+    ],
+    "stage_count": 39,
+    "packages": {
+      "ordinary": {
+        "package_passes": 80,
+        "no_test_packages": 22,
+        "package_failures": 0
+      },
+      "race": {
+        "package_passes": 80,
+        "no_test_packages": 22,
+        "package_failures": 0
+      }
+    },
+    "verifier_regressions": 73,
+    "limitation": "The full verifier inherits an unsupported gomarkdoc flag from GOFLAGS despite a zero exit. The separate final documentation check unsets GOFLAGS and passes."
+  }
 }
