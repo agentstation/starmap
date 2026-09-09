@@ -1,0 +1,102 @@
+{
+  "status": "in_progress",
+  "contract": "CSP3/A20 accepted input reporting across manual results and errors",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "base": "a3b0c6ad",
+  "behavior": [
+    "Each connected manual result or error carries a source snapshot from one runtime Status read.",
+    "The snapshot carries its own active generation ID and source identifiers. It does not derive acceptance from attempted observations.",
+    "Preview and failed publication preserve active accepted input. Successful publication reports the active generation after the operation.",
+    "Standalone acquisition without retained-input tracking leaves the snapshot absent; CLI reports unknown.",
+    "HTTP, operation copies, and CLI retain validated accepted input independently of source activity."
+  ],
+  "remaining": [
+    "Audit early manual cancellation and preflight errors for explicit unattempted source reporting.",
+    "Complete cross-composition ingestion acceptance, full verification, required review, native CI, and merge."
+  ],
+  "checks": {
+    "fail-before": {
+      "test_pass_events": 1,
+      "test_fail_events": 2,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "race": {
+      "test_pass_events": 4,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "transport-minimum": {
+      "test_pass_events": 10,
+      "test_fail_events": 0,
+      "package_pass_events": 3,
+      "skips": 0
+    },
+    "transport-final-race": {
+      "test_pass_events": 11,
+      "test_fail_events": 0,
+      "package_pass_events": 4,
+      "skips": 0
+    },
+    "ago": {
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 1313,
+      "diagnostics": 0
+    },
+    "docs": {
+      "exit_code": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "43df4ecade3b386aae0a9d4018f6d9e02d6ce61de8fbfbf7a15030fdc3e082e4"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "sha256": "2f903226d3db322cf3b704295a33f386e603b8b0dc4390f2e3cce2b440b84a21"
+    },
+    {
+      "path": "transport-minimum.jsonl.gz",
+      "sha256": "4693865b137d80def389069ea4e2249fdff9f2f2a2598e9c439e7624974d6ce1"
+    },
+    {
+      "path": "transport-final-race.jsonl.gz",
+      "sha256": "499f985ef46dee7a80d78171d5b12208cec98753aee9d4d7191506b038737fc8"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "952f66b452dd821a41b548850959df630ca27a5c38277e7dca521a89f31eb48b"
+    },
+    {
+      "path": "generate.log.gz",
+      "sha256": "63ee6f6ed7e7c42eaa2fb39e77f4229b35dcc3271877c96d3b59c43167f58566"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "f53f05d5d27d99c1b659804aaa78ecedd73a638e6213768c8235e8f10a0ae73b"
+    }
+  ],
+  "task_completion_credit": false,
+  "active_checks": {},
+  "commit": "c232474493bcfe5204ccbbc34288c933c994cfd7",
+  "tree": "ac82bc555dc91876d47eb55430989ad62d578a3e"
+}

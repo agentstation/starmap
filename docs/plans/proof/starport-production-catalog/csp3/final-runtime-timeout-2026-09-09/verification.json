@@ -1,0 +1,18 @@
+{
+  "status": "failed",
+  "session": 61844,
+  "exit_code": 1,
+  "head": "d4ecdbed77af790761d981a2726710ded004111e",
+  "tree": "b6e11c8c9e684c6d2b83ad8b6f5860ea7218701b",
+  "command": "bash scripts/verify.sh with pinned Go 1.26.6 and recorded integration roots",
+  "failure": "runtime package reached the unchanged 20-minute test deadline",
+  "runtime_seconds": 1200.526,
+  "individual_assertion_failure_observed": false,
+  "evidence_limits": "No complete runtime roster can be credited to this timed-out run. The isolated prior run passed all 252 listed tests and 677 events. Its top-level durations sum to 1139.51 seconds; parallel overlap means this sum is not wall time.",
+  "next": "Investigate isolation of the complete runtime race package from other package and agent test jobs, preserving the exact package roster and the 20-minute runtime deadline. Validate the scheduling change before full review or publication.",
+  "artifact": {
+    "path": "full-verification.log.gz",
+    "sha256": "bdebf33b0afe4a377edd17d4613efc231567423fc1451ba2ef5932a90a88ddf1"
+  },
+  "task_completion_credit": false
+}

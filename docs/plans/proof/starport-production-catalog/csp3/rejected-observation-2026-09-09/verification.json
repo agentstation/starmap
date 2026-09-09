@@ -43,15 +43,7 @@
       "exit_code": 0
     }
   },
-  "running": {
-    "final_verification": {
-      "session": 61844,
-      "head": "d4ecdbed77af790761d981a2726710ded004111e",
-      "tree": "b6e11c8c9e684c6d2b83ad8b6f5860ea7218701b",
-      "log": "/tmp/starmap-source-inventory-full-verification-2026-09-09.log",
-      "command": "CATALOG_GIT_FIXTURE_REQUIRED=1 GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 CSP_STARPORT_WORKTREE=/tmp/starport-readme-merged-2026-09-08 CATALOG_DISTRIBUTION_STARPORT_ROOT=/tmp/starport-readme-merged-2026-09-08 CATALOG_DRIVEN_STARMAP_ROOT=/tmp/starmap-source-inventory-2026-09-09 STARMAP_OWNERSHIP_STARMAP_ROOT=/tmp/starmap-source-inventory-2026-09-09 bash scripts/verify.sh"
-    }
-  },
+  "running": {},
   "remaining": [
     "Full source inventory with supported, enabled, eligible and attempted dimensions.",
     "Final combined qualification, review, native CI and merge."
@@ -159,5 +151,10 @@
       "binary_sha256": "086876bf3c7062b6483ec73e2fb75343af8c03f415b96b9328fcd459c233f3ce"
     },
     "conclusion": "The complete compiled runtime suite passes without another heavy test suite. Prior package timeouts remain historical failures; no deadline or assertion changed."
+  },
+  "final_verification": {
+    "session": 61844,
+    "exit_code": 1,
+    "proof": "../final-runtime-timeout-2026-09-09/verification.json"
   }
 }
