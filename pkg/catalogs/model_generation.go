@@ -2,6 +2,7 @@ package catalogs
 
 // ModelGeneration - core chat completions generation controls.
 type ModelGeneration struct {
+	unknownParameters uint32
 	// Core sampling and decoding
 	Temperature *FloatRange `json:"temperature,omitempty" yaml:"temperature,omitempty"`
 	TopP        *FloatRange `json:"top_p,omitempty" yaml:"top_p,omitempty"`
@@ -41,14 +42,18 @@ type ModelGeneration struct {
 
 // FloatRange represents a range of float values.
 type FloatRange struct {
-	Min     float64 `json:"min" yaml:"min"`         // Minimum value
-	Max     float64 `json:"max" yaml:"max"`         // Maximum value
-	Default float64 `json:"default" yaml:"default"` // Default value
+	absentFields  uint8
+	unknownFields uint8
+	Min           float64 `json:"min" yaml:"min"`         // Minimum value
+	Max           float64 `json:"max" yaml:"max"`         // Maximum value
+	Default       float64 `json:"default" yaml:"default"` // Default value
 }
 
 // IntRange represents a range of integer values.
 type IntRange struct {
-	Min     int `json:"min" yaml:"min"`         // Minimum value
-	Max     int `json:"max" yaml:"max"`         // Maximum value
-	Default int `json:"default" yaml:"default"` // Default value
+	absentFields  uint8
+	unknownFields uint8
+	Min           int `json:"min" yaml:"min"`         // Minimum value
+	Max           int `json:"max" yaml:"max"`         // Maximum value
+	Default       int `json:"default" yaml:"default"` // Default value
 }
