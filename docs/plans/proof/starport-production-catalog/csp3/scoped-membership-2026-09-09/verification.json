@@ -28,6 +28,10 @@
     {
       "path": "fail-before.jsonl.gz",
       "sha256": "7b672ff71560243db7cd8cc8bae413f9e2b5db9dd093c8c032aa80da219e258b"
+    },
+    {
+      "path": "membership-authority-before.jsonl.gz",
+      "sha256": "f5cc0e248edf0e6538c8b48f6565f09b3a45b043d53c5654d040f6da6c0ccf51"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -64,10 +68,10 @@
     "next": "Define the exact membership coverage contract, then implement suppression at its owning reconciliation seam and prove replay after partial updates and restart."
   },
   "owner_question": {
-    "status": "pending preference",
+    "status": "No owner answer. Recommended engineering default selected for implementation.",
     "question": "Should source membership replacement authority be explicit and separate from reply completeness?",
     "recommendation": "Explicit membership authority; provider-wide removal requires provider-wide authority.",
-    "constraint": "No broad public-inventory replacement is implemented while the coverage contract remains undefined."
+    "constraint": "Explicit membership authority remains separate from reply completeness. Preserve legacy receipts and reject account-scoped provider-wide authority."
   },
   "authority_design_constraints": {
     "head": "6e4f9efbeab65e2652314f8293518dda9783778e",
@@ -90,5 +94,20 @@
     ],
     "status": "Read-only design constraints; no schema or deletion implementation change.",
     "prose_log": "/tmp/starmap-scoped-authority-identity-plan-prose-2026-09-09.log"
+  },
+  "membership_contract_fail_before": {
+    "exit_code": 1,
+    "passing_test_events": 5,
+    "failing_tests": [
+      "TestProviderMembershipAuthorityWireContract/evidence_only",
+      "TestProviderMembershipAuthorityWireContract/public_scoped_membership",
+      "TestProviderMembershipAuthorityWireContract/account_scoped_membership",
+      "TestProviderMembershipAuthorityWireContract/public_provider_membership",
+      "TestProviderMembershipAuthorityWireContract",
+      "TestProviderMembershipAuthorityBoundToReceipt"
+    ],
+    "test_file": "pkg/sources/provider_membership_test.go",
+    "proposed_contract": "Binding schema 2 adds optional membership_authority scope or provider. Omission grants no replacement authority. Provider authority requires public scope. Schema 1 remains readable without authority. Schema 2 receipts use identity v4 and include authority.",
+    "next": "Implement binding validation and receipt identity with legacy compatibility before scoped reconciliation."
   }
 }

@@ -62,6 +62,26 @@
           "skip": 0
         }
       }
+    },
+    "windows-11-arm": {
+      "conclusion": "success",
+      "checks": {
+        "publisher-ingestion.jsonl": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "git-acquisition.jsonl": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests.jsonl": {
+          "pass": 1490,
+          "fail": 0,
+          "skip": 0
+        }
+      }
     }
   },
   "artifacts": [
@@ -120,6 +140,22 @@
     {
       "path": "macos-15-tests.jsonl.gz",
       "sha256": "b918a21440598096a2250108a2c594f448cd5639af1e7bce12e63c2576536748"
+    },
+    {
+      "path": "windows-11-arm-toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb"
+    },
+    {
+      "path": "windows-11-arm-publisher-ingestion.jsonl.gz",
+      "sha256": "de4a55686912c0525dd2e37c2a469be544697cec2af3a90be7cf92b037e27507"
+    },
+    {
+      "path": "windows-11-arm-git-acquisition.jsonl.gz",
+      "sha256": "810db453824901de6f0c106d74c7311fab8ce37c0ee143a5e440bb1d25a27131"
+    },
+    {
+      "path": "windows-11-arm-tests.jsonl.gz",
+      "sha256": "d8a7e312dcaf40bb392bae18a2c143c09abe7585be77a298a07a0c4e118d578c"
     }
   ],
   "linux_skip": "TestServiceConfigurationAdministratorOwnedRead skips under the ordinary user. The separate administrator-owned configuration step passes and retains service-owner.txt."
