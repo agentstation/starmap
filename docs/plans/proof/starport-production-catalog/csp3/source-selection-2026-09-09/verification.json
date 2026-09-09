@@ -132,7 +132,7 @@
     }
   ],
   "settings_packages": "Both complete shared settings packages pass after adding the new descriptor, CLI facade, and deployment samples.",
-  "full_verification": "Session 25128 is active. Ordinary Go checks and all 73 verifier tests pass. The full race suite is running. Inspect /tmp/starmap-source-selection-full-verification.log.",
+  "full_verification": "Session 25128 was terminated after discovery required a production change. Its partial run is historical, not a full pass. Session 35415 passes 32 minimum-Go test events across four packages and now runs all repository stages. Log: /tmp/starmap-source-selection-with-pin-full-verification.log.",
   "remaining": [
     "Full repository verification",
     "Required pre-PR reviews",
@@ -301,5 +301,232 @@
       "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
     }
   ],
-  "final_assertion": "PASS: the startup test proves fs.ErrPermission with race detection and Go 1.25.12."
+  "final_assertion": "PASS: the startup test proves fs.ErrPermission with race detection and Go 1.25.12.",
+  "git_pin_discovery": {
+    "status": "implemented_locally",
+    "setting": "STARMAP_CATALOG_MODELS_DEV_GIT_COMMIT",
+    "test": "TestCanonicalGitAcquisitionCommitSetting",
+    "command": "env GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -json -count=1 -run ^TestCanonicalGitAcquisitionCommitSetting$ /tmp/starmap-git-pin-setting_test.go",
+    "result": "One test fails because the canonical setting is unsupported. The overlay attempt ran zero tests and is inconclusive.",
+    "impact": "The explicit Git source requires an exact commit. The scheduled application has no canonical setting to supply it. Add configuration and request wiring before publishing source selection.",
+    "constraints": "Preserve the source tree while full verification runs. Preserve existing collector pins when the runtime omits a pin. Preserve explicit manual pin precedence.",
+    "artifacts": [
+      {
+        "path": "git-pin-overlay-inconclusive.jsonl.gz",
+        "sha256": "92866e036ed3264bf1792bf5595c57e31b8adff1b34f1eb22e37b5da850bfc0f"
+      },
+      {
+        "path": "git-pin-fail-before.jsonl.gz",
+        "sha256": "9c2fac533e096a5e4f68bfa167677afb1292a76060c0caee58cbece591373d55"
+      }
+    ],
+    "repair": "The local change now carries an optional exact commit through the runtime request and manual pipeline. Nil preserves a collector pin; explicit empty clears it. Nonempty manual pins take precedence.",
+    "test_correction": "The initial manual assertion expected ConfigError. The strict pipeline returns DependencyError. The corrected assertion passes and proves an invalid explicit pin replaces the configured pin."
+  },
+  "git_pin_checks": [
+    {
+      "name": "git-pin-initial-race",
+      "path": "git-pin-initial-race.jsonl.gz",
+      "sha256": "319668ac3710d0e5456a0b15bb4d36670c76f9722a7b506f2f6dd3f894234e8f",
+      "tests": {
+        "pass": 13,
+        "fail": 1
+      },
+      "packages": {
+        "pass": 2,
+        "fail": 1
+      }
+    },
+    {
+      "name": "git-pin-manual-final-race",
+      "path": "git-pin-manual-final-race.jsonl.gz",
+      "sha256": "8ae98ac256e01884bbe6da5e8ed6a7048a771f378b585f9cc28bb49118da3abe",
+      "tests": {
+        "pass": 1
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "name": "with-pin-minimum",
+      "path": "with-pin-minimum.jsonl.gz",
+      "sha256": "b4ec9797b81cc82e9d5cd4077c7cd3401bc3b2186f1f7f9ae736157b454a52f6",
+      "tests": {
+        "pass": 32
+      },
+      "packages": {
+        "pass": 4
+      }
+    }
+  ],
+  "git_pin_artifacts": [
+    {
+      "path": "with-pin-settings-complete.log.gz",
+      "sha256": "f1d77898a6c8cd1a4b39627c13dd695273f068b7ea9a6a086d96797581661c6e"
+    },
+    {
+      "path": "with-pin-docs-check.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    },
+    {
+      "path": "with-pin-prose.log.gz",
+      "sha256": "e6e582896a2c638a81066e2bd4c4b5ee7a20d4234def6a1574a902584ec90823"
+    },
+    {
+      "path": "with-pin-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "interrupted-before-pin-full-verification.log.gz",
+      "sha256": "17a9df69b405cc1a77f455e83e782bbeeffa23154d7fc8ea9b0236e8ea6699e5"
+    }
+  ],
+  "git_pin_source_inventory": [
+    {
+      "path": ".env.example",
+      "sha256": "38c3fd99f3268048cdbc4d1ac3854d3d511e2a9c7b77e60daa83f0750ec8c7f6"
+    },
+    {
+      "path": "acquisition/runtime.go",
+      "sha256": "348143728a8bae291a766421a00b9621146cafafdc5b265b63e5a9e951e1cca5"
+    },
+    {
+      "path": "acquisition/source_acquirer.go",
+      "sha256": "b48221517641a3c03990ba68b39ac6873410fc563a3edc8cf1a3e830af2fdd59"
+    },
+    {
+      "path": "acquisition/source_acquirer_test.go",
+      "sha256": "babcc6ed4759707ddf791cbae940243a125eec942a9fefc9332da475e45c9c58"
+    },
+    {
+      "path": "acquisition/source_selection_test.go",
+      "sha256": "c53b176d4f98db4d4574e8325ee7dea76893e35bdf7dcf0e0bd7c04a46137dc1"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "8ff6c815c7e7360ba988f659cc98d5c519e2a4d7d236ecc4cddbe80db8fdc1f2"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "1ebbfc088fff472cf340cf3dd72b34d0d47667390fea23ad83ab5ffb161624fa"
+    },
+    {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "sha256": "92c5a9387c0ad73b04803c2b95d84105c6865764e66dbcaf96cfad18c5282269"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "sha256": "92c4aaaaf136071ff361459960a4b3ccd635fd3669b0ba1471e349efebebc170"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "sha256": "267937b01834f83d2b9866455d66967e48729076275064fd8cf6cba57b2b1133"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "sha256": "823d1ec8aaefcccafaab42f02371cbe380371ab971b53043970161574d64ba72"
+    },
+    {
+      "path": "internal/cli/app/catalog_scheduled_sources_test.go",
+      "sha256": "e20de524a025c436db2a368b640ce3847b4f66f832e873521ef657e9ea73ec1b"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_git_pin_test.go",
+      "sha256": "bfb8151cd41129b6da632846d3f1e1d0946b5beb62f404c7607f22fdd84aae1b"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_sources.go",
+      "sha256": "a2e171bb8b5f41ce6faaac6fe1777214e30fe17db53b550d87bc01499507a493"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_sources_test.go",
+      "sha256": "6afe1fb981da4237fe54d2003900fa477783eece3f649244c55cd235e4677818"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "sha256": "18ef50718309f6788c6ae5e08e6c17a426d07dbdfd2250d5d1bf48ae35205c4a"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "16abbd04bd6321f41cda4865359b9251d8026d09fba099f06f486eee4d454a70"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "75f47075cbc1198a07f0a6a5f4de24fdc809e6df7008c755d2dc4aad6a067080"
+    },
+    {
+      "path": "pkg/sources/README.md",
+      "sha256": "f2fc94cdbd442bf45437d32aca8cbcba273e4aedd936e772d6ce87f3753099a7"
+    },
+    {
+      "path": "pkg/sources/acquisition_selection.go",
+      "sha256": "520e6ccf9b5b144cbaf075dbc8c624b2f5978be935325b764452b4b90f2480a8"
+    },
+    {
+      "path": "pkg/sources/observation.go",
+      "sha256": "7d30c915af1f59d135770deb2801eca3f61f1597eb7f14c480b4f888256bbcbe"
+    },
+    {
+      "path": "pkg/sync/options.go",
+      "sha256": "361a36915200729d5841f61bc7be676edbbde111f831de8356f6af1f8f6a0fac"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "8867a20989aaa09e68e4978c0d855b77a71d76c6f8fe93cc577671dfce441cc0"
+    },
+    {
+      "path": "runtime/acquisition_policy_publication.go",
+      "sha256": "6b5f0b7def58de3d11c4fc445a300eb34b922ccf22acc744499db2f8cc60b2cf"
+    },
+    {
+      "path": "runtime/acquisition_source_policy.go",
+      "sha256": "f0ba2e594aa86b1c347c57787a5924c9a73f23f4657c18ed4cc595c4fd2d5bf5"
+    },
+    {
+      "path": "runtime/acquisition_source_policy_test.go",
+      "sha256": "22b2637991e35605cff049ded03f522d7810a4adbe65239066936c12e12c548f"
+    },
+    {
+      "path": "runtime/acquisition_update.go",
+      "sha256": "e436a9316c4855630621711734026abf7888a7bf94dbe413089105f89018907c"
+    },
+    {
+      "path": "runtime/layers.go",
+      "sha256": "85a227b898574c66fb8ccccd25bd9181d13c4e0f25f39918b604217be136b3e4"
+    },
+    {
+      "path": "runtime/manual_reconciliation.go",
+      "sha256": "f5028a6f3715bb8b70701c6378033d404ee665af1ad54f5204c05f3fa0bb310c"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "2343f7e6b91850d21277482a16bcd8d579bdc9182578eed30ea0b088e80b5ab4"
+    },
+    {
+      "path": "runtime/provider_policy_publication.go",
+      "sha256": null
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "sha256": "de7eddfaaf85cb0daa21c763e15a3623302847896f94cc1ac9bc83fa167885ff"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "c6112a6c6808ab574f388c608c66614123fba35e58f85f5a0651efb99d16a76e"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "485e5b04bcdd2ec054fc249e299d8c31993db212c6b0f660caed281a41a32a12"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "sha256": "f8389d096646e6dcb420e0df8b29c026dcf71c387532cc99e2bd82c7af41aa1e"
+    },
+    {
+      "path": "runtime/source_acquisition.go",
+      "sha256": "4c1c0c34bd271ed792387897f66048c11f9a2141344b74c2608be9fafc06d887"
+    }
+  ],
+  "historical_source_inventory": "The files inventory and original checks above describe source-selection work before the Git pin change. git_pin_source_inventory binds the current corrected source. Git commit 8ad4e291 retains the original proof."
 }
