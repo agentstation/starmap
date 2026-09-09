@@ -221,6 +221,26 @@
     {
       "path": "starmap-publisher-workflow-final-ago.json.gz",
       "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-publisher-all-provider-diagnostic.jsonl.gz",
+      "sha256": "bd27d0f0266de36837b418879d0c68e94880855af08a16c4f8d58b33fe9ac8a0",
+      "role": "isolated diagnostic; not a candidate change or passing qualification"
+    },
+    {
+      "path": "readonly.go.gz",
+      "sha256": "0a11865062fb86936a808224f5621ad219abd561ec402cd9cde3be3f7c307880",
+      "role": "isolated diagnostic; not a candidate change or passing qualification"
+    },
+    {
+      "path": "ingestion_test.go.gz",
+      "sha256": "4725b2bb994c79215cf27384f7b5404147f9b0115e4449b3778b2da4180c9f2b",
+      "role": "isolated diagnostic; not a candidate change or passing qualification"
+    },
+    {
+      "path": "overlay.json.gz",
+      "sha256": "4501b2043b9cf0c555b1baf95dbdda8722b26ff87ceb7a329de039c15a11ab26",
+      "role": "isolated diagnostic; not a candidate change or passing qualification"
     }
   ],
   "next_action": "Finish the active full verifier, commit intended files, run both required reviews, publish the PR, and merge after CI. Record the verified merge before completion credit.",
@@ -233,8 +253,21 @@
   },
   "qualification_limits": [
     "The publisher ingestion test exercises provider-scoped update acme, then stages and reopens the exact committed artifact. It does not qualify the complete all-provider publisher acceptance case.",
-    "The earlier all-provider test used a one-provider file baseline and failed on an embedded Alibaba author mapping. Determine the fixture or composition cause before claiming all-provider qualification.",
+    "The all-provider diagnostic locates the missing author mapping target at runtime provider reconciliation. A narrow file baseline and embedded provider configuration expose this separate integration failure. It remains open before all-provider qualification.",
     "Initial harness errors and the corrected macOS logical-path expectation remain retained as failed evidence.",
     "No hosted publication, provider credentials, or external provider requests occurred. Local HTTP fixtures reject external hosts."
-  ]
+  ],
+  "all_provider_diagnostic": {
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -overlay /tmp/starmap-publisher-all-provider-diagnostic/overlay.json -count=1 -run ^TestPublisherStagesChangingProviderAndMetadataIngestion$ -json ./cmd/starmap-catalog-release",
+    "result": "1 failing test event; 1 failing package",
+    "owner": "CSP3 provider observation reconciliation and A20 dependency/partial ingestion",
+    "verified_call": "runtime/manual_reconciliation.go:86 builds the provider reconciliation result. Catalog validation rejects the Alibaba author mapping target absent from the selected file baseline.",
+    "source_evidence": [
+      "internal/sources/providers/providers.go adds every configured provider before credential preflight. Skipped and failed results leave these provider records in the observation.",
+      "internal/catalog/reconciler/reconciler.go:catalog sets reconciled provider records into the selected baseline.",
+      "pkg/catalogs/readonly.go:buildCatalog validates provider author mapping targets against canonical authors."
+    ],
+    "next": "Add a focused regression for mixed successful and unavailable provider acquisition against a narrow selected baseline. Define the permitted provider-configuration membership and receipt-preservation contract before changing reconciliation. Preserve the full all-provider publisher acceptance requirement.",
+    "mutations": "The diagnostic overlay removes only the test provider selector and adds a stack trace at validation failure. Neither candidate worktree changed."
+  }
 }
