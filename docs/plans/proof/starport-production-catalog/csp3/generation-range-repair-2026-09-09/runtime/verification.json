@@ -1,0 +1,86 @@
+{
+  "task": "CSP3",
+  "status": "focused runtime and catalog checks pass; full verification active",
+  "worktree": "/tmp/starmap-presence-integration-2026-09-09",
+  "branch": "codex/catalog-ranges-main",
+  "commit": "ce5f6a9e0dbec5009f7b5ae910ac0ba58039c278",
+  "publication_base": "606b48dd",
+  "implementation_files_above_base": 15,
+  "runtime_scenarios": [
+    "JSON and YAML missing, unknown, and known zero numeric bounds",
+    "JSON and YAML unknown generation controls",
+    "retained original provider receipt after a complete reply omits the record",
+    "filesystem publication, restart, and later source refresh"
+  ],
+  "fail_before": {
+    "test_fail_events": 5,
+    "package_fail_events": 1,
+    "source": "606b48dd",
+    "first_overlay": "The unresolved /tmp symlink path matched no test. It receives no fail-before credit. The corrected real-path overlay runs and fails all four scenarios."
+  },
+  "after": {
+    "race_test_pass_events": 5,
+    "minimum_go_test_pass_events": 5,
+    "toolchains": [
+      "go1.26.6",
+      "go1.25.12"
+    ]
+  },
+  "catalog_schema": {
+    "race_test_pass_events": 1120,
+    "package_pass_events": 2
+  },
+  "static": {
+    "ago_findings": 0,
+    "lint_findings": 0,
+    "writing_files": 1248,
+    "docs_check_exit_code": 0
+  },
+  "running_checks": [
+    {
+      "session": 97951,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
+      "output": "/tmp/starmap-ranges-main-verify.txt"
+    }
+  ],
+  "publication": "not started",
+  "completion_credit": false,
+  "artifacts": [
+    {
+      "path": "starmap-generation-recovery-before.jsonl.gz",
+      "raw_sha256": "297d06e9976adf1f4eb8ac2c4edfec1785fee5ec0ab47b7f79fb3b4729e07ecf"
+    },
+    {
+      "path": "starmap-generation-recovery-before-resolved.jsonl.gz",
+      "raw_sha256": "6ed56274753393fc9d5447ffe2cb68706b3b0a82036dde58637fe9a876c5afe9"
+    },
+    {
+      "path": "starmap-generation-recovery-after.jsonl.gz",
+      "raw_sha256": "050c7987d0f98f5d509ea3f2f7f4fe359bb39c1d3887c069c14cfcb44750d92c"
+    },
+    {
+      "path": "starmap-generation-recovery-minimum.jsonl.gz",
+      "raw_sha256": "14ff58e78a1961e0cb84d6b6dae8c5596cb9034ac0c93516e7f8658b351ddc97"
+    },
+    {
+      "path": "starmap-ranges-main-catalog-schema.jsonl.gz",
+      "raw_sha256": "77db909e901c3eae4691cf05c71b85afad7659063b7ccc9379da4bf6d58c44db"
+    },
+    {
+      "path": "starmap-ranges-main-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-ranges-main-lint.txt.gz",
+      "raw_sha256": "3afe8e22950babc45a5ecc08beb5dddfe465528bcfdb202851f7758dd29195f7"
+    },
+    {
+      "path": "starmap-ranges-main-docs.txt.gz",
+      "raw_sha256": "88f949a7f59c11a39a996647247c15fe2a5ad2c96f29b3605c9248758084eaaf"
+    },
+    {
+      "path": "starmap-ranges-main-writing.txt.gz",
+      "raw_sha256": "b9ef2def758b26cd6bb7691ec6f76c0209221b35906f66e9ec8dc802123b2efb"
+    }
+  ]
+}

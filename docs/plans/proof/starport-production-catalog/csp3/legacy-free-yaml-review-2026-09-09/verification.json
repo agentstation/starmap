@@ -1,6 +1,6 @@
 {
   "task": "CSP3",
-  "status": "verified repair committed; required review running",
+  "status": "verified repair; cross-lab review unavailable at session limit",
   "reviewed_commit": "759b41bb",
   "review_exit_code": 1,
   "review_portions": 3,
@@ -54,12 +54,7 @@
       "sha256": "ebd57e38868f1a94e72df92b7758186c2a319fc3a87015c8baee1001a7eb5e03"
     }
   ],
-  "running_checks": [
-    {
-      "session": 4860,
-      "output": "/tmp/starmap-presence-main-autoreview-repair.txt"
-    }
-  ],
+  "running_checks": [],
   "remaining": [
     "fresh required review",
     "push and PR",
@@ -151,6 +146,14 @@
     {
       "path": "starmap-legacy-free-yaml-final-failed-contracts.jsonl.gz",
       "raw_sha256": "07d25dc9842a2f21f4a347eecb00547e48c42e7e6a01544fb5b8f03bf6ca3585"
+    },
+    {
+      "path": "starmap-presence-main-autoreview-repair.txt.gz",
+      "raw_sha256": "7e7eb11a727483e93f52ffcced04660a6229f5be5f442317dad3adfb48bfdf2a"
+    },
+    {
+      "path": "starmap-presence-main-sol-review.txt.gz",
+      "raw_sha256": "65daf56a878204f3c10374759f5e59b377af72f48e3faf82fa6b91d6e1839631"
     }
   ],
   "broader_failure": {
@@ -232,5 +235,24 @@
     ],
     "preserved": "branches, commits, proof, active candidates, and shared Go cache",
     "free_after": "2.6 GiB"
+  },
+  "review_rerun": {
+    "session": 4860,
+    "exit_code": 1,
+    "verdict": "UNVERIFIED",
+    "reason": "Claude API session limit (HTTP 429), no completed review verdict",
+    "reported_reset": "2026-09-08 23:10 America/Chicago"
+  },
+  "owner_question": "Await Opus at its reset or explicitly authorize Sol-only review for this candidate. Merge authorization remains in effect.",
+  "sol_review": {
+    "session": 27571,
+    "exit_code": 0,
+    "profile": "sol",
+    "model": "gpt-5.6-sol",
+    "effort": "xhigh",
+    "portions": 3,
+    "findings": 0,
+    "secret_scan": "clean",
+    "commit": "606b48dd"
   }
 }
