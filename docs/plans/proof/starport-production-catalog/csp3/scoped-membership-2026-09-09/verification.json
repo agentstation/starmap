@@ -1,0 +1,48 @@
+{
+  "status": "Corrected fixture reproduces missing public scoped deletion; implementation remains open.",
+  "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
+  "branch": "codex/catalog-scoped-membership",
+  "base": "6e4f9efbeab65e2652314f8293518dda9783778e",
+  "dependency": "Reviewed PR #142; merge this dependency before publishing later work.",
+  "scope": "A08.scoped_tombstone and A08.partial_empty at the reconciliation boundary.",
+  "expected": "Complete public scope can withdraw only its own serving membership. Partial, failed, unscoped, and account-only observations preserve unrelated canonical discovery.",
+  "completion_credit": false,
+  "fail_before": {
+    "exit_code": 1,
+    "passing_test_events": 4,
+    "failing_tests": [
+      "TestEmptyProviderInventoryRequiresCompletePublicScope/complete-public",
+      "TestEmptyProviderInventoryRequiresCompletePublicScope"
+    ],
+    "finding": "Complete public empty inventory restores provider-a/shared from the baseline. The four preservation controls pass."
+  },
+  "artifacts": [
+    {
+      "path": "invalid-fixture.jsonl.gz",
+      "sha256": "ae20ab1cc9c17f4aea42235f2a19f6c2ff39a35e1fc46b2f4f1ea214963dca8f"
+    },
+    {
+      "path": "missing-issue.jsonl.gz",
+      "sha256": "d8a5126dfba73b922ceb518251856fc8ac8b01b1c29856777261c13435408859"
+    },
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "7b672ff71560243db7cd8cc8bae413f9e2b5db9dd093c8c032aa80da219e258b"
+    }
+  ],
+  "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
+  "next": "Define scope-safe membership suppression at reconciliation, including region and API-surface boundaries. Preserve D25 account-profile semantics and removal review. Do not turn every public inventory into global deletion.",
+  "ago": {
+    "exit_code": 0,
+    "artifact": "ago.json.gz",
+    "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+  },
+  "test_sha256": "682f8329713438ec73d6b3cf4f68bf1530085c0dde6a0f5ab01bb22cf1e851cb",
+  "plan_prose": {
+    "exit_code": 0,
+    "files": 1272,
+    "diagnostics": 0,
+    "artifact": "plan-prose.log.gz",
+    "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+  }
+}
