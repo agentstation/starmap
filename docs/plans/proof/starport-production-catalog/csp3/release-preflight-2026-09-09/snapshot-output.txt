@@ -1,0 +1,57 @@
+  • starting release
+  • skipping announce, ko, publish, sign, and validate...
+  • cleaning distribution directory
+  • loading environment variables
+  • getting and validating git state
+    • using tags                                     previous=v0.16.4 current=v0.16.5
+    • pipe skipped or partially skipped              reason=disabled during snapshot mode
+  • parsing tag
+  • setting defaults
+  • snapshotting
+    • building snapshot...                           version=0.16.6-next
+  • running before hooks
+    • running                                        hook=go mod tidy
+    • running                                        hook=go generate ./...
+    • running                                        hook=rm -rf completions
+    • running                                        hook=mkdir completions
+    • running                                        hook=rm -rf manpages
+    • running                                        hook=mkdir manpages
+    • running                                        hook=sh -c 'go run ./cmd/starmap completion bash > ./completions/starmap.bash'
+    • running                                        hook=sh -c 'go run ./cmd/starmap completion zsh > ./completions/starmap.zsh'
+    • running                                        hook=sh -c 'go run ./cmd/starmap completion fish > ./completions/starmap.fish'
+    • running                                        hook=sh -c 'go run ./cmd/starmap man | gzip -c > ./manpages/starmap.1.gz'
+  • ensuring distribution directory
+  • setting up metadata
+  • writing release metadata
+  • loading go mod information
+  • build prerequisites
+  • building binaries
+    • building                                       paths=cmd/starmap binaries=starmap target=linux_arm64_v8.0
+    • building                                       paths=cmd/starmap binaries=starmap target=linux_amd64_v1
+    • building                                       paths=cmd/starmap binaries=starmap target=darwin_amd64_v1
+    • building                                       paths=cmd/starmap binaries=starmap target=darwin_arm64_v8.0
+    • building                                       paths=cmd/starmap binaries=starmap target=windows_amd64_v1
+    • building                                       paths=cmd/starmap binaries=starmap target=windows_arm64_v8.0
+      • took: 46s
+  • sign & notarize macOS binaries
+    • pipe skipped or partially skipped              reason=disabled
+  • archives
+    • archiving                                      name=dist/starmap_0.16.6-next_linux_arm64.tar.gz
+    • archiving                                      name=dist/starmap_0.16.6-next_linux_x86_64.tar.gz
+    • archiving                                      name=dist/starmap_0.16.6-next_darwin_x86_64.tar.gz
+    • archiving                                      name=dist/starmap_0.16.6-next_darwin_arm64.tar.gz
+    • archiving                                      name=dist/starmap_0.16.6-next_windows_x86_64.zip
+    • archiving                                      name=dist/starmap_0.16.6-next_windows_arm64.zip
+  • software bill of materials
+    • cataloging                                     cmd=syft sbom=starmap_0.16.6-next_linux_arm64.tar.gz.sbom.json
+    • cataloging                                     cmd=syft sbom=starmap_0.16.6-next_linux_x86_64.tar.gz.sbom.json
+    • cataloging                                     cmd=syft sbom=starmap_0.16.6-next_darwin_arm64.tar.gz.sbom.json
+    • cataloging                                     cmd=syft sbom=starmap_0.16.6-next_darwin_x86_64.tar.gz.sbom.json
+    • cataloging                                     cmd=syft sbom=starmap_0.16.6-next_windows_arm64.zip.sbom.json
+    • cataloging                                     cmd=syft sbom=starmap_0.16.6-next_windows_x86_64.zip.sbom.json
+  • calculating checksums
+  • homebrew cask
+    • writing                                        cask=dist/homebrew/Casks/starmap.rb
+  • writing artifacts metadata
+  • release succeeded after 1m13s
+  • thanks for using GoReleaser!

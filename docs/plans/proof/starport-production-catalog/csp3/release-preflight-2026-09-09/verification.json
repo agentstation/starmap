@@ -1,0 +1,57 @@
+{
+  "task": "CSP3",
+  "completion_credit": false,
+  "completed_tasks": 8,
+  "merged_prs": 16,
+  "head": "5c40192a620b43341f06a3ad49f4e2a743c741ba",
+  "worktree": "/tmp/starmap-release-preflight-2026-09-09",
+  "command": "env -u GOFLAGS GOTOOLCHAIN=go1.26.6 goreleaser release --snapshot --clean --skip=ko,sign --parallelism=2 --timeout=45m",
+  "snapshot_exit": 0,
+  "elapsed_seconds": 73,
+  "source_status_after_build": "clean",
+  "archives": 6,
+  "sboms": 6,
+  "checksum_matches": 12,
+  "native_cli_commands_passed": 3,
+  "snapshot_version": "0.16.6-next",
+  "verification_command": "python3 /tmp/starmap-release-artifact-check.py",
+  "limits": [
+    "The source remains unmerged.",
+    "Snapshot mode disables publication and release validation.",
+    "Container publication and signing are excluded.",
+    "Only the macOS ARM64 binary was executed locally.",
+    "A stable release requires merged code, required checks, and separate owner authority."
+  ],
+  "artifacts": [
+    {
+      "path": "snapshot-output.txt",
+      "sha256": "4694db8a6f4de022b32ce8db2f0caf6a130bbc60c581057bb7ba500286e61ae9",
+      "bytes": 4144
+    },
+    {
+      "path": "artifact-check.py",
+      "sha256": "7c5a4eb82ab7119ccc988356a4690344e82ded1156df90c5b78de8ebc3d977f9",
+      "bytes": 2975
+    },
+    {
+      "path": "artifact-check.json",
+      "sha256": "aec5287c8ffdea4b5108458aa943b6cfa0dbbdf6096e91c7f22bead654282c4b",
+      "bytes": 52383
+    },
+    {
+      "path": "checksums.txt",
+      "sha256": "13836d0c32078cf3726bcc89785b71c220ed34f31cbaff216b261ac1a09576f0",
+      "bytes": 1326
+    },
+    {
+      "path": "artifacts.json",
+      "sha256": "df9e343cb92e5ad16ff5f43c77d79d4ccb16ad86ad2d801c6214a9f0cb79f0d8",
+      "bytes": 8155
+    }
+  ],
+  "native_assertions": [
+    "Exact snapshot version.",
+    "Config, data, state, and cache roots under the selected isolated home.",
+    "Owner-only catalog-store access policy."
+  ]
+}
