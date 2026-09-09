@@ -21,7 +21,10 @@
       "exit_code": 0,
       "test_pass_events": 1,
       "package_passes": 1,
-      "seconds": 78.038
+      "seconds": 78.038,
+      "source_artifact": "starmap-server-ingestion-write-probe.go.gz",
+      "log_artifact": "starmap-server-ingestion-audit.jsonl.gz",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout=5m -json -overlay /tmp/starmap-server-ingestion-overlay.json ./internal/cli/app -run '^TestHTTPRefreshIngestsProviderAndLocalEvidence$'"
     },
     {
       "scope": "acquisition lifecycle and runtime reads",
@@ -30,7 +33,10 @@
       "exit_code": 0,
       "test_pass_events": 1,
       "package_passes": 1,
-      "seconds": 11.802
+      "seconds": 11.802,
+      "source_artifact": "starmap-server-ingestion-write-probe.go.gz",
+      "log_artifact": "starmap-server-ingestion-minimum.jsonl.gz",
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -count=1 -timeout=5m -json -overlay /tmp/starmap-server-ingestion-overlay.json ./internal/cli/app -run '^TestHTTPRefreshIngestsProviderAndLocalEvidence$'"
     },
     {
       "scope": "extended HTTP reads and server restart",
@@ -39,7 +45,10 @@
       "exit_code": 0,
       "test_pass_events": 1,
       "package_passes": 1,
-      "seconds": 79.747
+      "seconds": 79.747,
+      "source_artifact": "starmap-server-ingestion-probe.go.gz",
+      "log_artifact": "starmap-server-ingestion-read-audit.jsonl.gz",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout=5m -json -overlay /tmp/starmap-server-ingestion-overlay.json ./internal/cli/app -run '^TestHTTPRefreshIngestsProviderAndLocalEvidence$'"
     },
     {
       "scope": "extended HTTP reads and server restart",
@@ -48,7 +57,10 @@
       "exit_code": 0,
       "test_pass_events": 1,
       "package_passes": 1,
-      "seconds": 12.007
+      "seconds": 12.007,
+      "source_artifact": "starmap-server-ingestion-probe.go.gz",
+      "log_artifact": "starmap-server-ingestion-read-minimum.jsonl.gz",
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -count=1 -timeout=5m -json -overlay /tmp/starmap-server-ingestion-overlay.json ./internal/cli/app -run '^TestHTTPRefreshIngestsProviderAndLocalEvidence$'"
     }
   ],
   "limitations": [
@@ -85,5 +97,6 @@
       "path": "starmap-server-ingestion-read-minimum.jsonl.gz",
       "raw_sha256": "ab84993da55485e46af07f46c3937e470a265b9d813de7009e14cac6cfa7ce65"
     }
-  ]
+  ],
+  "working_directory": "/tmp/starmap-presence-integration-2026-09-09"
 }
