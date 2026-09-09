@@ -1,0 +1,86 @@
+{
+  "status": "committed; three race and three minimum-Go tests pass; lint, Ago and prose pass",
+  "base": "6a88f10d",
+  "worktree": "/tmp/starmap-source-inventory-2026-09-09",
+  "branch": "codex/catalog-source-inventory",
+  "contract": "CSP3; A20 accepted source reporting",
+  "finding": "The pipeline represents a failed fetch with an empty degraded observation. Counting its linked receipt as an accepted source reports false acceptance.",
+  "fail_before": {
+    "test": "TestAcceptedSourcesExcludeEmptyFailedObservation",
+    "exit_code": 1,
+    "failure": "failed empty source reported accepted: [models_dev_http]",
+    "replay": "Use the test from the repair over base 6a88f10d. Publish an empty partial observation with the source-level fetch_failed issue."
+  },
+  "correction": [
+    "Preserve empty failed receipts in generation diagnostics.",
+    "Collect accepted source IDs from validated full observations during existing reconciliation, before receipt metadata loses record information.",
+    "Include complete successful empty inventories, which can carry removal authority.",
+    "Include partial observations with catalog records even when their optional record count is zero.",
+    "Exclude partial observations with no catalog records. Status still reads only the bounded cached source set.",
+    "No catalog payload, receipt, or generation identity rule changes."
+  ],
+  "minimum": {
+    "tests_passed": 3,
+    "packages_passed": 1,
+    "exit_code": 0
+  },
+  "checks": {
+    "lint_findings": 0,
+    "ago_findings": 0,
+    "ago_errors": 0,
+    "prose_files": 1277,
+    "prose_diagnostics": 0
+  },
+  "running": {},
+  "remaining": [
+    "Final combined verification, required review, native CI and merge.",
+    "Full source inventory still requires supported, enabled, eligible and attempted reporting."
+  ],
+  "task_completion_credit": false,
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "b3b51b36b44ba70313154fe9bb4ceffafacb5b73ef6fbcd8a13f6448409d12a8"
+    },
+    {
+      "path": "minimum.jsonl.gz",
+      "sha256": "f2131c779ec2940186670bf9f38da11eeab9c0b13e43c07b993f1b24f135aa6b"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "78b7f0661356691f208e1b8902245349cfe371b33ef8689e7020e13c0488610a"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "sha256": "7aaba314104c930b4471979d488d02a182348959068caeb5f964540360b9839d"
+    },
+    {
+      "path": "plan-prose.log.gz",
+      "sha256": "8d6d633c7d7d700e972154fb0a394de622c6fdf6e43798be6896861c661293eb"
+    },
+    {
+      "path": "plan-corrected-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    }
+  ],
+  "head": "cc5ae1ed8f7c2114777a48cf2b006d5046f70de8",
+  "race": {
+    "tests_passed": 3,
+    "packages_passed": 1,
+    "exit_code": 0
+  },
+  "plan_prose": {
+    "initial_repository_files": 1270,
+    "initial_diagnostics": 1,
+    "correction": "Replace a nominalization in the new resume paragraph with a direct verb.",
+    "final_file_diagnostics": 0
+  }
+}
