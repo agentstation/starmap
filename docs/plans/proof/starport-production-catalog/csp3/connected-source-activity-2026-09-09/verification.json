@@ -1,0 +1,197 @@
+{
+  "status": "in_progress",
+  "contract": "CSP3/A20; full source inventory remains incomplete",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "base": "12cf4d8e",
+  "behavior": [
+    "The optional per-call report preserves the existing observation-only interface.",
+    "The built-in collector reports configured sources even when cancellation prevents acquisition.",
+    "Reports aggregate eligibility across provider-filtered source calls without retaining shared mutable run state.",
+    "Runtime status retains validated metadata source activity from failed acquisition; copies do not alias collector or caller reports.",
+    "Readiness separates last-run source activity from accepted active-generation input."
+  ],
+  "remaining": [
+    "Passive capability declarations and provider activity in connected status.",
+    "CLI and publisher reporting paths.",
+    "Complete full qualification, review, and merge."
+  ],
+  "checks": {
+    "connected-fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 1,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "connected-race": {
+      "test_pass_events": 21,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "runtime-status-fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 1,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "runtime-status-final-race": {
+      "test_pass_events": 3,
+      "test_fail_events": 0,
+      "package_pass_events": 2,
+      "skips": 0
+    },
+    "connected-minimum": {
+      "test_pass_events": 6,
+      "test_fail_events": 0,
+      "package_pass_events": 3,
+      "skips": 0
+    },
+    "ago": {
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 1303,
+      "diagnostics": 0
+    },
+    "docs_check": {
+      "exit_code": 0,
+      "result": "All documentation is up to date"
+    },
+    "connected-final-race": {
+      "exit_code": 0,
+      "test_pass_events": 3,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "connected-fail-before.jsonl.gz",
+      "sha256": "306bcc25c612630f833c8be14779aad447764dcf805a1b7fa7e8fabf71e92fd9"
+    },
+    {
+      "path": "connected-race.jsonl.gz",
+      "sha256": "21eb325ac48e75a415ebc05d2a33cdd0e4a3ab2c4221dc49595cf258fda00dad"
+    },
+    {
+      "path": "runtime-status-fail-before.jsonl.gz",
+      "sha256": "20252c72e7405a4f47bc7732d7c5ea88c28dab55247613417721fc90239c4f96"
+    },
+    {
+      "path": "runtime-status-final-race.jsonl.gz",
+      "sha256": "cf71c23cf03cf3addbe37d166bbaebd7e3b6ac61773fe8338517a40f4d69dc5c"
+    },
+    {
+      "path": "connected-minimum.jsonl.gz",
+      "sha256": "570f3441e798b8329913fcc17625f7bc58a61646c92116adf2ddb4c6d16817a0"
+    },
+    {
+      "path": "generate.log.gz",
+      "sha256": "1fe22a2febf9a1c9a30344ff6ff06bec160a46cc3ee5db4289509a2dff3da233"
+    },
+    {
+      "path": "generate-corrected.log.gz",
+      "sha256": "0e9b7933bab2721b647f620c841a1635d8180a4444b3be5e44ed48dbc3657aa5"
+    },
+    {
+      "path": "connected-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "connected-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "connected-final-race.jsonl.gz",
+      "sha256": "49b61cdb2d4de84ed3028f099861cf45cc26ce0d7331c532dee9750856348cbe"
+    },
+    {
+      "path": "connected-prose.log.gz",
+      "sha256": "7e968b4f9876467b571a2d16a5763543fe7d4048fae009b2ca68dba84744b1fc"
+    },
+    {
+      "path": "connected-docs-check.log.gz",
+      "sha256": "f53f05d5d27d99c1b659804aaa78ecedd73a638e6213768c8235e8f10a0ae73b"
+    }
+  ],
+  "task_completion_credit": false,
+  "generation": {
+    "initial": "Exit zero with unsupported GOFLAGS diagnostics; no qualification credit.",
+    "corrected": "GOTOOLCHAIN=go1.26.6 GOFLAGS= make generate: exit zero without unsupported flag diagnostics.",
+    "docs_check_session": 83130,
+    "docs_check_exit_code": 0
+  },
+  "active_checks": {},
+  "commit": "f88a526a08c1f6c02457fc998e5f47d316483e13",
+  "tree": "799b8af145e792c7d844b6afbca01bd3bc12328b",
+  "changed_files": [
+    {
+      "path": "acquisition/source_acquirer.go",
+      "sha256": "33d8c13c59303b0cf22bdc9796b87b2fb6721afed813247f362b233f5e17a939"
+    },
+    {
+      "path": "acquisition/source_acquirer_test.go",
+      "sha256": "36d26d0b9e95cc1380e623f9a15428e80d498951a345a136805b928dbb5a04cc"
+    },
+    {
+      "path": "acquisition/source_activity.go",
+      "sha256": "7b0e247ba0fbbe7b92a2eaf73f5f95d218e299a6213857d2e06a2333ff019ea4"
+    },
+    {
+      "path": "acquisition/source_activity_test.go",
+      "sha256": "2fef4376900a72ace7f2b2672dd38d2dbf20f44e7393ca99311d984d52290042"
+    },
+    {
+      "path": "internal/server/handlers/accepted_sources_test.go",
+      "sha256": "5546620963c7929b36e7985a1133ca7c7e201d497a33b98592ed0fc2e2958950"
+    },
+    {
+      "path": "internal/server/handlers/health.go",
+      "sha256": "77f48bba7aa14b3717024d77b6e292892fbaee6fa6cbae862a660d96025381a8"
+    },
+    {
+      "path": "pkg/sources/README.md",
+      "sha256": "2e44d549743feeeb8e5cd6425864ea69d95eb15388cddaebc4e39627cdda6e02"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "2972f80cbae5e7dea585f97ee50a672576d30154f55da96a1d9bcce31f95a74f"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "7e96690db105cf0de6431d36388b4e08e02e0d54dfb19d6cc1b5e6b1d23e5139"
+    },
+    {
+      "path": "runtime/source_acquisition.go",
+      "sha256": "3a12d7300d9cd4f51dfaa274e76ec90238947dfa259163f0055835f8748cc628"
+    },
+    {
+      "path": "runtime/source_activity.go",
+      "sha256": "28ac6c2b07866d0f4d05fa32a337712302ee13aae84c10484e735bba85ce0bae"
+    },
+    {
+      "path": "runtime/source_activity_test.go",
+      "sha256": "c4279242cfb7b78b47576b5ed44cf021c7dae8f48dbad992ed2e4e0532b920ca"
+    },
+    {
+      "path": "runtime/status.go",
+      "sha256": "dabbf5c9d362d3be335da8b17bd478e4737f3fe283868ba5a65fbd63ca7d29e0"
+    },
+    {
+      "path": "runtime/status/README.md",
+      "sha256": "6e17d262463b44db560d61335a239adb381d093bb1300c47628c49ebadaa249d"
+    },
+    {
+      "path": "runtime/status/status.go",
+      "sha256": "e19a5536de85baf2ef7f48aa2f63ba9255d8d0920dece8c8460eb1f6ed452fe1"
+    }
+  ]
+}
