@@ -32,7 +32,13 @@
     "stale_ignores": 0,
     "errors": 0
   },
-  "running": {},
+  "running": {
+    "csp3_current_acceptance": {
+      "session": 81926,
+      "head": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
+      "log": "/tmp/starmap-csp3-current-acceptance-2026-09-09.log"
+    }
+  },
   "remaining": [
     "Integration after frozen combined verification, required review, native CI and merge.",
     "Complete distinct supported, enabled, eligible, attempted, accepted source reporting.",
@@ -88,5 +94,46 @@
     "exit_code": 0,
     "files": 1266,
     "diagnostics": 0
+  },
+  "source_reporting_review": {
+    "source": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
+    "contract": "ENGINEERING_SPEC.md section 6.3",
+    "findings": [
+      {
+        "file": "internal/catalog/pipeline/lifecycle.go",
+        "symbol": "resolveDependencies",
+        "fact": "The successful partial-resolution path returns only available sources. Skipped source identities and dependency errors do not reach the caller."
+      },
+      {
+        "file": "acquisition/source_acquirer.go",
+        "symbol": "AcquireSources",
+        "fact": "The collector returns observations and one joined error. Missing observations become a generic ConfigError, without the original per-source dependency result."
+      },
+      {
+        "file": "runtime/status/status.go",
+        "symbol": "Status",
+        "fact": "Provider attempts and last non-provider receipts exist. A complete configured-source inventory and per-source eligibility/attempt state do not."
+      },
+      {
+        "file": "internal/server/handlers/admin.go",
+        "symbol": "runCatalogUpdate",
+        "fact": "Successful HTTP operations report aggregate changes and generation IDs, without source-specific attempt results."
+      }
+    ],
+    "implementation_boundaries": {
+      "composition": "Report the supported registry and explicit enabled selection. Preserve disabled sources in diagnostics. Apply dependency, credential, and egress eligibility before calls.",
+      "acquisition": "Return source-keyed bounded outcomes for every selected source, including skipped and partial results. Preserve immutable observation identities.",
+      "publication": "Set accepted evidence from the actual active generation. An attempt can fail while a previous permitted generation remains accepted. Dry runs and failed publication cannot claim acceptance.",
+      "presentation": "CLI, publisher, and HTTP consume the same source report. Runtime status reads in-memory snapshots without dependency checks or network calls."
+    },
+    "required_regressions": [
+      "Enabled Git source with missing dependencies plus successful local acquisition preserves a typed dependency result and reports partial acquisition.",
+      "Disabled source stays visible as disabled, makes no request, and contributes no revoked active evidence after restart.",
+      "Failed observation or publication does not claim that new evidence was accepted.",
+      "A no-change successful acquisition remains a successful attempt with generation-bound acceptance.",
+      "Provider credential skips and non-provider dependency skips remain distinct.",
+      "Caller mutation of returned report collections cannot alter runtime state."
+    ],
+    "completion": "Not implemented. A20.dependency_disabled_partial remains unregistered."
   }
 }
