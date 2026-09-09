@@ -50,6 +50,30 @@ go test ./internal/server/sse ./internal/server/middleware ./internal/server
 go test ./pkg/catalogs -race
 ```
 
+## Real Git acquisition fixtures
+
+The Git acquisition fixtures use Git and Bun 1.3.12. They create local repositories
+with two pinned revisions and a dependency-free lockfile. The production collector
+clones these repositories and builds their metadata with Bun. Tests check changed
+catalog facts and exact commit and lockfile receipts.
+
+The verification job and all six native jobs require these tools. The
+fixture checks the Bun version, operating system, and architecture against the
+native Go test process. A missing tool fails required qualification. A local run reports a skip when
+a tool is absent. A skip does not qualify Git acquisition.
+
+Run the source collector check with mandatory tools:
+
+```bash
+CATALOG_GIT_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout=5m -run '^TestRealPinnedGitSourceAcquisition$' ./acquisition
+```
+
+The fixture redirects only the models.dev Git URL to its local repository. It
+disables system and user Git configuration and limits Git transport to local
+files. It does not install dependencies from a package registry. This check
+qualifies the source collector. The application ingestion matrix has separate
+acceptance cases.
+
 ## Critical Boundary Coverage
 
 Global coverage is intentionally not the primary trust metric. CLI command constructors, generated packages, and optional integrations dilute the signal. Starmap instead enforces coverage on modules where correctness and production reliability concentrate:

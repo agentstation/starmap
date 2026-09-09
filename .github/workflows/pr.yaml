@@ -66,6 +66,8 @@ jobs:
     name: Verification Gate
     runs-on: ubuntu-latest
     timeout-minutes: 75
+    env:
+      CATALOG_GIT_FIXTURE_REQUIRED: '1'
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -75,6 +77,12 @@ jobs:
         with:
           go-version: "1.25.12"
           cache: true
+
+      - name: Set up pinned Bun for Git acquisition fixtures
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: '1.3.12'
+          no-cache: true
 
       - name: Test minimum supported Go version
         env:
@@ -174,6 +182,7 @@ jobs:
     env:
       GOTOOLCHAIN: local
       CGO_ENABLED: '0'
+      CATALOG_GIT_FIXTURE_REQUIRED: '1'
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -184,6 +193,11 @@ jobs:
         with:
           go-version: '1.25.12'
           cache: true
+      - name: Set up pinned Bun for Git acquisition fixtures
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: '1.3.12'
+          no-cache: true
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:
@@ -203,6 +217,10 @@ jobs:
           fi
           # The complete runtime suite uses the repository verification limit.
           go test -json -count=1 -timeout=20m "${native_packages[@]}" > native-evidence/tests.jsonl
+      - name: Test real Git acquisition and mandatory tools
+        shell: bash
+        run: |
+          go test -json -count=1 -timeout=5m -run '^TestRealPinnedGitSourceAcquisition$|^TestRequiredGitFixtureToolsCannotSkip$' ./acquisition > native-evidence/git-acquisition.jsonl
       - name: Test administrator-owned Linux configuration
         if: matrix.os == 'linux'
         shell: bash

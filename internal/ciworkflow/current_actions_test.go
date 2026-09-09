@@ -10,6 +10,7 @@ import (
 func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 	t.Helper()
 	approved := map[string]string{
+		"oven-sh/setup-bun":                 "0c5077e51419868618aeaa5fe8019c62421857d6", // v2
 		"actions/checkout":                  "3d3c42e5aac5ba805825da76410c181273ba90b1", // v7.0.1
 		"actions/setup-go":                  "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e", // v7.0.0
 		"actions/attest-build-provenance":   "4d101475d8b20a2381f78447822ac1eab6504dd8", // v4.2.2

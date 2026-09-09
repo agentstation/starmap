@@ -1,0 +1,1 @@
+{"name": "starmap-git-fixture", "private": true, "workspaces": ["packages/*"]}

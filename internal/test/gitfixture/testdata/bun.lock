@@ -1,0 +1,16 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "starmap-git-fixture",
+    },
+    "packages/web": {
+      "name": "starmap-git-web",
+      "version": "1.0.0",
+    },
+  },
+  "packages": {
+    "starmap-git-web": ["starmap-git-web@workspace:packages/web"],
+  }
+}
