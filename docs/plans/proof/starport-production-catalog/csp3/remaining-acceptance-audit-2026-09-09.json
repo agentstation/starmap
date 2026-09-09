@@ -1,0 +1,46 @@
+{
+  "status": "read-only contract audit; no acceptance credit",
+  "head": "5b7e1d0088dcbf20e530127893c102510432720d",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "registry": "scripts/catalog-product-checks.json",
+  "registered": {
+    "A08.field_authority": 10,
+    "A08.presence_zero_null": 20,
+    "A20.cli_provider_nonprovider": 2,
+    "A20.publisher_provider_nonprovider": 4,
+    "A20.server_provider_nonprovider": 8,
+    "A20.receipt_artifact_binding": 6
+  },
+  "unregistered": [
+    "A08.scoped_tombstone",
+    "A08.partial_empty",
+    "A08.alias_cycle_scope",
+    "A20.dependency_disabled_partial"
+  ],
+  "scope_boundary": {
+    "source": "runtime/provider_scope.go",
+    "finding": "Retained provider evidence is separated by provider, binding identity, and revision. Legacy unscoped evidence explicitly does not declare public coverage.",
+    "constraint": "Do not treat an unscoped provider list as authority for global deletion."
+  },
+  "fact_boundary": {
+    "source": "internal/catalog/reconciler/scoped_observations.go",
+    "finding": "Scoped observations select provider/model facts while retaining receipt identity. A selected commercial fact is distinct from permission to infer through a particular account.",
+    "constraint": "Account-specific removals must restrict only explicitly linked inference profiles under D25. Preserve unrelated routes and canonical discovery."
+  },
+  "authored_boundary": {
+    "source": "internal/catalog/reconciler/authored_corpus.go",
+    "finding": "Complete local workspace absence removes definitions only when upstream bootstrap cannot restore them. This is not proof of the complete scoped tombstone contract."
+  },
+  "next_behavior_cases": [
+    "A complete public provider scope withdraws an offering that a lower baseline still contains; partial, failed, or unscoped observations cannot authorize that deletion.",
+    "Account/project-scoped withdrawal preserves canonical discovery and unrelated account offerings while exposing the restriction required by an explicitly linked Starport profile.",
+    "A missing dependency, explicit source disablement, cancellation, rejected observation, and publication failure preserve separate supported/enabled/eligible/attempted/accepted dimensions through actual composition entry points.",
+    "Alias cycles, scope crossings, and expired rename compatibility are refused without restoring withdrawn membership."
+  ],
+  "decision_constraints": [
+    "D25 already requires explicit inference-profile links. Do not ask that decision again.",
+    "Ordinary removal review thresholds and rename compatibility duration remain owner decisions; do not invent approval from elapsed time.",
+    "Immediate internal-authority withdrawals must not wait for ordinary removal review."
+  ],
+  "sequence": "Complete the active combined verification and reviewed merge first. Then capture observable fail-before cases and close the remaining contracts. Existing registration counts do not prove their checks passed on this head."
+}

@@ -1,0 +1,171 @@
+{
+  "contract": "CSP3 source reporting on failures before collection",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "base": "c2324744",
+  "status": "All canonical gates qualified across the initial run and the resumed remainder; required pre-PR review is active.",
+  "completion_credit": false,
+  "behavior": [
+    "Built-in source support and selection come from one passive pipeline descriptor.",
+    "Unparsed options retain unknown selection. Parsed preflight errors retain known selection without evaluating options again.",
+    "Runtime policy refusal reports permitted sources, including an explicitly empty selection.",
+    "Cancellation, store refusal, and publication failure retain typed error causes. Connected errors retain the active generation snapshot."
+  ],
+  "artifacts": [
+    {
+      "label": "fail_before",
+      "path": "fail_before.gz",
+      "sha256": "31cd49926eff2922d3cf736fa446123d6724bcbc1ae1c92d9d73e7c650513648"
+    },
+    {
+      "label": "race",
+      "path": "race.gz",
+      "sha256": "7758e389a00c5cafb8c199a80e28460524e5fbcc89b2b8efe5d76c8371717df4"
+    },
+    {
+      "label": "minimum",
+      "path": "minimum.gz",
+      "sha256": "006e49123d35c6c6ba8b927316d3d9dc49fcb0d0089e5b61f666f4f201f3c59f"
+    },
+    {
+      "label": "ago",
+      "path": "ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "label": "lint",
+      "path": "lint.gz",
+      "sha256": "199610e11b39d340c5da897591e5c7b1b55355fda82b154b5f15c628ec270b09"
+    },
+    {
+      "label": "generate",
+      "path": "generate.gz",
+      "sha256": "55347941a4ea3fb8016bb27a4a77b46a441d03fc80651bbbdbd99e3cdd19bcca"
+    },
+    {
+      "label": "docs",
+      "path": "docs.gz",
+      "sha256": "f53f05d5d27d99c1b659804aaa78ecedd73a638e6213768c8235e8f10a0ae73b"
+    },
+    {
+      "label": "prose",
+      "path": "prose.log.gz",
+      "sha256": "db9ff0e9bc12d1e67b67112c6705dec58cbba3c3e27bb2b8d0b33e8c70da0f87"
+    }
+  ],
+  "fail_before": {
+    "exit_code": 1,
+    "passed_test_events": 0,
+    "failed_test_events": 3,
+    "packages_passed": 0
+  },
+  "race": {
+    "exit_code": 0,
+    "passed_test_events": 12,
+    "failed_test_events": 0,
+    "packages_passed": 2
+  },
+  "minimum": {
+    "exit_code": 0,
+    "passed_test_events": 12,
+    "failed_test_events": 0,
+    "packages_passed": 2
+  },
+  "ago": {
+    "exit_code": 0
+  },
+  "lint": {
+    "exit_code": 0
+  },
+  "generate": {
+    "exit_code": 0
+  },
+  "docs": {
+    "exit_code": 0
+  },
+  "remaining": [
+    "Collect review session 11663; verify any findings.",
+    "Publish the qualified branch, run native CI, and merge under existing authority.",
+    "Finish remaining A08 and A20 acceptance before CSP3 completion."
+  ],
+  "commit": "9117b86a",
+  "integration_head": "5b7e1d0088dcbf20e530127893c102510432720d",
+  "prose": {
+    "exit_code": 0,
+    "files": 1314,
+    "diagnostics": 0
+  },
+  "full_verification": {
+    "session": 27402,
+    "head": "5b7e1d0088dcbf20e530127893c102510432720d",
+    "worktree": "/tmp/starmap-source-activity-2026-09-09",
+    "command": "CATALOG_GIT_FIXTURE_REQUIRED=1 GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 CSP_STARPORT_WORKTREE=/tmp/starport-readme-merged-2026-09-08 CATALOG_DISTRIBUTION_STARPORT_ROOT=/tmp/starport-readme-merged-2026-09-08 CATALOG_DRIVEN_STARMAP_ROOT=/tmp/starmap-source-activity-2026-09-09 STARMAP_OWNERSHIP_STARMAP_ROOT=/tmp/starmap-source-activity-2026-09-09 bash scripts/verify.sh",
+    "log": "/tmp/starmap-source-reporting-full-verification-2026-09-09.log",
+    "result": "FAIL: container smoke port conflict",
+    "stage": "Race suite, vet, and performance passed. Container smoke failed because unrelated Nimbus libsql owns 127.0.0.1:18080. Later gates did not run.",
+    "partial_race_results": {
+      "github.com/agentstation/starmap": {
+        "status": "pass",
+        "seconds": 802.88
+      },
+      "github.com/agentstation/starmap/acquisition": {
+        "status": "pass",
+        "seconds": 686.409
+      },
+      "github.com/agentstation/starmap/internal/cli/app": {
+        "status": "pass",
+        "seconds": 1112.849
+      },
+      "github.com/agentstation/starmap/remote": {
+        "status": "pass",
+        "seconds": 17.011
+      },
+      "github.com/agentstation/starmap/runtime": {
+        "status": "pass",
+        "seconds": 1079.209
+      }
+    },
+    "exit_code": 1,
+    "log_artifact": "full-verification-port-conflict.log.gz",
+    "log_sha256": "67a6fb89338e2f62596dbbe2e95ae20bc4de89a343fb892d9bef5f351b5eacd3"
+  },
+  "remaining_acceptance_audit": "../remaining-acceptance-audit-2026-09-09.json",
+  "plan_maintenance": "../../resume-compaction-2026-09-09-193500.json",
+  "smoke_repair": {
+    "status": "focused smoke and every remaining canonical gate passed",
+    "changed_file": "scripts/verify-container-smoke.sh",
+    "behavior": "Docker assigns a loopback port. Each invocation owns unique container, volume, and image names. Nimbus remains untouched.",
+    "exit_code": 0,
+    "artifact": "smoke-isolation.log.gz",
+    "sha256": "69b8ab46d336ef8437a527994bc7088614c8064368b5fe870890041cc4260e2b",
+    "remaining_session": 94678,
+    "remaining_runner": "/tmp/starmap-source-reporting-remaining-verify-2026-09-09.sh",
+    "remaining_log": "/tmp/starmap-source-reporting-remaining-verification-2026-09-09.log",
+    "verification_scope": "Unchanged Go source passed complete tests, race, vet, and performance at 5b7e1d00. The remaining runner preserves canonical setup and every command from container smoke to the end. The only source change is smoke resource isolation.",
+    "commit": "6e4f9efbeab65e2652314f8293518dda9783778e",
+    "tree": "d1b02d95dbff9529d22d2c80868d9d2fa931fa40",
+    "remaining_exit_code": 0,
+    "artifacts": [
+      {
+        "path": "remaining-verification.log.gz",
+        "sha256": "2389f457a6470e0e78478b82ed2a2da66b6cbefdce2cd3088abe8a2e9bd50189"
+      },
+      {
+        "path": "remaining-runner.sh.gz",
+        "sha256": "51e6107567ef9b4174c35fd38d03e850b7b4621694fd9dfa8b1e049fb2653bca"
+      }
+    ],
+    "coverage_gates": 15,
+    "prose_files": 1315,
+    "prose_diagnostics": 0
+  },
+  "review": {
+    "session": 11663,
+    "log": "/tmp/starmap-source-reporting-autoreview-2026-09-09.log",
+    "head": "6e4f9efbeab65e2652314f8293518dda9783778e",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "result": "UNVERIFIED: running"
+  }
+}

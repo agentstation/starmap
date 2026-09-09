@@ -1,0 +1,70 @@
+{
+  "status": "Preservation, local links, cold-resume, and repository prose checks pass.",
+  "snapshot": "resume-history-2026-09-09-193500.html",
+  "old_section_sha256": "51a97bc53c60bbfa8b17f492167042681f7a636620b291b3e3c518087a977da7",
+  "old_resume_words": 580,
+  "new_resume_words": 270,
+  "protected_sections": "Only current-resume section replaced. The surrounding source is unchanged.",
+  "prefix_sha256": "95524cc6517e89bbddc22c1b50fad5a786351ceeabddb16e745ae657d327cd17",
+  "suffix_sha256": "0c14fca9e258f1a2b9ef90db69b86b1256ba335b2cf1fee921f72e7dd639fdda",
+  "required_resume_path": [
+    "starport-production-catalog-plan.html#current-resume",
+    "starport-production-catalog-plan.html#task-CSP3",
+    "proof/starport-production-catalog/csp3/preflight-source-activity-2026-09-09/verification.json#review"
+  ],
+  "running_session": 11663,
+  "preservation_check": {
+    "old_section_sha256_matches": true,
+    "prefix_sha256_matches": true,
+    "suffix_sha256_matches": true,
+    "result": "pass",
+    "snapshot_text_matches_original": true
+  },
+  "link_check": {
+    "local_links_checked": 152,
+    "invalid_links": [],
+    "duplicate_ids": [],
+    "result": "pass"
+  },
+  "cold_resume_check": {
+    "result": "pass",
+    "active_task": "CSP3",
+    "next_action": "Poll review session 11663, verify findings, then publish the qualified branch, run native CI, and merge.",
+    "source_head": "6e4f9efbeab65e2652314f8293518dda9783778e",
+    "authority": "Reviewed branch publication and qualified merges allowed. Releases and hosted publication require separate authority.",
+    "unverified": "Pre-PR review, native CI, merge, remaining A08/A20, and final released-pair acceptance.",
+    "read_path": [
+      "starport-production-catalog-plan.html#current-resume",
+      "starport-production-catalog-plan.html#task-CSP3",
+      "starport-production-catalog-plan.html#goal",
+      "csp3/preflight-source-activity-2026-09-09/verification.json"
+    ],
+    "read_words": 1415,
+    "read_bytes": 13767
+  },
+  "original_snapshot": {
+    "path": "resume-history-2026-09-09-193500.original.html.gz",
+    "sha256": "013f4e787bf41822019200ad26e588ba9855c4b1b2aa177e0283bcec40aace58",
+    "section_sha256": "51a97bc53c60bbfa8b17f492167042681f7a636620b291b3e3c518087a977da7"
+  },
+  "snapshot_formatting": "Separate the introduction from the resume section and split one historical paragraph. All historical text is unchanged. Original HTML bytes remain archived.",
+  "prose": {
+    "exit_code": 0,
+    "files": 1272,
+    "diagnostics": 0
+  },
+  "prose_artifacts": [
+    {
+      "path": "resume-prose-initial-failure-2026-09-09.log.gz",
+      "sha256": "751277e1c1bd8ddbd2091c2ac527a95a976c57ab55ccb553a8085c8bf51a8054"
+    },
+    {
+      "path": "resume-prose-formatting-failure-2026-09-09.log.gz",
+      "sha256": "751277e1c1bd8ddbd2091c2ac527a95a976c57ab55ccb553a8085c8bf51a8054"
+    },
+    {
+      "path": "resume-prose-qualified-2026-09-09.log.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    }
+  ]
+}

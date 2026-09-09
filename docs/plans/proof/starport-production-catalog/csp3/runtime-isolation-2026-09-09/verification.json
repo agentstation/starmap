@@ -36,9 +36,9 @@
     }
   ],
   "next": [
-    "Run the complete runtime binary at the unchanged 20-minute deadline without other test jobs.",
-    "Record the complete test roster and outcome.",
-    "Finish preflight reporting and full repository verification before review, native CI, and merge."
+    "Combined runtime passed in 1079.209 seconds. Follow the current delivery proof for review session 11663.",
+    "Keep the integrated source tree fixed; do not run competing test jobs.",
+    "Required review, native CI, and merge remain open."
   ],
   "completion_credit": false,
   "parallel_read_only_audit": {
@@ -182,5 +182,76 @@
       "files": 1271,
       "diagnostics": 0
     }
+  },
+  "full_runtime_after": {
+    "session": 8108,
+    "head": "66e3ed4d848c7423e234ce0374af1bb5fde110e6",
+    "binary": "/tmp/starmap-runtime-baseline-reuse-2026-09-09.test",
+    "binary_sha256": "eb3160dc0e35183801e6553f632a283c698d4d1a408c7e70cdb40c6b0edc50e3",
+    "log": "/tmp/starmap-runtime-baseline-reuse-full-2026-09-09.log",
+    "flags": [
+      "-test.short",
+      "-test.timeout=20m",
+      "-test.v"
+    ],
+    "result": "PASS",
+    "exit_code": 0,
+    "roster": {
+      "listed_tests": 253,
+      "top_level_passes": 253,
+      "all_pass_events": 678,
+      "skipped": [],
+      "failed": [],
+      "missing": [],
+      "unexpected": [],
+      "binary_sha256": "eb3160dc0e35183801e6553f632a283c698d4d1a408c7e70cdb40c6b0edc50e3"
+    },
+    "artifact": "full-runtime-after.log.gz",
+    "artifact_sha256": "968a2e412a9fdb891b227e62dc8a8da687c2e7966cfb91bd1e8e2c4c2933984d"
+  },
+  "preflight_repair": {
+    "worktree": "/tmp/starmap-source-activity-2026-09-09",
+    "base": "c2324744",
+    "status": "Committed as 9117b86a; integrated at 5b7e1d00; see ../preflight-source-activity-2026-09-09/verification.json",
+    "files": [
+      "acquisition/preflight_activity_test.go",
+      "acquisition/publication_activity.go",
+      "acquisition/runtime.go",
+      "acquisition/syncer.go",
+      "internal/catalog/pipeline/source_activity.go",
+      "internal/catalog/pipeline/source_activity_test.go"
+    ],
+    "behavior": [
+      "Pipeline SourceConfiguration reads parsed selection without I/O; nil parsed options produce unknown selection.",
+      "Manual Sync errors preserve source activity before collectors run. Existing collector reports and typed errors remain intact.",
+      "Runtime policy refusal reports the configured source selection, including explicitly empty selection.",
+      "Connected cancellation uses the resolved inherited selection and keeps the accepted generation snapshot."
+    ],
+    "tests": [
+      "TestManualPreflightFailureReportsUnattemptedSources",
+      "TestManualRuntimePreflightReportsSelectedSources",
+      "TestSourceConfigurationWithoutParsedOptionsKeepsSelectionUnknown"
+    ],
+    "checks": "UNVERIFIED: no checks run during the isolated full runtime suite.",
+    "file_sha256": {
+      "acquisition/preflight_activity_test.go": "e696381a271fa507244a7004cedd2ac7931530b0603cf5c33b8e96d058df9aed",
+      "acquisition/publication_activity.go": "19316e448e9b25f8b211442e292f09c63d5b8ee0bc6b78cc92f8f470ecfb6923",
+      "acquisition/runtime.go": "4e4bd744f8dc2a1c8348140546f10d31550d044f1a8b1a35f832e402ebdd2b43",
+      "acquisition/syncer.go": "dc04371d78339fefeca6d76b33db48a494ce79fce7d08ac7c5034052bb619d91",
+      "internal/catalog/pipeline/source_activity.go": "dd2718daa3d8c26500a88e6e8132cd2f8cf68d04f7d7d71d4898761dd637061e",
+      "internal/catalog/pipeline/source_activity_test.go": "c93d986a9ddf9e0b2cacda215e8ab91f9a23f1c66ca9967c15096b76778a5c53"
+    },
+    "manual_audit": [
+      "Named return errors preserve explicit return values while deferred wrappers retain typed causes.",
+      "Existing collector activity is preserved rather than replaced by unattempted defaults.",
+      "Runtime selection is resolved before the deferred failure report; explicitly empty policy receives four disabled rows.",
+      "The public Sync wrapper still attaches an independently identified accepted-generation snapshot after acquisition fails.",
+      "The repair does not invoke functional options again to construct a report. Existing option evaluation behavior is unchanged."
+    ],
+    "pending_commands": [
+      "go test -race ./acquisition ./internal/catalog/pipeline -run 'TestManualPreflightFailureReportsUnattemptedSources|TestManualRuntimePreflightReportsSelectedSources|TestSourceConfigurationWithoutParsedOptionsKeepsSelectionUnknown|TestManualPublicationFailureRetainsSourceActivity|TestPipelineSourceActivitySurvivesFatalPreflight' -count=1 -timeout=5m",
+      "Repeat the focused checks on Go 1.25.12.",
+      "Run ago, pinned golangci-lint, generated documentation checks, and technical-writing-check."
+    ]
   }
 }
