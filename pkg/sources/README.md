@@ -243,7 +243,7 @@ func ValidateJSONPayload(data []byte) error
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
 <a name="ActivityError"></a>
-## type [ActivityError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L55-L62>)
+## type [ActivityError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L62-L69>)
 
 ActivityError preserves per\-run source activity when acquisition fails before a result exists. Call ActivityFromError to get an owned report while retaining the original error identity.
 
@@ -259,7 +259,7 @@ type ActivityError struct {
 ```
 
 <a name="ActivityError.Error"></a>
-### func \(\*ActivityError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L65>)
+### func \(\*ActivityError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L72>)
 
 ```go
 func (e *ActivityError) Error() string
@@ -268,7 +268,7 @@ func (e *ActivityError) Error() string
 Error preserves the underlying acquisition error text.
 
 <a name="ActivityError.Unwrap"></a>
-### func \(\*ActivityError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L73>)
+### func \(\*ActivityError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L80>)
 
 ```go
 func (e *ActivityError) Unwrap() error
@@ -712,7 +712,7 @@ type ProviderAttempt struct {
 ```
 
 <a name="ProviderAttemptsFromError"></a>
-### func [ProviderAttemptsFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L85>)
+### func [ProviderAttemptsFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L92>)
 
 ```go
 func ProviderAttemptsFromError(err error) []ProviderAttempt
@@ -1347,7 +1347,7 @@ type Source interface {
 ```
 
 <a name="SourceActivity"></a>
-## type [SourceActivity](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L22-L33>)
+## type [SourceActivity](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L22-L37>)
 
 SourceActivity reports capability, selection, and execution for one acquisition source. Accepted input belongs to the active generation and remains separate from this run.
 
@@ -1357,8 +1357,12 @@ type SourceActivity struct {
     Source ID  `json:"source"`
     // Supported reports whether this composition implements the source.
     Supported bool `json:"supported"`
+    // SupportUnknown identifies a collector without a declared source capability.
+    SupportUnknown bool `json:"support_unknown,omitzero"`
     // Enabled reports configured selection, independent of automatic refresh scheduling.
     Enabled bool `json:"enabled"`
+    // SelectionUnknown identifies a collector without declared source defaults.
+    SelectionUnknown bool `json:"selection_unknown,omitzero"`
     // Eligibility remains unknown until the required source preflight checks finish.
     Eligibility Eligibility `json:"eligibility"`
     // Attempted reports whether the source collector ran. Provider attempts separately report network requests.
@@ -1367,7 +1371,7 @@ type SourceActivity struct {
 ```
 
 <a name="ActivityFromError"></a>
-### func [ActivityFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L76>)
+### func [ActivityFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L83>)
 
 ```go
 func ActivityFromError(err error) []SourceActivity
@@ -1376,7 +1380,7 @@ func ActivityFromError(err error) []SourceActivity
 ActivityFromError returns an owned source report from an acquisition error.
 
 <a name="SourceActivity.Valid"></a>
-### func \(SourceActivity\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L36>)
+### func \(SourceActivity\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L40>)
 
 ```go
 func (a SourceActivity) Valid() bool

@@ -44,3 +44,23 @@ func TestSourceAcquirerReportsCanceledSelection(t *testing.T) {
 		}
 	}
 }
+
+func TestSourceConfigurationReportsBuiltInDefaultsWithoutAcquisition(t *testing.T) {
+	acquirer, err := NewSourceAcquirer(pkgsync.WithSources(sources.ModelsDevGitID), pkgsync.WithSourcesDir(filepath.Join(t.TempDir(), "not-created")))
+	if err != nil {
+		t.Fatal(err)
+	}
+	report := acquirer.SourceConfiguration()
+	if len(report) != 3 {
+		t.Fatalf("configuration=%+v", report)
+	}
+	for _, row := range report {
+		if !row.Supported || row.SupportUnknown || row.SelectionUnknown || row.Enabled != (row.Source == sources.ModelsDevGitID) || row.Attempted || row.Eligibility != sources.EligibilityUnknown {
+			t.Fatalf("configuration=%+v", row)
+		}
+	}
+	report[0].Source = sources.ProvidersID
+	if acquirer.SourceConfiguration()[0].Source == sources.ProvidersID {
+		t.Fatal("configuration shares caller-owned state")
+	}
+}

@@ -150,6 +150,10 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if err := config.validate(); err != nil {
 		return nil, err
 	}
+	config.sourceConfiguration, err = describeSources(config)
+	if err != nil {
+		return nil, err
+	}
 	directory, err := acquireDirectory(ctx, config.stateDirectory)
 	if err != nil {
 		return nil, err

@@ -80,6 +80,7 @@ func (r *Runtime) Status() Status {
 		Providers:                  append([]sources.ProviderAttempt(nil), state.attempts...),
 		SourceObservations:         slices.Clone(state.sourceObservations),
 		SourceActivities:           slices.Clone(state.sourceActivities),
+		SourceConfiguration:        slices.Clone(r.config.sourceConfiguration),
 		AcceptedAcquisitionSources: acceptedSources,
 		StartedAt:                  state.startedAt,
 		ObservedAt:                 now,

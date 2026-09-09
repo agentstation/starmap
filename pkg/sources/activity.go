@@ -24,8 +24,12 @@ type SourceActivity struct {
 	Source ID `json:"source"`
 	// Supported reports whether this composition implements the source.
 	Supported bool `json:"supported"`
+	// SupportUnknown identifies a collector without a declared source capability.
+	SupportUnknown bool `json:"support_unknown,omitzero"`
 	// Enabled reports configured selection, independent of automatic refresh scheduling.
 	Enabled bool `json:"enabled"`
+	// SelectionUnknown identifies a collector without declared source defaults.
+	SelectionUnknown bool `json:"selection_unknown,omitzero"`
 	// Eligibility remains unknown until the required source preflight checks finish.
 	Eligibility Eligibility `json:"eligibility"`
 	// Attempted reports whether the source collector ran. Provider attempts separately report network requests.
@@ -44,10 +48,13 @@ func (a SourceActivity) Valid() bool {
 	default:
 		return false
 	}
-	if a.Attempted && (!a.Supported || !a.Enabled) {
+	if (a.SupportUnknown && a.Supported) || (a.SelectionUnknown && a.Enabled) {
 		return false
 	}
-	return a.Eligibility == EligibilityUnknown || (a.Supported && a.Enabled)
+	if a.Attempted && (!a.Supported || !a.Enabled || a.SupportUnknown || a.SelectionUnknown) {
+		return false
+	}
+	return a.Eligibility == EligibilityUnknown || (a.Supported && a.Enabled && !a.SupportUnknown && !a.SelectionUnknown)
 }
 
 // ActivityError preserves per-run source activity when acquisition fails before a result exists.

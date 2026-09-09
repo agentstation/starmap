@@ -11,16 +11,11 @@ import (
 // AcquireSourceReport returns observations and activity owned by this call.
 // Existing callers can use AcquireSources when they need only observations.
 func (a *SourceAcquirer) AcquireSourceReport(ctx context.Context, request runtime.SourceAcquisitionRequest) ([]sources.Observation, []sources.SourceActivity, error) {
-	var selected []sources.ID
-	if a != nil {
-		selected = a.options.Sources
-	}
+	report := a.SourceConfiguration()
 	if request.Sources != nil {
-		selected = request.Sources
-	}
-	report := make([]sources.SourceActivity, 0, 3)
-	for _, id := range []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID} {
-		report = append(report, sources.SourceActivity{Source: id, Supported: a != nil && a.pipeline != nil, Enabled: slices.Contains(selected, id), Eligibility: sources.EligibilityUnknown})
+		for i := range report {
+			report[i].Enabled = slices.Contains(request.Sources, report[i].Source)
+		}
 	}
 	seen := make(map[sources.ID]bool)
 	record := func(activities []sources.SourceActivity) {
@@ -49,4 +44,18 @@ func (a *SourceAcquirer) AcquireSourceReport(ctx context.Context, request runtim
 	}
 	observations, err := a.acquireSources(ctx, request, record)
 	return observations, report, err
+}
+
+// SourceConfiguration reports built-in metadata support and constructor defaults.
+// It reads no workspace, tool, network endpoint, or credential material.
+func (a *SourceAcquirer) SourceConfiguration() []sources.SourceActivity {
+	var selected []sources.ID
+	if a != nil {
+		selected = a.options.Sources
+	}
+	result := make([]sources.SourceActivity, 0, 3)
+	for _, id := range []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID} {
+		result = append(result, sources.SourceActivity{Source: id, Supported: a != nil && a.pipeline != nil, Enabled: slices.Contains(selected, id), Eligibility: sources.EligibilityUnknown})
+	}
+	return result
 }

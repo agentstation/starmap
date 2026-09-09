@@ -8,6 +8,7 @@ import (
 	"github.com/agentstation/starmap/internal/fleet"
 	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // Transfer and refresh defaults. They match the canonical CATALOG_TRANSFER_*
@@ -59,10 +60,11 @@ type options struct {
 	schedulerIdentity string
 	listenAddress     string
 
-	customSource   Source
-	acquirer       Acquirer
-	sourceAcquirer SourceAcquirer
-	leaseStore     LeaseStore
+	customSource        Source
+	acquirer            Acquirer
+	sourceAcquirer      SourceAcquirer
+	sourceConfiguration []sources.SourceActivity
+	leaseStore          LeaseStore
 
 	now    func() time.Time
 	random Random

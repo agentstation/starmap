@@ -207,6 +207,9 @@ type Status struct {
 	// SourceObservations holds the last non-provider acquisition receipts.
 	SourceObservations []catalogs.SourceObservationLink
 
+	// SourceConfiguration holds the passive composition and configured selection.
+	SourceConfiguration []sources.SourceActivity `json:"source_configuration"`
+
 	// SourceActivities holds activity from the last acquisition run.
 	SourceActivities []sources.SourceActivity `json:"source_activities,omitempty"`
 
