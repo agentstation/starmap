@@ -32,6 +32,14 @@
       "failed_tests": 0,
       "failed_packages": 0,
       "exit_code": 0
+    },
+    {
+      "log": "publisher-corrected-race.jsonl.gz",
+      "passed_tests": 2,
+      "passed_packages": 1,
+      "failed_tests": 0,
+      "failed_packages": 0,
+      "exit_code": 0
     }
   ],
   "initial_checks": [
@@ -74,7 +82,8 @@
   "scope": [
     "CLI refresh, HTTP refresh, connected startup and refresh, automatic startup acquisition, explicit source exclusion, changed provider and Git metadata, partial provider replies, failed provider retention, configured commit change with restart, immutable model responses and receipts.",
     "Real Git and Bun use a local dependency-free repository. Git network protocols are disabled. Fixture provider calls stay on loopback.",
-    "The changed metadata field binds to the selected Git commit and exact frozen lockfile checksum. Retained receipts can support older unchanged facts."
+    "The changed metadata field binds to the selected Git commit and exact frozen lockfile checksum. Retained receipts can support older unchanged facts.",
+    "Publisher fixtures run provider-scoped and all-provider CLI acquisition, verify changed provider and Git metadata, stage the committed catalog, and reopen its exact immutable artifact. The changed field retains its Git revision and lockfile binding."
   ],
   "test_correction": "The initial whole-manifest assertion incorrectly required every retained Git receipt to use the newest commit. The diagnostic proves that the changed temperature field already binds to the new commit. Corrected checks follow that field to its matching immutable manifest receipt. No production code changed.",
   "race_scope": "final-race.jsonl contains two passing CLI/HTTP cases with final assertions, five passing test events total, and two failing server assertions plus a failing package. corrected-server-race.jsonl passes the five server test events after correcting the assertion. Do not describe the earlier package as green.",
@@ -87,8 +96,9 @@
     },
     "publisher_final_race": {
       "session": 78556,
-      "status": "running",
-      "log": "/tmp/starmap-real-git-application-2026-09-09/publisher-corrected-race.jsonl"
+      "status": "passed",
+      "log": "/tmp/starmap-real-git-application-2026-09-09/publisher-corrected-race.jsonl",
+      "exit_code": 0
     },
     "permanent_tests": "not installed",
     "platform_scope": "macOS ARM64 only",
@@ -187,7 +197,11 @@
     {
       "path": "fixture.bundle.gz",
       "sha256": "8d9a4e14ec5c314ff207339ff1ba82cfc417db0578be422d333f9bea10b9b3aa"
+    },
+    {
+      "path": "publisher-corrected-race.jsonl.gz",
+      "sha256": "6993f76adee45bd3b347ff7309ab4befa2384e27dcbd124703f43273d8d037fe"
     }
   ],
-  "next_action": "Complete publisher race qualification and retain its exact result. Promote verified application fixtures after the combined acquisition candidate completes verification, required review, and merge."
+  "next_action": "Promote the verified local fixture into permanent application tests after the combined acquisition candidate completes verification, required review, and merge. Native Git source and repeated timer qualification remain open."
 }
