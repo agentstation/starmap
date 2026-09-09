@@ -33,7 +33,7 @@
     "Keep the scheduled-source and source-selection work pending integration of this repair."
   ],
   "completion_credit": false,
-  "updated_at": "2026-09-09T10:53:02.109532+00:00",
+  "updated_at": "2026-09-09T11:57:11.032828+00:00",
   "dirty_inventory": [
     {
       "path": ".github/workflows/catalog-generation.yaml",
@@ -287,9 +287,17 @@
     {
       "path": "starmap-publisher-workflow-context-final-prose.log.gz",
       "sha256": "5f8011cfd768a26b38a474b7ab4220218f79a4333140ca6ee1e7e6e8898095a3"
+    },
+    {
+      "path": "starmap-publisher-repair-final-review.json.gz",
+      "sha256": "388dde18a8f08ec57b0111e33d756678e153dc9c28f21137fb81404c315cc562"
+    },
+    {
+      "path": "starmap-publisher-repair-final-review.log.gz",
+      "sha256": "02018061cb78cd1b966644f0eb0fbf33c9f2b0d32da563fc653300454da69fc6"
     }
   ],
-  "next_action": "Finish the required review, publish the publisher repair PR, run CI, and merge after checks pass. Then integrate this merge into the combined acquisition branch. No task completion credit before merged acceptance.",
+  "next_action": "Wait for PR #140 checks and merge session 56774. Verify the merge commit and tree before recording delivery. Integrate the merged repair into the combined acquisition branch after its current verifier completes.",
   "full_verification": {
     "status": "passed",
     "session": 35014,
@@ -324,11 +332,11 @@
   },
   "prepared_pr_description": {
     "path": "/tmp/starmap-publisher-repair-pr-body.md",
-    "sha256": "66f0c3aabafe55c37a21dcf5643590477b085241f9e2aaed3a9be33b947ca9e5",
-    "status": "Full verification recorded. Remove the pending-review sentence only after the required review passes."
+    "sha256": "f3c3032f65295fb6029d5638a02dda6a311df664038c6e173323985120fab568",
+    "status": "published after final review passed"
   },
   "review": {
-    "status": "running",
+    "status": "passed",
     "session": 83361,
     "head": "27b56e8d84cb37c9996be41327b65022efb07e56",
     "base": "ccc14dcff83be0a147258d92884c1f71e5edf690",
@@ -337,7 +345,9 @@
       "claude:opus:high"
     ],
     "log": "/tmp/starmap-publisher-repair-final-review.log",
-    "report": "/tmp/starmap-publisher-repair-final-review.json"
+    "report": "/tmp/starmap-publisher-repair-final-review.json",
+    "exit_code": 0,
+    "findings": 0
   },
   "review_history": [
     {
@@ -429,5 +439,14 @@
       "path": "scripts/generate-embedded-catalog.sh",
       "sha256": "b93ec41ffe30803cbce7402268ad4df9c54e65ffa41b5f3cbd4bd03a00eb47ca"
     }
-  ]
+  ],
+  "publication": {
+    "number": 140,
+    "url": "https://github.com/agentstation/starmap/pull/140",
+    "head": "27b56e8d84cb37c9996be41327b65022efb07e56",
+    "status": "open; CI running",
+    "ci_run": 34348149747,
+    "merge_session": 56774,
+    "merge_condition": "All PR checks pass and the head matches the reviewed commit."
+  }
 }
