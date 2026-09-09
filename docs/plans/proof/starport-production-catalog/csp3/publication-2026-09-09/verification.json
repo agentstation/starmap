@@ -1,0 +1,84 @@
+{
+  "task": "CSP3",
+  "completion_credit": false,
+  "completed_tasks": 8,
+  "merged_prs": 16,
+  "prs": [
+    {
+      "number": 138,
+      "url": "https://github.com/agentstation/starmap/pull/138",
+      "head": "606b48dd1960deb87d20109cea82fc2a6580dd9a",
+      "base": "main",
+      "draft": true,
+      "opus": {
+        "exit_code": 0,
+        "portions": 3,
+        "findings": 0
+      },
+      "sol": {
+        "exit_code": 0,
+        "portions": 3,
+        "findings": 0
+      },
+      "ci_run": 34310875375,
+      "state": "open; CI running"
+    },
+    {
+      "number": 139,
+      "url": "https://github.com/agentstation/starmap/pull/139",
+      "head": "c62faba31d52807cdaae2540d5128617c2bf5607",
+      "base": "codex/catalog-presence-main",
+      "draft": true,
+      "opus": {
+        "exit_code": 0,
+        "portions": 1,
+        "findings": 0
+      },
+      "sol": {
+        "exit_code": 0,
+        "portions": 1,
+        "findings": 0
+      },
+      "state": "open; retarget after PR 138 merge to start main-only PR workflow"
+    }
+  ],
+  "publication_events": [
+    {
+      "event": "Inherited branch upstream mapped the first push to main",
+      "result": "GitHub rejected the protected branch update; no main mutation",
+      "resolution": "Pushed explicit task-branch refspec and set the correct upstream."
+    },
+    {
+      "event": "Automatic approval review rejected ready-PR creation",
+      "reason": "Earlier publication authorization specified draft PRs.",
+      "resolution": "Created draft PRs as the permitted lower-risk alternative. Standing later merge authorization remains recorded."
+    }
+  ],
+  "release_preparation": {
+    "configuration_check_exit": 0,
+    "latest_stable": "v0.16.5",
+    "publication_authorized": false
+  },
+  "artifacts": [
+    {
+      "path": "starmap-presence-main-opus-reset-review.txt.gz",
+      "raw_sha256": "e397a6c4dd0735a9be0d343f73b8e4ecac261b07fadfb1010955690d67008450"
+    },
+    {
+      "path": "starmap-ranges-main-opus-reset-review.txt.gz",
+      "raw_sha256": "1b7424416eeb18e875455274899818c298daedb5abbc6f0334a3643442e1529f"
+    },
+    {
+      "path": "starmap-presence-pr-body.md.gz",
+      "raw_sha256": "882c5dcaafa86fe09a0896a720ffca18fdbca7a47f6d9113aa2933e136cdf257"
+    },
+    {
+      "path": "starmap-ranges-pr-body.md.gz",
+      "raw_sha256": "0ba81a247048a079341ab75155acae01d08fba47f381c953dea299b4ae35a7dd"
+    },
+    {
+      "path": "starmap-merged-candidate-release-config.txt.gz",
+      "raw_sha256": "f9ae884d9a58c3c9dab298229f2fe32f860762d494a71e965995f4a08d976432"
+    }
+  ]
+}
