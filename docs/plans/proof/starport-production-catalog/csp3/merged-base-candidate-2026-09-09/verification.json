@@ -102,19 +102,24 @@
     "testdata/consumers/server-storage/go.mod",
     "testdata/consumers/server-storage/go.sum"
   ],
-  "status": "prepared; full publication-candidate verification running",
+  "status": "committed; required cross-lab review running",
   "branch": "codex/catalog-presence-main",
   "worktree": "/tmp/starmap-presence-main-2026-09-09",
-  "head": "7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e",
-  "staged_implementation_paths": 93,
+  "head": "759b41bbd284aa93bf6901c4008a680bf4495bd6",
+  "staged_implementation_paths": 0,
   "consumer_packages_passed": 6,
   "consumer_exit_code": 0,
-  "writing_files": 1226,
+  "writing_files": 1238,
   "writing_exit_code": 0,
-  "full_verification_session": 76962,
+  "full_verification_session": null,
   "full_verification_worktree": "/tmp/starmap-presence-main-2026-09-09",
   "full_verification_output": "/tmp/starmap-presence-main-verify-2026-09-09.txt",
-  "review": "not started; requires terminal checks and commit",
+  "review": {
+    "session_id": 5830,
+    "command": "GOTOOLCHAIN=go1.26.6 autoreview --gate pre-pr --mode auto --base 7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e --profile cross-lab --thinking codex=xhigh",
+    "output": "/tmp/starmap-presence-main-autoreview.txt",
+    "status": "running"
+  },
   "publication": "not started",
   "completion_credit": false,
   "prior_goal_turn": "progress: implementation merge, merged CSP2 acceptance, plan transition, and CSP3 integration",
@@ -130,6 +135,30 @@
     {
       "path": "integrated-verification.txt.gz",
       "raw_sha256": "2ec5b76783cf2ac537b3427d0fb168f2152dfbb75c6c42bfe2d4d25ae0ee57e7"
+    },
+    {
+      "path": "starmap-presence-main-verify-2026-09-09.txt.gz",
+      "raw_sha256": "de8d0d329a87036f3b910b811057b4655096e47656d957443a7cfbcf966c2c86"
+    },
+    {
+      "path": "starmap-presence-main-docs-cleanflags.txt.gz",
+      "raw_sha256": "e24a4d72e30085c43fccf5bd4a2b10d0d0f6fefb3e23aaf20ede0d685bd5afbb"
+    },
+    {
+      "path": "starmap-presence-main-record-recovery.jsonl.gz",
+      "raw_sha256": "966d3c36583ca643ee8a8b557a5307051cbd2133b30d099af832626388be5062"
+    },
+    {
+      "path": "starmap-presence-main-final-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-presence-main-final-lint.txt.gz",
+      "raw_sha256": "1550ba3e6655e7bd06ea353054757bd6822e50c480cb1b7dd6c8f6bcdf00aab4"
+    },
+    {
+      "path": "starmap-presence-main-final-writing.txt.gz",
+      "raw_sha256": "ea1ce2b5790065fed59c7fcde0ab5740995ffaa82bc6559eda9d17746a2e8a8b"
     }
   ],
   "integration_verification": {
@@ -138,5 +167,24 @@
     "ordinary_packages_passed": 80,
     "failure": "The nested server-storage consumer requires the module versions already retained in the publication candidate.",
     "artifact": "integrated-verification.txt.gz"
+  },
+  "committed_implementation_paths": 94,
+  "full_verification_exit_code": 0,
+  "verification_stages_passed": 39,
+  "ordinary_packages_passed": 80,
+  "race_packages_passed": 80,
+  "verifier_unit_tests_passed": 73,
+  "documentation_correction": {
+    "warning_count": 33,
+    "cause": "gomarkdoc reported unsupported GOFLAGS=-p=2 while returning success.",
+    "independent_command": "env -u GOFLAGS GOTOOLCHAIN=go1.26.6 make docs-check",
+    "exit_code": 0,
+    "output": "starmap-presence-main-docs-cleanflags.txt.gz"
+  },
+  "recovery_test": {
+    "test": "TestProviderOptionalRecordRecoveryPreservesPresence",
+    "passing_test_events": 29,
+    "passing_package_events": 1,
+    "exit_code": 0
   }
 }

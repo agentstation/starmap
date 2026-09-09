@@ -1,0 +1,74 @@
+{
+  "task": "CSP3",
+  "status": "partial repair; publication not qualified",
+  "source_commit": "bab16179b6a629d31f0872c920ff75666a82caa5",
+  "worktree": "/tmp/starmap-presence-integration-2026-09-09",
+  "test_pass_events_per_toolchain": 182,
+  "toolchains": [
+    "go1.26.6",
+    "go1.25.12"
+  ],
+  "package_pass_events_per_toolchain": 1,
+  "go_check_exit_codes": [
+    0,
+    0
+  ],
+  "generation_controls": 22,
+  "range_types": [
+    "FloatRange",
+    "IntRange"
+  ],
+  "range_fields": [
+    "min",
+    "max",
+    "default"
+  ],
+  "formats": [
+    "JSON",
+    "YAML"
+  ],
+  "covered": [
+    "missing, unknown, known zero",
+    "repeated codec cycles",
+    "deep copies and caller ownership",
+    "legacy literal bytes",
+    "all six recorded nested-range failures"
+  ],
+  "remaining": [
+    "generated schema nullability",
+    "broader package and consumer regression",
+    "runtime and projection contracts",
+    "generated Go documentation",
+    "review and publication"
+  ],
+  "ago_findings": 0,
+  "lint_findings": 0,
+  "writing_files": 1282,
+  "initial_test_build_error": "Incorrect formatting of ValuePresence in the initial test. Corrected without production changes.",
+  "artifacts": [
+    {
+      "path": "starmap-generation-range-presence-candidate.jsonl.gz",
+      "raw_sha256": "62d48890522ede337a65bfdfcbb77bd0cd9526e8a2d4e42d7e336acc73942c9b"
+    },
+    {
+      "path": "starmap-generation-range-presence-minimum.jsonl.gz",
+      "raw_sha256": "de89ba08d6ef239755e7f741af53e0b5ed9e3e4c20524fc4d6c6595283848e2a"
+    },
+    {
+      "path": "starmap-generation-range-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-generation-range-lint.txt.gz",
+      "raw_sha256": "3afe8e22950babc45a5ecc08beb5dddfe465528bcfdb202851f7758dd29195f7"
+    },
+    {
+      "path": "starmap-generation-range-writing.txt.gz",
+      "raw_sha256": "d14277ebb3d987188eb32b75c565b7df3e016e1e206b0637191c7e460c330f3e"
+    },
+    {
+      "path": "starmap-parameter-range-candidate.jsonl.gz",
+      "raw_sha256": "970efc093b78116f8375046b2b41148b078936d0a5087d0a03eae9cc23d07455"
+    }
+  ]
+}
