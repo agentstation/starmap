@@ -180,7 +180,7 @@ func (s *Syncer) Sync(
 		})
 	})
 	if err != nil {
-		return nil, err
+		return nil, preparedActivityError(prepared, err)
 	}
 	if prepared == nil {
 		return nil, &errors.ValidationError{

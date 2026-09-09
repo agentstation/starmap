@@ -87,7 +87,7 @@ func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, pa
 		state, err = s.connected.UpdateAcquisition(ctx, prepare)
 	}
 	if err != nil {
-		return nil, err
+		return nil, preparedActivityError(prepared, err)
 	}
 	if prepared == nil {
 		return nil, &errors.ValidationError{Field: "acquisition.result", Message: "preparation did not complete"}
