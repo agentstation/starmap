@@ -72,6 +72,10 @@
     {
       "path": "membership-prose-corrected.gz",
       "sha256": "89138933b2a6ebc7fb953c68f9d9e4869552d9b263f482ba982f81311fa11e08"
+    },
+    {
+      "path": "membership-recovery-before.gz",
+      "sha256": "45f79bcc030a452a1ce19cd645fec8f0291c1069a7323a0ccaaa757c24b879d5"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -213,5 +217,22 @@
     "Manual history reconciles batches sequentially. The current pass does not contain all earlier scope declarations.",
     "Field provenance records binding identity and revision but does not itself encode membership authority.",
     "Retain negative membership evidence through partial replies, metadata refresh, and restart. Do not implement deletion only as a final map filter."
-  ]
+  ],
+  "runtime_membership_fail_before": {
+    "head": "6555d16202eb345d42464238d087cdf10833c629",
+    "test_file": "runtime/membership_recovery_test.go",
+    "test": "TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart",
+    "exit_code": 1,
+    "failed_checks": [
+      "complete inventory",
+      "partial inventory",
+      "restart"
+    ],
+    "passed_checks": [
+      "removal receipt remains bound after all three steps",
+      "restart preserves the accepted generation and checksum"
+    ],
+    "meaning": "The missing behavior is membership enforcement. The retained receipt is available for replay.",
+    "test_status": "Untracked local regression. Preserve with the reconciliation regression."
+  }
 }
