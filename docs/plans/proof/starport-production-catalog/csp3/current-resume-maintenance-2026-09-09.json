@@ -1,0 +1,18 @@
+{
+  "archive": "resume-history-2026-09-09-153703.html",
+  "archived_section_sha256": "cdb9840ef705d0e20d09ab3df69c6d38d2834fdb52e33dbec2eb3129a21fabfe",
+  "resume_words": 286,
+  "protected_sections": {
+    "scope": "a5721bc4115884d8904ae4cab00fa9bc5a4d859c7fab73359dceef05a5c15c89",
+    "invariants": "13d5772c68bf9205af5c6a6d7cf22188fcb45f7a2652b3f293fb2019cc690d19",
+    "ledger": "3a6cb4f0fcdd1ff32a8e3439c0fa56265ec7e8f9eb9cf14327f744ae2e02d314",
+    "tasks": "1a59c537a42e8325d89f8003a2f113ea4a210f0560548913c9f0840fae449712",
+    "goal": "f1305426da8c42867e2bf99789aace62e827c6119d9bfd0e6dc2b4d9b242387a"
+  },
+  "cold_resume": "Current task, worktrees, heads, exact live handles, next action, remaining acceptance, and authority links are present.",
+  "size_exception": "The plan retains all 38 task contracts and completion requirements. Read current resume, CSP3, and the three current proof files before implementation. History is not required.",
+  "resumed_sessions": {
+    "full_verification": 35093,
+    "conditional_merge": 8510
+  }
+}

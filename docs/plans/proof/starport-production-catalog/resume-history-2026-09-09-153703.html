@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><base href="../../starport-production-catalog-plan.html"><title>Historical resume state</title></head><body><section id="current-resume"><h2>Current resume state</h2>
+<p>Updated 2026-09-09 UTC. CSP3 remains active. Eight tasks are complete. Nineteen PRs merged.</p>
+
+<p id="next-action">PR #141 exceeded its 75-minute verification limit. Merge session <code>9484</code> ended without merging. The <a href="proof/starport-production-catalog/csp3/verification-timeout-2026-09-09/verification.json">timeout repair</a> raises the job limit to 120 minutes. Both required reviewers approved commit <code>8eafe362</code>. Fresh run <code>34369968889</code> is active. Conditional merge session <code>49852</code> requires all fifteen checks to pass before merging.</p>
+
+<p>Repair worktree: <code>/tmp/starmap-publisher-repair-2026-09-09</code>, branch <code>codex/catalog-publisher-repair</code>, clean HEAD <code>27b56e8d</code>. The fourteen-file repair preserves the source and canonical limits and selects one publisher store. The first review found an invalid workflow context. The corrected workflow passes actionlint and affected checks. Required Sol and Opus review completed with no findings. </p>
+
+<p>PR #140 merged this reviewed tree after all fifteen checks passed. Merge session <code>56774</code> completed with exit zero.</p>
+
+<p>Publisher verification session <code>35014</code> completed with exit zero. Eighty ordinary packages, eighty race packages, and 73 verifier tests pass. Independent documentation validation passes with <code>GOFLAGS</code> unset.</p>
+
+<p>PR #139 merged at <code>ccc14dcf</code>. All fifteen checks pass. Both trees equal <code>2a2aeeaa</code>. <a href="proof/starport-production-catalog/csp3/retry-boundary-2026-09-09/verification.json">Merge proof</a>. Merge session <code>71350</code> completed.</p>
+
+<p>Scheduled sources: <code>/tmp/starmap-scheduled-sources-2026-09-09</code>, branch <code>codex/catalog-scheduled-sources</code>, clean HEAD <code>5c06e7a9</code>. Its 39 stages and both reviews pass as historical evidence. The source-selection branch already contains this commit. Publish both features together after publisher repair integration and review of the complete combined diff. <a href="proof/starport-production-catalog/csp3/scheduled-sources-2026-09-09/verification.json">Source proof</a>.</p>
+
+<p>Source selection: <code>/tmp/starmap-source-selection-2026-09-09</code>, branch <code>codex/catalog-source-selection</code>, clean HEAD <code>8eafe362</code>. This commit includes the publisher regression. Its <a href="proof/starport-production-catalog/csp3/provider-health-selection-2026-09-09/verification.json">current source inventory and checks</a> include provider failure selection. Fourteen new race and minimum-Go events pass. Session <code>35415</code> stopped at Devbox setup because the disk was full. Cache cleanup restored the pinned linter.</p>
+
+<p>Session <code>60866</code> passed eighty ordinary and eighty race packages, then failed on two lint findings. Commit <code>ed7390ab</code> fixes both. Targeted policy race checks, the complete configuration race package, minimum-Go checks, Ago, prose, and fifteen coverage gates pass. Sessions <code>40023</code>, <code>8832</code>, and <code>82392</code> completed. </p>
+
+<p>Local merge <code>909d9fc1</code> includes publisher merge <code>af828f4f</code>. Its tracked tree matches <code>f3953bb4</code>, so source files under verification remain unchanged. Session <code>60527</code> passed all 39 stages. Eighty ordinary packages, eighty race packages, and 73 verifier tests pass. Independent documentation validation passes. Required Sol and Opus review reports zero findings.</p>
+
+<p>Commit <code>9c829662</code> extends the connected-server fixture through changed inputs, partial results, failure, and restart. Five race and five minimum-Go events pass. The <a href="proof/starport-production-catalog/csp3/ingestion-qualification-2026-09-09/verification.json">ingestion proof</a> retains these checks and the publisher draft. </p>
+
+<p>The combined branch now contains the isolated publisher regression. Its two final minimum-Go tests pass. The repository linter reports zero findings. Final integrated race checks pass. The supported Git acquisition matrix remains open.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp3/real-git-acquisition-2026-09-09/verification.json">real Git acquisition audit</a> passes on both Go toolchains, including race detection. It builds a dependency-free fixture with Git and Bun and verifies two pinned revisions. The source collector retains exact revision and lockfile receipts. Permanent application coverage remains open.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp3/real-git-application-2026-09-09/verification.json">Git application audit</a> passes nine minimum-Go test events across two packages. Five corrected server race events pass. The publisher race command passes both test events. Session <code>78556</code> completed with exit zero. These temporary fixtures cover acquisition, source exclusion, receipt binding, failure, and restart. Permanent tests and native qualification remain open.</p>
+
+<p>Starport: <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>, HEAD <code>d45bb30</code>. It passes 32/33 gates. V01 needs a stable Starmap tag and separate release authority.</p>
+
+<p>Git qualification: <code>/tmp/starmap-git-qualification-2026-09-09</code>, branch <code>codex/catalog-git-qualification</code>, clean HEAD <code>3da0e489</code>, base <code>63cfc2be</code>. The <a href="proof/starport-production-catalog/csp3/permanent-git-fixture-2026-09-09/verification.json">permanent source fixture</a> passes three focused cases on both Go toolchains. Complete package race session <code>19463</code> passed 105 events across two packages. </p>
+
+<p>The <a href="proof/starport-production-catalog/csp3/permanent-ingestion-2026-09-09/verification.json">application matrix</a> now has twenty passing minimum-Go test events and four publisher race passes. Application race session <code>37786</code> passed sixteen events. Commit <code>92db21a1</code> contains the eight application files. Full repository session <code>68754</code> failed after shared cache files disappeared. Session <code>41151</code> runs the current Git candidate with a private cache. Review, native qualification, and merge remain required.</p>
+
+<p>Independent documentation validation passed with <code>GOFLAGS</code> unset. Cache cleanup removed 14.46 GB of generated files older than two days. The cleanup restored 17.98 GB of free space.</p>
+
+<p>Source diagnostics: <code>/tmp/starmap-source-diagnostics-2026-09-09</code>, branch <code>codex/catalog-source-diagnostics</code>, clean HEAD <code>605084e7</code>. The <a href="proof/starport-production-catalog/csp3/source-diagnostics-2026-09-09/verification.json">failure and repair proof</a> records commit <code>293c89f7</code> and its integration with the Git candidate. HTTP previously reported success after missing Git dependencies prevented acquisition. Sixteen focused events pass on both Go toolchains, including race detection.</p>
+
+<p>All six affected packages now pass race tests. A private cache restored the five package checks that the shared cache interrupted. Use this combined branch for the next PR after PR #141 merges. Full combined qualification and required review remain open. Complete source-state reporting remains open.</p>
+
+<p>Canonical branch: <code>codex/catalog-qualification</code>, following <code>d58c7171</code>. Global inventory authority, removal review, and rename-window decisions remain pending. CSP5 owns journal compaction. Continue through released-pair acceptance and cleanup.</p>
+</section></body></html>

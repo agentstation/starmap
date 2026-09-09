@@ -1,0 +1,41 @@
+{
+  "run": 34360074845,
+  "head": "63cfc2be8a6bb885979eec72af3b2650a81744a9",
+  "conclusion": "cancelled",
+  "cause": "GitHub annotation confirms the verification job exceeded 75 minutes. Setup consumed approximately 13 minutes. The job stopped during bounded package race testing.",
+  "native_jobs": "all six passed on the original head",
+  "merge_session": {
+    "id": 8510,
+    "status": "running",
+    "log": "/tmp/starmap-pr141-merge-resumed.log",
+    "result": "/tmp/starmap-pr141-merge-result.json"
+  },
+  "repair_commit": "8eafe362355af036ba71bf55acd01701a2eee6c1",
+  "change": "Verification job limit increases from 75 to 120 minutes. Individual test deadlines, assertions, and package concurrency remain unchanged.",
+  "checks": "Workflow contract package passed. Fresh GitHub qualification is running.",
+  "next": "Await run 34369968889 and conditional merge session 8510. Verify actual merge and reviewed tree before merge credit.",
+  "repair_tree": "3ad4f88d10054a44464099a5c0f4916131cd96b6",
+  "review": {
+    "status": "passed",
+    "session": 15076,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "findings": 0,
+    "secret_scan": "clean"
+  },
+  "current_run": 34369968889,
+  "previous_merge_session": {
+    "id": 9484,
+    "exit_code": 1,
+    "merged": false
+  },
+  "interrupted_merge_session": {
+    "id": 49852,
+    "status": "stopped; missing handle and no matching process",
+    "log": "/tmp/starmap-pr141-merge-after-timeout.log",
+    "result": "/tmp/starmap-pr141-merge-result.json"
+  },
+  "current_native_jobs": "all six passed on repaired head 8eafe362"
+}

@@ -175,10 +175,17 @@
   ],
   "implementation_tree": "26245e6e875b2c1bf52becc7673ebfdb407e3173",
   "full_repository_verification": {
-    "session": 68754,
-    "status": "running",
-    "source_commit": "92db21a1587b13f8758f56d805ccd06e6f37f41e",
-    "log": "/tmp/starmap-permanent-ingestion-full-verification.log"
+    "previous_session": 68754,
+    "previous_exit_code": 1,
+    "previous_log": "shared-cache-verification.log.gz",
+    "cause": "Shared cache export files disappeared during the race stage. Ordinary package tests and 73 verifier tests passed. The complete command did not pass.",
+    "session": 41151,
+    "status": "interrupted; handle missing and process absent; no complete result",
+    "source_commit": "3da0e489bcdfba21f6ecfbbd6518d662b04f2ad0",
+    "source_tree": "2293e68dbdf42d0386f08a0c2c58dbe5f21fa56c",
+    "log": "/tmp/starmap-permanent-ingestion-private-cache-verification.log",
+    "cache": "/tmp/starmap-source-diagnostics-go-cache-2026-09-09",
+    "successor": "../source-diagnostics-2026-09-09/verification.json"
   },
   "independent_docs": {
     "status": "passed",
@@ -223,5 +230,7 @@
       "Complete distinct source-state reporting for supported, enabled, eligible, attempted, and accepted inputs. Current runtime status exposes aggregate acquisition health, provider attempts, and accepted non-provider receipts. It does not expose that complete non-provider state inventory."
     ],
     "registration": "A20.dependency_disabled_partial remains unregistered; component checks do not establish the complete application contract."
-  }
+  },
+  "current_branch_head": "3da0e489bcdfba21f6ecfbbd6518d662b04f2ad0",
+  "integration": "Resolved the adjacent workflow conflict by preserving the mandatory Git fixture flag and adopting the reviewed 120-minute job limit. The only file change from 92db21a1 is that one limit."
 }

@@ -1,0 +1,151 @@
+{
+  "status": "committed; focused and affected-package checks pass; full combined qualification and review pending",
+  "branch": "codex/catalog-source-diagnostics",
+  "worktree": "/tmp/starmap-source-diagnostics-2026-09-09",
+  "base_commit": "92db21a1587b13f8758f56d805ccd06e6f37f41e",
+  "dirty_inventory": [],
+  "contract": "ENGINEERING_SPEC.md section 6.3 and A20.dependency_disabled_partial",
+  "fail_before": {
+    "test": "TestAuditHTTPMissingGitDependencyNamesSource",
+    "exit_code": 1,
+    "test_events_failed": 1,
+    "observed": "HTTP operation reported succeeded after Git dependencies were skipped. Only the embedded source produced an observation.",
+    "log": "fail-before.jsonl.gz"
+  },
+  "method_corrections": [
+    "Initial overlay used /tmp instead of canonical /private/tmp and ran no tests. It earns no credit.",
+    "The next overlay used the large default workspace and exceeded its operation wait. A small isolated file baseline produced the final reproducible failure."
+  ],
+  "repair": [
+    "Reject missing dependencies when no acquisition input remains available. Distribution baselines do not satisfy acquisition.",
+    "Preserve existing behavior when another acquisition source remains available. Complete partial-source status reporting remains open.",
+    "Carry source identity in typed dependency errors. HTTP returns only recognized source and tool names with fixed recovery advice.",
+    "Classify dependency failures with a dedicated bounded reason code. Preserve credential and provider error sanitization."
+  ],
+  "early_results": [
+    "First HTTP repair passes with unchanged accepted generation.",
+    "First broader repair exposed missing source identity in CLI ConfigError text. The current repair includes the source in that text.",
+    "Five affected packages pass race tests before the final CLI and strict-source refinements.",
+    "Ago and lint pass before the final refinements."
+  ],
+  "running": {
+    "full_combined_verification": {
+      "session": 35093,
+      "head": "605084e76890be968b953811e295006a72c94f34",
+      "log": "/tmp/starmap-source-diagnostics-full-verification.log"
+    }
+  },
+  "remaining": [
+    "Full combined repository verification, pre-PR panel review, native qualification, publication and merge.",
+    "Complete per-source state inventory, partial availability reports, revoked-source application restart tests, and A08."
+  ],
+  "task_completion_credit": false,
+  "artifacts": [
+    {
+      "path": "missing_dependencies_test.go.gz",
+      "sha256": "c1230ddc067694dd42f3a2d675898663b5b9b16b0dd3e0ab169ede32823ef3ad"
+    },
+    {
+      "path": "overlay.json.gz",
+      "sha256": "9ed171ed4924ee4c12a6f8936a7e5acd06f57e76baa49228f813cc4e40ca947d"
+    },
+    {
+      "path": "initial-no-match.jsonl.gz",
+      "sha256": "8630b86d561d648085930b2a528e64fe40927693db5894e5a87a1fc29e4acc6a"
+    },
+    {
+      "path": "initial-large-baseline-timeout.jsonl.gz",
+      "sha256": "56107b5a2d916a081a9c5e4f24c6558dbb986a2131812ceabfc90c76149afe33"
+    },
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "9a3fa68d3e4de4e70a8a6749715c7351993156fefd9e28966a061ac3bc136a77"
+    },
+    {
+      "path": "first-repair.jsonl.gz",
+      "sha256": "6a7d6ec05d28e8a79073c93461adf69edf54810db326bfc9a0f140cdfd52ddfd"
+    },
+    {
+      "path": "repair-focused-race.jsonl.gz",
+      "sha256": "09723fe60c67d44028c80da69f35b424df18371d2e9ee5063b3f652ebe5e07cb"
+    },
+    {
+      "path": "final-affected-packages-race.log.gz",
+      "sha256": "81527661b940c878949b675588920f170db3495e3b7f8b4a52c1c69e0bd3e2d0"
+    },
+    {
+      "path": "final-isolated-cache-race.log.gz",
+      "sha256": "4d18f9416379eb9bfb30c2f2facfb7a715f0de685415f234118b552c22c3b098"
+    },
+    {
+      "path": "final-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "final-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "final-prose.log.gz",
+      "sha256": "5af3f83fa12054d2d378e478126215b7c662253c579bb581e41109656d7eb4fe"
+    },
+    {
+      "path": "openapi-generation.log.gz",
+      "sha256": "81e53e6af6a4b3e74c40f30c07770f6a221fca4af2c1101ce85d1da6df456b2b"
+    },
+    {
+      "path": "openapi-regeneration.log.gz",
+      "sha256": "c3254e0bfcf1691431602ff192438ce0425f396597fa0acbed6886449f5b7622"
+    },
+    {
+      "path": "regenerated-docs-check.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    }
+  ],
+  "final_focused_results": {
+    "repair-final-focused-race.jsonl": {
+      "tests": {
+        "pass": 16
+      },
+      "packages": {
+        "pass": 3
+      },
+      "sha256": "22acab8caad07de952fd73b42b11dcdec24d13b7ac77569e9508ed4a8bf49035"
+    },
+    "repair-final-minimum.jsonl": {
+      "tests": {
+        "pass": 16
+      },
+      "packages": {
+        "pass": 3
+      },
+      "sha256": "018701aff4139f7919f933cf31da0d279521e5d7630d8d01aad95c55f04f3544"
+    }
+  },
+  "final_checks": {
+    "ago": "pass; no findings, stale ignores, or errors",
+    "lint": "pass; zero findings",
+    "docs": "generated API descriptions match source; independent docs-check passes with GOFLAGS unset",
+    "prose": "pass; 1265 files"
+  },
+  "cache_repair": "Some shared cache files disappeared during the run. The shared cache later measured 237 MiB, down from tens of GiB. Task-owned cache isolation allowed all five remaining package checks to pass. The initiating actor is unknown.",
+  "implementation_commit": "293c89f79f95cf9e183433be31632c47c000336d",
+  "head": "605084e76890be968b953811e295006a72c94f34",
+  "tree": "0fc4f49d0562864ecc6eca2717021f369c947dd9",
+  "final_affected_race": {
+    "acquisition": "passed in 548.174 seconds; later compilation in the same command failed because shared cache files disappeared",
+    "remaining_packages": "all five passed with a private cache",
+    "private_cache": "/tmp/starmap-source-diagnostics-go-cache-2026-09-09",
+    "session": 39518,
+    "exit_code": 0
+  },
+  "delivery": "Use this combined branch for the next PR after PR #141 merges. It includes the permanent Git matrix, source dependency repair, and 120-minute verification limit.",
+  "interruption_recovery": {
+    "prior_handles": [
+      41151,
+      49852
+    ],
+    "status": "handles missing; process inventory confirms prior commands stopped",
+    "previous_turn": "evidence established execution restriction and missing handles; access now restored"
+  }
+}
