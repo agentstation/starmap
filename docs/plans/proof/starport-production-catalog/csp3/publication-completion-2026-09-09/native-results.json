@@ -1,7 +1,7 @@
 {
   "run": 34414251026,
   "head": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
-  "status": "Partial native results. Remaining jobs are running.",
+  "status": "All six native platform jobs passed. The full verification gate remains active.",
   "platforms": {
     "ubuntu-24.04": {
       "conclusion": "success",
@@ -82,6 +82,46 @@
           "skip": 0
         }
       }
+    },
+    "windows-2025": {
+      "conclusion": "success",
+      "checks": {
+        "publisher-ingestion.jsonl": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "git-acquisition.jsonl": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests.jsonl": {
+          "pass": 1490,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    },
+    "macos-15-intel": {
+      "conclusion": "success",
+      "checks": {
+        "publisher-ingestion.jsonl": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "git-acquisition.jsonl": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests.jsonl": {
+          "pass": 1545,
+          "fail": 0,
+          "skip": 0
+        }
+      }
     }
   },
   "artifacts": [
@@ -156,6 +196,38 @@
     {
       "path": "windows-11-arm-tests.jsonl.gz",
       "sha256": "d8a7e312dcaf40bb392bae18a2c143c09abe7585be77a298a07a0c4e118d578c"
+    },
+    {
+      "path": "windows-2025-toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd"
+    },
+    {
+      "path": "windows-2025-publisher-ingestion.jsonl.gz",
+      "sha256": "531810ccde9185451eb1d1c116beff8fc10db39b832ab4215f71f05611aabddb"
+    },
+    {
+      "path": "windows-2025-git-acquisition.jsonl.gz",
+      "sha256": "36a889e949bee3872ec4643c15e5f938e5cd3046589b83c13edde26fd0650d9b"
+    },
+    {
+      "path": "windows-2025-tests.jsonl.gz",
+      "sha256": "61a876f1055af4975cf995199cb4bdf67d0fb1a345b5dc9efeff2af5f22fccf0"
+    },
+    {
+      "path": "macos-15-intel-toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e"
+    },
+    {
+      "path": "macos-15-intel-publisher-ingestion.jsonl.gz",
+      "sha256": "ad95e6b6ee373b4f0ea48754ac061c3b792786036720312aa2beee8639bf5ef4"
+    },
+    {
+      "path": "macos-15-intel-git-acquisition.jsonl.gz",
+      "sha256": "93dd4fbb01d50b148e41d8e30bee96102bfd4f50d6bebcdcf644e6a65803b5fc"
+    },
+    {
+      "path": "macos-15-intel-tests.jsonl.gz",
+      "sha256": "f1a988efff4ea9d329cac27a63393dfb8abb94d4fdcd2f78b94acdc0f030f04d"
     }
   ],
   "linux_skip": "TestServiceConfigurationAdministratorOwnedRead skips under the ordinary user. The separate administrator-owned configuration step passes and retains service-owner.txt."
