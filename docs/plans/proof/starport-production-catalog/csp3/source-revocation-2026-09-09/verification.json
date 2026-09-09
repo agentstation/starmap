@@ -1,0 +1,92 @@
+{
+  "status": "committed; race, minimum Go, mutation, Ago, lint, prose pass",
+  "worktree": "/tmp/starmap-source-revocation-2026-09-09",
+  "branch": "codex/catalog-source-revocation",
+  "base": "605084e76890be968b953811e295006a72c94f34",
+  "dirty_files": [],
+  "contract": "ENGINEERING_SPEC.md section 6.3; A20.dependency_disabled_partial",
+  "race": {
+    "exit_code": 0,
+    "test_events_passed": 3,
+    "packages_passed": 1,
+    "cases": [
+      "models_dev_http",
+      "models_dev_git"
+    ]
+  },
+  "mutation": {
+    "exit_code": 1,
+    "change": "Overlay only: acquisitionSourcePolicy.permits always returns true. Production worktree remains unchanged.",
+    "expected_failure": "disabled source field survived application restart",
+    "test_events_failed": 2,
+    "packages_failed": 1
+  },
+  "lint": {
+    "status": "passed with GOTOOLCHAIN=go1.26.6",
+    "findings": 0,
+    "initial_failure": "Unpinned linter used newer ambient Go standard library and panicked. Pinned retry passed."
+  },
+  "ago": {
+    "status": "passed",
+    "findings": 0,
+    "stale_ignores": 0,
+    "errors": 0
+  },
+  "running": {},
+  "remaining": [
+    "Integration after frozen combined verification, required review, native CI and merge.",
+    "Complete distinct supported, enabled, eligible, attempted, accepted source reporting.",
+    "Full A20 and CSP3 acceptance remain incomplete."
+  ],
+  "artifacts": [
+    {
+      "path": "starmap-source-revocation-race.jsonl.gz",
+      "sha256": "4921279eb47a65765e7333a1d20ecfa6004abd1bc315a4a40b9e803461d90a2b"
+    },
+    {
+      "path": "starmap-source-revocation-mutation.jsonl.gz",
+      "sha256": "4fdd70dda0a11cca9e2ab4d0a5ccdfac710fb643ee9de0e0a602ebd063497007"
+    },
+    {
+      "path": "starmap-source-revocation-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "starmap-source-revocation-lint.log.gz",
+      "sha256": "1298a9f51676160915ddec487364e343e666739adaefbb20de4384abfbf3c1f4"
+    },
+    {
+      "path": "starmap-source-revocation-lint-pinned.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "policy_without_revocation.go.gz",
+      "sha256": "c2f550cdb53acb985ca03a7a37c7f12c83b5df6d2a0a429f9c8a781db9386221"
+    },
+    {
+      "path": "overlay.json.gz",
+      "sha256": "20c9a488e2622160377ef37959763e0b5b415e206c4079d28c548a9447fc2039"
+    },
+    {
+      "path": "starmap-source-revocation-minimum.jsonl.gz",
+      "sha256": "bd7ba3ac0643763792ddef5cb79c6990ddaf1d3b40ab786789a2113130432ae9"
+    },
+    {
+      "path": "starmap-source-revocation-prose.log.gz",
+      "sha256": "28b83e4675e604ace84584cb995a77d09d67a00b26e30b1ab5d3434c469306d2"
+    }
+  ],
+  "task_completion_credit": false,
+  "head": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
+  "minimum_go": {
+    "version": "1.25.12",
+    "exit_code": 0,
+    "test_events_passed": 3,
+    "packages_passed": 1
+  },
+  "prose": {
+    "exit_code": 0,
+    "files": 1266,
+    "diagnostics": 0
+  }
+}
