@@ -1,5 +1,5 @@
 {
-  "status": "Membership wire contract implemented locally. Reconciliation suppression remains open.",
+  "status": "Membership wire contract committed locally; enforcement regressions pass. Broad verification remains in progress.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base": "6e4f9efbeab65e2652314f8293518dda9783778e",
@@ -108,6 +108,18 @@
     {
       "path": "history-docs-initial.gz",
       "sha256": "0f89f486995bc04e5c8f33299965e08deefa4fa1d48eaf8d367dcb90462420e3"
+    },
+    {
+      "path": "history-integration-final.gz",
+      "sha256": "600a9c903b4e6a181fb00805bc6b769e93b2703fc4472c823d2eb41fccae3642"
+    },
+    {
+      "path": "history-lint-final.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "membership-health.gz",
+      "sha256": "9062fdf344af8341ae4dd186528fd2b0799eceefee3bc618cb1258dbbe919d87"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -304,13 +316,29 @@
       "docs_prose_initial": {
         "exit_code": 0,
         "prose_files": 1320
+      },
+      "integration_final": {
+        "passing_test_events": 68,
+        "failing_test_events": 0,
+        "skipped_test_events": 0,
+        "packages_passed": 3,
+        "evidence": "Terminal package PASS events; old process handle no longer available."
+      },
+      "lint_final": {
+        "issues": 0,
+        "evidence": "Completed linter output; old process handle no longer available."
+      },
+      "provider_health": {
+        "exit_code": 0,
+        "passing_test_events": 3
       }
     },
     "sessions": {
-      "integration_final": 37225,
-      "lint_final": 33880
+      "full_race": 25031,
+      "minimum_go": 76288,
+      "reset_recovery": 61011
     },
-    "caveat": "Provider-health selection and runtime helper extraction require final checks. The enforcement changes remain uncommitted.",
+    "caveat": "The full race run began before the two added tests. The focused health check passes. Separate reset recovery and minimum-Go checks are running. All enforcement edits remain local and uncommitted.",
     "remaining": [
       "Add integration coverage for unrelated scope preservation and health selection.",
       "Complete broad runtime and reconciliation checks.",
