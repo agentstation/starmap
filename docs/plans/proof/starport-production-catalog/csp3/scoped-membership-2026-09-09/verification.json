@@ -68,5 +68,27 @@
     "question": "Should source membership replacement authority be explicit and separate from reply completeness?",
     "recommendation": "Explicit membership authority; provider-wide removal requires provider-wide authority.",
     "constraint": "No broad public-inventory replacement is implemented while the coverage contract remains undefined."
+  },
+  "authority_design_constraints": {
+    "head": "6e4f9efbeab65e2652314f8293518dda9783778e",
+    "sources": [
+      "pkg/sources/provider_binding.go:ProviderAcquisitionBinding.UnmarshalJSON",
+      "pkg/sources/provider_binding.go:ProviderAcquisitionBinding.Validate",
+      "pkg/sources/provider_binding.go:ProviderAcquisitionBinding.identityFields",
+      "pkg/sources/observation_identity.go:observationIdentityFields"
+    ],
+    "observations": [
+      "Binding decoding rejects unknown fields and unsupported schema versions.",
+      "Receipt identity uses eleven explicit fields rather than the complete serialized binding.",
+      "The existing scope declaration does not prove upstream completeness."
+    ],
+    "required_contract": [
+      "Bind any membership authority declaration to immutable receipt identity and deployment policy.",
+      "Preserve validation of existing retained receipts during migration.",
+      "Reject unsupported authority formats instead of silently ignoring them.",
+      "Keep account, region, and API restrictions separate from provider-wide catalog removal."
+    ],
+    "status": "Read-only design constraints; no schema or deletion implementation change.",
+    "prose_log": "/tmp/starmap-scoped-authority-identity-plan-prose-2026-09-09.log"
   }
 }
