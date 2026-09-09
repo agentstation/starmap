@@ -38,6 +38,10 @@
     "affected": {
       "session": 77968,
       "log": "/tmp/starmap-partial-dependency-affected.log"
+    },
+    "plan_prose": {
+      "session": 75592,
+      "log": "/tmp/starmap-partial-dependency-plan-final-prose.log"
     }
   },
   "remaining": [
@@ -81,5 +85,6 @@
     "exit_code": 0,
     "files": 1267,
     "diagnostics": 0
-  }
+  },
+  "plan_prose": "Final plan file passes targeted strict lint. Full repository check runs after replacing the obsolete uncommitted-state sentence."
 }
