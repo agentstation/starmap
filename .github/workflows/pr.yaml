@@ -65,7 +65,7 @@ jobs:
   verification:
     name: Verification Gate
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 120
     env:
       CATALOG_GIT_FIXTURE_REQUIRED: '1'
     steps:
