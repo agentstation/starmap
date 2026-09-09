@@ -1,0 +1,44 @@
+{
+  "status": "A20 component verification running; no completion credit",
+  "worktree": "/tmp/starmap-source-acceptance-2026-09-09",
+  "branch": "codex/catalog-source-acceptance",
+  "base": "c1af596ddd58b60699426580ca370824b565fc3e",
+  "change": "Register fourteen existing behavior tests for A20.dependency_disabled_partial.",
+  "registry_sha256": "46d8a13518f97d176a0bd20bf2b80a6e4037c918cc9fb236d594711df5a6a15e",
+  "session": 93801,
+  "log": "/tmp/starmap-source-acceptance-a20-2026-09-09.json",
+  "command": "CATALOG_GIT_FIXTURE_REQUIRED=1 GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 bash scripts/verify-catalog-product.sh --case A20 --starport-root /tmp/starport-readme-merged-2026-09-08 --json",
+  "coverage": {
+    "actual_cli_http": [
+      "missing Git dependency preserves accepted generation",
+      "provider and metadata updates retain partial receipts",
+      "failed fresh refresh preserves accepted generation"
+    ],
+    "actual_connected_scheduled": [
+      "disabled metadata never runs",
+      "partial provider evidence survives restart"
+    ],
+    "public_acquisition": [
+      "canceled preflight retains selection without attempts",
+      "failed publication retains activity and accepted generation"
+    ],
+    "runtime": [
+      "invalid receipts and canceled results cannot replace accepted state",
+      "partial source receipt binds the accepted manifest"
+    ]
+  },
+  "constraints": [
+    "Full released-pair acceptance remains incomplete.",
+    "Merge PR #142 before publishing this dependent change.",
+    "Do not count registered tests as passing before the verifier finishes."
+  ],
+  "verifier_tests": {
+    "exit_code": 0,
+    "tests": 73,
+    "log": "/tmp/starmap-source-acceptance-verifier-tests-2026-09-09.log"
+  },
+  "plan_prose": {
+    "exit_code": 0,
+    "log": "/tmp/starmap-source-acceptance-plan-prose-2026-09-09.log"
+  }
+}
