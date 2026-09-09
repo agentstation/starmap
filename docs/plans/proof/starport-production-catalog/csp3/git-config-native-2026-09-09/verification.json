@@ -1,0 +1,105 @@
+{
+  "status": "Minimum Go passes 16 events across four packages. Race session 63584 remains active. Lint, ago, docs, and prose pass.",
+  "pr": 142,
+  "run": 34403415712,
+  "job": 102640539963,
+  "failed_head": "6e4f9efbeab65e2652314f8293518dda9783778e",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "branch": "codex/catalog-source-activity",
+  "race_session": 63584,
+  "race_log": "/tmp/starmap-pr142-git-config-race-2026-09-09.jsonl",
+  "failed_tests": [
+    "TestGitCLIRefreshIngestsProviderAndNonProviderEvidence",
+    "TestGitHTTPRefreshIngestsProviderAndNonProviderEvidence",
+    "TestGitConnectedRefreshIngestsProviderAndNonProviderEvidence",
+    "TestGitScheduledRefreshIngestsProviderAndNonProviderEvidence",
+    "TestGitConfiguredSourceSelectionSkipsMetadataInApplication/false",
+    "TestGitConfiguredSourceSelectionSkipsMetadataInApplication/true",
+    "TestGitConfiguredSourceSelectionSkipsMetadataInApplication",
+    "TestGitPeriodicRefreshIngestsProviderAndNonProviderEvidence",
+    "TestApplicationRestartRevokesMetadataSource/models_dev_git",
+    "TestApplicationRestartRevokesMetadataSource"
+  ],
+  "cause": "Git rejects GIT_CONFIG_GLOBAL=NUL on the native Windows ARM runner before fixture setup completes.",
+  "repair": "Write an empty regular gitconfig file inside the fixture-owned temporary home. Retain isolated configuration and native tool assertions.",
+  "remaining": [
+    "Finish all affected Git composition tests on race and minimum toolchains.",
+    "Run required lint, ago, prose, and review before the PR update.",
+    "Push reviewed fix and collect fresh native CI. Merge only after required checks pass."
+  ],
+  "completion_credit": false,
+  "artifacts": [
+    {
+      "path": "native-tests.gz",
+      "sha256": "98587d96ae80b0addd8a2e0ef4e2c79c1907346d3127d43e267c8fef663bef7e"
+    },
+    {
+      "path": "native-job.gz",
+      "sha256": "c0e7d07929bbcfcaee9207d64ac82cf683b2d853f4ddeeb669dc817fef0dfc87"
+    },
+    {
+      "path": "toolchain.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb"
+    },
+    {
+      "path": "fail-before.gz",
+      "sha256": "23d2fbd0c89c20285d2a99fdc4c64e055457374b330a573a956014c9c8322dc6"
+    },
+    {
+      "path": "ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.gz",
+      "sha256": "199610e11b39d340c5da897591e5c7b1b55355fda82b154b5f15c628ec270b09"
+    },
+    {
+      "path": "docs-prose.gz",
+      "sha256": "d813037c9adc477c78baaa1b7515b7278bf40f67638b120efe0a0304e524e118"
+    },
+    {
+      "path": "minimum.gz",
+      "sha256": "c0b808b1a72d6646e6514109cb8b9a764f70419235e58bf87693a025369f286a"
+    },
+    {
+      "path": "plan-prose-failure.gz",
+      "sha256": "2f4dba4c4d80e8a5640d286b10a9b02e81067c25474c86fd08680f889ca94c9f"
+    },
+    {
+      "path": "plan-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    }
+  ],
+  "minimum_session": 7341,
+  "minimum_log": "/tmp/starmap-pr142-git-config-minimum-2026-09-09.jsonl",
+  "files": {
+    "internal/test/gitfixture/fixture.go": "288e1790dc1e070d348deca8d72b522bdd50f5bad015948d8da7c98b6c77f7c9",
+    "internal/test/gitfixture/fixture_test.go": "daf03d489549f8380c42b13af7fdf9f2f8a4ec44c7f43609f499e723f09c9a48"
+  },
+  "local_checks": {
+    "ago": {
+      "exit_code": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "version": "2.12.2",
+      "findings": 0
+    },
+    "docs_prose": {
+      "exit_code": 0,
+      "files": 1316,
+      "diagnostics": 0
+    },
+    "minimum": {
+      "exit_code": 0,
+      "passing_events": 16,
+      "packages": 4,
+      "failed_events": 0
+    },
+    "plan_prose": {
+      "exit_code": 0,
+      "files": 1272,
+      "diagnostics": 0
+    }
+  }
+}

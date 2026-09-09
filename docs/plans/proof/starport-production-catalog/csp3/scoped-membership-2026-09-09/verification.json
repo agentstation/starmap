@@ -62,5 +62,11 @@
       "Scope-aware deletion must preserve unrelated positive scope evidence, account-profile links, and canonical definitions. Do not implement deletion as unconditional provider model replacement."
     ],
     "next": "Define the exact membership coverage contract, then implement suppression at its owning reconciliation seam and prove replay after partial updates and restart."
+  },
+  "owner_question": {
+    "status": "pending preference",
+    "question": "Should source membership replacement authority be explicit and separate from reply completeness?",
+    "recommendation": "Explicit membership authority; provider-wide removal requires provider-wide authority.",
+    "constraint": "No broad public-inventory replacement is implemented while the coverage contract remains undefined."
   }
 }
