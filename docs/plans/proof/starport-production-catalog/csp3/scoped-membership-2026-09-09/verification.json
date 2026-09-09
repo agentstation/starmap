@@ -180,6 +180,18 @@
     {
       "path": "lint-account.gz",
       "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "baseline-refresh.gz",
+      "sha256": "a6f147e12becdd974808030c482f35056c8d9facc0ece7d5daab3ae0d69271ae"
+    },
+    {
+      "path": "runtime-minimum-latest.gz",
+      "sha256": "d5cc32f216351e5abbf62f3316f8c31a67d2fb97f101727d720b5bf8e29f64b8"
+    },
+    {
+      "path": "lint-baseline.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -448,6 +460,20 @@
         "exit_code": 0
       },
       "lint_account": {
+        "exit_code": 0
+      },
+      "baseline_refresh": {
+        "exit_code": 0,
+        "passing_test_events": 1,
+        "scope": "New baseline generation cannot restore accepted membership removal. Existing partial, restart and binding reset assertions remain."
+      },
+      "runtime_minimum_latest": {
+        "exit_code": 0,
+        "test_events": {
+          "pass": 2
+        }
+      },
+      "lint_baseline": {
         "exit_code": 0
       }
     },
