@@ -129,18 +129,15 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		if err != nil {
 			return starmap.CatalogState{}, err
 		}
-	} else {
-		var err error
-		builder, err = catalogs.NewBuilderFrom(base)
-		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource("copy", "effective catalog baseline", state.GenerationID, err)
-		}
 	}
 
-	catalog, err := builder.Build()
-	if err != nil {
-		return starmap.CatalogState{}, errors.WrapResource(
-			"publish", "effective catalog", state.GenerationID, err)
+	catalog := base
+	if builder != nil {
+		catalog, err = builder.Build()
+		if err != nil {
+			return starmap.CatalogState{}, errors.WrapResource(
+				"publish", "effective catalog", state.GenerationID, err)
+		}
 	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
