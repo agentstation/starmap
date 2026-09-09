@@ -1,0 +1,24 @@
+{
+  "record_repair_commit": "6c691dddcf2fa212af2cf4207ca31d7b42e380fc",
+  "integration_head": "aac130d55571fa7dfec460c00c6b050fbcec132c",
+  "integration_worktree": "/tmp/starmap-presence-integration-2026-09-09",
+  "integration_branch": "codex/catalog-presence-integration",
+  "integrated_token_commits": [
+    "73dbc439",
+    "86f17932",
+    "aac130d5"
+  ],
+  "conflict_resolution": "Compare private state in both ProviderOffering and ModelTokenCost. No state is ignored.",
+  "root_modules_match_main": "7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e",
+  "remaining_module_repair": [
+    "testdata/consumers/server-storage/go.mod",
+    "testdata/consumers/server-storage/go.sum"
+  ],
+  "verification": {
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify.sh",
+    "session_id": 56148,
+    "output": "/tmp/starmap-presence-integrated-verify-2026-09-09.txt",
+    "status": "running"
+  },
+  "completion_credit": false
+}
