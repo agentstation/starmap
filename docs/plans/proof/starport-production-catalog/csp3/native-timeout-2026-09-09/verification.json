@@ -1,0 +1,105 @@
+{
+  "task": "CSP3",
+  "completion_credit": false,
+  "merged_prs": 16,
+  "completed_tasks": 8,
+  "failed_run": {
+    "id": 34310875375,
+    "head": "606b48dd1960deb87d20109cea82fc2a6580dd9a",
+    "conclusion": "cancelled by the repaired-head push after native Windows AMD64 failed",
+    "native_windows_amd64": {
+      "test_pass_events": 1378,
+      "package_passes": 12,
+      "package_failures": 1,
+      "failed_package": "github.com/agentstation/starmap/runtime",
+      "package_elapsed_seconds": 600.125,
+      "cause": "The complete package reached its ten-minute timeout with migration tests still advancing.",
+      "assertion_failures_reported": 0
+    },
+    "native_windows_arm64": {
+      "test_pass_events": 1402,
+      "runtime_elapsed_seconds": 456.398,
+      "status": "PASS"
+    },
+    "other_native_platforms": "All five native peers passed.",
+    "full_verification": "Minimum Go suite and consumer passed. The repository verification step was still running when the new push cancelled it."
+  },
+  "repair": {
+    "head": "93c73439148544ddc4874ffbba818b4ef74166d2",
+    "path": ".github/workflows/pr.yaml",
+    "package_timeout_before": "10m",
+    "package_timeout_after": "20m",
+    "job_minutes_before": 20,
+    "job_minutes_after": 30,
+    "contract": "scripts/verify.sh and the CSP3 task already use a twenty-minute complete-suite timeout. All native packages, assertions, expected platforms, and artifact capture remain.",
+    "writing_files": 1239,
+    "writing_diagnostics": 0,
+    "workflow_validation": "Actionlint reports only pre-existing SC2024 on both the original and updated workflow. The test process runs as root, and the caller owns its redirected evidence file.",
+    "sol_gate_exit": 0,
+    "opus_gate_exit": 0,
+    "review_evidence": "Both gates reused clean attestations because the substantive diff and review contract are unchanged."
+  },
+  "followup": {
+    "pr": 139,
+    "head": "5c40192a620b43341f06a3ad49f4e2a743c741ba",
+    "base": "93c73439148544ddc4874ffbba818b4ef74166d2",
+    "merge_preserves_history": true,
+    "reviewed_and_current_pr_diff_sha256": "d645b83fd73e702afaffd7514a6988699b7a66e8364bab3e0c695e0eddcbf905",
+    "diff_byte_identical": true,
+    "sol_gate_exit": 0,
+    "opus_gate_exit": 0
+  },
+  "active_run": {
+    "id": 34312137809,
+    "head": "93c73439148544ddc4874ffbba818b4ef74166d2",
+    "watch_session": 53257,
+    "status": "in_progress"
+  },
+  "artifacts": [
+    {
+      "path": "windows-amd64-tests.jsonl.gz",
+      "raw_sha256": "7e47023c3c8a5b6fb74b7f09ff41d753eefbcca1ec6cd66d85defa454688d6f6"
+    },
+    {
+      "path": "windows-arm64-tests.jsonl.gz",
+      "raw_sha256": "6bd3d0b2cdd162cd709da9c995fabedd0152e1a84cd10c1e52447def0098aa83"
+    },
+    {
+      "path": "windows-amd64-job.log.gz",
+      "raw_sha256": "0b6971b71d5f6421c6575698a8a53f3e7b1ddaf9c36a38d0b330830f0ebcfd99"
+    },
+    {
+      "path": "workflow-validation.json.gz",
+      "raw_sha256": "f964a7fbf2e1f911a30fbb5e4882837de9af0f3d909b77c9936440759a950629"
+    },
+    {
+      "path": "writing.txt.gz",
+      "raw_sha256": "7303b61512ae9436376cb3cf4580973c4a83b70e799804103a390662c049a3ae"
+    },
+    {
+      "path": "pr138-sol-review.txt.gz",
+      "raw_sha256": "94f6638a317c3d51ce27b6cdd78f9ed606d0ee5ae61809477b83e877a5d30bfb"
+    },
+    {
+      "path": "pr138-opus-review.txt.gz",
+      "raw_sha256": "367e1e8d7d9dc383ce8483f3b6e0b4731337e4dbaeaee9fb26ec9ff4b3dd25af"
+    },
+    {
+      "path": "pr139-sol-review.txt.gz",
+      "raw_sha256": "73fc32d27c095ae779178d9f15bf0f0f999d7fd6383cb851e69007e48b4bffec"
+    },
+    {
+      "path": "pr139-opus-review.txt.gz",
+      "raw_sha256": "bdcfee21c8c78a312c5b36d19b9d3f048e2ea6ef3540f3eb76236ff3da8b6789"
+    },
+    {
+      "path": "updated-pr138-body.md.gz",
+      "raw_sha256": "ad9c21565be0880d6c6200720976c1f1d84d2851e2306e932929a50df5676eec"
+    }
+  ],
+  "plan_prose_check": {
+    "files": 1257,
+    "diagnostics": 0,
+    "exit_code": 0
+  }
+}
