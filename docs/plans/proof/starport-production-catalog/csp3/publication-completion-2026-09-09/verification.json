@@ -1,5 +1,5 @@
 {
-  "status": "Local checks passed. Commit 1b54481d awaits required review before push.",
+  "status": "Reviewed repair pushed to PR #142. Native qualification is pending.",
   "head": "cbb8e32291444051c5f14af3660e2ccff6516610",
   "native_run": 34412052597,
   "failed_job": 102668564750,
@@ -72,19 +72,29 @@
     {
       "path": "prior-windows-arm-publisher-ingestion.gz",
       "sha256": "3a976d26a02fc34bb670ed77d3f1f8a59af0e7488de04ff18b2cd95ce080f3ce"
+    },
+    {
+      "path": "review.gz",
+      "sha256": "a1a29992299789e6cabe44cb27629d10586542c5e360701d2cc796077505a5d3"
+    },
+    {
+      "path": "push-plan-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
     }
   ],
   "remaining": [
-    "Collect required review session 76259.",
-    "Push after review passes.",
-    "Repeat native qualification and merge only after required checks pass."
+    "Collect native run 34414251026.",
+    "Merge PR #142 only after required checks pass."
   ],
   "completion_credit": false,
   "commit": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
   "review": {
     "session": 76259,
-    "status": "running",
-    "log": "/tmp/starmap-publication-completion-review-2026-09-09.log"
+    "status": "pass",
+    "log": "/tmp/starmap-publication-completion-review-2026-09-09.log",
+    "exit_code": 0,
+    "findings": 0,
+    "chunks": 2
   },
   "checks": {
     "integration_race": {
@@ -108,6 +118,9 @@
     },
     "plan_prose": {
       "exit_code": 0
+    },
+    "push_plan_prose": {
+      "exit_code": 0
     }
   },
   "prior_native_windows_arm": {
@@ -121,5 +134,17 @@
     "failed_test_events": 0,
     "skipped_test_events": 0,
     "scope": "Qualifies the prior directory flush repair. Does not qualify the later completion-deadline fix."
+  },
+  "push": {
+    "exit_code": 0,
+    "branch": "codex/catalog-source-activity"
+  },
+  "latest_ci": {
+    "run": 34414251026,
+    "head": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
+    "status": "in_progress",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34414251026",
+    "watch_session": 26598,
+    "watch_log": "/tmp/starmap-pr142-1b544-native-watch-2026-09-09.log"
   }
 }
