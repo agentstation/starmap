@@ -1,5 +1,5 @@
 {
-  "status": "Local fixture repair and native diagnostic checks pass; required review session 64538 is active.",
+  "status": "Reviewed repair pushed to PR #142. Native CI run 34406770629 is active on c1af596d.",
   "pr": 142,
   "run": 34403415712,
   "job": 102640539963,
@@ -23,9 +23,9 @@
   "cause": "Git rejects GIT_CONFIG_GLOBAL=NUL on the native Windows ARM runner before fixture setup completes.",
   "repair": "Write an empty regular gitconfig file inside the fixture-owned temporary home. Retain isolated configuration and native tool assertions.",
   "remaining": [
-    "Collect review session 64538, verify findings, then push the PR update for native lockfile evidence.",
-    "Run required lint, ago, prose, and review before the PR update.",
-    "Push reviewed fix and collect fresh native CI. Merge only after required checks pass."
+    "Collect CI run 34406770629 on c1af596d, including frozen lockfile diagnostic output on both Windows architectures.",
+    "Resolve native failures, rerun required review for code fixes, and qualify the updated head.",
+    "Merge only after all required checks pass."
   ],
   "completion_credit": false,
   "artifacts": [
@@ -104,6 +104,10 @@
     {
       "path": "plan-diagnostic-review-prose.gz",
       "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    },
+    {
+      "path": "plan-diagnostic-push-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
     }
   ],
   "minimum_session": 7341,
@@ -163,7 +167,12 @@
     "session": 64538,
     "log": "/tmp/starmap-pr142-git-fixture-review-2026-09-09.log",
     "head": "c1af596ddd58b60699426580ca370824b565fc3e",
-    "result": "UNVERIFIED: running"
+    "result": "pass",
+    "exit_code": 0,
+    "findings": 0,
+    "chunks": 2,
+    "artifact": "review.gz",
+    "sha256": "b712e3601b200df3449c139a9c77e35bdc8ade4a6ceaa103d0dfa35c8fdbabc7"
   },
   "diagnostic_checks": {
     "race": {
@@ -197,5 +206,11 @@
       "Runtime windows-2025"
     ],
     "verification_gate": "running"
+  },
+  "latest_ci": {
+    "run": 34406770629,
+    "head": "c1af596ddd58b60699426580ca370824b565fc3e",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34406770629",
+    "status": "in_progress"
   }
 }
