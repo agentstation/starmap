@@ -90,6 +90,17 @@ def run_check(identity, entry, roots):
         states = [result["status"] for result in results]
         status = "FAIL" if "FAIL" in states else "UNVERIFIED" if "UNVERIFIED" in states else "PASS"
         return {"status": status, "checks": results}
+    if entry.get("kind") == "native_ci":
+        root = roots.get(entry.get("repository"))
+        if root is None:
+            return {"status": "UNVERIFIED", "reason": "The native evidence repository is unavailable."}
+        try:
+            spec = importlib.util.spec_from_file_location("catalog_native_ci", root / "scripts/native_catalog.py")
+            adapter = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(adapter)
+            return adapter.verify(root, entry)
+        except (OSError, ImportError) as error:
+            return {"status": "UNVERIFIED", "reason": str(error)}
     if entry.get("kind") == "vitest":
         return run_vitest(entry, roots)
     if entry.get("kind") == "reviewed_ui":

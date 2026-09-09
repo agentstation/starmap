@@ -520,6 +520,430 @@
     "A01.starmap_cold_offline": {
       "kind": "cold_server",
       "repository": "starmap"
+    },
+    "A03.required_empty_path_refusal": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestApplicationRefusesEmptyRequiredPathsBeforeWrites"
+    },
+    "A03.two_instances_same_user": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestSeparateApplicationInstancesRetainDistinctSeeds"
+    },
+    "A03.duplicate_owner_refusal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestSeparateApplicationInstancesRetainDistinctSeeds"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPersistentRuntimeRefusesConcurrentDirectoryOwner"
+        }
+      ]
+    },
+    "A03.service_container_roots": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/cli/app",
+      "test": "TestApplicationUsesExplicitDeploymentRootsWithoutHome"
+    },
+    "A03.root_leaf_precedence": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestProductHomeAndLeafOverridesUseOneAnchor"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestPrimaryFileCannotRelocateItsConfigurationRoot"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCommandPathFlagsAndDotenvKeepOrigins"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestFrozenConfigurationRootDoesNotResolveAgain"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/productpaths",
+          "test": "TestRootSpecificityPresenceAndProvenance"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/productpaths",
+          "test": "TestHigherRootValueReplacesInvalidLowerValue"
+        }
+      ]
+    },
+    "A03.starmap_file_manifest": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestFileManifestCoversColdStartupAndPublication"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestFileManifestCoversWorkspaceRecoveryArtifacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestFileManifestReportsAccessAndRetentionPolicies"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestConfigPathsReportsPoliciesAcrossFormats"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles"
+        }
+      ]
+    },
+    "A04.human_workspace_preserved": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/workspace",
+          "test": "TestRepairDoesNotOverwriteDirtyWorkspace"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/workspace",
+          "test": "TestMigrateLegacyLayoutFailureRollsBackExactStore"
+        }
+      ]
+    },
+    "A04.dual_root_conflict": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestImplicitNewRootsRefuseLegacyStateWithoutWriting"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestDefaultRuntimeRootRefusesUnprovenLegacyMigration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestDefaultRuntimeRootAcceptsCompletedLegacyMigration"
+        }
+      ]
+    },
+    "A04.identity_and_journal_recovery": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestStageDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestMigrationJournalRecoversEveryPartialEventBoundary"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestDirectoryMigrationCompletionRefusesChangedEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCompletedMigrationStartupRefusesReplacedTarget"
+        }
+      ]
+    },
+    "A03.starmap_linux": {
+      "kind": "native_ci",
+      "repository": "starmap",
+      "platform": "linux",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "test": "TestNativeUserRootsSeparateProductsAndDirectoryRoles"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestProductHomeAndLeafOverridesUseOneAnchor"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestRequiredBaselineWriteFailurePreventsRuntimeStartup"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestSeparateApplicationInstancesRetainDistinctSeeds"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestApplicationRefusesEmptyRequiredPathsBeforeWrites"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestApplicationUsesExplicitDeploymentRootsWithoutHome"
+        }
+      ]
+    },
+    "A04.starmap_linux_interruption": {
+      "kind": "native_ci",
+      "repository": "starmap",
+      "platform": "linux",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestStageDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestMigrationJournalRecoversAfterProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestJournalReplacementRecoversAfterProcessExit"
+        }
+      ]
+    },
+    "A03.starmap_macos": {
+      "kind": "native_ci",
+      "repository": "starmap",
+      "platform": "darwin",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "test": "TestNativeUserRootsSeparateProductsAndDirectoryRoles"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestProductHomeAndLeafOverridesUseOneAnchor"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestRequiredBaselineWriteFailurePreventsRuntimeStartup"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestSeparateApplicationInstancesRetainDistinctSeeds"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestApplicationRefusesEmptyRequiredPathsBeforeWrites"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestApplicationUsesExplicitDeploymentRootsWithoutHome"
+        }
+      ]
+    },
+    "A04.starmap_macos_interruption": {
+      "kind": "native_ci",
+      "repository": "starmap",
+      "platform": "darwin",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestStageDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestMigrationJournalRecoversAfterProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestJournalReplacementRecoversAfterProcessExit"
+        }
+      ]
+    },
+    "A03.starmap_windows": {
+      "kind": "native_ci",
+      "repository": "starmap",
+      "platform": "windows",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "test": "TestNativeUserRootsSeparateProductsAndDirectoryRoles"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestCatalogPathsFreshInstallAreCanonicalSeparatedAndPassive"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestProductHomeAndLeafOverridesUseOneAnchor"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestRequiredBaselineWriteFailurePreventsRuntimeStartup"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestSeparateApplicationInstancesRetainDistinctSeeds"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestApplicationRefusesEmptyRequiredPathsBeforeWrites"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestApplicationUsesExplicitDeploymentRootsWithoutHome"
+        }
+      ]
+    },
+    "A04.starmap_windows_interruption": {
+      "kind": "native_ci",
+      "repository": "starmap",
+      "platform": "windows",
+      "tests": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestStageDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestPublishDirectoryMigrationRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestDirectoryMigrationCompletionRecoversProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "test": "TestMigrationJournalRecoversAfterProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "test": "TestRuntimeRestartCompletesProjectionAfterMigrationMove"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestWorkspaceReplacementPreservesAccessPolicy"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestJournalReplacementRecoversAfterProcessExit"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "test": "TestWindowsJournalReplacementRecoversAfterEditorHandleCloses"
+        }
+      ]
     }
   }
 }
