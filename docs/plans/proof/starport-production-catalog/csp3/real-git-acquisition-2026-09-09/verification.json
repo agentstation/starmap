@@ -1,0 +1,42 @@
+{
+  "status": "diagnostic qualification passed; no task completion credit",
+  "source_head": "f3953bb490352072f36d6f70735c72e383a626be",
+  "fixture": {
+    "root": "/tmp/starmap-real-git-ingestion-2026-09-09",
+    "remote": "/tmp/starmap-real-git-ingestion-2026-09-09/remote",
+    "model": "gpt-image-2",
+    "commits": [
+      "f8da724a1775e4a586fd693de3ed7f0cbaa0e296",
+      "d46d308cdfa8a20841a0eea17a04ce681a0db531"
+    ],
+    "bun_version": "1.3.12",
+    "git_version": "git version 2.55.0"
+  },
+  "checks": [
+    {
+      "log": "race.jsonl.gz",
+      "sha256": "38e533dd743e41d94b7e84cd94e50e08ff31b2d2341f69976ce64fcb386e0998",
+      "passed_tests": 1,
+      "passed_packages": 1,
+      "failed_events": 0,
+      "exit_code": 0
+    },
+    {
+      "log": "minimum.jsonl.gz",
+      "sha256": "8d6256a9ab27bcff70779a491fc69a78a2556b809855f3ceb76a433e728678bb",
+      "passed_tests": 1,
+      "passed_packages": 1,
+      "failed_events": 0,
+      "exit_code": 0
+    }
+  ],
+  "scope": "The actual SourceAcquirer selects models_dev_git, clones a local fixture with real Git, installs a frozen dependency-free Bun workspace, builds metadata, and binds two changed observations to their exact Git revisions and lockfile checksum.",
+  "isolation": "Git URL rewrite points the compiled repository URL to the local fixture. GIT_ALLOW_PROTOCOL=file rejects remote protocols. The fixture has no external package dependencies. No production checkout changes.",
+  "limits": [
+    "Temporary Go overlay, not a committed regression.",
+    "This source collector check does not qualify the CLI, publisher, connected server, or Starport application matrix.",
+    "No negative test or fail-before defect claim.",
+    "Tested macOS ARM64 only."
+  ],
+  "next_action": "Use the verified fixture for permanent application ingestion coverage without changing the current PR or its checks."
+}
