@@ -1,0 +1,170 @@
+{
+  "status": "in_progress",
+  "contract": "CSP3/A20 passive source configuration; complete composition qualification remains required",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "base": "5808d57e",
+  "behavior": [
+    "SourceDescriber declares metadata capability and default selection without external reads.",
+    "Runtime construction validates and copies one declaration snapshot; status reads do not invoke the collector.",
+    "Opaque metadata collectors expose support_unknown and selection_unknown. Explicit runtime source selection resolves only selection uncertainty.",
+    "Source configuration, last-run activity, and accepted generation input remain separate status fields.",
+    "The built-in collector uses one passive declaration for runtime configuration and initial per-run activity."
+  ],
+  "remaining": [
+    "CLI and publisher report integration.",
+    "Preserve manual per-run activity when publication fails after successful preparation.",
+    "Full reporting-path and source-policy qualification, required review, CI, and merge."
+  ],
+  "checks": {
+    "fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 1,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "minimum": {
+      "test_pass_events": 20,
+      "test_fail_events": 0,
+      "package_pass_events": 3,
+      "skips": 0
+    },
+    "final-race": {
+      "test_pass_events": 20,
+      "test_fail_events": 0,
+      "package_pass_events": 3,
+      "skips": 0
+    },
+    "readiness_race": {
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_pass_events": 1
+    },
+    "initial_lint": {
+      "exit_code": 1,
+      "findings": 1,
+      "repair": "Preallocate the three-row declaration slice."
+    },
+    "initial_prose": {
+      "exit_code": 2,
+      "files": 1307,
+      "diagnostics": 2,
+      "repair": "Use direct verbs in two interface comments."
+    },
+    "final_ago": {
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    "final_lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "docs_check": {
+      "exit_code": 0
+    },
+    "second_prose": {
+      "exit_code": 2,
+      "files": 1307,
+      "diagnostics": 1,
+      "repair": "Changed the remaining indirect verb to read."
+    },
+    "final_allocation_race": {
+      "exit_code": 0,
+      "test_pass_events": 1,
+      "package_pass_events": 1
+    },
+    "corrected_docs_check": {
+      "exit_code": 0
+    },
+    "final_prose": {
+      "exit_code": 0,
+      "files": 1307,
+      "diagnostics": 0
+    },
+    "report_boundaries": {
+      "exit_code": 0,
+      "test_pass_events": 10,
+      "package_pass_events": 2,
+      "fail_events": 0,
+      "skip_events": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "e3154f86d9a45b908717fabd4cec720a77f612d4e9771605b737c8a5fe136419"
+    },
+    {
+      "path": "minimum.jsonl.gz",
+      "sha256": "94d0e5220eedc1429b88a0bf2ea24440579bcf30ee8c3e4b3e242c4a13e924ff"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "sha256": "a536c8091f7997e7ef633d4cb83a5314fb087bd9591647687e8abd3a4ebc542d"
+    },
+    {
+      "path": "readiness-race.jsonl.gz",
+      "sha256": "a2764a6f0381bc495944197730f164c89901615949ae1e75612a0940e67bb291"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "7b9083cb6ae44fd4aae292237941593f028625f6ac5aecdd5f01ee95025d0fa7"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "e901bb126c633b3e3c6e1592875be4409ac0fd3feccf745a63aa0e33b38cb23e"
+    },
+    {
+      "path": "ago-final.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint-final.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "generate.log.gz",
+      "sha256": "0baea16b2c4825e2ed13f7dae33f3b963b9e66b9723f643feaed4128ea5d8170"
+    },
+    {
+      "path": "godoc-final.log.gz",
+      "sha256": "b10222d508fdbcd8d77aa4c50bb6abb045e16fd303742f7aaa67c7364327db78"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "f53f05d5d27d99c1b659804aaa78ecedd73a638e6213768c8235e8f10a0ae73b"
+    },
+    {
+      "path": "final-allocation-race.jsonl.gz",
+      "sha256": "44dfa008bc9f5901215a472245488ff78efc16ca81cf59f690c2f42b9639f493"
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "575c48fbd0e52e4e363bc33cd1bae77e0d32865aee4b8ae407b12d4742236cac"
+    },
+    {
+      "path": "godoc-corrected.log.gz",
+      "sha256": "b10222d508fdbcd8d77aa4c50bb6abb045e16fd303742f7aaa67c7364327db78"
+    },
+    {
+      "path": "docs-check-corrected.log.gz",
+      "sha256": "f53f05d5d27d99c1b659804aaa78ecedd73a638e6213768c8235e8f10a0ae73b"
+    },
+    {
+      "path": "prose-corrected.log.gz",
+      "sha256": "3295b4d17cc93b4601259df0b8eea10d8db6f6b01b045e764aa492e4564efd23"
+    },
+    {
+      "path": "report-boundaries.jsonl.gz",
+      "sha256": "6a896e900088ff06de7b770804b6c290d5222a6b5da9754341cef5e94c09fa4a"
+    }
+  ],
+  "task_completion_credit": false,
+  "active_checks": {},
+  "commit": "370eaccf293c25b67e66438e5b9eb4a01c1e621d",
+  "tree": "01e3909714dfef27d2d1c8567ae72bfd28db2db3"
+}
