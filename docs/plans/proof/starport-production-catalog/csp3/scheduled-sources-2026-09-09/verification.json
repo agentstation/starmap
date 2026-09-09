@@ -356,5 +356,23 @@
     },
     "verifier_regressions": 73,
     "limitation": "The full verifier inherits an unsupported gomarkdoc flag from GOFLAGS despite a zero exit. The separate final documentation check unsets GOFLAGS and passes."
+  },
+  "dependency_integration": {
+    "head": "5c06e7a9dbc075e238026d86722b7546ff92ed71",
+    "dependency": "bf8461888b2148735622288009e5a54385ca95a6",
+    "method": "Normal merge into the clean candidate. Only the three remote repair files changed.",
+    "check": "go test -race -count=1 -timeout 5m ./remote",
+    "result": "PASS: one package, 15.475 seconds.",
+    "review": "PASS: Sol xhigh and Opus high report zero findings on head 5c06e7a9 against bf846188.",
+    "review_proof": [
+      {
+        "path": "review.json",
+        "sha256": "477ed62e9a4ce3ef9c1e6b10f476bcb86ac7f6b8cd36decc7f80765418af9c5d"
+      },
+      {
+        "path": "review.log",
+        "sha256": "6ed3cf5ff7b3cce268dfd1aee4ef2df77e4d7190befdc5e2e758f4a074c38b08"
+      }
+    ]
   }
 }
