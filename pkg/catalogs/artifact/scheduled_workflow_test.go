@@ -27,7 +27,7 @@ func TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload(t *test
 		"schedule:", `cron: "17 */4 * * *"`, "workflow_dispatch:", "cancel-in-progress: false",
 		"timeout-minutes: 90", "timeout-minutes: 75",
 		"./scripts/generate-embedded-catalog.sh", "jq -r .changed catalog-generation.json",
-		"STARMAP_GENERATION_STATE_PATH:", "STARMAP_GENERATION_STORE_PATH:",
+		"STARMAP_GENERATION_STATE_PATH:", "STARMAP_GENERATION_STORE_PATH=",
 		"TAG=catalog-${CATALOG_DIGEST}", `PREVIOUS_TAG=""`,
 		`--rollback-candidates "${RUNNER_TEMP}/catalog-release-listing.json"`,
 		`--exclude-tag "$TAG"`,

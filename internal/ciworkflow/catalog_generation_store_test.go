@@ -1,9 +1,10 @@
 package ciworkflow
 
 import (
-	"github.com/goccy/go-yaml"
 	"strings"
 	"testing"
+
+	"github.com/goccy/go-yaml"
 )
 
 func TestCatalogGenerationWorkflowSharesAcquisitionAndStagingStore(t *testing.T) {
@@ -21,14 +22,24 @@ func TestCatalogGenerationWorkflowSharesAcquisitionAndStagingStore(t *testing.T)
 		t.Fatal(err)
 	}
 	job := document.Jobs["generate"]
-	store := job.Env["STARMAP_GENERATION_STORE_PATH"]
-	if !strings.HasPrefix(store, "${{ runner.temp }}/") {
-		t.Fatal("publisher store is not explicit job-owned temporary state")
+	if _, exists := job.Env["STARMAP_GENERATION_STORE_PATH"]; exists {
+		t.Fatal("publisher store must be selected after the runner starts")
 	}
-	refreshFound, stageFound := false, false
+	selected, refreshFound, stageFound := false, false, false
 	for _, step := range job.Steps {
+		if step.Name == "Select catalog store" {
+			if selected || !strings.Contains(step.Run, "STARMAP_GENERATION_STORE_PATH=") ||
+				!strings.Contains(step.Run, `"$RUNNER_TEMP"`) ||
+				!strings.Contains(step.Run, `>> "$GITHUB_ENV"`) {
+				t.Fatal("publisher store must be selected once from runner temporary state")
+			}
+			selected = true
+		}
 		if step.Name != "Refresh candidate catalog" && step.Name != "Stage validated immutable generation" {
 			continue
+		}
+		if !selected {
+			t.Fatal("publisher phase runs before shared store selection")
 		}
 		if _, overridden := step.Env["STARMAP_GENERATION_STORE_PATH"]; overridden {
 			t.Fatal("publisher phase replaces the shared store")
