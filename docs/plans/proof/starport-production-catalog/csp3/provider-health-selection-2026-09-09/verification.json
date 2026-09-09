@@ -1,0 +1,332 @@
+{
+  "task": "CSP3",
+  "status": "in_progress",
+  "worktree": "/tmp/starmap-source-selection-2026-09-09",
+  "branch": "codex/catalog-source-selection",
+  "base": "5c06e7a9dbc075e238026d86722b7546ff92ed71",
+  "work_commit": null,
+  "contract": "Provider-wide missing-credential, configuration, fetch, or schema failure cannot supply canonical provider facts. Healthy siblings continue, existing baseline facts remain, and original observations and receipts remain unchanged. Partial records and successful empty inventory are not provider-wide failure.",
+  "checks": [
+    {
+      "path": "starmap-provider-health-selection-fail-before.jsonl.gz",
+      "sha256": "ac6d40daaf01b41f405d9cf3f28a49442eef5c355cc7ed2d835126623b785086",
+      "passed_test_events": 0,
+      "failed_test_events": 9,
+      "passed_packages": 0
+    },
+    {
+      "path": "starmap-provider-health-selection-race.jsonl.gz",
+      "sha256": "f4dd7ce6b5ad9533fdcd61f7e59b72a25e10a15be1ed676f8e174ba7d713810f",
+      "passed_test_events": 0,
+      "failed_test_events": 14,
+      "passed_packages": 0
+    },
+    {
+      "path": "starmap-provider-health-selection-corrected-fail-before.jsonl.gz",
+      "sha256": "caf8fc820f7584d0d080fc2212d0ad0514eb3fb608174997ab84421060bb0185",
+      "passed_test_events": 5,
+      "failed_test_events": 9,
+      "passed_packages": 0
+    },
+    {
+      "path": "starmap-provider-health-selection-final-race.jsonl.gz",
+      "sha256": "222e695bf11238ce63f2b7fbf273661f43267a6ea4fe28599bae0e6cacc3418d",
+      "passed_test_events": 14,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-provider-health-selection-final-minimum.jsonl.gz",
+      "sha256": "bfc4d1676df55f781eaaa0eaf337c8ea09b7af5c9809148e74113d92d3c0a7d5",
+      "passed_test_events": 14,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-provider-health-selection-final-ago.json.gz",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-provider-health-reconciler-final-race.log.gz",
+      "sha256": "b2c261dca13103d1de6a82537b926b6a5f243fc589ec765b9b5b8da998012c54"
+    },
+    {
+      "path": "starmap-all-provider-proxy-fail-before.jsonl.gz",
+      "sha256": "305c07e52e885b2dafac4d447663b07069e20971a964ed709a9883e81295fda3",
+      "passed_test_events": 0,
+      "failed_test_events": 1,
+      "passed_packages": 0
+    },
+    {
+      "path": "starmap-provider-admission-proxy-prototype.jsonl.gz",
+      "sha256": "9c5b6ea923b59b4bbe49658a1414da17029b4095641d8e6021426412888dcfea",
+      "passed_test_events": 1,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-provider-admission-prototype.jsonl.gz",
+      "sha256": "8345f47537bec702c9e6f9242ec9846be9a38949ecbd362ee2c7ad2427b1b5d9",
+      "passed_test_events": 0,
+      "failed_test_events": 1,
+      "passed_packages": 0
+    },
+    {
+      "path": "starmap-source-selection-with-pin-full-verification.log.gz",
+      "sha256": "5686c2f7f47d7b7492e09a09aa83acd6c5bb3e4e77652d9e035994531cea2fbb"
+    },
+    {
+      "path": "starmap-source-selection-devbox-recovered.log.gz",
+      "sha256": "d8af945c03c5d674f73b2c510838fdc694af2c304abfec9298fbf5697da71550"
+    },
+    {
+      "path": "starmap-cache-space-recovery-2026-09-09.json.gz",
+      "sha256": "19d35125f04da6197a4419374c1a3f96cbd4e67a6dc880ca0f68780aada78398"
+    },
+    {
+      "path": "starmap-source-health-docs-check.log.gz",
+      "sha256": "c326a6932614067e6dc62592068f841cbf5eadf50fe1b0b63bc07614250aa50b"
+    },
+    {
+      "path": "starmap-provider-admission-prototype-ingestion_test.go.gz",
+      "sha256": "4725b2bb994c79215cf27384f7b5404147f9b0115e4449b3778b2da4180c9f2b",
+      "role": "temporary prototype overlay"
+    },
+    {
+      "path": "starmap-provider-admission-prototype-overlay.json.gz",
+      "sha256": "1599a5ee9c7c807b4d0bf6f334f68e15113014d794986310287f681748033da8",
+      "role": "temporary prototype overlay"
+    },
+    {
+      "path": "starmap-provider-admission-prototype-provider_selection.go.gz",
+      "sha256": "6fffae7eb2ffb9d0f1a5f03f542266510c80ed950c1a94708d1dcf4d26fadeef",
+      "role": "temporary prototype overlay"
+    },
+    {
+      "path": "starmap-provider-health-before.go.gz",
+      "sha256": "c1b098e3951e3c7c73825a3fe0ef2d1d849d93c5c1cba246d5f720641bfbc431",
+      "role": "original production source overlay for corrected fail-before"
+    },
+    {
+      "path": "starmap-provider-health-before-overlay.json.gz",
+      "sha256": "9e8557d1b3cc849cbf83fd69114467a3d590449071926919603e6b5bab1050fe",
+      "role": "original production source overlay for corrected fail-before"
+    }
+  ],
+  "source_inventory": [
+    {
+      "path": ".env.example",
+      "status": " M",
+      "sha256": "38c3fd99f3268048cdbc4d1ac3854d3d511e2a9c7b77e60daa83f0750ec8c7f6"
+    },
+    {
+      "path": "acquisition/runtime.go",
+      "status": " M",
+      "sha256": "348143728a8bae291a766421a00b9621146cafafdc5b265b63e5a9e951e1cca5"
+    },
+    {
+      "path": "acquisition/source_acquirer.go",
+      "status": " M",
+      "sha256": "b48221517641a3c03990ba68b39ac6873410fc563a3edc8cf1a3e830af2fdd59"
+    },
+    {
+      "path": "acquisition/source_acquirer_test.go",
+      "status": " M",
+      "sha256": "babcc6ed4759707ddf791cbae940243a125eec942a9fefc9332da475e45c9c58"
+    },
+    {
+      "path": "docker-compose.yml",
+      "status": " M",
+      "sha256": "8ff6c815c7e7360ba988f659cc98d5c519e2a4d7d236ecc4cddbe80db8fdc1f2"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "status": " M",
+      "sha256": "1ebbfc088fff472cf340cf3dd72b34d0d47667390fea23ad83ab5ffb161624fa"
+    },
+    {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "status": " M",
+      "sha256": "92c5a9387c0ad73b04803c2b95d84105c6865764e66dbcaf96cfad18c5282269"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "status": " M",
+      "sha256": "92c4aaaaf136071ff361459960a4b3ccd635fd3669b0ba1471e349efebebc170"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_selection.go",
+      "status": " M",
+      "sha256": "6fffae7eb2ffb9d0f1a5f03f542266510c80ed950c1a94708d1dcf4d26fadeef"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "status": " M",
+      "sha256": "267937b01834f83d2b9866455d66967e48729076275064fd8cf6cba57b2b1133"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "status": " M",
+      "sha256": "823d1ec8aaefcccafaab42f02371cbe380371ab971b53043970161574d64ba72"
+    },
+    {
+      "path": "internal/cli/app/catalog_scheduled_sources_test.go",
+      "status": " M",
+      "sha256": "e20de524a025c436db2a368b640ce3847b4f66f832e873521ef657e9ea73ec1b"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "status": " M",
+      "sha256": "18ef50718309f6788c6ae5e08e6c17a426d07dbdfd2250d5d1bf48ae35205c4a"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "status": " M",
+      "sha256": "16abbd04bd6321f41cda4865359b9251d8026d09fba099f06f486eee4d454a70"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "status": " M",
+      "sha256": "75f47075cbc1198a07f0a6a5f4de24fdc809e6df7008c755d2dc4aad6a067080"
+    },
+    {
+      "path": "pkg/sources/README.md",
+      "status": " M",
+      "sha256": "f2fc94cdbd442bf45437d32aca8cbcba273e4aedd936e772d6ce87f3753099a7"
+    },
+    {
+      "path": "pkg/sources/observation.go",
+      "status": " M",
+      "sha256": "7d30c915af1f59d135770deb2801eca3f61f1597eb7f14c480b4f888256bbcbe"
+    },
+    {
+      "path": "pkg/sync/options.go",
+      "status": " M",
+      "sha256": "361a36915200729d5841f61bc7be676edbbde111f831de8356f6af1f8f6a0fac"
+    },
+    {
+      "path": "runtime/README.md",
+      "status": " M",
+      "sha256": "8867a20989aaa09e68e4978c0d855b77a71d76c6f8fe93cc577671dfce441cc0"
+    },
+    {
+      "path": "runtime/acquisition_update.go",
+      "status": " M",
+      "sha256": "e436a9316c4855630621711734026abf7888a7bf94dbe413089105f89018907c"
+    },
+    {
+      "path": "runtime/layers.go",
+      "status": " M",
+      "sha256": "85a227b898574c66fb8ccccd25bd9181d13c4e0f25f39918b604217be136b3e4"
+    },
+    {
+      "path": "runtime/manual_reconciliation.go",
+      "status": " M",
+      "sha256": "f5028a6f3715bb8b70701c6378033d404ee665af1ad54f5204c05f3fa0bb310c"
+    },
+    {
+      "path": "runtime/options.go",
+      "status": " M",
+      "sha256": "2343f7e6b91850d21277482a16bcd8d579bdc9182578eed30ea0b088e80b5ab4"
+    },
+    {
+      "path": "runtime/provider_policy_publication.go",
+      "status": " D"
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "status": " M",
+      "sha256": "de7eddfaaf85cb0daa21c763e15a3623302847896f94cc1ac9bc83fa167885ff"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "status": " M",
+      "sha256": "c6112a6c6808ab574f388c608c66614123fba35e58f85f5a0651efb99d16a76e"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "status": " M",
+      "sha256": "485e5b04bcdd2ec054fc249e299d8c31993db212c6b0f660caed281a41a32a12"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "status": " M",
+      "sha256": "f8389d096646e6dcb420e0df8b29c026dcf71c387532cc99e2bd82c7af41aa1e"
+    },
+    {
+      "path": "runtime/source_acquisition.go",
+      "status": " M",
+      "sha256": "4c1c0c34bd271ed792387897f66048c11f9a2141344b74c2608be9fafc06d887"
+    },
+    {
+      "path": "acquisition/source_selection_test.go",
+      "status": "??",
+      "sha256": "c53b176d4f98db4d4574e8325ee7dea76893e35bdf7dcf0e0bd7c04a46137dc1"
+    },
+    {
+      "path": "internal/catalog/reconciler/provider_health_selection_test.go",
+      "status": "??",
+      "sha256": "ed3737db283ff74d91bd7d4201854634c75197e6e21d5197e00e88fad08857cb"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_git_pin_test.go",
+      "status": "??",
+      "sha256": "bfb8151cd41129b6da632846d3f1e1d0946b5beb62f404c7607f22fdd84aae1b"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_sources.go",
+      "status": "??",
+      "sha256": "a2e171bb8b5f41ce6faaac6fe1777214e30fe17db53b550d87bc01499507a493"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_sources_test.go",
+      "status": "??",
+      "sha256": "6afe1fb981da4237fe54d2003900fa477783eece3f649244c55cd235e4677818"
+    },
+    {
+      "path": "pkg/sources/acquisition_selection.go",
+      "status": "??",
+      "sha256": "520e6ccf9b5b144cbaf075dbc8c624b2f5978be935325b764452b4b90f2480a8"
+    },
+    {
+      "path": "runtime/acquisition_policy_publication.go",
+      "status": "??",
+      "sha256": "6b5f0b7def58de3d11c4fc445a300eb34b922ccf22acc744499db2f8cc60b2cf"
+    },
+    {
+      "path": "runtime/acquisition_source_policy.go",
+      "status": "??",
+      "sha256": "f0ba2e594aa86b1c347c57787a5924c9a73f23f4657c18ed4cc595c4fd2d5bf5"
+    },
+    {
+      "path": "runtime/acquisition_source_policy_test.go",
+      "status": "??",
+      "sha256": "22b2637991e35605cff049ded03f522d7810a4adbe65239066936c12e12c548f"
+    }
+  ],
+  "generated_non_source_files": [],
+  "initial_fixture_errors": "The first focused fail-before and race run reused the old payload revision after changing its content. Those runs failed receipt validation and do not prove the defect. Corrected fail-before uses a newly computed content digest with the original production selection code. Eight failure subcases fail on canonical facts, and four usable-evidence subcases pass.",
+  "fixed_result": "14 test events pass with race detection and Go 1.25.12. The full reconciler race package and Ago pass.",
+  "all_provider_result": "The all-provider test fails before selection and passes with the prototype when HTTP_PROXY and HTTPS_PROXY force external targets to a closed loopback port. This is an isolated prototype result, not merged or complete publisher qualification.",
+  "network_correction": "Earlier all-provider diagnostics replaced http.DefaultTransport. Dedicated provider transports bypass it, so those diagnostics were not hermetic and public catalog requests were possible. No inference request or hosted write was part of the test. Subsequent diagnostic runs set HTTP_PROXY, HTTPS_PROXY, lowercase aliases, and empty NO_PROXY before process startup.",
+  "prior_full_verification": {
+    "session": 35415,
+    "result": "failed during Devbox linter setup after tests, race tests, vet, performance, and container smoke passed",
+    "error": "nix path-info for path:./devbox/swag#swag: writing to file: No space left on device",
+    "no_full_pass_credit": true
+  },
+  "space_recovery": {
+    "removed_files": 3020,
+    "removed_bytes": 8589469659,
+    "minimum_age_hours": 48,
+    "maximum_bytes": 8589934592,
+    "scope": "hashed Go compiler cache objects only",
+    "pinned_linter": "Devbox golangci-lint 2.12.2 recovered with exit 0"
+  },
+  "current_verification": {
+    "session": 60866,
+    "log": "/tmp/starmap-source-health-full-verification.log",
+    "status": "running docs/prose/full check chain; no full pass credit"
+  },
+  "completion_credit": false
+}

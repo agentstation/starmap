@@ -255,7 +255,7 @@
     "The publisher ingestion test exercises provider-scoped update acme, then stages and reopens the exact committed artifact. It does not qualify the complete all-provider publisher acceptance case.",
     "The all-provider diagnostic locates the missing author mapping target at runtime provider reconciliation. A narrow file baseline and embedded provider configuration expose this separate integration failure. It remains open before all-provider qualification.",
     "Initial harness errors and the corrected macOS logical-path expectation remain retained as failed evidence.",
-    "No hosted publication, provider credentials, or external provider requests occurred. Local HTTP fixtures reject external hosts."
+    "The provider-scoped candidate uses local fixtures. Earlier all-provider diagnostics were not hermetic: provider-specific transports bypassed http.DefaultTransport. Public catalog requests were possible. Corrected process-level proxy runs and the prototype result are recorded in ../provider-health-selection-2026-09-09/verification.json."
   ],
   "all_provider_diagnostic": {
     "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -overlay /tmp/starmap-publisher-all-provider-diagnostic/overlay.json -count=1 -run ^TestPublisherStagesChangingProviderAndMetadataIngestion$ -json ./cmd/starmap-catalog-release",
@@ -267,7 +267,8 @@
       "internal/catalog/reconciler/reconciler.go:catalog sets reconciled provider records into the selected baseline.",
       "pkg/catalogs/readonly.go:buildCatalog validates provider author mapping targets against canonical authors."
     ],
-    "next": "Add a focused regression for mixed successful and unavailable provider acquisition against a narrow selected baseline. Define the permitted provider-configuration membership and receipt-preservation contract before changing reconciliation. Preserve the full all-provider publisher acceptance requirement.",
-    "mutations": "The diagnostic overlay removes only the test provider selector and adds a stack trace at validation failure. Neither candidate worktree changed."
+    "next": "The provider failure selection prototype passes the proxy-isolated all-provider diagnostic. Its production implementation and regression checks now live in the source-selection candidate. Complete integration and full qualification before all-provider acceptance credit.",
+    "mutations": "The diagnostic overlay removes only the test provider selector and adds a stack trace at validation failure. Neither candidate worktree changed.",
+    "network_correction": "The original default-transport guard did not constrain dedicated provider transports. Do not count those runs as hermetic."
   }
 }

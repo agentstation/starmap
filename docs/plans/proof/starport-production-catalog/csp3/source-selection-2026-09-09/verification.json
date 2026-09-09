@@ -132,13 +132,13 @@
     }
   ],
   "settings_packages": "Both complete shared settings packages pass after adding the new descriptor, CLI facade, and deployment samples.",
-  "full_verification": "Session 25128 was terminated after discovery required a production change. Its partial run is historical, not a full pass. Session 35415 passes 32 minimum-Go test events across four packages and now runs all repository stages. Log: /tmp/starmap-source-selection-with-pin-full-verification.log.",
+  "full_verification": "Session 35415 failed during Devbox linter setup because the disk was full. Its completed stages are historical evidence. Cache cleanup restored the pinned linter. Provider failure selection then changed production code. Session 60866 runs fresh documentation, prose, and full verification. Log: /tmp/starmap-source-health-full-verification.log.",
   "remaining": [
-    "Full repository verification",
+    "Full repository verification for current source",
     "Required pre-PR reviews",
-    "Merge the preceding range and scheduled-source candidates",
+    "Integrate the publisher repair and scheduled-source candidate",
     "Publish and merge this candidate",
-    "Complete the remaining CSP3 acceptance contracts"
+    "Complete remaining CSP3 acceptance contracts"
   ],
   "files": [
     {
@@ -528,5 +528,6 @@
       "sha256": "4c1c0c34bd271ed792387897f66048c11f9a2141344b74c2608be9fafc06d887"
     }
   ],
-  "historical_source_inventory": "The files inventory and original checks above describe source-selection work before the Git pin change. git_pin_source_inventory binds the current corrected source. Git commit 8ad4e291 retains the original proof."
+  "historical_source_inventory": "The files inventory and original checks above describe source-selection work before the Git pin change. git_pin_source_inventory binds the current corrected source. Git commit 8ad4e291 retains the original proof.",
+  "provider_health_selection": "../provider-health-selection-2026-09-09/verification.json"
 }
