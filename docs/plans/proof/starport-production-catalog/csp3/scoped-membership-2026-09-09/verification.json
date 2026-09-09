@@ -120,6 +120,50 @@
     {
       "path": "membership-health.gz",
       "sha256": "9062fdf344af8341ae4dd186528fd2b0799eceefee3bc618cb1258dbbe919d87"
+    },
+    {
+      "path": "minimum-final.gz",
+      "sha256": "25a757e7104de7a244870ee3894ea07214afca50510817ef48dda6ebabf0302d"
+    },
+    {
+      "path": "reset-partial-fixture.gz",
+      "sha256": "1018cca0826cb222c3d8ca4c97612d717b5890f128136d5b7e077d474b01361e"
+    },
+    {
+      "path": "reset-unbound-fixture.gz",
+      "sha256": "5e6400a311bf689d816393a853436da3925446d4341c50617ca574054de22320"
+    },
+    {
+      "path": "reset-unscoped-fixture.gz",
+      "sha256": "f8d39ba06ebaf8768b6a049a7b1b7cf6bd3af334eb3a42efd3f86b680768654d"
+    },
+    {
+      "path": "reset-scoped.gz",
+      "sha256": "11443ace969b255bf161e22140667333730f32721dc1eb1dce157132cacfc4a5"
+    },
+    {
+      "path": "ago-final.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint-health-reset.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "docs-stale-links.gz",
+      "sha256": "a51b5253a1b9f147914cf99065d0dcd29b4c7df453bd799520966606bca5005d"
+    },
+    {
+      "path": "docs-regenerated.gz",
+      "sha256": "0f89f486995bc04e5c8f33299965e08deefa4fa1d48eaf8d367dcb90462420e3"
+    },
+    {
+      "path": "schema-boundaries-before.gz",
+      "sha256": "b5c5a65e8943955ef5aff7e310fa2a4c1459c8ba5cfb6a3f9ea80b2db72ef8d1"
+    },
+    {
+      "path": "schema-boundaries-after.gz",
+      "sha256": "4919740d7c9407de2565af161639c4744acc1927b01eb4c98ee84cf93858ce4d"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -331,19 +375,67 @@
       "provider_health": {
         "exit_code": 0,
         "passing_test_events": 3
+      },
+      "minimum_final": {
+        "exit_code": 0,
+        "passing_test_events": 47,
+        "scope": "Before reset extension."
+      },
+      "reset_recovery": {
+        "exit_code": 0,
+        "passing_test_events": 1,
+        "scope": "Complete removal, partial refresh, restart, matching binding reset, second restart, active removal receipt absent."
+      },
+      "ago_final": {
+        "exit_code": 0
+      },
+      "lint_health_reset": {
+        "exit_code": 0,
+        "issues": 0
+      },
+      "docs_stale_links": {
+        "exit_code": 2,
+        "cause": "Generated reconciler README line links were stale after provider-health selection was added. Regeneration started."
+      },
+      "docs_regenerated": {
+        "exit_code": 0
+      },
+      "schema_boundaries": {
+        "exit_code": 0,
+        "test_events": {
+          "pass": 32
+        }
       }
     },
     "sessions": {
       "full_race": 25031,
-      "minimum_go": 76288,
-      "reset_recovery": 61011
+      "acquisition_schema": 15564
     },
-    "caveat": "The full race run began before the two added tests. The focused health check passes. Separate reset recovery and minimum-Go checks are running. All enforcement edits remain local and uncommitted.",
+    "caveat": "Broad race checks remain running. Focused reset extension passes. Final documentation check follows generated link repair. Code remains uncommitted.",
     "remaining": [
       "Add integration coverage for unrelated scope preservation and health selection.",
       "Complete broad runtime and reconciliation checks.",
       "Review removal evidence and source-policy changes through restart.",
       "Implement required removal review and remaining alias rules before CSP3 completion."
-    ]
+    ],
+    "reset_fixture_failures": [
+      "Partial reset replacement rejected as required.",
+      "Unbound replacement rejected by explicit binding policy as required.",
+      "Reset without binding identity rejected because it selects legacy unscoped evidence."
+    ],
+    "broad_failure": {
+      "test": "TestAcquireBindingsValidatesBatchBeforeIO/schema",
+      "cause": "Legacy fixture increments schema 1 to schema 2, which is now supported.",
+      "repair": "Use current supported schema + 1. Preserve credential and client I/O assertions.",
+      "status": "Full acquisition rerun in progress."
+    },
+    "schema_boundary_failures": {
+      "exit_code": 1,
+      "tests": [
+        "TestManualBindingsValidateBeforeSourceWork/schema",
+        "TestObserveBindingRejectsConfigurationBeforeResolution/invalid_schema"
+      ],
+      "repair": "Both legacy invalid-schema fixtures now select current supported schema + 1. Affected binding suites are running."
+    }
   }
 }
