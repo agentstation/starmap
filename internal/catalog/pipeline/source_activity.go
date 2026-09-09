@@ -22,15 +22,24 @@ type sourceActivityRun struct {
 }
 
 func newSourceActivityRun(options *pkgsync.Options) *sourceActivityRun {
-	run := &sourceActivityRun{}
+	return &sourceActivityRun{states: SourceConfiguration(options)}
+}
+
+// SourceConfiguration reports built-in support and parsed selection without I/O.
+// A nil options value leaves selection unknown.
+func SourceConfiguration(options *pkgsync.Options) []sources.SourceActivity {
+	report := make([]sources.SourceActivity, 0, 4)
 	for _, id := range []sources.ID{sources.LocalCatalogID, sources.ModelsDevHTTPID, sources.ModelsDevGitID, sources.ProvidersID} {
-		enabled := slices.Contains(options.Sources, id)
-		if len(options.Sources) == 0 {
-			enabled = id != sources.ModelsDevGitID
+		row := sources.SourceActivity{Source: id, Supported: true, Eligibility: sources.EligibilityUnknown, SelectionUnknown: options == nil}
+		if options != nil {
+			row.Enabled = slices.Contains(options.Sources, id)
+			if len(options.Sources) == 0 {
+				row.Enabled = id != sources.ModelsDevGitID
+			}
 		}
-		run.states = append(run.states, sources.SourceActivity{Source: id, Supported: true, Enabled: enabled, Eligibility: sources.EligibilityUnknown})
+		report = append(report, row)
 	}
-	return run
+	return report
 }
 
 func (r *sourceActivityRun) resolved(available []sources.Source) {

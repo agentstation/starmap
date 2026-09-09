@@ -135,7 +135,7 @@ func (s *Syncer) Sync(
 	return result, err
 }
 
-func (s *Syncer) sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.Result, error) {
+func (s *Syncer) sync(ctx context.Context, opts ...pkgsync.Option) (result *pkgsync.Result, err error) {
 	if s == nil || s.client == nil || s.pipeline == nil {
 		return nil, &errors.ValidationError{
 			Field:   "acquisition.syncer",
@@ -144,6 +144,7 @@ func (s *Syncer) sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.Res
 	}
 
 	effective, parsed, err := s.effectiveOptions(opts)
+	defer func() { err = preflightActivityError(parsed, err) }()
 	if err != nil {
 		return nil, err
 	}
@@ -204,7 +205,7 @@ func (s *Syncer) sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.Res
 		}
 	}
 
-	result := prepared.Result
+	result = prepared.Result
 	if publication.Published {
 		result.GenerationID = publication.GenerationID
 		result.SyncRunID = publication.SyncRunID

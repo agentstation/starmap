@@ -15,6 +15,22 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
+func TestSourceConfigurationWithoutParsedOptionsKeepsSelectionUnknown(t *testing.T) {
+	report := SourceConfiguration(nil)
+	if len(report) != 4 {
+		t.Fatalf("source configuration=%+v", report)
+	}
+	for _, row := range report {
+		if !row.Valid() || !row.Supported || !row.SelectionUnknown || row.Enabled || row.Attempted || row.Eligibility != sources.EligibilityUnknown {
+			t.Fatalf("unparsed source configuration=%+v", row)
+		}
+	}
+	report[0].Supported = false
+	if !SourceConfiguration(nil)[0].Supported {
+		t.Fatal("caller mutation changed source configuration")
+	}
+}
+
 func TestPipelineReportsSourceEligibilityAndActualAttempt(t *testing.T) {
 	catalog := asSnapshot(catalogs.NewEmpty())
 	local := &lifecycleTestSource{id: sources.LocalCatalogID, catalog: catalog}

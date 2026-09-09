@@ -29,18 +29,19 @@ func NewForRuntime(connected *runtime.Runtime, opts ...Option) (*Syncer, error) 
 	return syncer, nil
 }
 
-func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, parsed *pkgsync.Options) (*pkgsync.Result, error) {
+func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, parsed *pkgsync.Options) (result *pkgsync.Result, err error) {
+	defer func() { err = preflightActivityError(parsed, err) }()
 	if selected, present := s.connected.AcquisitionSources(); present {
 		requested := slices.Clone(parsed.Sources)
 		if len(requested) == 0 {
 			requested = selected
 		}
 		if len(requested) == 0 {
-			return nil, &errors.ConfigError{Component: "acquisition", Message: "no acquisition sources are enabled"}
+			return nil, sourceSelectionActivityError(selected, &errors.ConfigError{Component: "acquisition", Message: "no acquisition sources are enabled"})
 		}
 		for _, id := range requested {
 			if id != sources.EmbeddedCatalogID && id != sources.ReleaseArtifactID && !slices.Contains(selected, id) {
-				return nil, &errors.ConfigError{Component: "acquisition", Message: "requested source is excluded by the runtime source selection"}
+				return nil, sourceSelectionActivityError(selected, &errors.ConfigError{Component: "acquisition", Message: "requested source is excluded by the runtime source selection"})
 			}
 		}
 		effective = append(slices.Clone(effective), pkgsync.WithSources(requested...))
@@ -80,7 +81,6 @@ func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, pa
 		return update, nil
 	}
 	var state starmap.CatalogState
-	var err error
 	if parsed.DryRun {
 		state, err = s.connected.PreviewAcquisition(ctx, prepare)
 	} else {
@@ -107,7 +107,7 @@ func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, pa
 			models[id] = provider.ID
 		}
 	}
-	result := pkgsync.ChangesetToResultWithProvenance(changes, parsed.DryRun, parsed.CatalogPath, counts, models, state.Catalog.Provenance().Map(), prepared.Result.Sources...)
+	result = pkgsync.ChangesetToResultWithProvenance(changes, parsed.DryRun, parsed.CatalogPath, counts, models, state.Catalog.Provenance().Map(), prepared.Result.Sources...)
 	result.Fresh, result.ResetCount = parsed.Fresh, len(update.Resets)
 	result.SourceObservations = prepared.Result.SourceObservations
 	result.Partial = prepared.Result.Partial
