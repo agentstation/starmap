@@ -4,7 +4,7 @@
   "worktree": "/tmp/starmap-source-selection-2026-09-09",
   "branch": "codex/catalog-source-selection",
   "base": "5c06e7a9dbc075e238026d86722b7546ff92ed71",
-  "work_commit": "ed7390abc6822b7fabc1e6ad0504e29fca7e29bf",
+  "work_commit": "9c829662c1184998e124ca01533e2a7075c6825d",
   "contract": "An explicit canonical source selection controls automatic and manual acquisition, publication, and retained local evidence after restart. Distribution baselines remain separate.",
   "setting": "STARMAP_CATALOG_ACQUISITION_SOURCES",
   "scope": "deployment",
@@ -541,5 +541,7 @@
   "prepared_pr_description": {
     "path": "/tmp/starmap-combined-acquisition-pr-body.md",
     "status": "prepared; validation paragraph must be finalized after integration"
-  }
+  },
+  "implementation_commit": "ed7390abc6822b7fabc1e6ad0504e29fca7e29bf",
+  "ingestion_qualification": "../ingestion-qualification-2026-09-09/verification.json"
 }

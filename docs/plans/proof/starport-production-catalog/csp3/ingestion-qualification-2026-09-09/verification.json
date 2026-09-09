@@ -1,0 +1,109 @@
+{
+  "task": "CSP3",
+  "status": "in_progress",
+  "updated_at": "2026-09-09T12:41:26.875971+00:00",
+  "worktree": "/tmp/starmap-source-selection-2026-09-09",
+  "head": "9c829662c1184998e124ca01533e2a7075c6825d",
+  "completion_credit": false,
+  "connected_server": {
+    "commit": "9c829662c1184998e124ca01533e2a7075c6825d",
+    "change": "Extend startup fixtures through changed provider and HTTP metadata facts, partial provider receipts, provider failure with retained facts, disabled metadata reads, and restart without acquisition.",
+    "race_events": 5,
+    "minimum_go_events": 5,
+    "passed_packages_per_command": 1,
+    "lint_issues": 0,
+    "ago_findings": 0,
+    "prose_files": 1264,
+    "scope": "Automatic startup and explicit connected refresh. This does not claim a separate repeated timer qualification."
+  },
+  "publisher": {
+    "draft": "/tmp/starmap-publisher-all-provider-regression-2026-09-09/ingestion_test.go",
+    "base_production_commit": "ed7390abc6822b7fabc1e6ad0504e29fca7e29bf",
+    "overlaid_publisher_commit": "27b56e8d84cb37c9996be41327b65022efb07e56",
+    "test": "TestPublisherStagesAllProviderAndMetadataIngestion",
+    "initial_attempt": "Logical /tmp overlay paths discovered zero tests. This is not fail-before evidence.",
+    "corrected_fail_before": "Physical paths discover the test. It fails because unavailable Alibaba configuration names qwen outside the selected canonical authors.",
+    "race_result": "Two publisher tests pass. The all-provider child completes both changing fixture revisions and the local proxy refuses 18 external requests.",
+    "final_minimum_result": "Both tests pass on Go 1.25.12 after adding receipt-health assertions and inherited child deadlines.",
+    "race_scope": "The final deadline and receipt-assertion changes followed the recorded race run. Final integrated race verification remains pending.",
+    "isolation": "The child starts before proxy environment caching, receives only platform process variables and private home paths, and sets fixture credentials inside the test. Dedicated provider transports use the local rejection proxy. models.dev requests and the Acme API use loopback fixtures.",
+    "scope": "Provider and models.dev HTTP ingestion followed by exact committed artifact staging. Real pinned Git acquisition across the supported composition matrix remains unqualified."
+  },
+  "artifacts": [
+    {
+      "path": "starmap-publisher-all-provider-regression-fail-before.jsonl.gz",
+      "raw_sha256": "aa021d03525d81b76684452453322542b0dc0a436afe09ae2e86aed8e6c2be37",
+      "passed_test_events": 0,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-publisher-all-provider-regression-corrected-fail-before.jsonl.gz",
+      "raw_sha256": "da37c53e8b98877c715536aa26cf23f8a4aa56235b79b27c94508353e63df371",
+      "passed_test_events": 0,
+      "failed_test_events": 1,
+      "passed_packages": 0
+    },
+    {
+      "path": "starmap-publisher-all-provider-regression-race.jsonl.gz",
+      "raw_sha256": "138fc959c0df19acc2821fb0b61358fd996b9a0fa721c8f8eba64ac86e26cc6f",
+      "passed_test_events": 2,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-publisher-all-provider-regression-minimum.jsonl.gz",
+      "raw_sha256": "6236b1bff2938570b00cedc71887b7bda224803c0c24c009434d011f55ca0e4b",
+      "passed_test_events": 2,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-connected-ingestion-lifecycle-race.jsonl.gz",
+      "raw_sha256": "b0b035688e2c426ca25118b9124600d1dd89b348ac0834dcb55f06194b88ef5d",
+      "passed_test_events": 5,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-connected-ingestion-lifecycle-minimum.jsonl.gz",
+      "raw_sha256": "d76037eb9de3846efd50093d2b99ba96d6d3c646ff28d5c38d9960fdd4c7ae82",
+      "passed_test_events": 5,
+      "failed_test_events": 0,
+      "passed_packages": 1
+    },
+    {
+      "path": "starmap-connected-ingestion-lifecycle-lint.log.gz",
+      "raw_sha256": "44a567a84930e49f8c6ff9d771dd195231cfd552632e796431cf2687f7e85862"
+    },
+    {
+      "path": "starmap-connected-ingestion-lifecycle-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-connected-ingestion-lifecycle-prose.log.gz",
+      "raw_sha256": "78a748a57f109f4e811f943cd56837e04461edaf2f7c6a5a2e4ffd31d451b575"
+    },
+    {
+      "path": "ingestion_test.go.gz",
+      "raw_sha256": "bb561c518ccea06c72d99e5d26c43e3882a4ffd6337acc6371e630f939476344",
+      "role": "current draft or diagnostic overlay; not yet committed to the product"
+    },
+    {
+      "path": "overlay.json.gz",
+      "raw_sha256": "c907feb7ee9bb69c57424bd53a3c38baa30f9c427476a334b4433a801fee0ed7",
+      "role": "current draft or diagnostic overlay; not yet committed to the product"
+    },
+    {
+      "path": "before-overlay.json.gz",
+      "raw_sha256": "3b54b6e585a96639ecccebec75d96ce8f71630e3e866f4e7570a5610d723b96a",
+      "role": "current draft or diagnostic overlay; not yet committed to the product"
+    },
+    {
+      "path": "provider_selection_before.go.gz",
+      "raw_sha256": "c1b098e3951e3c7c73825a3fe0ef2d1d849d93c5c1cba246d5f720641bfbc431",
+      "role": "current draft or diagnostic overlay; not yet committed to the product"
+    }
+  ],
+  "next_action": "Merge publisher PR #140 after CI. Integrate it into the committed source branch, install the prepared publisher regression, and run full integrated verification and required review. Keep A20 and CSP3 incomplete until all required source forms and remaining acceptance contracts have evidence."
+}
