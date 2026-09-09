@@ -1,0 +1,138 @@
+{
+  "head": "bf8461888b2148735622288009e5a54385ca95a6",
+  "run": "https://github.com/agentstation/starmap/actions/runs/34333704548",
+  "native_result": "PASS",
+  "full_verification_ci": "Still running. Native success alone does not authorize the merge.",
+  "platforms": [
+    {
+      "platform": "native-runtime-macos-15",
+      "tests": {
+        "pass": 1468
+      },
+      "packages": {
+        "pass": 12
+      },
+      "toolchain": "go version go1.25.12 darwin/arm64\ndarwin\narm64\ndarwin\narm64\n0",
+      "artifacts": [
+        {
+          "path": "native-runtime-macos-15-tests.jsonl.gz",
+          "sha256": "9be6ae0129785d264c6de0aae85c31c57789c24f1dea829dd2210742a42dd861"
+        },
+        {
+          "path": "native-runtime-macos-15-toolchain.txt.gz",
+          "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503"
+        }
+      ]
+    },
+    {
+      "platform": "native-runtime-macos-15-intel",
+      "tests": {
+        "pass": 1468
+      },
+      "packages": {
+        "pass": 12
+      },
+      "toolchain": "go version go1.25.12 darwin/amd64\ndarwin\namd64\ndarwin\namd64\n0",
+      "artifacts": [
+        {
+          "path": "native-runtime-macos-15-intel-tests.jsonl.gz",
+          "sha256": "5d8c733451b136b3d4d1b1dbfbf334efc5f06a704edc630d596577fd9b72575b"
+        },
+        {
+          "path": "native-runtime-macos-15-intel-toolchain.txt.gz",
+          "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e"
+        }
+      ]
+    },
+    {
+      "platform": "native-runtime-ubuntu-24.04",
+      "tests": {
+        "pass": 1412,
+        "skip": 1
+      },
+      "packages": {
+        "pass": 12
+      },
+      "toolchain": "go version go1.25.12 linux/amd64\nlinux\namd64\nlinux\namd64\n0",
+      "artifacts": [
+        {
+          "path": "native-runtime-ubuntu-24.04-service-owner.txt.gz",
+          "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396"
+        },
+        {
+          "path": "native-runtime-ubuntu-24.04-tests.jsonl.gz",
+          "sha256": "3543870bd762732c550487e7884441502c98bd5e10392c641c707850eb14ab78"
+        },
+        {
+          "path": "native-runtime-ubuntu-24.04-toolchain.txt.gz",
+          "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786"
+        }
+      ]
+    },
+    {
+      "platform": "native-runtime-ubuntu-24.04-arm",
+      "tests": {
+        "pass": 1412,
+        "skip": 1
+      },
+      "packages": {
+        "pass": 12
+      },
+      "toolchain": "go version go1.25.12 linux/arm64\nlinux\narm64\nlinux\narm64\n0",
+      "artifacts": [
+        {
+          "path": "native-runtime-ubuntu-24.04-arm-service-owner.txt.gz",
+          "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396"
+        },
+        {
+          "path": "native-runtime-ubuntu-24.04-arm-tests.jsonl.gz",
+          "sha256": "9d9e96a2df1a48f2b512a60b2e80d5b6cc348aaeed8ee181967452e8d8154160"
+        },
+        {
+          "path": "native-runtime-ubuntu-24.04-arm-toolchain.txt.gz",
+          "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d"
+        }
+      ]
+    },
+    {
+      "platform": "native-runtime-windows-11-arm",
+      "tests": {
+        "pass": 1413
+      },
+      "packages": {
+        "pass": 13
+      },
+      "toolchain": "go version go1.25.12 windows/arm64\nwindows\narm64\nwindows\narm64\n0",
+      "artifacts": [
+        {
+          "path": "native-runtime-windows-11-arm-tests.jsonl.gz",
+          "sha256": "361a1ea87457529f68ed4ae3d9ac143f2260b780fca76faad295047920d629ad"
+        },
+        {
+          "path": "native-runtime-windows-11-arm-toolchain.txt.gz",
+          "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb"
+        }
+      ]
+    },
+    {
+      "platform": "native-runtime-windows-2025",
+      "tests": {
+        "pass": 1413
+      },
+      "packages": {
+        "pass": 13
+      },
+      "toolchain": "go version go1.25.12 windows/amd64\nwindows\namd64\nwindows\namd64\n0",
+      "artifacts": [
+        {
+          "path": "native-runtime-windows-2025-tests.jsonl.gz",
+          "sha256": "d71db3d1c66797936c76ef2444d5a19ccc936168dc5ec85e4d57828de3ac3344"
+        },
+        {
+          "path": "native-runtime-windows-2025-toolchain.txt.gz",
+          "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd"
+        }
+      ]
+    }
+  ]
+}

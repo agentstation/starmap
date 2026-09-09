@@ -177,5 +177,6 @@
       }
     ]
   },
-  "ci_run": "https://github.com/agentstation/starmap/actions/runs/34333704548"
+  "ci_run": "https://github.com/agentstation/starmap/actions/runs/34333704548",
+  "native_evidence": "native-34333704548/verification.json"
 }

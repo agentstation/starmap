@@ -1,0 +1,305 @@
+{
+  "task": "CSP3",
+  "status": "in_progress",
+  "worktree": "/tmp/starmap-source-selection-2026-09-09",
+  "branch": "codex/catalog-source-selection",
+  "base": "5c06e7a9dbc075e238026d86722b7546ff92ed71",
+  "work_commit": null,
+  "contract": "An explicit canonical source selection controls automatic and manual acquisition, publication, and retained local evidence after restart. Distribution baselines remain separate.",
+  "setting": "STARMAP_CATALOG_ACQUISITION_SOURCES",
+  "scope": "deployment",
+  "empty": "Exclude all acquisition inputs.",
+  "omitted": "Keep supplied collector defaults and existing retained source evidence.",
+  "checks": [
+    {
+      "name": "fail-before",
+      "path": "fail-before.jsonl.gz",
+      "sha256": "943bde0ed789afb08b81948a08680459e527a4b31c2c552d721da9d845d9d5a5",
+      "tests": {
+        "fail": 1
+      },
+      "packages": {
+        "fail": 1
+      }
+    },
+    {
+      "name": "first-check",
+      "path": "first-check.jsonl.gz",
+      "sha256": "da777c18735c076e5a04b1013f5a4c1461d7a5a774c6554dcab42a510deb3828",
+      "tests": {},
+      "packages": {
+        "fail": 1
+      }
+    },
+    {
+      "name": "second-check",
+      "path": "second-check.jsonl.gz",
+      "sha256": "ee1bbe7be4fa15d5bbebf79593a26c08e87587c01ad7fc1319ce51a127427159",
+      "tests": {
+        "pass": 1
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "name": "runtime-race",
+      "path": "runtime-race.jsonl.gz",
+      "sha256": "5ccc4ba78ea495968897bea5d250b7d546b629d15ac21d5c18650536d9b44059",
+      "tests": {
+        "pass": 2
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "name": "adapters-race",
+      "path": "adapters-race.jsonl.gz",
+      "sha256": "89d8e673f89003a802695fd14ccc0efed1cc7cd374cea87ad3e7d56edfc0e2c3",
+      "tests": {
+        "pass": 10
+      },
+      "packages": {
+        "pass": 2
+      }
+    },
+    {
+      "name": "app-race",
+      "path": "app-race.jsonl.gz",
+      "sha256": "3755acc90ea70743202b6b5e9478c1407f3d4eee65f62f748415bc4b6b8027fa",
+      "tests": {
+        "pass": 4
+      },
+      "packages": {
+        "pass": 2
+      }
+    },
+    {
+      "name": "current-tests",
+      "path": "current-tests.jsonl.gz",
+      "sha256": "cc18b5442c5fe76bbb617fdf72159d29771db06bab44da70db704e05320bd01e",
+      "tests": {
+        "pass": 12
+      },
+      "packages": {
+        "pass": 3
+      }
+    },
+    {
+      "name": "final-race",
+      "path": "final-race.jsonl.gz",
+      "sha256": "c26aaae2afcd5efbb4b52fb167f4e2faf53af7b38669095e67f19db6d1e39943",
+      "tests": {
+        "pass": 18
+      },
+      "packages": {
+        "pass": 4
+      }
+    },
+    {
+      "name": "minimum",
+      "path": "minimum.jsonl.gz",
+      "sha256": "97e8685c8b84985171dd359ef3a8a5d247b12d8c403af0508bf810150520eb40",
+      "tests": {
+        "pass": 18
+      },
+      "packages": {
+        "pass": 4
+      }
+    },
+    {
+      "name": "startup-error-race",
+      "path": "startup-error-race.jsonl.gz",
+      "sha256": "e31492f9646cc0aefae31b131daf22435208d374e1edc62ae47deed4cf02034f",
+      "tests": {
+        "pass": 1
+      },
+      "packages": {
+        "pass": 1
+      }
+    },
+    {
+      "name": "startup-error-minimum",
+      "path": "startup-error-minimum.jsonl.gz",
+      "sha256": "60a6b34dd44f7241c3567348e87bd8abf860744c37c83eb48821347c982ffabc",
+      "tests": {
+        "pass": 1
+      },
+      "packages": {
+        "pass": 1
+      }
+    }
+  ],
+  "settings_packages": "Both complete shared settings packages pass after adding the new descriptor, CLI facade, and deployment samples.",
+  "full_verification": "Session 25128 is active. Ordinary Go checks and all 73 verifier tests pass. The full race suite is running. Inspect /tmp/starmap-source-selection-full-verification.log.",
+  "remaining": [
+    "Full repository verification",
+    "Required pre-PR reviews",
+    "Merge the preceding range and scheduled-source candidates",
+    "Publish and merge this candidate",
+    "Complete the remaining CSP3 acceptance contracts"
+  ],
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "0db4373c41827837130b362fdcb8e87a038d63de24aa1c8378707266b7acda3f"
+    },
+    {
+      "path": "acquisition/runtime.go",
+      "sha256": "50b451c34b7d4e01105d30b3b581c21f3750fc875746fd84499f28c04b69b172"
+    },
+    {
+      "path": "acquisition/source_acquirer.go",
+      "sha256": "1b2bb6ee9fe31503d2f13cbf35e30b408b7ccdea6101fe036137779e503fc4f6"
+    },
+    {
+      "path": "acquisition/source_acquirer_test.go",
+      "sha256": "67ec81c8a646e93213b6e2e5c90ce67d93c1e30549707cb9bbc1510d0d464774"
+    },
+    {
+      "path": "acquisition/source_selection_test.go",
+      "sha256": "97594dbda4a7f5978100229f004d52af609a6a66c60218e84ebd903318170260"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "9ff1d41071690777a215806c62634b9c63f11eaafd453dbaac7eefd381fa72f9"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "49faff7fe18c6a087ff6d94fb5145e89a1cea941ac58e73f17d41b304ebb54b8"
+    },
+    {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "sha256": "833bc6bc26d856ab845a8127bcc4c872a5cc83e04f21b00d394b9780f1d2d902"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "sha256": "44bb0d2d9153232552f43e62e88a077d9eabf8bedbaaf3c958dcd3bdd7dc7b5c"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "sha256": "25fce9bead9592671ef4aeeeb0a8f48229a3d957a4e6efec473059cb9c13350a"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "sha256": "3418b82581d49f5410c8be7560df51b7e96d119b54514526751cfd161ba2a7a1"
+    },
+    {
+      "path": "internal/cli/app/catalog_scheduled_sources_test.go",
+      "sha256": "e20de524a025c436db2a368b640ce3847b4f66f832e873521ef657e9ea73ec1b"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_sources.go",
+      "sha256": "86e787348dac09527a185dfb867dff4a84308aa901712b35acc788167261dcaf"
+    },
+    {
+      "path": "pkg/catalogs/config/acquisition_sources_test.go",
+      "sha256": "6afe1fb981da4237fe54d2003900fa477783eece3f649244c55cd235e4677818"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "sha256": "16f8e8f574c3ad80475e27bc1ac51b32eeeec9db4b3bc27ac4bb7752d98ed80b"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "2b2fd2d924a8bf817f090411c30619cc9a84582f07f0b19e1a63ae72e2dbdcd3"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "895acb2fb2fa3b087c6de4e407c7b5ba386292fc833b59cfb86484c596b071e9"
+    },
+    {
+      "path": "pkg/sources/README.md",
+      "sha256": "cd196ee639579b3e1765f3f7352eeef53f09b82ee60bd93406e05ce9d5490dbe"
+    },
+    {
+      "path": "pkg/sources/acquisition_selection.go",
+      "sha256": "d38f40513c18e9a7ec2952d6b037bb463200179cca1c1b8bd184360aca3969d0"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "2b3d2ddd37913891072d3bcb5f479c3ee6d65895e4097b3103c057f61a96093f"
+    },
+    {
+      "path": "runtime/acquisition_policy_publication.go",
+      "sha256": "6b5f0b7def58de3d11c4fc445a300eb34b922ccf22acc744499db2f8cc60b2cf"
+    },
+    {
+      "path": "runtime/acquisition_source_policy.go",
+      "sha256": "f0ba2e594aa86b1c347c57787a5924c9a73f23f4657c18ed4cc595c4fd2d5bf5"
+    },
+    {
+      "path": "runtime/acquisition_source_policy_test.go",
+      "sha256": "98000306bfede8ff6bbc946c6f2237fefc3e76f18be1b627dfbb8ff20880330d"
+    },
+    {
+      "path": "runtime/acquisition_update.go",
+      "sha256": "e436a9316c4855630621711734026abf7888a7bf94dbe413089105f89018907c"
+    },
+    {
+      "path": "runtime/layers.go",
+      "sha256": "85a227b898574c66fb8ccccd25bd9181d13c4e0f25f39918b604217be136b3e4"
+    },
+    {
+      "path": "runtime/manual_reconciliation.go",
+      "sha256": "f5028a6f3715bb8b70701c6378033d404ee665af1ad54f5204c05f3fa0bb310c"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "583e990c0e719818078d13f9aa837f05406d42e20d096d8ab662d7d98e1fde6d"
+    },
+    {
+      "path": "runtime/provider_policy_publication.go",
+      "sha256": null
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "sha256": "de7eddfaaf85cb0daa21c763e15a3623302847896f94cc1ac9bc83fa167885ff"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "c6112a6c6808ab574f388c608c66614123fba35e58f85f5a0651efb99d16a76e"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "485e5b04bcdd2ec054fc249e299d8c31993db212c6b0f660caed281a41a32a12"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "sha256": "f8389d096646e6dcb420e0df8b29c026dcf71c387532cc99e2bd82c7af41aa1e"
+    },
+    {
+      "path": "runtime/source_acquisition.go",
+      "sha256": "d49b9bc3496bdc7c86a8973152f7552bac10a515e9121cae7e20708879b6f09d"
+    }
+  ],
+  "task_completion_credit": false,
+  "additional_artifacts": [
+    {
+      "path": "settings-first.log.gz",
+      "sha256": "c0327c22c3b39dd91fb18416c15c513e8a79e5a51910f2156ae5e24b8af7d471"
+    },
+    {
+      "path": "settings-second.log.gz",
+      "sha256": "5596d125d83bfcc1291447a7700f3f7642a4e28cb0e441ac3807cb1bd7ef73ec"
+    },
+    {
+      "path": "settings-complete.log.gz",
+      "sha256": "755149bb8af7e5c4f651920121a324013c5535edcf7539f95a841f03a3e816df"
+    },
+    {
+      "path": "ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "b9a8db85c3b67d56c0a0cd0c82b3b7bdfaf359bb122925949c4646e657d2f6c3"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+    }
+  ],
+  "final_assertion": "PASS: the startup test proves fs.ErrPermission with race detection and Go 1.25.12."
+}
