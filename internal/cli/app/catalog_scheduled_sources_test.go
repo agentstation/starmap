@@ -1,0 +1,286 @@
+package app
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"os"
+	"path/filepath"
+	"strconv"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"github.com/agentstation/starmap/internal/constants"
+	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
+	"github.com/agentstation/starmap/pkg/sources"
+	"github.com/agentstation/starmap/runtime"
+)
+
+func TestConnectedRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testConnectedSourceIngestion(t, false)
+}
+
+func TestScheduledRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testConnectedSourceIngestion(t, true)
+}
+
+func TestConfiguredSourceSelectionSkipsMetadataInApplication(t *testing.T) {
+	for _, automatic := range []bool{false, true} {
+		t.Run(strconv.FormatBool(automatic), func(t *testing.T) { testConnectedSourceIngestion(t, automatic, string(sources.ProvidersID)) })
+	}
+}
+
+func testConnectedSourceIngestion(t *testing.T, automatic bool, selection ...string) {
+	clearCatalogEnvironment(t)
+	t.Setenv("STARMAP_HOME", t.TempDir())
+	modelsPayload := ingestionMetadataPayload(t)
+	var temperature atomic.Bool
+	var metadataCalls atomic.Int32
+	metadataServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		metadataCalls.Add(1)
+		if r.URL.Path != "/api.json" {
+			t.Errorf("metadata path %s", r.URL.Path)
+		}
+		var payload map[string]any
+		if err := json.Unmarshal(modelsPayload, &payload); err != nil {
+			t.Error(err)
+			return
+		}
+		provider, ok := payload["acme"].(map[string]any)
+		if !ok {
+			t.Error("fixture provider absent")
+			return
+		}
+		models := provider["models"].(map[string]any)
+		model, ok := models["known"].(map[string]any)
+		if !ok {
+			t.Error("fixture model absent")
+			return
+		}
+		model["temperature"] = temperature.Load()
+		model["description"] = "Metadata fixture"
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(payload); err != nil {
+			t.Error(err)
+		}
+	}))
+	t.Cleanup(metadataServer.Close)
+	metadataURL, err := url.Parse(metadataServer.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	originalTransport := http.DefaultTransport
+	http.DefaultTransport = ingestionFixtureTransport(func(request *http.Request) (*http.Response, error) {
+		if request.URL.Hostname() == "models.dev" {
+			copy := request.Clone(request.Context())
+			copy.URL.Scheme, copy.URL.Host = metadataURL.Scheme, metadataURL.Host
+			return originalTransport.RoundTrip(copy)
+		}
+		if request.URL.Hostname() != "127.0.0.1" && request.URL.Hostname() != "::1" {
+			return nil, fmt.Errorf("unexpected external host %s", request.URL.Hostname())
+		}
+		return originalTransport.RoundTrip(request)
+	})
+	t.Cleanup(func() { http.DefaultTransport = originalTransport })
+	var limit atomic.Int64
+	var partial atomic.Bool
+	var failed atomic.Bool
+	var calls atomic.Int32
+	limit.Store(131072)
+	api := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls.Add(1)
+		if failed.Load() {
+			http.Error(w, "fixture unavailable", http.StatusServiceUnavailable)
+			return
+		}
+		if r.URL.Path != "/models" {
+			t.Errorf("unexpected catalog path %s", r.URL.Path)
+		}
+		records := []map[string]any{{"id": "known", "object": "model", "name": "API name", "context_window": limit.Load()}}
+		if partial.Load() {
+			records = append(records, map[string]any{"object": "model"})
+		}
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(map[string]any{"object": "list", "data": records}); err != nil {
+			t.Error(err)
+		}
+	}))
+	t.Cleanup(api.Close)
+	workspace := catalogs.NewEmpty()
+	if err := workspace.SetAuthor(catalogs.Author{ID: "acme", Name: "Acme"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := workspace.SetAuthorModel("acme", catalogs.Model{ID: "known", Name: "Known", Authors: []catalogs.Author{{ID: "acme", Name: "Acme"}}}); err != nil {
+		t.Fatal(err)
+	}
+	credentials := testcatalog.APIKeyCredentials("ACME_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer)
+	provider := catalogs.Provider{ID: "acme", Name: "Acme", Credentials: credentials, Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: api.URL + "/models", ProtocolOptions: testcatalog.OpenAIProtocolOptions(), FieldMappings: []catalogs.FieldMapping{{From: "context_window", To: "limits.context_window"}}}}, Models: map[string]*catalogs.Model{"known": {ID: "known", ModelRef: "acme/known", Name: "Reviewed offering"}}}
+	if err := workspace.SetProvider(provider); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(t.TempDir(), "workspace")
+	if err := workspace.SaveTo(path); err != nil {
+		t.Fatal(err)
+	}
+	baselinePath := filepath.Join(t.TempDir(), "baseline.json")
+	payload, err := catalogs.EncodeCatalogPayload(workspace)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(baselinePath, payload, constants.SecureFilePermissions); err != nil {
+		t.Fatal(err)
+	}
+	open := func() *App {
+		values := map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: baselinePath, catalogconfig.SourceStartupPolicy: "require_source", catalogconfig.AcquisitionEnabled: strconv.FormatBool(automatic), catalogconfig.AcquisitionInterval: "0s", catalogconfig.StartupSpread: "0s", catalogconfig.SourcePollInterval: "0s"}
+		if len(selection) != 0 {
+			values[catalogconfig.AcquisitionSources] = selection[0]
+		}
+		application, err := New("test", "test", "test", "test", WithConfig(&Config{Quiet: true, CatalogPath: path, CatalogValues: values}))
+		if err != nil {
+			t.Fatal(err)
+		}
+		application.credentialResolver = sources.ProviderCredentialResolverFunc(func(_ context.Context, p *catalogs.Provider) (sources.ProviderCredentialMaterial, error) {
+			return testcatalog.APIKeyMaterial(p.Credentials, "fixture-key"), nil
+		})
+		t.Cleanup(func() {
+			if err := application.Shutdown(context.Background()); err != nil {
+				t.Error(err)
+			}
+		})
+		return application
+	}
+	application := open()
+	connected, err := application.Runtime(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if automatic {
+		ctx, cancel := context.WithTimeout(t.Context(), 30*time.Second)
+		defer cancel()
+		timer := time.NewTicker(10 * time.Millisecond)
+		defer timer.Stop()
+		for connected.Status().AcquisitionHealth == runtime.HealthUnknown {
+			select {
+			case <-ctx.Done():
+				t.Fatal("automatic source acquisition did not finish")
+			case <-timer.C:
+			}
+		}
+	} else {
+		report, err := connected.Sync(t.Context(), "acme")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if report.Succeeded != 1 {
+			t.Fatalf("provider acquisition report=%+v", report)
+		}
+	}
+	if calls.Load() != 1 {
+		t.Fatalf("provider calls = %d, want 1", calls.Load())
+	}
+	wantMetadataCalls, wantDescription := int32(1), "Metadata fixture"
+	if len(selection) != 0 {
+		wantMetadataCalls, wantDescription = 0, ""
+	}
+	if metadataCalls.Load() != wantMetadataCalls {
+		t.Fatalf("metadata calls=%d, want %d", metadataCalls.Load(), wantMetadataCalls)
+	}
+	observed, err := connected.State().Catalog.Provider("acme")
+	if err != nil {
+		t.Fatal(err)
+	}
+	model := observed.Models["known"]
+	if model == nil || model.Description != wantDescription || model.Limits == nil || model.Limits.ContextWindow != 131072 {
+		t.Fatalf("connected catalog did not combine provider and metadata facts: %+v", model)
+	}
+	assertCurrent := func(wantTemperature bool) {
+		t.Helper()
+		provider, err := connected.State().Catalog.Provider("acme")
+		if err != nil {
+			t.Fatal(err)
+		}
+		current := provider.Models["known"]
+		if current == nil || current.Limits == nil || current.Limits.ContextWindow != 262144 || current.Description != wantDescription {
+			t.Fatalf("connected refresh lost the selected facts: %+v", current)
+		}
+		if len(selection) == 0 && (current.Features == nil || current.Features.Temperature != wantTemperature) {
+			t.Fatalf("metadata temperature = %+v, want %t", current.Features, wantTemperature)
+		}
+	}
+	clearMetadata := func() {
+		t.Helper()
+		directories, err := application.SourceDirectories()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.RemoveAll(filepath.Join(directories.Cache, "models.dev")); err != nil {
+			t.Fatal(err)
+		}
+	}
+	initial := connected.State()
+	limit.Store(262144)
+	temperature.Store(true)
+	partial.Store(true)
+	clearMetadata()
+	report, err := connected.Sync(t.Context(), "acme")
+	if err != nil || report.Health != runtime.HealthDegraded {
+		t.Fatalf("partial connected refresh: report=%+v error=%v", report, err)
+	}
+	assertCurrent(true)
+	changed := connected.State()
+	if changed.GenerationID == initial.GenerationID || changed.PayloadChecksum == initial.PayloadChecksum {
+		t.Fatal("changed provider and metadata inputs kept the old generation")
+	}
+	generation, err := connected.Client().Generation(t.Context(), changed.GenerationID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	providerReceipts := changed.Catalog.Provenance().FindModelField("acme", "known", "limits.context_window")
+	if len(providerReceipts) != 1 || !generation.Manifest.Degraded {
+		t.Fatal("partial provider facts lost their receipt or degraded status")
+	}
+	bound := false
+	for _, link := range generation.Manifest.SourceObservations {
+		if link.Source == sources.ProvidersID && link.ObservationID == providerReceipts[0].ObservationID && link.EvidenceChecksum == providerReceipts[0].EvidenceChecksum && link.Status == sources.ObservationStatusDegraded && link.Completeness == sources.ObservationCompletenessPartial {
+			bound = true
+		}
+	}
+	if !bound {
+		t.Fatal("partial provider facts have no matching immutable manifest receipt")
+	}
+	failed.Store(true)
+	temperature.Store(false)
+	clearMetadata()
+	report, err = connected.Sync(t.Context(), "acme")
+	if report.Failed != 1 || report.Health == runtime.HealthOK {
+		t.Fatalf("failed provider reported success: report=%+v error=%v", report, err)
+	}
+	assertCurrent(false)
+	if len(selection) != 0 && metadataCalls.Load() != 0 {
+		t.Fatal("disabled metadata source ran during a later refresh")
+	}
+	accepted := connected.State()
+	providerCallsBefore, metadataCallsBefore := calls.Load(), metadataCalls.Load()
+	if err := application.Shutdown(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	automatic = false
+	application = open()
+	connected, err = application.Runtime(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertCurrent(false)
+	if connected.State().GenerationID != accepted.GenerationID || connected.State().PayloadChecksum != accepted.PayloadChecksum {
+		t.Fatal("restart changed the retained catalog generation")
+	}
+	if calls.Load() != providerCallsBefore || metadataCalls.Load() != metadataCallsBefore {
+		t.Fatal("restart contacted a disabled acquisition source")
+	}
+}

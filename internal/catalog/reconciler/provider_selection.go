@@ -39,6 +39,18 @@ func WithProviderObservationSelection(input map[string][]catalogs.ProviderID) Op
 }
 
 func (s providerObservationSelection) permits(observation sources.Observation, provider catalogs.ProviderID) bool {
+	if observation.SourceID == sources.ProvidersID {
+		for _, issue := range observation.Issues {
+			if issue.Scope != sources.ObservationIssueScopeProvider || issue.Subject != string(provider) {
+				continue
+			}
+			switch issue.Code {
+			case sources.ObservationIssueCodeMissingCredentials, sources.ObservationIssueCodeConfiguration,
+				sources.ObservationIssueCodeFetchFailed, sources.ObservationIssueCodeSchemaDrift:
+				return false
+			}
+		}
+	}
 	selected, exists := s[observation.ID]
 	return !exists || selected[provider]
 }

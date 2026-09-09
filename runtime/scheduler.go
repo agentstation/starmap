@@ -126,7 +126,7 @@ func (r *Runtime) startSchedules() {
 			})
 		})
 	}
-	if r.config.acquisition.Enabled && r.config.acquirer != nil {
+	if r.config.acquisition.Enabled && r.hasAcquisition() {
 		interval := r.config.acquisition.Interval
 		offset := r.schedule.acquisitionOffset
 		phase := r.schedule.acquisitionPhase
@@ -163,10 +163,14 @@ func (r *Runtime) sourceNeedsStartupPass() bool {
 	return r.pastWarnAge(observed, r.config.freshness.SourceCheckWarnAge)
 }
 
-// acquisitionNeedsStartupPass reports whether the acquisition worker observes
-// providers once right after its startup offset. A runtime with no retained
-// provider layer, or with one layer past the acquisition warning age, is cold.
+// acquisitionNeedsStartupPass selects a pass after the startup offset.
+// A source acquirer rechecks its configured inputs because retained provider
+// timestamps cannot prove freshness for local or metadata sources.
+// Provider-only acquisition checks retained layers against the warning age.
 func (r *Runtime) acquisitionNeedsStartupPass() bool {
+	if r.config.sourceAcquirer != nil && r.config.acquisitionSources.permitsMetadata() {
+		return true
+	}
 	r.mu.RLock()
 	var oldest time.Time
 	retained := 0

@@ -20,13 +20,13 @@ import (
 type runKind string
 
 const (
-	// runKindRefresh reads the source and then observes the providers.
+	// runKindRefresh reads the upstream and then observes acquisition sources.
 	runKindRefresh runKind = "refresh"
 
 	// runKindSource reads the selected upstream source only.
 	runKindSource runKind = "source"
 
-	// runKindAcquisition observes providers only.
+	// runKindAcquisition observes configured acquisition sources.
 	runKindAcquisition runKind = "acquisition"
 
 	// Manual batches have distinct inputs and must never join another caller's run.
@@ -73,7 +73,7 @@ type SourceRefreshReport struct {
 	Chain []SourceHop
 }
 
-// AcquisitionReport says what one provider acquisition run produced. A partial
+// AcquisitionReport says what one acquisition run produced. A partial
 // failure still publishes: the report names the providers that kept their own
 // last-known-good observation.
 type AcquisitionReport struct {
@@ -94,6 +94,9 @@ type AcquisitionReport struct {
 
 	// Attempts holds one terminal attempt per eligible provider or binding.
 	Attempts []sources.ProviderAttempt
+
+	// SourceObservations binds each non-provider result to its original receipt.
+	SourceObservations []catalogs.SourceObservationLink
 
 	// Published reports whether the runtime published a new effective catalog.
 	Published bool
@@ -126,7 +129,7 @@ type RefreshReport struct {
 	// Source reports the upstream read.
 	Source SourceRefreshReport
 
-	// Acquisition reports the provider observations.
+	// Acquisition reports provider attempts and non-provider observations.
 	Acquisition AcquisitionReport
 
 	// Published reports whether the runtime published a new effective catalog.
@@ -251,15 +254,15 @@ func (g *runGroup) cancelActive() {
 	}
 }
 
-// Refresh reads the upstream source and then observes every eligible provider.
-// It changes the source layer and the provider layers in one run.
+// Refresh reads the upstream and then observes configured acquisition sources.
+// It changes the upstream layer and acquisition inputs in one run.
 func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error) {
 	return r.execute(ctx, runKindRefresh, func(runCtx context.Context, report *RefreshReport, epoch uint64) error {
 		sourceErr := r.readSource(runCtx, report, epoch)
-		if r.config.acquirer == nil {
+		if !r.hasAcquisition() {
 			return sourceErr
 		}
-		acquireErr := r.acquireProviders(runCtx, report, nil, epoch)
+		acquireErr := r.acquire(runCtx, report, nil, epoch)
 		return stderrors.Join(sourceErr, acquireErr)
 	})
 }
@@ -272,17 +275,17 @@ func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error
 	return report.Source, err
 }
 
-// Sync observes providers only. It changes the provider layers and returns the
-// acquisition report. An empty provider list observes every eligible provider.
+// Sync observes configured provider and non-provider sources.
+// An empty provider list observes every eligible provider scope.
 func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (AcquisitionReport, error) {
 	report, err := r.execute(ctx, runKindAcquisition, func(runCtx context.Context, report *RefreshReport, epoch uint64) error {
-		if r.config.acquirer == nil {
+		if !r.hasAcquisition() {
 			return &errors.ConfigError{
 				Component: "acquirer",
-				Message:   "provider acquisition needs an injected acquirer",
+				Message:   "no configured acquisition source is eligible",
 			}
 		}
-		return r.acquireProviders(runCtx, report, providers, epoch)
+		return r.acquire(runCtx, report, providers, epoch)
 	})
 	return report.Acquisition, err
 }
@@ -571,7 +574,6 @@ func (r *Runtime) acquireProviders(
 	if validationErr != nil {
 		result.Health = HealthDegraded
 		combined := stderrors.Join(err, validationErr)
-		r.recordAcquisition(result, combined)
 		report.Acquisition = result
 		return combined
 	}
@@ -598,7 +600,6 @@ func (r *Runtime) acquireProviders(
 		if publishErr != nil {
 			result.Health = HealthDegraded
 			combined := stderrors.Join(err, publishErr)
-			r.recordAcquisition(result, combined)
 			report.Acquisition = result
 			return combined
 		}
@@ -619,18 +620,18 @@ func (r *Runtime) acquireProviders(
 	r.mu.RUnlock()
 	result.Retained = slices.Compact(result.Retained)
 
-	r.recordAcquisition(result, err)
 	report.Acquisition = result
 	return err
 }
 
-// recordAcquisition stores what Status reports about the last provider run.
+// recordAcquisition stores what Status reports about the last acquisition run.
 func (r *Runtime) recordAcquisition(result AcquisitionReport, err error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.report.acquisitionStartedAt = result.StartedAt
 	r.report.acquisitionHealth = result.Health
 	r.report.attempts = result.Attempts
+	r.report.sourceObservations = slices.Clone(result.SourceObservations)
 	if err == nil {
 		r.report.acquisitionSucceededAt = result.CompletedAt
 	}

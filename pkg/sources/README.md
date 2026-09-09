@@ -17,6 +17,8 @@ Package sources provides public APIs for working with AI model data sources.
 ## Index
 
 - [Constants](<#constants>)
+- [func IsExactGitCommit\(value string\) bool](<#IsExactGitCommit>)
+- [func ValidateAcquisitionSelection\(ids \[\]ID\) error](<#ValidateAcquisitionSelection>)
 - [func ValidateJSONPayload\(data \[\]byte\) error](<#ValidateJSONPayload>)
 - [type Dependency](<#Dependency>)
 - [type DependencyStatus](<#DependencyStatus>)
@@ -202,6 +204,24 @@ const MaxProviderBindingFieldBytes = 4096
 ```go
 const ProviderAcquisitionBindingSchemaVersion = 1
 ```
+
+<a name="IsExactGitCommit"></a>
+## func [IsExactGitCommit](<https://github.com/agentstation/starmap/blob/main/pkg/sources/acquisition_selection.go#L6>)
+
+```go
+func IsExactGitCommit(value string) bool
+```
+
+IsExactGitCommit reports whether value is a complete SHA\-1 or SHA\-256 Git commit.
+
+<a name="ValidateAcquisitionSelection"></a>
+## func [ValidateAcquisitionSelection](<https://github.com/agentstation/starmap/blob/main/pkg/sources/acquisition_selection.go#L12>)
+
+```go
+func ValidateAcquisitionSelection(ids []ID) error
+```
+
+ValidateAcquisitionSelection checks the explicit local acquisition source set. An empty set permits no acquisition. Distribution baselines remain separate.
 
 <a name="ValidateJSONPayload"></a>
 ## func [ValidateJSONPayload](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload.go#L9>)

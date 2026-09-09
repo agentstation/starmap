@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/sources"
 	"os"
 	"path/filepath"
 	"slices"
@@ -51,13 +52,14 @@ type sourceLayer struct {
 // layerSet holds the inputs that produce the effective catalog: the embedded
 // baseline, selected upstream source, provider observations, and manual history.
 type layerSet struct {
-	embedded         starmap.CatalogState
-	source           *sourceLayer
-	providers        map[providerEvidenceKey]ProviderLayer
-	manual           *manualBatch
-	sequence         uint64
-	providerBindings *providerBindingPolicy
-	buildEvidence    starmap.CandidateEvidence
+	embedded           starmap.CatalogState
+	source             *sourceLayer
+	providers          map[providerEvidenceKey]ProviderLayer
+	manual             *manualBatch
+	sequence           uint64
+	providerBindings   *providerBindingPolicy
+	acquisitionSources *acquisitionSourcePolicy
+	buildEvidence      starmap.CandidateEvidence
 }
 
 // empty reports whether any retained layer sits above the embedded baseline.
@@ -80,7 +82,7 @@ func (l *layerSet) providerOrder() []providerEvidenceKey {
 func (l *layerSet) activeProviderOrder() []providerEvidenceKey {
 	order := l.providerOrder()
 	return slices.DeleteFunc(order, func(key providerEvidenceKey) bool {
-		return !l.providerBindings.permits(l.providers[key])
+		return !l.acquisitionSources.permits(sources.ProvidersID) || !l.providerBindings.permits(l.providers[key])
 	})
 }
 
@@ -168,6 +170,12 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		}
 	} else if len(l.buildEvidence.SourceObservations) > 0 && state.GenerationID != "" {
 		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, identityChecksum)
+	}
+	if l.acquisitionSources != nil {
+		state.GenerationID, err = l.acquisitionSources.generationID(state.GenerationID, identityChecksum)
+		if err != nil {
+			return starmap.CatalogState{}, err
+		}
 	}
 	return state, nil
 }

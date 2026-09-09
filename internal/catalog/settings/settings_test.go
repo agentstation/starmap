@@ -30,6 +30,8 @@ func sampleValues() map[string]string {
 		settings.SourceMaxHops:        "4",
 		settings.SourceAliases:        "replica-a,replica-b",
 		settings.AcquisitionEnabled:   "false",
+		settings.AcquisitionSources:   "providers",
+		settings.ModelsDevGitCommit:   strings.Repeat("a", 40),
 		settings.AcquisitionInterval:  "2h",
 		settings.ProviderBindings:     "[]",
 		settings.CoalesceWindow:       "45s",

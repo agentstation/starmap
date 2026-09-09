@@ -22,6 +22,8 @@ const (
 	SourceMaxAge         = catalogconfig.SourceMaxAge
 	SourceMaxHops        = catalogconfig.SourceMaxHops
 	SourceAliases        = catalogconfig.SourceAliases
+	AcquisitionSources   = catalogconfig.AcquisitionSources
+	ModelsDevGitCommit   = catalogconfig.ModelsDevGitCommit
 	AcquisitionEnabled   = catalogconfig.AcquisitionEnabled
 	AcquisitionInterval  = catalogconfig.AcquisitionInterval
 	ProviderBindings     = catalogconfig.ProviderBindings

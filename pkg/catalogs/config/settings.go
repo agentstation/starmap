@@ -60,8 +60,15 @@ const (
 	// a self reference.
 	SourceAliases = Prefix + "CATALOG_SOURCE_ALIASES"
 
-	// AcquisitionEnabled turns automatic provider acquisition on or off.
+	// AcquisitionEnabled turns all automatic acquisition on or off.
 	AcquisitionEnabled = Prefix + "CATALOG_ACQUISITION_ENABLED"
+
+	// AcquisitionSources selects permitted local acquisition source IDs.
+	// An explicit empty value disables all local acquisition inputs.
+	AcquisitionSources = Prefix + "CATALOG_ACQUISITION_SOURCES"
+
+	// ModelsDevGitCommit pins models.dev Git acquisition to one exact commit.
+	ModelsDevGitCommit = Prefix + "CATALOG_MODELS_DEV_GIT_COMMIT"
 
 	// AcquisitionInterval is the acquisition period. Zero means one startup
 	// pass while acquisition stays enabled.
@@ -229,6 +236,8 @@ func table() []setting {
 			name: AcquisitionEnabled, flag: "catalog-acquisition-enabled",
 			apply: boolOption(AcquisitionEnabled, runtime.WithAcquisitionEnabled),
 		},
+		{name: AcquisitionSources, flag: "catalog-acquisition-sources", apply: acquisitionSourcesOption},
+		{name: ModelsDevGitCommit, flag: "catalog-models-dev-git-commit", apply: modelsDevGitCommitOption},
 		{
 			name: AcquisitionInterval, flag: "catalog-acquisition-interval",
 			apply: durationOption(AcquisitionInterval, runtime.WithAcquisitionInterval),

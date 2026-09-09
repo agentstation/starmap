@@ -222,7 +222,7 @@ func validateRevision(r Revision) error {
 		if strings.TrimSpace(r.Value) == "" {
 			return observationValidationError("revision.value", r.Value, "is required")
 		}
-		if (len(r.Value) != 40 && len(r.Value) != 64) || !isHex(r.Value) {
+		if !IsExactGitCommit(r.Value) {
 			return observationValidationError("revision.value", r.Value, "must be an exact hexadecimal Git commit")
 		}
 		if r.InputName == "" || r.InputChecksum == "" {

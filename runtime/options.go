@@ -35,9 +35,11 @@ type options struct {
 	sourceToken  string
 	sourceAPIKey string
 
-	acquisition      AcquisitionPolicy
-	providerBindings *providerBindingPolicy
-	freshness        FreshnessPolicy
+	acquisition        AcquisitionPolicy
+	providerBindings   *providerBindingPolicy
+	acquisitionSources *acquisitionSourcePolicy
+	modelsDevGitCommit *string
+	freshness          FreshnessPolicy
 
 	// freshnessExplicit records that a caller supplied a freshness policy. An
 	// explicit policy wins, so the source maximum age derives no threshold.
@@ -57,9 +59,10 @@ type options struct {
 	schedulerIdentity string
 	listenAddress     string
 
-	customSource Source
-	acquirer     Acquirer
-	leaseStore   LeaseStore
+	customSource   Source
+	acquirer       Acquirer
+	sourceAcquirer SourceAcquirer
+	leaseStore     LeaseStore
 
 	now    func() time.Time
 	random Random
@@ -336,7 +339,7 @@ func WithSource(source Source) Option {
 	}
 }
 
-// WithAcquisitionEnabled turns scheduled provider acquisition on or off.
+// WithAcquisitionEnabled turns all scheduled acquisition on or off.
 func WithAcquisitionEnabled(enabled bool) Option {
 	return func(r *options) error {
 		r.acquisition.Enabled = enabled
@@ -344,7 +347,7 @@ func WithAcquisitionEnabled(enabled bool) Option {
 	}
 }
 
-// WithAcquisitionInterval sets the provider acquisition period. Zero selects
+// WithAcquisitionInterval sets the acquisition period. Zero selects
 // one startup pass and no periodic work.
 func WithAcquisitionInterval(interval time.Duration) Option {
 	return func(r *options) error {
@@ -359,8 +362,7 @@ func WithAcquisitionInterval(interval time.Duration) Option {
 }
 
 // WithAcquirer injects the provider acquisition composition. The root package
-// selects no concrete provider client, so a runtime without an acquirer runs
-// source refresh only.
+// selects no concrete provider client. Non-provider acquisition uses WithSourceAcquirer.
 func WithAcquirer(acquirer Acquirer) Option {
 	return func(r *options) error {
 		if acquirer == nil {
