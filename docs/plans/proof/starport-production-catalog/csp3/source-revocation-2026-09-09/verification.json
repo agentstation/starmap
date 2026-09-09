@@ -36,7 +36,8 @@
     "csp3_current_acceptance": {
       "session": 81926,
       "head": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
-      "log": "/tmp/starmap-csp3-current-acceptance-2026-09-09.log"
+      "log": "/tmp/starmap-csp3-current-acceptance-2026-09-09.log",
+      "qualification": "Diagnostic only. The worktree changed during this run, and the command did not pin GOTOOLCHAIN. Rerun against frozen final source before acceptance credit."
     }
   },
   "remaining": [

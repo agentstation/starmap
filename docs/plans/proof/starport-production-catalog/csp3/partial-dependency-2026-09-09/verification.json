@@ -1,0 +1,85 @@
+{
+  "status": "committed; focused, lint, Ago and prose pass; broader affected check running",
+  "worktree": "/tmp/starmap-source-revocation-2026-09-09",
+  "branch": "codex/catalog-source-revocation",
+  "base": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
+  "contract": "CSP3; ENGINEERING_SPEC.md section 6.3",
+  "fail_before": {
+    "test": "TestSourceAcquirerPreservesPartialDependencyFailure",
+    "exit_code": 1,
+    "test_events_failed": 1,
+    "observed": "Available local evidence survived, but the missing Git dependency became credential_reference_invalid and lost its typed cause."
+  },
+  "change": "Dependency resolution returns skipped-source errors separately from fatal errors. Prepared results preserve those errors. The connected collector retains typed failures beside available observations and avoids duplicate generic errors.",
+  "focused": {
+    "race": {
+      "exit_code": 0,
+      "test_events_passed": 12,
+      "packages_passed": 2
+    },
+    "minimum_go": {
+      "version": "1.25.12",
+      "exit_code": 0,
+      "test_events_passed": 12,
+      "packages_passed": 2
+    }
+  },
+  "method_correction": "Initial signature migration produced four-result assignments in three test sites. Compilation failed. Corrected assignments preserve all assertions; final runs pass.",
+  "lint": {
+    "exit_code": 0,
+    "findings": 0
+  },
+  "ago": {
+    "findings": 0,
+    "stale_ignores": 0,
+    "errors": 0
+  },
+  "running": {
+    "affected": {
+      "session": 77968,
+      "log": "/tmp/starmap-partial-dependency-affected.log"
+    }
+  },
+  "remaining": [
+    "Complete source-state inventory and operator projections.",
+    "Full combined qualification, required review, CI and merge.",
+    "A08 and A20 task acceptance."
+  ],
+  "task_completion_credit": false,
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "8109d2f50545b42951e684573941e126beee55d0bae4a72a003c70c67b23cadd"
+    },
+    {
+      "path": "repair-race.jsonl.gz",
+      "sha256": "33d43a96c916d7fa808eb5bcffe43c7c3c90d0a319c674ca310a346ee5e33761"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "sha256": "341c1f4bd671032fdf22bd33d8b870f974ea479719494b173d853e564737f6b2"
+    },
+    {
+      "path": "minimum.jsonl.gz",
+      "sha256": "c1851964de745530788f3dd1d193f4aa5e961230f331e1f2b1911ba670e99a75"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "8da8c250f2259da355094a6f4e445a95ff57d2cc37cd61447548bf4d760831aa"
+    }
+  ],
+  "head": "8bb928bad90d5480e9394bd517837ac483a7eabd",
+  "prose": {
+    "exit_code": 0,
+    "files": 1267,
+    "diagnostics": 0
+  }
+}
