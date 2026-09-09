@@ -13,6 +13,7 @@ import (
 	"github.com/agentstation/starmap/internal/catalog/settings"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/errors"
+	pkgsync "github.com/agentstation/starmap/pkg/sync"
 	"github.com/agentstation/starmap/runtime"
 )
 
@@ -121,6 +122,15 @@ func (a *App) composition(extra []runtime.Option) (settings.Composition, error) 
 	if paths.SourceFile.Path != "" {
 		resolvedExtras = append(resolvedExtras, runtime.WithSourceURL(paths.SourceFile.Path))
 	}
+	directories, err := a.SourceDirectories()
+	if err != nil {
+		return settings.Composition{}, err
+	}
+	sourceAcquirer, err := acquisition.NewSourceAcquirer(pkgsync.WithCatalogPath(paths.Workspace.Path), pkgsync.WithSourceDirectories(directories))
+	if err != nil {
+		return settings.Composition{}, err
+	}
+	resolvedExtras = append(resolvedExtras, runtime.WithSourceAcquirer(sourceAcquirer))
 	resolvedExtras = append(resolvedExtras, extra...)
 	return settings.Composition{Config: a.catalogSettings, Acquirer: acquirer, Base: base, Extra: resolvedExtras}, nil
 }

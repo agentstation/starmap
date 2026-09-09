@@ -405,7 +405,7 @@ Names other identities of this runtime for source cycle detection.
 
 ## catalog_acquisition_enabled
 
-Enables automatic provider acquisition.
+Enables automatic acquisition from configured provider and metadata sources.
 
 | Property | Value |
 |---|---|

@@ -12,6 +12,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -173,7 +174,7 @@ type Status struct {
 	// catalog still reports the degradation.
 	UpstreamHealth Health
 
-	// AcquisitionHealth is the state of the last provider acquisition run.
+	// AcquisitionHealth is the state of the last acquisition run.
 	AcquisitionHealth Health
 
 	// InstanceIdentity is the stable identity of this runtime inside a fleet.
@@ -198,6 +199,9 @@ type Status struct {
 
 	// Providers holds one terminal attempt per provider or binding of the last run.
 	Providers []sources.ProviderAttempt
+
+	// SourceObservations holds the last non-provider acquisition receipts.
+	SourceObservations []catalogs.SourceObservationLink
 
 	// StartedAt is when the runtime opened.
 	StartedAt time.Time

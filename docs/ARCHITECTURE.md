@@ -1361,8 +1361,26 @@ because it saves the document body.
 
 An acquisition interval of zero means one startup pass and no periodic work. A
 false `STARMAP_CATALOG_ACQUISITION_ENABLED` value disables every automatic
-acquisition. Scheduled acquisition also needs an injected acquirer, so a
-runtime without one runs source refresh only.
+acquisition. Explicit `Runtime.Sync` calls still run the configured acquirers.
+A runtime without an injected acquirer runs upstream source refresh only.
+
+The CLI and server compose provider acquisition with local and models.dev HTTP
+observations. Both source groups use one refresh lease and publish independently.
+A slow metadata request does not delay a completed provider publication window.
+The runtime retains original source receipts with each accepted generation.
+Failed or partial sources retain accepted facts and report degraded acquisition.
+
+Go callers add `runtime.WithSourceAcquirer` to select non-provider acquisition.
+`acquisition.NewSourceAcquirer` accepts `sync.WithSources` for local input or one
+models.dev transport. Git selection requires an exact commit and its configured
+dependencies. Missing selected dependencies report an error. The constructor
+reads no sources and installs no dependencies.
+
+A source acquirer rechecks after the configured startup delay on every restart.
+Provider timestamps cannot prove freshness for local or metadata sources.
+Periodic work then follows the existing stable schedule. Scheduled metadata
+uses the bounded input journal. If that journal reaches its limit, publication
+returns an error and keeps the accepted generation.
 
 `STARMAP_SCHEDULER_IDENTITY` replaces the derived identity. The derived value
 is the first 16 hex characters of a SHA-256 over a process-local seed, the host
@@ -1379,7 +1397,7 @@ The runtime publishes five times and grades four of them.
 | `generated_at` | When the served generation was built | `freshness` and `catalog_age_seconds` |
 | `channel_updated_at` | When the origin published the channel. Every hop carries the same value. | `channel_freshness` and `channel_age_seconds` |
 | the source check time | When this runtime last checked its own source | `source_check_freshness` |
-| the acquisition success time | When provider acquisition last succeeded | `acquisition_freshness` |
+| the acquisition success time | When the configured acquisition run last completed without an error | `acquisition_freshness` |
 | `started_at` | When `Open` returned | not graded |
 | `observed_at` | When the runtime built the report | not graded |
 
@@ -1420,7 +1438,8 @@ only the hosts its selected source names.
 | `starmap` | The configured `STARMAP_CATALOG_SOURCE_URL` origin | At the startup pass, for each stream event, and on the conditional polling fallback |
 | `file` and `embedded` | none | never |
 
-Scheduled provider acquisition adds the provider APIs of the injected acquirer.
+Scheduled acquisition adds the configured provider APIs and non-provider sources.
+The CLI and server default to models.dev HTTP for metadata acquisition.
 Sigstore verification adds no request, because the binary compiles in its
 trusted root. To stop every catalog request, set
 `STARMAP_CATALOG_SOURCE` to `embedded` and set

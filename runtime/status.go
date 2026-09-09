@@ -1,6 +1,8 @@
 package runtime
 
 import (
+	"github.com/agentstation/starmap/pkg/catalogs"
+	"slices"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/sources"
@@ -36,6 +38,7 @@ type statusState struct {
 	acquisitionSucceededAt time.Time
 	acquisitionHealth      Health
 	attempts               []sources.ProviderAttempt
+	sourceObservations     []catalogs.SourceObservationLink
 
 	lastRunID string
 }
@@ -59,22 +62,23 @@ func (r *Runtime) Status() Status {
 	r.mu.RUnlock()
 
 	report := Status{
-		Usable:            effective.Catalog != nil,
-		GenerationID:      effective.GenerationID,
-		PayloadChecksum:   effective.PayloadChecksum,
-		SourceHealth:      orUnknown(state.sourceHealth),
-		SourceReason:      state.sourceReason,
-		UpstreamHealth:    orUnknown(state.upstreamHealth),
-		AcquisitionHealth: orUnknown(state.acquisitionHealth),
-		SourceKind:        r.config.source.Kind,
-		ChannelUpdatedAt:  channelUpdatedAt,
-		InstanceIdentity:  r.schedule.identity.Instance,
-		Chain:             append([]SourceHop(nil), state.upstreamChain...),
-		Lease:             string(r.lease.status()),
-		LastRunID:         state.lastRunID,
-		Providers:         append([]sources.ProviderAttempt(nil), state.attempts...),
-		StartedAt:         state.startedAt,
-		ObservedAt:        now,
+		Usable:             effective.Catalog != nil,
+		GenerationID:       effective.GenerationID,
+		PayloadChecksum:    effective.PayloadChecksum,
+		SourceHealth:       orUnknown(state.sourceHealth),
+		SourceReason:       state.sourceReason,
+		UpstreamHealth:     orUnknown(state.upstreamHealth),
+		AcquisitionHealth:  orUnknown(state.acquisitionHealth),
+		SourceKind:         r.config.source.Kind,
+		ChannelUpdatedAt:   channelUpdatedAt,
+		InstanceIdentity:   r.schedule.identity.Instance,
+		Chain:              append([]SourceHop(nil), state.upstreamChain...),
+		Lease:              string(r.lease.status()),
+		LastRunID:          state.lastRunID,
+		Providers:          append([]sources.ProviderAttempt(nil), state.attempts...),
+		SourceObservations: slices.Clone(state.sourceObservations),
+		StartedAt:          state.startedAt,
+		ObservedAt:         now,
 	}
 	if r.source != nil {
 		report.SourceIdentity = r.source.Identity()

@@ -60,7 +60,7 @@ const (
 	// a self reference.
 	SourceAliases = Prefix + "CATALOG_SOURCE_ALIASES"
 
-	// AcquisitionEnabled turns automatic provider acquisition on or off.
+	// AcquisitionEnabled turns all automatic acquisition on or off.
 	AcquisitionEnabled = Prefix + "CATALOG_ACQUISITION_ENABLED"
 
 	// AcquisitionInterval is the acquisition period. Zero means one startup

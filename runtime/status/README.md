@@ -28,7 +28,7 @@ The package is a leaf. It reads no catalog source and opens no connection. A ser
 
 
 <a name="Freshness"></a>
-## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L66>)
+## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L67>)
 
 Freshness is the evaluated age of one observed timestamp.
 
@@ -55,7 +55,7 @@ const (
 ```
 
 <a name="Freshness.String"></a>
-### func \(Freshness\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L83>)
+### func \(Freshness\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L84>)
 
 ```go
 func (f Freshness) String() string
@@ -64,7 +64,7 @@ func (f Freshness) String() string
 String returns the wire value of the freshness level.
 
 <a name="Health"></a>
-## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L86>)
+## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L87>)
 
 Health is the operator\-facing state of one runtime component.
 
@@ -91,7 +91,7 @@ const (
 ```
 
 <a name="Health.String"></a>
-### func \(Health\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L103>)
+### func \(Health\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L104>)
 
 ```go
 func (h Health) String() string
@@ -100,7 +100,7 @@ func (h Health) String() string
 String returns the wire value of the health state.
 
 <a name="SourceHop"></a>
-## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L107-L112>)
+## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L108-L113>)
 
 SourceHop is one sanitized entry in an upstream source chain. A hop names the reporting identity and its health, never an address.
 
@@ -114,7 +114,7 @@ type SourceHop struct {
 ```
 
 <a name="SourceKind"></a>
-## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L21>)
+## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L22>)
 
 SourceKind names one supported upstream catalog source. Selection is terminal: a deployment that names a custom source never falls back to the public GitHub channel.
 
@@ -147,7 +147,7 @@ const (
 ```
 
 <a name="SourceKinds"></a>
-### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L53>)
+### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L54>)
 
 ```go
 func SourceKinds() []SourceKind
@@ -156,7 +156,7 @@ func SourceKinds() []SourceKind
 SourceKinds returns a caller\-owned copy of every accepted source name.
 
 <a name="SourceKind.Custom"></a>
-### func \(SourceKind\) [Custom](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L63>)
+### func \(SourceKind\) [Custom](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L64>)
 
 ```go
 func (k SourceKind) Custom() bool
@@ -165,7 +165,7 @@ func (k SourceKind) Custom() bool
 Custom reports whether the kind names a deployment\-owned source. A custom source never falls back to the public channel.
 
 <a name="SourceKind.String"></a>
-### func \(SourceKind\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L59>)
+### func \(SourceKind\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L60>)
 
 ```go
 func (k SourceKind) String() string
@@ -174,7 +174,7 @@ func (k SourceKind) String() string
 String returns the wire value of the source kind.
 
 <a name="SourceKind.Valid"></a>
-### func \(SourceKind\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L56>)
+### func \(SourceKind\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L57>)
 
 ```go
 func (k SourceKind) Valid() bool
@@ -183,7 +183,7 @@ func (k SourceKind) Valid() bool
 Valid reports whether the kind is one of the accepted source names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L117-L207>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L211>)
 
 Status is the operator\-facing state of one connected runtime. It keeps usability, freshness, fallback, direct source health, and upstream\-reported health as five independent values, so a warning on one never hides another.
 
@@ -247,7 +247,7 @@ type Status struct {
     // catalog still reports the degradation.
     UpstreamHealth Health
 
-    // AcquisitionHealth is the state of the last provider acquisition run.
+    // AcquisitionHealth is the state of the last acquisition run.
     AcquisitionHealth Health
 
     // InstanceIdentity is the stable identity of this runtime inside a fleet.
@@ -272,6 +272,9 @@ type Status struct {
 
     // Providers holds one terminal attempt per provider or binding of the last run.
     Providers []sources.ProviderAttempt
+
+    // SourceObservations holds the last non-provider acquisition receipts.
+    SourceObservations []catalogs.SourceObservationLink
 
     // StartedAt is when the runtime opened.
     StartedAt time.Time

@@ -331,7 +331,7 @@
       "anchor": "catalog-source-aliases"
     },
     {
-      "description": "Enables automatic provider acquisition.",
+      "description": "Enables automatic acquisition from configured provider and metadata sources.",
       "id": "catalog.acquisition.enabled",
       "name": "STARMAP_CATALOG_ACQUISITION_ENABLED",
       "key": "catalog_acquisition_enabled",

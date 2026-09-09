@@ -235,14 +235,14 @@ func (p SourcePolicy) SafeIdentity() string {
 // Acquisition policy defaults. Acquisition has exactly two settings: whether
 // it runs, and how often. No start-time or mode setting exists.
 const (
-	// DefaultAcquisitionInterval is the provider acquisition period.
+	// DefaultAcquisitionInterval is the acquisition period.
 	DefaultAcquisitionInterval = 4 * time.Hour
 )
 
-// AcquisitionPolicy configures scheduled provider acquisition. The policy is
+// AcquisitionPolicy configures all scheduled acquisition. The policy is
 // exactly one switch and one period.
 type AcquisitionPolicy struct {
-	// Enabled reports whether scheduled provider acquisition runs.
+	// Enabled reports whether scheduled acquisition runs.
 	Enabled bool
 
 	// Interval is the acquisition period. The scheduler places each instance

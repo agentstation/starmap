@@ -66,6 +66,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func WithSchedulerIdentity\(identity string\) Option](<#WithSchedulerIdentity>)
   - [func WithSource\(source Source\) Option](<#WithSource>)
   - [func WithSourceAPIKey\(key string\) Option](<#WithSourceAPIKey>)
+  - [func WithSourceAcquirer\(acquirer SourceAcquirer\) Option](<#WithSourceAcquirer>)
   - [func WithSourceAliases\(aliases ...string\) Option](<#WithSourceAliases>)
   - [func WithSourceChannel\(channel string\) Option](<#WithSourceChannel>)
   - [func WithSourceMaxAge\(maxAge time.Duration\) Option](<#WithSourceMaxAge>)
@@ -106,6 +107,8 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) UpdateObservations\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(\[\]sources.Observation, error\), resets ...ObservationReset\) \(starmap.CatalogState, error\)](<#Runtime.UpdateObservations>)
   - [func \(r \*Runtime\) Updates\(\) \<\-chan starmap.CatalogState](<#Runtime.Updates>)
 - [type Source](<#Source>)
+- [type SourceAcquirer](<#SourceAcquirer>)
+- [type SourceAcquisitionRequest](<#SourceAcquisitionRequest>)
 - [type SourceHop](<#SourceHop>)
 - [type SourceIdentityAdopter](<#SourceIdentityAdopter>)
 - [type SourceKind](<#SourceKind>)
@@ -293,7 +296,7 @@ const (
 
 ```go
 const (
-    // DefaultAcquisitionInterval is the provider acquisition period.
+    // DefaultAcquisitionInterval is the acquisition period.
     DefaultAcquisitionInterval = 4 * time.Hour
 )
 ```
@@ -334,11 +337,11 @@ type Acquirer interface {
 <a name="AcquisitionPolicy"></a>
 ## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L244-L252>)
 
-AcquisitionPolicy configures scheduled provider acquisition. The policy is exactly one switch and one period.
+AcquisitionPolicy configures all scheduled acquisition. The policy is exactly one switch and one period.
 
 ```go
 type AcquisitionPolicy struct {
-    // Enabled reports whether scheduled provider acquisition runs.
+    // Enabled reports whether scheduled acquisition runs.
     Enabled bool
 
     // Interval is the acquisition period. The scheduler places each instance
@@ -367,9 +370,9 @@ func (p AcquisitionPolicy) Validate() error
 Validate checks the acquisition period. Zero is valid and selects one startup pass, so an operator schedules a single run without a cadence.
 
 <a name="AcquisitionReport"></a>
-## type [AcquisitionReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L79-L110>)
+## type [AcquisitionReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L79-L113>)
 
-AcquisitionReport says what one provider acquisition run produced. A partial failure still publishes: the report names the providers that kept their own last\-known\-good observation.
+AcquisitionReport says what one acquisition run produced. A partial failure still publishes: the report names the providers that kept their own last\-known\-good observation.
 
 ```go
 type AcquisitionReport struct {
@@ -390,6 +393,9 @@ type AcquisitionReport struct {
 
     // Attempts holds one terminal attempt per eligible provider or binding.
     Attempts []sources.ProviderAttempt
+
+    // SourceObservations binds each non-provider result to its original receipt.
+    SourceObservations []catalogs.SourceObservationLink
 
     // Published reports whether the runtime published a new effective catalog.
     Published bool
@@ -736,7 +742,7 @@ type ObservationUpdate struct {
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L156>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L157>)
 
 Option configures the connected runtime. The offline constructors in the root package take their own option type, so no offline constructor accepts a connected\-runtime setting.
 
@@ -751,28 +757,28 @@ type Option func(*options) error
 func WithAcquirer(acquirer Acquirer) Option
 ```
 
-WithAcquirer injects the provider acquisition composition. The root package selects no concrete provider client, so a runtime without an acquirer runs source refresh only.
+WithAcquirer injects the provider acquisition composition. The root package selects no concrete provider client. Non\-provider acquisition uses WithSourceAcquirer.
 
 <a name="WithAcquisitionEnabled"></a>
-### func [WithAcquisitionEnabled](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L340>)
+### func [WithAcquisitionEnabled](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L341>)
 
 ```go
 func WithAcquisitionEnabled(enabled bool) Option
 ```
 
-WithAcquisitionEnabled turns scheduled provider acquisition on or off.
+WithAcquisitionEnabled turns all scheduled acquisition on or off.
 
 <a name="WithAcquisitionInterval"></a>
-### func [WithAcquisitionInterval](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L349>)
+### func [WithAcquisitionInterval](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L350>)
 
 ```go
 func WithAcquisitionInterval(interval time.Duration) Option
 ```
 
-WithAcquisitionInterval sets the provider acquisition period. Zero selects one startup pass and no periodic work.
+WithAcquisitionInterval sets the acquisition period. Zero selects one startup pass and no periodic work.
 
 <a name="WithCatalogSource"></a>
-### func [WithCatalogSource](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L182>)
+### func [WithCatalogSource](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L183>)
 
 ```go
 func WithCatalogSource(name string) Option
@@ -781,7 +787,7 @@ func WithCatalogSource(name string) Option
 WithCatalogSource selects the upstream catalog source by name. It accepts public, github, starmap, file, and embedded. A named custom source is terminal: the runtime never falls back to the public channel.
 
 <a name="WithClientOptions"></a>
-### func [WithClientOptions](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L172>)
+### func [WithClientOptions](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L173>)
 
 ```go
 func WithClientOptions(opts ...starmap.Option) Option
@@ -898,7 +904,7 @@ func WithSchedulerIdentity(identity string) Option
 WithSchedulerIdentity overrides the derived instance identity. Use it when the deployment already owns a stable instance name.
 
 <a name="WithSource"></a>
-### func [WithSource](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L329>)
+### func [WithSource](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L330>)
 
 ```go
 func WithSource(source Source) Option
@@ -907,7 +913,7 @@ func WithSource(source Source) Option
 WithSource injects a deployment\-owned upstream source. It replaces every built\-in source implementation.
 
 <a name="WithSourceAPIKey"></a>
-### func [WithSourceAPIKey](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L248>)
+### func [WithSourceAPIKey](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L249>)
 
 ```go
 func WithSourceAPIKey(key string) Option
@@ -915,8 +921,17 @@ func WithSourceAPIKey(key string) Option
 
 WithSourceAPIKey supplies the source API key. The runtime keeps the key out of status, logs, and errors.
 
+<a name="WithSourceAcquirer"></a>
+### func [WithSourceAcquirer](<https://github.com/agentstation/starmap/blob/main/runtime/source_acquisition.go#L30>)
+
+```go
+func WithSourceAcquirer(acquirer SourceAcquirer) Option
+```
+
+WithSourceAcquirer adds non\-provider acquisition beside the provider role. This option starts no source reads. Scheduled and explicit Sync runs use this role.
+
 <a name="WithSourceAliases"></a>
-### func [WithSourceAliases](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L259>)
+### func [WithSourceAliases](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L260>)
 
 ```go
 func WithSourceAliases(aliases ...string) Option
@@ -925,7 +940,7 @@ func WithSourceAliases(aliases ...string) Option
 WithSourceAliases declares the other stable identities that name this same runtime. A served source chain that names one of them is a self reference. The runtime then refuses the read instead of serving its own catalog back to itself.
 
 <a name="WithSourceChannel"></a>
-### func [WithSourceChannel](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L222>)
+### func [WithSourceChannel](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L223>)
 
 ```go
 func WithSourceChannel(channel string) Option
@@ -934,7 +949,7 @@ func WithSourceChannel(channel string) Option
 WithSourceChannel names the mutable branch that selects the current catalog.
 
 <a name="WithSourceMaxAge"></a>
-### func [WithSourceMaxAge](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L302>)
+### func [WithSourceMaxAge](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L303>)
 
 ```go
 func WithSourceMaxAge(maxAge time.Duration) Option
@@ -943,7 +958,7 @@ func WithSourceMaxAge(maxAge time.Duration) Option
 WithSourceMaxAge sets the age at which the served catalog counts as stale. It also derives the channel freshness thresholds. The warning age becomes the maximum age, and the critical age keeps the six\-to\-ten ratio of the defaults. WithFreshnessPolicy wins over this derivation.
 
 <a name="WithSourceMaxHops"></a>
-### func [WithSourceMaxHops](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L315>)
+### func [WithSourceMaxHops](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L316>)
 
 ```go
 func WithSourceMaxHops(hops int) Option
@@ -952,7 +967,7 @@ func WithSourceMaxHops(hops int) Option
 WithSourceMaxHops bounds a cascade of Starmap runtimes.
 
 <a name="WithSourcePolicy"></a>
-### func [WithSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L194>)
+### func [WithSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L195>)
 
 ```go
 func WithSourcePolicy(policy SourcePolicy) Option
@@ -961,7 +976,7 @@ func WithSourcePolicy(policy SourcePolicy) Option
 WithSourcePolicy replaces the whole upstream source policy.
 
 <a name="WithSourcePollInterval"></a>
-### func [WithSourcePollInterval](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L273>)
+### func [WithSourcePollInterval](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L274>)
 
 ```go
 func WithSourcePollInterval(interval time.Duration) Option
@@ -970,7 +985,7 @@ func WithSourcePollInterval(interval time.Duration) Option
 WithSourcePollInterval sets the channel check period.
 
 <a name="WithSourceRepository"></a>
-### func [WithSourceRepository](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L214>)
+### func [WithSourceRepository](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L215>)
 
 ```go
 func WithSourceRepository(repository string) Option
@@ -979,7 +994,7 @@ func WithSourceRepository(repository string) Option
 WithSourceRepository names the catalog repository of a GitHub channel.
 
 <a name="WithSourceSignerWorkflow"></a>
-### func [WithSourceSignerWorkflow](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L230>)
+### func [WithSourceSignerWorkflow](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L231>)
 
 ```go
 func WithSourceSignerWorkflow(workflow string) Option
@@ -988,7 +1003,7 @@ func WithSourceSignerWorkflow(workflow string) Option
 WithSourceSignerWorkflow pins the build provenance the source accepts.
 
 <a name="WithSourceStartupPolicy"></a>
-### func [WithSourceStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L287>)
+### func [WithSourceStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L288>)
 
 ```go
 func WithSourceStartupPolicy(name string) Option
@@ -997,7 +1012,7 @@ func WithSourceStartupPolicy(name string) Option
 WithSourceStartupPolicy decides what the runtime serves before the first upstream reply.
 
 <a name="WithSourceToken"></a>
-### func [WithSourceToken](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L239>)
+### func [WithSourceToken](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L240>)
 
 ```go
 func WithSourceToken(token string) Option
@@ -1006,7 +1021,7 @@ func WithSourceToken(token string) Option
 WithSourceToken supplies the source access token. The runtime keeps the token out of status, logs, and errors.
 
 <a name="WithSourceURL"></a>
-### func [WithSourceURL](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L206>)
+### func [WithSourceURL](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L207>)
 
 ```go
 func WithSourceURL(url string) Option
@@ -1128,7 +1143,7 @@ type ProviderObservationReset = ObservationReset
 ```
 
 <a name="Random"></a>
-## type [Random](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L79>)
+## type [Random](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L80>)
 
 Random returns a uniform value in the half\-open interval \[0, 1\). The runtime uses it to spread scheduled work across a fleet.
 
@@ -1137,7 +1152,7 @@ type Random func() float64
 ```
 
 <a name="RefreshReport"></a>
-## type [RefreshReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L115-L137>)
+## type [RefreshReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L118-L140>)
 
 RefreshReport says what one whole refresh produced. A source\-only run leaves the acquisition report empty, and an acquisition\-only run leaves the source report empty.
 
@@ -1156,7 +1171,7 @@ type RefreshReport struct {
     // Source reports the upstream read.
     Source SourceRefreshReport
 
-    // Acquisition reports the provider observations.
+    // Acquisition reports provider attempts and non-provider observations.
     Acquisition AcquisitionReport
 
     // Published reports whether the runtime published a new effective catalog.
@@ -1251,16 +1266,16 @@ func (r *Runtime) PublishObservations(ctx context.Context, observations ...sourc
 PublishObservations retains caller\-supplied observations with their accepted catalog. The runtime validates receipts and active bindings before it publishes any input. This operation reads no source and joins runtime cancellation and shutdown.
 
 <a name="Runtime.Refresh"></a>
-### func \(\*Runtime\) [Refresh](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L256>)
+### func \(\*Runtime\) [Refresh](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L259>)
 
 ```go
 func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
 ```
 
-Refresh reads the upstream source and then observes every eligible provider. It changes the source layer and the provider layers in one run.
+Refresh reads the upstream and then observes configured acquisition sources. It changes the upstream layer and acquisition inputs in one run.
 
 <a name="Runtime.RefreshSource"></a>
-### func \(\*Runtime\) [RefreshSource](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L268>)
+### func \(\*Runtime\) [RefreshSource](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L271>)
 
 ```go
 func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error)
@@ -1278,7 +1293,7 @@ func (r *Runtime) State() starmap.CatalogState
 State returns one atomic snapshot of the effective catalog and its generation identity. It reaches no external system.
 
 <a name="Runtime.Status"></a>
-### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L45>)
+### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L48>)
 
 ```go
 func (r *Runtime) Status() Status
@@ -1287,13 +1302,13 @@ func (r *Runtime) Status() Status
 Status returns the current runtime status. It reads retained state only, so it reaches no external system and never blocks on the source.
 
 <a name="Runtime.Sync"></a>
-### func \(\*Runtime\) [Sync](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L277>)
+### func \(\*Runtime\) [Sync](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L280>)
 
 ```go
 func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (AcquisitionReport, error)
 ```
 
-Sync observes providers only. It changes the provider layers and returns the acquisition report. An empty provider list observes every eligible provider.
+Sync observes configured provider and non\-provider sources. An empty provider list observes every eligible provider scope.
 
 <a name="Runtime.UpdateAcquisition"></a>
 ### func \(\*Runtime\) [UpdateAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_update.go#L20>)
@@ -1331,6 +1346,29 @@ Source reads one upstream immutable catalog generation.
 
 ```go
 type Source = source.Source
+```
+
+<a name="SourceAcquirer"></a>
+## type [SourceAcquirer](<https://github.com/agentstation/starmap/blob/main/runtime/source_acquisition.go#L24-L26>)
+
+SourceAcquirer collects configured non\-provider observations without publication. It must preserve source receipts and report failed or partial observations. Runtime owns cancellation, lease fencing, retained evidence, and publication.
+
+```go
+type SourceAcquirer interface {
+    AcquireSources(context.Context, SourceAcquisitionRequest) ([]sources.Observation, error)
+}
+```
+
+<a name="SourceAcquisitionRequest"></a>
+## type [SourceAcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/source_acquisition.go#L16-L19>)
+
+SourceAcquisitionRequest selects non\-provider observations for one owned run. Current is immutable. Providers restricts model scope when the caller supplies IDs.
+
+```go
+type SourceAcquisitionRequest struct {
+    Current   *catalogs.Catalog
+    Providers []catalogs.ProviderID
+}
 ```
 
 <a name="SourceHop"></a>

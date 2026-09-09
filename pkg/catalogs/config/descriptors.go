@@ -132,7 +132,7 @@ func describe(entry setting) Descriptor {
 		d.Description = "Names other identities of this runtime for source cycle detection."
 		d.Type, d.AllowEmpty, d.Scope = ListValue, true, NodeScope
 	case AcquisitionEnabled:
-		d.Description = "Enables automatic provider acquisition."
+		d.Description = "Enables automatic acquisition from configured provider and metadata sources."
 		d.Type, d.Default = BooleanValue, strconv.FormatBool(acquisition.Enabled)
 	case AcquisitionInterval:
 		d.Description = "Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on."
