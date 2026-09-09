@@ -393,7 +393,7 @@ func NewContext(ctx context.Context, config Config) (*Subscriber, error)
 NewContext validates config and makes an idle subscriber. The context bounds caller\-store reads and an optional pinned\-bootstrap commit. NewContext does not create a goroutine or send a remote request.
 
 <a name="Subscriber.AdoptInstanceIdentity"></a>
-### func \(\*Subscriber\) [AdoptInstanceIdentity](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L827>)
+### func \(\*Subscriber\) [AdoptInstanceIdentity](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L831>)
 
 ```go
 func (s *Subscriber) AdoptInstanceIdentity(instance string)
@@ -411,7 +411,7 @@ func (s *Subscriber) Catalog() *catalogs.Catalog
 Catalog returns the catalog from State. Construction selects the verified durable current generation, the optional pinned bootstrap for an empty store, or the embedded bootstrap in that order.
 
 <a name="Subscriber.Close"></a>
-### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L347>)
+### func \(\*Subscriber\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L348>)
 
 ```go
 func (s *Subscriber) Close() error
@@ -456,7 +456,7 @@ func (s *Subscriber) State() starmap.CatalogState
 State returns one atomic catalog, generation identity, payload checksum, timestamp, and sequence snapshot without performing I/O.
 
 <a name="Subscriber.Updates"></a>
-### func \(\*Subscriber\) [Updates](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L807>)
+### func \(\*Subscriber\) [Updates](<https://github.com/agentstation/starmap/blob/main/remote/subscriber.go#L811>)
 
 ```go
 func (s *Subscriber) Updates() <-chan struct{}
