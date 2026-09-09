@@ -1,0 +1,40 @@
+{
+  "status": "Preservation, links, cold resume, and prose checks pass.",
+  "snapshot": "resume-history-2026-09-09-225500.html.gz",
+  "old_section_sha256": "5b1fc6062dd32c8a8c546ce14cdd0d6538f16ab0b9d31b9c59a8cbe36b8e2846",
+  "old_resume_words": 371,
+  "new_resume_words": 255,
+  "prefix_sha256": "95524cc6517e89bbddc22c1b50fad5a786351ceeabddb16e745ae657d327cd17",
+  "suffix_sha256": "eb0213cfb558136b2b2e757aeb1a170b7cb7f5a69180f946966346585e0c8809",
+  "preservation": {
+    "prefix_unchanged": true,
+    "suffix_unchanged": true,
+    "snapshot_exact": true
+  },
+  "cold_resume": {
+    "active_task": "CSP3",
+    "next_action": "Collect native run 34414251026 before merging PR #142.",
+    "head": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
+    "watch_session": 26598,
+    "remaining": "Native qualification, merge, scoped membership, remaining A08, A20 Starport ingestion, and released-pair acceptance.",
+    "authority": "Reviewed pushes and qualified merges allowed. Releases and hosted publication need separate authority."
+  },
+  "read_path": [
+    "starport-production-catalog-plan.html#current-resume",
+    "starport-production-catalog-plan.html#task-CSP3",
+    "starport-production-catalog-plan.html#goal",
+    "csp3/publication-completion-2026-09-09/verification.json"
+  ],
+  "links": {
+    "checked": 156,
+    "invalid": [],
+    "duplicate_ids": 0
+  },
+  "resume_read_words": 1211,
+  "resume_read_bytes": 13318,
+  "prose": {
+    "exit_code": 0,
+    "artifact": "resume-prose-2026-09-09-225500.log.gz",
+    "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+  }
+}
