@@ -22,32 +22,11 @@
     "Collector entry marks attempted state; disabled and ineligible sources do not run.",
     "Fatal preflight retains source activity in a typed wrapper with original error identity.",
     "Provider binding identity survives source instrumentation.",
-    "Provider credential eligibility remains unknown pending the provider-attempt bridge."
-  ],
-  "dirty_files": [
-    {
-      "path": "internal/catalog/pipeline/pipeline.go",
-      "sha256": "cafb43b671df7722176f69a09c3ed444f9561ce2253962026a1e3b0969fbd99e"
-    },
-    {
-      "path": "internal/catalog/pipeline/source_activity.go",
-      "sha256": "e744e5f29f793dafc6be61d994a755733601cb91e1ccf049667cfe79657abdd8"
-    },
-    {
-      "path": "internal/catalog/pipeline/source_activity_test.go",
-      "sha256": "39110d05f958277375677e602f8ff0891a15db7862e7aa3a00dc81a07875acfe"
-    },
-    {
-      "path": "pkg/sources/activity.go",
-      "sha256": "214e7a1dcd502687dfe3d2d202f93af6c77784410f965af843d2300c3714b783"
-    },
-    {
-      "path": "pkg/sync/result.go",
-      "sha256": "a088f7c3d97469647194ee3c44b9dc18716d69ae6a07d2d8c39b20e2833e8e26"
-    }
+    "Scoped provider preflight determines eligibility and retains per-profile request outcomes.",
+    "Manual runtime results copy source activity and provider attempts.",
+    "HTTP operation summaries retain validated activity on success and failure; status copies own their report slices."
   ],
   "remaining": [
-    "Provider credential eligibility and provider-attempt integration.",
     "Connected SourceAcquirer report transport and passive capability declarations.",
     "Runtime status composition with accepted generation state, CLI, HTTP, and publisher paths.",
     "Cancellation, missing-workspace, invalid-input, and failure-report boundary tests.",
@@ -89,6 +68,66 @@
     {
       "path": "final-plan-prose.log.gz",
       "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    {
+      "path": "provider-fail-before.jsonl.gz",
+      "sha256": "3ddf3867ed732a50703c0dbc22187b55fc1a087086b8371b1a41785cebd600de"
+    },
+    {
+      "path": "provider-final-minimum.jsonl.gz",
+      "sha256": "009a1bf0f571000255da0b5645e94e9e7bc4ca725adef2f504450fc165f6aeb7"
+    },
+    {
+      "path": "pipeline-race.jsonl.gz",
+      "sha256": "4f7799ced308d5584556eeecc0c5001653e5776e584958f667be5962fb8571e9"
+    },
+    {
+      "path": "http-fail-before.jsonl.gz",
+      "sha256": "98d012050e94666272fa7ba22079510424dfcf20cab37ae20ebdb289b11f8944"
+    },
+    {
+      "path": "http-race.jsonl.gz",
+      "sha256": "5375108f05a024b58d7a0fd9553af973d9b7a41f26ec6653b3c04fb18a381bb9"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "reporting-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "runtime-race.jsonl.gz",
+      "sha256": "14d402ab85221ee72fd1e79a829112a75e9e347ce9d79003ebd83d426bf20b03"
+    },
+    {
+      "path": "http-minimum.jsonl.gz",
+      "sha256": "b5a68b9235193c09641e23142d4a89bbe644effe8f3e8ef2e14a976d338f7bb3"
+    },
+    {
+      "path": "reporting-prose.log.gz",
+      "sha256": "0f52cadb608da53f39d2c6bb35a27a9c9e8ef3631b3c4ad0bbf664abcdab02f1"
+    },
+    {
+      "path": "reporting-prose-final.log.gz",
+      "sha256": "4a6149753a1754794719d518413a8489af9a286afc8487d1f39a395a2c05e3ff"
+    },
+    {
+      "path": "reporting-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "canonical-prose.log.gz",
+      "sha256": "8e2b9cfcf7a845446d660d3387a108092f62aa584902ac0caf7b353c2d044bb0"
+    },
+    {
+      "path": "plan-final-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
     }
   ],
   "task_completion_credit": false,
@@ -96,5 +135,142 @@
     "tests_passed": 4,
     "packages_passed": 1,
     "failed_events": 0
+  },
+  "reporting_checks": {
+    "provider-fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 4,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "provider-final-minimum": {
+      "test_pass_events": 9,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "pipeline-race": {
+      "test_pass_events": 96,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "http-fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 4,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "http-race": {
+      "test_pass_events": 6,
+      "test_fail_events": 0,
+      "package_pass_events": 2,
+      "skips": 0
+    },
+    "runtime-race": {
+      "exit_code": 0,
+      "test_pass_events": 11,
+      "test_fail_events": 0,
+      "package_pass_events": 2,
+      "skips": 0
+    },
+    "http-minimum": {
+      "exit_code": 0,
+      "test_pass_events": 14,
+      "test_fail_events": 0,
+      "package_pass_events": 3,
+      "skips": 0
+    }
+  },
+  "active_checks": {},
+  "qualification": "UNVERIFIED: connected status, CLI reporting, generated documentation, full verification, review, and merge remain required.",
+  "reporting_ago": {
+    "exit_code": 0,
+    "findings": 0,
+    "stale_ignores": 0,
+    "errors": 0
+  },
+  "prose_first_attempt": {
+    "exit_code": 2,
+    "files": 1288,
+    "diagnostics": 2,
+    "repair": "Simplified two comments; full prose check reruns."
+  },
+  "commit": "12cf4d8edb2be1de6c112d662f521616f8ad7212",
+  "tree": "e9adc77b584c1e99386f718b98a7efc03972c414",
+  "changed_files": [
+    {
+      "path": "acquisition/runtime.go",
+      "sha256": "df4cec929e049f7f3c67b3d5f0854de9c226a315272c61c7adad3ff63a7a4977"
+    },
+    {
+      "path": "acquisition/runtime_test.go",
+      "sha256": "f9745f268aaf857247ee1aac8a6e7f848357a6810ab06d3c0945a37566798b36"
+    },
+    {
+      "path": "internal/catalog/pipeline/pipeline.go",
+      "sha256": "cafb43b671df7722176f69a09c3ed444f9561ce2253962026a1e3b0969fbd99e"
+    },
+    {
+      "path": "internal/catalog/pipeline/provider_bindings.go",
+      "sha256": "681a71eed86ecf63b5e62996406a2a625e9c552ddc6debd43779ab27a7535ba4"
+    },
+    {
+      "path": "internal/catalog/pipeline/source_activity.go",
+      "sha256": "f6785dfd13252fc14983a38c1703193ece7a3bf9ef0c77affe23712f8cb8494b"
+    },
+    {
+      "path": "internal/catalog/pipeline/source_activity_provider_test.go",
+      "sha256": "962009e2b1890ad100c6d9d7ac3ba5ba2b792ca68e00e79ad8f953808b4685c3"
+    },
+    {
+      "path": "internal/catalog/pipeline/source_activity_providers.go",
+      "sha256": "316fbff7db507527e1fa6515668782d66f5772d211317c94f74fc340d38df1bd"
+    },
+    {
+      "path": "internal/catalog/pipeline/source_activity_test.go",
+      "sha256": "39110d05f958277375677e602f8ff0891a15db7862e7aa3a00dc81a07875acfe"
+    },
+    {
+      "path": "internal/server/handlers/admin.go",
+      "sha256": "5f6851ec62c1750ca670a90937a56723549454b95f7af4f4ca1c673eb3b47e6f"
+    },
+    {
+      "path": "internal/server/handlers/source_activity.go",
+      "sha256": "06df7e80885560d159acb9dade7aad820f66761311e50d4c17198d1f16f680c8"
+    },
+    {
+      "path": "internal/server/handlers/source_activity_test.go",
+      "sha256": "b119026589806d5b91137b95f9bcc47fd0d5de76cdb840a81a68ff31ad895537"
+    },
+    {
+      "path": "internal/server/operations/operations.go",
+      "sha256": "11823071fedfad7c85c688ef33d2a28824f98d28ed66771bf9bb73cff639ddcc"
+    },
+    {
+      "path": "internal/server/operations/source_activity_test.go",
+      "sha256": "b0c0a521fbd51737ad05b075d0b7da2097cbee4f1dcc0aa9853c36ab40d0802b"
+    },
+    {
+      "path": "pkg/sources/activity.go",
+      "sha256": "ae8e59c7d3758186cc078f4a86db7d5501f7f1f6334ed05ef87f621d28424469"
+    },
+    {
+      "path": "pkg/sources/activity_test.go",
+      "sha256": "0e5258f63d5b1be403adff20b222e879fefcb94a6feccc913701182e8f504560"
+    },
+    {
+      "path": "pkg/sync/result.go",
+      "sha256": "2536c3a1093c6b2bea27da472563527a3f879cbc1eafa0754d65267dabe53f76"
+    }
+  ],
+  "reporting_lint": {
+    "exit_code": 0,
+    "issues": 0
+  },
+  "reporting_prose": {
+    "exit_code": 0,
+    "files": 1288,
+    "diagnostics": 0
   }
 }
