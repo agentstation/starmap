@@ -134,10 +134,10 @@
   "settings_packages": "Both complete shared settings packages pass after adding the new descriptor, CLI facade, and deployment samples.",
   "full_verification": "Session 35415 failed during Devbox linter setup because the disk was full. Its completed stages are historical evidence. Cache cleanup restored the pinned linter. Provider failure selection then changed production code. Session 60866 runs fresh documentation, prose, and full verification. Log: /tmp/starmap-source-health-full-verification.log.",
   "remaining": [
-    "Full repository verification for current source",
-    "Required pre-PR reviews",
-    "Integrate the publisher repair and scheduled-source candidate",
-    "Publish and merge this candidate",
+    "Finish current full repository verification",
+    "Integrate the merged publisher repair and verify affected contracts",
+    "Review the complete combined scheduled-acquisition and source-selection diff",
+    "Publish and merge the combined PR",
     "Complete remaining CSP3 acceptance contracts"
   ],
   "files": [
@@ -529,5 +529,13 @@
     }
   ],
   "historical_source_inventory": "The files inventory and original checks above describe source-selection work before the Git pin change. git_pin_source_inventory binds the current corrected source. Git commit 8ad4e291 retains the original proof.",
-  "provider_health_selection": "../provider-health-selection-2026-09-09/verification.json"
+  "provider_health_selection": "../provider-health-selection-2026-09-09/verification.json",
+  "publication_group": {
+    "target": "One combined scheduled-acquisition and source-selection PR after the publisher repair merges.",
+    "branch": "codex/catalog-source-selection",
+    "included_scheduled_commit": "5c06e7a9dbc075e238026d86722b7546ff92ed71",
+    "verified_ancestor": true,
+    "review": "Run the required two-reviewer pre-PR review against the complete combined diff and the merged publisher base. The earlier scheduled-only review is historical evidence.",
+    "reason": "Automatic and manual acquisition need the same source-selection controls. The current source-selection branch already contains scheduled acquisition."
+  }
 }

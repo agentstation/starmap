@@ -270,5 +270,10 @@
     "next": "The provider failure selection prototype passes the proxy-isolated all-provider diagnostic. Its production implementation and regression checks now live in the source-selection candidate. Complete integration and full qualification before all-provider acceptance credit.",
     "mutations": "The diagnostic overlay removes only the test provider selector and adds a stack trace at validation failure. Neither candidate worktree changed.",
     "network_correction": "The original default-transport guard did not constrain dedicated provider transports. Do not count those runs as hermetic."
+  },
+  "prepared_pr_description": {
+    "path": "/tmp/starmap-publisher-repair-pr-body.md",
+    "sha256": "c386c2c7faa0bae3f313d5786534b0eb655ffa2e756b832f08477cb1824b0844",
+    "status": "Draft records focused checks and pending full verification and review. Update after those gates pass."
   }
 }
