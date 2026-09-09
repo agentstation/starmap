@@ -1,0 +1,94 @@
+{
+  "status": "committed; focused checks, Ago, lint and prose pass; affected package verification remains active",
+  "worktree": "/tmp/starmap-source-inventory-2026-09-09",
+  "base": "cc5ae1ed",
+  "branch": "codex/catalog-source-inventory",
+  "contract": "CSP3; A20 partial failure and fresh safety",
+  "fail_before": {
+    "exit_code": 1,
+    "test_events_failed": 3,
+    "test": "TestPipelineReportsRejectedObservationWithoutReceipt",
+    "failures": [
+      "invalid source observation reported complete success",
+      "fresh reset reached reconciliation after an invalid observation"
+    ],
+    "method": "A real Observe call returns a catalog with an invalid observation ID. The real observation validator drops it. The fixture retains one valid local source."
+  },
+  "behavior": [
+    "Observation errors remain in Prepared.SourceFailures even when no receipt survives validation.",
+    "Partial manual results name registered sources and bounded reasons for rejected observations.",
+    "Fresh reset stops before reconciliation and preserves the typed source error.",
+    "Joined errors preserve distinct sources; duplicate summaries collapse; unknown source IDs and message text do not enter summaries.",
+    "The connected SourceAcquirer uses these summaries to avoid a duplicate generic credential error."
+  ],
+  "focused": {
+    "race": {
+      "test_events_passed": 6,
+      "packages_passed": 2,
+      "exit_code": 0
+    },
+    "minimum": {
+      "test_events_passed": 6,
+      "packages_passed": 2,
+      "exit_code": 0
+    }
+  },
+  "checks": {
+    "lint_findings": 0,
+    "ago_findings": 0,
+    "ago_errors": 0,
+    "prose": {
+      "files": 1279,
+      "diagnostics": 0,
+      "exit_code": 0
+    }
+  },
+  "running": {
+    "affected": {
+      "session": 31098,
+      "log": "/tmp/starmap-observation-rejection-affected.log",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -timeout=20m ./internal/catalog/pipeline ./acquisition",
+      "head": "9ea6f70fd672951f8d5cdc9f7a184f52c3ae1cc4"
+    }
+  },
+  "remaining": [
+    "Full source inventory with supported, enabled, eligible and attempted dimensions.",
+    "Final combined qualification, review, native CI and merge."
+  ],
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "dd7df397ff13b19530d45ca9578e042883a775c00e24c00d2f4d2dab8b6433dc"
+    },
+    {
+      "path": "minimum.jsonl.gz",
+      "sha256": "0d1f0583e2703efa6b17e06078d67445c61ecdbb86f2009f11f3f5e47e847434"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "sha256": "ff169b6a1c5a48d533cb9e6338fc2030764b34e6a56c0ac8d9c26c9d140e8442"
+    },
+    {
+      "path": "final-minimum.jsonl.gz",
+      "sha256": "48566db50e21a2a3a16c83860c9d23bb743ea431d3a9e6fe39132f337b1d6757"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "74654fb1826d012ec3efba618fd441861acbd7f458725b5aed4451fabaa71b84"
+    },
+    {
+      "path": "plan-prose.log.gz",
+      "sha256": "0963b2bd796bde699c64df9e575228014d077470b7d408409c30ee56e5513832"
+    }
+  ],
+  "task_completion_credit": false,
+  "head": "9ea6f70fd672951f8d5cdc9f7a184f52c3ae1cc4"
+}

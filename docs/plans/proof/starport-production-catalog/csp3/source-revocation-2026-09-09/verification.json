@@ -32,14 +32,7 @@
     "stale_ignores": 0,
     "errors": 0
   },
-  "running": {
-    "csp3_current_acceptance": {
-      "session": 81926,
-      "head": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
-      "log": "/tmp/starmap-csp3-current-acceptance-2026-09-09.log",
-      "qualification": "Diagnostic only. The worktree changed during this run, and the command did not pin GOTOOLCHAIN. Rerun against frozen final source before acceptance credit."
-    }
-  },
+  "running": {},
   "remaining": [
     "Integration after frozen combined verification, required review, native CI and merge.",
     "Complete distinct supported, enabled, eligible, attempted, accepted source reporting.",
@@ -145,5 +138,13 @@
     "reason": "The run used the ambient toolchain and a changing worktree. It did not request detailed JSON output. No individual requirement conclusion follows from this aggregate diagnostic.",
     "artifact": "csp3-diagnostic-terminal.log.gz",
     "sha256": "1f1532c78f9e5ceba705010a780392900adc11005e0c451a7ae13b6e0ca7cf20"
+  },
+  "previous_running": {
+    "csp3_current_acceptance": {
+      "session": 81926,
+      "head": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
+      "log": "/tmp/starmap-csp3-current-acceptance-2026-09-09.log",
+      "qualification": "Diagnostic only. The worktree changed during this run, and the command did not pin GOTOOLCHAIN. Rerun against frozen final source before acceptance credit."
+    }
   }
 }

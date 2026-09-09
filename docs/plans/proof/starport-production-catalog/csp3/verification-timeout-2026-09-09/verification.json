@@ -37,5 +37,30 @@
     "log": "/tmp/starmap-pr141-merge-after-timeout.log",
     "result": "/tmp/starmap-pr141-merge-result.json"
   },
-  "current_native_jobs": "all six passed on repaired head 8eafe362"
+  "current_native_jobs": "all six passed on repaired head 8eafe362",
+  "merge": {
+    "sha": "bdc0650f179df3038915a435d4eac876c8201716",
+    "merged_at": "2026-09-09T16:49:22Z",
+    "reviewed_head": "8eafe362355af036ba71bf55acd01701a2eee6c1",
+    "reviewed_tree": "3ad4f88d10054a44464099a5c0f4916131cd96b6",
+    "merged_tree": "3ad4f88d10054a44464099a5c0f4916131cd96b6",
+    "checks_passed": 15,
+    "native_jobs_passed": 6,
+    "run_conclusion": "success",
+    "artifact": "merge-result.json.gz",
+    "sha256": "d6c6c7b9c31f4f2cf9a4990cf2161fd2543aed730ba240bdd35442f2e1ccd83b",
+    "merged_pr_count": 20,
+    "completed_task_count": 8
+  },
+  "status": "merged; all checks pass and merged tree matches reviewed tree",
+  "artifacts": [
+    {
+      "path": "merge-plan-prose.log.gz",
+      "sha256": "489bc7b1b6115f96c8177d5fcb5b2fa05511a8a73128f10a44a0890ae4a1f310"
+    },
+    {
+      "path": "merge-plan-corrected-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    }
+  ]
 }

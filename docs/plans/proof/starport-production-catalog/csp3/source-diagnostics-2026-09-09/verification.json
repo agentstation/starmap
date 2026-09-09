@@ -147,5 +147,15 @@
     ],
     "status": "handles missing; process inventory confirms prior commands stopped",
     "previous_turn": "evidence established execution restriction and missing handles; access now restored"
+  },
+  "full_verification_terminal": {
+    "session": 35093,
+    "head": "605084e76890be968b953811e295006a72c94f34",
+    "exit_code": 1,
+    "failure": "runtime package exceeded its unchanged 20-minute suite deadline; TestSourceAcquisitionStartupRechecksDespiteFreshProviderEvidence had run for 26 seconds when the package alarm fired",
+    "artifact": "full-verification-terminal.log.gz",
+    "sha256": "8733c4f8d33c166ea21eaca2d364e6dbbb41325d33d2c92edfad7def98ff86fb",
+    "diagnosis": "Unproven. Other heavy test suites ran concurrently. Reproduce with resource isolation after the existing checks finish; do not increase test deadlines.",
+    "full_verification_credit": false
   }
 }
