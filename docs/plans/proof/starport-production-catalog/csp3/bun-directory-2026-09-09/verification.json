@@ -69,6 +69,10 @@
     {
       "path": "push-plan-prose.gz",
       "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    },
+    {
+      "path": "native-steps.gz",
+      "sha256": "2e556fbb01ac43c510498571ff61afed0458c47ce7b6258abbc8b23a7360d888"
     }
   ],
   "sessions": {
@@ -133,5 +137,17 @@
     "url": "https://github.com/agentstation/starmap/actions/runs/34409341753",
     "watch_session": 81316,
     "watch_log": "/tmp/starmap-pr142-965e-native-watch-2026-09-09.log"
+  },
+  "native_windows_steps": {
+    "Runtime windows-2025": {
+      "Test native runtime, configuration, and paths": "success",
+      "Test real Git acquisition and mandatory tools": "success",
+      "Test provider and metadata artifact publication": ""
+    },
+    "Runtime windows-11-arm": {
+      "Test native runtime, configuration, and paths": "success",
+      "Test real Git acquisition and mandatory tools": "success",
+      "Test provider and metadata artifact publication": ""
+    }
   }
 }
