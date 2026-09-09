@@ -1,0 +1,33 @@
+review still running: claude elapsed=60s pid=38838 cpu=0.9s/60s(2%) rss=251M state=S
+review still running: claude elapsed=120s pid=38838 cpu=0.5s/60s(1%) rss=217M state=S
+review still running: claude elapsed=180s pid=38838 cpu=0.5s/60s(1%) rss=246M state=S
+autoreview target: branch
+branch: codex/catalog-ranges-main
+gate: pre-pr (configured cadence: pre-pr)
+profile: opus
+config: /Users/jack/.config/autoreview/config.toml
+selection: opus5=7.52
+reviewers: claude model=claude-opus-5 thinking=high
+tools: on
+web_search: on
+ref: fff54427e9f19bb0bd05b3df93b4556b8100c24c
+trufflehog: clean (3.2s)
+bundle: 199236 bytes; review passes: 1
+autoreview clean: no accepted/actionable findings reported
+overall: patch is correct (0.72)
+I traced the new presence machinery end to end against the P0-only threshold and found no release-blocking defect.
+
+Correctness checks performed:
+
+1. `FloatRange`/`IntRange` codec round-trips. `UnmarshalJSON`/`UnmarshalYAML` reset the receiver via `*r = FloatRange(decoded)` (a fresh `plain` value, so `absentFields`/`unknownFields` are cleared before the presence loop), then mark missing fields absent and JSON/YAML nulls unknown. `MarshalJSON`/`MarshalYAML` short-circuit to the legacy struct encoding when both masks are zero, so `FloatRange{}` still emits exactly `{"min":0,"max":0,"default":0}` and legacy Go literals keep known-zero semantics via `Value`. I hand-simulated the four scenarios in `nested_range_presence_audit_test.go` (`null`, `{"min":null,"max":10,"default":null}`, `{"max":10}`, `{"min":0,"max":10,"default":0}`) and each reproduces byte-for-byte.
+
+2. No recursion hazards: every codec uses a local `type plain X` conversion which drops the marshaler methods, and `encodeRangeJSON(r.Value)` binds the addressable value-receiver copy, so the pointer-receiver `Value` method value is legal.
+
+3. `ModelGeneration` presence: `generationParameters` has 22 entries matching the 22 exported pointer fields; `generationParameterMask` covers bits 0..21 within `uint32`; `ParameterPresence`/`SetParameterUnknown`/`UnsetParameter` all handle nil receivers and unknown parameter names without panicking or mutating state.
+
+4. Generator/spec consistency: `nullableGenerationProperties` lists exactly the 19 `$ref`-typed generation controls, and the regenerated `openapi.json`/`openapi.yaml` show those 19 as `anyOf[$ref, null]` plus `max_tokens`, `max_output_tokens`, `top_logprobs` and all six `FloatRange`/`IntRange` bounds as `type: [<scalar>, "null"]`. That satisfies both assertions in the new `TestEmbeddedGenerationParameterNullContract`.
+
+5. `yamlSourceOffset` line/column-to-byte conversion is correct (1-based line walk, rune-aware column prefix, guards for over-long line/column), and the scalar candidate scan ordering (`boolean`, `number`, `integer`) has no prefix collisions.
+
+Non-blocking observations I am deliberately withholding under the stated threshold: `ModelGeneration.MarshalJSON` reorders keys alphabetically when any control is unknown (map-based re-encode), `MarshalYAML` re-encodes nested range mappings through a generic decode which can reorder nested keys, and a JSON `null` delivered to a non-pointer `FloatRange`/`IntRange` field would zero it rather than no-op. None of these lose data or break round-trips, and no non-pointer usage of those range types appears in the bundle.
+autoreview clean attestation stored for this substantive diff

@@ -1,0 +1,6 @@
+go version go1.25.12 windows/amd64
+windows
+amd64
+windows
+amd64
+0

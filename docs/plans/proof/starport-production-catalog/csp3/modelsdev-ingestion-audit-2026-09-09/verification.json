@@ -1,0 +1,257 @@
+{
+  "task": "CSP3",
+  "completion_credit": false,
+  "completed_tasks": 8,
+  "merged_prs": 16,
+  "head": "5c40192a620b43341f06a3ad49f4e2a743c741ba",
+  "worktree": "/tmp/starmap-presence-integration-2026-09-09",
+  "worktree_changes": "none; temporary Go overlays",
+  "observations": [
+    "Real HTTP source downloads change models.dev capabilities and descriptions.",
+    "Provider limits keep their higher declared field priority.",
+    "CLI and HTTP manual refresh both ingest local, provider, and models.dev observations.",
+    "Changed metadata receives a different observation identity.",
+    "Immutable manifest links match the metadata receipt identity and evidence checksum.",
+    "Provider partial replies and failed strict refresh preserve accepted metadata.",
+    "Restart preserves catalog bytes, degraded health, and retained metadata identity."
+  ],
+  "limits": [
+    "These checks cover manual acquisition. Automatic connected-runtime acquisition remains provider-only.",
+    "Publisher, Starport, and disabled-dependency acquisition remain unqualified.",
+    "No full A20 or CSP3 completion follows from these audits."
+  ],
+  "runs": [
+    {
+      "name": "first HTTP audit",
+      "toolchain": "go1.25.12",
+      "race": false,
+      "exit": 0,
+      "package_seconds": 15.813,
+      "source": "server-first-pass.go.fixture",
+      "log": "server-first-pass.jsonl",
+      "test": "TestHTTPRefreshIngestsModelsDevAndProviderEvidence",
+      "overlay_target": "internal/cli/app/modelsdev_server_probe_test.go",
+      "command": "env GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -overlay=/tmp/starmap-modelsdev-server-overlay.json -count=1 -timeout=8m -run ^TestHTTPRefreshIngestsModelsDevAndProviderEvidence$ -json ./internal/cli/app",
+      "replay_overlay": {
+        "Replace": {
+          "/private/tmp/starmap-presence-integration-2026-09-09/internal/cli/app/modelsdev_server_probe_test.go": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp3/modelsdev-ingestion-audit-2026-09-09/server-first-pass.go.fixture"
+        }
+      }
+    },
+    {
+      "name": "HTTP immutable receipts",
+      "toolchain": "go1.26.6",
+      "race": true,
+      "exit": 0,
+      "package_seconds": 109.495,
+      "source": "server-receipt-pass.go.fixture",
+      "log": "server-receipt-race.jsonl",
+      "test": "TestHTTPRefreshIngestsModelsDevAndProviderEvidence",
+      "overlay_target": "internal/cli/app/modelsdev_server_probe_test.go",
+      "command": "env GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -overlay=/tmp/starmap-modelsdev-server-overlay.json -count=1 -timeout=10m -run ^TestHTTPRefreshIngestsModelsDevAndProviderEvidence$ -json ./internal/cli/app",
+      "replay_overlay": {
+        "Replace": {
+          "/private/tmp/starmap-presence-integration-2026-09-09/internal/cli/app/modelsdev_server_probe_test.go": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp3/modelsdev-ingestion-audit-2026-09-09/server-receipt-pass.go.fixture"
+        }
+      }
+    },
+    {
+      "name": "CLI and HTTP immutable receipts",
+      "toolchain": "go1.25.12",
+      "race": false,
+      "exit": 0,
+      "test_pass_events": 3,
+      "package_passes": 1,
+      "package_seconds": 30.451,
+      "source": "application-probe.go.fixture",
+      "log": "application-minimum.jsonl",
+      "test": "TestApplicationRefreshIngestsModelsDevAndProviderEvidence",
+      "overlay_target": "internal/cli/app/modelsdev_application_probe_test.go",
+      "command": "env GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -overlay=/tmp/starmap-modelsdev-application-overlay.json -count=1 -timeout=8m -run ^TestApplicationRefreshIngestsModelsDevAndProviderEvidence$ -json ./internal/cli/app",
+      "replay_overlay": {
+        "Replace": {
+          "/private/tmp/starmap-presence-integration-2026-09-09/internal/cli/app/modelsdev_application_probe_test.go": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp3/modelsdev-ingestion-audit-2026-09-09/application-probe.go.fixture"
+        }
+      }
+    },
+    {
+      "name": "CLI and HTTP immutable receipts",
+      "toolchain": "go1.26.6",
+      "race": true,
+      "exit": 0,
+      "test_pass_events": 3,
+      "package_passes": 1,
+      "package_seconds": 207.755,
+      "source": "application-probe.go.fixture",
+      "log": "application-race.jsonl",
+      "test": "TestApplicationRefreshIngestsModelsDevAndProviderEvidence",
+      "overlay_target": "internal/cli/app/modelsdev_application_probe_test.go",
+      "command": "env GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -overlay=/tmp/starmap-modelsdev-application-overlay.json -count=1 -timeout=10m -run ^TestApplicationRefreshIngestsModelsDevAndProviderEvidence$ -json ./internal/cli/app",
+      "replay_overlay": {
+        "Replace": {
+          "/private/tmp/starmap-presence-integration-2026-09-09/internal/cli/app/modelsdev_application_probe_test.go": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/csp3/modelsdev-ingestion-audit-2026-09-09/application-probe.go.fixture"
+        }
+      }
+    }
+  ],
+  "probe_corrections": [
+    "The first probe used features.temperature instead of the canonical Features.temperature evidence key.",
+    "The next probe incorrectly expected a local description to outrank models.dev. The declared Description policy places models.dev first. Both failures were audit assumptions, not product defects."
+  ],
+  "artifacts": [
+    {
+      "path": "field-key-probe.go.fixture",
+      "sha256": "86057a5d70b43323524ce1c369db5e6e998576bee62648821e9f7c431fed533f",
+      "bytes": 14374
+    },
+    {
+      "path": "field-key-probe.jsonl",
+      "sha256": "c5ef263f6725642fb68e329c56756bf36f6945191fbec258f847d8f3f8aba81a",
+      "bytes": 12142
+    },
+    {
+      "path": "description-policy-probe.go.fixture",
+      "sha256": "76dae4b2d3d5e014980c9adb9f7d10a1bb5a4853be9217297d99cc34c9de753a",
+      "bytes": 14374
+    },
+    {
+      "path": "description-policy-probe.jsonl",
+      "sha256": "2b6bd5d6d101b4993b3768b2830e87e0e8afd5c5a952ab2ae8b37a389789613e",
+      "bytes": 21002
+    },
+    {
+      "path": "server-first-pass.go.fixture",
+      "sha256": "fe7dcb530b417a75b50360993918869cf7071be895d5f90d36772bb6b9532cbb",
+      "bytes": 14500
+    },
+    {
+      "path": "server-first-pass.jsonl",
+      "sha256": "0850594cdf37ba95b95790d568f3151f89c4ba039072d036c940d5dee925f1d9",
+      "bytes": 25474
+    },
+    {
+      "path": "server-receipt-pass.go.fixture",
+      "sha256": "2000e8bab0bb5e6893296d6a0a5c5ae788507a53b4cde201db0b5fd2000e4d2b",
+      "bytes": 15603
+    },
+    {
+      "path": "server-receipt-race.jsonl",
+      "sha256": "8d050884a163b949dc295e2335c65eaae04a5035efc837ed46442978c619fc25",
+      "bytes": 25484
+    },
+    {
+      "path": "application-probe.go.fixture",
+      "sha256": "c497eb92a977335c8a755c33e0a7ff970a42f24ded87fc2b38ecf6c9f6c6ce84",
+      "bytes": 16347
+    },
+    {
+      "path": "application-minimum.jsonl",
+      "sha256": "29aa54002b7ec973879f9b0f78955c0fb55339b2a35824ebde2c4c4f5484c23e",
+      "bytes": 53538
+    },
+    {
+      "path": "application-race.jsonl",
+      "sha256": "3f4a8a132b63aebf822275436ac7a9d071305d233a31ea73ec8ed58133239688",
+      "bytes": 53548
+    },
+    {
+      "path": "fixed-fixture-minimum.jsonl",
+      "sha256": "11518503814e010636c7d297501c703a95e4eb8bceafce559c5d11e1857f4052",
+      "bytes": 51010
+    },
+    {
+      "path": "fixed-fixture-race.jsonl",
+      "sha256": "a5da3d9ba8fae183f8de4bd5a685b5267c4ac7c3eba6dbabb567f3bc95de6be6",
+      "bytes": 51011
+    },
+    {
+      "path": "full-app-race.jsonl",
+      "sha256": "d98c79cca799192b8ac3c54f9a8561bb27e00e01500f40aa9f385b59387c5d4b",
+      "bytes": 487278
+    },
+    {
+      "path": "ago.json",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "bytes": 289
+    },
+    {
+      "path": "lint.txt",
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "bytes": 10
+    },
+    {
+      "path": "writing.log",
+      "sha256": "e9fc66b810e86f61ec99cb423306773354bfd9c14614ea36d2a6e0166d4efc04",
+      "bytes": 514
+    },
+    {
+      "path": "verifier-tests.log",
+      "sha256": "d8c4b056b8e71f4d5779957ae54200217370c83accf21023109519edb4f5dbee",
+      "bytes": 9271
+    },
+    {
+      "path": "a20-acceptance.json",
+      "sha256": "8a95ac109d3540b39cf8a1c54f7f6f509412064911343b1ee11b757da72b4fc1",
+      "bytes": 37671
+    },
+    {
+      "path": "sol-review.log",
+      "sha256": "cbc430325e42be2d6ece72c558e7c3b300c0bf3af4520065959371dba0d557ea",
+      "bytes": 767
+    },
+    {
+      "path": "opus-review.log",
+      "sha256": "7104b6a0ef69123547c09540a7fb041880806c3d4a53c0aac577a23e4a4fdef3",
+      "bytes": 2160
+    }
+  ],
+  "next_candidate": {
+    "worktree": "/tmp/starmap-ingestion-main-2026-09-09",
+    "branch": "codex/catalog-ingestion-main",
+    "base": "7960a847df76ae13c09c39c8a98daf66ee282946",
+    "files": [
+      "internal/cli/app/catalog_ingestion_test.go",
+      "scripts/catalog-product-checks.json"
+    ],
+    "status": "committed and clean; reviews pass; not published",
+    "fixture": "Five deterministic providers and 100 models satisfy source validation without following the changing embedded catalog.",
+    "focused_minimum_go": "PASS: two test events, one package, 29.375s",
+    "focused_race": "PASS: two test events, one package, 199.962s",
+    "ago_exit": 0,
+    "lint_exit": 0,
+    "writing": "PASS: 1240 files, zero diagnostics",
+    "full_app_race_session": null,
+    "verifier_tests": "PASS: 73 tests",
+    "full_app_race": {
+      "exit": 0,
+      "test_pass_events": 222,
+      "package_passes": 1,
+      "failures": 0,
+      "skips": 0,
+      "seconds": 378.836
+    },
+    "acceptance": {
+      "exit": 1,
+      "passed": [
+        "A20.cli_provider_nonprovider"
+      ],
+      "unverified": [
+        "A20.publisher_provider_nonprovider",
+        "A20.server_provider_nonprovider",
+        "A20.starport_provider_nonprovider",
+        "A20.dependency_disabled_partial",
+        "A20.receipt_artifact_binding"
+      ],
+      "note": "The selected CLI check passes. The parent case and whole-plan summary remain unqualified."
+    },
+    "head": "3cde57f49bc35d09ad0bb03c67004e1f3b798605",
+    "reviews": {
+      "sol_exit": 0,
+      "opus_exit": 0,
+      "portions_each": 1,
+      "findings_each": 0,
+      "threshold": "P0",
+      "assessment": "Shutdown idempotence passes in the full package suite. HTTP registration remains absent because automatic non-provider acquisition is still missing. The local copy variable does not affect behavior."
+    }
+  }
+}

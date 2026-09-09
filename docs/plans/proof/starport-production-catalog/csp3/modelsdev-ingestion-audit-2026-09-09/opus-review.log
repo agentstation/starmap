@@ -1,0 +1,25 @@
+review still running: claude elapsed=60s pid=37873 cpu=1.4s/60s(2%) rss=278M state=S
+autoreview target: branch
+branch: codex/catalog-ingestion-main
+gate: pre-pr (configured cadence: pre-pr)
+profile: opus
+config: /Users/jack/.config/autoreview/config.toml
+selection: opus5=7.52
+reviewers: claude model=claude-opus-5 thinking=high
+tools: on
+web_search: on
+ref: 7960a847df76ae13c09c39c8a98daf66ee282946
+trufflehog: clean (2.9s)
+bundle: 18612 bytes; review passes: 1
+autoreview clean: no accepted/actionable findings reported
+overall: patch is correct (0.7)
+The bundle is test-only: a new integration test in internal/cli/app/catalog_ingestion_test.go plus a registration entry in scripts/catalog-product-checks.json. No production code changes are present, so there is no runtime, install/upgrade, data-loss, or security exposure introduced by this diff.
+
+I checked the test for defects rising to the reported P0 threshold and found none:
+- The global http.DefaultTransport swap is restored via t.Cleanup, and cleanups run LIFO so server/app teardown happens before the transport is restored; the two exported tests run sequentially in the package (no t.Parallel), so the global mutation is not concurrent.
+- Handler goroutines only use t.Error/t.Errorf (never t.Fatal), and both fixture servers are closed by defers that run before the parent test's cleanups, so "log after test completed" panics are not reachable on the normal path.
+- The closeServer closure captures the srv/httpServer variables, so the post-restart reassignment is handled correctly by the registered cleanup.
+- The JSON addition is syntactically valid and matches the surrounding entry shape.
+
+Lower-priority observations exist (e.g., the first App has Shutdown called explicitly and again from its t.Cleanup, which would fail the test if Shutdown is not idempotent; only the CLI variant is registered in catalog-product-checks.json while the HTTP variant is not; `copy` shadows the builtin), but these fall below the P0 reporting threshold and none is a catastrophic or pervasive failure, so they are not reported as findings.
+autoreview clean attestation stored for this substantive diff

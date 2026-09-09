@@ -1,0 +1,354 @@
+{
+  "cases": [
+    {
+      "id": "A01",
+      "condition": "CSP-V01",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A02",
+      "condition": "CSP-V02",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A03",
+      "condition": "CSP-V03",
+      "status": "UNVERIFIED",
+      "required_subcases": 16
+    },
+    {
+      "id": "A04",
+      "condition": "CSP-V04",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A05",
+      "condition": "CSP-V05",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A06",
+      "condition": "CSP-V06",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A07",
+      "condition": "CSP-V07",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A08",
+      "condition": "CSP-V08",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A09",
+      "condition": "CSP-V09",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A10",
+      "condition": "CSP-V10",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A11",
+      "condition": "CSP-V11",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A12",
+      "condition": "CSP-V12",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A13",
+      "condition": "CSP-V13",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A14",
+      "condition": "CSP-V14",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A15",
+      "condition": "CSP-V15",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A16",
+      "condition": "CSP-V16",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A17",
+      "condition": "CSP-V17",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A18",
+      "condition": "CSP-V18",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A19",
+      "condition": "CSP-V19",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A20",
+      "condition": "CSP-V20",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A21",
+      "condition": "CSP-V21",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A22",
+      "condition": "CSP-V22",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A23",
+      "condition": "CSP-V23",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A24",
+      "condition": "CSP-V24",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A25",
+      "condition": "CSP-V25",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A26",
+      "condition": "CSP-V26",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A27",
+      "condition": "CSP-V27",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A28",
+      "condition": "CSP-V28",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A29",
+      "condition": "CSP-V29",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A30",
+      "condition": "CSP-V30",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A31",
+      "condition": "CSP-V31",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A32",
+      "condition": "CSP-V32",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A33",
+      "condition": "CSP-V33",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A34",
+      "condition": "CSP-V34",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A35",
+      "condition": "CSP-V35",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A36",
+      "condition": "CSP-V36",
+      "status": "UNVERIFIED",
+      "required_subcases": 2
+    },
+    {
+      "id": "A37",
+      "condition": "CSP-V37",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A38",
+      "condition": "CSP-V38",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A39",
+      "condition": "CSP-V39",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A40",
+      "condition": "CSP-V40",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A41",
+      "condition": "CSP-V41",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A42",
+      "condition": "CSP-V42",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A43",
+      "condition": "CSP-V43",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A44",
+      "condition": "CSP-V44",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A45",
+      "condition": "CSP-V45",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A46",
+      "condition": "CSP-V46",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A47",
+      "condition": "CSP-V47",
+      "status": "UNVERIFIED",
+      "required_subcases": 22
+    },
+    {
+      "id": "A48",
+      "condition": "CSP-V48",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A49",
+      "condition": "CSP-V49",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A50",
+      "condition": "CSP-V50",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    }
+  ],
+  "subcases": {
+    "A20.cli_provider_nonprovider": {
+      "status": "PASS",
+      "reason": "The named behavior test passed in this invocation.",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^TestCLIRefreshIngestsProviderAndNonProviderEvidence$",
+        "./internal/cli/app"
+      ],
+      "cwd": "/private/tmp/starmap-ingestion-main-2026-09-09",
+      "exit_code": 0,
+      "stdout": "{\"Time\":\"2026-09-09T01:40:56.25989-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-09T01:40:56.841276-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\"}\n{\"Time\":\"2026-09-09T01:40:56.841337-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"=== RUN   TestCLIRefreshIngestsProviderAndNonProviderEvidence\\n\"}\n{\"Time\":\"2026-09-09T01:41:14.582295-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"local_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:41:14-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:14.582329-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"embedded_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:41:14-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:19.764691-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":18,\\\"time\\\":\\\"2026-09-09T01:41:19-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:20.535188-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"added\\\":618,\\\"updated\\\":0,\\\"removed\\\":0,\\\"time\\\":\\\"2026-09-09T01:41:20-05:00\\\",\\\"message\\\":\\\"Changes detected\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:20.574476-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:20-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:27.691698-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"embedded_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:41:27-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:27.691719-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"time\\\":\\\"2026-09-09T01:41:27-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:27.691755-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"provider_count\\\":1,\\\"max_concurrency\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:27-05:00\\\",\\\"message\\\":\\\"Syncing providers concurrently\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:27.693919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"provider_id\\\":\\\"acme\\\",\\\"provider_id\\\":\\\"acme\\\",\\\"model_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:27-05:00\\\",\\\"message\\\":\\\"Fetched models\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:32.835855-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:32-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:32.857996-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"added\\\":0,\\\"updated\\\":1,\\\"removed\\\":0,\\\"time\\\":\\\"2026-09-09T01:41:32-05:00\\\",\\\"message\\\":\\\"Changes detected\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:32.865208-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:32-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:32.869904-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:32-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:40.043261-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"local_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:41:40-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:40.043279-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"embedded_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:41:40-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:45.275227-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":18,\\\"time\\\":\\\"2026-09-09T01:41:45-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:46.060341-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"added\\\":618,\\\"updated\\\":1,\\\"removed\\\":0,\\\"time\\\":\\\"2026-09-09T01:41:46-05:00\\\",\\\"message\\\":\\\"Changes detected\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:46.104051-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:46-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:46.112799-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:46-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:46.116731-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:46-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:53.325268-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"embedded_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:41:53-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:53.325286-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"time\\\":\\\"2026-09-09T01:41:53-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:53.325526-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"url\\\":\\\"https://models.dev/api.json\\\",\\\"time\\\":\\\"2026-09-09T01:41:53-05:00\\\",\\\"message\\\":\\\"Fetching models.dev catalog\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:53.488842-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"acquisition\\\":\\\"downloaded\\\",\\\"response_bytes\\\":201019,\\\"time\\\":\\\"2026-09-09T01:41:53-05:00\\\",\\\"message\\\":\\\"Downloaded models.dev catalog\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:53.620196-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"model_count\\\":20,\\\"time\\\":\\\"2026-09-09T01:41:53-05:00\\\",\\\"message\\\":\\\"Found models with catalog data from models.dev HTTP\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:58.515835-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:58-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:58.540393-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"added\\\":0,\\\"updated\\\":1,\\\"removed\\\":0,\\\"time\\\":\\\"2026-09-09T01:41:58-05:00\\\",\\\"message\\\":\\\"Changes detected\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:58.599211-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:58-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:58.608-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:58-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:58.645018-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:58-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:41:58.650097-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:41:58-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:05.958997-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"embedded_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:42:05-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:05.959017-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"time\\\":\\\"2026-09-09T01:42:05-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:05.959207-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"url\\\":\\\"https://models.dev/api.json\\\",\\\"time\\\":\\\"2026-09-09T01:42:05-05:00\\\",\\\"message\\\":\\\"Fetching models.dev catalog\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:06.128126-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"acquisition\\\":\\\"downloaded\\\",\\\"response_bytes\\\":201018,\\\"time\\\":\\\"2026-09-09T01:42:06-05:00\\\",\\\"message\\\":\\\"Downloaded models.dev catalog\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:06.263819-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"models_dev_http\\\",\\\"model_count\\\":20,\\\"time\\\":\\\"2026-09-09T01:42:06-05:00\\\",\\\"message\\\":\\\"Found models with catalog data from models.dev HTTP\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:11.254027-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:11-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:11.28058-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"added\\\":0,\\\"updated\\\":1,\\\"removed\\\":0,\\\"time\\\":\\\"2026-09-09T01:42:11-05:00\\\",\\\"message\\\":\\\"Changes detected\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:11.341846-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:11-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:11.350559-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:11-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:11.387806-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:11-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:11.426504-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:11-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:11.432568-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:11-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:18.736048-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"embedded_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:42:18-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:18.736067-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"time\\\":\\\"2026-09-09T01:42:18-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:18.736107-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"provider_count\\\":1,\\\"max_concurrency\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:18-05:00\\\",\\\"message\\\":\\\"Syncing providers concurrently\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:18.737063-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"provider_id\\\":\\\"acme\\\",\\\"provider_id\\\":\\\"acme\\\",\\\"model_count\\\":2,\\\"time\\\":\\\"2026-09-09T01:42:18-05:00\\\",\\\"message\\\":\\\"Fetched models\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:23.93891-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:23-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:23.961789-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"added\\\":0,\\\"updated\\\":1,\\\"removed\\\":0,\\\"time\\\":\\\"2026-09-09T01:42:23-05:00\\\",\\\"message\\\":\\\"Changes detected\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:23.972135-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:23-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:23.981055-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:23-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:24.018528-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:24-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:24.056149-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:24-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:24.063057-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:24-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:24.069424-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:24-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:31.416203-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"time\\\":\\\"2026-09-09T01:42:31-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:31.416223-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"embedded_catalog\\\",\\\"time\\\":\\\"2026-09-09T01:42:31-05:00\\\",\\\"message\\\":\\\"Observing\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:31.416237-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"source\\\":\\\"providers\\\",\\\"provider_count\\\":1,\\\"max_concurrency\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:31-05:00\\\",\\\"message\\\":\\\"Syncing providers concurrently\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:31.417051-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"source\\\":\\\"providers\\\",\\\"provider_id\\\":\\\"acme\\\",\\\"error\\\":\\\"sync error for provider acme: API error from acme (status 503): failed to decode response\\\",\\\"provider_id\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-09T01:42:31-05:00\\\",\\\"message\\\":\\\"Provider observation degraded\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:36.619883-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"    catalog_ingestion_test.go:437: CLI acquisition returned process error during update catalog (command: update): sync error for provider providers: validation failed for field required_source.status: required source must succeed without degradation or fallback\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.61146-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.620381-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.656905-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.694184-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.701432-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.707306-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.720625-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.730056-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.767167-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.805239-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.811952-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.818428-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-09T01:42:38-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.920832-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Output\":\"--- PASS: TestCLIRefreshIngestsProviderAndNonProviderEvidence (102.08s)\\n\"}\n{\"Time\":\"2026-09-09T01:42:38.920849-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCLIRefreshIngestsProviderAndNonProviderEvidence\",\"Elapsed\":102.08}\n{\"Time\":\"2026-09-09T01:42:38.92098-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-09T01:42:39.943561-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t103.683s\\n\"}\n{\"Time\":\"2026-09-09T01:42:39.943582-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":103.683}\n",
+      "stderr": ""
+    },
+    "A20.dependency_disabled_partial": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered."
+    },
+    "A20.publisher_provider_nonprovider": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered."
+    },
+    "A20.receipt_artifact_binding": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered."
+    },
+    "A20.server_provider_nonprovider": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered."
+    },
+    "A20.starport_provider_nonprovider": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered."
+    }
+  },
+  "selected_subcases": 6,
+  "summary": "Summary: 0 passed, 50 failed",
+  "unverified_cases": 50,
+  "gate_status": "FAIL",
+  "qualification": "component checks only",
+  "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+  "registry_sha256": "82166e650659c403d02a84e5e3611a74c2a74cea29dfeacb908a24f06bcc2e57",
+  "backend_scope": "primary"
+}

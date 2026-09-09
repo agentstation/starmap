@@ -24,7 +24,7 @@
   ],
   "artifacts": [
     {
-      "path": "snapshot-output.txt",
+      "path": "snapshot-output.log",
       "sha256": "4694db8a6f4de022b32ce8db2f0caf6a130bbc60c581057bb7ba500286e61ae9",
       "bytes": 4144
     },
@@ -39,7 +39,7 @@
       "bytes": 52383
     },
     {
-      "path": "checksums.txt",
+      "path": "checksums.log",
       "sha256": "13836d0c32078cf3726bcc89785b71c220ed34f31cbaff216b261ac1a09576f0",
       "bytes": 1326
     },

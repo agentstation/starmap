@@ -1,0 +1,16 @@
+autoreview target: branch
+branch: codex/catalog-ingestion-main
+gate: pre-pr (configured cadence: pre-pr)
+profile: sol
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83
+reviewers: codex model=gpt-5.6-sol thinking=xhigh
+tools: on
+web_search: on
+ref: 7960a847df76ae13c09c39c8a98daf66ee282946
+trufflehog: clean (2.8s)
+bundle: 18612 bytes; review passes: 1
+autoreview clean: no accepted/actionable findings reported
+overall: patch is correct (0.99)
+No P0 defects are demonstrated by the provided change bundle. The patch adds integration coverage and registers the CLI check; any potential lower-severity test robustness or coverage concerns are outside the requested reporting threshold.
+autoreview clean attestation stored for this substantive diff

@@ -39,7 +39,78 @@
     "opus_review_exit": 0,
     "run_id": 34317629320,
     "pushed": true,
-    "pr_ready": true
+    "pr_ready": true,
+    "native_results": [
+      {
+        "platform": "native-runtime-macos-15",
+        "test_pass_events": 1457,
+        "package_passes": 12,
+        "failures": 0,
+        "skips": [],
+        "runtime_seconds": [
+          217.879
+        ]
+      },
+      {
+        "platform": "native-runtime-macos-15-intel",
+        "test_pass_events": 1457,
+        "package_passes": 12,
+        "failures": 0,
+        "skips": [],
+        "runtime_seconds": [
+          427.295
+        ]
+      },
+      {
+        "platform": "native-runtime-ubuntu-24.04",
+        "test_pass_events": 1401,
+        "package_passes": 12,
+        "failures": 0,
+        "skips": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "runtime_seconds": [
+          242.972
+        ],
+        "privileged_owner_test_passed": true
+      },
+      {
+        "platform": "native-runtime-ubuntu-24.04-arm",
+        "test_pass_events": 1401,
+        "package_passes": 12,
+        "failures": 0,
+        "skips": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "runtime_seconds": [
+          165.423
+        ],
+        "privileged_owner_test_passed": true
+      },
+      {
+        "platform": "native-runtime-windows-11-arm",
+        "test_pass_events": 1402,
+        "package_passes": 13,
+        "failures": 0,
+        "skips": [],
+        "runtime_seconds": [
+          375.454
+        ]
+      },
+      {
+        "platform": "native-runtime-windows-2025",
+        "test_pass_events": 1402,
+        "package_passes": 13,
+        "failures": 0,
+        "skips": [],
+        "runtime_seconds": [
+          653.404
+        ]
+      }
+    ],
+    "native_test_pass_events": 8520,
+    "native_package_passes": 74,
+    "auto_merge_requested": true
   },
   "artifacts": [
     {
@@ -58,7 +129,7 @@
       "bytes": 157030
     },
     {
-      "path": "sol-review.txt",
+      "path": "sol-review.log",
       "sha256": "3a3c1c2e80a093cb77e44a097aa80b47b2c39d1c0a8a97443f5c54ca3a74d134",
       "bytes": 752
     },
@@ -68,7 +139,7 @@
       "bytes": 289
     },
     {
-      "path": "opus-review.txt",
+      "path": "opus-review.log",
       "sha256": "0a2f7dd9d3ab2dd9dcc33d3690e23955ff58997124526ae51f044854338d4f38",
       "bytes": 1528
     },
@@ -76,6 +147,115 @@
       "path": "pr-body.md",
       "sha256": "0e64845c9464715e7f1a3b7671dd87d7ce5c69b9b1eee20c2d9817f37c1487a1",
       "bytes": 2329
+    },
+    {
+      "path": "native/native-runtime-macos-15/tests.jsonl.gz",
+      "sha256": "e6248f7099a58c6573c25f532787203c668605d7ebfae4057ba3e020d8fb16fd",
+      "bytes": 124101,
+      "original_sha256": "df87635b9df79b17782583e60b63771875ef8f1636b7d4d05837d236db30302c"
+    },
+    {
+      "path": "native/native-runtime-macos-15/toolchain.txt",
+      "sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05",
+      "bytes": 62,
+      "original_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "sha256": "9de36c164e6d56ae83dd0f43937511e9e945063167c0a4d87df1bf07421993cb",
+      "bytes": 127307,
+      "original_sha256": "b0300b6598e6b80014327efd98785c640cd6a5fec263e7c3063a3e468bf5a0ed"
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/toolchain.txt",
+      "sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe",
+      "bytes": 62,
+      "original_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/service-owner.txt",
+      "sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e",
+      "bytes": 323,
+      "original_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "sha256": "dca2f9622b08356467291005596831edaab122c3a56fdb9bcf05c37af58d1b28",
+      "bytes": 138437,
+      "original_sha256": "029522f9978db1f3568612bb52fdf2537208ac928d2bb6bafd2869b8602f91e6"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/toolchain.txt",
+      "sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057",
+      "bytes": 59,
+      "original_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/service-owner.txt",
+      "sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e",
+      "bytes": 323,
+      "original_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256": "8c19eed024bc08b456bcadf1532b8526060edf663c493b2cb5b3e9b833d39b30",
+      "bytes": 136761,
+      "original_sha256": "668db1afd82bc1365677c9694e14619bf8295f41671f26df256aa824ee69997c"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/toolchain.txt",
+      "sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca",
+      "bytes": 59,
+      "original_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "d9f9e87d304d2d35f872abb60e281a29c246d50fceb9716d17a44438315094dd",
+      "bytes": 102080,
+      "original_sha256": "bf64baa0297a704c1d2f5bc3941ed43c371b072f4974c62635c4d4125ed224cf"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/toolchain.txt",
+      "sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33",
+      "bytes": 65,
+      "original_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "d3617e1730de7aefd900aedec22cc84525eaddb0e35f0c21327f63aaa0bdeb72",
+      "bytes": 103668,
+      "original_sha256": "02dadd8f9910ae9e1083773af22f803581728ad148e4758b5f66f566e3d1dda3"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/toolchain.txt",
+      "sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad",
+      "bytes": 65,
+      "original_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "range-equivalence.json",
+      "bytes": 503,
+      "sha256": "69f9e4b88342c89a1c355fab21713bafdf210c6970ecaee2334aaadb1fda01da"
+    },
+    {
+      "path": "range-sol-review.log",
+      "bytes": 739,
+      "sha256": "3e57f72c18e52734e7d7b33e484a41da1efb017c65f0baf4beefbb5d697ae102"
+    },
+    {
+      "path": "range-opus-review.log",
+      "bytes": 3409,
+      "sha256": "44884f6dd8b65aa4f4953faa712fc0593d1ad7edb28b5ee3136a7ac8b36f13b9"
+    },
+    {
+      "path": "prose-check.log",
+      "bytes": 558,
+      "sha256": "8d2c057851242418a47d1e0bc9467c7c55abc461d7ccb9600fb6f9eede9c9eb7"
+    },
+    {
+      "path": "prose-check-failure.log",
+      "bytes": 41930,
+      "sha256": "e7c1bf32edf3676cad6ca8676906b0cea5fb006cbbc32b186748b0d75c6e40ca"
     }
   ],
   "focused_profile": {
@@ -91,5 +271,23 @@
     "runtime_madvise_percent": 11.17,
     "tsan_read_percent": 9.91,
     "diagnosis": "The focused test completes with all assertions. Race instrumentation and memory management dominate the CPU profile. No deadlock appeared in the CI stack or focused profile."
+  },
+  "range_integration": {
+    "local_head": "57eaadc1dbbdf1099d84a185d6f5168e0a6fbabf",
+    "published_head": "5c40192a620b43341f06a3ad49f4e2a743c741ba",
+    "review_base": "fff54427e9f19bb0bd05b3df93b4556b8100c24c",
+    "substantive_diff_sha256": "d645b83fd73e702afaffd7514a6988699b7a66e8364bab3e0c695e0eddcbf905",
+    "sol": "PASS: clean attestation stored",
+    "opus": "PASS: clean attestation stored",
+    "published": false
+  },
+  "plan_prose_check": {
+    "command": "make technical-writing-check",
+    "exit": 0,
+    "files": 1268,
+    "diagnostics": 0,
+    "earlier_exit": 2,
+    "earlier_diagnostics": 172,
+    "repair": "Keep captured logs and code byte-identical under .log and .fixture paths. Correct two authored sentences."
   }
 }
