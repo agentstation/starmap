@@ -36,20 +36,22 @@ func (p *providerBindingPolicy) selected(providers []catalogs.ProviderID) ([]sou
 }
 
 // acquireSelectedProviders prevents an explicit policy from invoking an unscoped role.
-func (r *Runtime) acquireSelectedProviders(ctx context.Context, request AcquisitionRequest) (AcquisitionResult, error) {
+func (r *Runtime) acquireSelectedProviders(ctx context.Context, request AcquisitionRequest) (AcquisitionResult, bool, error) {
 	if r.config.providerBindings == nil {
-		return r.config.acquirer.AcquireProviders(ctx, request)
+		result, err := r.config.acquirer.AcquireProviders(ctx, request)
+		return result, true, err
 	}
 	bindings, err := r.config.providerBindings.selected(request.Providers)
 	if err != nil {
-		return AcquisitionResult{}, err
+		return AcquisitionResult{}, false, err
 	}
 	if len(bindings) == 0 {
-		return AcquisitionResult{}, nil
+		return AcquisitionResult{}, false, nil
 	}
 	acquirer, ok := r.config.acquirer.(BindingAcquirer)
 	if !ok {
-		return AcquisitionResult{}, &errors.ConfigError{Component: "binding acquisition", Message: "acquirer must support active provider bindings"}
+		return AcquisitionResult{}, false, &errors.ConfigError{Component: "binding acquisition", Message: "acquirer must support active provider bindings"}
 	}
-	return acquirer.AcquireProviderBindings(ctx, request, bindings)
+	result, err := acquirer.AcquireProviderBindings(ctx, request, bindings)
+	return result, true, err
 }

@@ -92,7 +92,7 @@ func (r *Runtime) acquire(ctx context.Context, report *RefreshReport, providers 
 	}
 	work.Wait()
 	result := providerReport.Acquisition
-	result.SourceActivities = activities
+	result.SourceActivities = append(result.SourceActivities, activities...)
 	result.RunID, result.StartedAt, result.CompletedAt = report.RunID, started, r.config.now()
 	if result.Health == "" {
 		result.Health = HealthOK

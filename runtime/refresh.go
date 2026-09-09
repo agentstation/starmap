@@ -536,13 +536,14 @@ func (r *Runtime) acquireProviders(
 	// Each closed coalescing window publishes the layers it collected. The
 	// acquirer calls this from its own run goroutine, one window at a time.
 	windows := &windowPublisher{runtime: r, epoch: epoch}
-	observed, err := r.acquireSelectedProviders(ctx, AcquisitionRequest{
+	observed, attempted, err := r.acquireSelectedProviders(ctx, AcquisitionRequest{
 		RunID:          report.RunID,
 		Current:        current,
 		Providers:      providers,
 		CoalesceWindow: r.config.coalesceWindow,
 		Publish:        windows.publish,
 	})
+	result.SourceActivities = []sources.SourceActivity{providerSourceActivity(observed, attempted, err)}
 	result.CompletedAt = r.config.now()
 	result.Eligible = observed.Eligible
 	result.Attempts = observed.Attempts
