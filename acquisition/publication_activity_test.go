@@ -79,6 +79,15 @@ func TestManualPublicationFailureRetainsSourceActivity(t *testing.T) {
 				t.Fatal("failed publication changed runtime catalog or accepted input")
 			}
 
+			accepted := sources.AcceptedSourcesFromError(err)
+			if connectedMode {
+				if accepted == nil || accepted.GenerationID != connected.State().GenerationID || len(accepted.Sources) != 0 {
+					t.Fatalf("failure accepted snapshot=%+v", accepted)
+				}
+			} else if accepted != nil {
+				t.Fatal("standalone composition invented retained input ownership")
+			}
+
 			activity := sources.ActivityFromError(err)
 			attempts := sources.ProviderAttemptsFromError(err)
 			if len(activity) != 4 || len(attempts) != 1 || !attempts[0].Requested {

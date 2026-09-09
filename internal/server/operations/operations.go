@@ -116,6 +116,8 @@ func (s Status) Copy() Status {
 	detail := make(map[string]any, len(s.Detail))
 	for key, value := range s.Detail {
 		switch typed := value.(type) {
+		case sources.AcceptedSourceState:
+			detail[key] = typed.Clone()
 		case []sources.SourceFailure:
 			detail[key] = slices.Clone(typed)
 		case []sources.SourceActivity:

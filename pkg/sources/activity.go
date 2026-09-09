@@ -64,6 +64,8 @@ type ActivityError struct {
 	Activities []SourceActivity
 	// ProviderAttempts preserves per-profile outcomes from the failed run.
 	ProviderAttempts []ProviderAttempt
+	// AcceptedSources identifies retained input when the caller supplies a runtime snapshot.
+	AcceptedSources *AcceptedSourceState
 	// Err preserves the original acquisition failure.
 	Err error
 }
@@ -95,4 +97,14 @@ func ProviderAttemptsFromError(err error) []ProviderAttempt {
 		return nil
 	}
 	return slices.Clone(report.ProviderAttempts)
+}
+
+// AcceptedSourcesFromError returns an owned accepted-input snapshot, when present.
+func AcceptedSourcesFromError(err error) *AcceptedSourceState {
+	var report *ActivityError
+	if !errors.As(err, &report) || report.AcceptedSources == nil {
+		return nil
+	}
+	owned := report.AcceptedSources.Clone()
+	return &owned
 }

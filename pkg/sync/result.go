@@ -62,6 +62,9 @@ type Result struct {
 	SourceActivities []sources.SourceActivity `json:"source_activities,omitempty"`
 	// ProviderAttempts preserves credential and request outcomes for each provider scope.
 	ProviderAttempts []sources.ProviderAttempt `json:"provider_attempts,omitempty"`
+	// AcceptedSources identifies the runtime generation and its retained acquisition inputs.
+	// It remains absent for a composition without a retained-input snapshot.
+	AcceptedSources *sources.AcceptedSourceState `json:"accepted_sources,omitempty"`
 	// Overall statistics
 	TotalChanges     int                                     // Total number of changes across all providers
 	ProvidersChanged int                                     // Number of providers with changes

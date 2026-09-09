@@ -3,7 +3,7 @@ package handlers
 import "github.com/agentstation/starmap/pkg/sources"
 
 // acquisitionActivityDetail copies validated activity into the operation summary.
-func acquisitionActivityDetail(detail map[string]any, activities []sources.SourceActivity, attempts []sources.ProviderAttempt) map[string]any {
+func acquisitionActivityDetail(detail map[string]any, activities []sources.SourceActivity, attempts []sources.ProviderAttempt, accepted *sources.AcceptedSourceState) map[string]any {
 	var safeActivities []sources.SourceActivity
 	for _, activity := range activities {
 		if activity.Valid() {
@@ -16,7 +16,8 @@ func acquisitionActivityDetail(detail map[string]any, activities []sources.Sourc
 			safeAttempts = append(safeAttempts, attempt)
 		}
 	}
-	if len(safeActivities) == 0 && len(safeAttempts) == 0 {
+	hasAccepted := accepted != nil && accepted.Valid()
+	if len(safeActivities) == 0 && len(safeAttempts) == 0 && !hasAccepted {
 		return detail
 	}
 	if detail == nil {
@@ -24,5 +25,8 @@ func acquisitionActivityDetail(detail map[string]any, activities []sources.Sourc
 	}
 	detail["source_activities"] = safeActivities
 	detail["provider_attempts"] = safeAttempts
+	if hasAccepted {
+		detail["accepted_sources"] = accepted.Clone()
+	}
 	return detail
 }

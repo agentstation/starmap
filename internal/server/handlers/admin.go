@@ -77,7 +77,7 @@ func (h *Handlers) runCatalogUpdate(
 ) (map[string]any, error) {
 	result, err := h.app.Sync(ctx, opts...)
 	if err != nil {
-		return acquisitionActivityDetail(acquisitionDependencyDetail(err), sources.ActivityFromError(err), sources.ProviderAttemptsFromError(err)), err
+		return acquisitionActivityDetail(acquisitionDependencyDetail(err), sources.ActivityFromError(err), sources.ProviderAttemptsFromError(err), sources.AcceptedSourcesFromError(err)), err
 	}
 	failures := make([]sources.SourceFailure, 0, len(result.SourceFailures))
 	for _, failure := range result.SourceFailures {
@@ -94,7 +94,7 @@ func (h *Handlers) runCatalogUpdate(
 		"dry_run":           result.DryRun,
 		"generation_id":     result.GenerationID,
 		"sync_run_id":       result.SyncRunID,
-	}, result.SourceActivities, result.ProviderAttempts), nil
+	}, result.SourceActivities, result.ProviderAttempts, result.AcceptedSources), nil
 }
 
 // HandleOperationStatus handles GET /api/v1/updates/{id}.

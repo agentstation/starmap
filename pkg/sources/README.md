@@ -20,6 +20,10 @@ Package sources provides public APIs for working with AI model data sources.
 - [func IsExactGitCommit\(value string\) bool](<#IsExactGitCommit>)
 - [func ValidateAcquisitionSelection\(ids \[\]ID\) error](<#ValidateAcquisitionSelection>)
 - [func ValidateJSONPayload\(data \[\]byte\) error](<#ValidateJSONPayload>)
+- [type AcceptedSourceState](<#AcceptedSourceState>)
+  - [func AcceptedSourcesFromError\(err error\) \*AcceptedSourceState](<#AcceptedSourcesFromError>)
+  - [func \(s AcceptedSourceState\) Clone\(\) AcceptedSourceState](<#AcceptedSourceState.Clone>)
+  - [func \(s AcceptedSourceState\) Valid\(\) bool](<#AcceptedSourceState.Valid>)
 - [type ActivityError](<#ActivityError>)
   - [func \(e \*ActivityError\) Error\(\) string](<#ActivityError.Error>)
   - [func \(e \*ActivityError\) Unwrap\(\) error](<#ActivityError.Unwrap>)
@@ -242,8 +246,49 @@ func ValidateJSONPayload(data []byte) error
 
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
+<a name="AcceptedSourceState"></a>
+## type [AcceptedSourceState](<https://github.com/agentstation/starmap/blob/main/pkg/sources/accepted.go#L7-L12>)
+
+AcceptedSourceState binds accepted acquisition inputs to one active generation. A missing snapshot means the composition cannot report retained input ownership.
+
+```go
+type AcceptedSourceState struct {
+    // GenerationID identifies the active generation at the snapshot time.
+    GenerationID string `json:"generation_id"`
+    // Sources names accepted acquisition input, independently of the last attempt.
+    Sources []ID `json:"sources"`
+}
+```
+
+<a name="AcceptedSourcesFromError"></a>
+### func [AcceptedSourcesFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L103>)
+
+```go
+func AcceptedSourcesFromError(err error) *AcceptedSourceState
+```
+
+AcceptedSourcesFromError returns an owned accepted\-input snapshot, when present.
+
+<a name="AcceptedSourceState.Clone"></a>
+### func \(AcceptedSourceState\) [Clone](<https://github.com/agentstation/starmap/blob/main/pkg/sources/accepted.go#L15>)
+
+```go
+func (s AcceptedSourceState) Clone() AcceptedSourceState
+```
+
+Clone returns a snapshot with caller\-owned source identifiers.
+
+<a name="AcceptedSourceState.Valid"></a>
+### func \(AcceptedSourceState\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/accepted.go#L21>)
+
+```go
+func (s AcceptedSourceState) Valid() bool
+```
+
+Valid reports whether the snapshot names a generation and unique acquisition sources.
+
 <a name="ActivityError"></a>
-## type [ActivityError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L62-L69>)
+## type [ActivityError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L62-L71>)
 
 ActivityError preserves per\-run source activity when acquisition fails before a result exists. Call ActivityFromError to get an owned report while retaining the original error identity.
 
@@ -253,13 +298,15 @@ type ActivityError struct {
     Activities []SourceActivity
     // ProviderAttempts preserves per-profile outcomes from the failed run.
     ProviderAttempts []ProviderAttempt
+    // AcceptedSources identifies retained input when the caller supplies a runtime snapshot.
+    AcceptedSources *AcceptedSourceState
     // Err preserves the original acquisition failure.
     Err error
 }
 ```
 
 <a name="ActivityError.Error"></a>
-### func \(\*ActivityError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L72>)
+### func \(\*ActivityError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L74>)
 
 ```go
 func (e *ActivityError) Error() string
@@ -268,7 +315,7 @@ func (e *ActivityError) Error() string
 Error preserves the underlying acquisition error text.
 
 <a name="ActivityError.Unwrap"></a>
-### func \(\*ActivityError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L80>)
+### func \(\*ActivityError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L82>)
 
 ```go
 func (e *ActivityError) Unwrap() error
@@ -712,7 +759,7 @@ type ProviderAttempt struct {
 ```
 
 <a name="ProviderAttemptsFromError"></a>
-### func [ProviderAttemptsFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L92>)
+### func [ProviderAttemptsFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L94>)
 
 ```go
 func ProviderAttemptsFromError(err error) []ProviderAttempt
@@ -1371,7 +1418,7 @@ type SourceActivity struct {
 ```
 
 <a name="ActivityFromError"></a>
-### func [ActivityFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L83>)
+### func [ActivityFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L85>)
 
 ```go
 func ActivityFromError(err error) []SourceActivity

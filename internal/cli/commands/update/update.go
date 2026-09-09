@@ -176,6 +176,9 @@ func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *s
 		if err := displaySourceActivity(os.Stderr, result.SourceActivities); err != nil {
 			return err
 		}
+		if err := displayAcceptedSources(os.Stderr, result.AcceptedSources); err != nil {
+			return err
+		}
 	}
 	if err := displaySourceFailures(os.Stderr, result); err != nil {
 		return err
@@ -246,6 +249,9 @@ func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *s
 
 	if !quiet {
 		if err := displaySourceActivity(os.Stderr, finalResult.SourceActivities); err != nil {
+			return err
+		}
+		if err := displayAcceptedSources(os.Stderr, finalResult.AcceptedSources); err != nil {
 			return err
 		}
 	}

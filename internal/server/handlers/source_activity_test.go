@@ -13,11 +13,12 @@ func TestUpdateDetailPreservesSourceActivity(t *testing.T) {
 		t.Run(map[bool]string{false: "success", true: "failure"}[failed], func(t *testing.T) {
 			activity := []sources.SourceActivity{{Source: sources.ProvidersID, Supported: true, Enabled: true, Eligibility: sources.EligibilityIneligible, Attempted: true}, {Source: "private-source", Eligibility: "private-reason"}}
 			attempts := []sources.ProviderAttempt{{ProviderID: "openai", Outcome: sources.ProviderOutcomeSkippedNotConfigured, Reason: sources.ProviderReasonCredentialUnavailable}, {ProviderID: "openai", Outcome: "private-outcome"}}
+			accepted := &sources.AcceptedSourceState{GenerationID: "prior", Sources: []sources.ID{sources.ModelsDevHTTPID}}
 			h := &Handlers{app: &testApplication{SyncFunc: func(context.Context, ...pkgsync.Option) (*pkgsync.Result, error) {
 				if failed {
-					return nil, &sources.ActivityError{Activities: activity, ProviderAttempts: attempts, Err: context.Canceled}
+					return nil, &sources.ActivityError{Activities: activity, ProviderAttempts: attempts, AcceptedSources: accepted, Err: context.Canceled}
 				}
-				return &pkgsync.Result{SourceActivities: activity, ProviderAttempts: attempts}, nil
+				return &pkgsync.Result{SourceActivities: activity, ProviderAttempts: attempts, AcceptedSources: accepted}, nil
 			}}}
 			detail, err := h.runCatalogUpdate(t.Context(), nil)
 			if (err != nil) != failed {
@@ -30,6 +31,15 @@ func TestUpdateDetailPreservesSourceActivity(t *testing.T) {
 			providers, ok := detail["provider_attempts"].([]sources.ProviderAttempt)
 			if !ok || len(providers) != 1 || providers[0] != attempts[0] {
 				t.Fatalf("provider attempts=%v", detail)
+			}
+
+			retained, ok := detail["accepted_sources"].(sources.AcceptedSourceState)
+			if !ok || retained.GenerationID != "prior" || len(retained.Sources) != 1 || retained.Sources[0] != sources.ModelsDevHTTPID {
+				t.Fatalf("accepted input=%v", detail)
+			}
+			accepted.Sources[0] = sources.LocalCatalogID
+			if retained.Sources[0] != sources.ModelsDevHTTPID {
+				t.Fatal("accepted snapshot aliases acquisition result")
 			}
 			activity[0].Source = sources.LocalCatalogID
 			attempts[0].ProviderID = "changed"

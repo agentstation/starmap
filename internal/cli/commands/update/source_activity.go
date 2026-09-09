@@ -4,6 +4,7 @@ import (
 	stderrors "errors"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -25,6 +26,9 @@ func displayFailedSourceActivity(out io.Writer, err error) error {
 	if writeErr := displaySourceActivity(out, sources.ActivityFromError(err)); writeErr != nil {
 		return stderrors.Join(err, writeErr)
 	}
+	if writeErr := displayAcceptedSources(out, sources.AcceptedSourcesFromError(err)); writeErr != nil {
+		return stderrors.Join(err, writeErr)
+	}
 	return err
 }
 
@@ -36,4 +40,25 @@ func activityFlag(value, unknown bool) string {
 		return "yes"
 	}
 	return "no"
+}
+
+func displayAcceptedSources(out io.Writer, accepted *sources.AcceptedSourceState) error {
+	if accepted == nil || !accepted.Valid() {
+		if _, err := fmt.Fprintln(out, "Accepted acquisition inputs: unknown."); err != nil {
+			return errors.WrapResource("write", "accepted source summary", "", err)
+		}
+		return nil
+	}
+	ids := make([]string, 0, len(accepted.Sources))
+	for _, id := range accepted.Sources {
+		ids = append(ids, string(id))
+	}
+	label := strings.Join(ids, ", ")
+	if label == "" {
+		label = "none"
+	}
+	if _, err := fmt.Fprintf(out, "Accepted acquisition inputs for generation %q: %s.\n", accepted.GenerationID, label); err != nil {
+		return errors.WrapResource("write", "accepted source summary", "", err)
+	}
+	return nil
 }

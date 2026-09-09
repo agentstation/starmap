@@ -16,11 +16,12 @@ type activitySyncClient struct{ calls, failAt int }
 
 func (c *activitySyncClient) Sync(_ context.Context, opts ...pkgsync.Option) (*pkgsync.Result, error) {
 	c.calls++
+	accepted := &sources.AcceptedSourceState{GenerationID: "prior", Sources: []sources.ID{sources.ModelsDevHTTPID}}
 	rows := []sources.SourceActivity{{Source: sources.ProvidersID, Supported: true, Enabled: true, Eligibility: sources.EligibilityIneligible, Attempted: true}, {Source: "private-source", Eligibility: "private-reason"}}
 	if c.calls == c.failAt {
-		return nil, &sources.ActivityError{Activities: rows, Err: context.Canceled}
+		return nil, &sources.ActivityError{Activities: rows, AcceptedSources: accepted, Err: context.Canceled}
 	}
-	return &pkgsync.Result{SourceActivities: rows, TotalChanges: 1, DryRun: pkgsync.Defaults().Apply(opts...).DryRun}, nil
+	return &pkgsync.Result{SourceActivities: rows, AcceptedSources: accepted, TotalChanges: 1, DryRun: pkgsync.Defaults().Apply(opts...).DryRun}, nil
 }
 
 func TestUpdateReportsSourceActivityOnSuccessAndFailure(t *testing.T) {
@@ -53,6 +54,10 @@ func TestUpdateReportsSourceActivityOnSuccessAndFailure(t *testing.T) {
 			text := string(raw)
 			if strings.Contains(text, "providers: supported=yes enabled=yes eligible=ineligible attempted=yes") == test.quiet || strings.Contains(text, "private-") {
 				t.Fatalf("source report=%s", text)
+			}
+
+			if strings.Contains(text, `Accepted acquisition inputs for generation "prior": models_dev_http.`) == test.quiet {
+				t.Fatalf("accepted input report=%s", text)
 			}
 			want := 1
 			if !test.auto {
