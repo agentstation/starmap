@@ -2,8 +2,10 @@ package update
 
 import (
 	"fmt"
+	"io"
 	"os"
 
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sync"
 )
 
@@ -46,4 +48,21 @@ func displayResultsSummary(result *sync.Result) {
 			fmt.Fprintf(os.Stderr, "\n")
 		}
 	}
+}
+
+func displaySourceFailures(out io.Writer, result *sync.Result) error {
+	if !result.Partial {
+		return nil
+	}
+	if _, err := fmt.Fprintln(out, "Catalog acquisition is partial."); err != nil {
+		return errors.WrapResource("write", "source failure summary", "", err)
+	}
+	for _, failure := range result.SourceFailures {
+		if failure.Valid() {
+			if _, err := fmt.Fprintf(out, "  %s: %s. Check source configuration and dependencies.\n", failure.Source, failure.Reason); err != nil {
+				return errors.WrapResource("write", "source failure summary", "", err)
+			}
+		}
+	}
+	return nil
 }

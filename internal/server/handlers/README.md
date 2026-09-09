@@ -210,7 +210,7 @@ func (h *Handlers) HandleOpenRouterModel(w http.ResponseWriter, _ *http.Request,
 HandleOpenRouterModel handles GET /api/v1/model/\{author\}/\{slug\}. @Summary Get an OpenRouter\-compatible model by author and slug @Description Resolve a canonical model, known alias, or configured variant @Tags openrouter @Produce json @Param author path string true "Canonical author ID or alias" @Param slug path string true "Model slug or configured variant" @Success 200 \{object\} openrouter.ModelEnvelope @Failure 401 \{object\} openrouter.ErrorEnvelope @Failure 404 \{object\} openrouter.ErrorEnvelope @Failure 500 \{object\} openrouter.ErrorEnvelope @Security ApiKeyAuth @Router /api/v1/model/\{author\}/\{slug\} \[get\].
 
 <a name="Handlers.HandleOperationCancel"></a>
-### func \(\*Handlers\) [HandleOperationCancel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L124-L128>)
+### func \(\*Handlers\) [HandleOperationCancel](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L132-L136>)
 
 ```go
 func (h *Handlers) HandleOperationCancel(w http.ResponseWriter, _ *http.Request, id string)
@@ -219,7 +219,7 @@ func (h *Handlers) HandleOperationCancel(w http.ResponseWriter, _ *http.Request,
 HandleOperationCancel handles DELETE /api/v1/updates/\{id\}. @Summary Cancel an update operation @Description Ask one accepted or running update to stop @Tags admin @Produce json @Param id path string true "Operation identity" @Success 200 \{object\} response.Response\{data=operations.Status\} @Failure 404 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/updates/\{id\} \[delete\].
 
 <a name="Handlers.HandleOperationStatus"></a>
-### func \(\*Handlers\) [HandleOperationStatus](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L102-L106>)
+### func \(\*Handlers\) [HandleOperationStatus](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L110-L114>)
 
 ```go
 func (h *Handlers) HandleOperationStatus(w http.ResponseWriter, _ *http.Request, id string)
@@ -255,7 +255,7 @@ func (h *Handlers) HandleSearchModels(w http.ResponseWriter, r *http.Request)
 HandleSearchModels handles POST /api/v1/models/search. @Summary Search models @Description Advanced search with multiple criteria @Tags models @Accept json @Produce json @Param search body SearchRequest true "Search criteria" @Success 200 \{object\} response.Response\{data=object\} @Failure 400 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/models/search \[post\].
 
 <a name="Handlers.HandleStats"></a>
-### func \(\*Handlers\) [HandleStats](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L178>)
+### func \(\*Handlers\) [HandleStats](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/admin.go#L186>)
 
 ```go
 func (h *Handlers) HandleStats(w http.ResponseWriter, _ *http.Request)

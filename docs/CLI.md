@@ -307,6 +307,11 @@ Recognized tool names appear in `dependency`. Error text, executable paths, and 
 Restore the source dependencies through the deployment's installation policy, then retry the refresh.
 Normal updates and `--fresh` use this failure rule. Other available acquisition sources retain the existing optional-source behavior.
 
+If an optional source lacks dependencies but another source succeeds, the result sets `partial` to `true`.
+Its `source_failures` list names each unavailable source and its bounded reason.
+The CLI warns even in quiet mode and avoids an all-sources success claim.
+HTTP update detail carries the same fields. A successful operation can therefore contain partial source evidence.
+
 ### Source cache and checkout paths
 
 The `update` command and server acquisition use the configured cache root.

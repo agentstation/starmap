@@ -79,8 +79,16 @@ func (h *Handlers) runCatalogUpdate(
 	if err != nil {
 		return acquisitionDependencyDetail(err), err
 	}
+	failures := make([]sources.SourceFailure, 0, len(result.SourceFailures))
+	for _, failure := range result.SourceFailures {
+		if failure.Valid() {
+			failures = append(failures, failure)
+		}
+	}
 	return map[string]any{
 		"total_changes":     result.TotalChanges,
+		"partial":           result.Partial,
+		"source_failures":   failures,
 		"reset_count":       result.ResetCount,
 		"providers_changed": result.ProvidersChanged,
 		"dry_run":           result.DryRun,

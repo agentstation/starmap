@@ -110,6 +110,8 @@ func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, pa
 	result := pkgsync.ChangesetToResultWithProvenance(changes, parsed.DryRun, parsed.CatalogPath, counts, models, state.Catalog.Provenance().Map(), prepared.Result.Sources...)
 	result.Fresh, result.ResetCount = parsed.Fresh, len(update.Resets)
 	result.SourceObservations = prepared.Result.SourceObservations
+	result.Partial = prepared.Result.Partial
+	result.SourceFailures = prepared.Result.SourceFailures
 	result.ReviewCandidates = prepared.Result.ReviewCandidates
 	result.SyncRunID = logging.RunID(ctx)
 	if !parsed.DryRun {

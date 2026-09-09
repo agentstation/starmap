@@ -169,7 +169,16 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 }
 
 func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *sync.Result, flags *Flags, catalogPath string, sourcesDir string, quiet bool, confirm func() (bool, error)) error {
+	if err := displaySourceFailures(os.Stderr, result); err != nil {
+		return err
+	}
 	if !result.HasChanges() {
+		if result.Partial {
+			if !quiet {
+				fmt.Fprintln(os.Stderr, "No catalog changes from the available sources.")
+			}
+			return nil
+		}
 		if !quiet {
 			fmt.Fprintf(os.Stderr, emoji.Success+" All providers are up to date - no changes needed\n")
 		}
@@ -224,13 +233,20 @@ func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *s
 		}
 	}
 
+	if err := displaySourceFailures(os.Stderr, finalResult); err != nil {
+		return err
+	}
 	return finalizeChanges(quiet, finalResult)
 }
 
 // finalizeChanges displays the completion message.
 func finalizeChanges(isQuiet bool, result *sync.Result) error {
 	if !isQuiet {
-		fmt.Fprintf(os.Stderr, "\n🎉 Update completed successfully!\n")
+		if result.Partial {
+			fmt.Fprintln(os.Stderr, "Update completed with partial source evidence.")
+		} else {
+			fmt.Fprintf(os.Stderr, "\n🎉 Update completed successfully!\n")
+		}
 		fmt.Fprintf(os.Stderr, "📊 Total: %s\n", result.Summary())
 	}
 	return nil

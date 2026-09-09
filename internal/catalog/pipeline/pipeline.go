@@ -266,6 +266,8 @@ func (p *Pipeline) Prepare(
 		activeSourceIDs(observations)...,
 	)
 	syncResult.Fresh = options.Fresh
+	syncResult.Partial = len(sourceFailures) > 0 || hasDegradedObservation(observations)
+	syncResult.SourceFailures = sourceFailureSummaries(sourceFailures)
 	syncResult.SourceObservations = make([]catalogs.SourceObservationLink, 0, len(observations))
 	for _, observation := range observations {
 		syncResult.SourceObservations = append(syncResult.SourceObservations, observation.Link())

@@ -115,7 +115,11 @@ func (s Status) Copy() Status {
 	}
 	detail := make(map[string]any, len(s.Detail))
 	for key, value := range s.Detail {
-		detail[key] = value
+		if failures, ok := value.([]sources.SourceFailure); ok {
+			detail[key] = slices.Clone(failures)
+		} else {
+			detail[key] = value
+		}
 	}
 	s.Detail = detail
 	return s

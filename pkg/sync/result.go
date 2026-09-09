@@ -54,6 +54,10 @@ var modelProvenanceFieldSuffixes = []string{
 
 // Result represents the complete result of a sync operation.
 type Result struct {
+	// Partial reports incomplete source acquisition, independently of catalog changes.
+	Partial bool `json:"partial"`
+	// SourceFailures contains bounded failures from skipped acquisition sources.
+	SourceFailures []sources.SourceFailure `json:"source_failures,omitempty"`
 	// Overall statistics
 	TotalChanges     int                                     // Total number of changes across all providers
 	ProvidersChanged int                                     // Number of providers with changes
