@@ -87,8 +87,33 @@
     {
       "path": "plan-prose.log.gz",
       "sha256": "0963b2bd796bde699c64df9e575228014d077470b7d408409c30ee56e5513832"
+    },
+    {
+      "path": "integration-plan-prose.log.gz",
+      "sha256": "8e2b9cfcf7a845446d660d3387a108092f62aa584902ac0caf7b353c2d044bb0"
     }
   ],
   "task_completion_credit": false,
-  "head": "9ea6f70fd672951f8d5cdc9f7a184f52c3ae1cc4"
+  "head": "9ea6f70fd672951f8d5cdc9f7a184f52c3ae1cc4",
+  "integration": {
+    "head": "d4ecdbed77af790761d981a2726710ded004111e",
+    "merge_parent": "bdc0650f179df3038915a435d4eac876c8201716",
+    "prior_head": "9ea6f70fd672951f8d5cdc9f7a184f52c3ae1cc4",
+    "prior_and_merged_tree": "b6e11c8c9e684c6d2b83ad8b6f5860ea7218701b",
+    "method": "git merge-tree predicted the unchanged tree; the actual no-fast-forward merge produced that tree. The active tests continue against unchanged source bytes."
+  },
+  "isolated_runtime_preparation": {
+    "head": "d4ecdbed77af790761d981a2726710ded004111e",
+    "tree": "b6e11c8c9e684c6d2b83ad8b6f5860ea7218701b",
+    "binary": "/tmp/starmap-runtime-isolated-2026-09-09.test",
+    "sha256": "086876bf3c7062b6483ec73e2fb75343af8c03f415b96b9328fcd459c233f3ce",
+    "compile_exit_code": 0,
+    "next": "After acquisition session 31098 ends, run this binary from its worktree with -test.short -test.timeout=20m -test.v. Preserve exact output and timeout. No runtime qualification credit yet."
+  },
+  "open_pr_inventory": {
+    "starmap": 0,
+    "starport": 0,
+    "limit_each": 100,
+    "date": "2026-09-09"
+  }
 }

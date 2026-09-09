@@ -119,14 +119,7 @@
   ],
   "task_completion_credit": false,
   "head": "6a88f10d375aebcf87bbe60f354e1610a7e956a4",
-  "running": {
-    "affected_race": {
-      "session": 19426,
-      "head": "6a88f10d375aebcf87bbe60f354e1610a7e956a4",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -timeout=20m ./runtime ./internal/server/handlers",
-      "log": "/tmp/starmap-accepted-sources-affected.log"
-    }
-  },
+  "running": {},
   "next_implementation": {
     "owner": "source acquisition reporting",
     "requirements": [
@@ -153,5 +146,23 @@
   "follow_up": {
     "proof": "../accepted-empty-failure-2026-09-09/verification.json",
     "finding": "A subsequent pipeline audit found empty failure receipts could report false acceptance. The follow-up uses full observations and preserves those receipts only as diagnostics. Earlier tests remain historical evidence; they did not cover empty failed inputs."
+  },
+  "affected_terminal": {
+    "session": 19426,
+    "exit_code": 1,
+    "head": "6a88f10d",
+    "failure": "runtime package exceeded 20 minutes; TestSourceAndProviderAcquisitionPublishIndependently/provider had run for six seconds at the package alarm",
+    "handler_package": "PASS (28.935s)",
+    "artifact": "affected-terminal.log.gz",
+    "sha256": "6ded99faa7b85484f49c5a5d0b12e11a5505783cb74e29f98e0a3f62db4eb85c",
+    "diagnosis": "Unresolved; repeat only after the remaining acquisition run ends, with the same timeout."
+  },
+  "previous_running": {
+    "affected_race": {
+      "session": 19426,
+      "head": "6a88f10d375aebcf87bbe60f354e1610a7e956a4",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -timeout=20m ./runtime ./internal/server/handlers",
+      "log": "/tmp/starmap-accepted-sources-affected.log"
+    }
   }
 }
