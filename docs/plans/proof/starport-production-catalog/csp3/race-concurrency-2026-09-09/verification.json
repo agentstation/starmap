@@ -19,7 +19,7 @@
     "later_stages": "UNVERIFIED after race suite failure"
   },
   "repair": {
-    "head": "fff54427",
+    "head": "fff54427e9f19bb0bd05b3df93b4556b8100c24c",
     "files": [
       "scripts/verify.sh",
       "internal/ciworkflow/pr_workflow_test.go"
@@ -33,9 +33,13 @@
     "writing_files": 1239,
     "writing_diagnostics": 0,
     "shell_syntax_exit": 0,
-    "reviews": "IN_PROGRESS",
-    "ci": "UNVERIFIED",
-    "sol_review_exit": 0
+    "reviews": "PASS: Sol and Opus each report zero findings across three portions.",
+    "ci": "IN_PROGRESS",
+    "sol_review_exit": 0,
+    "opus_review_exit": 0,
+    "run_id": 34317629320,
+    "pushed": true,
+    "pr_ready": true
   },
   "artifacts": [
     {
@@ -62,6 +66,16 @@
       "path": "ago.json",
       "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
       "bytes": 289
+    },
+    {
+      "path": "opus-review.txt",
+      "sha256": "0a2f7dd9d3ab2dd9dcc33d3690e23955ff58997124526ae51f044854338d4f38",
+      "bytes": 1528
+    },
+    {
+      "path": "pr-body.md",
+      "sha256": "0e64845c9464715e7f1a3b7671dd87d7ce5c69b9b1eee20c2d9817f37c1487a1",
+      "bytes": 2329
     }
   ],
   "focused_profile": {

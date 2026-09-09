@@ -1,0 +1,28 @@
+review still running: claude elapsed=60s pid=24995 cpu=0.9s/60s(2%) rss=255M state=S
+review still running: claude elapsed=120s pid=24995 cpu=0.5s/60s(1%) rss=235M state=S
+review still running: claude elapsed=180s pid=24995 cpu=0.7s/60s(1%) rss=237M state=S
+review still running: claude elapsed=240s pid=24995 cpu=0.7s/60s(1%) rss=285M state=S
+review still running: claude elapsed=60s pid=25849 cpu=0.9s/60s(2%) rss=213M state=S
+review still running: claude elapsed=120s pid=25849 cpu=0.6s/60s(1%) rss=221M state=S
+review still running: claude elapsed=180s pid=25849 cpu=0.7s/60s(1%) rss=223M state=S
+review still running: claude elapsed=240s pid=25849 cpu=0.7s/60s(1%) rss=250M state=S
+review still running: claude elapsed=60s pid=31266 cpu=1.2s/60s(2%) rss=251M state=S
+autoreview target: branch
+branch: codex/catalog-presence-main
+gate: pre-pr (configured cadence: pre-pr)
+profile: opus
+config: /Users/jack/.config/autoreview/config.toml
+selection: opus5=7.52
+reviewers: claude model=claude-opus-5 thinking=high
+tools: on
+web_search: on
+ref: 7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e
+trufflehog: clean (4.4s)
+bundle: 522386 bytes; review passes: 3
+review pass: 1/3 (193578 prompt bytes)
+review pass: 2/3 (231962 prompt bytes)
+review pass: 3/3 (118456 prompt bytes)
+autoreview chunked clean: no accepted/actionable findings reported
+overall: patch is correct (0.72)
+Chunked review complete. chunk 1/3: 0 finding(s), chunk 2/3: 0 finding(s), chunk 3/3: 0 finding(s).
+autoreview clean attestation stored for this substantive diff
