@@ -4,7 +4,7 @@
   "base": "ccc14dcff83be0a147258d92884c1f71e5edf690",
   "worktree": "/tmp/starmap-publisher-repair-2026-09-09",
   "branch": "codex/catalog-publisher-repair",
-  "work_commit": "5d26c2164ea47cd71040e371a951152e78fd314c",
+  "work_commit": "27b56e8d84cb37c9996be41327b65022efb07e56",
   "observed_failure": {
     "run": 34311767888,
     "commit": "7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e",
@@ -249,6 +249,44 @@
     {
       "path": "starmap-publisher-final-independent-docs.log.gz",
       "sha256": "c326a6932614067e6dc62592068f841cbf5eadf50fe1b0b63bc07614250aa50b"
+    },
+    {
+      "path": "starmap-publisher-repair-review.json.gz",
+      "sha256": "8fb63aaf96fcef2ac23f170b507d399016d368b5298d52f17fdaa6ec86674487"
+    },
+    {
+      "path": "starmap-publisher-repair-review.log.gz",
+      "sha256": "0f650e901c129d2301da948035cf0d254c950cfea8732016182a90a1ff512510"
+    },
+    {
+      "path": "starmap-publisher-workflow-context-fail-before.log.gz",
+      "sha256": "52e58f8f6610f30a09523034d4ea8b93d671245ef9e61f36d728035b1c541830"
+    },
+    {
+      "path": "starmap-publisher-workflow-context-final-actionlint.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "starmap-publisher-workflow-context-final-race.jsonl.gz",
+      "sha256": "13d0d1dee313e93d4cf0f7d0352ad18f15701cc74032e02dbebcacae1fb61224",
+      "passed_test_events": 67,
+      "passed_packages": 2,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-workflow-context-final-minimum.jsonl.gz",
+      "sha256": "44a5e2a7912a0884e627c556be542fa73f534d2ba7f287aeac4c008e63b48c33",
+      "passed_test_events": 2,
+      "passed_packages": 2,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-workflow-context-final-ago.json.gz",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-publisher-workflow-context-final-prose.log.gz",
+      "sha256": "5f8011cfd768a26b38a474b7ab4220218f79a4333140ca6ee1e7e6e8898095a3"
     }
   ],
   "next_action": "Finish the required review, publish the publisher repair PR, run CI, and merge after checks pass. Then integrate this merge into the combined acquisition branch. No task completion credit before merged acceptance.",
@@ -286,19 +324,110 @@
   },
   "prepared_pr_description": {
     "path": "/tmp/starmap-publisher-repair-pr-body.md",
-    "sha256": "cd39b3b030f60b6f9e42e61c04aa4919fb16ee86e2f6a720a5bedbb666c6fe28",
+    "sha256": "66f0c3aabafe55c37a21dcf5643590477b085241f9e2aaed3a9be33b947ca9e5",
     "status": "Full verification recorded. Remove the pending-review sentence only after the required review passes."
   },
   "review": {
     "status": "running",
-    "session": 3035,
-    "head": "5d26c2164ea47cd71040e371a951152e78fd314c",
+    "session": 83361,
+    "head": "27b56e8d84cb37c9996be41327b65022efb07e56",
     "base": "ccc14dcff83be0a147258d92884c1f71e5edf690",
     "reviewers": [
       "codex:gpt-5.6-sol:xhigh",
       "claude:opus:high"
     ],
-    "log": "/tmp/starmap-publisher-repair-review.log",
-    "report": "/tmp/starmap-publisher-repair-review.json"
-  }
+    "log": "/tmp/starmap-publisher-repair-final-review.log",
+    "report": "/tmp/starmap-publisher-repair-final-review.json"
+  },
+  "review_history": [
+    {
+      "status": "completed with one accepted finding",
+      "session": 3035,
+      "head": "5d26c2164ea47cd71040e371a951152e78fd314c",
+      "base": "ccc14dcff83be0a147258d92884c1f71e5edf690",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "log": "/tmp/starmap-publisher-repair-review.log",
+      "report": "/tmp/starmap-publisher-repair-review.json",
+      "exit_code": 1,
+      "finding": "runner.temp is unavailable in job-level env",
+      "verified_by": [
+        "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+        "actionlint 1.7.12 reproduces the expression error"
+      ]
+    }
+  ],
+  "workflow_followup": {
+    "commit": "27b56e8d84cb37c9996be41327b65022efb07e56",
+    "prior_full_verification_commit": "5d26c2164ea47cd71040e371a951152e78fd314c",
+    "change": "Select the shared store after runner startup and write it to GITHUB_ENV before both consumers. Update the two workflow contract tests and operator documentation.",
+    "validation": "actionlint 1.7.12 passes. The extracted initialization script produces one exact assignment with spaces in both runner and environment-file paths. Both complete affected packages pass 67 race test events. Two minimum-Go tests, Ago, and 1254-file prose validation pass.",
+    "full_run_scope": "The 39-stage run remains evidence for 5d26c216. The follow-up changes workflow setup, contract tests, and prose only; its affected checks are recorded separately. Production Go source is unchanged.",
+    "initialization_output": {
+      "shared_store_initialization": "PASS",
+      "paths_with_spaces": true,
+      "assignments": 1,
+      "session": 33994
+    }
+  },
+  "current_source_inventory": [
+    {
+      "path": ".github/workflows/catalog-generation.yaml",
+      "sha256": "23e22f3f55b89cc45303bc41332ea3451a25967c53f56df2791ef3affabde75f"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/ingestion_test.go",
+      "sha256": "31fd54376b5b1b1c87beff4896ac2f7c1e0e08c5041120ca37524fca3a512a0c"
+    },
+    {
+      "path": "docs/SCHEDULED_CATALOG_GENERATION.md",
+      "sha256": "68d8ac1cedecd67961f33fde7a54fcc1c8cfcea63f67513d93d962270c747e60"
+    },
+    {
+      "path": "internal/ciworkflow/catalog_generation_store_test.go",
+      "sha256": "49b85a2e0745f7b25bd0508cda8f91ba74061f7dee5ca6e67d09ea0a15c506a8"
+    },
+    {
+      "path": "internal/constants/constants.go",
+      "sha256": "e2044ac60c1640e51ea3a638c56a80368939fc9c80625a69b6f2af01f873bbf3"
+    },
+    {
+      "path": "internal/sources/modelsdev/catalog_generation_tooling_test.go",
+      "sha256": "a07513928b56f15870108951af0b71078d582b9ccce6d0b40a1cf858e7d86140"
+    },
+    {
+      "path": "pkg/catalogs/README.md",
+      "sha256": "839cff47dc426801914f304e38629fe05e4e883abe9045f65733731fb11b5ec2"
+    },
+    {
+      "path": "pkg/catalogs/artifact/scheduled_workflow_test.go",
+      "sha256": "63f873001f896cb78a1727fabca43d0d4f548f85c9f0f3c3092c59cf3ad488c5"
+    },
+    {
+      "path": "pkg/catalogs/payload_decode.go",
+      "sha256": "a7d76d3ec3efd720e2440d959af23959894f467eb9ef014b7f98dedf490aa192"
+    },
+    {
+      "path": "pkg/catalogs/source_observation_limits_test.go",
+      "sha256": "9543e21b0aba0be0aec3c9bb04e17e910969f87515e1b1fd1641dd267cb29514"
+    },
+    {
+      "path": "pkg/sources/payload/README.md",
+      "sha256": "9fd2ab8bbcc9d144e0407bf82bfa14fd9dbd410feabf180455c7b4802c566ca4"
+    },
+    {
+      "path": "pkg/sources/payload/payload.go",
+      "sha256": "4291e59b55165993af3f8c3a477f85ea45e61152176bb051c2ae625248008cb1"
+    },
+    {
+      "path": "runtime/manual_source_limits_test.go",
+      "sha256": "8fc691fd4b58a97c2c44a8ea5103d29f683f199dbe41aac7dad4e4ff24f2fe1f"
+    },
+    {
+      "path": "scripts/generate-embedded-catalog.sh",
+      "sha256": "b93ec41ffe30803cbce7402268ad4df9c54e65ffa41b5f3cbd4bd03a00eb47ca"
+    }
+  ]
 }
