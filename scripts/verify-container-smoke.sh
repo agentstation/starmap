@@ -16,11 +16,7 @@ cd "$ROOT" || exit 1
 
 # BASE is the digest-pinned base image of the release configuration.
 BASE="cgr.dev/chainguard/static@sha256:f51c2493951313c3ad4069080b2814ffb6ed6fe3909dabeb84a9482f42d5600b"
-IMAGE="starmap-container-smoke:local"
-CONTAINER="starmap-container-smoke"
-VOLUME="starmap-container-smoke-state"
 STATE_PATH="/home/nonroot"
-PORT="18080"
 
 if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
 	printf 'UNVERIFIED the container smoke check needs Docker.\n'
@@ -29,6 +25,10 @@ if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
 fi
 
 BUILD="$(mktemp -d "${TMPDIR:-/tmp}/starmap-container-smoke.XXXXXX")"
+RUN_ID="$(basename "$BUILD" | tr '[:upper:]' '[:lower:]')"
+IMAGE="$RUN_ID:local"
+CONTAINER="$RUN_ID"
+VOLUME="$RUN_ID-state"
 cleanup() {
 	docker rm -f "$CONTAINER" >/dev/null 2>&1
 	docker volume rm -f "$VOLUME" >/dev/null 2>&1
@@ -64,7 +64,7 @@ if ! docker run --detach --name "$CONTAINER" \
 	--security-opt no-new-privileges:true \
 	--user 65532:65532 \
 	--volume "$VOLUME:$STATE_PATH" \
-	--publish "127.0.0.1:$PORT:8080" \
+	--publish "127.0.0.1::8080" \
 	--env "STARMAP_CATALOG_WORKSPACE_PATH=$STATE_PATH/.starmap/catalog" \
 	--env "STARMAP_STATE_DIR=$STATE_PATH/.starmap/state/runtime" \
 	--env "STARMAP_CATALOG_SOURCE=embedded" \
@@ -74,10 +74,15 @@ if ! docker run --detach --name "$CONTAINER" \
 	exit 1
 fi
 
+if ! ADDRESS="$(docker port "$CONTAINER" 8080/tcp)" || [[ "$ADDRESS" != 127.0.0.1:* ]]; then
+	printf 'FAIL the container has no loopback health port.\n'
+	exit 1
+fi
+
 printf 'Reading the health endpoint.\n'
 healthy=1
 for _ in $(seq 1 30); do
-	if curl --silent --fail --max-time 2 "http://127.0.0.1:$PORT/health" >/dev/null; then
+	if curl --silent --fail --max-time 2 "http://$ADDRESS/health" >/dev/null; then
 		healthy=0
 		break
 	fi
