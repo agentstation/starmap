@@ -1,0 +1,100 @@
+{
+  "status": "in_progress",
+  "contract": "CSP3/A20 provider source activity; full source inventory remains incomplete",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "base": "f88a526a",
+  "behavior": [
+    "Provider dispatch returns whether it called a collector; empty or unsupported binding selection does not count as acquisition.",
+    "The runtime derives eligibility from valid credential outcomes and confirmed requests.",
+    "Missing target reports and opaque layers preserve unknown eligibility.",
+    "Combined metadata acquisition preserves the provider activity row."
+  ],
+  "remaining": [
+    "Passive composition capability and configured-selection snapshots.",
+    "CLI and publisher reporting.",
+    "Full integrated verification, review, and merge."
+  ],
+  "checks": {
+    "fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 1,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "minimum": {
+      "test_pass_events": 10,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "race": {
+      "test_pass_events": 1,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "ago": {
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 1305,
+      "diagnostics": 0
+    },
+    "godoc": {
+      "exit_code": 0,
+      "generated_diff": "none"
+    },
+    "final_race": {
+      "exit_code": 0,
+      "test_pass_events": 17,
+      "package_pass_events": 1,
+      "fail_events": 0,
+      "skip_events": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "6db16e2fefd629d8c43b63f5e90948352aa66ed447ed12da02b1c98ac4104c18"
+    },
+    {
+      "path": "minimum.jsonl.gz",
+      "sha256": "9cdba3cf07b28c97d9db316f3fa23cdf24fc0a90017aa93c55975c1c33c726be"
+    },
+    {
+      "path": "race.jsonl.gz",
+      "sha256": "706a53e6b3b49ec0a2c60173e08098294b1a8ed67794e2a556876893baff79c3"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "sha256": "973a6c306815e4697e32d5ec3a2cccf3b4ed69e80164ff99401c7387307c4a5e"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "27a4195e2aed7e8de3bf3ed13b8d81a6a27972496b126f45be5ac0252d4b001b"
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "b10222d508fdbcd8d77aa4c50bb6abb045e16fd303742f7aaa67c7364327db78"
+    }
+  ],
+  "task_completion_credit": false,
+  "active_checks": {},
+  "commit": "5808d57e4f3437bdfe05d9dd8bb5e5e7916a1f7d",
+  "tree": "b6fc4d58c511f85282ab4b9c60c18e0e258dcc98"
+}
