@@ -4,7 +4,7 @@
   "worktree": "/tmp/starmap-source-selection-2026-09-09",
   "branch": "codex/catalog-source-selection",
   "base": "5c06e7a9dbc075e238026d86722b7546ff92ed71",
-  "work_commit": null,
+  "work_commit": "ed7390abc6822b7fabc1e6ad0504e29fca7e29bf",
   "contract": "Provider-wide missing-credential, configuration, fetch, or schema failure cannot supply canonical provider facts. Healthy siblings continue, existing baseline facts remain, and original observations and receipts remain unchanged. Partial records and successful empty inventory are not provider-wide failure.",
   "checks": [
     {
@@ -324,9 +324,73 @@
     "pinned_linter": "Devbox golangci-lint 2.12.2 recovered with exit 0"
   },
   "current_verification": {
-    "session": 60866,
-    "log": "/tmp/starmap-source-health-full-verification.log",
-    "status": "running docs/prose/full check chain; no full pass credit"
+    "status": "affected checks passed; integrated full verifier and review remain pending",
+    "completed_sessions": [
+      40023,
+      8832,
+      82392
+    ],
+    "checks": [
+      {
+        "path": "starmap-source-selection-lint-repair.log.gz",
+        "raw_sha256": "44a567a84930e49f8c6ff9d771dd195231cfd552632e796431cf2687f7e85862"
+      },
+      {
+        "path": "starmap-source-selection-lint-repair-race.jsonl.gz",
+        "raw_sha256": "202622099b7a01c148a263f94b84b141eb19cca722b9501563f0720ebd6b4ed5",
+        "passed_test_events": 10,
+        "passed_packages": 2,
+        "failed_events": 0
+      },
+      {
+        "path": "starmap-source-selection-lint-repair-config-race.jsonl.gz",
+        "raw_sha256": "66c72c6ff87bf34b5312c431a98c2818c6b8b8529514d4e60d55e19f0ae8d8fc",
+        "passed_test_events": 78,
+        "passed_packages": 1,
+        "failed_events": 0
+      },
+      {
+        "path": "starmap-source-selection-lint-repair-minimum.jsonl.gz",
+        "raw_sha256": "d2276ac865b8c7fb99c46b7628bc10cc4484145b6be65c574737b7fb41a2d76c",
+        "passed_test_events": 19,
+        "passed_packages": 2,
+        "failed_events": 0
+      },
+      {
+        "path": "starmap-source-selection-lint-repair-ago.json.gz",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      {
+        "path": "starmap-source-selection-lint-repair-prose.log.gz",
+        "raw_sha256": "78a748a57f109f4e811f943cd56837e04461edaf2f7c6a5a2e4ffd31d451b575"
+      },
+      {
+        "path": "starmap-source-selection-final-coverage.log.gz",
+        "raw_sha256": "41704ce685921771ba7dfafdec2b17db598844b5706a2585d09aa56d20c41e13"
+      }
+    ],
+    "coverage_packages": 15,
+    "prose_files": 1264,
+    "lint_issues": 0,
+    "ago_findings": 0,
+    "source": "The complete ordinary and race suites passed before the policy extraction. Targeted policy race tests and the complete configuration race package pass after it. The full run stopped at lint and has no complete-run credit."
   },
-  "completion_credit": false
+  "completion_credit": false,
+  "full_verification_attempt": {
+    "session": 60866,
+    "exit_code": 1,
+    "ordinary_packages": 80,
+    "race_packages": 80,
+    "verifier_tests": 73,
+    "runtime_race_seconds": 973.993,
+    "log": "starmap-source-health-full-verification.log.gz",
+    "raw_sha256": "aabffc44d0cabb09d436390da69454371dfab77528f6beb61e0e2db9e200bbe0",
+    "failure": [
+      "runtime publishInputs complexity 33 exceeds 30",
+      "acquisition source ID slice needs preallocation"
+    ],
+    "repair": "Move acquisition publication policy checks to their owning policy file. Allocate the source ID result at its known length. Keep checks and order unchanged.",
+    "next": "Finish affected verification, commit the combined candidate, integrate the publisher merge, then complete full verification and required review."
+  },
+  "updated_at": "2026-09-09T12:09:49.557604+00:00"
 }

@@ -4,7 +4,7 @@
   "worktree": "/tmp/starmap-source-selection-2026-09-09",
   "branch": "codex/catalog-source-selection",
   "base": "5c06e7a9dbc075e238026d86722b7546ff92ed71",
-  "work_commit": null,
+  "work_commit": "ed7390abc6822b7fabc1e6ad0504e29fca7e29bf",
   "contract": "An explicit canonical source selection controls automatic and manual acquisition, publication, and retained local evidence after restart. Distribution baselines remain separate.",
   "setting": "STARMAP_CATALOG_ACQUISITION_SOURCES",
   "scope": "deployment",
@@ -132,7 +132,7 @@
     }
   ],
   "settings_packages": "Both complete shared settings packages pass after adding the new descriptor, CLI facade, and deployment samples.",
-  "full_verification": "Session 35415 failed during Devbox linter setup because the disk was full. Its completed stages are historical evidence. Cache cleanup restored the pinned linter. Provider failure selection then changed production code. Session 60866 runs fresh documentation, prose, and full verification. Log: /tmp/starmap-source-health-full-verification.log.",
+  "full_verification": "Session 60866 passed all 80 ordinary and 80 race packages, then stopped on two lint findings. Commit ed7390ab fixes both. Targeted policy race tests, the complete configuration race package, minimum-Go checks, Ago, prose, and all 15 coverage gates pass. Publisher integration, full verification, required review, CI, and merge remain pending.",
   "remaining": [
     "Finish current full repository verification",
     "Integrate the merged publisher repair and verify affected contracts",
@@ -537,5 +537,9 @@
     "verified_ancestor": true,
     "review": "Run the required two-reviewer pre-PR review against the complete combined diff and the merged publisher base. The earlier scheduled-only review is historical evidence.",
     "reason": "Automatic and manual acquisition need the same source-selection controls. The current source-selection branch already contains scheduled acquisition."
+  },
+  "prepared_pr_description": {
+    "path": "/tmp/starmap-combined-acquisition-pr-body.md",
+    "status": "prepared; validation paragraph must be finalized after integration"
   }
 }
