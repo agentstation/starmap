@@ -130,6 +130,8 @@
     "run": 34409341753,
     "head": "965e744d12f08917cdb3aa1410dfe3bf99527c02",
     "status": "in_progress",
-    "url": "https://github.com/agentstation/starmap/actions/runs/34409341753"
+    "url": "https://github.com/agentstation/starmap/actions/runs/34409341753",
+    "watch_session": 81316,
+    "watch_log": "/tmp/starmap-pr142-965e-native-watch-2026-09-09.log"
   }
 }
