@@ -1,5 +1,5 @@
 {
-  "status": "A20 component verification running; no completion credit",
+  "status": "Five Starmap A20 subcases pass locally. Starport ingestion remains unverified. No merge or task completion credit.",
   "worktree": "/tmp/starmap-source-acceptance-2026-09-09",
   "branch": "codex/catalog-source-acceptance",
   "base": "c1af596ddd58b60699426580ca370824b565fc3e",
@@ -30,7 +30,7 @@
   "constraints": [
     "Full released-pair acceptance remains incomplete.",
     "Merge PR #142 before publishing this dependent change.",
-    "Do not count registered tests as passing before the verifier finishes."
+    "A20.starport_provider_nonprovider still requires a registered and passing Starport composition check."
   ],
   "verifier_tests": {
     "exit_code": 0,
@@ -40,5 +40,28 @@
   "plan_prose": {
     "exit_code": 0,
     "log": "/tmp/starmap-source-acceptance-plan-prose-2026-09-09.log"
-  }
+  },
+  "session_exit_code": 1,
+  "commit": "509d5adaa825cf69f1fcbfeb2486b30e4b3e64f0",
+  "result": {
+    "command_count": 34,
+    "passing_commands": 34,
+    "passing_test_events": 53,
+    "subcase_status": {
+      "A20.cli_provider_nonprovider": "PASS",
+      "A20.dependency_disabled_partial": "PASS",
+      "A20.publisher_provider_nonprovider": "PASS",
+      "A20.receipt_artifact_binding": "PASS",
+      "A20.server_provider_nonprovider": "PASS",
+      "A20.starport_provider_nonprovider": "UNVERIFIED"
+    },
+    "gate_status": "FAIL",
+    "qualification": "component checks only"
+  },
+  "artifact": {
+    "path": "source-acceptance-a20-2026-09-09.json.gz",
+    "sha256": "e85c683368b37930ccd017a4af1a04fbd111fa0de7229a2a912d5ab5ea48ba57"
+  },
+  "remaining_subcase_owner": "CSP8",
+  "remaining_subcase_owner_source": "acceptance-map.json:primary_task.A20"
 }

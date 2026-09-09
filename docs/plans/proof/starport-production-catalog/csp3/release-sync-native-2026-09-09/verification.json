@@ -1,5 +1,5 @@
 {
-  "status": "Local checks pass; committed repair in required review.",
+  "status": "Reviewed repair pushed to PR #142; native revalidation pending.",
   "worktree": "/tmp/starmap-source-activity-2026-09-09",
   "branch": "codex/catalog-source-activity",
   "failed_head": "965e744d12f08917cdb3aa1410dfe3bf99527c02",
@@ -67,6 +67,14 @@
     {
       "path": "plan-prose-final.gz",
       "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    },
+    {
+      "path": "review.gz",
+      "sha256": "e018dde26819efa1eceb66202d544ed9143e53c907a41aae4b84519590c48f91"
+    },
+    {
+      "path": "push-a20-plan-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
     }
   ],
   "sessions": {
@@ -79,17 +87,19 @@
     "ownership_pure_go": 23239
   },
   "remaining": [
-    "Collect local checks, commit, and run required review.",
-    "Push the reviewed repair to PR #142.",
-    "Qualify native publisher tests and all required CI checks before merge."
+    "Collect native CI for cbb8e322.",
+    "Qualify native publisher tests and all required checks before merge."
   ],
   "completion_credit": false,
   "commit": "cbb8e32291444051c5f14af3660e2ccff6516610",
   "tree": "dd46985340db7650ead49b19df287a11562851ca",
   "review": {
     "session": 82396,
-    "status": "running",
-    "log": "/tmp/starmap-pr142-release-sync-review-2026-09-09.log"
+    "status": "pass",
+    "log": "/tmp/starmap-pr142-release-sync-review-2026-09-09.log",
+    "exit_code": 0,
+    "findings": 0,
+    "chunks": 2
   },
   "checks": {
     "focused_race": {
@@ -136,5 +146,13 @@
       "artifact": "plan-prose.gz"
     }
   },
-  "evidence_correction": "Commit 8260c87a incorrectly recorded the initial plan prose exit as zero. The retained log reports exit two for a semicolon. This record corrects that result."
+  "evidence_correction": "Commit 8260c87a incorrectly recorded the initial plan prose exit as zero. The retained log reports exit two for a semicolon. This record corrects that result.",
+  "latest_ci": {
+    "run": 34412052597,
+    "head": "cbb8e32291444051c5f14af3660e2ccff6516610",
+    "status": "in_progress",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34412052597",
+    "watch_session": 45899,
+    "watch_log": "/tmp/starmap-pr142-cbb8-native-watch-2026-09-09.log"
+  }
 }
