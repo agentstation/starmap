@@ -30,10 +30,13 @@ Package payload enforces bounded resource use before source decoding.
 
 ## Constants
 
-<a name="MaxBytes"></a>
+<a name="MaxProviders"></a>
 
 ```go
 const (
+    // MaxProviders bounds provider records in one external source observation.
+    MaxProviders = 512
+
     // MaxBytes is the default byte limit for source JSON payloads.
     MaxBytes = 16 << 20
     // MaxJSONNestingDepth bounds object/array nesting before JSON decode.
@@ -42,7 +45,7 @@ const (
 ```
 
 <a name="ValidateJSON"></a>
-## func [ValidateJSON](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L30>)
+## func [ValidateJSON](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L33>)
 
 ```go
 func ValidateJSON(data []byte) error
@@ -51,7 +54,7 @@ func ValidateJSON(data []byte) error
 ValidateJSON enforces source byte and nesting limits before decoding.
 
 <a name="ValidateJSONWithMaxBytes"></a>
-## func [ValidateJSONWithMaxBytes](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L35>)
+## func [ValidateJSONWithMaxBytes](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L38>)
 
 ```go
 func ValidateJSONWithMaxBytes(data []byte, maxBytes int) error
@@ -163,7 +166,7 @@ type UnknownJSONField struct {
 ```
 
 <a name="FingerprintValue"></a>
-### func [FingerprintValue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L105>)
+### func [FingerprintValue](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L108>)
 
 ```go
 func FingerprintValue(path string, value any) UnknownJSONField
@@ -172,7 +175,7 @@ func FingerprintValue(path string, value any) UnknownJSONField
 FingerprintValue returns path/digest evidence for an unrecognized typed value.
 
 <a name="UnknownJSONFields"></a>
-### func [UnknownJSONFields](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L82>)
+### func [UnknownJSONFields](<https://github.com/agentstation/starmap/blob/main/pkg/sources/payload/payload.go#L85>)
 
 ```go
 func UnknownJSONFields(data []byte, schema any, prefix string) ([]UnknownJSONField, error)

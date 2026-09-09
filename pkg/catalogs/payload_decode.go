@@ -37,7 +37,7 @@ func (r payloadDecodeReport) err() error {
 // with *sourcepayload.QuarantineError is only a partial diagnostic result. Callers
 // must not activate it as the manifest-bound generation.
 func DecodeCatalogPayload(data []byte) (*Catalog, error) {
-	catalog, report, err := decodeCatalogPayload(data, (*Builder).Build)
+	catalog, report, err := decodeCatalogPayload(data, resourcepolicy.MaxProviders, (*Builder).Build)
 	if err != nil {
 		return nil, err
 	}
@@ -47,9 +47,10 @@ func DecodeCatalogPayload(data []byte) (*Catalog, error) {
 // DecodeSourceObservationPayload decodes a source candidate without requiring
 // resolved canonical authorship for every provider record. The returned
 // catalog is suitable only for reconciliation. Durable generation activation
-// must use DecodeCatalogPayload.
+// must use DecodeCatalogPayload. Source observations use the bounded source
+// provider count. Canonical generation decoding retains its smaller limit.
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error) {
-	catalog, report, err := decodeCatalogPayload(data, func(builder *Builder) (*Catalog, error) {
+	catalog, report, err := decodeCatalogPayload(data, sourcepayload.MaxProviders, func(builder *Builder) (*Catalog, error) {
 		return NewObservationCatalog(builder)
 	})
 	if err != nil {
@@ -60,15 +61,15 @@ func DecodeSourceObservationPayload(data []byte) (*Catalog, error) {
 
 type catalogBuilder func(*Builder) (*Catalog, error)
 
-func decodeCatalogPayload(data []byte, build catalogBuilder) (*Catalog, payloadDecodeReport, error) {
-	payload, err := decodePayloadEnvelope(data)
+func decodeCatalogPayload(data []byte, maxProviders int, build catalogBuilder) (*Catalog, payloadDecodeReport, error) {
+	payload, err := decodePayloadEnvelope(data, maxProviders)
 	if err != nil {
 		return nil, payloadDecodeReport{}, err
 	}
 	return buildDecodedCatalog(payload, build)
 }
 
-func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
+func decodePayloadEnvelope(data []byte, maxProviders int) (payloadEnvelope, error) {
 	if err := sourcepayload.ValidateJSONWithMaxBytes(data, resourcepolicy.MaxPayloadBytes); err != nil {
 		return payloadEnvelope{}, err
 	}
@@ -123,9 +124,9 @@ func decodePayloadEnvelope(data []byte) (payloadEnvelope, error) {
 			}
 		}
 	}
-	if len(payload.Providers) > resourcepolicy.MaxProviders || len(payload.ProviderModels) > resourcepolicy.MaxProviders {
+	if len(payload.Providers) > maxProviders || len(payload.ProviderModels) > maxProviders {
 		return payloadEnvelope{}, &errors.ValidationError{
-			Field: "providers", Value: len(payload.Providers), Message: "exceeds maximum provider count",
+			Field: "providers", Value: max(len(payload.Providers), len(payload.ProviderModels)), Message: "exceeds maximum provider count",
 		}
 	}
 	if len(payload.Authors) > resourcepolicy.MaxModels {
