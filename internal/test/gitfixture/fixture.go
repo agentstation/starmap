@@ -26,6 +26,7 @@ type Fixture struct {
 	Commits          []string
 	LockfileChecksum string
 	buildLog         string
+	root             string
 }
 
 // New creates a local repository and redirects the production Git URL to it.
@@ -58,13 +59,16 @@ func New(t *testing.T, payloads ...[]byte) *Fixture {
 	t.Setenv("USERPROFILE", home)
 	t.Setenv("XDG_CONFIG_HOME", home)
 	t.Setenv("GIT_CONFIG_NOSYSTEM", "1")
-	t.Setenv("GIT_CONFIG_GLOBAL", os.DevNull)
+	globalConfig := filepath.Join(home, "gitconfig")
+	write(t, globalConfig, nil)
+	t.Setenv("GIT_CONFIG_GLOBAL", globalConfig)
 	t.Setenv("GIT_TERMINAL_PROMPT", "0")
 	t.Setenv("GIT_ALLOW_PROTOCOL", "file")
 	t.Setenv("BUN_INSTALL_CACHE_DIR", filepath.Join(home, "bun-cache"))
 	f := &Fixture{buildLog: filepath.Join(home, "builds")}
 	t.Setenv("STARMAP_GIT_BUILD_LOG", f.buildLog)
 	root := filepath.Join(home, "remote with spaces")
+	f.root = root
 	if err := os.MkdirAll(root, constants.DirPermissions); err != nil {
 		t.Fatal(err)
 	}
