@@ -4301,13 +4301,13 @@ func (cost ModelTokenCost) MarshalJSON() ([]byte, error)
 MarshalJSON preserves unit presence, legacy zero placeholders, and field order.
 
 <a name="ModelTokenCost.MarshalYAML"></a>
-### func \(ModelTokenCost\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L157>)
+### func \(ModelTokenCost\) [MarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L158>)
 
 ```go
 func (cost ModelTokenCost) MarshalYAML() (any, error)
 ```
 
-MarshalYAML preserves token amount presence and legacy zero placeholders.
+MarshalYAML preserves token amount presence and legacy zero placeholders. A cost with no claimed units cannot use YAML, where an empty mapping means free.
 
 <a name="ModelTokenCost.SetAmount"></a>
 ### func \(\*ModelTokenCost\) [SetAmount](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L46>)
@@ -4337,13 +4337,13 @@ func (cost *ModelTokenCost) UnmarshalJSON(data []byte) error
 UnmarshalJSON restores observed unit presence and clears reused state.
 
 <a name="ModelTokenCost.UnmarshalYAML"></a>
-### func \(\*ModelTokenCost\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L182>)
+### func \(\*ModelTokenCost\) [UnmarshalYAML](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L189>)
 
 ```go
 func (cost *ModelTokenCost) UnmarshalYAML(unmarshal func(any) error) error
 ```
 
-UnmarshalYAML restores observed unit presence and clears reused state.
+UnmarshalYAML restores observed unit presence and clears reused state. An empty mapping retains the free\-price meaning of the legacy YAML encoder.
 
 <a name="ModelTokenCost.UnsetAmount"></a>
 ### func \(\*ModelTokenCost\) [UnsetAmount](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/model_token_cost_presence.go#L76>)

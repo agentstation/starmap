@@ -36,8 +36,10 @@ func TestTokenCostObservationRequiresKnownAmount(t *testing.T) {
 					t.Fatal(err)
 				}
 				pricing := &ModelPricing{Currency: ModelPricingCurrencyUSD, Tokens: &ModelTokenPricing{Input: &cost}}
-				if err := pricing.Validate(); (err == nil) != tc.valid {
-					t.Fatalf("Validate()=%v, want valid=%v for %s", err, tc.valid, tc.input)
+				// The old YAML encoder used an empty mapping for a known free price.
+				wantValid := tc.valid || (format == "yaml" && tc.input == `{}`)
+				if err := pricing.Validate(); (err == nil) != wantValid {
+					t.Fatalf("Validate()=%v, want valid=%v for %s", err, wantValid, tc.input)
 				}
 			})
 		}

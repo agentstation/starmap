@@ -62,6 +62,12 @@ func TestTokenCostPresenceCopiesAndRoundTrips(t *testing.T) {
 								err = yaml.Unmarshal(data, decoded)
 							}
 						}
+						if format == "yaml" && a.state == ValueMissing && b.state == ValueMissing {
+							if err == nil {
+								t.Fatal("missing units encoded as legacy free YAML")
+							}
+							return
+						}
 						if err != nil {
 							t.Fatal(err)
 						}

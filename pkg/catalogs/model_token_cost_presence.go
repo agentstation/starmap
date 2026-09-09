@@ -154,10 +154,16 @@ func (cost *ModelTokenCost) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalYAML preserves token amount presence and legacy zero placeholders.
+// A cost with no claimed units cannot use YAML, where an empty mapping means free.
 func (cost ModelTokenCost) MarshalYAML() (any, error) {
 	type plain ModelTokenCost
 	if cost.absentUnits|cost.unknownUnits == 0 {
 		return plain(cost), nil
+	}
+	if _, token := cost.Amount(CostUnitPerToken); token == ValueMissing {
+		if _, million := cost.Amount(CostUnitPerMillion); million == ValueMissing {
+			return nil, pricingValidationError("token_cost", cost, "cannot encode missing units as a legacy free YAML mapping")
+		}
 	}
 	entries := make(yaml.MapSlice, 0, 2)
 	for _, unit := range []TokenCostUnit{CostUnitPerToken, CostUnitPerMillion} {
@@ -179,6 +185,7 @@ func (cost ModelTokenCost) MarshalYAML() (any, error) {
 }
 
 // UnmarshalYAML restores observed unit presence and clears reused state.
+// An empty mapping retains the free-price meaning of the legacy YAML encoder.
 func (cost *ModelTokenCost) UnmarshalYAML(unmarshal func(any) error) error {
 	type plain ModelTokenCost
 	var decoded plain
@@ -190,6 +197,9 @@ func (cost *ModelTokenCost) UnmarshalYAML(unmarshal func(any) error) error {
 		return err
 	}
 	*cost = ModelTokenCost(decoded)
+	if raw != nil && len(raw) == 0 {
+		return nil
+	}
 	for _, unit := range []TokenCostUnit{CostUnitPerToken, CostUnitPerMillion} {
 		key := string(unit)
 		if unit == CostUnitPerMillion {

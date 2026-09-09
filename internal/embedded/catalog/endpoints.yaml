@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260908T215730Z-a02b30afe902
-catalog_digest: sha256:d8015ea191867dddc59b5cccef0b482ce0d102a14a9d535951a53a2af8068809
+generation_id: catalog-20260909T015834Z-7f9bcfc6e3a4
+catalog_digest: sha256:83cfdf52c6a789577aa2afe4f518024cab8fbfd2ffd0b5955f648e337dc40652
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -3541,7 +3541,9 @@ models:
           tokens:
             input:
               per_1m: 0.15
-            output: {}
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           currency: USD
         limits:
           context_window: 2048
@@ -3562,7 +3564,9 @@ models:
           tokens:
             input:
               per_1m: 0.15
-            output: {}
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           currency: USD
         limits:
           context_window: 2048
@@ -3585,7 +3589,9 @@ models:
           tokens:
             input:
               per_1m: 0.2
-            output: {}
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           operations:
             audio_input: 6.5
           currency: USD
@@ -4450,8 +4456,12 @@ models:
         provider_model_id: lyria-3-clip-preview
         pricing:
           tokens:
-            input: {}
-            output: {}
+            input:
+              per_token: 0.0
+              per_1m: 0.0
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           currency: USD
         limits:
           context_window: 1048576
@@ -4485,8 +4495,12 @@ models:
         provider_model_id: lyria-3-pro-preview
         pricing:
           tokens:
-            input: {}
-            output: {}
+            input:
+              per_token: 0.0
+              per_1m: 0.0
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           currency: USD
         limits:
           context_window: 1048576
@@ -6755,7 +6769,9 @@ models:
         provider_model_id: gpt-3.5-turbo
         pricing:
           tokens:
-            cache_read: {}
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.0
             input:
               per_1m: 0.5
             output:
@@ -9196,7 +9212,9 @@ models:
           tokens:
             input:
               per_1m: 0.13
-            output: {}
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           currency: USD
         limits:
           context_window: 8191
@@ -9219,7 +9237,9 @@ models:
           tokens:
             input:
               per_1m: 0.02
-            output: {}
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           currency: USD
         limits:
           context_window: 8191
@@ -9242,7 +9262,9 @@ models:
           tokens:
             input:
               per_1m: 0.1
-            output: {}
+            output:
+              per_token: 0.0
+              per_1m: 0.0
           currency: USD
         limits:
           context_window: 8192
@@ -11953,7 +11975,9 @@ models:
           tokens:
             cache_read:
               per_1m: 2.25
-            cache_write: {}
+            cache_write:
+              per_token: 0.0
+              per_1m: 0.0
             input:
               per_1m: 2.25
             output:
