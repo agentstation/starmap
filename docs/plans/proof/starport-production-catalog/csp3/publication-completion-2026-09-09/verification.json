@@ -60,6 +60,18 @@
     {
       "path": "plan-prose.gz",
       "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    },
+    {
+      "path": "prior-windows-arm-tests.gz",
+      "sha256": "ab9a580c4f7d8bdfb9b27e7ba2bbbbcb6d7a8aa150671342dae0ea46ee753f07"
+    },
+    {
+      "path": "prior-windows-arm-git-acquisition.gz",
+      "sha256": "a78a8bb4705b1849072e67df47cf45494f8189e67700bc17e7a174e1c571ab44"
+    },
+    {
+      "path": "prior-windows-arm-publisher-ingestion.gz",
+      "sha256": "3a976d26a02fc34bb670ed77d3f1f8a59af0e7488de04ff18b2cd95ce080f3ce"
     }
   ],
   "remaining": [
@@ -68,7 +80,7 @@
     "Repeat native qualification and merge only after required checks pass."
   ],
   "completion_credit": false,
-  "commit": "1b54481d",
+  "commit": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
   "review": {
     "session": 76259,
     "status": "running",
@@ -97,5 +109,17 @@
     "plan_prose": {
       "exit_code": 0
     }
+  },
+  "prior_native_windows_arm": {
+    "head": "cbb8e32291444051c5f14af3660e2ccff6516610",
+    "run": 34412052597,
+    "job": 102668564603,
+    "conclusion": "success",
+    "runtime_passing_test_events": 1487,
+    "git_passing_test_events": 2,
+    "publisher_passing_test_events": 4,
+    "failed_test_events": 0,
+    "skipped_test_events": 0,
+    "scope": "Qualifies the prior directory flush repair. Does not qualify the later completion-deadline fix."
   }
 }
