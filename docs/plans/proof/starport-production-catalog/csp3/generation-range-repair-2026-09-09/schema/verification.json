@@ -1,0 +1,132 @@
+{
+  "task": "CSP3",
+  "status": "schema and affected integration checks pass; unpublished",
+  "head": "bab16179b6a629d31f0872c920ff75666a82caa5",
+  "dirty_files": [
+    {
+      "path": "cmd/starmap-openapi-presence/ranges_test.go",
+      "sha256": "85d27f9aa05cbe4d6656a15f8ba6e20dd5030331450a8e0b899d66df9e069061"
+    },
+    {
+      "path": "cmd/starmap-openapi-presence/main.go",
+      "sha256": "277de351fb1c96c15cbb4ccc72613734a1dc69374348c71e5e0f90594d5ac0f5"
+    },
+    {
+      "path": "cmd/starmap-openapi-presence/records.go",
+      "sha256": "8a50567503c9d0d69902f6c0d20a40391f79818d8ce0a337a7f818a5764acff1"
+    },
+    {
+      "path": "internal/embedded/openapi/openapi.json",
+      "sha256": "326f8e86c631cb00324d15e21319158af9dfc782ff84517df939cb8bd9ea637c"
+    },
+    {
+      "path": "internal/embedded/openapi/openapi.yaml",
+      "sha256": "eb50f3e6c774c9291e049f0e22d9476a069b7ca22202db80c66fddd08bfe7c0c"
+    },
+    {
+      "path": "pkg/catalogs/README.md",
+      "sha256": "c2b23cc0f339d752df2009c50b495f25f1566abca841c636e7569a6cbaf53705"
+    },
+    {
+      "path": "pkg/catalogs/model_generation.go",
+      "sha256": "c1ccb93e35b7ade12a9936193d328114827e296dddea734375e6d2ce30d4d9a3"
+    },
+    {
+      "path": "testdata/consumers/server-storage/go.mod",
+      "sha256": "b4a44c20b608283a781828cbb066068269674f41734f0fbba7f048e075248a38"
+    },
+    {
+      "path": "testdata/consumers/server-storage/go.sum",
+      "sha256": "8ef0d5640442287ab6dedb628ea8084da5a414973f07159377c0a155453d38a4"
+    }
+  ],
+  "schema_properties": 28,
+  "normalizer_tests_passed_per_toolchain": 59,
+  "toolchains": [
+    "go1.26.6",
+    "go1.25.12"
+  ],
+  "schema_generation_exit_code": 0,
+  "docs_check_exit_code": 0,
+  "writing_files": 1283,
+  "ago_findings": 0,
+  "lint_findings": 0,
+  "initial_generation_failure": "YAML token offsets did not locate the integer scalar. Line and column positions resolve the actual source.",
+  "initial_broad_failure": "Failed generation left docs.go importing an unavailable generator module. The later successful generation removed its temporary file. The subsequent runtime and reconciliation run remains active.",
+  "live_checks": [],
+  "permission_review": "The initial dependency restore was rejected for possible unclear user changes. Read-only status and diff checks proved both files clean. Automatic review then allowed the exact two-path update.",
+  "artifacts": [
+    {
+      "path": "starmap-range-schema-before.jsonl.gz",
+      "raw_sha256": "d0d8d5391abcba5646341b96c4fd780e008694ec664e434c4b744059e6771784"
+    },
+    {
+      "path": "starmap-range-schema-normalizer.jsonl.gz",
+      "raw_sha256": "ee1b32677b8178e799d7e33be62fe68779e16d41ad4f06f8bd130ec264b20f56"
+    },
+    {
+      "path": "starmap-range-schema-generate.txt.gz",
+      "raw_sha256": "cfd5fd5d37c43fa7be63cd9528d1d9fa6dba4d1df6d35f5c35bb0ac63355ca59"
+    },
+    {
+      "path": "starmap-range-schema-normalize-fixed.txt.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "starmap-range-schema-generate-fixed.txt.gz",
+      "raw_sha256": "1bce468e0608e0aef604df88be4412a02dddab84e4345e886f1ed7c9b6f02743"
+    },
+    {
+      "path": "starmap-range-schema-after.jsonl.gz",
+      "raw_sha256": "7accffc1e5a7cd6f3d8248a99a229d946f84bd1b59f36040b2153cb3e0f0d59d"
+    },
+    {
+      "path": "starmap-range-schema-minimum.jsonl.gz",
+      "raw_sha256": "3ab0fa5fa2fec9db5db95c68c77108ce358e337d0a1e1ab467de5364e6299425"
+    },
+    {
+      "path": "starmap-range-schema-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-range-schema-lint.txt.gz",
+      "raw_sha256": "3afe8e22950babc45a5ecc08beb5dddfe465528bcfdb202851f7758dd29195f7"
+    },
+    {
+      "path": "starmap-range-godoc.txt.gz",
+      "raw_sha256": "09feef3af6b4b19cecc09738d93111804ebbabbcfab13456d38313d7455c3df3"
+    },
+    {
+      "path": "starmap-range-docs-check.txt.gz",
+      "raw_sha256": "88f949a7f59c11a39a996647247c15fe2a5ad2c96f29b3605c9248758084eaaf"
+    },
+    {
+      "path": "starmap-range-schema-writing.txt.gz",
+      "raw_sha256": "9927337b79e6bc19e8cc328011f0f696ee51710580ddb67fb4abfcc90b4f623e"
+    },
+    {
+      "path": "starmap-range-affected-packages.jsonl.gz",
+      "raw_sha256": "92af25c6c2455080ebe1fb28ff4a612f1f6e4b5273d828030b628ef63fdfba07"
+    },
+    {
+      "path": "consumers.txt.gz",
+      "raw_sha256": "0b9701934d01040969e0ec5ee31b3109ee6c8d16480ed98cc3f6851d21676dc9"
+    },
+    {
+      "path": "starmap-range-recovery-after-generation.jsonl.gz",
+      "raw_sha256": "d1fba87cc32ed9909fac0f2696f36296f15390addb26e5c6ed76c9074e6e9190"
+    }
+  ],
+  "consumer_packages_passed": 6,
+  "consumer_exit_code": 0,
+  "commit": "412538b0",
+  "runtime_reconciliation": {
+    "exit_code": 0,
+    "test_pass_events": 1244,
+    "package_pass_events": 2
+  },
+  "catalog_package": {
+    "test_pass_events": 1059,
+    "package_pass_events": 1
+  }
+}

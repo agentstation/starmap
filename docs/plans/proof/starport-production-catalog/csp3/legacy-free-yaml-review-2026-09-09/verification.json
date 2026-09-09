@@ -1,0 +1,194 @@
+{
+  "task": "CSP3",
+  "status": "accepted finding repaired; refreshed embedded identity under verification",
+  "reviewed_commit": "759b41bb",
+  "review_exit_code": 1,
+  "review_portions": 3,
+  "review_findings": 1,
+  "reviewer": "claude-opus-5 high",
+  "panel": "gpt-5.6-sol xhigh and claude-opus-5 high",
+  "finding": "The prior token-cost YAML encoder wrote known free costs as empty mappings. The new decoder marks both units missing and rejects those legacy prices.",
+  "assessment": "Accepted after checking the old encoder at merged main and reproducing both failing contract tests.",
+  "repair": "Preserve empty YAML mappings as legacy known zero. Keep empty JSON costs missing and invalid. Refuse YAML encoding of a cost whose units are both missing, because that mapping would assert a legacy free price. Unknown units remain unknown.",
+  "fail_before": {
+    "exit_code": 1,
+    "test_fail_events": 2,
+    "package_fail_events": 1
+  },
+  "focused_after": {
+    "exit_code": 0,
+    "test_pass_events": 110,
+    "package_pass_events": 2
+  },
+  "dirty_files": [
+    {
+      "path": "pkg/catalogs/token_cost_legacy_yaml_test.go",
+      "sha256": "169bdd6f501a570f7cf10b5c66f9e147eeeed3fdf2b759cdd5798717d2d5afb6"
+    },
+    {
+      "path": "pkg/catalogs/README.md",
+      "sha256": "b8525ed95fcb265a798555ccb04926327d1cbdab6b77e603f9831912a3d0c857"
+    },
+    {
+      "path": "pkg/catalogs/model_token_cost_presence.go",
+      "sha256": "3524400b79ccd7cf08ecf51bf5a2a25d22e1fd2347808978df28187e2a0af510"
+    },
+    {
+      "path": "pkg/catalogs/token_cost_presence_test.go",
+      "sha256": "6f08246d39bcb8087d960839e3310e6fd934ecfceb8d8bad4c829792f37f3014"
+    },
+    {
+      "path": "pkg/catalogs/token_cost_validation_test.go",
+      "sha256": "a4100f1c07614a675ce182015db5e4cd6a88a0fcabe6a5a073fa0caa875f91c8"
+    },
+    {
+      "path": "internal/embedded/catalog/generation.json",
+      "sha256": "9d442dd8592de294e5ec3118426ac2684b044753f896a7c5fe286f6f7514da6c"
+    },
+    {
+      "path": "internal/embedded/catalog/endpoints.yaml",
+      "sha256": "7a6b396d50c041bd7bbf782d91b547523d66e0ed6e1c9440a52e320aef95da32"
+    },
+    {
+      "path": "testdata/consumers/pinned-artifact/consumer.go",
+      "sha256": "ebd57e38868f1a94e72df92b7758186c2a319fc3a87015c8baee1001a7eb5e03"
+    }
+  ],
+  "running_checks": [
+    {
+      "session": 48845,
+      "output": "/tmp/starmap-legacy-free-yaml-rebound-race.jsonl"
+    },
+    {
+      "session": 73866,
+      "output": "/tmp/starmap-legacy-free-yaml-final-all.jsonl"
+    },
+    {
+      "session": 52324,
+      "output": "/tmp/starmap-legacy-free-yaml-staged-checkout.jsonl"
+    }
+  ],
+  "remaining": [
+    "affected race and consumer checks",
+    "commit after final checks",
+    "fresh required review",
+    "push and PR",
+    "native CI and merge"
+  ],
+  "publication": "not started",
+  "completion_credit": false,
+  "artifacts": [
+    {
+      "path": "starmap-presence-main-autoreview.txt.gz",
+      "raw_sha256": "00ebd999fdcda0bb36acb5c58d06657a67cea953ccb6a1a0a821f8c61d781f4b"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-before.jsonl.gz",
+      "raw_sha256": "871b6ee26da6379be4f60cf7e4304a5ca8c98e5229e444805d58020bcb2718f3"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-after.jsonl.gz",
+      "raw_sha256": "e628c145b4ff9bc4f3e65eb769bcb86661eaf4e54517362b84ce2486a2944975"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-full-race.jsonl.gz",
+      "raw_sha256": "a712943c36469f6ad3b300d0bb5e93ce859aa606a8b186bcc5ab92d4c0b08229"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-consumers.txt.gz",
+      "raw_sha256": "d237f3d9d53f1bfd2f88df541fe00a600fc1b9c5bd5ab7dba69fc13e41490973"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-rebound-consumers.txt.gz",
+      "raw_sha256": "ca54b9959d2d10b90a5436a73430bad118f9c39ef6c849b47bf8821c59284121"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-minimum.jsonl.gz",
+      "raw_sha256": "5d1dd843b3e05aa80e1d7d13f5559b7854900574086cf5ffe06d1b49cb989fea"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-lint.txt.gz",
+      "raw_sha256": "1550ba3e6655e7bd06ea353054757bd6822e50c480cb1b7dd6c8f6bcdf00aab4"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-docs.txt.gz",
+      "raw_sha256": "e24a4d72e30085c43fccf5bd4a2b10d0d0f6fefb3e23aaf20ede0d685bd5afbb"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-writing.txt.gz",
+      "raw_sha256": "7303b61512ae9436376cb3cf4580973c4a83b70e799804103a390662c049a3ae"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-manifest.txt.gz",
+      "raw_sha256": "469158cf8e9f4316b0a71fc92c9ce8f7b89ac88ba4a054db058c94255ddb5f6b"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-artifact-digest.txt.gz",
+      "raw_sha256": "e0f5fe55782e568c18d39b8d4adb77adccf00777e2718ec3aa28e02416da9d58"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-final-consumers.txt.gz",
+      "raw_sha256": "2c6fd8db720bc5572c7f031b663b3621f55ddeed2da506d16cd880e59e23c04c"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-final-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-final-writing.txt.gz",
+      "raw_sha256": "7303b61512ae9436376cb3cf4580973c4a83b70e799804103a390662c049a3ae"
+    },
+    {
+      "path": "starmap-legacy-free-yaml-plan-writing-fixed.txt.gz",
+      "raw_sha256": "834d81ba71e34bd0b9587669fb88b34e9342f92fd5facb51f6bdba9a98b14523"
+    }
+  ],
+  "broader_failure": {
+    "test_fail_events": 388,
+    "package_fail_events": 1,
+    "cause": "The corrected legacy free prices change canonical payload bytes. The embedded manifest still declared the previous size and digests.",
+    "first_error": "payload has 8260386 bytes, want 8260014"
+  },
+  "manifest_regeneration": {
+    "changed": true,
+    "previous_generation_id": "catalog-20260908T215730Z-a02b30afe902",
+    "generation_id": "catalog-20260909T015834Z-7f9bcfc6e3a4",
+    "generated_at": "2026-09-09T01:58:34.328381Z",
+    "payload_checksum": "sha256:83cfdf52c6a789577aa2afe4f518024cab8fbfd2ffd0b5955f648e337dc40652",
+    "semantic_checksum": "sha256:7f9bcfc6e3a4c39687fde30ee0859a73e40ddbddc775ac0d2d1a4e9d7a6377b1",
+    "payload_size_bytes": 8260386
+  },
+  "pinned_fixture": {
+    "previous_digest": "feb61a46452a5e40579db6948e6e1b5668c23d7a04fe375e1f5a01cd44791573",
+    "current_digest": "4e170a3d05e48c20017f412347439623210e551c8fcec6d5c7f713f29b2b0eb9",
+    "verification": "Independent artifact.Build and crypto/sha256 agree. Digest comparison remains required."
+  },
+  "minimum_go": {
+    "toolchain": "go1.25.12",
+    "test_pass_events": 110,
+    "package_pass_events": 2,
+    "exit_code": 0
+  },
+  "static": {
+    "ago_findings": 0,
+    "lint_findings": 0,
+    "writing_files": 1239,
+    "docs_check_exit_code": 0
+  },
+  "final_consumers": {
+    "exit_code": 0,
+    "package_pass_events": 6,
+    "macos_read_only_packages": "37/37",
+    "macos_pinned_packages": "38/38"
+  },
+  "final_static": {
+    "exit_code": 0,
+    "ago_findings": 0,
+    "writing_files": 1239
+  },
+  "index_parity_failure": "The full ordinary suite compared unstaged regenerated inputs with checkout-index. Stage the intended assets before rerunning this contract; no source or assertion change."
+}

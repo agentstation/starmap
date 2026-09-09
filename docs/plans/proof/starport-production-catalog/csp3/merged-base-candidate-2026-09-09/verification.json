@@ -102,7 +102,7 @@
     "testdata/consumers/server-storage/go.mod",
     "testdata/consumers/server-storage/go.sum"
   ],
-  "status": "committed; required cross-lab review running",
+  "status": "review finding accepted; compatibility repair uncommitted",
   "branch": "codex/catalog-presence-main",
   "worktree": "/tmp/starmap-presence-main-2026-09-09",
   "head": "759b41bbd284aa93bf6901c4008a680bf4495bd6",
@@ -115,10 +115,12 @@
   "full_verification_worktree": "/tmp/starmap-presence-main-2026-09-09",
   "full_verification_output": "/tmp/starmap-presence-main-verify-2026-09-09.txt",
   "review": {
-    "session_id": 5830,
+    "session_id": null,
     "command": "GOTOOLCHAIN=go1.26.6 autoreview --gate pre-pr --mode auto --base 7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e --profile cross-lab --thinking codex=xhigh",
     "output": "/tmp/starmap-presence-main-autoreview.txt",
-    "status": "running"
+    "status": "failed: one verified compatibility finding",
+    "exit_code": 1,
+    "followup_proof": "../legacy-free-yaml-review-2026-09-09/verification.json"
   },
   "publication": "not started",
   "completion_credit": false,
