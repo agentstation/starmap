@@ -182,7 +182,15 @@
       "skips": 0
     }
   },
-  "active_checks": {},
+  "active_checks": {
+    "generate": {
+      "session": 43924,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 make generate",
+      "log": "/tmp/starmap-source-activity-generate.log",
+      "worktree": "/tmp/starmap-source-activity-2026-09-09",
+      "note": "The repository command created untracked .devbox/gen/scripts files. Inspect and remove only these generated command artifacts after the process ends; preserve generated documentation."
+    }
+  },
   "qualification": "UNVERIFIED: connected status, CLI reporting, generated documentation, full verification, review, and merge remain required.",
   "reporting_ago": {
     "exit_code": 0,
