@@ -1,0 +1,124 @@
+{
+  "status": "in_progress",
+  "contract": "CSP3/A20 manual publication failures and CLI reporting; complete qualification remains required",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "base": "370eaccf",
+  "behavior": [
+    "Standalone and connected manual updates retain completed source activity and provider attempts when publication fails.",
+    "Errors retain the original store failure identity. Failed publication preserves the accepted catalog.",
+    "CLI success, preview failure, and apply failure paths print validated source activity. Quiet mode suppresses the new rows.",
+    "Output failures preserve both the acquisition error and the output error.",
+    "The no-change message names selected sources rather than every provider."
+  ],
+  "publisher_wiring": {
+    "path": "scripts/generate-embedded-catalog.sh",
+    "lines": [
+      72,
+      74
+    ],
+    "evidence": "Both publisher branches invoke starmap update with -y. The publisher-success command test exercises auto approval. This wiring evidence does not qualify a released publisher run."
+  },
+  "remaining": [
+    "Full composition reporting and acceptance audit, including accepted-input display and failure boundaries.",
+    "Full integrated verification, required review, native CI, and merge."
+  ],
+  "checks": {
+    "starmap-publication-activity-fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 3,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "starmap-publication-activity-race": {
+      "test_pass_events": 3,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "starmap-cli-source-activity-fail-before": {
+      "test_pass_events": 0,
+      "test_fail_events": 4,
+      "package_pass_events": 0,
+      "skips": 0
+    },
+    "starmap-cli-source-activity-race": {
+      "test_pass_events": 36,
+      "test_fail_events": 0,
+      "package_pass_events": 1,
+      "skips": 0
+    },
+    "starmap-cli-publication-activity-minimum": {
+      "test_pass_events": 10,
+      "test_fail_events": 0,
+      "package_pass_events": 2,
+      "skips": 0
+    },
+    "ago": {
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    "lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 1311,
+      "diagnostics": 0
+    },
+    "final_race": {
+      "exit_code": 0,
+      "test_pass_events": 10,
+      "package_pass_events": 2,
+      "fail_events": 0,
+      "skip_events": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "starmap-publication-activity-fail-before.jsonl.gz",
+      "sha256": "13b0a08348b9b99a4dda08652641a032d8df8d3beb5d2bc7e9e3d82c15b40325"
+    },
+    {
+      "path": "starmap-publication-activity-race.jsonl.gz",
+      "sha256": "cdaa1027750803e3b4824169ec6d92048a1c30cc17fcc115f18a38549d0b8c9d"
+    },
+    {
+      "path": "starmap-cli-source-activity-fail-before.jsonl.gz",
+      "sha256": "a4d7ddcdb4ba94cdc2b5d39ae6552571faa031000392b05e9faf954ceb059a3f"
+    },
+    {
+      "path": "starmap-cli-source-activity-race.jsonl.gz",
+      "sha256": "241740d5851c412ba1045700478a845a04b807043567313cf3d0e61f7a4e60c5"
+    },
+    {
+      "path": "starmap-cli-publication-activity-minimum.jsonl.gz",
+      "sha256": "37478c500e7ceb641754b087c3d0dd57f75c855620ceae3e357ab9a3e9e997e5"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "5722a3c2796601f3da6211005471a61b43c8c139a2540532fef7e6b98257b030"
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "b10222d508fdbcd8d77aa4c50bb6abb045e16fd303742f7aaa67c7364327db78"
+    },
+    {
+      "path": "final-race.jsonl.gz",
+      "sha256": "99bb14f394e3a3b1de34023e4c5ea37a07ad5f7613420b605a603a62b10bbd87"
+    }
+  ],
+  "task_completion_credit": false,
+  "active_checks": {},
+  "commit": "a3b0c6ad2c793ab1c1c41f5276fe1aab80417be3",
+  "tree": "009114076379ae89ed86f5eae1c0f1f6c4a5762e"
+}
