@@ -164,6 +164,22 @@
     {
       "path": "schema-boundaries-after.gz",
       "sha256": "4919740d7c9407de2565af161639c4744acc1927b01eb4c98ee84cf93858ce4d"
+    },
+    {
+      "path": "full-race-default-timeout.gz",
+      "sha256": "1f36565b0e385fd671d35f723d7b4dc47fc3ddf5493130a5e580c57e1bdb3bac"
+    },
+    {
+      "path": "account-recovery.gz",
+      "sha256": "184030c6b0f91d377f64c650182713fce603a502bb47cf6205ec0dc163052570"
+    },
+    {
+      "path": "ago-account.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint-account.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -405,13 +421,41 @@
         "test_events": {
           "pass": 32
         }
+      },
+      "full_race_initial": {
+        "exit_code": 1,
+        "reconciler": {
+          "passing_test_events": 635,
+          "package_pass": true
+        },
+        "acquisition": {
+          "passing_test_events": 90,
+          "failing_test_events": 2,
+          "cause": "Unsupported-version fixture used newly supported schema 2; fixed separately."
+        },
+        "runtime": {
+          "passing_test_events": 275,
+          "package_pass": false,
+          "cause": "Command omitted the required -timeout 20m and reached default 10m. No runtime completion credit."
+        }
+      },
+      "account_recovery": {
+        "exit_code": 0,
+        "passing_test_events": 1,
+        "scope": "Public removal preserves independent account contribution through restart; later account removal removes membership through a second restart."
+      },
+      "ago_account": {
+        "exit_code": 0
+      },
+      "lint_account": {
+        "exit_code": 0
       }
     },
     "sessions": {
-      "full_race": 25031,
+      "runtime_20m": 98374,
       "acquisition_schema": 15564
     },
-    "caveat": "Broad race checks remain running. Focused reset extension passes. Final documentation check follows generated link repair. Code remains uncommitted.",
+    "caveat": "Required runtime timeout is unchanged at 20m. The replacement runtime command is active; acquisition rerun remains active. Code is uncommitted and unpublished.",
     "remaining": [
       "Add integration coverage for unrelated scope preservation and health selection.",
       "Complete broad runtime and reconciliation checks.",
