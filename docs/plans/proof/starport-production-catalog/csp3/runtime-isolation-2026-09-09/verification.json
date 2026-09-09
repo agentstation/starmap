@@ -1,0 +1,186 @@
+{
+  "status": "isolated runtime repeat failed; scheduling isolation is not a sufficient repair",
+  "contract": "CSP3 verification scheduling; preserve the complete race package roster and existing package deadline",
+  "worktree": "/tmp/starmap-source-inventory-2026-09-09",
+  "base": "d4ecdbed77af790761d981a2726710ded004111e",
+  "runtime_repeat": {
+    "session": 95181,
+    "binary": "/tmp/starmap-runtime-isolated-2026-09-09.test",
+    "binary_sha256": "086876bf3c7062b6483ec73e2fb75343af8c03f415b96b9328fcd459c233f3ce",
+    "flags": [
+      "-test.short",
+      "-test.timeout=20m",
+      "-test.v"
+    ],
+    "log": "/tmp/starmap-runtime-isolation-repeat-2026-09-09.log",
+    "environment": "Fresh /tmp/starmap-runtime-qualification.* TMPDIR; no other test or verification jobs run during this repeat.",
+    "result": "FAIL: test timed out after 20m0s",
+    "exit_code": 2,
+    "top_level_passes": 136,
+    "all_pass_events": 407,
+    "artifact": "runtime-repeat.log.gz",
+    "artifact_sha256": "44630637e978083331d5e07300e79e794a08e3b6d18e3986bd55484d0513bdfd"
+  },
+  "prototype_files": [
+    {
+      "path": "scripts/verify-race-tests.sh",
+      "sha256": "6e30a3b3e6405fecec9fc05e6d73c9d40609c60bf122851a773b0561bb832f49",
+      "archived_as": "verify-race-tests.sh.gz",
+      "archive_sha256": "6e67888c68aef5e88ff07fc0d79e0faf4596fb0c32dce79c2e5852909cb72130"
+    },
+    {
+      "path": "scripts/test_race_verifier.py",
+      "sha256": "d7dee36e9cc4fd2ce2db55bfd823e2f1d569513000eb6c77df00c3c06170107b",
+      "archived_as": "test_race_verifier.py.gz",
+      "archive_sha256": "cb0a70382b9bd72611acd7cfc7c58d807448eb1cb5636c40c5b0deed2e911c90"
+    }
+  ],
+  "next": [
+    "Run the complete runtime binary at the unchanged 20-minute deadline without other test jobs.",
+    "Record the complete test roster and outcome.",
+    "Finish preflight reporting and full repository verification before review, native CI, and merge."
+  ],
+  "completion_credit": false,
+  "parallel_read_only_audit": {
+    "worktree": "/tmp/starmap-source-activity-2026-09-09",
+    "head": "c2324744",
+    "finding": "Manual acquisition errors before Pipeline.Prepare omit source activity. Client.Update checks store writability and cancellation before invoking the preparation callback. preparedActivityError returns the original error when preparation never ran.",
+    "contract": "ENGINEERING_SPEC.md section 6 source composition; report supported, enabled, eligible, attempted, and accepted independently.",
+    "prepared_regression_file": "acquisition/preflight_activity_test.go",
+    "tests": [
+      "TestManualPreflightFailureReportsUnattemptedSources/read-only_store",
+      "TestManualPreflightFailureReportsUnattemptedSources/canceled_before_publication"
+    ],
+    "result": "FAIL: both named subcases reported no source activity; 3 failed test events including parent; exit 1",
+    "implementation": "No production change. Capture fail-before after runtime session 95181 ends, then retain parsed selection without evaluating caller options again.",
+    "artifact": {
+      "path": "preflight-fail-before.jsonl.gz",
+      "sha256": "31cd49926eff2922d3cf736fa446123d6724bcbc1ae1c92d9d73e7c650513648"
+    }
+  },
+  "prototype_decision": "Scheduling-only prototypes were archived and removed from the delivery worktree. No canonical verifier change.",
+  "profile": {
+    "session": 7281,
+    "test": "TestPartialProviderReplyPreservesPricingAcrossRestartAndSourceRefresh",
+    "binary": "/tmp/starmap-runtime-isolated-2026-09-09.test",
+    "cpu_profile": "/tmp/starmap-runtime-cost-2026-09-09.cpu",
+    "log": "/tmp/starmap-runtime-cost-2026-09-09.log",
+    "deadline": "5m",
+    "result": "PASS",
+    "exit_code": 0,
+    "all_pass_events": 33,
+    "profile_duration_seconds": 118.5,
+    "cpu_samples_seconds": 100.3
+  },
+  "profile_artifacts": [
+    {
+      "path": "starmap-runtime-cost-2026-09-09.cpu.gz",
+      "sha256": "10f354f54d8a57497c74c5a5624434ad53aec0f9434efdba45668bf0c65003a0"
+    },
+    {
+      "path": "starmap-runtime-cost-2026-09-09.log.gz",
+      "sha256": "8e98eefde902c531349ae67c5524708ae1fce763637efd473d0160893bb30b5c"
+    },
+    {
+      "path": "starmap-runtime-cost-2026-09-09.top.txt.gz",
+      "sha256": "279bf879c76921e41e1be235dfc5bc5b0dc19ae70917c1ad18673b30bf565aff"
+    }
+  ],
+  "profile_findings": [
+    "EncodeCatalogPayload accounts for 19.37 seconds of sampled CPU cumulatively.",
+    "Runtime.Open accounts for 25.53 seconds of sampled CPU cumulatively.",
+    "Race instrumentation accounts for substantial native CPU samples; these are not a production latency measurement.",
+    "layerSet.build copies and builds the selected immutable baseline even when there are no active provider or manual observations. Investigate preserving the canonical payload identity while removing that copy."
+  ],
+  "baseline_reuse": {
+    "files": [
+      "runtime/layers.go",
+      "runtime/baseline_reuse_test.go"
+    ],
+    "behavior": "Reuse the immutable selected catalog only when no provider or manual reconciliation creates a builder. Preserve payload encoding, checksum, sequence, and policy identity construction.",
+    "next": "Complete minimum-toolchain and lint checks, then repeat the measured test and full runtime suite. This local repair is not yet a sufficient timeout fix.",
+    "fail_before": {
+      "artifact": "starmap-baseline-reuse-fail-before-2026-09-09.jsonl.gz",
+      "sha256": "c95de741956dba0c4a237003afdedc1f5483922d9cf511c4780ccebf53b293de",
+      "passed": 0,
+      "failed": 1
+    },
+    "race": {
+      "artifact": "starmap-baseline-reuse-race-2026-09-09.jsonl.gz",
+      "sha256": "9ea1e6f1b37ccae13e54f54f95e8b7f39accc0364c55df6cde2c1384d386fb6d",
+      "passed": 3,
+      "failed": 0
+    },
+    "ago": {
+      "artifact": "starmap-baseline-reuse-ago-2026-09-09.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "report": {
+        "schemaVersion": 1,
+        "version": "v0.2.0",
+        "rules": [
+          "no-dot-import",
+          "no-generic-methods",
+          "no-goto",
+          "no-invalid-ignore",
+          "no-naked-return",
+          "no-new-expr",
+          "no-self-referential-constraints"
+        ],
+        "findings": [],
+        "staleIgnores": [],
+        "errors": []
+      }
+    },
+    "file_sha256": {
+      "runtime/layers.go": "6b8bbc1bcdc26e2d3da02a517a554bbca3393c802c8e867eb6ca9ba3b5afbbe0",
+      "runtime/baseline_reuse_test.go": "919c27f5c74c5a6cee8e444083e4b870803cbc62fab2d4a23af85272176b1ac8"
+    },
+    "commit": "66e3ed4d848c7423e234ce0374af1bb5fde110e6",
+    "profile_after": {
+      "session": 62608,
+      "binary": "/tmp/starmap-runtime-baseline-reuse-2026-09-09.test",
+      "binary_sha256": "eb3160dc0e35183801e6553f632a283c698d4d1a408c7e70cdb40c6b0edc50e3",
+      "cpu_profile": "/tmp/starmap-runtime-cost-after-2026-09-09.cpu",
+      "log": "/tmp/starmap-runtime-cost-after-2026-09-09.log",
+      "result": "PASS",
+      "exit_code": 0,
+      "profile_duration_seconds": 85.11,
+      "cpu_samples_seconds": 77.13,
+      "artifacts": [
+        {
+          "path": "starmap-runtime-cost-after-2026-09-09.cpu.gz",
+          "sha256": "b9ba34cf29c10e614916c23a87a1031dc713e422f42aeb1e37f7364e055c0829"
+        },
+        {
+          "path": "starmap-runtime-cost-after-2026-09-09.log.gz",
+          "sha256": "a7dee3ac791bc33f29f69f79edc4b4ee5a924eea1590ac7e26e50216e20f7860"
+        },
+        {
+          "path": "starmap-runtime-cost-after-2026-09-09.top.txt.gz",
+          "sha256": "662291cec320acd3c393554e401eea7a53fb35963615948af95f5a314e3fc529"
+        }
+      ],
+      "all_pass_events": 33,
+      "interpretation": "One before/after profile pair: approximately 28 percent shorter wall time. This is not full-suite reliability or production latency qualification."
+    },
+    "minimum": {
+      "artifact": "starmap-baseline-reuse-minimum-2026-09-09.jsonl.gz",
+      "sha256": "2a1b2261dee64ba66c43b0028421afbd0871d7b59bddd0720a5e836b7967d8cd",
+      "exit_code": 0,
+      "passed": 3
+    },
+    "lint": {
+      "artifact": "starmap-baseline-reuse-lint-2026-09-09.log.gz",
+      "sha256": "db28c7422ed943b54e21cec3818a2ebb42643810c387e73532be0163279da5c6",
+      "exit_code": 0,
+      "findings": 0
+    },
+    "plan_prose": {
+      "artifact": "starmap-runtime-investigation-prose-final2-2026-09-09.log.gz",
+      "sha256": "8e2b9cfcf7a845446d660d3387a108092f62aa584902ac0caf7b353c2d044bb0",
+      "exit_code": 0,
+      "files": 1271,
+      "diagnostics": 0
+    }
+  }
+}

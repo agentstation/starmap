@@ -1,5 +1,5 @@
 {
-  "status": "delivery tree passes affected checks and complete isolated runtime suite; final full verification remains active",
+  "status": "Affected checks and the first isolated runtime run passed; final full verification and isolated repeat timed out",
   "worktree": "/tmp/starmap-source-inventory-2026-09-09",
   "base": "cc5ae1ed",
   "branch": "codex/catalog-source-inventory",

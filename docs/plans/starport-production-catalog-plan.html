@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-09 UTC. <a href="#CSP3">CSP3</a> remains active. Eight of 38 tasks are complete. Twenty PRs merged. Unmerged work receives no completion credit.</p>
 
-<p id="next-action">Repair runtime race qualification scheduling on <code>/tmp/starmap-source-inventory-2026-09-09</code>, branch <code>codex/catalog-source-inventory</code>, clean HEAD <code>d4ecdbed</code>. Full verification ended with a runtime package timeout. Preserve all tests and the 20-minute deadline. Finish full verification before required review and publication.</p>
+<p id="next-action">Repair measured runtime qualification cost on <code>/tmp/starmap-source-inventory-2026-09-09</code>, branch <code>codex/catalog-source-inventory</code>, clean HEAD <code>66e3ed4d</code>. Full verification and isolated runtime session 95181 both timed out. Scheduling isolation is not a sufficient repair. Preserve all tests and the 20-minute deadline. Finish full verification before required review and publication.</p>
 
 <p><a href="https://github.com/agentstation/starmap/pull/141">PR #141</a> merged at <code>bdc0650f</code>. All fifteen checks and six native jobs pass. The <a href="proof/starport-production-catalog/csp3/verification-timeout-2026-09-09/verification.json">merge proof</a> confirms the reviewed and merged trees match.</p>
 
@@ -23,7 +23,7 @@
 
 <p>Session <code>61844</code> ended with exit one. Its <a href="proof/starport-production-catalog/csp3/final-runtime-timeout-2026-09-09/verification.json">failure proof</a> retains the final runtime timeout. Do not poll this ended session. Required review and publication remain open.</p>
 
-<p>Source activity work: <code>/tmp/starmap-source-activity-2026-09-09</code>, branch <code>codex/catalog-source-activity</code>, clean HEAD <code>c2324744</code>, base <code>d4ecdbed</code>. The <a href="proof/starport-production-catalog/csp3/source-activity-2026-09-09/verification.json">prototype proof</a> owns the changed files and boundary results. Provider preflight and HTTP report tests pass. The <a href="proof/starport-production-catalog/csp3/connected-source-activity-2026-09-09/verification.json">connected report proof</a> records metadata status and readiness checks. </p>
+<p>Source activity work: <code>/tmp/starmap-source-activity-2026-09-09</code>, branch <code>codex/catalog-source-activity</code>, HEAD <code>c2324744</code> with an unrun preflight regression file, base <code>d4ecdbed</code>. The <a href="proof/starport-production-catalog/csp3/source-activity-2026-09-09/verification.json">prototype proof</a> owns the changed files and boundary results. Provider preflight and HTTP report tests pass. The <a href="proof/starport-production-catalog/csp3/connected-source-activity-2026-09-09/verification.json">connected report proof</a> records metadata status and readiness checks. </p>
 
 <p>The <a href="proof/starport-production-catalog/csp3/provider-source-activity-2026-09-09/verification.json">provider status proof</a> records seventeen passing race test events. The <a href="proof/starport-production-catalog/csp3/source-configuration-2026-09-09/verification.json">passive configuration proof</a> records unknown capability states and owned constructor snapshots. The <a href="proof/starport-production-catalog/csp3/cli-publication-activity-2026-09-09/verification.json">CLI and publication proof</a> records both failure paths and quiet mode. Complete the reporting audit and full qualification before review. Keep the separate delivery tree fixed for runtime verification.</p>
 
@@ -32,6 +32,14 @@
 <p>Read the <a href="#task-CSP3">CSP3 contract</a>. Full A08, A20, and released-pair acceptance remain incomplete. D25 already limits account-specific removals to linked inference profiles. Ordinary removal thresholds and rename-window decisions remain pending. The <a href="#goal">goal block</a> preserves the full scope.</p>
 
 <p>Canonical plan branch: <code>codex/catalog-qualification</code>. The <a href="proof/starport-production-catalog/resume-history-2026-09-09-165700.html">historical resume snapshot</a> retains prior worktree and check details.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp3/runtime-isolation-2026-09-09/verification.json">isolation investigation</a> records terminal runtime session <code>95181</code>, exit two. Do not poll it. Profile session <code>7281</code> ended successfully. It records substantial catalog encoding and construction cost. Do not poll it.</p>
+
+<p>A regression test reproduced the unnecessary baseline copy. The local repair reuses the immutable catalog and preserves payload encoding and identity checks. Three focused race checks and their Go 1.25 equivalents pass. Lint reports zero findings.</p>
+
+<p>Profile session <code>62608</code> measures the same slow test after the repair. It passed in 85.1 seconds versus 118.5 seconds before the repair. Run the complete runtime suite next. Scheduling prototypes remain archived.</p>
+
+<p>The source activity tree has <code>acquisition/preflight_activity_test.go</code>. Both preflight cases failed because source activity was absent. Preserve these failures before implementing the repair.</p>
 </section>
 
 <section id="outcome"><h2>Outcome</h2><blockquote>Starport delivers a verified catalog and a working inference gateway from local development through a qualified single-region fleet. Starmap owns catalog facts and acquisition. Both products share configuration semantics and preserve catalog authority. Starport serves valid working state from memory with measured latency and resource limits. Installation, operation, recovery, and documentation have tested contracts.</blockquote></section>
@@ -497,4 +505,8 @@
 <p>2026-09-09: Commit <code>a3b0c6ad</code> retains activity after failed publication and reports CLI source outcomes. The <a href="proof/starport-production-catalog/csp3/cli-publication-activity-2026-09-09/verification.json">proof</a> records both regression failures, passing focused race checks, and publisher command wiring. CSP3 remains incomplete.</p>
 
 <p>2026-09-09: Commit <code>c2324744</code> adds an active generation snapshot to manual accepted-input reports. The <a href="proof/starport-production-catalog/csp3/accepted-input-report-2026-09-09/verification.json">proof</a> records passing preview, commit, failure, and transport checks. The separate delivery verification reached its runtime deadline. Its <a href="proof/starport-production-catalog/csp3/final-runtime-timeout-2026-09-09/verification.json">failure proof</a> owns the next qualification repair.</p>
+
+<p>2026-09-09: The complete runtime race binary runs alone with its existing 20-minute deadline. The <a href="proof/starport-production-catalog/csp3/runtime-isolation-2026-09-09/verification.json">investigation proof</a> owns the process and two verifier prototypes. No new qualification or completion credit applies yet.</p>
+
+<p>2026-09-09: The isolated runtime repeat also timed out. Commit <code>66e3ed4d</code> removes a measured construction copy when no observations require reconciliation. The <a href="proof/starport-production-catalog/csp3/runtime-isolation-2026-09-09/verification.json">proof</a> records the failure, CPU profile, regression, and three passing focused tests on each toolchain. Full runtime qualification remains open.</p>
 </section></main></body></html>
