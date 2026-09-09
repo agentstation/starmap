@@ -1,0 +1,34 @@
+{
+  "source_commit": "42783dc65e3acdc7f57e9bd33c094364ab413f26",
+  "file": "internal/embedded/openapi/openapi.json",
+  "sha256": "7772a7c77e96e379998d1bb95447e6b288e382f89dee0d6e4acfb0381ac5e8d8",
+  "capability_schema": {
+    "attachments": {
+      "$ref": "#/components/schemas/catalogs.ModelAttachments"
+    },
+    "delivery": {
+      "$ref": "#/components/schemas/catalogs.ModelDelivery"
+    },
+    "features": {
+      "$ref": "#/components/schemas/catalogs.ModelFeatures"
+    },
+    "generation": {
+      "$ref": "#/components/schemas/catalogs.ModelGeneration"
+    },
+    "reasoning": {
+      "$ref": "#/components/schemas/catalogs.ModelControlLevels"
+    },
+    "reasoning_tokens": {
+      "$ref": "#/components/schemas/catalogs.IntRange"
+    },
+    "tools": {
+      "$ref": "#/components/schemas/catalogs.ModelTools"
+    },
+    "verbosity": {
+      "$ref": "#/components/schemas/catalogs.ModelControlLevels"
+    }
+  },
+  "observation": "All eight capability properties still use non-null object references. The definition serializer now emits explicit null for an unknown record. Schema alignment remains required before publication.",
+  "owner": "CSP3",
+  "status": "UNVERIFIED for publication"
+}

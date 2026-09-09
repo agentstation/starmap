@@ -1,0 +1,102 @@
+{
+  "date": "2026-09-08",
+  "source_commit": "02551bf84dcb70271f82b1fd58808d108deeb536",
+  "parent": "7771357812ef297975b1821fd5f287b2ddbf728e",
+  "status": "local candidate; not merged",
+  "behavior": "Explicit receipt refusal clears known records and denied lineage leaves. Accepted new composite presence retains its selected receipt. Parent presence cannot restore denied child values.",
+  "before": "Known record and lineage refusal probes fail. First broad repair exposes three composite receipt regressions with five failed events.",
+  "after": {
+    "focused_test_pass": 170,
+    "race_test_pass": 1396,
+    "race_package_pass": 3,
+    "minimum_go": "1.25.12",
+    "minimum_test_pass": 286,
+    "minimum_package_pass": 2,
+    "ago_findings": 0,
+    "ago_errors": 0,
+    "lint_issues": 0,
+    "writing_file_pass": 1262
+  },
+  "remaining": [
+    "Full repository verification",
+    "Definition representation",
+    "Effective publication and restart",
+    "Required publication review",
+    "Implementation merge",
+    "CSP3 acceptance"
+  ],
+  "files": {
+    "starmap-record-known-receipt-before.jsonl.gz": {
+      "sha256": "0d3edbee5d2b2704317a2ec5aa4c7eb7e017c8f6a1fc652aaba925450dc192ef",
+      "uncompressed_bytes": 72833,
+      "counts": {
+        "fail_test": 27,
+        "pass_test": 16,
+        "fail_package": 1
+      }
+    },
+    "starmap-record-lineage-refusal-before.jsonl.gz": {
+      "sha256": "0266c38a48b6d0aae4ed4557397796882e9623e414c78d69ca779b429c8e7d85",
+      "uncompressed_bytes": 7769,
+      "counts": {
+        "fail_test": 3,
+        "pass_test": 1,
+        "fail_package": 1
+      }
+    },
+    "starmap-record-known-receipt-and-leaf-after.jsonl.gz": {
+      "sha256": "44d70ca84a57b55f489ad68b679e86d4c61ee3f41430f38faf8d93fe205b7011",
+      "uncompressed_bytes": 201040,
+      "counts": {
+        "pass_test": 162,
+        "pass_package": 1
+      }
+    },
+    "starmap-record-receipt-repair-packages.jsonl.gz": {
+      "sha256": "d10293732270f2f58bc88c87317936202257606ac93654b861692743a7c1df83",
+      "uncompressed_bytes": 1590387,
+      "counts": {
+        "pass_test": 1391,
+        "pass_package": 2,
+        "fail_test": 5,
+        "fail_package": 1
+      }
+    },
+    "starmap-record-accepted-presence-repair.jsonl.gz": {
+      "sha256": "6835b37b863e6ace7b17d9bcb7d9f90e082c029c9a9ad92037e804d5c826600d",
+      "uncompressed_bytes": 214617,
+      "counts": {
+        "pass_test": 170,
+        "pass_package": 1
+      }
+    },
+    "starmap-record-receipt-repair-packages-final.jsonl.gz": {
+      "sha256": "bfab8e6d6e835c68cf526cb9c3b8bc8edebbd47911d2e0b9f1917f9c799dae4d",
+      "uncompressed_bytes": 1588132,
+      "counts": {
+        "pass_test": 1396,
+        "pass_package": 3
+      }
+    },
+    "starmap-record-receipt-repair-minimum.jsonl.gz": {
+      "sha256": "16a77f4b0e994c129971d7f851e1aa2277e15655cc0e8a7fadb156adbaf0e3df",
+      "uncompressed_bytes": 325224,
+      "counts": {
+        "pass_test": 286,
+        "pass_package": 2
+      }
+    },
+    "starmap-record-receipt-repair-ago.json.gz": {
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_bytes": 289
+    },
+    "starmap-record-receipt-repair-lint.txt.gz": {
+      "sha256": "5c69f90583207094e6ae6485785d3850df6eac780ced0132c282ed1eb54bcbc8",
+      "uncompressed_bytes": 340
+    },
+    "starmap-record-receipt-repair-writing.txt.gz": {
+      "sha256": "a4c98201a63c41ef3799addaf51a9c5ce3b2f16e2c7ac035e9be6cfa609603d8",
+      "uncompressed_bytes": 534
+    }
+  }
+}

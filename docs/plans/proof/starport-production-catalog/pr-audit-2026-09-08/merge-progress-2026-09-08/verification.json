@@ -34,5 +34,20 @@
       "sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4",
       "uncompressed_bytes": 78
     }
+  },
+  "merge_order": {
+    "first": 136,
+    "then": "Verify merged module files, close PR137 as superseded, and run CSP2 merged-source qualification.",
+    "pr137_auto_merge": "disabled after exact patch comparison",
+    "verified_pr137_diff": [
+      "go.mod",
+      "go.sum"
+    ],
+    "module_blob_ids": {
+      "go.mod": "8dbaf832a77e1ec2f7eb4a1d98cd1869bc038da6",
+      "go.sum": "3a7ec739cd36376fbea8373d5ad90a7985d2b4eb"
+    },
+    "pr136_head": "8e559680dcfd4bfb28016be1f333e10d3e1d16ee",
+    "pr137_head": "c827c64d9048f2bd3b882cf8e88b53e4dbf6f081"
   }
 }

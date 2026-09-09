@@ -1,0 +1,135 @@
+{
+  "date": "2026-09-08",
+  "commit": "42783dc65e3acdc7f57e9bd33c094364ab413f26",
+  "parent": "02551bf84dcb70271f82b1fd58808d108deeb536",
+  "status": "local candidate; not merged",
+  "before": "Sixteen valid JSON/YAML unknown-capability cases fail. Initial harness also lacked reasoning support for known controls and used an incorrect method name. Corrected harness records 32 passes and 17 failed events.",
+  "after": {
+    "codec_test_pass": 52,
+    "race_test_pass": 1448,
+    "race_package_pass": 3,
+    "minimum_go": "1.25.12",
+    "minimum_test_pass": 53,
+    "minimum_package_pass": 1,
+    "ago_findings": 0,
+    "lint_issues": 0,
+    "writing_file_pass": 1265
+  },
+  "regression_repair": "Allow the existing round-trip comparator to inspect the new private presence state. Do not ignore that state.",
+  "full_verify": {
+    "session": 71547,
+    "output": "/tmp/starmap-record-presence-publication-verify.txt",
+    "status": "running"
+  },
+  "remaining_defect": {
+    "owner": "CSP3",
+    "source_commit": "42783dc65e3acdc7f57e9bd33c094364ab413f26",
+    "contract": "ProviderOffering serialization retains missing, unknown, and known optional records.",
+    "affected_fields": [
+      "pricing",
+      "limits",
+      "deprecated_at",
+      "retires_at"
+    ],
+    "probe": "starmap-offering-record-probe.jsonl.gz",
+    "result": "16 passing events and 9 failed events across eight unknown scenarios. No production repair yet."
+  },
+  "remaining": [
+    "Align nullable capability OpenAPI schemas with actual serialization",
+    "Full repository verification",
+    "Provider offering projection repair",
+    "Required review",
+    "Implementation merge",
+    "Effective publication and restart",
+    "CSP3 acceptance"
+  ],
+  "files": {
+    "starmap-record-definition-probe.jsonl.gz": {
+      "sha256": "069bfebeb89f6af2cecbcef85b0f6ab4962c98c2de713be27ad942b35c327fa9",
+      "uncompressed_bytes": 55113,
+      "counts": {
+        "pass_test": 28,
+        "fail_test": 21,
+        "fail_package": 1
+      }
+    },
+    "starmap-record-definition-probe-corrected.jsonl.gz": {
+      "sha256": "b4909d89a7eb4d8d88c85fa506f63228744a72430b21805f9479c1eb91294379",
+      "uncompressed_bytes": 1238,
+      "counts": {
+        "fail_package": 1
+      }
+    },
+    "starmap-record-definition-probe-valid.jsonl.gz": {
+      "sha256": "c92d4bc2bbe1ae289db44ff5ce23c5f3bd3ee9723cae8e97d202dbe79d4d9d32",
+      "uncompressed_bytes": 53409,
+      "counts": {
+        "pass_test": 32,
+        "fail_test": 17,
+        "fail_package": 1
+      }
+    },
+    "starmap-record-definition-after.jsonl.gz": {
+      "sha256": "8430ba69115a9e26dec78a3665c8833361274ce4aa460f5854376db27eacb079",
+      "uncompressed_bytes": 1196,
+      "counts": {
+        "fail_package": 1
+      }
+    },
+    "starmap-record-definition-codecs.jsonl.gz": {
+      "sha256": "bfe1cb0fa3aeb39776188caf8774755555759008c3a65d9ffbe6c1dbd8b604b9",
+      "uncompressed_bytes": 49425,
+      "counts": {
+        "pass_test": 52,
+        "pass_package": 1
+      }
+    },
+    "starmap-record-definition-packages.jsonl.gz": {
+      "sha256": "2ad85186eb86c74aa79c2a858c37cf98d3e0497bea464681a8b92044f0756913",
+      "uncompressed_bytes": 998588,
+      "counts": {
+        "pass_test": 893,
+        "pass_package": 2,
+        "fail_test": 1,
+        "fail_package": 1
+      }
+    },
+    "starmap-record-definition-packages-final.jsonl.gz": {
+      "sha256": "5e73070c063590843b11c509e7621e5079afb926b0c781eb6d70e7d6eb217eeb",
+      "uncompressed_bytes": 1637094,
+      "counts": {
+        "pass_test": 1448,
+        "pass_package": 3
+      }
+    },
+    "starmap-record-definition-minimum.jsonl.gz": {
+      "sha256": "28414a5cddfd96ca16f207d6bb89f8afbf165b5afc07b597076bf06c463c5642",
+      "uncompressed_bytes": 50298,
+      "counts": {
+        "pass_test": 53,
+        "pass_package": 1
+      }
+    },
+    "starmap-record-definition-ago.json.gz": {
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "uncompressed_bytes": 289
+    },
+    "starmap-record-definition-lint.txt.gz": {
+      "sha256": "0c2c1cbdcb1eb1364f951c387626cc047665ceffb5059558d8b7831d423dc771",
+      "uncompressed_bytes": 301
+    },
+    "starmap-record-definition-writing.txt.gz": {
+      "sha256": "4e4f072c4f0f7ed1d512a7bcdb6992534b0e6897920f36c43fa7c5e483a66b1f",
+      "uncompressed_bytes": 534
+    },
+    "starmap-offering-record-probe.jsonl.gz": {
+      "sha256": "3e88f05a30d6420bc3e9c4f80b2bef95af209e1ece1a200936e7f838ab936edd",
+      "uncompressed_bytes": 25609,
+      "counts": {
+        "pass_test": 16,
+        "fail_test": 9,
+        "fail_package": 1
+      }
+    }
+  }
+}
