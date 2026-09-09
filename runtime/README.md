@@ -374,7 +374,7 @@ func (p AcquisitionPolicy) Validate() error
 Validate checks the acquisition period. Zero is valid and selects one startup pass, so an operator schedules a single run without a cadence.
 
 <a name="AcquisitionReport"></a>
-## type [AcquisitionReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L79-L113>)
+## type [AcquisitionReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L79-L116>)
 
 AcquisitionReport says what one acquisition run produced. A partial failure still publishes: the report names the providers that kept their own last\-known\-good observation.
 
@@ -400,6 +400,9 @@ type AcquisitionReport struct {
 
     // SourceObservations binds each non-provider result to its original receipt.
     SourceObservations []catalogs.SourceObservationLink
+
+    // SourceActivities holds the reported selection and attempts for this run.
+    SourceActivities []sources.SourceActivity
 
     // Published reports whether the runtime published a new effective catalog.
     Published bool
@@ -872,7 +875,7 @@ func WithListenAddress(address string) Option
 WithListenAddress records the server listen address. It does not change instance identity.
 
 <a name="WithModelsDevGitCommit"></a>
-### func [WithModelsDevGitCommit](<https://github.com/agentstation/starmap/blob/main/runtime/source_acquisition.go#L121>)
+### func [WithModelsDevGitCommit](<https://github.com/agentstation/starmap/blob/main/runtime/source_acquisition.go#L122>)
 
 ```go
 func WithModelsDevGitCommit(commit string) Option
@@ -1174,7 +1177,7 @@ type Random func() float64
 ```
 
 <a name="RefreshReport"></a>
-## type [RefreshReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L118-L140>)
+## type [RefreshReport](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L121-L143>)
 
 RefreshReport says what one whole refresh produced. A source\-only run leaves the acquisition report empty, and an acquisition\-only run leaves the source report empty.
 
@@ -1270,7 +1273,7 @@ func (r *Runtime) CompleteDirectoryMigration(ctx context.Context, request Direct
 CompleteDirectoryMigration confirms this runtime's selected directory, owner, and retained identity. Call it after the host selects the replacement configuration and opens this runtime. This method records completion without editing configuration files or deleting the source.
 
 <a name="Runtime.ModelsDevGitCommit"></a>
-### func \(\*Runtime\) [ModelsDevGitCommit](<https://github.com/agentstation/starmap/blob/main/runtime/source_acquisition.go#L133>)
+### func \(\*Runtime\) [ModelsDevGitCommit](<https://github.com/agentstation/starmap/blob/main/runtime/source_acquisition.go#L134>)
 
 ```go
 func (r *Runtime) ModelsDevGitCommit() (string, bool)
@@ -1306,7 +1309,7 @@ func (r *Runtime) PublishObservations(ctx context.Context, observations ...sourc
 PublishObservations retains caller\-supplied observations with their accepted catalog. The runtime validates receipts and active bindings before it publishes any input. This operation reads no source and joins runtime cancellation and shutdown.
 
 <a name="Runtime.Refresh"></a>
-### func \(\*Runtime\) [Refresh](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L259>)
+### func \(\*Runtime\) [Refresh](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L262>)
 
 ```go
 func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
@@ -1315,7 +1318,7 @@ func (r *Runtime) Refresh(ctx context.Context) (RefreshReport, error)
 Refresh reads the upstream and then observes configured acquisition sources. It changes the upstream layer and acquisition inputs in one run.
 
 <a name="Runtime.RefreshSource"></a>
-### func \(\*Runtime\) [RefreshSource](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L271>)
+### func \(\*Runtime\) [RefreshSource](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L274>)
 
 ```go
 func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error)
@@ -1333,7 +1336,7 @@ func (r *Runtime) State() starmap.CatalogState
 State returns one atomic snapshot of the effective catalog and its generation identity. It reaches no external system.
 
 <a name="Runtime.Status"></a>
-### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L48>)
+### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L49>)
 
 ```go
 func (r *Runtime) Status() Status
@@ -1342,7 +1345,7 @@ func (r *Runtime) Status() Status
 Status returns the current runtime status. It reads retained state only, so it reaches no external system and never blocks on the source.
 
 <a name="Runtime.Sync"></a>
-### func \(\*Runtime\) [Sync](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L280>)
+### func \(\*Runtime\) [Sync](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L283>)
 
 ```go
 func (r *Runtime) Sync(ctx context.Context, providers ...catalogs.ProviderID) (AcquisitionReport, error)

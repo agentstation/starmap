@@ -39,6 +39,7 @@ type statusState struct {
 	acquisitionHealth      Health
 	attempts               []sources.ProviderAttempt
 	sourceObservations     []catalogs.SourceObservationLink
+	sourceActivities       []sources.SourceActivity
 
 	lastRunID string
 }
@@ -78,6 +79,7 @@ func (r *Runtime) Status() Status {
 		LastRunID:                  state.lastRunID,
 		Providers:                  append([]sources.ProviderAttempt(nil), state.attempts...),
 		SourceObservations:         slices.Clone(state.sourceObservations),
+		SourceActivities:           slices.Clone(state.sourceActivities),
 		AcceptedAcquisitionSources: acceptedSources,
 		StartedAt:                  state.startedAt,
 		ObservedAt:                 now,

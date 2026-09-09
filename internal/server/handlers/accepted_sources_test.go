@@ -13,3 +13,18 @@ func TestReadinessIncludesAcceptedAcquisitionSources(t *testing.T) {
 		t.Fatalf("readiness source report=%v", report)
 	}
 }
+
+func TestReadinessSeparatesSourceActivityFromAcceptedInput(t *testing.T) {
+	report := runtimeReadiness(status.Status{
+		SourceActivities:           []sources.SourceActivity{{Source: sources.LocalCatalogID, Supported: true, Enabled: true, Eligibility: sources.EligibilityIneligible}},
+		AcceptedAcquisitionSources: []sources.ID{sources.ModelsDevHTTPID},
+	})
+	activity, ok := report["source_activities"].([]sources.SourceActivity)
+	if !ok || len(activity) != 1 || activity[0].Source != sources.LocalCatalogID || activity[0].Eligibility != sources.EligibilityIneligible {
+		t.Fatalf("readiness activity=%v", report)
+	}
+	accepted := report["accepted_acquisition_sources"].([]sources.ID)
+	if len(accepted) != 1 || accepted[0] != sources.ModelsDevHTTPID {
+		t.Fatalf("readiness accepted input=%v", report)
+	}
+}

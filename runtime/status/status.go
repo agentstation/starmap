@@ -207,6 +207,9 @@ type Status struct {
 	// SourceObservations holds the last non-provider acquisition receipts.
 	SourceObservations []catalogs.SourceObservationLink
 
+	// SourceActivities holds activity from the last acquisition run.
+	SourceActivities []sources.SourceActivity `json:"source_activities,omitempty"`
+
 	// StartedAt is when the runtime opened.
 	StartedAt time.Time
 

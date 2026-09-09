@@ -73,9 +73,13 @@ func TestSourceAcquirerPreservesProviderFiltersAndHTTPReceipts(t *testing.T) {
 		t.Fatal("constructor called HTTP")
 	}
 	providers := []catalogs.ProviderID{"openai", "anthropic", "openai"}
-	observations, err := acquirer.AcquireSources(t.Context(), runtime.SourceAcquisitionRequest{Current: acquisitionTestCatalog(t), Providers: providers})
+	observations, activity, err := acquirer.AcquireSourceReport(t.Context(), runtime.SourceAcquisitionRequest{Current: acquisitionTestCatalog(t), Providers: providers})
 	if err != nil {
 		t.Fatal(err)
+	}
+	index := slices.IndexFunc(activity, func(row sources.SourceActivity) bool { return row.Source == sources.ModelsDevHTTPID })
+	if len(activity) != 3 || index < 0 || !activity[index].Attempted || activity[index].Eligibility != sources.EligibilityEligible {
+		t.Fatalf("scoped HTTP activity=%+v", activity)
 	}
 	if !slices.Equal(providers, []catalogs.ProviderID{"openai", "anthropic", "openai"}) {
 		t.Fatal("acquisition changed caller filters")
@@ -122,10 +126,15 @@ func TestSourceAcquirerMissingWorkspaceIsNotAResult(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	observations, err := acquirer.AcquireSources(t.Context(), runtime.SourceAcquisitionRequest{Current: acquisitionTestCatalog(t)})
+	observations, activity, err := acquirer.AcquireSourceReport(t.Context(), runtime.SourceAcquisitionRequest{Current: acquisitionTestCatalog(t)})
 	if err != nil || len(observations) != 0 {
 		t.Fatalf("absent optional workspace = %v, %v", observations, err)
 	}
+	index := slices.IndexFunc(activity, func(row sources.SourceActivity) bool { return row.Source == sources.LocalCatalogID })
+	if index < 0 || activity[index].Attempted || activity[index].Eligibility != sources.EligibilityIneligible {
+		t.Fatalf("absent workspace activity=%+v", activity)
+	}
+
 }
 
 func TestSourceAcquirerRejectsInvalidRequestAndCancellation(t *testing.T) {

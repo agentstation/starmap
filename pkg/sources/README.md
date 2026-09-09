@@ -20,8 +20,12 @@ Package sources provides public APIs for working with AI model data sources.
 - [func IsExactGitCommit\(value string\) bool](<#IsExactGitCommit>)
 - [func ValidateAcquisitionSelection\(ids \[\]ID\) error](<#ValidateAcquisitionSelection>)
 - [func ValidateJSONPayload\(data \[\]byte\) error](<#ValidateJSONPayload>)
+- [type ActivityError](<#ActivityError>)
+  - [func \(e \*ActivityError\) Error\(\) string](<#ActivityError.Error>)
+  - [func \(e \*ActivityError\) Unwrap\(\) error](<#ActivityError.Unwrap>)
 - [type Dependency](<#Dependency>)
 - [type DependencyStatus](<#DependencyStatus>)
+- [type Eligibility](<#Eligibility>)
 - [type FetchStats](<#FetchStats>)
   - [func \(s \*FetchStats\) HumanSize\(\) string](<#FetchStats.HumanSize>)
 - [type ID](<#ID>)
@@ -53,6 +57,7 @@ Package sources provides public APIs for working with AI model data sources.
   - [func \(b \*ProviderAcquisitionBinding\) UnmarshalJSON\(data \[\]byte\) error](<#ProviderAcquisitionBinding.UnmarshalJSON>)
   - [func \(b ProviderAcquisitionBinding\) Validate\(\) error](<#ProviderAcquisitionBinding.Validate>)
 - [type ProviderAttempt](<#ProviderAttempt>)
+  - [func ProviderAttemptsFromError\(err error\) \[\]ProviderAttempt](<#ProviderAttemptsFromError>)
   - [func \(a ProviderAttempt\) Validate\(\) error](<#ProviderAttempt.Validate>)
 - [type ProviderBindingCredentialRole](<#ProviderBindingCredentialRole>)
 - [type ProviderClient](<#ProviderClient>)
@@ -102,6 +107,9 @@ Package sources provides public APIs for working with AI model data sources.
 - [type SchemaFieldClass](<#SchemaFieldClass>)
 - [type SchemaRecord](<#SchemaRecord>)
 - [type Source](<#Source>)
+- [type SourceActivity](<#SourceActivity>)
+  - [func ActivityFromError\(err error\) \[\]SourceActivity](<#ActivityFromError>)
+  - [func \(a SourceActivity\) Valid\(\) bool](<#SourceActivity.Valid>)
 - [type SourceFailure](<#SourceFailure>)
   - [func \(f SourceFailure\) Valid\(\) bool](<#SourceFailure.Valid>)
 
@@ -234,6 +242,40 @@ func ValidateJSONPayload(data []byte) error
 
 ValidateJSONPayload enforces source byte and nesting limits before decoding.
 
+<a name="ActivityError"></a>
+## type [ActivityError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L55-L62>)
+
+ActivityError preserves per\-run source activity when acquisition fails before a result exists. Call ActivityFromError to get an owned report while retaining the original error identity.
+
+```go
+type ActivityError struct {
+    // Activities contains the source report for this failed run.
+    Activities []SourceActivity
+    // ProviderAttempts preserves per-profile outcomes from the failed run.
+    ProviderAttempts []ProviderAttempt
+    // Err preserves the original acquisition failure.
+    Err error
+}
+```
+
+<a name="ActivityError.Error"></a>
+### func \(\*ActivityError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L65>)
+
+```go
+func (e *ActivityError) Error() string
+```
+
+Error preserves the underlying acquisition error text.
+
+<a name="ActivityError.Unwrap"></a>
+### func \(\*ActivityError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L73>)
+
+```go
+func (e *ActivityError) Unwrap() error
+```
+
+Unwrap preserves typed acquisition errors and cancellation identity.
+
 <a name="Dependency"></a>
 ## type [Dependency](<https://github.com/agentstation/starmap/blob/main/pkg/sources/source.go#L69-L87>)
 
@@ -273,6 +315,28 @@ type DependencyStatus struct {
     Path       string // Full path to executable if found
     CheckError error  // Error from check command if not available
 }
+```
+
+<a name="Eligibility"></a>
+## type [Eligibility](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L9>)
+
+Eligibility states whether acquisition preflight confirms source availability.
+
+```go
+type Eligibility string
+```
+
+<a name="EligibilityUnknown"></a>
+
+```go
+const (
+    // EligibilityUnknown means preflight has not established availability.
+    EligibilityUnknown Eligibility = "unknown"
+    // EligibilityEligible means the required preflight checks passed.
+    EligibilityEligible Eligibility = "eligible"
+    // EligibilityIneligible means a required preflight condition failed.
+    EligibilityIneligible Eligibility = "ineligible"
+)
 ```
 
 <a name="FetchStats"></a>
@@ -646,6 +710,15 @@ type ProviderAttempt struct {
     Records int
 }
 ```
+
+<a name="ProviderAttemptsFromError"></a>
+### func [ProviderAttemptsFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L85>)
+
+```go
+func ProviderAttemptsFromError(err error) []ProviderAttempt
+```
+
+ProviderAttemptsFromError returns owned provider outcomes from a failed acquisition run.
 
 <a name="ProviderAttempt.Validate"></a>
 ### func \(ProviderAttempt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L140>)
@@ -1272,6 +1345,44 @@ type Source interface {
     IsOptional() bool
 }
 ```
+
+<a name="SourceActivity"></a>
+## type [SourceActivity](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L22-L33>)
+
+SourceActivity reports capability, selection, and execution for one acquisition source. Accepted input belongs to the active generation and remains separate from this run.
+
+```go
+type SourceActivity struct {
+    // Source identifies the registered acquisition source.
+    Source ID  `json:"source"`
+    // Supported reports whether this composition implements the source.
+    Supported bool `json:"supported"`
+    // Enabled reports configured selection, independent of automatic refresh scheduling.
+    Enabled bool `json:"enabled"`
+    // Eligibility remains unknown until the required source preflight checks finish.
+    Eligibility Eligibility `json:"eligibility"`
+    // Attempted reports whether the source collector ran. Provider attempts separately report network requests.
+    Attempted bool `json:"attempted"`
+}
+```
+
+<a name="ActivityFromError"></a>
+### func [ActivityFromError](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L76>)
+
+```go
+func ActivityFromError(err error) []SourceActivity
+```
+
+ActivityFromError returns an owned source report from an acquisition error.
+
+<a name="SourceActivity.Valid"></a>
+### func \(SourceActivity\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/activity.go#L36>)
+
+```go
+func (a SourceActivity) Valid() bool
+```
+
+Valid reports whether activity uses a known acquisition source and consistent states.
 
 <a name="SourceFailure"></a>
 ## type [SourceFailure](<https://github.com/agentstation/starmap/blob/main/pkg/sources/failure.go#L6-L11>)

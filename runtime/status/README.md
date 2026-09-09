@@ -183,7 +183,7 @@ func (k SourceKind) Valid() bool
 Valid reports whether the kind is one of the accepted source names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L215>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L218>)
 
 Status is the operator\-facing state of one connected runtime. It keeps usability, freshness, fallback, direct source health, and upstream\-reported health as five independent values, so a warning on one never hides another.
 
@@ -279,6 +279,9 @@ type Status struct {
 
     // SourceObservations holds the last non-provider acquisition receipts.
     SourceObservations []catalogs.SourceObservationLink
+
+    // SourceActivities holds activity from the last acquisition run.
+    SourceActivities []sources.SourceActivity `json:"source_activities,omitempty"`
 
     // StartedAt is when the runtime opened.
     StartedAt time.Time

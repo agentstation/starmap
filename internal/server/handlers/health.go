@@ -72,6 +72,7 @@ func runtimeReadiness(status status.Status) map[string]any {
 		"upstream_health":              string(status.UpstreamHealth),
 		"acquisition_health":           string(status.AcquisitionHealth),
 		"accepted_acquisition_sources": status.AcceptedAcquisitionSources,
+		"source_activities":            status.SourceActivities,
 		"freshness":                    string(status.Freshness),
 		"catalog_age_seconds":          int64(status.CatalogAge / time.Second),
 		"channel_freshness":            string(status.ChannelFreshness),
