@@ -89,6 +89,11 @@ files. It does not install dependencies from a package registry. This check
 qualifies the source collector. The application ingestion matrix has separate
 acceptance cases.
 
+The dependency regression tests use an empty executable path and a small file baseline.
+CLI and HTTP updates must fail for unavailable Git acquisition, including `--fresh`.
+They preserve the accepted generation and report the selected source. Separate tests reject unrecognized diagnostic values and preserve available local acquisition.
+These tests do not complete the source-state inventory or revoked-scope restart contract.
+
 ## Critical Boundary Coverage
 
 Global coverage is intentionally not the primary trust metric. CLI command constructors, generated packages, and optional integrations dilute the signal. Starmap instead enforces coverage on modules where correctness and production reliability concentrate:

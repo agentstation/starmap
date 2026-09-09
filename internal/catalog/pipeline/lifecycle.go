@@ -181,6 +181,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 
 	availableSources := make([]sources.Source, 0, len(srcs))
 	skippedSources := make([]sources.ID, 0)
+	var unavailableDependencies []error
 
 	for _, src := range srcs {
 		missingDeps, hasMissing := missingDepsMap[src.ID()]
@@ -196,6 +197,9 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 
 		if shouldSkip {
 			skippedSources = append(skippedSources, src.ID())
+			for _, dependency := range missingDeps {
+				unavailableDependencies = append(unavailableDependencies, dependencyError(src, dependency, "selected source has a missing dependency"))
+			}
 			logger.Info().
 				Str("source", string(src.ID())).
 				Msg("Skipping source due to missing dependencies")
@@ -206,16 +210,21 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 	}
 
 	if opts.RequireAllSources && len(skippedSources) > 0 {
-		return nil, &pkgerrors.DependencyError{
-			Dependency: "source-set",
-			Message:    fmt.Sprintf("required sources unavailable due to missing dependencies: %v", skippedSources),
-		}
+		return nil, errors.Join(unavailableDependencies...)
 	}
 
-	if len(availableSources) == 0 {
+	acquisitionAvailable := false
+	for _, source := range availableSources {
+		if source.ID() != sources.EmbeddedCatalogID && source.ID() != sources.ReleaseArtifactID {
+			acquisitionAvailable = true
+			break
+		}
+	}
+	if len(skippedSources) > 0 && !acquisitionAvailable {
 		return nil, &pkgerrors.ConfigError{
 			Component: "sync sources",
-			Message:   "no sources available; all configured sources have missing dependencies",
+			Message:   fmt.Sprintf("no acquisition source is available because dependencies are missing for %v", skippedSources),
+			Err:       errors.Join(unavailableDependencies...),
 		}
 	}
 
@@ -306,6 +315,7 @@ func dependencyDecision(ctx context.Context, src sources.Source, dep sources.Dep
 
 func dependencyError(src sources.Source, dep sources.Dependency, message string) error {
 	return &pkgerrors.DependencyError{
+		Source:     string(src.ID()),
 		Dependency: dep.Name,
 		Message:    fmt.Sprintf("source %s: %s", src.ID(), message),
 	}

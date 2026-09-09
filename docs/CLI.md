@@ -294,6 +294,19 @@ A copied directory is not interchangeable with the recorded directory, even when
 
 Native Windows execution and power-loss qualification remain pending. Local process-exit tests do not establish either guarantee.
 
+### Unavailable source tools
+
+A refresh fails when missing dependencies leave no acquisition source available.
+The embedded or downloaded baseline remains available for catalog reads. It does not count as a completed acquisition.
+For example, a Git-only refresh requires the configured Git and Bun tools.
+The CLI error names the unavailable source. The accepted catalog remains unchanged.
+
+HTTP operation status uses the `dependency_unavailable` reason. Its detail includes a recognized source and the `check_source_dependencies` action.
+Recognized tool names appear in `dependency`. Error text, executable paths, and installation commands remain private.
+
+Restore the source dependencies through the deployment's installation policy, then retry the refresh.
+Normal updates and `--fresh` use this failure rule. Other available acquisition sources retain the existing optional-source behavior.
+
 ### Source cache and checkout paths
 
 The `update` command and server acquisition use the configured cache root.

@@ -77,7 +77,7 @@ func (h *Handlers) runCatalogUpdate(
 ) (map[string]any, error) {
 	result, err := h.app.Sync(ctx, opts...)
 	if err != nil {
-		return nil, err
+		return acquisitionDependencyDetail(err), err
 	}
 	return map[string]any{
 		"total_changes":     result.TotalChanges,

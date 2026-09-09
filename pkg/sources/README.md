@@ -612,7 +612,7 @@ func (b ProviderAcquisitionBinding) Validate() error
 Validate checks the binding's format and requires an explicit public or account/project scope. Errors identify fields without exposing their values.
 
 <a name="ProviderAttempt"></a>
-## type [ProviderAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L107-L132>)
+## type [ProviderAttempt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L111-L136>)
 
 ProviderAttempt records one terminal provider acquisition attempt. It holds only values that are safe to log, to serve, and to retain.
 
@@ -646,7 +646,7 @@ type ProviderAttempt struct {
 ```
 
 <a name="ProviderAttempt.Validate"></a>
-### func \(ProviderAttempt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L136>)
+### func \(ProviderAttempt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L140>)
 
 ```go
 func (a ProviderAttempt) Validate() error
@@ -1036,10 +1036,13 @@ ProviderReason is a safe machine\-readable cause for a skip or a failure. A reas
 type ProviderReason string
 ```
 
-<a name="ProviderReasonCredentialReferenceInvalid"></a>
+<a name="ProviderReasonDependencyUnavailable"></a>
 
 ```go
 const (
+    // ProviderReasonDependencyUnavailable means an acquisition tool is unavailable.
+    ProviderReasonDependencyUnavailable ProviderReason = "dependency_unavailable"
+
     // ProviderReasonCredentialReferenceInvalid means the credential reference
     // does not parse or names an unsupported source.
     ProviderReasonCredentialReferenceInvalid ProviderReason = "credential_reference_invalid" //nolint:gosec // A reason code holds no credential value.
@@ -1071,7 +1074,7 @@ const (
 ```
 
 <a name="ClassifyProviderReason"></a>
-### func [ClassifyProviderReason](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L179>)
+### func [ClassifyProviderReason](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L183>)
 
 ```go
 func ClassifyProviderReason(err error) ProviderReason
@@ -1080,7 +1083,7 @@ func ClassifyProviderReason(err error) ProviderReason
 ClassifyProviderReason maps one acquisition error onto a safe reason code. It reads typed error structure first, so provider message text reaches the result only through the final transport classification.
 
 <a name="ProviderReasons"></a>
-### func [ProviderReasons](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L103>)
+### func [ProviderReasons](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L107>)
 
 ```go
 func ProviderReasons() []ProviderReason
@@ -1089,7 +1092,7 @@ func ProviderReasons() []ProviderReason
 ProviderReasons returns a caller\-owned copy of every defined reason code.
 
 <a name="ProviderReason.String"></a>
-### func \(ProviderReason\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L100>)
+### func \(ProviderReason\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L104>)
 
 ```go
 func (r ProviderReason) String() string
@@ -1098,7 +1101,7 @@ func (r ProviderReason) String() string
 String returns the wire value of the reason.
 
 <a name="ProviderReason.Valid"></a>
-### func \(ProviderReason\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L97>)
+### func \(ProviderReason\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/sources/outcome.go#L101>)
 
 ```go
 func (r ProviderReason) Valid() bool
