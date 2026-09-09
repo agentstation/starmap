@@ -1,0 +1,357 @@
+{
+  "task": "CSP3",
+  "completion_credit": false,
+  "merged_prs": 16,
+  "completed_tasks": 8,
+  "total_tasks": 38,
+  "main_candidate": {
+    "worktree": "/tmp/starmap-presence-main-2026-09-09",
+    "branch": "codex/catalog-presence-main",
+    "head": "606b48dd",
+    "status": "Sol review clean; Opus review or explicit owner exception required before publication",
+    "opus_reset_utc": "2026-09-09T04:10:00Z"
+  },
+  "range_candidate": {
+    "worktree": "/tmp/starmap-presence-integration-2026-09-09",
+    "branch": "codex/catalog-ranges-main",
+    "head": "c62faba31d52807cdaae2540d5128617c2bf5607",
+    "base": "606b48dd",
+    "full_verifier": {
+      "tested_head": "ce5f6a9e",
+      "exit_code": 0,
+      "stages": 39,
+      "ordinary_package_passes": 80,
+      "race_package_passes": 80,
+      "limitation": "GOFLAGS=-p=2 caused 33 gomarkdoc unsupported-flag diagnostics. A separate clean documentation check passed without GOFLAGS."
+    },
+    "final_acceptance": {
+      "exit_code": 1,
+      "subcases": {
+        "A08.field_authority": "PASS",
+        "A08.presence_zero_null": "PASS",
+        "A08.scoped_tombstone": "UNVERIFIED",
+        "A08.partial_empty": "UNVERIFIED",
+        "A08.alias_cycle_scope": "UNVERIFIED",
+        "A20.cli_provider_nonprovider": "UNVERIFIED",
+        "A20.publisher_provider_nonprovider": "UNVERIFIED",
+        "A20.server_provider_nonprovider": "UNVERIFIED",
+        "A20.dependency_disabled_partial": "UNVERIFIED",
+        "A20.receipt_artifact_binding": "UNVERIFIED"
+      },
+      "named_behavior_checks_passed": 30,
+      "gate_status": "FAIL",
+      "qualification": "component checks only; remaining eight subcases unverified",
+      "test_pass_events": 712,
+      "package_pass_events": 30
+    },
+    "minimum_toolchain": {
+      "version": "go1.25.12",
+      "test_pass_events": 6,
+      "package_pass_events": 1,
+      "exit_code": 0
+    },
+    "final_checks": {
+      "documentation_exit": 0,
+      "ago_exit": 0,
+      "lint_exit": 0,
+      "prose_files": 1250,
+      "prose_diagnostics": 0,
+      "verifier_python_tests": 73,
+      "verifier_python_exit": 0
+    },
+    "sol_review": {
+      "session": 26671,
+      "exit_code": 0,
+      "portions": 1,
+      "reported_findings": 0
+    },
+    "status": "Verified local candidate; required Opus review and merge remain"
+  },
+  "starport_candidate": {
+    "worktree": "/tmp/starport-readme-merged-2026-09-08",
+    "branch": "codex/catalog-starmap-main",
+    "head": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+    "base": "55629266f05f687d489adfa93aa449fd24168883",
+    "starmap_version": "v0.16.6-0.20260909001903-7be0a0270144",
+    "required_pre_pr_checks": 33,
+    "passed": 32,
+    "failed": [
+      {
+        "command": "bash scripts/verify-v1-architecture.sh",
+        "condition": "V01",
+        "reason": "The published-module gate requires a stable semantic version tag; the merged commit resolves as a Go pseudo-version."
+      }
+    ],
+    "ordinary_package_passes": 55,
+    "race_test_pass_events": 198,
+    "race_package_pass_events": 2,
+    "race_skips": [
+      "TestAppWithValkey"
+    ],
+    "sdk_smoke_passes": 12,
+    "status": "Local integration is committed; stable module release, final validation, review, and merge remain. Do not weaken V01."
+  },
+  "cli_ingestion_audit": {
+    "status": "configured file-baseline audit passes; test remains a preserved draft outside publication candidates",
+    "tested_commit": "606b48dd",
+    "session": null,
+    "output": "/tmp/starmap-cli-ingestion-receipts.jsonl",
+    "earlier_runs": [
+      {
+        "path": "starmap-cli-ingestion-audit.jsonl.gz",
+        "exit_code": 1,
+        "test_fail_events": 1,
+        "reason": "Provider-only acquisition quarantines the new offering without an ingested canonical definition. No product defect established."
+      },
+      {
+        "path": "starmap-cli-ingestion-local-first.jsonl.gz",
+        "exit_code": 1,
+        "reason": "Full embedded-catalog fixture exceeded the five-minute race test timeout. Full-data CLI audit remains unverified."
+      }
+    ],
+    "exit_code": 0,
+    "test_pass_events": 1,
+    "package_pass_events": 1,
+    "seconds": 78.754,
+    "verified_contracts": [
+      "provider fixture changes catalog limit",
+      "local workspace changes description without provider I/O",
+      "partial provider reply updates the valid record and retains matching immutable evidence",
+      "strict provider failure preserves the accepted generation",
+      "restart preserves generation, payload checksum, and degraded receipt health"
+    ],
+    "limitation": "Full embedded-catalog race variant remains unverified after timeout. No A20 registration or completion credit.",
+    "cleanup": {
+      "removed_completed_test_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCLIRefreshIngestsProviderAndLocalEvidence2713991596",
+      "bytes": 83565147,
+      "preserved": "draft sources, test logs, and current worktrees"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "starmap-ranges-main-verify.txt.gz",
+      "raw_sha256": "143909fc886b4be5c095454d89807c6127afe080905f347ef27056ee7cce419a"
+    },
+    {
+      "path": "starmap-csp3-a08-registered.json.gz",
+      "raw_sha256": "a76eb76c87d99f78c9d47030906b57141f27fdf1ad1e96bb2b3cf3c61dab2d0c"
+    },
+    {
+      "path": "starmap-a08-runtime-minimum.jsonl.gz",
+      "raw_sha256": "aa45602b779ac61635a6ad70b53ba6d59e9508ff6405bb5de6d90183c4e8a485"
+    },
+    {
+      "path": "starmap-ranges-final-docs.txt.gz",
+      "raw_sha256": "88f949a7f59c11a39a996647247c15fe2a5ad2c96f29b3605c9248758084eaaf"
+    },
+    {
+      "path": "starmap-ranges-registered-ago.json.gz",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-ranges-registered-lint.txt.gz",
+      "raw_sha256": "7b722dcf327e14a21560753da7bafa03f13badaec192e0f84ff024cbe813dc3f"
+    },
+    {
+      "path": "starmap-ranges-registered-writing.txt.gz",
+      "raw_sha256": "391be738f33447b10c87928893591f86d207fddb9650ebf3a9c58a87988562bc"
+    },
+    {
+      "path": "starmap-a08-registry-verifier-tests.txt.gz",
+      "raw_sha256": "fe254e74d6f93df471ae87dd2cf417a54499de591940253ed10e1407019c0215"
+    },
+    {
+      "path": "starmap-ranges-main-sol-review.txt.gz",
+      "raw_sha256": "d00e289386e9adc7f62e49f472616ea345b0837fb09a50c6b7f7d8f01a775cdd"
+    },
+    {
+      "path": "results.json.gz",
+      "raw_sha256": "5f8d86df24c5f45d049a57472d31ffe56e3269bdb4b606fecca5c612f9172f59"
+    },
+    {
+      "path": "starport-01.log.gz",
+      "raw_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "starport-02.log.gz",
+      "raw_sha256": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980"
+    },
+    {
+      "path": "starport-03.log.gz",
+      "raw_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "path": "starport-04.log.gz",
+      "raw_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "starport-05.log.gz",
+      "raw_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "path": "starport-06.log.gz",
+      "raw_sha256": "cb3389602625fcf38a2c81d9f17bb4feec1ed4906d69f3cf3b89d86bd1c0eb8b"
+    },
+    {
+      "path": "starport-07.log.gz",
+      "raw_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    {
+      "path": "starport-08.log.gz",
+      "raw_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    {
+      "path": "starport-09.log.gz",
+      "raw_sha256": "df43a433b0e2eacf0b82829fa989238b489484de7c8f1e18a4cbba228d81cdc9"
+    },
+    {
+      "path": "starport-10.log.gz",
+      "raw_sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5"
+    },
+    {
+      "path": "starport-11.log.gz",
+      "raw_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "path": "starport-12.log.gz",
+      "raw_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    {
+      "path": "starport-13.log.gz",
+      "raw_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "path": "starport-14.log.gz",
+      "raw_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    {
+      "path": "starport-15.log.gz",
+      "raw_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    {
+      "path": "starport-16.log.gz",
+      "raw_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    {
+      "path": "starport-17.log.gz",
+      "raw_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "path": "starport-18.log.gz",
+      "raw_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "path": "starport-19.log.gz",
+      "raw_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "path": "starport-20.log.gz",
+      "raw_sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7"
+    },
+    {
+      "path": "starport-21.log.gz",
+      "raw_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "path": "starport-22.log.gz",
+      "raw_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    {
+      "path": "starport-23.log.gz",
+      "raw_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    {
+      "path": "starport-24.log.gz",
+      "raw_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    {
+      "path": "starport-25.log.gz",
+      "raw_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    {
+      "path": "starport-26.log.gz",
+      "raw_sha256": "74fe1851e9e1c669f79b01ffc3b4ab7c662a13b54742b4e2000dfee22a19e0c8"
+    },
+    {
+      "path": "starport-27.log.gz",
+      "raw_sha256": "3a08226e57baf100db251e7b92f36a0d01edecd208e2c0d87ebfff9743c7b048"
+    },
+    {
+      "path": "starport-28.log.gz",
+      "raw_sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    {
+      "path": "starport-29.log.gz",
+      "raw_sha256": "7e7331b56d2d3e9824a96deeae3842b9685e6c8d4cdb45c0cb4cc5e9bd40d1cb"
+    },
+    {
+      "path": "starport-30.log.gz",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "starport-31.log.gz",
+      "raw_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "starport-32.log.gz",
+      "raw_sha256": "aa183caf27093b62959f417125d4e858b8ba29d1998c80134542f5638dc786f1"
+    },
+    {
+      "path": "starport-33.log.gz",
+      "raw_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585"
+    },
+    {
+      "path": "starmap-cli-ingestion-audit.jsonl.gz",
+      "raw_sha256": "45805db9be7209df79789828af0e1a337d517649237ed201ad0a389a54dc2490"
+    },
+    {
+      "path": "starmap-cli-ingestion-before-local.go.gz",
+      "raw_sha256": "7b5367ce1259493315811fdf02ceb79de959852cbd0fdf24b0a140772de81c05"
+    },
+    {
+      "path": "starmap-cli-ingestion-local-first.jsonl.gz",
+      "raw_sha256": "1f157b7e83c43b13555bec5281c3abba65e18e603ab17568a9bca49168f3841c"
+    },
+    {
+      "path": "starmap-cli-ingestion-local-first.go.gz",
+      "raw_sha256": "8a106c38d8a03cf56e4038b9cb1322509bf78c532fe1cdce871ef3ed77e4d5a2"
+    },
+    {
+      "path": "starmap-merge-readiness-writing.txt.gz",
+      "raw_sha256": "704ecf6ed1f4725aa532fc0ac930848d170a30d7aef9d2893aedc38129fee96c"
+    },
+    {
+      "path": "starmap-merge-readiness-writing-final.txt.gz",
+      "raw_sha256": "421a591377aeefeefbc9ba52d6e6d5cde1fe23f0c4930176c7c838ebf03b922c"
+    },
+    {
+      "path": "starmap-merge-readiness-writing-pass.txt.gz",
+      "raw_sha256": "834d81ba71e34bd0b9587669fb88b34e9342f92fd5facb51f6bdba9a98b14523"
+    },
+    {
+      "path": "previous-resume.html.gz",
+      "raw_sha256": "2ec961b7ff2d8dded37370e771c6a119ffccdcea96948f5245becc847313902b"
+    },
+    {
+      "path": "starmap-cli-ingestion-file-baseline.jsonl.gz",
+      "raw_sha256": "0023a9d322edb037a3033205febd8b7d52d65a3ef4432c5b6b215f9810a1beb1"
+    },
+    {
+      "path": "starmap-cli-ingestion-file-baseline.go.gz",
+      "raw_sha256": "052fe160f7a92b8e8d69916495eac6278a07b881acb1f87591f786f602676c65"
+    },
+    {
+      "path": "starmap-cli-ingestion-receipts.jsonl.gz",
+      "raw_sha256": "cd100ea13a9053cca282456f61653b40eed74806847ce57869993f7ace537902"
+    },
+    {
+      "path": "starmap-cli-ingestion-probe.go.gz",
+      "raw_sha256": "27cdcff66f5dbc9c10fa4f6e42056a75d17b9a55daa949ac5dd7ff698c34204e"
+    }
+  ],
+  "plan_prose_check": {
+    "exit_code": 0,
+    "files": 1257,
+    "diagnostics": 0
+  }
+}
