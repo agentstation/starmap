@@ -4,7 +4,7 @@
   "base": "ccc14dcff83be0a147258d92884c1f71e5edf690",
   "worktree": "/tmp/starmap-publisher-repair-2026-09-09",
   "branch": "codex/catalog-publisher-repair",
-  "work_commit": null,
+  "work_commit": "5d26c2164ea47cd71040e371a951152e78fd314c",
   "observed_failure": {
     "run": 34311767888,
     "commit": "7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e",
@@ -241,15 +241,28 @@
       "path": "overlay.json.gz",
       "sha256": "4501b2043b9cf0c555b1baf95dbdda8722b26ff87ceb7a329de039c15a11ab26",
       "role": "isolated diagnostic; not a candidate change or passing qualification"
+    },
+    {
+      "path": "starmap-publisher-repair-final-full-verification.log.gz",
+      "sha256": "f2902ccce8c202967145e2b6605de4a5ffed2ab734b81c9c49debd0ee1fb746e"
+    },
+    {
+      "path": "starmap-publisher-final-independent-docs.log.gz",
+      "sha256": "c326a6932614067e6dc62592068f841cbf5eadf50fe1b0b63bc07614250aa50b"
     }
   ],
-  "next_action": "Finish the active full verifier, commit intended files, run both required reviews, publish the PR, and merge after CI. Record the verified merge before completion credit.",
+  "next_action": "Finish the required review, publish the publisher repair PR, run CI, and merge after checks pass. Then integrate this merge into the combined acquisition branch. No task completion credit before merged acceptance.",
   "full_verification": {
-    "status": "running; no pass credit",
-    "log": "/tmp/starmap-publisher-repair-final-full-verification.log",
+    "status": "passed",
     "session": 35014,
-    "source": "dirty_inventory",
-    "prior_failure": "The prior full run failed TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload because it required the old path. The assertion now requires STARMAP_GENERATION_STORE_PATH. Both complete affected packages pass under the race detector."
+    "exit_code": 0,
+    "commit": "5d26c2164ea47cd71040e371a951152e78fd314c",
+    "stages": 39,
+    "ordinary_packages": 80,
+    "race_packages": 80,
+    "verifier_tests": 73,
+    "log": "starmap-publisher-repair-final-full-verification.log.gz",
+    "documentation": "The full script inherits GOFLAGS=-p=2, which gomarkdoc mishandles. Independent docs-check with GOFLAGS unset passes on the final source. Use that independent log as documentation evidence."
   },
   "qualification_limits": [
     "The publisher ingestion test exercises provider-scoped update acme, then stages and reopens the exact committed artifact. It does not qualify the complete all-provider publisher acceptance case.",
@@ -273,7 +286,19 @@
   },
   "prepared_pr_description": {
     "path": "/tmp/starmap-publisher-repair-pr-body.md",
-    "sha256": "c386c2c7faa0bae3f313d5786534b0eb655ffa2e756b832f08477cb1824b0844",
-    "status": "Draft records focused checks and pending full verification and review. Update after those gates pass."
+    "sha256": "cd39b3b030f60b6f9e42e61c04aa4919fb16ee86e2f6a720a5bedbb666c6fe28",
+    "status": "Full verification recorded. Remove the pending-review sentence only after the required review passes."
+  },
+  "review": {
+    "status": "running",
+    "session": 3035,
+    "head": "5d26c2164ea47cd71040e371a951152e78fd314c",
+    "base": "ccc14dcff83be0a147258d92884c1f71e5edf690",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "log": "/tmp/starmap-publisher-repair-review.log",
+    "report": "/tmp/starmap-publisher-repair-review.json"
   }
 }
