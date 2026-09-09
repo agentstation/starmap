@@ -1,0 +1,33 @@
+{
+  "status": "implementation constraints; not acceptance evidence",
+  "head": "d4ecdbed77af790761d981a2726710ded004111e",
+  "owner": "CSP3; ENGINEERING_SPEC section 6.3; A20",
+  "required_dimensions": {
+    "supported": "Describe the source capability of the actual composition. An opaque caller-supplied collector needs an explicit capability declaration or an unknown state. Do not infer capabilities from a previous successful receipt.",
+    "enabled": "Report configured source selection independently of scheduled refresh enablement. Explicit manual acquisition can still use a selected source when automatic refresh is off.",
+    "eligible": "Unknown before real preflight. Evaluate dependencies, local workspace presence, credentials and applicable policy during acquisition. Status reads must not run probes or contact a secret manager.",
+    "attempted": "Record the actual Observe or provider-request boundary. Missing dependencies and cancellation before that boundary do not count as attempts. Rejected observations still count as attempts.",
+    "accepted": "Report usable local input in the active generation, independently of the last run. Preserve the existing complete-empty and partial-with-records rules. Failed publication cannot install new accepted state."
+  },
+  "composition_constraints": [
+    "Keep the verified distribution baseline distinct from local acquisition inputs. Git and HTTP variants remain alternatives under the existing selection validator.",
+    "Carry per-run evidence through errors that occur before Prepared exists. Successful-result-only metadata misses failed eligibility and attempts.",
+    "Do not store the last report on a shared SourceAcquirer object. Concurrent callers must receive separate per-run reports.",
+    "Keep provider scope and binding details in the existing provider-attempt report. Document any source-level aggregation when only some provider profiles qualify.",
+    "Persist or reconstruct accepted input as today. A restart with no fresh preflight cannot claim known eligibility from old accepted evidence.",
+    "Expose the same meaning in CLI output, HTTP operation/readiness responses, publisher diagnostics, and Starport connected runtime."
+  ],
+  "required_cases": [
+    "Passive status before acquisition with unknown eligibility.",
+    "Explicitly disabled source: no acquisition and no revoked input after restart.",
+    "Selected local workspace absent.",
+    "Selected Git source with a missing tool.",
+    "Configured source with a rejected observation identity.",
+    "Cancellation before and during Observe.",
+    "Mixed eligible and unavailable provider profiles.",
+    "Valid partial input alongside source failure.",
+    "Publication rejection with preserved prior accepted state.",
+    "Two concurrent acquisitions on one collector with disjoint reports."
+  ],
+  "remaining": "Choose a concrete report boundary, implement all composition paths, and add these behavioral cases. Existing focused tests do not qualify the full inventory."
+}

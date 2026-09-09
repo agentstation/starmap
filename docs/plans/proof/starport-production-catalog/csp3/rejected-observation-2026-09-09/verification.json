@@ -1,5 +1,5 @@
 {
-  "status": "committed; focused checks, Ago, lint and prose pass; affected package verification remains active",
+  "status": "committed and integrated; focused and both affected package race checks pass; isolated runtime qualification remains active",
   "worktree": "/tmp/starmap-source-inventory-2026-09-09",
   "base": "cc5ae1ed",
   "branch": "codex/catalog-source-inventory",
@@ -44,11 +44,12 @@
     }
   },
   "running": {
-    "affected": {
-      "session": 31098,
-      "log": "/tmp/starmap-observation-rejection-affected.log",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -timeout=20m ./internal/catalog/pipeline ./acquisition",
-      "head": "9ea6f70fd672951f8d5cdc9f7a184f52c3ae1cc4"
+    "isolated_runtime": {
+      "session": 81127,
+      "head": "d4ecdbed77af790761d981a2726710ded004111e",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 /tmp/starmap-runtime-isolated-2026-09-09.test -test.short=true -test.timeout=20m -test.v",
+      "log": "/tmp/starmap-runtime-isolated-2026-09-09.log",
+      "precondition": "Process inventory showed no runtime.test or acquisition.test process before launch; prior acquisition session ended with exit zero."
     }
   },
   "remaining": [
@@ -91,6 +92,14 @@
     {
       "path": "integration-plan-prose.log.gz",
       "sha256": "8e2b9cfcf7a845446d660d3387a108092f62aa584902ac0caf7b353c2d044bb0"
+    },
+    {
+      "path": "affected.log.gz",
+      "sha256": "c13b15ab615b9c9b35840d009f883f3f2c09ddbec6515b171958862118db6e6f"
+    },
+    {
+      "path": "isolation-plan-prose.log.gz",
+      "sha256": "8e2b9cfcf7a845446d660d3387a108092f62aa584902ac0caf7b353c2d044bb0"
     }
   ],
   "task_completion_credit": false,
@@ -115,5 +124,15 @@
     "starport": 0,
     "limit_each": 100,
     "date": "2026-09-09"
-  }
+  },
+  "affected": {
+    "session": 31098,
+    "exit_code": 0,
+    "packages_passed": 2,
+    "pipeline_seconds": 12.313,
+    "acquisition_seconds": 610.288,
+    "head": "9ea6f70f",
+    "tree": "b6e11c8c9e684c6d2b83ad8b6f5860ea7218701b"
+  },
+  "next_contract": "../source-reporting-next-contract-2026-09-09.json"
 }
