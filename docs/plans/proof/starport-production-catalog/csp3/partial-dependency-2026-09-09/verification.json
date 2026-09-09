@@ -1,5 +1,5 @@
 {
-  "status": "committed; focused, lint, Ago and prose pass; broader affected check running",
+  "status": "committed; focused and broader affected checks, Ago, lint and prose pass",
   "worktree": "/tmp/starmap-source-revocation-2026-09-09",
   "branch": "codex/catalog-source-revocation",
   "base": "0fccef67fe1c5bb84d7be2f95a073b307e2b5ee4",
@@ -34,16 +34,7 @@
     "stale_ignores": 0,
     "errors": 0
   },
-  "running": {
-    "affected": {
-      "session": 77968,
-      "log": "/tmp/starmap-partial-dependency-affected.log"
-    },
-    "plan_prose": {
-      "session": 75592,
-      "log": "/tmp/starmap-partial-dependency-plan-final-prose.log"
-    }
-  },
+  "running": {},
   "remaining": [
     "Complete source-state inventory and operator projections.",
     "Full combined qualification, required review, CI and merge.",
@@ -78,6 +69,14 @@
     {
       "path": "prose.log.gz",
       "sha256": "8da8c250f2259da355094a6f4e445a95ff57d2cc37cd61447548bf4d760831aa"
+    },
+    {
+      "path": "affected.log.gz",
+      "sha256": "0915c75110ebdf0b9f6be464f7f8d9240663064c9643ebbc4236d01db875889c"
+    },
+    {
+      "path": "plan-final-prose.log.gz",
+      "sha256": "0963b2bd796bde699c64df9e575228014d077470b7d408409c30ee56e5513832"
     }
   ],
   "head": "8bb928bad90d5480e9394bd517837ac483a7eabd",
@@ -86,5 +85,21 @@
     "files": 1267,
     "diagnostics": 0
   },
-  "plan_prose": "Final plan file passes targeted strict lint. Full repository check runs after replacing the obsolete uncommitted-state sentence."
+  "plan_prose": {
+    "exit_code": 0,
+    "files": 1270,
+    "diagnostics": 0
+  },
+  "affected": {
+    "exit_code": 0,
+    "packages_passed": 2,
+    "pipeline_seconds": 11.265,
+    "acquisition_seconds": 210.254
+  },
+  "owner_questions": {
+    "status": "asked; no response yet",
+    "alias_window": "30 days configurable, or explicit per-deployment window; withdrawal remains immediate",
+    "ordinary_removal_review": "review above 10% or entire authorized inventory, or explicit deployment threshold; internal revocation remains immediate",
+    "confirmed_boundary": "D25 already confirms account-specific removal scope. Do not ask that decision again."
+  }
 }

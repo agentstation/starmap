@@ -1,0 +1,29 @@
+{
+  "status": "original nested-range repair is merged; full A08 still requires current task acceptance",
+  "reviewed_source": "8bb928bad90d5480e9394bd517837ac483a7eabd",
+  "merge": "ccc14dcff83be0a147258d92884c1f71e5edf690",
+  "pull_request": 139,
+  "implementation_commits": [
+    "b6ad1f2f",
+    "1644046b",
+    "ce5f6a9e"
+  ],
+  "original_failure": "nested-range-presence-2026-09-09/verification.json",
+  "historical_focused_proof": "generation-range-repair-2026-09-09/verification.json",
+  "merge_qualification": "retry-boundary-2026-09-09/verification.json",
+  "unchanged_since_merge": [
+    "pkg/catalogs/model_generation.go",
+    "pkg/catalogs/parameter_range_codec.go",
+    "pkg/catalogs/parameter_range_presence.go",
+    "pkg/catalogs/generation_parameter_codec.go",
+    "pkg/catalogs/generation_parameter_presence.go",
+    "pkg/catalogs/generation_parameter_presence_test.go",
+    "pkg/catalogs/parameter_range_presence_test.go",
+    "pkg/catalogs/nested_range_presence_audit_test.go",
+    "runtime/provider_generation_recovery_test.go",
+    "cmd/starmap-openapi-presence/ranges_test.go"
+  ],
+  "merge_evidence": "Reviewed and merged trees match. Fifteen checks passed, including six native jobs and full verification. Historical focused proof records 182 test events on each Go toolchain.",
+  "remaining": "Do not reopen the repaired codec gap. Complete remaining A08 scope, tombstone, alias contracts and final task verification.",
+  "task_completion_credit": false
+}
