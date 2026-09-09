@@ -16,15 +16,15 @@
   "findings": [
     {
       "id": "publisher-source-provider-limit",
-      "classification": "verified implementation mismatch",
+      "classification": "fixed locally; merge pending",
       "evidence": "models.dev accepts up to internal/constants.MaxSourceProviders (512). DecodeSourceObservationPayload shares decodePayloadEnvelope with canonical decoding and rejects more than 100 providers. Runtime manualObservation.restore calls this source decoder.",
-      "next": "Reproduce with 101 source providers, preserve the 100-provider canonical bound, and use the existing source bound for retained inputs."
+      "next": "Complete full verification, review, CI, and merge."
     },
     {
       "id": "publisher-store-path",
-      "classification": "suspected runtime mismatch",
-      "evidence": "Workflow supplies update-home/.starmap/state/catalog to manifest and release staging. The generator sets HOME but not STARMAP_HOME or STARMAP_CATALOG_STORE_PATH for the update. Native roots now derive from platform settings.",
-      "next": "Verify actual CLI path resolution and make the generator, manifest, and release staging use the same explicit store."
+      "classification": "verified with real CLI; fixed locally; merge pending",
+      "evidence": "On macOS, the isolated CLI selects Library/Application Support/starmap/state/catalog. An explicit catalog-store-path selects the requested directory. The workflow and generator now forward the same explicit store to acquisition, manifest generation, and release staging.",
+      "next": "Complete full verification, review, CI, and merge."
     }
   ],
   "constraints": [
@@ -32,5 +32,209 @@
     "Do not dispatch catalog publication without the separate release authority.",
     "Keep the scheduled-source and source-selection work pending integration of this repair."
   ],
-  "completion_credit": false
+  "completion_credit": false,
+  "updated_at": "2026-09-09T10:53:02.109532+00:00",
+  "dirty_inventory": [
+    {
+      "path": ".github/workflows/catalog-generation.yaml",
+      "status": " M",
+      "sha256": "76eb86d61ab39cde4a82160663afbb52aa0b05d43576340a4aa275ed045e6964"
+    },
+    {
+      "path": "docs/SCHEDULED_CATALOG_GENERATION.md",
+      "status": " M",
+      "sha256": "a41b79dcf2d42ae6e7f2b490905c3f6cde812a1d6a6b4f7eb073d2958cbcf2d2"
+    },
+    {
+      "path": "internal/constants/constants.go",
+      "status": " M",
+      "sha256": "e2044ac60c1640e51ea3a638c56a80368939fc9c80625a69b6f2af01f873bbf3"
+    },
+    {
+      "path": "internal/sources/modelsdev/catalog_generation_tooling_test.go",
+      "status": " M",
+      "sha256": "a07513928b56f15870108951af0b71078d582b9ccce6d0b40a1cf858e7d86140"
+    },
+    {
+      "path": "pkg/catalogs/README.md",
+      "status": " M",
+      "sha256": "839cff47dc426801914f304e38629fe05e4e883abe9045f65733731fb11b5ec2"
+    },
+    {
+      "path": "pkg/catalogs/artifact/scheduled_workflow_test.go",
+      "status": " M",
+      "sha256": "f26313cd64485cc294f578b3afb28fbbe155e94e2cc60f6d67cdf29d71701444"
+    },
+    {
+      "path": "pkg/catalogs/payload_decode.go",
+      "status": " M",
+      "sha256": "a7d76d3ec3efd720e2440d959af23959894f467eb9ef014b7f98dedf490aa192"
+    },
+    {
+      "path": "pkg/sources/payload/README.md",
+      "status": " M",
+      "sha256": "9fd2ab8bbcc9d144e0407bf82bfa14fd9dbd410feabf180455c7b4802c566ca4"
+    },
+    {
+      "path": "pkg/sources/payload/payload.go",
+      "status": " M",
+      "sha256": "4291e59b55165993af3f8c3a477f85ea45e61152176bb051c2ae625248008cb1"
+    },
+    {
+      "path": "scripts/generate-embedded-catalog.sh",
+      "status": " M",
+      "sha256": "b93ec41ffe30803cbce7402268ad4df9c54e65ffa41b5f3cbd4bd03a00eb47ca"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/ingestion_test.go",
+      "status": "??",
+      "sha256": "31fd54376b5b1b1c87beff4896ac2f7c1e0e08c5041120ca37524fca3a512a0c"
+    },
+    {
+      "path": "internal/ciworkflow/catalog_generation_store_test.go",
+      "status": "??",
+      "sha256": "9282b50fac9bac43270eba94a2ff4902a4899777d49ed47e01441a5d9429116d"
+    },
+    {
+      "path": "pkg/catalogs/source_observation_limits_test.go",
+      "status": "??",
+      "sha256": "9543e21b0aba0be0aec3c9bb04e17e910969f87515e1b1fd1641dd267cb29514"
+    },
+    {
+      "path": "runtime/manual_source_limits_test.go",
+      "status": "??",
+      "sha256": "8fc691fd4b58a97c2c44a8ea5103d29f683f199dbe41aac7dad4e4ff24f2fe1f"
+    }
+  ],
+  "checks": [
+    {
+      "path": "starmap-publisher-repair-fail-before.jsonl.gz",
+      "sha256": "1d8fce40fd853157c6c03d99532d580eecbb5238178a773dd6ade3d9672d4206",
+      "passed_test_events": 1,
+      "passed_packages": 0,
+      "failed_events": 6
+    },
+    {
+      "path": "starmap-publisher-repair-focused-race.jsonl.gz",
+      "sha256": "31534c70253447711a16a85c4eacdae7e3e5f951e421020740de645fd1209270",
+      "passed_test_events": 7,
+      "passed_packages": 3,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-repair-runtime-race.jsonl.gz",
+      "sha256": "f84f9f5bf91c02c9db002750f7ce0045ebcaef7e96c9fc827bb49b9ec638add4",
+      "passed_test_events": 0,
+      "passed_packages": 0,
+      "failed_events": 1
+    },
+    {
+      "path": "starmap-publisher-repair-runtime-final-race.jsonl.gz",
+      "sha256": "86e2f487cb3e98fcec36e6758c307a64e4a4666579e9d545e022bf53f8a58166",
+      "passed_test_events": 1,
+      "passed_packages": 1,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-store-final-race.jsonl.gz",
+      "sha256": "65b3ed353ef5020fda469864b44dda0ec934e270925ede90868e039a410163d3",
+      "passed_test_events": 1,
+      "passed_packages": 0,
+      "failed_events": 2
+    },
+    {
+      "path": "starmap-publisher-store-corrected-race.jsonl.gz",
+      "sha256": "405471c3a27745ceee7f92c9aea050fe77834fcd03720749f06b7f0e803693a3",
+      "passed_test_events": 2,
+      "passed_packages": 1,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-ingestion-first.jsonl.gz",
+      "sha256": "772ddc3d1af759a793dc5bfe1ec05a0d9739bbdf39d788e629099706c6f2c3ac",
+      "passed_test_events": 0,
+      "passed_packages": 0,
+      "failed_events": 2
+    },
+    {
+      "path": "starmap-publisher-ingestion-second.jsonl.gz",
+      "sha256": "be18da1db2c8a88727f53241ca52eb174a5402bdd31547652db1ac5c6e7b9c97",
+      "passed_test_events": 0,
+      "passed_packages": 0,
+      "failed_events": 2
+    },
+    {
+      "path": "starmap-publisher-ingestion-third.jsonl.gz",
+      "sha256": "8e85247bce5dcd8fdf8e2030bb156547e2080114969c5404b200fd087caf3152",
+      "passed_test_events": 0,
+      "passed_packages": 0,
+      "failed_events": 2
+    },
+    {
+      "path": "starmap-publisher-ingestion-fourth.jsonl.gz",
+      "sha256": "171ea647eebc200fa28e1c1c6ecc9d1839b32c72cd5278d8759b8d0471348a64",
+      "passed_test_events": 1,
+      "passed_packages": 1,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-ingestion-final-race.jsonl.gz",
+      "sha256": "1a8767bd9718c1cafbc6e1c75b364ca4ac5268d66727373b6998c98edd37e8d1",
+      "passed_test_events": 2,
+      "passed_packages": 2,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-repair-minimum.jsonl.gz",
+      "sha256": "20a739516ba2e538e7120c9554076e865ea51a2c69d598d0db9b369387bb783b",
+      "passed_test_events": 9,
+      "passed_packages": 5,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-repair-final-ago.json.gz",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "starmap-publisher-repair-docs-check.log.gz",
+      "sha256": "c326a6932614067e6dc62592068f841cbf5eadf50fe1b0b63bc07614250aa50b"
+    },
+    {
+      "path": "starmap-publisher-repair-prose.log.gz",
+      "sha256": "bf7bd9bae489994e94b5ce8c8a71cd3f4467baf8637147e9db2d5c2fb07b7855"
+    },
+    {
+      "path": "starmap-publisher-path-report.json.gz",
+      "sha256": "298d3f81c1246ab6e229a07b5307170f9b0503545192a0f3e067dbf076590e67"
+    },
+    {
+      "path": "starmap-publisher-repair-full-verification.log.gz",
+      "sha256": "695fa956ef678393cfa6bcba9d2543a8b94644fe01040e7105a6e7090d119e75"
+    },
+    {
+      "path": "starmap-publisher-workflow-final-race.jsonl.gz",
+      "sha256": "85d4aa5a657769c392aa585ab4dc54415b34bf6bc259832ade96d74ac7fb6141",
+      "passed_test_events": 67,
+      "passed_packages": 2,
+      "failed_events": 0
+    },
+    {
+      "path": "starmap-publisher-workflow-final-ago.json.gz",
+      "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    }
+  ],
+  "next_action": "Finish the active full verifier, commit intended files, run both required reviews, publish the PR, and merge after CI. Record the verified merge before completion credit.",
+  "full_verification": {
+    "status": "running; no pass credit",
+    "log": "/tmp/starmap-publisher-repair-final-full-verification.log",
+    "session": 35014,
+    "source": "dirty_inventory",
+    "prior_failure": "The prior full run failed TestScheduledGenerationWorkflowPublishesOnlyValidatedChangedPayload because it required the old path. The assertion now requires STARMAP_GENERATION_STORE_PATH. Both complete affected packages pass under the race detector."
+  },
+  "qualification_limits": [
+    "The publisher ingestion test exercises provider-scoped update acme, then stages and reopens the exact committed artifact. It does not qualify the complete all-provider publisher acceptance case.",
+    "The earlier all-provider test used a one-provider file baseline and failed on an embedded Alibaba author mapping. Determine the fixture or composition cause before claiming all-provider qualification.",
+    "Initial harness errors and the corrected macOS logical-path expectation remain retained as failed evidence.",
+    "No hosted publication, provider credentials, or external provider requests occurred. Local HTTP fixtures reject external hosts."
+  ]
 }
