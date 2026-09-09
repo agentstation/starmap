@@ -1,0 +1,31 @@
+import json
+import subprocess
+from pathlib import Path
+
+REPO = "agentstation/starmap"
+RUN = "34323117948"
+HEAD = "a5ecb9946f65027610dbdb2f62d1f8506606daf3"
+BASE = "565012ec2590f5d7e1ff34871dbc5f0caeeed6ea"
+OUTPUT = Path("/tmp/starmap-pr139-merge-result.json")
+
+def gh(*args):
+    return subprocess.check_output(["gh", *args], text=True, timeout=90)
+
+def view():
+    return json.loads(gh("pr", "view", "139", "--repo", REPO, "--json", "state,headRefOid,baseRefOid,baseRefName,mergeCommit,statusCheckRollup"))
+
+subprocess.run(["gh", "run", "watch", RUN, "--repo", REPO, "--interval", "60", "--exit-status"], check=True, timeout=5400)
+run = json.loads(gh("run", "view", RUN, "--repo", REPO, "--json", "conclusion,status,headSha,jobs"))
+assert run["headSha"] == HEAD and run["conclusion"] == "success", run
+native = [job for job in run["jobs"] if job["name"].startswith("Runtime ")]
+assert len(native) == 6 and all(job["conclusion"] == "success" for job in native), native
+pr = view()
+assert pr["headRefOid"] == HEAD and pr["baseRefName"] == "main", pr
+if pr["state"] != "MERGED":
+    assert pr["state"] == "OPEN" and pr["baseRefOid"] == BASE, pr
+    assert pr["statusCheckRollup"] and all(check.get("status") == "COMPLETED" and check.get("conclusion") in ("SUCCESS", "NEUTRAL", "SKIPPED") for check in pr["statusCheckRollup"]), pr
+    subprocess.run(["gh", "pr", "merge", "139", "--repo", REPO, "--merge", "--match-head-commit", HEAD], check=True, timeout=90)
+pr = view()
+assert pr["state"] == "MERGED" and pr["mergeCommit"], pr
+OUTPUT.write_text(json.dumps({"run": run, "pull_request": pr}, indent=2) + "\n")
+print("Merged PR #139 at " + pr["mergeCommit"]["oid"], flush=True)

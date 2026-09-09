@@ -253,5 +253,14 @@
       "threshold": "P0",
       "assessment": "Shutdown idempotence passes in the full package suite. HTTP registration remains absent because automatic non-provider acquisition is still missing. The local copy variable does not affect behavior."
     }
+  },
+  "ancestry_integration": {
+    "head": "bbde3ac42874372f383345a7cebdada482e00de5",
+    "range_base": "a5ecb9946f65027610dbdb2f62d1f8506606daf3",
+    "review_base": "7960a847df76ae13c09c39c8a98daf66ee282946",
+    "reviewed_commit": "3cde57f49bc35d09ad0bb03c67004e1f3b798605",
+    "diff_sha256": "b25a61167f1864dbae5d9001b227d05eddd5d9a33588317149dba600a546f925",
+    "tree_unchanged": true,
+    "published": false
   }
 }

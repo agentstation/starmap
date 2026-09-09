@@ -1,0 +1,13 @@
+autoreview target: branch
+branch: codex/catalog-ranges-main
+gate: pre-pr (configured cadence: pre-pr)
+profile: sol
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83
+reviewers: codex model=gpt-5.6-sol thinking=xhigh
+tools: on
+web_search: on
+ref: fff54427e9f19bb0bd05b3df93b4556b8100c24c
+trufflehog: clean (2.8s)
+bundle: 199236 bytes; review passes: 1
+autoreview clean attestation reused: exact substantive diff and review contract are unchanged

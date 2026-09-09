@@ -2,7 +2,7 @@
   "task": "CSP3",
   "completion_credit": false,
   "completed_tasks": 8,
-  "merged_prs": 16,
+  "merged_prs": 17,
   "failed_run": {
     "id": 34312137809,
     "head": "93c73439148544ddc4874ffbba818b4ef74166d2",
@@ -34,7 +34,7 @@
     "writing_diagnostics": 0,
     "shell_syntax_exit": 0,
     "reviews": "PASS: Sol and Opus each report zero findings across three portions.",
-    "ci": "IN_PROGRESS",
+    "ci": "PASS",
     "sol_review_exit": 0,
     "opus_review_exit": 0,
     "run_id": 34317629320,
@@ -110,7 +110,22 @@
     ],
     "native_test_pass_events": 8520,
     "native_package_passes": 74,
-    "auto_merge_requested": true
+    "auto_merge_requested": true,
+    "merge_commit": "565012ec2590f5d7e1ff34871dbc5f0caeeed6ea",
+    "merged_tree_equals_reviewed_head": true,
+    "final_verification": {
+      "stages": 39,
+      "ordinary_package_passes": 80,
+      "race_package_passes": 80,
+      "no_test_packages_per_suite": 22,
+      "package_failures": 0,
+      "python_tests": 73,
+      "prose_files": 1228,
+      "prose_diagnostics": 0,
+      "race_suite_seconds": 2582.42,
+      "job_started_at": "2026-09-09T06:06:39Z",
+      "job_completed_at": "2026-09-09T07:14:25Z"
+    }
   },
   "artifacts": [
     {
@@ -256,6 +271,52 @@
       "path": "prose-check-failure.log",
       "bytes": 41930,
       "sha256": "e7c1bf32edf3676cad6ca8676906b0cea5fb006cbbc32b186748b0d75c6e40ca"
+    },
+    {
+      "path": "final-ci.json",
+      "bytes": 19484,
+      "sha256": "30ce52dbf585ef694dea8e2100ba299c2901de848a0e04450be30ed347642a9b"
+    },
+    {
+      "path": "prior-merged-roster.json",
+      "bytes": 2024,
+      "sha256": "653816b04e18420de741f072558a1b54b3cbfcb50c562132f9da2beb3ccfa383"
+    },
+    {
+      "path": "range-final-sol-review.log",
+      "bytes": 465,
+      "sha256": "16c5a6381dcb4eb333d9490b072150a74c7b9c92d5acd89b1b1f7ce4e9170189"
+    },
+    {
+      "path": "range-final-opus-review.log",
+      "bytes": 470,
+      "sha256": "b8a7652f2a01135fd4600913530387ede6a5a45daf4ada0b03fddb8a4508627c"
+    },
+    {
+      "path": "final-verification.log.gz",
+      "bytes": 41185,
+      "sha256": "98c5e1fbf69f4f8d2b998cd889c07ba234c3b8cf989b3598094df077ec24fe75",
+      "original_sha256": "614004f738a0d2f372de32f550a883f59522d4feb3a2365b00c8a7d6ee730efe"
+    },
+    {
+      "path": "range-merge-command.py.fixture",
+      "bytes": 1674,
+      "sha256": "84ee33c7a3c187c2f77d5dc71130125ace229f9e99d0ca436877c04a6e731b0a"
+    },
+    {
+      "path": "merged-plan-prose-first.log",
+      "bytes": 787,
+      "sha256": "0bb7789470eb1a7f7a4385177877a8e6e31a92be1b5743d031d5d393caaf2edd"
+    },
+    {
+      "path": "merged-plan-prose-second.log",
+      "bytes": 787,
+      "sha256": "b07809d02945574823abef7f04621e03bb8efda04c0eeba4ee52de2793426b2b"
+    },
+    {
+      "path": "merged-plan-prose-pass.log",
+      "bytes": 558,
+      "sha256": "8d2c057851242418a47d1e0bc9467c7c55abc461d7ccb9600fb6f9eede9c9eb7"
     }
   ],
   "focused_profile": {
@@ -273,13 +334,26 @@
     "diagnosis": "The focused test completes with all assertions. Race instrumentation and memory management dominate the CPU profile. No deadlock appeared in the CI stack or focused profile."
   },
   "range_integration": {
-    "local_head": "57eaadc1dbbdf1099d84a185d6f5168e0a6fbabf",
-    "published_head": "5c40192a620b43341f06a3ad49f4e2a743c741ba",
+    "local_head": "a5ecb9946f65027610dbdb2f62d1f8506606daf3",
+    "published_head": "a5ecb9946f65027610dbdb2f62d1f8506606daf3",
     "review_base": "fff54427e9f19bb0bd05b3df93b4556b8100c24c",
     "substantive_diff_sha256": "d645b83fd73e702afaffd7514a6988699b7a66e8364bab3e0c695e0eddcbf905",
     "sol": "PASS: clean attestation stored",
     "opus": "PASS: clean attestation stored",
-    "published": false
+    "published": true,
+    "base_branch": "main",
+    "base_head": "565012ec2590f5d7e1ff34871dbc5f0caeeed6ea",
+    "is_draft": false,
+    "ci_run": 34323117948,
+    "ci": "IN_PROGRESS",
+    "auto_merge": "Bounded local merge command waits for all six native jobs and all PR checks. It requires the exact reviewed head and base.",
+    "merge_command": {
+      "path": "/tmp/starmap-pr139-merge-after-ci.py",
+      "session": 17325,
+      "log": "/tmp/starmap-pr139-merge-after-ci.log",
+      "result": "/tmp/starmap-pr139-merge-result.json",
+      "maximum_wait_seconds": 5400
+    }
   },
   "plan_prose_check": {
     "command": "make technical-writing-check",
@@ -289,5 +363,12 @@
     "earlier_exit": 2,
     "earlier_diagnostics": 172,
     "repair": "Keep captured logs and code byte-identical under .log and .fixture paths. Correct two authored sentences."
+  },
+  "merged_plan_prose_check": {
+    "command": "make technical-writing-check",
+    "exit": 0,
+    "files": 1268,
+    "diagnostics": 0,
+    "prior_failures": "Two captures detected missing paragraph separators. The final capture passes."
   }
 }
