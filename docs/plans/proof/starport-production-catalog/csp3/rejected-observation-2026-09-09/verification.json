@@ -1,5 +1,5 @@
 {
-  "status": "committed and integrated; focused and both affected package race checks pass; isolated runtime qualification remains active",
+  "status": "delivery tree passes affected checks and complete isolated runtime suite; final full verification remains active",
   "worktree": "/tmp/starmap-source-inventory-2026-09-09",
   "base": "cc5ae1ed",
   "branch": "codex/catalog-source-inventory",
@@ -44,12 +44,12 @@
     }
   },
   "running": {
-    "isolated_runtime": {
-      "session": 81127,
+    "final_verification": {
+      "session": 61844,
       "head": "d4ecdbed77af790761d981a2726710ded004111e",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 /tmp/starmap-runtime-isolated-2026-09-09.test -test.short=true -test.timeout=20m -test.v",
-      "log": "/tmp/starmap-runtime-isolated-2026-09-09.log",
-      "precondition": "Process inventory showed no runtime.test or acquisition.test process before launch; prior acquisition session ended with exit zero."
+      "tree": "b6e11c8c9e684c6d2b83ad8b6f5860ea7218701b",
+      "log": "/tmp/starmap-source-inventory-full-verification-2026-09-09.log",
+      "command": "CATALOG_GIT_FIXTURE_REQUIRED=1 GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 CSP_STARPORT_WORKTREE=/tmp/starport-readme-merged-2026-09-08 CATALOG_DISTRIBUTION_STARPORT_ROOT=/tmp/starport-readme-merged-2026-09-08 CATALOG_DRIVEN_STARMAP_ROOT=/tmp/starmap-source-inventory-2026-09-09 STARMAP_OWNERSHIP_STARMAP_ROOT=/tmp/starmap-source-inventory-2026-09-09 bash scripts/verify.sh"
     }
   },
   "remaining": [
@@ -100,6 +100,14 @@
     {
       "path": "isolation-plan-prose.log.gz",
       "sha256": "8e2b9cfcf7a845446d660d3387a108092f62aa584902ac0caf7b353c2d044bb0"
+    },
+    {
+      "path": "isolated-runtime.log.gz",
+      "sha256": "9d6cd52976ebfcce620371e82aee6972657451d83264d259c350047d7584afc4"
+    },
+    {
+      "path": "isolated-runtime-roster.json.gz",
+      "sha256": "8dc5777f981988212e9a2d288d191ebbc20d25f779c8c9593f27fcb02d4b3c13"
     }
   ],
   "task_completion_credit": false,
@@ -134,5 +142,22 @@
     "head": "9ea6f70f",
     "tree": "b6e11c8c9e684c6d2b83ad8b6f5860ea7218701b"
   },
-  "next_contract": "../source-reporting-next-contract-2026-09-09.json"
+  "next_contract": "../source-reporting-next-contract-2026-09-09.json",
+  "isolated_runtime": {
+    "session": 81127,
+    "exit_code": 0,
+    "head": "d4ecdbed77af790761d981a2726710ded004111e",
+    "deadline": "20m",
+    "roster": {
+      "listed_tests": 252,
+      "top_level_passes": 252,
+      "top_level_skips": [],
+      "all_pass_events": 677,
+      "fail_events": [],
+      "missing": [],
+      "unexpected": [],
+      "binary_sha256": "086876bf3c7062b6483ec73e2fb75343af8c03f415b96b9328fcd459c233f3ce"
+    },
+    "conclusion": "The complete compiled runtime suite passes without another heavy test suite. Prior package timeouts remain historical failures; no deadline or assertion changed."
+  }
 }

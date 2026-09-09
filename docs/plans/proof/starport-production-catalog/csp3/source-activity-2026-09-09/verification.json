@@ -1,0 +1,100 @@
+{
+  "status": "prototype; minimum-Go boundary checks pass; not qualified or committed",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "branch": "codex/catalog-source-activity",
+  "base": "d4ecdbed77af790761d981a2726710ded004111e",
+  "contract": "CSP3; full A20 source inventory remains incomplete",
+  "fail_before": {
+    "method": "Corrected test with a pinned Git commit over an overlay of the original pipeline code. New result field remains empty on the original implementation.",
+    "exit_code": 1,
+    "test": "TestPipelineReportsSourceEligibilityAndActualAttempt",
+    "failure": "source inventory length=0, want four acquisition sources",
+    "overlay": "/tmp/starmap-source-activity-baseline-overlay/overlay.json"
+  },
+  "method_corrections": [
+    "The first fixture assigned two results from a three-result helper and did not compile.",
+    "The next fixture omitted the required Git commit and stopped at option validation. Neither failure proves the inventory defect.",
+    "The corrected baseline replay supplies the pin and reaches the missing-inventory assertion."
+  ],
+  "behavior": [
+    "A per-call pipeline copy owns mutable source activity, including concurrent collectors.",
+    "Dependency results update source eligibility without adding probes.",
+    "Collector entry marks attempted state; disabled and ineligible sources do not run.",
+    "Fatal preflight retains source activity in a typed wrapper with original error identity.",
+    "Provider binding identity survives source instrumentation.",
+    "Provider credential eligibility remains unknown pending the provider-attempt bridge."
+  ],
+  "dirty_files": [
+    {
+      "path": "internal/catalog/pipeline/pipeline.go",
+      "sha256": "cafb43b671df7722176f69a09c3ed444f9561ce2253962026a1e3b0969fbd99e"
+    },
+    {
+      "path": "internal/catalog/pipeline/source_activity.go",
+      "sha256": "e744e5f29f793dafc6be61d994a755733601cb91e1ccf049667cfe79657abdd8"
+    },
+    {
+      "path": "internal/catalog/pipeline/source_activity_test.go",
+      "sha256": "39110d05f958277375677e602f8ff0891a15db7862e7aa3a00dc81a07875acfe"
+    },
+    {
+      "path": "pkg/sources/activity.go",
+      "sha256": "214e7a1dcd502687dfe3d2d202f93af6c77784410f965af843d2300c3714b783"
+    },
+    {
+      "path": "pkg/sync/result.go",
+      "sha256": "a088f7c3d97469647194ee3c44b9dc18716d69ae6a07d2d8c39b20e2833e8e26"
+    }
+  ],
+  "remaining": [
+    "Provider credential eligibility and provider-attempt integration.",
+    "Connected SourceAcquirer report transport and passive capability declarations.",
+    "Runtime status composition with accepted generation state, CLI, HTTP, and publisher paths.",
+    "Cancellation, missing-workspace, invalid-input, and failure-report boundary tests.",
+    "Race, Ago, lint, generated docs, full qualification, review and merge."
+  ],
+  "artifacts": [
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "5c5c2a1e33696b24772a3603b80cc44c49870112cc0cc6b387ca81339fa31f99"
+    },
+    {
+      "path": "corrected-fail-before.jsonl.gz",
+      "sha256": "2b4e1543de1cc640999c2b1862cadbe337669bdba19f12f308461655abcd5010"
+    },
+    {
+      "path": "prototype.jsonl.gz",
+      "sha256": "75bc63c2f00b42efa575324005d69811f7c684ce8da287dc20fe138caf410c6f"
+    },
+    {
+      "path": "baseline-replay.jsonl.gz",
+      "sha256": "6081d029b2c27e2bad31e32922bd6711f6cd8208f16c08671686e2ee396b7517"
+    },
+    {
+      "path": "corrected-prototype.jsonl.gz",
+      "sha256": "22ed5720e950e1ea26d3a53eda3faf1995fe557c773d8ae3d50b5c1833bd1240"
+    },
+    {
+      "path": "boundary-minimum.jsonl.gz",
+      "sha256": "9208d3ced88ec07ece7a4029da25630d0bd2d682d5a4081bb92b058481bfeb91"
+    },
+    {
+      "path": "owned-minimum.jsonl.gz",
+      "sha256": "2ac6036565eeff701f6faf2aaca56ebfa2659f9ab81492334c5cb78b7d68fda0"
+    },
+    {
+      "path": "plan-prose.log.gz",
+      "sha256": "8e2b9cfcf7a845446d660d3387a108092f62aa584902ac0caf7b353c2d044bb0"
+    },
+    {
+      "path": "final-plan-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    }
+  ],
+  "task_completion_credit": false,
+  "minimum": {
+    "tests_passed": 4,
+    "packages_passed": 1,
+    "failed_events": 0
+  }
+}
