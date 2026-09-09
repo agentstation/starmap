@@ -68,6 +68,10 @@
     {
       "path": "membership-prose-first-revision.gz",
       "sha256": "a1460a085504bb008db2d00e9ffc1e225c53c06be347f4b27e9d2dc4f41caf02"
+    },
+    {
+      "path": "membership-prose-corrected.gz",
+      "sha256": "89138933b2a6ebc7fb953c68f9d9e4869552d9b263f482ba982f81311fa11e08"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -147,7 +151,7 @@
     "next": "Implement binding validation and receipt identity with legacy compatibility before scoped reconciliation."
   },
   "membership_wire_contract": {
-    "status": "Local implementation, not committed or published.",
+    "status": "Committed locally as 6555d162. Not published. Reconciliation suppression remains unfinished.",
     "schema": 2,
     "receipt_identity": "v4 includes membership authority. Legacy schema 1 retains the exact v3 identity.",
     "checks": {
@@ -179,16 +183,22 @@
       },
       "focused_prose": {
         "exit_code": 0
+      },
+      "prose_corrected": {
+        "exit_code": 0,
+        "files": 1317,
+        "diagnostics": 0
       }
     },
-    "remaining_prose_session": 8246,
+    "remaining_prose_session": null,
     "files": [
       "pkg/sources/provider_binding.go",
       "pkg/sources/observation_identity.go",
       "pkg/sources/provider_binding_test.go",
       "pkg/sources/provider_membership_test.go",
       "pkg/sources/README.md"
-    ]
+    ],
+    "commit": "6555d162"
   },
   "suppression_contract": {
     "test": "TestEmptyProviderInventoryRequiresExplicitAuthority",
@@ -197,5 +207,11 @@
     "failing_test_events": 2,
     "reason": "Authorized complete public removal still restores the baseline offering. Evidence-only and scoped authority preserve global discovery.",
     "next": "Implement membership suppression with scoped retention and removal-review policy."
-  }
+  },
+  "suppression_design_constraints": [
+    "A later public inventory must not erase membership contributed by an unrelated account or regional scope.",
+    "Manual history reconciles batches sequentially. The current pass does not contain all earlier scope declarations.",
+    "Field provenance records binding identity and revision but does not itself encode membership authority.",
+    "Retain negative membership evidence through partial replies, metadata refresh, and restart. Do not implement deletion only as a final map filter."
+  ]
 }
