@@ -1,5 +1,5 @@
 {
-  "status": "Corrected fixture reproduces missing public scoped deletion; implementation remains open.",
+  "status": "Membership wire contract implemented locally. Reconciliation suppression remains open.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base": "6e4f9efbeab65e2652314f8293518dda9783778e",
@@ -32,6 +32,42 @@
     {
       "path": "membership-authority-before.jsonl.gz",
       "sha256": "f5cc0e248edf0e6538c8b48f6565f09b3a45b043d53c5654d040f6da6c0ccf51"
+    },
+    {
+      "path": "legacy-identity-before.gz",
+      "sha256": "03879926a09ec2615861af05e59e2a629914aa91e161ffc1a66dba295096a989"
+    },
+    {
+      "path": "membership-source-race.gz",
+      "sha256": "0105f8cec34aa14667dd7ef88e89ef8472ddd34e0155868aa4ec965aa19c7689"
+    },
+    {
+      "path": "membership-integration.gz",
+      "sha256": "ea64867bad078c0064f5d55dc014aaad05776de9163795055631d5dde4b4ede6"
+    },
+    {
+      "path": "membership-minimum.gz",
+      "sha256": "81d1cc91e2a01695530aaba5c82d59b1d41f28943a9bd4595c8e967eca904535"
+    },
+    {
+      "path": "membership-ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "membership-lint.gz",
+      "sha256": "e01af0c982540c8b2d2eaf0bbda73018bbcc32e41d4a7f72b633d7c542164db7"
+    },
+    {
+      "path": "membership-docs-initial.gz",
+      "sha256": "d4e95e50f1834afc23e7a2a8b6895824bf27f61bec26249183eead03a0842a93"
+    },
+    {
+      "path": "suppression-before.gz",
+      "sha256": "4bc371c9f92d2db3c1e5b47ce36545beee05cfb29e88048279f85a2d8a786a7a"
+    },
+    {
+      "path": "membership-prose-first-revision.gz",
+      "sha256": "a1460a085504bb008db2d00e9ffc1e225c53c06be347f4b27e9d2dc4f41caf02"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -109,5 +145,57 @@
     "test_file": "pkg/sources/provider_membership_test.go",
     "proposed_contract": "Binding schema 2 adds optional membership_authority scope or provider. Omission grants no replacement authority. Provider authority requires public scope. Schema 1 remains readable without authority. Schema 2 receipts use identity v4 and include authority.",
     "next": "Implement binding validation and receipt identity with legacy compatibility before scoped reconciliation."
+  },
+  "membership_wire_contract": {
+    "status": "Local implementation, not committed or published.",
+    "schema": 2,
+    "receipt_identity": "v4 includes membership authority. Legacy schema 1 retains the exact v3 identity.",
+    "checks": {
+      "source_race_before_tamper_additions": {
+        "exit_code": 0,
+        "passing_test_events": 125
+      },
+      "integration_race": {
+        "exit_code": 0,
+        "passing_test_events": 57
+      },
+      "minimum_go": {
+        "exit_code": 0,
+        "passing_test_events": 126
+      },
+      "ago": {
+        "exit_code": 0
+      },
+      "lint": {
+        "exit_code": 0
+      },
+      "docs_prose_initial": {
+        "exit_code": 2,
+        "reason": "Generated docs pass. One source comment failed the nominalization rule."
+      },
+      "prose_first_revision": {
+        "exit_code": 2,
+        "reason": "The first comment edit did not change the reported line. The second edit passes the focused source prose check."
+      },
+      "focused_prose": {
+        "exit_code": 0
+      }
+    },
+    "remaining_prose_session": 8246,
+    "files": [
+      "pkg/sources/provider_binding.go",
+      "pkg/sources/observation_identity.go",
+      "pkg/sources/provider_binding_test.go",
+      "pkg/sources/provider_membership_test.go",
+      "pkg/sources/README.md"
+    ]
+  },
+  "suppression_contract": {
+    "test": "TestEmptyProviderInventoryRequiresExplicitAuthority",
+    "exit_code": 1,
+    "passing_test_events": 6,
+    "failing_test_events": 2,
+    "reason": "Authorized complete public removal still restores the baseline offering. Evidence-only and scoped authority preserve global discovery.",
+    "next": "Implement membership suppression with scoped retention and removal-review policy."
   }
 }
