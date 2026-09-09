@@ -53,7 +53,129 @@
     "id": 34312137809,
     "head": "93c73439148544ddc4874ffbba818b4ef74166d2",
     "watch_session": 53257,
-    "status": "in_progress"
+    "status": "All six native jobs pass. The required repository verification gate is still running.",
+    "native_results": [
+      {
+        "platform": "native-runtime-macos-15",
+        "toolchain": [
+          "go version go1.25.12 darwin/arm64",
+          "darwin",
+          "arm64",
+          "darwin",
+          "arm64",
+          "0"
+        ],
+        "test_pass_events": 1457,
+        "test_skip_events": 0,
+        "skipped_tests": [],
+        "package_passes": 12,
+        "failures": [],
+        "runtime_elapsed_seconds": [
+          268.05
+        ]
+      },
+      {
+        "platform": "native-runtime-macos-15-intel",
+        "toolchain": [
+          "go version go1.25.12 darwin/amd64",
+          "darwin",
+          "amd64",
+          "darwin",
+          "amd64",
+          "0"
+        ],
+        "test_pass_events": 1457,
+        "test_skip_events": 0,
+        "skipped_tests": [],
+        "package_passes": 12,
+        "failures": [],
+        "runtime_elapsed_seconds": [
+          341.578
+        ]
+      },
+      {
+        "platform": "native-runtime-ubuntu-24.04",
+        "toolchain": [
+          "go version go1.25.12 linux/amd64",
+          "linux",
+          "amd64",
+          "linux",
+          "amd64",
+          "0"
+        ],
+        "test_pass_events": 1401,
+        "test_skip_events": 1,
+        "skipped_tests": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "package_passes": 12,
+        "failures": [],
+        "runtime_elapsed_seconds": [
+          232.014
+        ]
+      },
+      {
+        "platform": "native-runtime-ubuntu-24.04-arm",
+        "toolchain": [
+          "go version go1.25.12 linux/arm64",
+          "linux",
+          "arm64",
+          "linux",
+          "arm64",
+          "0"
+        ],
+        "test_pass_events": 1401,
+        "test_skip_events": 1,
+        "skipped_tests": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "package_passes": 12,
+        "failures": [],
+        "runtime_elapsed_seconds": [
+          157.575
+        ]
+      },
+      {
+        "platform": "native-runtime-windows-11-arm",
+        "toolchain": [
+          "go version go1.25.12 windows/arm64",
+          "windows",
+          "arm64",
+          "windows",
+          "arm64",
+          "0"
+        ],
+        "test_pass_events": 1402,
+        "test_skip_events": 0,
+        "skipped_tests": [],
+        "package_passes": 13,
+        "failures": [],
+        "runtime_elapsed_seconds": [
+          461.459
+        ]
+      },
+      {
+        "platform": "native-runtime-windows-2025",
+        "toolchain": [
+          "go version go1.25.12 windows/amd64",
+          "windows",
+          "amd64",
+          "windows",
+          "amd64",
+          "0"
+        ],
+        "test_pass_events": 1402,
+        "test_skip_events": 0,
+        "skipped_tests": [],
+        "package_passes": 13,
+        "failures": [],
+        "runtime_elapsed_seconds": [
+          475.591
+        ]
+      }
+    ],
+    "native_test_pass_events": 8520,
+    "native_package_passes": 74
   },
   "artifacts": [
     {
@@ -95,6 +217,62 @@
     {
       "path": "updated-pr138-body.md.gz",
       "raw_sha256": "ad9c21565be0880d6c6200720976c1f1d84d2851e2306e932929a50df5676eec"
+    },
+    {
+      "path": "native-runtime-macos-15-toolchain.txt.gz",
+      "raw_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "native-runtime-macos-15-tests.jsonl.gz",
+      "raw_sha256": "c79e5f6ba312743f0d6e1fe207b6808650a6f5f68694b628593cd49714f09f2b"
+    },
+    {
+      "path": "native-runtime-macos-15-intel-toolchain.txt.gz",
+      "raw_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "native-runtime-macos-15-intel-tests.jsonl.gz",
+      "raw_sha256": "12a64b9580a65224b69902bafd71efa2f37b35490ce590167d8d72480099fb30"
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-toolchain.txt.gz",
+      "raw_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-tests.jsonl.gz",
+      "raw_sha256": "415405fac3998c58e8dfb03fc87050da2c9e302e46bb398dc93e7166bf8721ee"
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-service-owner.txt.gz",
+      "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-arm-toolchain.txt.gz",
+      "raw_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-arm-tests.jsonl.gz",
+      "raw_sha256": "ef8600de5631934afaf2c51515585ea06624b8678f8bcbcdd4e4f8e614d610b8"
+    },
+    {
+      "path": "native-runtime-ubuntu-24.04-arm-service-owner.txt.gz",
+      "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native-runtime-windows-11-arm-toolchain.txt.gz",
+      "raw_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "native-runtime-windows-11-arm-tests.jsonl.gz",
+      "raw_sha256": "aaad0678bb79491460d2c74f43ca1f2d84570682cd3e167c59776e1cebb990cf"
+    },
+    {
+      "path": "native-runtime-windows-2025-toolchain.txt.gz",
+      "raw_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "native-runtime-windows-2025-tests.jsonl.gz",
+      "raw_sha256": "386c3333a3da423b7db77ecca10d82f1bc94f19145c062977b6ddad81374e99d"
     }
   ],
   "plan_prose_check": {
