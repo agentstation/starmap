@@ -1,0 +1,101 @@
+{
+  "status": "Local checks passed. Commit 1b54481d awaits required review before push.",
+  "head": "cbb8e32291444051c5f14af3660e2ccff6516610",
+  "native_run": 34412052597,
+  "failed_job": 102668564750,
+  "cause": "Post-commit retention uses the five-second close deadline even while the caller remains active. Native writes exceeded that deadline. The journal then blocked the next update.",
+  "repair": "Start the completion grace period on caller cancellation. Active callers keep their completion context. Preserve recovery evidence and storage errors.",
+  "worktree": "/tmp/starmap-source-activity-2026-09-09",
+  "files": [
+    "runtime/publication_retention.go",
+    "runtime/publication_completion_test.go"
+  ],
+  "fail_before": {
+    "exit_code": 1,
+    "test": "TestPublicationCompletionAllowsActiveCaller"
+  },
+  "focused_race": {
+    "exit_code": 0,
+    "tests": 3
+  },
+  "sessions": {
+    "integration_race": 63933,
+    "ago": 90935,
+    "lint": 15708,
+    "minimum": 77356
+  },
+  "artifacts": [
+    {
+      "path": "windows-x64-tests.gz",
+      "sha256": "7536377b8807d6b84cdff3aa657b533c72c8be4bdcd2eedf837c88b4b62378b6"
+    },
+    {
+      "path": "fail-before.gz",
+      "sha256": "eaba30db6b1cbf302d3eb839db1c7ba650607f498104bc998326686fbad27784"
+    },
+    {
+      "path": "race.gz",
+      "sha256": "085efe1870c7c6d250f5028bd1dd8e6823fea93b895391a050e26c7f2d5a3d25"
+    },
+    {
+      "path": "integration.gz",
+      "sha256": "149cce3de3db60753bf8bb89beabc0f81d46803770b7b3db0ad69e433eb9b2dd"
+    },
+    {
+      "path": "minimum.gz",
+      "sha256": "35f3068636d2a5dee687f4631d3425c4c3a899c3f7491f451fc94b2e32fbf7d1"
+    },
+    {
+      "path": "ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint.gz",
+      "sha256": "199610e11b39d340c5da897591e5c7b1b55355fda82b154b5f15c628ec270b09"
+    },
+    {
+      "path": "docs.gz",
+      "sha256": "42c2c2a8a24da137237c7f6ae848445ceaae8cd5bd98faa97f47bd265bc4b1d9"
+    },
+    {
+      "path": "plan-prose.gz",
+      "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+    }
+  ],
+  "remaining": [
+    "Collect required review session 76259.",
+    "Push after review passes.",
+    "Repeat native qualification and merge only after required checks pass."
+  ],
+  "completion_credit": false,
+  "commit": "1b54481d",
+  "review": {
+    "session": 76259,
+    "status": "running",
+    "log": "/tmp/starmap-publication-completion-review-2026-09-09.log"
+  },
+  "checks": {
+    "integration_race": {
+      "exit_code": 0,
+      "passing_test_events": 20,
+      "failures": 0,
+      "skips": 0
+    },
+    "minimum": {
+      "exit_code": 0,
+      "passing_test_events": 3
+    },
+    "ago": {
+      "exit_code": 0
+    },
+    "lint": {
+      "exit_code": 0
+    },
+    "docs_prose": {
+      "exit_code": 0
+    },
+    "plan_prose": {
+      "exit_code": 0
+    }
+  }
+}
