@@ -10,8 +10,8 @@
   "repair": "Capture the refusal boundary before consuming the pacing state. Clear the published boundary when retry starts, startup aborts, or the subscriber stops.",
   "worktree": "/tmp/starmap-presence-integration-2026-09-09",
   "branch": "codex/catalog-ranges-main",
-  "candidate": "Committed repair bf8461888b2148735622288009e5a54385ca95a6. Full verification session 18580 remains active. Required review, push, native CI, and merge remain open.",
-  "merge_worker": "Session 17325 exited 1 and performed no merge. Start a new bounded merge operation only after the repaired head passes all required checks.",
+  "candidate": "Published bf8461888b2148735622288009e5a54385ca95a6 after 39 passing stages and both clean reviews. Native CI run 34333704548 is active.",
+  "merge_worker": "Session 71350 runs /tmp/starmap-pr139-repaired-merge-after-ci.py 34333704548. It requires the exact head and base, all six native jobs, and every PR check. It writes /tmp/starmap-pr139-merge-result.json only after GitHub confirms the merge.",
   "task_completion_credit": false,
   "ci_artifact": {
     "path": "failed-ci.log.gz",
@@ -86,5 +86,96 @@
       "sha256": "cd0ef299abc462779e1b38a96026472c79a78e990927f6e00db3e395b12c71f1"
     }
   ],
-  "work_commit": "bf8461888b2148735622288009e5a54385ca95a6"
+  "work_commit": "bf8461888b2148735622288009e5a54385ca95a6",
+  "full_verification": {
+    "exit_code": 0,
+    "command": "env GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify.sh",
+    "stages": [
+      "go test ./...",
+      "make test-pure-go",
+      "make test-file-sizes",
+      "./scripts/verify-package-layout.sh",
+      "./scripts/test-package-layout-verifier.sh",
+      "./scripts/verify-catalog-package-ownership.sh",
+      "./scripts/test-catalog-package-ownership-verifier.sh",
+      "./scripts/verify-catalog-dependency-direction.sh",
+      "./scripts/test-catalog-dependency-direction-verifier.sh",
+      "python3 ./scripts/test_catalog_product_verify.py",
+      "env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=2",
+      "go vet ./...",
+      "./scripts/verify-catalog-performance.sh",
+      "./scripts/verify-container-smoke.sh",
+      "devbox run golangci-lint run",
+      "go tool ago -stale-ignores ./...",
+      "coverage ./internal/catalog/pipeline >= 70%",
+      "coverage ./internal/catalog/query >= 75%",
+      "coverage ./internal/providers/clients >= 80%",
+      "coverage ./internal/sources/providers >= 75%",
+      "coverage ./internal/server/middleware >= 90%",
+      "coverage ./internal/server/openrouter >= 85%",
+      "coverage ./internal/server/params >= 95%",
+      "coverage ./internal/server/response >= 95%",
+      "coverage ./internal/server/sse >= 90%",
+      "coverage ./internal/transport >= 40%",
+      "coverage ./pkg/catalogs/authority >= 90%",
+      "coverage ./pkg/catalogs >= 55%",
+      "coverage ./pkg/errors >= 80%",
+      "coverage ./internal/catalog/reconciler >= 75%",
+      "coverage ./pkg/sources >= 35%",
+      "make docs-check",
+      "make technical-writing-check",
+      "git diff --check",
+      "go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.cklzF5/starmap ./cmd/starmap",
+      "run_cli version",
+      "run_cli validate catalog",
+      "run_cli providers",
+      "run_cli models list --limit 5"
+    ],
+    "package_counts": [
+      {
+        "command": "go test ./...",
+        "pass_packages": 80,
+        "no_test_packages": 22
+      },
+      {
+        "command": "env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=2",
+        "pass_packages": 80,
+        "no_test_packages": 22
+      }
+    ],
+    "prose": "PASS: 1250 files, zero diagnostics.",
+    "independent_docs": "PASS without GOFLAGS.",
+    "artifacts": [
+      {
+        "path": "full-verification.log.gz",
+        "sha256": "81a39620e193730e212d9ce0e6ea49233d0c7b329df2ca8686b69e16222973d1"
+      },
+      {
+        "path": "docs-check.log.gz",
+        "sha256": "ddca6b3a2d189a013545b7ff3693fa07e9012d34a99a7ae93ba8af24d7cedd7b"
+      },
+      {
+        "path": "ago.json",
+        "sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    ]
+  },
+  "pre_pr_review": {
+    "exit_code": 0,
+    "head": "bf8461888b2148735622288009e5a54385ca95a6",
+    "base": "565012ec2590f5d7e1ff34871dbc5f0caeeed6ea",
+    "reviewers": "Sol xhigh and Opus high",
+    "findings": 0,
+    "artifacts": [
+      {
+        "path": "review.log",
+        "sha256": "d09583311bde9bb78bb0ad9134f90d5a5e022f13c241e7932c211445e72bab27"
+      },
+      {
+        "path": "review.json",
+        "sha256": "477ed62e9a4ce3ef9c1e6b10f476bcb86ac7f6b8cd36decc7f80765418af9c5d"
+      }
+    ]
+  },
+  "ci_run": "https://github.com/agentstation/starmap/actions/runs/34333704548"
 }
