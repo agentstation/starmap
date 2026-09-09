@@ -131,7 +131,7 @@ func (c *GitClient) BuildAPI(ctx context.Context) error {
 	cmd := exec.CommandContext(ctx, "bun", "run", "script/build.ts")
 	cmd.Dir = filepath.Join(c.RepoPath, "packages", "web")
 
-	output, err := cmd.CombinedOutput()
+	output, err := runBun(cmd)
 	if err != nil {
 		logger.Error().Err(err).Msg("models.dev API build failed")
 		return &errors.ProcessError{
@@ -160,7 +160,7 @@ func (c *GitClient) installDependencies(ctx context.Context) error {
 	cmd := exec.CommandContext(ctx, "bun", "install", "--frozen-lockfile")
 	cmd.Dir = c.RepoPath
 
-	output, err := cmd.CombinedOutput()
+	output, err := runBun(cmd)
 	if err != nil {
 		logging.FromContext(ctx).Error().Err(err).Msg("models.dev frozen dependency installation failed")
 		return &errors.ProcessError{
@@ -276,4 +276,15 @@ func validateGitCommit(commit string) error {
 		return &errors.ValidationError{Field: "models_dev.git.commit", Value: commit, Message: "must be hexadecimal"}
 	}
 	return nil
+}
+
+// runBun resolves directory aliases before Bun compares workspace paths.
+// Windows temporary paths can contain short names such as RUNNER~1.
+func runBun(cmd *exec.Cmd) ([]byte, error) {
+	resolved, err := filepath.EvalSymlinks(cmd.Dir)
+	if err != nil {
+		return nil, err
+	}
+	cmd.Dir = resolved
+	return cmd.CombinedOutput()
 }
