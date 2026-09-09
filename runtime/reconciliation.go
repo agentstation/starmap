@@ -36,6 +36,7 @@ func (l *layerSet) reconcileProviders(ctx context.Context, base *catalogs.Catalo
 		}
 		observations = append(observations, observation)
 		evidence.SourceObservations = append(evidence.SourceObservations, observation.Link())
+		l.acceptedSources = appendAcceptedSource(l.acceptedSources, observation)
 		if observation.ObservedAt.After(changedAt) {
 			changedAt = observation.ObservedAt
 		}

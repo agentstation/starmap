@@ -116,6 +116,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 	var builder *catalogs.Builder
 	active := l.activeProviderOrder()
 	l.buildEvidence = starmap.CandidateEvidence{}
+	l.acceptedSources = nil
 	if l.manual != nil {
 		var err error
 		builder, l.buildEvidence, err = l.reconcileManualInputs(ctx, base, state.GeneratedAt, active)
@@ -146,7 +147,6 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		return starmap.CatalogState{}, errors.WrapResource(
 			"encode", "effective catalog", state.GenerationID, err)
 	}
-	l.acceptedSources = acceptedSourceIDs(l.buildEvidence.SourceObservations)
 	l.sequence++
 	state.Catalog = catalog
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum

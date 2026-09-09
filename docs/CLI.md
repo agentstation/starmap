@@ -314,7 +314,9 @@ HTTP update detail carries the same fields. A successful operation can therefore
 
 Runtime readiness reports `accepted_acquisition_sources` for the active generation.
 This set contains local acquisition evidence and excludes distribution baseline receipts.
-It can include partial evidence. Presence does not imply a successful refresh or a routable model.
+It includes partial inputs with catalog records and complete empty inventories.
+Empty failed inputs retain diagnostic receipts but do not count as accepted sources.
+Presence does not imply a successful refresh or a routable model.
 
 A failed refresh preserves prior accepted sources. A replacement source policy removes excluded sources at restart.
 Status reads use cached state and start no acquisition.
