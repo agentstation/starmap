@@ -115,7 +115,7 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`GOLANGCI_LINT_VERSION="2.12.2"`,
 		`run make test-pure-go`,
 		`run make test-file-sizes`,
-		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=2`,
+		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=1`,
 		`cd "$TMPDIR"`,
 		`STARMAP_HOME="$TMPDIR/product"`,
 		`STARMAP_CATALOG_SOURCE=embedded`,

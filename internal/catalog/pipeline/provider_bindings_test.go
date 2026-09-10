@@ -78,7 +78,7 @@ func manualBindingRunner(t *testing.T, builder *catalogs.Builder, bindings []sou
 		}
 		return sources.ProviderCredentialMaterial{}, stderrors.New("fixture profile missing")
 	}), bindings)
-	runner.loadEmbedded = func() (*catalogs.Builder, error) { return catalogs.NewBuilderFrom(buildCatalog(t, builder)) }
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) { return buildCatalog(t, builder), nil }
 	return runner
 }
 
@@ -377,7 +377,7 @@ func TestManualBindingsBoundConcurrencyAndCancelQueuedCalls(t *testing.T) {
 	runner := NewBoundAcquisition(func(*catalogs.Provider) (sources.ProviderClient, error) {
 		return blockedManualClient{started: started}, nil
 	}, resolver, bindings)
-	runner.loadEmbedded = func() (*catalogs.Builder, error) { return builder, nil }
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) { return builder.Build() }
 	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
 	defer cancel()
 	done := make(chan error, 1)

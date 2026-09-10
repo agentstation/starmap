@@ -58,8 +58,8 @@ func TestEmbeddedRevisionUpdatesGeneratedFieldsAndPreservesHumanEdit(t *testing.
 	embeddedE2 = withEmbeddedUpgradeModel(t, embeddedE2, "model-b", "New E2 Model")
 	store := &pipelineTestStore{catalog: buildCatalog(t, e1Result.Catalog)}
 	runner := New(store)
-	runner.loadEmbedded = func() (*catalogs.Builder, error) {
-		return catalogs.NewBuilderFrom(embeddedE2)
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) {
+		return embeddedE2, nil
 	}
 
 	result, err := runner.Sync(
@@ -235,7 +235,7 @@ func TestEmbeddedRevisionLoadFailurePreservesExistingWorkspace(t *testing.T) {
 	store := &pipelineTestStore{catalog: buildCatalog(t, human)}
 	runner := New(store)
 	injected := stderrors.New("embedded revision unavailable")
-	runner.loadEmbedded = func() (*catalogs.Builder, error) {
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) {
 		return nil, injected
 	}
 
@@ -306,8 +306,8 @@ func TestWorkspaceFormattingChangesDoNotBecomeLocalEvidence(t *testing.T) {
 
 	store := &pipelineTestStore{catalog: buildCatalog(t, generated.Catalog)}
 	runner := New(store)
-	runner.loadEmbedded = func() (*catalogs.Builder, error) {
-		return catalogs.NewBuilderFrom(embedded)
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) {
+		return embedded, nil
 	}
 	var candidate *reconciler.Result
 	runner.reconcile = func(
@@ -387,8 +387,8 @@ func TestWorkspaceChangesRequireExplicitReloadAndPublishOnce(t *testing.T) {
 	}
 
 	runner := New(store)
-	runner.loadEmbedded = func() (*catalogs.Builder, error) {
-		return catalogs.NewBuilderFrom(embedded)
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) {
+		return embedded, nil
 	}
 	result, err := runner.Sync(
 		context.Background(),

@@ -35,7 +35,7 @@ func TestSourceActivityUsesScopedProviderPreflight(t *testing.T) {
 				}
 				return sources.ProviderCredentialMaterial{}, &pkgerrors.AuthenticationError{Provider: "provider", Message: "fixture profile absent"}
 			}), bindings)
-			runner.loadEmbedded = func() (*catalogs.Builder, error) { return catalogs.NewBuilderFrom(buildCatalog(t, builder)) }
+			runner.loadEmbedded = func() (*catalogs.Catalog, error) { return buildCatalog(t, builder), nil }
 			prepared, err := runner.Prepare(t.Context(), buildCatalog(t, builder), pkgsync.WithSources(sources.ProvidersID), pkgsync.WithDryRun(true), pkgsync.WithCatalogPath(t.TempDir()), pkgsync.WithRequireAllSources(mode == "strict-missing"))
 			if mode == "strict-missing" {
 				if err == nil {

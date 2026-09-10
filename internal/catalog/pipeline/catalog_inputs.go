@@ -21,15 +21,20 @@ type catalogInputs struct {
 
 func (p *Pipeline) loadCatalogInputs(ctx context.Context, path string) (catalogInputs, error) {
 	var inputs catalogInputs
-	var embedded *catalogs.Builder
 	err := workspace.Read(ctx, path, func(input workspace.InputExpectation) error {
 		human, err := p.loadWorkspace(path)
 		if err != nil {
 			return errors.WrapResource("load", "catalog", "human workspace", err)
 		}
-		embedded, err = p.loadEmbedded()
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		inputs.embedded, err = p.loadEmbedded()
 		if err != nil {
 			return errors.WrapResource("load", "catalog", "embedded", err)
+		}
+		if err := ctx.Err(); err != nil {
+			return err
 		}
 		humanCatalog, err := human.Build()
 		if err != nil {
@@ -47,9 +52,8 @@ func (p *Pipeline) loadCatalogInputs(ctx context.Context, path string) (catalogI
 	if err != nil {
 		return catalogInputs{}, err
 	}
-	inputs.embedded, err = embedded.Build()
-	if err != nil {
-		return catalogInputs{}, errors.WrapResource("publish", "embedded catalog", "", err)
+	if err := ctx.Err(); err != nil {
+		return catalogInputs{}, err
 	}
 	inputs.providerConfig, err = composeProviderCatalog(inputs.embedded, inputs.workspace, inputs.workspaceInput.Exists)
 	if err != nil {
