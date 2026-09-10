@@ -1,0 +1,185 @@
+{
+  "task": "CSP4",
+  "source": "8a71193bc7587a025231be0d72f2002327fd67be",
+  "base": "99ad3cfb8f7804e15f480096909f0dcdc10d380d",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
+  "branch": "codex/catalog-authority-issuer",
+  "publication": "Local committed checkpoint, unpublished and unmerged.",
+  "source_files_sha256": {
+    "docs/CATALOG_STORE_CONTRACT.md": "f9fc109b7220d4ffeaf80fd1561ac0cf5da9d728fa3f4065d47a8cf1bd1e5e97",
+    "pkg/catalogs/permission/README.md": "f74ab5a1186cdd1ea9176905c28a2e80a07899c034b3c4752c4b0da1dce84fe0",
+    "pkg/catalogs/permission/origin_publication.go": "91fe772fae5d157dc24c0771932b79d2b90e5fc75a6f4ccfdb21ba13577546b3",
+    "pkg/catalogs/permission/origin_publication_contract_test.go": "97feb3fd77660dd9b5e3412d003098f5da6087e421e9dc7c0169ceccef42631b",
+    "pkg/catalogs/permission/origin_publication_test.go": "f01eb333c8ce9ab00010d738600159f35cc7add8d25c704fafb1b1cc0f169992"
+  },
+  "checks": {
+    "red": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission -run '^TestOriginPublication'",
+      "exit_code": 1,
+      "scope": "Missing PublishCatalog API: compile failure, no behavioral test ran.",
+      "artifact": {
+        "path": "publication-red.jsonl.gz",
+        "sha256": "07977bf6cfa28f06194f0c9348495d28c99ba8c3cca6b3d60f202ded77b995f8",
+        "raw_sha256": "507b4e9748be5d8c636a15efd9abfa8d2ecdce4a1a13800b044399f303f8c750"
+      },
+      "test_events": {},
+      "package_events": {
+        "fail": 1
+      }
+    },
+    "red-source": {
+      "command": null,
+      "exit_code": null,
+      "scope": "Exact initial test source at base 99ad3cfb; not a test invocation.",
+      "artifact": {
+        "path": "origin-publication-red.go.gz",
+        "sha256": "d95de4b308efde61e8120f92daa50d4ecda74c742fdd75470a514304c3a1eeae",
+        "raw_sha256": "f01eb333c8ce9ab00010d738600159f35cc7add8d25c704fafb1b1cc0f169992"
+      }
+    },
+    "initial": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission -run '^TestOriginPublication'",
+      "exit_code": 0,
+      "scope": "Initial filesystem reopen and retry regression, one passing event.",
+      "artifact": {
+        "path": "publication-initial.jsonl.gz",
+        "sha256": "8d8d699d37f1efa741b0ad3e39d9fbc1d7bcb88e53edeaa6b77c52f1d2f5ea4e",
+        "raw_sha256": "0754222b141b387e3a996dda75c3dcfee147ce7b894a3d8edf6847cc8d01617b"
+      },
+      "test_events": {
+        "pass": 1
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "dev": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission",
+      "exit_code": 0,
+      "scope": "89 passing test events, including nine new origin-publication events. Later changes only revise a comment and generated documentation.",
+      "artifact": {
+        "path": "publication-dev.jsonl.gz",
+        "sha256": "dac6d7b44c008c9faf1f060d7f0c68553faba5375247ee81cba21fbb94a01376",
+        "raw_sha256": "8829b6da8c8f70f7e75dfdc10b782e603ef831174aeb96e95c714bca13442517"
+      },
+      "test_events": {
+        "pass": 89
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "floor": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission",
+      "exit_code": 0,
+      "scope": "89 passing events on Go 1.25.12. Later changes only revise a comment and generated documentation.",
+      "artifact": {
+        "path": "publication-floor.jsonl.gz",
+        "sha256": "98597feeea506a364b068672ebcb7e1dc09469ed17247c5495bea9ff6794b5ce",
+        "raw_sha256": "fdf68895b0f6f3355da5efb4e4a13a2b5ab62f1bf77fd9cbfbdfdcf4b16f4f8c"
+      },
+      "test_events": {
+        "pass": 89
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "lint": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 golangci-lint run ./pkg/catalogs/permission/...",
+      "exit_code": 0,
+      "scope": "Zero issues. Later changes only revise a comment and generated documentation.",
+      "artifact": {
+        "path": "publication-lint.log.gz",
+        "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+        "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+      }
+    },
+    "ago": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "scope": "Zero findings, errors, and stale ignores. Later changes only revise a comment and generated documentation.",
+      "artifact": {
+        "path": "publication-ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "prose-red": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "scope": "1442 files and two documentation-comment diagnostics.",
+      "artifact": {
+        "path": "publication-prose.log.gz",
+        "sha256": "cb34de084eb9378744b1645575040339b753332476b46b41029fcfadfe1208f4",
+        "raw_sha256": "1fd9156a30f23ecacaf4e146fd3491095487991fc3317af4de473ccd9d5e819b"
+      }
+    },
+    "prose-final": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "scope": "1442 files and zero diagnostics.",
+      "artifact": {
+        "path": "publication-prose-final.log.gz",
+        "sha256": "08b0288229f952fb24a340193fe966c1789d1b0a4938548364e399f300958700",
+        "raw_sha256": "c7946bd00123a0fc70106b533fdde571591d07f8bfedc0f4e2c8b0c96db17a68"
+      }
+    },
+    "docs": {
+      "command": "GOFLAGS= GOTOOLCHAIN=go1.26.6 PATH=/Users/jack/go/bin:$PATH make docs-check",
+      "exit_code": 0,
+      "scope": "Complete repository documentation check on committed 8a71193b.",
+      "artifact": {
+        "path": "publication-docs-check.log.gz",
+        "sha256": "8b024b5ed53cc9c558f6efbd08eb6d139604fb0abc8fe187258d72afaf22a251",
+        "raw_sha256": "487007146be15f307289fb5987b57c8f44bae1cc664c268350ec7fd8924acece"
+      }
+    },
+    "plan-prose-red": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "scope": "Canonical origin-publication checkpoint and clock survey.",
+      "artifact": {
+        "path": "plan-prose-red.log.gz",
+        "sha256": "17202156a032aa1c5a78f3252d3cbeda8165b04779e81f23445f5df1c87c851d",
+        "raw_sha256": "7f15697ff293f8427d0d293c9fb915dda2a544460d4cfe784f391f93e95552b7"
+      }
+    },
+    "plan-prose-retry": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "scope": "Canonical origin-publication checkpoint and clock survey.",
+      "artifact": {
+        "path": "plan-prose-retry.log.gz",
+        "sha256": "b1c57e12bfc56a36bac25ec2335de50f02bf02c604f3f7f34a17fbe1764c1fa6",
+        "raw_sha256": "140d9b28a6c2754b0ccd4480e353a09f357cbbeba767e9347b9aae44cdc6651d"
+      }
+    },
+    "plan-prose-accepted": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "scope": "Canonical origin-publication checkpoint and clock survey.",
+      "artifact": {
+        "path": "plan-prose-accepted.log.gz",
+        "sha256": "d3618ebeef21e79ecc7bf2d23a09f8338fabf594d6490e52448b7531eeb2334a",
+        "raw_sha256": "411e9ad873ba248cdea262037670e86b2144eb694869a85f6fbe8144652b460b"
+      }
+    }
+  },
+  "running_operations": [],
+  "contract": [
+    "PublishCatalog validates an ordinary permitted catalog before reading the durable predecessor.",
+    "A first publication uses sequence one. Later publications advance the stored sequence without wrapping.",
+    "The complete source input and stored sequence identify exact retries after reopen or an ambiguous successful response.",
+    "Changed proposals require the exact predecessor. Competing writers cannot both publish different successors.",
+    "BootstrapCatalog explicitly adopts an ordinary store and cannot reset an established authority.",
+    "Unknown permission semantics, changed identity, failed reads, exhausted sequence, and stale proposals cause refusal.",
+    "A successful publication still requires serving-client activation. No automatic stale-proposal retry occurs."
+  ],
+  "limitations": [
+    "All eight CSP4 acceptance checks remain UNVERIFIED. No task completion credit.",
+    "Origin authorization, serving-client activation, server configuration, and production clock qualification remain incomplete.",
+    "Shared followers, authority transitions, and Starport consumers remain incomplete.",
+    "No full repository verification, pre-PR review, or native CI has run for this delivery."
+  ]
+}

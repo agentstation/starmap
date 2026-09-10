@@ -5,12 +5,14 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "delivery_amendment": "CSP4 uses separate Starmap and Starport PRs; all eight task checks and completion requirements remain unchanged",
-  "local_links": 108,
-  "evidence_artifacts": 193,
-  "resume_words": 285,
-  "plan_words": 10442,
-  "plan_bytes": 112051,
-  "budget_exception": "The plan retains 38 task contracts for one product outcome. Resume reads current-resume, invariants, ledger, task-CSP4, the goal, and csp4.md#current-runtime-integration. Historical proof stays optional.",
-  "cold_resume": "PASS: next action, worktree, source, running command, authorization, and remaining qualification have explicit current owners."
+  "local_links": 114,
+  "evidence_artifacts": 220,
+  "new_commit_source_files": 12,
+  "resume_words": 323,
+  "history_repair": "Three execution entries moved from the phase evidence table into the execution log. Their text remains unchanged.",
+  "current_source": "8a71193bc7587a025231be0d72f2002327fd67be",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
+  "clean_source": true,
+  "running_implementation_commands": [],
+  "next_action": "Prepare final origin identity before input-journal staging, then integrate serving-client activation, server configuration, qualified clocks, shared followers, and authority transitions."
 }

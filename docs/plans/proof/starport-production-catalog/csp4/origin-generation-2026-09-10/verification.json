@@ -1,0 +1,202 @@
+{
+  "task": "CSP4",
+  "source": "99ad3cfb8f7804e15f480096909f0dcdc10d380d",
+  "base": "60f7b9cd208d1221abc4bd8e898eb84471c1aca3",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
+  "branch": "codex/catalog-authority-issuer",
+  "publication": "Local committed checkpoint, unpublished and unmerged.",
+  "source_files_sha256": {
+    "docs/CATALOG_STORE_CONTRACT.md": "4fac0a67661001a1b150d2ef2963c45dd06bacb9551cf86e25c9f42c415ebd6b",
+    "pkg/catalogs/permission/README.md": "3f07cd1066fd1eba098d431b2bcc14fd3766f7f13f04c0bc4de70fa2efca3e93",
+    "pkg/catalogs/permission/generation.go": "7415d8bc34767977ebd0b411e19a454df59f187397bfd75b92130fb73d8954b5",
+    "pkg/catalogs/permission/generation_revision_test.go": "6cd138a5d4be3874d6ec761f6a2d2ce8104dcf4f3a03700096d53aaa60f1b51a",
+    "pkg/catalogs/permission/generation_test.go": "4b859dedfcc4a1ff43ca237f7dd2e108e85eee81a12befca3c44e49feaadccd1",
+    "pkg/catalogs/permission/generation_validation_test.go": "1cbeb65b23b79c7436c72434b8cf2a50fb10e1537be7cc8461e084e454277319",
+    "pkg/catalogs/permission/issuer.go": "8b043aa5a54e6f0c7b28ccb2ed6976df1ef948a3ef140afeca35164bea4ff43b"
+  },
+  "checks": {
+    "red": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission -run '^TestPrepareGeneration'",
+      "exit_code": 1,
+      "scope": "Missing API compile failure. No behavioral test ran.",
+      "artifact": {
+        "path": "red.jsonl.gz",
+        "sha256": "eeccefd98777c81fa4b1c24c22b3edaa1e7f921eba8dd2f5ba8d973f6edb126c",
+        "raw_sha256": "d674c2162725847441e23324da0085f271a8c9e2e8b708b24357f460c5e46c78"
+      },
+      "test_events": {},
+      "package_events": {
+        "fail": 1
+      }
+    },
+    "red-source": {
+      "command": null,
+      "exit_code": null,
+      "scope": "Exact initial test source and prior commit; not a test invocation.",
+      "artifact": {
+        "path": "red-source.json.gz",
+        "sha256": "2a0c5fc6a955580a7191b313f8a35ec0e11b860a5575a5ea35c6ad935809cf44",
+        "raw_sha256": "d8a98dcb42b8d94a6996ba39011a2d0d31d8363fabae421de194990babda4d6f"
+      }
+    },
+    "initial": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission -run '^TestPrepareGeneration'",
+      "exit_code": 1,
+      "scope": "Initial fixture omitted the required primary author. Two test events failed before reaching preparation.",
+      "artifact": {
+        "path": "initial.jsonl.gz",
+        "sha256": "8a168cc7755add7c9bb7bd8f3a20fdd267735b9dc7367c32cfb7e12ad0f1392d",
+        "raw_sha256": "a12abdb2d5e46b5073ddfdc4c9c26be47f93aa23e26f7a0a3b68f826a41ada5a"
+      },
+      "test_events": {
+        "fail": 2
+      },
+      "package_events": {
+        "fail": 1
+      }
+    },
+    "expanded": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission -run '^TestPrepareGeneration'",
+      "exit_code": 0,
+      "scope": "Intermediate revision cases before input-validation and scope cases.",
+      "artifact": {
+        "path": "expanded.jsonl.gz",
+        "sha256": "52460970aafb144d4bb90a0ebc4946a508fe0bc3ba72ec18697b3a8ec6b7eae1",
+        "raw_sha256": "db50e8e2305b849c1325c93590c252d4f59ff1374b2db8905f4d63119181e9f5"
+      },
+      "test_events": {
+        "pass": 14
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "final-dev": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission",
+      "exit_code": 0,
+      "scope": "Final 80 passing test events, including 34 origin preparation events and 46 issuer/publisher events.",
+      "artifact": {
+        "path": "final-dev.jsonl.gz",
+        "sha256": "f8c88a7360dd1c06e4aa6ad5d3cef293132450beb7895fc962e90d7b47d6a4a8",
+        "raw_sha256": "6f0adb37695e6c3ed5fc635982dba74603b73d0168c1b841e8cf64ee90520266"
+      },
+      "test_events": {
+        "pass": 80
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "final-floor": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -race -json -count=1 ./pkg/catalogs/permission",
+      "exit_code": 0,
+      "scope": "Final 80 passing events on the Go 1.25.12 floor.",
+      "artifact": {
+        "path": "final-floor.jsonl.gz",
+        "sha256": "2898b42bf63ba971f33e7f7980cdd2edc9c3ab6b1098555166510f0c9558402d",
+        "raw_sha256": "879d044e4b38a18a35b4afe2fff0f69ef7c0a4ddcfa7dda6c8bd03c184c02038"
+      },
+      "test_events": {
+        "pass": 80
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "lint": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 golangci-lint run ./pkg/catalogs/permission/...",
+      "exit_code": 0,
+      "scope": "Zero issues. Later changes only correct comments and extend a test.",
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+        "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+      }
+    },
+    "ago": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "scope": "Final source: zero findings, errors, and stale ignores.",
+      "artifact": {
+        "path": "ago-final.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "prose-red": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "scope": "1428 files and 13 diagnostics. Eleven concern a raw Go test snapshot stored as prose; two concern maintained prose.",
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "bb9b0b715bf08d1b44349cbe5c3ae1727bb711ce1ffaae287f4090907cde7eb5",
+        "raw_sha256": "14af913c2d5d0985c2a0aeff82367d6d01ac10c3279eddfe5f4373a45ced8e47"
+      }
+    },
+    "prose-final": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "scope": "1427 files and zero diagnostics. The raw Go snapshot now resides inside structured JSON with its exact original bytes.",
+      "artifact": {
+        "path": "prose-final.log.gz",
+        "sha256": "1d5bfb665e616a55269a2c241e917949fd3508c57da9a4363291f9e7d402e869",
+        "raw_sha256": "98ecb500689b458a79aaa4b008950f8eb6771e1db9a8c8b0ec28e372b1ead019"
+      }
+    },
+    "docs-check": {
+      "command": "GOFLAGS= GOTOOLCHAIN=go1.26.6 PATH=/Users/jack/go/bin:$PATH make docs-check",
+      "exit_code": 0,
+      "scope": "Complete repository documentation check on committed 99ad3cfb.",
+      "artifact": {
+        "path": "docs-check.log.gz",
+        "sha256": "8b024b5ed53cc9c558f6efbd08eb6d139604fb0abc8fe187258d72afaf22a251",
+        "raw_sha256": "487007146be15f307289fb5987b57c8f44bae1cc664c268350ec7fd8924acece"
+      }
+    },
+    "plan-prose-red": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "scope": "Canonical preparation checkpoint prose before the later publication checkpoint.",
+      "artifact": {
+        "path": "plan-prose-red.log.gz",
+        "sha256": "e93a9e0e8ca3aa233c5fee750db756b923329440b818dc8f1642993404cf5cb5",
+        "raw_sha256": "a175559a681f1aee362fafb42d9b95cef6b69a4127bc53c32d995dc88537c36a"
+      }
+    },
+    "plan-prose-retry": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "scope": "Canonical preparation checkpoint prose before the later publication checkpoint.",
+      "artifact": {
+        "path": "plan-prose-retry.log.gz",
+        "sha256": "0a253feb34cb03277fc1734f37c0489d3d883804c531eb12ddc622047b0b696d",
+        "raw_sha256": "7eae19914594920fe48c889df43564cb102005964c74ce80d9cb56bdeddffc90"
+      }
+    },
+    "plan-prose-accepted": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "scope": "Canonical preparation checkpoint prose before the later publication checkpoint.",
+      "artifact": {
+        "path": "plan-prose-accepted.log.gz",
+        "sha256": "14ba843e39e5e88ce81dc1ea7bd75fb029e66baac474034f8187b9a62325e1ba",
+        "raw_sha256": "de8f4c3c570ba9de3fbc2e2ec63d8e7452ab0c7cb85218e1193017b8c75c0a75"
+      }
+    }
+  },
+  "running_operations": [],
+  "contract": {
+    "revision": "Domain-separated hash of authority, policy, permission schema, and complete catalog semantic checksum.",
+    "catalog_policy": "The caller supplies the complete permitted catalog after applying its selected catalog policy. Gateway grants and budgets remain separate.",
+    "conservative_effect": "Catalog facts and scope evidence renewals change the revision, including metadata-only catalog changes. Provenance and manifest observation metadata do not.",
+    "generation": "Domain-separated identity binds the complete source manifest, authority, policy, sequence, and required revision. Exact payload bytes remain unchanged.",
+    "aliases": "Publication time does not expire aliases. Explicit or replacement-baseline removal changes required permission semantics."
+  },
+  "limitations": [
+    "All eight CSP4 acceptance checks remain UNVERIFIED. No task completion credit.",
+    "The library does not authorize publishers, select sequences from durable storage, or wire origin server configuration.",
+    "Production clock adapters, shared followers, authority transitions, and Starport consumers remain incomplete.",
+    "No full repository verification, pre-PR review, or native CI has run for this delivery.",
+    "The earlier runtime checks remain evidence for their recorded source; this change touches no runtime source."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "scope": "One read-only local macOS clock observation. No clock or service configuration changed. Not production adapter qualification.",
+  "platform": "macOS-15.7.2-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "call": "libSystem.ntp_gettime",
+  "return_value": 0,
+  "errno": 0,
+  "size_bytes": 48,
+  "time_seconds": 1789073232,
+  "time_nanoseconds": 862695398,
+  "maximum_error_microseconds": 165685,
+  "estimated_error_microseconds": 500000,
+  "tai_offset": 0,
+  "time_state": 0,
+  "sdk_header": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/timex.h",
+  "sdk_header_sha256": "627927a055650a1b2ac816efb79f7e289b29fdb91abb4c8af838a0a1623d3ff1"
+}

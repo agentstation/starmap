@@ -1847,3 +1847,35 @@ Lint, ago, and the 1,434-file prose check pass. The full documentation check fin
 Commit `60f7b9cd` corrects those generated links. The complete documentation check then passes.
 The runtime suite passes 813 race events in 1,286.36 seconds with no failures or skips.
 Origin revision construction, clocks, server wiring, shared followers, authority transitions, and Starport qualification remain incomplete.
+
+## Origin generation construction, 2026-09-10
+
+Local commit `99ad3cfb8f7804e15f480096909f0dcdc10d380d` adds `permission.PrepareGeneration`.
+It derives required permission revisions from complete catalog semantics under explicit authority and policy identities.
+The source catalog must already reflect the selected policy. Preparation refuses existing authority generations and preserves exact ordinary payload bytes.
+
+The [origin proof](../../plans/proof/starport-production-catalog/csp4/origin-generation-2026-09-10/verification.json) records 80 race-test events on each supported toolchain.
+Its 34 new events cover withdrawal, scope changes, alias retention, explicit removal, source validation, identities, and independent copies.
+
+Lint, ago, complete documentation, and the 1,427-file prose check pass. The proof retains the missing-API failure and the fixture error.
+
+The revision includes all semantic catalog facts, including scope evidence. Metadata-only changes can therefore require a new enforced revision.
+Provenance and manifest observation metadata do not affect it. These hashes run during publication, outside inference admission.
+
+Origin authorization, durable sequence selection, clocks, server wiring, shared followers, transitions, and consumer qualification remain open.
+All eight CSP4 acceptance checks remain UNVERIFIED. The work remains local, with no PR or merge.
+
+## Origin durable sequence selection, 2026-09-10
+
+Local commit `8a71193bc7587a025231be0d72f2002327fd67be` adds `Publisher.PublishCatalog` and `BootstrapCatalog`.
+The publisher derives the sequence from durable state and uses the existing conditional commit contract.
+An exact retry keeps its identity after reopen. A stale proposal cannot replace a committed withdrawal.
+
+The [publication proof](../../plans/proof/starport-production-catalog/csp4/origin-publication-2026-09-10/verification.json) records 89 race-test events per supported toolchain.
+Nine new events cover restart, bootstrap, identity, unsupported semantics, exhaustion, unreadable state, invalid calls, and concurrent writers.
+Lint, ago, complete documentation, and the 1,442-file prose check pass.
+
+The [native clock survey](../../plans/proof/starport-production-catalog/csp4/native-clock-survey-2026-09-10.md) records a successful read-only macOS clock query.
+It selects no adapter and gives no production qualification.
+Origin authorization, serving-client activation, server configuration, clocks, followers, transitions, and Starport consumers remain incomplete.
+All eight CSP4 checks remain UNVERIFIED.

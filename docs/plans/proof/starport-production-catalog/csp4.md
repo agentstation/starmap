@@ -3,7 +3,7 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The active source is clean local `60f7b9cd208d1221abc4bd8e898eb84471c1aca3` in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
+The active source is clean local `8a71193bc7587a025231be0d72f2002327fd67be` in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
 The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b` and remains unpublished.
 
 No owner decision remains. No implementation command remains running.
@@ -25,7 +25,18 @@ The [storage proof](csp4/authority-record-2026-09-10/verification.json) retains 
 Current catalog and storage suites also pass 1,240 and 88 events respectively.
 The publisher proof preserves the nonprivate fixture failure, generic-store ordering gap, and the failed test draft.
 
-Next, construct origin authority generations and derive their required permission revision from the permitted catalog and applicable policy.
+The [origin proof](csp4/origin-generation-2026-09-10/verification.json) records the latest preparation library and 80 passing race events per toolchain.
+Its 34 new events cover withdrawal, scope and identity changes, invalid sources, alias retention, explicit removal, and independent copies.
+The required revision includes all semantic catalog facts. Metadata-only catalog changes can also require a new enforced revision.
+Provenance and manifest observation metadata do not affect it. Lint, ago, and the 1,427-file prose check pass.
+
+The [origin publication proof](csp4/origin-publication-2026-09-10/verification.json) adds durable sequence selection with 89 passing race events per toolchain.
+Exact retries keep their identity after reopen. Stale proposals cannot replace a committed withdrawal.
+Static checks, complete documentation, and the 1,442-file prose check pass.
+The [native clock survey](csp4/native-clock-survey-2026-09-10.md) records one macOS observation and selects no adapter.
+
+Next, use the [runtime inspection](csp4/origin-runtime-inspection-2026-09-10.md) to prepare the final authority identity before input-journal staging.
+Then connect serving-client activation and server configuration.
 Authorize publishers and issuers explicitly in that composition. Qualify clocks, server wiring, shared followers, authority transitions, and Starport consumers.
 The current libraries do not complete the standalone production recipe.
 

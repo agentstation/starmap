@@ -1788,7 +1788,23 @@ Bootstrap cannot replace an established authority. Exact retries preserve the un
 An unreadable predecessor cannot reset the sequence through an empty expectation.
 
 Origin composition constructs generations and authorizes publishers and issuers.
-That composition must derive the required revision from the permitted catalog and applicable policy.
+`permission.PrepareGeneration` derives a revision from the complete permitted catalog after the origin applies its selected policy.
+It binds authority, policy, permission schema, and every semantic catalog fact.
+Provenance and manifest observation metadata do not affect this revision. Scope evidence and all other catalog facts remain part of it.
+This conservative contract changes the revision even for metadata-only catalog changes. Incompatible replicas must then block new attempts.
+
+Preparation validates schema agreement and accepted membership evidence. It refuses to relabel an existing authority generation.
+A separate generation identity binds the complete source manifest and selected sequence. Exact retries preserve identity and exact payload bytes.
+
+Elapsed publication time cannot expire an alias. Explicit operator or replacement-baseline removal changes its permission revision.
+These operations run during publication and add no work to inference admission.
+
+`Publisher.PublishCatalog` now selects the next sequence from durable state and atomically publishes the prepared catalog.
+An exact retry keeps its generation and sequence after reopening the store. A changed proposal requires the exact predecessor.
+`BootstrapCatalog` explicitly adopts an ordinary store and cannot reset an established authority.
+Unknown permission semantics, failed predecessor reads, changed identity, and an exhausted sequence cause refusal.
+
+The origin still owns authorization, serving-client activation, server configuration, and qualified clock composition.
 Direct underlying writes, deleted state, and restored older backups require separate recovery procedures.
 
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.
