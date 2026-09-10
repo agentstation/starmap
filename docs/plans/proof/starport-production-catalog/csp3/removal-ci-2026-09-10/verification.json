@@ -1150,22 +1150,24 @@
       }
     },
     "ci_run": 34468955626,
-    "ci_watch_session": 45275,
+    "ci_watch_session": null,
     "ci_watch_log": "/tmp/starmap-pr145-main-ci-watch-2026-09-10.log",
-    "automatic_merge": false
+    "automatic_merge": false,
+    "ci_conclusion": "cancelled",
+    "superseded_by": 34470999089
   },
   "combined_delivery": {
     "plan": "Integrate the qualified canonical-alias branch into PR145, review the complete diff against main, then run final CI and merge.",
     "reason": "Removal and alias rules share one catalog schema and identity contract. One delivery avoids repeated qualification of unchanged dependency trees.",
     "source_candidate": "b3af02c3791e7ca36af191095808f8fac5bc6ac6",
-    "automatic_merge_disabled_until_combined_review": true,
+    "automatic_merge_disabled_until_combined_review": false,
     "new_pr_required": false,
     "commit": "b5af1e9c67e065ebd688a19a7563bcc430f724bb",
     "tree": "b03e43ff13256f3b9809319f53b83d2a5287d24b",
     "main": "b9eca8897c6ee8f0eb147f228b40bf1fc94deb8f",
     "same_tree_as_qualified_candidate": true,
     "contains_actual_main": true,
-    "published": false,
+    "published": true,
     "complete_verification": {
       "exit_code": 0,
       "proof": "../canonical-removal-rename-2026-09-10/verification.json"
@@ -1179,14 +1181,28 @@
       }
     },
     "review": {
-      "state": "running",
-      "session": 23847,
+      "state": "passed",
+      "session": null,
       "base": "b9eca8897c6ee8f0eb147f228b40bf1fc94deb8f",
       "log": "/tmp/starmap-combined-catalog-review-2026-09-10.log",
       "reviewers": [
         "codex:gpt-5.6-sol:xhigh",
         "claude:opus:high"
-      ]
-    }
+      ],
+      "exit_code": 0,
+      "findings": 0,
+      "confidence": 0.98,
+      "chunks": 2,
+      "artifact": {
+        "path": "starmap-combined-catalog-review-2026-09-10.log.gz",
+        "sha256": "91793218d02afac03e4a759ecbc5bc8334bff87142a83f3f3048ba3596cc1fcd",
+        "raw_sha256": "a856ff451070cc70d6a6b86af1ae4fd471778e374e97ec19f28776460b94e29e"
+      }
+    },
+    "automatic_merge": true,
+    "ci_run": 34470999089,
+    "ci_watch_session": 56268,
+    "ci_watch_log": "/tmp/starmap-pr145-combined-ci-watch-2026-09-10.log",
+    "title": "Retain canonical model aliases and explicit catalog removals"
   }
 }

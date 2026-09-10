@@ -1,5 +1,30 @@
 # CSP3: Scoped evidence reconciliation
 
+CSP3 remains in progress until its final implementation PR merges.
+Availability PR #144 merged at `b9eca889` after fifteen passing checks and six native jobs.
+The combined removal and alias candidate is `b5af1e9c` on PR #145.
+Its complete tree equals `b3af02c3`, which passed full repository verification.
+
+The [current qualification](csp3/canonical-removal-rename-2026-09-10/verification.json) records all ten selected CSP3 subcases, 111 commands, and 907 passing test events.
+Full runtime, acquisition, and reconciler race suites pass 1,503 events. Catalog tests pass 1,437 events.
+All 81 packages pass each full normal and race suite. All fifteen coverage thresholds and 73 verifier tests pass.
+The [combined delivery proof](csp3/removal-ci-2026-09-10/verification.json) owns review, publication, CI, and merge evidence.
+
+The discovery audit requires atomic pricing, explicit-zero pricing, and metadata-only membership through runtime reconstruction.
+
+`TestRuntimePricingAuthorityPreservesCompleteRecord` covers zero and positive prices, original receipts, offline restart, and source refresh.
+
+`TestMetadataOnlyLinkedMembershipSurvivesRuntimeLifecycle` covers missing and unknown price and limit records without losing model links through the same lifecycle.
+
+Both belong to the passing A08 registry checks. D24 reset tests also preserve the selected baseline through restart.
+
+D27 through D30 preserve visible provider absence, scoped removals, and canonical aliases without expiry.
+Starport discovery, pricing, routing, and operator UI integration remain later task requirements.
+The [current resume state](../../starport-production-catalog-plan.html#current-resume) owns the next action.
+The following sections preserve historical evidence and earlier incomplete states.
+
+## Historical implementation evidence
+
 CSP3 is in progress. CSP1 is complete locally, so this task can proceed independently of CSP2 qualification blockers.
 The runtime now retains separate binding revisions and supports explicit active declaration sets.
 Operator configuration, binding-aware batch acquisition, scoped field authority, and deletion remain incomplete.
