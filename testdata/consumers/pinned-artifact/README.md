@@ -6,7 +6,7 @@ Negative tests reject a different trust root and altered archive bytes.
 
 The fixture contains one authored model, `fixture/pinned`, and no provider credentials.
 Its archive and detached files are independent of the current embedded catalog and toolchain gzip output.
-The source payload and manifest remain beside the archive for inspection.
+Base64 text stores the fixed archive bytes. A test compares its payload and manifest with the inspectable JSON source files.
 Go 1.26.6 and `artifact.Build` produced the schema 8 fixture on 2026-09-10.
 A fixture update requires a deliberate archive and trust-root change.
 

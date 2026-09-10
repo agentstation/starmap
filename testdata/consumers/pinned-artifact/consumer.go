@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"embed"
+	"encoding/base64"
 	"fmt"
 
 	"github.com/agentstation/starmap"
@@ -84,7 +85,11 @@ func ActivatePinned(ctx context.Context) error {
 }
 
 func pinnedRelease() (artifact.Release, error) {
-	archive, err := fixtureFiles.ReadFile("testdata/" + artifact.Filename)
+	encoded, err := fixtureFiles.ReadFile("testdata/" + artifact.Filename + ".base64")
+	if err != nil {
+		return artifact.Release{}, err
+	}
+	archive, err := base64.StdEncoding.DecodeString(string(encoded))
 	if err != nil {
 		return artifact.Release{}, err
 	}
