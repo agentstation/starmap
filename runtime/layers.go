@@ -53,6 +53,7 @@ type sourceLayer struct {
 // layerSet holds the inputs that produce the effective catalog: the embedded
 // baseline, selected upstream source, provider observations, and manual history.
 type layerSet struct {
+	requireAuthority   bool
 	publisherID        string
 	publisherAliases   []string
 	embedded           starmap.CatalogState
@@ -106,6 +107,9 @@ func (l *layerSet) setProvider(layer ProviderLayer) {
 func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (starmap.CatalogState, error) {
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
+	}
+	if l.requireAuthority {
+		return l.buildAuthorityCatalog(baseline)
 	}
 	selected, err := l.selectedBaseline(baseline)
 	if err != nil {

@@ -49,6 +49,12 @@ const (
 	// upstream reply.
 	SourceStartupPolicy = Prefix + "CATALOG_SOURCE_STARTUP_POLICY"
 
+	// SourceAuthorityID pins the internal authority used by require_authority.
+	SourceAuthorityID = Prefix + "CATALOG_SOURCE_AUTHORITY_ID"
+
+	// SourcePolicyID pins the permission policy within the internal authority.
+	SourcePolicyID = Prefix + "CATALOG_SOURCE_POLICY_ID"
+
 	// SourceMaxAge is the source freshness warning objective.
 	SourceMaxAge = Prefix + "CATALOG_SOURCE_MAX_AGE"
 
@@ -217,6 +223,8 @@ func table() []setting {
 			name: SourceStartupPolicy, flag: "catalog-source-startup-policy",
 			apply: stringOption(runtime.WithSourceStartupPolicy),
 		},
+		{name: SourceAuthorityID, flag: "catalog-source-authority-id", apply: stringOption(runtime.WithSourceAuthorityID)},
+		{name: SourcePolicyID, flag: "catalog-source-policy-id", apply: stringOption(runtime.WithSourcePolicyID)},
 		{
 			name: SourceMaxAge, flag: "catalog-source-max-age",
 			capture: captureSourceMaxAge,

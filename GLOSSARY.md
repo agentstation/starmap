@@ -22,6 +22,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | catalog generation | A validated manifest and catalog payload with one immutable generation ID. |  | approved | `pkg/catalogs/generation_manifest.go` |
 | catalog payload | The canonical JSON bytes for one catalog generation. |  | approved | `pkg/catalogs/payload.go` |
 | catalog source | The configured upstream that supplies verified catalog generations to a connected runtime. |  | approved | `internal/catalog/settings/settings.go` |
+| catalog-source | The descriptor group that binds an upstream identity, permission policy, and transport credentials to one configuration layer. |  | approved | `pkg/catalogs/config/descriptors.go`, `pkg/catalogs/config/resolution.go` |
 | catalog store | The caller-supplied interface that persists and reads catalog generations. | generation store | approved | `pkg/catalogs/storage/store.go` |
 | connected runtime | The process state that `runtime.Open` returns. It reads a catalog source on a schedule. |  | approved | `runtime/runtime.go` |
 | CAS | The common abbreviation for compare-and-swap. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |

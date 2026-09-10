@@ -1,5 +1,5 @@
 // Package source owns the upstream source contract of a connected catalog
-// runtime. It holds the source interface, the two optional source
+// runtime. It holds the source interface, the optional source
 // capabilities, and the single upstream observation that a read returns.
 //
 // The package is a leaf. It implements no source and opens no connection. A
@@ -53,6 +53,14 @@ type IdentityAdopter interface {
 
 	// AdoptInstanceIdentity takes the derived instance identity of the runtime.
 	AdoptInstanceIdentity(instance string)
+}
+
+// PermissionReader reads authenticated authority receipts independently of catalog compatibility.
+// A receipt read must not depend on a catalog fetch or an active event stream.
+// The configured transport proves publisher trust. The runtime checks authority identity, replay, retention, and permission validity.
+type PermissionReader interface {
+	Source
+	ReadPermission(context.Context) (catalogs.CatalogPermissionEnvelope, error)
 }
 
 // Read is one upstream observation.

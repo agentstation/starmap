@@ -38,6 +38,10 @@ const (
 	// without a read and consumes the state that the owner publishes.
 	StartupRequireSource StartupPolicy = "require_source"
 
+	// StartupRequireAuthority retains catalog metadata while authority approval controls use.
+	// Open returns diagnostics even when no approved catalog is available.
+	StartupRequireAuthority StartupPolicy = "require_authority"
+
 	// StartupPreferLocal keeps the retained local generation active and
 	// applies an upstream generation only on an explicit refresh.
 	StartupPreferLocal StartupPolicy = "prefer_local"
@@ -47,6 +51,7 @@ const (
 var startupPolicies = []StartupPolicy{
 	StartupPreferSource,
 	StartupRequireSource,
+	StartupRequireAuthority,
 	StartupPreferLocal,
 }
 
@@ -63,7 +68,7 @@ func ParseStartupPolicy(name string) (StartupPolicy, error) {
 		return "", &errors.ValidationError{
 			Field:   "catalog_source_startup_policy",
 			Value:   name,
-			Message: "must be prefer_source, require_source, or prefer_local",
+			Message: "must be prefer_source, require_source, require_authority, or prefer_local",
 		}
 	}
 	return policy, nil
@@ -120,6 +125,10 @@ type SourcePolicy struct {
 	// StartupPolicy decides what the runtime serves before the first reply.
 	StartupPolicy StartupPolicy
 
+	// AuthorityID and PolicyID pin the authority required by require_authority.
+	AuthorityID string
+	PolicyID    string
+
 	// MaxAge is the age at which the active catalog counts as stale.
 	MaxAge time.Duration
 
@@ -148,6 +157,9 @@ func DefaultSourcePolicy() SourcePolicy {
 
 // Validate checks the policy fields that the runtime depends on.
 func (p SourcePolicy) Validate() error {
+	if err := p.validateAuthority(); err != nil {
+		return err
+	}
 	if !p.Kind.Valid() {
 		return &errors.ValidationError{
 			Field: "source_policy.kind", Value: p.Kind, Message: "is not a supported source",

@@ -43,6 +43,9 @@ func WithSourceAcquirer(acquirer SourceAcquirer) Option {
 }
 
 func (r *Runtime) hasAcquisition() bool {
+	if r.requiresAuthority() {
+		return false
+	}
 	return (r.config.acquirer != nil && r.config.acquisitionSources.permits(sources.ProvidersID)) || (r.config.sourceAcquirer != nil && r.config.acquisitionSources.permitsMetadata())
 }
 

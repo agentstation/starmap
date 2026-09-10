@@ -24,7 +24,8 @@ const (
 	runKindRefresh runKind = "refresh"
 
 	// runKindSource reads the selected upstream source only.
-	runKindSource runKind = "source"
+	runKindSource     runKind = "source"
+	runKindPermission runKind = "permission"
 
 	// runKindAcquisition observes configured acquisition sources.
 	runKindAcquisition runKind = "acquisition"
@@ -355,6 +356,11 @@ func (r *Runtime) execute(
 // readSource reads the upstream source, retains the generation, and publishes
 // the rebuilt effective catalog.
 func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch uint64) error {
+	if r.requiresAuthority() {
+		if err := r.RefreshPermission(ctx); err != nil {
+			return err
+		}
+	}
 	source := r.source
 	if source == nil {
 		return &errors.ConfigError{Component: "catalog source", Message: "is not selected"}
@@ -398,6 +404,14 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 	// A completed read grades the transfer healthy. The upstream report stays
 	// separate, so a degraded upstream never hides a working transfer, and a
 	// working transfer never hides a degraded upstream.
+	if read.Changed {
+		if err := r.observeSourceAuthority(ctx, read.Generation.Manifest); err != nil {
+			result.Health, result.Reason = HealthUnavailable, "authority_rejected"
+			r.recordSourceRead(result, false)
+			report.Source = result
+			return err
+		}
+	}
 	result.Health = HealthOK
 	result.UpstreamHealth = orUnknown(read.Health)
 	result.Chain = read.Chain

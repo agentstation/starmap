@@ -48,11 +48,18 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
 		response.ServiceUnavailable(w, strings.Join(reasons, "; "))
 		return
 	}
+	runtimeStatus := h.app.RuntimeStatus()
+	if runtimeStatus.AuthorityRequired && !runtimeStatus.Usable {
+		body := response.Fail("catalog_authority_unavailable", "Catalog authority does not permit new work", "")
+		body.Data = map[string]any{"status": "not_ready", "catalog": readiness, "runtime": runtimeReadiness(runtimeStatus)}
+		response.JSON(w, http.StatusServiceUnavailable, body)
+		return
+	}
 
 	response.OK(w, map[string]any{
 		"status":  "ready",
 		"catalog": readiness,
-		"runtime": runtimeReadiness(h.app.RuntimeStatus()),
+		"runtime": runtimeReadiness(runtimeStatus),
 		"cache": map[string]any{
 			"items": h.cache.ItemCount(),
 		},
@@ -65,6 +72,13 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
 func runtimeReadiness(status status.Status) map[string]any {
 	return map[string]any{
 		"usable":                       status.Usable,
+		"catalog_available":            status.CatalogAvailable,
+		"authority_required":           status.AuthorityRequired,
+		"authority_ready":              status.AuthorityReady,
+		"permission_valid":             status.PermissionValid,
+		"required_permission_revision": status.RequiredPermissionRevision,
+		"enforced_permission_revision": status.EnforcedPermissionRevision,
+		"permission_valid_until":       status.PermissionValidUntil,
 		"generation_id":                status.GenerationID,
 		"source_kind":                  string(status.SourceKind),
 		"source_health":                string(status.SourceHealth),

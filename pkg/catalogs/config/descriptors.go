@@ -117,12 +117,18 @@ func describe(entry setting) Descriptor {
 			d.Applicability = []string{"public", "github"}
 		}
 	case SourcePollInterval:
-		d.Description = "Sets the period between automatic source checks. Zero disables periodic checks."
+		d.Description = "Sets the period between automatic catalog checks. Zero disables periodic catalog checks."
 		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", source.PollInterval.String(), true
 	case SourceStartupPolicy:
 		d.Description = "Selects catalog availability before the first upstream reply."
 		d.Default = string(source.StartupPolicy)
-		d.AllowedValues = []string{string(runtime.StartupPreferSource), string(runtime.StartupRequireSource), string(runtime.StartupPreferLocal)}
+		d.AllowedValues = []string{string(runtime.StartupPreferSource), string(runtime.StartupRequireSource), string(runtime.StartupRequireAuthority), string(runtime.StartupPreferLocal)}
+	case SourceAuthorityID, SourcePolicyID:
+		d.Description = "Pins an internal authority or permission policy. The require_authority policy needs both identities."
+		d.Applicability = []string{"starmap"}
+		d.SourceBinding = "catalog-source"
+		d.Mutability = "restart"
+		d.DefaultMeaning = "no internal authority selected"
 	case SourceMaxAge:
 		d.Description = "Sets the source freshness warning threshold. Zero keeps the default channel freshness thresholds."
 		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", source.MaxAge.String(), true

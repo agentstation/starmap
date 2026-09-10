@@ -196,7 +196,7 @@
       "anchor": "catalog-source-token"
     },
     {
-      "description": "Sets the period between automatic source checks. Zero disables periodic checks.",
+      "description": "Sets the period between automatic catalog checks. Zero disables periodic catalog checks.",
       "id": "catalog.source.poll.interval",
       "name": "STARMAP_CATALOG_SOURCE_POLL_INTERVAL",
       "key": "catalog_source_poll_interval",
@@ -226,6 +226,7 @@
       "allowed_values": [
         "prefer_source",
         "require_source",
+        "require_authority",
         "prefer_local"
       ],
       "id": "catalog.source.startup.policy",
@@ -251,6 +252,58 @@
       "introduced": 1,
       "compatibility": "supported",
       "anchor": "catalog-source-startup-policy"
+    },
+    {
+      "description": "Pins an internal authority or permission policy. The require_authority policy needs both identities.",
+      "id": "catalog.source.authority.id",
+      "name": "STARMAP_CATALOG_SOURCE_AUTHORITY_ID",
+      "key": "catalog_source_authority_id",
+      "flag": "catalog-source-authority-id",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_AUTHORITY_ID"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "no internal authority selected",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "starmap"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-authority-id"
+    },
+    {
+      "description": "Pins an internal authority or permission policy. The require_authority policy needs both identities.",
+      "id": "catalog.source.policy.id",
+      "name": "STARMAP_CATALOG_SOURCE_POLICY_ID",
+      "key": "catalog_source_policy_id",
+      "flag": "catalog-source-policy-id",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_POLICY_ID"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "no internal authority selected",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "catalog-source",
+      "applicability": [
+        "starmap"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-policy-id"
     },
     {
       "description": "Sets the source freshness warning threshold. Zero keeps the default channel freshness thresholds.",

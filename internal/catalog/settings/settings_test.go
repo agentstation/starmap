@@ -26,6 +26,8 @@ func sampleValues() map[string]string {
 		settings.SourceToken:          "placeholder",
 		settings.SourcePollInterval:   "30m",
 		settings.SourceStartupPolicy:  "prefer_source",
+		settings.SourceAuthorityID:    "enterprise",
+		settings.SourcePolicyID:       "production",
 		settings.SourceMaxAge:         "12h",
 		settings.SourceMaxHops:        "4",
 		settings.SourceAliases:        "replica-a,replica-b",

@@ -8,13 +8,14 @@
 import "github.com/agentstation/starmap/runtime/source"
 ```
 
-Package source owns the upstream source contract of a connected catalog runtime. It holds the source interface, the two optional source capabilities, and the single upstream observation that a read returns.
+Package source owns the upstream source contract of a connected catalog runtime. It holds the source interface, the optional source capabilities, and the single upstream observation that a read returns.
 
 The package is a leaf. It implements no source and opens no connection. A package that implements a source therefore depends on this contract alone. It never depends on the attested source machinery that the runtime package carries.
 
 ## Index
 
 - [type IdentityAdopter](<#IdentityAdopter>)
+- [type PermissionReader](<#PermissionReader>)
 - [type Read](<#Read>)
 - [type Source](<#Source>)
 - [type Watcher](<#Watcher>)
@@ -34,8 +35,20 @@ type IdentityAdopter interface {
 }
 ```
 
+<a name="PermissionReader"></a>
+## type [PermissionReader](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L61-L64>)
+
+PermissionReader reads authenticated authority receipts independently of catalog compatibility. A receipt read must not depend on a catalog fetch or an active event stream. The configured transport proves publisher trust. The runtime checks authority identity, replay, retention, and permission validity.
+
+```go
+type PermissionReader interface {
+    Source
+    ReadPermission(context.Context) (catalogs.CatalogPermissionEnvelope, error)
+}
+```
+
 <a name="Read"></a>
-## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L59-L78>)
+## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L67-L86>)
 
 Read is one upstream observation.
 

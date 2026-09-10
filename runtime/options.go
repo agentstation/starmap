@@ -66,8 +66,9 @@ type options struct {
 	sourceConfiguration []sources.SourceActivity
 	leaseStore          LeaseStore
 
-	now    func() time.Time
-	random Random
+	now                        func() time.Time
+	random                     Random
+	permissionClockUncertainty func() (time.Duration, bool)
 
 	// scheduleTimer paces the periodic workers. It stays unexported and nil in
 	// every deployment, so production keeps one stopped timer per wait. A test
