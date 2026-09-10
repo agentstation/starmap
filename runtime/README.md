@@ -104,6 +104,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) PublishObservations\(ctx context.Context, observations ...sources.Observation\) \(starmap.CatalogState, error\)](<#Runtime.PublishObservations>)
   - [func \(r \*Runtime\) Refresh\(ctx context.Context\) \(RefreshReport, error\)](<#Runtime.Refresh>)
   - [func \(r \*Runtime\) RefreshSource\(ctx context.Context\) \(SourceRefreshReport, error\)](<#Runtime.RefreshSource>)
+  - [func \(r \*Runtime\) ReplaceRemovalTargets\(ctx context.Context, expected starmap.CatalogState, targets ...catalogs.CatalogRemovalTarget\) \(starmap.CatalogState, error\)](<#Runtime.ReplaceRemovalTargets>)
   - [func \(r \*Runtime\) State\(\) starmap.CatalogState](<#Runtime.State>)
   - [func \(r \*Runtime\) Status\(\) Status](<#Runtime.Status>)
   - [func \(r \*Runtime\) Sync\(ctx context.Context, providers ...catalogs.ProviderID\) \(AcquisitionReport, error\)](<#Runtime.Sync>)
@@ -1326,6 +1327,15 @@ func (r *Runtime) RefreshSource(ctx context.Context) (SourceRefreshReport, error
 ```
 
 RefreshSource reads the upstream source only. It changes the source layer.
+
+<a name="Runtime.ReplaceRemovalTargets"></a>
+### func \(\*Runtime\) [ReplaceRemovalTargets](<https://github.com/agentstation/starmap/blob/main/runtime/removal_update.go#L20>)
+
+```go
+func (r *Runtime) ReplaceRemovalTargets(ctx context.Context, expected starmap.CatalogState, targets ...catalogs.CatalogRemovalTarget) (starmap.CatalogState, error)
+```
+
+ReplaceRemovalTargets replaces this runtime's operator removal snapshot. Expected generation identity and checksum prevent stale edits. An empty target list restores local removals. The caller authorizes the operator action. Other publishers retain their own policies.
 
 <a name="Runtime.State"></a>
 ### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L293>)

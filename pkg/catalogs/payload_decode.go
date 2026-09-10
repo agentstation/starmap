@@ -26,6 +26,7 @@ type payloadEnvelope struct {
 	AuthorModels     map[string]json.RawMessage `json:"author_models"`
 	Provenance       provenance.Map             `json:"provenance"`
 	MembershipScopes []ProviderMembershipScope  `json:"membership_scopes"`
+	RemovalPolicies  []CatalogRemovalPolicy     `json:"removal_policies"`
 }
 
 func (r payloadDecodeReport) err() error {
@@ -113,6 +114,11 @@ func decodePayloadEnvelope(data []byte, maxProviders int) (payloadEnvelope, erro
 			Message: fmt.Sprintf("must be %d", CurrentCatalogSchemaVersion),
 		}
 	}
+	if payload.SchemaVersion < CurrentCatalogSchemaVersion {
+		if _, exists := required["removal_policies"]; exists {
+			return payloadEnvelope{}, invalidRemovalTarget("schema", "requires catalog schema version 8")
+		}
+	}
 	if payload.SchemaVersion == legacyCatalogSchemaVersion {
 		if _, exists := required["membership_scopes"]; exists {
 			return payloadEnvelope{}, &errors.ValidationError{Field: "membership_scopes", Message: "requires catalog schema version 7"}
@@ -159,6 +165,9 @@ func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*Catalo
 	}
 	builder.SetProvenance(payload.Provenance)
 	if err := builder.SetMembershipScopes(payload.MembershipScopes); err != nil {
+		return nil, payloadDecodeReport{}, err
+	}
+	if err := builder.SetRemovalPolicies(payload.RemovalPolicies); err != nil {
 		return nil, payloadDecodeReport{}, err
 	}
 	catalog, err := build(builder)

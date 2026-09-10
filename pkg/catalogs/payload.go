@@ -23,6 +23,7 @@ type CatalogPayload struct {
 	AuthorModels     map[string][]Model        `json:"author_models"`
 	Provenance       provenance.Map            `json:"provenance"`
 	MembershipScopes []ProviderMembershipScope `json:"membership_scopes,omitempty"`
+	RemovalPolicies  []CatalogRemovalPolicy    `json:"removal_policies,omitempty"`
 }
 
 // EncodeCatalogPayload deterministically encodes a readable catalog.
@@ -75,6 +76,7 @@ func catalogPayload(reader Reader) (CatalogPayload, error) {
 	}
 
 	payload.MembershipScopes = reader.MembershipScopes()
+	payload.RemovalPolicies = reader.RemovalPolicies()
 	payload.SchemaVersion = CatalogPayloadSchemaVersion(reader)
 	for _, provider := range payload.Providers {
 		modelIDs := make([]string, 0, len(provider.Models))
@@ -104,18 +106,24 @@ func catalogPayload(reader Reader) (CatalogPayload, error) {
 }
 
 const legacyCatalogSchemaVersion uint64 = 6
+const membershipCatalogSchemaVersion uint64 = 7
 
 // SupportsCatalogSchema reports the formats this release can read and enforce.
-// Version 6 contains no effective scope restrictions. Version 7 can carry them.
+// Version 7 adds effective scopes. Version 8 adds operator removal policies.
 func SupportsCatalogSchema(version uint64) bool {
-	return version == legacyCatalogSchemaVersion || version == CurrentCatalogSchemaVersion
+	return version == legacyCatalogSchemaVersion || version == membershipCatalogSchemaVersion || version == CurrentCatalogSchemaVersion
 }
 
 // CatalogPayloadSchemaVersion reports the schema used when encoding this reader.
 // Decoded legacy evidence keeps its original schema while it has no scope records.
 func CatalogPayloadSchemaVersion(reader Reader) uint64 {
-	if original, ok := reader.(*Catalog); ok && original.payloadSchemaVersion == legacyCatalogSchemaVersion && len(original.MembershipScopes()) == 0 {
-		return legacyCatalogSchemaVersion
+	if original, ok := reader.(*Catalog); ok && len(original.RemovalPolicies()) == 0 {
+		if original.payloadSchemaVersion == legacyCatalogSchemaVersion && len(original.MembershipScopes()) == 0 {
+			return legacyCatalogSchemaVersion
+		}
+		if original.payloadSchemaVersion == membershipCatalogSchemaVersion {
+			return membershipCatalogSchemaVersion
+		}
 	}
 	return CurrentCatalogSchemaVersion
 }

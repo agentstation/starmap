@@ -63,6 +63,11 @@ func (l *layerSet) appendScopeSourceEvidence(catalog *catalogs.Catalog) error {
 
 // validateUpstreamScopePublishers reserves this runtime's identities for local evidence.
 func (l *layerSet) validateUpstreamScopePublishers(catalog *catalogs.Catalog) error {
+	for _, policy := range catalog.RemovalPolicies() {
+		if namesInstance(policy.PublisherID, l.publisherID, l.publisherAliases) {
+			return &errors.ConflictError{Resource: "removal publisher", Message: "an upstream catalog cannot claim this runtime operator identity"}
+		}
+	}
 	for _, scope := range catalog.MembershipScopes() {
 		if namesInstance(scope.PublisherID, l.publisherID, l.publisherAliases) {
 			return &errors.ConflictError{

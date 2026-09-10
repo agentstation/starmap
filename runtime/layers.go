@@ -59,6 +59,7 @@ type layerSet struct {
 	source             *sourceLayer
 	providers          map[providerEvidenceKey]ProviderLayer
 	manual             *manualBatch
+	removals           *catalogs.CatalogRemovalPolicy
 	sequence           uint64
 	providerBindings   *providerBindingPolicy
 	acquisitionSources *acquisitionSourcePolicy
@@ -68,7 +69,7 @@ type layerSet struct {
 
 // empty reports whether any retained layer sits above the embedded baseline.
 func (l *layerSet) empty() bool {
-	return l.source == nil && len(l.providers) == 0 && l.manual == nil
+	return l.source == nil && len(l.providers) == 0 && l.manual == nil && l.removals == nil
 }
 
 // providerOrder returns the retained provider identities in stable order, so
@@ -142,6 +143,10 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 				"publish", "effective catalog", state.GenerationID, err)
 		}
 	}
+	catalog, err = l.applyRemovalPolicy(catalog)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if err := l.appendScopeSourceEvidence(catalog); err != nil {
 		return starmap.CatalogState{}, err
 	}
@@ -176,7 +181,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		if err != nil {
 			return starmap.CatalogState{}, err
 		}
-	} else if len(l.buildEvidence.SourceObservations) > 0 && state.GenerationID != "" {
+	} else if (len(l.buildEvidence.SourceObservations) > 0 || l.removals != nil) && state.GenerationID != "" {
 		state.GenerationID = deriveEffectiveGenerationID(state.GenerationID, identityChecksum)
 	}
 	if l.acquisitionSources != nil {
@@ -395,8 +400,15 @@ func (r *Runtime) loadRetainedLayers(ctx context.Context) error {
 	if err := validateManualHistory(manual, r.config.providerBindings); err != nil {
 		return err
 	}
+	removals, err := r.store.loadRemovals()
+	if err != nil {
+		return err
+	}
 	publisherID, err := r.instanceIdentity()
 	if err != nil {
+		return err
+	}
+	if err := checkRetainedRemovals(r.client.CurrentCatalogState().Catalog, publisherID, removals); err != nil {
 		return err
 	}
 	r.mu.Lock()
@@ -406,5 +418,6 @@ func (r *Runtime) loadRetainedLayers(ctx context.Context) error {
 	r.layers.source = source
 	r.layers.providers = providers
 	r.layers.manual = manual
+	r.layers.removals = removals
 	return nil
 }

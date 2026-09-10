@@ -17,6 +17,10 @@ func (r *Runtime) publishInputChanges(ctx context.Context, source *sourceLayer, 
 }
 
 func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64, resets []ObservationReset) (starmap.CatalogState, error) {
+	return r.publishInputsWithRemovals(ctx, source, providers, manual, epoch, resets, nil)
+}
+
+func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64, resets []ObservationReset, removal *removalUpdate) (starmap.CatalogState, error) {
 	manualRequested := len(manual) != 0
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
@@ -45,6 +49,11 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 	candidate := r.layers
 	candidate.providers = maps.Clone(r.layers.providers)
 	r.mu.RUnlock()
+	if removal != nil {
+		if err := candidate.prepareRemovalUpdate(r.State(), removal); err != nil {
+			return starmap.CatalogState{}, err
+		}
+	}
 	selected, err := selectProviderEvidence(prepared, candidate.providers)
 	if err != nil {
 		return starmap.CatalogState{}, err
@@ -79,27 +88,18 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 	}
 	current := r.client.CurrentCatalogState()
 	record := inputPublication{Version: inputPublicationVersion, Phase: inputPublicationPrepared, ExpectedID: current.GenerationID, ExpectedChecksum: current.PayloadChecksum, GenerationID: state.GenerationID, PayloadChecksum: state.PayloadChecksum}
-	if source != nil {
-		record.Source, err = r.store.stageInput(ctx, source)
-		if err != nil {
-			return starmap.CatalogState{}, err
-		}
-	}
-	for _, layer := range selected {
-		name, err := r.store.stageInput(ctx, layer)
-		if err != nil {
-			return starmap.CatalogState{}, err
-		}
-		record.Providers = append(record.Providers, name)
-	}
+	changes := inputChanges{source: source, providers: selected}
 	if len(manual) != 0 {
-		record.Manual, err = r.store.stageManualBatch(ctx, candidate.manual)
-		if err != nil {
-			return starmap.CatalogState{}, err
-		}
-		candidate.manual.reference = record.Manual
+		changes.manual = candidate.manual
 	}
-	changed := source != nil || len(selected) > 0 || len(manual) != 0
+	if removal != nil {
+		changes.removals = candidate.removals
+	}
+	record, err = changes.stage(ctx, r.store, record)
+	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	changed := !changes.empty()
 	if changed {
 		if err := r.store.writeInputPublication(ctx, record); err != nil {
 			return starmap.CatalogState{}, err
@@ -121,7 +121,7 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 	// Caller cancellation starts a bounded grace period for retained-input writes.
 	finish, cancel := publicationCompletionContext(ctx)
 	defer cancel()
-	return durable, r.store.completeInputPublication(finish, record, source, selected)
+	return durable, changes.complete(finish, r.store, record)
 }
 
 func publicationCompletionContext(ctx context.Context) (context.Context, context.CancelFunc) {

@@ -149,8 +149,8 @@ func (o Observation) Validate() error {
 	if o.SourceID == "" {
 		return observationValidationError("source", o.SourceID, "is required")
 	}
-	if o.Catalog == nil {
-		return observationValidationError("catalog", nil, "is required")
+	if err := validateObservationCatalog(o.Catalog); err != nil {
+		return err
 	}
 	if o.ObservedAt.IsZero() {
 		return observationValidationError("observed_at", o.ObservedAt, "is required")
@@ -288,4 +288,14 @@ func observationValidationError(field string, value any, message string) error {
 		Value:   value,
 		Message: message,
 	}
+}
+
+func validateObservationCatalog(catalog *catalogs.Catalog) error {
+	if catalog == nil {
+		return observationValidationError("catalog", nil, "is required")
+	}
+	if len(catalog.RemovalPolicies()) != 0 {
+		return observationValidationError("catalog.removal_policies", nil, "acquisition cannot supply operator policy")
+	}
+	return nil
 }
