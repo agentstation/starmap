@@ -1,0 +1,568 @@
+{
+  "task": "CSP4",
+  "status": "in_progress",
+  "source": "ea4f7f11658077f4218abf841e51605ea351afdf",
+  "source_tree": "eba7cd8e5513e7554f6760fd1b5f53b1d10aa9ac",
+  "base": "d2c738d6db20e0c7d738fcd8134b154db612ed16",
+  "worktree": "/tmp/starmap-authority-retention-2026-09-10",
+  "branch": "codex/catalog-authority-retention",
+  "source_files_sha256": {
+    ".env.example": "ad920c5a1174a33815acdc8d49a3b012528bd948bb7a55715bd5974406b14ebb",
+    "GLOSSARY.md": "09ebe2143a7662ae7b40983c89f7778d5921157b05e2683831ec2d3e9707dd7b",
+    "docker-compose.yml": "ad41ea792e9068353cd9cd2445fbe68be1c35fa4b2e1a7372109b3ecb50b4848",
+    "docs/API.md": "eb6b66009665e8b6603088491f9cd40d382b98026f7c179d1701024ee814890e",
+    "docs/CATALOG_SETTINGS.md": "7806756f50d2c5a0969155656cbee839334970986ae16a781691157d88212875",
+    "docs/catalog-settings-schema.json": "a76489b4a5afba93de1fe38f00f680e10a244516584f3a1f46fc6cb69ee8c5ab",
+    "internal/catalog/settings/reference_test.go": "f8495c0856a6439b996bee649f947328e654bcaccc42762e78464df17e4f6dc8",
+    "internal/catalog/settings/settings.go": "5fa3bae19daaff25efb98b7cd55096a22bff7ea4a8bce78f438e615ad0143b26",
+    "internal/catalog/settings/settings_test.go": "2e1267940d5401b6ce6cea287fd6d194a4631ecf0a2ead12f83fd4849e622647",
+    "internal/server/handlers/health.go": "64c3255921486bce731e7b001ccef09211ca1a96be5f754bbfea5217bc85d3ce",
+    "internal/server/handlers/health_test.go": "afccc42b5474da70f882728a04f0fa5d8ae574f59fd5e5428f7a4593de77f0d0",
+    "options.go": "a112240e795e3186a8818fe63bb3da8c617978c4cfe692d99c2a557d9ea6eb64",
+    "options_boundary_test.go": "d3b17d3f8ed7f26f2fdfb92df5b05d2708dbe2c42183b9a03e065a69cce49a54",
+    "pkg/catalogs/config/authority_test.go": "ac09d0a1dfa6c0215f93046bd2a70230dc1920db304b2b4c597d2cd04ccb215e",
+    "pkg/catalogs/config/config_test.go": "b01fa081ac3e691872d8858644d92c17a6c4227af11ccf461256b7568031dd42",
+    "pkg/catalogs/config/descriptors.go": "f61077a642ffdf58f6b0eea60787f388f89570e8c8c757bcd18ca8889528330a",
+    "pkg/catalogs/config/settings.go": "fa7da30833dcfdc1bc427c921104ff56ff40bb6154d864d27aa99aea5ceef4e0",
+    "publication_guard.go": "3f5f3696ceb49758ec24cd320e69c1d63f07641fb80a6673b390276fbd8ee2e5",
+    "publication_guard_test.go": "dfdef1354faf3e9007d2953d6a655ec0c94ea9e2d1205a16037ab5d16806a1ab",
+    "remote/README.md": "96de7036a833db3d442a00dad1dbab4e49c13b7397b1d8c073fa8aefa6315987",
+    "remote/source.go": "6cbe53940baa9825bd14a5086fd75da10bf2cc9caa2af9c03137cbcd95d2f57b",
+    "remote/source_permission_test.go": "367fa7b5e41cc21e8b61696bba031b2190b2d937bf0382b45c8ab5c622871161",
+    "rollback.go": "35c160d3127219cbb40eb0a362acc28e730b0c88fb04b0562390f378c67f8df2",
+    "runtime/README.md": "04f23b82335a9920a2d6d269ae1d36e7425c13f5a3beae8b13ad2132d3c61164",
+    "runtime/acquisition_policy_publication.go": "406c6c67dff636039c611da8bb6c70f3a9f9ee8d3996dd5700507b587d90ccd8",
+    "runtime/authority_catalog.go": "6dae3747538645e03f32e47f000c418a92db552ac09b3047ae2674059b0b1ddc",
+    "runtime/authority_permissions.go": "e73646cdeab86b32bbe1690acf3025054ca9e432acbb1a38e12fd973e84eb42c",
+    "runtime/authority_permissions_test.go": "7f3ef07ff6bf770586dd790cfe0e0a214dff8f673ab144e530f2f0899e44718d",
+    "runtime/authority_policy.go": "fec8500159f473da531c3d7212bfd89b55e78640203d8ad2dbc5cdf17f57ec6d",
+    "runtime/authority_publication.go": "118a89f540160c4cd1452abb45a51ab92a9516a088d319c44a799d84feedfdea",
+    "runtime/authority_refresh.go": "1f49f975c8e60b1667a8b343b6105bcb695c5e720340379871ec5f7513f6e584",
+    "runtime/authority_retention.go": "d6df98180d1e83d2287c6e8d9ff16130d901a6e8a9a8e25887acf9c8c5d336e6",
+    "runtime/authority_runtime_test.go": "8c2e6f2b4f9d73b259361b2473f09382b1872e5a9f0af39687c458cbecaee2a2",
+    "runtime/layers.go": "381605658ccea5f37cbacb408ef24a9512beb700b0ad019b0c93803c1f233659",
+    "runtime/options.go": "f01eaaf331096b1e870cb39946d25acf735e53054bb3897b42007187e610ff10",
+    "runtime/policy.go": "f4e7c200c07d60da9f8a971ad3ce2a3a572df9c14663c87707a6bf20eac862fc",
+    "runtime/publication_retention.go": "c8ed4cd7db9c0af95b9d5ea2c2e9c39e37939f3098a4c3ffb665ecb65870bd98",
+    "runtime/refresh.go": "34138e433e664a47557f23845f540598f327079bfa3cb9d6d8653471938d3b33",
+    "runtime/runtime.go": "167f9ff5330527caaf65014a5b7dbe6c20ab15a5b6036aba2bb42243e6858121",
+    "runtime/scheduler.go": "a6348d1cf873e6cf13668bb0746939db4579a3e59512861b550506f44d738169",
+    "runtime/source/README.md": "54de3c3d75022f066ede2afafa96f402ac667fff07cca6da26abe931075364e8",
+    "runtime/source/source.go": "a0db12f82228c2a59b8a54f01ae1d3e6e6656628161fe6795e95f06970ff51e1",
+    "runtime/source_acquisition.go": "db44f594f35edbadc63a28d396f65d0f60df8d918cad33421cf54117bfe83263",
+    "runtime/status.go": "15947607bf1f6264cbc26cd71c4d2c284e6b637ee8f46fa70cd6fe394e723112",
+    "runtime/status/README.md": "72ccbc255d395a9a23190f4d2453d05175882c4f366ed8aa7a0b46d55fa2298d",
+    "runtime/status/status.go": "ccc15fe4cb11ad095751b2fe29e8469d0cf465d0365edfccd4de6675f53e1f4e",
+    "update.go": "d922a4b547e7111066ec4ee320fb7cd5a6ccb3a5624028d3a0ceddbd908ad326"
+  },
+  "checks": {
+    "authority-acquisition-red": {
+      "artifact": {
+        "path": "authority-acquisition-red.jsonl.gz",
+        "sha256": "9605a8f581ef427ea23f7127ddfff1e0872a59df0a32779972b42480daac1515",
+        "raw_sha256": "a638bfc48648a3310a9df0d6eaea93af61ee2f24ffc2dd33079a40ec4f307d4b"
+      },
+      "command": "go test -race -count=1 -json ./runtime -run ^TestAuthorityRuntimeDoesNotAcquireLocally$",
+      "source_scope": "Intermediate runtime integration before the named fix. The artifact preserves the observed failure.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 10.406
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityRuntimeDoesNotAcquireLocally"
+      ],
+      "exit_code": 1
+    },
+    "authority-client-alignment-red": {
+      "artifact": {
+        "path": "authority-client-alignment-red.jsonl.gz",
+        "sha256": "f39af4a949a2839cad8f8ba35e33ecce0195103433de3307b338b413a01e6512",
+        "raw_sha256": "b3a4310a2c4cad5a8f9851332b2331d98928b658e1bdbb2e7903804c8715f206"
+      },
+      "command": "go test -race -count=1 -json ./runtime -run ^TestAuthorityRuntimeWarmStartAlignsPublicationClient$",
+      "source_scope": "Intermediate runtime integration before the named fix. The artifact preserves the observed failure.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 11.322
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityRuntimeWarmStartAlignsPublicationClient"
+      ],
+      "exit_code": 1
+    },
+    "runtime-postcommit": {
+      "artifact": {
+        "path": "runtime-postcommit.jsonl.gz",
+        "sha256": "c9102fd1d5d7faf5de6ccb3974a5b8702791929344dd1bd15eae8735b97f1faa",
+        "raw_sha256": "ffa1faf808edd8ef72d4528ced2afb52e21bc60efdc4a2a7eb974f29f40b29ed"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./remote ./pkg/catalogs/config ./internal/catalog/settings ./internal/server/handlers -run 'Authority|PublicDescriptorsCover|ReadPermission|EveryCanonicalName|CatalogSettingsReference'",
+      "source_scope": "Exact local commit 9ddf5fd070d346150f1700583f62565acf912b62. Later ownership and renewal fixes supersede this runtime source.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/remote",
+          "Elapsed": 1.501
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "Elapsed": 11.566
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 15.087
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/handlers",
+          "Elapsed": 1.423
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "Elapsed": 1.9060000000000001
+        }
+      ],
+      "failed_tests": [],
+      "exit_code": 0
+    },
+    "intermediate-broad": {
+      "artifact": {
+        "path": "intermediate-broad.jsonl.gz",
+        "sha256": "25769220334a6a623ae70aef224cef7bd7510dd610482429deeb6b8148210042",
+        "raw_sha256": "2ed3a68aa39748551cc0d67362af4aa52148fc11a4fbbd0525bfe345cadb4255"
+      },
+      "command": "go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact ./pkg/catalogs/config ./internal/catalog/settings ./internal/server/handlers ./server",
+      "source_scope": "Intermediate source while integration continued. Three settings-reference failures were fixed. This run does not qualify the final tree.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 1012,
+        "fail": 3,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/remote",
+          "Elapsed": 17.205
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Elapsed": 1.347
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "Elapsed": 35.329
+        },
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "Elapsed": 11.112
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/handlers",
+          "Elapsed": 13.918
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 19.502
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1145.277
+        }
+      ],
+      "failed_tests": [
+        "TestDeploymentFilesDocumentEveryCanonicalName",
+        "TestCatalogSettingsReferenceIsCurrent",
+        "TestEveryCanonicalNameMapsToOption"
+      ],
+      "exit_code": 1
+    },
+    "settings-repair": {
+      "artifact": {
+        "path": "settings-repair.jsonl.gz",
+        "sha256": "4aa4c4bd4e0844c3805cdee7974e175e8cd40cb00ea39d5a7f6402b98d5da383",
+        "raw_sha256": "f88d79ac888c53b1d93d7e54123928ab4efb2e2c8ad7ff5578e6f1dcbb76852f"
+      },
+      "command": "go test -race -count=1 -json ./pkg/catalogs/config ./internal/catalog/settings",
+      "source_scope": "Intermediate settings repair. All three failures from the broad run pass here.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 98,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "Elapsed": 13.11
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "Elapsed": 33.927
+        }
+      ],
+      "failed_tests": [],
+      "exit_code": 0
+    },
+    "direct-client-red": {
+      "artifact": {
+        "path": "direct-client-red.jsonl.gz",
+        "sha256": "877e6f1868d425c85cf9e7fd48e6550313d853d49f4dcafb8304fb9e27bf2daf",
+        "raw_sha256": "be57fe6aaa31da4364e3d336ae34e2860f884da24cbf3c2ab34284b4af2bc225"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthorityRuntimeDirectClientUpdateCannotKeepAdmission$",
+      "source_scope": "Fail-before regression on the local draft before its named fix. The direct-client recovery experiment retains its original failed alias-history check.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 9.98
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityRuntimeDirectClientUpdateCannotKeepAdmission"
+      ],
+      "exit_code": 1
+    },
+    "direct-client-recovery": {
+      "artifact": {
+        "path": "direct-client-recovery.jsonl.gz",
+        "sha256": "a1685743f3fc016f2fa0ed984793865b66f3586b89be535ad2154163406966c2",
+        "raw_sha256": "3fad0c8f0cc703d7ab985f41d046170e26295203324c94c239b342363e529327"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthorityRuntimeDirectClientUpdateCannotKeepAdmission$",
+      "source_scope": "Fail-before regression on the local draft before its named fix. The direct-client recovery experiment retains its original failed alias-history check.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 9.981
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityRuntimeDirectClientUpdateCannotKeepAdmission"
+      ],
+      "exit_code": 1
+    },
+    "permission-renewal-red": {
+      "artifact": {
+        "path": "permission-renewal-red.jsonl.gz",
+        "sha256": "2996fb996b36bcfb8e4f7bfd6b3cee6d4221643b40499dc4b9717ad9229347de",
+        "raw_sha256": "de90ce507711e71a1ff9d36b2e2628f266001f90c78353097017323dd6a63557"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthorityPermissionsRenewalPreservesOnlyTheConfirmedLease$",
+      "source_scope": "Fail-before regression on the local draft before its named fix. The direct-client recovery experiment retains its original failed alias-history check.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 0.485
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityPermissionsRenewalPreservesOnlyTheConfirmedLease"
+      ],
+      "exit_code": 1
+    },
+    "rollback-guard-red": {
+      "artifact": {
+        "path": "rollback-guard-red.jsonl.gz",
+        "sha256": "3003d16014566efe62d643dafabbae973e454b20543b6c0bd4a0d087684295a4",
+        "raw_sha256": "779d58aacfec699fdc667da01f199662b8a17d4be07a9648d79364d9fa2fbe44"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json . -run ^TestPublicationGuardsArePassiveAndCumulative$",
+      "source_scope": "Fail-before regression on the local draft before its named fix. The direct-client recovery experiment retains its original failed alias-history check.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap",
+          "Elapsed": 13.757
+        }
+      ],
+      "failed_tests": [
+        "TestPublicationGuardsArePassiveAndCumulative"
+      ],
+      "exit_code": 1
+    },
+    "rejected-receipt-red": {
+      "artifact": {
+        "path": "rejected-receipt-red.jsonl.gz",
+        "sha256": "21b0868dc09834ed0e80891ffe3c736db4943b0231babbaa8267cc3cb52f1387",
+        "raw_sha256": "50912ea18f35e50f8426525266d7b9d995125411275a076f4988b09dd8aecf67"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthorityPermissionsManifestCannotRestoreRejectedReceipt$",
+      "source_scope": "Fail-before regression on the local draft before its named fix. The direct-client recovery experiment retains its original failed alias-history check.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 0.559
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityPermissionsManifestCannotRestoreRejectedReceipt"
+      ],
+      "exit_code": 1
+    },
+    "earlier-root": {
+      "artifact": {
+        "path": "earlier-root.jsonl.gz",
+        "sha256": "e467c4026543e244042b2ad9b21a8b10f831f083605a33dea74c4e94808a857e",
+        "raw_sha256": "c46917c7286b793b1d45ff7f62825655f88fb8c5a355215bdefeee1ae03aea59"
+      },
+      "command": "go test -race -count=1 -timeout=15m -json .",
+      "source_scope": "Intermediate publication guard before the offline API inventory included WithPublicationGuard. Only TestNewRejectsRuntimeOptions fails.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 104,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap",
+          "Elapsed": 622.772
+        }
+      ],
+      "failed_tests": [
+        "TestNewRejectsRuntimeOptions"
+      ],
+      "exit_code": 1
+    },
+    "focused": {
+      "artifact": {
+        "path": "focused.jsonl.gz",
+        "sha256": "ee05b090c78bf5376c089c66471267efc59c51d86a7330fdc35958d1939096e2",
+        "raw_sha256": "1db16ce161b6097284ea7cb6eb7fc39fa5c0c26fcb726fcf8205efe02c7fc888"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json . ./runtime -run '^Test(PublicationGuard|Authority|NewRejectsRuntimeOptions)'",
+      "source_scope": "Final source before the local commit. Commit changes no source bytes.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap",
+          "Elapsed": 15.571
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 17.185
+        }
+      ],
+      "failed_tests": [],
+      "exit_code": 0
+    },
+    "minimum": {
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "dd222051951e5dfaa6c33d866ed2ba59514069dbba5224a6665d8e5ba7e29d6e",
+        "raw_sha256": "e82642bfcbf70da753ea7b0026515a38add24a0471ffd20ae1b273b96edd2568"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json . ./runtime -run '^Test(PublicationGuard|Authority|NewRejectsRuntimeOptions)'",
+      "source_scope": "Final source before the local commit. Commit changes no source bytes.",
+      "toolchain": "go1.25.12",
+      "test_events": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap",
+          "Elapsed": 12.798
+        },
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 14.859
+        }
+      ],
+      "failed_tests": [],
+      "exit_code": 0
+    },
+    "root-suite": {
+      "artifact": {
+        "path": "root-suite.jsonl.gz",
+        "sha256": "17c4829fec425aa880ec3c195d30e72b514afac56039516a2458e7135e51d818",
+        "raw_sha256": "b8c50edcd86cd7f5265ef73b600d8102e2480411c6de40d9f9995d2b60997c51"
+      },
+      "command": "go test -race -count=1 -timeout=20m -json .",
+      "source_scope": "Final root-package source. The later refusal repair changes only runtime/authority_permissions.go and its tests. Runtime qualification uses the focused checks.",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 105,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap",
+          "Elapsed": 613.487
+        }
+      ],
+      "failed_tests": [],
+      "exit_code": 0
+    },
+    "lint": {
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      },
+      "command": "devbox run golangci-lint run",
+      "source_scope": "Final source before the local commit.",
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    "ago": {
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      "command": "go tool ago -stale-ignores -format json ./...",
+      "source_scope": "Final source before the local commit.",
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    "docs": {
+      "artifact": {
+        "path": "docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      },
+      "command": "GOFLAGS= make docs-check",
+      "source_scope": "Final source before the local commit.",
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    "prose": {
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "efdfc1ab58a3b3ca030e86bfb537eea5264622db2b3a4752cd49588c063b4394",
+        "raw_sha256": "845be98d755fb3cdf42aa91e6ba3a39af5a683bd8cdaacc1bde2d0d55d4852b5"
+      },
+      "command": "make technical-writing-check",
+      "source_scope": "Final source before the local commit.",
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    "external-consumers": {
+      "artifact": {
+        "path": "external-consumers.log.gz",
+        "sha256": "70f00609577fd2e52ff73f31fe0beaeef8a29d9128ef15215742b36f9d355a1b",
+        "raw_sha256": "e125038c7c235d8bbbf2649c84415f74663dc8eed7bf90e2f5a004c3093d52f0"
+      },
+      "command": "bash scripts/verify-consumer-deps.sh",
+      "source_scope": "Publication guard before the Rollback and runtime receipt-state repairs. All six consumers pass with unchanged dependency limits.",
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    }
+  },
+  "invocation_errors": [
+    {
+      "artifact": {
+        "path": "renewal-final-minimum.jsonl.gz",
+        "sha256": "08a5566b91ea2ddb4775e1d53c07b88238851ac9a0f152c787f6354161cc303c",
+        "raw_sha256": "2685d7d2471fbb8fc9cec4a600fe5dfc337bf97c49c442e65362a06bf48f8eba"
+      },
+      "reason": "The command omitted the separator after -timeout. No test executed. Corrected commands supply -timeout=5m and -timeout=20m."
+    },
+    {
+      "artifact": {
+        "path": "renewal-final-root-suite.jsonl.gz",
+        "sha256": "976bd2183117c96a4282be35e7261cffb93cfc45c59dbedbda533a7c1312b752",
+        "raw_sha256": "36fae000af91511f070c60cdd429b35901fcde7046c50eb9b10b3df2697f3708"
+      },
+      "reason": "The command omitted the separator after -timeout. No test executed. Corrected commands supply -timeout=5m and -timeout=20m."
+    }
+  ],
+  "observations": [
+    "The runtime enforces configured authority and policy identities, retains the highest authenticated requirement separately from its finite receipt, and exposes diagnostic readiness.",
+    "The private permission checkpoint remains uncertain during runtime activity. A clean shutdown seals it after readers stop. A crash needs a fresh verified receipt before new inference.",
+    "Authoritative publication excludes retained local acquisition and rejects direct Update, Activate, and Rollback calls through the serving client. Caller guards compose with runtime ownership.",
+    "Same-permission renewal preserves the confirmed lease until its original expiry. Pending renewal cannot extend validity. A manifest cannot restore a rejected receipt.",
+    "Permission admission reads cached runtime state and clock evidence. These component tests do not qualify Starport request latency."
+  ],
+  "limitations": [
+    "All eight assigned CSP4 acceptance subcases remain UNVERIFIED. No completion or merge credit.",
+    "Publisher permission projection, receipt issuance, and a real host clock qualification adapter remain incomplete.",
+    "Shared-store follower activation, explicit authority transitions, full trust/schema/replay/cycle qualification, and required Starport consumer acceptance remain incomplete.",
+    "Full runtime regression on the final source, the product verifier, required review, native CI, PR, and merge remain pending.",
+    "Older broad results are intermediate evidence and retain their failures. The external object adapter remains a fixture qualification."
+  ]
+}

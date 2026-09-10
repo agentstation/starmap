@@ -1,5 +1,50 @@
 # CSP4 authority and retained startup
 
+## Current runtime integration
+
+CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
+Local commit `a9b369dca409f4d47813da32b092622fb3a4aedd` follows ownership fix `ea4f7f11` and runtime integration `9ddf5fd0`.
+The [runtime proof](csp4/runtime-integration-2026-09-10/verification.json) binds 47 changed files to the committed tree.
+
+Each final focused suite passes 29 test events and two package outcomes.
+The suites use Go 1.26.6 and Go 1.25.12.
+Lint, ago, generated documentation, and prose checks pass. The prose check covers 1,400 files with zero diagnostics.
+The complete root race suite passes 105 test events and one package outcome.
+
+The runtime retains the highest authenticated requirement separately from its finite receipt.
+It checks configured authority and policy identities before activation.
+The private `catalog-runtime/permission.json` checkpoint stays uncertain until shutdown stops every reader and retains the complete state.
+A crash needs a fresh verified receipt before admission. A clean restart can use a valid retained receipt with a qualified clock.
+
+The runtime reserves client publication through cumulative guards on `Update`, `Activate`, and `Rollback`.
+Direct calls cannot alter the serving catalog or add alias history that prevents trusted-source recovery.
+Local provider acquisition stops before provider calls in `require_authority` mode.
+The serving client and retained authority catalog align before readiness.
+
+A same-permission renewal preserves the confirmed lease and its original expiry until the replacement receipt is durable.
+A changed requirement or unknown permission semantics blocks new attempts immediately.
+A catalog manifest cannot restore a rejected permission receipt.
+Admission reads the runtime snapshot and cached clock evidence. These component checks do not measure Starport overhead.
+
+The proof retains failures for local acquisition, warm client alignment, direct client publication, rollback, ordinary renewal, and rejected-receipt recovery.
+An intermediate broad run passed 1,012 test events and failed three settings checks.
+The complete settings repair suite passes 98 test events plus two package outcomes.
+The proof preserves an earlier root API-list failure and two command syntax errors that ran no tests.
+None of these intermediate runs qualifies the final runtime tree.
+
+The [generation-binding proof](csp4/generation-binding-2026-09-10/verification.json) records a second publication defect and its repair.
+The runtime now activates the original authority generation with its complete manifest and payload.
+The exact generation survives refresh and retained restart. Both toolchains pass 27 authority test events and one package outcome.
+
+An unchanged generation requires no catalog-store write. This preserves retained diagnostics during a write outage.
+The complete runtime, remote, and artifact race suite remains running. Current resume state names its session and output path.
+
+Next, complete publisher receipt issuance, the host clock adapter, shared-store follower activation, authority transitions, and required consumer checks.
+Full CSP4 verification, review, native CI, PR, and merge remain pending.
+No owner decision remains. No task completion credit applies.
+
+## Historical permission-envelope checkpoint
+
 CSP4 remains in progress. All eight assigned acceptance subcases remain unverified.
 Local commit `1f1b01148f86115a053a0dc8ac9fd77c5b8a9b47` adds the permission-envelope contract.
 The [primitive proof](csp4/permission-envelope-2026-09-10/verification.json) records 1,212 catalog race events and 54 minimum-toolchain events.

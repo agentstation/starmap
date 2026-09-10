@@ -1,0 +1,162 @@
+{
+  "task": "CSP4",
+  "source": "a9b369dca409f4d47813da32b092622fb3a4aedd",
+  "source_tree": "0c38890ed4c4d7422238bc232f0ebab0069524f3",
+  "base": "ea4f7f11658077f4218abf841e51605ea351afdf",
+  "source_files_sha256": {
+    "runtime/acquisition_policy_publication.go": "b60f9eed6c4cf73ccc95a21585461bc50fefba85bf489c31c8bf595ff7a4bbb0",
+    "runtime/authority_catalog.go": "520c8fdd53f75d28ddadf5e5d0d334d9b86184cc04b32ecff2df30cc864dc37f",
+    "runtime/authority_runtime_test.go": "171ab3092ff76213304606f90a06f644610651e19aa7b85df35747eae2b0481f",
+    "runtime/publication_retention.go": "8529d15ec350605d9bacea2f708f0d21dbfea4972726d821c4c13d9f7eb8be43",
+    "runtime/runtime.go": "d5ff03401581e4670c152832338d3289f4d0a477ad849e7929a493129dcf415e"
+  },
+  "checks": {
+    "red": {
+      "artifact": {
+        "path": "red.jsonl.gz",
+        "sha256": "0df7c18b3270d07173dfd0259be1bc4f3f74b972acb6d4b7dd587aaaf73abb00",
+        "raw_sha256": "aee77d0d8de0b2cda8350b19ba1840b71fe3f5d60b2c9928d8244a6325c1a27a"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthorityRuntimePreservesPublishedAuthorityGeneration$",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T09:33:51.469721-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 11.328
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityRuntimePreservesPublishedAuthorityGeneration"
+      ],
+      "exit_code": 1
+    },
+    "intermediate-startup-write-failure": {
+      "artifact": {
+        "path": "intermediate-startup-write-failure.jsonl.gz",
+        "sha256": "7b18a028b49f5b8a8d01d80761aed699dc906fbc663b86d44d186df87b64df45",
+        "raw_sha256": "ccfa98adb2de3ddd93ab66c7e4e825ce694988c63105386527f19a2b7d472dc1"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthority",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 26,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T09:35:26.950753-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 13.589
+        }
+      ],
+      "failed_tests": [
+        "TestAuthorityRuntimeWithdrawalBlocksBeforeFailedActivationAndRestart"
+      ],
+      "exit_code": 1
+    },
+    "focused": {
+      "artifact": {
+        "path": "focused.jsonl.gz",
+        "sha256": "4fc251dae817bac6e9215e1e21eae648f964aa3bb37094d3fe47dcc4eddc0aa0",
+        "raw_sha256": "361c59a0c63f083b683ad8d42d4734c7910a5eb8a95a0be80429a85c152a9125"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthority",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T09:37:08.685636-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 13.884
+        }
+      ],
+      "failed_tests": [],
+      "exit_code": 0
+    },
+    "minimum": {
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "7fdff1ba05549588e556b44c41b59e1590e556b46bd241bc9f271a3a44aca093",
+        "raw_sha256": "63f006839fd358b94fbbef68c1c6c851f449fc0440ba9b40b704c87c46320ef0"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthority",
+      "toolchain": "go1.25.12",
+      "test_events": {
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T09:38:13.821959-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 13.996
+        }
+      ],
+      "failed_tests": [],
+      "exit_code": 0
+    },
+    "lint": {
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      },
+      "command": "devbox run golangci-lint run",
+      "exit_code": 0
+    },
+    "ago": {
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      "command": "go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0
+    },
+    "docs": {
+      "artifact": {
+        "path": "docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      },
+      "command": "GOFLAGS= make docs-check",
+      "exit_code": 0
+    },
+    "prose": {
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "efdfc1ab58a3b3ca030e86bfb537eea5264622db2b3a4752cd49588c063b4394",
+        "raw_sha256": "845be98d755fb3cdf42aa91e6ba3a39af5a683bd8cdaacc1bde2d0d55d4852b5"
+      },
+      "command": "make technical-writing-check",
+      "exit_code": 0
+    }
+  },
+  "limitations": [
+    "All eight assigned acceptance subcases remain UNVERIFIED. No task completion credit.",
+    "The complete runtime, remote, and artifact race suite is still running as session 8191. Its output is /tmp/starmap-csp4-runtime-generation-binding-full-suite-2026-09-10.jsonl.",
+    "Publisher receipt issuance, clock qualification, follower activation, consumer acceptance, required review, native CI, and merge remain incomplete."
+  ],
+  "observations": [
+    "Runtime publication now activates the original authority generation instead of constructing an ordinary generation from its catalog facts.",
+    "The regression compares the entire generation after refresh and retained restart. Both toolchains pass 27 authority test and subtest events plus one package outcome.",
+    "An unchanged serving generation requires exact payload and serialized manifest equality. It needs no catalog-store write, so retained diagnostics survive a write outage.",
+    "The prior root suite passes 105 test events plus one package outcome on unchanged root source. Its evidence remains in the preceding runtime-integration record."
+  ]
+}

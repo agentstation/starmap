@@ -1696,3 +1696,38 @@ CSP3 is complete. D27 through D30 remain the accepted absence, removal, and alia
 CSP4 continues with independent permission envelopes, transport, and committed authority bindings.
 Its runtime state and source adapter remain local work.
 Starport integration and released-pair acceptance remain incomplete.
+
+## Runtime authority and client publication, 2026-09-10
+
+Local Starmap `ea4f7f11` connects configured authority identities, independent permission refresh, private retention, startup, and readiness.
+The [runtime proof](../../plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/verification.json) records 29 passing test events and two package outcomes on both supported toolchains.
+Static checks pass. CSP4 remains in progress.
+
+The audit found that direct client mutations could bypass runtime authority and add incompatible alias history.
+Cumulative publication guards now reserve update, activation, and rollback for the owning runtime.
+The offline API inventory includes the passive guard. Construction and reads never invoke it.
+The existing alias-history validation remains intact.
+
+The audit also found that ordinary receipt renewal interrupted a valid confirmed lease.
+The runtime now preserves that lease until its original expiry while it retains the renewal.
+A manifest cannot restore a rejected receipt. Only a valid receipt can reopen receipt confirmation.
+These checks use cached state and clock evidence. They do not qualify complete gateway latency.
+
+An intermediate broad run passed 1,012 test events and failed three settings checks.
+The complete settings repair suite passes 98 test events and two package outcomes.
+The proof preserves those failures, the earlier root API inventory failure, and two command syntax errors that ran no tests.
+
+Publisher receipt issuance, clock qualification, shared-store follower activation, and exact authority bindings through the serving store still need verification.
+Full CSP4 acceptance, required review, native CI, and merge remain incomplete.
+
+## Authority generation preservation, 2026-09-10
+
+The next audit found that runtime publication rebuilt an ordinary manifest and discarded the authority head.
+Local `a9b369dc` activates the complete original generation instead.
+The [binding proof](../../plans/proof/starport-production-catalog/csp4/generation-binding-2026-09-10/verification.json) records the failure and 27 passing authority test events on each toolchain.
+The regression compares the entire generation after refresh and retained restart.
+
+An unchanged generation requires exact manifest and payload equality before the runtime skips a store write.
+This preserves diagnostics after a write outage without accepting a different manifest under the same generation ID.
+The full root race suite passes 105 test events on unchanged root source.
+The full runtime, remote, and artifact race suite remains running. CSP4 remains incomplete.

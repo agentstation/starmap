@@ -248,7 +248,8 @@ These rules apply to local development, team deployments, and enterprise replica
 | First public-mode start without network or keys | Serve and persist the verified baseline. Report fallback. |
 | Public-source outage after acceptance | Keep the accepted catalog and report source freshness separately. |
 | First internal-authority start without an accepted internal catalog | Keep diagnostics available. Block inference until an approved internal generation exists. |
-| Internal-authority restart during an outage | Use the retained internal generation within the operator's retention policy. |
+| Internal-authority restart during an outage | Retain internal metadata under the operator's policy. New inference also requires confirmed permission state, a valid receipt, and a qualified clock. |
+| Restart with an uncertain permission checkpoint | Keep catalog diagnostics available. Require a fresh verified authority receipt before new inference. |
 | Invalid signature, checksum, schema, or identity | Reject the candidate. Keep the accepted generation. |
 | Expired or revoked inference credential | Stop selecting that credential. Preserve catalog facts. |
 | One provider acquisition failure | Retain that provider's previous evidence and publish other valid changes. |

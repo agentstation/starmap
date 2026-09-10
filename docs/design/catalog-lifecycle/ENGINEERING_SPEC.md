@@ -215,6 +215,12 @@ It is therefore not sufficient for the confirmed retained-internal behavior.
 Add an authority-aware policy, proposed as `require_authority`, that accepts a
 retained generation from the configured authority without requiring a new reply.
 
+The CSP4 runtime candidate adds `STARMAP_CATALOG_SOURCE_AUTHORITY_ID` and `STARMAP_CATALOG_SOURCE_POLICY_ID`.
+Both belong to the selected source group and require the `starmap` source with `require_authority`.
+The complete authority catalog excludes retained local acquisition layers.
+Local acquisition remains disabled in this mode until an explicit permission contract permits it.
+Startup must align the publication client with the runtime's retained catalog before reporting authority readiness.
+
 A subscriber with no lease must apply the same readiness rule. Another
 instance's lease does not prove that an approved shared generation exists.
 
@@ -1716,6 +1722,35 @@ The initial internal production profile uses a five-minute permission-validity b
 Expiry checks subtract that uncertainty. A replica with unknown clock validity blocks new attempts.
 The same bound applies to cached account and grant authorization unless a stricter policy applies.
 Operators can select a shorter bound. Longer bounds require a separately qualified profile and an explicit revocation-delay claim.
+
+Retain the highest authenticated requirement separately from the finite receipt.
+A manifest can disclose a newer requirement before the matching receipt arrives.
+That manifest must not manufacture or renew a receipt. Persist the requirement even when catalog activation fails.
+
+The CSP4 runtime candidate stores both values in the private `catalog-runtime/permission.json` checkpoint beneath the configured runtime state root.
+The checkpoint stays uncertain while source readers can learn new requirements.
+A completed shutdown waits for those readers, then retains the complete state before clearing uncertainty.
+A crash requires a fresh verified receipt before new attempts. Retained metadata remains available for diagnostics.
+A completed shutdown permits offline restart while the retained receipt and qualified clock still permit it.
+
+An unchanged permission revision can renew without interrupting the last confirmed lease.
+Until the new receipt is durable, attempts use the previous receipt and its original expiry.
+A changed requirement or unsupported permission semantics blocks new attempts immediately.
+Diagnostics report the confirmed expiry, not the pending renewal expiry.
+
+An authoritative runtime owns publication into its serving client.
+Direct client update, activation, and rollback calls must pass the runtime publication guard before reading or preparing a candidate.
+The guard composes with caller guards and does not run during passive construction or catalog reads.
+Permission checks read the immutable runtime snapshot. They do not read a catalog store or reconstruct the catalog.
+
+The serving catalog store must retain the original authority generation, including its manifest and exact payload bytes.
+A runtime must not reconstruct an ordinary manifest from the same catalog facts.
+An unchanged retained generation requires exact manifest and payload equality before startup skips the store write.
+
+The library clock callback reads only cached evidence.
+Its uncertainty must describe the same clock that supplies runtime time.
+The current standalone composition has no clock qualification adapter. It therefore cannot yet qualify an internal production recipe.
+CSP4 must still qualify publisher receipts, replicas that read shared catalog state, and the required Starport acceptance cases.
 
 Test lost events, unsupported catalog schemas, restart, partition, and expired permission receipts.
 Diagnostics must report required and enforced revisions and the remaining validity interval.
