@@ -26,7 +26,6 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
 - [type MembershipState](<#MembershipState>)
   - [func ResolveMembership\(ctx context.Context, observations \[\]sources.Observation\) \(\*MembershipState, error\)](<#ResolveMembership>)
   - [func \(s \*MembershipState\) ExportScopes\(publisher string\) \(\[\]catalogs.ProviderMembershipScope, error\)](<#MembershipState.ExportScopes>)
-  - [func \(s \*MembershipState\) Permits\(provider catalogs.ProviderID, model string\) bool](<#MembershipState.Permits>)
 - [type Option](<#Option>)
   - [func WithAuthorities\(authorities authority.Reader\) Option](<#WithAuthorities>)
   - [func WithBaseline\(catalog \*catalogs.Catalog\) Option](<#WithBaseline>)
@@ -122,7 +121,7 @@ func (s *AuthorityStrategy) ResolveResourceConflict(resourceType evidence.Resour
 ResolveResourceConflict resolves a resource field conflict.
 
 <a name="MembershipState"></a>
-## type [MembershipState](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L18-L20>)
+## type [MembershipState](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L16-L18>)
 
 MembershipState resolves membership from a deployment's selected observation history. Its maps are private and remain immutable after construction.
 
@@ -133,7 +132,7 @@ type MembershipState struct {
 ```
 
 <a name="ResolveMembership"></a>
-### func [ResolveMembership](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L50>)
+### func [ResolveMembership](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L48>)
 
 ```go
 func ResolveMembership(ctx context.Context, observations []sources.Observation) (*MembershipState, error)
@@ -149,15 +148,6 @@ func (s *MembershipState) ExportScopes(publisher string) ([]catalogs.ProviderMem
 ```
 
 ExportScopes returns effective scope records under the caller's publisher identity. Each record retains original receipt identities and excludes credential references.
-
-<a name="MembershipState.Permits"></a>
-### func \(\*MembershipState\) [Permits](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L124>)
-
-```go
-func (s *MembershipState) Permits(provider catalogs.ProviderID, model string) bool
-```
-
-Permits reports whether retained evidence keeps an offering in canonical discovery. Account and scoped\-public evidence remain separate from provider\-wide public absence.
 
 <a name="Option"></a>
 ## type [Option](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/options.go#L47>)
@@ -196,7 +186,7 @@ func WithChangeTime(at time.Time) Option
 WithChangeTime supplies stable timestamps for facts derived from retained evidence. It leaves original source timestamps and current\-time pricing validation unchanged.
 
 <a name="WithMembershipState"></a>
-### func [WithMembershipState](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L159>)
+### func [WithMembershipState](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L135>)
 
 ```go
 func WithMembershipState(state *MembershipState) Option
@@ -234,7 +224,7 @@ WithProviderObservationSelection selects provider records within original observ
 Provider APIs and models.dev observations support selection. Baselines and local operator observations do not. Reviewed authored definitions remain separate inputs.
 
 <a name="Reconciler"></a>
-## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L28-L39>)
+## type [Reconciler](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L27-L38>)
 
 Reconciler combines data from multiple sources into a canonical catalog. It is concrete because this package has one reconciliation engine. The narrow authority.Reader and Source interfaces accept extensions.
 
@@ -245,7 +235,7 @@ type Reconciler struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L42>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L41>)
 
 ```go
 func New(opts ...Option) (*Reconciler, error)
@@ -254,7 +244,7 @@ func New(opts ...Option) (*Reconciler, error)
 New creates a new Reconciler with options.
 
 <a name="Reconciler.Sources"></a>
-### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L85>)
+### func \(\*Reconciler\) [Sources](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/reconciler.go#L84>)
 
 ```go
 func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sources.Observation) (*Result, error)

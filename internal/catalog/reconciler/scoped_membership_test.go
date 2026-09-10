@@ -8,7 +8,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-func TestEmptyProviderInventoryRequiresExplicitAuthority(t *testing.T) {
+func TestEmptyProviderInventoryPreservesCatalogAndRecordsAvailability(t *testing.T) {
 	seed := sourceIdentityCatalog(t, "", catalogs.Model{ID: "shared", Name: "Shared"})
 	builder, err := catalogs.NewBuilderFrom(seed)
 	if err != nil {
@@ -45,15 +45,15 @@ func TestEmptyProviderInventoryRequiresExplicitAuthority(t *testing.T) {
 		unscoped     bool
 		completeness sources.ObservationCompleteness
 		status       sources.ObservationStatus
-		wantOffering bool
+		wantKnown    bool
 		authority    sources.ProviderMembershipAuthority
 	}{
-		{"complete-public", true, false, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, false, sources.ProviderMembershipProvider},
-		{"partial-public", true, false, sources.ObservationCompletenessPartial, sources.ObservationStatusDegraded, true, sources.ProviderMembershipProvider},
-		{"failed-public", true, false, sources.ObservationCompletenessPartial, sources.ObservationStatusDegraded, true, sources.ProviderMembershipProvider},
+		{"complete-public", true, false, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, true, sources.ProviderMembershipProvider},
+		{"partial-public", true, false, sources.ObservationCompletenessPartial, sources.ObservationStatusDegraded, false, sources.ProviderMembershipProvider},
+		{"failed-public", true, false, sources.ObservationCompletenessPartial, sources.ObservationStatusDegraded, false, sources.ProviderMembershipProvider},
 		{"complete-account", false, false, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, true, sources.ProviderMembershipScope},
-		{"complete-unscoped", false, true, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, true, sources.ProviderMembershipEvidenceOnly},
-		{"complete-public-evidence", true, false, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, true, sources.ProviderMembershipEvidenceOnly},
+		{"complete-unscoped", false, true, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, false, sources.ProviderMembershipEvidenceOnly},
+		{"complete-public-evidence", true, false, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, false, sources.ProviderMembershipEvidenceOnly},
 		{"complete-public-scope", true, false, sources.ObservationCompletenessComplete, sources.ObservationStatusSucceeded, true, sources.ProviderMembershipScope},
 	} {
 		t.Run(test.name, func(t *testing.T) {
@@ -95,12 +95,31 @@ func TestEmptyProviderInventoryRequiresExplicitAuthority(t *testing.T) {
 			if !ok {
 				t.Fatal("inventory removal deleted provider metadata")
 			}
-			if _, exists := got.Models["shared"]; exists != test.wantOffering {
-				t.Errorf("provider-a offering present = %v, want %v", exists, test.wantOffering)
+			if _, exists := got.Models["shared"]; !exists {
+				t.Error("provider absence deleted a visible catalog offering")
 			}
 			other, ok := result.Catalog.Providers().Get("provider-b")
 			if !ok || other.Models["shared"] == nil {
 				t.Fatal("provider-a inventory removed unrelated provider-b offering")
+			}
+			state, err := ResolveMembership(t.Context(), []sources.Observation{observation})
+			if err != nil {
+				t.Fatal(err)
+			}
+			scopes, err := state.ExportScopes("publisher")
+			if err != nil {
+				t.Fatal(err)
+			}
+			known := false
+			for _, scope := range scopes {
+				present, scopeKnown := scope.Membership("shared")
+				if present {
+					t.Fatal("empty inventory invented positive availability")
+				}
+				known = known || scopeKnown
+			}
+			if known != test.wantKnown {
+				t.Errorf("availability known = %t, want %t", known, test.wantKnown)
 			}
 			if _, err := result.Catalog.Build(); err != nil {
 				t.Fatalf("scope handling damaged canonical catalog: %v", err)

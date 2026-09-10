@@ -4,12 +4,10 @@ import (
 	"context"
 	"maps"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
-	"github.com/agentstation/starmap/pkg/provenance"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -119,28 +117,6 @@ func ResolveMembership(ctx context.Context, observations []sources.Observation) 
 	return state, nil
 }
 
-// Permits reports whether retained evidence keeps an offering in canonical discovery.
-// Account and scoped-public evidence remain separate from provider-wide public absence.
-func (s *MembershipState) Permits(provider catalogs.ProviderID, model string) bool {
-	if s == nil {
-		return true
-	}
-	membership := s.providers[provider]
-	if membership == nil || membership.inventory == nil || membership.inventory.models[model] {
-		return true
-	}
-	for _, scope := range membership.scopes {
-		fact, exists := scope.positive[model]
-		if !exists {
-			continue
-		}
-		if !scope.binding.Public || scope.binding.MembershipAuthority == sources.ProviderMembershipScope || compareMembershipFacts(fact, membership.inventory.fact) > 0 {
-			return true
-		}
-	}
-	return false
-}
-
 func compareMembershipFacts(left, right membershipFact) int {
 	if left.fallback != right.fallback {
 		if left.fallback {
@@ -163,50 +139,5 @@ func WithMembershipState(state *MembershipState) Option {
 		}
 		options.membership = state
 		return nil
-	}
-}
-
-func (s *MembershipState) apply(ctx context.Context, catalog *catalogs.Builder) error {
-	for providerID, membership := range s.providers {
-		if membership.inventory == nil {
-			continue
-		}
-		provider, exists := catalog.Providers().Get(providerID)
-		if !exists {
-			continue
-		}
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-		changed := false
-		for model := range provider.Models {
-			if !s.Permits(provider.ID, model) {
-				delete(provider.Models, model)
-				changed = true
-			}
-		}
-		if changed {
-			if err := catalog.SetProvider(*provider); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-func (s *MembershipState) pruneProvenance(entries provenance.Map) {
-	for key := range entries {
-		resource, found := strings.CutPrefix(key, "model:")
-		if !found {
-			continue
-		}
-		identity, _, found := strings.Cut(resource, ":")
-		if !found {
-			continue
-		}
-		provider, model, valid := provenance.ParseModelResourceID(identity)
-		if valid && !s.Permits(catalogs.ProviderID(provider), model) {
-			delete(entries, key)
-		}
 	}
 }

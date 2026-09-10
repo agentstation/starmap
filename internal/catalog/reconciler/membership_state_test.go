@@ -3,6 +3,7 @@ package reconciler
 import (
 	"context"
 	stderrors "errors"
+	"reflect"
 	"sync"
 	"testing"
 	"time"
@@ -67,31 +68,40 @@ func TestMembershipHistoryPreservesScopeAndPartialEvidence(t *testing.T) {
 	for _, test := range []struct {
 		name         string
 		observations []sources.Observation
-		want         bool
+		want         map[string]bool
 	}{
-		{"complete removal", []sources.Observation{global(true, true, false, 1), global(false, true, false, 2)}, false},
-		{"reverse input order", []sources.Observation{global(false, true, false, 2), global(true, true, false, 1)}, false},
-		{"partial absence", []sources.Observation{global(false, true, false, 1), global(false, false, false, 2)}, false},
-		{"new partial presence", []sources.Observation{global(false, true, false, 1), global(true, false, false, 2)}, true},
-		{"stale presence", []sources.Observation{global(false, true, false, 1), global(true, true, true, 2)}, false},
-		{"unrelated account", []sources.Observation{scoped("account", false, true, 1), global(false, true, false, 2)}, true},
-		{"unrelated public scope", []sources.Observation{scoped("region", true, true, 1), global(false, true, false, 2)}, true},
-		{"account later withdraws", []sources.Observation{scoped("account", false, true, 1), global(false, true, false, 2), scoped("account", false, false, 3)}, false},
-		{"older public evidence", []sources.Observation{evidence(1), global(false, true, false, 2)}, false},
-		{"new public evidence", []sources.Observation{global(false, true, false, 1), evidence(2)}, true},
-		{"account cannot remove baseline", []sources.Observation{scoped("account", false, false, 1)}, true},
-		{"public scope cannot remove baseline", []sources.Observation{scoped("region", true, false, 1)}, true},
+		{"complete absence", []sources.Observation{global(true, true, false, 1), global(false, true, false, 2)}, map[string]bool{"global": false}},
+		{"reverse input order", []sources.Observation{global(false, true, false, 2), global(true, true, false, 1)}, map[string]bool{"global": false}},
+		{"partial absence", []sources.Observation{global(false, true, false, 1), global(false, false, false, 2)}, map[string]bool{"global": false}},
+		{"new partial presence", []sources.Observation{global(false, true, false, 1), global(true, false, false, 2)}, map[string]bool{"global": true}},
+		{"stale presence", []sources.Observation{global(false, true, false, 1), global(true, true, true, 2)}, map[string]bool{"global": false}},
+		{"unrelated account", []sources.Observation{scoped("account", false, true, 1), global(false, true, false, 2)}, map[string]bool{"account": true, "global": false}},
+		{"unrelated public scope", []sources.Observation{scoped("region", true, true, 1), global(false, true, false, 2)}, map[string]bool{"region": true, "global": false}},
+		{"account later withdraws", []sources.Observation{scoped("account", false, true, 1), global(false, true, false, 2), scoped("account", false, false, 3)}, map[string]bool{"account": false, "global": false}},
+		{"older public evidence", []sources.Observation{evidence(1), global(false, true, false, 2)}, map[string]bool{"evidence": true, "global": false}},
+		{"new public evidence", []sources.Observation{global(false, true, false, 1), evidence(2)}, map[string]bool{"evidence": true, "global": false}},
+		{"account cannot remove baseline", []sources.Observation{scoped("account", false, false, 1)}, map[string]bool{"account": false}},
+		{"public scope cannot remove baseline", []sources.Observation{scoped("region", true, false, 1)}, map[string]bool{"region": false}},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			state, err := ResolveMembership(t.Context(), test.observations)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if state.Permits("provider-a", "shared") != test.want {
-				t.Fatalf("membership permitted=%t, want %t", state.Permits("provider-a", "shared"), test.want)
+			scopes, err := state.ExportScopes("publisher")
+			if err != nil {
+				t.Fatal(err)
 			}
-			if !state.Permits("unrelated", "shared") {
-				t.Fatal("one provider changed another provider's membership")
+			got := make(map[string]bool)
+			for _, scope := range scopes {
+				present, known := scope.Membership("shared")
+				if !known {
+					t.Fatalf("scope %s lost known availability", scope.BindingID)
+				}
+				got[scope.BindingID] = present
+			}
+			if !reflect.DeepEqual(got, test.want) {
+				t.Fatalf("scope availability = %v, want %v", got, test.want)
 			}
 		})
 	}
@@ -138,8 +148,24 @@ func TestMembershipHistoryExcludesUnhealthyProviderEvidence(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if got, want := state.Permits("provider-a", "shared"), subject != "provider-a"; got != want {
-				t.Fatalf("provider membership permitted=%t, want %t", got, want)
+			scopes, err := state.ExportScopes("publisher")
+			if err != nil {
+				t.Fatal(err)
+			}
+			accountPresent := false
+			for _, scope := range scopes {
+				if scope.BindingID == "account" {
+					accountPresent, _ = scope.Membership("shared")
+				}
+				if scope.BindingID == "global" {
+					present, known := scope.Membership("shared")
+					if present || !known {
+						t.Fatal("account evidence changed public availability")
+					}
+				}
+			}
+			if accountPresent != (subject != "provider-a") {
+				t.Fatalf("account availability = %t", accountPresent)
 			}
 		})
 	}
@@ -161,13 +187,26 @@ func TestMembershipStateOwnsInputAndSupportsConcurrentReads(t *testing.T) {
 	for range 8 {
 		readers.Go(func() {
 			for range 100 {
-				if !state.Permits("provider-a", "shared") {
-					t.Error("caller mutation changed retained account membership")
+				scopes, err := state.ExportScopes("publisher")
+				if err != nil {
+					t.Error(err)
 					return
 				}
-				if state.Permits("provider-a", "absent") {
-					t.Error("complete inventory admitted an absent offering")
+				if len(scopes) != 2 {
+					t.Error("caller mutation changed scope count")
 					return
+				}
+				for _, scope := range scopes {
+					present, known := scope.Membership("shared")
+					if !known || present != (scope.BindingID == "account") {
+						t.Error("caller mutation changed independent availability")
+						return
+					}
+					present, known = scope.Membership("absent")
+					if present || !known {
+						t.Error("complete inventory lost known absence")
+						return
+					}
 				}
 			}
 		})

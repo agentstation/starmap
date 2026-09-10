@@ -85,3 +85,40 @@ func TestObservationVolumeRegressionBecomesDegradedWithoutInventingDeletion(t *t
 		t.Fatal("require-all accepted a volume-regressed observation")
 	}
 }
+
+func TestCompleteScopedAbsencePreservesInventoryReceipt(t *testing.T) {
+	for _, authority := range []sources.ProviderMembershipAuthority{sources.ProviderMembershipScope, sources.ProviderMembershipProvider} {
+		t.Run(string(authority), func(t *testing.T) {
+			at := time.Date(2026, 9, 10, 0, 0, 0, 0, time.UTC)
+			binding := sources.ProviderAcquisitionBinding{SchemaVersion: sources.ProviderAcquisitionBindingSchemaVersion,
+				ID: "inventory", Revision: "1", ProviderID: "provider", Public: true, Region: "global", APISurface: "models.list",
+				MembershipAuthority: authority, CredentialRole: sources.ProviderBindingCatalogAcquisition, CredentialProfileID: "catalog"}
+			builder := catalogs.NewEmpty()
+			if err := builder.SetProvider(catalogs.Provider{ID: "provider", Name: "Provider", Models: map[string]*catalogs.Model{"omitted": {ID: "omitted", Name: "Omitted"}}}); err != nil {
+				t.Fatal(err)
+			}
+			builder.SetProvenance(provenance.Map{"model:" + provenance.ModelResourceID("provider", "omitted") + ":Name": {{Source: sources.ProvidersID, Timestamp: at.Add(-time.Hour), ProviderBindingID: binding.ID, ProviderBindingRevision: binding.Revision}}})
+			baseline := buildCatalog(t, builder)
+			empty := catalogs.NewEmpty()
+			if err := empty.SetProvider(catalogs.Provider{ID: "provider", Name: "Provider"}); err != nil {
+				t.Fatal(err)
+			}
+			observation, err := sources.NewObservation(sources.ProvidersID, buildCatalog(t, empty), sources.ObservationMetadata{
+				ProviderBinding: &binding, ObservedAt: at, Revision: sources.Revision{Kind: sources.RevisionKindContentDigest},
+				Completeness: sources.ObservationCompletenessComplete, Status: sources.ObservationStatusSucceeded})
+			if err != nil {
+				t.Fatal(err)
+			}
+			guarded, err := guardObservationHealth(baseline, []sources.Observation{observation})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(guarded) != 1 || guarded[0].Link() != observation.Link() {
+				t.Fatal("complete scoped absence lost its original inventory receipt")
+			}
+			if baseline.Providers().List()[0].Models["omitted"] == nil {
+				t.Fatal("health check deleted a visible baseline offering")
+			}
+		})
+	}
+}

@@ -33,6 +33,14 @@ func guardObservationVolume(
 	if observation.SourceID == sources.LocalCatalogID || observation.Catalog == nil {
 		return observation, nil
 	}
+	// Complete scoped inventories update availability while catalog entries remain visible.
+	if observation.SourceID == sources.ProvidersID && observation.ProviderBinding != nil &&
+		observation.Status == sources.ObservationStatusSucceeded &&
+		observation.Completeness == sources.ObservationCompletenessComplete &&
+		(observation.ProviderBinding.MembershipAuthority == sources.ProviderMembershipScope ||
+			observation.ProviderBinding.MembershipAuthority == sources.ProviderMembershipProvider) {
+		return observation, nil
+	}
 	issues := append([]sources.ObservationIssue(nil), observation.Issues...)
 	for _, provider := range baseline.Providers().List() {
 		historical := observationAttributedModelIDs(baseline, observation, provider)

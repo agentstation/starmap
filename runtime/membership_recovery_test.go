@@ -10,7 +10,7 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-func TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart(t *testing.T) {
+func TestPublicMembershipAbsenceSurvivesPartialRefreshAndRestart(t *testing.T) {
 	binding := sources.ProviderAcquisitionBinding{
 		SchemaVersion: sources.ProviderAcquisitionBindingSchemaVersion,
 		ID:            "public-inventory", Revision: "1", ProviderID: "provider",
@@ -44,14 +44,19 @@ func TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart(t *testing.T) {
 	if _, err := connected.PublishObservations(t.Context(), removal); err != nil {
 		t.Fatal(err)
 	}
-	assertRemoved := func(stage string, runtime *Runtime) {
+	assertAbsent := func(stage string, runtime *Runtime) {
 		t.Helper()
 		provider, err := runtime.State().Catalog.Provider("provider")
 		if err != nil {
 			t.Fatal(err)
 		}
-		if provider.Models["model"] != nil {
-			t.Errorf("%s restored removed public membership", stage)
+		if provider.Models["model"] == nil {
+			t.Errorf("%s deleted a visible catalog offering", stage)
+		}
+		key := catalogs.MembershipScopeKey{PublisherID: runtime.layers.publisherID, BindingID: binding.ID, BindingRevision: binding.Revision}
+		present, known := runtime.Catalog().ScopeMembership(key, "provider", "model")
+		if present || !known {
+			t.Errorf("%s availability = %t/%t, want absent/known", stage, present, known)
 		}
 		generation, err := store.Current(t.Context())
 		if err != nil {
@@ -65,7 +70,7 @@ func TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart(t *testing.T) {
 			t.Errorf("%s lost the removal receipt", stage)
 		}
 	}
-	assertRemoved("complete inventory", connected)
+	assertAbsent("complete inventory", connected)
 	partial, err := sources.NewObservation(sources.ProvidersID, empty, sources.ObservationMetadata{
 		ProviderBinding: &binding, ObservedAt: at.Add(time.Minute),
 		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
@@ -78,7 +83,7 @@ func TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart(t *testing.T) {
 	if _, err := connected.PublishObservations(t.Context(), partial); err != nil {
 		t.Fatal(err)
 	}
-	assertRemoved("partial inventory", connected)
+	assertAbsent("partial inventory", connected)
 
 	payload, err := catalogs.EncodeCatalogPayload(baseline)
 	if err != nil {
@@ -92,13 +97,13 @@ func TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart(t *testing.T) {
 	if _, err := connected.RefreshSource(t.Context()); err != nil {
 		t.Fatal(err)
 	}
-	assertRemoved("refreshed baseline", connected)
+	assertAbsent("refreshed baseline", connected)
 	before := connected.State()
 	if err := connected.Close(); err != nil {
 		t.Fatal(err)
 	}
 	reopened := openTestRuntime(t, options...)
-	assertRemoved("restart", reopened)
+	assertAbsent("restart", reopened)
 	if reopened.State().GenerationID != before.GenerationID || reopened.State().PayloadChecksum != before.PayloadChecksum {
 		t.Error("restart changed accepted membership state")
 	}
@@ -190,13 +195,20 @@ func TestPublicMembershipWithdrawalPreservesAccountAcrossRestart(t *testing.T) {
 	if _, err := reopened.PublishObservations(t.Context(), withdrawn); err != nil {
 		t.Fatal(err)
 	}
-	assertPresent(reopened, false)
+	assertPresent(reopened, true)
+	for _, binding := range []sources.ProviderAcquisitionBinding{public, account} {
+		key := catalogs.MembershipScopeKey{PublisherID: reopened.layers.publisherID, BindingID: binding.ID, BindingRevision: binding.Revision}
+		present, known := reopened.Catalog().ScopeMembership(key, "provider", "model")
+		if present || !known {
+			t.Fatalf("scope %s did not retain observed absence", binding.ID)
+		}
+	}
 	generation := reopened.State().GenerationID
 	if err := reopened.Close(); err != nil {
 		t.Fatal(err)
 	}
 	afterWithdrawal := openTestRuntime(t, options...)
-	assertPresent(afterWithdrawal, false)
+	assertPresent(afterWithdrawal, true)
 	if afterWithdrawal.State().GenerationID != generation {
 		t.Fatal("restart changed withdrawn membership generation")
 	}

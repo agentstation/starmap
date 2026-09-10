@@ -1142,7 +1142,7 @@
           "kind": "go_test",
           "repository": "starmap",
           "package": "./internal/catalog/reconciler",
-          "test": "TestEmptyProviderInventoryRequiresExplicitAuthority"
+          "test": "TestEmptyProviderInventoryPreservesCatalogAndRecordsAvailability"
         },
         {
           "kind": "go_test",
@@ -1165,8 +1165,14 @@
         {
           "kind": "go_test",
           "repository": "starmap",
+          "package": "./internal/catalog/pipeline",
+          "test": "TestCompleteScopedAbsencePreservesInventoryReceipt"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
           "package": "./runtime",
-          "test": "TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart"
+          "test": "TestPublicMembershipAbsenceSurvivesPartialRefreshAndRestart"
         },
         {
           "kind": "go_test",

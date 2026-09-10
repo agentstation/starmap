@@ -6,7 +6,6 @@ package reconciler
 import (
 	"context"
 	"maps"
-	"slices"
 	"strings"
 	"time"
 
@@ -124,12 +123,7 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	if err != nil {
 		return nil, err
 	}
-	if err := rctx.membership.apply(ctx, catalog); err != nil {
-		return nil, err
-	}
-	reviewCandidates = slices.DeleteFunc(reviewCandidates, func(candidate evidence.ReviewCandidate) bool {
-		return !rctx.membership.Permits(catalogs.ProviderID(candidate.ProviderID), candidate.ProviderModelID)
-	})
+	// Provider absence changes scope availability and preserves visible catalog facts.
 	for _, issue := range reviewCandidates {
 		rctx.logger.Warn().
 			Str("issue_code", string(issue.Code)).
@@ -393,11 +387,9 @@ func (r *Reconciler) result(
 			combined[key] = entries
 		}
 		removeQuarantinedModelProvenance(combined, reviewCandidates)
-		rctx.membership.pruneProvenance(combined)
 		catalog.SetProvenance(combined)
 	}
 
-	rctx.membership.pruneProvenance(result.Provenance)
 	for _, provider := range catalog.Providers().List() {
 		if provider.Models != nil {
 			for modelID := range provider.Models {
