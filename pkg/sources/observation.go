@@ -297,5 +297,8 @@ func validateObservationCatalog(catalog *catalogs.Catalog) error {
 	if len(catalog.RemovalPolicies()) != 0 {
 		return observationValidationError("catalog.removal_policies", nil, "acquisition cannot supply operator policy")
 	}
+	if len(catalog.CanonicalAliasRecords()) != 0 {
+		return observationValidationError("catalog.canonical_aliases", nil, "acquisition cannot supply canonical rename authority")
+	}
 	return nil
 }

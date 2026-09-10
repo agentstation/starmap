@@ -27,6 +27,7 @@ type payloadEnvelope struct {
 	Provenance       provenance.Map             `json:"provenance"`
 	MembershipScopes []ProviderMembershipScope  `json:"membership_scopes"`
 	RemovalPolicies  []CatalogRemovalPolicy     `json:"removal_policies"`
+	CanonicalAliases []CanonicalAlias           `json:"canonical_aliases"`
 }
 
 func (r payloadDecodeReport) err() error {
@@ -114,7 +115,12 @@ func decodePayloadEnvelope(data []byte, maxProviders int) (payloadEnvelope, erro
 			Message: fmt.Sprintf("must be %d", CurrentCatalogSchemaVersion),
 		}
 	}
-	if payload.SchemaVersion < CurrentCatalogSchemaVersion {
+	if payload.SchemaVersion < CanonicalAliasSchemaVersion {
+		if _, exists := required["canonical_aliases"]; exists {
+			return payloadEnvelope{}, invalidCanonicalAlias("schema", "requires catalog schema version 9")
+		}
+	}
+	if payload.SchemaVersion < CatalogRemovalSchemaVersion {
 		if _, exists := required["removal_policies"]; exists {
 			return payloadEnvelope{}, invalidRemovalTarget("schema", "requires catalog schema version 8")
 		}
@@ -168,6 +174,9 @@ func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*Catalo
 		return nil, payloadDecodeReport{}, err
 	}
 	if err := builder.SetRemovalPolicies(payload.RemovalPolicies); err != nil {
+		return nil, payloadDecodeReport{}, err
+	}
+	if err := builder.SetCanonicalAliasRecords(payload.CanonicalAliases); err != nil {
 		return nil, payloadDecodeReport{}, err
 	}
 	catalog, err := build(builder)

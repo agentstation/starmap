@@ -58,6 +58,7 @@ type Reader interface {
 	AuthoredModels() []AuthoredModel
 	MembershipScopes() []ProviderMembershipScope
 	RemovalPolicies() []CatalogRemovalPolicy
+	CanonicalAliasRecords() []CanonicalAlias
 	Provenance() ProvenanceReader
 
 	// Gets a provider or author by ID.

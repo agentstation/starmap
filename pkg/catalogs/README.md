@@ -644,6 +644,7 @@ func main() {
   - [func \(cat \*Builder\) AuthoredModels\(\) \[\]AuthoredModel](<#Builder.AuthoredModels>)
   - [func \(cat \*Builder\) Authors\(\) AuthorsReader](<#Builder.Authors>)
   - [func \(cat \*Builder\) Build\(\) \(\*Catalog, error\)](<#Builder.Build>)
+  - [func \(b \*Builder\) CanonicalAliasRecords\(\) \[\]CanonicalAlias](<#Builder.CanonicalAliasRecords>)
   - [func \(cat \*Builder\) ClearProvenance\(\)](<#Builder.ClearProvenance>)
   - [func \(cat \*Builder\) Copy\(\) \(\*Builder, error\)](<#Builder.Copy>)
   - [func \(cat \*Builder\) DeleteAuthor\(id AuthorID\) error](<#Builder.DeleteAuthor>)
@@ -667,6 +668,7 @@ func main() {
   - [func \(cat \*Builder\) SaveTo\(path string\) error](<#Builder.SaveTo>)
   - [func \(cat \*Builder\) SetAuthor\(author Author\) error](<#Builder.SetAuthor>)
   - [func \(cat \*Builder\) SetAuthorModel\(authorID AuthorID, model Model\) error](<#Builder.SetAuthorModel>)
+  - [func \(b \*Builder\) SetCanonicalAliasRecords\(records \[\]CanonicalAlias\) error](<#Builder.SetCanonicalAliasRecords>)
   - [func \(cat \*Builder\) SetMembershipScopes\(scopes \[\]ProviderMembershipScope\) error](<#Builder.SetMembershipScopes>)
   - [func \(cat \*Builder\) SetMergeStrategy\(strategy MergeStrategy\)](<#Builder.SetMergeStrategy>)
   - [func \(cat \*Builder\) SetProvenance\(value provenance.Map\)](<#Builder.SetProvenance>)
@@ -693,6 +695,8 @@ func main() {
   - [func \(r \*Catalog\) AuthorModels\(authorID AuthorID\) \(\[\]ModelDefinition, error\)](<#Catalog.AuthorModels>)
   - [func \(r \*Catalog\) AuthoredModels\(\) \[\]AuthoredModel](<#Catalog.AuthoredModels>)
   - [func \(r \*Catalog\) Authors\(\) AuthorsReader](<#Catalog.Authors>)
+  - [func \(c \*Catalog\) CanonicalAliasRecords\(\) \[\]CanonicalAlias](<#Catalog.CanonicalAliasRecords>)
+  - [func \(c \*Catalog\) CanonicalAliases\(\) \*CanonicalAliasIndex](<#Catalog.CanonicalAliases>)
   - [func \(r \*Catalog\) Definition\(id ModelDefinitionID\) \(ModelDefinition, error\)](<#Catalog.Definition>)
   - [func \(r \*Catalog\) DefinitionOfferings\(id ModelDefinitionID\) \(\[\]ProviderOffering, error\)](<#Catalog.DefinitionOfferings>)
   - [func \(r \*Catalog\) Definitions\(\) \[\]ModelDefinition](<#Catalog.Definitions>)
@@ -1083,11 +1087,17 @@ const (
 
     // CurrentCatalogSchemaVersion identifies the canonical catalog payload
     // schema emitted by this release.
-    CurrentCatalogSchemaVersion uint64 = 8
+    CurrentCatalogSchemaVersion uint64 = 9
 
     // CatalogPayloadMediaType identifies the canonical JSON catalog payload.
     CatalogPayloadMediaType = "application/vnd.agentstation.starmap.catalog+json"
 )
+```
+
+<a name="CanonicalAliasSchemaVersion"></a>CanonicalAliasSchemaVersion is the first payload schema that retains canonical rename history.
+
+```go
+const CanonicalAliasSchemaVersion uint64 = 9
 ```
 
 <a name="CatalogRemovalSchemaVersion"></a>CatalogRemovalSchemaVersion is the first payload schema that can express operator removals.
@@ -1103,7 +1113,7 @@ const CurrentBootstrapManifestVersion uint64 = 2
 ```
 
 <a name="CatalogPayloadSchemaVersion"></a>
-## func [CatalogPayloadSchemaVersion](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L119>)
+## func [CatalogPayloadSchemaVersion](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L121>)
 
 ```go
 func CatalogPayloadSchemaVersion(reader Reader) uint64
@@ -1112,7 +1122,7 @@ func CatalogPayloadSchemaVersion(reader Reader) uint64
 CatalogPayloadSchemaVersion reports the schema used when encoding this reader. Decoded legacy evidence keeps its original schema while it has no scope records.
 
 <a name="CatalogSemanticChecksum"></a>
-## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L48>)
+## func [CatalogSemanticChecksum](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L49>)
 
 ```go
 func CatalogSemanticChecksum(reader Reader) (string, error)
@@ -1139,7 +1149,7 @@ func DerivedCredentialEnvironmentName(product string, providerID ProviderID, fie
 DerivedCredentialEnvironmentName derives a product\-specific ambient name. It validates all components before it replaces ID separators with underscores.
 
 <a name="EncodeCatalogPayload"></a>
-## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L30>)
+## func [EncodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L31>)
 
 ```go
 func EncodeCatalogPayload(reader Reader) ([]byte, error)
@@ -1175,13 +1185,13 @@ func ShallowCopyProviderModels(models map[string]*Model) map[string]*Model
 ShallowCopyProviderModels copies a provider's Models map while sharing its Model pointers. It returns nil for a nil input map.
 
 <a name="SupportsCatalogSchema"></a>
-## func [SupportsCatalogSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L113>)
+## func [SupportsCatalogSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L115>)
 
 ```go
 func SupportsCatalogSchema(version uint64) bool
 ```
 
-SupportsCatalogSchema reports the formats this release can read and enforce. Version 7 adds effective scopes. Version 8 adds operator removal policies.
+SupportsCatalogSchema reports the formats this release can read and enforce. Version 7 adds effective scopes. Version 8 adds operator removal policies. Version 9 adds canonical rename history.
 
 <a name="ValidateMembershipEvidence"></a>
 ## func [ValidateMembershipEvidence](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/membership_evidence.go#L11>)
@@ -1786,7 +1796,7 @@ func (m BootstrapManifest) ValidateEnvelope() error
 ValidateEnvelope checks schema\-independent embedded\-bootstrap metadata.
 
 <a name="Builder"></a>
-## type [Builder](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L65-L74>)
+## type [Builder](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L65-L75>)
 
 Builder is the advanced mutable catalog construction type. Use it for custom update callbacks, source or plugin authors, and persistence pipelines. Ordinary consumers should use the immutable \*Catalog from \*starmap.Client.Catalog. It can work as: \- Memory catalog \(readFS == nil\) \- Embedded catalog \(readFS is embed.FS\) \- Files catalog \(readFS is os.DirFS\) \- Custom catalog \(readFS is any fs.FS implementation\).
 
@@ -1797,7 +1807,7 @@ type Builder struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L78>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L79>)
 
 ```go
 func New(opt Option, opts ...Option) (*Builder, error)
@@ -1806,7 +1816,7 @@ func New(opt Option, opts ...Option) (*Builder, error)
 New creates a new builder with the given options. WithFS\(fsys\) and WithPath\(path\) load the configured files automatically.
 
 <a name="NewBuilderFrom"></a>
-### func [NewBuilderFrom](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L139>)
+### func [NewBuilderFrom](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L140>)
 
 ```go
 func NewBuilderFrom(source Reader) (*Builder, error)
@@ -1815,7 +1825,7 @@ func NewBuilderFrom(source Reader) (*Builder, error)
 NewBuilderFrom copies source into a new independent builder.
 
 <a name="NewEmpty"></a>
-### func [NewEmpty](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L126>)
+### func [NewEmpty](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L127>)
 
 ```go
 func NewEmpty() *Builder
@@ -1832,7 +1842,7 @@ catalog.SetProvider(provider)
 ```
 
 <a name="NewFromFS"></a>
-### func [NewFromFS](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L161>)
+### func [NewFromFS](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L162>)
 
 ```go
 func NewFromFS(fsys fs.FS, root string) (*Builder, error)
@@ -1848,7 +1858,7 @@ catalog, err := NewFromFS(myFS, "catalog")
 ```
 
 <a name="NewFromPath"></a>
-### func [NewFromPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L109>)
+### func [NewFromPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L110>)
 
 ```go
 func NewFromPath(path string) (*Builder, error)
@@ -1866,7 +1876,7 @@ if err != nil {
 ```
 
 <a name="Builder.Author"></a>
-### func \(\*Builder\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L205>)
+### func \(\*Builder\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L206>)
 
 ```go
 func (cat *Builder) Author(id AuthorID) (Author, error)
@@ -1875,7 +1885,7 @@ func (cat *Builder) Author(id AuthorID) (Author, error)
 Author returns an author by ID or alias. Silently resolves aliases to canonical author IDs.
 
 <a name="Builder.AuthoredModels"></a>
-### func \(\*Builder\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L181>)
+### func \(\*Builder\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L182>)
 
 ```go
 func (cat *Builder) AuthoredModels() []AuthoredModel
@@ -1884,7 +1894,7 @@ func (cat *Builder) AuthoredModels() []AuthoredModel
 AuthoredModels returns caller\-owned provider\-independent construction records in canonical author/slug order.
 
 <a name="Builder.Authors"></a>
-### func \(\*Builder\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L175>)
+### func \(\*Builder\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L176>)
 
 ```go
 func (cat *Builder) Authors() AuthorsReader
@@ -1893,7 +1903,7 @@ func (cat *Builder) Authors() AuthorsReader
 Authors returns the authors collection.
 
 <a name="Builder.Build"></a>
-### func \(\*Builder\) [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L569>)
+### func \(\*Builder\) [Build](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L584>)
 
 ```go
 func (cat *Builder) Build() (*Catalog, error)
@@ -1901,8 +1911,17 @@ func (cat *Builder) Build() (*Catalog, error)
 
 Build publishes an immutable deep copy of the builder's current state.
 
+<a name="Builder.CanonicalAliasRecords"></a>
+### func \(\*Builder\) [CanonicalAliasRecords](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias_records.go#L18>)
+
+```go
+func (b *Builder) CanonicalAliasRecords() []CanonicalAlias
+```
+
+CanonicalAliasRecords returns caller\-owned rename records.
+
 <a name="Builder.ClearProvenance"></a>
-### func \(\*Builder\) [ClearProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L321>)
+### func \(\*Builder\) [ClearProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L322>)
 
 ```go
 func (cat *Builder) ClearProvenance()
@@ -1911,7 +1930,7 @@ func (cat *Builder) ClearProvenance()
 ClearProvenance removes catalog provenance.
 
 <a name="Builder.Copy"></a>
-### func \(\*Builder\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L551>)
+### func \(\*Builder\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L566>)
 
 ```go
 func (cat *Builder) Copy() (*Builder, error)
@@ -1920,7 +1939,7 @@ func (cat *Builder) Copy() (*Builder, error)
 Copy creates a deep copy of the catalog.
 
 <a name="Builder.DeleteAuthor"></a>
-### func \(\*Builder\) [DeleteAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L331>)
+### func \(\*Builder\) [DeleteAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L332>)
 
 ```go
 func (cat *Builder) DeleteAuthor(id AuthorID) error
@@ -1929,7 +1948,7 @@ func (cat *Builder) DeleteAuthor(id AuthorID) error
 DeleteAuthor deletes an author.
 
 <a name="Builder.DeleteAuthorModel"></a>
-### func \(\*Builder\) [DeleteAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L372>)
+### func \(\*Builder\) [DeleteAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L373>)
 
 ```go
 func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error
@@ -1938,7 +1957,7 @@ func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error
 DeleteAuthorModel deletes one provider\-independent model from an author.
 
 <a name="Builder.DeleteProvider"></a>
-### func \(\*Builder\) [DeleteProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L326>)
+### func \(\*Builder\) [DeleteProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L327>)
 
 ```go
 func (cat *Builder) DeleteProvider(id ProviderID) error
@@ -1947,7 +1966,7 @@ func (cat *Builder) DeleteProvider(id ProviderID) error
 DeleteProvider deletes a provider.
 
 <a name="Builder.DeleteProviderModel"></a>
-### func \(\*Builder\) [DeleteProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L367>)
+### func \(\*Builder\) [DeleteProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L368>)
 
 ```go
 func (cat *Builder) DeleteProviderModel(providerID ProviderID, modelID string) error
@@ -1983,7 +2002,7 @@ func (cat *Builder) MembershipScopes() []ProviderMembershipScope
 MembershipScopes returns independent copies of effective scope records.
 
 <a name="Builder.MergeProvenance"></a>
-### func \(\*Builder\) [MergeProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L316>)
+### func \(\*Builder\) [MergeProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L317>)
 
 ```go
 func (cat *Builder) MergeProvenance(value provenance.Map)
@@ -1992,7 +2011,7 @@ func (cat *Builder) MergeProvenance(value provenance.Map)
 MergeProvenance appends catalog provenance.
 
 <a name="Builder.MergeStrategy"></a>
-### func \(\*Builder\) [MergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L574>)
+### func \(\*Builder\) [MergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L589>)
 
 ```go
 func (cat *Builder) MergeStrategy() MergeStrategy
@@ -2001,7 +2020,7 @@ func (cat *Builder) MergeStrategy() MergeStrategy
 MergeStrategy returns the default merge strategy.
 
 <a name="Builder.MergeWith"></a>
-### func \(\*Builder\) [MergeWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L424>)
+### func \(\*Builder\) [MergeWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L432>)
 
 ```go
 func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error
@@ -2010,7 +2029,7 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error
 MergeWith merges another catalog into this one.
 
 <a name="Builder.Provenance"></a>
-### func \(\*Builder\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L186>)
+### func \(\*Builder\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L187>)
 
 ```go
 func (cat *Builder) Provenance() ProvenanceReader
@@ -2019,7 +2038,7 @@ func (cat *Builder) Provenance() ProvenanceReader
 Provenance returns the provenance collection.
 
 <a name="Builder.Provider"></a>
-### func \(\*Builder\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L192>)
+### func \(\*Builder\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L193>)
 
 ```go
 func (cat *Builder) Provider(id ProviderID) (Provider, error)
@@ -2028,7 +2047,7 @@ func (cat *Builder) Provider(id ProviderID) (Provider, error)
 Provider returns a provider by ID or alias. Silently resolves aliases to canonical provider IDs.
 
 <a name="Builder.ProviderModel"></a>
-### func \(\*Builder\) [ProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L236>)
+### func \(\*Builder\) [ProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L237>)
 
 ```go
 func (cat *Builder) ProviderModel(providerID ProviderID, modelID string) (Model, error)
@@ -2037,7 +2056,7 @@ func (cat *Builder) ProviderModel(providerID ProviderID, modelID string) (Model,
 ProviderModel returns one provider\-specific model offering without flattening equal model IDs from other providers.
 
 <a name="Builder.ProviderModels"></a>
-### func \(\*Builder\) [ProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L217>)
+### func \(\*Builder\) [ProviderModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L218>)
 
 ```go
 func (cat *Builder) ProviderModels(id ProviderID) (ModelsReader, error)
@@ -2046,7 +2065,7 @@ func (cat *Builder) ProviderModels(id ProviderID) (ModelsReader, error)
 ProviderModels returns the models served by a provider or one of its aliases.
 
 <a name="Builder.Providers"></a>
-### func \(\*Builder\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L170>)
+### func \(\*Builder\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L171>)
 
 ```go
 func (cat *Builder) Providers() ProvidersReader
@@ -2064,7 +2083,7 @@ func (cat *Builder) RemovalPolicies() []CatalogRemovalPolicy
 RemovalPolicies returns caller\-owned operator policy snapshots.
 
 <a name="Builder.ReplaceWith"></a>
-### func \(\*Builder\) [ReplaceWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L381>)
+### func \(\*Builder\) [ReplaceWith](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L382>)
 
 ```go
 func (cat *Builder) ReplaceWith(source Reader) error
@@ -2091,7 +2110,7 @@ func (cat *Builder) SaveTo(path string) error
 SaveTo serializes a mutable builder to path.
 
 <a name="Builder.SetAuthor"></a>
-### func \(\*Builder\) [SetAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L259>)
+### func \(\*Builder\) [SetAuthor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L260>)
 
 ```go
 func (cat *Builder) SetAuthor(author Author) error
@@ -2100,13 +2119,22 @@ func (cat *Builder) SetAuthor(author Author) error
 SetAuthor sets an author \(upsert\).
 
 <a name="Builder.SetAuthorModel"></a>
-### func \(\*Builder\) [SetAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L282>)
+### func \(\*Builder\) [SetAuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L283>)
 
 ```go
 func (cat *Builder) SetAuthorModel(authorID AuthorID, model Model) error
 ```
 
 SetAuthorModel sets one provider\-independent model on its owning author.
+
+<a name="Builder.SetCanonicalAliasRecords"></a>
+### func \(\*Builder\) [SetCanonicalAliasRecords](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias_records.go#L26>)
+
+```go
+func (b *Builder) SetCanonicalAliasRecords(records []CanonicalAlias) error
+```
+
+SetCanonicalAliasRecords replaces explicit rename records after record validation. Build checks targets and cycles. The caller authorizes replacement and validates the preceding inventory.
 
 <a name="Builder.SetMembershipScopes"></a>
 ### func \(\*Builder\) [SetMembershipScopes](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/membership_store.go#L38>)
@@ -2118,7 +2146,7 @@ func (cat *Builder) SetMembershipScopes(scopes []ProviderMembershipScope) error
 SetMembershipScopes validates and replaces effective scope records as one unit.
 
 <a name="Builder.SetMergeStrategy"></a>
-### func \(\*Builder\) [SetMergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L579>)
+### func \(\*Builder\) [SetMergeStrategy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L594>)
 
 ```go
 func (cat *Builder) SetMergeStrategy(strategy MergeStrategy)
@@ -2127,7 +2155,7 @@ func (cat *Builder) SetMergeStrategy(strategy MergeStrategy)
 SetMergeStrategy sets the default merge strategy.
 
 <a name="Builder.SetProvenance"></a>
-### func \(\*Builder\) [SetProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L311>)
+### func \(\*Builder\) [SetProvenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L312>)
 
 ```go
 func (cat *Builder) SetProvenance(value provenance.Map)
@@ -2136,7 +2164,7 @@ func (cat *Builder) SetProvenance(value provenance.Map)
 SetProvenance replaces catalog provenance.
 
 <a name="Builder.SetProvider"></a>
-### func \(\*Builder\) [SetProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L252>)
+### func \(\*Builder\) [SetProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L253>)
 
 ```go
 func (cat *Builder) SetProvider(provider Provider) error
@@ -2145,7 +2173,7 @@ func (cat *Builder) SetProvider(provider Provider) error
 SetProvider sets a provider \(upsert\).
 
 <a name="Builder.SetProviderModel"></a>
-### func \(\*Builder\) [SetProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L266>)
+### func \(\*Builder\) [SetProviderModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/catalog.go#L267>)
 
 ```go
 func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error
@@ -2267,7 +2295,7 @@ type CapabilityMapping struct {
 ```
 
 <a name="Catalog"></a>
-## type [Catalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L99-L112>)
+## type [Catalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L102-L116>)
 
 Catalog is Starmap's immutable canonical catalog. Read methods provide the only access to its private state. Callers can retain it across goroutines.
 
@@ -2287,7 +2315,7 @@ func DecodeCatalogGeneration(generation Generation) (*Catalog, error)
 DecodeCatalogGeneration verifies exact bytes and matching manifest and payload schemas. Only a complete immutable catalog may cross a generation activation boundary.
 
 <a name="DecodeCatalogPayload"></a>
-### func [DecodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L41>)
+### func [DecodeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L42>)
 
 ```go
 func DecodeCatalogPayload(data []byte) (*Catalog, error)
@@ -2296,7 +2324,7 @@ func DecodeCatalogPayload(data []byte) (*Catalog, error)
 DecodeCatalogPayload decodes the current catalog payload. A non\-nil catalog with \*sourcepayload.QuarantineError is only a partial diagnostic result. Callers must not activate it as the manifest\-bound generation.
 
 <a name="DecodeSourceObservationPayload"></a>
-### func [DecodeSourceObservationPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L54>)
+### func [DecodeSourceObservationPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload_decode.go#L55>)
 
 ```go
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error)
@@ -2323,7 +2351,7 @@ func NewObservationCatalog(source Reader) (*Catalog, error)
 NewObservationCatalog copies source records into an immutable source observation without deriving consumer definitions or offerings. It exists for acquisition boundaries that must preserve provider records before reconciliation resolves every ModelRef. Final publication must use NewCatalog or Builder.Build, which fail closed on unresolved references.
 
 <a name="Catalog.Author"></a>
-### func \(\*Catalog\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L275>)
+### func \(\*Catalog\) [Author](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L284>)
 
 ```go
 func (r *Catalog) Author(id AuthorID) (Author, error)
@@ -2332,7 +2360,7 @@ func (r *Catalog) Author(id AuthorID) (Author, error)
 Author returns a caller\-owned copy of an author.
 
 <a name="Catalog.AuthorModel"></a>
-### func \(\*Catalog\) [AuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L346>)
+### func \(\*Catalog\) [AuthorModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L355>)
 
 ```go
 func (r *Catalog) AuthorModel(authorID AuthorID, slug string) (ModelDefinition, error)
@@ -2341,7 +2369,7 @@ func (r *Catalog) AuthorModel(authorID AuthorID, slug string) (ModelDefinition, 
 AuthorModel resolves an author ID or alias plus a model slug.
 
 <a name="Catalog.AuthorModels"></a>
-### func \(\*Catalog\) [AuthorModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L361>)
+### func \(\*Catalog\) [AuthorModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L370>)
 
 ```go
 func (r *Catalog) AuthorModels(authorID AuthorID) ([]ModelDefinition, error)
@@ -2350,7 +2378,7 @@ func (r *Catalog) AuthorModels(authorID AuthorID) ([]ModelDefinition, error)
 AuthorModels returns caller\-owned canonical model definitions attributed to an author or one of its aliases, ordered by definition ID.
 
 <a name="Catalog.AuthoredModels"></a>
-### func \(\*Catalog\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L257>)
+### func \(\*Catalog\) [AuthoredModels](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L266>)
 
 ```go
 func (r *Catalog) AuthoredModels() []AuthoredModel
@@ -2359,7 +2387,7 @@ func (r *Catalog) AuthoredModels() []AuthoredModel
 AuthoredModels returns caller\-owned provider\-independent construction records. Ordinary consumers normally use Definitions and AuthorModels.
 
 <a name="Catalog.Authors"></a>
-### func \(\*Catalog\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L251>)
+### func \(\*Catalog\) [Authors](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L260>)
 
 ```go
 func (r *Catalog) Authors() AuthorsReader
@@ -2367,8 +2395,26 @@ func (r *Catalog) Authors() AuthorsReader
 
 Authors returns the immutable catalog's author collection reader.
 
+<a name="Catalog.CanonicalAliasRecords"></a>
+### func \(\*Catalog\) [CanonicalAliasRecords](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias_records.go#L38>)
+
+```go
+func (c *Catalog) CanonicalAliasRecords() []CanonicalAlias
+```
+
+CanonicalAliasRecords returns caller\-owned rename records from the accepted catalog.
+
+<a name="Catalog.CanonicalAliases"></a>
+### func \(\*Catalog\) [CanonicalAliases](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias_records.go#L44>)
+
+```go
+func (c *Catalog) CanonicalAliases() *CanonicalAliasIndex
+```
+
+CanonicalAliases returns the immutable canonical rename index. A successful lookup grants no routing permission. Consumers still enforce current removal and membership policies.
+
 <a name="Catalog.Definition"></a>
-### func \(\*Catalog\) [Definition](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L278>)
+### func \(\*Catalog\) [Definition](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L287>)
 
 ```go
 func (r *Catalog) Definition(id ModelDefinitionID) (ModelDefinition, error)
@@ -2377,7 +2423,7 @@ func (r *Catalog) Definition(id ModelDefinitionID) (ModelDefinition, error)
 Definition returns one caller\-owned canonical model definition.
 
 <a name="Catalog.DefinitionOfferings"></a>
-### func \(\*Catalog\) [DefinitionOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L333>)
+### func \(\*Catalog\) [DefinitionOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L342>)
 
 ```go
 func (r *Catalog) DefinitionOfferings(id ModelDefinitionID) ([]ProviderOffering, error)
@@ -2386,7 +2432,7 @@ func (r *Catalog) DefinitionOfferings(id ModelDefinitionID) ([]ProviderOffering,
 DefinitionOfferings returns caller\-owned offerings for one canonical model, ordered by provider and exact provider model ID.
 
 <a name="Catalog.Definitions"></a>
-### func \(\*Catalog\) [Definitions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L287>)
+### func \(\*Catalog\) [Definitions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L296>)
 
 ```go
 func (r *Catalog) Definitions() []ModelDefinition
@@ -2395,7 +2441,7 @@ func (r *Catalog) Definitions() []ModelDefinition
 Definitions returns caller\-owned canonical definitions in ID order.
 
 <a name="Catalog.FindModel"></a>
-### func \(\*Catalog\) [FindModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L376>)
+### func \(\*Catalog\) [FindModel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L385>)
 
 ```go
 func (r *Catalog) FindModel(id string) (ModelDefinition, error)
@@ -2422,7 +2468,7 @@ func (cat *Catalog) MembershipScopes() []ProviderMembershipScope
 MembershipScopes returns caller\-owned effective scope records.
 
 <a name="Catalog.Offering"></a>
-### func \(\*Catalog\) [Offering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L302>)
+### func \(\*Catalog\) [Offering](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L311>)
 
 ```go
 func (r *Catalog) Offering(providerID ProviderID, providerModelID ProviderModelID) (ProviderOffering, error)
@@ -2431,7 +2477,7 @@ func (r *Catalog) Offering(providerID ProviderID, providerModelID ProviderModelI
 Offering returns one caller\-owned provider\-scoped model offering. Provider aliases resolve to their canonical provider before key lookup.
 
 <a name="Catalog.Provenance"></a>
-### func \(\*Catalog\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L267>)
+### func \(\*Catalog\) [Provenance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L276>)
 
 ```go
 func (r *Catalog) Provenance() ProvenanceReader
@@ -2440,7 +2486,7 @@ func (r *Catalog) Provenance() ProvenanceReader
 Provenance returns the immutable catalog's provenance reader.
 
 <a name="Catalog.Provider"></a>
-### func \(\*Catalog\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L272>)
+### func \(\*Catalog\) [Provider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L281>)
 
 ```go
 func (r *Catalog) Provider(id ProviderID) (Provider, error)
@@ -2449,7 +2495,7 @@ func (r *Catalog) Provider(id ProviderID) (Provider, error)
 Provider returns a caller\-owned copy of a provider.
 
 <a name="Catalog.ProviderOfferings"></a>
-### func \(\*Catalog\) [ProviderOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L319>)
+### func \(\*Catalog\) [ProviderOfferings](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L328>)
 
 ```go
 func (r *Catalog) ProviderOfferings(providerID ProviderID) ([]ProviderOffering, error)
@@ -2458,7 +2504,7 @@ func (r *Catalog) ProviderOfferings(providerID ProviderID) ([]ProviderOffering, 
 ProviderOfferings returns caller\-owned offerings in provider\-model\-ID order.
 
 <a name="Catalog.Providers"></a>
-### func \(\*Catalog\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L246>)
+### func \(\*Catalog\) [Providers](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L255>)
 
 ```go
 func (r *Catalog) Providers() ProvidersReader
@@ -2494,7 +2540,7 @@ func (cat *Catalog) ScopeMembership(key MembershipScopeKey, provider ProviderID,
 ScopeMembership reads a precomputed scope without allocation or storage I/O. Missing scopes and incomplete absence return known=false. The provider must match.
 
 <a name="CatalogPayload"></a>
-## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L27>)
+## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L28>)
 
 CatalogPayload is the canonical construction\-record JSON representation. Author models own provider\-independent facts. Provider models own serving facts and link to author models through Model.ModelRef.
 
@@ -2508,6 +2554,7 @@ type CatalogPayload struct {
     Provenance       provenance.Map            `json:"provenance"`
     MembershipScopes []ProviderMembershipScope `json:"membership_scopes,omitempty"`
     RemovalPolicies  []CatalogRemovalPolicy    `json:"removal_policies,omitempty"`
+    CanonicalAliases []CanonicalAlias          `json:"canonical_aliases,omitempty"`
 }
 ```
 
@@ -6904,7 +6951,7 @@ const (
 ```
 
 <a name="Reader"></a>
-## type [Reader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/interfaces.go#L54-L66>)
+## type [Reader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/interfaces.go#L54-L67>)
 
 Reader provides read\-only access to catalog data.
 
@@ -6916,6 +6963,7 @@ type Reader interface {
     AuthoredModels() []AuthoredModel
     MembershipScopes() []ProviderMembershipScope
     RemovalPolicies() []CatalogRemovalPolicy
+    CanonicalAliasRecords() []CanonicalAlias
     Provenance() ProvenanceReader
 
     // Gets a provider or author by ID.
