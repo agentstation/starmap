@@ -1,5 +1,5 @@
 {
-  "status": "The local availability repair passed affected checks at 71324240. Fresh pre-PR review is active. No publication, merge, or task completion credit.",
+  "status": "The scheduled-update audit found an omitted acquired offering. The local repair passes its focused regression. Full runtime qualification is active. No completion credit.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base_work_commit": "8a4c14d9",
@@ -159,6 +159,54 @@
     "full": {
       "path": "full.jsonl.gz",
       "sha256": "c30c7422a633e7c59f9ae440396ccb283888b9c5d3e4f404259dc90084143d76"
+    },
+    "scheduled-overlay-no-tests": {
+      "path": "scheduled-overlay-no-tests.gz",
+      "sha256": "d4f593b65dd14dacdc4f0d964889a97aee2f0552ab19bfb184e835c06042a7cb"
+    },
+    "scheduled-overlay-no-tests-second": {
+      "path": "scheduled-overlay-no-tests-second.gz",
+      "sha256": "0dad7e514478d171f955016c9085a32a8bd8c60d753703a2e8115e9e0c0b80c1"
+    },
+    "scheduled-fixture-build": {
+      "path": "scheduled-fixture-build.gz",
+      "sha256": "5b853099a5b4fa49355ae06caf196d931534e2df145d66b5861bacd4faab4486"
+    },
+    "scheduled-before": {
+      "path": "scheduled-before.gz",
+      "sha256": "8542d9e16e06a2fee41619db7c0fbb08cdfe00fb3dd7e65bf141b2aad44081e7"
+    },
+    "scheduled-after": {
+      "path": "scheduled-after.gz",
+      "sha256": "f57c017154dace539a18d0aeadb1c69686cb48e77432486e79dad888d58a0fef"
+    },
+    "availability-review": {
+      "path": "availability-review.gz",
+      "sha256": "83cbd9b5fe71f93e01d6147c8a817ba983fa35711613eb04bc8f9803742b9f69"
+    },
+    "scheduled-min-go": {
+      "path": "scheduled-min-go.gz",
+      "sha256": "5d65d4fdeec8e95ea4190a5c6e583f23ab0aa068e20708fdb7b5ef6753993603"
+    },
+    "scheduled-ago": {
+      "path": "scheduled-ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    "scheduled-lint": {
+      "path": "scheduled-lint.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    "scheduled-docs": {
+      "path": "scheduled-docs.gz",
+      "sha256": "ece94277e36b4f2e03dd529785b79bfdcd6ed47c9fbf17f8ef1827517b7068f3"
+    },
+    "scheduled-prose": {
+      "path": "scheduled-prose.gz",
+      "sha256": "0a6697945d8732bc70a20fb4322d1b18ee3f8289ad09478b1f9ff4017fd0ac71"
+    },
+    "scheduled-registry": {
+      "path": "scheduled-registry.gz",
+      "sha256": "3df4aacdb1836f6167c2fc6a31cbbb871e1530b5324e6c27d3d74dec23d69010"
     }
   },
   "static": {
@@ -206,12 +254,83 @@
   "work_commit": "71324240370ba416f852494309d29228fb72a0f8",
   "fresh_review": {
     "session_id": 82591,
-    "status": "active",
+    "status": "completed",
     "commit": "71324240370ba416f852494309d29228fb72a0f8",
     "log": "/tmp/starmap-observed-absence-pre-pr-review-2026-09-10.log",
     "reviewers": [
       "codex:gpt-5.6-sol:xhigh",
       "claude:opus:high"
+    ],
+    "exit_code": 0,
+    "findings": 0,
+    "current_qualification": false,
+    "reason": "A later scheduled-update regression requires a retention repair and fresh review."
+  },
+  "scheduled_retention": {
+    "status": "local repair under qualification",
+    "base_commit": "71324240",
+    "defect": "A complete scheduled inventory replaced the only retained provider payload and deleted an acquired-only visible offering. Manual history preserved it.",
+    "repair": "Retain original observations in the existing publication history when an incoming provider inventory omits prior model IDs. Reconciliation preserves visibility and records scoped absence separately.",
+    "initial_attempts": [
+      {
+        "log": "/tmp/starmap-scheduled-absence-before-2026-09-10.jsonl",
+        "result": "UNVERIFIED: the overlay path used the /tmp symlink and did not select the intended test."
+      },
+      {
+        "log": "/tmp/starmap-scheduled-absence-qualified-2026-09-10.jsonl",
+        "result": "UNVERIFIED: the overlay path still used the /tmp symlink and selected no tests."
+      },
+      {
+        "log": "/tmp/starmap-scheduled-absence-real-path-2026-09-10.jsonl",
+        "result": "Fixture build failure: Catalog has Offering, not ProviderModel."
+      }
+    ],
+    "fail_before": {
+      "exit_code": 1,
+      "pass": 1,
+      "fail": 2,
+      "skip": 0,
+      "test": "TestAcquiredOfferingSurvivesCompleteScopedAbsence"
+    },
+    "focused": {
+      "exit_code": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "full_runtime": {
+      "session_id": 25272,
+      "status": "active",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime -json",
+      "log": "/tmp/starmap-scheduled-absence-full-runtime-2026-09-10.jsonl"
+    },
+    "minimum_go": {
+      "session_id": 23618,
+      "status": "completed",
+      "log": "/tmp/starmap-scheduled-absence-min-go-2026-09-10.jsonl",
+      "exit_code": 0,
+      "pass_count": 3,
+      "fail_count": 0,
+      "skip_count": 0
+    },
+    "static": {
+      "ago_exit": 0,
+      "lint_exit": 0,
+      "docs_session": 28757,
+      "prose_session": 42215,
+      "registry_session": 28057,
+      "docs_exit": 0,
+      "prose_exit": 0,
+      "prose_files": 1343,
+      "registry_exit": 0,
+      "registry_tests": 73
+    },
+    "work_commit": "af94de19a81464e16bfa3b249cf9b8b60e3b0a8d",
+    "tested_files": [
+      "runtime/manual_history.go",
+      "runtime/provider_inventory_retention.go",
+      "runtime/scheduled_absence_test.go",
+      "scripts/catalog-product-checks.json"
     ]
   }
 }
