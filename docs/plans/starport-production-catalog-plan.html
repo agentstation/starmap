@@ -25,7 +25,7 @@
 
 <p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/scoped-removal-design.md">removal design</a> owns persistence and transport requirements. Its target prototype starts from <code>6e0d590a</code> in <code>/tmp/starmap-operator-removal-2026-09-10</code>, branch <code>codex/catalog-operator-removal</code>. Tests pass nineteen focused events on each Go version and 1,115 catalog race events. The immutable removal set at <code>c84c12d5</code> passes four race and four minimum-Go events. Documentation, ago, and lint checks pass.</p>
 
-<p>Removal policy commit <code>62432bd8</code> passes eight runtime recovery events, one concurrency event, and 1,248 catalog/source events. Minimum-Go and documentation checks pass. Integrate reviewed availability head <code>129e3f68</code>, then qualify the combined removal branch. The unchanged embedded checkout test must run after commit. Full qualification, aliases, and Starport routing remain incomplete.</p>
+<p>Removal policy commit <code>62432bd8</code> passes eight runtime recovery events, one concurrency event, and 1,248 catalog/source events. Minimum-Go and documentation checks pass. The reviewed dependency merged locally at <code>4e629b7f</code>. Full CSP3 checks run in <code>70867</code>. Public-contract checks run in <code>94861</code>, including the unchanged embedded checkout test. Full qualification, aliases, and Starport routing remain incomplete.</p>
 
 <p>Starport is clean <code>d45bb30</code> in <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>. It passes 32/33 gates. V01 requires a stable Starmap release.</p>
 

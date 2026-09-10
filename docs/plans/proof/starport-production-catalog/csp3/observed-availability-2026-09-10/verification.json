@@ -648,7 +648,8 @@
       "schema compatibility and full affected package tests",
       "upstream authority and transport qualification",
       "operator preview and consumer routing",
-      "aliases"
+      "aliases",
+      "Verify low-authority artifact import retains existing policies and refuses incoming operator policies; configured trusted generation sources must preserve them."
     ],
     "acceptance_credit": false,
     "catalog_full": {
@@ -696,8 +697,19 @@
         "sha256": "35708c1b52b8a1345e4af56ffa7ab2f4f77ecc57cd6bfc2ef7ea8a49ed560a95"
       }
     },
-    "status": "Focused runtime recovery and concurrency pass. Minimum Go, lint, ago, and generated and prose documentation checks pass. The embedded checkout check requires the new committed tree.",
-    "active_checks": {},
+    "status": "Clean integrated head 4e629b7f is undergoing broad public-contract and CSP3 race qualification. Earlier focused and static checks pass. No publication or acceptance credit.",
+    "active_checks": {
+      "full_csp3": {
+        "session": 70867,
+        "log": "/tmp/starmap-removal-integrated-csp3-2026-09-10.jsonl",
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json"
+      },
+      "public_contracts": {
+        "session": 94861,
+        "log": "/tmp/starmap-removal-integrated-public-2026-09-10.jsonl",
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 10m . ./pkg/catalogs/... ./pkg/sources ./internal/bootstrap -json"
+      }
+    },
     "findings": [
       "Artifact import compared old manifests with only the newest schema. The import guard now checks the payload schema against supported reader versions.",
       "Observation validation and input publication exceeded the existing complexity limit. Named validation and publication-input functions preserve their contracts.",
@@ -749,7 +761,8 @@
     "next_integration": {
       "dependency": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
       "reason": "The availability branch passed full affected checks and both reviewers. Integrate its reviewed cache dependency before broad removal runtime qualification.",
-      "state": "authorized reviewed local dependency; not merged into the removal branch yet"
+      "state": "merged locally without conflicts",
+      "commit": "4e629b7ffc05a84c3e48baa5269f0f89b6a0ee48"
     }
   }
 }

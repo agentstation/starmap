@@ -123,7 +123,7 @@ Starmap owns alias and deprecation metadata. Starport enforces it during request
 An alias must identify one canonical model and preserve the declared operation.
 Reject cycles, ambiguous targets, cross-authority aliases, and targets outside permitted membership.
 
-For a planned canonical rename, publish an alias before removing the old ID.
+For a planned rename, publish the new canonical target and old-ID alias in the same generation that retires the old canonical definition.
 D30 retains that alias until an operator or the replacement baseline explicitly removes it.
 Elapsed time, provider omission, and ordinary refresh must not expire the alias.
 Alias removal must follow the selected source authority and survive restart.
