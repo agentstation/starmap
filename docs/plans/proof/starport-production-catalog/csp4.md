@@ -38,6 +38,7 @@ The next delivery owns origin issuance, qualified clock evidence, shared-store f
 The first merge gives no task completion credit. All acceptance requirements remain in force.
 
 The [clock research](csp4/authority-head-2026-09-10/clock-research.md) selects no clock adapter.
+The [issuer storage inspection](csp4/issuer-storage-inspection-2026-09-10.md) records the missing current-head contract for the second delivery.
 Complete product verification, required review, native CI, and merge before task completion.
 
 ## Runtime integration checkpoint history

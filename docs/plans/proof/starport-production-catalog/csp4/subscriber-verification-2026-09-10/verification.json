@@ -124,6 +124,16 @@
         "docs/plans/proof/starport-production-catalog/csp4.md": "8a75e76053a09d5622934821b4fcc2b0868b91543e0bd9c964624d4dac9c9bf3",
         "docs/plans/proof/starport-production-catalog/csp4/subscriber-delivery-2026-09-10.md": "c00dfac77e72413d1ebaa24dec3d77a2cf7b7fa0fbdc696dbc3f66c9d557dddc"
       }
+    },
+    "issuer-plan-prose": {
+      "artifact": {
+        "path": "issuer-plan-prose.log.gz",
+        "sha256": "79cd8cc071c05ce06822f2a76faed03df1de1d518479d0d687a63e74e48e546f",
+        "raw_sha256": "0f2d227136812af21fa964b599cbd080b86968c4aa74a6cf22610901006f8414"
+      },
+      "exit_code": 0,
+      "command": "make technical-writing-check",
+      "source_scope": "Canonical planning worktree with the issuer storage inspection. 1286 files, zero diagnostics."
     }
   },
   "running_operations": [
@@ -131,7 +141,8 @@
       "session_id": 82978,
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
       "output": "/tmp/starmap-csp4-subscriber-verify-2-2026-09-10.log",
-      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "last_observed_stage": "Initial package tests, pure-Go execution, file-size, package layout, ownership, dependency direction, canonical alias history, and verifier tests passed. Repository-wide race tests are running."
     }
   ],
   "limitations": [
