@@ -20,7 +20,8 @@ const (
 	inputPublicationName = "publication.json"
 	// inputPublicationDirectory holds immutable records referenced by the transaction.
 	inputPublicationDirectory     = "publication-inputs"
-	inputPublicationVersion       = 2
+	inputPublicationVersion       = 3
+	inputPublicationManualVersion = 2
 	inputPublicationLegacyVersion = 1
 	inputPublicationPrepared      = "prepared"
 	inputPublicationCommitted     = "committed"
@@ -39,6 +40,7 @@ type inputPublication struct {
 	Source           string   `json:"source,omitempty"`
 	Providers        []string `json:"providers,omitempty"`
 	Manual           string   `json:"manual,omitempty"`
+	Removals         string   `json:"removals,omitempty"`
 }
 
 func invalidInputPublication(message string) error {
@@ -62,14 +64,17 @@ func (s *layerStore) loadInputPublication() (*inputPublication, error) {
 	if err := decoder.Decode(new(any)); err != io.EOF {
 		return nil, invalidInputPublication("record contains trailing data")
 	}
-	if record.Version != inputPublicationLegacyVersion && record.Version != inputPublicationVersion {
+	if record.Version != inputPublicationLegacyVersion && record.Version != inputPublicationManualVersion && record.Version != inputPublicationVersion {
 		return nil, invalidInputPublication("unsupported record version")
+	}
+	if record.Version < inputPublicationVersion && record.Removals != "" {
+		return nil, invalidInputPublication("operator removal requires publication version 3")
 	}
 	if record.Version == inputPublicationLegacyVersion && record.Manual != "" {
 		return nil, invalidInputPublication("manual history requires publication version 2")
 	}
 	if record.Phase == inputPublicationIdle {
-		if record.ExpectedID != "" || record.ExpectedChecksum != "" || record.GenerationID != "" || record.PayloadChecksum != "" || record.Source != "" || len(record.Providers) != 0 || record.Manual != "" {
+		if record.ExpectedID != "" || record.ExpectedChecksum != "" || record.GenerationID != "" || record.PayloadChecksum != "" || record.Source != "" || len(record.Providers) != 0 || record.Manual != "" || record.Removals != "" {
 			return nil, invalidInputPublication("idle record contains pending inputs")
 		}
 		return nil, nil
@@ -77,7 +82,7 @@ func (s *layerStore) loadInputPublication() (*inputPublication, error) {
 	if record.Phase != inputPublicationPrepared && record.Phase != inputPublicationCommitted {
 		return nil, invalidInputPublication("unsupported record phase")
 	}
-	if record.GenerationID == "" || record.PayloadChecksum == "" || (record.Source == "" && len(record.Providers) == 0 && record.Manual == "") {
+	if record.GenerationID == "" || record.PayloadChecksum == "" || (record.Source == "" && len(record.Providers) == 0 && record.Manual == "" && record.Removals == "") {
 		return nil, invalidInputPublication("incomplete record")
 	}
 	return &record, nil
@@ -204,7 +209,7 @@ func (s *layerStore) publicationInputs(record inputPublication) (*sourceLayer, [
 	return source, providers, nil
 }
 
-func (s *layerStore) applyPublicationInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual string) error {
+func (s *layerStore) applyPublicationInputs(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual string, removals ...*catalogs.CatalogRemovalPolicy) error {
 	if source != nil {
 		if err := s.saveSource(ctx, *source); err != nil {
 			return err
@@ -220,15 +225,23 @@ func (s *layerStore) applyPublicationInputs(ctx context.Context, source *sourceL
 			return err
 		}
 	}
+	if len(removals) != 0 {
+		if err := s.saveRemovals(ctx, removals[0]); err != nil {
+			return err
+		}
+	}
 	return s.clearInputPublication(ctx)
 }
 
-func (s *layerStore) completeInputPublication(ctx context.Context, record inputPublication, source *sourceLayer, providers []ProviderLayer) error {
+func (s *layerStore) completeInputPublication(ctx context.Context, record inputPublication, source *sourceLayer, providers []ProviderLayer, removals ...*catalogs.CatalogRemovalPolicy) error {
+	if (record.Removals != "") != (len(removals) == 1 && removals[0] != nil) {
+		return invalidInputPublication("operator removal input does not match its journal reference")
+	}
 	record.Phase = inputPublicationCommitted
 	if err := s.writeInputPublication(ctx, record); err != nil {
 		return err
 	}
-	return s.applyPublicationInputs(ctx, source, providers, record.Manual)
+	return s.applyPublicationInputs(ctx, source, providers, record.Manual, removals...)
 }
 
 // recoverInputPublication completes an accepted transaction before startup reads its files.
@@ -252,6 +265,10 @@ func (s *layerStore) recoverInputPublication(ctx context.Context, current starma
 			return invalidInputPublication("catalog state cannot resolve the prepared transaction")
 		}
 	}
+	removals, err := s.readRemovalInput(record.Removals)
+	if err != nil {
+		return err
+	}
 	source, providers, err := s.publicationInputs(*record)
 	if err != nil {
 		return err
@@ -261,7 +278,7 @@ func (s *layerStore) recoverInputPublication(ctx context.Context, current starma
 			return err
 		}
 	}
-	return s.applyPublicationInputs(ctx, source, providers, record.Manual)
+	return s.applyPublicationInputs(ctx, source, providers, record.Manual, removals)
 }
 
 // refuseInputPublication keeps a later update from replacing unresolved recovery evidence.

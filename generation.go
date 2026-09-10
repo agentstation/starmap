@@ -80,6 +80,9 @@ func (c *Client) commitAndPublish(
 	if err := c.requireWritableCatalogStore(); err != nil {
 		return Publication{}, err
 	}
+	if err := c.Catalog().CanonicalAliases().ValidateSuccessor(published.CanonicalAliases()); err != nil {
+		return Publication{}, err
+	}
 	generation, err := c.newGeneration(published, evidence, generationID)
 	if err != nil {
 		return Publication{}, err
@@ -116,6 +119,9 @@ func (c *Client) commitReceivedGeneration(
 	}
 	if published == nil {
 		return Publication{}, &errors.ValidationError{Field: "catalog generation", Message: "decoded catalog is required"}
+	}
+	if err := c.Catalog().CanonicalAliases().ValidateSuccessor(published.CanonicalAliases()); err != nil {
+		return Publication{}, err
 	}
 	if err := generation.Validate(); err != nil {
 		return Publication{}, err

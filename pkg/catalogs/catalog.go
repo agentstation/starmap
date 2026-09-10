@@ -63,25 +63,28 @@ var _ Reader = (*Builder)(nil)
 // - Files catalog (readFS is os.DirFS)
 // - Custom catalog (readFS is any fs.FS implementation).
 type Builder struct {
-	config         *options
-	providers      *Providers
-	authors        *Authors
-	authoredModels *authoredModelStore
-	provenance     *Provenance
-	membership     *membershipScopeStore
-	loadReport     LoadReport
+	config           *options
+	providers        *Providers
+	authors          *Authors
+	authoredModels   *authoredModelStore
+	provenance       *Provenance
+	membership       *membershipScopeStore
+	removalPolicies  *removalPolicyStore
+	canonicalAliases canonicalAliasStore
+	loadReport       LoadReport
 }
 
 // New creates a new builder with the given options.
 // WithFS(fsys) and WithPath(path) load the configured files automatically.
 func New(opt Option, opts ...Option) (*Builder, error) {
 	cat := &Builder{
-		providers:      NewProviders(),
-		authors:        NewAuthors(),
-		authoredModels: newAuthoredModelStore(),
-		provenance:     NewProvenance(),
-		membership:     &membershipScopeStore{},
-		config:         defaults().apply(append([]Option{opt}, opts...)...),
+		providers:       NewProviders(),
+		authors:         NewAuthors(),
+		authoredModels:  newAuthoredModelStore(),
+		provenance:      NewProvenance(),
+		membership:      &membershipScopeStore{},
+		removalPolicies: &removalPolicyStore{},
+		config:          defaults().apply(append([]Option{opt}, opts...)...),
 	}
 
 	// Auto-load if configured and has filesystem
@@ -123,12 +126,13 @@ func NewFromPath(path string) (*Builder, error) {
 //	catalog.SetProvider(provider)
 func NewEmpty() *Builder {
 	return &Builder{
-		providers:      NewProviders(),
-		authors:        NewAuthors(),
-		authoredModels: newAuthoredModelStore(),
-		provenance:     NewProvenance(),
-		membership:     &membershipScopeStore{},
-		config:         defaults(),
+		providers:       NewProviders(),
+		authors:         NewAuthors(),
+		authoredModels:  newAuthoredModelStore(),
+		provenance:      NewProvenance(),
+		membership:      &membershipScopeStore{},
+		removalPolicies: &removalPolicyStore{},
+		config:          defaults(),
 	}
 }
 
@@ -376,6 +380,14 @@ func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error {
 
 // ReplaceWith replaces this catalog's contents with another.
 func (cat *Builder) ReplaceWith(source Reader) error {
+	aliases, err := prepareCanonicalAliases(source.CanonicalAliasRecords())
+	if err != nil {
+		return err
+	}
+	policies, err := prepareRemovalPolicies(source.RemovalPolicies())
+	if err != nil {
+		return err
+	}
 	if err := cat.SetMembershipScopes(source.MembershipScopes()); err != nil {
 		return err
 	}
@@ -410,7 +422,10 @@ func (cat *Builder) ReplaceWith(source Reader) error {
 	// Copy provenance
 	cat.provenance.Set(source.Provenance().Map())
 
-	return nil
+	if err := cat.SetRemovalPolicies(policies); err != nil {
+		return err
+	}
+	return cat.SetCanonicalAliasRecords(aliases)
 }
 
 // MergeWith merges another catalog into this one.
@@ -421,11 +436,25 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 	}
 
 	if mergeOpts.Strategy == MergeEnrichEmpty || mergeOpts.Strategy == MergeAppendOnly {
+		aliases, err := mergeCanonicalAliases(cat.CanonicalAliasRecords(), source.CanonicalAliasRecords())
+		if err != nil {
+			return err
+		}
+		policies, err := mergeRemovalPolicies(cat.RemovalPolicies(), source.RemovalPolicies())
+		if err != nil {
+			return err
+		}
 		scopes, err := mergeMembershipScopes(cat.MembershipScopes(), source.MembershipScopes())
 		if err != nil {
 			return err
 		}
 		if err := cat.SetMembershipScopes(scopes); err != nil {
+			return err
+		}
+		if err := cat.SetRemovalPolicies(policies); err != nil {
+			return err
+		}
+		if err := cat.SetCanonicalAliasRecords(aliases); err != nil {
 			return err
 		}
 	}
@@ -537,13 +566,14 @@ func (cat *Builder) mergeAppendOnly(source Reader) error {
 func (cat *Builder) Copy() (*Builder, error) {
 	// Create a new catalog with the same configuration
 	NewCat := &Builder{
-		providers:      NewProviders(),
-		authors:        NewAuthors(),
-		authoredModels: newAuthoredModelStore(),
-		provenance:     NewProvenance(),
-		membership:     &membershipScopeStore{},
-		config:         cat.config.copy(),
-		loadReport:     cat.LoadReport(),
+		providers:       NewProviders(),
+		authors:         NewAuthors(),
+		authoredModels:  newAuthoredModelStore(),
+		provenance:      NewProvenance(),
+		membership:      &membershipScopeStore{},
+		removalPolicies: &removalPolicyStore{},
+		config:          cat.config.copy(),
+		loadReport:      cat.LoadReport(),
 	}
 
 	// Copy all data

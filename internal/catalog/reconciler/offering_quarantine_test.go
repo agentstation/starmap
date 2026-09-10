@@ -212,6 +212,7 @@ func TestReconciliationCarriesLastKnownGoodModelReference(t *testing.T) {
 		[]*catalogs.Model{observation},
 		map[catalogs.ModelDefinitionID]struct{}{"author/existing": {}},
 		map[string]*catalogs.Model{"existing": baseline},
+		nil,
 	)
 	if err != nil {
 		t.Fatalf("resolvableProviderModels: %v", err)
@@ -238,6 +239,7 @@ func TestReconciliationCandidateRecordsPriorReviewedModelLink(t *testing.T) {
 		map[string]*catalogs.Model{
 			"renamed-model": {ID: "renamed-model", ModelRef: "author/prior-model"},
 		},
+		nil,
 	)
 	if err != nil {
 		t.Fatalf("resolvableProviderModels: %v", err)
@@ -254,6 +256,7 @@ func TestReconciliationRejectsMalformedExplicitModelReference(t *testing.T) {
 		"provider",
 		[]*catalogs.Model{{ID: "model", ModelRef: "malformed"}},
 		map[catalogs.ModelDefinitionID]struct{}{},
+		nil,
 		nil,
 	)
 	var validationErr *errors.ValidationError

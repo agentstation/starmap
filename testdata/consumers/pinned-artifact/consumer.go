@@ -6,41 +6,29 @@ package consumer
 import (
 	"context"
 	"crypto/sha256"
+	"embed"
+	"encoding/base64"
 	"fmt"
-	"strings"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
-const pinnedArchiveSHA256 = "09f431c751ffaa4a1586490032baa3608c7c504ed40ff40f977c61cdc4e70138"
+const pinnedArchiveSHA256 = "b21b6b44606fcc0a3932bfe2e75ffbea47dbd558df9e84abb261e131681f4988"
 
-// ActivatePinned builds a portable fixture from the embedded generation.
-// It pins the exact archive digest as the offline trust root.
+//go:embed testdata/starmap-catalog.*
+var fixtureFiles embed.FS
+
+// ActivatePinned verifies a fixed portable fixture against its offline trust root.
 // It activates the fixture in a caller-selected store without network access
-// or provider credentials.
+// or provider credentials. The fixture is independent of the current embedded catalog.
 func ActivatePinned(ctx context.Context) error {
-	embedded, err := starmap.New()
+	release, err := pinnedRelease()
 	if err != nil {
 		return err
 	}
-	generation, err := embedded.CurrentGeneration(ctx)
-	if err != nil {
-		return err
-	}
-	bundle, err := artifact.Build(generation)
-	if err != nil {
-		return err
-	}
-	release := artifact.Release{
-		Archive: bundle.Data,
-		Checksum: []byte(
-			strings.TrimPrefix(bundle.Checksum, "sha256:") +
-				"  " + artifact.Filename + "\n",
-		),
-		Attestation: bundle.Attestation,
-	}
+
 	verified, err := artifact.VerifyRelease(
 		ctx,
 		release,
@@ -51,11 +39,20 @@ func ActivatePinned(ctx context.Context) error {
 	}
 
 	store := storage.NewMemory()
+	// Select a fixed predecessor so embedded rename history cannot affect this fixture.
+	predecessor := verified.Copy()
+	predecessor.Manifest.GenerationID += "-prior"
+	if err := store.Commit(ctx, predecessor, ""); err != nil {
+		return err
+	}
 	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		return err
 	}
 	initial := client.CurrentCatalogState()
+	if initial.GenerationID != predecessor.Manifest.GenerationID {
+		return fmt.Errorf("caller-selected predecessor was not loaded")
+	}
 	publication, err := client.Activate(ctx, verified)
 	if err != nil {
 		return err
@@ -65,18 +62,55 @@ func ActivatePinned(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if publication.Published ||
-		publication.GenerationID != generation.Manifest.GenerationID ||
-		state.GenerationID != generation.Manifest.GenerationID ||
-		state.PayloadChecksum != generation.Manifest.Payload.Checksum ||
+	if !publication.Published ||
+		publication.GenerationID != verified.Manifest.GenerationID ||
+		state.GenerationID != verified.Manifest.GenerationID ||
+		state.PayloadChecksum != verified.Manifest.Payload.Checksum ||
 		state.Catalog != initial.Catalog ||
-		durable.Manifest.GenerationID != generation.Manifest.GenerationID {
+		durable.Manifest.GenerationID != verified.Manifest.GenerationID {
 		return fmt.Errorf("unexpected pinned activation: %#v", publication)
 	}
-	if _, err := client.Catalog().FindModel("gpt-4o"); err != nil {
+	if _, err := client.Catalog().FindModel("fixture/pinned"); err != nil {
 		return fmt.Errorf("find pinned model: %w", err)
 	}
+	retry, err := client.Activate(ctx, verified)
+	if err != nil {
+		return err
+	}
+	if retry.Published || client.CurrentCatalogState().Catalog != state.Catalog {
+		return fmt.Errorf("duplicate pinned activation changed the catalog")
+	}
+	restarted, err := starmap.New(starmap.WithCatalogStore(store))
+	if err != nil {
+		return err
+	}
+	if restarted.CurrentCatalogState().GenerationID != verified.Manifest.GenerationID {
+		return fmt.Errorf("pinned generation did not survive restart")
+	}
+	if _, err := restarted.Catalog().FindModel("fixture/pinned"); err != nil {
+		return err
+	}
 	return nil
+}
+
+func pinnedRelease() (artifact.Release, error) {
+	encoded, err := fixtureFiles.ReadFile("testdata/" + artifact.Filename + ".base64")
+	if err != nil {
+		return artifact.Release{}, err
+	}
+	archive, err := base64.StdEncoding.DecodeString(string(encoded))
+	if err != nil {
+		return artifact.Release{}, err
+	}
+	checksum, err := fixtureFiles.ReadFile("testdata/" + artifact.Filename + ".sha256")
+	if err != nil {
+		return artifact.Release{}, err
+	}
+	statement, err := fixtureFiles.ReadFile("testdata/" + artifact.AttestationFilename)
+	if err != nil {
+		return artifact.Release{}, err
+	}
+	return artifact.Release{Archive: archive, Checksum: checksum, Attestation: statement}, nil
 }
 
 type pinnedVerifier struct {

@@ -46,6 +46,7 @@ func createSourcesWithConfig(
 	composition providerSourceComposition,
 ) []sources.Source {
 	configuredProviders := inputs.providerConfig.Providers()
+	metadataProviders := metadataProviderRegistry(inputs, options.ProviderID)
 	srcs := []sources.Source{
 		embeddedsrc.New(inputs.embedded),
 		providers.New(
@@ -56,7 +57,7 @@ func createSourcesWithConfig(
 	}
 	if inputs.workspaceInput.Exists {
 		srcs = append(
-			[]sources.Source{local.New(local.WithCatalogReport(inputs.workspace, inputs.workspaceReport))},
+			[]sources.Source{local.New(local.WithCatalogReport(inputs.workspace, inputs.workspaceReport), local.WithAliasBaseline(inputs.baseline))},
 			srcs...,
 		)
 	}
@@ -66,7 +67,7 @@ func createSourcesWithConfig(
 	if useGit {
 		gitOptions := []modelsdev.GitSourceOption{
 			modelsdev.WithGitCommit(options.ModelsDevGitCommit),
-			modelsdev.WithGitProviders(configuredProviders),
+			modelsdev.WithGitProviders(metadataProviders),
 		}
 		directory := options.SourcesDir
 		if directory == "" {
@@ -79,7 +80,7 @@ func createSourcesWithConfig(
 	}
 	if useHTTP {
 		httpOptions := []modelsdev.HTTPSourceOption{
-			modelsdev.WithHTTPProviders(configuredProviders),
+			modelsdev.WithHTTPProviders(metadataProviders),
 		}
 		directory := options.SourcesDir
 		if directory == "" {

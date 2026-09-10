@@ -69,7 +69,10 @@ func TestManualPublicationJournalVersionCompatibility(t *testing.T) {
 		valid     bool
 	}{
 		{name: "legacy-idle", raw: `{"version":1,"phase":"idle"}`, valid: true},
-		{name: "current-idle", raw: `{"version":2,"phase":"idle"}`, valid: true},
+		{name: "manual-idle", raw: `{"version":2,"phase":"idle"}`, valid: true},
+		{name: "current-idle", raw: `{"version":3,"phase":"idle"}`, valid: true},
+		{name: "legacy-removals", raw: `{"version":2,"phase":"committed","generation_id":"accepted","payload_checksum":"digest","removals":"policy.json"}`},
+		{name: "idle-removals", raw: `{"version":3,"phase":"idle","removals":"policy.json"}`},
 		{name: "legacy-manual", raw: `{"version":1,"phase":"committed","generation_id":"accepted","payload_checksum":"digest","manual":"history.json"}`},
 		{name: "idle-manual", raw: `{"version":2,"phase":"idle","manual":"history.json"}`},
 	} {

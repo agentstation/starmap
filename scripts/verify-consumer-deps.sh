@@ -2,9 +2,9 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-RELEASE_GOTOOLCHAIN="${STARMAP_RELEASE_GOTOOLCHAIN:-go1.26.6}"
-GOTOOLCHAIN="$RELEASE_GOTOOLCHAIN"
+GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.6}"
 export GOTOOLCHAIN
+printf 'External consumer toolchain: %s\n' "$(go env GOVERSION)"
 READ_ONLY_MODULE="$ROOT/testdata/consumers/read-only"
 STORE_ONLY_MODULE="$ROOT/testdata/consumers/store-only"
 PINNED_ARTIFACT_MODULE="$ROOT/testdata/consumers/pinned-artifact"
@@ -66,10 +66,10 @@ find_banned_dependencies() {
 
 (
 	cd "$PINNED_ARTIFACT_MODULE"
-	GOTOOLCHAIN="$RELEASE_GOTOOLCHAIN" GOWORK=off go test ./...
-	GOTOOLCHAIN="$RELEASE_GOTOOLCHAIN" GOWORK=off go list -deps -f '{{.ImportPath}}' . |
+	GOWORK=off go test ./...
+	GOWORK=off go list -deps -f '{{.ImportPath}}' . |
 		LC_ALL=C sort -u >"$PINNED_DEPS"
-	GOTOOLCHAIN="$RELEASE_GOTOOLCHAIN" GOWORK=off go list -deps -f '{{if not .Standard}}{{.ImportPath}}{{end}}' . |
+	GOWORK=off go list -deps -f '{{if not .Standard}}{{.ImportPath}}{{end}}' . |
 		sed '/^$/d' | LC_ALL=C sort -u >"$PINNED_NON_STANDARD_DEPS"
 )
 

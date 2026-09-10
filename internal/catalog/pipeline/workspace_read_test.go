@@ -36,7 +36,7 @@ func TestPipelineKeepsWorkspaceReadLockThroughLoad(t *testing.T) {
 		return loadHumanWorkspace(path)
 	}
 	p.loadEmbedded = func() (*catalogs.Catalog, error) { return catalogs.NewEmpty().Build() }
-	inputs, err := p.loadCatalogInputs(t.Context(), path)
+	inputs, err := p.loadCatalogInputs(t.Context(), path, nil)
 	if err != nil || inputs.workspace == nil || !inputs.workspaceInput.Exists || inputs.workspaceInput.Checksum == "" {
 		t.Fatalf("workspace input: %+v, %v", inputs, err)
 	}
@@ -59,7 +59,7 @@ func TestPipelineRefusesWorkspaceInputDuringWriter(t *testing.T) {
 		t.Fatal("workspace loaded during replacement")
 		return nil, nil
 	}
-	input, err := p.loadCatalogInputs(t.Context(), path)
+	input, err := p.loadCatalogInputs(t.Context(), path, nil)
 	var conflict *errors.ConflictError
 	if !stderrors.As(err, &conflict) || input.workspace != nil || input.providerConfig != nil {
 		t.Fatalf("input = %+v, %v", input, err)

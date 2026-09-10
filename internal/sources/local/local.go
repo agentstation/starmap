@@ -2,6 +2,7 @@ package local
 
 import (
 	"context"
+	"slices"
 	"time"
 
 	"github.com/agentstation/starmap/internal/catalog/workspace"
@@ -17,6 +18,7 @@ type Source struct {
 	snapshot        *catalogs.Catalog
 	loadReport      catalogs.LoadReport
 	catalogProvided bool
+	aliasBaseline   *catalogs.Catalog
 }
 
 var _ sources.Source = (*Source)(nil)
@@ -46,6 +48,12 @@ func WithCatalog(catalog *catalogs.Catalog) Option {
 		s.snapshot = catalog
 		s.catalogProvided = true
 	}
+}
+
+// WithAliasBaseline permits unchanged projected rename records from the accepted baseline.
+// Local acquisition cannot change that inventory or grant canonical rename authority.
+func WithAliasBaseline(baseline *catalogs.Catalog) Option {
+	return func(s *Source) { s.aliasBaseline = baseline }
 }
 
 // WithCatalogReport sets a pre-loaded catalog and its source load diagnostics.
@@ -84,6 +92,9 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 			return errors.WrapResource("load", "human catalog", s.catalogPath, err)
 		}
 		builder.SetMergeStrategy(catalogs.MergeReplaceAll)
+		if err := s.validateAndClearAliases(builder); err != nil {
+			return err
+		}
 		catalog, err := catalogs.NewObservationCatalog(builder)
 		if err != nil {
 			return errors.WrapResource("publish", "local source observation", "", err)
@@ -98,6 +109,19 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 }
 
 func (s *Source) observation(catalog *catalogs.Catalog, report catalogs.LoadReport) (sources.Observation, error) {
+	if catalog != nil && len(catalog.CanonicalAliasRecords()) != 0 {
+		builder, err := catalogs.NewBuilderFrom(catalog)
+		if err != nil {
+			return sources.Observation{}, err
+		}
+		if err := s.validateAndClearAliases(builder); err != nil {
+			return sources.Observation{}, err
+		}
+		catalog, err = catalogs.NewObservationCatalog(builder)
+		if err != nil {
+			return sources.Observation{}, err
+		}
+	}
 	issues := make([]sources.ObservationIssue, 0, len(report.Issues))
 	for _, issue := range report.Issues {
 		code := sources.ObservationIssueCodeInvalidRecord
@@ -126,6 +150,17 @@ func (s *Source) observation(catalog *catalogs.Catalog, report catalogs.LoadRepo
 		},
 		Issues: issues,
 	})
+}
+
+func (s *Source) validateAndClearAliases(builder *catalogs.Builder) error {
+	records := builder.CanonicalAliasRecords()
+	if len(records) == 0 {
+		return nil
+	}
+	if s.aliasBaseline == nil || !slices.Equal(records, s.aliasBaseline.CanonicalAliasRecords()) {
+		return &errors.ConflictError{Resource: "local canonical aliases", Message: "publish rename changes through the selected baseline authority"}
+	}
+	return builder.SetCanonicalAliasRecords(nil)
 }
 
 // Cleanup releases any resources.
