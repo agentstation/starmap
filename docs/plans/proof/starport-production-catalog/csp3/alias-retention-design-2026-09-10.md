@@ -41,6 +41,22 @@ A removed canonical ID must block convenience lookup. A current provider model I
 Reject an alias that gives one public request name a different canonical target from an existing provider route.
 This applies the existing ambiguous-identity requirement to the shared request namespace.
 
+## Storage and publication
+
+The baseline carries explicit active and removed rename records. Both states retain the original edge and publisher.
+A replacement inventory must preserve prior edges. Baseline removal changes the record state to removed.
+Reject missing history, changed targets, changed publishers, and unsupported payload formats before acceptance.
+The baseline producer must enforce the same successor checks before it publishes a new embedded catalog or downloadable generation.
+
+Operator alias removal belongs to the existing explicit removal policy. Add a separate alias target beside scoped-entry and canonical-model targets.
+Its local snapshot uses `catalog-runtime/removals.json` and the existing publication journal.
+An operator restore clears that local exclusion. It cannot restore an alias that the selected baseline removed.
+The original alias records remain in the accepted catalog generation and retained source manifest.
+
+Catalog payload transport must distinguish aliases from provider observations. Acquisition cannot create or clear canonical rename records.
+Advance the payload schema for this contract and preserve readable legacy formats when they contain no alias metadata.
+Retained policy and alias history must survive configured-source refresh, offline restart, and directory migration.
+
 ## Admission boundary
 
 A retained alias grants no permission. Resolve its target, then apply current membership, scope removal, provider availability, and operation checks.

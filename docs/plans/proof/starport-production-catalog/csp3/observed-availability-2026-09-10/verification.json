@@ -641,7 +641,7 @@
     ]
   },
   "removal_policy_work": {
-    "state": "committed and in required review",
+    "state": "reviewed; publication awaits availability merge",
     "base": "c84c12d5",
     "worktree": "/tmp/starmap-operator-removal-2026-09-10",
     "branch": "codex/catalog-operator-removal",
@@ -1119,14 +1119,22 @@
     },
     "pre_pr_review": {
       "session": 58501,
-      "state": "active",
+      "state": "completed",
       "head": "b13b1744ab85521144fdb0ed2fa6ba2663ff9740",
       "base": "3a989949a77433fafb920976a6c2dc0988246843",
       "reviewers": [
         "codex:gpt-5.6-sol:xhigh",
         "claude:opus:high"
       ],
-      "log": "/tmp/starmap-removal-source-pre-pr-review-2026-09-10.log"
+      "log": "/tmp/starmap-removal-source-pre-pr-review-2026-09-10.log",
+      "exit_code": 0,
+      "findings": 0,
+      "confidence": 0.98,
+      "bundle_bytes": 132703,
+      "artifact": {
+        "path": "removal-source-pre-pr-review.log.gz",
+        "sha256": "2ffd26f4b0963dd816fc3f353760dfbfb5906f3f046bea5eaa31f4c930497fb1"
+      }
     },
     "final_checks": {
       "ago_exit": 0,
