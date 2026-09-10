@@ -671,6 +671,14 @@ func main() {
   - [func \(cat \*Builder\) SetProvenance\(value provenance.Map\)](<#Builder.SetProvenance>)
   - [func \(cat \*Builder\) SetProvider\(provider Provider\) error](<#Builder.SetProvider>)
   - [func \(cat \*Builder\) SetProviderModel\(providerID ProviderID, model Model\) error](<#Builder.SetProviderModel>)
+- [type CanonicalAlias](<#CanonicalAlias>)
+  - [func \(a CanonicalAlias\) Validate\(\) error](<#CanonicalAlias.Validate>)
+- [type CanonicalAliasIndex](<#CanonicalAliasIndex>)
+  - [func NewCanonicalAliasIndex\(definitions \[\]ModelDefinitionID, records ...CanonicalAlias\) \(\*CanonicalAliasIndex, error\)](<#NewCanonicalAliasIndex>)
+  - [func \(i \*CanonicalAliasIndex\) Lookup\(id ModelDefinitionID\) \(ModelDefinitionID, CanonicalAliasState, bool\)](<#CanonicalAliasIndex.Lookup>)
+  - [func \(i \*CanonicalAliasIndex\) Records\(\) \[\]CanonicalAlias](<#CanonicalAliasIndex.Records>)
+  - [func \(i \*CanonicalAliasIndex\) ValidateSuccessor\(next \*CanonicalAliasIndex\) error](<#CanonicalAliasIndex.ValidateSuccessor>)
+- [type CanonicalAliasState](<#CanonicalAliasState>)
 - [type CapabilityMapping](<#CapabilityMapping>)
 - [type Catalog](<#Catalog>)
   - [func DecodeCatalogGeneration\(generation Generation\) \(\*Catalog, error\)](<#DecodeCatalogGeneration>)
@@ -2112,6 +2120,96 @@ func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error
 ```
 
 SetProviderModel sets a model on a provider atomically.
+
+<a name="CanonicalAlias"></a>
+## type [CanonicalAlias](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L21-L26>)
+
+CanonicalAlias retains one immutable rename edge and its explicit state. PublisherID requires separate source authentication. Removed edges preserve model identity across later renames and restores.
+
+```go
+type CanonicalAlias struct {
+    ID          ModelDefinitionID   `json:"id"`
+    TargetID    ModelDefinitionID   `json:"target_id"`
+    PublisherID string              `json:"publisher_id"`
+    State       CanonicalAliasState `json:"state"`
+}
+```
+
+<a name="CanonicalAlias.Validate"></a>
+### func \(CanonicalAlias\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L29>)
+
+```go
+func (a CanonicalAlias) Validate() error
+```
+
+Validate checks one explicit rename record independently of its catalog and transport.
+
+<a name="CanonicalAliasIndex"></a>
+## type [CanonicalAliasIndex](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L50-L53>)
+
+CanonicalAliasIndex owns immutable rename records and precomputed terminal targets. Request lookups allocate no memory. They do not traverse graphs or read storage.
+
+```go
+type CanonicalAliasIndex struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewCanonicalAliasIndex"></a>
+### func [NewCanonicalAliasIndex](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L57>)
+
+```go
+func NewCanonicalAliasIndex(definitions []ModelDefinitionID, records ...CanonicalAlias) (*CanonicalAliasIndex, error)
+```
+
+NewCanonicalAliasIndex validates and copies a complete retained alias inventory. Live definitions cannot reuse retired IDs. Active aliases require a live terminal definition.
+
+<a name="CanonicalAliasIndex.Lookup"></a>
+### func \(\*CanonicalAliasIndex\) [Lookup](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L112>)
+
+```go
+func (i *CanonicalAliasIndex) Lookup(id ModelDefinitionID) (ModelDefinitionID, CanonicalAliasState, bool)
+```
+
+Lookup returns an alias's terminal target, explicit state, and whether the index reserves its ID. A removed alias still returns its target for diagnostics. Callers must refuse that ID before applying convenience lookup rules.
+
+<a name="CanonicalAliasIndex.Records"></a>
+### func \(\*CanonicalAliasIndex\) [Records](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L94>)
+
+```go
+func (i *CanonicalAliasIndex) Records() []CanonicalAlias
+```
+
+Records returns caller\-owned rename records in retired\-ID order.
+
+<a name="CanonicalAliasIndex.ValidateSuccessor"></a>
+### func \(\*CanonicalAliasIndex\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L125>)
+
+```go
+func (i *CanonicalAliasIndex) ValidateSuccessor(next *CanonicalAliasIndex) error
+```
+
+ValidateSuccessor prevents a new inventory from dropping or reassigning retired IDs. Explicit state changes can remove or restore an alias. Later renames extend the existing edge chain.
+
+<a name="CanonicalAliasState"></a>
+## type [CanonicalAliasState](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L10>)
+
+CanonicalAliasState distinguishes a usable alias from an explicitly removed alias.
+
+```go
+type CanonicalAliasState string
+```
+
+<a name="CanonicalAliasActive"></a>
+
+```go
+const (
+    // CanonicalAliasActive resolves the former canonical ID to its current definition.
+    CanonicalAliasActive CanonicalAliasState = "active"
+    // CanonicalAliasRemoved reserves the retired ID without resolving client requests.
+    CanonicalAliasRemoved CanonicalAliasState = "removed"
+)
+```
 
 <a name="CapabilityMapping"></a>
 ## type [CapabilityMapping](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/provider.go#L96-L101>)
