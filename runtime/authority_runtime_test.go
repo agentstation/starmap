@@ -3,6 +3,7 @@ package runtime
 import (
 	"context"
 	"io/fs"
+	"reflect"
 	"strings"
 	"sync"
 	"testing"
@@ -47,6 +48,31 @@ func authorityRuntimeFixture(t *testing.T) (*authorityTestSource, []Option) {
 		WithSource(s), WithClock(func() time.Time { return receipt.IssuedAt.Add(time.Second) }),
 		WithPermissionClockUncertainty(func() (time.Duration, bool) { return time.Second, true }),
 		WithClientOptions(starmap.WithCatalogStore(storage.NewMemory())),
+	}
+}
+
+func TestAuthorityRuntimePreservesPublishedAuthorityGeneration(t *testing.T) {
+	source, options := authorityRuntimeFixture(t)
+	options = append(options, WithStateDirectory(privateRuntimeDirectory(t)))
+	expected := source.replies[0].Generation.Copy()
+	r := openTestRuntime(t, options...)
+	if _, err := r.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	for _, phase := range []string{"refresh", "retained restart"} {
+		generation, err := r.Client().CurrentGeneration(t.Context())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(generation, expected) {
+			t.Fatalf("%s changed the authority generation: version=%d head=%+v", phase, generation.Manifest.ManifestVersion, generation.Manifest.AuthorityHead)
+		}
+		if err := r.Close(); err != nil {
+			t.Fatal(err)
+		}
+		if phase == "refresh" {
+			r = openTestRuntime(t, options...)
+		}
 	}
 }
 

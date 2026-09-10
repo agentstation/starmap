@@ -1,7 +1,9 @@
 package runtime
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"slices"
 
 	"github.com/agentstation/starmap"
@@ -76,17 +78,53 @@ func (r *Runtime) publishAuthorityStartup(ctx context.Context) error {
 	if layer == nil || r.lease.status() == leaseLost {
 		return nil
 	}
-	current := r.client.CurrentCatalogState()
-	if current.GenerationID != state.GenerationID || current.PayloadChecksum != state.PayloadChecksum {
-		committed, err := r.commit(ctx, state, r.lease.epoch(), evidence)
-		if err != nil {
-			return err
-		}
-		state = committed
+	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, layer)
+	if err != nil {
+		return err
 	}
+	state = committed
 	r.mu.Lock()
 	r.effective = state
 	r.activateAuthorityLocked(layer)
 	r.mu.Unlock()
 	return nil
+}
+
+// commitAuthority preserves the complete upstream generation in the serving store.
+// Rebuilding a candidate from catalog facts would discard its authority manifest.
+func (r *Runtime) commitAuthority(ctx context.Context, state starmap.CatalogState, source *sourceLayer, epoch uint64) (starmap.CatalogState, error) {
+	if source == nil || source.Manifest == nil {
+		return starmap.CatalogState{}, &errors.ValidationError{Field: "catalog_authority.generation", Message: "requires the original source generation"}
+	}
+	manifest := source.Manifest
+	if manifest.ManifestVersion != catalogs.AuthorityGenerationManifestVersion || manifest.GenerationID != state.GenerationID || manifest.Payload.Checksum != state.PayloadChecksum {
+		return starmap.CatalogState{}, &errors.ValidationError{Field: "catalog_authority.generation", Message: "must match the selected authoritative catalog"}
+	}
+	if err := r.lease.fence(epoch); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if state.GenerationID == r.client.CurrentGenerationID() {
+		retained, err := r.client.CurrentGeneration(ctx)
+		if err != nil {
+			return starmap.CatalogState{}, err
+		}
+		if !source.matchesGeneration(retained) {
+			return starmap.CatalogState{}, &errors.ConflictError{Resource: "catalog authority generation", Message: "the serving store contains different content for the selected generation"}
+		}
+		return r.client.CurrentCatalogState(), nil
+	}
+	generation := catalogs.Generation{Manifest: manifest.Copy(), Payload: source.Payload}
+	if _, err := r.client.Activate(ctx, generation); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	return r.client.CurrentCatalogState(), nil
+}
+
+func (s *sourceLayer) matchesGeneration(generation catalogs.Generation) bool {
+	if s.Manifest == nil || !bytes.Equal(s.Payload, generation.Payload) {
+		return false
+	}
+	selected, selectedErr := json.Marshal(s.Manifest)
+	retained, retainedErr := json.Marshal(generation.Manifest)
+	return selectedErr == nil && retainedErr == nil && bytes.Equal(selected, retained)
 }

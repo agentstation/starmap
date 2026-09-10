@@ -39,7 +39,7 @@ func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
 	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum {
 		return nil
 	}
-	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence)
+	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, nil)
 	if err != nil {
 		return err
 	}

@@ -114,7 +114,7 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 			return starmap.CatalogState{}, err
 		}
 	}
-	durable, err := r.commit(ctx, state, epoch, candidate.buildEvidence)
+	durable, err := r.commit(ctx, state, epoch, candidate.buildEvidence, candidate.source)
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}

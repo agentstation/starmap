@@ -407,11 +407,14 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 // commit durably publishes one effective catalog when the deployment holds a
 // writable store. The epoch that the run started under fences the commit, so an
 // instance that lost the lease cannot overwrite a newer generation.
-func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64, evidence starmap.CandidateEvidence) (starmap.CatalogState, error) {
+func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64, evidence starmap.CandidateEvidence, source *sourceLayer) (starmap.CatalogState, error) {
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	ctx = r.authorityPublicationContext(ctx)
+	if r.requiresAuthority() {
+		return r.commitAuthority(ctx, state, source, epoch)
+	}
 	if !r.client.PublishesDurably() {
 		// Without a durable store the runtime publishes in memory only. The
 		// effective catalog stays correct. It does not survive a restart.
