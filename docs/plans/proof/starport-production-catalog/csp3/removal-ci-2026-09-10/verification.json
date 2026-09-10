@@ -742,6 +742,39 @@
             "path": "contract-repaired-native-runtime-macos-15.jsonl.gz",
             "sha256": "fe96eec6c0b8da8e7ed18f2bcd892bbf5db3631d34e197c6cd9a2671726a28f3",
             "raw_sha256": "f6043ecc04f8c633f835576cad036e9a021f0c1401b8d5a25ec8adb4c33a0947"
+          },
+          "additional": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-macos-15-git-acquisition.jsonl.gz",
+                "sha256": "b86f1cc5f762c9be4aa22f10be25f9702e057a37af430be543f3c31b2c8a82cc",
+                "raw_sha256": "0bbb4e45df8e18f617ef2ad09cf40c6f7eb5237a8f993c0343c636ff3410762e"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-macos-15-publisher-ingestion.jsonl.gz",
+                "sha256": "8c289974ad21186fb5f89daeb5603fbac009504f17709e7e571feaf98f4d5851",
+                "raw_sha256": "c9cc2dadb853db36bd89a62e45ac4701c1d2832b0ecabf6a871e59d031c0696c"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-macos-15-toolchain.txt.gz",
+                "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+                "raw_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+              }
+            }
           }
         },
         {
@@ -755,6 +788,39 @@
             "path": "contract-repaired-native-runtime-macos-15-intel.jsonl.gz",
             "sha256": "fd4c5762322cca2d51819e4ae627f8dfc2ced7661c56ee69583bcffe3cc2bc20",
             "raw_sha256": "34e4086207a6146dccf16925a10f97ca4b1c10433dd4962c85218e2a2ff84863"
+          },
+          "additional": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-macos-15-intel-git-acquisition.jsonl.gz",
+                "sha256": "8b8bdb0f461671a5023f316a3e3c6e0a31ddb8039f58a266f796fdfcfbf7d353",
+                "raw_sha256": "27b37a00aa81e1975b45a76ce932df8c54e10547abf6c863e45496d67feca725"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-macos-15-intel-publisher-ingestion.jsonl.gz",
+                "sha256": "0b06960082aac7e1286acadba75ea0c121efbd4960adb4a60c5379946b833267",
+                "raw_sha256": "d88bcf0cfec84d62a574f8e175cc4ed1719d50d92d40a34561eb24248d06193e"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-macos-15-intel-toolchain.txt.gz",
+                "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+                "raw_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+              }
+            }
           }
         },
         {
@@ -768,6 +834,48 @@
             "path": "contract-repaired-native-runtime-ubuntu-24.04.jsonl.gz",
             "sha256": "f706a856021fbaf8c1f683c6d1d40fcfb582bc159bdcbf76c0f58e33923c9ac9",
             "raw_sha256": "16c3581339408209464b1c696ffb8524e16694e1b042fadbda616b7bcce44c79"
+          },
+          "additional": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-git-acquisition.jsonl.gz",
+                "sha256": "44013441fcd49f2a39e0fe58ca5f03b961757e51c59c3d1de2c23c01bd6087d9",
+                "raw_sha256": "b497ac5b28ae1dc4163bf1099cdd54f482a8da32202a9ce4f3566da39b514b04"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-publisher-ingestion.jsonl.gz",
+                "sha256": "67cdea13e75c6e46c6c993087bdfb3a98bd0f19495c19c4ad01f9f14a993e1ae",
+                "raw_sha256": "c36625bb752f8f04280c38e0f600376ae64c79dad426c2c5f028552f7755beaf"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "service-owner.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-service-owner.txt.gz",
+                "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+                "raw_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+              },
+              "qualified_test": "TestServiceConfigurationAdministratorOwnedRead",
+              "state": "passed privileged parent and child execution"
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-toolchain.txt.gz",
+                "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+                "raw_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+              }
+            }
           }
         },
         {
@@ -781,6 +889,48 @@
             "path": "contract-repaired-native-runtime-ubuntu-24.04-arm.jsonl.gz",
             "sha256": "26eb211ebc7a2ee271930fb786897264d3b9ff2f9dd5ac12e31c18d1ba435264",
             "raw_sha256": "ef2e67adfed42aa5830159b8923f7cc027bd1197afb451c18365dc417cbb6a78"
+          },
+          "additional": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-arm-git-acquisition.jsonl.gz",
+                "sha256": "5eb772e20f90cae0cb3a9b743549b39bf553d6df05dfef65476b71182e541650",
+                "raw_sha256": "ad23c4e18bef94aabd8738adf1965a91b3493e724a2b3f70acd532109817eb3c"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-arm-publisher-ingestion.jsonl.gz",
+                "sha256": "38ae164cf94a3c1e18dfb1af38cba5d67e8b86dc79b39072117dfb0381821b6d",
+                "raw_sha256": "a79513d9ebcb65763ee965925ae68fa6c7f46237c747e2f30e04118257e67147"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "service-owner.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-arm-service-owner.txt.gz",
+                "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+                "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+              },
+              "qualified_test": "TestServiceConfigurationAdministratorOwnedRead",
+              "state": "passed privileged parent and child execution"
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-ubuntu-24.04-arm-toolchain.txt.gz",
+                "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+                "raw_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+              }
+            }
           }
         },
         {
@@ -794,6 +944,39 @@
             "path": "contract-repaired-native-runtime-windows-11-arm.jsonl.gz",
             "sha256": "286ec7adc3763a6272d9048c1f6c068db4b79f820bafeda72b23739a3156b868",
             "raw_sha256": "465ddb0615297d2bc9f75d7b3373d8c7a30743238667e88e487e1ba336cf3230"
+          },
+          "additional": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-windows-11-arm-git-acquisition.jsonl.gz",
+                "sha256": "910e13205dc8c2d7e65009f93e90f347667ca8cca315b762229f17aa5bb39e85",
+                "raw_sha256": "00fbc47155d8b789586b55b63706e688854df5a9f397ed16e0eb452c4087525f"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-windows-11-arm-publisher-ingestion.jsonl.gz",
+                "sha256": "cd344b236593434dbca6124520a125dfb7ddcbdd2587a8fda085cd5e1b3738ec",
+                "raw_sha256": "05c24309f8abfb7f8f7d87498c954e34bc989a6053a7c35a9efd22e9256cd1ea"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-windows-11-arm-toolchain.txt.gz",
+                "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+                "raw_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+              }
+            }
           }
         },
         {
@@ -807,6 +990,39 @@
             "path": "contract-repaired-native-runtime-windows-2025.jsonl.gz",
             "sha256": "ca92d9ccd6ad096f85cd9d7c3b422b32e94eafba79fa85abaca59ca2b20a9575",
             "raw_sha256": "873ee4c2857104ceda7c1bf0fd09a1405fb27e8d1c4dbd9e8d38437f775b6f03"
+          },
+          "additional": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-windows-2025-git-acquisition.jsonl.gz",
+                "sha256": "77f25aa1d3c0e8f9d5153bcd57aa7e4707ddf919b148ef7aab301dc741881825",
+                "raw_sha256": "5d5f5042524d4756014869e41a8fc7e292ee3a79cb198624f6b23d4c6a12c836"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-windows-2025-publisher-ingestion.jsonl.gz",
+                "sha256": "0a419f31dd10e1a6c8856d5a6fa5c99d3d7a884cb4b64bbbbe6de5506e6eb138",
+                "raw_sha256": "b329521cffecb06eed05ca59d1433ad47862aa755e73f4ea86dc5e4cbbd561b0"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              }
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "contract-repaired-native-runtime-windows-2025-toolchain.txt.gz",
+                "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+                "raw_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+              }
+            }
           }
         }
       ]
