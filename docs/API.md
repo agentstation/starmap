@@ -322,7 +322,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L316>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L322>)
 
 ```go
 func (c *Client) NextID() (string, error)

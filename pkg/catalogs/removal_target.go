@@ -2,7 +2,7 @@ package catalogs
 
 import "github.com/agentstation/starmap/pkg/errors"
 
-// CatalogRemovalKind distinguishes account entry removal from canonical removal.
+// CatalogRemovalKind distinguishes account, canonical model, and alias removals.
 type CatalogRemovalKind string
 
 const (
@@ -10,6 +10,8 @@ const (
 	CatalogRemovalScoped CatalogRemovalKind = "scoped"
 	// CatalogRemovalCanonical selects a canonical model across its provider offerings.
 	CatalogRemovalCanonical CatalogRemovalKind = "canonical"
+	// CatalogRemovalAlias selects one former canonical ID without removing its target model.
+	CatalogRemovalAlias CatalogRemovalKind = "alias"
 )
 
 // CatalogRemovalScope identifies an account independently of credential binding revisions.
@@ -31,6 +33,7 @@ type CatalogRemovalTarget struct {
 	Scope           *CatalogRemovalScope `json:"scope,omitempty"`
 	ProviderModelID ProviderModelID      `json:"provider_model_id,omitempty"`
 	DefinitionID    ModelDefinitionID    `json:"definition_id,omitempty"`
+	AliasID         ModelDefinitionID    `json:"alias_id,omitempty"`
 }
 
 // NewScopedRemovalTarget captures a validated scope without retaining credential identity.
@@ -58,24 +61,41 @@ func NewCanonicalRemovalTarget(definition ModelDefinitionID) (CatalogRemovalTarg
 	return target, nil
 }
 
+// NewAliasRemovalTarget selects one retained canonical alias for explicit removal.
+func NewAliasRemovalTarget(alias ModelDefinitionID) (CatalogRemovalTarget, error) {
+	target := CatalogRemovalTarget{Kind: CatalogRemovalAlias, AliasID: alias}
+	if err := target.Validate(); err != nil {
+		return CatalogRemovalTarget{}, err
+	}
+	return target, nil
+}
+
 // Validate rejects incomplete and mixed removal selectors before publication.
 func (t CatalogRemovalTarget) Validate() error {
 	switch t.Kind {
 	case CatalogRemovalScoped:
-		if t.Scope == nil || t.DefinitionID != "" || !validMembershipIdentifier(string(t.ProviderModelID)) {
+		if t.Scope == nil || t.DefinitionID != "" || t.AliasID != "" || !validMembershipIdentifier(string(t.ProviderModelID)) {
 			return invalidRemovalTarget("scope", "requires one account scope and provider model ID without a canonical selector")
 		}
 		return t.Scope.validate()
 	case CatalogRemovalCanonical:
-		if t.Scope != nil || t.ProviderModelID != "" || !validMembershipIdentifier(string(t.DefinitionID)) {
+		if t.Scope != nil || t.ProviderModelID != "" || t.AliasID != "" || !validMembershipIdentifier(string(t.DefinitionID)) {
 			return invalidRemovalTarget("definition_id", "requires one canonical model ID without an account selector")
 		}
 		if _, _, err := ParseModelDefinitionID(t.DefinitionID); err != nil {
 			return invalidRemovalTarget("definition_id", "must be a canonical author and model identity")
 		}
 		return nil
+	case CatalogRemovalAlias:
+		if t.Scope != nil || t.ProviderModelID != "" || t.DefinitionID != "" || !validMembershipIdentifier(string(t.AliasID)) {
+			return invalidRemovalTarget("alias_id", "requires one alias ID without another removal selector")
+		}
+		if _, _, err := ParseModelDefinitionID(t.AliasID); err != nil {
+			return invalidRemovalTarget("alias_id", "must be a canonical author and model identity")
+		}
+		return nil
 	default:
-		return invalidRemovalTarget("kind", "requires an explicit scoped or canonical action")
+		return invalidRemovalTarget("kind", "requires an explicit scoped, canonical, or alias action")
 	}
 }
 
@@ -83,7 +103,7 @@ func (t CatalogRemovalTarget) Validate() error {
 // Validate targets and source scopes before this query.
 // Credential rotation does not change the target. The query allocates no memory and reads no storage.
 func (t CatalogRemovalTarget) MatchesScope(scope ProviderMembershipScope, model ProviderModelID) bool {
-	if t.Kind != CatalogRemovalScoped || t.Scope == nil || t.DefinitionID != "" || t.ProviderModelID != model {
+	if t.Kind != CatalogRemovalScoped || t.Scope == nil || t.DefinitionID != "" || t.AliasID != "" || t.ProviderModelID != model {
 		return false
 	}
 	target := t.Scope

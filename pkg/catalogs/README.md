@@ -717,10 +717,12 @@ func main() {
 - [type CatalogRemovalScope](<#CatalogRemovalScope>)
 - [type CatalogRemovalSet](<#CatalogRemovalSet>)
   - [func NewCatalogRemovalSet\(targets ...CatalogRemovalTarget\) \(\*CatalogRemovalSet, error\)](<#NewCatalogRemovalSet>)
+  - [func \(s \*CatalogRemovalSet\) ContainsAlias\(id ModelDefinitionID\) bool](<#CatalogRemovalSet.ContainsAlias>)
   - [func \(s \*CatalogRemovalSet\) ContainsCanonical\(id ModelDefinitionID\) bool](<#CatalogRemovalSet.ContainsCanonical>)
   - [func \(s \*CatalogRemovalSet\) ContainsScoped\(scope ProviderMembershipScope, model ProviderModelID\) bool](<#CatalogRemovalSet.ContainsScoped>)
   - [func \(s \*CatalogRemovalSet\) Targets\(\) \[\]CatalogRemovalTarget](<#CatalogRemovalSet.Targets>)
 - [type CatalogRemovalTarget](<#CatalogRemovalTarget>)
+  - [func NewAliasRemovalTarget\(alias ModelDefinitionID\) \(CatalogRemovalTarget, error\)](<#NewAliasRemovalTarget>)
   - [func NewCanonicalRemovalTarget\(definition ModelDefinitionID\) \(CatalogRemovalTarget, error\)](<#NewCanonicalRemovalTarget>)
   - [func NewScopedRemovalTarget\(scope ProviderMembershipScope, model ProviderModelID\) \(CatalogRemovalTarget, error\)](<#NewScopedRemovalTarget>)
   - [func \(t CatalogRemovalTarget\) MatchesScope\(scope ProviderMembershipScope, model ProviderModelID\) bool](<#CatalogRemovalTarget.MatchesScope>)
@@ -2561,7 +2563,7 @@ type CatalogPayload struct {
 <a name="CatalogRemovalKind"></a>
 ## type [CatalogRemovalKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L6>)
 
-CatalogRemovalKind distinguishes account entry removal from canonical removal.
+CatalogRemovalKind distinguishes account, canonical model, and alias removals.
 
 ```go
 type CatalogRemovalKind string
@@ -2575,6 +2577,8 @@ const (
     CatalogRemovalScoped CatalogRemovalKind = "scoped"
     // CatalogRemovalCanonical selects a canonical model across its provider offerings.
     CatalogRemovalCanonical CatalogRemovalKind = "canonical"
+    // CatalogRemovalAlias selects one former canonical ID without removing its target model.
+    CatalogRemovalAlias CatalogRemovalKind = "alias"
 )
 ```
 
@@ -2591,7 +2595,7 @@ type CatalogRemovalPolicy struct {
 ```
 
 <a name="CatalogRemovalScope"></a>
-## type [CatalogRemovalScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L17-L25>)
+## type [CatalogRemovalScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L19-L27>)
 
 CatalogRemovalScope identifies an account independently of credential binding revisions. Publisher identity requires separate transport authentication before enforcement.
 
@@ -2608,7 +2612,7 @@ type CatalogRemovalScope struct {
 ```
 
 <a name="CatalogRemovalSet"></a>
-## type [CatalogRemovalSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L10-L14>)
+## type [CatalogRemovalSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L10-L15>)
 
 CatalogRemovalSet retains immutable operator targets and their lookup indexes. Construction validates target shape. The caller authorizes targets before construction.
 
@@ -2619,7 +2623,7 @@ type CatalogRemovalSet struct {
 ```
 
 <a name="NewCatalogRemovalSet"></a>
-### func [NewCatalogRemovalSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L23>)
+### func [NewCatalogRemovalSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L24>)
 
 ```go
 func NewCatalogRemovalSet(targets ...CatalogRemovalTarget) (*CatalogRemovalSet, error)
@@ -2627,8 +2631,17 @@ func NewCatalogRemovalSet(targets ...CatalogRemovalTarget) (*CatalogRemovalSet, 
 
 NewCatalogRemovalSet copies valid targets and removes identical duplicates. The resulting set has deterministic order and is safe for concurrent reads.
 
+<a name="CatalogRemovalSet.ContainsAlias"></a>
+### func \(\*CatalogRemovalSet\) [ContainsAlias](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L86>)
+
+```go
+func (s *CatalogRemovalSet) ContainsAlias(id ModelDefinitionID) bool
+```
+
+ContainsAlias reports an explicit removal of one former canonical ID. It does not remove the target model or other aliases.
+
 <a name="CatalogRemovalSet.ContainsCanonical"></a>
-### func \(\*CatalogRemovalSet\) [ContainsCanonical](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L69>)
+### func \(\*CatalogRemovalSet\) [ContainsCanonical](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L76>)
 
 ```go
 func (s *CatalogRemovalSet) ContainsCanonical(id ModelDefinitionID) bool
@@ -2637,7 +2650,7 @@ func (s *CatalogRemovalSet) ContainsCanonical(id ModelDefinitionID) bool
 ContainsCanonical reports an explicit removal of the canonical model. A scoped removal never changes this result.
 
 <a name="CatalogRemovalSet.ContainsScoped"></a>
-### func \(\*CatalogRemovalSet\) [ContainsScoped](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L79>)
+### func \(\*CatalogRemovalSet\) [ContainsScoped](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L96>)
 
 ```go
 func (s *CatalogRemovalSet) ContainsScoped(scope ProviderMembershipScope, model ProviderModelID) bool
@@ -2646,7 +2659,7 @@ func (s *CatalogRemovalSet) ContainsScoped(scope ProviderMembershipScope, model 
 ContainsScoped reports an exact account or public entry removal without allocating memory. The caller authenticates and validates the source scope before this query.
 
 <a name="CatalogRemovalSet.Targets"></a>
-### func \(\*CatalogRemovalSet\) [Targets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L53>)
+### func \(\*CatalogRemovalSet\) [Targets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L60>)
 
 ```go
 func (s *CatalogRemovalSet) Targets() []CatalogRemovalTarget
@@ -2655,7 +2668,7 @@ func (s *CatalogRemovalSet) Targets() []CatalogRemovalTarget
 Targets returns caller\-owned targets in deterministic order.
 
 <a name="CatalogRemovalTarget"></a>
-## type [CatalogRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L29-L34>)
+## type [CatalogRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L31-L37>)
 
 CatalogRemovalTarget names exactly one explicit operator removal action. Scoped actions preserve other accounts. Canonical actions require a separate selection.
 
@@ -2665,11 +2678,21 @@ type CatalogRemovalTarget struct {
     Scope           *CatalogRemovalScope `json:"scope,omitempty"`
     ProviderModelID ProviderModelID      `json:"provider_model_id,omitempty"`
     DefinitionID    ModelDefinitionID    `json:"definition_id,omitempty"`
+    AliasID         ModelDefinitionID    `json:"alias_id,omitempty"`
 }
 ```
 
+<a name="NewAliasRemovalTarget"></a>
+### func [NewAliasRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L65>)
+
+```go
+func NewAliasRemovalTarget(alias ModelDefinitionID) (CatalogRemovalTarget, error)
+```
+
+NewAliasRemovalTarget selects one retained canonical alias for explicit removal.
+
 <a name="NewCanonicalRemovalTarget"></a>
-### func [NewCanonicalRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L53>)
+### func [NewCanonicalRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L56>)
 
 ```go
 func NewCanonicalRemovalTarget(definition ModelDefinitionID) (CatalogRemovalTarget, error)
@@ -2678,7 +2701,7 @@ func NewCanonicalRemovalTarget(definition ModelDefinitionID) (CatalogRemovalTarg
 NewCanonicalRemovalTarget selects a canonical model through a separate explicit action.
 
 <a name="NewScopedRemovalTarget"></a>
-### func [NewScopedRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L38>)
+### func [NewScopedRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L41>)
 
 ```go
 func NewScopedRemovalTarget(scope ProviderMembershipScope, model ProviderModelID) (CatalogRemovalTarget, error)
@@ -2687,7 +2710,7 @@ func NewScopedRemovalTarget(scope ProviderMembershipScope, model ProviderModelID
 NewScopedRemovalTarget captures a validated scope without retaining credential identity. Callers must resolve the source scope through their authenticated profile link first.
 
 <a name="CatalogRemovalTarget.MatchesScope"></a>
-### func \(CatalogRemovalTarget\) [MatchesScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L85>)
+### func \(CatalogRemovalTarget\) [MatchesScope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L105>)
 
 ```go
 func (t CatalogRemovalTarget) MatchesScope(scope ProviderMembershipScope, model ProviderModelID) bool
@@ -2696,7 +2719,7 @@ func (t CatalogRemovalTarget) MatchesScope(scope ProviderMembershipScope, model 
 MatchesScope compares exact account identity and the opaque provider model ID. Validate targets and source scopes before this query. Credential rotation does not change the target. The query allocates no memory and reads no storage.
 
 <a name="CatalogRemovalTarget.Validate"></a>
-### func \(CatalogRemovalTarget\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L62>)
+### func \(CatalogRemovalTarget\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L74>)
 
 ```go
 func (t CatalogRemovalTarget) Validate() error

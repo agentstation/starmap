@@ -48,6 +48,15 @@ func (l *layerSet) prepareRemovalUpdate(current starmap.CatalogState, update *re
 	}
 	scopes := current.Catalog.MembershipScopes()
 	for _, target := range update.set.Targets() {
+		if target.Kind == catalogs.CatalogRemovalAlias {
+			if retained.ContainsAlias(target.AliasID) {
+				continue
+			}
+			if _, _, found := current.Catalog.CanonicalAliases().Lookup(target.AliasID); !found {
+				return &errors.NotFoundError{Resource: "canonical model alias", ID: string(target.AliasID)}
+			}
+			continue
+		}
 		if target.Kind == catalogs.CatalogRemovalCanonical {
 			if retained.ContainsCanonical(target.DefinitionID) {
 				continue

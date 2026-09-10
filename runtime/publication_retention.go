@@ -89,6 +89,9 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
+	if err := r.State().Catalog.CanonicalAliases().ValidateSuccessor(state.Catalog.CanonicalAliases()); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	current := r.client.CurrentCatalogState()
 	record := inputPublication{Version: inputPublicationVersion, Phase: inputPublicationPrepared, ExpectedID: current.GenerationID, ExpectedChecksum: current.PayloadChecksum, GenerationID: state.GenerationID, PayloadChecksum: state.PayloadChecksum}
 	changes := inputChanges{source: source, providers: selected}

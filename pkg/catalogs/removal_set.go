@@ -11,6 +11,7 @@ type CatalogRemovalSet struct {
 	targets   []CatalogRemovalTarget
 	scoped    map[scopedRemovalKey]struct{}
 	canonical map[ModelDefinitionID]struct{}
+	aliases   map[ModelDefinitionID]struct{}
 }
 
 type scopedRemovalKey struct {
@@ -24,6 +25,7 @@ func NewCatalogRemovalSet(targets ...CatalogRemovalTarget) (*CatalogRemovalSet, 
 	set := &CatalogRemovalSet{
 		scoped:    make(map[scopedRemovalKey]struct{}),
 		canonical: make(map[ModelDefinitionID]struct{}),
+		aliases:   make(map[ModelDefinitionID]struct{}),
 	}
 	for _, target := range targets {
 		if err := target.Validate(); err != nil {
@@ -34,6 +36,11 @@ func NewCatalogRemovalSet(targets ...CatalogRemovalTarget) (*CatalogRemovalSet, 
 				continue
 			}
 			set.canonical[target.DefinitionID] = struct{}{}
+		} else if target.Kind == CatalogRemovalAlias {
+			if _, found := set.aliases[target.AliasID]; found {
+				continue
+			}
+			set.aliases[target.AliasID] = struct{}{}
 		} else {
 			key := scopedRemovalKey{scope: *target.Scope, model: target.ProviderModelID}
 			if _, found := set.scoped[key]; found {
@@ -74,6 +81,16 @@ func (s *CatalogRemovalSet) ContainsCanonical(id ModelDefinitionID) bool {
 	return found
 }
 
+// ContainsAlias reports an explicit removal of one former canonical ID.
+// It does not remove the target model or other aliases.
+func (s *CatalogRemovalSet) ContainsAlias(id ModelDefinitionID) bool {
+	if s == nil {
+		return false
+	}
+	_, found := s.aliases[id]
+	return found
+}
+
 // ContainsScoped reports an exact account or public entry removal without allocating memory.
 // The caller authenticates and validates the source scope before this query.
 func (s *CatalogRemovalSet) ContainsScoped(scope ProviderMembershipScope, model ProviderModelID) bool {
@@ -94,6 +111,9 @@ func compareRemovalTargets(left, right CatalogRemovalTarget) int {
 	}
 	if left.Kind == CatalogRemovalCanonical {
 		return cmp.Compare(left.DefinitionID, right.DefinitionID)
+	}
+	if left.Kind == CatalogRemovalAlias {
+		return cmp.Compare(left.AliasID, right.AliasID)
 	}
 	l, r := left.Scope, right.Scope
 	result := cmp.Or(
