@@ -1,0 +1,9 @@
+{
+  "action": "Move earlier execution entries without changing task contracts or the goal.",
+  "moved_entries": 13,
+  "retained_entries": 10,
+  "moved_rows_sha256": "e8f1cdb074822ddac67d44b1b87d2c2cca5c98e6bb00552061af43993337a7b9",
+  "history": "execution-history-2026-09-10-0907.html",
+  "previous_history": "execution-history-2026-09-10-0417.html",
+  "ledger_and_task_contracts": "unchanged"
+}
