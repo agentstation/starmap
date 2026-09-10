@@ -15,7 +15,11 @@ func (o options) acquisitionPolicyClientOptions() []starmap.Option {
 	if o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
 		return o.client
 	}
-	return append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
+	selected := append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
+	if o.source.StartupPolicy == StartupRequireAuthority {
+		selected = append(selected, starmap.WithPublicationGuard(o.publicationCapability.guard))
+	}
+	return selected
 }
 
 // publishAcquisitionPolicyStartup applies declarations and removal of prior scoped evidence.

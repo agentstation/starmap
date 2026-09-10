@@ -411,6 +411,7 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
 	}
+	ctx = r.authorityPublicationContext(ctx)
 	if !r.client.PublishesDurably() {
 		// Without a durable store the runtime publishes in memory only. The
 		// effective catalog stays correct. It does not survive a restart.

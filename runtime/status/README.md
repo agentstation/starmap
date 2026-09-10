@@ -205,7 +205,7 @@ type Status struct {
     RequiredPermissionRevision string
     // EnforcedPermissionRevision is the active catalog's permission revision.
     EnforcedPermissionRevision string
-    // PermissionValidUntil is the authority's expiry before the runtime subtracts clock uncertainty.
+    // PermissionValidUntil is the confirmed receipt's expiry before the runtime subtracts clock uncertainty.
     PermissionValidUntil time.Time
 
     // GenerationID identifies the served catalog generation.

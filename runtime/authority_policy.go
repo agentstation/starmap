@@ -81,11 +81,11 @@ func (r *Runtime) AllowsNewAttempt() bool {
 		return false
 	}
 	r.mu.RLock()
-	p, available := r.permissions, r.effective.Catalog != nil
+	p, state := r.permissions, r.effective
 	r.mu.RUnlock()
 	if !r.requiresAuthority() {
-		return available
+		return state.Catalog != nil
 	}
 	uncertainty, known := r.permissionClock()
-	return available && p.allowsNewAttempt(r.config.now(), uncertainty, known)
+	return state.Catalog != nil && p.allowsNewAttempt(r.config.now(), uncertainty, known)
 }

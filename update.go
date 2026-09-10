@@ -144,6 +144,9 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 	if ctx == nil {
 		ctx = context.Background()
 	}
+	if err := c.authorizePublication(ctx); err != nil {
+		return Publication{}, err
+	}
 	release, err := c.updates.acquire(ctx)
 	if err != nil {
 		return Publication{}, err
@@ -174,6 +177,9 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 	}
 	if ctx == nil {
 		ctx = context.Background()
+	}
+	if err := c.authorizePublication(ctx); err != nil {
+		return Publication{}, err
 	}
 	if !catalogs.SupportsCatalogSchema(generation.Manifest.SchemaVersion) ||
 		!generation.Manifest.ConsumerCompatibility.SupportsSchema(

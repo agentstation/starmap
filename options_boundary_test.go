@@ -21,6 +21,7 @@ func TestNewRejectsRuntimeOptions(t *testing.T) {
 		"WithCatalogStore",
 		"WithEmbeddedBootstrapMaxAge",
 		"WithEmbeddedBootstrapMaxSizeBytes",
+		"WithPublicationGuard",
 	}
 	if got := optionConstructors(t, "."); !slices.Equal(got, offline) {
 		t.Fatalf("offline option constructors = %v, want %v", got, offline)

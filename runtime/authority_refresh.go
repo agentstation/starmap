@@ -54,7 +54,7 @@ func (r *Runtime) readPermission(ctx context.Context) error {
 	r.mu.RUnlock()
 	if err := r.store.savePermission(ctx, p, true); err != nil {
 		r.mu.Lock()
-		r.permissions.retained = false
+		r.permissions.retained, r.permissions.pending = false, false
 		r.mu.Unlock()
 		return err
 	}

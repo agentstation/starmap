@@ -10,13 +10,14 @@ import (
 // authorityPermissions separates the highest required revision from the revision the runtime can enforce.
 // Callers serialize updates and publish copies with the immutable catalog state.
 type authorityPermissions struct {
-	authorityID string
-	policyID    string
-	required    catalogs.CatalogPermissionEnvelope
-	highest     catalogs.CatalogAuthorityHead
-	enforced    catalogs.CatalogAuthorityHead
-	retained    bool
-	pending     bool
+	authorityID   string
+	policyID      string
+	required      catalogs.CatalogPermissionEnvelope
+	activeReceipt catalogs.CatalogPermissionEnvelope
+	highest       catalogs.CatalogAuthorityHead
+	enforced      catalogs.CatalogAuthorityHead
+	retained      bool
+	pending       bool
 }
 
 // observe records an authenticated receipt before catalog decoding or activation.
@@ -59,11 +60,13 @@ func (p authorityPermissions) confirmCheckpoint(receipt catalogs.CatalogPermissi
 	}
 	p.retained = true
 	p.pending = false
+	p.activeReceipt = receipt
 	return p, nil
 }
 
 // observeHead records a trusted manifest requirement without inventing a permission receipt.
 func (p authorityPermissions) observeHead(head catalogs.CatalogAuthorityHead) (authorityPermissions, error) {
+	receiptPending := p.retained || p.pending
 	p.retained, p.pending = false, false
 	if err := head.Validate(); err != nil {
 		return p, err
@@ -76,7 +79,8 @@ func (p authorityPermissions) observeHead(head catalogs.CatalogAuthorityHead) (a
 			return p, err
 		}
 	}
-	p.highest, p.pending = head, true
+	// A manifest cannot reopen receipt confirmation after an authenticated refusal.
+	p.highest, p.pending = head, receiptPending
 	return p, nil
 }
 
@@ -107,8 +111,8 @@ func (p authorityPermissions) activate(head catalogs.CatalogAuthorityHead) (auth
 // allowsNewAttempt reads only the validated snapshot and the caller's qualified clock sample.
 // Existing admitted work can retain its prior snapshot. Every new attempt must read the current snapshot.
 func (p authorityPermissions) allowsNewAttempt(now time.Time, uncertainty time.Duration, clockKnown bool) bool {
-	return p.retained && !p.pending && p.enforced.Sequence != 0 && p.highest.SupportsPermissions() && p.required.Head.SupportsPermissions() &&
+	return (p.retained || p.pending) && p.enforced.Sequence != 0 && p.highest.SupportsPermissions() && p.activeReceipt.Head.SupportsPermissions() &&
 		p.enforced.RequiredPermissionRevision == p.highest.RequiredPermissionRevision &&
-		p.required.Head.RequiredPermissionRevision == p.highest.RequiredPermissionRevision &&
-		p.required.ValidAt(now, uncertainty, clockKnown)
+		p.activeReceipt.Head.RequiredPermissionRevision == p.highest.RequiredPermissionRevision &&
+		p.activeReceipt.ValidAt(now, uncertainty, clockKnown)
 }

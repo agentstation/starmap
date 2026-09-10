@@ -18,7 +18,8 @@ type options struct {
 	catalogPath string
 
 	// durable catalog store required by every non-dry mutation path
-	catalogStore storage.Store
+	catalogStore      storage.Store
+	publicationGuards []PublicationGuard
 
 	// embedded bootstrap policy
 	embeddedBootstrapMaxAge       time.Duration

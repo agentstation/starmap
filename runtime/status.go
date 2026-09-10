@@ -91,14 +91,14 @@ func (r *Runtime) Status() Status {
 		uncertainty, known := r.permissionClock()
 		report.AuthorityRequired = true
 		report.AuthorityReady = permissions.enforced.Sequence != 0 && permissions.enforced.RequiredPermissionRevision == permissions.highest.RequiredPermissionRevision
-		report.PermissionValid = permissions.allowsNewAttempt(now, uncertainty, known)
+		report.PermissionValid = report.AuthorityReady && permissions.allowsNewAttempt(now, uncertainty, known)
 		if r.ctx.Err() != nil {
 			report.PermissionValid = false
 		}
 		report.Usable = report.CatalogAvailable && report.PermissionValid
 		report.RequiredPermissionRevision = permissions.highest.RequiredPermissionRevision
 		report.EnforcedPermissionRevision = permissions.enforced.RequiredPermissionRevision
-		report.PermissionValidUntil = permissions.required.ValidUntil
+		report.PermissionValidUntil = permissions.activeReceipt.ValidUntil
 	}
 	if r.source != nil {
 		report.SourceIdentity = r.source.Identity()

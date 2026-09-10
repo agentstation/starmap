@@ -50,7 +50,7 @@ func (r *Runtime) activateAuthorityLocked(source *sourceLayer) {
 	if !r.requiresAuthority() {
 		return
 	}
-	if source == nil || source.Manifest == nil || r.effective.PayloadChecksum != r.client.CurrentCatalogState().PayloadChecksum {
+	if source == nil || source.Manifest == nil || !r.authorityClientMatches(r.effective) {
 		r.permissions.enforced = catalogs.CatalogAuthorityHead{}
 		return
 	}
@@ -60,6 +60,11 @@ func (r *Runtime) activateAuthorityLocked(source *sourceLayer) {
 		return
 	}
 	r.permissions = next
+}
+
+func (r *Runtime) authorityClientMatches(state starmap.CatalogState) bool {
+	current := r.client.CurrentCatalogState()
+	return state.GenerationID == current.GenerationID && state.PayloadChecksum == current.PayloadChecksum
 }
 
 // publishAuthorityStartup aligns the serving client with the retained authority catalog.

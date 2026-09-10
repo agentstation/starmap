@@ -378,3 +378,43 @@ func TestAuthorityRuntimeWarmStartAlignsPublicationClient(t *testing.T) {
 		t.Fatal("warm runtime and its publication client disagree")
 	}
 }
+
+func TestAuthorityRuntimeReservesClientPublication(t *testing.T) {
+	_, opts := authorityRuntimeFixture(t)
+	r := openTestRuntime(t, opts...)
+	if _, err := r.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	before := r.State()
+	called := false
+	if _, err := r.Client().Update(t.Context(), func(context.Context, *catalogs.Catalog) (*starmap.Candidate, error) {
+		called = true
+		return nil, nil
+	}); err == nil || called {
+		t.Fatal("direct client update reached candidate work")
+	}
+	if _, err := r.Client().Activate(t.Context(), catalogs.Generation{}); err == nil {
+		t.Fatal("direct activation bypassed authority publication")
+	}
+	if r.Client().CurrentCatalogState().GenerationID != before.GenerationID || !r.AllowsNewAttempt() {
+		t.Fatal("rejected client mutation changed the approved generation or disabled its permission")
+	}
+	if _, err := r.RefreshSource(t.Context()); err != nil {
+		t.Fatalf("refresh after rejected client update: %v", err)
+	}
+	if !r.AllowsNewAttempt() {
+		t.Fatal("authority refresh remains unusable")
+	}
+}
+
+func TestAuthorityRuntimeRejectsAnotherRuntimeCapability(t *testing.T) {
+	_, firstOptions := authorityRuntimeFixture(t)
+	_, secondOptions := authorityRuntimeFixture(t)
+	first := openTestRuntime(t, firstOptions...)
+	second := openTestRuntime(t, secondOptions...)
+	called := false
+	_, err := second.Client().Update(first.authorityPublicationContext(t.Context()), func(context.Context, *catalogs.Catalog) (*starmap.Candidate, error) { called = true; return nil, nil })
+	if err == nil || called {
+		t.Fatal("one runtime's capability authorized another runtime's publication")
+	}
+}

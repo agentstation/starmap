@@ -17,6 +17,60 @@ func authorityPermissionFixture() catalogs.CatalogPermissionEnvelope {
 		IssuedAt: at, ValidUntil: at.Add(catalogs.MaxCatalogPermissionValidity)}
 }
 
+func TestAuthorityPermissionsRenewalPreservesOnlyTheConfirmedLease(t *testing.T) {
+	p := retainedAuthorityPermissions(t)
+	original := p.required
+	renewal := original
+	renewal.IssuedAt = renewal.IssuedAt.Add(time.Minute)
+	renewal.ValidUntil = renewal.ValidUntil.Add(time.Minute)
+	p, err := p.observe(renewal)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !p.allowsNewAttempt(renewal.IssuedAt, time.Second, true) {
+		t.Fatal("ordinary renewal interrupted a valid confirmed lease")
+	}
+	if p.allowsNewAttempt(original.ValidUntil, time.Second, true) {
+		t.Fatal("unretained renewal extended the original lease")
+	}
+	p, err = p.confirmRetention(renewal)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !p.allowsNewAttempt(original.ValidUntil, time.Second, true) {
+		t.Fatal("retained renewal did not extend its lease")
+	}
+}
+
+func TestAuthorityPermissionsManifestCannotRestoreRejectedReceipt(t *testing.T) {
+	p := retainedAuthorityPermissions(t)
+	confirmed := p.required
+	invalid := confirmed
+	invalid.Head.PolicyID = "unexpected-policy"
+	p, err := p.observe(invalid)
+	if err == nil {
+		t.Fatal("invalid receipt succeeded")
+	}
+	p, err = p.observeHead(confirmed.Head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if p.allowsNewAttempt(confirmed.IssuedAt, 0, true) {
+		t.Fatal("a manifest restored the rejected permission receipt")
+	}
+	if _, err = p.confirmCheckpoint(confirmed, confirmed.Head); err == nil {
+		t.Fatal("manifest retention confirmed a rejected permission receipt")
+	}
+	p, err = p.observe(confirmed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, err = p.confirmRetention(confirmed)
+	if err != nil || !p.allowsNewAttempt(confirmed.IssuedAt, 0, true) {
+		t.Fatal("a fresh verified receipt did not restore valid permission")
+	}
+}
+
 func retainedAuthorityPermissions(t *testing.T) authorityPermissions {
 	t.Helper()
 	p := authorityPermissions{authorityID: "enterprise", policyID: "production"}
