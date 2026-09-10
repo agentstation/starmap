@@ -1,5 +1,16 @@
 # CSP2: Persistent baseline and product paths
 
+Status: complete after Starmap PR #136 merged at `7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e` on 2026-09-09 UTC.
+The [merged qualification](csp2/merged-qualification-2026-09-09/verification.json) passes all 22 assigned subcases and fifteen CI checks.
+Six native jobs cover Linux, macOS, and Windows on AMD64 and ARM64.
+This completes the Starmap component criteria. Starport adoption and released-pair qualification remain open.
+CSP5 owns abandoned-stage cleanup and errors after publication. CSP18 owns unrecognized-journal guidance.
+
+## Historical implementation evidence
+
+The entries below retain their original source revisions, incomplete checks, and decisions.
+The merged qualification above owns the current CSP2 result.
+
 Status: native qualification remains incomplete. The owner resolved all three decisions and authorized reviewed publication on 2026-09-06.
 See the [decision record](csp2/owner-decisions-2026-09-06.md). Service-managed primary configuration now passes local checks in commit `707d63db`.
 The [service configuration evidence](csp2/service-configuration.md) records its scope. Required review and native qualification remain open.

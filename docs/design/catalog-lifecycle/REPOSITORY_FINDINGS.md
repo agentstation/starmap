@@ -7,6 +7,7 @@ The [engineering specification](ENGINEERING_SPEC.md) defines the proposed change
 
 This report records source inspection and selected local tests on 2026-09-04.
 It does not certify production availability or full API compatibility.
+Dated entries retain their original qualification limits. The canonical plan owns current task status.
 
 ## Inspected revisions
 
@@ -1657,3 +1658,14 @@ The [rename exclusion proof](../../plans/proof/starport-production-catalog/csp3/
 The runtime regression covers rename, restart, explicit restore, and another restart.
 Full task qualification, review, native CI, and merge remain open.
 CSP10 must preserve this identity during Starport admission.
+
+## Merged native qualification reconciliation, 2026-09-10
+
+CSP2 merged through Starmap PR #136 at `7be0a02701447ef0f3f044bbbd5cfd9ea5524f9e` on 2026-09-09 UTC.
+The [merged qualification](../../plans/proof/starport-production-catalog/csp2/merged-qualification-2026-09-09/verification.json) passes all 22 assigned subcases and fifteen CI checks.
+Six native jobs cover Linux, macOS, and Windows on AMD64 and ARM64.
+These results supersede the earlier native-execution gaps for the assigned component tests.
+
+The engineering specification now distinguishes those completed checks from power-loss durability, abandoned-stage cleanup, and complete service procedures.
+The historical entries above retain their original results.
+Starport composition and released-pair qualification remain open.

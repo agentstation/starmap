@@ -158,17 +158,78 @@
           "pass": 648
         }
       }
+    },
+    "product": {
+      "source": "13fe3a759a451106a824af5d9807b161352bd851",
+      "exit_code": 0,
+      "gate_status": "PASS",
+      "selected_subcases": 10,
+      "commands": 111,
+      "events": {
+        "pass": 907
+      },
+      "subcases": {
+        "A08.field_authority": {
+          "status": "PASS",
+          "commands": 10
+        },
+        "A08.presence_zero_null": {
+          "status": "PASS",
+          "commands": 20
+        },
+        "A08.scoped_tombstone": {
+          "status": "PASS",
+          "commands": 14
+        },
+        "A08.partial_empty": {
+          "status": "PASS",
+          "commands": 8
+        },
+        "A08.alias_cycle_scope": {
+          "status": "PASS",
+          "commands": 25
+        },
+        "A20.cli_provider_nonprovider": {
+          "status": "PASS",
+          "commands": 2
+        },
+        "A20.publisher_provider_nonprovider": {
+          "status": "PASS",
+          "commands": 4
+        },
+        "A20.server_provider_nonprovider": {
+          "status": "PASS",
+          "commands": 8
+        },
+        "A20.dependency_disabled_partial": {
+          "status": "PASS",
+          "commands": 14
+        },
+        "A20.receipt_artifact_binding": {
+          "status": "PASS",
+          "commands": 6
+        }
+      },
+      "qualification": "component checks only",
+      "whole_product_summary": "Summary: 1 passed, 49 failed",
+      "whole_product_unverified_cases": 49,
+      "artifact": {
+        "path": "starmap-alias-csp3-removal-identity-2026-09-10.json.gz",
+        "sha256": "9ccb09cdb10b49d21506aa02a7c25536e2f7c6634fc2a083f373a75d6cc496bf",
+        "raw_sha256": "44811924acf808fa6873a1faf35410073fb1fa12dd842274ddc10baa9448a79c"
+      }
     }
   },
   "running": {
-    "product": {
-      "session": 63970,
-      "source": "13fe3a759a451106a824af5d9807b161352bd851",
-      "output": "/tmp/starmap-alias-csp3-removal-identity-2026-09-10.json",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3 --json"
+    "complete_verification": {
+      "source": "b3af02c3791e7ca36af191095808f8fac5bc6ac6",
+      "worktree": "/tmp/starmap-canonical-aliases-2026-09-10",
+      "session": 53345,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 make verify",
+      "output": "/tmp/starmap-alias-complete-verification-2026-09-10.log"
     }
   },
-  "state": "Focused regression tests pass on both toolchains. Full catalog tests pass 1437 events. Static checks pass. Complete runtime/acquisition/reconciler qualification remains active.",
+  "state": "Task component checks pass; full repository verification, branch review, native CI, and merge remain open.",
   "generated_docs_failure": {
     "artifact": {
       "path": "starmap-alias-canonical-removal-docs-2026-09-10.log.gz",

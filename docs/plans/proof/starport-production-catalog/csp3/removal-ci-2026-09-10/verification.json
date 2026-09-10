@@ -1040,12 +1040,11 @@
     }
   },
   "shell_contract_repair": {
-    "state": "committed; pre-PR review active",
+    "state": "reviewed and pushed; final CI awaits actual main integration",
     "scope": "Replace the obsolete release-toolchain assertion with a process-boundary check for both selected toolchains.",
     "source_base": "ce1d646a0184572f07bdb2be7d7cf7a268216669",
     "file": "scripts/test-catalog-package-ownership-verifier.sh",
     "commit": "99304c36d1230dae1a51a209f3effd469b6370ab",
-    "review_session": 75590,
     "review_log": "/tmp/starmap-pr145-toolchain-shell-review-2026-09-10.log",
     "checks": {
       "current": {
@@ -1089,6 +1088,21 @@
         },
         "exit_code": 0,
         "product_verifier_tests": 73
+      }
+    },
+    "published": true,
+    "review": {
+      "exit_code": 0,
+      "findings": 0,
+      "confidence": 0.96,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "artifact": {
+        "path": "starmap-pr145-toolchain-shell-review-2026-09-10.log.gz",
+        "sha256": "e456b2e8eaaf089578eea15fb57924c1e54892f3c17ecf4f4349356ff7b6f378",
+        "raw_sha256": "e795a1be98bbf7f14375dfa03bdc52264d3b0e89ed0925651e42b7db66bf30b4"
       }
     }
   }

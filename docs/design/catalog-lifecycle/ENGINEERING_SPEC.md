@@ -8,7 +8,7 @@ The [repository findings](REPOSITORY_FINDINGS.md) record the inspected behavior.
 Requirements in this document do not imply that the current code implements them.
 New setting names and API concepts below are proposals unless marked existing.
 
-Updated: 2026-09-05. Status: engineering draft after verified review.
+Updated: 2026-09-10. Status: engineering draft after verified review.
 The review resolution and canonical plan distinguish proposed contracts from implementation evidence.
 The [storage review](STORAGE_REVIEW.md) records current file locations and backend behavior.
 The [storage revision](../../plans/proof/starport-production-catalog/storage-revision-2026-09-05/REVIEW_RESOLUTION.md) maps its fourteen findings to the contracts below.
@@ -379,7 +379,8 @@ Atomic replacement also checks the original access-bound tree before publication
 
 Private staging restores workspace access before candidate publication.
 macOS and Linux component tests cover modes, ACLs, inheritance, operator notes, and interrupted replacement.
-Native Windows execution, foreign-owner restoration, and complete recovery qualification remain UNVERIFIED.
+The [merged CSP2 qualification](../../plans/proof/starport-production-catalog/csp2/merged-qualification-2026-09-09/verification.json) passes all 22 assigned subcases and six native platform jobs.
+This includes the required workspace access and interruption tests. It does not qualify power-loss durability.
 
 See the [snapshot evidence](../../plans/proof/starport-production-catalog/csp2/workspace-access-snapshots.md) for limits and legacy recovery obligations.
 The [preservation evidence](../../plans/proof/starport-production-catalog/csp2/workspace-access-preservation.md) records the initial checks and process-lock failure.
@@ -508,7 +509,8 @@ Private record publication repeats ancestor checks before the record switch. Exi
 Configuration symlink checks preserve both the selected route and its intermediate target checks.
 Runtime validation runs before baseline export. Baseline directory creation uses the same parent-handle creation primitive.
 
-These controls do not qualify hostile mount replacement, every file role, native Windows ancestry, or managed-service file ownership exceptions.
+These controls do not qualify hostile mount replacement or every file role.
+The merged CSP2 matrix later qualified its native ancestry and service-managed primary configuration tests.
 The leaf policy still requires private owner access. Ancestor read permissions do not relax that policy.
 
 #### Private filesystem catalog store
@@ -524,7 +526,8 @@ Current publication retains its original directory binding and checks cancellati
 Cleanup preserves changed files and replacement directories. CSP5 owns abandoned-stage collection.
 
 The [CSP2 evidence](../../plans/proof/starport-production-catalog/csp2.md#private-filesystem-catalog-store) records local race and native Linux checks.
-Native Windows execution, Windows ancestors, service-file exceptions, and complete durability qualification remain open.
+The [merged CSP2 qualification](../../plans/proof/starport-production-catalog/csp2/merged-qualification-2026-09-09/verification.json) includes native Windows access checks and the selected service-file exception.
+Complete durability qualification remains separate.
 
 The [Linux ownership fixture](../../plans/proof/starport-production-catalog/csp2/native-ownership-and-tooling.md) verifies refusal without ownership rights and successful preservation with authorized rights.
 
@@ -546,9 +549,11 @@ Inheritance-only grants do not affect the current ancestor. Protected private cr
 Existing private leaf policy remains stricter. Unsupported entries, flags, and reparse points cause refusal.
 
 The implementation accepts drive, UNC, extended filesystem, and volume GUID path forms for validation.
-Native parser and filesystem tests remain UNVERIFIED until the Windows matrix runs.
+The merged CSP2 matrix passes the native Windows parser and filesystem tests on AMD64 and ARM64.
+
 The [CSP2 evidence](../../plans/proof/starport-production-catalog/csp2.md#windows-ancestor-access) separates portable policy checks from native API qualification.
-Windows service procedures, declared service-file exceptions, and complete platform durability remain open.
+CSP19 still owns complete service procedures. CSP2 qualifies the selected service-managed primary configuration exception.
+Complete platform durability remains separate.
 
 #### Windows file inspection
 
@@ -560,7 +565,7 @@ The native descriptor decoder belongs to `internal/runtimeacl/windows` and serve
 Observations distinguish absent, null, empty, and populated DACLs. They include owner and process SIDs without account-name resolution.
 
 The shared private policy determines known conflicts for owner-only file roles. Compatible descriptors still leave effective access unverified.
-Other access classes retain their declared uncertainty. Native Windows execution remains UNVERIFIED.
+Other access classes retain their declared uncertainty. The merged CSP2 matrix includes native Windows inspection tests.
 
 ### 4.3 Services and migration
 
@@ -2350,8 +2355,10 @@ Recovery verifies the candidate before moving the old workspace and refuses unex
 It removes verified backup entries only after the installed catalog and receipt match.
 Interrupted cleanup may resume with a verified subset of the old inventory. Recovery preserves changed or unknown backup entries.
 
-The prepared native suite includes an editor directory handle without delete sharing.
-Native Windows execution, power-loss durability, orphan staging cleanup, and complete file access policies remain unqualified in CSP2.
+The native suite includes an editor directory handle without delete sharing.
+The [merged CSP2 qualification](../../plans/proof/starport-production-catalog/csp2/merged-qualification-2026-09-09/verification.json) passes its required Windows interruption and access tests.
+Power-loss durability remains unqualified. CSP5 owns abandoned-stage cleanup and errors after publication.
+Starport must qualify its own composition under CSP8.
 
 ### 9.2 Inference credential destinations
 
