@@ -107,6 +107,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) ObservationInputs\(ctx context.Context\) \(ObservationInputs, error\)](<#Runtime.ObservationInputs>)
   - [func \(r \*Runtime\) PreviewAcquisition\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(ObservationUpdate, error\)\) \(starmap.CatalogState, error\)](<#Runtime.PreviewAcquisition>)
   - [func \(r \*Runtime\) PublishObservations\(ctx context.Context, observations ...sources.Observation\) \(starmap.CatalogState, error\)](<#Runtime.PublishObservations>)
+  - [func \(r \*Runtime\) ReadPermission\(ctx context.Context\) \(catalogs.CatalogPermissionEnvelope, error\)](<#Runtime.ReadPermission>)
   - [func \(r \*Runtime\) Refresh\(ctx context.Context\) \(RefreshReport, error\)](<#Runtime.Refresh>)
   - [func \(r \*Runtime\) RefreshPermission\(ctx context.Context\) error](<#Runtime.RefreshPermission>)
   - [func \(r \*Runtime\) RefreshSource\(ctx context.Context\) \(SourceRefreshReport, error\)](<#Runtime.RefreshSource>)
@@ -1360,6 +1361,15 @@ func (r *Runtime) PublishObservations(ctx context.Context, observations ...sourc
 ```
 
 PublishObservations retains caller\-supplied observations with their accepted catalog. The runtime validates receipts and active bindings before it publishes any input. This operation reads no source and joins runtime cancellation and shutdown.
+
+<a name="Runtime.ReadPermission"></a>
+### func \(\*Runtime\) [ReadPermission](<https://github.com/agentstation/starmap/blob/main/runtime/authority_relay.go#L14>)
+
+```go
+func (r *Runtime) ReadPermission(ctx context.Context) (catalogs.CatalogPermissionEnvelope, error)
+```
+
+ReadPermission returns the confirmed upstream receipt from memory without renewing it. It forwards a required revision even when this runtime cannot activate its catalog or permission schema. A newer manifest without a matching receipt, uncertain retention, or unknown clock validity prevents delivery. Callers must authenticate the downstream connection and enforce the receipt's original expiry.
 
 <a name="Runtime.Refresh"></a>
 ### func \(\*Runtime\) [Refresh](<https://github.com/agentstation/starmap/blob/main/runtime/refresh.go#L263>)

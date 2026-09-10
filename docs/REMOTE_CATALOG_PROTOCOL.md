@@ -4,7 +4,7 @@ The Starmap-to-Starmap online protocol uses a versioned API base URL such as
 `https://catalog.example.com/api/v1`. It is distinct from the signed release,
 hosted CDN, and OCI artifact distribution channels.
 
-The verified catalog and reactive notification flow has five routes:
+The verified catalog, permission, and notification flow has six routes:
 
 1. `GET /catalog/manifest` returns the current strict
    `GenerationManifest` as
@@ -25,6 +25,32 @@ The verified catalog and reactive notification flow has five routes:
    `channel_updated_at`, `observed_at`, and one entry for each disclosed hop.
    The document names no URL, no credential, and no operator message. The
    reply header is `no-store`.
+6. `GET /catalog/permission` returns the confirmed upstream permission receipt
+   as `application/vnd.agentstation.starmap.catalog-permission+json`.
+   It returns the complete receipt with `Cache-Control: no-store`. Conditional
+   headers do not produce a 304 response or extend permission validity.
+
+The permission route reads the connected runtime's confirmed receipt from
+memory. It does not read catalog storage or start an upstream request.
+`server.WithRuntime` connects this optional runtime capability. Server
+construction does not read a receipt. Authentication, when enabled, protects
+the permission route with the configured server API key.
+
+A relay preserves the authority identity, publication head, issue time, and
+expiry. It can forward an unsupported permission revision before it can
+activate the associated catalog. Downstream consumers must record that
+requirement and refuse attempts they cannot authorize.
+
+The relay returns 503 with code `catalog_permission_unavailable` when it has
+no confirmed receipt for the highest known publication. It also refuses an
+expired receipt, unknown clock validity, and an unconfirmed renewal.
+Internal error details do not appear in that response.
+
+Relaying does not mint permission. The standalone clock qualification adapter
+and origin receipt issuer remain unimplemented. Embedding applications must
+supply qualified clock evidence through `runtime.WithPermissionClockUncertainty`
+to use the current relay. The five-minute maximum receipt lifetime and
+30-second maximum clock uncertainty still apply.
 
 A downstream reads the source chain to grade the propagated origin freshness
 and to reject a cascade that names itself. The document discloses at most 16
@@ -50,9 +76,10 @@ It also rejects an incompatible catalog-schema range or oversized descriptor.
 The generation ID must be a bounded canonical path segment. The client verifies
 payload size and SHA-256 before decode or durable commit.
 
-Any verification or transport failure leaves the current catalog and durable
-store untouched. This includes malformed manifest data, unsafe identity,
-truncated data, a corrupt checksum, and semantic decode errors.
+A failed candidate verification leaves the active catalog unchanged. This
+includes malformed manifest data, unsafe identity, truncated data, a corrupt
+checksum, and semantic decode errors. An authenticated authority requirement
+can still advance independently and block new attempts before activation.
 
 Remote updates preserve the received generation and sync-run identities rather
 than minting a second local identity. Commit remains compare-and-swap and the

@@ -142,16 +142,16 @@ func WithLogger(logger *zerolog.Logger) Option
 WithLogger configures server diagnostics. The default logger discards output.
 
 <a name="WithRuntime"></a>
-### func [WithRuntime](<https://github.com/agentstation/starmap/blob/main/server/server.go#L65>)
+### func [WithRuntime](<https://github.com/agentstation/starmap/blob/main/server/server.go#L67>)
 
 ```go
 func WithRuntime(connected ConnectedRuntime) Option
 ```
 
-WithRuntime joins the server to one connected runtime. Readiness then reports the runtime status, and Shutdown joins the runtime shutdown.
+WithRuntime joins the server to one connected runtime. Readiness then reports the runtime status, and Shutdown joins the runtime shutdown. If the runtime implements ReadPermission\(context.Context\), the permission endpoint forwards its validated receipt. A runtime without that capability cannot serve permission receipts.
 
 <a name="WithSyncer"></a>
-### func [WithSyncer](<https://github.com/agentstation/starmap/blob/main/server/server.go#L76>)
+### func [WithSyncer](<https://github.com/agentstation/starmap/blob/main/server/server.go#L78>)
 
 ```go
 func WithSyncer(syncer Syncer) Option
@@ -176,7 +176,7 @@ type PublicationHealth struct {
 ```
 
 <a name="Server"></a>
-## type [Server](<https://github.com/agentstation/starmap/blob/main/server/server.go#L104-L109>)
+## type [Server](<https://github.com/agentstation/starmap/blob/main/server/server.go#L106-L111>)
 
 Server serves one Starmap client's immutable catalog over HTTP.
 
@@ -189,7 +189,7 @@ type Server struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/server/server.go#L112>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/server/server.go#L114>)
 
 ```go
 func New(client *starmap.Client, config Config, serverOptions ...Option) (*Server, error)
@@ -198,7 +198,7 @@ func New(client *starmap.Client, config Config, serverOptions ...Option) (*Serve
 New constructs an embeddable server for client.
 
 <a name="Server.Handler"></a>
-### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/server/server.go#L160>)
+### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/server/server.go#L162>)
 
 ```go
 func (s *Server) Handler() http.Handler
@@ -216,7 +216,7 @@ func (s *Server) Health() Health
 Health returns current server health without performing I/O.
 
 <a name="Server.Serve"></a>
-### func \(\*Server\) [Serve](<https://github.com/agentstation/starmap/blob/main/server/server.go#L178>)
+### func \(\*Server\) [Serve](<https://github.com/agentstation/starmap/blob/main/server/server.go#L180>)
 
 ```go
 func (s *Server) Serve(listener net.Listener) error
@@ -225,7 +225,7 @@ func (s *Server) Serve(listener net.Listener) error
 Serve starts server\-owned services and serves listener until Shutdown or a listener failure. A normal Shutdown returns nil.
 
 <a name="Server.Shutdown"></a>
-### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/server/server.go#L199>)
+### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/server/server.go#L201>)
 
 ```go
 func (s *Server) Shutdown(ctx context.Context) error
@@ -234,7 +234,7 @@ func (s *Server) Shutdown(ctx context.Context) error
 Shutdown drains the HTTP server used by Serve and then stops server\-owned background services within ctx. It also closes a runtime joined with WithRuntime. A caller serving Handler through its own http.Server must drain that server first.
 
 <a name="Server.Start"></a>
-### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/server/server.go#L168>)
+### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/server/server.go#L170>)
 
 ```go
 func (s *Server) Start() error

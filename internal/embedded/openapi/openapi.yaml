@@ -205,6 +205,34 @@ components:
           type: array
           uniqueItems: false
       type: object
+    catalogs.CatalogAuthorityHead:
+      properties:
+        authority_id:
+          type: string
+        generation_id:
+          type: string
+        payload_checksum:
+          type: string
+        permission_schema_version:
+          type: integer
+        policy_id:
+          type: string
+        required_permission_revision:
+          type: string
+        sequence:
+          type: integer
+      type: object
+    catalogs.CatalogPermissionEnvelope:
+      properties:
+        head:
+          $ref: '#/components/schemas/catalogs.CatalogAuthorityHead'
+        issued_at:
+          type: string
+        valid_until:
+          type: string
+        version:
+          type: integer
+      type: object
     catalogs.EndpointType:
       description: 'Required: API style'
       type: string
@@ -1852,6 +1880,32 @@ info:
   version: "1.0"
 openapi: 3.1.0
 paths:
+  /api/v1/catalog/permission:
+    get:
+      description: Returns the confirmed upstream receipt with its original expiry.
+        Catalog activation is not required. Unavailable permission returns 503.
+      responses:
+        "200":
+          content:
+            application/vnd.agentstation.starmap.catalog-permission+json:
+              schema:
+                $ref: '#/components/schemas/catalogs.CatalogPermissionEnvelope'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response.Response'
+          description: Unauthorized
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response.Response'
+          description: Service Unavailable
+      summary: Current catalog permission receipt
+      tags:
+      - catalog
   /api/v1/catalog/source-chain:
     get:
       description: Safe identities and bounded detail for each cascade hop

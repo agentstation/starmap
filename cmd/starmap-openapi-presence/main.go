@@ -1,4 +1,4 @@
-// Command starmap-openapi-presence preserves explicit null claims in generated schemas.
+// Command starmap-openapi-presence preserves wire contracts in generated schemas.
 package main
 
 import (
@@ -108,12 +108,23 @@ func normalize(originalJSON, originalYAML []byte) ([]byte, []byte, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	if len(paths) == 0 && len(recordPaths) == 0 {
+	permissionChanged, err := normalizePermissionContent(document)
+	if err != nil {
+		return nil, nil, err
+	}
+	if len(paths) == 0 && len(recordPaths) == 0 && !permissionChanged {
 		return originalJSON, originalYAML, nil
 	}
 	edits, err := nullableYAMLEdits(originalYAML, paths, recordPaths)
 	if err != nil {
 		return nil, nil, err
+	}
+	if permissionChanged {
+		edit, err := permissionContentYAMLEdit(originalYAML)
+		if err != nil {
+			return nil, nil, err
+		}
+		edits = append(edits, edit)
 	}
 	updatedYAML := replace(originalYAML, edits)
 	// Replace only top-level JSON values. Preserve the generator's existing layout.
@@ -135,7 +146,7 @@ func normalize(originalJSON, originalYAML []byte) ([]byte, []byte, error) {
 		if err := decoder.Decode(&raw); err != nil {
 			return nil, nil, err
 		}
-		if key != "components" {
+		if key != "components" && (key != "paths" || !permissionChanged) {
 			continue
 		}
 		value, err := json.Marshal(document[key])

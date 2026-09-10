@@ -72,6 +72,7 @@ The configured prefix replaces `/api/v1` in every versioned route.
 | `DELETE /api/v1/updates/{id}` | Cancels one acquisition operation |
 | `GET /api/v1/stats` | Catalog, cache, runtime, callback, and SSE health |
 | `GET /api/v1/catalog/manifest` | Strict current generation manifest |
+| `GET /api/v1/catalog/permission` | Confirmed upstream permission receipt with its original expiry; 503 when unavailable |
 | `GET /api/v1/catalog/source-chain` | Safe source-chain document of this runtime |
 | `GET /api/v1/catalog/generations/{id}/manifest` | Retained immutable generation manifest |
 | `GET /api/v1/catalog/generations/{id}/payload` | Retained immutable canonical payload |
