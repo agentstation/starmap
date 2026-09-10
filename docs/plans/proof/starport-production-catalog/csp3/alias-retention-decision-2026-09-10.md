@@ -14,3 +14,5 @@ CSP10 owns client protocol transitions through A18.
 
 These requirements refine existing acceptance cases. The plan retains 38 tasks, 50 primary cases, and 324 required subcases.
 Implementation, transport, Starport integration, and qualification remain incomplete.
+
+The [implementation design](alias-retention-design-2026-09-10.md) defines identity, source authority, removal, and admission boundaries.

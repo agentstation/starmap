@@ -164,7 +164,7 @@
     ],
     "benchmark_before_session": 98545,
     "log": "/tmp/starmap-bootstrap-generation-before-2026-09-10.log",
-    "status": "Committed repair passes bootstrap ownership, corrected full pipeline, acquisition, application, minimum-Go, and static checks. Final periodic rerun and pre-PR review remain open.",
+    "status": "Reviewed repair pushed to PR143. Local checks pass. Native and complete repository CI remain active before automatic merge.",
     "benchmark_before": {
       "ns_op": [
         162519236,
@@ -484,7 +484,49 @@
       "session": 87284,
       "log": "/tmp/starmap-embedded-reuse-final-periodic-2026-09-10.jsonl",
       "commit": "7734996783ac150faeed82eb0c9c416e723b1519",
-      "state": "active"
+      "state": "completed",
+      "exit_code": 0,
+      "passed_events": 2,
+      "failed_events": 0,
+      "skipped_events": 0,
+      "seconds": 45.119
+    },
+    "pre_pr_review": {
+      "session": 47097,
+      "log": "/tmp/starmap-embedded-reuse-pre-pr-review-2026-09-10.log",
+      "exit_code": 0,
+      "commit": "7734996783ac150faeed82eb0c9c416e723b1519",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "findings": 0,
+      "secret_scan": "clean",
+      "bundle_bytes": 22713
+    },
+    "delivery": {
+      "pr": "https://github.com/agentstation/starmap/pull/143",
+      "title": "Reuse embedded catalogs and qualify source failures",
+      "head": "7734996783ac150faeed82eb0c9c416e723b1519",
+      "state": "OPEN",
+      "ci_run": 34437656892,
+      "ci_url": "https://github.com/agentstation/starmap/actions/runs/34437656892",
+      "ci_state": "in_progress",
+      "auto_merge": "squash enabled; all required checks must pass",
+      "merge_credit": false,
+      "watch": {
+        "session": 46280,
+        "log": "/tmp/starmap-pr143-cache-ci-watch-2026-09-10.log",
+        "command": "gh run watch 34437656892 --repo agentstation/starmap --interval 60 --exit-status"
+      }
+    },
+    "pre-pr-review": {
+      "path": "embedded-reuse-pre-pr-review-2026-09-10.gz",
+      "sha256": "db57edd91ab20da1e9d37d68256f843fc479eceab2fc270502bcc06ba20dca98"
+    },
+    "final-periodic": {
+      "path": "embedded-reuse-final-periodic-2026-09-10.gz",
+      "sha256": "8fab276b79fa2b4178e85f72b526e9fa785863f3bf59ea25acd0ce82a7adaaf6"
     }
   }
 }
