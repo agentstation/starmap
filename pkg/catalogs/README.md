@@ -2163,7 +2163,7 @@ DecodeCatalogPayload decodes the current catalog payload. A non\-nil catalog wit
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error)
 ```
 
-DecodeSourceObservationPayload decodes a source candidate without requiring resolved canonical authorship for every provider record. The returned catalog is suitable only for reconciliation. Durable generation activation must use DecodeCatalogPayload. Source observations use the bounded source provider count. Canonical generation decoding retains its smaller limit.
+DecodeSourceObservationPayload decodes a source candidate without requiring resolved canonical authorship for every provider record. The returned catalog is suitable only for reconciliation. Durable generation activation must use DecodeCatalogGeneration. Source observations use the bounded source provider count. Canonical generation decoding retains its smaller limit.
 
 <a name="NewCatalog"></a>
 ### func [NewCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/readonly.go#L13>)

@@ -48,7 +48,7 @@ func DecodeCatalogPayload(data []byte) (*Catalog, error) {
 // DecodeSourceObservationPayload decodes a source candidate without requiring
 // resolved canonical authorship for every provider record. The returned
 // catalog is suitable only for reconciliation. Durable generation activation
-// must use DecodeCatalogPayload. Source observations use the bounded source
+// must use DecodeCatalogGeneration. Source observations use the bounded source
 // provider count. Canonical generation decoding retains its smaller limit.
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error) {
 	catalog, report, err := decodeCatalogPayload(data, sourcepayload.MaxProviders, func(builder *Builder) (*Catalog, error) {
