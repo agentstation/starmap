@@ -215,6 +215,16 @@ Preparation starts no I/O. The caller still selects the durable predecessor and 
 Elapsed publication time cannot expire a canonical alias. Explicit operator or baseline removal changes its retained state and the required revision.
 The preparation library does not wire an origin server, authorize publishers, qualify clocks, or select a shared storage service.
 
+`Publisher.PublishCatalog` selects the next sequence from the stored authority and combines preparation with atomic publication.
+It verifies an ordinary input before reading storage. An empty store starts at sequence one.
+An exact retry derives the current generation identity and verifies immutable equality through the underlying store.
+Changed proposals must name the exact predecessor. Concurrent writers cannot both replace that predecessor with different generations.
+
+`Publisher.BootstrapCatalog` explicitly adopts an ordinary store. It cannot reset an established authority.
+Unknown permission semantics, unreadable state, changed authority identity, and an exhausted sequence cause refusal.
+Publication never retries a stale proposal automatically. A successful call returns the complete generation for activation in the serving client.
+Serving-client activation and origin server configuration remain separate composition work.
+
 ## Failure preservation and rollback
 
 A refusal before current-pointer publication leaves the previous current generation complete and readable.

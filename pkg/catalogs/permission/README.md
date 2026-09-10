@@ -22,10 +22,12 @@ Package permission prepares authority generations, orders their publication, and
 - [type Publisher](<#Publisher>)
   - [func NewPublisher\(store storage.Store, config PublisherConfig\) \(\*Publisher, error\)](<#NewPublisher>)
   - [func \(p \*Publisher\) Bootstrap\(ctx context.Context, generation catalogs.Generation, expected string\) error](<#Publisher.Bootstrap>)
+  - [func \(p \*Publisher\) BootstrapCatalog\(ctx context.Context, input catalogs.Generation, expected string\) \(catalogs.Generation, error\)](<#Publisher.BootstrapCatalog>)
   - [func \(p \*Publisher\) Commit\(ctx context.Context, generation catalogs.Generation, expected string\) error](<#Publisher.Commit>)
   - [func \(p \*Publisher\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Publisher.Current>)
   - [func \(p \*Publisher\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Publisher.CurrentAuthorityHead>)
   - [func \(p \*Publisher\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Publisher.Get>)
+  - [func \(p \*Publisher\) PublishCatalog\(ctx context.Context, input catalogs.Generation, expected string\) \(catalogs.Generation, error\)](<#Publisher.PublishCatalog>)
 - [type PublisherConfig](<#PublisherConfig>)
 
 
@@ -139,6 +141,15 @@ func (p *Publisher) Bootstrap(ctx context.Context, generation catalogs.Generatio
 
 Bootstrap explicitly adopts an ordinary catalog store for this authority. Expected identifies the exact predecessor. An empty value requires an empty store. It cannot replace an established authority, except for an exact retry of its current generation.
 
+<a name="Publisher.BootstrapCatalog"></a>
+### func \(\*Publisher\) [BootstrapCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/origin_publication.go#L25>)
+
+```go
+func (p *Publisher) BootstrapCatalog(ctx context.Context, input catalogs.Generation, expected string) (catalogs.Generation, error)
+```
+
+BootstrapCatalog explicitly adopts an ordinary store and publishes its first authority generation. It requires the exact ordinary predecessor, or an empty expectation for an empty store. It cannot reset an established authority. Exact retries retain their original generation and sequence.
+
 <a name="Publisher.Commit"></a>
 ### func \(\*Publisher\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L57>)
 
@@ -174,6 +185,17 @@ func (p *Publisher) Get(ctx context.Context, id string) (catalogs.Generation, er
 ```
 
 Get reads one immutable generation from the caller's store.
+
+<a name="Publisher.PublishCatalog"></a>
+### func \(\*Publisher\) [PublishCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/origin_publication.go#L18>)
+
+```go
+func (p *Publisher) PublishCatalog(ctx context.Context, input catalogs.Generation, expected string) (catalogs.Generation, error)
+```
+
+PublishCatalog prepares an ordinary permitted catalog and publishes its next durable authority sequence. Expected identifies the exact predecessor. An empty value requires an empty store. An exact retry may identify the prior predecessor after an ambiguous successful response.
+
+The caller authorizes this origin and applies its catalog policy before publication. A conflict requires a fresh operator or source decision. This method never retries a stale proposal automatically. The serving client must still activate the returned generation.
 
 <a name="PublisherConfig"></a>
 ## type [PublisherConfig](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L13-L16>)
