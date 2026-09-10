@@ -81,5 +81,13 @@
         "sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
       }
     ]
+  },
+  "auto_merge": {
+    "enabled_at": "2026-09-10T00:52:22Z",
+    "head": "6a600feaae2255da05bd801a5f6675e85bb70ba5",
+    "method": "SQUASH",
+    "state": "OPEN",
+    "verification": "Only Verification Gate remains active. Merge request requires this reviewed head and does not bypass required checks.",
+    "completion_credit": false
   }
 }

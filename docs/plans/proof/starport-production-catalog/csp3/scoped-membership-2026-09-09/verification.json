@@ -735,7 +735,7 @@
     "remaining": [
       "Bind exported scope records to original accepted observations and authenticated publisher namespaces.",
       "Preserve imported scope records through runtime reconstruction and derivative publication.",
-      "Apply the generation-bound scope evidence check before local publication. Preserve every referenced receipt through reconciliation and derivative publication.",
+      "Preserve every scope-referenced receipt through reconciliation and derivative publication.",
       "Document protocol schema selection and migration behavior; generate package docs.",
       "Repeat full affected tests and minimum-Go checks after integration, then required review.",
       "Implement Starport explicit profile links and admission enforcement."
@@ -800,7 +800,7 @@
       ],
       "limits": [
         "Manifest links do not prove binding selectors or publisher identity. The producer must validate original scoped receipts and the consumer must authenticate its configured publisher.",
-        "Client.newGeneration still validates the manifest and payload checksum only. Add scope-evidence validation before local commit without adding request-path work.",
+        "Historical gap resolved by local_publication: Client.newGeneration now checks scope evidence before committing a generation.",
         "The full integration command started before the final provider-source restriction and pinned-client tests. Focused reruns cover these additions; final full qualification remains required."
       ],
       "fixture_correction": "Initial degraded fixtures omitted required manifest degradation metadata. Corrected fail-before run reports seven rejected-condition failures plus the parent, with both valid cases passing.",
@@ -836,6 +836,14 @@
           "exit_code": 0,
           "files": 1330,
           "diagnostics": 0
+        },
+        "transport_integration": {
+          "exit_code": 0,
+          "catalogs": 1094,
+          "sources": 126,
+          "acquisition": 92,
+          "remote": 33,
+          "scope": "Snapshot before final provider-source restriction and pinned-schema tests; those changes have focused passing reruns."
         }
       },
       "artifacts": {
@@ -924,17 +932,111 @@
         }
       },
       "live_checks": {
-        "integration": {
-          "session_id": 80136,
-          "log": "/tmp/starmap-membership-transport-integration-2026-09-10.jsonl",
-          "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m ./pkg/catalogs ./pkg/catalogs/remote ./pkg/sources ./acquisition -json",
-          "observed": "Catalogs, remote, and sources finished successfully. Acquisition remains active."
-        },
         "pr_143": {
           "run_id": 34420248527,
-          "observed": "Verification Gate remains in_progress; all other checks pass."
+          "observed": "Verification Gate remains in_progress; all other checks pass.",
+          "auto_merge": {
+            "enabled_at": "2026-09-10T00:52:22Z",
+            "head": "6a600feaae2255da05bd801a5f6675e85bb70ba5",
+            "method": "SQUASH",
+            "completion_credit": false
+          }
         }
       }
+    },
+    "local_publication": {
+      "status": "Shared validation now guards local commit and received generation activation. Full root/catalog checks are running. Runtime scope export remains incomplete.",
+      "behavior": "ValidateMembershipEvidence validates scope records and original provider source links. Client.newGeneration calls it before any CatalogStore.Commit. A rejected update changes neither active nor durable generation. Accepted scope records survive restart.",
+      "checks": {
+        "focused_race": {
+          "exit_code": 0,
+          "pass": 18
+        },
+        "minimum_go_1_25_12": {
+          "exit_code": 0,
+          "pass": 18
+        },
+        "ago": {
+          "exit_code": 0
+        },
+        "golangci_lint": {
+          "exit_code": 0
+        },
+        "godoc": {
+          "exit_code": 0
+        },
+        "technical_writing": {
+          "exit_code": 0,
+          "files": 1331,
+          "diagnostics": 0
+        }
+      },
+      "fail_before": "Corrected regression passes the original provider receipt case and fails the missing-receipt case plus parent. The initial fixture incorrectly used a local-catalog source receipt; preserved separately.",
+      "artifacts": {
+        "transport-integration": {
+          "path": "transport-integration.jsonl.gz",
+          "sha256": "80336839f9245725e03febf1724ec36ec4d7903f81d02c1d918fd5d82c768b23",
+          "test_events": {
+            "pass": 1345
+          }
+        },
+        "publication-before": {
+          "path": "publication-before.jsonl.gz",
+          "sha256": "4c639f38462d0a718b012fd326f8efc49c978f506388f721f03124353dc82112",
+          "test_events": {
+            "fail": 3
+          }
+        },
+        "publication-before-ready": {
+          "path": "publication-before-ready.jsonl.gz",
+          "sha256": "642eaad76fd96ff262463e7a06d24ab2bd118851b190dd432db41be9c1ecd1c2",
+          "test_events": {
+            "fail": 2,
+            "pass": 1
+          }
+        },
+        "publication-after": {
+          "path": "publication-after.jsonl.gz",
+          "sha256": "3160074614e0fff6e5135e6c831737faa3af5e3b88bc94b277699340b49cdc12",
+          "test_events": {
+            "pass": 18
+          }
+        },
+        "publication-min-go": {
+          "path": "publication-min-go.jsonl.gz",
+          "sha256": "3cff8fbad7922e56998d50a4a077368683b7d0b99aa9fd14503f2a4b88c75621",
+          "test_events": {
+            "pass": 18
+          }
+        },
+        "publication-ago": {
+          "path": "publication-ago.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        },
+        "publication-lint": {
+          "path": "publication-lint.log.gz",
+          "sha256": "a0e26fd8bf7a9bf1e323d88e6b7d36d61e2f050492be8eae9b320fc9708aab5b"
+        },
+        "publication-godoc": {
+          "path": "publication-godoc.log.gz",
+          "sha256": "55c7a47cd892ec349a7f33eb81d63423e365bccb82c5fff5c0b7169dcd900712"
+        },
+        "publication-writing": {
+          "path": "publication-writing.log.gz",
+          "sha256": "49a911d2ff2661b3824deba9f51f2268af8a1665bda8d79756e43fe43648a223"
+        }
+      },
+      "live_check": {
+        "session_id": 95145,
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m . ./pkg/catalogs -json",
+        "log": "/tmp/starmap-membership-publication-full-2026-09-10.jsonl"
+      },
+      "next_seams": [
+        "Export effective local scopes under the persistent runtime instance identity.",
+        "Preserve scope-referenced observations in runtime.selectCurrentProviderEvidence; current pruning only considers model provenance and review candidates.",
+        "Retain upstream original source links with sourceLayer payloads, then carry them into derivative manifests.",
+        "Authenticate imported publisher namespaces before resolving explicit profile links. Source-chain cycle detection alone does not grant membership authority."
+      ]
     }
   }
 }
