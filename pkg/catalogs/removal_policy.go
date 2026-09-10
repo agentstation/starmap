@@ -6,6 +6,9 @@ import (
 	"sync"
 )
 
+// CatalogRemovalSchemaVersion is the first payload schema that can express operator removals.
+const CatalogRemovalSchemaVersion uint64 = 8
+
 // CatalogRemovalPolicy contains one publisher's complete operator removal snapshot.
 // Publisher identity requires authentication before a consumer enforces the policy.
 type CatalogRemovalPolicy struct {

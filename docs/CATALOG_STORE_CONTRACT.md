@@ -370,7 +370,9 @@ Unscoped volume regressions retain the existing degraded classification. Failed 
 Starport must show observed absence and exclude the affected provider/account from automatic routing.
 Explicit operator removal defaults to that entry. Global canonical removal remains a separate action.
 A replacement Starmap baseline can remove entries it no longer contains. Internal authoritative permission withdrawals retain immediate enforcement.
-Explicit removal, Starport routing integration, and model rename expiry remain incomplete under CSP3 and CSP10.
+
+Canonical aliases and Starport routing remain incomplete. CSP3 and CSP10 own this work.
+Old canonical aliases must remain valid until explicit operator or replacement baseline removal. Elapsed time cannot remove an alias.
 
 ### Operator removal policy
 
@@ -390,6 +392,10 @@ Backups and directory migrations must preserve the removal snapshot and any pend
 `Catalog.Removals` exposes immutable scoped and canonical queries. Consumers validate publisher authority and account links before applying these results.
 Acquisition observations cannot contain operator policy. Generic catalog merges preserve targets when incoming data omits them.
 A trusted replacement and an explicit operator restore remain separate operations. A schema-7 reader rejects schema-8 policy payloads.
+
+An accepted upstream policy requires the original generation manifest. A legacy replacement format cannot clear that policy.
+Upstream publishers cannot claim the runtime's local identity or its configured aliases.
+Ordinary release imports preserve current operator policy and reject incoming policy. Configured catalog sources carry accepted upstream policy through reconciliation and restart.
 
 Starport discovery, routing, and operator UI integration remain incomplete. This component does not qualify A08 or the released product pair.
 

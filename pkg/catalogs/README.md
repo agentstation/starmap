@@ -1082,6 +1082,12 @@ const (
 )
 ```
 
+<a name="CatalogRemovalSchemaVersion"></a>CatalogRemovalSchemaVersion is the first payload schema that can express operator removals.
+
+```go
+const CatalogRemovalSchemaVersion uint64 = 8
+```
+
 <a name="CurrentBootstrapManifestVersion"></a>CurrentBootstrapManifestVersion is the embedded\-bootstrap metadata format.
 
 ```go
@@ -2041,7 +2047,7 @@ func (cat *Builder) Providers() ProvidersReader
 Providers returns the providers collection.
 
 <a name="Builder.RemovalPolicies"></a>
-### func \(\*Builder\) [RemovalPolicies](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L22>)
+### func \(\*Builder\) [RemovalPolicies](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L25>)
 
 ```go
 func (cat *Builder) RemovalPolicies() []CatalogRemovalPolicy
@@ -2140,7 +2146,7 @@ func (cat *Builder) SetProviderModel(providerID ProviderID, model Model) error
 SetProviderModel sets a model on a provider atomically.
 
 <a name="Builder.SetRemovalPolicies"></a>
-### func \(\*Builder\) [SetRemovalPolicies](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L30>)
+### func \(\*Builder\) [SetRemovalPolicies](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L33>)
 
 ```go
 func (cat *Builder) SetRemovalPolicies(policies []CatalogRemovalPolicy) error
@@ -2363,7 +2369,7 @@ func (r *Catalog) Providers() ProvidersReader
 Providers returns the immutable catalog's provider collection reader.
 
 <a name="Catalog.RemovalPolicies"></a>
-### func \(\*Catalog\) [RemovalPolicies](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L42>)
+### func \(\*Catalog\) [RemovalPolicies](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L45>)
 
 ```go
 func (cat *Catalog) RemovalPolicies() []CatalogRemovalPolicy
@@ -2372,7 +2378,7 @@ func (cat *Catalog) RemovalPolicies() []CatalogRemovalPolicy
 RemovalPolicies returns caller\-owned operator policy snapshots.
 
 <a name="Catalog.Removals"></a>
-### func \(\*Catalog\) [Removals](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L48>)
+### func \(\*Catalog\) [Removals](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L51>)
 
 ```go
 func (cat *Catalog) Removals() *CatalogRemovalSet
@@ -2428,7 +2434,7 @@ const (
 ```
 
 <a name="CatalogRemovalPolicy"></a>
-## type [CatalogRemovalPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L11-L14>)
+## type [CatalogRemovalPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_policy.go#L14-L17>)
 
 CatalogRemovalPolicy contains one publisher's complete operator removal snapshot. Publisher identity requires authentication before a consumer enforces the policy.
 

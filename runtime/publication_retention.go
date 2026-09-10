@@ -63,6 +63,9 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 		return starmap.CatalogState{}, err
 	}
 	if source != nil {
+		if err := candidate.validateSourceRemovalTransition(source); err != nil {
+			return starmap.CatalogState{}, err
+		}
 		owned := *source
 		owned.Payload = bytes.Clone(source.Payload)
 		owned.Chain = slices.Clone(source.Chain)

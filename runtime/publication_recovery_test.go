@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"context"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -191,7 +192,7 @@ func TestRetentionRecoveryRefusesUnresolvedHead(t *testing.T) {
 
 func TestRetentionRecoveryRejectsInvalidRecords(t *testing.T) {
 	for name, record := range map[string]string{
-		"version":       `{"version":3,"phase":"idle"}`,
+		"version":       fmt.Sprintf(`{"version":%d,"phase":"idle"}`, inputPublicationVersion+1),
 		"phase":         `{"version":1,"phase":"unknown"}`,
 		"trailing":      `{"version":1,"phase":"idle"} {}`,
 		"unknown-field": `{"version":1,"phase":"idle","unrecognized":true}`,
