@@ -1669,3 +1669,19 @@ These results supersede the earlier native-execution gaps for the assigned compo
 The engineering specification now distinguishes those completed checks from power-loss durability, abandoned-stage cleanup, and complete service procedures.
 The historical entries above retain their original results.
 Starport composition and released-pair qualification remain open.
+
+## Combined alias and removal qualification, 2026-09-10
+
+The preceding alias findings describe earlier source revisions.
+Combined source `b5af1e9c` retains aliases without expiry and preserves scoped and canonical operator removals across refresh and restart.
+Its complete tree matches `b3af02c3`, which passed full repository verification.
+Both required reviewers report zero findings against main `b9eca889`.
+
+The [task proof](../../plans/proof/starport-production-catalog/csp3/canonical-removal-rename-2026-09-10/verification.json) records ten passing CSP3 subcases, 111 commands, and 907 test events.
+Full catalog tests pass 1,437 events. Runtime, acquisition, and reconciler race tests pass 1,503 events.
+All 81 packages pass each full normal and race suite. All fifteen coverage thresholds pass.
+
+PR #145 carries this reviewed source. Native CI and merge remain necessary before CSP3 completion.
+Starmap exposes alias identity and removal state, while later Starport tasks must enforce both during discovery, pricing, and routing.
+The alias lookup does not grant permission or establish authenticated enterprise authority.
+CSP4 owns retained authority, permission envelopes, and the refusal conditions recorded in its [preparation](../../plans/proof/starport-production-catalog/csp4-preparation-2026-09-10.md).
