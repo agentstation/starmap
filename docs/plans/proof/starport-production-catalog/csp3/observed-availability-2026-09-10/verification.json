@@ -335,9 +335,12 @@
   },
   "next_implementation_design": {
     "path": "scoped-removal-design.md",
-    "status": "design only",
+    "status": "begin implementation at the catalog target boundary",
     "owner": "CSP3",
     "acceptance": "A08.scoped_tombstone",
-    "implementation_credit": false
+    "implementation_credit": false,
+    "worktree": "/tmp/starmap-operator-removal-2026-09-10",
+    "branch": "codex/catalog-operator-removal",
+    "base_commit": "af94de19"
   }
 }

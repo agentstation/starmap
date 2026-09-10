@@ -21,6 +21,8 @@
 
 <p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/scoped-removal-design.md">scoped removal design</a> defines the next owning boundary and required tests. It retains account identity across credential rotation and keeps restore separate from provider recovery. It receives no implementation credit.</p>
 
+<p>Start the scoped removal implementation in <code>/tmp/starmap-operator-removal-2026-09-10</code>, branch <code>codex/catalog-operator-removal</code>, from <code>af94de19</code>. Keep the availability delivery branch unchanged during its final qualification. The removal branch remains dependent work with no publication credit.</p>
+
 <p>The earlier CSP3 verifier reported all 50 cases unverified and retained no per-command detail. Preserve that summary as limited evidence. Current A08 field-authority, presence, and partial-empty checks pass. Explicit operator removal and model aliases remain unverified. Full CSP3 acceptance remains incomplete.</p>
 
 <p><a href="https://github.com/agentstation/starmap/pull/143">PR #143</a> contains reviewed head <code>4f2b9462</code>. Its <a href="proof/starport-production-catalog/csp3/source-acceptance-2026-09-09.json">proof</a> records the earlier race timeouts and the serial scheduling repair. Fresh CI <code>34426991461</code> passes six native jobs. The final verification job remains active, with automatic merge enabled. Confirm the merge and matching trees before recording merge credit.</p>
