@@ -1,5 +1,5 @@
 {
-  "status": "Membership wire contract committed locally; enforcement regressions pass. Broad verification remains in progress.",
+  "status": "Membership wire and reconciliation checkpoints committed locally. Runtime qualification and the durable scope transport contract remain incomplete.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base": "6e4f9efbeab65e2652314f8293518dda9783778e",
@@ -376,7 +376,7 @@
     "test_status": "Untracked local regression. Preserve with the reconciliation regression."
   },
   "membership_enforcement": {
-    "status": "Local implementation under verification. Not committed or published.",
+    "status": "Local checkpoint committed; full runtime qualification and pre-PR review remain open. Not published.",
     "base": "6555d16202eb345d42464238d087cdf10833c629",
     "owner": "internal/catalog/reconciler MembershipState resolves selected history. Runtime shares it across field replay batches.",
     "behavior": [
@@ -531,7 +531,7 @@
     "sessions": {
       "runtime_20m": 98374
     },
-    "caveat": "Full runtime remains active. Full acquisition and reconciler suites pass. Later focused baseline refresh and revocation extensions have separate checks. Code remains uncommitted and unpublished.",
+    "caveat": "Full runtime remains active. Full acquisition and reconciler suites pass. Later focused baseline refresh and revocation extensions have separate passing checks. Commit 24d7bd35 is local only.",
     "remaining": [
       "Add integration coverage for unrelated scope preservation and health selection.",
       "Complete broad runtime and reconciliation checks.",
@@ -567,6 +567,7 @@
         "Starport explicit inference-profile links under D25"
       ],
       "status": "Unimplemented; local membership filtering and receipt retention do not satisfy this transport or Starport admission requirement."
-    }
+    },
+    "commit": "24d7bd35"
   }
 }
