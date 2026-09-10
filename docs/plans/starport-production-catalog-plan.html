@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-10 UTC. <a href="#CSP3">CSP3</a> is active. Eight of 38 tasks are complete. Twenty-one PRs merged. Unmerged work receives no completion credit.</p>
 
-<p id="next-action">Qualify the scoped membership draft with the full checks. Publisher collision and real HTTPS source checks pass. The earlier full runtime snapshot ended with 706 passing events and one repaired expectation failure. PR #143 still awaits its final CI gate with automatic merge enabled. Confirm its merge before recording completion credit. CSP3 remains incomplete.</p>
+<p id="next-action">Qualify the scoped membership draft with the full checks. PR #143 hit two race-test package timeouts. Review its serial scheduling repair, then qualify it in fresh CI. Confirm the merge before recording completion credit. CSP3 remains incomplete.</p>
 
 <p>Continue scoped membership work in <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>, based on merged <code>fee76cc9</code>. The <a href="proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json">scope proof</a> owns this work. Health, reset recovery, and 68 integration test events pass. The full runtime suite passes 703 test events with the required twenty-minute limit. The full acquisition rerun passes 92 test events after the unsupported-schema fixture repair.</p>
 
@@ -21,7 +21,9 @@
 
 <p>Explicit membership authority is the engineering default. The owner has not answered that preference.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp3/source-acceptance-2026-09-09.json">A20 registration proof</a> records 34 passing commands across five Starmap subcases. The Starport ingestion subcase remains unverified. Commit <code>6a600fea</code> is in <code>/tmp/starmap-source-acceptance-2026-09-09</code>, branch <code>codex/catalog-source-acceptance</code>. <a href="https://github.com/agentstation/starmap/pull/143">PR #143</a> carries the rebased registration and will merge after its required checks pass.</p>
+<p>The <a href="proof/starport-production-catalog/csp3/source-acceptance-2026-09-09.json">A20 registration proof</a> records 34 passing commands across five Starmap subcases. The Starport ingestion subcase remains unverified. Commit <code>6a600fea</code> is in <code>/tmp/starmap-source-acceptance-2026-09-09</code>, branch <code>codex/catalog-source-acceptance</code>. <a href="https://github.com/agentstation/starmap/pull/143">PR #143</a> carries the rebased registration.</p>
+
+<p>Its final gate failed on CLI application and runtime timeouts. A serial scheduling candidate preserves the tests and deadline. Automatic merge remains blocked until required checks pass.</p>
 
 <p>Read the <a href="#task-CSP3">CSP3 contract</a> and <a href="proof/starport-production-catalog/csp3/remaining-acceptance-audit-2026-09-09.json">remaining acceptance audit</a> after the delivery checks. Full A08, A20, and released-pair acceptance remain incomplete. D25 requires explicit inference-profile scope links. Ordinary removal thresholds and rename-window decisions remain pending. The <a href="#goal">goal block</a> preserves all 38 tasks, 50 cases, and 324 required subcases.</p>
 

@@ -87,7 +87,24 @@
     "head": "6a600feaae2255da05bd801a5f6675e85bb70ba5",
     "method": "SQUASH",
     "state": "OPEN",
-    "verification": "Only Verification Gate remains active. Merge request requires this reviewed head and does not bypass required checks.",
+    "verification": "Verification Gate failed. Automatic merge remains blocked by the required check.",
     "completion_credit": false
+  },
+  "ci_timeout": {
+    "run": 34420248527,
+    "status": "completed",
+    "conclusion": "failure",
+    "packages": [
+      "internal/cli/app",
+      "runtime"
+    ],
+    "timeout_seconds": 1200,
+    "native_jobs_passed": 6,
+    "artifact": {
+      "path": "source-acceptance-ci-timeout-2026-09-10.log.gz",
+      "sha256": "1f3e3ffe3c323137ac275679b53ae9c0532925ef2a0be33226c433247e4956e4"
+    },
+    "repair_candidate": "Serialize race-test packages with -p=1 while preserving selection, race detection, and the 20-minute package deadline. Fresh CI must qualify this scheduling change.",
+    "qualification": "Workflow tests and ago pass. Prose and pre-PR review remain pending."
   }
 }
