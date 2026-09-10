@@ -1,5 +1,5 @@
 {
-  "status": "Local availability checks complete. PR143 dependency repair, main integration, fresh review, and publication remain open. A08 aliases and explicit removal remain unverified.",
+  "status": "Reviewed cache dependency merged locally. Integration checks and fresh review remain open. Published dependency CI is active. No merge or completion credit.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base_work_commit": "8a4c14d9",
@@ -474,12 +474,38 @@
     "exit_code": 1
   },
   "reviewed_dependency_integration": {
-    "state": "prepared",
+    "state": "merged locally without conflicts",
     "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
     "before": "af94de19",
     "dependency": "7734996783ac150faeed82eb0c9c416e723b1519",
     "dependency_pr": 143,
     "authorization": "The active workflow permits local integration from a documented reviewed dependency. Publication remains after actual dependency merge.",
-    "review": "Sol xhigh and Opus high found zero actionable findings for the dependency."
+    "review": "Sol xhigh and Opus high found zero actionable findings for the dependency.",
+    "commit": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
+    "publication_state": "unpublished; dependency PR143 must merge before publication",
+    "status": "Eight focused integration events pass. Full CSP3 package checks remain active before fresh review.",
+    "focused": {
+      "session": 74131,
+      "exit_code": 0,
+      "log": "/tmp/starmap-availability-cache-integration-focused-2026-09-10.jsonl",
+      "passed_events": 8,
+      "failed_events": 0,
+      "skipped_events": 0,
+      "artifact": {
+        "path": "cache-integration-focused.jsonl.gz",
+        "sha256": "87ccedaca511b1d017d554962c72d626e1501c7c26812bf2c00169d2fd6f0669"
+      }
+    },
+    "full": {
+      "session": 83233,
+      "state": "active",
+      "log": "/tmp/starmap-availability-cache-integration-full-2026-09-10.jsonl",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json"
+    },
+    "static_sessions": {
+      "ago": 76418,
+      "lint": 36112,
+      "docs_check": 7654
+    }
   }
 }
