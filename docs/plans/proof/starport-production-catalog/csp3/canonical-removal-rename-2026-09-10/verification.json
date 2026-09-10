@@ -42,21 +42,104 @@
       },
       "exit_code": 0,
       "passed_events": 3
+    },
+    "full_catalog": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-catalog-full-2026-09-10.jsonl.gz",
+        "sha256": "e27af7fdba0cf40bce4da1278ff9670550cea3c6371bbf32da0a366c3c449372",
+        "raw_sha256": "386b1ff5484152a8c188940b602f07eb6469efccab6316e4cb5cd521048beeb7"
+      },
+      "exit_code": 0,
+      "counts": {
+        "pass": 1437,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "runtime_focused": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-runtime-green-2026-09-10.jsonl.gz",
+        "sha256": "f8136f53f4193fde612276cabe1c2c057b8c74ed1c93d9d60877905aba7727b3",
+        "raw_sha256": "ba0f86fa3586d7fdb144eb389b7622ae30073da2b38cf63ea29f8ce76aaa1d52"
+      },
+      "exit_code": 0,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "minimum_focused": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-minimum-2026-09-10.jsonl.gz",
+        "sha256": "92175b83b7e616dd3f5c89964cf6add2699dea5e7979fa9383d84425ae7d9362",
+        "raw_sha256": "c835ab49458548868ef3338cac71a64274615fd718fb8afde2a1be52653e5a75"
+      },
+      "exit_code": 0,
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "ago": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-ago-2026-09-10.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      "exit_code": 0
+    },
+    "lint": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-lint-2026-09-10.log.gz",
+        "sha256": "0a9f770a868d61f12021e78d1fc46a16bb47a4db6073214b2e3defeee919588b",
+        "raw_sha256": "c6a0dc129efa426d095992cd4759232fdc12414f58f5533c15cb3ae2b6e92d75"
+      },
+      "exit_code": 0
+    },
+    "docs": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-docs-fixed-2026-09-10.log.gz",
+        "sha256": "7388f22c733ef5640f8a4bcc35ffb4b61c3a4e3ead26699232ed0136000a84b6",
+        "raw_sha256": "83e5e05f38a4e35ccc33a5f2535db180ab15e98686e8619d624ded38320dbf1a"
+      },
+      "exit_code": 0
+    },
+    "prose": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-prose-2026-09-10.log.gz",
+        "sha256": "f166a44a2ec09ef07482bb53b601a8c3ac0b20a978711db2a1907a8d2f1b138d",
+        "raw_sha256": "c9ea41516a7ab095c31c5a72a962d76a4e3abe7d6bad1234cc4f1a3ebbb3200a"
+      },
+      "exit_code": 0,
+      "checked_files": 1378
+    },
+    "verifier": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-verifier-registered-2026-09-10.log.gz",
+        "sha256": "2bd6fb87059a644c2eba5b5da2eba9554294d33080e0af03928c2720632118f4",
+        "raw_sha256": "6cdad27ca2668f1ce6e94e05da820b6a2c53789a4811e0c9aad57b6abb3273b5"
+      },
+      "exit_code": 0,
+      "passed_tests": 73
     }
   },
   "running": {
     "full_race": {
       "session": 43282,
       "output": "/tmp/starmap-alias-canonical-removal-full-race-2026-09-10.jsonl"
-    },
-    "static": {
-      "session": 21489,
-      "output_prefix": "/tmp/starmap-alias-canonical-removal-"
-    },
-    "minimum": {
-      "session": 30930,
-      "output": "/tmp/starmap-alias-canonical-removal-minimum-2026-09-10.jsonl"
     }
   },
-  "state": "Local repair under qualification. Integrate into the alias branch before final publication. The older acceptance run at 3609f171 does not qualify this repair."
+  "state": "Focused regression tests pass on both toolchains. Full catalog tests pass 1437 events. Static checks pass. Complete runtime/acquisition/reconciler qualification remains active.",
+  "generated_docs_failure": {
+    "artifact": {
+      "path": "starmap-alias-canonical-removal-docs-2026-09-10.log.gz",
+      "sha256": "cb7663c511cfb3dfdc64b61cf441ebd6ae656e08aff3230d907418ce48f5a3be",
+      "raw_sha256": "d317c0e1c924f301db298a8420dcd8c789dca612b892c19011339649fd76c494"
+    },
+    "exit_code": 2,
+    "reason": "Sixteen generated source links changed after the constructor index call and private helper insertion. go generate ./pkg/catalogs regenerated the README, and the repeated documentation check passes."
+  },
+  "commit": "13fe3a759a451106a824af5d9807b161352bd851"
 }

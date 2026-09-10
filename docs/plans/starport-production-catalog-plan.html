@@ -27,7 +27,7 @@
 
 <p>Both failing tests pass on both Go versions. The full publisher package passes 35 tests. All six external consumers and static checks pass. CSP3 session <code>70366</code> writes <code>/tmp/starmap-alias-csp3-final-2026-09-10.json</code>. Complete branch review, native CI, and merge remain required.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp3/canonical-removal-rename-2026-09-10/verification.json">canonical removal audit</a> reproduces lost exclusion after a rename. Repair worktree <code>/tmp/starmap-alias-removal-identity-2026-09-10</code> uses branch <code>codex/catalog-alias-removal-identity</code>. Its six intended files remain uncommitted. Full race session <code>43282</code> checks the repair. Integrate it before final alias qualification.</p>
+<p>The <a href="proof/starport-production-catalog/csp3/canonical-removal-rename-2026-09-10/verification.json">canonical removal audit</a> reproduces lost exclusion after a rename. Repair worktree <code>/tmp/starmap-alias-removal-identity-2026-09-10</code> uses branch <code>codex/catalog-alias-removal-identity</code>. Clean commit <code>13fe3a75</code> passes 1,437 catalog events, both focused toolchains, and static checks. Full race session <code>43282</code> checks the repair. Integrate it before final alias qualification.</p>
 
 <p>Starport is clean <code>d45bb30</code> in <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>. It passes 32/33 gates. V01 requires a stable Starmap release. CSP8 and CSP10 own alias consumer integration.</p>
 
