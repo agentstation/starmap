@@ -128,6 +128,10 @@ D30 retains that alias until an operator or the replacement baseline explicitly 
 Elapsed time, provider omission, and ordinary refresh must not expire the alias.
 Alias removal must follow the selected source authority and survive restart.
 
+Retain the original rename edges after removal so a retired ID cannot later identify another model.
+Resolve aliases consistently for discovery, cost checks, and routing within the request generation.
+A removed alias must block convenience lookup. Reject ambiguous alias and provider-route names before activation.
+
 Retaining an alias does not grant permission or restore an unavailable provider/account route.
 The target must still pass current membership and admission checks.
 A08 tests must advance time beyond 30 days and cover restart, explicit removal, and baseline replacement.

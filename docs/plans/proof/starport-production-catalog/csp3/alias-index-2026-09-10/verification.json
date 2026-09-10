@@ -1,0 +1,67 @@
+{
+  "task": "CSP3",
+  "decision": "D30",
+  "worktree": "/tmp/starmap-canonical-aliases-2026-09-10",
+  "branch": "codex/catalog-canonical-aliases",
+  "base": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
+  "commit": "8c42665b56c61a3f30062fa0f2e275f8fbf0cc9c",
+  "state": "Local index component only; no publication or acceptance credit",
+  "scope": [
+    "Explicit active and removed rename edges with no expiry field",
+    "Immutable retired-ID ownership and successor validation",
+    "Cycles, ambiguous mappings, and cross-publisher edges rejected",
+    "Removed intermediate aliases preserve other active chains",
+    "Iterative flattening of 10000 edges and zero-allocation value-checked lookup"
+  ],
+  "remaining": [
+    "Builder ownership and payload transport",
+    "Atomic baseline rename and retained runtime history",
+    "Reconciliation of references from original observations",
+    "Convenience-name collision handling",
+    "Starport identity, price, membership, removal, and routing integration",
+    "Assigned A08 and A20 acceptance, review, native CI, and merge"
+  ],
+  "checks": {
+    "go126_race": {
+      "exit_code": 0,
+      "test_events": {
+        "pass": 17
+      },
+      "artifact": "go126_race.jsonl.gz",
+      "sha256": "da6dffe9c21d4ca9dead98a0f9a9d701ddc3ab109b30361cc354a1bdca6801d0"
+    },
+    "go125_race": {
+      "exit_code": 0,
+      "test_events": {
+        "pass": 17
+      },
+      "artifact": "go125_race.jsonl.gz",
+      "sha256": "8fbb0abb81eaf72a8eca8b6c87f6e55590dd48ba81f4ac9e38a708d890185b3f"
+    },
+    "ago": {
+      "exit_code": 0,
+      "artifact": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    "lint": {
+      "exit_code": 0,
+      "artifact": "lint.log.gz",
+      "sha256": "efa615e584e7a0e0a2be3b6af1a2e1684906ddc91756935370550df11eb1e970"
+    },
+    "godoc": {
+      "exit_code": 0,
+      "artifact": "godoc.log.gz",
+      "sha256": "dae696d95312060bc935ce41b2a3422ae54c0e0fcd331a3fdff4729f16058ebf"
+    },
+    "docs": {
+      "exit_code": 0,
+      "artifact": "docs.log.gz",
+      "sha256": "f35af21cbae5140a657df6fc9c88555b77dcacdf41e1aafe66ecae89ecfd49a9"
+    },
+    "prose": {
+      "exit_code": 0,
+      "artifact": "prose.log.gz",
+      "sha256": "b9f55bc6e049de366bbe7259c7bae1b88ad94d108a20db9f9aae54509effc683"
+    }
+  }
+}
