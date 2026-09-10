@@ -1475,6 +1475,65 @@
           "files": 2,
           "diagnostics": 0
         }
+      },
+      "qualification_followup": {
+        "work_commit": "70e260d6",
+        "change": "Updated the fixed external-consumer archive pin for the schema-7 embedded generation. The verifier still checks an independently configured constant.",
+        "fail_before": "Package ownership gate: 12 passed, 1 failed. The pinned artifact consumer rejected the old archive digest.",
+        "checks": {
+          "package_ownership": {
+            "exit_code": 0,
+            "passed": 13,
+            "failed": 0
+          },
+          "dependency_direction": {
+            "exit_code": 0,
+            "passed": 8,
+            "failed": 0
+          },
+          "pinned_consumer_race": {
+            "exit_code": 0
+          },
+          "minimum_go_https": {
+            "exit_code": 0,
+            "pass": 3
+          },
+          "ago": {
+            "exit_code": 0
+          }
+        },
+        "artifacts": {
+          "https-min-go": {
+            "path": "https-min-go.jsonl.gz",
+            "sha256": "c23598073dbcb2e0713e2ba9bbf1a6d1aa10d8585272e8ab9b58e5faa646d3b5"
+          },
+          "final-ownership": {
+            "path": "final-ownership.log.gz",
+            "sha256": "723e33e0bf50448fdfc89c29147869c6338f3c1bd7c68cdfc877d6cc5dc7966f"
+          },
+          "final-ownership-ready": {
+            "path": "final-ownership-ready.log.gz",
+            "sha256": "daa1a01112146eaf590755cf1e388f58676d5e07877264c373abad96d0567cfe"
+          },
+          "final-direction": {
+            "path": "final-direction.log.gz",
+            "sha256": "f952a265f06b9ff335d4fa700ddbf09891a658ea91646a1d80079e5d1d29f53b"
+          },
+          "pinned-consumer": {
+            "path": "pinned-consumer.log.gz",
+            "sha256": "43206cc52ae54230c18ebcb8ea09de7f49d1827dc1b9b50cde59cc146e792624"
+          },
+          "pinned-ago": {
+            "path": "pinned-ago.json.gz",
+            "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+          }
+        },
+        "full_run": "Session 9507 remains active on the unchanged runtime/acquisition/reconciler source. The external consumer pin change does not alter that compiled snapshot.",
+        "pending_owner_decisions": [
+          "Ordinary removal review threshold",
+          "Model rename compatibility expiry"
+        ],
+        "alias_coverage": "Existing author/provider alias tests do not prove canonical model rename expiry or cross-authority model alias rejection. A08.alias_cycle_scope remains incomplete."
       }
     }
   }
