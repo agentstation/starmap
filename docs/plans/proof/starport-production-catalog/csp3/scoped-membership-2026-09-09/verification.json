@@ -236,6 +236,34 @@
     {
       "path": "runtime-20m.gz",
       "sha256": "6af5ad8803cf3d17a29186d3f3195687a77a19e26b7113e25b799ea1ba7240b7"
+    },
+    {
+      "path": "transport-before.gz",
+      "sha256": "01349c8028540aeae76bcb9d2549b94fe40e0cf7ecd8fd58ce6c1df3b07382e5"
+    },
+    {
+      "path": "transport-after.gz",
+      "sha256": "b327cd38427008a8a2c19b0769bfc3fd6824394f3945c466d9b4e0aca81e14ba"
+    },
+    {
+      "path": "payload-source-initial.gz",
+      "sha256": "b53b2f456e65e629778f9c8bff4afb7d9016fe9b18d8ac61781a9d5b52ac9b7e"
+    },
+    {
+      "path": "source-legacy.gz",
+      "sha256": "f0798ecdba2eecf81ae46ce807672a2164b836bf8d1b57d155bc8a07d0b197e7"
+    },
+    {
+      "path": "reader-compile.gz",
+      "sha256": "3cd4775bce594432c12c293051a0dd78a6d757184bfcd0b54340faa0c53871ea"
+    },
+    {
+      "path": "store-ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "store-lint.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -608,24 +636,61 @@
     ]
   },
   "transport_draft": {
-    "status": "Local untracked types and tests. No storage, payload, or runtime integration yet.",
+    "status": "Uncommitted store and payload integration. Runtime and protocol compatibility remain incomplete. Do not publish this draft.",
     "files": [
       "pkg/catalogs/membership_scope.go",
       "pkg/catalogs/membership_scope_test.go"
     ],
     "behavior": "Distinguish unknown inventory, complete empty inventory, and newer partial positive evidence. Require publisher and binding identity/revision, declared authority, and observation identities/times.",
     "checks": {
-      "focused_race_exit": 0,
-      "ago_exit": 0,
-      "lint_initial_exit": 1,
-      "lint_repair": "Split declaration and inventory validation at their owning boundaries.",
-      "lint_final_exit": 0
+      "ownership_and_merge_before": {
+        "pass": 2
+      },
+      "transport_before": {
+        "fail": 1
+      },
+      "focused_payload_after": {
+        "exit_code": 0,
+        "pass": 51
+      },
+      "full_catalog_and_sources_initial": {
+        "exit_code": 1,
+        "pass": 1208,
+        "fail": 1,
+        "failure": "Legacy receipt fixture unintentionally used the new current payload format."
+      },
+      "source_legacy_after": {
+        "exit_code": 0,
+        "pass": 126,
+        "repair": "Decode an explicit schema-6 fixture; keep the original golden receipt identity unchanged."
+      },
+      "reader_compile": {
+        "exit_code": 0,
+        "scope": "All packages before payload schema changes."
+      },
+      "ago": {
+        "exit_code": 0
+      },
+      "lint": {
+        "exit_code": 0,
+        "scope": "Before final merge-strategy guard, schema helper move, and legacy fixture edit."
+      }
     },
     "remaining": [
-      "Immutable catalog ownership and scope lookup",
-      "Payload format and consumer compatibility",
-      "Runtime import/export and evidence binding",
-      "Starport linked-profile enforcement"
+      "Finish schema-6 activation and remote protocol compatibility; update.go still requires only CurrentCatalogSchemaVersion.",
+      "Bind manifest schema to actual payload schema at activation.",
+      "Define scope evidence treatment in semantic checksums and test it.",
+      "Bind exported effective scopes to authenticated publisher identity and original observations.",
+      "Preserve imported scopes through reconstruction and derivative publication.",
+      "Add generated docs and repeat full checks after integration.",
+      "Implement Starport linked-profile enforcement."
+    ],
+    "implemented": [
+      "Reader requires scope records; Builder copies and validates them under its own lock.",
+      "Immutable Catalog precomputes scoped membership; direct lookup asserts zero allocations.",
+      "Generic merge refuses conflicting inventories instead of choosing authority.",
+      "Schema 7 encodes effective scope records. Decoder also accepts schema 6 without scope fields.",
+      "Decoded schema-6 catalogs preserve their original encoding for receipt verification."
     ]
   }
 }
