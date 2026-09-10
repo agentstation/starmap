@@ -1416,6 +1416,226 @@
           "test": "TestSourceAcquisitionRetainsReceiptsAndReportsPartialFailure"
         }
       ]
+    },
+    "A08.scoped_tombstone": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestScopedRemovalTargetPreservesAccountIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestRemovalSetKeepsScopedAndCanonicalActionsSeparate"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestRemovalPolicySurvivesCatalogCopiesAndPayload"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestRemovalPolicyRequiresEnforcingSchemaAndCannotBecomeObservation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOperatorRemovalSurvivesRefreshAndRestartUntilRestore"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOperatorCanonicalRemovalPreservesSourceFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOperatorRemovalPublicationFailureRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOperatorRemovalConcurrentEditsHaveOneAcceptedWriter"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOperatorRemovalMissingPrivateStateRefusesRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOperatorUpstreamPolicySurvivesReconciliationAndRejectsLegacyReplacement"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOperatorPolicyRequiresOriginalManifestAndDistinctPublisher"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestImportReleaseCannotReplaceOperatorPolicy"
+        }
+      ]
+    },
+    "A08.alias_cycle_scope": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasIndexRejectsInvalidInventory"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasIndexRetainsRemovedEdgesAndCopiesRecords"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasSuccessorPreservesIdentityThroughRenameAndRestore"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasCatalogRetainsRenameThroughPayloadAndCopy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestRemovedCanonicalAliasBlocksConvenienceLookup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasRejectsConflictingProviderRouteName"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasGenericMergeCannotRestoreOrReassign"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestAliasRemovalRejectsLegacyPayloadSchema"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasWorkspaceRoundTrip"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalAliasWorkspaceRejectsInvalidRecords"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalAliasRequiresManifestAndDistinctPublisher"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalAliasSurvivesTimeRestartAndExplicitRemoval"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalAliasRejectsLegacySourceReplacement"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalAliasFailedPublicationPreservesOldID"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalAliasStartupRejectsRetainedHistoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalAliasClientRejectsHistoryLoss"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalAliasPreservesScopedAbsenceAndOperatorExclusions"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./acquisition",
+          "test": "TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestCanonicalAliasReconciliationPreservesOriginalReferences"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestCanonicalAliasRejectsRetiredLocalDefinition"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-bootstrap-manifest",
+          "test": "TestBootstrapManifestPreservesCanonicalRenameHistory"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestPublishedCanonicalAliasSuccessor"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestChannelRequiresPublishedPredecessor"
+        }
+      ]
     }
   }
 }
