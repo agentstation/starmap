@@ -3,7 +3,7 @@
 This delivery owns permission transport, retained subscriber enforcement, and receipt relay.
 The source is `44a400a481748c5e7ae1268cecb63b260a91bdab` above actual Starmap main `a87262e3`.
 The branch changes 91 files, with 4,596 insertions and 201 deletions.
-CSP4 remains in progress until its second delivery and all acceptance checks complete.
+CSP4 remains in progress until the remaining Starmap and Starport deliveries merge and all eight task checks pass.
 
 ## Review scope
 
@@ -42,9 +42,14 @@ Static checks and all six external consumer checks pass.
 The complete runtime, remote, and artifact race suite passes 877 events with no failures or skips.
 
 The first repository verification failed two YAML authority fixtures. Their source context now selects the required paired authority settings.
-All 28 YAML test events pass on both toolchains. Complete repository verification runs again.
+All 28 YAML test events pass on both toolchains.
 
-Required pre-PR autoreview, native CI, PR publication, and merge remain pending.
+Complete repository verification passes at `44a400a4`.
+Both test modes pass 81 packages. Container smoke, all 15 coverage thresholds, static checks, and isolated CLI checks pass.
+The catalog accessor records 8.167–8.523 ns/op, zero bytes, and zero allocations across three runs.
+The documentation generator rejects the build-concurrency flag despite a successful wrapper exit. Its clean-environment retry passes.
+
+Required Sol and Opus review continues. Native CI, PR publication, and merge remain pending.
 The current plan resume state owns session IDs and output paths.
 
 ## Next delivery constraints
@@ -56,4 +61,5 @@ Clock evidence must account for the issuer and consumer bounds, process restart,
 
 Shared-store followers must recover from durable state without relying on notifications or another process's private layer files.
 Authority transitions must refuse retained permission from the old authority.
-The second delivery must complete these contracts and all eight CSP4 acceptance subcases before task completion.
+The remaining Starmap delivery must complete these contracts. A separate Starport PR must qualify the four mapped consumer checks.
+All eight CSP4 acceptance subcases and the implementation merges remain necessary for task completion.

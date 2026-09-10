@@ -28,13 +28,19 @@ The first repository check failed two YAML authority fixtures under the wrong so
 Local `44a400a4` corrects the fixture source context. All 28 focused YAML events pass on both toolchains. Lint and ago pass.
 
 The [verification proof](csp4/subscriber-verification-2026-09-10/verification.json) preserves the failed gate and focused regression.
-The complete retry runs in session `82978` against clean `44a400a4`.
-Output: `/tmp/starmap-csp4-subscriber-verify-2-2026-09-10.log`.
 
-The task now permits two mechanical PRs. The current 90-file branch owns permission transport, retained subscriber enforcement, and relay.
+The complete retry passes at clean `44a400a4`. Both test modes pass 81 packages, and the container smoke check passes.
+All 15 coverage thresholds, static checks, isolated CLI checks, and the catalog accessor budget pass.
+The generator rejects `GOFLAGS=-p=2` despite a successful wrapper exit. A separate `GOFLAGS= make docs-check` run passes without that diagnostic.
+
+Required Sol and Opus review runs in session `28132`. Output: `/tmp/starmap-csp4-subscriber-autoreview-2026-09-10.log`.
+
+The current 91-file Starmap branch owns permission transport, retained subscriber enforcement, and relay.
 Complete its repository checks, pre-PR review, native CI, and merge before the next delivery.
 
-The next delivery owns origin issuance, qualified clock evidence, shared-store follower activation, authority transitions, and required consumer checks.
+The next Starmap delivery owns origin issuance, qualified clock evidence, shared-store follower activation, and authority transitions.
+The [consumer inspection](csp4/starport-consumer-inspection-2026-09-10.md) requires a separate Starport PR after a compatible Starmap module release.
+It preserves all eight task checks. Complete gateway admission coverage remains with CSP10.
 The first merge gives no task completion credit. All acceptance requirements remain in force.
 
 The [clock research](csp4/authority-head-2026-09-10/clock-research.md) selects no clock adapter.
