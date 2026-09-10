@@ -1,0 +1,141 @@
+{
+  "task": "CSP4",
+  "source": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+  "source_tree": "6f3551a75d7d4690fd27e089974d6f403d594195",
+  "base": "5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430",
+  "source_files_sha256": {
+    "internal/cli/app/catalog_file_test.go": "d96404f00ca9c66fb309b0fd2eb279a602912ce04cad6d5ab6592e7b3f332974"
+  },
+  "checks": {
+    "repository-first": {
+      "artifact": {
+        "path": "repository-first.log.gz",
+        "sha256": "c7f636bd920e1ef75c09ce7255af65d16991bfc5a0ba8973a4cd922281a172c0",
+        "raw_sha256": "210b717df4ae7ca4b094a6fea19e7479f4c2fa7e0cbf264469d0d49cca21c112"
+      },
+      "exit_code": 2,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
+      "source_scope": "5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430; initial go test ./... fails in two YAML authority cases. The parent test also fails. Later verification stages did not run.",
+      "initial_package_outcomes": {
+        "pass": 80,
+        "fail": 1
+      }
+    },
+    "yaml-red": {
+      "artifact": {
+        "path": "yaml-red.jsonl.gz",
+        "sha256": "78b3355deada0b3c1a5331fe4e63b09cba5b31fe88d952dc7d23f1557c9664e7",
+        "raw_sha256": "85507136d4c2b974d016379103c7a55d22a03a9f53c2d828eb195f11a8f2c57e"
+      },
+      "exit_code": 1,
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=5m -json ./internal/cli/app -run '^TestEveryCanonicalSettingLoadsFromYAML$'",
+      "source_scope": "5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430; existing descriptor-driven fixture uses an unrelated source kind.",
+      "test_events": {
+        "pass": 25,
+        "fail": 3,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T11:19:52.757616-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Elapsed": 0.657
+        }
+      ]
+    },
+    "yaml-green": {
+      "artifact": {
+        "path": "yaml-green.jsonl.gz",
+        "sha256": "514bb8a56a5a667b5b0da54ed8fe78a9a97980ed681c9e993bc33f3bf40292bd",
+        "raw_sha256": "6ddab70efc42a1deed4c90e7e87368f89e5042a74ae1b8b0f1d93b2816317110"
+      },
+      "exit_code": 0,
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=5m -json ./internal/cli/app -run '^TestEveryCanonicalSettingLoadsFromYAML$'",
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T11:20:26.054035-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Elapsed": 1.658
+        }
+      ]
+    },
+    "yaml-minimum": {
+      "artifact": {
+        "path": "yaml-minimum.jsonl.gz",
+        "sha256": "66bbe5a638bf9725876ec0356944c3694a7bb0b83fe46295d0a8ddda7c94e129",
+        "raw_sha256": "4cd9fb3a531bb08360ced1f45eb01d9e3c85d8cbd1b978b30031578857d34697"
+      },
+      "exit_code": 0,
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout=5m -json ./internal/cli/app -run '^TestEveryCanonicalSettingLoadsFromYAML$'",
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T11:21:00.454233-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Elapsed": 1.6520000000000001
+        }
+      ]
+    },
+    "ago": {
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      "exit_code": 0,
+      "command": "go tool ago -stale-ignores -format json ./...",
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "lint": {
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      },
+      "exit_code": 0,
+      "command": "devbox run golangci-lint run",
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "plan-prose": {
+      "artifact": {
+        "path": "plan-prose.log.gz",
+        "sha256": "f7ea657a8118075aa6ced40f9e81a3010ee9ffd3eb2bb620b7be0b80491699d3",
+        "raw_sha256": "f3110d132b60a1172a4a8a5f97ca423da52f72f4056f03a0ddcef87f4f545306"
+      },
+      "exit_code": 0,
+      "command": "make technical-writing-check",
+      "source_scope": "Canonical planning worktree after YAML evidence and delivery-scope updates. 1285 files, zero diagnostics.",
+      "prose_files_sha256": {
+        "docs/plans/starport-production-catalog-plan.html": "8e17e944df9bdc18c9ae1e1f18544ee88ea8fc11cf2f3a976863dd555225ba60",
+        "docs/plans/proof/starport-production-catalog/csp4.md": "8a75e76053a09d5622934821b4fcc2b0868b91543e0bd9c964624d4dac9c9bf3",
+        "docs/plans/proof/starport-production-catalog/csp4/subscriber-delivery-2026-09-10.md": "c00dfac77e72413d1ebaa24dec3d77a2cf7b7fa0fbdc696dbc3f66c9d557dddc"
+      }
+    }
+  },
+  "running_operations": [
+    {
+      "session_id": 82978,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
+      "output": "/tmp/starmap-csp4-subscriber-verify-2-2026-09-10.log",
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    }
+  ],
+  "limitations": [
+    "Repository verification, required pre-PR autoreview, native CI, PR, and merge remain pending.",
+    "All eight task acceptance subcases remain UNVERIFIED. The first delivery gives no task completion credit."
+  ]
+}

@@ -287,25 +287,95 @@
       "exit_code": 0,
       "command": "CGO_ENABLED=0 GOTOOLCHAIN=go1.25.12 make test-consumer-deps",
       "source_scope": "Final public contracts. Before equivalent private startup extraction. All six external consumers pass."
+    },
+    "runtime-suite": {
+      "artifact": {
+        "path": "runtime-suite.jsonl.gz",
+        "sha256": "86e4138e9b6428e324e64866ad629e9fa06a165845bcc3979e593a1ced331fa4",
+        "raw_sha256": "3e535532d25701ccdcc794b46c9acd3df578a16937a730eeca55fc5634ba4d8a"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
+      "source_scope": "Final observer and shutdown behavior before equivalent source-startup extraction and comment correction. Final focused checks cover that extraction.",
+      "test_events": {
+        "pass": 877,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:52:57.026702-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/remote",
+          "Elapsed": 18.363
+        },
+        {
+          "Time": "2026-09-10T10:52:58.337811-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Elapsed": 1.308
+        },
+        {
+          "Time": "2026-09-10T11:12:52.275624-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1213.6
+        }
+      ]
+    },
+    "product-checks": {
+      "artifact": {
+        "path": "product-checks.json.gz",
+        "sha256": "889127487066436b3737d0a5be5a091392cf0c68ff80d9e7be5b8dc26b48c36a",
+        "raw_sha256": "ee505bcf6869695c576fb4ccf74b909a910a23ead5e38317d4a0f42026d4d4a5"
+      },
+      "exit_code": 1,
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP4 --json",
+      "source_scope": "5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430",
+      "selected_subcases": 8,
+      "subcases": {
+        "A07.public_no_provider_keys": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A07.invalid_signature": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A07.checksum_size_schema": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A07.replay_rejection": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A09.excluded_membership": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A10.cold_owner_refusal": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A10.warm_retained_authority": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A21.mixed_schema_permission_envelope": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        }
+      },
+      "interpretation": "All eight selected subcases are UNVERIFIED because the behavior registry has no checks. The report includes the global 50-case summary; it is not a full product run."
     }
   },
-  "running_operations": [
-    {
-      "session_id": 9598,
-      "command": "go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
-      "output": "/tmp/starmap-csp4-manifest-arrival-runtime-suite-2026-09-10.jsonl",
-      "source_scope": "Final observer and lifecycle behavior before equivalent source-startup extraction and comment correction."
-    },
-    {
-      "session_id": 95250,
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
-      "output": "/tmp/starmap-csp4-subscriber-verify-2026-09-10.log",
-      "source_scope": "5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430; complete repository verification for the first CSP4 delivery."
-    }
-  ],
+  "running_operations": [],
   "limitations": [
     "All eight task acceptance subcases remain UNVERIFIED.",
     "Origin receipt issuance, standalone qualified clock, shared-store follower recovery, authority transitions, and product qualification remain incomplete.",
     "No pre-PR review, native CI, PR, or merge for CSP4."
-  ]
+  ],
+  "repository_verification_followup": "../subscriber-verification-2026-09-10/verification.json"
 }

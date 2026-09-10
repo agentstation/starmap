@@ -3,7 +3,7 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The current local source is `5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430`. The Starmap worktree is clean.
+The current local source is `44a400a481748c5e7ae1268cecb63b260a91bdab`. The Starmap worktree is clean.
 No CSP4 PR exists. No owner decision remains.
 
 The [manifest-arrival proof](csp4/manifest-arrival-2026-09-10/verification.json) records 16 changed files and the original failing TLS regression.
@@ -18,14 +18,18 @@ The complete remote protocol suite passes 60 test events and one package outcome
 Lint, ago, generated documentation, prose, and all six external consumers pass.
 Prose checks cover 1,415 files with zero diagnostics. The proof preserves the complexity and comment failures before their repairs.
 
-The broader runtime, remote, and artifact race suite runs in session `9598`.
-Output: `/tmp/starmap-csp4-manifest-arrival-runtime-suite-2026-09-10.jsonl`.
+The complete runtime, remote, and artifact race suite passes 877 test events and three package outcomes without failures or skips.
 It includes the observer and shutdown changes. Compilation preceded the equivalent source-startup extraction and comment correction.
+The final focused checks cover that extraction.
 The preceding relay suite completed 875 passing test events and three package outcomes.
 The [relay proof](csp4/relay-2026-09-10/verification.json) preserves that separate tested source.
 
-Complete repository verification runs in session `95250` against clean `5155c9f7`.
-Output: `/tmp/starmap-csp4-subscriber-verify-2026-09-10.log`.
+The first repository check failed two YAML authority fixtures under the wrong source kind.
+Local `44a400a4` corrects the fixture source context. All 28 focused YAML events pass on both toolchains. Lint and ago pass.
+
+The [verification proof](csp4/subscriber-verification-2026-09-10/verification.json) preserves the failed gate and focused regression.
+The complete retry runs in session `82978` against clean `44a400a4`.
+Output: `/tmp/starmap-csp4-subscriber-verify-2-2026-09-10.log`.
 
 The task now permits two mechanical PRs. The current 90-file branch owns permission transport, retained subscriber enforcement, and relay.
 Complete its repository checks, pre-PR review, native CI, and merge before the next delivery.

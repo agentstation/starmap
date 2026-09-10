@@ -1,8 +1,8 @@
 # CSP4 subscriber delivery
 
 This delivery owns permission transport, retained subscriber enforcement, and receipt relay.
-The source is `5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430` above actual Starmap main `a87262e3`.
-The branch changes 90 files, with 4,584 insertions and 200 deletions.
+The source is `44a400a481748c5e7ae1268cecb63b260a91bdab` above actual Starmap main `a87262e3`.
+The branch changes 91 files, with 4,596 insertions and 201 deletions.
 CSP4 remains in progress until its second delivery and all acceptance checks complete.
 
 ## Review scope
@@ -39,7 +39,11 @@ A missing clock callback blocks admission. This delivery does not qualify a stan
 
 Both toolchains pass 40 focused race events. The complete remote protocol suite passes 60 events.
 Static checks and all six external consumer checks pass.
-The current broad runtime suite and complete repository verification remain running.
+The complete runtime, remote, and artifact race suite passes 877 events with no failures or skips.
+
+The first repository verification failed two YAML authority fixtures. Their source context now selects the required paired authority settings.
+All 28 YAML test events pass on both toolchains. Complete repository verification runs again.
+
 Required pre-PR autoreview, native CI, PR publication, and merge remain pending.
 The current plan resume state owns session IDs and output paths.
 
