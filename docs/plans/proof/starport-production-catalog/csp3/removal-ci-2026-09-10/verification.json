@@ -557,8 +557,29 @@
     "prior_source": "4cbf99f032bd5782e0ded74391f4b967d2f3abef",
     "prior_base": "acbfc2471ef5cff223b6d519df375b22874c3713",
     "exact_diff_sha256": "7074da56d12033ff699dab7909464943ba76addcbc1a85c22af175e469fdc4b1",
-    "review_session": 1126,
     "review_log": "/tmp/starmap-removal-ci-budget-integrated-review-2026-09-10.log",
-    "state": "Both diff byte streams match. Required review is active."
+    "state": "Exact reviewed diff preserved. Both reviewers pass. Published head runs fresh CI.",
+    "review": {
+      "exit_code": 0,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "findings": 0,
+      "confidence": 0.98,
+      "artifact": {
+        "path": "time-budget-integrated-review-2026-09-10.log.gz",
+        "sha256": "0a2366d9783d960a40393b9f1e523def4ce1543b25e2bc5b8112e6cf75c437c2",
+        "raw_sha256": "5d5eddbdb8bdbf0c5676cb263bb5c6f23dde08e97d96adb782b7ba6d22c5b81e"
+      }
+    }
+  },
+  "current_run": {
+    "id": 34457203042,
+    "head": "014d5ab4200885295c1a64014b219b90d9e75913",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34457203042",
+    "state": "running",
+    "log": "/tmp/starmap-pr145-repaired-ci-watch-2026-09-10.log",
+    "watch_session": 4982
   }
 }

@@ -555,7 +555,7 @@
     },
     "cause": "The runtime package exhausted its 1200-second aggregate race-test allowance. The running startup test had run for twelve seconds. No assertion failure appears before the package timeout.",
     "repair": "Thirty-minute aggregate race-test allowance and 150-minute workflow allowance. Per-test deadlines and test roster remain unchanged.",
-    "state": "Focused startup test and prose checks pass. Required full branch review is active in session 76790.",
+    "state": "Reviewed repair pushed. Fresh CI is queued or running.",
     "repair_commit": "8155e6e69097280849d60100b1ddc2c4772e5859",
     "checks": {
       "active_test": {
@@ -583,6 +583,29 @@
         }
       }
     },
-    "workflow_lint_note": "SC2024 is the unchanged administrator-owned configuration test redirection. The privileged test reads files, while the ordinary runner owns the output file. The same diagnostic was reproduced at acbfc247 in the earlier alias publication proof."
+    "workflow_lint_note": "SC2024 is the unchanged administrator-owned configuration test redirection. The privileged test reads files, while the ordinary runner owns the output file. The same diagnostic was reproduced at acbfc247 in the earlier alias publication proof.",
+    "review": {
+      "exit_code": 0,
+      "source": "8155e6e69097280849d60100b1ddc2c4772e5859",
+      "base": "c474e2a419251b5127cca2179ab21b7503afccdf",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "findings": 0,
+      "confidence": 0.95,
+      "artifact": {
+        "path": "time-budget-pre-pr-review-2026-09-10.log.gz",
+        "sha256": "37ce86df356ff9b3adf99fe2f15f89310beb8bf79ed771fabbdd1be25c65483d",
+        "raw_sha256": "bde31a345dfb2bfc53ba36271dffafd654dfeb97cce8c6dba48ee779500f9c97"
+      }
+    }
+  },
+  "current_run": {
+    "id": 34456986753,
+    "head": "8155e6e69097280849d60100b1ddc2c4772e5859",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34456986753",
+    "watch_session": 19852,
+    "log": "/tmp/starmap-pr144-time-budget-ci-watch-2026-09-10.log"
   }
 }
