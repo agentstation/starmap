@@ -208,6 +208,14 @@
     {
       "path": "lint-revocation.gz",
       "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "reconciler-final.gz",
+      "sha256": "be0789b307afb02d81b4344aa7bd77ec99d9c39b812c206d275efb0a6a769e6f"
+    },
+    {
+      "path": "lint-ownership.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -507,6 +515,16 @@
         "exit_code": 0
       },
       "lint_revocation": {
+        "exit_code": 0
+      },
+      "reconciler_final": {
+        "exit_code": 0,
+        "test_events": {
+          "pass": 639
+        },
+        "scope": "Full reconciler suite including caller-owned input mutation and concurrent immutable membership reads."
+      },
+      "lint_ownership": {
         "exit_code": 0
       }
     },
