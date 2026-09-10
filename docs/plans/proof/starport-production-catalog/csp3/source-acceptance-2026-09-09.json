@@ -136,5 +136,321 @@
       }
     },
     "completion_credit": false
+  },
+  "serial_ci_result": {
+    "run_id": 34426991461,
+    "head": "4f2b94624c1edaff75ee75f93de52bacac8bf16d",
+    "conclusion": "cancelled",
+    "job_seconds": 7217,
+    "annotation": "The job has exceeded the maximum execution time of 2h0m0s",
+    "native_jobs_passed": 6,
+    "other_checks_passed": 14,
+    "failures": [
+      "TestPeriodicRefreshIngestsProviderAndNonProviderEvidence: runtime close exceeded five seconds",
+      "Application package race suite exceeded 20 minutes while TestAbsoluteRuntimeSelectionPreservesExistingIdentity encoded the embedded catalog"
+    ],
+    "remaining": "The serial scheduling change did not qualify the PR. Fix and verify the actual failures before merge.",
+    "artifact": {
+      "path": "source-acceptance-serial-ci-2026-09-10.log.gz",
+      "sha256": "42eb8396095d413420471ee11f8404334f5d03e50998fb420594a3625848c45d"
+    }
+  },
+  "cache_investigation": {
+    "worktree": "/tmp/starmap-source-acceptance-2026-09-09",
+    "base": "4f2b9462",
+    "dirty_files": [
+      "internal/bootstrap/bootstrap.go",
+      "internal/bootstrap/generation_cache_test.go"
+    ],
+    "benchmark_before_session": 98545,
+    "log": "/tmp/starmap-bootstrap-generation-before-2026-09-10.log",
+    "status": "Generation cache passed ownership tests. Pipeline repair reuses the verified immutable catalog and checks cancellation between input stages. Final qualification is active.",
+    "benchmark_before": {
+      "ns_op": [
+        162519236,
+        165071542,
+        163444472
+      ],
+      "bytes_op": [
+        110415704,
+        113120314,
+        104845906
+      ],
+      "allocations_op": [
+        776579,
+        776718,
+        776805
+      ]
+    },
+    "benchmark_after": {
+      "ns_op": [
+        5729000,
+        4856000,
+        1475556
+      ],
+      "bytes_op": [
+        8266000,
+        8266037,
+        8266000
+      ],
+      "allocations_op": [
+        3,
+        3,
+        3
+      ]
+    },
+    "periodic_session": 51491,
+    "bootstrap_race_session": 71839,
+    "docs_session": 24404,
+    "ago_exit": 0,
+    "lint_exit": 0,
+    "bootstrap-generation-before": {
+      "path": "bootstrap-generation-before.log.gz",
+      "sha256": "91a92076d924d247b3185b69191148e5bc9799282957dd8e60295b74de3450c3"
+    },
+    "bootstrap-generation-after": {
+      "path": "bootstrap-generation-after.log.gz",
+      "sha256": "06ed86849f7c38f922006ff70ffd3ba284f9cef4fdc735e32947dd88b8e630ca"
+    },
+    "bootstrap_race": {
+      "log": "/tmp/starmap-bootstrap-cache-race-2026-09-10.jsonl",
+      "passed": 71,
+      "failed": 0,
+      "skipped": 0,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/bootstrap",
+          "Action": "pass",
+          "Elapsed": 168.679
+        }
+      ]
+    },
+    "periodic_after_cache": {
+      "log": "/tmp/starmap-bootstrap-cache-periodic-2026-09-10.jsonl",
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "fail",
+          "Elapsed": 210.148
+        }
+      ]
+    },
+    "diagnostic_first": {
+      "log": "/tmp/starmap-periodic-shutdown-diagnostic-2026-09-10.jsonl",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 168.463
+        }
+      ]
+    },
+    "diagnostic_active": {
+      "session": 91441,
+      "log": "/tmp/starmap-periodic-shutdown-two-second-2026-09-10.jsonl",
+      "overlay": "/tmp/starmap-periodic-shutdown-two-second-overlay-2026-09-10.json",
+      "purpose": "Capture goroutines when shutdown takes more than two seconds without changing runtime timeouts.",
+      "exit_code": 1,
+      "passed": 4,
+      "failed": 2,
+      "root_cause": "Shutdown waits for NewEmbeddedBuilder to parse embedded provenance YAML inside pipeline.loadCatalogInputs. Captured runnable goroutine remains in loadProvenanceYAML after two seconds of cancellation. Both HTTP and Git periodic cleanup exceeded five seconds."
+    },
+    "docs_check_log": "/tmp/starmap-bootstrap-cache-docs-check-2026-09-10.log",
+    "prose_result": "PASS: 1318 files, zero diagnostics",
+    "pipeline_regression": {
+      "before_log": "/tmp/starmap-pipeline-embedded-before-2026-09-10.jsonl",
+      "before_exit": 1,
+      "before_reason": "acquisition rebuilt the immutable embedded catalog",
+      "after_log": "/tmp/starmap-pipeline-embedded-after-2026-09-10.jsonl",
+      "after_exit": 0,
+      "after_passed": 4,
+      "after_failed": 0,
+      "after_skipped": 0
+    },
+    "periodic_after_reuse": {
+      "log": "/tmp/starmap-embedded-reuse-periodic-2026-09-10.jsonl",
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "fail",
+          "Elapsed": 111.03
+        }
+      ],
+      "exit_code": 1
+    },
+    "benchmark_after_reuse": {
+      "session": 12039,
+      "log": "/tmp/starmap-pipeline-embedded-benchmark-after-2026-09-10.log",
+      "duration": "1s per sample",
+      "comparison_limit": "Before used three operations per sample; after uses one second. These measure embedded input retrieval, not Starport request latency.",
+      "exit_code": 0,
+      "ns_op": [
+        6.668,
+        6.607,
+        6.915
+      ],
+      "bytes_op": [
+        0,
+        0,
+        0
+      ],
+      "allocations_op": [
+        0,
+        0,
+        0
+      ]
+    },
+    "pipeline-embedded-before": {
+      "path": "pipeline-embedded-before-2026-09-10.gz",
+      "sha256": "77acc94450a5843a67d312286420819cb30e47f463e09ca1ab415abd86b4c26e"
+    },
+    "periodic-shutdown-diagnostic": {
+      "path": "periodic-shutdown-diagnostic-2026-09-10.gz",
+      "sha256": "f0b5a97bbadb87adb576d11be457c253e91a6f0b5f9aba69a84f912d93cce1c8"
+    },
+    "pipeline-embedded-benchmark-before": {
+      "path": "pipeline-embedded-benchmark-before-2026-09-10.gz",
+      "sha256": "6f5e60f82328d31c4f8ecf83650131c3b0579ac466ff69439a28c371c93b3f06"
+    },
+    "diagnostic_after_reuse": {
+      "log": "/tmp/starmap-embedded-reuse-shutdown-diagnostic-2026-09-10.jsonl",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 54.929
+        }
+      ],
+      "exit_code": 0
+    },
+    "final_pipeline": {
+      "log": "/tmp/starmap-embedded-reuse-final-pipeline-2026-09-10.jsonl",
+      "passed": 102,
+      "failed": 0,
+      "skipped": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+          "Action": "pass",
+          "Elapsed": 12.162
+        }
+      ],
+      "exit_code": 0
+    },
+    "full_affected": {
+      "session": 76691,
+      "log": "/tmp/starmap-embedded-reuse-full-2026-09-10.jsonl",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./internal/catalog/pipeline ./acquisition ./internal/cli/app -json",
+      "state": "active",
+      "known_failure": "Embedded load failure fixture saw workspace validation first after input reorder. Restored original error order, then full pipeline passed 102 events. Acquisition and app continue on the earlier compiled binary; only error precedence changed afterward."
+    },
+    "collector_cancellation": {
+      "before_exit": 1,
+      "after_exit": 0,
+      "before_log": "/tmp/starmap-observe-cancellation-before-2026-09-10.jsonl",
+      "after_log": "/tmp/starmap-observe-cancellation-after-2026-09-10.jsonl",
+      "contract": "Cancellation after collection stops validation and diagnostic catalog copies."
+    },
+    "minimum_go": {
+      "log": "/tmp/starmap-embedded-reuse-min-go-2026-09-10.jsonl",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/bootstrap",
+          "Action": "pass",
+          "Elapsed": 2.118
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+          "Action": "pass",
+          "Elapsed": 2.002
+        }
+      ]
+    },
+    "benchmark_before_reuse": {
+      "ns_op": [
+        1179348278,
+        1126925181,
+        1223895611
+      ],
+      "bytes_op": [
+        1255837117,
+        1255661533,
+        1255831338
+      ],
+      "allocations_op": [
+        14802492,
+        14802410,
+        14802327
+      ]
+    },
+    "final_static": {
+      "ago_exit": 0,
+      "lint_exit": 0,
+      "prose_exit": 0,
+      "docs_check_exit": 0
+    },
+    "pipeline-embedded-benchmark-after": {
+      "path": "pipeline-embedded-benchmark-after-2026-09-10.gz",
+      "sha256": "7506cbf05460e75f987f9ced9ad39abf53cdcccea8cffcab92089ac7f72f5208"
+    },
+    "pipeline-embedded-final": {
+      "path": "pipeline-embedded-final-2026-09-10.gz",
+      "sha256": "913880c9afd29f1e56db1ef09becc6d1a7dd4848a778cb5e27938b0c0a832c6e"
+    },
+    "observe-cancellation-before": {
+      "path": "observe-cancellation-before-2026-09-10.gz",
+      "sha256": "e94cc933657c90d89af56ed2959a48cb1a98cc6478fd6e40517fd9e9d5a4fadc"
+    },
+    "observe-cancellation-after": {
+      "path": "observe-cancellation-after-2026-09-10.gz",
+      "sha256": "bc6c1886e7e2a830076f1209d6c270a1f58a2b289c3e111e1f7d3ab1b179ebb4"
+    },
+    "periodic-after-reuse": {
+      "path": "periodic-after-reuse-2026-09-10.gz",
+      "sha256": "5342411a40084b19b2af08943b608fc9074f933b0c9db8f11e36a1ef71b2feae"
+    },
+    "final_minimum_go": {
+      "log": "/tmp/starmap-embedded-reuse-final-min-go-2026-09-10.jsonl",
+      "exit_code": 0,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "canonical_verifier": {
+      "failed_invocation": "python3 -m unittest scripts/test_catalog_product_verify.py",
+      "reason": "ImportError: scripts directory was not on the module path. No product test ran.",
+      "correct_command": "python3 scripts/test_catalog_product_verify.py",
+      "exit_code": 0,
+      "tests": 73,
+      "log": "/tmp/starmap-cache-plan-verifier-tests-corrected-2026-09-10.log"
+    },
+    "canonical_prose": {
+      "exit_code": 0,
+      "log": "/tmp/starmap-cache-canonical-prose-2026-09-10.log"
+    },
+    "current_source_sha256": {
+      "internal/bootstrap/bootstrap.go": "5c19e0ed363ad645222a4be312cb66fcbfea742c1e4a7b33156432abc7cdd190",
+      "internal/bootstrap/generation_cache_test.go": "11675b2e2131575b1513f4c77b592ba4905e2d071a464234ad10b0f800006bf5",
+      "internal/catalog/pipeline/catalog_inputs.go": "ec320c3994a72b862fb45218f88c64ab5f9de7bb52f1222253ae2db90baafd9c",
+      "internal/catalog/pipeline/pipeline.go": "04382753165ff643c26cfd2f2cb8d73e8228451f952678248de98bd62ee5e81e",
+      "internal/catalog/pipeline/lifecycle.go": "78d80c2018854086109a103a3f7baca6417501528252cd06ababa4d99d5dba04",
+      "internal/catalog/pipeline/embedded_cache_test.go": "ca72184ae2a5053d1c883537427dad136292a43dd0191c82cb16305960f6ae72",
+      "internal/catalog/pipeline/observation_cancellation_test.go": "200241294ae6cacdd397941a7aa978d8ca3d9c0eac60e84eb189b6814dc7923a"
+    }
   }
 }

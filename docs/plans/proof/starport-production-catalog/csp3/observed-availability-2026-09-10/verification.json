@@ -1,5 +1,5 @@
 {
-  "status": "The availability branch at af94de19 passes the complete runtime race suite with 722 events. Final A08 reporting, main integration, and pre-PR review remain open.",
+  "status": "Local availability checks complete. PR143 dependency repair, main integration, fresh review, and publication remain open. A08 aliases and explicit removal remain unverified.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base_work_commit": "8a4c14d9",
@@ -444,14 +444,33 @@
     }
   },
   "final_a08": {
-    "status": "active",
+    "status": "completed",
     "session_id": 48940,
     "log": "/tmp/starmap-availability-final-a08-2026-09-10.json",
-    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --case A08 --json"
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --case A08 --json",
+    "exit_code": 1,
+    "commands": 38,
+    "passed_commands": 38,
+    "test_events": {
+      "pass": 745
+    },
+    "subcases": {
+      "A08.alias_cycle_scope": "UNVERIFIED",
+      "A08.field_authority": "PASS",
+      "A08.partial_empty": "PASS",
+      "A08.presence_zero_null": "PASS",
+      "A08.scoped_tombstone": "UNVERIFIED"
+    },
+    "qualification": "A08 remains unverified because scoped operator removal and canonical alias checks are not registered.",
+    "artifact": {
+      "path": "a08-final.json.gz",
+      "sha256": "caf65c65d33a0bd9a30281ae6de235149912c1425d84a823fbb6260285c595eb"
+    }
   },
   "pr143_watch": {
     "session_id": 4065,
     "run_id": 34426991461,
-    "log": "/tmp/starmap-pr143-watch-2026-09-10.log"
+    "log": "/tmp/starmap-pr143-watch-2026-09-10.log",
+    "exit_code": 1
   }
 }

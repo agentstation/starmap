@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><base href="../../../starport-production-catalog-plan.html"><title>Prior catalog resume state</title></head><body><section id="current-resume"><h2>Current resume state</h2>
+<p>Updated 2026-09-10 UTC. CSP3 is active. Eight of 38 tasks are complete. Twenty-one PRs merged. Unmerged work receives no completion credit.</p>
+
+<p id="next-action">Repair and qualify PR #143 after its CI failure, then integrate it and publish the reviewed availability branch. The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/verification.json">availability proof</a> owns current work. Provider absence must preserve visible entries. Starport must exclude the affected provider/account from automatic routing. Explicit removal defaults to that entry.</p>
+
+<p>Use <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>. Its clean committed head is <code>af94de19</code>, based on merged <code>fee76cc9</code>. This commit repairs scheduled retention and registers its regression. Prior artifact import, scope transport, and review evidence remain in the <a href="proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json">scope proof</a>. Both prior reviewers found no actionable defects, but the new decisions require fresh review.</p>
+
+<p>Thirty-seven focused test events pass on each supported Go toolchain. Ago, lint, generated documentation, and source prose checks pass. At <code>71324240</code>, the full affected-package race run passed 1,563 test events, with no failures or skips. Both reviewers found no actionable defects at that commit. </p>
+
+<p>A later audit found that complete scheduled updates could delete acquired-only offerings. The repair passes three focused events. The full runtime race suite passed 722 test events, with no failures or skips. The final A08 report passes all 38 registered commands and 745 test events. Main integration and fresh review remain open. All 73 verifier unit tests pass.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/scoped-removal-design.md">scoped removal design</a> defines the next owning boundary and required tests. It retains account identity across credential rotation and keeps restore separate from provider recovery. It receives no implementation credit.</p>
+
+<p>The scoped removal worktree is <code>/tmp/starmap-operator-removal-2026-09-10</code>, branch <code>codex/catalog-operator-removal</code>, at <code>6e0d590a</code>. Target validation passes nineteen focused events on both Go versions and 1,115 full catalog race events. Persistence and transport remain open. Keep the availability delivery branch unchanged during its final qualification. The removal branch remains dependent work with no publication credit.</p>
+
+<p>The earlier CSP3 verifier reported all 50 cases unverified and retained no per-command detail. Preserve that summary as limited evidence. Current A08 field-authority, presence, and partial-empty checks pass. Explicit operator removal and model aliases remain unverified. Full CSP3 acceptance remains incomplete.</p>
+
+<p><a href="https://github.com/agentstation/starmap/pull/143">PR #143</a> contains reviewed head <code>4f2b9462</code>. Its <a href="proof/starport-production-catalog/csp3/source-acceptance-2026-09-09.json">proof</a> records the earlier race timeouts and the serial scheduling repair. CI <code>34426991461</code> passed six native jobs but exceeded the two-hour job limit. Its application race suite also exceeded twenty minutes, and periodic shutdown exceeded five seconds. </p>
+
+<p>Use <code>/tmp/starmap-source-acceptance-2026-09-09</code> at <code>4f2b9462</code> for the repair. The generation cache passes 71 race test events, but periodic shutdown still failed once in six runs. Diagnostic session <code>91441</code> captures delayed shutdown stacks. The proof owns its log and source. Automatic merge remains enabled, subject to passing checks.</p>
+
+<p>The <a href="#task-CSP3">CSP3 contract</a> and <a href="#goal">goal block</a> preserve all 38 tasks, 50 cases, and 324 required subcases. D27 supersedes percentage-based removal review. The model rename expiry decision remains pending. Internal authoritative permission withdrawals retain immediate enforcement.</p>
+
+<p>Starport remains at clean <code>d45bb30</code> in <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>. It passes 32/33 gates. V01 requires a stable Starmap release and separate publication authority. Starport scope-profile links and routing integration remain incomplete.</p>
+
+<p>The canonical plan branch is <code>codex/catalog-qualification</code>. Existing authority permits reviewed pushes and merges. Releases and hosted publication require separate authority. The availability proof preserves the <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/prior-resume.json">prior resume state</a>.</p>
+</section>
+</body></html>

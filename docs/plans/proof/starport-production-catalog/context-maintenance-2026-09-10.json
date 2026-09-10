@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "moved_entries": 53,
+  "kept_entries": 9,
+  "moved_sha256": "8321b87347287d2c59adc32f8b3553edc24142606763bc526e657c027dd13ded",
+  "protected_sections": {
+    "ledger": "e6b2a36e3b80437a083965c77c59238a06097133479d37f3ea8fd2adbff3bf91",
+    "tasks": "44873369d34b96de178251a6aa2d348efec7eeb3017587831a01c09813ae8b71",
+    "invariants": "13d5772c68bf9205af5c6a6d7cf22188fcb45f7a2652b3f293fb2019cc690d19"
+  },
+  "resume_words": 309,
+  "plan_words": 9174,
+  "plan_bytes": 100973,
+  "budget_exception": "The plan retains all task contracts, invariants, ledger, and whole-plan completion rules. Read current resume, ledger, active CSP3 contract, invariants, goal, and named current proof sections. Historical evidence is not required on every resume.",
+  "cold_resume": "PASS: names active task, repair worktree, current failure, required checks, dependent branches, exact proof/process owner, preserved decisions, incomplete acceptance, and publication authority.",
+  "plan_links_checked": 105,
+  "missing_links": 0,
+  "execution_entries_after_work_update": 10
+}
