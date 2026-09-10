@@ -1,0 +1,63 @@
+{
+  "status": "qualification_in_progress",
+  "base_commit": "8a71193bc7587a025231be0d72f2002327fd67be",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
+  "branch": "codex/catalog-authority-issuer",
+  "acceptance_status": "all eight CSP4 cases UNVERIFIED",
+  "checks": [
+    {
+      "name": "fail-before",
+      "result": "build failure: OriginConfig and WithAuthorityOrigin absent",
+      "log": ".tmp/csp4-origin-runtime/red.log"
+    },
+    {
+      "name": "initial runtime race tests",
+      "result": "PASS",
+      "events": 2,
+      "elapsed_seconds": 77.873,
+      "log": ".tmp/csp4-origin-runtime/green-initial.jsonl"
+    },
+    {
+      "name": "root preparation draft",
+      "result": "build failure: builder/catalog type and nonexistent validation helper",
+      "log": ".tmp/csp4-origin-runtime/root-tests.jsonl"
+    },
+    {
+      "name": "focused draft",
+      "result": "root PASS 6 events; runtime build failure from typed startup-policy constant",
+      "log": ".tmp/csp4-origin-runtime/focused-tests.jsonl"
+    },
+    {
+      "name": "initial lint",
+      "result": "FAIL: input publication complexity 31 exceeded 30; moved alias validation into preparation",
+      "log": ".tmp/csp4-origin-runtime/lint.log"
+    },
+    {
+      "name": "final lint",
+      "result": "PASS: zero issues",
+      "log": ".tmp/csp4-origin-runtime/lint-final.log"
+    },
+    {
+      "name": "initial prose",
+      "result": "FAIL: paragraph length and nominalization; corrected",
+      "log": ".tmp/csp4-origin-runtime/prose.log"
+    },
+    {
+      "name": "Go 1.26 regression",
+      "result": "RUNNING",
+      "session_id": 46084,
+      "log": ".tmp/csp4-origin-runtime/regression-go126.jsonl",
+      "scope": "root, runtime, permission; started before alias-validation extraction"
+    },
+    {
+      "name": "Go 1.25 focused",
+      "result": "RUNNING",
+      "session_id": 1138,
+      "log": ".tmp/csp4-origin-runtime/focused-go125.jsonl",
+      "scope": "root, runtime, permission origin/preparation cases; includes alias-validation extraction"
+    }
+  ],
+  "next": "Complete current checks, test final preparation and publication contracts, preserve failure logs, and commit implementation and evidence. Canonical server settings, qualified native clocks, shared followers, authority transitions, review, CI, and merges remain required.",
+  "record_kind": "historical progress snapshot",
+  "superseded_by": "verification.json"
+}

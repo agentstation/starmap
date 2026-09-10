@@ -3,10 +3,12 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The active source is clean local `8a71193bc7587a025231be0d72f2002327fd67be` in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
+The active source is clean local `717ba9148a75ad74ca1758aa51cbb121b0f5fd18` in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
 The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b` and remains unpublished.
 
-No owner decision remains. No implementation command remains running.
+No owner decision remains. The [runtime transaction proof](csp4/origin-runtime-2026-09-10/verification.json) records the committed integration and its scoped qualification.
+The full repository check remains active. The proof lists its session ID and completed package outcomes.
+
 The [recovery record](csp4/worktree-recovery-2026-09-10.json) verifies the restored branches after their temporary directories disappeared.
 Canonical checkpoint `91aa43c6` preserves the completed checks. Historical proof keeps its original paths.
 
@@ -35,10 +37,18 @@ Exact retries keep their identity after reopen. Stale proposals cannot replace a
 Static checks, complete documentation, and the 1,442-file prose check pass.
 The [native clock survey](csp4/native-clock-survey-2026-09-10.md) records one macOS observation and selects no adapter.
 
-Next, use the [runtime inspection](csp4/origin-runtime-inspection-2026-09-10.md) to prepare the final authority identity before input-journal staging.
-Then connect serving-client activation and server configuration.
-Authorize publishers and issuers explicitly in that composition. Qualify clocks, server wiring, shared followers, authority transitions, and Starport consumers.
-The current libraries do not complete the standalone production recipe.
+The runtime now prepares the authority identity before input-journal staging and activates those exact bytes.
+Both Go toolchains pass seven origin runtime cases. Final transaction regression passes 36 events with no failures or skips.
+Completed root and permission suites pass 112 and 90 events. Final lint, ago, complete documentation, and the 1,451-file prose check pass.
+
+A regression test exposed a bootstrap write before caller-supplied publication guards. The committed implementation puts bootstrap inside the guarded client commit.
+The proof retains that failure, the correction, source hashes, and compressed artifacts.
+The intermediate runtime suite passes 820 events in 1,386.154 seconds. Its source predates the alias-validation extraction and guarded-bootstrap repair.
+Do not report it as final-code qualification.
+
+Next, qualify this library and runtime delivery with complete repository checks, required review, native CI, and a reviewed merge.
+Then continue canonical server settings, qualified clocks, shared-store followers, authority transitions, and Starport consumers.
+The current APIs do not complete the standalone production recipe.
 
 ### First subscriber delivery
 

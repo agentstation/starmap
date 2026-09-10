@@ -1879,3 +1879,26 @@ The [native clock survey](../../plans/proof/starport-production-catalog/csp4/nat
 It selects no adapter and gives no production qualification.
 Origin authorization, serving-client activation, server configuration, clocks, followers, transitions, and Starport consumers remain incomplete.
 All eight CSP4 checks remain UNVERIFIED.
+
+
+## Origin runtime transaction integration, 2026-09-10
+
+Local commit `717ba9148a75ad74ca1758aa51cbb121b0f5fd18` connects authority preparation, the retained-input journal, guarded activation, and receipt issuance.
+The [qualification record](../../plans/proof/starport-production-catalog/csp4/origin-runtime-2026-09-10/verification.json) lists current commands and failures.
+The journal names the final authority generation before catalog storage changes. A lost commit reply no longer leaves recovery bound to an ordinary source identity.
+
+The runtime preserves an unchanged accepted authority after restart and filesystem reopen.
+It requires explicit bootstrap for an ordinary store and rejects a changed authority identity.
+A regression test exposed a bootstrap write before caller-supplied publication guards. Bootstrap now executes inside the guarded client commit.
+
+Both supported Go toolchains pass all seven origin runtime cases after that correction.
+The earlier focused run also passes six root preparation events and 44 origin library events on Go 1.25.
+Final transaction regression passes 36 events. Completed root and permission suites pass 112 and 90 events.
+Lint, ago, complete documentation, and the 1,451-file prose check pass.
+
+The intermediate runtime suite passes 820 events. Its source predates the alias-validation extraction and guarded-bootstrap repair.
+These checks do not complete the standalone production recipe or any of the eight CSP4 acceptance cases.
+
+The origin option selects the sole publication store, including when client options name another store.
+Its complete effective catalog defines the permitted catalog. The deployment still controls mutation authorization and supplies qualified clock evidence.
+Canonical server settings, native clock qualification, shared-store followers, authority transitions, and Starport consumer qualification remain open.

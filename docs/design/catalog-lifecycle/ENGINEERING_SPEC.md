@@ -1804,7 +1804,23 @@ An exact retry keeps its generation and sequence after reopening the store. A ch
 `BootstrapCatalog` explicitly adopts an ordinary store and cannot reset an established authority.
 Unknown permission semantics, failed predecessor reads, changed identity, and an exhausted sequence cause refusal.
 
-The origin still owns authorization, serving-client activation, server configuration, and qualified clock composition.
+`Client.PrepareGeneration` returns the ordinary manifest and payload without committing or activating them.
+`Publisher.PrepareCatalog` selects the authority sequence without reserving it. The final commit retains the same predecessor expectation.
+The runtime prepares the authority generation before staging its input journal. Recovery binds to that final identity and exact payload.
+An ambiguous commit cannot make restart mint a different identity for the accepted inputs.
+
+`runtime.WithAuthorityOrigin` selects one authority, policy, publication store, and qualified clock callback.
+Its store takes precedence over stores in `WithClientOptions`, independent of option order. Other client options still apply.
+This explicit origin setting authorizes origin behavior. The deployment must control every mutation API and prevent direct ungoverned writes to storage.
+An authoritative subscriber cannot also be an origin.
+
+The runtime activates the exact prepared generation through the guarded client commit.
+Explicit bootstrap can adopt an ordinary store only inside that guarded commit. An unchanged restart preserves the accepted sequence.
+Origin permission reads observe the current durable head, including a commit whose activation reply failed.
+Unknown clock validity refuses receipts while catalog diagnostics remain available.
+
+Canonical server settings and native clock qualification remain separate requirements.
+The current origin runtime requires the publication lease at startup. Shared-store follower activation and authority transitions still require implementation and qualification.
 Direct underlying writes, deleted state, and restored older backups require separate recovery procedures.
 
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.

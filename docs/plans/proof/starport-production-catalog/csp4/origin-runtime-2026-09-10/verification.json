@@ -1,0 +1,406 @@
+{
+  "status": "PASS_scoped_runtime_qualification",
+  "source_commit": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
+  "source_base": "8a71193bc7587a025231be0d72f2002327fd67be",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
+  "branch": "codex/catalog-authority-issuer",
+  "publication": "local commit, no PR or merge",
+  "acceptance": {
+    "task": "CSP4",
+    "status": "in_progress",
+    "all_eight_cases": "UNVERIFIED"
+  },
+  "contracts": [
+    "Client.PrepareGeneration returns an ordinary generation without storage writes or active-state changes.",
+    "Publisher.PrepareCatalog selects a durable sequence without reserving it; commit retains atomic CAS.",
+    "WithAuthorityOrigin explicitly selects identity, policy, sole publication store, and qualified clock callback.",
+    "The runtime prepares the authority identity before input journal staging, then activates those exact bytes.",
+    "Ambiguous commit recovery selects the accepted authority identity and retains its accepted inputs without minting a new sequence.",
+    "Unchanged reconstruction proves source identity against the accepted origin digest; bootstrap cannot reset an authority.",
+    "Bootstrap runs inside the client publication guard; denied publication changes no catalog storage.",
+    "Origin receipts observe the durable head independently of successful serving-client activation.",
+    "Publication guards prevent direct client mutation; subscribers cannot become origins through this option."
+  ],
+  "checks": [
+    {
+      "name": "origin runtime Go 1.26.6",
+      "command": "GOFLAGS=-p=2 go test -race -count=1 -timeout 10m -json -run '^TestOriginPublication' ./runtime",
+      "status": "PASS",
+      "test_events": 7,
+      "packages": 1,
+      "failures": 0,
+      "skips": 0,
+      "elapsed_seconds": 158.199,
+      "artifact": "origin-final-go126.jsonl.gz"
+    },
+    {
+      "name": "origin runtime Go 1.25.12",
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -race -count=1 -timeout 10m -json -run '^TestOriginPublication' ./runtime",
+      "status": "PASS",
+      "test_events": 7,
+      "packages": 1,
+      "failures": 0,
+      "skips": 0,
+      "elapsed_seconds": 152.093,
+      "artifact": "origin-final-go125.jsonl.gz"
+    },
+    {
+      "name": "final ordinary transaction regression",
+      "command": "GOFLAGS=-p=2 go test -race -count=1 -timeout 15m -json -run '^Test(Retention|Rejected.*Publication|CanonicalAlias|Startup.*(Binding|Bindings|Catalog))' ./runtime",
+      "status": "PASS",
+      "test_events": 36,
+      "packages": 1,
+      "failures": 0,
+      "skips": 0,
+      "elapsed_seconds": 188.451,
+      "artifact": "transaction-regression-final.jsonl.gz"
+    },
+    {
+      "name": "root and permission package outcomes",
+      "command": "GOFLAGS=-p=2 go test -race -count=1 -timeout 30m -json ./runtime . ./pkg/catalogs/permission",
+      "status": "completed root and permission outcomes PASS",
+      "packages": {
+        "root": {
+          "test_events": 112,
+          "elapsed_seconds": 601.272
+        },
+        "permission": {
+          "test_events": 90,
+          "elapsed_seconds": 1.628
+        }
+      },
+      "failures": 0,
+      "skips": 0,
+      "artifact": "root-permission-regression-go126.jsonl.gz",
+      "scope": "Extracted completed package events only. Root and permission source matches this commit. The running runtime binary predates the alias-validation extraction and guarded-bootstrap repair."
+    },
+    {
+      "name": "earlier Go 1.25 preparation qualification",
+      "status": "PASS",
+      "root_events": 6,
+      "origin_library_events": 44,
+      "runtime_events": 7,
+      "artifact": "focused-go125.jsonl.gz",
+      "scope": "Runtime portion predates the guarded-bootstrap repair. Final origin runs above supersede that portion."
+    },
+    {
+      "name": "lint",
+      "status": "PASS",
+      "issues": 0,
+      "artifact": "lint-bootstrap.log.gz"
+    },
+    {
+      "name": "ago",
+      "status": "PASS",
+      "findings": 0,
+      "errors": 0,
+      "stale_ignores": 0,
+      "artifact": "ago-bootstrap.json.gz"
+    },
+    {
+      "name": "technical writing",
+      "status": "PASS",
+      "files": 1451,
+      "diagnostics": 0,
+      "artifact": "prose-qualified.log.gz"
+    },
+    {
+      "name": "complete documentation check",
+      "status": "PASS",
+      "artifact": "docs-bootstrap.log.gz"
+    },
+    {
+      "name": "canonical technical writing",
+      "status": "PASS",
+      "files": 1292,
+      "diagnostics": 0,
+      "artifact": "canonical-prose.log.gz"
+    },
+    {
+      "name": "intermediate complete runtime regression",
+      "status": "PASS",
+      "command_exit": 0,
+      "runtime_test_events": 820,
+      "all_test_events": 1022,
+      "packages": 3,
+      "failures": 0,
+      "skips": 0,
+      "runtime_elapsed_seconds": 1386.154,
+      "artifact": "intermediate-regression-go126.jsonl.gz",
+      "scope": "Intermediate runtime before alias-validation extraction and guarded-bootstrap repair. Final runtime qualification is the seven origin cases per toolchain and 36 ordinary transaction cases above."
+    },
+    {
+      "name": "canonical prose after resume maintenance",
+      "status": "PASS",
+      "files": 1293,
+      "diagnostics": 0,
+      "artifact": "canonical-prose-stable.log.gz"
+    },
+    {
+      "name": "canonical prose at evidence commit",
+      "status": "PASS",
+      "files": 1293,
+      "diagnostics": 0,
+      "artifact": "canonical-prose-commit.log.gz"
+    }
+  ],
+  "failures_preserved": [
+    "Missing origin runtime API caused fail-before compilation failure.",
+    "A root test draft confused Builder with Catalog and referenced a nonexistent validation helper.",
+    "A runtime test draft passed a typed startup policy where the option requires string.",
+    "The first input transaction exceeded the complexity limit; preparation now owns alias-successor validation.",
+    "The bootstrap guard regression proved that direct bootstrap could write before the client guard refused activation.",
+    "Prose iterations exceeded paragraph limits or used nominalizations; final prose passes.",
+    "Canonical resume maintenance triggered a 29-word sentence and then a seven-sentence paragraph. Shorter text and a paragraph break pass the final check."
+  ],
+  "remaining": [
+    "canonical server settings and operator authorization",
+    "qualified native clocks",
+    "shared-store follower activation",
+    "authority transitions and recovery",
+    "full make verify and required autoreview",
+    "native CI and reviewed merges",
+    "Starport consumer qualification and all eight CSP4 acceptance cases"
+  ],
+  "source_files": [
+    {
+      "path": "docs/API.md",
+      "sha256": "82d98490cf04684e101b86fa12951f988783048da57b561859c9eb08ab4691e8"
+    },
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "a39e1a14b3039b9feaee706f50d79dbafe20aa740825c9371a0ca077a501e9ef"
+    },
+    {
+      "path": "pkg/catalogs/permission/README.md",
+      "sha256": "7e3376afe49494a60d429eb7b9052f4482f06c746b2684778c0d154f0a385202"
+    },
+    {
+      "path": "pkg/catalogs/permission/origin_preparation_test.go",
+      "sha256": "78a9de554d82ff838cee583ea8f65e8880ba8a7224d4c7da81fa0c1fb33ca895"
+    },
+    {
+      "path": "pkg/catalogs/permission/origin_publication.go",
+      "sha256": "c1dc683fde1cd2d818efab1c4f2f4e1aa4f9696cab385207a04f73062bdb477f"
+    },
+    {
+      "path": "prepare.go",
+      "sha256": "f51e728d7a3b0a8d8a42cb01cd0b84d9222d4ddb56b3c336bc4f30fe695e012e"
+    },
+    {
+      "path": "prepare_test.go",
+      "sha256": "81205ca509d96897a91ba0f13fba78a7ffb02edb3aa84d48f75ae499535319b5"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "a15fbb851e0fbaad53c6d8e1ae98889d51c06322acd4e88df3a8bdd8621e7ae8"
+    },
+    {
+      "path": "runtime/acquisition_policy_publication.go",
+      "sha256": "640572e8a4f477eaf2d9683d40a5ad50ca567708c7cb1fcf5557d5bb99104ccf"
+    },
+    {
+      "path": "runtime/authority_publication.go",
+      "sha256": "91993c7b985d48f2d296d6ca0844d520f1f3696bc4f74dd1a30dd7d5cbb2a239"
+    },
+    {
+      "path": "runtime/authority_relay.go",
+      "sha256": "7fc2e33dbc84f5dd4159589f8a3dbca5626cf144ed2d3ff2575ce90ddb7dfe5b"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "0bd2fd110207e4672582a3a394e0bcf1b2192394b4ec51a2876ca673c30f2edc"
+    },
+    {
+      "path": "runtime/origin.go",
+      "sha256": "abb98b5281462df59de00724abd5d464cf0ce773bcbcb96518904c73825653a1"
+    },
+    {
+      "path": "runtime/origin_contract_test.go",
+      "sha256": "a5aa272fff9c8d893c84fad9d74efeecbe4c52c008162a193b529244dd6d47b8"
+    },
+    {
+      "path": "runtime/origin_filesystem_test.go",
+      "sha256": "b2e29aade8c34f4a7e017ef99cc3ffd184db4da834a4e99c9472e420087d988b"
+    },
+    {
+      "path": "runtime/origin_publication.go",
+      "sha256": "632143f434637ac19cb119f8cf7ccd6eae72ac7739f4a797f67f7fb791e65645"
+    },
+    {
+      "path": "runtime/origin_store.go",
+      "sha256": "f7fce6fc7e4af7a298eeed1dbd5e10b244d8fdae42a0bc072b77256c64f5cdbd"
+    },
+    {
+      "path": "runtime/origin_transaction_test.go",
+      "sha256": "5fad70da0f8148e8955d916a179f0d0a041302e969548b946f38bd1144b4cb4a"
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "sha256": "67478cc7e472ce410d7328f881e4c5f83101656dc67063c8a72f76fe060767bd"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "18e3a36a3b99240735a7ef02cb4bd7121a8b50630ef65b358c3d8dabc49df736"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "red.log.gz",
+      "sha256": "6d24d39c59aa8701b7cca1dff37561c66d1da3383a14491d36a9830523bb0b14",
+      "decoded_sha256": "c9a83c72417183a9a0e7445e2901aaabb092838e20abb6686696289d04a45953",
+      "decoded_bytes": 432
+    },
+    {
+      "path": "green-initial.jsonl.gz",
+      "sha256": "b5c5168818edc9dd1c57d7e37ef8f33984fa638884a6cfa20e6d6b89c3d9a433",
+      "decoded_sha256": "735ddd20906fb1dfc1d17dc61f64fcfb8e0feb9f74d64b2164885878f525bc06",
+      "decoded_bytes": 4000
+    },
+    {
+      "path": "root-tests.jsonl.gz",
+      "sha256": "3babfa296df2a3201698658a60de95a7a38d68cc2b7889ee061d433bb8642cca",
+      "decoded_sha256": "b7d6c6678cda538343b329bc4b3b9738db710c51c6354613eeafc337d0815cad",
+      "decoded_bytes": 1530
+    },
+    {
+      "path": "focused-tests.jsonl.gz",
+      "sha256": "6906a5b9d6cd3223b621473565d068c43e5b30583294f4218c79a54360f7eb78",
+      "decoded_sha256": "5804acfc89d0fe7348f8f3937215c81a50442fee7e70223e67498d40197ad638",
+      "decoded_bytes": 7360
+    },
+    {
+      "path": "bootstrap-guard-red.jsonl.gz",
+      "sha256": "d2b27178e71242e594c7516862fd1b482e05957fcffbe0b4731d0f284febfad5",
+      "decoded_sha256": "82e531f74c89593ebef15a7a977cba1ea6514ec16613418cfa74607d3db1803b",
+      "decoded_bytes": 1901
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "810fb086331613de92f6f3a237c74b33842e883c8d895abbfcc06091789e794a",
+      "decoded_sha256": "c84f0c284f4fc89f13a5c5bdbed6258eb5b35d32ad6b146ed235faa1d93034f3",
+      "decoded_bytes": 399
+    },
+    {
+      "path": "lint-bootstrap.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "decoded_bytes": 10
+    },
+    {
+      "path": "ago-bootstrap.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "decoded_bytes": 289
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "55cd394599db60d57aa1e6bfb0264e629f4076054d92031d669b36ebfa26b079",
+      "decoded_sha256": "2690c44c02f56b3db0f009a42ea3ff64d40580ef4208faa975fbb2af57535662",
+      "decoded_bytes": 939
+    },
+    {
+      "path": "prose-bootstrap.log.gz",
+      "sha256": "8cbb451f211ff2f5ed2daeb690cc6e153d68895db42c5823b275360cfeb32b8f",
+      "decoded_sha256": "2155b3194847ba7ea8761885462880d30349cb37fa5f1ed939264b5559e48d64",
+      "decoded_bytes": 774
+    },
+    {
+      "path": "prose-qualified.log.gz",
+      "sha256": "05cf7ddece64e1a97bd69eacf5c2825174654000101853b7d65cd62a8429ece3",
+      "decoded_sha256": "b27a4e17da3c9424b5ead3d13157474c8893afd464f780e4e524825fd1de8289",
+      "decoded_bytes": 566
+    },
+    {
+      "path": "docs-bootstrap.log.gz",
+      "sha256": "8b024b5ed53cc9c558f6efbd08eb6d139604fb0abc8fe187258d72afaf22a251",
+      "decoded_sha256": "487007146be15f307289fb5987b57c8f44bae1cc664c268350ec7fd8924acece",
+      "decoded_bytes": 1545
+    },
+    {
+      "path": "origin-final-go126.jsonl.gz",
+      "sha256": "ef8366f908f6680cba576f1865fa65507bd03b45d278de1cc1fae7ac0731c38a",
+      "decoded_sha256": "0c70eae0991645308c9f8ef6e04c5ab889f33e8477c7c714c2f47d4f90743b4f",
+      "decoded_bytes": 9491
+    },
+    {
+      "path": "origin-final-go125.jsonl.gz",
+      "sha256": "c848300b34c3f7a0c26cbba14b040b9d5122e2acaaab4fee70e0e6fc0683b02b",
+      "decoded_sha256": "35f39b9f34c4eca20bf9938b0813122e0579df25a6c1a888c6c1f8956a84fead",
+      "decoded_bytes": 9177
+    },
+    {
+      "path": "transaction-regression-final.jsonl.gz",
+      "sha256": "df28338c02d1f3546b9a61dc23c73f76b7dfacbd12cc222e7c1be219991c64ed",
+      "decoded_sha256": "8de35ce181f48ca3710db61882dcd2d2104a6c1afe6e983394ebaa95a4a49f52",
+      "decoded_bytes": 47040
+    },
+    {
+      "path": "focused-go125.jsonl.gz",
+      "sha256": "3f0f29ecdac2d6c2476e820d3ce088dd0cd2eb675a81a0d94e1abccb40fd76da",
+      "decoded_sha256": "5b1aa2f485527d7a45956b3aebcd174af93b53448fc92c0b74c62eb103f51fa3",
+      "decoded_bytes": 59350
+    },
+    {
+      "path": "root-permission-regression-go126.jsonl.gz",
+      "sha256": "5cfac2dad24de503e143034517663eb3f75735dd26e87dfbbe0507cfc39e2b38",
+      "decoded_sha256": "c1619ad5b1321b2d942cb487c2c3bc55560747e3b8b571f40630c7e543c31b63",
+      "decoded_bytes": 206984
+    },
+    {
+      "path": "canonical-prose.log.gz",
+      "sha256": "7ed1928d59ac326b1c20020aad3da8ccabed25c7bcde9bc8351940fb6efbbfba",
+      "decoded_sha256": "1226289a14e2ca2085ff4b5e360370026a86a0bc92e30efa0d1f9a3220de1092",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "intermediate-regression-go126.jsonl.gz",
+      "sha256": "bfcd1de3050e8b7025e28d3fb310bd9e013ad5384a3ec35ba5ecceb8a971cd90",
+      "decoded_sha256": "420ac793b4dc34004bbbaa3a81e5d600c27298bf9653085b751897704d5ec867",
+      "decoded_bytes": 1626020
+    },
+    {
+      "path": "canonical-prose-final.log.gz",
+      "sha256": "665d9dc98e1178ca5ed0c3b849f54aef38cc52af849f439e7dc6569382c3aaf9",
+      "decoded_sha256": "44da475c8b76e9c1ddc55369a4762a1b4d6bc63f3e95257cf7f81b9dceb90bb6",
+      "decoded_bytes": 786
+    },
+    {
+      "path": "canonical-prose-qualified.log.gz",
+      "sha256": "240a56fd1246ec2412477b63b6011be4152d549a7b97cf84a8886518d2b76352",
+      "decoded_sha256": "201cefad0c590df42417ef0804d43b04780d435b8279389be9d9efbb972d3d05",
+      "decoded_bytes": 789
+    },
+    {
+      "path": "canonical-prose-stable.log.gz",
+      "sha256": "9f1ea9c74a09c1cc09171620ffd6e816832b308f14c6cc0cf0d2c8c047b7b39b",
+      "decoded_sha256": "b0a85c8c26ec62c1fa4cc4881ea5bf864f46d36845a4d736f7ad1bffb55f5f29",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "canonical-prose-commit.log.gz",
+      "sha256": "9f1ea9c74a09c1cc09171620ffd6e816832b308f14c6cc0cf0d2c8c047b7b39b",
+      "decoded_sha256": "b0a85c8c26ec62c1fa4cc4881ea5bf864f46d36845a4d736f7ad1bffb55f5f29",
+      "decoded_bytes": 558
+    }
+  ],
+  "running_commands": [
+    {
+      "session_id": 74180,
+      "command": "make verify",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer/.tmp/csp4-origin-runtime/make-verify.log",
+      "source_commit": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
+      "status": "running"
+    }
+  ],
+  "publication_preparation": {
+    "checked_at": "2026-09-10T21:39:31.062457+00:00",
+    "main": "faa9cc8b0bc01eb787f567f568f1b9fe05e0740a",
+    "main_included": true,
+    "open_prs": {
+      "starmap": 0,
+      "starport": 0
+    },
+    "next": "Complete make verify, required autoreview, native CI, and reviewed merge before counting any delivered acceptance."
+  }
+}
