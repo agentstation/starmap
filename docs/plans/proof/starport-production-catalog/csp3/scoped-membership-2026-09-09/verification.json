@@ -692,7 +692,7 @@
     ]
   },
   "transport_draft": {
-    "status": "Uncommitted schema-7 scope transport and runtime export draft. Local publication, restart, and migration pass focused checks. Upstream import and authenticated publisher handling remain incomplete. Do not publish this draft.",
+    "status": "Uncommitted schema-7 scope transport and runtime integration draft. Local and upstream scope receipt persistence pass focused checks. Authenticated publisher handling and full qualification remain incomplete. Do not publish this draft.",
     "files": [
       "pkg/catalogs/membership_scope.go",
       "pkg/catalogs/membership_scope_test.go"
@@ -733,9 +733,7 @@
       }
     },
     "remaining": [
-      "Bind imported scope records to authenticated publisher namespaces and preserve original receipt declarations.",
-      "Preserve imported scope records through runtime reconstruction and derivative publication.",
-      "Preserve every scope-referenced receipt through reconciliation and derivative publication.",
+      "Bind imported publisher namespaces to the configured authenticated source authority and qualify collision handling.",
       "Document protocol schema selection and migration behavior; generate package docs.",
       "Repeat full affected tests and minimum-Go checks after integration, then required review.",
       "Implement Starport explicit profile links and admission enforcement."
@@ -1040,7 +1038,7 @@
       ]
     },
     "runtime_scope_export": {
-      "status": "Local runtime export, restart, and directory migration pass focused checks. Full runtime qualification is active. Upstream transport remains incomplete.",
+      "status": "Local export, restart, and migration checks pass. The earlier full-runtime snapshot remains active with one identified expectation failure; the replacement test passes separately.",
       "implementation": [
         "MembershipState retains the last complete inventory per scope and the original receipt ID for every positive fact.",
         "ExportScopes assigns the caller-selected persistent publisher identity and copies only effective scope facts, without credential references.",
@@ -1183,13 +1181,161 @@
       "live_check": {
         "session_id": 18449,
         "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m ./runtime -json",
-        "log": "/tmp/starmap-membership-export-runtime-full-2026-09-10.jsonl"
+        "log": "/tmp/starmap-membership-export-runtime-full-2026-09-10.jsonl",
+        "observed_failure": {
+          "test": "TestReceiptOnlyUpdatePublishesDistinctGeneration",
+          "reason": "The old fixture expected scoped receipt renewal to leave the payload unchanged.",
+          "repair": "TestScopeEvidenceRenewalPublishesDistinctGeneration now checks unchanged non-scope content and changed scope evidence, semantic checksum, and generation identity. Focused repair passes.",
+          "qualification": "The running suite uses its earlier snapshot and cannot count as a clean run. Poll session 18449 to completion and retain all results before the final rerun."
+        }
       },
       "remaining": [
         "Retain upstream original source links alongside the selected source payload.",
         "Bind imported publisher claims to the configured authenticated source authority before explicit inference-profile links resolve them.",
         "Test derivative publication, source replacement, namespace collisions, revocation, and restart with imported scope records.",
         "Complete full qualification and required review before publishing the draft."
+      ]
+    },
+    "upstream_scope_import": {
+      "status": "Focused import, derivative publication, replacement, restart, and malformed-retention checks pass. Publisher trust binding remains incomplete.",
+      "implementation": [
+        "Retain a copy of the original generation manifest with upstream layer bytes.",
+        "Validate retained scoped layers through DecodeCatalogGeneration during baseline selection and publication-journal recovery.",
+        "Allow existing payload-only layers only when they contain no scope records.",
+        "Copy manifest slices at retention ownership boundaries.",
+        "Carry original scope-referenced source observations into derivative manifests, and reject conflicting claims for one receipt identity.",
+        "Validate all effective scope evidence before publishing in-memory runtime state."
+      ],
+      "checks": {
+        "upstream_flow_and_retention": {
+          "exit_code": 0,
+          "pass": 5
+        },
+        "source_replacement_and_restart": {
+          "exit_code": 0,
+          "pass": 5
+        },
+        "minimum_go_final": {
+          "exit_code": 0,
+          "pass": 6
+        },
+        "retention_integration": {
+          "exit_code": 0,
+          "pass": 16
+        },
+        "scope_renewal": {
+          "exit_code": 0,
+          "pass": 1
+        },
+        "ago": {
+          "exit_code": 0
+        },
+        "golangci_lint": {
+          "exit_code": 0
+        },
+        "docs_check": {
+          "exit_code": 0
+        },
+        "technical_writing": {
+          "exit_code": 0,
+          "files": 1337,
+          "diagnostics": 0
+        }
+      },
+      "fail_before": "The producer publishes a real scoped generation. Its downstream runtime rejected import because the original source observation was missing from the derivative manifest.",
+      "repairs": [
+        "Removed an import left unused when baseline decode moved to the source-layer method.",
+        "Regenerated documentation after source line numbers changed."
+      ],
+      "scope_renewal_contract": {
+        "old_test": "TestReceiptOnlyUpdatePublishesDistinctGeneration",
+        "replacement": "TestScopeEvidenceRenewalPublishesDistinctGeneration",
+        "reason": "Scope evidence now belongs to the payload and its semantic identity. The old fixture uses scoped inputs and therefore is no longer receipt-only.",
+        "assertions": "All payload content outside membership_scopes stays byte-equivalent. Payload, semantic checksum, and immutable generation identity must change. The new manifest replaces the old receipt with the exact current receipt.",
+        "preserved_contract": "TestEffectiveIdentityBindsCanonicalPublicationEvidence still verifies identity changes when only manifest evidence changes."
+      },
+      "artifacts": {
+        "upstream-before": {
+          "path": "upstream-before.jsonl.gz",
+          "sha256": "37f6046429e3285c3d76cdaa2dec10035f543c62e9a3b159233b318c7ce586c4",
+          "test_events": {
+            "fail": 1
+          }
+        },
+        "upstream-after": {
+          "path": "upstream-after.jsonl.gz",
+          "sha256": "7c565ab5072a65293116279c735973ce13d69481db92c7f574da8eb9e7c317bd",
+          "test_events": {}
+        },
+        "upstream-retained-validation": {
+          "path": "upstream-retained-validation.jsonl.gz",
+          "sha256": "ebe052395928a0d8ee02aacafb236c36b01f96eceda38d8fffead685a38b66ed",
+          "test_events": {}
+        },
+        "upstream-after-ready": {
+          "path": "upstream-after-ready.jsonl.gz",
+          "sha256": "8a37f52cca0606bef356cdf415997d342584c508553e58fd589e26210c9b4f1d",
+          "test_events": {
+            "pass": 5
+          }
+        },
+        "upstream-replacement": {
+          "path": "upstream-replacement.jsonl.gz",
+          "sha256": "ba00fd1215664fc2105829ee33b59a326a8565c411a54fe2393d498b2fc37420",
+          "test_events": {
+            "pass": 5
+          }
+        },
+        "upstream-min-go-final": {
+          "path": "upstream-min-go-final.jsonl.gz",
+          "sha256": "ed211f66dd3cbe02958d31d4701899465b8c2d58a807c4eac5931eb1cf0b0b3b",
+          "test_events": {
+            "pass": 6
+          }
+        },
+        "scope-renewal-after": {
+          "path": "scope-renewal-after.jsonl.gz",
+          "sha256": "56628ac5bac65dbed9030627df0ee06547a402832165dc09f0b8a915ee4903e3",
+          "test_events": {
+            "pass": 1
+          }
+        },
+        "upstream-retention-integration": {
+          "path": "upstream-retention-integration.jsonl.gz",
+          "sha256": "2f96aa3d007046cf90b5f622bcacbc0cbddda168b8ccbdcfb14c80583ac21182",
+          "test_events": {
+            "pass": 16
+          }
+        },
+        "upstream-ago": {
+          "path": "upstream-ago.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        },
+        "upstream-lint": {
+          "path": "upstream-lint.log.gz",
+          "sha256": "a0e26fd8bf7a9bf1e323d88e6b7d36d61e2f050492be8eae9b320fc9708aab5b"
+        },
+        "upstream-godoc": {
+          "path": "upstream-godoc.log.gz",
+          "sha256": "5d95f6cda30a94b9e0e5a600a4f8a439b17e5ee7e785dcaef466122aa2963b32"
+        },
+        "upstream-docs": {
+          "path": "upstream-docs.log.gz",
+          "sha256": "9160a7d833a883ddc4a0df748ca09a42f71b45084a1269629becc075c8ad896b"
+        },
+        "upstream-docs-ready": {
+          "path": "upstream-docs-ready.log.gz",
+          "sha256": "ece94277e36b4f2e03dd529785b79bfdcd6ed47c9fbf17f8ef1827517b7068f3"
+        },
+        "upstream-writing": {
+          "path": "upstream-writing.log.gz",
+          "sha256": "3d3b4e552508e52a41f292cecbd8aefedbb88a1f3b3cd15d0daa75f907c7c199"
+        }
+      },
+      "remaining": [
+        "Bind imported publisher namespaces to the configured authenticated source authority and reject local publisher impersonation.",
+        "Verify namespace collisions, source-authority changes, and explicit profile-link behavior.",
+        "Finish full verification and required review before publication."
       ]
     }
   }
