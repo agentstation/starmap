@@ -225,6 +225,7 @@ func (c *Client) fetchManifest(
 		resourcePath,
 		ManifestMediaType,
 		ifNoneMatch,
+		maxBodyBytes,
 	)
 	if err != nil {
 		return catalogs.GenerationManifest{}, false, err
@@ -322,7 +323,7 @@ func (c *Client) fetchGenerationPayload(
 }
 
 func (c *Client) fetch(ctx context.Context, resourcePath, mediaType string) ([]byte, error) {
-	data, _, err := c.fetchConditional(ctx, resourcePath, mediaType, "")
+	data, _, err := c.fetchConditional(ctx, resourcePath, mediaType, "", maxBodyBytes)
 	return data, err
 }
 
@@ -331,6 +332,7 @@ func (c *Client) fetchConditional(
 	resourcePath string,
 	mediaType string,
 	ifNoneMatch string,
+	maxBytes int64,
 ) ([]byte, bool, error) {
 	if ctx == nil {
 		ctx = context.Background()
@@ -366,19 +368,19 @@ func (c *Client) fetchConditional(
 	if err != nil || actualMediaType != mediaType {
 		return nil, false, &errors.ValidationError{Field: "catalog_remote.content_type", Value: response.Header.Get("Content-Type"), Message: "does not match " + mediaType}
 	}
-	if response.ContentLength > maxBodyBytes {
+	if response.ContentLength > maxBytes {
 		return nil, false, &errors.ValidationError{
 			Field:   "catalog_remote.body",
 			Value:   response.ContentLength,
 			Message: "exceeds maximum size",
 		}
 	}
-	limited := io.LimitReader(response.Body, maxBodyBytes+1)
+	limited := io.LimitReader(response.Body, maxBytes+1)
 	data, err := io.ReadAll(limited)
 	if err != nil {
 		return nil, false, errors.WrapIO("read", target.String(), err)
 	}
-	if len(data) > maxBodyBytes {
+	if int64(len(data)) > maxBytes {
 		return nil, false, &errors.ValidationError{Field: "catalog_remote.body", Value: len(data), Message: "exceeds maximum size"}
 	}
 	return data, false, nil

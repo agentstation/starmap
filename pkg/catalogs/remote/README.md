@@ -27,6 +27,7 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
   - [func \(c \*Client\) FetchCurrent\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.FetchCurrent>)
   - [func \(c \*Client\) FetchCurrentIfChanged\(ctx context.Context, generationID string\) \(generation catalogs.Generation, changed bool, err error\)](<#Client.FetchCurrentIfChanged>)
   - [func \(c \*Client\) FetchGeneration\(ctx context.Context, generationID string\) \(catalogs.Generation, error\)](<#Client.FetchGeneration>)
+  - [func \(c \*Client\) FetchPermissionEnvelope\(ctx context.Context\) \(catalogs.CatalogPermissionEnvelope, error\)](<#Client.FetchPermissionEnvelope>)
   - [func \(c \*Client\) FetchSourceChain\(ctx context.Context\) \(SourceChain, error\)](<#Client.FetchSourceChain>)
   - [func \(c \*Client\) OpenEventStream\(ctx context.Context, lastEventID string\) \(\*EventStream, error\)](<#Client.OpenEventStream>)
 - [type EventStream](<#EventStream>)
@@ -110,6 +111,17 @@ const (
 )
 ```
 
+<a name="PermissionEnvelopePath"></a>
+
+```go
+const (
+    // PermissionEnvelopePath returns the current authority head with a finite permission receipt.
+    PermissionEnvelopePath = CatalogPath + "/permission"
+    // PermissionEnvelopeMediaType identifies permission JSON independently of catalog formats.
+    PermissionEnvelopeMediaType = "application/vnd.agentstation.starmap.catalog-permission+json"
+)
+```
+
 <a name="DefaultConnectTimeout"></a>Transfer bounds. Each value bounds one stage of one finite HTTP body transfer, for a catalog download and for an ordinary provider request alike. No value bounds a subscription lifetime.
 
 ```go
@@ -166,7 +178,7 @@ func GenerationManifestPath(generationID string) string
 GenerationManifestPath returns the immutable manifest route for generationID.
 
 <a name="ManifestETag"></a>
-## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L389>)
+## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L391>)
 
 ```go
 func ManifestETag(generationID string) string
@@ -175,7 +187,7 @@ func ManifestETag(generationID string) string
 ManifestETag returns the strong entity tag for a generation manifest. A generation ID is immutable and restricted to HTTP entity\-tag\-safe bytes.
 
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L394>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L396>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
@@ -274,6 +286,15 @@ func (c *Client) FetchGeneration(ctx context.Context, generationID string) (cata
 ```
 
 FetchGeneration fetches and verifies one immutable generation by ID.
+
+<a name="Client.FetchPermissionEnvelope"></a>
+### func \(\*Client\) [FetchPermissionEnvelope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/permission.go#L20>)
+
+```go
+func (c *Client) FetchPermissionEnvelope(ctx context.Context) (catalogs.CatalogPermissionEnvelope, error)
+```
+
+FetchPermissionEnvelope verifies the configured publisher and reads its bounded permission envelope. It reads no catalog manifest or payload and sends no conditional request. The caller checks configured authority identity, successor order, permission semantics, and receipt validity before admission.
 
 <a name="Client.FetchSourceChain"></a>
 ### func \(\*Client\) [FetchSourceChain](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/chain.go#L174>)
