@@ -133,13 +133,34 @@
         "sha256": "5755e1af6660cc57595835a1977af0b25a40c4c6ae9c4f2241b7aa51de203794",
         "raw_sha256": "d8afc810cbcb3ef576594706e21e4b6bdce4e2bd34bbf44a17c66c33f831d182"
       }
+    },
+    "full_race": {
+      "source": "13fe3a759a451106a824af5d9807b161352bd851",
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-full-race-2026-09-10.jsonl.gz",
+        "sha256": "7291b9ea96f375de3f2c4ec5da5f264fdb08905624a6d3cf4cc021b43f9066ff",
+        "raw_sha256": "b22d49c7bb5797d181842674427754f7ee413c301988a51aac9489c25c723d52"
+      },
+      "exit_code": 0,
+      "counts": {
+        "pass": 1503,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 752
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/catalog/reconciler": {
+          "pass": 648
+        }
+      }
     }
   },
   "running": {
-    "full_race": {
-      "session": 43282,
-      "output": "/tmp/starmap-alias-canonical-removal-full-race-2026-09-10.jsonl"
-    },
     "product": {
       "session": 63970,
       "source": "13fe3a759a451106a824af5d9807b161352bd851",
@@ -157,5 +178,13 @@
     "exit_code": 2,
     "reason": "Sixteen generated source links changed after the constructor index call and private helper insertion. go generate ./pkg/catalogs regenerated the README, and the repeated documentation check passes."
   },
-  "commit": "13fe3a759a451106a824af5d9807b161352bd851"
+  "commit": "13fe3a759a451106a824af5d9807b161352bd851",
+  "publication_integration": {
+    "commit": "b3af02c3791e7ca36af191095808f8fac5bc6ac6",
+    "base": "13fe3a759a451106a824af5d9807b161352bd851",
+    "changed_file": "scripts/test-catalog-package-ownership-verifier.sh",
+    "check_log": "/tmp/starmap-alias-integrated-toolchain-shell-2026-09-10.log",
+    "exit_code": 0,
+    "limitation": "Full product qualification continues against the unchanged production code in the repair worktree at 13fe3a75."
+  }
 }

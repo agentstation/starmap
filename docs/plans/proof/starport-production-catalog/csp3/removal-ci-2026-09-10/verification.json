@@ -1026,6 +1026,70 @@
           }
         }
       ]
+    },
+    "ci_conclusion": "failure",
+    "failure": {
+      "job": 102812885327,
+      "step": "Run verification gate",
+      "cause": "The shell regression still requires STARMAP_RELEASE_GOTOOLCHAIN after caller-selected toolchain support removed that setting. All six native jobs pass.",
+      "artifact": {
+        "path": "starmap-pr145-final-gate-failure-2026-09-10.log.gz",
+        "sha256": "5276243046b604b2a7affc457733fd703039794b85fa48524695fc5174da559c",
+        "raw_sha256": "a590f93ef7082393107e9f9aa83216b4d4e18514686144eba37ec3a351d3f59d"
+      }
+    }
+  },
+  "shell_contract_repair": {
+    "state": "committed; pre-PR review active",
+    "scope": "Replace the obsolete release-toolchain assertion with a process-boundary check for both selected toolchains.",
+    "source_base": "ce1d646a0184572f07bdb2be7d7cf7a268216669",
+    "file": "scripts/test-catalog-package-ownership-verifier.sh",
+    "commit": "99304c36d1230dae1a51a209f3effd469b6370ab",
+    "review_session": 75590,
+    "review_log": "/tmp/starmap-pr145-toolchain-shell-review-2026-09-10.log",
+    "checks": {
+      "current": {
+        "artifact": {
+          "path": "starmap-pr145-toolchain-shell-current-2026-09-10.log.gz",
+          "sha256": "486aff30f3f03d532df68accf0b19da88e3c5ef27d64ccfd9d5bac7a8b68256d",
+          "raw_sha256": "fc28ad32995d77d94393a19132db62947e48251776c1c053ac2894a1c1540c19"
+        },
+        "exit_code": 0
+      },
+      "minimum": {
+        "artifact": {
+          "path": "starmap-pr145-toolchain-shell-minimum-2026-09-10.log.gz",
+          "sha256": "486aff30f3f03d532df68accf0b19da88e3c5ef27d64ccfd9d5bac7a8b68256d",
+          "raw_sha256": "fc28ad32995d77d94393a19132db62947e48251776c1c053ac2894a1c1540c19"
+        },
+        "exit_code": 0
+      },
+      "negative": {
+        "artifact": {
+          "path": "starmap-pr145-toolchain-shell-negative-2026-09-10.log.gz",
+          "sha256": "aefb9959aea7283d3498d17c59021e8cd3950c017017a95a082cc29dbdbeb826",
+          "raw_sha256": "1620b3a6bae1b4fbcdf277cb697586343e84f815da9c4e0a9a847d5cf16476d0"
+        },
+        "exit_code": 1,
+        "expected_rejection": true
+      },
+      "prose": {
+        "artifact": {
+          "path": "starmap-pr145-toolchain-shell-prose-2026-09-10.log.gz",
+          "sha256": "205561fd1ff4da0f790213bc19b81a4fcdebe2909bb85eb6bf4f706d78d6b399",
+          "raw_sha256": "c3bc98c25f9f6a2dd3d98280c79c33ce88c91fc5c74397fdc2a8440f731566b0"
+        },
+        "exit_code": 0
+      },
+      "downstream_verifiers": {
+        "artifact": {
+          "path": "starmap-pr145-remaining-verifiers-2026-09-10.log.gz",
+          "sha256": "6ea5e1881968bd6088a80a163ccb41b8253b8c45a1038254fd5dd56184ce96e7",
+          "raw_sha256": "db628f483f944346e6ce8724b249c13bffb16efb0e1778245745aa785e2dbb28"
+        },
+        "exit_code": 0,
+        "product_verifier_tests": 73
+      }
     }
   }
 }
