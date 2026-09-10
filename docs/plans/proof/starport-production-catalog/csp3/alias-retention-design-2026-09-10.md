@@ -53,6 +53,11 @@ Its local snapshot uses `catalog-runtime/removals.json` and the existing publica
 An operator restore clears that local exclusion. It cannot restore an alias that the selected baseline removed.
 The original alias records remain in the accepted catalog generation and retained source manifest.
 
+The operator UI must submit the stored removal target when it restores a record.
+Show the current canonical identity beside the original target when a rename changes its display name.
+Do not derive the restore target from that display name. Preserve other removal records.
+CSP17 owns this UI contract. The runtime rename-and-restore regression proves the underlying target behavior.
+
 Catalog payload transport must distinguish aliases from provider observations. Acquisition cannot create or clear canonical rename records.
 Advance the payload schema for this contract and preserve readable legacy formats when they contain no alias metadata.
 Retained policy and alias history must survive configured-source refresh, offline restart, and directory migration.
