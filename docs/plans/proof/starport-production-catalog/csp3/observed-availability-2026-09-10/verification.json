@@ -563,6 +563,24 @@
         "path": "cache-integration-full.jsonl.gz",
         "sha256": "336b95910174dad44aa21a76fff8e10390721ca8aa771fd21c35625432194ae1"
       }
+    },
+    "delivery": {
+      "pr": "https://github.com/agentstation/starmap/pull/144",
+      "state": "OPEN",
+      "head": "3a989949a77433fafb920976a6c2dc0988246843",
+      "reviewed_head": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
+      "reviewed_tree": "925ea667f60d33d5b1c12c03379d3ba9ba7f7154",
+      "published_tree": "925ea667f60d33d5b1c12c03379d3ba9ba7f7154",
+      "base_merge": "c474e2a419251b5127cca2179ab21b7503afccdf",
+      "base_tree_equivalent_to_reviewed_dependency": true,
+      "ci_run": 34444938562,
+      "auto_merge": "squash after required checks pass",
+      "merge_credit": false,
+      "watch": {
+        "session": 95923,
+        "log": "/tmp/starmap-pr144-ci-watch-2026-09-10.log",
+        "state": "active"
+      }
     }
   },
   "removal_set_work": {
@@ -623,7 +641,7 @@
     ]
   },
   "removal_policy_work": {
-    "state": "committed locally; qualification remains incomplete",
+    "state": "committed and in required review",
     "base": "c84c12d5",
     "worktree": "/tmp/starmap-operator-removal-2026-09-10",
     "branch": "codex/catalog-operator-removal",
@@ -696,7 +714,7 @@
         "sha256": "35708c1b52b8a1345e4af56ffa7ab2f4f77ecc57cd6bfc2ef7ea8a49ed560a95"
       }
     },
-    "status": "All 37 focused policy, import, recovery, and source events pass on Go 1.26.6 and Go 1.25.12. Final documentation checks and commit remain pending.",
+    "status": "Full repaired runtime passes 739 events. Both Go versions pass 37 focused events. Static and documentation checks pass.",
     "active_checks": {
       "full_csp3": {
         "session": 70867,
@@ -726,9 +744,10 @@
       },
       "runtime_after_repair": {
         "session": 69774,
-        "state": "active",
+        "state": "completed",
         "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime -json",
-        "log": "/tmp/starmap-removal-source-runtime-full-2026-09-10.jsonl"
+        "log": "/tmp/starmap-removal-source-runtime-full-2026-09-10.jsonl",
+        "exit_code": 0
       }
     },
     "findings": [
@@ -921,7 +940,7 @@
         "uncompressed_sha256": "287705cec478f150ff6338d49f2a830d42f3c055347e473b42f14f08696867fb",
         "apply": "Decompress to a temporary .patch file, verify git apply --check, and apply after active checks finish. Full patch context remains intact."
       },
-      "next": "Commit the qualified repair, complete required review, then publish after the availability dependency merges.",
+      "next": "Complete the active review. Publish after PR #144 merges and its base tree matches the reviewed dependency.",
       "journal_fixture_repair": {
         "reason": "The old invalid-version fixture used version 3, which this candidate now supports. Use inputPublicationVersion+1 and cover legacy removal-field rejection.",
         "exit_code": 0,
@@ -1082,6 +1101,39 @@
         "path": "removal-source-minimum-go.jsonl.gz",
         "sha256": "6ed88bce74e6a4ce7280a6745578dcbb31e3fa17e3bbefee88884b048293d035"
       }
+    },
+    "repair_commit": "e19028cf",
+    "integrated_head": "b13b1744ab85521144fdb0ed2fa6ba2663ff9740",
+    "runtime_after_repair": {
+      "exit_code": 0,
+      "test_events": {
+        "pass": 739,
+        "fail": 0,
+        "skip": 0
+      },
+      "elapsed_seconds": 1087.58,
+      "artifact": {
+        "path": "removal-source-runtime-full.jsonl.gz",
+        "sha256": "169545fa6753880b2ecda264cce6d332b5ba626eb21dc9b4973f5a1389e4de1f"
+      }
+    },
+    "pre_pr_review": {
+      "session": 58501,
+      "state": "active",
+      "head": "b13b1744ab85521144fdb0ed2fa6ba2663ff9740",
+      "base": "3a989949a77433fafb920976a6c2dc0988246843",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "log": "/tmp/starmap-removal-source-pre-pr-review-2026-09-10.log"
+    },
+    "final_checks": {
+      "ago_exit": 0,
+      "lint_exit": 0,
+      "godoc_exit": 0,
+      "docs_check_exit": 0,
+      "prose_exit": 0
     }
   }
 }
