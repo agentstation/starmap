@@ -1,0 +1,102 @@
+{
+  "task": "CSP4",
+  "source": "12c89f6901c7fb07fe7257fca87c138d60458bf6",
+  "base": "1f1b01148f86115a053a0dc8ac9fd77c5b8a9b47",
+  "worktree": "/tmp/starmap-authority-retention-2026-09-10",
+  "branch": "codex/catalog-authority-retention",
+  "source_files_sha256": {
+    "pkg/catalogs/remote/README.md": "0ebc29a23eca92a6a87555fed32a10e7960e7452fc6723cbe1ba069108411039",
+    "pkg/catalogs/remote/client.go": "acda75b6e51ac9f135a68eae426a513054ab48839468fd2f1e33a736e7c950ae",
+    "pkg/catalogs/remote/permission.go": "9fea070cbade31ddaadfac24969ba37d72df1417251e12bd1d8ae0d243e61745",
+    "pkg/catalogs/remote/permission_test.go": "2256a7502aacd13d4caf8aef8ece7ff3c08b670cd3baa1d717e77d76f13c4ce9"
+  },
+  "checks": {
+    "red": {
+      "exit_code": 1,
+      "artifact": {
+        "path": "red.jsonl.gz",
+        "sha256": "ca75346cf23bb9370acb3cabc3ad868ccdf0a6c0772fdf8573d2f825ecca519f",
+        "raw_sha256": "fd2803627877e6b0a02a3c5b4648dca534da07005a1388f38b0e98a2c0dcfbc8"
+      },
+      "test_events": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -run TestRemotePermission -json ./pkg/catalogs/remote"
+    },
+    "suite": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "suite.jsonl.gz",
+        "sha256": "803d4de548ccc3eb2f4daf971122100f166ce584861d1f30fb37446a5b2d7517",
+        "raw_sha256": "82f2b5ac6ed4ffbeb6b342707644fa433bc1d1d58c3980077ba015ebca02bd02"
+      },
+      "test_events": {
+        "pass": 51,
+        "fail": 0,
+        "skip": 0
+      },
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./pkg/catalogs/remote"
+    },
+    "minimum": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "90cd268f83554da4aa02ff12ae2376b2fe3eb7cce45ea173441a928a08b9341f",
+        "raw_sha256": "9b12c43ac94c0f6abc7077adf7b58c29d08242644f94a5effd8ee08cc6018706"
+      },
+      "test_events": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "toolchain": "go1.25.12",
+      "command": "go test -race -count=1 -timeout=5m -run TestRemotePermission -json ./pkg/catalogs/remote"
+    },
+    "ago": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      }
+    },
+    "docs": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "06e514e5821fdb28009878f897b142beba328a2e45da7a62d3c13d34d98c5116",
+        "raw_sha256": "fe1e94c9d4e4173683f0037a56da63acdf17136b70601c858fd3ecb8c20a7f6e"
+      }
+    }
+  },
+  "red_result": "The new tests cannot compile at the parent because the permission transport API does not exist. This is missing-contract evidence, not a behavioral test failure.",
+  "observations": [
+    "Verified TLS reads and renews an envelope without any manifest or payload request. Unknown permission semantics retain their required revision.",
+    "The request rejects unverified TLS, cross-origin redirects, unexpected status, malformed input, and wrong media type. Cancellation and Retry-After remain effective.",
+    "An oversized declared response reads zero body bytes. An unknown-length response reads at most 16385 bytes before refusal. Both close the response body."
+  ],
+  "limitations": [
+    "No runtime, source-adapter, authority publisher, retained permission state, or Starport admission integration.",
+    "All eight CSP4 acceptance subcases remain UNVERIFIED. No publication or completion credit."
+  ]
+}

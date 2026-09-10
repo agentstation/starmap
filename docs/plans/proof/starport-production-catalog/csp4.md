@@ -21,3 +21,13 @@ Independent authenticated receipt reads, publication, retention, runtime activat
 Complete those paths before task qualification or publication.
 
 The [context record](csp4/permission-envelope-2026-09-10/context-maintenance.json) verifies unchanged task contracts, goal, and invariants during history rotation.
+
+## Independent permission transport
+
+Local commit `12c89f6901c7fb07fe7257fca87c138d60458bf6` adds the independent permission request.
+The [transport proof](csp4/permission-transport-2026-09-10/verification.json) records 51 remote-client race events and 16 minimum-toolchain events.
+All pass without skips. Static checks pass.
+
+The transport verifies the configured publisher before decoding the envelope.
+It bounds the body before parsing and preserves cancellation and refusal deadlines.
+A renewal reads no catalog payload. Runtime and publisher integration remain incomplete.
