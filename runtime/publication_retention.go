@@ -57,6 +57,10 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 		owned := *source
 		owned.Payload = bytes.Clone(source.Payload)
 		owned.Chain = slices.Clone(source.Chain)
+		if source.Manifest != nil {
+			manifest := source.Manifest.Copy()
+			owned.Manifest = &manifest
+		}
 		source = &owned
 		candidate.source = source
 	}

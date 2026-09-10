@@ -177,7 +177,7 @@ func (s *layerStore) publicationInputs(record inputPublication) (*sourceLayer, [
 		if source.GenerationID == "" || source.Identity == "" || source.Checksum != catalogs.DescribeCatalogPayload(source.Payload).Checksum {
 			return nil, nil, invalidInputPublication("source identity or digest does not match")
 		}
-		if _, err := catalogs.DecodeCatalogPayload(source.Payload); err != nil {
+		if _, err := source.decodeCatalog(); err != nil {
 			return nil, nil, err
 		}
 	}

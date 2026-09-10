@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -444,6 +445,23 @@ func TestRemoteCatalogFetchValidatesManifestPayloadChecksumAndCompatibility(t *t
 		MinSchemaVersion: current,
 		MaxSchemaVersion: current,
 	})
+
+	legacy := valid.Copy()
+	var legacyPayload map[string]json.RawMessage
+	if err := json.Unmarshal(legacy.Payload, &legacyPayload); err != nil {
+		t.Fatal(err)
+	}
+	legacyPayload["schema_version"] = json.RawMessage("6")
+	delete(legacyPayload, "membership_scopes")
+	rawLegacy, err := json.Marshal(legacyPayload)
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy.Payload = rawLegacy
+	legacy.Manifest.Payload = catalogs.DescribeCatalogPayload(rawLegacy)
+	mismatchedSchema := legacy.Copy()
+	legacy.Manifest.SchemaVersion = 6
+	legacy.Manifest.ConsumerCompatibility = catalogs.ConsumerCompatibility{MinSchemaVersion: 6, MaxSchemaVersion: 6}
 	wrongDescriptorMedia := valid.Copy()
 	wrongDescriptorMedia.Manifest.Payload.MediaType = "application/json"
 	oversizedDescriptor := valid.Copy()
@@ -462,10 +480,15 @@ func TestRemoteCatalogFetchValidatesManifestPayloadChecksumAndCompatibility(t *t
 		manifestType         string
 		payloadType          string
 		payloadContentLength int64
+		consumerSchema       uint64
 		wantError            bool
 		wantPayloadGet       bool
 	}{
 		{name: "valid", generation: valid, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantPayloadGet: true},
+		{name: "legacy schema", generation: legacy, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantPayloadGet: true},
+		{name: "pinned legacy accepts legacy", consumerSchema: 6, generation: legacy, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantPayloadGet: true},
+		{name: "pinned legacy rejects current before payload", consumerSchema: 6, generation: valid, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantError: true},
+		{name: "schema mismatch", generation: mismatchedSchema, manifestType: ManifestMediaType, payloadType: catalogs.CatalogPayloadMediaType, wantPayloadGet: true, wantError: true},
 		{name: "corrupt payload", generation: valid, mutatePayload: func(data []byte) []byte {
 			copyData := append([]byte(nil), data...)
 			copyData[len(copyData)-1] ^= 1
@@ -528,7 +551,11 @@ func TestRemoteCatalogFetchValidatesManifestPayloadChecksumAndCompatibility(t *t
 				}
 			}))
 			defer server.Close()
-			client, err := NewClient(server.URL, server.Client(), catalogs.CurrentCatalogSchemaVersion)
+			consumerSchema := test.consumerSchema
+			if consumerSchema == 0 {
+				consumerSchema = current
+			}
+			client, err := NewClient(server.URL, server.Client(), consumerSchema)
 			if err != nil {
 				t.Fatalf("NewClient: %v", err)
 			}

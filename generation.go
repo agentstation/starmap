@@ -275,7 +275,7 @@ func (c *Client) newGeneration(
 	generation := catalogs.Generation{
 		Manifest: catalogs.GenerationManifest{
 			ManifestVersion: catalogs.CurrentGenerationManifestVersion,
-			SchemaVersion:   catalogs.CurrentCatalogSchemaVersion,
+			SchemaVersion:   catalogs.CatalogPayloadSchemaVersion(published),
 			GenerationID:    generationID,
 			GeneratedAt:     generatedAt,
 			Payload:         descriptor,
@@ -295,13 +295,16 @@ func (c *Client) newGeneration(
 			Degraded:           degraded,
 			DegradationReasons: degradationReasons,
 			ConsumerCompatibility: catalogs.ConsumerCompatibility{
-				MinSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
-				MaxSchemaVersion: catalogs.CurrentCatalogSchemaVersion,
+				MinSchemaVersion: catalogs.CatalogPayloadSchemaVersion(published),
+				MaxSchemaVersion: catalogs.CatalogPayloadSchemaVersion(published),
 			},
 		},
 		Payload: payload,
 	}
 	if err := generation.Validate(); err != nil {
+		return catalogs.Generation{}, err
+	}
+	if err := catalogs.ValidateMembershipEvidence(published.MembershipScopes(), generation.Manifest.SourceObservations); err != nil {
 		return catalogs.Generation{}, err
 	}
 	return generation, nil

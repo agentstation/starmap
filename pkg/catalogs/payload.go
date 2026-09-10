@@ -16,12 +16,13 @@ import (
 // Author models own provider-independent facts. Provider models own serving
 // facts and link to author models through Model.ModelRef.
 type CatalogPayload struct {
-	SchemaVersion  uint64             `json:"schema_version"`
-	Providers      []Provider         `json:"providers"`
-	Authors        []Author           `json:"authors"`
-	ProviderModels map[string][]Model `json:"provider_models"`
-	AuthorModels   map[string][]Model `json:"author_models"`
-	Provenance     provenance.Map     `json:"provenance"`
+	SchemaVersion    uint64                    `json:"schema_version"`
+	Providers        []Provider                `json:"providers"`
+	Authors          []Author                  `json:"authors"`
+	ProviderModels   map[string][]Model        `json:"provider_models"`
+	AuthorModels     map[string][]Model        `json:"author_models"`
+	Provenance       provenance.Map            `json:"provenance"`
+	MembershipScopes []ProviderMembershipScope `json:"membership_scopes,omitempty"`
 }
 
 // EncodeCatalogPayload deterministically encodes a readable catalog.
@@ -40,9 +41,9 @@ func EncodeCatalogPayload(reader Reader) ([]byte, error) {
 	return data, nil
 }
 
-// CatalogSemanticChecksum returns the stable SHA-256 identity of catalog facts.
-// It excludes provenance and observation evidence. EncodeCatalogPayload remains
-// the exact integrity representation for storage, transport, and audit.
+// CatalogSemanticChecksum identifies catalog facts and effective scope state.
+// It excludes field provenance. Scope evidence renewals remain part of the identity.
+// EncodeCatalogPayload binds all evidence for storage, transport, and audit.
 func CatalogSemanticChecksum(reader Reader) (string, error) {
 	payload, err := catalogPayload(reader)
 	if err != nil {
@@ -72,6 +73,9 @@ func catalogPayload(reader Reader) (CatalogPayload, error) {
 		AuthorModels:   make(map[string][]Model),
 		Provenance:     reader.Provenance().Map(),
 	}
+
+	payload.MembershipScopes = reader.MembershipScopes()
+	payload.SchemaVersion = CatalogPayloadSchemaVersion(reader)
 	for _, provider := range payload.Providers {
 		modelIDs := make([]string, 0, len(provider.Models))
 		for modelID := range provider.Models {
@@ -97,4 +101,21 @@ func catalogPayload(reader Reader) (CatalogPayload, error) {
 		)
 	}
 	return payload, nil
+}
+
+const legacyCatalogSchemaVersion uint64 = 6
+
+// SupportsCatalogSchema reports the formats this release can read and enforce.
+// Version 6 contains no effective scope restrictions. Version 7 can carry them.
+func SupportsCatalogSchema(version uint64) bool {
+	return version == legacyCatalogSchemaVersion || version == CurrentCatalogSchemaVersion
+}
+
+// CatalogPayloadSchemaVersion reports the schema used when encoding this reader.
+// Decoded legacy evidence keeps its original schema while it has no scope records.
+func CatalogPayloadSchemaVersion(reader Reader) uint64 {
+	if original, ok := reader.(*Catalog); ok && original.payloadSchemaVersion == legacyCatalogSchemaVersion && len(original.MembershipScopes()) == 0 {
+		return legacyCatalogSchemaVersion
+	}
+	return CurrentCatalogSchemaVersion
 }

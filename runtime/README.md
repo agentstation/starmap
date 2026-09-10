@@ -706,7 +706,7 @@ type LeaseStore interface {
 ```
 
 <a name="ObservationInputs"></a>
-## type [ObservationInputs](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L14-L19>)
+## type [ObservationInputs](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L13-L18>)
 
 ObservationInputs separates accepted local facts from the selected baseline. Both catalogs are immutable snapshots. Baseline excludes this runtime's local observations.
 
@@ -1283,7 +1283,7 @@ func (r *Runtime) ModelsDevGitCommit() (string, bool)
 ModelsDevGitCommit returns the configured Git pin and its explicit presence.
 
 <a name="Runtime.ObservationInputs"></a>
-### func \(\*Runtime\) [ObservationInputs](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L24>)
+### func \(\*Runtime\) [ObservationInputs](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L23>)
 
 ```go
 func (r *Runtime) ObservationInputs(ctx context.Context) (ObservationInputs, error)
@@ -1364,7 +1364,7 @@ func (r *Runtime) UpdateAcquisition(ctx context.Context, prepare func(context.Co
 UpdateAcquisition prepares and commits one acquisition under runtime ownership. Failed preparation preserves accepted state. The callback must not mutate this runtime.
 
 <a name="Runtime.UpdateObservations"></a>
-### func \(\*Runtime\) [UpdateObservations](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L57>)
+### func \(\*Runtime\) [UpdateObservations](<https://github.com/agentstation/starmap/blob/main/runtime/observation_update.go#L56>)
 
 ```go
 func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.Context, ObservationInputs) ([]sources.Observation, error), resets ...ObservationReset) (starmap.CatalogState, error)

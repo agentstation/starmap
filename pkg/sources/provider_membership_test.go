@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestProviderMembershipAuthorityWireContract(t *testing.T) {
@@ -104,7 +106,28 @@ func TestProviderMembershipAuthorityBoundToReceipt(t *testing.T) {
 func TestLegacyProviderMembershipReceiptIdentity(t *testing.T) {
 	binding := validProviderBinding()
 	binding.SchemaVersion = 1
-	observation := scopedProviderObservation(t, &binding)
+	current := scopedProviderObservation(t, &binding)
+	raw, err := catalogs.EncodeCatalogPayload(current.Catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var legacy map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &legacy); err != nil {
+		t.Fatal(err)
+	}
+	legacy["schema_version"] = json.RawMessage("6")
+	raw, err = json.Marshal(legacy)
+	if err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := catalogs.DecodeSourceObservationPayload(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	observation, err := NewObservation(ProvidersID, catalog, ObservationMetadata{ProviderBinding: &binding, ObservedAt: current.ObservedAt, Revision: Revision{Kind: RevisionKindContentDigest}, Completeness: current.Completeness, Status: current.Status})
+	if err != nil {
+		t.Fatal(err)
+	}
 	if observation.ID != "observation:v3:49c1b5d73c175f8454156b2d2bbae6f3d4064d6df6f53049cae3348c63ac17f4" {
 		t.Fatalf("legacy receipt identity changed: %s", observation.ID)
 	}

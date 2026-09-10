@@ -55,7 +55,7 @@ func (s *Syncer) ImportRelease(
 	if err != nil {
 		return nil, err
 	}
-	releaseCatalog, err := catalogs.DecodeCatalogPayload(generation.Payload)
+	releaseCatalog, err := catalogs.DecodeCatalogGeneration(generation)
 	if err != nil {
 		return nil, errors.WrapResource(
 			"decode",

@@ -419,6 +419,10 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 		ObservedAt:       result.CompletedAt,
 		Chain:            read.Chain,
 	}
+	if read.Generation.Manifest.ManifestVersion != 0 {
+		manifest := read.Generation.Manifest.Copy()
+		layer.Manifest = &manifest
+	}
 	state, err := r.publishInputChanges(ctx, &layer, nil, epoch)
 	if err != nil {
 		result.Health = HealthDegraded

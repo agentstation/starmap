@@ -146,7 +146,7 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 	if err != nil {
 		return sources.Observation{}, err
 	}
-	catalog, err := catalogs.DecodeCatalogPayload(release.Generation.Payload)
+	catalog, err := catalogs.DecodeCatalogGeneration(release.Generation)
 	if err != nil {
 		return sources.Observation{}, errors.WrapResource(
 			"decode", "catalog release payload", release.GenerationID, err)

@@ -25,6 +25,7 @@ Package reconciler provides catalog synchronization and reconciliation capabilit
   - [func \(s \*AuthorityStrategy\) ResolveResourceConflict\(resourceType evidence.ResourceType, field string, values map\[sources.ID\]any\) \(any, sources.ID, string\)](<#AuthorityStrategy.ResolveResourceConflict>)
 - [type MembershipState](<#MembershipState>)
   - [func ResolveMembership\(ctx context.Context, observations \[\]sources.Observation\) \(\*MembershipState, error\)](<#ResolveMembership>)
+  - [func \(s \*MembershipState\) ExportScopes\(publisher string\) \(\[\]catalogs.ProviderMembershipScope, error\)](<#MembershipState.ExportScopes>)
   - [func \(s \*MembershipState\) Permits\(provider catalogs.ProviderID, model string\) bool](<#MembershipState.Permits>)
 - [type Option](<#Option>)
   - [func WithAuthorities\(authorities authority.Reader\) Option](<#WithAuthorities>)
@@ -132,7 +133,7 @@ type MembershipState struct {
 ```
 
 <a name="ResolveMembership"></a>
-### func [ResolveMembership](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L48>)
+### func [ResolveMembership](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L50>)
 
 ```go
 func ResolveMembership(ctx context.Context, observations []sources.Observation) (*MembershipState, error)
@@ -140,8 +141,17 @@ func ResolveMembership(ctx context.Context, observations []sources.Observation) 
 
 ResolveMembership reads verified, selected history without changing its observations. Callers must exclude revoked bindings and reset observations before construction.
 
+<a name="MembershipState.ExportScopes"></a>
+### func \(\*MembershipState\) [ExportScopes](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_export.go#L12>)
+
+```go
+func (s *MembershipState) ExportScopes(publisher string) ([]catalogs.ProviderMembershipScope, error)
+```
+
+ExportScopes returns effective scope records under the caller's publisher identity. Each record retains original receipt identities and excludes credential references.
+
 <a name="MembershipState.Permits"></a>
-### func \(\*MembershipState\) [Permits](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L119>)
+### func \(\*MembershipState\) [Permits](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L124>)
 
 ```go
 func (s *MembershipState) Permits(provider catalogs.ProviderID, model string) bool
@@ -186,7 +196,7 @@ func WithChangeTime(at time.Time) Option
 WithChangeTime supplies stable timestamps for facts derived from retained evidence. It leaves original source timestamps and current\-time pricing validation unchanged.
 
 <a name="WithMembershipState"></a>
-### func [WithMembershipState](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L154>)
+### func [WithMembershipState](<https://github.com/agentstation/starmap/blob/main/internal/catalog/reconciler/membership_state.go#L159>)
 
 ```go
 func WithMembershipState(state *MembershipState) Option

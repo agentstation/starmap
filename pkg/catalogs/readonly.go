@@ -77,6 +77,7 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 	}
 	return &Catalog{
 		source:                     builder,
+		membership:                 indexMembershipScopes(builder.MembershipScopes()),
 		providerIDs:                indexProviderIdentities(providers),
 		definitions:                map[ModelDefinitionID]ModelDefinition{},
 		offerings:                  map[OfferingKey]ProviderOffering{},
@@ -93,7 +94,9 @@ var _ Reader = (*Catalog)(nil)
 // Catalog is Starmap's immutable canonical catalog. Read methods provide the only
 // access to its private state. Callers can retain it across goroutines.
 type Catalog struct {
+	payloadSchemaVersion       uint64
 	source                     Reader
+	membership                 map[MembershipScopeKey]membershipScopeIndex
 	providerIDs                map[ProviderID]ProviderID
 	definitions                map[ModelDefinitionID]ModelDefinition
 	offerings                  map[OfferingKey]ProviderOffering
@@ -153,6 +156,7 @@ func buildCatalog(source Reader) (*Catalog, error) {
 
 	return &Catalog{
 		source:                     source,
+		membership:                 indexMembershipScopes(source.MembershipScopes()),
 		providerIDs:                indexProviderIdentities(providers),
 		definitions:                views.definitions,
 		offerings:                  views.offerings,

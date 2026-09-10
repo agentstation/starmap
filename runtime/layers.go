@@ -39,19 +39,22 @@ const (
 // verified payload, so a restart serves the last upstream catalog without a
 // network reply.
 type sourceLayer struct {
-	Identity         string      `json:"identity"`
-	GenerationID     string      `json:"generation_id"`
-	Checksum         string      `json:"checksum"`
-	Payload          []byte      `json:"payload"`
-	PublishedAt      time.Time   `json:"published_at"`
-	ChannelUpdatedAt time.Time   `json:"channel_updated_at"`
-	ObservedAt       time.Time   `json:"observed_at"`
-	Chain            []SourceHop `json:"chain,omitempty"`
+	Manifest         *catalogs.GenerationManifest `json:"manifest,omitempty"`
+	Identity         string                       `json:"identity"`
+	GenerationID     string                       `json:"generation_id"`
+	Checksum         string                       `json:"checksum"`
+	Payload          []byte                       `json:"payload"`
+	PublishedAt      time.Time                    `json:"published_at"`
+	ChannelUpdatedAt time.Time                    `json:"channel_updated_at"`
+	ObservedAt       time.Time                    `json:"observed_at"`
+	Chain            []SourceHop                  `json:"chain,omitempty"`
 }
 
 // layerSet holds the inputs that produce the effective catalog: the embedded
 // baseline, selected upstream source, provider observations, and manual history.
 type layerSet struct {
+	publisherID        string
+	publisherAliases   []string
 	embedded           starmap.CatalogState
 	source             *sourceLayer
 	providers          map[providerEvidenceKey]ProviderLayer
@@ -138,6 +141,12 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 			return starmap.CatalogState{}, errors.WrapResource(
 				"publish", "effective catalog", state.GenerationID, err)
 		}
+	}
+	if err := l.appendScopeSourceEvidence(catalog); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := catalogs.ValidateMembershipEvidence(catalog.MembershipScopes(), l.buildEvidence.SourceObservations); err != nil {
+		return starmap.CatalogState{}, err
 	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
@@ -386,8 +395,14 @@ func (r *Runtime) loadRetainedLayers(ctx context.Context) error {
 	if err := validateManualHistory(manual, r.config.providerBindings); err != nil {
 		return err
 	}
+	publisherID, err := r.instanceIdentity()
+	if err != nil {
+		return err
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	r.layers.publisherID = publisherID
+	r.layers.publisherAliases = slices.Clone(r.config.source.Aliases)
 	r.layers.source = source
 	r.layers.providers = providers
 	r.layers.manual = manual

@@ -56,6 +56,7 @@ type Reader interface {
 	Providers() ProvidersReader
 	Authors() AuthorsReader
 	AuthoredModels() []AuthoredModel
+	MembershipScopes() []ProviderMembershipScope
 	Provenance() ProvenanceReader
 
 	// Gets a provider or author by ID.

@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"encoding/json"
 	"reflect"
 	"testing"
 	"time"
@@ -11,7 +12,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
-func TestReceiptOnlyUpdatePublishesDistinctGeneration(t *testing.T) {
+func TestScopeEvidenceRenewalPublishesDistinctGeneration(t *testing.T) {
 	at := time.Date(2026, 9, 7, 0, 0, 0, 0, time.UTC)
 	older := scopedProviderLayer(t, "older", "1", at)
 	newer := scopedProviderLayer(t, "newer", "1", at.Add(time.Hour))
@@ -36,11 +37,34 @@ func TestReceiptOnlyUpdatePublishesDistinctGeneration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if before.Manifest.Payload.Checksum != after.Manifest.Payload.Checksum {
-		t.Fatal("fixture did not isolate a receipt-only update")
+	var beforeFacts, afterFacts map[string]json.RawMessage
+	if err := json.Unmarshal(before.Payload, &beforeFacts); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(after.Payload, &afterFacts); err != nil {
+		t.Fatal(err)
+	}
+	delete(beforeFacts, "membership_scopes")
+	delete(afterFacts, "membership_scopes")
+	if !reflect.DeepEqual(beforeFacts, afterFacts) {
+		t.Fatal("scope evidence renewal changed unrelated catalog content")
+	}
+	if before.Manifest.Payload.Checksum == after.Manifest.Payload.Checksum {
+		t.Fatal("scope evidence renewal reused previous payload bytes")
+	}
+	beforeSemantic, err := before.SemanticChecksum()
+	if err != nil {
+		t.Fatal(err)
+	}
+	afterSemantic, err := after.SemanticChecksum()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if beforeSemantic == afterSemantic {
+		t.Fatal("scope evidence renewal reused previous scope semantics")
 	}
 	if before.Manifest.GenerationID == after.Manifest.GenerationID {
-		t.Fatal("receipt-only update reused the previous immutable generation")
+		t.Fatal("scope evidence renewal reused the previous immutable generation")
 	}
 	found := false
 	for _, link := range after.Manifest.SourceObservations {

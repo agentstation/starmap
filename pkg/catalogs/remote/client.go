@@ -64,6 +64,8 @@ type Client struct {
 // https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback.
 // The supplied HTTP client may add authentication or stricter TLS policy, but
 // HTTPS responses must retain a standard verified certificate chain.
+// The current schema selects all formats this client supports. An older schema
+// selects only that format. The client rejects other formats before fetching payloads.
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error) {
 	parsed, err := url.Parse(strings.TrimRight(baseURL, "/"))
 	if err != nil || parsed.Scheme == "" || parsed.Host == "" {
@@ -242,7 +244,9 @@ func (c *Client) fetchManifest(
 	if err := validateGenerationID(manifest.GenerationID); err != nil {
 		return catalogs.GenerationManifest{}, false, err
 	}
-	if !manifest.ConsumerCompatibility.SupportsSchema(c.schemaVersion) {
+	if !catalogs.SupportsCatalogSchema(manifest.SchemaVersion) ||
+		(manifest.SchemaVersion != c.schemaVersion && c.schemaVersion != catalogs.CurrentCatalogSchemaVersion) ||
+		!manifest.ConsumerCompatibility.SupportsSchema(manifest.SchemaVersion) {
 		return catalogs.GenerationManifest{}, false, &errors.ValidationError{
 			Field: "catalog_remote.schema_version", Value: c.schemaVersion,
 			Message: fmt.Sprintf("is incompatible with remote range %d..%d", manifest.ConsumerCompatibility.MinSchemaVersion, manifest.ConsumerCompatibility.MaxSchemaVersion),
@@ -311,7 +315,7 @@ func (c *Client) fetchGenerationPayload(
 		return catalogs.Generation{}, err
 	}
 	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
-	if err := generation.Validate(); err != nil {
+	if _, err := catalogs.DecodeCatalogGeneration(generation); err != nil {
 		return catalogs.Generation{}, errors.WrapResource("verify", "remote catalog generation", manifest.GenerationID, err)
 	}
 	return generation, nil

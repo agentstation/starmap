@@ -20,8 +20,9 @@ type MembershipState struct {
 }
 
 type membershipFact struct {
-	at       time.Time
-	fallback bool
+	observationID string
+	at            time.Time
+	fallback      bool
 }
 
 type membershipInventory struct {
@@ -32,10 +33,11 @@ type membershipInventory struct {
 type membershipScopeKey struct{ id, revision string }
 
 type membershipScope struct {
-	binding  sources.ProviderAcquisitionBinding
-	positive map[string]membershipFact
-	latest   membershipFact
-	latestID string
+	inventory *membershipInventory
+	binding   sources.ProviderAcquisitionBinding
+	positive  map[string]membershipFact
+	latest    membershipFact
+	latestID  string
 }
 
 type providerMembership struct {
@@ -82,7 +84,7 @@ func ResolveMembership(ctx context.Context, observations []sources.Observation) 
 		}
 		key := membershipScopeKey{binding.ID, binding.Revision}
 		scope := membership.scopes[key]
-		fact := membershipFact{at: observation.ObservedAt, fallback: scopedFallback(observation)}
+		fact := membershipFact{at: observation.ObservedAt, fallback: scopedFallback(observation), observationID: observation.ID}
 		if scope == nil {
 			scope = &membershipScope{binding: binding, positive: make(map[string]membershipFact)}
 			membership.scopes[key] = scope
@@ -103,6 +105,9 @@ func ResolveMembership(ctx context.Context, observations []sources.Observation) 
 		for model := range provider.Models {
 			scope.positive[model] = fact
 			inventory[model] = true
+		}
+		if complete && binding.MembershipAuthority != sources.ProviderMembershipEvidenceOnly {
+			scope.inventory = &membershipInventory{fact: fact, models: inventory}
 		}
 		if complete && binding.MembershipAuthority == sources.ProviderMembershipProvider {
 			if previous := membership.inventory; previous != nil && compareMembershipFacts(previous.fact, fact) == 0 && !maps.Equal(previous.models, inventory) {

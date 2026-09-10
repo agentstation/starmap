@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/agentstation/starmap"
-	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -71,9 +70,12 @@ func (r *Runtime) UpdateObservations(ctx context.Context, prepare func(context.C
 func (l *layerSet) selectedBaseline(embedded starmap.CatalogState) (starmap.CatalogState, error) {
 	baseline := embedded
 	if l.source != nil {
-		decoded, err := catalogs.DecodeCatalogPayload(l.source.Payload)
+		decoded, err := l.source.decodeCatalog()
 		if err != nil {
 			return starmap.CatalogState{}, errors.WrapResource("decode", "retained source layer", l.source.GenerationID, err)
+		}
+		if err := l.validateUpstreamScopePublishers(decoded); err != nil {
+			return starmap.CatalogState{}, err
 		}
 		baseline = starmap.CatalogState{Catalog: decoded, GenerationID: l.source.GenerationID, PayloadChecksum: l.source.Checksum, GeneratedAt: l.source.PublishedAt}
 	}

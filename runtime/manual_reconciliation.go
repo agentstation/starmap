@@ -100,6 +100,9 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 	if err != nil {
 		return nil, collected, err
 	}
+	if err := l.attachMembershipScopes(builder, membership); err != nil {
+		return nil, collected, err
+	}
 	collected.ReviewCandidates = slices.DeleteFunc(collected.ReviewCandidates, func(candidate evidence.ReviewCandidate) bool {
 		_, err := builder.ProviderModel(catalogs.ProviderID(candidate.ProviderID), candidate.ProviderModelID)
 		return err == nil

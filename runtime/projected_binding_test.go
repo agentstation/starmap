@@ -39,7 +39,7 @@ func TestProjectedProviderFactsRespectActiveBindingAndOperatorEdits(t *testing.T
 		t.Fatal(err)
 	}
 	active := &providerBindingPolicy{bindings: map[string]sources.ProviderAcquisitionBinding{binding.ID: binding}}
-	original := layerSet{providerBindings: active}
+	original := layerSet{publisherID: "test-runtime", providerBindings: active}
 	original.setProvider(layer)
 	accepted, err := original.build(t.Context(), baseline)
 	if err != nil {
@@ -100,7 +100,7 @@ func TestProjectedProviderFactsRespectActiveBindingAndOperatorEdits(t *testing.T
 			case "undeclared-binding":
 				policy = nil
 			}
-			replayed := layerSet{providerBindings: policy, manual: &manualBatch{observations: prepared}}
+			replayed := layerSet{publisherID: "test-runtime", providerBindings: policy, manual: &manualBatch{observations: prepared}}
 			state, err := replayed.build(t.Context(), baseline)
 			if err != nil {
 				t.Fatal(err)

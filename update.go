@@ -175,9 +175,9 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 	if ctx == nil {
 		ctx = context.Background()
 	}
-	if generation.Manifest.SchemaVersion != catalogs.CurrentCatalogSchemaVersion ||
+	if !catalogs.SupportsCatalogSchema(generation.Manifest.SchemaVersion) ||
 		!generation.Manifest.ConsumerCompatibility.SupportsSchema(
-			catalogs.CurrentCatalogSchemaVersion,
+			generation.Manifest.SchemaVersion,
 		) {
 		return Publication{}, &errors.ValidationError{
 			Field:   "catalog_generation.schema_version",
@@ -191,7 +191,7 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 	}
 	defer release()
 
-	published, err := catalogs.DecodeCatalogPayload(generation.Payload)
+	published, err := catalogs.DecodeCatalogGeneration(generation)
 	if err != nil {
 		return Publication{}, errors.WrapResource(
 			"decode",
