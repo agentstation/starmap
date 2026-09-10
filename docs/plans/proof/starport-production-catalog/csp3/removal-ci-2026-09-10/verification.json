@@ -449,5 +449,96 @@
       "raw_sha256": "6cb6d61d2f7a33fd9d17827d84088f5bdc2a8147d9968d0427a2f4c79dd16de1"
     },
     "review_failure": "The helper cannot inspect binary changes. A textual fixed archive plus source-equivalence test now replaces the binary fixture. Qualification is active."
+  },
+  "text_fixture_repair": {
+    "commit": "7fd4a2d1868d006aa3cbf3a4e9472602d0f6c3e9",
+    "tests_current": 4,
+    "tests_minimum": 4,
+    "current": {
+      "path": "starmap-pinned-consumer-text-2026-09-10.jsonl.gz",
+      "sha256": "426b0f771e56e75f5cb6066004d0a3ee0de418344559282bf0bd91f98f839efe",
+      "raw_sha256": "e6f0284157d5d57c1696ca2db6c2f030ce088157a4c3f87f8a816700befad95f"
+    },
+    "minimum": {
+      "path": "starmap-pinned-consumer-text-minimum-2026-09-10.jsonl.gz",
+      "sha256": "baa8e9346e6c5ce6dd2c63c7cfb5cca1addd2b26134c6567aec56ac8ec85434d",
+      "raw_sha256": "515e2b9d5c0cc3c28ef6a5fe175b85ec6ccdeb1ecaf988788dc6781a24652c51"
+    },
+    "review": {
+      "path": "starmap-removal-text-fixture-pre-pr-review-2026-09-10.log.gz",
+      "sha256": "e15eb22491419ba85a111fe6534b621c232e86430efd82632f45a38103474107",
+      "raw_sha256": "c15bac86c29f96b7e1333cc4ff434168419914f9af3ef1746b019826667a0e2a"
+    },
+    "review_exit_code": 1,
+    "review_verdict": "No qualification. Source changed during review to correct selected-toolchain verification and isolate the fixture predecessor."
+  },
+  "toolchain_repair": {
+    "commit": "76dc83f607fbed0e14661df0c9e0bff2c8235526",
+    "contract": "All six consumers use the selected toolchain. The check prints go env GOVERSION. No dependency budget changes.",
+    "current": {
+      "path": "starmap-pinned-consumer-selected-current-2026-09-10.log.gz",
+      "sha256": "0984f613a43d3ae53a8519d12f3bb3c966eccd579baffbf78b1c13a0a475a6be",
+      "raw_sha256": "e46e61e2068de345b95a16c88769303b2578aaca75a372459ec8768fb0c2c591"
+    },
+    "minimum": {
+      "path": "starmap-pinned-consumer-selected-minimum-2026-09-10.log.gz",
+      "sha256": "56074814b245b10dabefd907fabb6ba314710db54bc232249c46962c4a7ff6dd",
+      "raw_sha256": "45a4bc23a4c3a52c250c3f0254cb8045ce6411194d865d90904637e79540c3b3"
+    },
+    "ownership": {
+      "path": "starmap-pinned-consumer-selected-ownership-2026-09-10.log.gz",
+      "sha256": "daa1a01112146eaf590755cf1e388f58676d5e07877264c373abad96d0567cfe",
+      "raw_sha256": "90211beeb264c62d8aae6ff32a749e3ef6ab0cec2fc694157858a82a36f9ce67"
+    },
+    "ownership_counts": {
+      "pass": 13,
+      "fail": 0
+    },
+    "exit_codes": {
+      "current": 0,
+      "minimum": 0,
+      "ownership": 0,
+      "shell_syntax": 0
+    }
+  },
+  "final_fixture_repair": {
+    "commit": "4cbf99f032bd5782e0ded74391f4b967d2f3abef",
+    "contract": "Fixed verified archive, fixed predecessor from caller-selected storage, duplicate activation, restart, and inspectable JSON source equivalence.",
+    "current": {
+      "path": "starmap-pinned-consumer-predecessor-current-2026-09-10.jsonl.gz",
+      "sha256": "66f737e4ab2b6ac482ec8292dfcacab3ffd1070542e9d10b139c407b76edcc67",
+      "raw_sha256": "c1c21ae2a32361c50dd93508d222f391a94c8636f931b3d9a4530eef7456b558"
+    },
+    "minimum": {
+      "path": "starmap-pinned-consumer-predecessor-minimum-2026-09-10.jsonl.gz",
+      "sha256": "82f515b92f54ebbe11ea7fc94439c6f4a261d495cab83a4909e4e25060cf959a",
+      "raw_sha256": "ccbcb790ce5681b7541acec564340311db6b1f502ea830466cfb149906161f4b"
+    },
+    "test_events": {
+      "current": 4,
+      "minimum": 4
+    },
+    "exit_codes": {
+      "current": 0,
+      "minimum": 0,
+      "ago": 0,
+      "prose": 0
+    },
+    "ago": {
+      "path": "starmap-pinned-consumer-predecessor-ago-2026-09-10.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "prose": {
+      "path": "starmap-pinned-consumer-predecessor-prose-2026-09-10.log.gz",
+      "sha256": "205561fd1ff4da0f790213bc19b81a4fcdebe2909bb85eb6bf4f706d78d6b399",
+      "raw_sha256": "c3bc98c25f9f6a2dd3d98280c79c33ce88c91fc5c74397fdc2a8440f731566b0"
+    },
+    "review": {
+      "state": "running",
+      "session": 22552,
+      "log": "/tmp/starmap-removal-final-fixture-pre-pr-review-2026-09-10.log",
+      "base": "acbfc2471ef5cff223b6d519df375b22874c3713"
+    }
   }
 }
