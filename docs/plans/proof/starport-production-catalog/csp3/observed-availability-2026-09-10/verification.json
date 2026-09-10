@@ -702,7 +702,12 @@
       "full_csp3": {
         "session": 70867,
         "log": "/tmp/starmap-removal-integrated-csp3-2026-09-10.jsonl",
-        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json"
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+        "runtime_result": {
+          "pass": 729,
+          "fail": 2,
+          "classification": "One failing unsupported-version scenario and its parent event. The corrected fixture passes through the retained overlay. Acquisition and reconciliation are still running."
+        }
       },
       "public_contracts": {
         "session": 94861,
@@ -710,6 +715,12 @@
         "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 10m . ./pkg/catalogs/... ./pkg/sources ./internal/bootstrap -json",
         "state": "completed",
         "exit_code": 1
+      },
+      "root_repository_flags": {
+        "session": 61562,
+        "state": "active",
+        "log": "/tmp/starmap-removal-integrated-root-2026-09-10.jsonl",
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -count=1 -timeout=20m -p=1 . -json"
       }
     },
     "findings": [
@@ -897,10 +908,23 @@
         }
       },
       "patch": {
-        "path": "upstream-policy-downgrade.patch",
-        "sha256": "8d6ccc366bdf0900f2afab2fe069436dd83a99fb22a86c360a2aec52e3975a0f"
+        "path": "upstream-policy-downgrade.patch.gz",
+        "sha256": "b1fdd4def46c5a03b96c888eef971dc63184ab2f0a16471d87e78e55a7f30e48",
+        "uncompressed_sha256": "287705cec478f150ff6338d49f2a830d42f3c055347e473b42f14f08696867fb",
+        "apply": "Decompress to a temporary .patch file, verify git apply --check, and apply after active checks finish. Full patch context remains intact."
       },
-      "next": "After session 70867 completes, apply this patch to the clean removal branch, generate docs, and run focused source-policy, recovery, and static checks. No need to repeat completed unrelated package suites."
+      "next": "Wait for sessions 70867 and 61562 to finish. Apply the exact patch, generate docs, run focused source-policy, journal, and recovery checks, then review the final branch.",
+      "journal_fixture_repair": {
+        "reason": "The old invalid-version fixture used version 3, which this candidate now supports. Use inputPublicationVersion+1 and cover legacy removal-field rejection.",
+        "exit_code": 0,
+        "test_events": {
+          "pass": 15
+        },
+        "artifact": {
+          "path": "removal-source-journal-overlay.jsonl.gz",
+          "sha256": "df2edb73ef4e490daef105c1056264cae23d0585afb16bb951c51efc66eb6cde"
+        }
+      }
     }
   }
 }
