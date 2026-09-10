@@ -112,7 +112,7 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string, metadata
 	t.Setenv("STARMAP_CATALOG_STORE_PATH", storePath)
 	t.Setenv("ACME_API_KEY", "fixture-key")
 	var revision atomic.Int32
-	var providerCalls, metadataCalls atomic.Int32
+	var providerCalls, metadataCalls, unavailableCalls atomic.Int32
 	revision.Store(1)
 	api := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		providerCalls.Add(1)
@@ -184,6 +184,24 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string, metadata
 	provider := catalogs.Provider{ID: "acme", Name: "Acme", Credentials: testcatalog.APIKeyCredentials("ACME_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer), Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{Type: catalogs.EndpointTypeOpenAI, URL: api.URL + "/models", ProtocolOptions: testcatalog.OpenAIProtocolOptions(), FieldMappings: []catalogs.FieldMapping{{From: "context_window", To: "limits.context_window"}}}}, Models: map[string]*catalogs.Model{"known": {ID: "known", ModelRef: "acme/known", Name: "Known"}}}
 	if err := workspace.SetProvider(provider); err != nil {
 		t.Fatal(err)
+	}
+	if len(providers) == 0 {
+		unavailable := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+			unavailableCalls.Add(1)
+			http.Error(w, "Provider unavailable.", http.StatusServiceUnavailable)
+		}))
+		defer unavailable.Close()
+		failed := provider
+		failed.ID, failed.Name, failed.Models = "unavailable", "Unavailable", nil
+		t.Setenv("UNAVAILABLE_API_KEY", "unavailable-fixture-key")
+		failed.Credentials = testcatalog.APIKeyCredentials("UNAVAILABLE_API_KEY", "Authorization", catalogs.ProviderCredentialSchemeBearer)
+		failed.Catalog = &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeOpenAI, URL: unavailable.URL + "/models",
+			ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
+		}}
+		if err := workspace.SetProvider(failed); err != nil {
+			t.Fatal(err)
+		}
 	}
 	workspacePath := filepath.Join(root, "workspace")
 	if err := workspace.SaveTo(workspacePath); err != nil {
@@ -261,7 +279,7 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string, metadata
 		if err != nil {
 			t.Fatal(err)
 		}
-		if len(catalog.Providers().List()) != 1 {
+		if catalog.Providers().Len() != workspace.Providers().Len() {
 			t.Fatal("metadata added unapproved canonical providers")
 		}
 		actual, err := catalog.Provider("acme")
@@ -311,6 +329,9 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string, metadata
 	}
 	if providerCalls.Load() != 2 || countMetadata() != 2 {
 		t.Fatal("publisher did not acquire both changing inputs twice")
+	}
+	if len(providers) == 0 && unavailableCalls.Load() < 2 {
+		t.Fatal("publisher did not attempt the unavailable provider on each update")
 	}
 }
 
