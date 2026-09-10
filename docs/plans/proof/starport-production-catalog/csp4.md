@@ -31,3 +31,18 @@ All pass without skips. Static checks pass.
 The transport verifies the configured publisher before decoding the envelope.
 It bounds the body before parsing and preserves cancellation and refusal deadlines.
 A renewal reads no catalog payload. Runtime and publisher integration remain incomplete.
+
+## Committed authority binding
+
+Local commit `115f0c7e4a6b7c5f848ca2918bdc7c6db97fa974` adds authority manifest version 3.
+The [manifest proof](csp4/authority-manifest-2026-09-10/verification.json) records 1,525 catalog-package race events and 72 minimum-toolchain events.
+All pass without skips. Static checks pass.
+
+The manifest stores the authority head with its catalog generation.
+Validation binds the generation ID and payload digest. Ordinary manifests retain version 2.
+Memory, filesystem, and the conditional object adapter preserve this binding through compare-and-swap.
+The object test uses the existing memory backend fixture. It does not qualify an external service.
+
+The filesystem interruption test preserves the prior catalog and permission revision after reopen.
+A retry publishes the complete replacement. The permission receipt can renew against that immutable head.
+Publisher policy, receipt issuance, retained permission state, and runtime admission remain incomplete.

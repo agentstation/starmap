@@ -1,0 +1,128 @@
+{
+  "task": "CSP4",
+  "source": "115f0c7e4a6b7c5f848ca2918bdc7c6db97fa974",
+  "base": "12c89f6901c7fb07fe7257fca87c138d60458bf6",
+  "worktree": "/tmp/starmap-authority-retention-2026-09-10",
+  "branch": "codex/catalog-authority-retention",
+  "source_files_sha256": {
+    "pkg/catalogs/README.md": "a3e3fa8329c31829811ab1ae968980eb0c8448afcbbba96a13aec4b7c7a7c242",
+    "pkg/catalogs/authority_manifest.go": "7e6be7842432585a9e49542f282a4798d00240b7a592f4f5742e217109c775c7",
+    "pkg/catalogs/authority_manifest_test.go": "5314ab6b509a75219a17bbb8b3efe95bf937004d2ce34eafa6b9467f44a3bac3",
+    "pkg/catalogs/generation_manifest.go": "182ba44a8e02418a3609f9257e75a91dedf26f0be68e9e60b329b0b657c3e067",
+    "pkg/catalogs/json_object.go": "f0d22ab7beb7f654e8cce56dba7140411330961d895baeabf3fbee47a3ef7cdd",
+    "pkg/catalogs/permission_envelope_json.go": "d87ec3fb64a2bb20882c86b700fdbdfef9623f44a7ad8f7023d851ad0751bf81",
+    "pkg/catalogs/permission_head.go": "8c19997c0ef0baa9042566c700a81a825169479ca2d9cfba198943b9f01b38a5",
+    "pkg/catalogs/storage/authority_test.go": "69552d2d2bb444360f8d1b30d1a30266a35680be54be2c99201eef265346cf8e"
+  },
+  "checks": {
+    "red": {
+      "exit_code": 1,
+      "artifact": {
+        "path": "red.jsonl.gz",
+        "sha256": "1f1bcef3cbff5365a28fc80a63850eb508c02b37b8ba164835272831c8080447",
+        "raw_sha256": "216705b063eeec1c03e2785878882176ab1ec22e486efe39b2f531c646ff6be2"
+      },
+      "test_events": {
+        "pass": 11,
+        "fail": 1,
+        "skip": 0
+      },
+      "toolchain": "go1.26.6",
+      "failed_tests": [
+        "TestAuthorityManifestBindsPublicationAndPayload"
+      ],
+      "passed_packages": [],
+      "command": "go test -race -count=1 -run 'TestAuthorityManifest|TestOrdinaryManifest' -json ./pkg/catalogs"
+    },
+    "suite": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "suite.jsonl.gz",
+        "sha256": "7335f6aac85125efbb48855ecb6b75d869ce5028c8fffb5463daf67b53aab374",
+        "raw_sha256": "02e5b3d5e6153fe1edb3438707165d850e5ffe1e15623e1054436cceec70c7f1"
+      },
+      "test_events": {
+        "pass": 1525,
+        "fail": 0,
+        "skip": 0
+      },
+      "toolchain": "go1.26.6",
+      "failed_tests": [],
+      "passed_packages": [
+        "github.com/agentstation/starmap/pkg/catalogs/artifact",
+        "github.com/agentstation/starmap/pkg/catalogs/authority",
+        "github.com/agentstation/starmap/pkg/catalogs/config",
+        "github.com/agentstation/starmap/pkg/catalogs/evidence",
+        "github.com/agentstation/starmap/pkg/catalogs/projection",
+        "github.com/agentstation/starmap/pkg/catalogs/remote",
+        "github.com/agentstation/starmap/pkg/catalogs/storage",
+        "github.com/agentstation/starmap/pkg/catalogs/storage/s3",
+        "github.com/agentstation/starmap/pkg/catalogs"
+      ],
+      "command": "go test -race -count=1 -timeout=10m -json ./pkg/catalogs/..."
+    },
+    "minimum": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "9b6376685979cc77f66943542b810f8766090e9b296087544fb4fe08765ce38f",
+        "raw_sha256": "6436bab6c4367f3b6840bcc3d6e6424941b4b8fe72d5d726519f887a143b3e9c"
+      },
+      "test_events": {
+        "pass": 72,
+        "fail": 0,
+        "skip": 0
+      },
+      "toolchain": "go1.25.12",
+      "failed_tests": [],
+      "passed_packages": [
+        "github.com/agentstation/starmap/pkg/catalogs",
+        "github.com/agentstation/starmap/pkg/catalogs/storage"
+      ],
+      "command": "go test -race -count=1 -timeout=5m -run 'TestAuthorityManifest|TestOrdinaryManifest|TestPermissionEnvelope|TestCatalogStoresCommitAuthority|TestFilesystemAuthorityHead' -json ./pkg/catalogs ./pkg/catalogs/storage"
+    },
+    "ago": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      }
+    },
+    "docs": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "4c24a2e1a6b77ba686cdc48cfa979b9efe3898b16ebd7f4738b8203f33cd942b",
+        "raw_sha256": "1b15155e741bfd1dee1b9aabb9f59d7d66dae72a44416dfb7183132ef513e77a"
+      }
+    }
+  },
+  "design": "Authority manifests use version 3 and retain the complete authority head in the same immutable generation record. Ordinary manifests keep version 2 and omit the new field. Finite permission receipts renew independently against the committed head.",
+  "observations": [
+    "The head must match the generation ID and payload digest. Duplicate and case-variant JSON fields cannot replace the binding.",
+    "Memory, filesystem, and the conditional object adapter commit the required permission revision with the generation under the existing compare-and-swap contract.",
+    "An injected filesystem failure before head publication preserves the prior catalog and permission revision after reopen. Retrying publishes the complete new pair."
+  ],
+  "limitations": [
+    "The object adapter uses the existing in-memory ObjectBackend fixture. This does not qualify an external object service.",
+    "Issuer revision selection, runtime authority policy, retained permission state, receipt issuance, and Starport admission remain incomplete.",
+    "All eight CSP4 acceptance subcases remain UNVERIFIED. No task completion or publication credit."
+  ]
+}
