@@ -5,7 +5,7 @@
   "branch": "codex/catalog-canonical-aliases",
   "commit": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
   "reviewed_dependency": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
-  "state": "Publisher fixture repair passes the full publisher package, both focused toolchains, all external consumers, and static checks. Final CSP3 verification runs at 3609f171. Review, CI, and merge remain open.",
+  "state": "Publisher qualification passes. Current alias qualification includes the canonical-removal rename repair at 13fe3a75. Complete race checks and CSP3 acceptance remain active. Final branch review, native CI, and merge remain required.",
   "scope": [
     "Strict canonical-aliases.yaml storage and original alias records through embedded/local acquisition.",
     "Local workspace rename changes require selected baseline authority.",
@@ -453,10 +453,8 @@
     }
   ],
   "remaining": [
-    "Merge and qualify the canonical-removal rename repair. The existing runtime test proves identity loss on the current candidate.",
-    "Repair and qualify publisher partial-source fixtures without relying on embedded providers outside the selected baseline.",
-    "Rerun registered CSP3 acceptance.",
-    "Pass final branch review and native CI, then merge in dependency order.",
+    "Complete full race and registered CSP3 qualification at 13fe3a75, then integrate into the alias branch.",
+    "Pass complete branch review, native CI, and merge in dependency order.",
     "CSP8 and CSP10 own Starport integration."
   ],
   "full_race_qualification": {
@@ -676,5 +674,12 @@
   "canonical_removal_finding": {
     "proof": "../canonical-removal-rename-2026-09-10/verification.json",
     "state": "confirmed; local repair under qualification"
+  },
+  "current_integration": {
+    "commit": "13fe3a759a451106a824af5d9807b161352bd851",
+    "worktree": "/tmp/starmap-alias-removal-identity-2026-09-10",
+    "proof": "../canonical-removal-rename-2026-09-10/verification.json",
+    "qualification_session": 63970,
+    "state": "running"
   }
 }

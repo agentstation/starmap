@@ -129,6 +129,12 @@
     "full_race": {
       "session": 43282,
       "output": "/tmp/starmap-alias-canonical-removal-full-race-2026-09-10.jsonl"
+    },
+    "product": {
+      "session": 63970,
+      "source": "13fe3a759a451106a824af5d9807b161352bd851",
+      "output": "/tmp/starmap-alias-csp3-removal-identity-2026-09-10.json",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3 --json"
     }
   },
   "state": "Focused regression tests pass on both toolchains. Full catalog tests pass 1437 events. Static checks pass. Complete runtime/acquisition/reconciler qualification remains active.",
