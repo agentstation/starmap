@@ -117,6 +117,10 @@ Exact definition and offering reads retain their existing contracts. Starport mu
 Local operators use `Runtime.ReplaceRemovalTargets` with `NewAliasRemovalTarget` for a local exclusion.
 The runtime keeps that exclusion in the existing removal snapshot. Restoring it clears only the local exclusion and cannot reverse baseline removal.
 
+A canonical model removal follows later rename edges to the current definition, including edges whose aliases no longer resolve requests.
+The stored operator target remains unchanged for audit and explicit restore.
+Catalog construction indexes the current target so request checks require no graph traversal or allocation.
+
 Embedded acquisition reports model facts without copying baseline rename authority into an observation.
 Local acquisition accepts an unchanged projected alias inventory. It refuses edits that differ from the selected baseline.
 The baseline publisher must approve rename changes. Provider observations cannot create or remove aliases.

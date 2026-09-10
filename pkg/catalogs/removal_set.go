@@ -81,6 +81,19 @@ func (s *CatalogRemovalSet) ContainsCanonical(id ModelDefinitionID) bool {
 	return found
 }
 
+// indexCanonicalRenames preserves model removals across retained rename edges.
+// Catalog construction calls this before publication. Original operator targets remain unchanged.
+func (s *CatalogRemovalSet) indexCanonicalRenames(aliases *CanonicalAliasIndex) {
+	for _, target := range s.targets {
+		if target.Kind != CatalogRemovalCanonical {
+			continue
+		}
+		if terminal, _, found := aliases.Lookup(target.DefinitionID); found {
+			s.canonical[terminal] = struct{}{}
+		}
+	}
+}
+
 // ContainsAlias reports an explicit removal of one former canonical ID.
 // It does not remove the target model or other aliases.
 func (s *CatalogRemovalSet) ContainsAlias(id ModelDefinitionID) bool {

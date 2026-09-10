@@ -1491,6 +1491,18 @@
           "repository": "starmap",
           "package": "./acquisition",
           "test": "TestImportReleaseCannotReplaceOperatorPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalRemovalFollowsRetainedRenameIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalRemovalSurvivesRenameAndRestartUntilRestore"
         }
       ]
     },
@@ -1634,6 +1646,18 @@
           "repository": "starmap",
           "package": "./cmd/starmap-catalog-release",
           "test": "TestChannelRequiresPublishedPredecessor"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs",
+          "test": "TestCanonicalRemovalFollowsRetainedRenameIdentity"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestCanonicalRemovalSurvivesRenameAndRestartUntilRestore"
         }
       ]
     }

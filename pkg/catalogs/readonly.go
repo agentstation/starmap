@@ -134,6 +134,7 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	if err != nil {
 		return nil, err
 	}
+	removals.indexCanonicalRenames(canonicalAliases)
 	providerOfferings := make(map[ProviderID][]OfferingKey)
 	definitionOfferings := make(map[ModelDefinitionID][]OfferingKey)
 	for key := range views.offerings {
