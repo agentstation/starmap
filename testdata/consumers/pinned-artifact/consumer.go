@@ -39,11 +39,20 @@ func ActivatePinned(ctx context.Context) error {
 	}
 
 	store := storage.NewMemory()
+	// Select a fixed predecessor so embedded rename history cannot affect this fixture.
+	predecessor := verified.Copy()
+	predecessor.Manifest.GenerationID += "-prior"
+	if err := store.Commit(ctx, predecessor, ""); err != nil {
+		return err
+	}
 	client, err := starmap.New(starmap.WithCatalogStore(store))
 	if err != nil {
 		return err
 	}
 	initial := client.CurrentCatalogState()
+	if initial.GenerationID != predecessor.Manifest.GenerationID {
+		return fmt.Errorf("caller-selected predecessor was not loaded")
+	}
 	publication, err := client.Activate(ctx, verified)
 	if err != nil {
 		return err
@@ -57,7 +66,7 @@ func ActivatePinned(ctx context.Context) error {
 		publication.GenerationID != verified.Manifest.GenerationID ||
 		state.GenerationID != verified.Manifest.GenerationID ||
 		state.PayloadChecksum != verified.Manifest.Payload.Checksum ||
-		state.Catalog == initial.Catalog ||
+		state.Catalog != initial.Catalog ||
 		durable.Manifest.GenerationID != verified.Manifest.GenerationID {
 		return fmt.Errorf("unexpected pinned activation: %#v", publication)
 	}

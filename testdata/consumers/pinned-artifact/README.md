@@ -1,7 +1,7 @@
 # Pinned artifact consumer
 
 This external module verifies a fixed catalog archive with a checked-in SHA-256 trust root.
-It activates the verified generation, checks duplicate activation, and reads the retained generation after restart.
+It loads a fixed predecessor from caller-selected storage, activates the verified generation, and checks duplicate activation and restart.
 Negative tests reject a different trust root and altered archive bytes.
 
 The fixture contains one authored model, `fixture/pinned`, and no provider credentials.
