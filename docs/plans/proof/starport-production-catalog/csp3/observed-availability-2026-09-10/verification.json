@@ -1,5 +1,5 @@
 {
-  "status": "D27 through D29 replace the prior deletion behavior. Local repair is uncommitted. Full qualification and fresh review are active or pending. No completion credit.",
+  "status": "The local availability repair passed affected checks at 71324240. Fresh pre-PR review is active. No publication, merge, or task completion credit.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base_work_commit": "8a4c14d9",
@@ -40,9 +40,39 @@
   },
   "full": {
     "session_id": 78012,
-    "status": "running",
+    "status": "completed",
     "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler ./internal/catalog/pipeline -json",
-    "log": "/tmp/starmap-observed-absence-full-2026-09-10.jsonl"
+    "log": "/tmp/starmap-observed-absence-full-2026-09-10.jsonl",
+    "exit_code": 0,
+    "pass_count": 1563,
+    "fail_count": 0,
+    "skip_count": 0,
+    "packages": [
+      {
+        "Time": "2026-09-09T22:06:20.729449-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/acquisition",
+        "Elapsed": 580.212
+      },
+      {
+        "Time": "2026-09-09T22:06:23.59566-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+        "Elapsed": 2.247
+      },
+      {
+        "Time": "2026-09-09T22:06:33.964481-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+        "Elapsed": 9.049
+      },
+      {
+        "Time": "2026-09-09T22:15:28.014777-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 1128.061
+      }
+    ]
   },
   "minimum_go": {
     "session_id": 73444,
@@ -67,7 +97,7 @@
     "Explicit operator removal and restore records",
     "Starport linked-profile routing exclusion and visible availability",
     "Model rename expiry decision",
-    "Full tests, documentation checks, fresh review, publication, native CI, and merge"
+    "Fresh review, publication, native CI, and merge"
   ],
   "artifacts": {
     "initial-before": {
@@ -125,6 +155,10 @@
     "plan-prose": {
       "path": "plan-prose.log.gz",
       "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    },
+    "full": {
+      "path": "full.jsonl.gz",
+      "sha256": "c30c7422a633e7c59f9ae440396ccb283888b9c5d3e4f404259dc90084143d76"
     }
   },
   "static": {
@@ -168,5 +202,16 @@
       "path": "a08-current.json.gz",
       "sha256": "796f598ee31ae3c25fbd717dcff5d067d7e89c682c516b5a4cfacbac28e59ee3"
     }
+  },
+  "work_commit": "71324240370ba416f852494309d29228fb72a0f8",
+  "fresh_review": {
+    "session_id": 82591,
+    "status": "active",
+    "commit": "71324240370ba416f852494309d29228fb72a0f8",
+    "log": "/tmp/starmap-observed-absence-pre-pr-review-2026-09-10.log",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ]
   }
 }
