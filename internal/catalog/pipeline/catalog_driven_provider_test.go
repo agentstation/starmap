@@ -120,8 +120,8 @@ func TestYAMLOnlyProviderAcquisitionPublishesReviewedOfferingAndQuarantinesUnkno
 	runner := NewAcquisition(func(configured *catalogs.Provider) (sources.ProviderClient, error) {
 		return clients.NewProvider(configured)
 	}, credentialResolver)
-	runner.loadEmbedded = func() (*catalogs.Builder, error) {
-		return catalogs.NewEmpty(), nil
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) {
+		return catalogs.NewEmpty().Build()
 	}
 	empty := catalogs.NewEmpty()
 	existing, err := empty.Build()

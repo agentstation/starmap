@@ -14,10 +14,11 @@ import (
 const manifestPath = "catalog/generation.json"
 
 var (
-	embeddedOnce     sync.Once
-	embeddedCatalog  *catalogs.Catalog
-	embeddedManifest catalogs.BootstrapManifest
-	embeddedErr      error
+	embeddedOnce       sync.Once
+	embeddedCatalog    *catalogs.Catalog
+	embeddedManifest   catalogs.BootstrapManifest
+	embeddedErr        error
+	embeddedGeneration = sync.OnceValues(buildEmbeddedGeneration)
 )
 
 // Embedded returns the process-wide verified immutable bootstrap catalog and
@@ -96,9 +97,17 @@ func Load(reader catalogs.Reader) (catalogs.BootstrapManifest, error) {
 	return manifest, nil
 }
 
-// Generation returns the embedded bootstrap as a complete validated immutable
-// generation suitable for deterministic release artifact publication.
+// Generation returns an owned copy of the process-wide verified embedded generation.
+// Encoding and validation run once because embedded bytes cannot change in this process.
 func Generation() (catalogs.Generation, error) {
+	generation, err := embeddedGeneration()
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	return generation.Copy(), nil
+}
+
+func buildEmbeddedGeneration() (catalogs.Generation, error) {
 	catalog, bootstrapManifest, err := Embedded()
 	if err != nil {
 		return catalogs.Generation{}, err

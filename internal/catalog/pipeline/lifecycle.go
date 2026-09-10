@@ -67,6 +67,9 @@ func observeSource(
 
 	logger.Info().Str("source", string(src.ID())).Msg("Observing")
 	observation, err := src.Observe(ctx, opts...)
+	if ctxErr := ctx.Err(); ctxErr != nil {
+		return sourceObservationResult{errs: []error{ctxErr}}
+	}
 	result := sourceObservationResult{}
 	if err != nil {
 		logger.Warn().Err(err).Str("source", string(src.ID())).Msg("Source observation had errors")

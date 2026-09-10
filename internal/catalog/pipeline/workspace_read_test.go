@@ -35,7 +35,7 @@ func TestPipelineKeepsWorkspaceReadLockThroughLoad(t *testing.T) {
 		}
 		return loadHumanWorkspace(path)
 	}
-	p.loadEmbedded = func() (*catalogs.Builder, error) { return catalogs.NewEmpty(), nil }
+	p.loadEmbedded = func() (*catalogs.Catalog, error) { return catalogs.NewEmpty().Build() }
 	inputs, err := p.loadCatalogInputs(t.Context(), path)
 	if err != nil || inputs.workspace == nil || !inputs.workspaceInput.Exists || inputs.workspaceInput.Checksum == "" {
 		t.Fatalf("workspace input: %+v, %v", inputs, err)
