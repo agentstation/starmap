@@ -692,7 +692,7 @@
     ]
   },
   "transport_draft": {
-    "status": "Uncommitted store and payload integration. Runtime and protocol compatibility remain incomplete. Do not publish this draft.",
+    "status": "Uncommitted schema-7 scope transport and runtime export draft. Local publication, restart, and migration pass focused checks. Upstream import and authenticated publisher handling remain incomplete. Do not publish this draft.",
     "files": [
       "pkg/catalogs/membership_scope.go",
       "pkg/catalogs/membership_scope_test.go"
@@ -733,7 +733,7 @@
       }
     },
     "remaining": [
-      "Bind exported scope records to original accepted observations and authenticated publisher namespaces.",
+      "Bind imported scope records to authenticated publisher namespaces and preserve original receipt declarations.",
       "Preserve imported scope records through runtime reconstruction and derivative publication.",
       "Preserve every scope-referenced receipt through reconciliation and derivative publication.",
       "Document protocol schema selection and migration behavior; generate package docs.",
@@ -945,7 +945,7 @@
       }
     },
     "local_publication": {
-      "status": "Shared validation now guards local commit and received generation activation. Full root/catalog checks are running. Runtime scope export remains incomplete.",
+      "status": "Local publication and activation checks pass. Full root and catalog suites passed before runtime scope export changes.",
       "behavior": "ValidateMembershipEvidence validates scope records and original provider source links. Client.newGeneration calls it before any CatalogStore.Commit. A rejected update changes neither active nor durable generation. Accepted scope records survive restart.",
       "checks": {
         "focused_race": {
@@ -969,6 +969,12 @@
           "exit_code": 0,
           "files": 1331,
           "diagnostics": 0
+        },
+        "full_root_and_catalogs": {
+          "exit_code": 0,
+          "root": 103,
+          "catalogs": 1096,
+          "scope": "Local publication checkpoint before runtime export changes."
         }
       },
       "fail_before": "Corrected regression passes the original provider receipt case and fails the missing-receipt case plus parent. The initial fixture incorrectly used a local-catalog source receipt; preserved separately.",
@@ -1026,16 +1032,164 @@
           "sha256": "49a911d2ff2661b3824deba9f51f2268af8a1665bda8d79756e43fe43648a223"
         }
       },
-      "live_check": {
-        "session_id": 95145,
-        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m . ./pkg/catalogs -json",
-        "log": "/tmp/starmap-membership-publication-full-2026-09-10.jsonl"
-      },
       "next_seams": [
         "Export effective local scopes under the persistent runtime instance identity.",
         "Preserve scope-referenced observations in runtime.selectCurrentProviderEvidence; current pruning only considers model provenance and review candidates.",
         "Retain upstream original source links with sourceLayer payloads, then carry them into derivative manifests.",
         "Authenticate imported publisher namespaces before resolving explicit profile links. Source-chain cycle detection alone does not grant membership authority."
+      ]
+    },
+    "runtime_scope_export": {
+      "status": "Local runtime export, restart, and directory migration pass focused checks. Full runtime qualification is active. Upstream transport remains incomplete.",
+      "implementation": [
+        "MembershipState retains the last complete inventory per scope and the original receipt ID for every positive fact.",
+        "ExportScopes assigns the caller-selected persistent publisher identity and copies only effective scope facts, without credential references.",
+        "Runtime manual and scheduled reconciliation attach local scope records. Receipt pruning retains every scope-referenced original observation.",
+        "Runtime derives the publisher from its persistent instance identity. Directory migration rebuilds use the verified SourceIdentity.",
+        "Imported and local duplicate scope identities fail Builder validation instead of overwriting each other."
+      ],
+      "checks": {
+        "export_contract": {
+          "exit_code": 0,
+          "pass": 5
+        },
+        "membership_reconciler": {
+          "exit_code": 0,
+          "pass": 23
+        },
+        "runtime_integration": {
+          "exit_code": 0,
+          "pass": 143
+        },
+        "runtime_transport_and_migration": {
+          "exit_code": 0,
+          "pass": 1
+        },
+        "minimum_go_contract_and_runtime": {
+          "exit_code": 0,
+          "pass": 6
+        },
+        "minimum_go_migration": {
+          "exit_code": 0,
+          "pass": 1
+        },
+        "ago": {
+          "exit_code": 0
+        },
+        "golangci_lint": {
+          "exit_code": 0
+        },
+        "godoc": {
+          "exit_code": 0
+        },
+        "technical_writing": {
+          "exit_code": 0,
+          "files": 1335,
+          "diagnostics": 0
+        }
+      },
+      "fail_before": "The corrected runtime regression fails because the published catalog contains zero scope records. Initial fixture compilation used a Builder-only lookup on Catalog; preserved separately. The first implementation compile identified a migration receiver name and one test caller needing the new publisher argument.",
+      "artifacts": {
+        "publication-full": {
+          "path": "publication-full.jsonl.gz",
+          "sha256": "30dfea9c3ca5d1e98d721bda81f2f77bbb6020b15b0487c6c851634e13a14318",
+          "test_events": {
+            "pass": 1199
+          }
+        },
+        "runtime-export-before": {
+          "path": "runtime-export-before.jsonl.gz",
+          "sha256": "f3a329d681740d9a1751b4d1643c8872328b27f6b7e19a5df61551fc973141ea",
+          "test_events": {}
+        },
+        "runtime-export-before-ready": {
+          "path": "runtime-export-before-ready.jsonl.gz",
+          "sha256": "91d0ccc72abe9d02730a6f5e2b3d45aaff487773538b1b8f16f834b938c6213e",
+          "test_events": {
+            "fail": 1
+          }
+        },
+        "runtime-export-after": {
+          "path": "runtime-export-after.jsonl.gz",
+          "sha256": "557991e4650bdedd4b92c3176ec19c89f24ab13d75f9bae7c50c244921c3d62f",
+          "test_events": {}
+        },
+        "runtime-export-after-ready": {
+          "path": "runtime-export-after-ready.jsonl.gz",
+          "sha256": "dc9308b8fa433c970931c477a67a913d6876dc61451333e11b4a58bf74c15328",
+          "test_events": {
+            "pass": 1
+          }
+        },
+        "export-reconciler": {
+          "path": "export-reconciler.jsonl.gz",
+          "sha256": "4319bcf11bc828758582a67d6faaee03eb5361c4d8b20422af3c098ed851cb9c",
+          "test_events": {
+            "pass": 23
+          }
+        },
+        "export-contract": {
+          "path": "export-contract.jsonl.gz",
+          "sha256": "637ad8f3908aff2ce343fa395b4b5cce39fc8f78129a9d56fd02418724000c4d",
+          "test_events": {
+            "pass": 5
+          }
+        },
+        "export-runtime-integration": {
+          "path": "export-runtime-integration.jsonl.gz",
+          "sha256": "4eceea300ac0470b71e912381a336bd29219b939f98691188cfdf33f66623523",
+          "test_events": {
+            "pass": 143
+          }
+        },
+        "export-min-go": {
+          "path": "export-min-go.jsonl.gz",
+          "sha256": "628585fb56174f3b8ca38325391573e50b6f8ce2fd7bec1d26f45c5dbe101f4c",
+          "test_events": {
+            "pass": 6
+          }
+        },
+        "runtime-export-migration": {
+          "path": "runtime-export-migration.jsonl.gz",
+          "sha256": "fafbe4ebf9fcca9879542aaf412614b29f604aad558c6f6059926020da7c1896",
+          "test_events": {
+            "pass": 1
+          }
+        },
+        "runtime-export-migration-min-go": {
+          "path": "runtime-export-migration-min-go.jsonl.gz",
+          "sha256": "8966e6b63e8f25bae7a2a63ac5a2b5c56eac70ab0232f10628e563c6069f4390",
+          "test_events": {
+            "pass": 1
+          }
+        },
+        "export-ago": {
+          "path": "export-ago.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        },
+        "export-lint": {
+          "path": "export-lint.log.gz",
+          "sha256": "a0e26fd8bf7a9bf1e323d88e6b7d36d61e2f050492be8eae9b320fc9708aab5b"
+        },
+        "export-godoc": {
+          "path": "export-godoc.log.gz",
+          "sha256": "55c7a47cd892ec349a7f33eb81d63423e365bccb82c5fff5c0b7169dcd900712"
+        },
+        "export-writing": {
+          "path": "export-writing.log.gz",
+          "sha256": "7a245da7fde5439e9aceba05247b42d41c7268569111275ca153816a2d6588a2"
+        }
+      },
+      "live_check": {
+        "session_id": 18449,
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m ./runtime -json",
+        "log": "/tmp/starmap-membership-export-runtime-full-2026-09-10.jsonl"
+      },
+      "remaining": [
+        "Retain upstream original source links alongside the selected source payload.",
+        "Bind imported publisher claims to the configured authenticated source authority before explicit inference-profile links resolve them.",
+        "Test derivative publication, source replacement, namespace collisions, revocation, and restart with imported scope records.",
+        "Complete full qualification and required review before publishing the draft."
       ]
     }
   }
