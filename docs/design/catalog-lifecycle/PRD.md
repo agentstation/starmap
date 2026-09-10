@@ -55,6 +55,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D27 | Ordinary provider absence changes observed availability and preserves visible catalog entries. Explicit operator removal or a replacement Starmap baseline can remove entries. | User confirmed on 2026-09-10 |
 | D28 | A model absent from a complete accepted provider inventory remains visible but is excluded from automatic routing for the affected provider/account. | User confirmed on 2026-09-10 |
 | D29 | Explicit removal affects only the selected provider/account entry by default. Canonical removal across providers is a separate action. | User confirmed on 2026-09-10 |
+| D30 | A former canonical model ID remains an alias until an operator or replacement baseline explicitly removes it. Aliases have no automatic expiry. | User confirmed on 2026-09-10 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.

@@ -164,7 +164,7 @@
     ],
     "benchmark_before_session": 98545,
     "log": "/tmp/starmap-bootstrap-generation-before-2026-09-10.log",
-    "status": "Generation cache passed ownership tests. Pipeline repair reuses the verified immutable catalog and checks cancellation between input stages. Final qualification is active.",
+    "status": "Committed repair passes bootstrap ownership, corrected full pipeline, acquisition, application, minimum-Go, and static checks. Final periodic rerun and pre-PR review remain open.",
     "benchmark_before": {
       "ns_op": [
         162519236,
@@ -353,8 +353,34 @@
       "session": 76691,
       "log": "/tmp/starmap-embedded-reuse-full-2026-09-10.jsonl",
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./internal/catalog/pipeline ./acquisition ./internal/cli/app -json",
-      "state": "active",
-      "known_failure": "Embedded load failure fixture saw workspace validation first after input reorder. Restored original error order, then full pipeline passed 102 events. Acquisition and app continue on the earlier compiled binary; only error precedence changed afterward."
+      "state": "completed",
+      "known_failure": "Embedded load failure fixture saw workspace validation first after input reorder. Restored original error order, then full pipeline passed 102 events. Acquisition and app continue on the earlier compiled binary; only error precedence changed afterward.",
+      "exit_code": 1,
+      "package_results": {
+        "pipeline": {
+          "passed_events": 101,
+          "failed_events": 1,
+          "seconds": 11.713,
+          "qualification": "Superseded by corrected full pipeline run with 102 passes."
+        },
+        "acquisition": {
+          "passed_events": 92,
+          "failed_events": 0,
+          "seconds": 354.432
+        },
+        "application": {
+          "passed_events": 247,
+          "failed_events": 0,
+          "seconds": 490.429
+        }
+      },
+      "skipped_events": 0,
+      "effective_passing_events": 441,
+      "qualification": "Use the separate corrected full pipeline result. The original combined command failed and is not a green whole-command result.",
+      "artifact": {
+        "path": "embedded-reuse-full-2026-09-10.jsonl.gz",
+        "sha256": "a5e40c5af28dfebff7a25921ac0e5eda19d31592bedb9b7c7738707ca78aebd1"
+      }
     },
     "collector_cancellation": {
       "before_exit": 1,
@@ -451,6 +477,14 @@
       "internal/catalog/pipeline/lifecycle.go": "78d80c2018854086109a103a3f7baca6417501528252cd06ababa4d99d5dba04",
       "internal/catalog/pipeline/embedded_cache_test.go": "ca72184ae2a5053d1c883537427dad136292a43dd0191c82cb16305960f6ae72",
       "internal/catalog/pipeline/observation_cancellation_test.go": "200241294ae6cacdd397941a7aa978d8ca3d9c0eac60e84eb189b6814dc7923a"
+    },
+    "commit": "7734996783ac150faeed82eb0c9c416e723b1519",
+    "worktree_state": "clean",
+    "final_periodic": {
+      "session": 87284,
+      "log": "/tmp/starmap-embedded-reuse-final-periodic-2026-09-10.jsonl",
+      "commit": "7734996783ac150faeed82eb0c9c416e723b1519",
+      "state": "active"
     }
   }
 }

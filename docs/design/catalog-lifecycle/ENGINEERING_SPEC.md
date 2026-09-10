@@ -124,8 +124,13 @@ An alias must identify one canonical model and preserve the declared operation.
 Reject cycles, ambiguous targets, cross-authority aliases, and targets outside permitted membership.
 
 For a planned canonical rename, publish an alias before removing the old ID.
-Use a time-based deprecation window from the release profile, not one generation.
-The proposed default is 30 days. Confirm that value before CSP3 changes client identity behavior.
+D30 retains that alias until an operator or the replacement baseline explicitly removes it.
+Elapsed time, provider omission, and ordinary refresh must not expire the alias.
+Alias removal must follow the selected source authority and survive restart.
+
+Retaining an alias does not grant permission or restore an unavailable provider/account route.
+The target must still pass current membership and admission checks.
+A08 tests must advance time beyond 30 days and cover restart, explicit removal, and baseline replacement.
 
 Provider withdrawal, lost capability, and authority revocation can end availability earlier.
 The UI and API must distinguish those events from a planned rename.

@@ -1599,8 +1599,8 @@ It applies this rule to bound observations as well as unscoped observations.
 Thus reconciliation and transport support do not prove that ordinary acquisition can apply authorized removals.
 
 CSP3 must connect explicit replacement authority to the operator review policy at this boundary.
-The ordinary removal threshold remains an owner decision. Internal authoritative withdrawals must retain their separate immediate enforcement path.
-Model rename expiry and cross-authority alias acceptance also remain incomplete.
+D27 later rejected an automatic removal threshold. Internal authoritative withdrawals retain their separate immediate enforcement path.
+D30 later selected alias retention without automatic expiry. Alias implementation and cross-authority qualification remain incomplete.
 
 ## Portable artifact membership evidence, 2026-09-10
 
@@ -1629,3 +1629,14 @@ The repair preserves catalog facts and carries absence only in scope inventory e
 
 The prior Sol and Opus review passed for commit `8a4c14d9`. It does not qualify the revised behavior.
 The scoped branch remains unpublished. Pipeline integration, explicit removal, Starport routing, full qualification, and fresh review remain required.
+
+
+## Canonical rename alias retention, 2026-09-10
+
+The owner selected D30: retain old model IDs as aliases until explicit operator removal or replacement baseline removal.
+This decision supersedes the proposed 30-day expiry in specification section 2.1.
+Provider omission must not remove an alias. Current authority and provider/account availability still govern requests through it.
+
+The [decision proof](../../plans/proof/starport-production-catalog/csp3/alias-retention-decision-2026-09-10.md) assigns time, restart, removal, and authority checks to existing A08 coverage.
+The final local A08 report passes 38 registered commands and 745 events, but alias and scoped-removal subcases remain unverified.
+The decision adds no implementation or merge credit.

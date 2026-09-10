@@ -1,6 +1,6 @@
 # Scoped operator removal
 
-This implementation design belongs to CSP3 and decisions D27 through D29. It has no implementation or acceptance credit.
+This implementation design belongs to CSP3 and decisions D27 through D30. It has no implementation or acceptance credit.
 
 ## Current boundary
 
@@ -44,6 +44,9 @@ Upstream data cannot claim the local operator's publisher identity. A matching p
 
 Starmap exposes separate observed-availability and operator-removal results. Starport applies the validated scope link before filtering account-specific discovery or routing.
 Other accounts retain their own visible entries and routing eligibility. Canonical removal applies only after the separate canonical action.
+
+D30 retains old model aliases without automatic expiry. Requests through an alias must enforce removals on its resolved target.
+Removing one scoped entry must preserve aliases used by other permitted entries.
 Internal authoritative permission withdrawals retain their immediate enforcement rules. Provider omission and operator removal cannot weaken those rules.
 
 Build removal indexes before publishing an immutable generation. Request-time queries must use memory and avoid storage reads or catalog reconstruction.
@@ -58,6 +61,7 @@ Operator diagnostics must distinguish observed absence, explicit removal, and de
 | Restore | Explicit restore removes the local exclusion and uses remaining accepted inputs. |
 | Credential change | Rotation preserves the same account target. Reassignment cannot affect an unrelated account. |
 | Canonical action | Only the separate canonical action hides every offering of the selected definition. |
+| Aliases | Alias requests enforce target removals. Scoped removal preserves other permitted entries reached through the same alias. |
 | Publication failure | Failed commit preserves prior visibility and retained inputs. |
 | Crash recovery | Recovery reproduces the accepted generation and removal state. |
 | Concurrency | A stale expected generation cannot overwrite a newer operator change. |
