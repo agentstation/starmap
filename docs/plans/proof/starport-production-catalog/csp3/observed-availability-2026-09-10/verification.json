@@ -481,7 +481,7 @@
     "dependency_pr": 143,
     "authorization": "The active workflow permits local integration from a documented reviewed dependency. Publication remains after actual dependency merge.",
     "review": {
-      "status": "active",
+      "status": "completed",
       "session": 98411,
       "log": "/tmp/starmap-availability-integrated-pre-pr-review-2026-09-10.log",
       "base": "7734996783ac150faeed82eb0c9c416e723b1519",
@@ -490,11 +490,19 @@
         "codex:gpt-5.6-sol:xhigh",
         "claude:opus:high"
       ],
-      "publication_requirement": "Verify the eventual dependency merge tree equals the reviewed base tree before publication."
+      "publication_requirement": "Verify the eventual dependency merge tree equals the reviewed base tree before publication.",
+      "exit_code": 0,
+      "findings": 0,
+      "confidence": 0.91,
+      "bundle_bytes": 256825,
+      "artifact": {
+        "path": "availability-integrated-pre-pr-review.log.gz",
+        "sha256": "bc872dc0ed3baa36a71d947e257ed40a6a2d9923dc3988e62eb47b25a546df14"
+      }
     },
     "commit": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
     "publication_state": "unpublished; dependency PR143 must merge before publication",
-    "status": "All focused, full package, ago, lint, and documentation checks pass. Dependency merge and fresh review remain required.",
+    "status": "Full affected checks and both pre-PR reviewers pass. Await actual PR143 merge and verify its tree equals the reviewed dependency base.",
     "focused": {
       "session": 74131,
       "exit_code": 0,
@@ -509,9 +517,10 @@
     },
     "full": {
       "session": 83233,
-      "state": "active",
+      "state": "completed",
       "log": "/tmp/starmap-availability-cache-integration-full-2026-09-10.jsonl",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json"
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+      "exit_code": 0
     },
     "static_sessions": {
       "ago": 76418,
@@ -614,7 +623,7 @@
     ]
   },
   "removal_policy_work": {
-    "state": "uncommitted implementation; runtime checks active",
+    "state": "committed locally; qualification remains incomplete",
     "base": "c84c12d5",
     "worktree": "/tmp/starmap-operator-removal-2026-09-10",
     "branch": "codex/catalog-operator-removal",
@@ -687,17 +696,60 @@
         "sha256": "35708c1b52b8a1345e4af56ffa7ab2f4f77ecc57cd6bfc2ef7ea8a49ed560a95"
       }
     },
-    "status": "Local catalog and source suites pass. Runtime refresh, restart, stale edit, restore, rejected commit, lost reply, and missing private state checks pass. Broader transport, minimum Go, lint, and documentation checks remain active.",
-    "active_checks": {
-      "minimum_go": 3171,
-      "lint": 8537,
-      "godoc": 72353,
-      "initial_transport": 59941
-    },
+    "status": "Focused runtime recovery and concurrency pass. Minimum Go, lint, ago, and generated and prose documentation checks pass. The embedded checkout check requires the new committed tree.",
+    "active_checks": {},
     "findings": [
       "Artifact import compared old manifests with only the newest schema. The import guard now checks the payload schema against supported reader versions.",
       "Observation validation and input publication exceeded the existing complexity limit. Named validation and publication-input functions preserve their contracts.",
       "An accepted removal with a missing private retention file must refuse restart instead of restoring access."
-    ]
+    ],
+    "work_commit": "62432bd8",
+    "minimum_go_exit": 0,
+    "lint_exit": 0,
+    "ago_exit": 0,
+    "godoc_exit": 0,
+    "docs_check_exit": 0,
+    "prose_exit": 0,
+    "initial_transport": {
+      "exit_code": 1,
+      "artifact": {
+        "path": "removal-policy-initial-transport.jsonl.gz",
+        "sha256": "4d7e6e411e0a68886a5a6e8b14254952a8cabd25738a210c40aa3be5459c88e5"
+      },
+      "findings": [
+        "Artifact import rejected supported schema-7 releases; focused repair checks pass.",
+        "Embedded checkout compared tracked HEAD with changed generated files. Rerun that unchanged check after commit."
+      ],
+      "test_events": {
+        "artifact": {
+          "pass": 36,
+          "fail": 4
+        },
+        "bootstrap": {
+          "pass": 69,
+          "fail": 1
+        }
+      }
+    },
+    "minimum_go": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "removal-policy-minimum-go.jsonl.gz",
+        "sha256": "4db3c4117c6da17a8aae3d8eaf066c2d96cc471a5a30496b1fbf409ce84d7880"
+      }
+    },
+    "concurrency": {
+      "exit_code": 0,
+      "pass": 1,
+      "artifact": {
+        "path": "removal-policy-concurrency.jsonl.gz",
+        "sha256": "a1105d6a21c1e5eaa1e160ce2583d39abace23117a18f389cac117004add5aab"
+      }
+    },
+    "next_integration": {
+      "dependency": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
+      "reason": "The availability branch passed full affected checks and both reviewers. Integrate its reviewed cache dependency before broad removal runtime qualification.",
+      "state": "authorized reviewed local dependency; not merged into the removal branch yet"
+    }
   }
 }

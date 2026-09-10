@@ -70,6 +70,7 @@ Explicit leaf settings can change several locations.
 | Welcome marker | `C/data/welcomed` | Tracks whether the first-use greeting has appeared |
 | Instance seed | `R/instance-seed` | Stable runtime identity and schedule spread |
 | Retained source layer | `R/catalog-runtime/source.json` | Restart and catalog reconciliation |
+| Operator removal snapshot | `R/catalog-runtime/removals.json` | Target private state for explicit entry and canonical removals. CSP3 has a local candidate. Preserve with the accepted catalog and publication journal. |
 | Retained provider layers | `R/catalog-runtime/providers/<provider-id>.json` | Restart and provider evidence |
 | GitHub discovery state | `R/github-catalog-source/<channel-hash>.json` | ETag, replay sequence, and verified release reference |
 | Application logs | Standard output by default | File output requires an explicit logging selection and path |

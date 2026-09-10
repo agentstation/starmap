@@ -11,13 +11,13 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-10 UTC. CSP3 is active. Eight of 38 tasks are complete. Twenty-one PRs merged. Unmerged work receives no completion credit.</p>
 
-<p id="next-action">Finish the availability branch qualification, then run fresh review. Merge <a href="https://github.com/agentstation/starmap/pull/143">PR #143</a> after required CI passes. Its reviewed head is <code>77349967</code> in <code>/tmp/starmap-source-acceptance-2026-09-09</code>, branch <code>codex/catalog-source-acceptance</code>. The <a href="proof/starport-production-catalog/csp3/source-acceptance-2026-09-09.json">source acceptance proof</a> owns CI run <code>34437656892</code> and watch session <code>46280</code>.</p>
+<p id="next-action">Merge <a href="https://github.com/agentstation/starmap/pull/143">PR #143</a> after required CI passes. Its reviewed head is <code>77349967</code> in <code>/tmp/starmap-source-acceptance-2026-09-09</code>, branch <code>codex/catalog-source-acceptance</code>. The <a href="proof/starport-production-catalog/csp3/source-acceptance-2026-09-09.json">source acceptance proof</a> owns CI run <code>34437656892</code> and watch session <code>46280</code>.</p>
 
 <p>CI passed six native jobs but exceeded its two-hour limit. The application race suite exceeded twenty minutes, and periodic shutdown exceeded five seconds. Local stacks locate the shutdown delay in repeated embedded YAML parsing. The local repair caches the owned generation and reuses the immutable catalog during acquisition. </p>
 
 <p>Generation ownership passes 71 race events. Acquisition passes 92 events, the corrected pipeline passes 102, and the application passes 247 events. Final periodic checks and both reviewers pass. All six native jobs pass. The complete verification gate remains open.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/verification.json">availability proof</a> owns clean <code>129e3f68</code> in <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>. The reviewed dependency merged locally without conflicts. Eight focused integration events pass. Full runtime, acquisition, and reconciliation checks pass. Fresh review runs in session <code>98411</code>. Publication waits for the dependency merge and review.</p>
+<p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/verification.json">availability proof</a> owns clean <code>129e3f68</code> in <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>. The reviewed dependency merged locally without conflicts. Eight focused integration events pass. Full runtime, acquisition, and reconciliation checks pass. Both reviewers report zero findings. Publication waits for the dependency merge and equivalent-base verification.</p>
 
 <p>At prior head <code>af94de19</code>, runtime race tests pass 722 events. The final A08 report passes 38 registered commands and 745 test events. Preserve those results as prior evidence.</p>
 
@@ -25,7 +25,7 @@
 
 <p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/scoped-removal-design.md">removal design</a> owns persistence and transport requirements. Its target prototype starts from <code>6e0d590a</code> in <code>/tmp/starmap-operator-removal-2026-09-10</code>, branch <code>codex/catalog-operator-removal</code>. Tests pass nineteen focused events on each Go version and 1,115 catalog race events. The immutable removal set at <code>c84c12d5</code> passes four race and four minimum-Go events. Documentation, ago, and lint checks pass.</p>
 
-<p>Uncommitted removal policy changes pass eight runtime recovery events and 1,248 catalog/source events. The repair preserves supported artifact imports and rejects missing accepted private state. Minimum-Go, transport, and documentation checks remain active. Full qualification, aliases, and Starport routing remain incomplete.</p>
+<p>Removal policy commit <code>62432bd8</code> passes eight runtime recovery events, one concurrency event, and 1,248 catalog/source events. Minimum-Go and documentation checks pass. Integrate reviewed availability head <code>129e3f68</code>, then qualify the combined removal branch. The unchanged embedded checkout test must run after commit. Full qualification, aliases, and Starport routing remain incomplete.</p>
 
 <p>Starport is clean <code>d45bb30</code> in <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>. It passes 32/33 gates. V01 requires a stable Starmap release.</p>
 
