@@ -113,31 +113,7 @@ func (s *Filesystem) writeGeneration(ctx context.Context, generation catalogs.Ge
 		}{authorityFilename, authority})
 	}
 	for _, record := range records {
-		file, err := privatefiles.CreateFile(stage, record.name)
-		if err != nil {
-			return err
-		}
-		info, err := file.Stat()
-		if err != nil {
-			_ = file.Close()
-			return err
-		}
-		owned[record.name] = storeStageRecord{info: info, digest: sha256.Sum256(nil)}
-		if _, err := file.Write(record.data); err != nil {
-			_ = file.Close()
-			return err
-		}
-		if err := file.Sync(); err != nil {
-			_ = file.Close()
-			return err
-		}
-		written, err := file.Stat()
-		if err != nil {
-			_ = file.Close()
-			return err
-		}
-		owned[record.name] = storeStageRecord{info: written, digest: sha256.Sum256(record.data)}
-		if err := file.Close(); err != nil {
+		if err := writeStoreStageRecord(stage, record.name, record.data, owned); err != nil {
 			return err
 		}
 	}
@@ -196,6 +172,31 @@ func (s *Filesystem) writeGeneration(ctx context.Context, generation catalogs.Ge
 type storeStageRecord struct {
 	info   fs.FileInfo
 	digest [sha256.Size]byte
+}
+
+func writeStoreStageRecord(stage *os.Root, name string, data []byte, owned map[string]storeStageRecord) error {
+	file, err := privatefiles.CreateFile(stage, name)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = file.Close() }()
+	info, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	owned[name] = storeStageRecord{info: info, digest: sha256.Sum256(nil)}
+	if _, err := file.Write(data); err != nil {
+		return err
+	}
+	if err := file.Sync(); err != nil {
+		return err
+	}
+	written, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	owned[name] = storeStageRecord{info: written, digest: sha256.Sum256(data)}
+	return file.Close()
 }
 
 func cleanupStoreStage(parent, stage *os.Root, name string, identity fs.FileInfo, owned map[string]storeStageRecord) {

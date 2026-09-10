@@ -137,7 +137,36 @@ The memory object backend implements the guarantee under its publication lock.
 The S3 adapter does not yet assert this capability for caller-selected endpoints and transports.
 
 These reads belong to receipt acquisition. Starport admission remains an in-memory decision.
-Origin issuance, production clock adapters, shared followers, and Starport consumer qualification remain separate CSP4 requirements.
+The library issuer described below is available.
+Production clock adapters, server wiring, shared followers, and Starport consumer qualification remain separate CSP4 requirements.
+
+## Library permission issuer
+
+`permission.NewIssuer` selects one `storage.AuthorityHeadReader`, authority ID, policy ID, and clock callback.
+Its constructor starts no I/O or background activity.
+The caller must authorize that issuer and enforce durable publication order.
+This constructor does not establish either guarantee for an arbitrary catalog store.
+
+Each `ReadPermission(ctx)` call observes the current stored head.
+The receipt interval starts at the earliest qualified clock time before that read.
+Storage delay and issuer uncertainty consume the interval. Consumers also account for their own uncertainty.
+
+A zero lifetime selects five minutes. Explicit positive lifetimes cannot exceed that maximum.
+Unknown clock validity or uncertainty outside zero through 30 seconds refuses issuance.
+
+`ClockReading` binds the returned time to cached qualification evidence for that time.
+The callback must support concurrent calls and account for clock corrections, suspend, restart, and expired evidence.
+Returning `time.Now()` with an assumed uncertainty does not qualify a clock.
+
+The issuer rejects changed authority identity, sequence rollback, and conflicting heads at the same sequence.
+Concurrent observations cannot replace a newer observed head with an older reply.
+A clock failure after a valid head read still retains that requirement in process memory.
+This process memory does not establish durable replay protection across issuer restart.
+
+Storage failure returns an error without renewing the previous receipt.
+A bounded clock correction can preserve an unchanged, still-valid receipt with its original expiry.
+The issuer can report a newer permission schema from independent metadata when catalog data is unreadable.
+That receipt grants no permission to consumers that cannot enforce the reported schema.
 
 ## Failure preservation and rollback
 

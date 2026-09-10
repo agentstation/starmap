@@ -589,6 +589,7 @@ func main() {
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
 - [func ShallowCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#ShallowCopyProviderModels>)
 - [func SupportsCatalogSchema\(version uint64\) bool](<#SupportsCatalogSchema>)
+- [func ValidateCatalogAuthorityIdentity\(authorityID, policyID string\) error](<#ValidateCatalogAuthorityIdentity>)
 - [func ValidateMembershipEvidence\(scopes \[\]ProviderMembershipScope, links \[\]SourceObservationLink\) error](<#ValidateMembershipEvidence>)
 - [func ValidateReviewCandidates\(candidates \[\]evidence.ReviewCandidate, observations \[\]SourceObservationLink\) error](<#ValidateReviewCandidates>)
 - [type ArchitectureType](<#ArchitectureType>)
@@ -1240,6 +1241,15 @@ func SupportsCatalogSchema(version uint64) bool
 ```
 
 SupportsCatalogSchema reports the formats this release can read and enforce. Version 7 adds effective scopes. Version 8 adds operator removal policies. Version 9 adds canonical rename history.
+
+<a name="ValidateCatalogAuthorityIdentity"></a>
+## func [ValidateCatalogAuthorityIdentity](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L74>)
+
+```go
+func ValidateCatalogAuthorityIdentity(authorityID, policyID string) error
+```
+
+ValidateCatalogAuthorityIdentity checks the bounded authority and policy names used by publishers and subscribers.
 
 <a name="ValidateMembershipEvidence"></a>
 ## func [ValidateMembershipEvidence](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/membership_evidence.go#L11>)
@@ -2605,7 +2615,7 @@ type CatalogAuthorityHead struct {
 ```
 
 <a name="CatalogAuthorityHead.SupportsPermissions"></a>
-### func \(CatalogAuthorityHead\) [SupportsPermissions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L49>)
+### func \(CatalogAuthorityHead\) [SupportsPermissions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L48>)
 
 ```go
 func (h CatalogAuthorityHead) SupportsPermissions() bool
@@ -2623,7 +2633,7 @@ func (h CatalogAuthorityHead) Validate() error
 Validate checks publication identity and digest shape independently of catalog payload compatibility. Unknown positive permission versions remain readable so the consumer can record the required revision before refusing admission.
 
 <a name="CatalogAuthorityHead.ValidateSuccessor"></a>
-### func \(CatalogAuthorityHead\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L55>)
+### func \(CatalogAuthorityHead\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L54>)
 
 ```go
 func (h CatalogAuthorityHead) ValidateSuccessor(next CatalogAuthorityHead) error
