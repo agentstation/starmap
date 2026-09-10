@@ -17,6 +17,14 @@ Package permission issues bounded catalog permission receipts from current autho
   - [func NewIssuer\(reader storage.AuthorityHeadReader, config IssuerConfig\) \(\*Issuer, error\)](<#NewIssuer>)
   - [func \(i \*Issuer\) ReadPermission\(ctx context.Context\) \(catalogs.CatalogPermissionEnvelope, error\)](<#Issuer.ReadPermission>)
 - [type IssuerConfig](<#IssuerConfig>)
+- [type Publisher](<#Publisher>)
+  - [func NewPublisher\(store storage.Store, config PublisherConfig\) \(\*Publisher, error\)](<#NewPublisher>)
+  - [func \(p \*Publisher\) Bootstrap\(ctx context.Context, generation catalogs.Generation, expected string\) error](<#Publisher.Bootstrap>)
+  - [func \(p \*Publisher\) Commit\(ctx context.Context, generation catalogs.Generation, expected string\) error](<#Publisher.Commit>)
+  - [func \(p \*Publisher\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Publisher.Current>)
+  - [func \(p \*Publisher\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Publisher.CurrentAuthorityHead>)
+  - [func \(p \*Publisher\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Publisher.Get>)
+- [type PublisherConfig](<#PublisherConfig>)
 
 
 <a name="ClockReading"></a>
@@ -73,6 +81,83 @@ type IssuerConfig struct {
     // Lifetime zero selects the five-minute maximum profile.
     Lifetime time.Duration
     Clock    func() ClockReading
+}
+```
+
+<a name="Publisher"></a>
+## type [Publisher](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L22-L25>)
+
+Publisher enforces authority publication order through the store's atomic compare\-and\-swap. Every writer for this authority must use the same publication contract. Direct underlying writes, deleted state, and restored older backups require separate recovery qualification. The caller owns the store and authorizes the publisher. Read methods retain the underlying storage contract.
+
+```go
+type Publisher struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewPublisher"></a>
+### func [NewPublisher](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L28>)
+
+```go
+func NewPublisher(store storage.Store, config PublisherConfig) (*Publisher, error)
+```
+
+NewPublisher selects a store and fixed authority identity without I/O or background activity.
+
+<a name="Publisher.Bootstrap"></a>
+### func \(\*Publisher\) [Bootstrap](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L64>)
+
+```go
+func (p *Publisher) Bootstrap(ctx context.Context, generation catalogs.Generation, expected string) error
+```
+
+Bootstrap explicitly adopts an ordinary catalog store for this authority. Expected identifies the exact predecessor. An empty value requires an empty store. It cannot replace an established authority, except for an exact retry of its current generation.
+
+<a name="Publisher.Commit"></a>
+### func \(\*Publisher\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L57>)
+
+```go
+func (p *Publisher) Commit(ctx context.Context, generation catalogs.Generation, expected string) error
+```
+
+Commit publishes a supported authority generation after validating its durable predecessor. It permits the first authority in an empty store and exact idempotent retries. An existing ordinary catalog requires explicit Bootstrap. A different authority requires a separate transition.
+
+<a name="Publisher.Current"></a>
+### func \(\*Publisher\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L39>)
+
+```go
+func (p *Publisher) Current(ctx context.Context) (catalogs.Generation, error)
+```
+
+Current reads the selected generation from the caller's store.
+
+<a name="Publisher.CurrentAuthorityHead"></a>
+### func \(\*Publisher\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L122>)
+
+```go
+func (p *Publisher) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuthorityHead, error)
+```
+
+CurrentAuthorityHead observes independent current metadata when the underlying store supports that guarantee. It validates the selected authority identity but retains unknown positive permission versions for refusal diagnostics.
+
+<a name="Publisher.Get"></a>
+### func \(\*Publisher\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L47>)
+
+```go
+func (p *Publisher) Get(ctx context.Context, id string) (catalogs.Generation, error)
+```
+
+Get reads one immutable generation from the caller's store.
+
+<a name="PublisherConfig"></a>
+## type [PublisherConfig](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L13-L16>)
+
+PublisherConfig fixes the authority and policy that own a publication store.
+
+```go
+type PublisherConfig struct {
+    AuthorityID string
+    PolicyID    string
 }
 ```
 

@@ -168,6 +168,31 @@ A bounded clock correction can preserve an unchanged, still-valid receipt with i
 The issuer can report a newer permission schema from independent metadata when catalog data is unreadable.
 That receipt grants no permission to consumers that cannot enforce the reported schema.
 
+## Authority publication ordering
+
+`permission.NewPublisher` wraps a caller-selected store for one fixed authority and policy.
+Its constructor starts no I/O. It implements `storage.Store` and the optional current-head role.
+The underlying store must supply the current-read guarantee before the wrapper can return an authority observation.
+
+Every authority writer must use this publication contract.
+The caller authorizes the publisher and supplies a complete authority generation with the correct required permission revision.
+This wrapper validates publication order. Origin policy composition must still derive that revision from the permitted catalog and applicable policy.
+Direct underlying writes, deleted state, and restored older backups need separate recovery procedures.
+
+`Commit` checks the stored predecessor before the final atomic compare-and-swap.
+A process restart does not clear this predecessor. A delayed writer cannot overwrite a newer accepted generation.
+Changed authority identity, sequence rollback, and conflicting content under an existing sequence cause refusal.
+An exact retry still succeeds. The underlying immutable store rejects changed manifest or payload bytes under the same generation ID.
+
+The first authority can populate an empty store.
+An existing ordinary catalog requires an explicit `Bootstrap` call with its exact predecessor ID.
+Bootstrap cannot replace an established authority. An identical bootstrap retry remains valid after an ambiguous successful response.
+A missing predecessor read cannot reset an existing sequence through an empty expectation.
+
+The publisher refuses candidates or predecessors whose mandatory permission semantics it cannot enforce.
+Its independent head read still exposes unknown positive permission versions to receipt readers.
+Consumers must refuse those semantics. The capability does not authorize publication under an unsupported policy.
+
 ## Failure preservation and rollback
 
 A refusal before current-pointer publication leaves the previous current generation complete and readable.
