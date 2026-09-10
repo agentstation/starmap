@@ -63,5 +63,23 @@
     "sha256": "e85c683368b37930ccd017a4af1a04fbd111fa0de7229a2a912d5ab5ea48ba57"
   },
   "remaining_subcase_owner": "CSP8",
-  "remaining_subcase_owner_source": "acceptance-map.json:primary_task.A20"
+  "remaining_subcase_owner_source": "acceptance-map.json:primary_task.A20",
+  "delivery": {
+    "base": "fee76cc9675b977db1330f52fbf22ceb4c464392",
+    "commit": "6a600feaae2255da05bd801a5f6675e85bb70ba5",
+    "pr": "https://github.com/agentstation/starmap/pull/143",
+    "status": "CI active; no merge credit",
+    "verifier_tests": 73,
+    "review": "pre-pr auto passed; configuration-only diff skipped model invocation",
+    "artifacts": [
+      {
+        "path": "source-acceptance-python-2026-09-10.gz",
+        "sha256": "3ec21771e5eb9e7c13c7634324797720261d43d99a97051716b78d7f01a3d053"
+      },
+      {
+        "path": "source-acceptance-review-2026-09-10.gz",
+        "sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+      }
+    ]
+  }
 }

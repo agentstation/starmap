@@ -216,6 +216,22 @@
     {
       "path": "lint-ownership.gz",
       "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "scope-contract.gz",
+      "sha256": "f62c326190a805a732ff61bf4f285875a556567b9b21ef0e703167974e0221b3"
+    },
+    {
+      "path": "scope-contract-ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "scope-contract-lint-initial.gz",
+      "sha256": "51c1f546cac058e7426c6e5ddeba7923f8de9aaf2657036f423147b29aca57d3"
+    },
+    {
+      "path": "scope-contract-lint-refined.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -569,5 +585,38 @@
       "status": "Unimplemented; local membership filtering and receipt retention do not satisfy this transport or Starport admission requirement."
     },
     "commit": "24d7bd35"
+  },
+  "rebase": {
+    "base": "fee76cc9675b977db1330f52fbf22ceb4c464392",
+    "previous_wire": "6555d162",
+    "wire": "92812167",
+    "previous_enforcement": "24d7bd35",
+    "enforcement": "a653bf8d",
+    "publication": "none",
+    "preserved_drafts": [
+      "pkg/catalogs/membership_scope.go",
+      "pkg/catalogs/membership_scope_test.go"
+    ]
+  },
+  "transport_draft": {
+    "status": "Local untracked types and tests. No storage, payload, or runtime integration yet.",
+    "files": [
+      "pkg/catalogs/membership_scope.go",
+      "pkg/catalogs/membership_scope_test.go"
+    ],
+    "behavior": "Distinguish unknown inventory, complete empty inventory, and newer partial positive evidence. Require publisher and binding identity/revision, declared authority, and observation identities/times.",
+    "checks": {
+      "focused_race_exit": 0,
+      "ago_exit": 0,
+      "lint_initial_exit": 1,
+      "lint_repair": "Split declaration and inventory validation at their owning boundaries.",
+      "lint_final_exit": 0
+    },
+    "remaining": [
+      "Immutable catalog ownership and scope lookup",
+      "Payload format and consumer compatibility",
+      "Runtime import/export and evidence binding",
+      "Starport linked-profile enforcement"
+    ]
   }
 }
