@@ -1,0 +1,111 @@
+{
+  "task": "CSP4",
+  "source": "1f1b01148f86115a053a0dc8ac9fd77c5b8a9b47",
+  "base": "b5af1e9c67e065ebd688a19a7563bcc430f724bb",
+  "worktree": "/tmp/starmap-authority-retention-2026-09-10",
+  "branch": "codex/catalog-authority-retention",
+  "source_files_sha256": {
+    "pkg/catalogs/README.md": "6093623d7ea368bbcbeed302b8bf1ebd695113ed726d10f7ef1d11ba55e1c60d",
+    "pkg/catalogs/permission_envelope.go": "0d4d0782f3c7d0b0b3a88fdd3b3f1318db424abbf829ad349f8d93bd3172c674",
+    "pkg/catalogs/permission_envelope_json.go": "fa496aa7705d5b8d7aaaa83a5b70341f023bc91dc7eb49992e0707a12822f0d8",
+    "pkg/catalogs/permission_envelope_test.go": "140a2d5c871e12923a7d13e0ac9e359cfd308d281afecaa0d45ee802ee9f8cc2",
+    "pkg/catalogs/permission_head.go": "6d8afe8c7bf986b7d43a99e798de99c1555e891df8027cb111d9d812ce2c6d73"
+  },
+  "checks": {
+    "catalog": {
+      "command": "go test -race -count=1 -timeout=5m -json ./pkg/catalogs",
+      "toolchain": "go1.26.6",
+      "exit_code": 0,
+      "test_events": {
+        "pass": 1212,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "catalog.jsonl.gz",
+        "sha256": "15d87ae30ba627f5d544549f300a8a99e60c057bf55ef4a0d79ff683c53c9c55",
+        "raw_sha256": "51f8e6e705b63280c266732837625d1f24e5235c2dbe4a4b63e17ff581f9504a"
+      }
+    },
+    "minimum": {
+      "command": "go test -race -count=1 -run TestPermissionEnvelope -json ./pkg/catalogs",
+      "toolchain": "go1.25.12",
+      "exit_code": 0,
+      "test_events": {
+        "pass": 54,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "2597fec478a09e75c38daac4e3de386c30e7e5036ad174ec2ca0d5ba72555f3b",
+        "raw_sha256": "4aa1018f9d5e1df10ec38554a78145098b4a99afa9b8c481de29222ec90db22b"
+      }
+    },
+    "case_red": {
+      "command": "go test -race -count=1 -run TestPermissionEnvelopeDecodesWithoutCatalogCompatibility -json ./pkg/catalogs",
+      "toolchain": "go1.26.6",
+      "exit_code": 1,
+      "test_events": {
+        "pass": 11,
+        "fail": 4,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestPermissionEnvelopeDecodesWithoutCatalogCompatibility/case_variant_field",
+        "TestPermissionEnvelopeDecodesWithoutCatalogCompatibility/case_variant_version",
+        "TestPermissionEnvelopeDecodesWithoutCatalogCompatibility/case_variant_authority",
+        "TestPermissionEnvelopeDecodesWithoutCatalogCompatibility"
+      ],
+      "artifact": {
+        "path": "case_red.jsonl.gz",
+        "sha256": "11a7721b5fb63c6841b7e75a27127d22b3ef9ddde1ca3894f6bb6b0033d1d203",
+        "raw_sha256": "9eca3c50e6f2aefb4529a3f921f16845dc3ce7129aa2ddd6d0e74c2613ae06c5"
+      }
+    },
+    "ago": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      }
+    },
+    "docs": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "8c75992049154074799bd818c86242ff223b3814529bd811f0564377798c0fdf",
+        "raw_sha256": "a11323d7ec58768ff8e75874c8f0ff6276da3588912462859202ade37eef65d6"
+      }
+    }
+  },
+  "observations": [
+    "The permission time check allocates zero bytes under testing.AllocsPerRun. This does not measure gateway latency.",
+    "The envelope parses independently of catalog payload compatibility. Unknown positive permission semantic versions remain visible and unsupported.",
+    "Strict JSON decoding rejects duplicate members, escaped duplicates, case variants, unknown fields, invalid UTF-8, trailing documents, and oversized envelopes."
+  ],
+  "limitations": [
+    "No publication or task completion credit. All eight CSP4 acceptance subcases remain UNVERIFIED.",
+    "Authentication, authority publication, independent remote reads, runtime activation, retained permission records, and admission enforcement remain incomplete.",
+    "The source commit preserves reviewed CSP3 dependency bytes. Integrate its actual merge before CSP4 publication."
+  ]
+}

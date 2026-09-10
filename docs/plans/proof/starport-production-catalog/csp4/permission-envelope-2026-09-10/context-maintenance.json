@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-10",
+  "plan_bytes": 100259,
+  "plan_words": 9210,
+  "resume_words": 324,
+  "archived_rows": 8,
+  "archive_rows_sha256": "c72cba71a035ba0be77398c9275cbf282d3df56dc7c22706b05336496c371200",
+  "preserved_sections": [
+    "tasks",
+    "goal",
+    "invariants"
+  ],
+  "ledger": {
+    "rows": 38,
+    "in_progress": 1,
+    "done": 8,
+    "blocked": 1
+  },
+  "internal_links_checked": 46,
+  "budget_exception": "The plan retains the complete contracts for 38 cross-repository tasks. Current resume, invariants, goal, active task, and current proof provide the bounded resume path. Historical logs remain outside that path.",
+  "bounded_control_read_words": 1939,
+  "cold_resume": "The current record names CSP4, exact source and worktree, next transport action, retained-authority constraints, pending CI, completion limits, and publication authority."
+}
