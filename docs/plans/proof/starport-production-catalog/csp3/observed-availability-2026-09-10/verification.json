@@ -697,7 +697,7 @@
         "sha256": "35708c1b52b8a1345e4af56ffa7ab2f4f77ecc57cd6bfc2ef7ea8a49ed560a95"
       }
     },
-    "status": "Clean integrated head 4e629b7f is undergoing broad public-contract and CSP3 race qualification. Earlier focused and static checks pass. No publication or acceptance credit.",
+    "status": "The full CSP3 check remains active at clean 4e629b7f. Public contract packages pass except root timeout. The upstream downgrade repair is ready as a tested overlay patch.",
     "active_checks": {
       "full_csp3": {
         "session": 70867,
@@ -707,7 +707,9 @@
       "public_contracts": {
         "session": 94861,
         "log": "/tmp/starmap-removal-integrated-public-2026-09-10.jsonl",
-        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 10m . ./pkg/catalogs/... ./pkg/sources ./internal/bootstrap -json"
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 10m . ./pkg/catalogs/... ./pkg/sources ./internal/bootstrap -json",
+        "state": "completed",
+        "exit_code": 1
       }
     },
     "findings": [
@@ -763,6 +765,142 @@
       "reason": "The availability branch passed full affected checks and both reviewers. Integrate its reviewed cache dependency before broad removal runtime qualification.",
       "state": "merged locally without conflicts",
       "commit": "4e629b7ffc05a84c3e48baa5269f0f89b6a0ee48"
+    },
+    "integrated_public": {
+      "exit_code": 1,
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "pass": 1122
+        },
+        "github.com/agentstation/starmap": {
+          "pass": 102
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 40
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/authority": {
+          "pass": 64
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/config": {
+          "pass": 78
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/evidence": {
+          "pass": 4
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/projection": {
+          "pass": 2
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/remote": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 47
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage/s3": {
+          "pass": 9
+        },
+        "github.com/agentstation/starmap/pkg/sources": {
+          "pass": 126
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "result": "pass",
+          "elapsed_seconds": 69.009
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "result": "pass",
+          "elapsed_seconds": 1.315
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/authority": {
+          "result": "pass",
+          "elapsed_seconds": 1.194
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/config": {
+          "result": "pass",
+          "elapsed_seconds": 37.38
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/evidence": {
+          "result": "pass",
+          "elapsed_seconds": 1.179
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy": {
+          "result": "skip",
+          "elapsed_seconds": 0
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/projection": {
+          "result": "pass",
+          "elapsed_seconds": 1.169
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/remote": {
+          "result": "pass",
+          "elapsed_seconds": 1.5550000000000002
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "result": "pass",
+          "elapsed_seconds": 2.6790000000000003
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage/s3": {
+          "result": "pass",
+          "elapsed_seconds": 1.393
+        },
+        "github.com/agentstation/starmap/pkg/sources": {
+          "result": "pass",
+          "elapsed_seconds": 1.263
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "result": "pass",
+          "elapsed_seconds": 156.469
+        },
+        "github.com/agentstation/starmap": {
+          "result": "fail",
+          "elapsed_seconds": 600.558
+        }
+      },
+      "classification": "Root package exceeded the manually selected ten-minute limit. Its partial passing events are not package qualification. All other packages passed, including the embedded checkout test. Resource-policy package contains no tests.",
+      "next": "Run root race checks with the repository verification flags: -short -timeout=20m -p=1. Do not change the repository gate.",
+      "artifact": {
+        "path": "removal-integrated-public.jsonl.gz",
+        "sha256": "625abfd2397c29b054e560b10aa0f439ff8c2c5418ce801839a63cf66dc1fc70"
+      }
+    },
+    "upstream_downgrade": {
+      "head": "4e629b7ffc05a84c3e48baa5269f0f89b6a0ee48",
+      "state": "repair passes through a Go overlay; actual worktree remains clean while broad checks run",
+      "finding": "A selected schema-7 source replacement cleared schema-8 upstream removal policy. Local operator policy was not the affected scope.",
+      "invalid_first_attempt": {
+        "exit_code": 0,
+        "executed_tests": 0,
+        "qualification": false,
+        "artifact": {
+          "path": "removal-upstream-invalid-overlay.jsonl.gz",
+          "sha256": "a6b5fa082bfdcffc24cbd15dd93bdaa1fc62ca9eddcdf8eca7f96d58dacac7ae"
+        }
+      },
+      "fail_before": {
+        "exit_code": 1,
+        "failed_events": 1,
+        "artifact": {
+          "path": "removal-upstream-before.jsonl.gz",
+          "sha256": "c28249e55a415354c9d05bd8d4ab9c0188466e385ff8c91348ff7f8420495570"
+        }
+      },
+      "pass_after_overlay": {
+        "exit_code": 0,
+        "passed_events": 1,
+        "artifact": {
+          "path": "removal-upstream-after-overlay.jsonl.gz",
+          "sha256": "13698c503221677bd82d811f2903ff17fbb2c2d8dd56d7a004b585b88c1a8afc"
+        }
+      },
+      "patch": {
+        "path": "upstream-policy-downgrade.patch",
+        "sha256": "8d6ccc366bdf0900f2afab2fe069436dd83a99fb22a86c360a2aec52e3975a0f"
+      },
+      "next": "After session 70867 completes, apply this patch to the clean removal branch, generate docs, and run focused source-policy, recovery, and static checks. No need to repeat completed unrelated package suites."
     }
   }
 }
