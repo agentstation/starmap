@@ -1037,7 +1037,7 @@
       ]
     },
     "runtime_scope_export": {
-      "status": "The earlier full runtime snapshot ended with 706 passing test events and one expectation failure. The scope-renewal replacement test passes separately. Fresh full qualification is required.",
+      "status": "The final package run passes 719 runtime, 92 acquisition, and 644 reconciler test events with no failures or skips. The earlier failed snapshot remains historical evidence.",
       "implementation": [
         "MembershipState retains the last complete inventory per scope and the original receipt ID for every positive fact.",
         "ExportScopes assigns the caller-selected persistent publisher identity and copies only effective scope facts, without credential references.",
@@ -1449,12 +1449,6 @@
           "sha256": "2a9647af9a4212bde8440272bb165a5d6f6400e12eeec6591dac6b560ad6851f"
         }
       },
-      "live_check": {
-        "session_id": 9507,
-        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
-        "log": "/tmp/starmap-membership-final-csp3-2026-09-10.jsonl",
-        "status": "running"
-      },
       "work_commit": "373fa2cac99cdc34db8a5438157f835c9d10c761",
       "work_tree": "ca1e676147862fb17650315dd22eea5e88050ad6",
       "checks": {
@@ -1527,12 +1521,48 @@
             "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
           }
         },
-        "full_run": "Session 9507 remains active on the unchanged runtime/acquisition/reconciler source. The external consumer pin change does not alter that compiled snapshot.",
+        "full_run": "Session 9507 completed successfully. Runtime, acquisition, and reconciler source matched its compiled snapshot.",
         "pending_owner_decisions": [
           "Ordinary removal review threshold",
           "Model rename compatibility expiry"
         ],
         "alias_coverage": "Existing author/provider alias tests do not prove canonical model rename expiry or cross-authority model alias rejection. A08.alias_cycle_scope remains incomplete."
+      },
+      "completed_full_check": {
+        "session_id": 9507,
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+        "log": "/tmp/starmap-membership-final-csp3-2026-09-10.jsonl",
+        "status": "completed",
+        "result": {
+          "exit_code": 0,
+          "pass": 1455,
+          "fail": 0,
+          "skip": 0,
+          "package_results": [
+            {
+              "Time": "2026-09-09T20:46:46.977163-05:00",
+              "Action": "pass",
+              "Package": "github.com/agentstation/starmap/acquisition",
+              "Elapsed": 577.918
+            },
+            {
+              "Time": "2026-09-09T20:46:49.806753-05:00",
+              "Action": "pass",
+              "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+              "Elapsed": 2.215
+            },
+            {
+              "Time": "2026-09-09T20:56:07.173236-05:00",
+              "Action": "pass",
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Elapsed": 1139.155
+            }
+          ],
+          "artifact": {
+            "path": "final-csp3.jsonl.gz",
+            "sha256": "f4dae295f362a1cf01a69399c931ed23dd55a6bdaf40a81fe74ba185bf27c2bf"
+          }
+        }
       }
     },
     "final_static_checks": {
@@ -1583,6 +1613,12 @@
           "sha256": "c6dfbe2bdd1f1df840a3e5614788df35ccd7384c01bf79eaf8212c6d26df6407"
         }
       }
+    },
+    "acceptance_verifier": {
+      "session_id": 68553,
+      "log": "/tmp/starmap-membership-final-acceptance-2026-09-10.log",
+      "status": "running",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3"
     }
   }
 }
