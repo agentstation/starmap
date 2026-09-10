@@ -232,6 +232,10 @@
     {
       "path": "scope-contract-lint-refined.gz",
       "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "runtime-20m.gz",
+      "sha256": "6af5ad8803cf3d17a29186d3f3195687a77a19e26b7113e25b799ea1ba7240b7"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -542,12 +546,17 @@
       },
       "lint_ownership": {
         "exit_code": 0
+      },
+      "runtime_20m": {
+        "exit_code": 0,
+        "test_events": {
+          "pass": 703
+        },
+        "scope": "Full runtime suite before rebase and before later baseline-refresh and revocation test extensions. Those extensions have separate passing checks."
       }
     },
-    "sessions": {
-      "runtime_20m": 98374
-    },
-    "caveat": "Full runtime remains active. Full acquisition and reconciler suites pass. Later focused baseline refresh and revocation extensions have separate passing checks. Commit 24d7bd35 is local only.",
+    "sessions": {},
+    "caveat": "Full runtime, acquisition, and reconciler suites pass before rebase. Recheck affected integration on merged PR #142 before pre-PR review. Scope transport draft remains incomplete.",
     "remaining": [
       "Add integration coverage for unrelated scope preservation and health selection.",
       "Complete broad runtime and reconciliation checks.",
