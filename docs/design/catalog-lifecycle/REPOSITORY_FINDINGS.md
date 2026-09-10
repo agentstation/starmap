@@ -1783,3 +1783,18 @@ Both supported toolchains pass 40 focused race events and two package outcomes.
 The complete protocol suite passes 60 events. Static checks and all six external consumer checks pass.
 The preceding relay runtime suite completed 875 events. Current broad runtime qualification continues against the new observer behavior.
 Origin receipt issuance, qualified clocks, shared-store follower recovery, authority transitions, and full product acceptance remain incomplete.
+
+## Issuer storage consistency, 2026-09-10
+
+The source at `44a400a4` has no production caller of `Client.CurrentAuthorityHead`.
+Its focused tests prove local snapshot behavior. They do not qualify permission receipt issuance.
+The runtime relay reads confirmed upstream receipts from its own retained permission state.
+
+The current `storage.ObjectBackend` contract requires conditional writes and exact object-version tokens.
+It does not require current reads. `storage.Object.Current` reads a pointer, then loads the selected manifest and payload.
+The filesystem store also resolves its pointer through the complete generation.
+The caller-owned S3 adapter does not establish a freshness guarantee for every compatible endpoint or transport.
+
+The [issuer storage inspection](../../plans/proof/starport-production-catalog/csp4/issuer-storage-inspection-2026-09-10.md) defines the missing read guarantee and required qualification cases.
+Receipt validity must start before the read. Metadata migration must cover existing generations and repeated identical commits.
+These findings concern the second CSP4 delivery. No stored format, interface, or implementation changed in this inspection.

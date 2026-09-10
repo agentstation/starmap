@@ -40,7 +40,9 @@ An exact ETag identifies returned content. It does not establish that the conten
 Adding a head method that delegates to arbitrary `ObjectBackend.Get` would therefore leave the issuer's freshness requirement unproved.
 
 The second delivery must require an explicit current-read contract for receipt issuance.
-The read must observe a committed head selected during that operation, including commits from other writers.
+The returned head must be current at some point between the read's invocation and completion.
+That guarantee includes other writers' committed publications.
+
 Ordinary generation storage can retain its existing interface. An adapter without the current-read guarantee cannot issue new permission receipts.
 The S3 adapter delegates endpoint, client, and transport selection to its caller.
 Its type alone cannot qualify every compatible service.

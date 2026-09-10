@@ -159,6 +159,32 @@
         "docs/plans/proof/starport-production-catalog/csp4.md": "46e680c9a4704f6aaf33ea82b70080b8125cdcdf1f77afbc7eda0f401f1308a4",
         "docs/plans/starport-production-catalog-plan.html": "6711cc816c6439a1f40b9f15389b4f53748dded423a8dc89c6e74911c49d9a40"
       }
+    },
+    "issuer-spec-prose-red": {
+      "artifact": {
+        "path": "issuer-spec-prose-red.log.gz",
+        "sha256": "c1d4070a842c6b24e9344384fc1bf54ae3fb1527e0f41b9b17e350b6e2792bb1",
+        "raw_sha256": "cb63eb35d587c526688890e4838379fe3099250ec531d62321df5a3fa9bc6b89"
+      },
+      "exit_code": 2,
+      "command": "make technical-writing-check",
+      "source_scope": "Intermediate engineering specification, findings, and inspection changes. Two paragraph-length diagnostics and one prose diagnostic precede the final repair."
+    },
+    "issuer-spec-prose-final": {
+      "artifact": {
+        "path": "issuer-spec-prose-final.log.gz",
+        "sha256": "79cd8cc071c05ce06822f2a76faed03df1de1d518479d0d687a63e74e48e546f",
+        "raw_sha256": "0f2d227136812af21fa964b599cbd080b86968c4aa74a6cf22610901006f8414"
+      },
+      "exit_code": 0,
+      "command": "make technical-writing-check",
+      "source_scope": "Canonical engineering specification, findings, inspection, and execution log. 1286 files, zero diagnostics.",
+      "prose_files_sha256": {
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "09a274512a9ddf536506cc545caa57ec96e8de9ed8bf71001bd95bcde38e8614",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "be3c1450dcbf05a85237978d4590c42cc47fb0ecc3c75f0a57746b6524334b69",
+        "docs/plans/proof/starport-production-catalog/csp4/issuer-storage-inspection-2026-09-10.md": "91612f5bf7e1e3712034c0f68cb27c6f7ce5510bff1fe44d2febd3038b42b484",
+        "docs/plans/starport-production-catalog-plan.html": "a6e60119ef3d9d4801388f1d25b8e63b61dac7681a703f76cf1d6a13f05ead99"
+      }
     }
   },
   "running_operations": [
@@ -167,7 +193,7 @@
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
       "output": "/tmp/starmap-csp4-subscriber-verify-2-2026-09-10.log",
       "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
-      "last_observed_stage": "Initial package tests, pure-Go execution, structural and product verifier checks passed. Repository-wide race tests passed through the catalog, artifact, and authority packages. The race stage is still running."
+      "last_observed_stage": "Initial package tests, pure-Go execution, structural and product verifier checks passed. Every preceding package in the repository-wide race stage passed. The runtime race package is still active in session 82978."
     }
   ],
   "limitations": [

@@ -1750,10 +1750,22 @@ The serving catalog store must retain the original authority generation, includi
 A runtime must not reconstruct an ordinary manifest from the same catalog facts.
 An unchanged retained generation requires exact manifest and payload equality before startup skips the store write.
 
-Permission handling reads the committed authority head from memory through `CurrentAuthorityHead`.
+The root client exposes its committed authority head from memory through `CurrentAuthorityHead`.
 That snapshot follows catalog publication under the same client lock. Failed publication preserves the previous head.
 The snapshot does not prove publisher identity, fleet freshness, or permission validity.
-The issuer must establish those conditions before it can return a receipt.
+The issuer must establish those conditions separately before it can return a receipt.
+
+Receipt issuance from shared storage requires a current-read guarantee.
+The returned head must be current at some point between the read's invocation and completion.
+That guarantee includes other writers' committed publications. Conditional writes and exact object-version tokens alone do not establish it.
+An adapter without this guarantee cannot issue new permission receipts from its stored head.
+
+The issuer starts receipt validity before the current-head read. Delayed completion consumes that original interval.
+An expired interval requires refusal and a fresh observation. Receipt timing must account for issuer and consumer clock uncertainty.
+
+Permission metadata must bind to the same immutable generation before the accepted pointer changes.
+Missing metadata, incompatible metadata, and an ordinary selected generation cannot renew a previous authority receipt.
+Define migration and repeated-commit behavior before adding a new stored head representation.
 
 A relay forwards the original confirmed upstream receipt through `GET /catalog/permission`.
 It does not renew the issue time or expiry and does not require catalog activation.
