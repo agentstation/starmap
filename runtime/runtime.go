@@ -382,6 +382,9 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	if err := current.Catalog.CanonicalAliases().ValidateSuccessor(state.Catalog.CanonicalAliases()); err != nil {
+		return err
+	}
 	r.effective = state
 	r.report.startedAt = r.config.now()
 	return nil

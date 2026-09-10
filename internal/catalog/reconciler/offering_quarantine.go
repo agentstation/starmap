@@ -27,6 +27,10 @@ func quarantineUnresolvedProviderOfferings(
 	collector *collector,
 ) ([]evidence.ReviewCandidate, error) {
 	authored := authoredModelIdentities(catalog)
+	var aliases *catalogs.CanonicalAliasIndex
+	if baseline != nil {
+		aliases = baseline.CanonicalAliases()
+	}
 	issues := make([]evidence.ReviewCandidate, 0)
 	for _, provider := range catalog.Providers().List() {
 		models := make([]*catalogs.Model, 0, len(provider.Models))
@@ -45,6 +49,7 @@ func quarantineUnresolvedProviderOfferings(
 			models,
 			authored,
 			baselineModels,
+			aliases,
 		)
 		if err != nil {
 			return nil, err
@@ -80,6 +85,7 @@ func resolvableProviderModels(
 	models []*catalogs.Model,
 	authored map[catalogs.ModelDefinitionID]struct{},
 	baseline map[string]*catalogs.Model,
+	aliases *catalogs.CanonicalAliasIndex,
 ) ([]*catalogs.Model, []evidence.ReviewCandidate, error) {
 	resolved := make([]*catalogs.Model, 0, len(models))
 	issues := make([]evidence.ReviewCandidate, 0)
@@ -96,17 +102,19 @@ func resolvableProviderModels(
 					err,
 				)
 			}
-			if _, found := authored[model.ModelRef]; found {
-				resolved = append(resolved, model)
+			if reference, found := resolvedModelReference(model.ModelRef, authored, aliases); found {
+				carried := *model
+				carried.ModelRef = reference
+				resolved = append(resolved, &carried)
 				continue
 			}
 		}
 		priorReviewedModelLink := ""
 		if baselineModel := baseline[model.ID]; baselineModel != nil {
 			priorReviewedModelLink = string(baselineModel.ModelRef)
-			if _, found := authored[baselineModel.ModelRef]; found {
+			if reference, found := resolvedModelReference(baselineModel.ModelRef, authored, aliases); found {
 				carried := *model
-				carried.ModelRef = baselineModel.ModelRef
+				carried.ModelRef = reference
 				resolved = append(resolved, &carried)
 				continue
 			}
@@ -120,6 +128,15 @@ func resolvableProviderModels(
 		})
 	}
 	return resolved, issues, nil
+}
+
+// resolvedModelReference normalizes retained facts without granting access through a removed client alias.
+func resolvedModelReference(reference catalogs.ModelDefinitionID, authored map[catalogs.ModelDefinitionID]struct{}, aliases *catalogs.CanonicalAliasIndex) (catalogs.ModelDefinitionID, bool) {
+	if terminal, _, found := aliases.Lookup(reference); found {
+		reference = terminal
+	}
+	_, found := authored[reference]
+	return reference, found
 }
 
 func providerModelMap(models []*catalogs.Model) map[string]*catalogs.Model {

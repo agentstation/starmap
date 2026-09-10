@@ -6,7 +6,7 @@ import (
 )
 
 // decodeCatalog checks retained scope evidence against its original generation.
-// Legacy payload-only layers require no scope records or operator policies.
+// Legacy payload-only layers cannot hold scopes, operator policies, or canonical aliases.
 func (s *sourceLayer) decodeCatalog() (*catalogs.Catalog, error) {
 	if s.Manifest != nil {
 		if s.Manifest.GenerationID != s.GenerationID || s.Manifest.Payload.Checksum != s.Checksum {
@@ -18,8 +18,8 @@ func (s *sourceLayer) decodeCatalog() (*catalogs.Catalog, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(catalog.MembershipScopes()) != 0 || len(catalog.RemovalPolicies()) != 0 {
-		return nil, &errors.ValidationError{Field: "source_layer.manifest", Message: "scope records and operator policies require the original generation manifest"}
+	if len(catalog.MembershipScopes()) != 0 || len(catalog.RemovalPolicies()) != 0 || len(catalog.CanonicalAliasRecords()) != 0 {
+		return nil, &errors.ValidationError{Field: "source_layer.manifest", Message: "scopes, policies, and aliases require the original generation manifest"}
 	}
 	return catalog, nil
 }
@@ -63,6 +63,11 @@ func (l *layerSet) appendScopeSourceEvidence(catalog *catalogs.Catalog) error {
 
 // validateUpstreamScopePublishers reserves this runtime's identities for local evidence.
 func (l *layerSet) validateUpstreamScopePublishers(catalog *catalogs.Catalog) error {
+	for _, alias := range catalog.CanonicalAliasRecords() {
+		if namesInstance(alias.PublisherID, l.publisherID, l.publisherAliases) {
+			return &errors.ConflictError{Resource: "alias publisher", Message: "an upstream catalog cannot claim this runtime alias identity"}
+		}
+	}
 	for _, policy := range catalog.RemovalPolicies() {
 		if namesInstance(policy.PublisherID, l.publisherID, l.publisherAliases) {
 			return &errors.ConflictError{Resource: "removal publisher", Message: "an upstream catalog cannot claim this runtime operator identity"}

@@ -27,6 +27,7 @@ type channelOptions struct {
 	publishedAt         string
 	updatedAt           string
 	currentDocument     string
+	previousDirectory   string
 	outputPath          string
 	attestationVerified bool
 }
@@ -84,6 +85,14 @@ func stageChannelDocument(options channelOptions) (channelReport, error) {
 		return channelReport{}, err
 	}
 
+	candidate, err := readReleaseGeneration(verified.Directory)
+	if err != nil {
+		return channelReport{}, err
+	}
+	if err := validatePublishedSuccessor(current, options.previousDirectory, candidate); err != nil {
+		return channelReport{}, err
+	}
+
 	next, kind, err := current.Advance(artifact.Candidate{
 		GenerationID:  verified.GenerationID,
 		Tag:           tag,
@@ -123,21 +132,15 @@ func stageChannelDocument(options channelOptions) (channelReport, error) {
 }
 
 // readCurrentChannel reads the channel document that the publisher read from
-// the channel branch. A missing or empty path is the first publication.
+// the channel branch. An empty path selects the first publication.
 func readCurrentChannel(path string) (artifact.Channel, error) {
 	trimmed := strings.TrimSpace(path)
 	if trimmed == "" {
 		return artifact.Channel{}, nil
 	}
 	data, err := os.ReadFile(trimmed) //nolint:gosec // the publisher selects the channel document it read.
-	if os.IsNotExist(err) {
-		return artifact.Channel{}, nil
-	}
 	if err != nil {
 		return artifact.Channel{}, pkgerrors.WrapIO("read", trimmed, err)
-	}
-	if len(data) == 0 {
-		return artifact.Channel{}, nil
 	}
 	return artifact.DecodeChannel(data)
 }

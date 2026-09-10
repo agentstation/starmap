@@ -39,6 +39,9 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 	if len(source.RemovalPolicies()) != 0 {
 		return nil, invalidRemovalTarget("observation", "acquisition cannot supply operator policy")
 	}
+	if len(source.CanonicalAliasRecords()) != 0 {
+		return nil, invalidCanonicalAlias("observation", "acquisition cannot supply canonical rename authority")
+	}
 	builder, err := NewBuilderFrom(source)
 	if err != nil {
 		return nil, errors.WrapResource("create", "immutable catalog observation", "", err)
@@ -101,6 +104,7 @@ type Catalog struct {
 	source                     Reader
 	membership                 map[MembershipScopeKey]membershipScopeIndex
 	removals                   *CatalogRemovalSet
+	canonicalAliases           *CanonicalAliasIndex
 	providerIDs                map[ProviderID]ProviderID
 	definitions                map[ModelDefinitionID]ModelDefinition
 	offerings                  map[OfferingKey]ProviderOffering
@@ -126,6 +130,11 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	if err != nil {
 		return nil, errors.WrapResource("index", "catalog read views", "", err)
 	}
+	canonicalAliases, err := buildCanonicalAliasIndex(source.CanonicalAliasRecords(), views.definitions, views.offerings)
+	if err != nil {
+		return nil, err
+	}
+	removals.indexCanonicalRenames(canonicalAliases)
 	providerOfferings := make(map[ProviderID][]OfferingKey)
 	definitionOfferings := make(map[ModelDefinitionID][]OfferingKey)
 	for key := range views.offerings {
@@ -165,6 +174,7 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	return &Catalog{
 		source:                     source,
 		removals:                   removals,
+		canonicalAliases:           canonicalAliases,
 		membership:                 indexMembershipScopes(source.MembershipScopes()),
 		providerIDs:                indexProviderIdentities(providers),
 		definitions:                views.definitions,
@@ -374,6 +384,12 @@ func (r *Catalog) AuthorModels(authorID AuthorID) ([]ModelDefinition, error) {
 // FindModel returns the canonical provider-independent model definition.
 // Use Offering for provider price, limits, availability, and request behavior.
 func (r *Catalog) FindModel(id string) (ModelDefinition, error) {
+	if target, state, found := r.canonicalAliases.Lookup(ModelDefinitionID(id)); found {
+		if state == CanonicalAliasRemoved {
+			return ModelDefinition{}, &errors.NotFoundError{Resource: "removed canonical model alias", ID: id}
+		}
+		return r.Definition(target)
+	}
 	if _, found := r.definitions[ModelDefinitionID(id)]; found {
 		return r.Definition(ModelDefinitionID(id))
 	}

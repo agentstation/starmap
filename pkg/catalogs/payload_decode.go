@@ -27,6 +27,7 @@ type payloadEnvelope struct {
 	Provenance       provenance.Map             `json:"provenance"`
 	MembershipScopes []ProviderMembershipScope  `json:"membership_scopes"`
 	RemovalPolicies  []CatalogRemovalPolicy     `json:"removal_policies"`
+	CanonicalAliases []CanonicalAlias           `json:"canonical_aliases"`
 }
 
 func (r payloadDecodeReport) err() error {
@@ -107,22 +108,8 @@ func decodePayloadEnvelope(data []byte, maxProviders int) (payloadEnvelope, erro
 			Format: "json", File: "catalog payload", Message: "invalid trailing JSON", Err: err,
 		}
 	}
-	if !SupportsCatalogSchema(payload.SchemaVersion) {
-		return payloadEnvelope{}, &errors.ValidationError{
-			Field:   "schema_version",
-			Value:   payload.SchemaVersion,
-			Message: fmt.Sprintf("must be %d", CurrentCatalogSchemaVersion),
-		}
-	}
-	if payload.SchemaVersion < CurrentCatalogSchemaVersion {
-		if _, exists := required["removal_policies"]; exists {
-			return payloadEnvelope{}, invalidRemovalTarget("schema", "requires catalog schema version 8")
-		}
-	}
-	if payload.SchemaVersion == legacyCatalogSchemaVersion {
-		if _, exists := required["membership_scopes"]; exists {
-			return payloadEnvelope{}, &errors.ValidationError{Field: "membership_scopes", Message: "requires catalog schema version 7"}
-		}
+	if err := payload.validateSchemaFeatures(required); err != nil {
+		return payloadEnvelope{}, err
 	}
 	for _, field := range []struct {
 		name   string
@@ -153,6 +140,39 @@ func decodePayloadEnvelope(data []byte, maxProviders int) (payloadEnvelope, erro
 	return payload, nil
 }
 
+func (p payloadEnvelope) validateSchemaFeatures(fields map[string]json.RawMessage) error {
+	if !SupportsCatalogSchema(p.SchemaVersion) {
+		return &errors.ValidationError{
+			Field: "schema_version", Value: p.SchemaVersion,
+			Message: fmt.Sprintf("must be %d", CurrentCatalogSchemaVersion),
+		}
+	}
+	for _, feature := range []struct {
+		field   string
+		version uint64
+	}{
+		{"membership_scopes", membershipCatalogSchemaVersion},
+		{"removal_policies", CatalogRemovalSchemaVersion},
+		{"canonical_aliases", CanonicalAliasSchemaVersion},
+	} {
+		if _, exists := fields[feature.field]; exists && p.SchemaVersion < feature.version {
+			return &errors.ValidationError{
+				Field: feature.field, Message: fmt.Sprintf("requires catalog schema version %d", feature.version),
+			}
+		}
+	}
+	if p.SchemaVersion < CanonicalAliasSchemaVersion {
+		for _, policy := range p.RemovalPolicies {
+			for _, target := range policy.Targets {
+				if target.Kind == CatalogRemovalAlias || target.AliasID != "" {
+					return invalidRemovalTarget("alias_id", "requires catalog schema version 9")
+				}
+			}
+		}
+	}
+	return nil
+}
+
 func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*Catalog, payloadDecodeReport, error) {
 	builder := NewEmpty()
 	providerReport, err := decodePayloadProviders(builder, payload)
@@ -168,6 +188,9 @@ func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*Catalo
 		return nil, payloadDecodeReport{}, err
 	}
 	if err := builder.SetRemovalPolicies(payload.RemovalPolicies); err != nil {
+		return nil, payloadDecodeReport{}, err
+	}
+	if err := builder.SetCanonicalAliasRecords(payload.CanonicalAliases); err != nil {
 		return nil, payloadDecodeReport{}, err
 	}
 	catalog, err := build(builder)

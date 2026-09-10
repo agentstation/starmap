@@ -15,7 +15,7 @@ func TestPipelineReusesVerifiedEmbeddedCatalog(t *testing.T) {
 		t.Fatal(err)
 	}
 	for range 2 {
-		inputs, err := New(nil).loadCatalogInputs(t.Context(), "")
+		inputs, err := New(nil).loadCatalogInputs(t.Context(), "", nil)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -47,7 +47,7 @@ func TestPipelineStopsInputLoadingAfterCancellation(t *testing.T) {
 				cancel()
 				return catalogs.NewEmpty().Build()
 			}
-			inputs, err := pipeline.loadCatalogInputs(ctx, "")
+			inputs, err := pipeline.loadCatalogInputs(ctx, "", nil)
 			if !errors.Is(err, context.Canceled) || inputs.providerConfig != nil {
 				t.Fatalf("canceled inputs = %+v, %v", inputs, err)
 			}

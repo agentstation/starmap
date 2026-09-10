@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260910T050424Z-9c798a1b034a
-catalog_digest: sha256:b332a2ed2b4215634fd2d24f98feec683a7e76fcab7642e7fda3a6679add8030
+generation_id: catalog-20260910T063828Z-0bbbff4c5fd3
+catalog_digest: sha256:f52170bd409eec87ef273f2db1adeacab33f35cfbde080694b73764b54d2f083
 models:
   - model: ai21/jamba-1-5-large
     endpoints:

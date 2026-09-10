@@ -63,14 +63,15 @@ var _ Reader = (*Builder)(nil)
 // - Files catalog (readFS is os.DirFS)
 // - Custom catalog (readFS is any fs.FS implementation).
 type Builder struct {
-	config          *options
-	providers       *Providers
-	authors         *Authors
-	authoredModels  *authoredModelStore
-	provenance      *Provenance
-	membership      *membershipScopeStore
-	removalPolicies *removalPolicyStore
-	loadReport      LoadReport
+	config           *options
+	providers        *Providers
+	authors          *Authors
+	authoredModels   *authoredModelStore
+	provenance       *Provenance
+	membership       *membershipScopeStore
+	removalPolicies  *removalPolicyStore
+	canonicalAliases canonicalAliasStore
+	loadReport       LoadReport
 }
 
 // New creates a new builder with the given options.
@@ -379,6 +380,10 @@ func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error {
 
 // ReplaceWith replaces this catalog's contents with another.
 func (cat *Builder) ReplaceWith(source Reader) error {
+	aliases, err := prepareCanonicalAliases(source.CanonicalAliasRecords())
+	if err != nil {
+		return err
+	}
 	policies, err := prepareRemovalPolicies(source.RemovalPolicies())
 	if err != nil {
 		return err
@@ -417,7 +422,10 @@ func (cat *Builder) ReplaceWith(source Reader) error {
 	// Copy provenance
 	cat.provenance.Set(source.Provenance().Map())
 
-	return cat.SetRemovalPolicies(policies)
+	if err := cat.SetRemovalPolicies(policies); err != nil {
+		return err
+	}
+	return cat.SetCanonicalAliasRecords(aliases)
 }
 
 // MergeWith merges another catalog into this one.
@@ -428,6 +436,10 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 	}
 
 	if mergeOpts.Strategy == MergeEnrichEmpty || mergeOpts.Strategy == MergeAppendOnly {
+		aliases, err := mergeCanonicalAliases(cat.CanonicalAliasRecords(), source.CanonicalAliasRecords())
+		if err != nil {
+			return err
+		}
 		policies, err := mergeRemovalPolicies(cat.RemovalPolicies(), source.RemovalPolicies())
 		if err != nil {
 			return err
@@ -440,6 +452,9 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 			return err
 		}
 		if err := cat.SetRemovalPolicies(policies); err != nil {
+			return err
+		}
+		if err := cat.SetCanonicalAliasRecords(aliases); err != nil {
 			return err
 		}
 	}

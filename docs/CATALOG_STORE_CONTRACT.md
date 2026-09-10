@@ -347,7 +347,7 @@ The last complete inventory and later positive observations retain their origina
 Credential references and resolved values do not appear in these scope records.
 
 `DecodeCatalogGeneration` verifies the manifest, payload, schema agreement, and referenced receipts before activation.
-The current decoder also accepts schema 6 without scope records and schema 7 with effective scopes. Consumers reject schemas beyond their declared support.
+The current decoder accepts schemas 6 through 9. Schema 6 has no scope records. Schema 7 adds effective scopes. Consumers reject schemas beyond their declared support.
 Legacy receipts keep their original payload bytes and identity during restore. Older binaries cannot read the new format merely because the new decoder reads old formats.
 
 The selected trusted source supplies the authority for imported publisher claims.
@@ -362,7 +362,8 @@ This merge cannot select a replacement scope authority. Use a configured catalog
 
 Starport must resolve an explicit inference-profile link before applying account-specific restrictions.
 That link must bind the selected catalog authority, publisher, binding ID, and revision. An authority change requires link revalidation.
-Starport integration remains incomplete under CSP8 and CSP10.
+Starport integration remains incomplete under `CSP8` and `CSP10`.
+
 
 Complete accepted scoped inventories retain their original receipts through the acquisition volume guard.
 Unscoped volume regressions retain the existing degraded classification. Failed and incomplete evidence cannot establish new absence.
@@ -371,25 +372,30 @@ Starport must show observed absence and exclude the affected provider/account fr
 Explicit operator removal defaults to that entry. Global canonical removal remains a separate action.
 A replacement Starmap baseline can remove entries it no longer contains. Internal authoritative permission withdrawals retain immediate enforcement.
 
-Canonical aliases and Starport routing remain incomplete. CSP3 and CSP10 own this work.
+Starmap retains canonical rename history in schema 9. Starport discovery and routing integration remain incomplete under `CSP8` and `CSP10`.
+
 Old canonical aliases must remain valid until explicit operator or replacement baseline removal. Elapsed time cannot remove an alias.
 
 ### Operator removal policy
 
 Catalog schema 8 adds `removal_policies`. Each snapshot names the operator publisher and its explicit targets.
 A scoped target names one provider entry and its stable account or public scope. A canonical target requires a separate explicit selection.
+
+Schema 9 adds alias targets that name one old canonical ID. These use the same removal snapshot and publication journal.
 Credential rotation preserves a stable account target. Reassigning a binding to another account cannot transfer that target.
 
 `Runtime.ReplaceRemovalTargets` replaces only the local operator snapshot. It requires the expected generation ID and payload checksum from `Runtime.State`.
 An empty target list explicitly restores local removals. Other publishers retain their own policies.
 Provider refresh cannot clear a local removal. Catalog facts remain available for reconstruction and operator diagnostics.
 
+Identity lookup does not enforce local operator policy. Consumers check `ContainsAlias` before serving a request through that alias.
+
 The runtime stores the accepted snapshot in `R/catalog-runtime/removals.json` with the private-file policy.
 Publication journal version 3 binds its immutable input to the resulting catalog generation. Readers retain support for journal versions 1 and 2.
 Recovery follows the accepted catalog commit before loading retained inputs. Missing or changed retention cannot silently restore an accepted removal.
 Backups and directory migrations must preserve the removal snapshot and any pending publication inputs.
 
-`Catalog.Removals` exposes immutable scoped and canonical queries. Consumers validate publisher authority and account links before applying these results.
+`Catalog.Removals` exposes immutable scoped, canonical, and alias queries. Consumers validate publisher authority and account links before applying these results.
 Acquisition observations cannot contain operator policy. Generic catalog merges preserve targets when incoming data omits them.
 A trusted replacement and an explicit operator restore remain separate operations. A schema-7 reader rejects schema-8 policy payloads.
 
@@ -399,6 +405,19 @@ Ordinary release imports preserve current operator policy and reject incoming po
 
 Starport discovery, routing, and operator UI integration remain incomplete. This component does not qualify A08 or the released product pair.
 
+
+### Acquisition provider configuration
+
+Manual and scheduled provider acquisition use the accepted catalog's provider definitions.
+An accepted upstream baseline can supply a custom provider without a local YAML workspace.
+An explicit local workspace can override provider configuration or add a provider, subject to the runtime's acquisition policy.
+An embedded provider outside the accepted registry cannot bypass that registry during manual provider acquisition.
+
+A metadata-only source filter can still name an embedded provider. That filter does not enable a provider client or resolve its credentials.
+
+Provider selection does not resolve credentials. The selected acquisition profile and binding checks govern later credential resolution.
+These changes do not grant inference access or change credential-plane precedence.
+Without a local workspace, acquisition reuses the immutable accepted provider catalog.
 
 ### Explicit acquisition binding calls
 

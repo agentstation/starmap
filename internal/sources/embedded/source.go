@@ -54,7 +54,21 @@ func (s *Source) Observe(ctx context.Context, _ ...sources.Option) (sources.Obse
 		now = time.Now
 	}
 	observedAt := now().UTC()
-	return sources.NewObservation(s.ID(), s.catalog, sources.ObservationMetadata{
+	catalog := s.catalog
+	if len(catalog.CanonicalAliasRecords()) != 0 {
+		builder, err := catalogs.NewBuilderFrom(catalog)
+		if err != nil {
+			return sources.Observation{}, err
+		}
+		if err := builder.SetCanonicalAliasRecords(nil); err != nil {
+			return sources.Observation{}, err
+		}
+		catalog, err = builder.Build()
+		if err != nil {
+			return sources.Observation{}, err
+		}
+	}
+	return sources.NewObservation(s.ID(), catalog, sources.ObservationMetadata{
 		ObservedAt:   observedAt,
 		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
 		Completeness: sources.ObservationCompletenessComplete,
