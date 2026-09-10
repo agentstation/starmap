@@ -216,5 +216,176 @@
       "fail": 0,
       "skip": 0
     }
+  },
+  "runtime_retention": {
+    "commit": "5812227e",
+    "integrated_head": "610b89c34e7240fbf042bc5a719d3eaac5fe5cc5",
+    "state": "Local qualified component. Reconciliation and producer integration remain incomplete.",
+    "checks": {
+      "schema-before": {
+        "exit_code": 1,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs": {
+            "fail": 1
+          }
+        },
+        "artifact": {
+          "path": "schema-before.jsonl.gz",
+          "sha256": "c4f952dd4354b77e7bdcabfc43f3be25eb036808fc112f6b4a2b8a134ab62fe9"
+        }
+      },
+      "runtime-fixture-before": {
+        "exit_code": 1,
+        "test_events": {
+          "github.com/agentstation/starmap/runtime": {
+            "fail": 6
+          }
+        },
+        "artifact": {
+          "path": "runtime-fixture-before.jsonl.gz",
+          "sha256": "268821dab49be434a7d7cb4127a9c1e2845f96249a1d7e2d5927d47ef53a5113"
+        },
+        "classification": "Invalid test fixture. No behavior acceptance credit."
+      },
+      "runtime-before": {
+        "exit_code": 1,
+        "test_events": {
+          "github.com/agentstation/starmap/runtime": {
+            "fail": 6
+          }
+        },
+        "artifact": {
+          "path": "runtime-before.jsonl.gz",
+          "sha256": "8e4c6cb535196f9bd88598c86d7f3a990d208a8a7d60ddb5ab71381e5059a3c9"
+        }
+      },
+      "runtime-after": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/runtime": {
+            "pass": 6
+          }
+        },
+        "artifact": {
+          "path": "runtime-after.jsonl.gz",
+          "sha256": "200dfee4bc4a452d770cea47062c09f505f2abc3924d7cc36bedebec89b6c68f"
+        }
+      },
+      "retention": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs": {
+            "pass": 26
+          },
+          "github.com/agentstation/starmap/runtime": {
+            "pass": 25
+          }
+        },
+        "artifact": {
+          "path": "retention.jsonl.gz",
+          "sha256": "738b8cf28ae8315b2ae5357a310c1aeaa6c20494f7b1bdc93ecc844f8aa75c38"
+        }
+      },
+      "retention-minimum": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs": {
+            "pass": 26
+          },
+          "github.com/agentstation/starmap/runtime": {
+            "pass": 25
+          }
+        },
+        "artifact": {
+          "path": "retention-minimum.jsonl.gz",
+          "sha256": "39f6728eeed4de1773c9ce4b150f65c91b7558066d5bdf46722cf703bf2cecce"
+        }
+      },
+      "ago": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "retention-ago.log.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        }
+      },
+      "lint": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "retention-lint.log.gz",
+          "sha256": "39d3713d7768a66c22a93c40300fba9c635dfa42950404729c5cdc8976596dc1"
+        }
+      },
+      "godoc": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "retention-godoc.log.gz",
+          "sha256": "dae696d95312060bc935ce41b2a3422ae54c0e0fcd331a3fdff4729f16058ebf"
+        }
+      },
+      "docs": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "retention-docs.log.gz",
+          "sha256": "f35af21cbae5140a657df6fc9c88555b77dcacdf41e1aafe66ecae89ecfd49a9"
+        }
+      },
+      "prose": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "retention-prose.log.gz",
+          "sha256": "9a76b5a495423d2ebd322497c5cf11f4cd954ada35870308343477fb9005fdb8"
+        }
+      }
+    },
+    "scope": [
+      "Alias targets reuse the existing removal policy and journal.",
+      "Original manifest and distinct publisher required.",
+      "Client activation, update, runtime publication, and startup preserve rename history.",
+      "Elapsed time does not expire aliases.",
+      "Local restore cannot override a baseline removal.",
+      "Failed publication and damaged retained input preserve accepted identity."
+    ]
+  },
+  "reconciliation": {
+    "state": "Full reconciliation package and focused minimum-Go tests pass. Publication qualification remains open.",
+    "before": {
+      "path": "reconcile-before.jsonl.gz",
+      "sha256": "eb47e31ec4bf74fb9c476030db0d0b07aac90e3ea6891339ca25cecefb15239e"
+    },
+    "before_events": {
+      "github.com/agentstation/starmap/internal/catalog/reconciler": {
+        "fail": 3
+      }
+    },
+    "full_log": "/tmp/starmap-canonical-alias-reconciler-full-2026-09-10.jsonl",
+    "checks": {
+      "full": {
+        "exit_code": 0,
+        "artifact": "reconcile-full.gz",
+        "sha256": "45465d37ebca3baeadacce62fb710964da37ff880d0773ecde2c9a18923056b6",
+        "test_events": {
+          "pass": 648
+        }
+      },
+      "minimum": {
+        "exit_code": 0,
+        "artifact": "reconcile-minimum.gz",
+        "sha256": "ab17d3fc85c57c1039aaf18fb0176a444b228f93a4ce0a60f8d1bb26c074d73a",
+        "test_events": {
+          "pass": 4
+        }
+      },
+      "ago": {
+        "exit_code": 0,
+        "artifact": "reconcile-ago.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+      },
+      "lint": {
+        "exit_code": 0,
+        "artifact": "reconcile-lint.gz",
+        "sha256": "39d3713d7768a66c22a93c40300fba9c635dfa42950404729c5cdc8976596dc1"
+      }
+    },
+    "commit": "972a8dc8"
   }
 }

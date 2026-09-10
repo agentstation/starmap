@@ -1145,5 +1145,53 @@
       "docs_check_exit": 0,
       "prose_exit": 0
     }
+  },
+  "operator_removal_integration": {
+    "head": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
+    "base": "acbfc2471ef5cff223b6d519df375b22874c3713",
+    "review": {
+      "exit_code": 0,
+      "findings": 0,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "artifact": {
+        "path": "integrated-removal-review.log.gz",
+        "sha256": "cde46b52355d8ed0954a638d80e15bb165620806279d5838dcf21ad8be9521ba"
+      }
+    },
+    "checks": {
+      "compatibility": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+            "pass": 40
+          },
+          "github.com/agentstation/starmap/internal/sources/github": {
+            "pass": 31
+          }
+        },
+        "artifact": {
+          "path": "integrated-removal-compatibility.jsonl.gz",
+          "sha256": "5655bb5fb58462a347bd670d978072873f1655afb22aff7a8e9a62a667dfe0dc"
+        }
+      },
+      "compatibility-minimum": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+            "pass": 40
+          },
+          "github.com/agentstation/starmap/internal/sources/github": {
+            "pass": 31
+          }
+        },
+        "artifact": {
+          "path": "integrated-removal-compatibility-minimum.jsonl.gz",
+          "sha256": "726c7781d4570bbcc2981d52476428aced5e2fd4c43c456dbe8255333e9ed966"
+        }
+      }
+    }
   }
 }
