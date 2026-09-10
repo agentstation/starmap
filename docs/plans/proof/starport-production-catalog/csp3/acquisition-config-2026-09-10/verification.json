@@ -1,0 +1,142 @@
+{
+  "task": "CSP3",
+  "finding": "CSP3-source-provider-configuration",
+  "worktree": "/tmp/starmap-acquisition-config-2026-09-10",
+  "branch": "codex/catalog-acquisition-config",
+  "base": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
+  "commit": "61b6e9903aea109211eb5602275311b087141e0f",
+  "state": "Local repair committed. Full acquisition race suite is running. Review, CI, and merge remain unverified.",
+  "contract": [
+    "Manual acquisition uses the accepted catalog provider registry, as scheduled acquisition already does.",
+    "An explicit local workspace can override that registry within runtime acquisition policy.",
+    "Embedded-only providers cannot bypass the selected registry. Selection refuses them before resolving credentials or creating a client.",
+    "Without a local workspace, provider selection reuses the accepted immutable catalog.",
+    "Credential-plane precedence and inference authorization do not change."
+  ],
+  "checks": {
+    "before": {
+      "command": "go test -race -count=1 -timeout 20m -json ./acquisition -run TestAcceptedBaselineProviderSupportsManualAcquisitionWithoutWorkspace",
+      "exit_code": 1,
+      "test_events": {
+        "github.com/agentstation/starmap/acquisition": {
+          "fail": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/acquisition": "fail"
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/acquisition:TestAcceptedBaselineProviderSupportsManualAcquisitionWithoutWorkspace"
+      ],
+      "artifact": {
+        "path": "before-2026-09-10.jsonl.gz",
+        "sha256": "42e150325e254f75fa4cd694a5a49674332eab10245b3e389b8e0384babd7b3d",
+        "raw_sha256": "8f84ee34452f944aca2566b463b4bd911171818a8c9018dbe7c3e4da23cf2855"
+      }
+    },
+    "after": {
+      "command": "go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline ./acquisition -run 'TestAcceptedBaselineProviderSupportsManualAcquisitionWithoutWorkspace|TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart|TestComposeProviderCatalog|TestPipeline|TestEmbeddedRevision'",
+      "exit_code": 0,
+      "test_events": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": {
+          "pass": 41
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 2
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": "pass",
+        "github.com/agentstation/starmap/acquisition": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "after-2026-09-10.jsonl.gz",
+        "sha256": "31d52e27680af4e4353f0006aa6eb71f084f068417a92226a089587708ee4060",
+        "raw_sha256": "30863c60415d46042ad28da5d1e9750a68f8746dce21ec13674845407c12fd01"
+      }
+    },
+    "pipeline": {
+      "command": "go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline",
+      "exit_code": 0,
+      "test_events": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": {
+          "pass": 109
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "pipeline-2026-09-10.jsonl.gz",
+        "sha256": "e8944f5fd062fa02ab419c2d13bc764e8400bb360ece7f3e76451101423948ae",
+        "raw_sha256": "cc5b84aa3a7400ba05d189e81be369375f56b6254b65445482016fcda561474c"
+      }
+    },
+    "minimum": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline ./acquisition -run 'TestAccepted|TestPrepareRejectsProviderOutside|TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart'",
+      "exit_code": 0,
+      "test_events": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": {
+          "pass": 4
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 2
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": "pass",
+        "github.com/agentstation/starmap/acquisition": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "minimum-2026-09-10.jsonl.gz",
+        "sha256": "2a508655183f6dbe84da0b692370945bf0a1d69b2b944aefdd7acd0388a9c89e",
+        "raw_sha256": "c3004de587832d951614ed305d43eda5fe6b0c0f4498ee235a7a91b22b7125c4"
+      }
+    }
+  },
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6 unless stated otherwise",
+    "GOFLAGS": "-p=2",
+    "GOCACHE": "/tmp/starmap-source-diagnostics-go-cache-2026-09-09"
+  },
+  "static": {
+    "ago": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "ago-2026-09-10.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "lint-2026-09-10.log.gz",
+        "sha256": "0a8ea84e58953b60adaa367c9359258ac93f3b8823801039b786c43194a72aac",
+        "raw_sha256": "a88fbd64c943e867f10f2ab4acdae2ebb6cd8b47265c8e6a9bb889013bddfc37"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "prose-2026-09-10.log.gz",
+        "sha256": "603c3c588ffa2cb7e906c5625a45b5cfa05747f3038876f8ccaad2ef7bee9a52",
+        "raw_sha256": "142b0fe85f48cc4cd71205a6eb084a1e1786f5a2c136365935d19cfae13472f9"
+      },
+      "files": 1374,
+      "diagnostics": 0
+    }
+  },
+  "running": {
+    "full_acquisition": {
+      "session": 84266,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json ./acquisition",
+      "log": "/tmp/starmap-acquisition-config-full-2026-09-10.jsonl",
+      "source": "61b6e9903aea109211eb5602275311b087141e0f",
+      "state": "running"
+    }
+  }
+}

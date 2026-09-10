@@ -1193,5 +1193,22 @@
         }
       }
     }
+  },
+  "operator_removal_publication": {
+    "pr": 145,
+    "url": "https://github.com/agentstation/starmap/pull/145",
+    "head": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
+    "base_branch": "codex/catalog-scoped-membership",
+    "base_head": "acbfc2471ef5cff223b6d519df375b22874c3713",
+    "draft": true,
+    "review": "Full diff reviewed by Sol xhigh and Opus high, zero findings.",
+    "native_ci": {
+      "run": 34451894222,
+      "event": "workflow_dispatch",
+      "head": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
+      "watch_session": 69712,
+      "log": "/tmp/starmap-pr145-native-ci-watch-2026-09-10.log"
+    },
+    "next": "After PR144 merges, verify equivalent base, retarget to main, obtain all required checks, and merge. Do not merge into the dependency branch."
   }
 }

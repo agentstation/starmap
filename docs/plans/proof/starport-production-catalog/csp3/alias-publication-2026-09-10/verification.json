@@ -446,7 +446,12 @@
       "state": "requires resolution before CSP3 completion",
       "evidence": "acquisition-flow-valid.jsonl.gz; internal/catalog/pipeline/catalog_inputs.go; acquisition/acquirer.go:scopeToProvider",
       "finding": "Manual Sync composes acquisition provider configuration from embedded and local catalogs. Runtime Acquirer instead uses the accepted current catalog. A custom provider in an accepted upstream baseline is missing from the manual path unless a local workspace supplies it.",
-      "next": "Make the selected-baseline and local override contract consistent across manual and scheduled acquisition. Preserve credential-plane separation and explicit local configuration precedence."
+      "next": "Make the selected-baseline and local override contract consistent across manual and scheduled acquisition. Preserve credential-plane separation and explicit local configuration precedence.",
+      "resolution": {
+        "commit": "61b6e9903aea109211eb5602275311b087141e0f",
+        "proof": "../acquisition-config-2026-09-10/verification.json",
+        "state": "Local repair and focused checks pass. Full acquisition qualification, review, and merge remain open."
+      }
     }
   ],
   "remaining": [
