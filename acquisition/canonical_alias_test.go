@@ -25,6 +25,15 @@ func (s aliasAcquisitionSource) Read(context.Context) (runtime.SourceRead, error
 }
 
 func TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart(t *testing.T) {
+	testCanonicalAliasProviderAcquisition(t, true)
+}
+
+func TestAcceptedBaselineProviderSupportsManualAcquisitionWithoutWorkspace(t *testing.T) {
+	testCanonicalAliasProviderAcquisition(t, false)
+}
+
+func testCanonicalAliasProviderAcquisition(t *testing.T, useWorkspace bool) {
+	t.Helper()
 	var requests atomic.Int32
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		requests.Add(1)
@@ -53,9 +62,12 @@ func TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart(t *testing.T) 
 	}}, Models: map[string]*catalogs.Model{"deployment": {ID: "deployment", ModelRef: "author/current", Name: "Baseline offering"}}}); err != nil {
 		t.Fatal(err)
 	}
-	workspacePath := filepath.Join(t.TempDir(), "workspace")
-	if err := builder.SaveTo(workspacePath); err != nil {
-		t.Fatal(err)
+	workspacePath := ""
+	if useWorkspace {
+		workspacePath = filepath.Join(t.TempDir(), "workspace")
+		if err := builder.SaveTo(workspacePath); err != nil {
+			t.Fatal(err)
+		}
 	}
 	catalog, err := builder.Build()
 	if err != nil {
@@ -74,7 +86,10 @@ func TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	options := []runtime.Option{runtime.WithSource(aliasAcquisitionSource{generation}), runtime.WithStateDirectory(filepath.Join(t.TempDir(), "runtime")), runtime.WithSourcePollInterval(0), runtime.WithAcquisitionEnabled(false), runtime.WithClientOptions(starmap.WithCatalogPath(workspacePath))}
+	options := []runtime.Option{runtime.WithSource(aliasAcquisitionSource{generation}), runtime.WithStateDirectory(filepath.Join(t.TempDir(), "runtime")), runtime.WithSourcePollInterval(0), runtime.WithAcquisitionEnabled(false)}
+	if useWorkspace {
+		options = append(options, runtime.WithClientOptions(starmap.WithCatalogPath(workspacePath)))
+	}
 	connected, err := runtime.Open(t.Context(), options...)
 	if err != nil {
 		t.Fatal(err)
@@ -90,7 +105,11 @@ func TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	selected := []pkgsync.Option{pkgsync.WithSources(sources.LocalCatalogID, sources.ProvidersID), pkgsync.WithProvider("acme"), pkgsync.WithFresh(true)}
+	selectedSources := []sources.ID{sources.ProvidersID}
+	if useWorkspace {
+		selectedSources = append(selectedSources, sources.LocalCatalogID)
+	}
+	selected := []pkgsync.Option{pkgsync.WithSources(selectedSources...), pkgsync.WithProvider("acme"), pkgsync.WithFresh(true)}
 	preview, err := syncer.Sync(t.Context(), append(selected, pkgsync.WithDryRun(true))...)
 	if err != nil {
 		t.Fatal(err)

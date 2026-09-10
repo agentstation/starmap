@@ -406,6 +406,17 @@ Ordinary release imports preserve current operator policy and reject incoming po
 Starport discovery, routing, and operator UI integration remain incomplete. This component does not qualify A08 or the released product pair.
 
 
+### Acquisition provider configuration
+
+Manual and scheduled provider acquisition use the accepted catalog's provider definitions.
+An accepted upstream baseline can supply a custom provider without a local YAML workspace.
+An explicit local workspace can override provider configuration or add a provider, subject to the runtime's acquisition policy.
+An embedded provider outside the accepted registry cannot bypass that registry during manual acquisition.
+
+Provider selection does not resolve credentials. The selected acquisition profile and binding checks govern later credential resolution.
+These changes do not grant inference access or change credential-plane precedence.
+Without a local workspace, acquisition reuses the immutable accepted provider catalog.
+
 ### Explicit acquisition binding calls
 
 `Acquirer.ObserveProviderBinding` observes one binding without storing or publishing the result.

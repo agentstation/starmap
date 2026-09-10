@@ -20,7 +20,7 @@ type catalogInputs struct {
 	workspaceInput  workspace.InputExpectation
 }
 
-func (p *Pipeline) loadCatalogInputs(ctx context.Context, path string) (catalogInputs, error) {
+func (p *Pipeline) loadCatalogInputs(ctx context.Context, path string, baseline *catalogs.Catalog) (catalogInputs, error) {
 	var inputs catalogInputs
 	err := workspace.Read(ctx, path, func(input workspace.InputExpectation) error {
 		human, err := p.loadWorkspace(path)
@@ -56,7 +56,11 @@ func (p *Pipeline) loadCatalogInputs(ctx context.Context, path string) (catalogI
 	if err := ctx.Err(); err != nil {
 		return catalogInputs{}, err
 	}
-	inputs.providerConfig, err = composeProviderCatalog(inputs.embedded, inputs.workspace, inputs.workspaceInput.Exists)
+	if baseline == nil {
+		baseline = inputs.embedded
+	}
+	inputs.baseline = baseline
+	inputs.providerConfig, err = composeProviderCatalog(baseline, inputs.workspace, inputs.workspaceInput.Exists)
 	if err != nil {
 		return catalogInputs{}, err
 	}
@@ -78,16 +82,19 @@ func loadHumanWorkspace(path string) (*catalogs.Builder, error) {
 }
 
 func composeProviderCatalog(
-	embedded, human *catalogs.Catalog,
+	baseline, human *catalogs.Catalog,
 	humanExists bool,
 ) (*catalogs.Catalog, error) {
-	if embedded == nil {
+	if baseline == nil {
 		return nil, &errors.ValidationError{
-			Field:   "embedded_catalog",
-			Message: "verified embedded catalog is required",
+			Field:   "acquisition_baseline",
+			Message: "accepted catalog is required",
 		}
 	}
-	builder, err := catalogs.NewBuilderFrom(embedded)
+	if !humanExists {
+		return baseline, nil
+	}
+	builder, err := catalogs.NewBuilderFrom(baseline)
 	if err != nil {
 		return nil, errors.WrapResource("create", "provider configuration catalog", "", err)
 	}

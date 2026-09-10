@@ -191,11 +191,10 @@ func (p *Pipeline) prepare(
 	if err := options.ValidateFilesystemLayout(); err != nil {
 		return nil, err
 	}
-	inputs, err := p.loadCatalogInputs(ctx, options.CatalogPath)
+	inputs, err := p.loadCatalogInputs(ctx, options.CatalogPath, existing)
 	if err != nil {
 		return nil, err
 	}
-	inputs.baseline = existing
 	if err = options.Validate(inputs.providerConfig.Providers()); err != nil {
 		return nil, err
 	}
