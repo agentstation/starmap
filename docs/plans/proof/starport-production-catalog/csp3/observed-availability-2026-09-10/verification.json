@@ -332,5 +332,12 @@
       "runtime/scheduled_absence_test.go",
       "scripts/catalog-product-checks.json"
     ]
+  },
+  "next_implementation_design": {
+    "path": "scoped-removal-design.md",
+    "status": "design only",
+    "owner": "CSP3",
+    "acceptance": "A08.scoped_tombstone",
+    "implementation_credit": false
   }
 }
