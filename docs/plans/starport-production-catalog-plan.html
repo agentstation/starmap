@@ -15,7 +15,7 @@
 
 <p>CI passed six native jobs but exceeded its two-hour limit. The application race suite exceeded twenty minutes, and periodic shutdown exceeded five seconds. Local stacks locate the shutdown delay in repeated embedded YAML parsing. The local repair caches the owned generation and reuses the immutable catalog during acquisition. </p>
 
-<p>Generation ownership passes 71 race events. Acquisition passes 92 events, the corrected pipeline passes 102, and the application passes 247 events. Final periodic checks and both reviewers pass. Native and complete repository CI remain open.</p>
+<p>Generation ownership passes 71 race events. Acquisition passes 92 events, the corrected pipeline passes 102, and the application passes 247 events. Final periodic checks and both reviewers pass. All six native jobs pass. The complete verification gate remains open.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/verification.json">availability proof</a> owns clean <code>129e3f68</code> in <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>. The reviewed dependency merged locally without conflicts. Eight focused integration events pass. Full runtime, acquisition, and reconciliation checks run in session <code>83233</code>. Publication waits for the dependency merge and fresh review.</p>
 
@@ -23,7 +23,7 @@
 
 <p>D27 preserves visible entries after provider absence. D28 excludes the affected provider/account from automatic routing. D29 limits default explicit removal to that entry. Internal authoritative permission withdrawals remain immediate. D30 retains old model aliases until explicit operator or replacement baseline removal.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/scoped-removal-design.md">removal design</a> owns persistence and transport requirements. Its target prototype is clean <code>6e0d590a</code> in <code>/tmp/starmap-operator-removal-2026-09-10</code>, branch <code>codex/catalog-operator-removal</code>. Tests pass nineteen focused events on each Go version and 1,115 catalog race events. Persistence, transport, aliases, and Starport routing remain incomplete.</p>
+<p>The <a href="proof/starport-production-catalog/csp3/observed-availability-2026-09-10/scoped-removal-design.md">removal design</a> owns persistence and transport requirements. Its target prototype starts from <code>6e0d590a</code> in <code>/tmp/starmap-operator-removal-2026-09-10</code>, branch <code>codex/catalog-operator-removal</code>. Tests pass nineteen focused events on each Go version and 1,115 catalog race events. The immutable removal set at <code>c84c12d5</code> passes four race and four minimum-Go events. Documentation, ago, and lint checks pass. Persistence, transport, aliases, and Starport routing remain incomplete.</p>
 
 <p>Starport is clean <code>d45bb30</code> in <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>. It passes 32/33 gates. V01 requires a stable Starmap release.</p>
 

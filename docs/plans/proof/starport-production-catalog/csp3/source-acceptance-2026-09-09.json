@@ -518,6 +518,18 @@
         "session": 46280,
         "log": "/tmp/starmap-pr143-cache-ci-watch-2026-09-10.log",
         "command": "gh run watch 34437656892 --repo agentstation/starmap --interval 60 --exit-status"
+      },
+      "native_jobs": {
+        "passed": 6,
+        "platforms": [
+          "windows-2025",
+          "windows-11-arm",
+          "ubuntu-24.04",
+          "ubuntu-24.04-arm",
+          "macos-15",
+          "macos-15-intel"
+        ],
+        "remaining": "Verification Gate remains active. No merge credit."
       }
     },
     "pre-pr-review": {

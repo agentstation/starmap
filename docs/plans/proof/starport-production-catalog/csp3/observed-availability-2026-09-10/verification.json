@@ -506,10 +506,15 @@
       "ago": 76418,
       "lint": 36112,
       "docs_check": 7654
+    },
+    "static_results": {
+      "ago_exit": 0,
+      "lint_exit": 0,
+      "docs_check_exit": 0
     }
   },
   "removal_set_work": {
-    "state": "starting",
+    "state": "committed locally; runtime persistence and transport remain required",
     "worktree": "/tmp/starmap-operator-removal-2026-09-10",
     "branch": "codex/catalog-operator-removal",
     "base": "6e0d590a",
@@ -519,6 +524,50 @@
       "Rotation must preserve account identity.",
       "A scoped removal cannot imply canonical removal.",
       "Retained aliases must enforce removal of their resolved target."
+    ],
+    "fail_before": {
+      "log": "/tmp/starmap-removal-set-before-2026-09-10.jsonl",
+      "exit_code": 1,
+      "classification": "Expected compile failure: new API was absent. No test executed.",
+      "artifact": {
+        "path": "removal-set-fail_before.gz",
+        "sha256": "304614ab6cd992c83d5f8c59a84b49f53c58ca903de7b78b29129c8297d1025e"
+      }
+    },
+    "race": {
+      "log": "/tmp/starmap-removal-set-final-2026-09-10.jsonl",
+      "exit_code": 0,
+      "passed_events": 4,
+      "failed_events": 0,
+      "skipped_events": 0,
+      "artifact": {
+        "path": "removal-set-race.gz",
+        "sha256": "bb86eb49cfc95a4e7d40c330791b6a8843a6e46418ab818f9418024dbd745153"
+      }
+    },
+    "minimum_go": {
+      "log": "/tmp/starmap-removal-set-min-go-2026-09-10.jsonl",
+      "exit_code": 0,
+      "passed_events": 4,
+      "failed_events": 0,
+      "skipped_events": 0,
+      "artifact": {
+        "path": "removal-set-minimum_go.gz",
+        "sha256": "08d18b4c255c4583a0189b82d571f9e3251c0a0f39189c7b9f16f413afba7a72"
+      }
+    },
+    "ago_exit": 0,
+    "lint_exit": 0,
+    "godoc_exit": 0,
+    "docs_check_session": 8495,
+    "prose_session": 11212,
+    "work_commit": "c84c12d5",
+    "docs_check_exit": 0,
+    "prose_exit": 0,
+    "files": [
+      "pkg/catalogs/removal_set.go",
+      "pkg/catalogs/removal_set_test.go",
+      "pkg/catalogs/README.md"
     ]
   }
 }
