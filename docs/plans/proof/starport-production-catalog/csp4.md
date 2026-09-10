@@ -7,7 +7,7 @@ The active source is clean local `717ba9148a75ad74ca1758aa51cbb121b0f5fd18` in `
 The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b` and remains unpublished.
 
 No owner decision remains. The [runtime transaction proof](csp4/origin-runtime-2026-09-10/verification.json) records the committed integration and its scoped qualification.
-The full repository check remains active. The proof lists its session ID and completed package outcomes.
+Complete repository verification passes at that commit. Required Sol and Opus review is active.
 
 The [recovery record](csp4/worktree-recovery-2026-09-10.json) verifies the restored branches after their temporary directories disappeared.
 Canonical checkpoint `91aa43c6` preserves the completed checks. Historical proof keeps its original paths.
@@ -46,7 +46,10 @@ The proof retains that failure, the correction, source hashes, and compressed ar
 The intermediate runtime suite passes 820 events in 1,386.154 seconds. Its source predates the alias-validation extraction and guarded-bootstrap repair.
 Do not report it as final-code qualification.
 
-Next, qualify this library and runtime delivery with complete repository checks, required review, native CI, and a reviewed merge.
+Full verification passes 82 packages in both ordinary and race modes. All 15 coverage thresholds and the container smoke check pass.
+Documentation, prose, static analysis, and offline CLI checks pass. Catalog reads take 8.100–11.43 ns with zero allocations across three runs.
+
+Next, complete required review, native CI, and a reviewed merge for this library and runtime delivery.
 Then continue canonical server settings, qualified clocks, shared-store followers, authority transitions, and Starport consumers.
 The current APIs do not complete the standalone production recipe.
 

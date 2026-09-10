@@ -1902,3 +1902,9 @@ These checks do not complete the standalone production recipe or any of the eigh
 The origin option selects the sole publication store, including when client options name another store.
 Its complete effective catalog defines the permitted catalog. The deployment still controls mutation authorization and supplies qualified clock evidence.
 Canonical server settings, native clock qualification, shared-store followers, authority transitions, and Starport consumer qualification remain open.
+
+Complete `make verify` passes at `717ba914`, with 82 package outcomes in both ordinary and race modes.
+The final runtime race package completes in 1,533.210 seconds. All 15 coverage thresholds, container smoke, documentation, prose, and offline CLI checks pass.
+
+Catalog pointer reads take 8.100–11.43 ns with zero allocations across three runs. This measures the accessor, not complete gateway overhead.
+Required Sol and Opus review is active. Native CI and a reviewed merge remain required.
