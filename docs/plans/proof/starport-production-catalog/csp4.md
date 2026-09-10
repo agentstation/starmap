@@ -3,7 +3,39 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-Local commit `a9b369dca409f4d47813da32b092622fb3a4aedd` follows ownership fix `ea4f7f11` and runtime integration `9ddf5fd0`.
+The current local source is `671b54d531f928f65d550411190293d4cde842b0`. No CSP4 PR exists.
+No command remains running. No owner decision remains.
+
+The [head snapshot proof](csp4/authority-head-2026-09-10/verification.json) records 106 passing root test events and one package outcome.
+Its focused root/runtime check passes 17 test events and two package outcomes.
+
+The minimum-toolchain check passes one test and one package outcome. Static checks pass across 1,402 prose files with zero diagnostics.
+The complete runtime, remote, and artifact suite passes 864 test events and three package outcomes against predecessor `a9b369dc`.
+These completed suites contain no failed or skipped events. They do not qualify all CSP4 product cases.
+
+The runtime retains authority requirements separately from finite receipts.
+It preserves refusal after a known withdrawal or rejected receipt. Ordinary renewal keeps only the previously confirmed lease until the replacement is durable.
+Private retention supports bounded clean restart and requires fresh evidence after a crash.
+Client guards reserve update, activation, and rollback for the owning runtime.
+
+The [generation-binding proof](csp4/generation-binding-2026-09-10/verification.json) verifies exact generations after refresh and retained restart.
+
+`CurrentAuthorityHead` reads the committed record from memory with no storage reads and zero allocations in the focused test.
+That snapshot does not authenticate a publisher, prove fleet freshness, or renew permission.
+The [integration proof](csp4/runtime-integration-2026-09-10/verification.json) preserves earlier failures and their repairs.
+
+Next, implement publisher receipt issuance, qualified clock evidence, shared-store follower activation, authority transitions, and required consumer checks.
+The [clock research](csp4/authority-head-2026-09-10/clock-research.md) identifies restart, suspend, replay, and timing constraints. It selects no clock adapter.
+Complete product verification, required review, native CI, and merge before task completion.
+
+## Runtime integration checkpoint history
+
+The following record preserves earlier results and commands that were still running when recorded.
+The current section above owns execution state.
+
+
+CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
+Local commit `671b54d531f928f65d550411190293d4cde842b0` follows generation binding `a9b369dc`, ownership fix `ea4f7f11`, and runtime integration `9ddf5fd0`.
 The [runtime proof](csp4/runtime-integration-2026-09-10/verification.json) binds 47 changed files to the committed tree.
 
 Each final focused suite passes 29 test events and two package outcomes.
@@ -38,6 +70,16 @@ The exact generation survives refresh and retained restart. Both toolchains pass
 
 An unchanged generation requires no catalog-store write. This preserves retained diagnostics during a write outage.
 The complete runtime, remote, and artifact race suite remains running. Current resume state names its session and output path.
+
+The [head snapshot proof](csp4/authority-head-2026-09-10/verification.json) records the latest nine-file change.
+`CurrentAuthorityHead` reads the committed authority record from memory.
+Its focused test records zero storage reads and zero allocations.
+Construction, activation, ordinary publication, rollback, and failed writes preserve the expected head.
+The final root/runtime check passes 17 test events and two package outcomes. The minimum-toolchain check passes one test and one package outcome.
+
+The snapshot does not authenticate a publisher, prove fleet freshness, or renew permission.
+The current root suite remains running. The older complete runtime suite tests `a9b369dc` before this root change.
+Current resume state names both sessions and output paths.
 
 Next, complete publisher receipt issuance, the host clock adapter, shared-store follower activation, authority transitions, and required consumer checks.
 Full CSP4 verification, review, native CI, PR, and merge remain pending.

@@ -1747,6 +1747,11 @@ The serving catalog store must retain the original authority generation, includi
 A runtime must not reconstruct an ordinary manifest from the same catalog facts.
 An unchanged retained generation requires exact manifest and payload equality before startup skips the store write.
 
+Permission handling reads the committed authority head from memory through `CurrentAuthorityHead`.
+That snapshot follows catalog publication under the same client lock. Failed publication preserves the previous head.
+The snapshot does not prove publisher identity, fleet freshness, or permission validity.
+The issuer must establish those conditions before it can return a receipt.
+
 The library clock callback reads only cached evidence.
 Its uncertainty must describe the same clock that supplies runtime time.
 The current standalone composition has no clock qualification adapter. It therefore cannot yet qualify an internal production recipe.

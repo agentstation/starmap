@@ -1,0 +1,190 @@
+{
+  "task": "CSP4",
+  "source": "671b54d531f928f65d550411190293d4cde842b0",
+  "source_tree": "02d70ad805f103ef09f28f5f5a90cf497547deb2",
+  "base": "a9b369dca409f4d47813da32b092622fb3a4aedd",
+  "source_files_sha256": {
+    "authority_head.go": "72fdf6694b18f935dee23aa7ee2ad86ad726e0902a6663135d6c3d0d39f4d868",
+    "authority_head_test.go": "311d90455d4abd33e23fd71d0f6d9290cb4cd94be5aa0a92b988e4129019ea2b",
+    "client.go": "ba264b789c049b943a4c0bd0dc14e6c236c208c9ae79b2465e6469cc31cb9d56",
+    "client_readonly_test.go": "e8de5bee9d524c364fd8e66f39e03de562dd3d82d21e211751515061a98838e5",
+    "docs/API.md": "01194b9c8ea7a4e299c207deb0c4105c6a78eb9fb72ee5b192a8f404099f22a3",
+    "generation.go": "cca794ecc9b741ffffae492297e680908fe91631ae6831578b85883f4106dbf2",
+    "options_behavior_test.go": "4ef7dbca1b5892858fa243c449f70f9d637856a858e6a5694abaaee5dea6b5cd",
+    "readiness_test.go": "35a12f958a070d27817e01b6c764289338af8b3c30b6a073dba0fe10322b2e28",
+    "update.go": "b08af18713c28b161fda51eb0c73b09ad9745427d57f31eb1d291a52571d7c36"
+  },
+  "checks": {
+    "red": {
+      "artifact": {
+        "path": "red.jsonl.gz",
+        "sha256": "0c74c09041bc3f765c0ddadf334eaf337dff81a24709d01b1e3dbba0872417c1",
+        "raw_sha256": "115d3509759beb8a3583636f78340590665b38f9e5f54c1b831077872635980c"
+      },
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json . -run '^TestCurrentAuthorityHeadReadsPublishedStateWithoutStorage$'",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "exit_code": 1,
+      "source_scope": "Fail-before test above a9b369dc."
+    },
+    "initial-green": {
+      "artifact": {
+        "path": "initial-green.jsonl.gz",
+        "sha256": "c2f7c132faaad00c105c18b3d057d9f5e7359909e0085f4ae6d3cc76f2544998",
+        "raw_sha256": "2202b8fe280cb2604c0d3a3c3e162d0eb97ef00f2aadcaa7fc14d1bf5f7cb330"
+      },
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json . -run '^TestCurrentAuthorityHeadReadsPublishedStateWithoutStorage$'",
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "source_scope": "The initial green precedes the extra failed-write and nil-client assertions. Final runtime and minimum checks include them."
+    },
+    "minimum": {
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "e5b7b3cb9c290cb0e403a0e086bb555b0d8890a529bcaa5a5303e8b64afb8649",
+        "raw_sha256": "497365490d7c95a333eea3541f80565e5c4501596216f180bc3328915b781688"
+      },
+      "toolchain": "go1.25.12",
+      "command": "go test -race -count=1 -timeout=5m -json . -run '^TestCurrentAuthorityHeadReadsPublishedStateWithoutStorage$'",
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "source_scope": "Final source before commit."
+    },
+    "runtime": {
+      "artifact": {
+        "path": "runtime.jsonl.gz",
+        "sha256": "6314dd5635c4275e68ca38eb49f5cbd7613eea36fdc1ec8296506ef3563346e0",
+        "raw_sha256": "aa814ed41daba5dbb41018263eaa5cd55658f4ba3f2087f7d8aa63748e75a96b"
+      },
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json . ./runtime -run '^(TestCurrentAuthorityHeadReadsPublishedStateWithoutStorage|TestAuthorityRuntime)'",
+      "test_events": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0,
+      "source_scope": "Final source before commit."
+    },
+    "lint": {
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      },
+      "command": "devbox run golangci-lint run",
+      "exit_code": 0
+    },
+    "ago": {
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      "command": "go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0
+    },
+    "docs": {
+      "artifact": {
+        "path": "docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      },
+      "command": "GOFLAGS= make docs-check",
+      "exit_code": 0
+    },
+    "prose": {
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "4309cc0153c815eedb4e2666cb79ef5026179664a71674fe7e7c22e0c41b30ce",
+        "raw_sha256": "4dcb9e2095b0517c0046c28cf5e0ecaccd5b470ab31404d885fef8c6b20d8172"
+      },
+      "command": "make technical-writing-check",
+      "exit_code": 0
+    },
+    "root-suite": {
+      "artifact": {
+        "path": "root-suite.jsonl.gz",
+        "sha256": "1b9ef65f4b228faa58162ede63f41f366d88f61aae3f0688da20281baf623ce1",
+        "raw_sha256": "5f21de071c5f4a00318cb06e0106df97fa9e815f0373a29d194193bc979d8825"
+      },
+      "command": "go test -race -count=1 -timeout=20m -json .",
+      "source": "671b54d531f928f65d550411190293d4cde842b0",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 106,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:00:29.687357-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap",
+          "Elapsed": 625.095
+        }
+      ],
+      "exit_code": 0
+    },
+    "runtime-parent-suite": {
+      "artifact": {
+        "path": "runtime-parent-suite.jsonl.gz",
+        "sha256": "1ee8d1d2dee8f3b1e60f2338ae49f0d834c45ee61d3a2d360c22128d9fa3a5ca",
+        "raw_sha256": "1447998e8836507ad241389adfc05744cd3c8f0507014e9c56eff15b2ec69f2d"
+      },
+      "command": "go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
+      "source": "a9b369dca409f4d47813da32b092622fb3a4aedd",
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 864,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T09:38:12.880161-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/remote",
+          "Elapsed": 16.259
+        },
+        {
+          "Time": "2026-09-10T09:38:14.178637-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Elapsed": 1.297
+        },
+        {
+          "Time": "2026-09-10T09:56:13.253894-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1096.63
+        }
+      ],
+      "exit_code": 0
+    }
+  },
+  "observations": [
+    "CurrentAuthorityHead reads the committed head under the same lock as catalog publication. It performs no store reads and allocates no memory in the focused check.",
+    "The head follows construction, activation, ordinary publication, and rollback. A failed store commit preserves the prior head.",
+    "The head is a passive publication record. It does not authenticate a publisher, prove fleet freshness, or renew a permission receipt.",
+    "The final root/runtime check passes 17 test events and two package outcomes. The minimum-toolchain check passes one test and one package outcome."
+  ],
+  "limitations": [
+    "The complete runtime, remote, and artifact suite covers a9b369dc before the later root head snapshot. The focused root/runtime suite covers that later change.",
+    "All eight CSP4 acceptance subcases remain UNVERIFIED. Publisher receipt issuance, qualified clock evidence, follower activation, full product qualification, review, native CI, and merge remain open."
+  ],
+  "running_operations": []
+}

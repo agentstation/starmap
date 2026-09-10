@@ -1731,3 +1731,18 @@ An unchanged generation requires exact manifest and payload equality before the 
 This preserves diagnostics after a write outage without accepting a different manifest under the same generation ID.
 The full root race suite passes 105 test events on unchanged root source.
 The full runtime, remote, and artifact race suite remains running. CSP4 remains incomplete.
+
+## Authority head snapshot, 2026-09-10
+
+Local `671b54d5` exposes `CurrentAuthorityHead` without catalog-store reads or payload copies.
+The [head proof](../../plans/proof/starport-production-catalog/csp4/authority-head-2026-09-10/verification.json) records zero storage reads and zero allocations in the focused test.
+The final root/runtime check passes 17 test events and two package outcomes. The minimum-toolchain check passes one test and one package outcome.
+Static checks pass across 1,402 prose files with zero diagnostics.
+
+The snapshot follows construction, activation, ordinary publication, and rollback. Failed publication preserves the previous head.
+It does not authenticate the publisher, prove fleet freshness, or renew permission.
+Receipt issuance and complete CSP4 qualification remain open.
+
+The latest full root suite passes 106 test events and one package outcome at `671b54d5`.
+The complete runtime, remote, and artifact suite passes 864 test events and three package outcomes at predecessor `a9b369dc`.
+Both runs finish without failed or skipped test events. The head snapshot proof preserves their exact logs and source revisions.
