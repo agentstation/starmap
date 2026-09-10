@@ -8,11 +8,13 @@
 import "github.com/agentstation/starmap/pkg/catalogs/permission"
 ```
 
-Package permission issues bounded catalog permission receipts from current authority storage.
+Package permission prepares authority generations, orders their publication, and issues bounded receipts from current storage.
 
 ## Index
 
+- [func PrepareGeneration\(input catalogs.Generation, config GenerationConfig\) \(catalogs.Generation, error\)](<#PrepareGeneration>)
 - [type ClockReading](<#ClockReading>)
+- [type GenerationConfig](<#GenerationConfig>)
 - [type Issuer](<#Issuer>)
   - [func NewIssuer\(reader storage.AuthorityHeadReader, config IssuerConfig\) \(\*Issuer, error\)](<#NewIssuer>)
   - [func \(i \*Issuer\) ReadPermission\(ctx context.Context\) \(catalogs.CatalogPermissionEnvelope, error\)](<#Issuer.ReadPermission>)
@@ -27,6 +29,17 @@ Package permission issues bounded catalog permission receipts from current autho
 - [type PublisherConfig](<#PublisherConfig>)
 
 
+<a name="PrepareGeneration"></a>
+## func [PrepareGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/generation.go#L36>)
+
+```go
+func PrepareGeneration(input catalogs.Generation, config GenerationConfig) (catalogs.Generation, error)
+```
+
+PrepareGeneration binds an ordinary catalog to an explicitly selected origin authority. The entire input catalog defines the permitted catalog for this policy. The caller must apply its catalog policy before preparation and authorize the origin separately. An existing authority generation must retain its original identity through the subscriber or relay path. Preparation starts no I/O and returns independent copies of mutable data. Publication still requires Publisher and its exact durable predecessor.
+
+The required revision binds authority, policy, permission schema, and every semantic catalog fact. It excludes provenance and manifest observation metadata, but includes catalog scope evidence and rename history. This conservative revision changes even for metadata\-only catalog changes. Identical semantics under a new publication sequence keep the revision, while the generation identity changes.
+
 <a name="ClockReading"></a>
 ## type [ClockReading](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/issuer.go#L16-L20>)
 
@@ -37,6 +50,19 @@ type ClockReading struct {
     Time        time.Time
     Uncertainty time.Duration
     Known       bool
+}
+```
+
+<a name="GenerationConfig"></a>
+## type [GenerationConfig](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/generation.go#L19-L23>)
+
+GenerationConfig identifies one complete permitted catalog and its publication sequence. The origin selects Sequence from its durable predecessor. Publisher checks the final atomic commit.
+
+```go
+type GenerationConfig struct {
+    AuthorityID string
+    PolicyID    string
+    Sequence    uint64
 }
 ```
 

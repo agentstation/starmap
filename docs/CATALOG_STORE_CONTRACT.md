@@ -176,7 +176,8 @@ The underlying store must supply the current-read guarantee before the wrapper c
 
 Every authority writer must use this publication contract.
 The caller authorizes the publisher and supplies a complete authority generation with the correct required permission revision.
-This wrapper validates publication order. Origin policy composition must still derive that revision from the permitted catalog and applicable policy.
+This wrapper validates publication order. `permission.PrepareGeneration` derives a revision for a complete permitted catalog.
+The origin must select and apply its catalog policy before preparation.
 Direct underlying writes, deleted state, and restored older backups need separate recovery procedures.
 
 `Commit` checks the stored predecessor before the final atomic compare-and-swap.
@@ -192,6 +193,27 @@ A missing predecessor read cannot reset an existing sequence through an empty ex
 The publisher refuses candidates or predecessors whose mandatory permission semantics it cannot enforce.
 Its independent head read still exposes unknown positive permission versions to receipt readers.
 Consumers must refuse those semantics. The capability does not authorize publication under an unsupported policy.
+
+## Authority generation construction
+
+`permission.PrepareGeneration` accepts an ordinary generation and explicit authority, policy, and positive sequence values.
+It verifies the complete catalog, including schema agreement and accepted membership evidence, before constructing the authority manifest.
+The input catalog must already represent the policy's complete permitted catalog. Gateway account grants and budgets remain separate contracts.
+An authority generation cannot enter this path. Subscribers and relays preserve its original authority identity instead.
+
+The required permission revision binds authority, policy, permission schema, and the catalog's semantic checksum.
+It covers membership, scoped removal policy, canonical identity, alias state, and serving facts.
+Provenance and manifest observation metadata do not change this revision. Catalog scope evidence remains part of it.
+This conservative contract also changes the revision when other catalog facts change. An incompatible replica must then block new attempts.
+
+The authority generation ID separately binds the complete source manifest, selected identity, sequence, and required revision.
+Exact preparation retries return identical bytes. New sequences or changed source evidence receive a different generation ID.
+The result preserves exact payload bytes and copies mutable data. Neither preparation nor its hashes run during inference admission.
+
+Preparation starts no I/O. The caller still selects the durable predecessor and uses `Publisher` for atomic publication.
+
+Elapsed publication time cannot expire a canonical alias. Explicit operator or baseline removal changes its retained state and the required revision.
+The preparation library does not wire an origin server, authorize publishers, qualify clocks, or select a shared storage service.
 
 ## Failure preservation and rollback
 

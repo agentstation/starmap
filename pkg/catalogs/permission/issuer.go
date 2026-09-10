@@ -1,4 +1,4 @@
-// Package permission issues bounded catalog permission receipts from current authority storage.
+// Package permission prepares authority generations, orders their publication, and issues bounded receipts from current storage.
 package permission
 
 import (
