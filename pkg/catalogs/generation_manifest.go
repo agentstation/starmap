@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"slices"
 	"strings"
 	"time"
 
@@ -34,10 +35,12 @@ var (
 )
 
 const (
-	// CurrentGenerationManifestVersion is the manifest envelope version emitted
-	// by this release. It is intentionally independent of the Starmap binary
-	// version and the catalog payload schema version.
+	// CurrentGenerationManifestVersion is the default manifest envelope version.
+	// Authority publications use AuthorityGenerationManifestVersion. Both are independent of the payload schema.
 	CurrentGenerationManifestVersion uint64 = 2
+
+	// AuthorityGenerationManifestVersion binds an authority head to the committed catalog generation.
+	AuthorityGenerationManifestVersion uint64 = 3
 
 	// CurrentCatalogSchemaVersion identifies the canonical catalog payload
 	// schema emitted by this release.
@@ -173,6 +176,9 @@ func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool {
 // Local stores and distribution transports share it. Transport-specific
 // URLs, release tags, and binary versions do not belong in this domain record.
 type GenerationManifest struct {
+	// AuthorityHead is the permission publication committed with this generation.
+	// Ordinary manifests omit it. The scalar value remains independent of caller mutation after a copy.
+	AuthorityHead         CatalogAuthorityHead       `json:"authority_head,omitzero" yaml:"authority_head,omitempty"`
 	ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
 	SchemaVersion         uint64                     `json:"schema_version" yaml:"schema_version"`
 	GenerationID          string                     `json:"generation_id" yaml:"generation_id"`
@@ -192,9 +198,14 @@ type GenerationManifest struct {
 // It returns typed validation errors for unknown or missing members, including
 // false or zero values. It also rejects malformed JSON and trailing documents.
 func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
-	var raw map[string]json.RawMessage
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return GenerationManifest{}, validationError("manifest", string(data), fmt.Sprintf("invalid JSON: %v", err))
+	raw, err := strictJSONObjectMembers(data, "manifest", slices.Concat(requiredManifestJSONFields, []string{"degradation_reasons", "authority_head"}))
+	if err != nil {
+		return GenerationManifest{}, err
+	}
+	if head, present := raw["authority_head"]; present {
+		if _, err := strictJSONObjectMembers(head, "authority_head", catalogAuthorityHeadJSONFields); err != nil {
+			return GenerationManifest{}, err
+		}
 	}
 	if err := requireJSONFields(raw, "", requiredManifestJSONFields); err != nil {
 		return GenerationManifest{}, err
@@ -249,6 +260,9 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error) {
 		}
 		return GenerationManifest{}, validationError("manifest", nil, fmt.Sprintf("invalid trailing data: %v", err))
 	}
+	if _, present := raw["authority_head"]; present && manifest.ManifestVersion != AuthorityGenerationManifestVersion {
+		return GenerationManifest{}, validationError("authority_head", nil, "requires the authority manifest version")
+	}
 	if err := manifest.Validate(); err != nil {
 		return GenerationManifest{}, err
 	}
@@ -267,8 +281,8 @@ func (m GenerationManifest) Copy() GenerationManifest {
 
 // Validate verifies that a manifest is complete and eligible for publication.
 func (m GenerationManifest) Validate() error {
-	if m.ManifestVersion != CurrentGenerationManifestVersion {
-		return validationError("manifest_version", m.ManifestVersion, fmt.Sprintf("must be %d", CurrentGenerationManifestVersion))
+	if err := m.validateAuthorityBinding(); err != nil {
+		return err
 	}
 	if m.SchemaVersion == 0 {
 		return validationError("schema_version", m.SchemaVersion, "must be greater than zero")

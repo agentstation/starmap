@@ -5,6 +5,11 @@ const CatalogPermissionSchemaVersion uint64 = 1
 
 const maxPermissionIdentityBytes = 256
 
+var catalogAuthorityHeadJSONFields = []string{
+	"authority_id", "policy_id", "sequence", "generation_id", "payload_checksum",
+	"required_permission_revision", "permission_schema_version",
+}
+
 // CatalogAuthorityHead binds one authority publication to its catalog and required permission revision.
 // The authority commits these fields together. Validation does not authenticate the authority.
 type CatalogAuthorityHead struct {

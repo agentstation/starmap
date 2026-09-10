@@ -1091,10 +1091,12 @@ func main() {
 
 ```go
 const (
-    // CurrentGenerationManifestVersion is the manifest envelope version emitted
-    // by this release. It is intentionally independent of the Starmap binary
-    // version and the catalog payload schema version.
+    // CurrentGenerationManifestVersion is the default manifest envelope version.
+    // Authority publications use AuthorityGenerationManifestVersion. Both are independent of the payload schema.
     CurrentGenerationManifestVersion uint64 = 2
+
+    // AuthorityGenerationManifestVersion binds an authority head to the committed catalog generation.
+    AuthorityGenerationManifestVersion uint64 = 3
 
     // CurrentCatalogSchemaVersion identifies the canonical catalog payload
     // schema emitted by this release.
@@ -1235,7 +1237,7 @@ func ValidateMembershipEvidence(scopes []ProviderMembershipScope, links []Source
 ValidateMembershipEvidence checks scope facts against original provider observations. It does not authenticate publishers or prove a source's declared scope authority.
 
 <a name="ValidateReviewCandidates"></a>
-## func [ValidateReviewCandidates](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L340-L343>)
+## func [ValidateReviewCandidates](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L354-L357>)
 
 ```go
 func ValidateReviewCandidates(candidates []evidence.ReviewCandidate, observations []SourceObservationLink) error
@@ -2572,7 +2574,7 @@ func (cat *Catalog) ScopeMembership(key MembershipScopeKey, provider ProviderID,
 ScopeMembership reads a precomputed scope without allocation or storage I/O. Missing scopes and incomplete absence return known=false. The provider must match.
 
 <a name="CatalogAuthorityHead"></a>
-## type [CatalogAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L10-L18>)
+## type [CatalogAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L15-L23>)
 
 CatalogAuthorityHead binds one authority publication to its catalog and required permission revision. The authority commits these fields together. Validation does not authenticate the authority.
 
@@ -2589,7 +2591,7 @@ type CatalogAuthorityHead struct {
 ```
 
 <a name="CatalogAuthorityHead.SupportsPermissions"></a>
-### func \(CatalogAuthorityHead\) [SupportsPermissions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L44>)
+### func \(CatalogAuthorityHead\) [SupportsPermissions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L49>)
 
 ```go
 func (h CatalogAuthorityHead) SupportsPermissions() bool
@@ -2598,7 +2600,7 @@ func (h CatalogAuthorityHead) SupportsPermissions() bool
 SupportsPermissions reports whether this reader understands every mandatory permission semantic. A compatible catalog payload cannot override an unsupported permission version.
 
 <a name="CatalogAuthorityHead.Validate"></a>
-### func \(CatalogAuthorityHead\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L22>)
+### func \(CatalogAuthorityHead\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L27>)
 
 ```go
 func (h CatalogAuthorityHead) Validate() error
@@ -2607,7 +2609,7 @@ func (h CatalogAuthorityHead) Validate() error
 Validate checks publication identity and digest shape independently of catalog payload compatibility. Unknown positive permission versions remain readable so the consumer can record the required revision before refusing admission.
 
 <a name="CatalogAuthorityHead.ValidateSuccessor"></a>
-### func \(CatalogAuthorityHead\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L50>)
+### func \(CatalogAuthorityHead\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L55>)
 
 ```go
 func (h CatalogAuthorityHead) ValidateSuccessor(next CatalogAuthorityHead) error
@@ -2852,7 +2854,7 @@ func (t CatalogRemovalTarget) Validate() error
 Validate rejects incomplete and mixed removal selectors before publication.
 
 <a name="ConsumerCompatibility"></a>
-## type [ConsumerCompatibility](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L162-L165>)
+## type [ConsumerCompatibility](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L165-L168>)
 
 ConsumerCompatibility declares the catalog schema versions that can consume this generation. It never refers to a Starmap or Starport binary version.
 
@@ -2864,7 +2866,7 @@ type ConsumerCompatibility struct {
 ```
 
 <a name="ConsumerCompatibility.SupportsSchema"></a>
-### func \(ConsumerCompatibility\) [SupportsSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L168>)
+### func \(ConsumerCompatibility\) [SupportsSchema](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L171>)
 
 ```go
 func (c ConsumerCompatibility) SupportsSchema(schemaVersion uint64) bool
@@ -3043,7 +3045,7 @@ func (g Generation) Validate() error
 Validate verifies the manifest and its binding to the payload.
 
 <a name="GenerationCompleteness"></a>
-## type [GenerationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L54>)
+## type [GenerationCompleteness](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L57>)
 
 GenerationCompleteness describes whether a generation contains every record expected from the observations used to build it.
 
@@ -3064,12 +3066,15 @@ const (
 ```
 
 <a name="GenerationManifest"></a>
-## type [GenerationManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L175-L189>)
+## type [GenerationManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L178-L195>)
 
 GenerationManifest describes one immutable, validated catalog generation. Local stores and distribution transports share it. Transport\-specific URLs, release tags, and binary versions do not belong in this domain record.
 
 ```go
 type GenerationManifest struct {
+    // AuthorityHead is the permission publication committed with this generation.
+    // Ordinary manifests omit it. The scalar value remains independent of caller mutation after a copy.
+    AuthorityHead         CatalogAuthorityHead       `json:"authority_head,omitzero" yaml:"authority_head,omitempty"`
     ManifestVersion       uint64                     `json:"manifest_version" yaml:"manifest_version"`
     SchemaVersion         uint64                     `json:"schema_version" yaml:"schema_version"`
     GenerationID          string                     `json:"generation_id" yaml:"generation_id"`
@@ -3087,7 +3092,7 @@ type GenerationManifest struct {
 ```
 
 <a name="ParseGenerationManifestJSON"></a>
-### func [ParseGenerationManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L194>)
+### func [ParseGenerationManifestJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L200>)
 
 ```go
 func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error)
@@ -3096,7 +3101,7 @@ func ParseGenerationManifestJSON(data []byte) (GenerationManifest, error)
 ParseGenerationManifestJSON strictly parses and validates a JSON manifest. It returns typed validation errors for unknown or missing members, including false or zero values. It also rejects malformed JSON and trailing documents.
 
 <a name="GenerationManifest.Copy"></a>
-### func \(GenerationManifest\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L259>)
+### func \(GenerationManifest\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L273>)
 
 ```go
 func (m GenerationManifest) Copy() GenerationManifest
@@ -3105,7 +3110,7 @@ func (m GenerationManifest) Copy() GenerationManifest
 Copy returns a value whose slices do not alias the original manifest.
 
 <a name="GenerationManifest.Validate"></a>
-### func \(GenerationManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L269>)
+### func \(GenerationManifest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L283>)
 
 ```go
 func (m GenerationManifest) Validate() error
@@ -3183,7 +3188,7 @@ func PublishedGenerationParameters() []GenerationParameter
 PublishedGenerationParameters returns the supported generation controls. The caller owns the returned slice.
 
 <a name="GenerationValidationCheck"></a>
-## type [GenerationValidationCheck](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L125-L129>)
+## type [GenerationValidationCheck](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L128-L132>)
 
 GenerationValidationCheck records one deterministic validation decision.
 
@@ -3196,7 +3201,7 @@ type GenerationValidationCheck struct {
 ```
 
 <a name="GenerationValidationCheckStatus"></a>
-## type [GenerationValidationCheckStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L76>)
+## type [GenerationValidationCheckStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L79>)
 
 GenerationValidationCheckStatus is the result of one validation check.
 
@@ -3218,7 +3223,7 @@ const (
 ```
 
 <a name="GenerationValidationReport"></a>
-## type [GenerationValidationReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L133-L140>)
+## type [GenerationValidationReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L136-L143>)
 
 GenerationValidationReport records the validator identity and exact outcome that made a candidate eligible \(or ineligible\) for publication.
 
@@ -3234,7 +3239,7 @@ type GenerationValidationReport struct {
 ```
 
 <a name="GenerationValidationStatus"></a>
-## type [GenerationValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L65>)
+## type [GenerationValidationStatus](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L68>)
 
 GenerationValidationStatus is the overall result of generation validation.
 
@@ -5670,7 +5675,7 @@ func WithWritePath(path string) Option
 WithWritePath sets a specific path for writing catalog files.
 
 <a name="PayloadDescriptor"></a>
-## type [PayloadDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L88-L92>)
+## type [PayloadDescriptor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L91-L95>)
 
 PayloadDescriptor binds a generation manifest to exact immutable bytes.
 
@@ -5683,7 +5688,7 @@ type PayloadDescriptor struct {
 ```
 
 <a name="DescribeCatalogPayload"></a>
-### func [DescribeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L95>)
+### func [DescribeCatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L98>)
 
 ```go
 func DescribeCatalogPayload(payload []byte) PayloadDescriptor
@@ -5692,7 +5697,7 @@ func DescribeCatalogPayload(payload []byte) PayloadDescriptor
 DescribeCatalogPayload returns the descriptor for canonical catalog bytes.
 
 <a name="PayloadDescriptor.Verify"></a>
-### func \(PayloadDescriptor\) [Verify](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L105>)
+### func \(PayloadDescriptor\) [Verify](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L108>)
 
 ```go
 func (d PayloadDescriptor) Verify(payload []byte) error
@@ -7271,7 +7276,7 @@ func (se SourceExtensions) Copy() SourceExtensions
 Copy returns a deep copy of the source extension map.
 
 <a name="SourceObservationLink"></a>
-## type [SourceObservationLink](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L145-L153>)
+## type [SourceObservationLink](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L148-L156>)
 
 SourceObservationLink binds a generation to one immutable source observation. The source pipeline defines the observation schema and retention policy. This link is deliberately small and replay\-oriented.
 
@@ -7288,7 +7293,7 @@ type SourceObservationLink struct {
 ```
 
 <a name="SourceObservationLink.Validate"></a>
-### func \(SourceObservationLink\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L156>)
+### func \(SourceObservationLink\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation_manifest.go#L159>)
 
 ```go
 func (o SourceObservationLink) Validate() error
