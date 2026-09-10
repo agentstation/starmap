@@ -692,7 +692,7 @@
     ]
   },
   "transport_draft": {
-    "status": "Schema-7 transport and runtime integration are committed locally through 2290162f. Focused trust, receipt, migration, compatibility, and consumer checks pass. Full qualification and required review remain incomplete. Do not publish before those checks finish.",
+    "status": "Committed through 8a4c14d9. Full acquisition passes 100 test events. Required pre-PR review is running.",
     "files": [
       "pkg/catalogs/membership_scope.go",
       "pkg/catalogs/membership_scope_test.go"
@@ -1617,8 +1617,15 @@
     "acceptance_verifier": {
       "session_id": 68553,
       "log": "/tmp/starmap-membership-final-acceptance-2026-09-10.log",
-      "status": "running",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3"
+      "status": "completed",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3",
+      "exit_code": 1,
+      "summary": "0 passed, 50 failed; 50 UNVERIFIED",
+      "artifact": {
+        "path": "final-acceptance-summary.log.gz",
+        "sha256": "1f1532c78f9e5ceba705010a780392900adc11005e0c451a7ae13b6e0ca7cf20"
+      },
+      "limitation": "The non-JSON command retained only the aggregate report, so it cannot prove which registered commands passed. Its registry snapshot predates A08.partial_empty, and it began before the artifact repair. Preserve separate command evidence and collect a JSON report for current detailed qualification."
     },
     "operator_documentation": {
       "status": "Binding and receipt version documentation now matches the local implementation. Generated settings reference, docs checks, ago, and prose checks pass.",
@@ -1672,6 +1679,123 @@
         "Review, publication, and merge"
       ],
       "work_commit": "6517c69b"
+    },
+    "artifact_import": {
+      "status": "Committed repair passes full acquisition, focused minimum-Go, and static checks. Required review is running. No merge credit.",
+      "base_work_commit": "6517c69b",
+      "fail_before": {
+        "exit_code": 1,
+        "failed_test_events": 3,
+        "test": "TestArtifactImportRetainsOriginalMembershipEvidence",
+        "failure": "artifact import lost scoped membership in both scope-only and changed-facts subcases"
+      },
+      "contract": [
+        "ImportRelease retains independent incoming and current scopes with original provider receipts.",
+        "Scope-only changes publish. Identical imports do not publish.",
+        "Conflicting publisher/binding/revision scope records fail before changing active memory or the store.",
+        "Low-authority artifact merge does not select replacement authority. Configured source selection or explicit trusted activation owns replacement."
+      ],
+      "focused": {
+        "command": "go test -race -count=1 -timeout 20m ./acquisition -run '^TestArtifactImport' -json",
+        "go1.26.6": {
+          "exit_code": 0,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "go1.25.12": {
+          "exit_code": 0,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "static": {
+        "ago_exit_code": 0,
+        "lint_exit_code": 0,
+        "godoc_exit_code": 0,
+        "docs_check_exit_code": 0,
+        "writing_status": "completed",
+        "writing_exit_code": 0,
+        "writing_files": 1341,
+        "writing_diagnostics": 0,
+        "vet_exit_code": 0
+      },
+      "full_acquisition": {
+        "session_id": 84150,
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./acquisition -json",
+        "log": "/tmp/starmap-membership-artifact-full-2026-09-10.jsonl",
+        "status": "completed",
+        "exit_code": 0,
+        "passing_test_events": 100,
+        "failing_test_events": 0,
+        "skipped_test_events": 0,
+        "artifact": {
+          "path": "artifact-import-full.jsonl.gz",
+          "sha256": "36b7925d90341602e67d4b045db7fc63e847d5a3b27a1cbae6ed6496a17e1b83"
+        }
+      },
+      "artifacts": {
+        "before": {
+          "path": "artifact-import-before.jsonl.gz",
+          "sha256": "5368881b097be018667bbe2c43d2b11c778a9ce773cf25a10dfa40e78faab897"
+        },
+        "first-repair": {
+          "path": "artifact-import-first-repair.jsonl.gz",
+          "sha256": "749fd08e83272b8fe99a1bb705d7ecee0e14d2bf69ace3258beda67df917be4a"
+        },
+        "focused": {
+          "path": "artifact-import-focused.jsonl.gz",
+          "sha256": "2ee7ad2336850ef026fc31e0c56043ec1104c668eb5c8937d95f3e66756d6f0b"
+        },
+        "min-go": {
+          "path": "artifact-import-min-go.jsonl.gz",
+          "sha256": "e82837a40586675b3894413359e849fdace9ae09281fd0e82781cd264e25b5ab"
+        },
+        "ago": {
+          "path": "artifact-import-ago.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        },
+        "lint": {
+          "path": "artifact-import-lint.log.gz",
+          "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+        },
+        "docs": {
+          "path": "artifact-import-docs.log.gz",
+          "sha256": "5d95f6cda30a94b9e0e5a600a4f8a439b17e5ee7e785dcaef466122aa2963b32"
+        },
+        "docs-check": {
+          "path": "artifact-import-docs-check.log.gz",
+          "sha256": "ece94277e36b4f2e03dd529785b79bfdcd6ed47c9fbf17f8ef1827517b7068f3"
+        },
+        "writing": {
+          "path": "artifact-import-writing.log.gz",
+          "sha256": "97bf9da308c66436f5cda09a40fff362e62ee290f5b2e4d30cd261b91ebf2c26"
+        },
+        "vet": {
+          "path": "artifact-import-vet.log.gz",
+          "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+        },
+        "plan-prose": {
+          "path": "artifact-import-plan-prose.log.gz",
+          "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b"
+        },
+        "plan-writing-clean": {
+          "path": "artifact-import-plan-writing-clean.log.gz",
+          "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
+        }
+      },
+      "work_commit": "8a4c14d9f79b48ac0fb140529c13e1b17611786f"
+    },
+    "pre_pr_review": {
+      "status": "running",
+      "work_commit": "8a4c14d9f79b48ac0fb140529c13e1b17611786f",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "log": "/tmp/starmap-membership-pre-pr-review-2026-09-10.log",
+      "session_id": 69725
     }
   }
 }

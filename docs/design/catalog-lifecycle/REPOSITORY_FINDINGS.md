@@ -1601,3 +1601,17 @@ Thus reconciliation and transport support do not prove that ordinary acquisition
 CSP3 must connect explicit replacement authority to the operator review policy at this boundary.
 The ordinary removal threshold remains an owner decision. Internal authoritative withdrawals must retain their separate immediate enforcement path.
 Model rename expiry and cross-authority alias acceptance also remain incomplete.
+
+## Portable artifact membership evidence, 2026-09-10
+
+Verified artifacts can contain membership scopes.
+`acquisition.ImportRelease` previously dropped incoming scopes during fact reconciliation and omitted original provider receipts from publication evidence.
+The regression tests reproduce this loss for scope-only imports and imports that also add model facts.
+
+The local repair retains independent incoming and current scopes with their original receipts.
+Conflicting records for one publisher and binding revision fail before publication.
+Repeated identical imports do not publish another generation.
+This low-authority merge does not select replacement authority. Configured source selection and explicit trusted activation own replacement.
+
+The [scope proof](../../plans/proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json) records eight passing focused events on each Go toolchain.
+Commit `8a4c14d9` also passes all 100 acquisition test events. Pre-PR review is active. The repair has no merge or task completion credit.

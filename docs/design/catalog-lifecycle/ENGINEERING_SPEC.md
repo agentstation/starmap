@@ -973,6 +973,12 @@ The reconciler owns source selection and baseline enrichment for pipeline acquis
 The function accepts supplied observations. It does not read sources or publish catalogs.
 Runtime reconstruction supplies stable change timestamps.
 
+Portable artifact merge must retain independent membership scopes and their original provider receipts.
+Scope-only changes require publication. Repeated identical imports must preserve the current generation.
+Conflicting records for one publisher and binding revision must fail before mutation.
+`acquisition.ImportRelease` cannot choose replacement authority through low-authority fact merge.
+A configured source or explicit trusted activation owns catalog replacement and its separate authority checks.
+
 Source refresh and provider windows now stage immutable inputs before catalog publication.
 A private transaction record binds the prior and candidate catalog identities and payload checksums.
 Only catalog acceptance permits retained input replacement. A bounded completion attempt continues after caller cancellation.

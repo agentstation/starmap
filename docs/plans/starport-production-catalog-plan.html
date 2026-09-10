@@ -11,13 +11,15 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-10 UTC. <a href="#CSP3">CSP3</a> is active. Eight of 38 tasks are complete. Twenty-one PRs merged. Unmerged work receives no completion credit.</p>
 
-<p id="next-action">Qualify the scoped membership draft with the full checks. PR #143 hit two race-test package timeouts. Reviewed commit <code>4f2b9462</code> now runs in CI <code>34426991461</code>. Confirm the merge before recording completion credit. CSP3 remains incomplete.</p>
+<p id="next-action">Finish required review of scoped membership commit <code>8a4c14d9</code>. Publish the reviewed branch and verify its merge. PR #143 hit two race-test package timeouts. Reviewed commit <code>4f2b9462</code> now runs in CI <code>34426991461</code>. Confirm the merge before recording completion credit. CSP3 remains incomplete.</p>
 
 <p>Continue scoped membership work in <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>, based on merged <code>fee76cc9</code>. The <a href="proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json">scope proof</a> owns this work. Health, reset recovery, and 68 integration test events pass. The full runtime suite passes 703 test events with the required twenty-minute limit. The full acquisition rerun passes 92 test events after the unsupported-schema fixture repair.</p>
 
 <p>The draft preserves local and upstream scope receipts through publication and restart. Local directory migration and upstream scope replacement checks pass. The <a href="proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json">scope proof</a> records passing retention, compatibility, and minimum-Go checks. Publisher reservation and HTTPS trust checks pass at local commit <code>373fa2ca</code>. Commit <code>70e260d6</code> repairs the fixture pin. Documentation commit <code>2290162f</code> names generation validation at activation.</p>
 
-<p>The full package run passes 719 runtime, 92 acquisition, and 644 reconciler test events. No tests failed or skipped. The acceptance verifier runs in session <code>68553</code>. Poll that session without restarting it. Required review remains incomplete.</p>
+<p>The earlier full run passed 719 runtime, 92 acquisition, and 644 reconciler test events. New artifact import tests reproduced lost membership scopes. Commit <code>8a4c14d9</code> passes eight focused events on each supported Go toolchain and all 100 acquisition test events. Required review is active.</p>
+
+<p>The acceptance verifier ended with all 50 cases unverified. Its summary omits per-command results. Its snapshot predates the partial-empty registration and artifact import repair. The scope proof preserves these limits and separate command evidence. Use JSON output for the next detailed qualification.</p>
 
 <p>Local commit <code>6517c69b</code> registers A08 partial and empty inventory behavior. All six registered commands and 73 verifier tests pass. Scoped deletion policy and model alias acceptance remain incomplete.</p>
 
@@ -25,7 +27,7 @@
 
 <p>The <a href="proof/starport-production-catalog/csp3/source-acceptance-2026-09-09.json">A20 registration proof</a> records 34 passing commands across five Starmap subcases. The Starport ingestion subcase remains unverified. Commit <code>6a600fea</code> is in <code>/tmp/starmap-source-acceptance-2026-09-09</code>, branch <code>codex/catalog-source-acceptance</code>. <a href="https://github.com/agentstation/starmap/pull/143">PR #143</a> carries the rebased registration.</p>
 
-<p>Its final gate failed on CLI application and runtime timeouts. The reviewed serial scheduling repair preserves the tests and deadline. Fresh CI <code>34426991461</code> is active. Automatic merge remains blocked until required checks pass.</p>
+<p>The earlier final gate failed on CLI application and runtime timeouts. The reviewed serial scheduling repair preserves the tests and deadline. All six native jobs pass in fresh CI <code>34426991461</code>. The final verification job remains active. Automatic merge waits for required checks.</p>
 
 <p>Read the <a href="#task-CSP3">CSP3 contract</a> and <a href="proof/starport-production-catalog/csp3/remaining-acceptance-audit-2026-09-09.json">remaining acceptance audit</a> after the delivery checks. Full A08, A20, and released-pair acceptance remain incomplete. D25 requires explicit inference-profile scope links. Ordinary removal thresholds and rename-window decisions remain pending. The <a href="#goal">goal block</a> preserves all 38 tasks, 50 cases, and 324 required subcases.</p>
 
@@ -490,6 +492,7 @@
 <tr><td>2026-09-10</td><td>CSP3</td><td>Exported local scopes and retained their original receipts through restart and directory migration.</td><td>The <a href="proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json">scope proof</a> records 143 runtime integration passes, five exporter passes, and minimum-Go checks. Full runtime qualification is active. Upstream import and authenticated publisher handling remain incomplete. No completion credit.</td></tr>
 <tr><td>2026-09-10</td><td>CSP3</td><td>Retained upstream generation manifests and scope receipts through downstream publication and restart.</td><td>The <a href="proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json">scope proof</a> records upstream replacement checks, 16 retention passes, and the scope-renewal test repair. The full runtime snapshot remains active with the earlier expectation failure. No completion credit.</td></tr>
 <tr><td>2026-09-10</td><td>CSP3</td><td>Qualified publisher isolation and real HTTPS scope import.</td><td>The scope proof records rejected local identity claims, separate equal binding IDs, and three passing HTTPS test events. The earlier runtime snapshot ended with one repaired failure. Fresh full checks remain required. No completion credit.</td></tr>
+<tr><td>2026-09-10</td><td>CSP3</td><td>Repaired lost membership scopes during portable artifact import.</td><td>The <a href="proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json">scope proof</a> records two failing import scenarios and eight passing focused events on each Go toolchain. Commit <code>8a4c14d9</code> also passes all 100 acquisition test events. Required review is active. No completion credit.</td></tr>
 </tbody></table>
 <p>2026-09-09: Commit <code>12cf4d8e</code> retains source activity through manual updates. Scoped provider activity passes 96 pipeline race test events. HTTP report and copy checks pass six race test events. The <a href="proof/starport-production-catalog/csp3/source-activity-2026-09-09/verification.json">source activity proof</a> retains both regression failures. Connected status, CLI reporting, full verification, and merge remain open. CSP3 receives no completion credit.</p>
 
