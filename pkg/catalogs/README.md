@@ -698,6 +698,11 @@ func main() {
 - [type CatalogPayload](<#CatalogPayload>)
 - [type CatalogRemovalKind](<#CatalogRemovalKind>)
 - [type CatalogRemovalScope](<#CatalogRemovalScope>)
+- [type CatalogRemovalSet](<#CatalogRemovalSet>)
+  - [func NewCatalogRemovalSet\(targets ...CatalogRemovalTarget\) \(\*CatalogRemovalSet, error\)](<#NewCatalogRemovalSet>)
+  - [func \(s \*CatalogRemovalSet\) ContainsCanonical\(id ModelDefinitionID\) bool](<#CatalogRemovalSet.ContainsCanonical>)
+  - [func \(s \*CatalogRemovalSet\) ContainsScoped\(scope ProviderMembershipScope, model ProviderModelID\) bool](<#CatalogRemovalSet.ContainsScoped>)
+  - [func \(s \*CatalogRemovalSet\) Targets\(\) \[\]CatalogRemovalTarget](<#CatalogRemovalSet.Targets>)
 - [type CatalogRemovalTarget](<#CatalogRemovalTarget>)
   - [func NewCanonicalRemovalTarget\(definition ModelDefinitionID\) \(CatalogRemovalTarget, error\)](<#NewCanonicalRemovalTarget>)
   - [func NewScopedRemovalTarget\(scope ProviderMembershipScope, model ProviderModelID\) \(CatalogRemovalTarget, error\)](<#NewScopedRemovalTarget>)
@@ -2396,6 +2401,53 @@ type CatalogRemovalScope struct {
     Public      bool       `json:"public"`
 }
 ```
+
+<a name="CatalogRemovalSet"></a>
+## type [CatalogRemovalSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L10-L14>)
+
+CatalogRemovalSet retains immutable operator targets and their lookup indexes. Construction validates target shape. The caller authorizes targets before construction.
+
+```go
+type CatalogRemovalSet struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewCatalogRemovalSet"></a>
+### func [NewCatalogRemovalSet](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L23>)
+
+```go
+func NewCatalogRemovalSet(targets ...CatalogRemovalTarget) (*CatalogRemovalSet, error)
+```
+
+NewCatalogRemovalSet copies valid targets and removes identical duplicates. The resulting set has deterministic order and is safe for concurrent reads.
+
+<a name="CatalogRemovalSet.ContainsCanonical"></a>
+### func \(\*CatalogRemovalSet\) [ContainsCanonical](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L69>)
+
+```go
+func (s *CatalogRemovalSet) ContainsCanonical(id ModelDefinitionID) bool
+```
+
+ContainsCanonical reports an explicit removal of the canonical model. A scoped removal never changes this result.
+
+<a name="CatalogRemovalSet.ContainsScoped"></a>
+### func \(\*CatalogRemovalSet\) [ContainsScoped](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L79>)
+
+```go
+func (s *CatalogRemovalSet) ContainsScoped(scope ProviderMembershipScope, model ProviderModelID) bool
+```
+
+ContainsScoped reports an exact account or public entry removal without allocating memory. The caller authenticates and validates the source scope before this query.
+
+<a name="CatalogRemovalSet.Targets"></a>
+### func \(\*CatalogRemovalSet\) [Targets](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_set.go#L53>)
+
+```go
+func (s *CatalogRemovalSet) Targets() []CatalogRemovalTarget
+```
+
+Targets returns caller\-owned targets in deterministic order.
 
 <a name="CatalogRemovalTarget"></a>
 ## type [CatalogRemovalTarget](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L29-L34>)
