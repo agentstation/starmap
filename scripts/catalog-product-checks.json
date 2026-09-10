@@ -1135,6 +1135,47 @@
         }
       ]
     },
+    "A08.partial_empty": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestEmptyProviderInventoryRequiresExplicitAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestMembershipHistoryPreservesScopeAndPartialEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/reconciler",
+          "test": "TestMembershipHistoryExcludesUnhealthyProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/pipeline",
+          "test": "TestObservationVolumeRegressionBecomesDegradedWithoutInventingDeletion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPublicMembershipRemovalSurvivesPartialRefreshAndRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestRuntimePublishesScopedInventoryAndOriginalReceipts"
+        }
+      ]
+    },
     "A20.cli_provider_nonprovider": {
       "kind": "all",
       "checks": [
