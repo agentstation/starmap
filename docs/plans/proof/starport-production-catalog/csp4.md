@@ -3,18 +3,28 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The active source is clean local `2b4310d1d24fa22279993417b4e92f55af7aee29` in `/tmp/starmap-authority-issuer-2026-09-10`.
+The active source is clean local `48205c51886c084c81b65f06ce57fe9389036dd8` in `/tmp/starmap-authority-issuer-2026-09-10`.
 The branch is `codex/catalog-authority-issuer`. It follows reviewed PR #146 source `44a400a4` and remains unpublished.
 No owner decision remains.
 
-The [storage proof](csp4/authority-record-2026-09-10/verification.json) records independent authority metadata and explicit current-read capabilities.
-The 17-file checkpoint preserves current-pointer formats and requires explicit repair of missing legacy metadata.
-Legacy relocation verifies and preserves authority records. It leaves absent legacy records absent.
+The [issuer proof](csp4/issuer-library-2026-09-10/verification.json) records the 13-file library checkpoint after independent authority storage.
+The issuer observes the current stored head before each bounded receipt.
+Read delay and issuer uncertainty consume the interval that starts before storage access.
+Concurrent old replies, invalid clock evidence, and storage failures cannot renew stale permission.
+Durable publication ordering remains the publisher's responsibility.
 
-Current storage/private-file race checks pass 142 events on each toolchain. Migration checks pass seven events on each toolchain.
-Six external consumers pass on Go 1.25.12. Ago, focused vet, generated documentation, and the 1,423-file prose check pass.
-The earlier broader run passed 1,369 events before final pointer validation and migration changes.
-The proof retains both failing regressions and the exact scope of each result.
+Current issuer race checks pass 33 events on each toolchain. Runtime identity checks pass 21 events on each toolchain.
+All six external consumers, lint, ago, and the 1,430-file prose check pass.
+The complete catalog and storage suites pass 1,240 and 88 events respectively.
+
+The broad runtime run reaches its default ten-minute timeout after 337 passing events.
+Session `9353` retries the runtime suite with the planned thirty-minute limit.
+Its output is `/tmp/starmap-csp4-issuer-runtime-regression-2026-09-10.jsonl`. The result remains UNVERIFIED until completion.
+
+The proof preserves the new API scaffold failure, invalid-receiver panic, complexity finding, prose failures, and broad timeout.
+The scaffold failure does not represent a historical production defect.
+The [preceding storage proof](csp4/authority-record-2026-09-10/verification.json) retains record, migration, and current-read qualification.
+Next, enforce durable publication order and explicit issuer ownership. Production clocks, server wiring, shared followers, and Starport qualification remain required.
 
 ### First subscriber delivery
 

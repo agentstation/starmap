@@ -5,23 +5,23 @@
 
 <p><a href="https://github.com/agentstation/starmap/pull/146">Starmap PR #146</a> carries the first CSP4 delivery at <code>44a400a4</code>. Local qualification, required review, and all six native jobs pass. Automatic merge waits for the verification gate.</p>
 
-<p>Next action: <a href="#next-action">complete CI and merge the first CSP4 delivery</a>.</p>
+<p>Next action: <a href="#next-action">enforce publication ordering and complete the first delivery merge</a>.</p>
 
 <h1>Starmap and Starport production catalog</h1>
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-10 UTC. CSP4 is active. Nine of 38 tasks are complete. Twenty-four PRs merged.</p>
 
-<p id="next-action">Complete origin receipt issuance, clock qualification, shared-store followers, and authority transitions from the <a href="proof/starport-production-catalog/csp4/issuer-storage-contract-2026-09-10.md">storage contract</a>. Check <a href="https://github.com/agentstation/starmap/actions/runs/34510928894">CI run 34510928894</a> for <a href="https://github.com/agentstation/starmap/pull/146">PR #146</a>. Automatic squash merge waits for its protected verification gate. Record actual merged main before dependent publication.</p>
+<p id="next-action">Enforce durable authority publication order and explicit issuer ownership. Continue clock qualification, server wiring, and shared-store followers. Check <a href="https://github.com/agentstation/starmap/actions/runs/34510928894">CI run 34510928894</a> for <a href="https://github.com/agentstation/starmap/pull/146">PR #146</a>. Automatic squash merge waits for its protected verification gate. Record actual merged main before dependent publication.</p>
 
-<p>The active Starmap worktree is <code>/tmp/starmap-authority-issuer-2026-09-10</code>, branch <code>codex/catalog-authority-issuer</code>. Clean local checkpoint <code>2b4310d1d24fa22279993417b4e92f55af7aee29</code> follows reviewed <code>44a400a4</code>. It changes 17 files for independent authority metadata, current reads, and legacy migration. It is not published or merged.</p>
+<p>The active Starmap worktree is <code>/tmp/starmap-authority-issuer-2026-09-10</code>, branch <code>codex/catalog-authority-issuer</code>. Clean local checkpoint <code>48205c51886c084c81b65f06ce57fe9389036dd8</code> adds the library issuer after storage checkpoint <code>2b4310d1</code>. It remains unpublished. The <a href="proof/starport-production-catalog/csp4/issuer-library-2026-09-10/verification.json">issuer proof</a> records exact source and check scope.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp4/authority-record-2026-09-10/verification.json">storage proof</a> records 142 storage/private-file race events and seven migration events on each toolchain. The earlier broader run passed 1,369 events. All six external consumers pass on Go 1.25.12. Ago, focused vet, generated documentation, and 1,423-file prose checks pass. Complete delivery verification, review, and native CI remain required.</p>
+<p>Both toolchains pass 33 issuer events and 21 runtime identity events. All six external consumers, lint, ago, and 1,430-file prose checks pass. Catalog and storage suites pass 1,240 and 88 events. The runtime suite timed out at its default ten minutes after 337 passing events. Session <code>9353</code> retries with the planned thirty-minute limit. Output: <code>/tmp/starmap-csp4-issuer-runtime-regression-2026-09-10.jsonl</code>.</p>
 
-<p>The first delivery remains clean at <code>44a400a4</code> in <code>/tmp/starmap-authority-retention-2026-09-10</code>, branch <code>codex/catalog-authority-retention</code>. Its <a href="proof/starport-production-catalog/csp4/subscriber-publication-2026-09-10/verification.json">publication proof</a> records complete local verification, clean Sol and Opus review, and all six native jobs. Only the protected verification gate remains active. No local implementation command remains running.</p>
+<p>The first delivery remains clean at <code>44a400a4</code> in <code>/tmp/starmap-authority-retention-2026-09-10</code>, branch <code>codex/catalog-authority-retention</code>. Its <a href="proof/starport-production-catalog/csp4/subscriber-publication-2026-09-10/verification.json">publication proof</a> records complete local verification, clean Sol and Opus review, and all six native jobs. Only the protected verification gate remains active.</p>
 
-<p>All eight CSP4 subcases remain UNVERIFIED. Read the <a href="#task-CSP4">task criteria</a> and <a href="proof/starport-production-catalog/csp4.md#current-runtime-integration">current proof</a>. A separate Starport PR must qualify its four mapped consumer checks after a compatible module release. Full gateway qualification remains with CSP10.</p>
+<p>All eight CSP4 subcases remain UNVERIFIED. Read the <a href="#task-CSP4">task criteria</a>, <a href="proof/starport-production-catalog/csp4.md#current-runtime-integration">current proof</a>, and <a href="proof/starport-production-catalog/csp4/issuer-storage-contract-2026-09-10.md">storage contract</a>. Starport needs a separate PR and a compatible released Starmap module for its four consumer checks. Full gateway qualification remains with CSP10.</p>
 
-<p>Starport remains clean <code>d45bb30</code> in <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>. V01 requires a compatible stable Starmap release. Preserve D27 through D30.</p>
+<p>Starport remains clean <code>d45bb30</code> in <code>/tmp/starport-readme-merged-2026-09-08</code>, branch <code>codex/catalog-starmap-main</code>. V01 needs a compatible stable release. Preserve D27 through D30.</p>
 
 <p>The canonical plan branch is <code>codex/catalog-qualification</code>. The <a href="#goal">goal</a> retains 38 tasks, 50 cases, and 324 subcases. Authority permits reviewed commits, pushes, PRs, native CI, and merges. Releases and hosted publication require separate authority. No owner decision remains.</p>
 </section>
@@ -120,6 +120,7 @@
 <tr><td>6 · Candidate qualification</td><td>CSP22</td><td>43 candidate cases. Seven publication-dependent cases remain UNVERIFIED.</td></tr>
 <tr><td>6 · Publish and verify</td><td>CSP23–CSP24</td><td>50 cases. Verify public docs, actual installers, final recording, and released recovery.</td></tr>
 <tr><td>7 · Cleanup</td><td>CSP99</td><td>Archive after the final implementation PR merges.</td></tr>
+<tr><td>2026-09-10</td><td>CSP4</td><td>Committed bounded receipt issuance from current authority storage.</td><td>Local <code>48205c51</code> passes 33 issuer and 21 runtime identity events on both toolchains. Six external consumers and static checks pass. The <a href="proof/starport-production-catalog/csp4/issuer-library-2026-09-10/verification.json">proof</a> preserves failures and the ten-minute runtime timeout. The runtime retry uses the planned thirty-minute limit. Publisher ordering, clocks, server wiring, shared followers, and consumer qualification remain open.</td></tr>
 </tbody></table></div>
 
 <p>The candidate gate checks 43 complete cases plus eight local subcases from publication-dependent parents. It reports those seven incomplete parents as UNVERIFIED. The complete production claim requires all 50 after CSP24. Earlier releases describe only their tested existing behavior.</p>

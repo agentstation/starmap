@@ -1812,3 +1812,20 @@ Relocation now validates the record against the complete generation and preserve
 The [storage proof](../../plans/proof/starport-production-catalog/csp4/authority-record-2026-09-10/verification.json) records 142 storage/private-file race events and seven migration events on both toolchains.
 All six external consumers pass on Go 1.25.12. Ago and prose checks pass.
 This checkpoint is local and unmerged. Origin issuance, clock qualification, shared followers, and Starport consumer checks remain incomplete.
+
+## Library permission issuer, 2026-09-10
+
+Local Starmap commit `48205c51886c084c81b65f06ce57fe9389036dd8` adds `permission.NewIssuer`.
+It starts a bounded receipt interval before a current-head storage read and accounts for issuer uncertainty.
+Concurrent older replies cannot replace a newer observed head. Storage failures do not renew receipts.
+A new regression found a panic for an uninitialized issuer. The API now returns a typed error for invalid receivers and contexts.
+
+The [issuer proof](../../plans/proof/starport-production-catalog/csp4/issuer-library-2026-09-10/verification.json) records 33 issuer events and 21 runtime identity events on each supported toolchain.
+All six external consumers and the 1,430-file prose check pass. Lint and ago pass.
+The complete catalog and storage suites pass 1,240 and 88 events respectively.
+The broad runtime run reaches its default ten-minute timeout after 337 passing events.
+Its retry uses the planned thirty-minute limit and remains unverified.
+
+The issuer retains its highest observation only in process memory.
+Durable publisher ordering, issuer authorization, production clock adapters, server wiring, and shared follower activation remain incomplete.
+This checkpoint is local and unmerged. All eight CSP4 acceptance subcases remain UNVERIFIED.

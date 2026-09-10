@@ -1763,6 +1763,20 @@ An adapter without this guarantee cannot issue new permission receipts from its 
 The issuer starts receipt validity before the current-head read. Delayed completion consumes that original interval.
 An expired interval requires refusal and a fresh observation. Receipt timing must account for issuer and consumer clock uncertainty.
 
+The library API `permission.NewIssuer` selects a current-head reader, fixed authority and policy IDs, and a `ClockReading` callback.
+Its constructor starts no I/O. Zero lifetime selects five minutes, and explicit positive lifetimes cannot exceed that bound.
+The callback binds its time to cached qualification evidence and supports concurrent calls.
+
+`Issuer.ReadPermission` samples the clock before and after the current-head observation.
+Its interval starts at the earliest possible time from the first sample.
+Unknown clock validity, excessive uncertainty, or an exhausted interval refuses the receipt.
+A storage error returns no new receipt. A bounded clock correction can preserve an unchanged valid receipt with its original expiry.
+
+The issuer retains the highest validated head in process memory, including when a subsequent clock check fails.
+A delayed older read cannot replace a newer observation. Changed authority identity and conflicting publication sequences cause refusal.
+The owning publisher must enforce durable publication order across issuer restart and authorize each issuer.
+The library issuer alone does not qualify that publication contract, a production clock adapter, or the standalone server.
+
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.
 Missing metadata, incompatible metadata, and an ordinary selected generation cannot renew a previous authority receipt.
 

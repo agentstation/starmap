@@ -1,0 +1,281 @@
+{
+  "task": "CSP4",
+  "source": "48205c51886c084c81b65f06ce57fe9389036dd8",
+  "parent": "2b4310d1d24fa22279993417b4e92f55af7aee29",
+  "worktree": "/tmp/starmap-authority-issuer-2026-09-10",
+  "branch": "codex/catalog-authority-issuer",
+  "publication": "Local checkpoint only. Not pushed, reviewed for PR, or merged.",
+  "source_files_sha256": {
+    "docs/CATALOG_STORE_CONTRACT.md": "2f5f2b2c02c863c8dd2c16952211c804a165616d0a8a589680b206f1375095d4",
+    "pkg/catalogs/README.md": "c3fd8673121d67c3f33ed13d5d7a66eaa27f661474c3ccf71adb3fdc55c8fa52",
+    "pkg/catalogs/permission/README.md": "feb0920b73cca1d7c8a2461fc9dfbedd90ba53359f0799ec1dff3220f8fa339b",
+    "pkg/catalogs/permission/generate.go": "9138085c727ecd2a18e8bc112717c1814ead78e6b75f969c19af1b7402e27236",
+    "pkg/catalogs/permission/issuer.go": "ac5244d45ef480ae67fc3c152fc9fab6bc7499c9c503ee721110659bf3189f05",
+    "pkg/catalogs/permission/issuer_concurrency_test.go": "4ab548278612bce8976294f7523cc9e86f56235eefa80c67d6e90ee9762fbc23",
+    "pkg/catalogs/permission/issuer_storage_test.go": "65f4a34e399371813ffb48998643eb4c2b9cc2eb78b0ae3a47f37e053df9e4be",
+    "pkg/catalogs/permission/issuer_test.go": "e5b3a4f292ce24ba6ffdef0e405b1b82b4905b411878e02e395ad54df53a77e3",
+    "pkg/catalogs/permission/issuer_time_test.go": "be759b15884750f0eb0161db674c329a809ec319e71df348e94fb39b06cd6e3d",
+    "pkg/catalogs/permission_head.go": "a3fe600d1521fa5ffa49115d187160296b70cc24f62cca4cd0df053a21fae4f8",
+    "pkg/catalogs/storage/filesystem_private.go": "f563ad446213824ceb33ec3c7f3de952e859685e3b3d0c99a64f5869850c1678",
+    "runtime/authority_identity_test.go": "2a6b10d950bf4cfe70bc4896776ed82ca8506eaaed75f5e7d2b5ee32871aac88",
+    "runtime/authority_policy.go": "3c7ecc72d1c458008a264ed3b04e880d406ef4023fc8317cd7570425983abf0e"
+  },
+  "checks": {
+    "issuer-dev": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/permission",
+      "exit_code": 0,
+      "source_scope": "Current issuer source. 33 passing test events, including invalid receiver/context refusal.",
+      "artifact": {
+        "path": "issuer-dev.jsonl.gz",
+        "sha256": "d37ad98927ee3b34cd408a594744d0e9f106c886987f281760bf65998f38ba17",
+        "raw_sha256": "28c74b1b1ecf1c0c1f188f0327e9465ba8db80736b84e1ec2336b1df0ef5f940"
+      },
+      "test_events": {
+        "pass": 33
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "runtime-identity-dev": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./runtime -run '^TestSourcePolicyAuthorityIdentityContract$'",
+      "exit_code": 0,
+      "source_scope": "Current runtime identity contract. 21 passing test events.",
+      "artifact": {
+        "path": "runtime-identity-dev.jsonl.gz",
+        "sha256": "60e950e2510c143bb66592042a5c42225b4f58fa63bac6003d08f8ee449e7c05",
+        "raw_sha256": "bb287909d5a0c29059a675c4adc778e92aa7511f149db417f5e4fcf40e3443e3"
+      },
+      "test_events": {
+        "pass": 21
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "issuer-floor": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/permission",
+      "exit_code": 0,
+      "source_scope": "Current issuer source. 33 passing test events, including invalid receiver/context refusal.",
+      "artifact": {
+        "path": "issuer-floor.jsonl.gz",
+        "sha256": "76a596e988bfe4da7cdf0e13ee5a5322b6b41f453a6901c33bb01d9273f66917",
+        "raw_sha256": "17d5608a9f3e411e33f8c9fb5f2500e75f6a8b2322174b615d08553e65dd3de2"
+      },
+      "test_events": {
+        "pass": 33
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "runtime-identity-floor": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./runtime -run '^TestSourcePolicyAuthorityIdentityContract$'",
+      "exit_code": 0,
+      "source_scope": "Current runtime identity contract. 21 passing test events.",
+      "artifact": {
+        "path": "runtime-identity-floor.jsonl.gz",
+        "sha256": "da3f92b320c13c98ad021b3e604d16c89a2abdf55182746db3168c640072eb9c",
+        "raw_sha256": "b9b1cb5daebfd3db4d402a982359d01934f1fdb2d9dd751d43dc0c186305c2b9"
+      },
+      "test_events": {
+        "pass": 21
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "storage-catalog-floor": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -json ./pkg/catalogs/storage ./pkg/catalogs -run 'Test.*(Authority|Permission|Filesystem|StoreStage)'",
+      "exit_code": 0,
+      "source_scope": "Current storage and catalog source after staged-write extraction. 168 passing test events and two package outcomes.",
+      "artifact": {
+        "path": "storage-catalog-floor.jsonl.gz",
+        "sha256": "4b13ae6b891f4bed80fabea21dda03553b907d3ee3b128366de19a0958e66fdc",
+        "raw_sha256": "e525802df8556d76354ae69bc04d890e7d6c8cafd2798a4e229625136f01d7e0"
+      },
+      "test_events": {
+        "pass": 168
+      },
+      "package_events": {
+        "pass": 2
+      }
+    },
+    "scaffold-red": {
+      "command": null,
+      "exit_code": 1,
+      "source_scope": "New API scaffold at the original top-level permission path before implementation. The full shell invocation was not retained. This is not a historical production defect.",
+      "artifact": {
+        "path": "scaffold-red.jsonl.gz",
+        "sha256": "05e393ad4e41e21effcfa6d9d6808ce40ad7f9141be30f1bd2a9a6e3883bebc1",
+        "raw_sha256": "a1295094154274dc0dc68f868fce38b1d1c18f694e34c5342ac4d7ca9155d5a9"
+      },
+      "test_events": {
+        "fail": 1
+      },
+      "package_events": {
+        "fail": 1
+      }
+    },
+    "scaffold-source": {
+      "command": null,
+      "exit_code": null,
+      "source_scope": "Exact source of the new API scaffold and its first test, based on 2b4310d1. This is a source snapshot, not a test command.",
+      "artifact": {
+        "path": "scaffold-source.json.gz",
+        "sha256": "789d46d0f550d9b4b14b95bce28f1c76f88dcfb1b824c8481316447139777dbb",
+        "raw_sha256": "274e9931d46f94789b545a1a731a3ec453b84b388e56b6a4629ce8fb2be8438e"
+      }
+    },
+    "invalid-receiver-red": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/permission -run '^TestIssuerReadPermissionRejectsInvalidReceiverOrContext$'",
+      "exit_code": 1,
+      "source_scope": "Draft issuer before the constructed-receiver guard. A zero issuer panicked. The current tests cover nil receiver, zero issuer, and nil context.",
+      "artifact": {
+        "path": "invalid-receiver-red.jsonl.gz",
+        "sha256": "39b2aabaefe98d4f2b62c71b836ef12560f6ac80a5a371c61c797b993d1a1ac1",
+        "raw_sha256": "ff939e0756bf9ba15084ce6b05a41283fecd36bcc1655c343cc679881ecfd2fc"
+      },
+      "test_events": {
+        "pass": 1,
+        "fail": 2
+      },
+      "package_events": {
+        "fail": 1
+      }
+    },
+    "lint-red": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 golangci-lint run ./pkg/catalogs/permission/... ./pkg/catalogs/... ./runtime/...",
+      "exit_code": 1,
+      "source_scope": "Storage checkpoint writeGeneration exceeded cyclomatic complexity 30 by one. Current extraction retains staged-file ownership and cleanup.",
+      "artifact": {
+        "path": "lint-red.log.gz",
+        "sha256": "bafb54107d89197787ac765e2fbf448a80fb39366e24815b9ea62582230ec5d6",
+        "raw_sha256": "43f436b14fa25bc7218aca6b06877878c9b044087cd9b6f7798e983075bd929a"
+      }
+    },
+    "lint": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 golangci-lint run ./pkg/catalogs/... ./runtime/...",
+      "exit_code": 0,
+      "source_scope": "Current handwritten production source. Tests are excluded by repository lint policy.",
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+        "raw_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+      }
+    },
+    "ago": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "source_scope": "Current committed source and tests. No findings, stale ignores, or errors.",
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "consumers": {
+      "command": "CGO_ENABLED=0 GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 bash scripts/verify-consumer-deps.sh",
+      "exit_code": 0,
+      "source_scope": "Six external consumers pass. All configured dependency budgets and forbidden-family checks pass.",
+      "artifact": {
+        "path": "consumers.log.gz",
+        "sha256": "a9152b09be6aa1f6c492da1ae01bfef83db82ad17adf6c79dd2d2c28ec0dc4bf",
+        "raw_sha256": "1531d07ef986f16a680755b4e80bb60d19fd1fc38272775799f4570441918039"
+      }
+    },
+    "prose-red": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Earlier runs retain nominalization and paragraph failures. The final run covers the committed source: 1430 files and zero diagnostics.",
+      "artifact": {
+        "path": "prose-red.log.gz",
+        "sha256": "09a2c566df6f0572ae52d51e738bceccd4e37f765b73ad66b0ca5865b8a446ba",
+        "raw_sha256": "b6b75899ab8c22e73681f74cc1772166199b994d6ecf62a65f248334a4ca5b30"
+      }
+    },
+    "prose-red-2": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Earlier runs retain nominalization and paragraph failures. The final run covers the committed source: 1430 files and zero diagnostics.",
+      "artifact": {
+        "path": "prose-red-2.log.gz",
+        "sha256": "de558f523ff0f70e3c10e0e41526499237c929f25ab036e0672ab53bdfeee8eb",
+        "raw_sha256": "6bb6f38fe21d081225707e0aa4330303a6a7e9c6a83761459ae11abffedc911e"
+      }
+    },
+    "prose-red-3": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Earlier runs retain nominalization and paragraph failures. The final run covers the committed source: 1430 files and zero diagnostics.",
+      "artifact": {
+        "path": "prose-red-3.log.gz",
+        "sha256": "64b2140f8b407bcde5eab1375d57c12578897d49ffbda0e248866d83c8cfce69",
+        "raw_sha256": "49e19ba9cd5923046ae61e3f08ecc46e6596a4e72d248cd425d245fa79caf02e"
+      }
+    },
+    "prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Earlier runs retain nominalization and paragraph failures. The final run covers the committed source: 1430 files and zero diagnostics.",
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "9efaecf6e2f3de6aec05f382ec88f3a78205980b29b93f6c6f58e65097ee7607",
+        "raw_sha256": "56f75ef533b2a2ddf3d8e96286fa505e914aab1596d5139c71b9a610fe00cf8a"
+      }
+    },
+    "broad-default-timeout": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -json ./pkg/catalogs/storage ./pkg/catalogs ./runtime",
+      "exit_code": 1,
+      "source_scope": "Current production source. Storage passes 88 test events and catalogs pass 1240 events. Runtime reaches the default ten-minute timeout after 337 passing events. No failed test assertion precedes the timeout. The later identity test was not compiled into this run.",
+      "artifact": {
+        "path": "broad-default-timeout.jsonl.gz",
+        "sha256": "5e423d554e7e673eccd0a8590df5eae6b278cdb04943782b5690b0a90147ccd7",
+        "raw_sha256": "b131ad52c08d6432715ac68eba0a37506b1bb9fb8fe0ac922dc5c6cf4272a939"
+      },
+      "test_events": {
+        "pass": 1665
+      },
+      "package_events": {
+        "pass": 2,
+        "fail": 1
+      }
+    },
+    "plan-prose-red": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Canonical engineering specification, findings, plan, and proof update. Final run: 1289 files and zero diagnostics. Earlier run records the paragraph-length repair.",
+      "artifact": {
+        "path": "plan-prose-red.log.gz",
+        "sha256": "d10227cb169384445b4062d5b1c6cfea86e2477887b726641a1af487704ec777",
+        "raw_sha256": "5c2c30b3119f26005f6244f9c02af7b60ae990a1c61cc5b90fb949492593cb12"
+      }
+    },
+    "plan-prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Canonical engineering specification, findings, plan, and proof update. Final run: 1289 files and zero diagnostics. Earlier run records the paragraph-length repair.",
+      "artifact": {
+        "path": "plan-prose.log.gz",
+        "sha256": "14ba843e39e5e88ce81dc1ea7bd75fb029e66baac474034f8187b9a62325e1ba",
+        "raw_sha256": "de8f4c3c570ba9de3fbc2e2ec63d8e7452ab0c7cb85218e1193017b8c75c0a75"
+      }
+    }
+  },
+  "running_operations": [
+    {
+      "session": 9353,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 30m -json ./runtime",
+      "output": "/tmp/starmap-csp4-issuer-runtime-regression-2026-09-10.jsonl",
+      "scope": "Current committed runtime production source and tests. This run uses the planned thirty-minute limit. Result remains UNVERIFIED until completion."
+    }
+  ],
+  "limitations": [
+    "All eight CSP4 task checks remain UNVERIFIED. No task completion credit.",
+    "Source PR #146 remains open at reviewed 44a400a4. Align dependent commits with actual merged main before publication.",
+    "The owning publisher still needs durable ordering and explicit issuer authorization. Issuer memory alone does not prevent rollback across restart.",
+    "Production clock qualification, origin server wiring, shared followers, and Starport consumer qualification remain incomplete.",
+    "No S3 current-read capability is asserted.",
+    "Complete repository verification, pre-PR review, and native CI remain required for the second delivery."
+  ]
+}
