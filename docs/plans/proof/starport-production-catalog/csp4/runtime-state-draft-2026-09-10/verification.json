@@ -1,0 +1,163 @@
+{
+  "task": "CSP4",
+  "base": "d2c738d6db20e0c7d738fcd8134b154db612ed16",
+  "worktree": "/tmp/starmap-authority-retention-2026-09-10",
+  "branch": "codex/catalog-authority-retention",
+  "uncommitted_files": {
+    "remote/source_permission_test.go": {
+      "raw_sha256": "367fa7b5e41cc21e8b61696bba031b2190b2d937bf0382b45c8ab5c622871161",
+      "backup": "source-files/remote/source_permission_test.go.gz",
+      "sha256": "cd8003df1dcbb04839a065fa6a90154c294f7bd2063e58f4931397073566a37f"
+    },
+    "runtime/authority_permissions.go": {
+      "raw_sha256": "c62dfaa1bcd3208d508041cd7e275b53adba4d7fa3412dca07f6c859ec402a6d",
+      "backup": "source-files/runtime/authority_permissions.go.gz",
+      "sha256": "0a90550b498e087d4277609dc6074b316a413d6d6fbcead7fef8a771c122e9d0"
+    },
+    "runtime/authority_permissions_test.go": {
+      "raw_sha256": "182503922d2e92fb3d05e90273c19cea01220f7b90bc3eac0a3a79e8e3556420",
+      "backup": "source-files/runtime/authority_permissions_test.go.gz",
+      "sha256": "51fe3a7927dcc6c41ca2680aab377a130e90379f164737ab237f458afe70d67c"
+    },
+    "remote/README.md": {
+      "raw_sha256": "96de7036a833db3d442a00dad1dbab4e49c13b7397b1d8c073fa8aefa6315987",
+      "backup": "source-files/remote/README.md.gz",
+      "sha256": "3ca63165505202cc55191fd5b31bd94553e6fcf093ef23fd13c3a260a930152c"
+    },
+    "remote/source.go": {
+      "raw_sha256": "6cbe53940baa9825bd14a5086fd75da10bf2cc9caa2af9c03137cbcd95d2f57b",
+      "backup": "source-files/remote/source.go.gz",
+      "sha256": "3279e4e8ea745b557c5e666b15a55dce9662382eeb6b8f98eef2a751a32fdab4"
+    },
+    "runtime/source/README.md": {
+      "raw_sha256": "54de3c3d75022f066ede2afafa96f402ac667fff07cca6da26abe931075364e8",
+      "backup": "source-files/runtime/source/README.md.gz",
+      "sha256": "072aa2c3f05a0d938084af7fc9816c8fbbb50787326f78a3e5f567e6b763d731"
+    },
+    "runtime/source/source.go": {
+      "raw_sha256": "a0db12f82228c2a59b8a54f01ae1d3e6e6656628161fe6795e95f06970ff51e1",
+      "backup": "source-files/runtime/source/source.go.gz",
+      "sha256": "93abed3db0e6fac8360dd547e404c3ecbd011c8932f010f7eba6977ccfca173c"
+    }
+  },
+  "checks": {
+    "state": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "state.jsonl.gz",
+        "sha256": "5b41cc7b935f70c88fe102d95eaafa4f1e2ab886af9a6fab34c6922406c4abe0",
+        "raw_sha256": "ed6aa9b50d1e4003fe931f6c98bf27cd3107a55c5b17b79fb6987a806b86d3af"
+      },
+      "test_events": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    "minimum": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "72b604bec24aced211c0d18abf062888c82fa80182de2b8e4d4cb2317dd14f39",
+        "raw_sha256": "689cefd26cf502ef6d9e902b845bbde9ad18ac4ea9005eebcad603e0dbdbf1b6"
+      },
+      "test_events": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    "late-retention-red": {
+      "exit_code": 1,
+      "artifact": {
+        "path": "late-retention-red.jsonl.gz",
+        "sha256": "3ae6050f04489779a7634dea6147ffa4fecde468aa7b96d71d4efab4309b1efa",
+        "raw_sha256": "5f508a0b958b7ccb6908021b0f157eec2437eda033251ed75478655eb9e162f9"
+      },
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestAuthorityPermissionsLateRetentionCannotRestoreRejectedReceipt"
+      ]
+    },
+    "source": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "source.jsonl.gz",
+        "sha256": "35b8ef7b07acfbe364b83e3408e2bb1f684e7a0a1c21ee786ca3cfddf64cee48",
+        "raw_sha256": "ccd91294926e8c09abd381b8a35172a1df5f428721bdb560a9100bc68d198d3e"
+      },
+      "test_events": {
+        "pass": 45,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    "source-minimum": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "source-minimum.jsonl.gz",
+        "sha256": "fae730c58a2e634c7ce2a7a6e8f0194e3bedb52ee96d8196ff4d257e584a0563",
+        "raw_sha256": "fcc971e3e6db0e061039f3227c6d17ed08443547e878705b53756cb2332f2712"
+      },
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": []
+    },
+    "ago": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 1,
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "18ad10aa88122bd115bb56f74ef2d9a296f3e87d1a6d4db65fcfad5b3c5ead8f",
+        "raw_sha256": "81f4d5bd4d6ec726a46d3ec3332f713f7a10a049eaf72041f13a9bd4f21f88df"
+      }
+    },
+    "docs": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "2ab94f008aab3f251fd675b967334e973fec51cc790e794ebaeac8bcc76ed59e",
+        "raw_sha256": "a08f6d6ed2cd3047b8174ccc1ef6280455affcfb76f576a35fedee565a7cdbb6"
+      }
+    }
+  },
+  "current_failure": "Whole lint reports five unused private permission-state declarations. Runtime startup, refresh, retention, and readiness do not yet call them. Integrate these callers without suppressing the findings.",
+  "observations": [
+    "The draft state keeps required and enforced revisions separate. Known withdrawals refuse new attempts while activation fails.",
+    "A later catalog with unchanged permission revision can retain the prior enforced catalog after receipt retention.",
+    "A pending confirmation cannot restore permission after an invalid authenticated receipt. The late-retention regression reproduces the bug before its fix.",
+    "The independent remote source receipt method sends one request and does not start catalog synchronization or the event stream.",
+    "The isolated permission-state check allocates no memory. This is not a full-path Starport latency measurement."
+  ],
+  "limitations": [
+    "These seven uncommitted files are task-owned drafts. Their exact bytes and failed lint log remain available here.",
+    "The lint capture predates the source-role wiring and final pending-confirmation refinement. Its five unused declarations still require runtime integration. Repeat whole lint after wiring.",
+    "Durable permission recovery, publisher revision selection, receipt issuance, actual runtime activation, and Starport admission remain incomplete.",
+    "All eight CSP4 acceptance subcases remain UNVERIFIED."
+  ]
+}

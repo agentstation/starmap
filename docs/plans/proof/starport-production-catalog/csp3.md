@@ -1,9 +1,9 @@
 # CSP3: Scoped evidence reconciliation
 
-CSP3 remains in progress until its final implementation PR merges.
-Availability PR #144 merged at `b9eca889` after fifteen passing checks and six native jobs.
-The combined removal and alias candidate is `b5af1e9c` on PR #145.
-Its complete tree equals `b3af02c3`, which passed full repository verification.
+CSP3 is complete after PR #145 merged at `a87262e3b830f285eee2a82ebd85e3816d7d94c5` on 2026-09-10.
+All fifteen checks pass, including six native platform jobs.
+The [merged qualification](csp3/merged-qualification-2026-09-10/verification.json) proves complete tree equality with reviewed source `b5af1e9c`.
+That tree equals `b3af02c3`, which passed full repository verification.
 
 The [current qualification](csp3/canonical-removal-rename-2026-09-10/verification.json) records all ten selected CSP3 subcases, 111 commands, and 907 passing test events.
 Full runtime, acquisition, and reconciler race suites pass 1,503 events. Catalog tests pass 1,437 events.

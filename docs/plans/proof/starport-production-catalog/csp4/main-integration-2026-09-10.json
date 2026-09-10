@@ -1,0 +1,19 @@
+{
+  "head": "115f0c7e4a6b7c5f848ca2918bdc7c6db97fa974",
+  "head_tree": "ca3b3dca34e9f9e102792727d5df6320d1c58d60",
+  "dirty_files_sha256": {
+    "remote/source_permission_test.go": "367fa7b5e41cc21e8b61696bba031b2190b2d937bf0382b45c8ab5c622871161",
+    "runtime/authority_permissions.go": "c62dfaa1bcd3208d508041cd7e275b53adba4d7fa3412dca07f6c859ec402a6d",
+    "runtime/authority_permissions_test.go": "182503922d2e92fb3d05e90273c19cea01220f7b90bc3eac0a3a79e8e3556420",
+    "remote/README.md": "96de7036a833db3d442a00dad1dbab4e49c13b7397b1d8c073fa8aefa6315987",
+    "remote/source.go": "6cbe53940baa9825bd14a5086fd75da10bf2cc9caa2af9c03137cbcd95d2f57b",
+    "runtime/source/README.md": "54de3c3d75022f066ede2afafa96f402ac667fff07cca6da26abe931075364e8",
+    "runtime/source/source.go": "a0db12f82228c2a59b8a54f01ae1d3e6e6656628161fe6795e95f06970ff51e1"
+  },
+  "integrated_head": "d2c738d6db20e0c7d738fcd8134b154db612ed16",
+  "integrated_tree": "ca3b3dca34e9f9e102792727d5df6320d1c58d60",
+  "merged_main": "a87262e3b830f285eee2a82ebd85e3816d7d94c5",
+  "dirty_files_preserved": true,
+  "actual_main_is_ancestor": true,
+  "conflict_resolution": "The only conflict was generated pkg/catalogs/README.md. Kept its qualified CSP4 bytes. The complete committed tree remains identical to the qualified CSP4 parent."
+}

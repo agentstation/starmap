@@ -1,0 +1,56 @@
+{
+  "task": "CSP3",
+  "state": "done",
+  "pr": 145,
+  "title": "Retain canonical model aliases and explicit catalog removals",
+  "merged_at": "2026-09-10T12:52:05Z",
+  "merged_commit": "a87262e3b830f285eee2a82ebd85e3816d7d94c5",
+  "reviewed_source": "b5af1e9c67e065ebd688a19a7563bcc430f724bb",
+  "tree": "b03e43ff13256f3b9809319f53b83d2a5287d24b",
+  "whole_tree_equality": true,
+  "tree_check_command": "git diff --exit-code b5af1e9c67e065ebd688a19a7563bcc430f724bb a87262e3b830f285eee2a82ebd85e3816d7d94c5",
+  "tree_check_exit_code": 0,
+  "ci_run": 34470999089,
+  "checks_passed": 15,
+  "native_jobs_passed": 6,
+  "qualification": {
+    "proof": "../canonical-removal-rename-2026-09-10/verification.json",
+    "selected_subcases_passed": 10,
+    "commands": 111,
+    "passing_test_events": 907,
+    "complete_repository_verification_passed": true,
+    "registry_and_production_binding": "../removal-ci-2026-09-10/verification.json#/combined_delivery/registry_binding"
+  },
+  "review": {
+    "required_reviewers": 2,
+    "findings": 0,
+    "proof": "../removal-ci-2026-09-10/verification.json#/combined_delivery/review"
+  },
+  "artifacts": {
+    "pr": {
+      "path": "pr.json.gz",
+      "sha256": "4a1e6a9113a98f1e079a164978105d65f6a5dfc7207b463707210d6da1e2286f",
+      "raw_sha256": "86fe2d265dc972c46a9c97ed326122ef5516f1e7d0aab23dba83b924a19f8b5c"
+    },
+    "jobs": {
+      "path": "jobs.json.gz",
+      "sha256": "d24db37c5ebd78284405bbf1d3309be90f100e22330cbb44104470f7f05f85a1",
+      "raw_sha256": "315ab052f2022d226d0d267ab00a4eafb5fd650182b33dcd2fe5415491c6ae1d"
+    },
+    "gate": {
+      "path": "gate.log.gz",
+      "sha256": "fd8bf8a1af10d937b929a91231ed3472cfc70835cd6b9f7d820806723319d455",
+      "raw_sha256": "a09db8fa128011e3afbd8121645b3684483ea94d31e7463852ba2fe31dbc9c4a"
+    }
+  },
+  "campaign": {
+    "completed_tasks": 9,
+    "total_tasks": 38,
+    "merged_prs": 24,
+    "active_task": "CSP4"
+  },
+  "limitations": [
+    "CSP3 component completion does not qualify Starport integration or the released product pair.",
+    "CSP4 authority, fleet, performance, operator UI, documentation, and release tasks retain their acceptance criteria."
+  ]
+}

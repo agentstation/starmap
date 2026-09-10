@@ -46,3 +46,20 @@ The object test uses the existing memory backend fixture. It does not qualify an
 The filesystem interruption test preserves the prior catalog and permission revision after reopen.
 A retry publishes the complete replacement. The permission receipt can renew against that immutable head.
 Publisher policy, receipt issuance, retained permission state, and runtime admission remain incomplete.
+
+## Runtime permission state draft
+
+The active worktree contains seven uncommitted files above `d2c738d6`.
+The [draft proof](csp4/runtime-state-draft-2026-09-10/verification.json) preserves their exact bytes, test output, and remaining lint findings.
+The permission state passes nine race events on each Go toolchain.
+The full remote-source suite passes 45 events. Its focused minimum-toolchain test passes.
+
+The late-retention regression fails before the fix. A pending confirmation now cannot restore permission after an invalid authenticated receipt.
+The isolated state check allocates no memory. It does not measure gateway latency.
+
+Whole lint reports five unused private declarations.
+Connect the state to startup, independent receipt refresh, durable retention, and readiness before clearing those findings.
+Do not suppress them or count the draft as task completion.
+
+The [main integration](csp4/main-integration-2026-09-10.json) records actual CSP3 merge `a87262e3`.
+The integration preserves the qualified committed tree and every draft file.

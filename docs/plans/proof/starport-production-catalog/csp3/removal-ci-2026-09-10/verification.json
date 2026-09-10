@@ -1199,7 +1199,7 @@
         "raw_sha256": "a856ff451070cc70d6a6b86af1ae4fd471778e374e97ec19f28776460b94e29e"
       }
     },
-    "automatic_merge": true,
+    "automatic_merge": "completed",
     "ci_run": 34470999089,
     "ci_watch_session": 56268,
     "ci_watch_log": "/tmp/starmap-pr145-combined-ci-watch-2026-09-10.log",
@@ -1558,6 +1558,14 @@
         "sha256": "c1a3e610008f634f554d094c9466ef1afc96ea62ef0f27adb1bf21a86eba55ef",
         "raw_sha256": "67a98772f36ca5cb5f507d5b8ff7d1b4c1366e35af8d417bd66cd7145066adb6"
       }
+    },
+    "merged_delivery": {
+      "commit": "a87262e3b830f285eee2a82ebd85e3816d7d94c5",
+      "merged_at": "2026-09-10T12:52:05Z",
+      "tree": "b03e43ff13256f3b9809319f53b83d2a5287d24b",
+      "checks_passed": 15,
+      "native_jobs_passed": 6,
+      "proof": "../merged-qualification-2026-09-10/verification.json"
     }
   }
 }

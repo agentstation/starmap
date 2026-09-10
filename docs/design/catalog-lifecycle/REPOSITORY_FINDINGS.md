@@ -1685,3 +1685,14 @@ PR #145 carries this reviewed source. Native CI and merge remain necessary befor
 Starmap exposes alias identity and removal state, while later Starport tasks must enforce both during discovery, pricing, and routing.
 The alias lookup does not grant permission or establish authenticated enterprise authority.
 CSP4 owns retained authority, permission envelopes, and the refusal conditions recorded in its [preparation](../../plans/proof/starport-production-catalog/csp4-preparation-2026-09-10.md).
+
+## CSP3 merged qualification, 2026-09-10
+
+PR #145 merged at `a87262e3b830f285eee2a82ebd85e3816d7d94c5`.
+All fifteen checks pass, including six native platform jobs.
+The [merged proof](../../plans/proof/starport-production-catalog/csp3/merged-qualification-2026-09-10/verification.json) confirms exact tree equality with the reviewed and qualified source.
+CSP3 is complete. D27 through D30 remain the accepted absence, removal, and alias contracts.
+
+CSP4 continues with independent permission envelopes, transport, and committed authority bindings.
+Its runtime state and source adapter remain local work.
+Starport integration and released-pair acceptance remain incomplete.
