@@ -189,8 +189,7 @@ check_v09() {
 }
 
 check_v10() {
-	local module release_toolchain
-	release_toolchain="${STARMAP_RELEASE_GOTOOLCHAIN:-go1.26.6}"
+	local module
 	for module in read-only store-only pinned-artifact server-embed remote-subscriber server-storage; do
 		test -f "$ROOT/testdata/consumers/$module/go.mod" || {
 			printf 'missing external consumer module: %s\n' "$module"
@@ -198,11 +197,7 @@ check_v10() {
 		}
 		(
 			cd "$ROOT/testdata/consumers/$module"
-			if [[ "$module" == "pinned-artifact" ]]; then
-				GOTOOLCHAIN="$release_toolchain" GOWORK=off go test ./...
-			else
-				GOWORK=off go test ./...
-			fi
+			GOWORK=off go test ./...
 		) || return 1
 	done
 }
