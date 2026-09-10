@@ -51,6 +51,9 @@ func (o ProviderOutcome) String() string { return string(o) }
 type ProviderReason string
 
 const (
+	// ProviderReasonDependencyUnavailable means an acquisition tool is unavailable.
+	ProviderReasonDependencyUnavailable ProviderReason = "dependency_unavailable"
+
 	// ProviderReasonCredentialReferenceInvalid means the credential reference
 	// does not parse or names an unsupported source.
 	ProviderReasonCredentialReferenceInvalid ProviderReason = "credential_reference_invalid" //nolint:gosec // A reason code holds no credential value.
@@ -82,6 +85,7 @@ const (
 
 // providerReasons lists every defined reason in declaration order.
 var providerReasons = []ProviderReason{
+	ProviderReasonDependencyUnavailable,
 	ProviderReasonCredentialReferenceInvalid,
 	ProviderReasonCredentialUnavailable,
 	ProviderReasonCredentialRejected,
@@ -195,6 +199,10 @@ func ClassifyProviderReason(err error) ProviderReason {
 	var parseErr *errors.ParseError
 	if stderrors.As(err, &parseErr) {
 		return ProviderReasonResponseInvalid
+	}
+	var dependencyErr *errors.DependencyError
+	if stderrors.As(err, &dependencyErr) {
+		return ProviderReasonDependencyUnavailable
 	}
 	var configErr *errors.ConfigError
 	if stderrors.As(err, &configErr) {

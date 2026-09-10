@@ -151,6 +151,9 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 
 	result, err := sm.Sync(ctx, opts...)
 	if err != nil {
+		if !quiet {
+			err = displayFailedSourceActivity(os.Stderr, err)
+		}
 		return &errors.ProcessError{
 			Operation: "update catalog",
 			Command:   "update",
@@ -169,9 +172,26 @@ func updateCatalogWithConfirmation(ctx context.Context, sm syncClient, flags *Fl
 }
 
 func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *sync.Result, flags *Flags, catalogPath string, sourcesDir string, quiet bool, confirm func() (bool, error)) error {
+	if !quiet {
+		if err := displaySourceActivity(os.Stderr, result.SourceActivities); err != nil {
+			return err
+		}
+		if err := displayAcceptedSources(os.Stderr, result.AcceptedSources); err != nil {
+			return err
+		}
+	}
+	if err := displaySourceFailures(os.Stderr, result); err != nil {
+		return err
+	}
 	if !result.HasChanges() {
+		if result.Partial {
+			if !quiet {
+				fmt.Fprintln(os.Stderr, "No catalog changes from the available sources.")
+			}
+			return nil
+		}
 		if !quiet {
-			fmt.Fprintf(os.Stderr, emoji.Success+" All providers are up to date - no changes needed\n")
+			fmt.Fprintf(os.Stderr, emoji.Success+" No catalog changes from selected sources.\n")
 		}
 		return nil
 	}
@@ -217,6 +237,9 @@ func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *s
 	// Apply changes
 	finalResult, err := sm.Sync(ctx, opts...)
 	if err != nil {
+		if !quiet {
+			err = displayFailedSourceActivity(os.Stderr, err)
+		}
 		return &errors.ProcessError{
 			Operation: "apply changes",
 			Command:   "update",
@@ -224,13 +247,28 @@ func handleResultsWithConfirmation(ctx context.Context, sm syncClient, result *s
 		}
 	}
 
+	if !quiet {
+		if err := displaySourceActivity(os.Stderr, finalResult.SourceActivities); err != nil {
+			return err
+		}
+		if err := displayAcceptedSources(os.Stderr, finalResult.AcceptedSources); err != nil {
+			return err
+		}
+	}
+	if err := displaySourceFailures(os.Stderr, finalResult); err != nil {
+		return err
+	}
 	return finalizeChanges(quiet, finalResult)
 }
 
 // finalizeChanges displays the completion message.
 func finalizeChanges(isQuiet bool, result *sync.Result) error {
 	if !isQuiet {
-		fmt.Fprintf(os.Stderr, "\n🎉 Update completed successfully!\n")
+		if result.Partial {
+			fmt.Fprintln(os.Stderr, "Update completed with partial source evidence.")
+		} else {
+			fmt.Fprintf(os.Stderr, "\n🎉 Update completed successfully!\n")
+		}
 		fmt.Fprintf(os.Stderr, "📊 Total: %s\n", result.Summary())
 	}
 	return nil

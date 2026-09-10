@@ -1813,6 +1813,7 @@ components:
         ProviderReasonCredentialUnavailable: nolint:gosec // A reason code holds no
           credential value.
       x-enum-varnames:
+      - ProviderReasonDependencyUnavailable
       - ProviderReasonCredentialReferenceInvalid
       - ProviderReasonCredentialUnavailable
       - ProviderReasonCredentialRejected

@@ -20,6 +20,7 @@ import (
 	"github.com/agentstation/starmap/internal/cli/app"
 	"github.com/agentstation/starmap/internal/constants"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
+	"github.com/agentstation/starmap/internal/test/gitfixture"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
@@ -28,13 +29,25 @@ import (
 )
 
 func TestPublisherStagesChangingProviderAndMetadataIngestion(t *testing.T) {
-	publisherStagesChangingIngestion(t, []string{"acme"})
+	publisherStagesChangingIngestion(t, []string{"acme"}, sources.ModelsDevHTTPID)
+}
+
+func TestGitPublisherStagesChangingProviderAndMetadataIngestion(t *testing.T) {
+	publisherStagesChangingIngestion(t, []string{"acme"}, sources.ModelsDevGitID)
 }
 
 func TestPublisherStagesAllProviderAndMetadataIngestion(t *testing.T) {
+	publisherAllProviderIngestion(t, sources.ModelsDevHTTPID)
+}
+
+func TestGitPublisherStagesAllProviderAndMetadataIngestion(t *testing.T) {
+	publisherAllProviderIngestion(t, sources.ModelsDevGitID)
+}
+
+func publisherAllProviderIngestion(t *testing.T, metadataSource sources.ID) {
 	const childMarker = "STARMAP_TEST_PUBLISHER_CHILD"
 	if os.Getenv(childMarker) == "1" {
-		publisherStagesChangingIngestion(t, nil)
+		publisherStagesChangingIngestion(t, nil, metadataSource)
 		return
 	}
 	// Start a separate process before net/http caches the proxy environment.
@@ -50,7 +63,7 @@ func TestPublisherStagesAllProviderAndMetadataIngestion(t *testing.T) {
 		t.Fatal(err)
 	}
 	root := t.TempDir()
-	arguments := []string{"-test.run=^TestPublisherStagesAllProviderAndMetadataIngestion$", "-test.count=1"}
+	arguments := []string{"-test.run=^" + t.Name() + "$", "-test.count=1", "-test.v"}
 	if deadline, present := t.Deadline(); present {
 		arguments = append(arguments, "-test.timeout="+time.Until(deadline).String())
 	}
@@ -59,7 +72,7 @@ func TestPublisherStagesAllProviderAndMetadataIngestion(t *testing.T) {
 	for _, entry := range os.Environ() {
 		name, _, _ := strings.Cut(entry, "=")
 		switch strings.ToUpper(name) {
-		case "PATH", "SYSTEMROOT", "WINDIR", "TMP", "TEMP", "TMPDIR":
+		case "PATH", "SYSTEMROOT", "WINDIR", "TMP", "TEMP", "TMPDIR", "CATALOG_GIT_FIXTURE_REQUIRED":
 			command.Env = append(command.Env, entry)
 		}
 	}
@@ -69,13 +82,20 @@ func TestPublisherStagesAllProviderAndMetadataIngestion(t *testing.T) {
 		"HTTP_PROXY="+proxy.URL, "HTTPS_PROXY="+proxy.URL,
 		"http_proxy="+proxy.URL, "https_proxy="+proxy.URL, "NO_PROXY=", "no_proxy=",
 	)
-	if output, err := command.CombinedOutput(); err != nil {
+	output, err := command.CombinedOutput()
+	if err != nil {
 		t.Fatalf("isolated publisher fixture: %v\n%s", err, output)
+	}
+	if strings.Contains(string(output), "--- SKIP:") {
+		if os.Getenv("CATALOG_GIT_FIXTURE_REQUIRED") == "1" {
+			t.Fatalf("required publisher fixture skipped: %s", output)
+		}
+		t.Skip("publisher Git fixture requires Git and Bun 1.3.12")
 	}
 	t.Logf("The local proxy refused %d external catalog requests.", blocked.Load())
 }
 
-func publisherStagesChangingIngestion(t *testing.T, providers []string) {
+func publisherStagesChangingIngestion(t *testing.T, providers []string, metadataSource sources.ID) {
 	t.Helper()
 	for _, entry := range os.Environ() {
 		name, _, _ := strings.Cut(entry, "=")
@@ -105,24 +125,45 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string) {
 		}
 	}))
 	defer api.Close()
-	metadata := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		metadataCalls.Add(1)
-		if r.URL.Path != "/api.json" {
-			t.Error("unexpected metadata endpoint")
+	var git *gitfixture.Fixture
+	var metadataURL *url.URL
+	if metadataSource == sources.ModelsDevGitID {
+		var payloads [][]byte
+		for _, version := range []int32{1, 2} {
+			payload, err := json.Marshal(publisherMetadataFixture(version))
+			if err != nil {
+				t.Fatal(err)
+			}
+			payloads = append(payloads, payload)
 		}
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(publisherMetadataFixture(revision.Load())); err != nil {
-			t.Error(err)
+		git = gitfixture.New(t, payloads...)
+	} else {
+		metadata := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			metadataCalls.Add(1)
+			if r.URL.Path != "/api.json" {
+				t.Error("unexpected metadata endpoint")
+			}
+			w.Header().Set("Content-Type", "application/json")
+			if err := json.NewEncoder(w).Encode(publisherMetadataFixture(revision.Load())); err != nil {
+				t.Error(err)
+			}
+		}))
+		defer metadata.Close()
+		var err error
+		metadataURL, err = url.Parse(metadata.URL)
+		if err != nil {
+			t.Fatal(err)
 		}
-	}))
-	defer metadata.Close()
-	metadataURL, err := url.Parse(metadata.URL)
-	if err != nil {
-		t.Fatal(err)
+	}
+	countMetadata := func() int32 {
+		if git != nil {
+			return int32(git.BuildCount(t))
+		}
+		return metadataCalls.Load()
 	}
 	originalTransport := http.DefaultTransport
 	http.DefaultTransport = publisherFixtureTransport(func(request *http.Request) (*http.Response, error) {
-		if request.URL.Hostname() == "models.dev" {
+		if metadataURL != nil && request.URL.Hostname() == "models.dev" {
 			clone := request.Clone(request.Context())
 			clone.URL.Scheme, clone.URL.Host = metadataURL.Scheme, metadataURL.Host
 			return originalTransport.RoundTrip(clone)
@@ -168,6 +209,10 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string) {
 	var previous catalogs.Generation
 	for _, version := range []int32{1, 2} {
 		revision.Store(version)
+		if git != nil {
+			t.Setenv(catalogconfig.ModelsDevGitCommit, git.Commits[version-1])
+			t.Setenv(catalogconfig.AcquisitionSources, "providers,local_catalog,"+string(metadataSource))
+		}
 		if err := os.RemoveAll(filepath.Join(cacheRoot, "models.dev")); err != nil {
 			t.Fatal(err)
 		}
@@ -227,10 +272,22 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string) {
 		if model == nil || model.Limits == nil || model.Limits.ContextWindow != int64(version)*131072 || model.Description != publisherDescription(version) {
 			t.Fatalf("published model did not combine changed sources: %+v", model)
 		}
+		metadataEvidence := catalog.Provenance().FindModelField("acme", "known", "Description")
+		if len(metadataEvidence) != 1 || metadataEvidence[0].Source != metadataSource {
+			t.Fatal("published description lost its source provenance")
+		}
+		boundMetadata := false
 		found := map[sources.ID]bool{}
 		for _, link := range staged.Manifest.SourceObservations {
 			found[link.Source] = link.ObservationID != "" && link.EvidenceChecksum != ""
-			if link.Source != sources.ProvidersID && link.Source != sources.ModelsDevHTTPID && link.Source != sources.LocalCatalogID {
+			if link.Source == metadataSource && link.ObservationID == metadataEvidence[0].ObservationID && link.EvidenceChecksum == metadataEvidence[0].EvidenceChecksum {
+				boundMetadata = true
+				if git != nil && (link.Revision.Kind != sources.RevisionKindGitCommit || link.Revision.Value != git.Commits[version-1] || link.Revision.InputName != "bun.lock" || link.Revision.InputChecksum != git.LockfileChecksum) {
+					t.Fatalf("published description lost pinned Git inputs: %+v", link.Revision)
+				}
+			}
+
+			if link.Source != sources.ProvidersID && link.Source != metadataSource && link.Source != sources.LocalCatalogID {
 				continue
 			}
 			wantStatus, wantCompleteness := sources.ObservationStatusSucceeded, sources.ObservationCompletenessComplete
@@ -241,7 +298,10 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string) {
 				t.Fatalf("published source %s health = %s/%s, want %s/%s", link.Source, link.Status, link.Completeness, wantStatus, wantCompleteness)
 			}
 		}
-		if !found[sources.ProvidersID] || !found[sources.ModelsDevHTTPID] || !found[sources.LocalCatalogID] {
+		if !boundMetadata {
+			t.Fatal("published description has no matching immutable receipt")
+		}
+		if !found[sources.ProvidersID] || !found[metadataSource] || !found[sources.LocalCatalogID] {
 			t.Fatal("publisher omitted an acquired source receipt")
 		}
 		if version == 2 && (staged.Manifest.GenerationID == previous.Manifest.GenerationID || staged.Manifest.Payload.Checksum == previous.Manifest.Payload.Checksum) {
@@ -249,7 +309,7 @@ func publisherStagesChangingIngestion(t *testing.T, providers []string) {
 		}
 		previous = staged
 	}
-	if providerCalls.Load() != 2 || metadataCalls.Load() != 2 {
+	if providerCalls.Load() != 2 || countMetadata() != 2 {
 		t.Fatal("publisher did not acquire both changing inputs twice")
 	}
 }

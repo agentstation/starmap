@@ -60,6 +60,7 @@ type layerSet struct {
 	providerBindings   *providerBindingPolicy
 	acquisitionSources *acquisitionSourcePolicy
 	buildEvidence      starmap.CandidateEvidence
+	acceptedSources    []sources.ID
 }
 
 // empty reports whether any retained layer sits above the embedded baseline.
@@ -115,6 +116,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 	var builder *catalogs.Builder
 	active := l.activeProviderOrder()
 	l.buildEvidence = starmap.CandidateEvidence{}
+	l.acceptedSources = nil
 	if l.manual != nil {
 		var err error
 		builder, l.buildEvidence, err = l.reconcileManualInputs(ctx, base, state.GeneratedAt, active)
@@ -127,18 +129,15 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 		if err != nil {
 			return starmap.CatalogState{}, err
 		}
-	} else {
-		var err error
-		builder, err = catalogs.NewBuilderFrom(base)
-		if err != nil {
-			return starmap.CatalogState{}, errors.WrapResource("copy", "effective catalog baseline", state.GenerationID, err)
-		}
 	}
 
-	catalog, err := builder.Build()
-	if err != nil {
-		return starmap.CatalogState{}, errors.WrapResource(
-			"publish", "effective catalog", state.GenerationID, err)
+	catalog := base
+	if builder != nil {
+		catalog, err = builder.Build()
+		if err != nil {
+			return starmap.CatalogState{}, errors.WrapResource(
+				"publish", "effective catalog", state.GenerationID, err)
+		}
 	}
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {

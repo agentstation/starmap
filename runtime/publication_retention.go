@@ -5,6 +5,7 @@ import (
 	"context"
 	"maps"
 	"slices"
+	"time"
 
 	"github.com/agentstation/starmap"
 )
@@ -113,8 +114,25 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 		return durable, nil
 	}
 	// Catalog acceptance cannot roll back when the caller cancels afterward.
-	// A bounded completion attempt leaves recovery evidence on any storage failure.
-	finish, cancel := context.WithTimeout(context.WithoutCancel(ctx), closeJoinTimeout)
+	// Caller cancellation starts a bounded grace period for retained-input writes.
+	finish, cancel := publicationCompletionContext(ctx)
 	defer cancel()
 	return durable, r.store.completeInputPublication(finish, record, source, selected)
+}
+
+func publicationCompletionContext(ctx context.Context) (context.Context, context.CancelFunc) {
+	finish, cancel := context.WithCancel(context.WithoutCancel(ctx))
+	stop := context.AfterFunc(ctx, func() {
+		timer := time.NewTimer(closeJoinTimeout)
+		defer timer.Stop()
+		select {
+		case <-timer.C:
+			cancel()
+		case <-finish.Done():
+		}
+	})
+	return finish, func() {
+		stop()
+		cancel()
+	}
 }

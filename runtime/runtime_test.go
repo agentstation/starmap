@@ -174,6 +174,13 @@ func TestRuntimeSyncReturnsAcquisitionReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Sync: %v", err)
 	}
+	if len(report.SourceActivities) != 1 || report.SourceActivities[0].Source != sources.ProvidersID || !report.SourceActivities[0].Attempted || report.SourceActivities[0].Eligibility != sources.EligibilityEligible {
+		t.Fatalf("provider source activity=%+v", report.SourceActivities)
+	}
+	if got := runtime.Status().SourceActivities; len(got) != 1 || got[0] != report.SourceActivities[0] {
+		t.Fatalf("retained provider source activity=%+v", got)
+	}
+
 	if report.RunID == "" {
 		t.Fatal("the acquisition report carries no run identity")
 	}

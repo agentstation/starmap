@@ -98,6 +98,10 @@ func TestSourceAndProviderAcquisitionPublishIndependently(t *testing.T) {
 			case <-time.After(30 * time.Second):
 				t.Fatal("run did not join both source groups")
 			}
+			activity := connected.Status().SourceActivities
+			if len(activity) != 1 || activity[0].Source != sources.ProvidersID || !activity[0].Attempted || activity[0].Eligibility != sources.EligibilityUnknown {
+				t.Fatalf("mixed-source run lost provider activity or inferred eligibility from a layer: %+v", activity)
+			}
 			for _, id := range []catalogs.ProviderID{"provider", "metadata"} {
 				if _, err := connected.State().Catalog.Provider(id); err != nil {
 					t.Fatal(err)

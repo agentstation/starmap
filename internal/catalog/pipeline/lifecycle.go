@@ -97,11 +97,11 @@ func observeSource(
 		return result
 	}
 	if observedSourceKey(observation) != configuredObservationKey(src) {
-		result.errs = append(result.errs, &pkgerrors.ValidationError{
+		result.errs = append(result.errs, pkgerrors.WrapResource("validate", "source observation", string(src.ID()), &pkgerrors.ValidationError{
 			Field:   "observation.source",
 			Value:   observation.SourceID,
 			Message: "must match the configured source and provider binding",
-		})
+		}))
 		return result
 	}
 
@@ -152,7 +152,7 @@ func failedSourceObservation(sourceID sources.ID, cause error) (sources.Observat
 	return observation, nil
 }
 
-func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsync.Options) ([]sources.Source, error) {
+func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsync.Options) ([]sources.Source, []error, error) {
 	logger := logging.FromContext(ctx)
 
 	missingDepsMap := make(map[sources.ID][]sources.Dependency)
@@ -172,7 +172,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 
 	if len(missingDepsMap) == 0 {
 		logger.Debug().Msg("All source dependencies satisfied")
-		return srcs, nil
+		return srcs, nil, nil
 	}
 
 	logger.Info().
@@ -181,6 +181,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 
 	availableSources := make([]sources.Source, 0, len(srcs))
 	skippedSources := make([]sources.ID, 0)
+	var unavailableDependencies []error
 
 	for _, src := range srcs {
 		missingDeps, hasMissing := missingDepsMap[src.ID()]
@@ -191,11 +192,14 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 
 		shouldSkip, err := handleMissingDeps(ctx, src, missingDeps, opts)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
 		if shouldSkip {
 			skippedSources = append(skippedSources, src.ID())
+			for _, dependency := range missingDeps {
+				unavailableDependencies = append(unavailableDependencies, dependencyError(src, dependency, "selected source has a missing dependency"))
+			}
 			logger.Info().
 				Str("source", string(src.ID())).
 				Msg("Skipping source due to missing dependencies")
@@ -206,16 +210,21 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 	}
 
 	if opts.RequireAllSources && len(skippedSources) > 0 {
-		return nil, &pkgerrors.DependencyError{
-			Dependency: "source-set",
-			Message:    fmt.Sprintf("required sources unavailable due to missing dependencies: %v", skippedSources),
-		}
+		return nil, nil, errors.Join(unavailableDependencies...)
 	}
 
-	if len(availableSources) == 0 {
-		return nil, &pkgerrors.ConfigError{
+	acquisitionAvailable := false
+	for _, source := range availableSources {
+		if source.ID() != sources.EmbeddedCatalogID && source.ID() != sources.ReleaseArtifactID {
+			acquisitionAvailable = true
+			break
+		}
+	}
+	if len(skippedSources) > 0 && !acquisitionAvailable {
+		return nil, nil, &pkgerrors.ConfigError{
 			Component: "sync sources",
-			Message:   "no sources available; all configured sources have missing dependencies",
+			Message:   fmt.Sprintf("no acquisition source is available because dependencies are missing for %v", skippedSources),
+			Err:       errors.Join(unavailableDependencies...),
 		}
 	}
 
@@ -226,7 +235,7 @@ func resolveDependencies(ctx context.Context, srcs []sources.Source, opts *pkgsy
 			Msg("Continuing with available sources")
 	}
 
-	return availableSources, nil
+	return availableSources, unavailableDependencies, nil
 }
 
 func handleMissingDeps(ctx context.Context, src sources.Source, missingDeps []sources.Dependency, opts *pkgsync.Options) (bool, error) {
@@ -306,6 +315,7 @@ func dependencyDecision(ctx context.Context, src sources.Source, dep sources.Dep
 
 func dependencyError(src sources.Source, dep sources.Dependency, message string) error {
 	return &pkgerrors.DependencyError{
+		Source:     string(src.ID()),
 		Dependency: dep.Name,
 		Message:    fmt.Sprintf("source %s: %s", src.ID(), message),
 	}

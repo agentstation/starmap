@@ -175,9 +175,9 @@ func TestManualBindingsValidateBeforeSourceWork(t *testing.T) {
 				opts = append(opts, pkgsync.WithProvider("provider"))
 			}
 			runner := manualBindingRunner(t, builder, bindings, &failed, &resolutions, &calls)
-			runner.resolveDependencies = func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error) {
+			runner.resolveDependencies = func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, []error, error) {
 				t.Error("invalid declaration reached dependencies")
-				return nil, nil
+				return nil, nil, nil
 			}
 			if _, err := runner.Prepare(t.Context(), buildCatalog(t, builder), opts...); err == nil {
 				t.Fatal("invalid declaration accepted")

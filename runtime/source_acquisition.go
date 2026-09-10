@@ -66,7 +66,7 @@ func (r *Runtime) acquire(ctx context.Context, report *RefreshReport, providers 
 	if r.config.acquirer != nil && r.config.acquisitionSources.permits(sources.ProvidersID) {
 		work.Go(func() { providerErr = r.acquireProviders(ctx, &providerReport, providers, epoch) })
 	}
-	observations, sourceErr := r.config.sourceAcquirer.AcquireSources(ctx, SourceAcquisitionRequest{Current: r.State().Catalog, Providers: slices.Clone(providers), Sources: r.config.acquisitionSources.metadata(), ModelsDevGitCommit: r.modelsDevGitCommit()})
+	observations, activities, sourceErr := r.acquireSourceReport(ctx, SourceAcquisitionRequest{Current: r.State().Catalog, Providers: slices.Clone(providers), Sources: r.config.acquisitionSources.metadata(), ModelsDevGitCommit: r.modelsDevGitCommit()})
 	sourcePublished := false
 	if len(observations) != 0 {
 		for _, observation := range observations {
@@ -92,6 +92,7 @@ func (r *Runtime) acquire(ctx context.Context, report *RefreshReport, providers 
 	}
 	work.Wait()
 	result := providerReport.Acquisition
+	result.SourceActivities = append(result.SourceActivities, activities...)
 	result.RunID, result.StartedAt, result.CompletedAt = report.RunID, started, r.config.now()
 	if result.Health == "" {
 		result.Health = HealthOK

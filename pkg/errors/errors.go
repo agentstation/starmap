@@ -192,6 +192,8 @@ func (e *LegacyCatalogLayoutError) Error() string {
 
 // DependencyError reports a missing external dependency.
 type DependencyError struct {
+	// Source identifies the catalog source that requires the dependency.
+	Source     string
 	Dependency string
 	Message    string
 }

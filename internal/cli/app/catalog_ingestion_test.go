@@ -26,65 +26,25 @@ import (
 )
 
 func TestCLIRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
-	testApplicationMetadataIngestion(t, "cli")
+	testApplicationMetadataIngestion(t, "cli", sources.ModelsDevHTTPID)
 }
 
 func TestHTTPRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
-	testApplicationMetadataIngestion(t, "http")
+	testApplicationMetadataIngestion(t, "http", sources.ModelsDevHTTPID)
 }
 
-func testApplicationMetadataIngestion(t *testing.T, mode string) {
+func TestGitCLIRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testApplicationMetadataIngestion(t, "cli", sources.ModelsDevGitID)
+}
+
+func TestGitHTTPRefreshIngestsProviderAndNonProviderEvidence(t *testing.T) {
+	testApplicationMetadataIngestion(t, "http", sources.ModelsDevGitID)
+}
+
+func testApplicationMetadataIngestion(t *testing.T, mode string, metadataSource sources.ID) {
 	clearCatalogEnvironment(t)
 	t.Setenv("STARMAP_HOME", t.TempDir())
-	modelsPayload := ingestionMetadataPayload(t)
-	var temperature atomic.Bool
-	var metadataCalls atomic.Int32
-	metadataServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		metadataCalls.Add(1)
-		if r.URL.Path != "/api.json" {
-			t.Errorf("metadata path %s", r.URL.Path)
-		}
-		var payload map[string]any
-		if err := json.Unmarshal(modelsPayload, &payload); err != nil {
-			t.Error(err)
-			return
-		}
-		provider, ok := payload["acme"].(map[string]any)
-		if !ok {
-			t.Error("fixture provider absent")
-			return
-		}
-		models := provider["models"].(map[string]any)
-		model, ok := models["known"].(map[string]any)
-		if !ok {
-			t.Error("fixture model absent")
-			return
-		}
-		model["temperature"] = temperature.Load()
-		model["description"] = "Metadata fixture"
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(payload); err != nil {
-			t.Error(err)
-		}
-	}))
-	defer metadataServer.Close()
-	metadataURL, err := url.Parse(metadataServer.URL)
-	if err != nil {
-		t.Fatal(err)
-	}
-	originalTransport := http.DefaultTransport
-	http.DefaultTransport = ingestionFixtureTransport(func(request *http.Request) (*http.Response, error) {
-		if request.URL.Hostname() == "models.dev" {
-			copy := request.Clone(request.Context())
-			copy.URL.Scheme, copy.URL.Host = metadataURL.Scheme, metadataURL.Host
-			return originalTransport.RoundTrip(copy)
-		}
-		if request.URL.Hostname() != "127.0.0.1" && request.URL.Hostname() != "::1" {
-			return nil, fmt.Errorf("unexpected external host %s", request.URL.Hostname())
-		}
-		return originalTransport.RoundTrip(request)
-	})
-	t.Cleanup(func() { http.DefaultTransport = originalTransport })
+	metadata := newApplicationMetadataFixture(t, metadataSource)
 	var limit atomic.Int64
 	var partial atomic.Bool
 	var failed atomic.Bool
@@ -134,7 +94,9 @@ func testApplicationMetadataIngestion(t *testing.T, mode string) {
 		t.Fatal(err)
 	}
 	open := func() *App {
-		application, err := New("test", "test", "test", "test", WithConfig(&Config{Quiet: true, CatalogPath: path, CatalogValues: map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: baselinePath, catalogconfig.SourceStartupPolicy: "require_source", catalogconfig.AcquisitionEnabled: "false", catalogconfig.SourcePollInterval: "0s"}}))
+		values := map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: baselinePath, catalogconfig.SourceStartupPolicy: "require_source", catalogconfig.AcquisitionEnabled: "false", catalogconfig.SourcePollInterval: "0s"}
+		metadata.configure(values)
+		application, err := New("test", "test", "test", "test", WithConfig(&Config{Quiet: true, CatalogPath: path, CatalogValues: values}))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -341,7 +303,7 @@ func testApplicationMetadataIngestion(t *testing.T, mode string) {
 			t.Fatalf("temperature=%+v, want %v", model.Features, want)
 		}
 		receipts := connected.State().Catalog.Provenance().FindModelField("acme", "known", "Features.temperature")
-		if len(receipts) != 1 || receipts[0].Source != sources.ModelsDevHTTPID {
+		if len(receipts) != 1 || receipts[0].Source != metadata.id {
 			t.Fatalf("metadata receipts=%+v", receipts)
 		}
 		storePath, err := application.catalogStatePath()
@@ -358,14 +320,15 @@ func testApplicationMetadataIngestion(t *testing.T, mode string) {
 		}
 		bound := false
 		for _, link := range current.Manifest.SourceObservations {
-			if link.Source == sources.ModelsDevHTTPID && link.ObservationID == receipts[0].ObservationID && link.EvidenceChecksum == receipts[0].EvidenceChecksum && link.EvidenceChecksum != "" {
+			if link.Source == metadata.id && link.ObservationID == receipts[0].ObservationID && link.EvidenceChecksum == receipts[0].EvidenceChecksum && link.EvidenceChecksum != "" {
 				bound = true
+				metadata.assertRevision(t, link.Revision)
 			}
 		}
 		if !bound {
 			t.Fatal("metadata receipt has no matching immutable manifest link")
 		}
-		count := metadataCalls.Load()
+		count := metadata.count(t)
 		if count == 2 && receipts[0].ObservationID == metadataObservations[1] {
 			t.Fatal("changed metadata retained the first response identity")
 		}
@@ -376,13 +339,23 @@ func testApplicationMetadataIngestion(t *testing.T, mode string) {
 
 	}
 	beforeMetadata := calls.Load()
-	run(string(sources.ModelsDevHTTPID))
+	run(string(metadata.id))
 	assertMetadata(false)
 	assertModel(131072, "Metadata fixture")
-	if metadataCalls.Load() != 1 || calls.Load() != beforeMetadata {
-		t.Fatal("metadata acquisition did not isolate the intended HTTP source")
+	if metadata.count(t) != 1 || calls.Load() != beforeMetadata {
+		t.Fatal("metadata acquisition did not isolate the selected metadata source")
 	}
-	temperature.Store(true)
+	metadata.temperature.Store(true)
+	if metadata.git != nil {
+		closeServer()
+		if err := application.Shutdown(context.Background()); err != nil {
+			t.Fatal(err)
+		}
+		application = open()
+		srv, httpServer = startHTTP()
+		client = httpServer.Client()
+		client.Timeout = 2 * time.Minute
+	}
 	directories, err := application.SourceDirectories()
 	if err != nil {
 		t.Fatal(err)
@@ -390,11 +363,11 @@ func testApplicationMetadataIngestion(t *testing.T, mode string) {
 	if err := os.RemoveAll(filepath.Join(directories.Cache, "models.dev")); err != nil {
 		t.Fatal(err)
 	}
-	run(string(sources.ModelsDevHTTPID))
+	run(string(metadata.id))
 	assertMetadata(true)
 	assertModel(131072, "Metadata fixture")
-	if metadataCalls.Load() != 2 || calls.Load() != beforeMetadata {
-		t.Fatal("changed metadata did not come from a second HTTP response")
+	if metadata.count(t) != 2 || calls.Load() != beforeMetadata {
+		t.Fatal("changed metadata did not come from a second metadata acquisition")
 	}
 	limit.Store(262144)
 	partial.Store(true)

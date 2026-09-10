@@ -1136,10 +1136,144 @@
       ]
     },
     "A20.cli_provider_nonprovider": {
-      "kind": "go_test",
-      "repository": "starmap",
-      "package": "./internal/cli/app",
-      "test": "TestCLIRefreshIngestsProviderAndNonProviderEvidence"
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCLIRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitCLIRefreshIngestsProviderAndNonProviderEvidence"
+        }
+      ]
+    },
+    "A20.publisher_provider_nonprovider": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestPublisherStagesChangingProviderAndMetadataIngestion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestPublisherStagesAllProviderAndMetadataIngestion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestGitPublisherStagesChangingProviderAndMetadataIngestion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestGitPublisherStagesAllProviderAndMetadataIngestion"
+        }
+      ]
+    },
+    "A20.server_provider_nonprovider": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestHTTPRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestConnectedRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestScheduledRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestPeriodicRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitHTTPRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitConnectedRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitScheduledRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitPeriodicRefreshIngestsProviderAndNonProviderEvidence"
+        }
+      ]
+    },
+    "A20.receipt_artifact_binding": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestPublisherStagesChangingProviderAndMetadataIngestion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestPublisherStagesAllProviderAndMetadataIngestion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestGitPublisherStagesChangingProviderAndMetadataIngestion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./cmd/starmap-catalog-release",
+          "test": "TestGitPublisherStagesAllProviderAndMetadataIngestion"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCLIRefreshIngestsProviderAndNonProviderEvidence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestGitCLIRefreshIngestsProviderAndNonProviderEvidence"
+        }
+      ]
     }
   }
 }

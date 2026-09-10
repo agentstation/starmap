@@ -121,6 +121,21 @@ func (s *Syncer) Sync(
 	ctx context.Context,
 	opts ...pkgsync.Option,
 ) (*pkgsync.Result, error) {
+	result, err := s.sync(ctx, opts...)
+	if s != nil && s.connected != nil {
+		status := s.connected.Status()
+		accepted := sources.AcceptedSourceState{GenerationID: status.GenerationID, Sources: status.AcceptedAcquisitionSources}.Clone()
+		if err != nil {
+			return nil, &sources.ActivityError{Activities: sources.ActivityFromError(err), ProviderAttempts: sources.ProviderAttemptsFromError(err), AcceptedSources: &accepted, Err: err}
+		}
+		if result != nil {
+			result.AcceptedSources = &accepted
+		}
+	}
+	return result, err
+}
+
+func (s *Syncer) sync(ctx context.Context, opts ...pkgsync.Option) (result *pkgsync.Result, err error) {
 	if s == nil || s.client == nil || s.pipeline == nil {
 		return nil, &errors.ValidationError{
 			Field:   "acquisition.syncer",
@@ -129,6 +144,7 @@ func (s *Syncer) Sync(
 	}
 
 	effective, parsed, err := s.effectiveOptions(opts)
+	defer func() { err = preflightActivityError(parsed, err) }()
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +196,7 @@ func (s *Syncer) Sync(
 		})
 	})
 	if err != nil {
-		return nil, err
+		return nil, preparedActivityError(prepared, err)
 	}
 	if prepared == nil {
 		return nil, &errors.ValidationError{
@@ -189,7 +205,7 @@ func (s *Syncer) Sync(
 		}
 	}
 
-	result := prepared.Result
+	result = prepared.Result
 	if publication.Published {
 		result.GenerationID = publication.GenerationID
 		result.SyncRunID = publication.SyncRunID

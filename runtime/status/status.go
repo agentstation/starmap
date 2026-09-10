@@ -200,8 +200,18 @@ type Status struct {
 	// Providers holds one terminal attempt per provider or binding of the last run.
 	Providers []sources.ProviderAttempt
 
+	// AcceptedAcquisitionSources identifies local acquisition evidence in the active generation.
+	// It excludes distribution baseline receipts and is independent of the last attempt.
+	AcceptedAcquisitionSources []sources.ID `json:"accepted_acquisition_sources"`
+
 	// SourceObservations holds the last non-provider acquisition receipts.
 	SourceObservations []catalogs.SourceObservationLink
+
+	// SourceConfiguration holds the passive composition and configured selection.
+	SourceConfiguration []sources.SourceActivity `json:"source_configuration"`
+
+	// SourceActivities holds activity from the last acquisition run.
+	SourceActivities []sources.SourceActivity `json:"source_activities,omitempty"`
 
 	// StartedAt is when the runtime opened.
 	StartedAt time.Time

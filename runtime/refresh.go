@@ -98,6 +98,9 @@ type AcquisitionReport struct {
 	// SourceObservations binds each non-provider result to its original receipt.
 	SourceObservations []catalogs.SourceObservationLink
 
+	// SourceActivities holds the reported selection and attempts for this run.
+	SourceActivities []sources.SourceActivity
+
 	// Published reports whether the runtime published a new effective catalog.
 	Published bool
 
@@ -533,13 +536,14 @@ func (r *Runtime) acquireProviders(
 	// Each closed coalescing window publishes the layers it collected. The
 	// acquirer calls this from its own run goroutine, one window at a time.
 	windows := &windowPublisher{runtime: r, epoch: epoch}
-	observed, err := r.acquireSelectedProviders(ctx, AcquisitionRequest{
+	observed, attempted, err := r.acquireSelectedProviders(ctx, AcquisitionRequest{
 		RunID:          report.RunID,
 		Current:        current,
 		Providers:      providers,
 		CoalesceWindow: r.config.coalesceWindow,
 		Publish:        windows.publish,
 	})
+	result.SourceActivities = []sources.SourceActivity{providerSourceActivity(observed, attempted, err)}
 	result.CompletedAt = r.config.now()
 	result.Eligible = observed.Eligible
 	result.Attempts = observed.Attempts
@@ -630,8 +634,9 @@ func (r *Runtime) recordAcquisition(result AcquisitionReport, err error) {
 	defer r.mu.Unlock()
 	r.report.acquisitionStartedAt = result.StartedAt
 	r.report.acquisitionHealth = result.Health
-	r.report.attempts = result.Attempts
+	r.report.attempts = slices.Clone(result.Attempts)
 	r.report.sourceObservations = slices.Clone(result.SourceObservations)
+	r.report.sourceActivities = slices.Clone(result.SourceActivities)
 	if err == nil {
 		r.report.acquisitionSucceededAt = result.CompletedAt
 	}

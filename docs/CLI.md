@@ -294,6 +294,35 @@ A copied directory is not interchangeable with the recorded directory, even when
 
 Native Windows execution and power-loss qualification remain pending. Local process-exit tests do not establish either guarantee.
 
+### Unavailable source tools
+
+A refresh fails when missing dependencies leave no acquisition source available.
+The embedded or downloaded baseline remains available for catalog reads. It does not count as a completed acquisition.
+For example, a Git-only refresh requires the configured Git and Bun tools.
+The CLI error names the unavailable source. The accepted catalog remains unchanged.
+
+HTTP operation status uses the `dependency_unavailable` reason. Its detail includes a recognized source and the `check_source_dependencies` action.
+Recognized tool names appear in `dependency`. Error text, executable paths, and installation commands remain private.
+
+Restore the source dependencies through the deployment's installation policy, then retry the refresh.
+Normal updates and `--fresh` use this failure rule. Other available acquisition sources retain the existing optional-source behavior.
+
+If an optional source lacks dependencies but another source succeeds, the result sets `partial` to `true`.
+Its `source_failures` list names unavailable sources and rejected observations with bounded reasons.
+A rejected observation can have no receipt. It still makes the result partial and prevents a fresh reset.
+
+The CLI warns even in quiet mode and avoids an all-sources success claim.
+HTTP update detail carries the same fields. A successful operation can therefore contain partial source evidence.
+
+Runtime readiness reports `accepted_acquisition_sources` for the active generation.
+This set contains local acquisition evidence and excludes distribution baseline receipts.
+It includes partial inputs with catalog records and complete empty inventories.
+Empty failed inputs retain diagnostic receipts but do not count as accepted sources.
+Presence does not imply a successful refresh or a routable model.
+
+A failed refresh preserves prior accepted sources. A replacement source policy removes excluded sources at restart.
+Status reads use cached state and start no acquisition.
+
 ### Source cache and checkout paths
 
 The `update` command and server acquisition use the configured cache root.

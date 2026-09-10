@@ -4,6 +4,7 @@ package pipeline
 
 import (
 	"context"
+	stderrors "errors"
 	"slices"
 	"time"
 
@@ -25,10 +26,12 @@ import (
 // Prepared is one complete acquisition result ready for optional publication.
 // It remains internal because callers compose publication through starmap.Client.
 type Prepared struct {
-	Result         *pkgsync.Result
-	Catalog        *catalogs.Builder
-	Changeset      *differ.Changeset
-	Observations   []sources.Observation
+	Result       *pkgsync.Result
+	Catalog      *catalogs.Builder
+	Changeset    *differ.Changeset
+	Observations []sources.Observation
+	// SourceFailures preserves dependency and observation failures for acquisition sources.
+	SourceFailures []error
 	Options        *pkgsync.Options
 	WorkspaceInput workspace.InputExpectation
 	Publish        bool
@@ -60,7 +63,7 @@ type Publication struct {
 type loadWorkspaceFunc func(string) (*catalogs.Builder, error)
 type loadEmbeddedFunc func() (*catalogs.Builder, error)
 type sourcesFunc func(*pkgsync.Options, catalogInputs) []sources.Source
-type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, error)
+type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, []error, error)
 type cleanupFunc func(context.Context, []sources.Source) error
 type observeFunc func(context.Context, []sources.Source, []sources.Option) ([]sources.Observation, error)
 type reconcileFunc func(context.Context, *catalogs.Catalog, []sources.Observation) (*reconciler.Result, error)
@@ -162,12 +165,12 @@ func (p *Pipeline) Sync(ctx context.Context, opts ...pkgsync.Option) (*pkgsync.R
 	return prepared.Result, nil
 }
 
-// Prepare observes and reconciles sources against existing without mutating
+// prepare observes and reconciles sources against existing without mutating
 // shared state. Publication remains the root client's responsibility.
-func (p *Pipeline) Prepare(
+func (p *Pipeline) prepare(
 	ctx context.Context,
 	existing *catalogs.Catalog,
-	opts ...pkgsync.Option,
+	options *pkgsync.Options,
 ) (*Prepared, error) {
 	if p == nil {
 		return nil, &pkgerrors.ValidationError{
@@ -182,7 +185,6 @@ func (p *Pipeline) Prepare(
 		}
 	}
 
-	options := pkgsync.Defaults().Apply(opts...)
 	if err := options.ValidateFilesystemLayout(); err != nil {
 		return nil, err
 	}
@@ -200,7 +202,7 @@ func (p *Pipeline) Prepare(
 		return nil, err
 	}
 
-	srcs, err = p.resolveDependencies(ctx, srcs, options)
+	srcs, sourceFailures, err := p.resolveDependencies(ctx, srcs, options)
 	if err != nil {
 		return nil, err
 	}
@@ -237,14 +239,18 @@ func (p *Pipeline) Prepare(
 			return nil, err
 		}
 	}
-	if options.Fresh && hasDegradedObservation(observations) {
+	if options.Fresh && (observeErr != nil || hasDegradedObservation(observations)) {
 		return nil, &pkgerrors.SyncError{
 			Provider: "all",
-			Err: &pkgerrors.ValidationError{
+			Err: stderrors.Join(&pkgerrors.ValidationError{
 				Field:   "fresh",
 				Message: "cannot reset acquisition while any source observation is degraded or partial",
-			},
+			}, observeErr),
 		}
+	}
+
+	if observeErr != nil {
+		sourceFailures = append(sourceFailures, observeErr)
 	}
 
 	result, err := p.reconcile(ctx, existing, observations)
@@ -264,6 +270,8 @@ func (p *Pipeline) Prepare(
 		activeSourceIDs(observations)...,
 	)
 	syncResult.Fresh = options.Fresh
+	syncResult.Partial = len(sourceFailures) > 0 || hasDegradedObservation(observations)
+	syncResult.SourceFailures = sourceFailureSummaries(sourceFailures)
 	syncResult.SourceObservations = make([]catalogs.SourceObservationLink, 0, len(observations))
 	for _, observation := range observations {
 		syncResult.SourceObservations = append(syncResult.SourceObservations, observation.Link())
@@ -280,6 +288,7 @@ func (p *Pipeline) Prepare(
 			Catalog:        result.Catalog,
 			Changeset:      result.Changeset,
 			Observations:   observations,
+			SourceFailures: sourceFailures,
 			Options:        options,
 			WorkspaceInput: inputs.workspaceInput,
 		}, nil
@@ -290,6 +299,7 @@ func (p *Pipeline) Prepare(
 		Catalog:        result.Catalog,
 		Changeset:      result.Changeset,
 		Observations:   observations,
+		SourceFailures: sourceFailures,
 		Options:        options,
 		WorkspaceInput: inputs.workspaceInput,
 		Publish: shouldPublish(

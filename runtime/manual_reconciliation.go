@@ -39,6 +39,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 				continue
 			}
 			collected.SourceObservations = append(collected.SourceObservations, observation.Link())
+			l.acceptedSources = appendAcceptedSource(l.acceptedSources, observation)
 			if observation.SourceID == sources.ProvidersID {
 				seenProviders[observation.ID] = true
 				providers = append(providers, observation)
@@ -71,6 +72,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 		}
 		providers = append(providers, observation)
 		collected.SourceObservations = append(collected.SourceObservations, observation.Link())
+		l.acceptedSources = appendAcceptedSource(l.acceptedSources, observation)
 	}
 	providerEvidence := providers
 	slices.SortStableFunc(providers, reconciler.CompareProviderObservations)

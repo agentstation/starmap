@@ -47,6 +47,11 @@ func NewSourceAcquirer(opts ...pkgsync.Option) (*SourceAcquirer, error) {
 // AcquireSources returns original observations without publishing a catalog.
 // Provider filters use the shared pipeline contract. A failed scope preserves other results.
 func (a *SourceAcquirer) AcquireSources(ctx context.Context, request runtime.SourceAcquisitionRequest) ([]sources.Observation, error) {
+	observations, _, err := a.AcquireSourceReport(ctx, request)
+	return observations, err
+}
+
+func (a *SourceAcquirer) acquireSources(ctx context.Context, request runtime.SourceAcquisitionRequest, record func([]sources.SourceActivity)) ([]sources.Observation, error) {
 	if a == nil || a.pipeline == nil {
 		return nil, &errors.ValidationError{Field: "source_acquirer", Message: "is required"}
 	}
@@ -97,18 +102,24 @@ func (a *SourceAcquirer) AcquireSources(ctx context.Context, request runtime.Sou
 		}
 		prepared, err := a.pipeline.Prepare(ctx, request.Current, func(target *pkgsync.Options) { *target = options })
 		if err != nil {
+			record(sources.ActivityFromError(err))
 			failures = append(failures, err)
 			continue
 		}
-		seen := make(map[sources.ID]bool, len(prepared.Observations))
+		record(prepared.Result.SourceActivities)
+		failures = append(failures, prepared.SourceFailures...)
+		reported := make(map[sources.ID]bool, len(prepared.Observations))
+		for _, failure := range prepared.Result.SourceFailures {
+			reported[failure.Source] = true
+		}
 		for _, observation := range prepared.Observations {
-			seen[observation.SourceID] = true
+			reported[observation.SourceID] = true
 			if observation.SourceID != sources.EmbeddedCatalogID && observation.SourceID != sources.ReleaseArtifactID {
 				observations = append(observations, observation)
 			}
 		}
 		for _, id := range options.Sources {
-			if !seen[id] && (id != sources.LocalCatalogID || prepared.WorkspaceInput.Exists) {
+			if !reported[id] && (id != sources.LocalCatalogID || prepared.WorkspaceInput.Exists) {
 				failures = append(failures, &errors.ConfigError{Component: "source acquisition", Message: "selected source " + string(id) + " produced no observation; check its configuration and dependencies"})
 			}
 		}

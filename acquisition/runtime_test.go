@@ -3,6 +3,7 @@ package acquisition
 import (
 	"context"
 	"path/filepath"
+	"slices"
 	"testing"
 
 	"github.com/agentstation/starmap"
@@ -59,12 +60,28 @@ func TestRuntimeAcquisitionFreshPreservesBaselineAndRestart(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	{
+		report := preview
+		index := slices.IndexFunc(report.SourceActivities, func(activity sources.SourceActivity) bool { return activity.Source == sources.ProvidersID })
+		if index < 0 || !report.SourceActivities[index].Attempted || report.SourceActivities[index].Eligibility != sources.EligibilityEligible {
+			t.Fatalf("runtime preview lost provider activity: %+v", report.SourceActivities)
+		}
+		if len(report.ProviderAttempts) != 1 || !report.ProviderAttempts[0].Requested {
+			t.Fatalf("runtime preview lost provider requests: %+v", report.ProviderAttempts)
+		}
+	}
+	if preview.AcceptedSources == nil || preview.AcceptedSources.GenerationID != acquired.GenerationID || !slices.Equal(preview.AcceptedSources.Sources, []sources.ID{sources.ProvidersID}) {
+		t.Fatalf("preview lost accepted generation: %+v", preview.AcceptedSources)
+	}
 	if !preview.HasChanges() || preview.ResetCount != 1 || connected.State().GenerationID != acquired.GenerationID {
 		t.Fatal("preview did not expose reset without activation")
 	}
 	result, err := syncer.Sync(t.Context(), fresh...)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if result.AcceptedSources == nil || result.AcceptedSources.GenerationID != result.GenerationID {
+		t.Fatalf("committed accepted snapshot=%+v", result.AcceptedSources)
 	}
 	reset := connected.State()
 	provider, _ = reset.Catalog.Provider("openai")

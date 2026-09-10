@@ -50,6 +50,50 @@ go test ./internal/server/sse ./internal/server/middleware ./internal/server
 go test ./pkg/catalogs -race
 ```
 
+## Real Git acquisition fixtures
+
+The Git acquisition fixtures use Git and Bun 1.3.12. They create local repositories
+with two pinned revisions and a dependency-free lockfile. The production collector
+clones these repositories and builds their metadata with Bun. Tests check changed
+catalog facts and exact commit and lockfile receipts.
+
+The verification job and all six native jobs require these tools. The
+fixture checks the Bun version, operating system, and architecture against the
+native Go test process. A missing tool fails required qualification. A local run reports a skip when
+a tool is absent. A skip does not qualify Git acquisition.
+
+Run the source collector check with mandatory tools:
+
+```bash
+CATALOG_GIT_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout=5m -run '^TestRealPinnedGitSourceAcquisition$' ./acquisition
+```
+
+The application matrix uses both HTTP fixtures and real Git fixtures. It covers
+CLI refresh, HTTP update, connected refresh, startup acquisition, and repeated
+timer cycles. Git commit changes require a restart. Each timer cycle must report
+a new successful source receipt. Unchanged facts can retain earlier provenance.
+
+Publisher cases cover provider-scoped and all-provider acquisition. They reopen
+the exact staged artifact and bind changed metadata to its source receipt. The
+all-provider case runs in a child process with private directories and a local
+proxy. The child preserves the mandatory-tool flag and propagates skips.
+
+Native jobs retain runtime, Git source, and publisher ingestion evidence in
+separate JSON files. The A20 registry names both source forms for the CLI,
+server, publisher, and artifact-binding checks. Missing-dependency and complete
+product-pair acceptance remain separate checks.
+
+The fixture redirects only the models.dev Git URL to its local repository. It
+disables system and user Git configuration and limits Git transport to local
+files. It does not install dependencies from a package registry. This check
+qualifies the source collector. The application ingestion matrix has separate
+acceptance cases.
+
+The dependency regression tests use an empty executable path and a small file baseline.
+CLI and HTTP updates must fail for unavailable Git acquisition, including `--fresh`.
+They preserve the accepted generation and report the selected source. Separate tests reject unrecognized diagnostic values and preserve available local acquisition.
+These tests do not complete the source-state inventory or revoked-scope restart contract.
+
 ## Critical Boundary Coverage
 
 Global coverage is intentionally not the primary trust metric. CLI command constructors, generated packages, and optional integrations dilute the signal. Starmap instead enforces coverage on modules where correctness and production reliability concentrate:
