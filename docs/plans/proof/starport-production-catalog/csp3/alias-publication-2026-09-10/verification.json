@@ -5,7 +5,7 @@
   "branch": "codex/catalog-canonical-aliases",
   "commit": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
   "reviewed_dependency": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
-  "state": "Full component race checks pass at bece41e4. All five A08 subcases pass at 7ca484dd. Combined CSP3 acceptance runs at a0cfc63e. Complete branch review, native CI, and merge remain unverified.",
+  "state": "Integrated qualification found two stale publisher fixture assumptions. Repair adds an explicitly configured local failing provider. Final review, CI, and merge remain open.",
   "scope": [
     "Strict canonical-aliases.yaml storage and original alias records through embedded/local acquisition.",
     "Local workspace rename changes require selected baseline authority.",
@@ -430,7 +430,7 @@
       }
     }
   },
-  "running": {},
+  "running": [],
   "open_findings": [
     {
       "id": "CSP3-source-provider-configuration",
@@ -447,10 +447,10 @@
     }
   ],
   "remaining": [
-    "Complete A08/A20 registered verification on the integrated branch.",
-    "Integrate the fixed textual consumer fixture and aggregate CI time allowance after the active qualification run.",
-    "Pass required pre-PR review and native CI, then merge.",
-    "CSP8 and CSP10 own Starport consumer integration after this Starmap component."
+    "Repair and qualify publisher partial-source fixtures without relying on embedded providers outside the selected baseline.",
+    "Rerun registered CSP3 acceptance.",
+    "Pass final branch review and native CI, then merge in dependency order.",
+    "CSP8 and CSP10 own Starport integration."
   ],
   "full_race_qualification": {
     "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json . ./runtime ./acquisition ./internal/catalog/reconciler",
@@ -491,7 +491,7 @@
     "qualification_session": 31396,
     "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3 --json",
     "output": "/tmp/starmap-alias-csp3-integrated-2026-09-10.json",
-    "state": "running",
+    "state": "completed with failure",
     "static": {
       "consumers": {
         "exit_code": 0,
@@ -538,6 +538,33 @@
           "raw_sha256": "634abeab204949f9e0a64e0b078e8ae197d9db614771b9feabb61c865acbb655"
         }
       }
+    },
+    "exit_code": 1,
+    "artifact": {
+      "path": "starmap-alias-csp3-integrated-2026-09-10.json.gz",
+      "sha256": "10722014c05611bcc5b8678fd57b15de0b82dda654086a68203f3d1daa07636d",
+      "raw_sha256": "436a57f54e5ee3b4255042427174f730524273e0d4ed35b16f9abc876aa7ed47"
+    },
+    "subcase_results": {
+      "A08.field_authority": "PASS",
+      "A08.presence_zero_null": "PASS",
+      "A08.scoped_tombstone": "PASS",
+      "A08.partial_empty": "PASS",
+      "A08.alias_cycle_scope": "PASS",
+      "A20.cli_provider_nonprovider": "PASS",
+      "A20.publisher_provider_nonprovider": "FAIL",
+      "A20.server_provider_nonprovider": "PASS",
+      "A20.dependency_disabled_partial": "PASS",
+      "A20.receipt_artifact_binding": "FAIL"
+    },
+    "failure": "Four failed commands repeat two publisher fixtures. Both expect partial provider health but the selected baseline now contains only the successful local provider. All five A08 subcases pass. Three A20 subcases pass; two fail.",
+    "fixture_trial_failure": {
+      "artifact": {
+        "path": "starmap-alias-publisher-local-failure-current-2026-09-10.jsonl.gz",
+        "sha256": "ccef38ee9d85eb0f1465155167a5a58860c2944084459e74d18941900241d491",
+        "raw_sha256": "cd7636ee479ab67e11aae10515033a13ce24a797ee28403cf0ded4a7644c99a3"
+      },
+      "reason": "The first fixture version reused ACME_API_KEY across two provider IDs. Identity validation correctly refused the conflict. The repair assigns a separate fixture credential."
     }
   }
 }

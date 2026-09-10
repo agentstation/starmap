@@ -3,7 +3,7 @@
   "pr": "https://github.com/agentstation/starmap/pull/144",
   "head": "3a989949a77433fafb920976a6c2dc0988246843",
   "ci_run": 34444938562,
-  "state": "Repair passed both required reviewers and was pushed to the existing PR. Fresh native CI is running.",
+  "state": "Fresh CI found a stale workflow timeout expectation. The one-line test repair passes 28 workflow events on each Go version. Review and renewed CI remain required.",
   "findings": [
     "Release import required the newest schema instead of any supported payload schema. The reviewed later removal branch already contained the narrow guard repair.",
     "The GitHub test fixture used a legacy manifest with a current-format payload. It now constructs a consistent legacy generation and validates the decoded catalog."
@@ -606,6 +606,48 @@
     "head": "8155e6e69097280849d60100b1ddc2c4772e5859",
     "url": "https://github.com/agentstation/starmap/actions/runs/34456986753",
     "watch_session": 19852,
-    "log": "/tmp/starmap-pr144-time-budget-ci-watch-2026-09-10.log"
+    "log": "/tmp/starmap-pr144-time-budget-ci-watch-2026-09-10.log",
+    "verification_failure": {
+      "artifact": {
+        "path": "starmap-pr144-time-budget-new-failure-2026-09-10.log.gz",
+        "sha256": "529c07c8be05da77fa41b5063bf9e85dbae6a8751bbe90c8b18ce2ce6d3b3f9a",
+        "raw_sha256": "c642b66e9e39c307395766a1acae431ae1d4bfb7ac9ffd3f21c37de92eb4f59b"
+      },
+      "job": 102805571268,
+      "test": "TestMakeVerifyUsesCanonicalVerificationScript",
+      "reason": "The workflow contract still expected timeout=20m after the accepted allowance changed to 30m."
+    }
+  },
+  "contract_repair": {
+    "files": [
+      "internal/ciworkflow/pr_workflow_test.go"
+    ],
+    "source": "8155e6e6 plus one expected command update",
+    "checks": {
+      "current": {
+        "counts": {
+          "pass": 28,
+          "fail": 0,
+          "skip": 0
+        },
+        "artifact": {
+          "path": "starmap-pr144-time-budget-contract-current-2026-09-10.jsonl.gz",
+          "sha256": "d985b656e81105862b987289ad8a6b8f9bb564d9b19d1394ea2701267ba51e17",
+          "raw_sha256": "ac7e58b652aab796428b253c9efd8fbbaf83c7a097a14ed0b2716f48f9ab98fc"
+        }
+      },
+      "minimum": {
+        "counts": {
+          "pass": 28,
+          "fail": 0,
+          "skip": 0
+        },
+        "artifact": {
+          "path": "starmap-pr144-time-budget-contract-minimum-2026-09-10.jsonl.gz",
+          "sha256": "1c36a91216fe32a8eb1a4d666a74e1873972dee96b08734e12ec58c36f8a4a88",
+          "raw_sha256": "e66c92d4eabcbaaf18a45cea211b1ab9bd5830e1c6d7582aeb4bc75f237cbbc6"
+        }
+      }
+    }
   }
 }
