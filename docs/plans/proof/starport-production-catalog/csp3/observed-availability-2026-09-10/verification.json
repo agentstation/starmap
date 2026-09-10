@@ -644,12 +644,11 @@
     "runtime_session": 76684,
     "runtime_log": "/tmp/starmap-removal-runtime-first-2026-09-10.jsonl",
     "remaining": [
-      "runtime failure and recovery qualification",
-      "schema compatibility and full affected package tests",
-      "upstream authority and transport qualification",
-      "operator preview and consumer routing",
-      "aliases",
-      "Verify low-authority artifact import retains existing policies and refuses incoming operator policies; configured trusted generation sources must preserve them."
+      "Final commit and required pre-PR review",
+      "Native CI and merges in dependency order",
+      "Operator preview and Starport consumer routing",
+      "Canonical aliases",
+      "Full assigned A08 and A20 qualification"
     ],
     "acceptance_credit": false,
     "catalog_full": {
@@ -697,7 +696,7 @@
         "sha256": "35708c1b52b8a1345e4af56ffa7ab2f4f77ecc57cd6bfc2ef7ea8a49ed560a95"
       }
     },
-    "status": "The full CSP3 check remains active at clean 4e629b7f. Public contract packages pass except root timeout. The upstream downgrade repair is ready as a tested overlay patch.",
+    "status": "All 37 focused policy, import, recovery, and source events pass on Go 1.26.6 and Go 1.25.12. Final documentation checks and commit remain pending.",
     "active_checks": {
       "full_csp3": {
         "session": 70867,
@@ -706,8 +705,10 @@
         "runtime_result": {
           "pass": 729,
           "fail": 2,
-          "classification": "One failing unsupported-version scenario and its parent event. The corrected fixture passes through the retained overlay. Acquisition and reconciliation are still running."
-        }
+          "classification": "Only the unsupported journal-version fixture and its parent event failed. The fixture used version 3, which is now supported. Acquisition and reconciliation passed."
+        },
+        "state": "completed",
+        "exit_code": 1
       },
       "public_contracts": {
         "session": 94861,
@@ -718,9 +719,16 @@
       },
       "root_repository_flags": {
         "session": 61562,
-        "state": "active",
+        "state": "completed",
         "log": "/tmp/starmap-removal-integrated-root-2026-09-10.jsonl",
-        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -count=1 -timeout=20m -p=1 . -json"
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -short -count=1 -timeout=20m -p=1 . -json",
+        "exit_code": 0
+      },
+      "runtime_after_repair": {
+        "session": 69774,
+        "state": "active",
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime -json",
+        "log": "/tmp/starmap-removal-source-runtime-full-2026-09-10.jsonl"
       }
     },
     "findings": [
@@ -872,7 +880,7 @@
         }
       },
       "classification": "Root package exceeded the manually selected ten-minute limit. Its partial passing events are not package qualification. All other packages passed, including the embedded checkout test. Resource-policy package contains no tests.",
-      "next": "Run root race checks with the repository verification flags: -short -timeout=20m -p=1. Do not change the repository gate.",
+      "next": "Completed the unchanged repository root race check with -short -timeout=20m -p=1; all 103 test events pass.",
       "artifact": {
         "path": "removal-integrated-public.jsonl.gz",
         "sha256": "625abfd2397c29b054e560b10aa0f439ff8c2c5418ce801839a63cf66dc1fc70"
@@ -880,7 +888,7 @@
     },
     "upstream_downgrade": {
       "head": "4e629b7ffc05a84c3e48baa5269f0f89b6a0ee48",
-      "state": "repair passes through a Go overlay; actual worktree remains clean while broad checks run",
+      "state": "Applied the preserved patch after both broad checks completed. Focused actual-worktree checks pass.",
       "finding": "A selected schema-7 source replacement cleared schema-8 upstream removal policy. Local operator policy was not the affected scope.",
       "invalid_first_attempt": {
         "exit_code": 0,
@@ -913,7 +921,7 @@
         "uncompressed_sha256": "287705cec478f150ff6338d49f2a830d42f3c055347e473b42f14f08696867fb",
         "apply": "Decompress to a temporary .patch file, verify git apply --check, and apply after active checks finish. Full patch context remains intact."
       },
-      "next": "Wait for sessions 70867 and 61562 to finish. Apply the exact patch, generate docs, run focused source-policy, journal, and recovery checks, then review the final branch.",
+      "next": "Commit the qualified repair, complete required review, then publish after the availability dependency merges.",
       "journal_fixture_repair": {
         "reason": "The old invalid-version fixture used version 3, which this candidate now supports. Use inputPublicationVersion+1 and cover legacy removal-field rejection.",
         "exit_code": 0,
@@ -924,6 +932,155 @@
           "path": "removal-source-journal-overlay.jsonl.gz",
           "sha256": "df2edb73ef4e490daef105c1056264cae23d0585afb16bb951c51efc66eb6cde"
         }
+      },
+      "actual_worktree": {
+        "exit_code": 0,
+        "log": "/tmp/starmap-removal-source-final-2026-09-10.jsonl",
+        "test_events": {
+          "github.com/agentstation/starmap/runtime": {
+            "pass": 32
+          }
+        },
+        "packages": {
+          "github.com/agentstation/starmap/runtime": {
+            "result": "pass",
+            "elapsed_seconds": 29
+          }
+        },
+        "artifact": {
+          "path": "removal-source-final.jsonl.gz",
+          "sha256": "985a8407617ebf540131879b60b2ba34c6d4b8011e13a01e28c673aabcd095f9"
+        }
+      }
+    },
+    "integrated_csp3": {
+      "exit_code": 1,
+      "log": "/tmp/starmap-removal-integrated-csp3-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 729,
+          "fail": 2
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 100
+        },
+        "github.com/agentstation/starmap/internal/catalog/reconciler": {
+          "pass": 644
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/runtime": {
+          "result": "fail",
+          "elapsed_seconds": 1107.794
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "result": "pass",
+          "elapsed_seconds": 337.265
+        },
+        "github.com/agentstation/starmap/internal/catalog/reconciler": {
+          "result": "pass",
+          "elapsed_seconds": 2.189
+        }
+      },
+      "artifact": {
+        "path": "removal-integrated-csp3.jsonl.gz",
+        "sha256": "f79e83db185b3945e6b1d2d3ff9ed1d0561341112e6742fcae06cd2c06225df4"
+      },
+      "classification": "Only the unsupported journal-version fixture and its parent event failed. The fixture used version 3, which is now supported. Acquisition and reconciliation passed."
+    },
+    "integrated_root": {
+      "exit_code": 0,
+      "log": "/tmp/starmap-removal-integrated-root-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap": {
+          "result": "pass",
+          "elapsed_seconds": 580.113
+        }
+      },
+      "artifact": {
+        "path": "removal-integrated-root.jsonl.gz",
+        "sha256": "9d6437539d7f1a4929406a8a230e9f4a079776df7146b75108ff5bc833d40f5b"
+      }
+    },
+    "boundary_initial_compile": {
+      "exit_code": 1,
+      "log": "/tmp/starmap-removal-policy-boundaries-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/runtime": {
+          "result": "fail",
+          "elapsed_seconds": 0
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "result": "pass",
+          "elapsed_seconds": 11.068
+        }
+      },
+      "artifact": {
+        "path": "removal-policy-boundaries-initial.jsonl.gz",
+        "sha256": "263e583e8944045f9ace5c2dd04ea5356f56557df3f3077181be8b82b350a273"
+      },
+      "classification": "The new runtime test used a nonexistent error helper. Corrected IsValidation to IsValidationError. Acquisition policy preservation and refusal passed."
+    },
+    "source_qualified": {
+      "exit_code": 0,
+      "log": "/tmp/starmap-removal-source-qualified-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 36
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/acquisition": {
+          "result": "pass",
+          "elapsed_seconds": 11.318
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "result": "pass",
+          "elapsed_seconds": 28.731
+        }
+      },
+      "artifact": {
+        "path": "removal-source-qualified.jsonl.gz",
+        "sha256": "1818e69658c628f537bb988c4d975c037015410f98eec7fcc3466cc3b1265674"
+      }
+    },
+    "source_minimum_go": {
+      "exit_code": 0,
+      "log": "/tmp/starmap-removal-source-minimum-go-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 36
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/acquisition": {
+          "result": "pass",
+          "elapsed_seconds": 11.15
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "result": "pass",
+          "elapsed_seconds": 29.738
+        }
+      },
+      "artifact": {
+        "path": "removal-source-minimum-go.jsonl.gz",
+        "sha256": "6ed88bce74e6a4ce7280a6745578dcbb31e3fa17e3bbefee88884b048293d035"
       }
     }
   }
