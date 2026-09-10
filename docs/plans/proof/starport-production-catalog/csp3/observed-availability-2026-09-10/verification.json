@@ -507,5 +507,18 @@
       "lint": 36112,
       "docs_check": 7654
     }
+  },
+  "removal_set_work": {
+    "state": "starting",
+    "worktree": "/tmp/starmap-operator-removal-2026-09-10",
+    "branch": "codex/catalog-operator-removal",
+    "base": "6e0d590a",
+    "concept": "Immutable set of validated operator removal targets with owned export and allocation-free scoped/canonical lookup. Runtime persistence and transport remain required before A08 credit.",
+    "constraints": [
+      "Source scope authentication stays with the caller.",
+      "Rotation must preserve account identity.",
+      "A scoped removal cannot imply canonical removal.",
+      "Retained aliases must enforce removal of their resolved target."
+    ]
   }
 }
