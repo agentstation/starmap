@@ -893,7 +893,7 @@ func WithModelsDevGitCommit(commit string) Option
 WithModelsDevGitCommit sets the exact commit for models.dev Git acquisition. Empty clears an inherited pin. This option does not select the Git source.
 
 <a name="WithPermissionClockUncertainty"></a>
-### func [WithPermissionClockUncertainty](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L55>)
+### func [WithPermissionClockUncertainty](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L48>)
 
 ```go
 func WithPermissionClockUncertainty(sample func() (time.Duration, bool)) Option
@@ -983,7 +983,7 @@ func WithSourceAliases(aliases ...string) Option
 WithSourceAliases declares the other stable identities that name this same runtime. A served source chain that names one of them is a self reference. The runtime then refuses the read instead of serving its own catalog back to itself.
 
 <a name="WithSourceAuthority"></a>
-### func [WithSourceAuthority](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L35>)
+### func [WithSourceAuthority](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L28>)
 
 ```go
 func WithSourceAuthority(authorityID, policyID string) Option
@@ -992,7 +992,7 @@ func WithSourceAuthority(authorityID, policyID string) Option
 WithSourceAuthority pins the authority and policy used by require\_authority. It changes neither the source address nor the startup policy.
 
 <a name="WithSourceAuthorityID"></a>
-### func [WithSourceAuthorityID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L43>)
+### func [WithSourceAuthorityID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L36>)
 
 ```go
 func WithSourceAuthorityID(identity string) Option
@@ -1037,7 +1037,7 @@ func WithSourcePolicy(policy SourcePolicy) Option
 WithSourcePolicy replaces the whole upstream source policy.
 
 <a name="WithSourcePolicyID"></a>
-### func [WithSourcePolicyID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L48>)
+### func [WithSourcePolicyID](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L41>)
 
 ```go
 func WithSourcePolicyID(identity string) Option
@@ -1282,7 +1282,7 @@ func (r *Runtime) AcquisitionSources() ([]sources.ID, bool)
 AcquisitionSources returns an owned explicit source set and its presence. Without a selection, the supplied acquisition roles keep their defaults.
 
 <a name="Runtime.AllowsNewAttempt"></a>
-### func \(\*Runtime\) [AllowsNewAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L79>)
+### func \(\*Runtime\) [AllowsNewAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L72>)
 
 ```go
 func (r *Runtime) AllowsNewAttempt() bool
