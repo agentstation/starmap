@@ -1199,10 +1199,204 @@
         "raw_sha256": "a856ff451070cc70d6a6b86af1ae4fd471778e374e97ec19f28776460b94e29e"
       }
     },
-    "automatic_merge": true,
+    "automatic_merge": false,
     "ci_run": 34470999089,
     "ci_watch_session": 56268,
     "ci_watch_log": "/tmp/starmap-pr145-combined-ci-watch-2026-09-10.log",
-    "title": "Retain canonical model aliases and explicit catalog removals"
+    "title": "Retain canonical model aliases and explicit catalog removals",
+    "merge_hold": "Branch protection requires Security & Reliability and Verification Gate only. Wait for all six native jobs before enabling automatic merge or merging.",
+    "registry_binding": {
+      "sha256": "1d15bbd937d9eb7e4f4407df4eb24848c43c2a16032a41c6b30bbfed4783f8c6",
+      "same_as_component_report": true,
+      "difference_from_component_test_source": [
+        "scripts/test-catalog-package-ownership-verifier.sh"
+      ],
+      "production_code_and_registry_unchanged": true
+    },
+    "native": {
+      "source": "b5af1e9c67e065ebd688a19a7563bcc430f724bb",
+      "run": 34470999089,
+      "state": "partial",
+      "platforms": [
+        {
+          "platform": "native-runtime-macos-15",
+          "files": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-git-acquisition.jsonl.gz",
+                "sha256": "cfedb2bdf793aaf090be3fa9afef7c97a025df1712c8875b4c7540bcbce29774",
+                "raw_sha256": "bce110a416302fd2ccc62a8260809686d6810f028eaace2652c9df3f8159377f"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-publisher-ingestion.jsonl.gz",
+                "sha256": "cd6195355771201b3af83f3695cac12ec519883c3cae3d638f0c3182130aafef",
+                "raw_sha256": "d7bb0d10c8a564df7cb0ef97ed9cc1ab7ab10b4a92419ba607b9a2a192213e10"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "tests.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-tests.jsonl.gz",
+                "sha256": "27547e02289507c7e7f2c761dbf2d5baacaddc9eec55230f9a353311e1e2719d",
+                "raw_sha256": "b186377bd85e91d3de819627c3892c97ea172006b7a3048dcd78706bada69579"
+              },
+              "counts": {
+                "pass": 1600,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-toolchain.txt.gz",
+                "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+                "raw_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+              },
+              "toolchain": "go version go1.25.12 darwin/arm64"
+            }
+          }
+        },
+        {
+          "platform": "native-runtime-ubuntu-24.04",
+          "files": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-git-acquisition.jsonl.gz",
+                "sha256": "8b555cae45083d191896544879da01bfd113dc1765a7685393148a945f3ca82c",
+                "raw_sha256": "c2b481651816115450daa405b420ff4687506302c6ce747febbbca869149dc8f"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-publisher-ingestion.jsonl.gz",
+                "sha256": "d3425c4d9dc15ed462a91c00ddd8171920cc0cb7e5f982a7fc5f041cbd1b3b1d",
+                "raw_sha256": "9a08f2d98092c138fafb6e72f34a6fd58e86cff2cda57fe2530f63ee02f89325"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "service-owner.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-service-owner.txt.gz",
+                "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+                "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+              },
+              "qualified_test": "TestServiceConfigurationAdministratorOwnedRead",
+              "state": "passed privileged parent and child execution"
+            },
+            "tests.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-tests.jsonl.gz",
+                "sha256": "4359236adfa6a3b1eb7aecd0169b0541ad98ddd7e45f0043f5760c154b8723eb",
+                "raw_sha256": "cf51b282f20b87b9cddfff41ae036250d7a2324677bab593a0d9f0bab2e47622"
+              },
+              "counts": {
+                "pass": 1544,
+                "fail": 0,
+                "skip": 1
+              },
+              "skipped_tests": [
+                "TestServiceConfigurationAdministratorOwnedRead"
+              ]
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-toolchain.txt.gz",
+                "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+                "raw_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+              },
+              "toolchain": "go version go1.25.12 linux/amd64"
+            }
+          }
+        },
+        {
+          "platform": "native-runtime-ubuntu-24.04-arm",
+          "files": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-arm-git-acquisition.jsonl.gz",
+                "sha256": "51ea14253c2c18eebc223dab2cb040d9e962ba9c65383e5f049639877736ce7f",
+                "raw_sha256": "d1a89d0da4f1e671ac242be85712ce1d9ab546696c19451553ff94352c250c7c"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-arm-publisher-ingestion.jsonl.gz",
+                "sha256": "8a11b80c98810305c785f37db3526293838fb148f2f4ec5e98ee1732f019bec3",
+                "raw_sha256": "cdb064a4404142b8a3e90596f7f63f0123854a10ea6017da6895c8798f1ffbf4"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "service-owner.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-arm-service-owner.txt.gz",
+                "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+                "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+              },
+              "qualified_test": "TestServiceConfigurationAdministratorOwnedRead",
+              "state": "passed privileged parent and child execution"
+            },
+            "tests.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-arm-tests.jsonl.gz",
+                "sha256": "63726e59817b10bd84afe7463488300c51986801047a4a19017723d58236f8b1",
+                "raw_sha256": "02a248b278080729f3ee792b6b1449a7bee91bdf139dff9001ea671036729d87"
+              },
+              "counts": {
+                "pass": 1544,
+                "fail": 0,
+                "skip": 1
+              },
+              "skipped_tests": [
+                "TestServiceConfigurationAdministratorOwnedRead"
+              ]
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-ubuntu-24.04-arm-toolchain.txt.gz",
+                "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+                "raw_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+              },
+              "toolchain": "go version go1.25.12 linux/arm64"
+            }
+          }
+        }
+      ]
+    }
   }
 }
