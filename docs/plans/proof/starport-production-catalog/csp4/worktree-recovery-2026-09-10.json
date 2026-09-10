@@ -1,0 +1,43 @@
+{
+  "task": "CSP4",
+  "scope": "Worktree recovery only. No acceptance credit.",
+  "cause": "Temporary directories were absent after an environment transition; cause of their removal is unknown.",
+  "canonical_checkpoint": "91aa43c651faa50cc533c804b310e416d9ead45c",
+  "worktrees": [
+    {
+      "repository": "starmap",
+      "missing_worktree": "/tmp/starmap-authority-issuer-2026-09-10",
+      "restored_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
+      "commit": "60f7b9cd208d1221abc4bd8e898eb84471c1aca3",
+      "clean": true,
+      "command": "git worktree add --force /Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer codex/catalog-authority-issuer"
+    },
+    {
+      "repository": "starport",
+      "missing_worktree": "/tmp/starport-readme-merged-2026-09-08",
+      "restored_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-starmap-main",
+      "commit": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+      "clean": true,
+      "command": "git worktree add --force /Users/jack/src/github.com/agentstation/starport-catalog-starmap-main codex/catalog-starmap-main"
+    }
+  ],
+  "source_hashes_verified": {
+    "authority-record-2026-09-10": 14,
+    "issuer-library-2026-09-10": 11,
+    "publisher-order-2026-09-10": 7
+  },
+  "prose": {
+    "command": "make technical-writing-check",
+    "exit_code": 0,
+    "artifact": "worktree-recovery-prose-2026-09-10.log.gz",
+    "sha256": "14ba843e39e5e88ce81dc1ea7bd75fb029e66baac474034f8187b9a62325e1ba",
+    "raw_sha256": "de8f4c3c570ba9de3fbc2e2ec63d8e7452ab0c7cb85218e1193017b8c75c0a75"
+  },
+  "plan_maintenance": {
+    "tasks": 38,
+    "done": 9,
+    "in_progress": "CSP4",
+    "task_contracts_invariants_goal_unchanged": true,
+    "local_links_exist": true
+  }
+}

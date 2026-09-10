@@ -3,10 +3,12 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The active source is clean local `60f7b9cd208d1221abc4bd8e898eb84471c1aca3` in `/tmp/starmap-authority-issuer-2026-09-10`.
+The active source is clean local `60f7b9cd208d1221abc4bd8e898eb84471c1aca3` in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
 The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b` and remains unpublished.
 
-No owner decision remains. No local command remains running.
+No owner decision remains. No implementation command remains running.
+The [recovery record](csp4/worktree-recovery-2026-09-10.json) verifies the restored branches after their temporary directories disappeared.
+Canonical checkpoint `91aa43c6` preserves the completed checks. Historical proof keeps its original paths.
 
 The [publication-order proof](csp4/publisher-order-2026-09-10/verification.json) records implementation `4031c084` and the final generated documentation correction.
 The publisher checks a durable predecessor before atomic publication. Reopening the store cannot permit an older authority sequence.
