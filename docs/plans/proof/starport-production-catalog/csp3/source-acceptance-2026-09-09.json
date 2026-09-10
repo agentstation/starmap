@@ -84,10 +84,10 @@
   },
   "auto_merge": {
     "enabled_at": "2026-09-10T00:52:22Z",
-    "head": "6a600feaae2255da05bd801a5f6675e85bb70ba5",
+    "head": "4f2b94624c1edaff75ee75f93de52bacac8bf16d",
     "method": "SQUASH",
     "state": "OPEN",
-    "verification": "Verification Gate failed. Automatic merge remains blocked by the required check.",
+    "verification": "Fresh checks run on the reviewed scheduling repair. Automatic squash merge remains enabled without bypassing checks.",
     "completion_credit": false
   },
   "ci_timeout": {
@@ -105,6 +105,36 @@
       "sha256": "1f3e3ffe3c323137ac275679b53ae9c0532925ef2a0be33226c433247e4956e4"
     },
     "repair_candidate": "Serialize race-test packages with -p=1 while preserving selection, race detection, and the 20-minute package deadline. Fresh CI must qualify this scheduling change.",
-    "qualification": "Workflow tests and ago pass. Prose and pre-PR review remain pending."
+    "qualification": "Focused workflow race tests, ago, shell syntax, prose, and required pre-PR review pass. Fresh CI is active."
+  },
+  "scheduling_delivery": {
+    "head": "4f2b94624c1edaff75ee75f93de52bacac8bf16d",
+    "reviewers": {
+      "codex:gpt-5.6-sol:xhigh": 0,
+      "claude:opus:high": 0
+    },
+    "review_exit_code": 0,
+    "push_exit_code": 0,
+    "run": 34426991461,
+    "run_status": "in_progress",
+    "artifacts": {
+      "scheduling-tests": {
+        "path": "source-acceptance-scheduling-tests-2026-09-10.log.gz",
+        "sha256": "c8bb2de3436432706df54d3e8c24568361a4ae53e507b6ed9d182e61a1850823"
+      },
+      "scheduling-ago": {
+        "path": "source-acceptance-scheduling-ago-2026-09-10.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+      },
+      "scheduling-writing": {
+        "path": "source-acceptance-scheduling-writing-2026-09-10.log.gz",
+        "sha256": "ef35079088f7f97543b264dd23199a7a2dea8e0840c851cc2ac731ff06042f12"
+      },
+      "scheduling-review": {
+        "path": "source-acceptance-scheduling-review-2026-09-10.log.gz",
+        "sha256": "65c71dd05c437490cfb4e13283fcabfde4d1bc2d5a2fceec0b0ba21261c068a2"
+      }
+    },
+    "completion_credit": false
   }
 }
