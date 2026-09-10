@@ -20,6 +20,10 @@ func reconcileAuthoredCorpus(
 ) error {
 	bootstrap := collector.authoredBootstrap()
 	local := collector.catalog(sources.LocalCatalogID)
+	var aliases *catalogs.CanonicalAliasIndex
+	if baseline != nil {
+		aliases = baseline.CanonicalAliases()
+	}
 
 	if err := addMissingAuthors(target, bootstrap); err != nil {
 		return err
@@ -36,6 +40,9 @@ func reconcileAuthoredCorpus(
 	// overwrite a retained or human-edited definition without field-level
 	// authored-definition provenance.
 	for id, record := range bootstrapModels {
+		if _, _, retired := aliases.Lookup(id); retired {
+			continue
+		}
 		if _, retained := baselineModels[id]; retained {
 			continue
 		}
@@ -47,6 +54,9 @@ func reconcileAuthoredCorpus(
 	// The human catalog workspace is explicit editable input, so matching records
 	// replace the durable baseline and embedded bootstrap.
 	for _, record := range localModels {
+		if _, _, retired := aliases.Lookup(record.ID()); retired {
+			return &errors.ConflictError{Resource: "local authored model", Actual: string(record.ID()), Message: "use the current canonical ID instead of a retired ID"}
+		}
 		if err := setAuthoredModel(target, record); err != nil {
 			return err
 		}
