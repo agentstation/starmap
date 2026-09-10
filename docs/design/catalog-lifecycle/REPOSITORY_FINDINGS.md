@@ -1640,3 +1640,20 @@ Provider omission must not remove an alias. Current authority and provider/accou
 The [decision proof](../../plans/proof/starport-production-catalog/csp3/alias-retention-decision-2026-09-10.md) assigns time, restart, removal, and authority checks to existing A08 coverage.
 The final local A08 report passes 38 registered commands and 745 events, but alias and scoped-removal subcases remain unverified.
 The decision adds no implementation or merge credit.
+
+## Canonical removals across renames, 2026-09-10
+
+The alias candidate at `3609f171` retains an operator removal under the original canonical ID.
+Its effective removal index does not follow that ID to the renamed definition.
+A consumer that resolves the alias before checking removal can therefore miss the exclusion.
+The catalog and runtime regressions reproduce this behavior.
+
+Repair `13fe3a75` indexes retained removal targets through the current alias history during catalog construction.
+It preserves the original serialized operator target for audit and explicit restore.
+Removed alias edges still preserve model identity.
+The query allocates no memory and does not traverse rename chains.
+
+The [rename exclusion proof](../../plans/proof/starport-production-catalog/csp3/canonical-removal-rename-2026-09-10/verification.json) records 1,437 passing catalog events and both focused Go toolchains.
+The runtime regression covers rename, restart, explicit restore, and another restart.
+Full task qualification, review, native CI, and merge remain open.
+CSP10 must preserve this identity during Starport admission.

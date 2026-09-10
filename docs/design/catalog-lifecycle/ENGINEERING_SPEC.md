@@ -134,6 +134,8 @@ A removed alias must block convenience lookup. Reject ambiguous alias and provid
 
 Retaining an alias does not grant permission or restore an unavailable provider/account route.
 The target must still pass current membership and admission checks.
+Canonical model removals follow retained rename history to the current definition.
+Preserve the original operator target for audit and explicit restore.
 A08 tests must advance time beyond 30 days and cover restart, explicit removal, and baseline replacement.
 
 Provider withdrawal, lost capability, and authority revocation can end availability earlier.
