@@ -1619,6 +1619,35 @@
       "log": "/tmp/starmap-membership-final-acceptance-2026-09-10.log",
       "status": "running",
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3"
+    },
+    "operator_documentation": {
+      "status": "Binding and receipt version documentation now matches the local implementation. Generated settings reference, docs checks, ago, and prose checks pass.",
+      "artifacts": {
+        "operator-reference": {
+          "path": "operator-reference.log.gz",
+          "sha256": "baed5ed66faccb3d0a8359f5d221abccc38bfbd45a79d8cda0b6e19c1e7d89c0"
+        },
+        "operator-writing": {
+          "path": "operator-writing.log.gz",
+          "sha256": "c6dfbe2bdd1f1df840a3e5614788df35ccd7384c01bf79eaf8212c6d26df6407"
+        },
+        "operator-ago": {
+          "path": "operator-ago.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        },
+        "operator-docs-check": {
+          "path": "operator-docs-check.log.gz",
+          "sha256": "9e1d141a103778cadaba91510f49b9bde28392c4004b0121fdccac63190df2eb"
+        }
+      },
+      "remaining_removal_integration": {
+        "owner": "CSP3",
+        "source": "internal/catalog/pipeline/observation_health.go:guardObservationVolume",
+        "finding": "Any omission of a previously attributed model adds volume_collapse and changes the receipt to partial/degraded, including explicitly bound scopes.",
+        "implication": "Reconciliation and scope transport tests do not prove ordinary provider acquisition can apply an authorized removal. Integrate explicit replacement authority and the owner-selected review policy at this acquisition boundary.",
+        "status": "UNVERIFIED; owner review threshold pending"
+      },
+      "work_commit": "251b1431"
     }
   }
 }

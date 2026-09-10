@@ -1585,3 +1585,19 @@ Its second migration repeats `ADD COLUMN request_id` and fails on both dependenc
 Separate disposable databases pass migration, read/write, and rollback checks.
 CSP15 must repair the fixture isolation before it claims complete shared-backend qualification.
 No production SQL change belongs to this dependency update.
+
+## Scoped membership and acquisition removal, 2026-09-10
+
+Local Starmap commit `251b1431` carries schema-2 bindings and schema-7 membership records.
+The [scope evidence](../../plans/proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json) records 1,455 passing runtime, acquisition, and reconciler test events.
+HTTPS trust checks, publisher isolation, receipt retention, restart, and migration also pass focused checks.
+This branch remains unpublished. Starport profile links and released-pair qualification remain incomplete.
+
+The acquisition volume guard still marks omitted attributed models as partial, degraded evidence.
+The owning function is `guardObservationVolume` in `internal/catalog/pipeline/observation_health.go`.
+It applies this rule to bound observations as well as unscoped observations.
+Thus reconciliation and transport support do not prove that ordinary acquisition can apply authorized removals.
+
+CSP3 must connect explicit replacement authority to the operator review policy at this boundary.
+The ordinary removal threshold remains an owner decision. Internal authoritative withdrawals must retain their separate immediate enforcement path.
+Model rename expiry and cross-authority alias acceptance also remain incomplete.
