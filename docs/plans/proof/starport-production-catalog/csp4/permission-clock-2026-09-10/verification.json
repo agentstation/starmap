@@ -1,0 +1,246 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_clock_sample_checks",
+  "acceptance": "All eight CSP4 acceptance checks remain UNVERIFIED. No task completion credit.",
+  "source_commit": "0d1920927164a3a64216d692912587256511fb26",
+  "base": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock",
+  "branch": "codex/catalog-permission-clock",
+  "publication": "local commit, no PR or merge",
+  "dependency": {
+    "pr": 148,
+    "source": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
+    "state": "Reviewed, published, CI active, unmerged"
+  },
+  "contract": [
+    "WithPermissionClock supplies one complete time, uncertainty, and qualification sample per permission decision.",
+    "Admission, receipt relay, and permission status use that sample instead of separate scheduler time and assurance reads.",
+    "Legacy uncertainty-only configuration remains available. Selecting both contracts fails before runtime construction.",
+    "Both unsafe clock samples remain denied under concurrent access, with diagnostic metadata available.",
+    "Admission uses memory only and passes its zero-allocation check.",
+    "The callback contract does not itself qualify a native clock."
+  ],
+  "checks": [
+    {
+      "artifact": "green-go126.jsonl.gz",
+      "test_events": {
+        "pass": 10
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1.467
+        }
+      ]
+    },
+    {
+      "artifact": "green-go125.jsonl.gz",
+      "test_events": {
+        "pass": 10
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1.459
+        }
+      ]
+    },
+    {
+      "artifact": "authority-regression.jsonl.gz",
+      "test_events": {
+        "pass": 50
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 17.225
+        }
+      ]
+    },
+    {
+      "artifact": "final-go126.jsonl.gz",
+      "test_events": {
+        "pass": 11
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1.478
+        }
+      ]
+    },
+    {
+      "artifact": "final-authority-go125.jsonl.gz",
+      "test_events": {
+        "pass": 51
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 14.644
+        }
+      ]
+    }
+  ],
+  "static_checks": {
+    "lint": "PASS, zero issues",
+    "ago": "PASS, no findings, stale ignores, or errors",
+    "docs": "PASS before the final comment-only prose repair. Runtime documentation regenerated after that repair.",
+    "prose": "PASS, 1452 files, zero diagnostics"
+  },
+  "retained_failures": [
+    "New callback absent: compile failure in red.jsonl.gz.",
+    "Prose paragraph and passive-voice errors in prose.log.gz, fixed before commit."
+  ],
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "d974d526a087463456fa42f4f78ed7ded5e8be691c58640ed0df10f0bc6d838d"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "0efd896624aaa623b128c9721de07d1e72509267215b3a9197c9be401daa1d3f"
+    },
+    {
+      "path": "runtime/authority_clock.go",
+      "sha256": "07c0d7ac7161b19cced042c9e44ee560ac088edc6ebe5014f934ef291ad57948"
+    },
+    {
+      "path": "runtime/authority_clock_test.go",
+      "sha256": "609febd4e16b544f8ea5e3839127f1f167f32de3c774a9b3122ad9087078c564"
+    },
+    {
+      "path": "runtime/authority_policy.go",
+      "sha256": "022a4b7dbfa44aaa480a1d1447f9813f32799e683eb0b68a20007c7d1767de9a"
+    },
+    {
+      "path": "runtime/authority_relay.go",
+      "sha256": "1b674ea46d0aa35347a74407cf6bee10d903c9eaea47924788ce83570dbcaae7"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "f8f4913d3ec1606ebe64fb01e6ec93fc13cd9b79004f317ec6189510185ada9d"
+    },
+    {
+      "path": "runtime/status.go",
+      "sha256": "0e94f77f8c7daa86fe7a495246768029f85d752b22e3a6c54e3d0c210d35eb1a"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "red.jsonl.gz",
+      "sha256": "8405729989f7135f7663cb24332a79a2e98d997570fb39046a0ac2bb38011ceb",
+      "decoded_sha256": "e6855ae9746611b6e39127cc20349cfc3000e8e7391e27bf10a14e11efd7588a"
+    },
+    {
+      "path": "green-go126.jsonl.gz",
+      "sha256": "8df49bbe5c58aad0b6797c3314bd4ce9bdb8a3ccfa7c0915da1baed30fe87e43",
+      "decoded_sha256": "18c985e3c8abd58c4333bf1ae909f6159eb1eedb5469fa3f8a82e09f4821db81"
+    },
+    {
+      "path": "green-go125.jsonl.gz",
+      "sha256": "4ee3a53e7407938153d20a84af90784a1acd76227e5fd91daebe598609e6e7b5",
+      "decoded_sha256": "085583bba391500b3f7fdfd7c1ba5a0fc35cd7281564a527ddd7e567074b491f"
+    },
+    {
+      "path": "authority-regression.jsonl.gz",
+      "sha256": "6091beb675852102908075c7a3bc4385a52d19d00a6b410835877750ea0948c0",
+      "decoded_sha256": "8ce95f912dc11a81a905b0e1289035c8d0f9c0c23e1f0cac802d33df341ff3b2"
+    },
+    {
+      "path": "final-go126.jsonl.gz",
+      "sha256": "f23d52d3982b6fda10613d76c7fecc547cffa234aee12a44d26a2299b6d65896",
+      "decoded_sha256": "5f0e2e514522e7abacd3b4912eba1af3b5e8f0831d1f8386f9c9685f9e415b63"
+    },
+    {
+      "path": "final-authority-go125.jsonl.gz",
+      "sha256": "411885532671e3b0acb36048172ba5ed4188acf3b72a2e5dba472280c17dc082",
+      "decoded_sha256": "3097da8f634c286c206e14fe6f930f587e9a95248bad2fbe4de2bcd6ffadd3cf"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "lint-final.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-final.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "generate.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generate-retry.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs.log.gz",
+      "sha256": "60eaa62af57e7ba2f13232a23321da425ec7379328e6f2b1de6e2e963bd07570",
+      "decoded_sha256": "994d95bb3dbd8f3c1506969e3559887c5ef928ac93370414abacdec25ed18c48"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "03c1c3fe75060ac932c61e3be1968ff78e47271fb43d2b0310cc97872aa92eab",
+      "decoded_sha256": "b8be497eb77b82c6c37b40ebd12e728ccf70027695179e7a4d2dc756a219442c"
+    },
+    {
+      "path": "prose-retry.log.gz",
+      "sha256": "b365f21d5e071c89e4fb83ab12b620020b669e8e61ec78cd3a4cb3dd9595b221",
+      "decoded_sha256": "58dbb7de35ea208100698a30f2b3a0585775aea345b00e607a85271609cf6f81"
+    },
+    {
+      "path": "canonical-prose.log.gz",
+      "sha256": "0cc80dcb9b268d6700f997f5adb8893b072e33f2e5d901b12c2ab617451da30c",
+      "decoded_sha256": "706da47afc54236ff910c6af3cfa86da85675bd9d0f20da22b67a4ea733beb10"
+    },
+    {
+      "path": "canonical-prose-retry.log.gz",
+      "sha256": "d360434d6ea2a7de68d9fcd14302b266179cfc151af5d91e7f082d1ca9c3a0eb",
+      "decoded_sha256": "76d3801264bac929afda9bebfd13d00cb000f61512c8ecaa90ad87117bf2aa2c"
+    },
+    {
+      "path": "canonical-native-prose.log.gz",
+      "sha256": "9584f653da30c73640658698614f48fd75be1c04cedf5113bc1280d7a08909ce",
+      "decoded_sha256": "0a24f3b3bf044f16ad89e9c219ee735e190d77cd1027a2c78306229faa9bfcf2"
+    },
+    {
+      "path": "canonical-native-prose-retry.log.gz",
+      "sha256": "d360434d6ea2a7de68d9fcd14302b266179cfc151af5d91e7f082d1ca9c3a0eb",
+      "decoded_sha256": "76d3801264bac929afda9bebfd13d00cb000f61512c8ecaa90ad87117bf2aa2c"
+    }
+  ],
+  "running_commands": [
+    {
+      "session_id": 13328,
+      "command": "make verify",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock/.tmp/csp4-permission-clock/make-verify.log"
+    }
+  ],
+  "next_action": "Complete full repository verification. Merge PR #148 after its required and native checks. Then qualify native clock adapters and the dependent clock delivery.",
+  "canonical_prose": {
+    "status": "PASS",
+    "files": 1295,
+    "diagnostics": 0,
+    "artifact": "canonical-native-prose-retry.log.gz",
+    "retained_failure": "canonical-native-prose.log.gz"
+  }
+}

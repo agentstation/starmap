@@ -3,11 +3,19 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The active source is clean local `717ba9148a75ad74ca1758aa51cbb121b0f5fd18` in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
-The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b`. [PR #148](https://github.com/agentstation/starmap/pull/148) now publishes this delivery.
 
-No owner decision remains. The [runtime transaction proof](csp4/origin-runtime-2026-09-10/verification.json) records the committed integration and its scoped qualification.
-Complete repository verification passes at that commit. Required Sol and Opus review passes with zero findings.
+The active source is clean local `0d1920927164a3a64216d692912587256511fb26` in `/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock`.
+The branch is `codex/catalog-permission-clock`. Its [clock proof](csp4/permission-clock-2026-09-10/verification.json) records eleven focused and 51 authority/status race checks.
+Admission, relay, and permission status now use one complete time and uncertainty sample. The callback still requires native qualification.
+
+Full repository verification runs in session `13328`. No owner decision remains.
+
+Parent `717ba914` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
+[PR #148](https://github.com/agentstation/starmap/pull/148) publishes that delivery. It includes actual PR #146 merge `faa9cc8b`.
+The [runtime transaction proof](csp4/origin-runtime-2026-09-10/verification.json) records complete repository verification.
+
+Required Sol and Opus review passes with zero findings. All six native jobs pass with 10,170 test events and 92 package outcomes.
+Separate privileged Linux tests cover the two ordinary skips. Automatic squash merge waits for Verification Gate.
 
 The [recovery record](csp4/worktree-recovery-2026-09-10.json) verifies the restored branches after their temporary directories disappeared.
 Canonical checkpoint `91aa43c6` preserves the completed checks. Historical proof keeps its original paths.
@@ -50,7 +58,7 @@ Full verification passes 82 packages in both ordinary and race modes. All 15 cov
 Documentation, prose, static analysis, and offline CLI checks pass. Catalog reads take 8.100–11.43 ns with zero allocations across three runs.
 
 The [delivery proof](csp4/origin-delivery-2026-09-10/verification.json) binds the reviewed head, public PR, and CI run `34540446314`.
-Next, complete native CI and merge this reviewed library and runtime delivery.
+Next, confirm Verification Gate and the automatic merge of this reviewed library and runtime delivery.
 Then continue canonical server settings, qualified clocks, shared-store followers, authority transitions, and Starport consumers.
 The current APIs do not complete the standalone production recipe.
 

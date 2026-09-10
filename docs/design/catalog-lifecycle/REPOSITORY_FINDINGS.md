@@ -1909,3 +1909,14 @@ The final runtime race package completes in 1,533.210 seconds. All 15 coverage t
 Catalog pointer reads take 8.100–11.43 ns with zero allocations across three runs. This measures the accessor, not complete gateway overhead.
 Required Sol and Opus review passes with zero findings. The changed-content secret scan passes.
 [PR #148](https://github.com/agentstation/starmap/pull/148) is open, and native CI tests the reviewed head. A reviewed merge remains required.
+
+## Complete permission clock samples, 2026-09-10
+
+Local `0d1920927164a3a64216d692912587256511fb26` adds `runtime.WithPermissionClock` for one complete time and uncertainty sample.
+Admission, receipt relay, and permission status use that same callback contract. The scheduler retains its separate clock.
+The legacy uncertainty-only option remains available. Selecting both contracts fails before construction.
+
+The [clock proof](../../plans/proof/starport-production-catalog/csp4/permission-clock-2026-09-10/verification.json) records eleven focused Go 1.26 race checks and 51 Go 1.25 authority/status checks.
+Concurrent unsafe samples remain denied. Admission retains zero allocations, and clock failure preserves diagnostic metadata.
+Static checks and the 1,452-file prose check pass. Full repository verification is active.
+This API does not qualify native clock evidence or complete CSP4. The parent origin PR #148 still awaits CI and merge.

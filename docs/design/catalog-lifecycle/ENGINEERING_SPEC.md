@@ -1843,8 +1843,15 @@ Unconfirmed retention, a newer unmatched manifest, expiry, or unknown clock vali
 The endpoint uses `no-store`, ignores conditional renewal, and applies the configured API authentication.
 Unavailable permission returns a generic 503 without private error details.
 
+`runtime.WithPermissionClock` now supplies one complete `ClockReading` for each permission decision.
+Admission, receipt relay, and permission status use its time and uncertainty together. The scheduler retains its separate clock.
+The callback must read cached qualification evidence and support concurrent calls. It supplies no native adapter itself.
+
+The legacy uncertainty callback remains available when it qualifies the time from `WithClock`.
+Selecting both clock contracts causes a configuration error before runtime construction.
+
 The library clock callback reads only cached evidence.
-Its uncertainty must describe the same clock that supplies runtime time.
+Each sample's uncertainty must bound its returned time.
 The current standalone composition has no clock qualification adapter. It therefore cannot yet qualify an internal production recipe.
 CSP4 must still qualify publisher receipts, replicas that read shared catalog state, and the required Starport acceptance cases.
 
