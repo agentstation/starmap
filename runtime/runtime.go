@@ -110,13 +110,14 @@ type Runtime struct {
 	publicationMu sync.Mutex
 
 	// mu guards the retained layers and the published effective state.
-	mu             sync.RWMutex
-	layers         layerSet
-	effective      starmap.CatalogState
-	report         statusState
-	permissions    authorityPermissions
-	permissionRuns runGroup
-	permissionIO   sync.Mutex
+	mu                 sync.RWMutex
+	layers             layerSet
+	effective          starmap.CatalogState
+	report             statusState
+	permissions        authorityPermissions
+	permissionRuns     runGroup
+	permissionIO       sync.Mutex
+	authorityObservers authorityObservationGroup
 
 	instanceSeed string
 	directory    *flock.Flock
@@ -257,21 +258,9 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
 	}
 
-	// The require_source policy blocks inside the Open context and reads the
-	// source once. A failed read fails Open, so a deployment that needs
-	// upstream state never serves the embedded baseline instead. A non-owner
-	// replica reads nothing, because the lease owner supplies the state that
-	// this replica then consumes.
-	if runtime.config.source.StartupPolicy == StartupRequireSource {
-		if runtime.lease.status() == leaseLost {
-			logging.Info().
-				Str("holder", runtime.schedule.identity.Instance).
-				Msg("The lease owner supplies the source state; require_source reads nothing here")
-		} else if _, err := runtime.RefreshSource(ctx); err != nil {
-			runtime.abort()
-			return nil, errors.WrapResource(
-				"read", "catalog source", runtime.source.Identity(), err)
-		}
+	if err := runtime.prepareSourceStartup(ctx); err != nil {
+		runtime.abort()
+		return nil, err
 	}
 	runtime.startSchedules()
 	opened = true
@@ -334,6 +323,7 @@ func (r *Runtime) Close() error {
 		return nil
 	}
 	r.closeOnce.Do(func() {
+		r.authorityObservers.close()
 		active := r.runs.close()
 		permissionActive := r.permissionRuns.close()
 		r.cancel()
@@ -341,6 +331,7 @@ func (r *Runtime) Close() error {
 		go func() {
 			<-active
 			<-permissionActive
+			r.authorityObservers.active.Wait()
 			r.work.Wait()
 			r.lease.stop()
 			var err error

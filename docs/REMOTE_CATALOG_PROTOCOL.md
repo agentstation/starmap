@@ -41,6 +41,17 @@ expiry. It can forward an unsupported permission revision before it can
 activate the associated catalog. Downstream consumers must record that
 requirement and refuse attempts they cannot authorize.
 
+An internal runtime binds a manifest observer before source acquisition starts.
+The protocol authenticates the publisher and validates the current manifest
+before calling that observer. The runtime records the required permission
+revision before payload compatibility checks or transfer. A failed or stalled
+payload therefore cannot postpone a known withdrawal.
+
+The observer binds once before any manifest request. A new runtime owner needs
+a new source instance. Addressed historical manifests do not advance the
+current requirement. Shutdown stops new callbacks and joins active callbacks
+before sealing the permission checkpoint.
+
 The relay returns 503 with code `catalog_permission_unavailable` when it has
 no confirmed receipt for the highest known publication. It also refuses an
 expired receipt, unknown clock validity, and an unconfirmed renewal.

@@ -63,6 +63,13 @@ type PermissionReader interface {
 	ReadPermission(context.Context) (catalogs.CatalogPermissionEnvelope, error)
 }
 
+// AuthorityObservable reports verified requirements before source payload processing.
+// Binding starts no acquisition. A source must refuse binding after manifest requests start.
+type AuthorityObservable interface {
+	Source
+	BindAuthorityObserver(func(context.Context, catalogs.CatalogAuthorityHead) error) error
+}
+
 // Read is one upstream observation.
 type Read struct {
 	// Changed reports whether the upstream generation moved.

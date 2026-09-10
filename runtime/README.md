@@ -1253,7 +1253,7 @@ type RefreshReport struct {
 ```
 
 <a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L101-L140>)
+## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L101-L141>)
 
 Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
 
@@ -1264,7 +1264,7 @@ type Runtime struct {
 ```
 
 <a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L145>)
+### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L146>)
 
 ```go
 func Open(ctx context.Context, opts ...Option) (*Runtime, error)
@@ -1291,7 +1291,7 @@ func (r *Runtime) AllowsNewAttempt() bool
 AllowsNewAttempt checks current catalog permission using memory only. Call it for every new attempt, including retries and cached response delivery. It does not replace model, destination, account, or budget authorization.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L290>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L279>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -1300,7 +1300,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L312>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L301>)
 
 ```go
 func (r *Runtime) Client() *starmap.Client
@@ -1309,7 +1309,7 @@ func (r *Runtime) Client() *starmap.Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L332>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L321>)
 
 ```go
 func (r *Runtime) Close() error
@@ -1408,7 +1408,7 @@ func (r *Runtime) ReplaceRemovalTargets(ctx context.Context, expected starmap.Ca
 ReplaceRemovalTargets replaces this runtime's operator removal snapshot. Expected generation identity and checksum prevent stale edits. An empty target list restores local removals. The caller authorizes the operator action. Other publishers retain their own policies.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L301>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L290>)
 
 ```go
 func (r *Runtime) State() starmap.CatalogState
@@ -1455,7 +1455,7 @@ UpdateObservations prepares and publishes original observations under runtime ow
 Optional resets replace prior local acquisition observations within the named scopes. Each scope requires complete successful replacement evidence. The baseline and unrelated scopes remain. Resets and replacements share the catalog publication journal.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L322>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L311>)
 
 ```go
 func (r *Runtime) Updates() <-chan starmap.CatalogState

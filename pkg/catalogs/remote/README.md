@@ -24,6 +24,7 @@ Package remote implements the versioned online Starmap\-to\-Starmap generation p
 - [func RetryBoundary\(header http.Header, now time.Time\) \(time.Time, bool\)](<#RetryBoundary>)
 - [type Client](<#Client>)
   - [func NewClient\(baseURL string, httpClient \*http.Client, schemaVersion uint64\) \(\*Client, error\)](<#NewClient>)
+  - [func \(c \*Client\) BindAuthorityObserver\(observer func\(context.Context, catalogs.CatalogAuthorityHead\) error\) error](<#Client.BindAuthorityObserver>)
   - [func \(c \*Client\) FetchCurrent\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.FetchCurrent>)
   - [func \(c \*Client\) FetchCurrentIfChanged\(ctx context.Context, generationID string\) \(generation catalogs.Generation, changed bool, err error\)](<#Client.FetchCurrentIfChanged>)
   - [func \(c \*Client\) FetchGeneration\(ctx context.Context, generationID string\) \(catalogs.Generation, error\)](<#Client.FetchGeneration>)
@@ -169,7 +170,7 @@ func DefaultTransferClient() *http.Client
 DefaultTransferClient returns a transfer client with the default policy. The default policy is a set of constants, so this call cannot fail.
 
 <a name="GenerationManifestPath"></a>
-## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L46>)
+## func [GenerationManifestPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L47>)
 
 ```go
 func GenerationManifestPath(generationID string) string
@@ -178,7 +179,7 @@ func GenerationManifestPath(generationID string) string
 GenerationManifestPath returns the immutable manifest route for generationID.
 
 <a name="ManifestETag"></a>
-## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L391>)
+## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L401>)
 
 ```go
 func ManifestETag(generationID string) string
@@ -187,7 +188,7 @@ func ManifestETag(generationID string) string
 ManifestETag returns the strong entity tag for a generation manifest. A generation ID is immutable and restricted to HTTP entity\-tag\-safe bytes.
 
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L396>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L406>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
@@ -223,7 +224,7 @@ func NewTransport(policy TransferPolicy) (*http.Transport, error)
 NewTransport returns an HTTP transport that applies the connection, TLS, and response\-header bounds of the policy. The body bounds belong to Transfer.
 
 <a name="PayloadPath"></a>
-## func [PayloadPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L51>)
+## func [PayloadPath](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L52>)
 
 ```go
 func PayloadPath(generationID string) string
@@ -241,7 +242,7 @@ func RetryBoundary(header http.Header, now time.Time) (time.Time, bool)
 RetryBoundary returns the hard not\-before boundary a reply declared. It accepts the delta\-seconds and the HTTP\-date forms of Retry\-After.
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L56-L60>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L57-L64>)
 
 Client fetches one exact current generation from a versioned Starmap API.
 
@@ -252,7 +253,7 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L69>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L73>)
 
 ```go
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
@@ -260,8 +261,17 @@ func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*
 
 NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain. The current schema selects all formats this client supports. An older schema selects only that format. The client rejects other formats before fetching payloads.
 
+<a name="Client.BindAuthorityObserver"></a>
+### func \(\*Client\) [BindAuthorityObserver](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/authority.go#L14>)
+
+```go
+func (c *Client) BindAuthorityObserver(observer func(context.Context, catalogs.CatalogAuthorityHead) error) error
+```
+
+BindAuthorityObserver installs one observer before any manifest request starts. A validated current manifest reaches the observer before payload compatibility checks or transfer. An ordinary manifest supplies a zero head. Addressed historical reads never call the observer. An observer error prevents payload transfer. The callback must support concurrent reads and must not read this client's manifests.
+
 <a name="Client.FetchCurrent"></a>
-### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L156>)
+### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L160>)
 
 ```go
 func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
@@ -270,7 +280,7 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
 FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed payload and validates their binding and compatibility.
 
 <a name="Client.FetchCurrentIfChanged"></a>
-### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L167-L170>)
+### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L171-L174>)
 
 ```go
 func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string) (generation catalogs.Generation, changed bool, err error)
@@ -279,7 +289,7 @@ func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string)
 FetchCurrentIfChanged conditionally fetches the current manifest relative to generationID. It returns changed=false without fetching a payload when the publisher reports that generationID is still current.
 
 <a name="Client.FetchGeneration"></a>
-### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L194>)
+### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L198>)
 
 ```go
 func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogs.Generation, error)
@@ -353,7 +363,7 @@ type ProgressFunc func(TransferProgress)
 ```
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L40-L43>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L41-L44>)
 
 Publication identifies one committed immutable catalog generation.
 

@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -54,9 +55,12 @@ func PayloadPath(generationID string) string {
 
 // Client fetches one exact current generation from a versioned Starmap API.
 type Client struct {
-	baseURL       *url.URL
-	httpClient    *http.Client
-	schemaVersion uint64
+	baseURL           *url.URL
+	httpClient        *http.Client
+	schemaVersion     uint64
+	authorityMu       sync.Mutex
+	authorityObserver func(context.Context, catalogs.CatalogAuthorityHead) error
+	manifestStarted   bool
 }
 
 // NewClient creates a remote generation client. baseURL is the trusted,
@@ -220,6 +224,7 @@ func (c *Client) fetchManifest(
 	resourceID string,
 	ifNoneMatch string,
 ) (catalogs.GenerationManifest, bool, error) {
+	observer := c.beginManifestRead()
 	manifestData, notModified, err := c.fetchConditional(
 		ctx,
 		resourcePath,
@@ -241,6 +246,11 @@ func (c *Client) fetchManifest(
 			resourceID,
 			err,
 		)
+	}
+	if observer != nil && resourcePath == ManifestPath {
+		if err := observer(ctx, manifest.AuthorityHead); err != nil {
+			return catalogs.GenerationManifest{}, false, err
+		}
 	}
 	if err := validateGenerationID(manifest.GenerationID); err != nil {
 		return catalogs.GenerationManifest{}, false, err

@@ -65,10 +65,11 @@ type Source struct {
 
 // The cascaded source fills the reactive runtime source roles.
 var (
-	_ source.Source           = (*Source)(nil)
-	_ source.PermissionReader = (*Source)(nil)
-	_ source.Watcher          = (*Source)(nil)
-	_ source.IdentityAdopter  = (*Source)(nil)
+	_ source.Source              = (*Source)(nil)
+	_ source.PermissionReader    = (*Source)(nil)
+	_ source.AuthorityObservable = (*Source)(nil)
+	_ source.Watcher             = (*Source)(nil)
+	_ source.IdentityAdopter     = (*Source)(nil)
 )
 
 // NewSource builds the cascaded Starmap source. It starts no goroutine and

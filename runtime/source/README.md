@@ -14,12 +14,25 @@ The package is a leaf. It implements no source and opens no connection. A packag
 
 ## Index
 
+- [type AuthorityObservable](<#AuthorityObservable>)
 - [type IdentityAdopter](<#IdentityAdopter>)
 - [type PermissionReader](<#PermissionReader>)
 - [type Read](<#Read>)
 - [type Source](<#Source>)
 - [type Watcher](<#Watcher>)
 
+
+<a name="AuthorityObservable"></a>
+## type [AuthorityObservable](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L68-L71>)
+
+AuthorityObservable reports verified requirements before source payload processing. Binding starts no acquisition. A source must refuse binding after manifest requests start.
+
+```go
+type AuthorityObservable interface {
+    Source
+    BindAuthorityObserver(func(context.Context, catalogs.CatalogAuthorityHead) error) error
+}
+```
 
 <a name="IdentityAdopter"></a>
 ## type [IdentityAdopter](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L51-L56>)
@@ -48,7 +61,7 @@ type PermissionReader interface {
 ```
 
 <a name="Read"></a>
-## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L67-L86>)
+## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L74-L93>)
 
 Read is one upstream observation.
 

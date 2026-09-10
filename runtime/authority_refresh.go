@@ -103,6 +103,21 @@ func (r *Runtime) observeSourceAuthority(ctx context.Context, manifest catalogs.
 		r.mu.Unlock()
 		return &errors.ValidationError{Field: "catalog_authority.manifest", Message: "must bind the authority head to the source generation"}
 	}
+	return r.observeAuthorityHead(ctx, head)
+}
+
+// observeAuthorityHead records a verified manifest requirement before payload processing.
+func (r *Runtime) observeAuthorityHead(ctx context.Context, head catalogs.CatalogAuthorityHead) error {
+	if !r.authorityObservers.begin() {
+		return context.Canceled
+	}
+	defer r.authorityObservers.active.Done()
+	if err := r.ctx.Err(); err != nil {
+		return err
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	r.mu.Lock()
 	p, err := r.permissions.observeHead(head)
 	r.permissions = p
@@ -129,6 +144,16 @@ func (r *Runtime) observeSourceAuthority(ctx context.Context, manifest catalogs.
 	}
 	r.mu.Unlock()
 	return err
+}
+
+func (r *Runtime) bindSourceAuthority() error {
+	if !r.requiresAuthority() {
+		return nil
+	}
+	if observable, ok := r.source.(source.AuthorityObservable); ok {
+		return observable.BindAuthorityObserver(r.observeAuthorityHead)
+	}
+	return nil
 }
 
 func (r *Runtime) startPermissionSchedule() {
