@@ -207,6 +207,50 @@
     "scheduled-registry": {
       "path": "scheduled-registry.gz",
       "sha256": "3df4aacdb1836f6167c2fc6a31cbbb871e1530b5324e6c27d3d74dec23d69010"
+    },
+    "removal-target-before": {
+      "path": "removal-target-before.gz",
+      "sha256": "8bc0846fa652a7164ea34d85efbb7db2f40ef833a8aa088695754ef3f91f67da"
+    },
+    "removal-target-focused": {
+      "path": "removal-target-focused.gz",
+      "sha256": "5180ca52a86ade8e321e8ac62bc3cd59ef735ea2f4f751bb2c2ca48062995951"
+    },
+    "removal-target-min-go": {
+      "path": "removal-target-min-go.gz",
+      "sha256": "f02d6e459d4722b5436416669dbaaaa6ebe372aefc5919d24d2d6538a81d6f52"
+    },
+    "removal-target-catalog-full": {
+      "path": "removal-target-catalog-full.gz",
+      "sha256": "12ded208a145b6e6fb4b368331919862d57fc036bcf270ba812f3c5ad566075d"
+    },
+    "removal-target-ago": {
+      "path": "removal-target-ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    "removal-target-lint": {
+      "path": "removal-target-lint.gz",
+      "sha256": "42b25fcd43b6f45fadf16c2d7b88a7414cbbaffbe6d49aa332d1f59b61fa53cb"
+    },
+    "removal-target-docs": {
+      "path": "removal-target-docs.gz",
+      "sha256": "ffab0fa82480320ec9ed6a51acbced5aa7724085d5275f675e53df2fd74dcb92"
+    },
+    "removal-target-docs-check": {
+      "path": "removal-target-docs-check.gz",
+      "sha256": "f1f0109c94142314f8eb8758b7a3f95e410f7c8fc84682c25feddd2be2f13ae1"
+    },
+    "removal-target-prose-initial": {
+      "path": "removal-target-prose-initial.gz",
+      "sha256": "fdd4711f4f8e971328f653ace8f856e031b335b9a8959363a02a55ee3f7a29c0"
+    },
+    "removal-target-prose-final": {
+      "path": "removal-target-prose-final.gz",
+      "sha256": "f82b5f2d7f88afc7572618b5a83f1c8f4cbd0afabd24287f4ef4c5e9608c5b20"
+    },
+    "removal-target-docs-final": {
+      "path": "removal-target-docs-final.gz",
+      "sha256": "02788f19780d8f1fe3a2a1138f4addf6a65dff1f41de896c4b7751b1a4d5be2b"
     }
   },
   "static": {
@@ -331,16 +375,63 @@
       "runtime/provider_inventory_retention.go",
       "runtime/scheduled_absence_test.go",
       "scripts/catalog-product-checks.json"
-    ]
+    ],
+    "existing_limit": {
+      "bytes": 67108864,
+      "batches": 4096,
+      "behavior": "Refuse further manual history publication at the bound. History compaction remains incomplete.",
+      "owner": "CSP5 retained-evidence collection",
+      "production_qualification": false
+    }
   },
   "next_implementation_design": {
     "path": "scoped-removal-design.md",
-    "status": "begin implementation at the catalog target boundary",
+    "status": "target validation and matching are local prototypes; persistence and transport remain open",
     "owner": "CSP3",
     "acceptance": "A08.scoped_tombstone",
     "implementation_credit": false,
     "worktree": "/tmp/starmap-operator-removal-2026-09-10",
     "branch": "codex/catalog-operator-removal",
-    "base_commit": "af94de19"
+    "base_commit": "af94de19",
+    "prototype": {
+      "files": [
+        "pkg/catalogs/removal_target.go",
+        "pkg/catalogs/removal_target_test.go",
+        "pkg/catalogs/README.md"
+      ],
+      "baseline": "af94de19",
+      "fail_before": "New target API tests fail to compile because the constructors and types do not exist. This is an API contract baseline, not a runtime behavior failure.",
+      "focused": {
+        "exit_code": 0,
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      },
+      "minimum_go": {
+        "exit_code": 0,
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      },
+      "ago_exit": 0,
+      "full_catalog_session": 26624,
+      "lint_session": 90224,
+      "docs_session": 92465,
+      "full_catalog": {
+        "exit_code": 0,
+        "pass": 1115,
+        "fail": 0,
+        "skip": 0,
+        "elapsed_seconds": 73.267
+      },
+      "lint_exit": 0,
+      "docs_exit": 0,
+      "docs_check_exit": 0,
+      "prose_session": 75184,
+      "work_commit": "6e0d590a07fdb0dea31276bf60ede69518ed31d9",
+      "prose_exit": 0,
+      "prose_files": 1345,
+      "generated_docs_final_exit": 0
+    }
   }
 }
