@@ -5,7 +5,7 @@
   "branch": "codex/catalog-canonical-aliases",
   "commit": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
   "reviewed_dependency": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
-  "state": "Integrated qualification found two stale publisher fixture assumptions. Repair adds an explicitly configured local failing provider. Final review, CI, and merge remain open.",
+  "state": "Publisher fixture repair passes the full publisher package, both focused toolchains, all external consumers, and static checks. Final CSP3 verification runs at 3609f171. Review, CI, and merge remain open.",
   "scope": [
     "Strict canonical-aliases.yaml storage and original alias records through embedded/local acquisition.",
     "Local workspace rename changes require selected baseline authority.",
@@ -430,7 +430,13 @@
       }
     }
   },
-  "running": [],
+  "running": [
+    {
+      "session": 70366,
+      "output": "/tmp/starmap-alias-csp3-final-2026-09-10.json",
+      "source": "3609f17174e4d42478b0bba47c2d2f34bcb3e2c0"
+    }
+  ],
   "open_findings": [
     {
       "id": "CSP3-source-provider-configuration",
@@ -447,6 +453,7 @@
     }
   ],
   "remaining": [
+    "Merge and qualify the canonical-removal rename repair. The existing runtime test proves identity loss on the current candidate.",
     "Repair and qualify publisher partial-source fixtures without relying on embedded providers outside the selected baseline.",
     "Rerun registered CSP3 acceptance.",
     "Pass final branch review and native CI, then merge in dependency order.",
@@ -566,5 +573,108 @@
       },
       "reason": "The first fixture version reused ACME_API_KEY across two provider IDs. Identity validation correctly refused the conflict. The repair assigns a separate fixture credential."
     }
+  },
+  "publisher_fixture_repair": {
+    "commit": "b3e5d3de",
+    "source": "a0cfc63e plus 014d5ab4 integration and the publisher fixture change",
+    "change": "Configure a local unavailable provider and distinct credentials for all-provider partial-source tests. Keep partial receipt assertions and restrict accepted provider membership.",
+    "checks": {
+      "focused_current": {
+        "artifact": {
+          "path": "starmap-alias-publisher-local-failure-fixed-current-2026-09-10.jsonl.gz",
+          "sha256": "38e0834c3314e265664c4b21ecf4bac756f0b59a5d9123116e5bc6843bdcdb87",
+          "raw_sha256": "db6bc2a3cf004db4d2e378a02c61b83052a7a37dba4b359e5831fdcb654b992c"
+        },
+        "counts": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0
+      },
+      "focused_minimum": {
+        "artifact": {
+          "path": "starmap-alias-publisher-local-failure-fixed-minimum-2026-09-10.jsonl.gz",
+          "sha256": "9fc803106ab03617f0004a8dfb81c3abee64773632113aeb8359a6a099b91aa0",
+          "raw_sha256": "c33f515dbea2fc01d9c6ae919fcdf956d4f91acb7ad961543b37f1ff2bc49507"
+        },
+        "counts": {
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0
+      },
+      "full_publisher": {
+        "artifact": {
+          "path": "starmap-alias-publisher-full-repaired-2026-09-10.jsonl.gz",
+          "sha256": "354a54e34c122fb77bd259291b7c4818429f432280662bb60735553ac1959cf6",
+          "raw_sha256": "d5352ee18620afee400a75641c77458086671bf9b209dfd5197f3b000d411583"
+        },
+        "counts": {
+          "pass": 35,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0
+      },
+      "consumers": {
+        "artifact": {
+          "path": "starmap-alias-text-fixture-consumers-2026-09-10.log.gz",
+          "sha256": "24fec2ebe018406634b186cf8452f6e6017c12b5dbc16abb821b9f61479abc0a",
+          "raw_sha256": "0b901346334b9335fc78670dc06862892dbefa41f6b6a9f0cfb0c58250bbdc85"
+        },
+        "exit_code": 0
+      },
+      "ago": {
+        "artifact": {
+          "path": "starmap-alias-publisher-repaired-ago-2026-09-10.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+          "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+        },
+        "exit_code": 0
+      },
+      "lint": {
+        "artifact": {
+          "path": "starmap-alias-publisher-repaired-lint-2026-09-10.log.gz",
+          "sha256": "39d3713d7768a66c22a93c40300fba9c635dfa42950404729c5cdc8976596dc1",
+          "raw_sha256": "4b59bc9866bdeab1a37678dd0e3c108e985098c7bef22eb4ccfbefa2cb6d087f"
+        },
+        "exit_code": 0
+      },
+      "prose": {
+        "artifact": {
+          "path": "starmap-alias-publisher-repaired-prose-2026-09-10.log.gz",
+          "sha256": "5013a49b39398f9062384e20cef887bb7d4cf7d9d134d3c829529ba7053aa8e2",
+          "raw_sha256": "634abeab204949f9e0a64e0b078e8ae197d9db614771b9feabb61c865acbb655"
+        },
+        "exit_code": 0
+      }
+    }
+  },
+  "final_integration": {
+    "commit": "3609f17174e4d42478b0bba47c2d2f34bcb3e2c0",
+    "removal_dependency": "ce1d646a0184572f07bdb2be7d7cf7a268216669",
+    "post_fixture_change": "Only workflow contract assertions changed after the full publisher and consumer checks.",
+    "workflow": {
+      "artifact": {
+        "path": "starmap-alias-final-workflow-contract-2026-09-10.jsonl.gz",
+        "sha256": "ae70f6308fd6a0efc50c0211f0d249747aad15c591de645af52ee453c7fb88ae",
+        "raw_sha256": "d58b6d4c2e93b5dc0beca9380132ce181c0fca64abf67208ac5529d48243baea"
+      },
+      "counts": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "session": 70366,
+    "state": "running",
+    "output": "/tmp/starmap-alias-csp3-final-2026-09-10.json"
+  },
+  "canonical_removal_finding": {
+    "proof": "../canonical-removal-rename-2026-09-10/verification.json",
+    "state": "confirmed; local repair under qualification"
   }
 }

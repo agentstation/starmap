@@ -1,0 +1,62 @@
+{
+  "task": "CSP3",
+  "decision": "D30 preserves model identity across renames. D29 canonical removals apply to that model across all providers.",
+  "base": "3609f17174e4d42478b0bba47c2d2f34bcb3e2c0",
+  "worktree": "/tmp/starmap-alias-removal-identity-2026-09-10",
+  "branch": "codex/catalog-alias-removal-identity",
+  "finding": "A canonical removal stored under the previous model ID stopped matching its renamed definition. This could restore an excluded model during consumer identity resolution.",
+  "scope": "Index retained canonical removal targets through the immutable canonical alias index during catalog construction. Preserve original serialized operator targets and separate alias removals. No wire or API change.",
+  "fail_before": {
+    "catalog": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-red-2026-09-10.jsonl.gz",
+        "sha256": "067849c9190ba8847a268b0b4194bdf0fa06cdeb8f1caf7e388c94eb2f1eac5f",
+        "raw_sha256": "e396a1af984fce57cf438c645226d1d625a680d0d42698959b6e9812c404a3e8"
+      },
+      "exit_code": 1,
+      "failed_events": [
+        "TestCanonicalRemovalFollowsRetainedRenameIdentity/active",
+        "TestCanonicalRemovalFollowsRetainedRenameIdentity/removed",
+        "TestCanonicalRemovalFollowsRetainedRenameIdentity"
+      ]
+    },
+    "runtime": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-runtime-red-2026-09-10.jsonl.gz",
+        "sha256": "01ae40ee106be54d811689991339e22f470149801836874620ef46150d2b4a36",
+        "raw_sha256": "157a7398f83b4e7e18c1279a7cecf5a66d8e0cb3eba9cc36d2147fe1dc9f98a5"
+      },
+      "exit_code": 1,
+      "failed_events": [
+        "TestCanonicalRemovalSurvivesRenameAndRestartUntilRestore"
+      ],
+      "overlay": "The test uses git-show copies of readonly.go and removal_set.go from 3609f171 through Go overlay. Only the regression test is new."
+    }
+  },
+  "checks": {
+    "catalog_focused": {
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-green-2026-09-10.jsonl.gz",
+        "sha256": "82dcd856196eac1cc175484717789ef29ee077c33e0f5a9ad2bf753654b4269e",
+        "raw_sha256": "adce0e51b4732ef63b4e1979bc5850ac81ff582197569374d69781d1060bf9d0"
+      },
+      "exit_code": 0,
+      "passed_events": 3
+    }
+  },
+  "running": {
+    "full_race": {
+      "session": 43282,
+      "output": "/tmp/starmap-alias-canonical-removal-full-race-2026-09-10.jsonl"
+    },
+    "static": {
+      "session": 21489,
+      "output_prefix": "/tmp/starmap-alias-canonical-removal-"
+    },
+    "minimum": {
+      "session": 30930,
+      "output": "/tmp/starmap-alias-canonical-removal-minimum-2026-09-10.jsonl"
+    }
+  },
+  "state": "Local repair under qualification. Integrate into the alias branch before final publication. The older acceptance run at 3609f171 does not qualify this repair."
+}

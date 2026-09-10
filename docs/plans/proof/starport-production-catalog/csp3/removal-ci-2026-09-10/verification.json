@@ -580,6 +580,152 @@
     "url": "https://github.com/agentstation/starmap/actions/runs/34457203042",
     "state": "running",
     "log": "/tmp/starmap-pr145-repaired-ci-watch-2026-09-10.log",
-    "watch_session": 4982
+    "watch_session": 4982,
+    "failure": {
+      "artifact": {
+        "path": "starmap-pr145-time-budget-contract-failure-2026-09-10.log.gz",
+        "sha256": "db859a77a9d4f0b3c75972d8299df7ea5100ee6ee119c5019c75aa43c1edc8b4",
+        "raw_sha256": "d55c81ac9cd9d6cb503f18b5a5cb3231c2c0e7cba16267d58979163975b3a384"
+      },
+      "tests": [
+        "TestMakeVerifyUsesCanonicalVerificationScript",
+        "TestPinnedArtifactConsumerIsOfflineAndDependencyBounded"
+      ],
+      "reason": "Two workflow assertions retained the old timeout and forced toolchain contract."
+    },
+    "native_completed": [
+      {
+        "platform": "native-runtime-ubuntu-24.04-arm",
+        "source": "014d5ab4200885295c1a64014b219b90d9e75913",
+        "counts": {
+          "pass": 1531,
+          "fail": 0,
+          "skip": 1
+        },
+        "artifact": {
+          "path": "contract-failure-native-runtime-ubuntu-24.04-arm.jsonl.gz",
+          "sha256": "5a806ba5e3bf9deae4cfc092e647ad08590a1d498aaeb782091e73383c57a7a0",
+          "raw_sha256": "912786e9415b6295917454d74ab79d7610a03132710c2dd3757047d15c2ad934"
+        }
+      },
+      {
+        "platform": "native-runtime-macos-15-intel",
+        "source": "014d5ab4200885295c1a64014b219b90d9e75913",
+        "counts": {
+          "pass": 1587,
+          "fail": 0,
+          "skip": 0
+        },
+        "artifact": {
+          "path": "contract-failure-native-runtime-macos-15-intel.jsonl.gz",
+          "sha256": "11f13b9f3e3af201c6efcd543b057b7b343b669f754c6f04a15f16c7425fc2c4",
+          "raw_sha256": "926b7daa513510403804cbdd527b1236c9caba6ae25415d1d45cb6cdc4c4de0c"
+        }
+      },
+      {
+        "platform": "native-runtime-ubuntu-24.04",
+        "source": "014d5ab4200885295c1a64014b219b90d9e75913",
+        "counts": {
+          "pass": 1531,
+          "fail": 0,
+          "skip": 1
+        },
+        "artifact": {
+          "path": "contract-failure-native-runtime-ubuntu-24.04.jsonl.gz",
+          "sha256": "440e197e7beeced8c4cd2310f448a8672c54c3e7d7f236df51214c613e8ae48a",
+          "raw_sha256": "551d7dbb0ba5b6e63b51bc10d994dc5bc75b73eb24b68b56fd40145ddeac94c8"
+        }
+      },
+      {
+        "platform": "native-runtime-macos-15",
+        "source": "014d5ab4200885295c1a64014b219b90d9e75913",
+        "counts": {
+          "pass": 1587,
+          "fail": 0,
+          "skip": 0
+        },
+        "artifact": {
+          "path": "contract-failure-native-runtime-macos-15.jsonl.gz",
+          "sha256": "c14f59430831fd320d250b7fa1e4247f66dc9b69096acdce840f19d677f7599c",
+          "raw_sha256": "a4c82b34dcb237866206eb24c4d8545641a92a5252f3a332c8210c1b5a04eb74"
+        }
+      },
+      {
+        "platform": "native-runtime-windows-11-arm",
+        "source": "014d5ab4200885295c1a64014b219b90d9e75913",
+        "counts": {
+          "pass": 1532,
+          "fail": 0,
+          "skip": 0
+        },
+        "artifact": {
+          "path": "contract-failure-native-runtime-windows-11-arm.jsonl.gz",
+          "sha256": "f741136fdf1882f11247c0584fb8ed916bd1fec69c7e6877861e7bf53762b82f",
+          "raw_sha256": "2e05a9c66b520cc32afa6af23f800fc383b09efa41529e0bd2a4f576f2d1427b"
+        }
+      },
+      {
+        "platform": "native-runtime-windows-2025",
+        "source": "014d5ab4200885295c1a64014b219b90d9e75913",
+        "counts": {
+          "pass": 1532,
+          "fail": 0,
+          "skip": 0
+        },
+        "artifact": {
+          "path": "contract-failure-native-runtime-windows-2025.jsonl.gz",
+          "sha256": "8c89dbe5b82a0c05c5b24b3d3b313d2693f06e2a9c9c0775c069b1aab2892b6b",
+          "raw_sha256": "1bfc10eaac64eacce1659c66cab02b8c55ccdf5c02923661785f9f9fc10ce5c3"
+        }
+      }
+    ]
+  },
+  "workflow_contract_repair": {
+    "commit": "ce1d646a0184572f07bdb2be7d7cf7a268216669",
+    "base": "63779c88feecbee53ecb73b2baa5b7437e09e2e0",
+    "checks": {
+      "current": {
+        "artifact": {
+          "path": "starmap-pr145-toolchain-contract-current-2026-09-10.jsonl.gz",
+          "sha256": "750a6fb23c9d8de723f600fd41fb2547d7f576d08268736a45976f7f0b3c0b9e",
+          "raw_sha256": "6fef6327f223e9ade87f7606968cee25eee593a655d9e3119a25fd4a7e4194d0"
+        },
+        "counts": {
+          "pass": 28,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0
+      },
+      "minimum": {
+        "artifact": {
+          "path": "starmap-pr145-toolchain-contract-minimum-2026-09-10.jsonl.gz",
+          "sha256": "f0ed3d7d94537eab6ec09f22f78025f6a779ee769df7bb3a3ddd2220ff2cbdf8",
+          "raw_sha256": "617c414e3256507a266dd7d04ec0caf189aec60a60517de8c1108f4e1304365e"
+        },
+        "counts": {
+          "pass": 28,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0
+      }
+    },
+    "review": {
+      "exit_code": 0,
+      "findings": 0,
+      "confidence": 0.97,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "artifact": {
+        "path": "starmap-pr145-toolchain-contract-review-2026-09-10.log.gz",
+        "sha256": "97c117a76c5ee5e514baabd8a4443c57cbababf719075c91730a86a9cee41f8f",
+        "raw_sha256": "04cb13bc0a97f40d7f3533c4d52b575a20c85e5a8ad0d91f54c7c4e8d3151a5c"
+      }
+    },
+    "published": true,
+    "ci_run": 34459251132
   }
 }

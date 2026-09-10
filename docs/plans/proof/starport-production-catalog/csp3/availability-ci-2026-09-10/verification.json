@@ -3,7 +3,7 @@
   "pr": "https://github.com/agentstation/starmap/pull/144",
   "head": "3a989949a77433fafb920976a6c2dc0988246843",
   "ci_run": 34444938562,
-  "state": "Fresh CI found a stale workflow timeout expectation. The one-line test repair passes 28 workflow events on each Go version. Review and renewed CI remain required.",
+  "state": "Reviewed contract repair 63779c88 is pushed. Both reviewers report zero findings. Fresh run 34458807844 is active.",
   "findings": [
     "Release import required the newest schema instead of any supported payload schema. The reviewed later removal branch already contained the narrow guard repair.",
     "The GitHub test fixture used a legacy manifest with a current-format payload. It now constructs a consistent legacy generation and validates the decoded catalog."
@@ -648,6 +648,23 @@
           "raw_sha256": "e66c92d4eabcbaaf18a45cea211b1ab9bd5830e1c6d7582aeb4bc75f237cbbc6"
         }
       }
-    }
+    },
+    "commit": "63779c88feecbee53ecb73b2baa5b7437e09e2e0",
+    "review": {
+      "artifact": {
+        "path": "starmap-pr144-time-budget-contract-review-2026-09-10.log.gz",
+        "sha256": "8303973e5ad3ec41799a3703053b498705fba7ea584a4438369708064d4dfd90",
+        "raw_sha256": "8b4050842b18a2ea08897bba5280d320802a454fdbd93555c88aa5f18004fa28"
+      },
+      "exit_code": 0,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "findings": 0,
+      "confidence": 0.96
+    },
+    "published": true,
+    "ci_run": 34458807844
   }
 }
