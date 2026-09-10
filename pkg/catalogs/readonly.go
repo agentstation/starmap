@@ -36,6 +36,9 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 			Message: "catalog observation source cannot be nil",
 		}
 	}
+	if len(source.RemovalPolicies()) != 0 {
+		return nil, invalidRemovalTarget("observation", "acquisition cannot supply operator policy")
+	}
 	builder, err := NewBuilderFrom(source)
 	if err != nil {
 		return nil, errors.WrapResource("create", "immutable catalog observation", "", err)
@@ -97,6 +100,7 @@ type Catalog struct {
 	payloadSchemaVersion       uint64
 	source                     Reader
 	membership                 map[MembershipScopeKey]membershipScopeIndex
+	removals                   *CatalogRemovalSet
 	providerIDs                map[ProviderID]ProviderID
 	definitions                map[ModelDefinitionID]ModelDefinition
 	offerings                  map[OfferingKey]ProviderOffering
@@ -113,6 +117,10 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	}
 	if err := validateProviderAuthorMappingTargets(source); err != nil {
 		return nil, errors.WrapResource("validate", "provider author mapping targets", "", err)
+	}
+	removals, err := indexRemovalPolicies(source.RemovalPolicies())
+	if err != nil {
+		return nil, err
 	}
 	views, err := deriveReadViews(source)
 	if err != nil {
@@ -156,6 +164,7 @@ func buildCatalog(source Reader) (*Catalog, error) {
 
 	return &Catalog{
 		source:                     source,
+		removals:                   removals,
 		membership:                 indexMembershipScopes(source.MembershipScopes()),
 		providerIDs:                indexProviderIdentities(providers),
 		definitions:                views.definitions,

@@ -6,7 +6,7 @@ import (
 )
 
 // decodeCatalog checks retained scope evidence against its original generation.
-// Legacy payload-only layers remain readable when they contain no scope records.
+// Legacy payload-only layers require no scope records or operator policies.
 func (s *sourceLayer) decodeCatalog() (*catalogs.Catalog, error) {
 	if s.Manifest != nil {
 		if s.Manifest.GenerationID != s.GenerationID || s.Manifest.Payload.Checksum != s.Checksum {
@@ -18,8 +18,8 @@ func (s *sourceLayer) decodeCatalog() (*catalogs.Catalog, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(catalog.MembershipScopes()) != 0 {
-		return nil, &errors.ValidationError{Field: "source_layer.manifest", Message: "scope records require the original generation manifest"}
+	if len(catalog.MembershipScopes()) != 0 || len(catalog.RemovalPolicies()) != 0 {
+		return nil, &errors.ValidationError{Field: "source_layer.manifest", Message: "scope records and operator policies require the original generation manifest"}
 	}
 	return catalog, nil
 }
@@ -63,6 +63,11 @@ func (l *layerSet) appendScopeSourceEvidence(catalog *catalogs.Catalog) error {
 
 // validateUpstreamScopePublishers reserves this runtime's identities for local evidence.
 func (l *layerSet) validateUpstreamScopePublishers(catalog *catalogs.Catalog) error {
+	for _, policy := range catalog.RemovalPolicies() {
+		if namesInstance(policy.PublisherID, l.publisherID, l.publisherAliases) {
+			return &errors.ConflictError{Resource: "removal publisher", Message: "an upstream catalog cannot claim this runtime operator identity"}
+		}
+	}
 	for _, scope := range catalog.MembershipScopes() {
 		if namesInstance(scope.PublisherID, l.publisherID, l.publisherAliases) {
 			return &errors.ConflictError{
@@ -70,6 +75,20 @@ func (l *layerSet) validateUpstreamScopePublishers(catalog *catalogs.Catalog) er
 				Actual: scope.PublisherID, Message: "an upstream catalog cannot claim this runtime's scope identity",
 			}
 		}
+	}
+	return nil
+}
+
+func (l *layerSet) validateSourceRemovalTransition(next *sourceLayer) error {
+	if l.source == nil || (next.Manifest != nil && next.Manifest.SchemaVersion >= catalogs.CatalogRemovalSchemaVersion) {
+		return nil
+	}
+	previous, err := l.source.decodeCatalog()
+	if err != nil {
+		return err
+	}
+	if len(previous.RemovalPolicies()) != 0 {
+		return &errors.ConflictError{Resource: "upstream removal policy", Message: "replacement format cannot express the accepted operator removal policy"}
 	}
 	return nil
 }
