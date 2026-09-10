@@ -432,9 +432,9 @@
   },
   "running": [
     {
-      "session": 70366,
-      "output": "/tmp/starmap-alias-csp3-final-2026-09-10.json",
-      "source": "3609f17174e4d42478b0bba47c2d2f34bcb3e2c0"
+      "session": 63970,
+      "output": "/tmp/starmap-alias-csp3-removal-identity-2026-09-10.json",
+      "source": "13fe3a759a451106a824af5d9807b161352bd851"
     }
   ],
   "open_findings": [
@@ -668,8 +668,31 @@
       "exit_code": 0
     },
     "session": 70366,
-    "state": "running",
-    "output": "/tmp/starmap-alias-csp3-final-2026-09-10.json"
+    "state": "completed",
+    "output": "/tmp/starmap-alias-csp3-final-2026-09-10.json",
+    "exit_code": 0,
+    "gate_status": "PASS",
+    "selected_subcases": 10,
+    "passed_commands": 107,
+    "passed_test_events": 899,
+    "subcase_results": {
+      "A08.field_authority": "PASS",
+      "A08.presence_zero_null": "PASS",
+      "A08.scoped_tombstone": "PASS",
+      "A08.partial_empty": "PASS",
+      "A08.alias_cycle_scope": "PASS",
+      "A20.cli_provider_nonprovider": "PASS",
+      "A20.publisher_provider_nonprovider": "PASS",
+      "A20.server_provider_nonprovider": "PASS",
+      "A20.dependency_disabled_partial": "PASS",
+      "A20.receipt_artifact_binding": "PASS"
+    },
+    "artifact": {
+      "path": "starmap-alias-csp3-final-2026-09-10.json.gz",
+      "sha256": "8338666276317db5c5258abe71eda8e9823d22b0abd7411b5e6484cf8df3c01e",
+      "raw_sha256": "2215c8ab20c11c135dacd96b421c5de7c2f220d81a51b7b45f7f8223e07b8cb6"
+    },
+    "limitation": "This predecessor run does not test canonical-removal rename persistence. The expanded run at 13fe3a75 must pass before publication."
   },
   "canonical_removal_finding": {
     "proof": "../canonical-removal-rename-2026-09-10/verification.json",
@@ -680,6 +703,8 @@
     "worktree": "/tmp/starmap-alias-removal-identity-2026-09-10",
     "proof": "../canonical-removal-rename-2026-09-10/verification.json",
     "qualification_session": 63970,
-    "state": "running"
+    "state": "running",
+    "publication_worktree": "/tmp/starmap-canonical-aliases-2026-09-10",
+    "tree": "0076986bb39d85794cf70055fcf160d8c0236039"
   }
 }
