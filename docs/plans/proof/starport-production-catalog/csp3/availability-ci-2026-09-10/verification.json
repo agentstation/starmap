@@ -543,5 +543,46 @@
         "sha256": "7fa69418ba11eccc471e845f703ccc92e68499d6817f3d27898728800ee2b096"
       }
     }
+  },
+  "final_gate_failure": {
+    "run": 34447195101,
+    "source": "acbfc2471ef5cff223b6d519df375b22874c3713",
+    "conclusion": "failure",
+    "artifact": {
+      "path": "starmap-pr144-final-gate-failure-2026-09-10.log.gz",
+      "sha256": "8dbb9aa6920d1c7cbf062a93bd8dcdcd151a52e910101b55a7fa5a62caad645a",
+      "raw_sha256": "63b95f0358524c584c600a999fe04708d2e3e5570380346f1c70624c4fe7bd89"
+    },
+    "cause": "The runtime package exhausted its 1200-second aggregate race-test allowance. The running startup test had run for twelve seconds. No assertion failure appears before the package timeout.",
+    "repair": "Thirty-minute aggregate race-test allowance and 150-minute workflow allowance. Per-test deadlines and test roster remain unchanged.",
+    "state": "Focused startup test and prose checks pass. Required full branch review is active in session 76790.",
+    "repair_commit": "8155e6e69097280849d60100b1ddc2c4772e5859",
+    "checks": {
+      "active_test": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "starmap-pr144-time-budget-active-test-2026-09-10.jsonl.gz",
+          "sha256": "eeed6723ac919ff5cde321a8e43713d33bede3b0098936253ea1c3f01b63b74a",
+          "raw_sha256": "d2492061fc8d51c606ae094779bc10493c62513a1069d0ce4530f5ff606297e9"
+        }
+      },
+      "prose": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "starmap-pr144-time-budget-prose-2026-09-10.log.gz",
+          "sha256": "852886b393dec816ad5ce7a6d121d6d75806265688f909f3093431d6e6c98055",
+          "raw_sha256": "48994780c5fb689190884cbac72988b06670fe8a4fd0918cb7b6243e3646f834"
+        }
+      },
+      "workflow_lint": {
+        "exit_code": 1,
+        "artifact": {
+          "path": "starmap-pr144-time-budget-actionlint-2026-09-10.log.gz",
+          "sha256": "31a5b2ca90d4ae29797daad9d2bd5d5fda3a1cb975ee3945815f76b93ef49782",
+          "raw_sha256": "e2c7ff3ef12520fa439e186a8ec6c0c15c4e9e710ec74e2a5928a4221ff2d2aa"
+        }
+      }
+    },
+    "workflow_lint_note": "SC2024 is the unchanged administrator-owned configuration test redirection. The privileged test reads files, while the ordinary runner owns the output file. The same diagnostic was reproduced at acbfc247 in the earlier alias publication proof."
   }
 }

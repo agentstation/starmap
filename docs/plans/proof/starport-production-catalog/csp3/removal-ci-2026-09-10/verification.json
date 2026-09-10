@@ -535,10 +535,30 @@
       "raw_sha256": "c3bc98c25f9f6a2dd3d98280c79c33ce88c91fc5c74397fdc2a8440f731566b0"
     },
     "review": {
-      "state": "running",
-      "session": 22552,
-      "log": "/tmp/starmap-removal-final-fixture-pre-pr-review-2026-09-10.log",
-      "base": "acbfc2471ef5cff223b6d519df375b22874c3713"
+      "exit_code": 0,
+      "source": "4cbf99f032bd5782e0ded74391f4b967d2f3abef",
+      "base": "acbfc2471ef5cff223b6d519df375b22874c3713",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "findings": 0,
+      "confidence": 0.98,
+      "artifact": {
+        "path": "starmap-removal-final-fixture-pre-pr-review-2026-09-10.log.gz",
+        "sha256": "fd3efd139e801374c5249fc278b7d87797ec509f82adad0a8cb03442e49d6f68",
+        "raw_sha256": "72bd66f796e32327cad0e22b21fff0ec646a54c477eb248017654541dbe44f9a"
+      }
     }
+  },
+  "time_budget_integration": {
+    "source": "014d5ab4200885295c1a64014b219b90d9e75913",
+    "base": "8155e6e69097280849d60100b1ddc2c4772e5859",
+    "prior_source": "4cbf99f032bd5782e0ded74391f4b967d2f3abef",
+    "prior_base": "acbfc2471ef5cff223b6d519df375b22874c3713",
+    "exact_diff_sha256": "7074da56d12033ff699dab7909464943ba76addcbc1a85c22af175e469fdc4b1",
+    "review_session": 1126,
+    "review_log": "/tmp/starmap-removal-ci-budget-integrated-review-2026-09-10.log",
+    "state": "Both diff byte streams match. Required review is active."
   }
 }
