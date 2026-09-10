@@ -1199,12 +1199,12 @@
         "raw_sha256": "a856ff451070cc70d6a6b86af1ae4fd471778e374e97ec19f28776460b94e29e"
       }
     },
-    "automatic_merge": false,
+    "automatic_merge": true,
     "ci_run": 34470999089,
     "ci_watch_session": 56268,
     "ci_watch_log": "/tmp/starmap-pr145-combined-ci-watch-2026-09-10.log",
     "title": "Retain canonical model aliases and explicit catalog removals",
-    "merge_hold": "Branch protection requires Security & Reliability and Verification Gate only. Wait for all six native jobs before enabling automatic merge or merging.",
+    "merge_hold": "All six native jobs passed and their artifacts match the reviewed source. Automatic squash merge now waits for the remaining required Verification Gate.",
     "registry_binding": {
       "sha256": "1d15bbd937d9eb7e4f4407df4eb24848c43c2a16032a41c6b30bbfed4783f8c6",
       "same_as_component_report": true,
@@ -1216,7 +1216,7 @@
     "native": {
       "source": "b5af1e9c67e065ebd688a19a7563bcc430f724bb",
       "run": 34470999089,
-      "state": "partial",
+      "state": "passed",
       "platforms": [
         {
           "platform": "native-runtime-macos-15",
@@ -1267,6 +1267,58 @@
                 "raw_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
               },
               "toolchain": "go version go1.25.12 darwin/arm64"
+            }
+          }
+        },
+        {
+          "platform": "native-runtime-macos-15-intel",
+          "files": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-intel-git-acquisition.jsonl.gz",
+                "sha256": "a0f6c856a11885ec7b4bf6a28ed4aab4a366482d1c7b8147f23a89711160774a",
+                "raw_sha256": "1190dca819bb55e0a06c68e2538c32f4a5adaf9edbbe0f3afdf341c3f0fe2389"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-intel-publisher-ingestion.jsonl.gz",
+                "sha256": "6c07cc7d38ffd528ccdbf7e30c45daebb72e22238dd1eee6e4bde7ac51b2f93b",
+                "raw_sha256": "096e351f9793939d90962b170d01f95d2edf7e5a65675ca07df07a65f2c59495"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "tests.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-intel-tests.jsonl.gz",
+                "sha256": "edaea81637131f6a22cb0ee7fd9b0ec78cc57bb391ac6552263257f1091fd69a",
+                "raw_sha256": "5f86e507b726136016686127d92aa99dd409909ab188f98c745e51d13753c690"
+              },
+              "counts": {
+                "pass": 1600,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-macos-15-intel-toolchain.txt.gz",
+                "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+                "raw_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+              },
+              "toolchain": "go version go1.25.12 darwin/amd64"
             }
           }
         },
@@ -1395,8 +1447,117 @@
               "toolchain": "go version go1.25.12 linux/arm64"
             }
           }
+        },
+        {
+          "platform": "native-runtime-windows-11-arm",
+          "files": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-11-arm-git-acquisition.jsonl.gz",
+                "sha256": "c8b27522d4d3fae0d78322e6e13c3ed4d50238672d2d2db58e43829ccf7c328f",
+                "raw_sha256": "96ce0269fcc56253eb10d7452e03594cb1d1a4ff22ae0985495546b262dd8272"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-11-arm-publisher-ingestion.jsonl.gz",
+                "sha256": "625a4271551d8911601a96bb86e2cdc504d5b43eafd29660eb99c004e69ec02e",
+                "raw_sha256": "28cc81797eb888afc86d7f6098e8ed816de760dd2542c8afab68ab207b193ecd"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "tests.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-11-arm-tests.jsonl.gz",
+                "sha256": "2e999ef26633db6b4ab687ed1a68a9d46b78ae8f5080e212cc21fd13c27896ec",
+                "raw_sha256": "5323094dc1278f95b59ea3d0f7977eec7b040d3e3e3e4d2d33eedf2d8050cae3"
+              },
+              "counts": {
+                "pass": 1545,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-11-arm-toolchain.txt.gz",
+                "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+                "raw_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+              },
+              "toolchain": "go version go1.25.12 windows/arm64"
+            }
+          }
+        },
+        {
+          "platform": "native-runtime-windows-2025",
+          "files": {
+            "git-acquisition.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-2025-git-acquisition.jsonl.gz",
+                "sha256": "a055e507c4ffe59deadb1a3687173e32373f505e55e9220690d37a3330da8d95",
+                "raw_sha256": "dc4892914b4b49a41922bcd6c999f03f5745a24cae7706e7956ce8ba6b49a52d"
+              },
+              "counts": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "publisher-ingestion.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-2025-publisher-ingestion.jsonl.gz",
+                "sha256": "1b0887acd8cc68b91d0f72345420251ab523b995b8380b0d1f16a4a2f98ba1ff",
+                "raw_sha256": "267712b8cbc10a8c3e8e70539f5e9f0b4c30a105d575b463b3e2ce2958e3184d"
+              },
+              "counts": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "tests.jsonl": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-2025-tests.jsonl.gz",
+                "sha256": "dce0dad952cc4cd8cca03651f6045fe80bfce56f96b76eafb3cbc4a396b2ebe5",
+                "raw_sha256": "728b0d3d1e25ccbd35fbb24f9b3f6acbd85c02bf0e8318edd54645b7b32b60ad"
+              },
+              "counts": {
+                "pass": 1545,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": []
+            },
+            "toolchain.txt": {
+              "artifact": {
+                "path": "combined-native-runtime-windows-2025-toolchain.txt.gz",
+                "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+                "raw_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+              },
+              "toolchain": "go version go1.25.12 windows/amd64"
+            }
+          }
         }
-      ]
+      ],
+      "jobs_artifact": {
+        "path": "starmap-pr145-combined-native-jobs-2026-09-10.json.gz",
+        "sha256": "c1a3e610008f634f554d094c9466ef1afc96ea62ef0f27adb1bf21a86eba55ef",
+        "raw_sha256": "67a98772f36ca5cb5f507d5b8ff7d1b4c1366e35af8d417bd66cd7145066adb6"
+      }
     }
   }
 }
