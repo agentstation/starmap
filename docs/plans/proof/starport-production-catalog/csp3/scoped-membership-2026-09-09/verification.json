@@ -192,6 +192,22 @@
     {
       "path": "lint-baseline.gz",
       "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "acquisition-schema-after.gz",
+      "sha256": "ba065b5b5a5d2dd08c322005ae3ab799d454ee212b34bee388c112514276d076"
+    },
+    {
+      "path": "revoked-authority.gz",
+      "sha256": "0f4449c48658617fd4abf9e2ede1ecd460af6d680e2049787dea094c2589a5c0"
+    },
+    {
+      "path": "ago-revocation.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "lint-revocation.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -475,13 +491,29 @@
       },
       "lint_baseline": {
         "exit_code": 0
+      },
+      "acquisition_schema_after": {
+        "exit_code": 0,
+        "test_events": {
+          "pass": 92
+        }
+      },
+      "revoked_authority": {
+        "exit_code": 0,
+        "passing_test_events": 1,
+        "scope": "Removing the public binding drops its active removal evidence. Account-only absence cannot erase canonical baseline membership."
+      },
+      "ago_revocation": {
+        "exit_code": 0
+      },
+      "lint_revocation": {
+        "exit_code": 0
       }
     },
     "sessions": {
-      "runtime_20m": 98374,
-      "acquisition_schema": 15564
+      "runtime_20m": 98374
     },
-    "caveat": "Required runtime timeout is unchanged at 20m. The replacement runtime command is active; acquisition rerun remains active. Code is uncommitted and unpublished.",
+    "caveat": "Full runtime remains active. Full acquisition and reconciler suites pass. Later focused baseline refresh and revocation extensions have separate checks. Code remains uncommitted and unpublished.",
     "remaining": [
       "Add integration coverage for unrelated scope preservation and health selection.",
       "Complete broad runtime and reconciliation checks.",
@@ -506,6 +538,17 @@
         "TestObserveBindingRejectsConfigurationBeforeResolution/invalid_schema"
       ],
       "repair": "Both legacy invalid-schema fixtures now select current supported schema + 1. Affected binding suites are running."
+    },
+    "remaining_transport_contract": {
+      "current": "Canonical CatalogPayload schema 6 contains providers, authors, serving and authored model records, and provenance. It has no scoped inventory result.",
+      "required": "Persist immutable effective scope results with publisher, binding identity/revision, authority and original evidence. Digest and consumer compatibility must cover the restrictions.",
+      "owners": [
+        "pkg/catalogs payload, immutable catalog and builder boundaries",
+        "internal/catalog/reconciler MembershipState export",
+        "runtime upstream reconstruction and derivative publication",
+        "Starport explicit inference-profile links under D25"
+      ],
+      "status": "Unimplemented; local membership filtering and receipt retention do not satisfy this transport or Starport admission requirement."
     }
   }
 }
