@@ -63,5 +63,132 @@
       "artifact": "prose.log.gz",
       "sha256": "b9f55bc6e049de366bbe7259c7bae1b88ad94d108a20db9f9aae54509effc683"
     }
+  },
+  "catalog_transport": {
+    "commit": "6bec1d56b98991e03c034b9fe7c14f7bbdec1f27",
+    "integration_base": "92a303ed3742588d26b286bb4e7f11da3c42c8b8",
+    "state": "Committed local catalog transport; runtime and consumer integration remain incomplete",
+    "schema": 9,
+    "supported_legacy_schemas": [
+      6,
+      7,
+      8
+    ],
+    "checks": {
+      "missing_api": {
+        "exit_code": 1,
+        "test_events": {},
+        "packages": {
+          "github.com/agentstation/starmap/pkg/catalogs": "fail"
+        },
+        "artifact": "missing_api.jsonl.gz",
+        "sha256": "6628b8fcd64699cccd85ddf4ee7dbffc1e28e42eedf3bae0ce8618aee41995b3",
+        "classification": "Build failure establishes that the catalog construction API was absent. It is not behavioral acceptance evidence."
+      },
+      "initial_catalog": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs": {
+            "pass": 20
+          }
+        },
+        "packages": {
+          "github.com/agentstation/starmap/pkg/catalogs": "pass"
+        },
+        "artifact": "initial_catalog.jsonl.gz",
+        "sha256": "9737dc095158e5eaff2811997bd6d5baf8e0f012641119e90e174ead9900d8f8"
+      },
+      "collision_before": {
+        "exit_code": 1,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs": {
+            "fail": 1
+          }
+        },
+        "packages": {
+          "github.com/agentstation/starmap/pkg/catalogs": "fail"
+        },
+        "artifact": "collision_before.jsonl.gz",
+        "sha256": "f25253453242a8e4c96856a4088e190557029b073bdcf05de3d5bb49381ed37b"
+      },
+      "full_catalog_sources": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/sources": {
+            "pass": 126
+          },
+          "github.com/agentstation/starmap/pkg/catalogs": {
+            "pass": 1143
+          }
+        },
+        "packages": {
+          "github.com/agentstation/starmap/pkg/sources": "pass",
+          "github.com/agentstation/starmap/pkg/catalogs": "pass"
+        },
+        "artifact": "full_catalog_sources.jsonl.gz",
+        "sha256": "6ce3ee5ec33d71659481ff8b2350f3768c2e93f983f34d7b0889612383f95248"
+      },
+      "minimum_go": {
+        "exit_code": 0,
+        "test_events": {
+          "github.com/agentstation/starmap/pkg/catalogs": {
+            "pass": 21
+          }
+        },
+        "packages": {
+          "github.com/agentstation/starmap/pkg/catalogs": "pass"
+        },
+        "artifact": "minimum_go.jsonl.gz",
+        "sha256": "30a3c32ceae84974a9561308e4959067a3a040b22d27ee0d752c5744b42f087c"
+      },
+      "ago": {
+        "exit_code": 0,
+        "artifact": "catalog-ago.log.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+      },
+      "lint": {
+        "exit_code": 0,
+        "artifact": "catalog-lint.log.gz",
+        "sha256": "39d3713d7768a66c22a93c40300fba9c635dfa42950404729c5cdc8976596dc1"
+      },
+      "godoc": {
+        "exit_code": 0,
+        "artifact": "catalog-godoc.log.gz",
+        "sha256": "dae696d95312060bc935ce41b2a3422ae54c0e0fcd331a3fdff4729f16058ebf"
+      },
+      "docs": {
+        "exit_code": 0,
+        "artifact": "catalog-docs.log.gz",
+        "sha256": "f35af21cbae5140a657df6fc9c88555b77dcacdf41e1aafe66ecae89ecfd49a9"
+      },
+      "prose": {
+        "exit_code": 0,
+        "artifact": "catalog-prose.log.gz",
+        "sha256": "ee2e10048514e036e6a4d9510b250b2d8a4725d7de40f1989b78f24a24314dba"
+      }
+    },
+    "remaining": [
+      "Source manifest and publisher checks for alias metadata",
+      "Successor history checks during refresh and startup",
+      "Alias targets in existing operator removal policy",
+      "Reconciliation of retained canonical references",
+      "YAML baseline authoring and publisher successor checks",
+      "Starport lookup, costs, scoped admission, and routing",
+      "CI dependency integration, full acceptance, review, and merge"
+    ],
+    "generation_report": {
+      "changed": true,
+      "previous_generation_id": "catalog-20260910T050424Z-9c798a1b034a",
+      "generation_id": "catalog-20260910T063828Z-0bbbff4c5fd3",
+      "generated_at": "2026-09-10T06:38:28.505687Z",
+      "payload_checksum": "sha256:f52170bd409eec87ef273f2db1adeacab33f35cfbde080694b73764b54d2f083",
+      "semantic_checksum": "sha256:0bbbff4c5fd3c8b376725a808b3132a67dcee99bdc8ed45d7f64af5d6581cf05",
+      "payload_size_bytes": 8260386
+    },
+    "bootstrap_check": {
+      "session": 37233,
+      "state": "active",
+      "log": "/tmp/starmap-canonical-alias-bootstrap-2026-09-10.jsonl"
+    }
   }
 }

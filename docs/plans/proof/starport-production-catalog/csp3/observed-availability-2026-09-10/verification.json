@@ -580,7 +580,9 @@
         "session": 95923,
         "log": "/tmp/starmap-pr144-ci-watch-2026-09-10.log",
         "state": "active"
-      }
+      },
+      "ci_state": "failed",
+      "repair_proof": "../availability-ci-2026-09-10/verification.json"
     }
   },
   "removal_set_work": {

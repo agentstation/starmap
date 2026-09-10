@@ -1,0 +1,468 @@
+{
+  "task": "CSP3",
+  "pr": "https://github.com/agentstation/starmap/pull/144",
+  "head": "3a989949a77433fafb920976a6c2dc0988246843",
+  "ci_run": 34444938562,
+  "state": "Local compatibility repair committed after both Go versions and static checks passed. Fresh review is active.",
+  "findings": [
+    "Release import required the newest schema instead of any supported payload schema. The reviewed later removal branch already contained the narrow guard repair.",
+    "The GitHub test fixture used a legacy manifest with a current-format payload. It now constructs a consistent legacy generation and validates the decoded catalog."
+  ],
+  "native": {
+    "ubuntu-24.04-arm": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 25
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 25,
+          "skip": 1
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 54
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 17,
+          "fail": 14
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 712
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 239
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 44
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 122
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        }
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceVerifiesTheChannelBranch",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceAdvancesWithTheChannelSequence",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsTheSemanticCatalogDigest",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsTrustNegativeReleases",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsReplayedChannelDocuments",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget"
+      ],
+      "skipped_tests": [
+        "github.com/agentstation/starmap/internal/privatefiles:TestServiceConfigurationAdministratorOwnedRead"
+      ],
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "fail",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "artifact": {
+        "path": "native-ubuntu-24.04-arm.jsonl.gz",
+        "sha256": "1dfc9825220d2e94a56a41f8d05db5410ebca7ef393eb58d8cdad49239ca1332"
+      },
+      "toolchain": "go version go1.25.12 linux/arm64\nlinux\narm64\nlinux\narm64\n0\n"
+    },
+    "ubuntu-24.04": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 25
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 25,
+          "skip": 1
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 54
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 17,
+          "fail": 14
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 712
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 239
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 44
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 122
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        }
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceVerifiesTheChannelBranch",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceAdvancesWithTheChannelSequence",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsTrustNegativeReleases",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsTheSemanticCatalogDigest",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsReplayedChannelDocuments"
+      ],
+      "skipped_tests": [
+        "github.com/agentstation/starmap/internal/privatefiles:TestServiceConfigurationAdministratorOwnedRead"
+      ],
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "fail",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "artifact": {
+        "path": "native-ubuntu-24.04.jsonl.gz",
+        "sha256": "29819f9bb77071476e9b2cf8b256ddb7284c60d43984240b93ad46a7b51626a7"
+      },
+      "toolchain": "go version go1.25.12 linux/amd64\nlinux\namd64\nlinux\namd64\n0\n"
+    },
+    "macos-15": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 722
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 25
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 54
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 17,
+          "fail": 14
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 247
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 47
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 131
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        }
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceVerifiesTheChannelBranch",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceAdvancesWithTheChannelSequence",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsTrustNegativeReleases",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsTheSemanticCatalogDigest",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsReplayedChannelDocuments",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget"
+      ],
+      "skipped_tests": [],
+      "packages": {
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "fail",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "artifact": {
+        "path": "native-macos-15.jsonl.gz",
+        "sha256": "12e7fcbcd2ae0a9b0cf3e9f5498565093513f22e694481550b7e408a3d6d5989"
+      },
+      "toolchain": "go version go1.25.12 darwin/arm64\ndarwin\narm64\ndarwin\narm64\n0\n"
+    },
+    "windows-11-arm": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 26
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 49
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 60
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "fail": 14,
+          "pass": 14
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 707
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 227
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 52
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 33
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 121
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        },
+        "github.com/agentstation/starmap/internal/test/windowstoken": {
+          "pass": 1
+        }
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceAdvancesWithTheChannelSequence",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceVerifiesTheChannelBranch",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsTheSemanticCatalogDigest",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsReplayedChannelDocuments",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsTrustNegativeReleases",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget"
+      ],
+      "skipped_tests": [],
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "fail",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/test/windowstoken": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "artifact": {
+        "path": "native-windows-11-arm.jsonl.gz",
+        "sha256": "91a8855187491eb8e395128d3b190fa2c51678f15fb5bf988d3a6bfc605be6ee"
+      },
+      "toolchain": "go version go1.25.12 windows/arm64\nwindows\narm64\nwindows\narm64\n0\n"
+    }
+  },
+  "local": {
+    "before": {
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 36,
+          "fail": 4
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 17,
+          "fail": 14
+        }
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/pkg/catalogs/artifact:TestVerifyReleaseRequiresChecksumStatementAndPublisher",
+        "github.com/agentstation/starmap/pkg/catalogs/artifact:TestVerifyReleaseFailsClosedBeforeReturningGeneration/publisher_rejected",
+        "github.com/agentstation/starmap/pkg/catalogs/artifact:TestVerifyReleaseFailsClosedBeforeReturningGeneration",
+        "github.com/agentstation/starmap/pkg/catalogs/artifact:TestVerifyReleaseAcceptsExactlyStagedAssets",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsTheSemanticCatalogDigest",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsReplayedChannelDocuments",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceVerifiesTheChannelBranch",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceAdvancesWithTheChannelSequence",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceRejectsTrustNegativeReleases",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReadsLegacyReleaseTags",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceReportsRateLimitBudget"
+      ],
+      "skipped_tests": [],
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": "fail",
+        "github.com/agentstation/starmap/internal/sources/github": "fail"
+      },
+      "exit_code": 1,
+      "artifact": {
+        "path": "before.jsonl.gz",
+        "sha256": "c5da42996a0349aeb5d4d37f78f78603dba68ceaab95fc0763002c7c5720644e"
+      }
+    },
+    "after": {
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 40
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 30,
+          "fail": 1
+        }
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/internal/sources/github:TestGitHubSourceVerifiesTheChannelBranch"
+      ],
+      "skipped_tests": [],
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "fail"
+      },
+      "exit_code": 1,
+      "artifact": {
+        "path": "after.jsonl.gz",
+        "sha256": "5391d2faad5eec1f1a9c2790fab56a53f1809c656d870e1b35e65b24feb5fa7a"
+      }
+    },
+    "qualified": {
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 40
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 31
+        }
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass"
+      },
+      "exit_code": 0,
+      "artifact": {
+        "path": "qualified.jsonl.gz",
+        "sha256": "ba0312574b0f66a79a0cbe4fb2fbf48dcc4a329dd9d214f0cfaa03ebd2732083"
+      }
+    },
+    "minimum-go": {
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 40
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 31
+        }
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass"
+      },
+      "exit_code": 0,
+      "artifact": {
+        "path": "minimum-go.jsonl.gz",
+        "sha256": "95db321ae88a8a0ffad172e9d9a4e016755a8483f33d053cc563b47525b5e4de"
+      }
+    }
+  },
+  "verification_job_log": {
+    "path": "verification-failure.log.gz",
+    "sha256": "334536b0d36d5dc52c2fc650c47b77a87ad2fc64a48ca10a6eca80594edabee4"
+  },
+  "repair_commit": "acbfc2471ef5cff223b6d519df375b22874c3713",
+  "review": {
+    "session": 83032,
+    "state": "active",
+    "base": "c474e2a419251b5127cca2179ab21b7503afccdf",
+    "log": "/tmp/starmap-pr144-compatibility-pre-pr-review-2026-09-10.log"
+  }
+}
