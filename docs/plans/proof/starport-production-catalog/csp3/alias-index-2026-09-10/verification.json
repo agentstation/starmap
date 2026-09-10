@@ -187,8 +187,34 @@
     },
     "bootstrap_check": {
       "session": 37233,
-      "state": "active",
-      "log": "/tmp/starmap-canonical-alias-bootstrap-2026-09-10.jsonl"
+      "state": "passed",
+      "log": "/tmp/starmap-canonical-alias-bootstrap-2026-09-10.jsonl",
+      "exit_code": 0,
+      "test_events": {
+        "pass": 71,
+        "fail": 0,
+        "skip": 0
+      },
+      "artifact": {
+        "path": "bootstrap.jsonl.gz",
+        "sha256": "ba6350b0a1c69869e1d8b9288f355a5ed04b204c2782ab528fabcda38faf1e10"
+      }
+    }
+  },
+  "alias_removal": {
+    "state": "Uncommitted runtime integration is active. No acceptance credit.",
+    "schema_before": {
+      "path": "removal-schema-before.jsonl.gz",
+      "sha256": "c4f952dd4354b77e7bdcabfc43f3be25eb036808fc112f6b4a2b8a134ab62fe9"
+    },
+    "schema_after": {
+      "path": "removal-schema-after.jsonl.gz",
+      "sha256": "a5f4ad28d9f0fd5a8012eb50f4f33c6e2b65b23366ce12f0347496c4cc7ccfe4"
+    },
+    "after_test_events": {
+      "pass": 26,
+      "fail": 0,
+      "skip": 0
     }
   }
 }

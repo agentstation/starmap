@@ -3,7 +3,7 @@
   "pr": "https://github.com/agentstation/starmap/pull/144",
   "head": "3a989949a77433fafb920976a6c2dc0988246843",
   "ci_run": 34444938562,
-  "state": "Local compatibility repair committed after both Go versions and static checks passed. Fresh review is active.",
+  "state": "Repair passed both required reviewers and was pushed to the existing PR. Fresh native CI is running.",
   "findings": [
     "Release import required the newest schema instead of any supported payload schema. The reviewed later removal branch already contained the narrow guard repair.",
     "The GitHub test fixture used a legacy manifest with a current-format payload. It now constructs a consistent legacy generation and validates the decoded catalog."
@@ -461,8 +461,25 @@
   "repair_commit": "acbfc2471ef5cff223b6d519df375b22874c3713",
   "review": {
     "session": 83032,
-    "state": "active",
+    "state": "passed",
     "base": "c474e2a419251b5127cca2179ab21b7503afccdf",
-    "log": "/tmp/starmap-pr144-compatibility-pre-pr-review-2026-09-10.log"
+    "log": "/tmp/starmap-pr144-compatibility-pre-pr-review-2026-09-10.log",
+    "exit_code": 0,
+    "findings": 0,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "artifact": {
+      "path": "repair-review.log.gz",
+      "sha256": "a3e3ca133d45dcdfe488763e8f27cca4e8343a316eb6c964e4ef4489773aac5d"
+    }
+  },
+  "repaired_ci": {
+    "head": "acbfc2471ef5cff223b6d519df375b22874c3713",
+    "run": 34447195101,
+    "watch_session": 24659,
+    "log": "/tmp/starmap-pr144-repaired-ci-watch-2026-09-10.log",
+    "state": "in_progress"
   }
 }
