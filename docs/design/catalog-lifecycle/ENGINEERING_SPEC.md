@@ -1727,6 +1727,9 @@ Retain the highest authenticated requirement separately from the finite receipt.
 A manifest can disclose a newer requirement before the matching receipt arrives.
 That manifest must not manufacture or renew a receipt. Persist the requirement even when catalog activation fails.
 
+A trusted current manifest must reach permission state before payload compatibility checks or transfer.
+A stalled or incompatible payload must not postpone a known withdrawal. Addressed historical reads do not advance the current requirement.
+
 The CSP4 runtime candidate stores both values in the private `catalog-runtime/permission.json` checkpoint beneath the configured runtime state root.
 The checkpoint stays uncertain while source readers can learn new requirements.
 A completed shutdown waits for those readers, then retains the complete state before clearing uncertainty.
@@ -1751,6 +1754,13 @@ Permission handling reads the committed authority head from memory through `Curr
 That snapshot follows catalog publication under the same client lock. Failed publication preserves the previous head.
 The snapshot does not prove publisher identity, fleet freshness, or permission validity.
 The issuer must establish those conditions before it can return a receipt.
+
+A relay forwards the original confirmed upstream receipt through `GET /catalog/permission`.
+It does not renew the issue time or expiry and does not require catalog activation.
+Unsupported permission semantics must remain visible to downstream consumers.
+Unconfirmed retention, a newer unmatched manifest, expiry, or unknown clock validity prevents receipt delivery.
+The endpoint uses `no-store`, ignores conditional renewal, and applies the configured API authentication.
+Unavailable permission returns a generic 503 without private error details.
 
 The library clock callback reads only cached evidence.
 Its uncertainty must describe the same clock that supplies runtime time.

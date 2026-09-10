@@ -1,0 +1,547 @@
+{
+  "task": "CSP4",
+  "source": "cc4e2a017c779517251a4a050e335f0a9f77b260",
+  "source_tree": "d79c1ec5b16b70867625523d9f88cf30bfae10e9",
+  "base": "671b54d531f928f65d550411190293d4cde842b0",
+  "source_files_sha256": {
+    "cmd/starmap-openapi-presence/main.go": "d4637a1ff2a46f786dff08b8f99f5a459847e2d47da9c4239782e5f1444352c5",
+    "cmd/starmap-openapi-presence/permission.go": "f4e3c26d7527905799ea0ef45cb2556426d5e7d7ab54be101e970a7a243db1e5",
+    "cmd/starmap-openapi-presence/permission_test.go": "dc288fba0444d0f77d43bedfa8b8b6f4192d443aaf1ad81e884510080958a615",
+    "docs/REMOTE_CATALOG_PROTOCOL.md": "f486e93a2c1b1d601c50fbfd8443bf263c901f31ee365a76e7b889a111d5ad43",
+    "docs/REST_API.md": "5402988817f4040892b6f5dc5c4aad37107dd8d79efe7c4a665749f6c5ca764c",
+    "internal/embedded/openapi/openapi.json": "0c2bd9a86ce8e673315e210a05d6f5333dd5895621bb768318a214102b95e3ae",
+    "internal/embedded/openapi/openapi.yaml": "2471cb1bc6ec15d606090662c2fb9021a478e95283b2e23788fcb042726c9050",
+    "internal/server/handlers/README.md": "b04a554ccf0d4746369b009eb9639f8f50b847f12afc386d05f0150223380a56",
+    "internal/server/handlers/permission.go": "9e1fa80639178ac1f5b3fe5460853064d79264d325af506e3bcdb72776c3b230",
+    "internal/server/router.go": "d6433e61a020f5461870fa2663f59fa8ee5df7aefd21ddbace45ebf786fcf5dc",
+    "runtime/README.md": "b4229ccca69f5c4521cae798ea534cd1e453ab1ffbd256d43bad69b59942897f",
+    "runtime/authority_relay.go": "187eb3d9e1023b9c2dd5d079a0181c4d9338ba0d4158e0adeb6d461ce5aafd0d",
+    "runtime/authority_relay_test.go": "c4e923c5797194f7d395f2e53f9a083df10aef8864846828142854d113f17a7b",
+    "server/README.md": "d869b0090fd815b6ecae754f35eb1be6daccede6b8948942600c540bbdb89139",
+    "server/permission.go": "54f7e4c11479d8dc68072c6686af23619fec9fe52f4e4f16f209a837b4d222e4",
+    "server/permission_test.go": "6ba48e02e77a27c5ed0e01f775bf420b5cbe799000a6c822e98e2caa3b2e8be1",
+    "server/server.go": "db3afb8e995a8b79f2586391e97d83b675e15b5ee20dfcd9816356dd3b87287d"
+  },
+  "checks": {
+    "red": {
+      "artifact": {
+        "path": "red.jsonl.gz",
+        "sha256": "fd75fca9a929a88c8617e186e55811d96377d8e5d6cb033a66bbb5f869f2c175",
+        "raw_sha256": "a4d55ae8e03f3351400e576a32187b45b63d43c6a759d074a200dab68f4e69bd"
+      },
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./server -run '^(TestAuthorityRuntimeRelay|TestAuthorityRuntimeRelays|TestServerPermission)'",
+      "source_scope": "Before relay implementation; ten test failures.",
+      "test_events": {
+        "pass": 0,
+        "fail": 10,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:15:33.599767-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 10.936
+        },
+        {
+          "Time": "2026-09-10T10:15:34.023108-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 11.095
+        }
+      ]
+    },
+    "integration": {
+      "artifact": {
+        "path": "integration.jsonl.gz",
+        "sha256": "49bcab2c9299f516f3ce72d0464f96e0f49da3a9bee80683f3b29f9fcb7ea84e",
+        "raw_sha256": "efc662c3811ccb676bcdbcb307897be0567de6b75fef046ff50f242718ec5f6d"
+      },
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./server -run '^(TestAuthorityRuntimeRelay|TestAuthorityRuntimeRelays|TestServerPermission)'",
+      "source_scope": "Intermediate compile error used a function name as a schema-version constant; corrected to CurrentCatalogSchemaVersion.",
+      "test_events": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:17:52.732676-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 0.001,
+          "FailedBuild": "github.com/agentstation/starmap/runtime [github.com/agentstation/starmap/runtime.test]"
+        },
+        {
+          "Time": "2026-09-10T10:18:07.480004-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 11.519
+        }
+      ]
+    },
+    "minimum": {
+      "artifact": {
+        "path": "minimum.jsonl.gz",
+        "sha256": "b479623e24a62b531796187e6c62f19dbe80e44dfc798fb851790445a8fdbc3d",
+        "raw_sha256": "81bd738c4ad098d21c36346df83b2ed5f809b56469486ab32ce3a6483f9192b0"
+      },
+      "exit_code": 1,
+      "toolchain": "go1.25.12",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./server -run '^(TestAuthorityRuntimeRelay|TestAuthorityRuntimeRelays|TestServerPermission)'",
+      "source_scope": "The cold fixture allowed background permission acquisition. The repaired fixture keeps the source unavailable and waits for the first scheduled attempt.",
+      "test_events": {
+        "pass": 19,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:20:55.469333-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 22.357
+        },
+        {
+          "Time": "2026-09-10T10:20:56.557436-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 22.981
+        }
+      ]
+    },
+    "final-focused": {
+      "artifact": {
+        "path": "final-focused.jsonl.gz",
+        "sha256": "429b83201f5b1380e4845fe5b2ea0e9a90cd5eb8a46a6f154af33ffa472e5f31",
+        "raw_sha256": "af2829b47e1a0d958562d6b860e809043ddb31680d3986b6f48f7d5b8e152fd3"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./server -run '^(TestAuthorityRuntimeRelay|TestAuthorityRuntimeRelays|TestServerPermission)'",
+      "source_scope": "Final runtime and relay behavior before the added OpenAPI test.",
+      "test_events": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:23:20.730406-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 37.318
+        },
+        {
+          "Time": "2026-09-10T10:23:21.479352-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 38.068
+        }
+      ]
+    },
+    "qualified-minimum": {
+      "artifact": {
+        "path": "qualified-minimum.jsonl.gz",
+        "sha256": "02ee266f78d836e7274bd7590cba005f8176805494cfc6e7c7d6457bbf976fda",
+        "raw_sha256": "184ffd6b8946d427609f7e6d79fac0789f0910cc1235237fb218ac061941782a"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.25.12",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./server -run '^(TestAuthorityRuntimeRelay|TestAuthorityRuntimeRelays|TestServerPermission)'",
+      "source_scope": "Final relay source, generated schema, and OpenAPI regression.",
+      "test_events": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:35:13.59387-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 16.926
+        },
+        {
+          "Time": "2026-09-10T10:35:14.113379-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 16.464
+        }
+      ]
+    },
+    "server-suite": {
+      "artifact": {
+        "path": "server-suite.jsonl.gz",
+        "sha256": "f759c2a1230438bdf5750d29b55fa8470146741e2a675259c5f3444860aa24fc",
+        "raw_sha256": "b2079abeac764e57e59afaead71ecfe2b417714b700857f455319bf6f3dc8602"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=20m -json ./server ./internal/server/...",
+      "source_scope": "Complete server suite compiled before the added OpenAPI regression and schema normalization; final focused checks cover those additions.",
+      "test_events": {
+        "pass": 329,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:21:39.818751-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 40.846
+        },
+        {
+          "Time": "2026-09-10T10:21:42.717964-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/cache",
+          "Elapsed": 1.5899999999999999
+        },
+        {
+          "Time": "2026-09-10T10:22:16.243437-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/handlers",
+          "Elapsed": 28.842
+        },
+        {
+          "Time": "2026-09-10T10:22:19.387251-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/middleware",
+          "Elapsed": 1.465
+        },
+        {
+          "Time": "2026-09-10T10:22:44.245967-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/openrouter",
+          "Elapsed": 23.904
+        },
+        {
+          "Time": "2026-09-10T10:22:46.799803-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/operations",
+          "Elapsed": 1.2429999999999999
+        },
+        {
+          "Time": "2026-09-10T10:22:49.182853-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/params",
+          "Elapsed": 1.431
+        },
+        {
+          "Time": "2026-09-10T10:22:51.48184-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/response",
+          "Elapsed": 1.294
+        },
+        {
+          "Time": "2026-09-10T10:22:54.651083-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server/sse",
+          "Elapsed": 1.3639999999999999
+        },
+        {
+          "Time": "2026-09-10T10:29:47.572094-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/server",
+          "Elapsed": 528.489
+        }
+      ]
+    },
+    "openapi-red": {
+      "artifact": {
+        "path": "openapi-red.jsonl.gz",
+        "sha256": "276500cb8cd474c5c4c52e87adc5b77a6b52d4690f804d7ddc9580cf5827c71c",
+        "raw_sha256": "6bbe713540744f99cc2a4cd083baf4456d2a3d6fd488bfcfcbb2d0c03c94d826"
+      },
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./server -run '^TestServerPermissionOpenAPIUsesTheWireMediaType$'",
+      "source_scope": "Generated vendor media type described a string and duplicated the object under application/json.",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:28:13.175897-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 0.636
+        }
+      ]
+    },
+    "schema-normalizer": {
+      "artifact": {
+        "path": "schema-normalizer.jsonl.gz",
+        "sha256": "94cd3009e4598ceb7f34715ffa50af85c0d4fde9c51d4044e4a23974313d7dbf",
+        "raw_sha256": "16601766f2e19804f158fca643d4f20e0b250832b822aaf085e84884519dd9cd"
+      },
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./cmd/starmap-openapi-presence",
+      "source_scope": "Intermediate YAML offset selected a mapping delimiter; repaired to select the first key token.",
+      "test_events": {
+        "pass": 60,
+        "fail": 3,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:29:24.847302-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/cmd/starmap-openapi-presence",
+          "Elapsed": 0.262
+        }
+      ]
+    },
+    "normalizer-qualified": {
+      "artifact": {
+        "path": "normalizer-qualified.jsonl.gz",
+        "sha256": "4c2665446b4cc39b196f9e263d2832126e5261f5aea581305d81432d70e13c58",
+        "raw_sha256": "46ed1b773455a6d08e118d26d7d5a7b9946a5222d0095b20476d45e3e6adf393"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./cmd/starmap-openapi-presence",
+      "source_scope": "Complete schema-normalizer suite at final source.",
+      "test_events": {
+        "pass": 63,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:33:39.890884-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/cmd/starmap-openapi-presence",
+          "Elapsed": 1.262
+        }
+      ]
+    },
+    "schema-final": {
+      "artifact": {
+        "path": "schema-final.jsonl.gz",
+        "sha256": "b18d84cff44230364786189bc908aaf8a83f9eeae995a2bfa58f85b1bdce893b",
+        "raw_sha256": "fed0dd10c5ee4645e7848418573d6607576d11eef75b971631d455d064bd17a1"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./cmd/starmap-openapi-presence ./server -run '^(TestNormalize|TestRun|TestServerPermission)'",
+      "source_scope": "Generated wire schema and selected normalizer cases before the equivalent lint expression repair.",
+      "test_events": {
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:32:06.540032-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/cmd/starmap-openapi-presence",
+          "Elapsed": 1.299
+        },
+        {
+          "Time": "2026-09-10T10:32:42.143754-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 23.728
+        }
+      ]
+    },
+    "complete-minimum": {
+      "artifact": {
+        "path": "complete-minimum.jsonl.gz",
+        "sha256": "124ce84d30592abbd515449ca37ec5e30b1463dac4c85b7a35b1c4257c36a52d",
+        "raw_sha256": "aac84c6cfd57e674db1dfed7d9012511e78ad46997d255cc0449144455ea1ac3"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.25.12",
+      "command": "go test -race -count=1 -timeout=5m -json ./cmd/starmap-openapi-presence ./runtime ./server -run '^(TestNormalize|TestRun|TestAuthorityRuntimeRelay|TestAuthorityRuntimeRelays|TestServerPermission)'",
+      "source_scope": "The TestRun prefix also selected existing TestRuntime cases. All selected tests completed; the attempted interrupt found no process and changed nothing.",
+      "test_events": {
+        "pass": 89,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:32:08.106117-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/cmd/starmap-openapi-presence",
+          "Elapsed": 1.411
+        },
+        {
+          "Time": "2026-09-10T10:32:42.439379-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/server",
+          "Elapsed": 24.823
+        },
+        {
+          "Time": "2026-09-10T10:34:57.992776-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 163.837
+        }
+      ]
+    },
+    "complete-lint": {
+      "artifact": {
+        "path": "complete-lint.log.gz",
+        "sha256": "d316efad8956408d57f5251fd50b82d59b6bc73ed5d84e51b0a33e614388bc78",
+        "raw_sha256": "d8abeb717193c85656ea92857fca3bf125f283d501a1ff72abe2a45c1a58d80b"
+      },
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "command": "devbox run golangci-lint run",
+      "source_scope": "One De Morgan expression finding; repaired without changing behavior."
+    },
+    "qualified-lint": {
+      "artifact": {
+        "path": "qualified-lint.log.gz",
+        "sha256": "a0e26fd8bf7a9bf1e323d88e6b7d36d61e2f050492be8eae9b320fc9708aab5b",
+        "raw_sha256": "2b14f79356b451b0a3aa1d5627dd54710738fb3d16ca1998fab09df9dcda6055"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "devbox run golangci-lint run",
+      "source_scope": "Final source: zero issues."
+    },
+    "qualified-ago": {
+      "artifact": {
+        "path": "qualified-ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go tool ago -stale-ignores -format json ./...",
+      "source_scope": "Final source: zero findings, stale ignores, or errors."
+    },
+    "complete-prose": {
+      "artifact": {
+        "path": "complete-prose.log.gz",
+        "sha256": "4efe3524ec13c75b14c8329c80ae7b66dcf1d3e67262ea0c2f64f63642509dae",
+        "raw_sha256": "737ffec7e6fed55e4ada951827a8ddf8a5be25831ed476d343deffec52b0dee0"
+      },
+      "exit_code": 0,
+      "toolchain": "",
+      "command": "make technical-writing-check",
+      "source_scope": "1,409 files; zero diagnostics."
+    },
+    "complete-docs": {
+      "artifact": {
+        "path": "complete-docs.log.gz",
+        "sha256": "9e1d141a103778cadaba91510f49b9bde28392c4004b0121fdccac63190df2eb",
+        "raw_sha256": "84d1d6aa5327717cf1736fa7d4fb3174fa6a34ddde2315ae1c39fb850da9b94e"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "GOFLAGS= make docs-check",
+      "source_scope": "Generated API and Go documentation match; subsequent expression lint repair is equivalent."
+    },
+    "consumers": {
+      "artifact": {
+        "path": "consumers.log.gz",
+        "sha256": "eda4e8a810885825035da33e4f206d596efe2a1db1da8bc13e4df63b8acd42eb",
+        "raw_sha256": "e5774a3ad3a7161bf6c5bab08a9736236548f7ce325e07e85221ec42f1253a8c"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.25.12",
+      "command": "CGO_ENABLED=0 make test-consumer-deps",
+      "source_scope": "All six external consumers pass; no dependency ceiling changed."
+    },
+    "manifest-arrival-red": {
+      "artifact": {
+        "path": "manifest-arrival-red.jsonl.gz",
+        "sha256": "b67077ee7f01c67f7cb05b17701a97d7ef37f1c0b52ec9dffc92ef5f528dc572",
+        "raw_sha256": "b176f0db39a7e345d720afd8941b466363435145e69f4e379beee0511b04db90"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run '^TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival$'",
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "source_scope": "New regression above cc4e2a01. The final test cancels its refresh before shutdown. The initial capture also reports a fixture cleanup timeout."
+    },
+    "manifest-arrival-final-red": {
+      "artifact": {
+        "path": "manifest-arrival-final-red.jsonl.gz",
+        "sha256": "75b80683fb803622696b7fa29749670d47ebbfb7fc5a8842a21728330b109865",
+        "raw_sha256": "1d993e5d7bea211381ed5c60b1e36a9772dc0d20b6d7ca0dfd5dd51b81e6ed9c"
+      },
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run '^TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival$'",
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "source_scope": "New regression above cc4e2a01. The final test cancels its refresh before shutdown. The initial capture also reports a fixture cleanup timeout."
+    },
+    "runtime-suite": {
+      "artifact": {
+        "path": "runtime-suite.jsonl.gz",
+        "sha256": "edcbf528859756fe819e5380cf551b1f77054a7d94c2143c01d69adb671704f1",
+        "raw_sha256": "fcd9ef42962c00d44606bdad8b3c5b352bbfdd13f4a3537610400f6b23e3210a"
+      },
+      "source": "cc4e2a017c779517251a4a050e335f0a9f77b260",
+      "command": "go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
+      "toolchain": "go1.26.6",
+      "exit_code": 0,
+      "test_events": {
+        "pass": 875,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:23:50.721897-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/remote",
+          "Elapsed": 36.171
+        },
+        {
+          "Time": "2026-09-10T10:23:52.279692-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Elapsed": 1.541
+        },
+        {
+          "Time": "2026-09-10T10:48:38.378676-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1523.815
+        }
+      ],
+      "source_scope": "Runtime and remote source match cc4e2a01. Compilation preceded tooling-only schema normalization and the subsequent manifest-observer repair."
+    }
+  },
+  "observations": [
+    "Runtime.ReadPermission returns the exact confirmed upstream receipt from memory. The focused test records zero allocations and zero upstream permission reads.",
+    "A relay can disclose an unsupported permission revision without catalog activation. It does not mint or extend the receipt.",
+    "Unconfirmed retention, a newer unmatched manifest, expiry, unknown clock validity, cancellation, and ordinary source mode prevent relay delivery.",
+    "The permission endpoint ignores conditional caching and uses no-store. Configured API authentication applies. Unavailable receipts return a generic 503 without private error text.",
+    "The schema normalizer corrects the pinned swag v2.0.0-rc4 vendor media-type output. It preserves other response content, refuses changed generator shapes, and is idempotent."
+  ],
+  "running_operations": [],
+  "limitations": [
+    "All eight CSP4 acceptance subcases remain UNVERIFIED. No review, PR, native CI, or merge exists for CSP4.",
+    "The origin issuer, qualified standalone clock, shared-store follower recovery, and complete authority transitions remain open.",
+    "Confirmed regression: a trusted withdrawal manifest leaves old admission active while the payload transfer is stalled. Fix propagation before payload processing and rerun qualification before publication.",
+    "These component checks do not qualify Starport inference, latency, or a production deployment profile."
+  ],
+  "draft_regression": {
+    "path": "runtime/authority_manifest_arrival_test.go",
+    "sha256": "888300f4337b982d03bb7e3d4f528fc50039619098a3fa9c8a9b00da44749157"
+  }
+}

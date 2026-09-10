@@ -1,0 +1,311 @@
+{
+  "task": "CSP4",
+  "source": "5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430",
+  "source_tree": "3ccdc6edb9f0fedfc9c452001c4e60c7387e81aa",
+  "base": "cc4e2a017c779517251a4a050e335f0a9f77b260",
+  "source_files_sha256": {
+    "docs/REMOTE_CATALOG_PROTOCOL.md": "e73df796fec727fd0561b57182c11b427abbaa672b7d72bbf1cbe20b47d7d899",
+    "pkg/catalogs/remote/README.md": "314a663dccb0d27032db66a41d5539b7c63c8465df402de6860f704dbf5c9153",
+    "pkg/catalogs/remote/authority.go": "f170848850a231172838479817564659d7bc152e7cc979db09c6d29c5abe6124",
+    "pkg/catalogs/remote/authority_test.go": "44a855a5eb47031c9eb6dbd2806d36d56bbe6dd749ad1babb233bfd5f00e3cf9",
+    "pkg/catalogs/remote/client.go": "292bb4204aa5cac32797634a28ff4c938af8fd8caec7605e773f1a948d5111b2",
+    "remote/README.md": "51f45de6a47ad5a067c84ade452ac2f97e11f05379bc30562d49fe0d9a0e48bf",
+    "remote/source.go": "8b7a5860519f249d106a7b90bad82244a8b39856338f0e0ba4a7567fb12a5bef",
+    "remote/source_authority.go": "c3960a7dcf2b2d8fb6432c6f090d386aba31967fe10969c9cce5815d18b74902",
+    "runtime/README.md": "ad54048a6f19993659ff5c86bd97c2637d848dd250882a55d3304b373fbbeebc",
+    "runtime/authority_manifest_arrival_test.go": "326fc8a9d1683a563f7b0d4a4e661a26a927766513a28e0ca88c8fadd8048acd",
+    "runtime/authority_observers.go": "2cfc687e51ab193379d86a47a18e03e8de687cd1c9aa47191b13ef5261ab6335",
+    "runtime/authority_refresh.go": "1a44c50cbaac969fd91ea57d01d97f37a50008e7ccfdcc7727778464ac0cf87d",
+    "runtime/runtime.go": "f9603773d02f69b80524e28ff173747668aea032d5beaf2cf38e80bdbe52243a",
+    "runtime/source/README.md": "628924371ac49ccbc929010427a47cee31fa6bee097ff302c51bb9a6541c554a",
+    "runtime/source/source.go": "ee089afeec25256c4e264d8b418a1886d48359542465cee0eedb2ec49c0ccead",
+    "runtime/source_startup.go": "de4fb1e8da1d44a479d9538845ec0dc9ec378f1381d002e9e915e7f58096ab5b"
+  },
+  "checks": {
+    "final-red": {
+      "artifact": {
+        "path": "final-red.jsonl.gz",
+        "sha256": "75b80683fb803622696b7fa29749670d47ebbfb7fc5a8842a21728330b109865",
+        "raw_sha256": "1d993e5d7bea211381ed5c60b1e36a9772dc0d20b6d7ca0dfd5dd51b81e6ed9c"
+      },
+      "exit_code": 1,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival$",
+      "source_scope": "Before repair; the two intended assertions fail.",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:42:17.501699-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 19.43
+        }
+      ]
+    },
+    "green": {
+      "artifact": {
+        "path": "green.jsonl.gz",
+        "sha256": "85b0cb9550ee08836eb2dcc63a0f5c9e36761b92205d411defd2b48ef4e47590",
+        "raw_sha256": "78077d2509f511743002d95df21396879960cb2757c19c90662aa6ef9757f16f"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime -run ^TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival$",
+      "source_scope": "Initial observer integration before shutdown lifecycle additions.",
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:46:19.679663-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 11.531
+        }
+      ]
+    },
+    "final-focused": {
+      "artifact": {
+        "path": "final-focused.jsonl.gz",
+        "sha256": "a8d8ab80cbd33d983847c61452640618c659a6b02a9cc80c3126a916a79267d4",
+        "raw_sha256": "7d8473f1355512ba64703f091ffe3f308be5c95e48db01a193a864444051997f"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "source_scope": "Observer and lifecycle source before equivalent startup extraction.",
+      "test_events": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:51:44.875749-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/remote",
+          "Elapsed": 1.339
+        },
+        {
+          "Time": "2026-09-10T10:52:00.088922-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 11.353
+        }
+      ],
+      "reproduction_command": "go test -race -count=1 -timeout=5m -json ./runtime ./pkg/catalogs/remote -run '^(TestAuthorityObserver|TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival|TestAuthorityRuntimeRefusesManifestCallbacksAfterClose)'",
+      "command_record": "The raw test log identifies selected tests. The earlier shell invocation is not retained in this report."
+    },
+    "final-minimum": {
+      "artifact": {
+        "path": "final-minimum.jsonl.gz",
+        "sha256": "5804e43982b9351ef9da0fd7dcaa386e6e7c35262ab02e85f71e45f40ef736fc",
+        "raw_sha256": "43b2d1157732e9d42e7b35aa5ac305f1d3f02a103486556f96276197ee26c9fa"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.25.12",
+      "source_scope": "Observer and lifecycle source before equivalent startup extraction.",
+      "test_events": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:52:39.653127-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/remote",
+          "Elapsed": 1.34
+        },
+        {
+          "Time": "2026-09-10T10:52:55.997997-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 12.986
+        }
+      ],
+      "reproduction_command": "go test -race -count=1 -timeout=5m -json ./runtime ./pkg/catalogs/remote -run '^(TestAuthorityObserver|TestAuthorityRuntimeLearnsWithdrawalBeforePayloadArrival|TestAuthorityRuntimeRefusesManifestCallbacksAfterClose)'",
+      "command_record": "The raw test log identifies selected tests. The earlier shell invocation is not retained in this report."
+    },
+    "protocol-suite": {
+      "artifact": {
+        "path": "protocol-suite.jsonl.gz",
+        "sha256": "c6ecc6e3b0eeb056b866e60c53ace9c18c843ad98873855b4958cb5131278c9f",
+        "raw_sha256": "a85095e23c502a0fb92ade09c8e8f8686a6816ad9f37f6328e664c56fc55f9ba"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./pkg/catalogs/remote",
+      "source_scope": "Final protocol source; complete package suite.",
+      "test_events": {
+        "pass": 60,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:53:33.702596-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/remote",
+          "Elapsed": 1.771
+        }
+      ]
+    },
+    "qualified-focused": {
+      "artifact": {
+        "path": "qualified-focused.jsonl.gz",
+        "sha256": "93c348f229555e16f64113e45a92e08b488d55cd5c6ce54ef7526815d2268dca",
+        "raw_sha256": "5909ff29405e9a3b0a9ce010b1f37183f9a40ba1ac58ffb25ca169b53fd7d7e7"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.26.6",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./pkg/catalogs/remote -run '^(TestAuthorityObserver|TestAuthorityRuntime|TestRequireSource)'",
+      "source_scope": "Final committed source, including startup extraction.",
+      "test_events": {
+        "pass": 40,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T10:55:21.369521-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/remote",
+          "Elapsed": 1.414
+        },
+        {
+          "Time": "2026-09-10T10:55:42.207398-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 22.252
+        }
+      ]
+    },
+    "qualified-minimum": {
+      "artifact": {
+        "path": "qualified-minimum.jsonl.gz",
+        "sha256": "6e01f1f071ebd8b46d0f60adbe4f5690f95a6b9a3704c5083c4e3c9589293e7f",
+        "raw_sha256": "0522b57643393168eb8801460393d7fc9e6bbe08bd11b94f3b28156aae373605"
+      },
+      "exit_code": 0,
+      "toolchain": "go1.25.12",
+      "command": "go test -race -count=1 -timeout=5m -json ./runtime ./pkg/catalogs/remote -run '^(TestAuthorityObserver|TestAuthorityRuntime|TestRequireSource)'",
+      "source_scope": "Final committed source, including startup extraction.",
+      "test_events": {
+        "pass": 40,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T11:01:36.442813-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/remote",
+          "Elapsed": 1.295
+        },
+        {
+          "Time": "2026-09-10T11:01:52.127773-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 16.98
+        }
+      ]
+    },
+    "lint": {
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "38d1eaca6da2880337f55b3093bab1f55c0d304c06cbbd78e316171563fa62d1",
+        "raw_sha256": "bbf6bc5fe8260e9e097342852865e57a111fe6135b82c61814cbe80250d432d8"
+      },
+      "exit_code": null,
+      "command": "devbox run golangci-lint run",
+      "source_scope": "Open complexity was 31. Extracted source startup policy without a suppression.",
+      "outcome": "FAIL; exact process exit code was not retained."
+    },
+    "prose": {
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "774005939f8e92ab9b8ce9d705664b5096bff4a9d2aeade922d769f2eff07133",
+        "raw_sha256": "f391f2723e7ac997f98721093e79d3a3562627eeeb850edc00598671016a38cf"
+      },
+      "exit_code": null,
+      "command": "make technical-writing-check",
+      "source_scope": "One passive comment. Rewritten in active voice.",
+      "outcome": "FAIL; exact process exit code was not retained."
+    },
+    "qualified-lint": {
+      "artifact": {
+        "path": "qualified-lint.log.gz",
+        "sha256": "167bd19bc7aea2a2bf91f019c922fcb7f4b9c547fb4a9aacfba39eeef9a12715",
+        "raw_sha256": "3fe3422a2e59b791e9da455f92c025ced18fdc1621df2cf65a845285b2d7df55"
+      },
+      "exit_code": 0,
+      "command": "devbox run golangci-lint run",
+      "source_scope": "Final committed source."
+    },
+    "qualified-prose": {
+      "artifact": {
+        "path": "qualified-prose.log.gz",
+        "sha256": "333a20a2ce66fcea955a5eb7566f8e59b5b52362c2435506b4f5fcf38266f7be",
+        "raw_sha256": "f120ff9f30d14e8cb4b0cd5e2d1104c94323b0397fcdcbe821c61d5ef0d32990"
+      },
+      "exit_code": 0,
+      "command": "make technical-writing-check",
+      "source_scope": "Final committed source. 1415 files, zero diagnostics."
+    },
+    "qualified-ago": {
+      "artifact": {
+        "path": "qualified-ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      },
+      "exit_code": 0,
+      "command": "go tool ago -stale-ignores -format json ./...",
+      "source_scope": "Final committed source."
+    },
+    "qualified-docs": {
+      "artifact": {
+        "path": "qualified-docs.log.gz",
+        "sha256": "8ec87821ecb22796bf7f3e781768a9990c9ce0b310dffd39be1f2dab666a894a",
+        "raw_sha256": "7bc5b9c2600dfd1d0908bb0a7dc09f1eefe9cce01442fd2aa5540ed83dfd97f8"
+      },
+      "exit_code": 0,
+      "command": "GOFLAGS= make docs-check",
+      "source_scope": "Final committed source."
+    },
+    "consumers": {
+      "artifact": {
+        "path": "consumers.log.gz",
+        "sha256": "a6fcc0d76817a6d312a3a8ce76a3c9db25266a78f1460efdedaa4ae8a6bb044d",
+        "raw_sha256": "bd9233a0982ce7cfbd3d5bce4f21dc162be6566b99d6fc67611a5cab4ecece2c"
+      },
+      "exit_code": 0,
+      "command": "CGO_ENABLED=0 GOTOOLCHAIN=go1.25.12 make test-consumer-deps",
+      "source_scope": "Final public contracts. Before equivalent private startup extraction. All six external consumers pass."
+    }
+  },
+  "running_operations": [
+    {
+      "session_id": 9598,
+      "command": "go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
+      "output": "/tmp/starmap-csp4-manifest-arrival-runtime-suite-2026-09-10.jsonl",
+      "source_scope": "Final observer and lifecycle behavior before equivalent source-startup extraction and comment correction."
+    },
+    {
+      "session_id": 95250,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
+      "output": "/tmp/starmap-csp4-subscriber-verify-2026-09-10.log",
+      "source_scope": "5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430; complete repository verification for the first CSP4 delivery."
+    }
+  ],
+  "limitations": [
+    "All eight task acceptance subcases remain UNVERIFIED.",
+    "Origin receipt issuance, standalone qualified clock, shared-store follower recovery, authority transitions, and product qualification remain incomplete.",
+    "No pre-PR review, native CI, PR, or merge for CSP4."
+  ]
+}

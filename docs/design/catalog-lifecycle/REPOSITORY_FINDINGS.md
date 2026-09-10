@@ -1746,3 +1746,40 @@ Receipt issuance and complete CSP4 qualification remain open.
 The latest full root suite passes 106 test events and one package outcome at `671b54d5`.
 The complete runtime, remote, and artifact suite passes 864 test events and three package outcomes at predecessor `a9b369dc`.
 Both runs finish without failed or skipped test events. The head snapshot proof preserves their exact logs and source revisions.
+
+## Permission relay and wire schema, 2026-09-10
+
+Local `cc4e2a01` adds the server permission route and a runtime reader of confirmed upstream receipts.
+The [relay proof](../../plans/proof/starport-production-catalog/csp4/relay-2026-09-10/verification.json) records the exact 17-file source change.
+The runtime read uses cached state, allocates no memory in the focused check, and starts no upstream read.
+It preserves the original receipt when the catalog or permission schema cannot activate.
+
+The final focused Go 1.25.12 run passes 21 test events. The server suite passes 329 events before the later schema correction.
+The complete schema-normalizer suite passes 63 events. Static and external-consumer checks pass.
+The cold-fixture repair controls upstream availability and waits for the initial scheduled read. It preserves the cold-refusal assertion.
+
+The pinned Swag generator placed a string schema under the vendor media type and the object under `application/json`.
+The build normalizer now emits the exact vendor JSON object contract and refuses unexpected generator output.
+The wire-schema regression fails before the correction and passes afterward.
+
+The complete runtime suite remains running. Origin issuance, standalone clock qualification, shared-store follower recovery, and product acceptance remain open.
+
+The new TLS regression confirms a CSP4 defect: a trusted withdrawal manifest leaves old admission active during a stalled payload transfer.
+The runtime also reports the previous required revision. The final test captures both assertions and completes cleanup.
+Current `runtime.readSource` observes authority after a successful `Source.Read`.
+Propagate the requirement before payload processing and rerun qualification before publication. This repair requires no owner decision.
+
+## Requirement arrival before payload processing, 2026-09-10
+
+Local `5155c9f7` repairs the preceding TLS regression.
+The [manifest-arrival proof](../../plans/proof/starport-production-catalog/csp4/manifest-arrival-2026-09-10/verification.json) records the exact 16-file change.
+A current manifest reaches runtime permission state after transport trust and manifest validation, before payload processing.
+A stalled transfer or unsupported payload cannot delay a known withdrawal.
+Historical addressed reads do not advance permission requirements. Invalid publisher trust never reaches the observer.
+
+The binding is single-owner and must precede manifest reads. Shutdown joins active callbacks and refuses late callbacks.
+
+Both supported toolchains pass 40 focused race events and two package outcomes.
+The complete protocol suite passes 60 events. Static checks and all six external consumer checks pass.
+The preceding relay runtime suite completed 875 events. Current broad runtime qualification continues against the new observer behavior.
+Origin receipt issuance, qualified clocks, shared-store follower recovery, authority transitions, and full product acceptance remain incomplete.

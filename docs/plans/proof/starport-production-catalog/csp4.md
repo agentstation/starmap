@@ -3,6 +3,76 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
+The current local source is `5155c9f7ac3f501fa6b8cd9bfe379ca1a1241430`. The Starmap worktree is clean.
+No CSP4 PR exists. No owner decision remains.
+
+The [manifest-arrival proof](csp4/manifest-arrival-2026-09-10/verification.json) records 16 changed files and the original failing TLS regression.
+The runtime records a trusted current requirement before payload compatibility checks or transfer.
+A stalled download cannot preserve admission after a known withdrawal.
+Historical addressed reads do not change current permission requirements.
+Shutdown refuses new source callbacks and joins accepted callbacks before sealing retained state.
+
+The final focused race check passes 40 test events and two package outcomes on each supported toolchain.
+These checks include authority admission, observer binding, shutdown, relay, and strict source startup.
+The complete remote protocol suite passes 60 test events and one package outcome.
+Lint, ago, generated documentation, prose, and all six external consumers pass.
+Prose checks cover 1,415 files with zero diagnostics. The proof preserves the complexity and comment failures before their repairs.
+
+The broader runtime, remote, and artifact race suite runs in session `9598`.
+Output: `/tmp/starmap-csp4-manifest-arrival-runtime-suite-2026-09-10.jsonl`.
+It includes the observer and shutdown changes. Compilation preceded the equivalent source-startup extraction and comment correction.
+The preceding relay suite completed 875 passing test events and three package outcomes.
+The [relay proof](csp4/relay-2026-09-10/verification.json) preserves that separate tested source.
+
+Complete repository verification runs in session `95250` against clean `5155c9f7`.
+Output: `/tmp/starmap-csp4-subscriber-verify-2026-09-10.log`.
+
+The task now permits two mechanical PRs. The current 90-file branch owns permission transport, retained subscriber enforcement, and relay.
+Complete its repository checks, pre-PR review, native CI, and merge before the next delivery.
+
+The next delivery owns origin issuance, qualified clock evidence, shared-store follower activation, authority transitions, and required consumer checks.
+The first merge gives no task completion credit. All acceptance requirements remain in force.
+
+The [clock research](csp4/authority-head-2026-09-10/clock-research.md) selects no clock adapter.
+Complete product verification, required review, native CI, and merge before task completion.
+
+## Runtime integration checkpoint history
+
+### Permission relay checkpoint
+
+CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
+The current local source is `cc4e2a017c779517251a4a050e335f0a9f77b260`. No CSP4 PR exists.
+The worktree has one task-owned regression file: `runtime/authority_manifest_arrival_test.go`. No owner decision remains.
+
+The [relay proof](csp4/relay-2026-09-10/verification.json) records 21 passing focused test events on `go1.25.12`.
+
+The complete server suite passes 329 test events and ten package outcomes before the final schema correction.
+The schema-normalizer suite passes all 63 test events. Final focused checks cover the generated wire schema.
+Lint, ago, generated documentation, prose, and all six external consumers pass. Prose checks cover 1,409 files with zero diagnostics.
+
+`Runtime.ReadPermission` forwards a confirmed upstream receipt from memory with its original expiry.
+It can report an unsupported permission revision before catalog activation.
+The focused check records zero allocations and no upstream permission reads.
+The HTTP endpoint applies configured API authentication, uses `no-store`, and refuses unavailable receipts with a generic 503.
+
+The proof preserves the missing-route failure, a compile error, the cold-fixture timing failure, and the generated schema defect.
+It also records the YAML-offset and expression-lint repairs. These failures do not count as acceptance passes.
+
+The complete runtime, remote, and artifact race suite remains running in session `14376`.
+Its output is `/tmp/starmap-csp4-permission-relay-runtime-suite-2026-09-10.jsonl`.
+Runtime and remote source match the current commit. Compilation preceded the later schema tooling correction.
+
+The new TLS regression confirms that a trusted withdrawal manifest leaves old permission active during a stalled payload transfer.
+The required revision also remains old. The final red test reports these two assertions without a cleanup failure.
+
+Next, propagate the trusted requirement before payload processing and rerun the regression.
+Then complete origin receipt issuance, qualified clock evidence, shared-store follower activation, authority transitions, and required consumer checks.
+The [clock research](csp4/authority-head-2026-09-10/clock-research.md) selects no clock adapter.
+Complete product verification, required review, native CI, and merge before task completion.
+
+### Committed head checkpoint
+
+CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
 The current local source is `671b54d531f928f65d550411190293d4cde842b0`. No CSP4 PR exists.
 No command remains running. No owner decision remains.
 
@@ -27,8 +97,6 @@ The [integration proof](csp4/runtime-integration-2026-09-10/verification.json) p
 Next, implement publisher receipt issuance, qualified clock evidence, shared-store follower activation, authority transitions, and required consumer checks.
 The [clock research](csp4/authority-head-2026-09-10/clock-research.md) identifies restart, suspend, replay, and timing constraints. It selects no clock adapter.
 Complete product verification, required review, native CI, and merge before task completion.
-
-## Runtime integration checkpoint history
 
 The following record preserves earlier results and commands that were still running when recorded.
 The current section above owns execution state.
