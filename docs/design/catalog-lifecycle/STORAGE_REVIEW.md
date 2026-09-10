@@ -124,6 +124,15 @@ It hashes the generation ID for its directory name. The manifest retains the ori
 The baseline file export required by the PRD remains implementation work.
 Do not infer that every passive read currently materializes these files.
 
+The CSP4 candidate at `2b4310d1` adds `<store>/generations/<sha256-of-generation-id>/authority.json` for authority generations.
+Conditional object storage uses the same record beside the generation objects. Memory stores select the existing head under their publication lock.
+The record contains independent permission metadata, not a renewable receipt. Its format and read bound are independent of catalog schemas.
+
+Reads never add missing metadata. An explicit identical commit can repair a legacy record after validating the complete generation.
+Legacy relocation verifies and preserves existing records. It leaves absent records absent.
+See the [storage contract](../../plans/proof/starport-production-catalog/csp4/issuer-storage-contract-2026-09-10.md) and [local proof](../../plans/proof/starport-production-catalog/csp4/authority-record-2026-09-10/verification.json).
+This local candidate does not qualify origin issuance, clocks, or a production recipe.
+
 **Configuration files and precedence.** The current products do not yet share one complete file schema or loader.
 Their existing loading rules must remain visible during migration.
 

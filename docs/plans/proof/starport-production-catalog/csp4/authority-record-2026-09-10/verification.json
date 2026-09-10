@@ -1,0 +1,381 @@
+{
+  "task": "CSP4",
+  "source": "2b4310d1d24fa22279993417b4e92f55af7aee29",
+  "parent": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+  "worktree": "/tmp/starmap-authority-issuer-2026-09-10",
+  "branch": "codex/catalog-authority-issuer",
+  "publication": "Local checkpoint only. Not pushed, reviewed for PR, or merged.",
+  "source_files_sha256": {
+    "docs/CATALOG_STORE_CONTRACT.md": "1bed590fd34b7c27d987ba977fc46fdc3f9dbd6ee7ff01b60f93ebfa8b5080e1",
+    "internal/catalog/workspace/migration.go": "7a3974dbea0d0cb4cb15828b953e80ec3766538b392209994ba72f4903dbb35d",
+    "internal/catalog/workspace/migration_authority_test.go": "18b7d543cc53d71667c7f095a6124a7d7ef6a6bad4bd83f8e80cd336677c85b1",
+    "internal/privatefiles/records.go": "6546c0fd7175753af61010fc90b738fbc6396bf932d8f61c82b887e1212a32e0",
+    "internal/privatefiles/records_test.go": "5aafa3f84a505b83702d91ea4fbbd1c22e107ee98cc287f31af5a735498d9e11",
+    "pkg/catalogs/README.md": "3f5db05080596b1b2a63fdcd76d1b07910f6f89094962afce310675ccb7d9d34",
+    "pkg/catalogs/permission_record.go": "d879ff1c9787052afb8b7ed064ce32fe4cde55af4bdb31374fcb4441b05b640d",
+    "pkg/catalogs/permission_record_test.go": "c74acc849331f53515f213c6dc10b8adbafadf605dfba93cdf0e4fa5a045f915",
+    "pkg/catalogs/storage/README.md": "41b5bf2d18f0a1575c340184778912b4d86cb89be6bbe7e941ca45605e0727fb",
+    "pkg/catalogs/storage/authority.go": "633a492f4496a916e4b32444a95d0de71b6f5301f9758201f3f922bb0ce09e34",
+    "pkg/catalogs/storage/authority_filesystem.go": "538298e7e6feeb4a8d1d1bd605c8c21f3d96a40f9c8047583d0cabcacb458961",
+    "pkg/catalogs/storage/authority_metadata_test.go": "231afbf362468f732caf06c32086b5fa2c2e5b7ea6c019419f48e35cd8cecd2d",
+    "pkg/catalogs/storage/authority_object.go": "8e0f8f17dcfadfb9721c782d1077d57f38882d275d02304a04d1d1c8feb37f98",
+    "pkg/catalogs/storage/authority_observation_test.go": "7b29a1f8c83e0c21b8d11cab54e761b356c4471a08a0aedf8a96bc6685bf2f78",
+    "pkg/catalogs/storage/filesystem.go": "155a9cb8b571d21288251024aa74522b56ebfded511c606ee5d57e8bc7ca9ac8",
+    "pkg/catalogs/storage/filesystem_private.go": "7f289cf24921580b5fc291e503ef07a403ad40e65d2e0320f14451552dffbbe3",
+    "pkg/catalogs/storage/object.go": "0ccd687efd450f4268b35dcdad69dc57277db5c62f68335dd01df017037fe77f"
+  },
+  "checks": {
+    "observation-fail-before": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 -run 'Test(CatalogStoreCurrentAuthorityObservation|FilesystemAuthorityObservationSeesAnotherWriter|ObjectAuthorityObservationRequiresCurrentReadCapability)$' ./pkg/catalogs/storage",
+      "exit_code": 1,
+      "source_scope": "Parent 44a400a4 plus the initial authority_observation_test.go. Six failing events, including the parent and five leaf cases. No production changes.",
+      "artifact": {
+        "path": "observation-fail-before.jsonl.gz",
+        "sha256": "05ba7f1719ddefe64b1233b21227d4cee65bf04529ec96cb7dc1fa23d3dea865",
+        "raw_sha256": "249a6641f8a50b830674bd042b46f1d978fb3f9f43d1890f1bffc2c2fb106984"
+      },
+      "test_events": {
+        "fail": 6
+      },
+      "package_events": {
+        "fail": 1
+      }
+    },
+    "initial-storage": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/storage",
+      "exit_code": 0,
+      "source_scope": "Initial independent records and storage methods before exclusive creation, strict pointer parsing, and migration coverage.",
+      "artifact": {
+        "path": "initial-storage.jsonl.gz",
+        "sha256": "b5527738b17d590ba707d8a1f580f3636ec23099c378610a28353dc7388b263b",
+        "raw_sha256": "294055e401bbfc79f6be86999ee8769d03e0d2dd1af429d11fdf0b6636b6179c"
+      },
+      "test_events": {
+        "pass": 58
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "broad-race": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/storage ./internal/privatefiles ./pkg/catalogs",
+      "exit_code": 0,
+      "source_scope": "Storage, private records, and catalog record parser before final pointer validation and migration changes. 1369 passing events across three packages.",
+      "artifact": {
+        "path": "broad-race.jsonl.gz",
+        "sha256": "813c41973a6e48313ec601a3e8b9bc7f609775f9db587bb70b4662e44a6d1d30",
+        "raw_sha256": "04392a5c704ab86b2eb3bf8b533dd6c41f64a6fc9135083d271d3fc768548040"
+      },
+      "test_events": {
+        "pass": 1369
+      },
+      "package_events": {
+        "pass": 3
+      }
+    },
+    "minimum-focused": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 -run 'Test(CatalogStoreCurrentAuthorityObservation|FilesystemAuthorityObservationSeesAnotherWriter|ObjectAuthorityObservation|AuthorityObservation|AuthorityMetadata|AuthorityRecordStrictIndependentFormat|PrivateRecordCreate)' ./pkg/catalogs/storage ./internal/privatefiles ./pkg/catalogs",
+      "exit_code": 0,
+      "source_scope": "46 passing events on Go 1.25.12 before pointer validation and migration changes. The catalog parser source remains unchanged at the checkpoint.",
+      "artifact": {
+        "path": "minimum-focused.jsonl.gz",
+        "sha256": "16d41890e30a633f7080175eb4b675baef793f0931d9b143e21628bf66dd490a",
+        "raw_sha256": "77eb416aba4e7a7e117392988ccc00676c3b1551966df0a563ad357070bc2490"
+      },
+      "test_events": {
+        "pass": 46
+      },
+      "package_events": {
+        "pass": 3
+      }
+    },
+    "storage-before-pointer-bound": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/storage ./internal/privatefiles",
+      "exit_code": 0,
+      "source_scope": "142 passing events before final filesystem pointer bound and object UTF-8 validation.",
+      "artifact": {
+        "path": "storage-before-pointer-bound.jsonl.gz",
+        "sha256": "82f0ab0e4d47fbd32a813946096393064f5248d92ed425dddd1c1ac89eca6857",
+        "raw_sha256": "11bf9e93f9c15b94f41ad8282c22562de99b6e1cdcac6ddf442b71fe653e8cb2"
+      },
+      "test_events": {
+        "pass": 142
+      },
+      "package_events": {
+        "pass": 2
+      }
+    },
+    "storage-current": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/storage ./internal/privatefiles",
+      "exit_code": 0,
+      "source_scope": "Current storage and private-file source at 2b4310d1d24fa22279993417b4e92f55af7aee29. 142 passing events and two package outcomes. Later migration changes are outside these packages.",
+      "artifact": {
+        "path": "storage-current.jsonl.gz",
+        "sha256": "e06f8fcad325eaef32291cb1bb445d4b61bc6c3b26693d23cda130dd02a82705",
+        "raw_sha256": "44d4442b8c2035134130646fddc28fe9553538dd32e5f781d997527412c75ea4"
+      },
+      "test_events": {
+        "pass": 142
+      },
+      "package_events": {
+        "pass": 2
+      }
+    },
+    "storage-current-minimum": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 ./pkg/catalogs/storage ./internal/privatefiles",
+      "exit_code": 0,
+      "source_scope": "Current storage and private-file source at 2b4310d1d24fa22279993417b4e92f55af7aee29. 142 passing events and two package outcomes. Later migration changes are outside these packages.",
+      "artifact": {
+        "path": "storage-current-minimum.jsonl.gz",
+        "sha256": "6ef8b341da6bd20329ea091dca7840dc34d2e0a562d31c7d6744a7451c26077a",
+        "raw_sha256": "62318205682515ff0b559d3087d801c97d78a1d321e8b9024d3e1e6da7432a13"
+      },
+      "test_events": {
+        "pass": 142
+      },
+      "package_events": {
+        "pass": 2
+      }
+    },
+    "migration-fail-before": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 -run '^TestMigrateLegacyLayoutRetainsAuthorityRecord$' ./internal/catalog/workspace",
+      "exit_code": 1,
+      "source_scope": "Independent records plus the new regression, before migration repair. The old two-file layout check rejects authority.json.",
+      "artifact": {
+        "path": "migration-fail-before.jsonl.gz",
+        "sha256": "04bf0f34a829d6f40003e14b253af5d8b0c9197f520a8b674e09d8767e2161e4",
+        "raw_sha256": "ea3b1efa2f3c8a5205c49335cec139d9317ae2aaddc0251f1f6d5d54d279f27a"
+      },
+      "test_events": {
+        "fail": 1
+      },
+      "package_events": {
+        "fail": 1
+      }
+    },
+    "migration-initial": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 -run 'TestMigrateLegacyLayout' ./internal/catalog/workspace",
+      "exit_code": 0,
+      "source_scope": "Migration repair before adding the recordless legacy case.",
+      "artifact": {
+        "path": "migration-initial.jsonl.gz",
+        "sha256": "5829f93680749a9e3e91f0085cd3ac1af668998ba1d87dda1af900532ce4eda6",
+        "raw_sha256": "4f04e57acfdb29349edcd982567e87ac661da3d3f2e0fd1d23f1b04ac9d634be"
+      },
+      "test_events": {
+        "pass": 6
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "migration-current": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 -run 'TestMigrateLegacyLayout' ./internal/catalog/workspace",
+      "exit_code": 0,
+      "source_scope": "Current migration source at 2b4310d1d24fa22279993417b4e92f55af7aee29. Seven passing events and one package outcome.",
+      "artifact": {
+        "path": "migration-current.jsonl.gz",
+        "sha256": "9a5ece4511ee7bbe4c869797688e2c7731fbebb7ebdc31a6e538ba30fc04f415",
+        "raw_sha256": "d3bf155d56397c72e6588270931c3a91250ba3bf16704006f6c8475979279848"
+      },
+      "test_events": {
+        "pass": 7
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "migration-current-minimum": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -json -count=1 -run 'TestMigrateLegacyLayout' ./internal/catalog/workspace",
+      "exit_code": 0,
+      "source_scope": "Current migration source at 2b4310d1d24fa22279993417b4e92f55af7aee29. Seven passing events and one package outcome.",
+      "artifact": {
+        "path": "migration-current-minimum.jsonl.gz",
+        "sha256": "97d4446c16e1f3142224fbe3d116882148cf48bc4ef98ec9355fb86a6eba5307",
+        "raw_sha256": "33e96d6d3b7c7183d801798cccf957be33919a44a84f25d4815d1d9fdad7d909"
+      },
+      "test_events": {
+        "pass": 7
+      },
+      "package_events": {
+        "pass": 1
+      }
+    },
+    "ago": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "source_scope": "The complete run covers 2b4310d1d24fa22279993417b4e92f55af7aee29. Earlier runs retain their pre-migration source scope.",
+      "artifact": {
+        "path": "ago.log.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "ago-final": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "source_scope": "The complete run covers 2b4310d1d24fa22279993417b4e92f55af7aee29. Earlier runs retain their pre-migration source scope.",
+      "artifact": {
+        "path": "ago-final.log.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "ago-complete": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go tool ago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "source_scope": "The complete run covers 2b4310d1d24fa22279993417b4e92f55af7aee29. Earlier runs retain their pre-migration source scope.",
+      "artifact": {
+        "path": "ago-complete.log.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "vet": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go vet ./pkg/catalogs/storage ./internal/privatefiles ./pkg/catalogs",
+      "exit_code": 0,
+      "source_scope": "Current catalog and storage source. Migration was not in this command.",
+      "artifact": {
+        "path": "vet.log.gz",
+        "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "consumers": {
+      "command": "CGO_ENABLED=0 GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 bash scripts/verify-consumer-deps.sh",
+      "exit_code": 0,
+      "source_scope": "Current checkpoint. Six external consumers pass on Go 1.25.12. All dependency budgets and forbidden-family checks pass.",
+      "artifact": {
+        "path": "consumers.log.gz",
+        "sha256": "975d9549b770506dc87d961a033257011af10df1574695a63437413e631bc281",
+        "raw_sha256": "f543c86324d36cd5f985991c5e1278cb38c122e14062d9ddd5b078b648deb8b1"
+      }
+    },
+    "godoc": {
+      "command": "GOFLAGS= GOTOOLCHAIN=go1.26.6 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 make godoc",
+      "exit_code": 0,
+      "source_scope": "Initial generated public documentation. A final go generate ./pkg/catalogs/storage completed with exit 0 after pointer edits.",
+      "artifact": {
+        "path": "godoc.log.gz",
+        "sha256": "726f4cd41d3812ed0201f83717d10f4b0c9f9f80f8d00623ea9bc1151df34df3",
+        "raw_sha256": "188309322c9c7ee9c7f5f1e08fd655229726b490d44fafc60861e50d9c8a4f12"
+      }
+    },
+    "source-prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Earlier runs retain comment and paragraph failures. The final run checks current 2b4310d1d24fa22279993417b4e92f55af7aee29: 1423 files, zero diagnostics.",
+      "artifact": {
+        "path": "source-prose.log.gz",
+        "sha256": "7440daed7ce9235f24522e77917a0cdf12ca26a80508b55e416cfd04db1cf19f",
+        "raw_sha256": "c2e34dceb4fb8f5781d2930b550cba12a439a7b81bc1d79847c3c9a9e3d8157d"
+      }
+    },
+    "source-prose-2": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Earlier runs retain comment and paragraph failures. The final run checks current 2b4310d1d24fa22279993417b4e92f55af7aee29: 1423 files, zero diagnostics.",
+      "artifact": {
+        "path": "source-prose-2.log.gz",
+        "sha256": "1b9a9f0934cb4282b83d43f15415ad227abad417d4135ed0bee0e655eccc4f42",
+        "raw_sha256": "1efcb7930a719067b55818776f16607dfd331c861c626ba1f936228228c5ccb0"
+      }
+    },
+    "source-prose-3": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Earlier runs retain comment and paragraph failures. The final run checks current 2b4310d1d24fa22279993417b4e92f55af7aee29: 1423 files, zero diagnostics.",
+      "artifact": {
+        "path": "source-prose-3.log.gz",
+        "sha256": "e422946ff44195f9c859cebc780288f3639615756092ecda7e7107152b8c26a8",
+        "raw_sha256": "468d9d29a626575ab57d4bb93396193ccabc82a54e68079c3967530fb077effd"
+      }
+    },
+    "source-prose-final": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Earlier runs retain comment and paragraph failures. The final run checks current 2b4310d1d24fa22279993417b4e92f55af7aee29: 1423 files, zero diagnostics.",
+      "artifact": {
+        "path": "source-prose-final.log.gz",
+        "sha256": "03fb53babde9596f6bdf1a533d1bfaf5ae6f568daafe157e2605e0e15894444b",
+        "raw_sha256": "2dc64a5fcba7ec4b8e15ce631c35fde2897acb931e67bf307944560e6513139c"
+      }
+    },
+    "contract-prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Canonical contract drafting checkpoint before implementation proof updates. The third run passes 1288 files.",
+      "artifact": {
+        "path": "contract-prose.log.gz",
+        "sha256": "01d576a33928e57e70a66ce87c7d1504c1777131ba7e8f0abb94e457f8171bae",
+        "raw_sha256": "0f33555fa19c353669f65f2443b900041cefa7d2823ee106407698f3ad6052f5"
+      }
+    },
+    "contract-prose-2": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Canonical contract drafting checkpoint before implementation proof updates. The third run passes 1288 files.",
+      "artifact": {
+        "path": "contract-prose-2.log.gz",
+        "sha256": "702c418ded708ae3430c01331c70b10ab40049fae29786b72915ed282936951d",
+        "raw_sha256": "ef0e73c53877da144a1af1154abf8313653ee0a8284150fd458b1915b55cf475"
+      }
+    },
+    "contract-prose-3": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Canonical contract drafting checkpoint before implementation proof updates. The third run passes 1288 files.",
+      "artifact": {
+        "path": "contract-prose-3.log.gz",
+        "sha256": "02318a46487c0d73a786367609c5fde2b125be61764b389797578e2878ec3b37",
+        "raw_sha256": "351b493ebb08bd13d5413bb9c0440046bbbe8c367619ba37e0286637034ada9f"
+      }
+    },
+    "plan-prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Canonical plan and design update. Final run: 1288 files, zero diagnostics. Earlier paragraph failure remains evidence.",
+      "artifact": {
+        "path": "plan-prose.log.gz",
+        "sha256": "7f0a4808707c4c41c55867dd7368eb52663bba928162630f26f9eb7b27ec252e",
+        "raw_sha256": "8dd8703973f7d5321d3b87b251ff55d070497ddebeccaebe077e8bd9cb5f137b"
+      }
+    },
+    "plan-prose-2": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Canonical plan and design update. Final run: 1288 files, zero diagnostics. Earlier paragraph failure remains evidence.",
+      "artifact": {
+        "path": "plan-prose-2.log.gz",
+        "sha256": "02318a46487c0d73a786367609c5fde2b125be61764b389797578e2878ec3b37",
+        "raw_sha256": "351b493ebb08bd13d5413bb9c0440046bbbe8c367619ba37e0286637034ada9f"
+      }
+    },
+    "plan-prose-final": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Canonical plan and design update. Final run: 1288 files, zero diagnostics. Earlier paragraph failure remains evidence.",
+      "artifact": {
+        "path": "plan-prose-final.log.gz",
+        "sha256": "02318a46487c0d73a786367609c5fde2b125be61764b389797578e2878ec3b37",
+        "raw_sha256": "351b493ebb08bd13d5413bb9c0440046bbbe8c367619ba37e0286637034ada9f"
+      },
+      "prose_files_sha256": {
+        "docs/plans/starport-production-catalog-plan.html": "1f5b7ba5d94617dc3d8fa8ecd013dca4031dc67661ccaced06005390da2ce20b",
+        "docs/plans/proof/starport-production-catalog/csp4.md": "c7abff98f8a51d1d365337ba3d4703db42d1649902e1fbda3e2f68a70a727751",
+        "docs/plans/proof/starport-production-catalog/csp4/issuer-storage-contract-2026-09-10.md": "b899aee9c5c344ce5cec9b62620b3654f6f23a5084d73c43b1536d80c7ad793d",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "dc97c4345e58bcec3fb5a2317558b19cfd4906867ea9279c6dd2f70201a6e117",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "b04200041b9010b4b47ebf407136fca41e86ba6be334a92114f6567133fe9058",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "a0aeea54dd553d62b2aa1751a4ffbef9bc055309913eabf9bd294374dbdf64c8"
+      }
+    }
+  },
+  "running_operations": [],
+  "limitations": [
+    "All eight CSP4 task checks remain UNVERIFIED. No task completion credit.",
+    "Source PR #146 remains open at the parent. Align the dependent commits with actual merged main before publication.",
+    "No origin issuer, qualified clock adapter, shared follower, or Starport consumer qualification in this checkpoint.",
+    "The S3 adapter does not assert current-read capability. Endpoint qualification remains required.",
+    "Complete repository verification, pre-PR review, and native CI remain required for the second delivery."
+  ]
+}

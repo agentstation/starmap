@@ -1798,3 +1798,17 @@ The caller-owned S3 adapter does not establish a freshness guarantee for every c
 The [issuer storage inspection](../../plans/proof/starport-production-catalog/csp4/issuer-storage-inspection-2026-09-10.md) defines the missing read guarantee and required qualification cases.
 Receipt validity must start before the read. Metadata migration must cover existing generations and repeated identical commits.
 These findings concern the second CSP4 delivery. No stored format, interface, or implementation changed in this inspection.
+
+## Independent authority storage, 2026-09-10
+
+Local Starmap commit `2b4310d1d24fa22279993417b4e92f55af7aee29` adds optional current-head observations to memory, filesystem, and qualified object stores.
+An immutable version-1 `authority.json` record binds the head independently of catalog manifests and payloads.
+Pointer promotion follows record persistence. Explicit identical commits repair missing legacy metadata, while reads remain passive.
+
+The legacy relocation code previously required exactly two generation files.
+Its new regression failed on the third authority record before the repair.
+Relocation now validates the record against the complete generation and preserves it. Recordless legacy generations remain recordless.
+
+The [storage proof](../../plans/proof/starport-production-catalog/csp4/authority-record-2026-09-10/verification.json) records 142 storage/private-file race events and seven migration events on both toolchains.
+All six external consumers pass on Go 1.25.12. Ago and prose checks pass.
+This checkpoint is local and unmerged. Origin issuance, clock qualification, shared followers, and Starport consumer checks remain incomplete.

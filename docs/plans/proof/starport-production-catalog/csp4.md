@@ -3,8 +3,21 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The current local source is `44a400a481748c5e7ae1268cecb63b260a91bdab`. The Starmap worktree is clean.
-No CSP4 PR exists. No owner decision remains.
+The active source is clean local `2b4310d1d24fa22279993417b4e92f55af7aee29` in `/tmp/starmap-authority-issuer-2026-09-10`.
+The branch is `codex/catalog-authority-issuer`. It follows reviewed PR #146 source `44a400a4` and remains unpublished.
+No owner decision remains.
+
+The [storage proof](csp4/authority-record-2026-09-10/verification.json) records independent authority metadata and explicit current-read capabilities.
+The 17-file checkpoint preserves current-pointer formats and requires explicit repair of missing legacy metadata.
+Legacy relocation verifies and preserves authority records. It leaves absent legacy records absent.
+
+Current storage/private-file race checks pass 142 events on each toolchain. Migration checks pass seven events on each toolchain.
+Six external consumers pass on Go 1.25.12. Ago, focused vet, generated documentation, and the 1,423-file prose check pass.
+The earlier broader run passed 1,369 events before final pointer validation and migration changes.
+The proof retains both failing regressions and the exact scope of each result.
+
+### First subscriber delivery
+
 
 The [manifest-arrival proof](csp4/manifest-arrival-2026-09-10/verification.json) records 16 changed files and the original failing TLS regression.
 The runtime records a trusted current requirement before payload compatibility checks or transfer.
@@ -42,7 +55,8 @@ The ordinary Linux runs skip the administrator-owned configuration check. Both s
 These component results give no complete product acceptance credit.
 
 The current 91-file Starmap branch owns permission transport, retained subscriber enforcement, and relay.
-Complete its repository checks, pre-PR review, native CI, and merge before the next delivery.
+Merge it before publishing the dependent delivery. Isolated implementation can use its reviewed source while CI completes.
+The [current authority storage contract](csp4/issuer-storage-contract-2026-09-10.md) owns the next storage change.
 
 The next Starmap delivery owns origin issuance, qualified clock evidence, shared-store follower activation, and authority transitions.
 The [consumer inspection](csp4/starport-consumer-inspection-2026-09-10.md) requires a separate Starport PR after a compatible Starmap module release.
@@ -50,7 +64,7 @@ It preserves all eight task checks. Complete gateway admission coverage remains 
 The first merge gives no task completion credit. All acceptance requirements remain in force.
 
 The [clock research](csp4/authority-head-2026-09-10/clock-research.md) selects no clock adapter.
-The [issuer storage inspection](csp4/issuer-storage-inspection-2026-09-10.md) records the missing current-head contract for the second delivery.
+The [issuer storage inspection](csp4/issuer-storage-inspection-2026-09-10.md) records the gap before the current storage checkpoint.
 The object backend promises conditional writes, but does not promise current reads. Receipt issuance requires both guarantees and bounded observation timing.
 Complete product verification, required review, native CI, and merge before task completion.
 

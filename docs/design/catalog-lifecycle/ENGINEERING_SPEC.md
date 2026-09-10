@@ -1765,7 +1765,16 @@ An expired interval requires refusal and a fresh observation. Receipt timing mus
 
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.
 Missing metadata, incompatible metadata, and an ordinary selected generation cannot renew a previous authority receipt.
-Define migration and repeated-commit behavior before adding a new stored head representation.
+
+Authority generations store a bounded version-1 `authority.json` record beside the manifest and payload before pointer promotion.
+The record binds the complete authority head and contains no receipt timestamps. Existing current-pointer formats remain unchanged.
+An explicit identical commit can repair missing metadata after validating the complete stored generation.
+Reads never repair metadata. Conflicting records refuse publication without replacement.
+
+The optional `storage.AuthorityHeadReader` role exposes current observations without loading catalog payloads.
+Object adapters require a separate `CurrentObjectReader` guarantee. Arbitrary object reads remain insufficient.
+Legacy relocation verifies and preserves existing authority records. Missing legacy records remain absent until an explicit commit repairs them.
+The [storage contract](../../plans/proof/starport-production-catalog/csp4/issuer-storage-contract-2026-09-10.md) owns the representation and required evidence.
 
 A relay forwards the original confirmed upstream receipt through `GET /catalog/permission`.
 It does not renew the issue time or expiry and does not require catalog activation.
