@@ -1038,7 +1038,7 @@
       ]
     },
     "runtime_scope_export": {
-      "status": "Local export, restart, and migration checks pass. The earlier full-runtime snapshot remains active with one identified expectation failure; the replacement test passes separately.",
+      "status": "The earlier full runtime snapshot ended with 706 passing test events and one expectation failure. The scope-renewal replacement test passes separately. Fresh full qualification is required.",
       "implementation": [
         "MembershipState retains the last complete inventory per scope and the original receipt ID for every positive fact.",
         "ExportScopes assigns the caller-selected persistent publisher identity and copies only effective scope facts, without credential references.",
@@ -1178,7 +1178,11 @@
           "sha256": "7a245da7fde5439e9aceba05247b42d41c7268569111275ca153816a2d6588a2"
         }
       },
-      "live_check": {
+      "remaining": [
+        "Complete full qualification and required review before publication.",
+        "CSP4 owns selected authority transitions. CSP10 owns explicit inference-profile links and admission snapshots."
+      ],
+      "earlier_full_snapshot": {
         "session_id": 18449,
         "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m ./runtime -json",
         "log": "/tmp/starmap-membership-export-runtime-full-2026-09-10.jsonl",
@@ -1186,15 +1190,10 @@
           "test": "TestReceiptOnlyUpdatePublishesDistinctGeneration",
           "reason": "The old fixture expected scoped receipt renewal to leave the payload unchanged.",
           "repair": "TestScopeEvidenceRenewalPublishesDistinctGeneration now checks unchanged non-scope content and changed scope evidence, semantic checksum, and generation identity. Focused repair passes.",
-          "qualification": "The running suite uses its earlier snapshot and cannot count as a clean run. Poll session 18449 to completion and retain all results before the final rerun."
-        }
-      },
-      "remaining": [
-        "Retain upstream original source links alongside the selected source payload.",
-        "Bind imported publisher claims to the configured authenticated source authority before explicit inference-profile links resolve them.",
-        "Test derivative publication, source replacement, namespace collisions, revocation, and restart with imported scope records.",
-        "Complete full qualification and required review before publishing the draft."
-      ]
+          "qualification": "Terminal snapshot retained. The corrected fixture and later integration changes require a fresh full run."
+        },
+        "exit_code": 1
+      }
     },
     "upstream_scope_import": {
       "status": "Focused import, derivative publication, replacement, restart, and malformed-retention checks pass. Publisher trust binding remains incomplete.",
@@ -1337,6 +1336,146 @@
         "Verify namespace collisions, source-authority changes, and explicit profile-link behavior.",
         "Finish full verification and required review before publication."
       ]
+    },
+    "publisher_namespace": {
+      "status": "Focused checks pass at local commit 373fa2ca. Full qualification and required review remain incomplete.",
+      "behavior": [
+        "Upstream claims to the local publisher ID or an alias are rejected before active or retained runtime publication.",
+        "Equal local and upstream binding IDs remain separate under their publisher IDs through restart.",
+        "The real HTTPS source rejects an untrusted certificate and preserves original scope receipts from a trusted source.",
+        "Publisher IDs are claims under the selected source authority. Source-chain labels are not authentication. Authority transitions and profile-link revalidation remain assigned to CSP4 and CSP10."
+      ],
+      "artifacts": {
+        "publisher-before": {
+          "path": "publisher-before.jsonl.gz",
+          "sha256": "d8aaace37fd8f973b67635917cc78633cfcfaaa88b07133fe5c6c5736811e4a1",
+          "test_events": {
+            "fail": 3
+          },
+          "package_results": [
+            {
+              "Time": "2026-09-09T20:23:15.565712-05:00",
+              "Action": "fail",
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Elapsed": 14.06
+            }
+          ]
+        },
+        "publisher-after": {
+          "path": "publisher-after.jsonl.gz",
+          "sha256": "7bf10fcab98ea0ce887a7bd4bec1c292e1b70768ba67834bf1f020849025ac6c",
+          "test_events": {
+            "pass": 9
+          },
+          "package_results": [
+            {
+              "Time": "2026-09-09T20:24:36.037329-05:00",
+              "Action": "pass",
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Elapsed": 23.687
+            }
+          ]
+        },
+        "publisher-min-go": {
+          "path": "publisher-min-go.jsonl.gz",
+          "sha256": "6d026af9c9cbae9991c06306425f0767077208fb101081e543f8fd0a5ade7ff6",
+          "test_events": {
+            "pass": 9
+          },
+          "package_results": [
+            {
+              "Time": "2026-09-09T20:28:48.122537-05:00",
+              "Action": "pass",
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Elapsed": 59.878
+            }
+          ]
+        },
+        "publisher-isolation": {
+          "path": "publisher-isolation.jsonl.gz",
+          "sha256": "5aceba9e1e08617fefa2b7a2006884e68ce7c4006fcefdf1d05db7803f5c16cc",
+          "test_events": {
+            "pass": 1
+          },
+          "package_results": [
+            {
+              "Time": "2026-09-09T20:31:12.023501-05:00",
+              "Action": "pass",
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Elapsed": 18.68
+            }
+          ]
+        },
+        "https": {
+          "path": "https.jsonl.gz",
+          "sha256": "43aee72baa8e95f01a036ade8406ae2234eddffb1ecd7d44b1006b8cc43ede39",
+          "test_events": {
+            "pass": 3
+          },
+          "package_results": [
+            {
+              "Time": "2026-09-09T20:36:27.203043-05:00",
+              "Action": "pass",
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Elapsed": 24.336
+            }
+          ]
+        },
+        "export-runtime-full": {
+          "path": "export-runtime-full.jsonl.gz",
+          "sha256": "f02abcf4df79dc839efb5663304d0b31062d8d77929c057d2acdb47f9721fef3",
+          "test_events": {
+            "pass": 706,
+            "fail": 1
+          },
+          "package_results": [
+            {
+              "Time": "2026-09-09T20:22:10.543631-05:00",
+              "Action": "fail",
+              "Package": "github.com/agentstation/starmap/runtime",
+              "Elapsed": 1102.681
+            }
+          ]
+        },
+        "publisher-ago": {
+          "path": "publisher-ago.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        },
+        "publisher-lint": {
+          "path": "publisher-lint.log.gz",
+          "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+        },
+        "publisher-writing": {
+          "path": "publisher-writing.log.gz",
+          "sha256": "2a9647af9a4212bde8440272bb165a5d6f6400e12eeec6591dac6b560ad6851f"
+        }
+      },
+      "live_check": {
+        "session_id": 9507,
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler -json",
+        "log": "/tmp/starmap-membership-final-csp3-2026-09-10.jsonl",
+        "status": "running"
+      },
+      "work_commit": "373fa2cac99cdc34db8a5438157f835c9d10c761",
+      "work_tree": "ca1e676147862fb17650315dd22eea5e88050ad6",
+      "checks": {
+        "https": {
+          "exit_code": 0,
+          "pass": 3
+        },
+        "ago_after_https": {
+          "exit_code": 0,
+          "findings": 0
+        },
+        "docs_check": {
+          "exit_code": 0
+        },
+        "plan_and_spec_prose": {
+          "exit_code": 0,
+          "files": 2,
+          "diagnostics": 0
+        }
+      }
     }
   }
 }

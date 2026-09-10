@@ -902,6 +902,23 @@ A shared provider name, environment variable, or credential material does not es
 The removal restricts the linked profile's eligible offerings. It preserves canonical model discovery and routes through unrelated accounts.
 Partial or failed observations cannot authorize removal. Internal Starmap authority remains binding on all subscriber profiles.
 
+The selected verified source supplies the authority for a received generation.
+A scope publisher ID distinguishes publishers within that authority. The ID is not a signature or an independent authentication claim.
+Built-in network sources must verify their configured transport or artifact trust policy. A custom Go source is an explicit caller-supplied trust boundary.
+
+A source-chain entry detects loops. It does not independently authenticate a scope publisher.
+
+Reserve the runtime's persistent publisher identity and configured aliases for its local acquisition evidence.
+Reject upstream scope records that claim those identities before active or retained state changes.
+Preserve other upstream publisher IDs and their original receipts through downstream publication. The accepted upstream authority vouches for those claims.
+
+A Starport inference-profile link must bind the selected catalog authority, publisher ID, acquisition binding ID, and binding revision.
+A change of catalog authority requires link revalidation before the new generation can authorize the profile.
+A matching publisher or binding ID under a different authority must not reactivate the old link.
+
+CSP4 owns authority selection and transition enforcement. CSP10 owns profile-link enforcement in the accepted inference snapshot.
+These are control-plane checks. Requests use the already validated snapshot.
+
 CSP3 owns the scoped evidence contract. Starport integration must enforce the link before applying an account-specific restriction.
 Tests must cover linked and unrelated profiles, absent links, incomplete observations, restart, and profile-link changes.
 This approved requirement has no implementation or acceptance credit yet.
