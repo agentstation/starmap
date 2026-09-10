@@ -62,6 +62,10 @@ func TestEveryCanonicalSettingLoadsFromYAML(t *testing.T) {
 					expected = "https://catalog.example.test"
 				case catalogconfig.SourceSignerWorkflow:
 					expected = ".github/workflows/catalog-generation.yaml"
+				case catalogconfig.SourceAuthorityID:
+					expected = "authority-from-yaml"
+				case catalogconfig.SourcePolicyID:
+					expected = "policy-from-yaml"
 				case catalogconfig.ProviderBindings:
 					expected = "[]"
 				default:
@@ -88,8 +92,15 @@ func TestEveryCanonicalSettingLoadsFromYAML(t *testing.T) {
 			}
 			// JSON is a YAML subset and keeps typed scalars exact in this fixture.
 			fileValues := map[string]any{descriptor.Key: value}
-			if descriptor.Name == catalogconfig.SourceURL {
+			switch descriptor.Name {
+			case catalogconfig.SourceURL:
 				fileValues["catalog_source"] = "starmap"
+			case catalogconfig.SourceAuthorityID, catalogconfig.SourcePolicyID:
+				fileValues["catalog_source"] = "starmap"
+				fileValues["catalog_source_url"] = "https://catalog.example.test"
+				fileValues["catalog_source_startup_policy"] = "require_authority"
+				fileValues["catalog_source_authority_id"] = "authority-from-yaml"
+				fileValues["catalog_source_policy_id"] = "policy-from-yaml"
 			}
 			contents, err := json.Marshal(fileValues)
 			if err != nil {
