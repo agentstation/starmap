@@ -355,7 +355,7 @@
   },
   "running_operations": [],
   "limitations": [
-    "Required pre-PR review passed, and PR #146 is open at the qualified source. Native CI and merge remain pending.",
+    "Required pre-PR review and all six native jobs passed. PR #146 has automatic squash merge enabled at the reviewed source. The protected Verification Gate and merge remain pending.",
     "All eight task acceptance subcases remain UNVERIFIED. The first delivery gives no task completion credit.",
     "The remaining Starmap authority work and a separate Starport consumer PR after a compatible module release remain required."
   ],

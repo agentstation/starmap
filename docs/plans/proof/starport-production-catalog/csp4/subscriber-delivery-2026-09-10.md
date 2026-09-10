@@ -50,7 +50,8 @@ The catalog accessor records 8.167–8.523 ns/op, zero bytes, and zero allocatio
 The documentation generator rejects the build-concurrency flag despite a successful wrapper exit. Its clean-environment retry passes.
 
 Required Sol and Opus review passes with zero accepted or actionable findings across two chunks.
-Starmap PR #146 is open at the reviewed source. Native CI and merge remain pending.
+Starmap PR #146 is open at the reviewed source. All six native jobs pass.
+Automatic squash merge waits for the protected verification gate.
 The current plan resume state owns session IDs and output paths.
 
 ## Next delivery constraints

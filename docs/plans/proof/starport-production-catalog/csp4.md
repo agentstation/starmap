@@ -35,7 +35,11 @@ The generator rejects `GOFLAGS=-p=2` despite a successful wrapper exit. A separa
 
 Required Sol and Opus review passes with zero accepted or actionable findings across two chunks.
 The [publication proof](csp4/subscriber-publication-2026-09-10/verification.json) binds PR #146 and CI run `34510928894` to reviewed `44a400a4`.
-All six native jobs must pass before merge. CSP4 remains in progress.
+All six native jobs pass. Automatic squash merge waits for the protected verification gate. CSP4 remains in progress.
+
+Native artifacts record 9,714 passing JSON test events and 92 successful package outcomes across six runners.
+The ordinary Linux runs skip the administrator-owned configuration check. Both separate privileged runs pass that check.
+These component results give no complete product acceptance credit.
 
 The current 91-file Starmap branch owns permission transport, retained subscriber enforcement, and relay.
 Complete its repository checks, pre-PR review, native CI, and merge before the next delivery.

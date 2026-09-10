@@ -8,7 +8,7 @@
     "url": "https://github.com/agentstation/starmap/pull/146",
     "state": "OPEN",
     "is_draft": false,
-    "auto_merge_enabled": false,
+    "auto_merge_enabled": true,
     "body_matches_prepared_file": true,
     "prepared_body_sha256": "4c2fb02029f7f9f9839bebea5e6f61cef5e4aa193783c13401ba9e4cb8a6f77c"
   },
@@ -20,28 +20,28 @@
     "conclusion": "",
     "native_jobs": {
       "Runtime windows-11-arm": {
-        "status": "in_progress",
-        "conclusion": ""
+        "status": "completed",
+        "conclusion": "success"
       },
       "Runtime ubuntu-24.04": {
-        "status": "in_progress",
-        "conclusion": ""
+        "status": "completed",
+        "conclusion": "success"
       },
       "Runtime windows-2025": {
-        "status": "in_progress",
-        "conclusion": ""
+        "status": "completed",
+        "conclusion": "success"
       },
       "Runtime macos-15": {
-        "status": "in_progress",
-        "conclusion": ""
+        "status": "completed",
+        "conclusion": "success"
       },
       "Runtime macos-15-intel": {
-        "status": "in_progress",
-        "conclusion": ""
+        "status": "completed",
+        "conclusion": "success"
       },
       "Runtime ubuntu-24.04-arm": {
-        "status": "in_progress",
-        "conclusion": ""
+        "status": "completed",
+        "conclusion": "success"
       }
     }
   },
@@ -110,12 +110,840 @@
         "docs/plans/proof/starport-production-catalog/csp4.md": "52c6745e48828d1dbb75a6c42e2d6d78e437b5a2db5eac588a7f9bc9fc685159",
         "docs/plans/proof/starport-production-catalog/csp4/subscriber-delivery-2026-09-10.md": "0d09ae6013cd9cf2ae7c09c726df79e8d840a233e0e3b0a195796a5eb6570f97"
       }
+    },
+    "native-macos-15-git-acquisition.jsonl": {
+      "artifact": {
+        "path": "native/macos-15/git-acquisition.jsonl.gz",
+        "sha256": "a3910e3dd873ed74089f72629e4441b5e569b5230394d474e70ee5ffee0d9c55",
+        "raw_sha256": "4aaa00fe147f2b6631820bc63ac695780986c412c8b4d4d343bb88714898e951"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 2
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/acquisition"
+      ],
+      "skipped_tests": []
+    },
+    "native-macos-15-publisher-ingestion.jsonl": {
+      "artifact": {
+        "path": "native/macos-15/publisher-ingestion.jsonl.gz",
+        "sha256": "d0830969a2d53d739da2d79164fbf71712be865e1f18487c2887a13249ae39ef",
+        "raw_sha256": "26f58f331501c2cfc3245484fd253fc5628dc127e3705da2312b0e249f0f8aef"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 4
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release"
+      ],
+      "skipped_tests": []
+    },
+    "native-macos-15-tests.jsonl": {
+      "artifact": {
+        "path": "native/macos-15/tests.jsonl.gz",
+        "sha256": "405fc8285f228cb7464d067183f455ba22ecc8c05fb00ecd3d50aaaed9a8f593",
+        "raw_sha256": "c78e627d1618c7638abb0b1cb586e5f0a9ae4e81aaa37bf3112d9179a71599df"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 1650
+      },
+      "package_events": {
+        "pass": 13
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/internal/bootstrap",
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows",
+        "github.com/agentstation/starmap/internal/sources/github",
+        "github.com/agentstation/starmap/internal/cli/app",
+        "github.com/agentstation/starmap/pkg/productpaths",
+        "github.com/agentstation/starmap/pkg/productpaths/policy",
+        "github.com/agentstation/starmap/pkg/catalogs/storage",
+        "github.com/agentstation/starmap/internal/catalog/workspace",
+        "github.com/agentstation/starmap/internal/test/gitfixture",
+        "github.com/agentstation/starmap",
+        "github.com/agentstation/starmap/runtime"
+      ],
+      "skipped_tests": []
+    },
+    "native-macos-15-toolchain.txt": {
+      "artifact": {
+        "path": "native/macos-15/toolchain.txt.gz",
+        "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+        "raw_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-macos-15-intel-git-acquisition.jsonl": {
+      "artifact": {
+        "path": "native/macos-15-intel/git-acquisition.jsonl.gz",
+        "sha256": "f88f200f06df3d7fb269e6aff7b2b04932ac4589ab916696c3dc207fd5599289",
+        "raw_sha256": "4ecb47debe85f5d80f0b5363e30d8e275f8862634395b3b06aa1db40d5b180ba"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15-intel, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 2
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/acquisition"
+      ],
+      "skipped_tests": []
+    },
+    "native-macos-15-intel-publisher-ingestion.jsonl": {
+      "artifact": {
+        "path": "native/macos-15-intel/publisher-ingestion.jsonl.gz",
+        "sha256": "4848f2fa4040e55aeaca33579c863e119d9a0a8e5d4137424feea8b16a005a01",
+        "raw_sha256": "745ca3473539504e5071e37a970b49c6a077ebdd5e91643aab7015eb6ca2ca53"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15-intel, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 4
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release"
+      ],
+      "skipped_tests": []
+    },
+    "native-macos-15-intel-tests.jsonl": {
+      "artifact": {
+        "path": "native/macos-15-intel/tests.jsonl.gz",
+        "sha256": "a8177e5247c1d0e1b36f57e80f169707838f9032026f116263bb4b27ed05f07e",
+        "raw_sha256": "bb748b665ba5c6d8b71ebcd527de90738a5b2b06df57b6130227dd3df9941fd9"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15-intel, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 1650
+      },
+      "package_events": {
+        "pass": 13
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows",
+        "github.com/agentstation/starmap/internal/sources/github",
+        "github.com/agentstation/starmap/internal/bootstrap",
+        "github.com/agentstation/starmap/pkg/productpaths",
+        "github.com/agentstation/starmap/pkg/productpaths/policy",
+        "github.com/agentstation/starmap/pkg/catalogs/storage",
+        "github.com/agentstation/starmap/internal/catalog/workspace",
+        "github.com/agentstation/starmap/internal/test/gitfixture",
+        "github.com/agentstation/starmap/internal/cli/app",
+        "github.com/agentstation/starmap",
+        "github.com/agentstation/starmap/runtime"
+      ],
+      "skipped_tests": []
+    },
+    "native-macos-15-intel-toolchain.txt": {
+      "artifact": {
+        "path": "native/macos-15-intel/toolchain.txt.gz",
+        "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+        "raw_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+      },
+      "command": "GitHub Actions native-runtime job for macos-15-intel, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-ubuntu-24.04-git-acquisition.jsonl": {
+      "artifact": {
+        "path": "native/ubuntu-24.04/git-acquisition.jsonl.gz",
+        "sha256": "7172d6523b02122a9c56d76bb95c8096e761de6150e778030c854d11e2c0f03a",
+        "raw_sha256": "46cc3458c23c8e9390d5128659823f32055a6dcaa8a16bb2e03890dd316dd181"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 2
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/acquisition"
+      ],
+      "skipped_tests": []
+    },
+    "native-ubuntu-24.04-publisher-ingestion.jsonl": {
+      "artifact": {
+        "path": "native/ubuntu-24.04/publisher-ingestion.jsonl.gz",
+        "sha256": "57f69d1975839def89bc3bc851dd09830121a65f7587669a1282201f1fd602e5",
+        "raw_sha256": "6abda250e47376025e204683a2491a295c693e8122f86601a722b68d8d59a9bc"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 4
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release"
+      ],
+      "skipped_tests": []
+    },
+    "native-ubuntu-24.04-service-owner.txt": {
+      "artifact": {
+        "path": "native/ubuntu-24.04/service-owner.txt.gz",
+        "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+        "raw_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-ubuntu-24.04-tests.jsonl": {
+      "artifact": {
+        "path": "native/ubuntu-24.04/tests.jsonl.gz",
+        "sha256": "42d38b7f7ab66f1e84cce651fc8ea604fbaeec816de1fbec2ae5bd3d62146d34",
+        "raw_sha256": "0d7ef76ee8c98314b2e10dabf646ce10fe901367a0ac436bf158cff1d2ff9cd8"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 1594,
+        "skip": 1
+      },
+      "package_events": {
+        "pass": 13
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows",
+        "github.com/agentstation/starmap/internal/sources/github",
+        "github.com/agentstation/starmap/internal/bootstrap",
+        "github.com/agentstation/starmap/pkg/productpaths",
+        "github.com/agentstation/starmap/pkg/productpaths/policy",
+        "github.com/agentstation/starmap/pkg/catalogs/storage",
+        "github.com/agentstation/starmap/internal/catalog/workspace",
+        "github.com/agentstation/starmap/internal/test/gitfixture",
+        "github.com/agentstation/starmap/internal/cli/app",
+        "github.com/agentstation/starmap",
+        "github.com/agentstation/starmap/runtime"
+      ],
+      "skipped_tests": [
+        "TestServiceConfigurationAdministratorOwnedRead"
+      ]
+    },
+    "native-ubuntu-24.04-toolchain.txt": {
+      "artifact": {
+        "path": "native/ubuntu-24.04/toolchain.txt.gz",
+        "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+        "raw_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-ubuntu-24.04-arm-git-acquisition.jsonl": {
+      "artifact": {
+        "path": "native/ubuntu-24.04-arm/git-acquisition.jsonl.gz",
+        "sha256": "5f7a3e033d3f674ed3194f539d5fcadccc7fa78d2eda61bd4fe2245dbe317dd1",
+        "raw_sha256": "f5a5a3695f0d5c71cdc224f70b49a33b2847276f8fb8891123b351116167b1ee"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 2
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/acquisition"
+      ],
+      "skipped_tests": []
+    },
+    "native-ubuntu-24.04-arm-publisher-ingestion.jsonl": {
+      "artifact": {
+        "path": "native/ubuntu-24.04-arm/publisher-ingestion.jsonl.gz",
+        "sha256": "7cbcbf7fda4255c29827386791526133e77d440483d88fe695462da769cfb8c5",
+        "raw_sha256": "a39a503a09fb23630a1b724b63d4cb2518afa02d0f5ba60987dac48178e1ef7b"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 4
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release"
+      ],
+      "skipped_tests": []
+    },
+    "native-ubuntu-24.04-arm-service-owner.txt": {
+      "artifact": {
+        "path": "native/ubuntu-24.04-arm/service-owner.txt.gz",
+        "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+        "raw_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-ubuntu-24.04-arm-tests.jsonl": {
+      "artifact": {
+        "path": "native/ubuntu-24.04-arm/tests.jsonl.gz",
+        "sha256": "847ccb4efedf5b035b56188de7f03851b97868e48c45681cb7c3234efc61c2ce",
+        "raw_sha256": "1546ec3dc3d6f1f658dfaa97f711c0e293f8b941fd24ea3b194e7078f4e8b979"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 1594,
+        "skip": 1
+      },
+      "package_events": {
+        "pass": 13
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows",
+        "github.com/agentstation/starmap/internal/sources/github",
+        "github.com/agentstation/starmap/internal/bootstrap",
+        "github.com/agentstation/starmap/pkg/productpaths",
+        "github.com/agentstation/starmap/pkg/productpaths/policy",
+        "github.com/agentstation/starmap/pkg/catalogs/storage",
+        "github.com/agentstation/starmap/internal/catalog/workspace",
+        "github.com/agentstation/starmap/internal/test/gitfixture",
+        "github.com/agentstation/starmap/internal/cli/app",
+        "github.com/agentstation/starmap",
+        "github.com/agentstation/starmap/runtime"
+      ],
+      "skipped_tests": [
+        "TestServiceConfigurationAdministratorOwnedRead"
+      ]
+    },
+    "native-ubuntu-24.04-arm-toolchain.txt": {
+      "artifact": {
+        "path": "native/ubuntu-24.04-arm/toolchain.txt.gz",
+        "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+        "raw_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+      },
+      "command": "GitHub Actions native-runtime job for ubuntu-24.04-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-windows-11-arm-git-acquisition.jsonl": {
+      "artifact": {
+        "path": "native/windows-11-arm/git-acquisition.jsonl.gz",
+        "sha256": "db3cdfb64fef4d6a5a69249fdd61ff03333fc908c7986f55b6b3b52de6789599",
+        "raw_sha256": "34921065bfb90e9c847d6223a3d40ce8b9ce7ccf5343441386504e481ac703c7"
+      },
+      "command": "GitHub Actions native-runtime job for windows-11-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 2
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/acquisition"
+      ],
+      "skipped_tests": []
+    },
+    "native-windows-11-arm-publisher-ingestion.jsonl": {
+      "artifact": {
+        "path": "native/windows-11-arm/publisher-ingestion.jsonl.gz",
+        "sha256": "485c5fa16b7fc3b3f9c5796bc819908860a346c09104a24c748ac4df9ee58e6f",
+        "raw_sha256": "e5965d3dc54eeea9ad6afe91800e8a19c77399d767656c1bdccd44b387f19396"
+      },
+      "command": "GitHub Actions native-runtime job for windows-11-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 4
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release"
+      ],
+      "skipped_tests": []
+    },
+    "native-windows-11-arm-tests.jsonl": {
+      "artifact": {
+        "path": "native/windows-11-arm/tests.jsonl.gz",
+        "sha256": "f0d0e1a190fb71f7f994962b36a27aeba99677dfd329f175551547fc4e9dca76",
+        "raw_sha256": "c75a149ed1e24183a68c80cff96d6698fc1eae15c9a48c931b8682e947423458"
+      },
+      "command": "GitHub Actions native-runtime job for windows-11-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 1595
+      },
+      "package_events": {
+        "pass": 14
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows",
+        "github.com/agentstation/starmap/internal/sources/github",
+        "github.com/agentstation/starmap/internal/bootstrap",
+        "github.com/agentstation/starmap/pkg/productpaths",
+        "github.com/agentstation/starmap/pkg/productpaths/policy",
+        "github.com/agentstation/starmap/pkg/catalogs/storage",
+        "github.com/agentstation/starmap/internal/catalog/workspace",
+        "github.com/agentstation/starmap/internal/test/gitfixture",
+        "github.com/agentstation/starmap/internal/test/windowstoken",
+        "github.com/agentstation/starmap/internal/cli/app",
+        "github.com/agentstation/starmap",
+        "github.com/agentstation/starmap/runtime"
+      ],
+      "skipped_tests": []
+    },
+    "native-windows-11-arm-toolchain.txt": {
+      "artifact": {
+        "path": "native/windows-11-arm/toolchain.txt.gz",
+        "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+        "raw_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+      },
+      "command": "GitHub Actions native-runtime job for windows-11-arm, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-windows-2025-git-acquisition.jsonl": {
+      "artifact": {
+        "path": "native/windows-2025/git-acquisition.jsonl.gz",
+        "sha256": "beae88a70f8e5e23c1780dfb4ea2f929499a051abae58ac90b3cc26881ddfe9f",
+        "raw_sha256": "5ade7851ce93333498aa715a71392e2b90c0d3beefbfedf28896bb8edee8375b"
+      },
+      "command": "GitHub Actions native-runtime job for windows-2025, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 2
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/acquisition"
+      ],
+      "skipped_tests": []
+    },
+    "native-windows-2025-publisher-ingestion.jsonl": {
+      "artifact": {
+        "path": "native/windows-2025/publisher-ingestion.jsonl.gz",
+        "sha256": "c5f4fc20cc0cf94aa5faeb348608495ccb3d3603b70a84a64e26088c90bc8b51",
+        "raw_sha256": "e9d5e006892a9a93313c028eeb7631800663d3d356b4aaadc0b032f4dc340f2e"
+      },
+      "command": "GitHub Actions native-runtime job for windows-2025, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 4
+      },
+      "package_events": {
+        "pass": 1
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release"
+      ],
+      "skipped_tests": []
+    },
+    "native-windows-2025-tests.jsonl": {
+      "artifact": {
+        "path": "native/windows-2025/tests.jsonl.gz",
+        "sha256": "0a3f9cdda411ef8d4c9c2cbf48832c3e2eb827c4b1529ac2d1d459e5951bd5d5",
+        "raw_sha256": "3ba0c50dbeafc71634763d20c7f469324b808beb12b0157f520bd0bf43a124ca"
+      },
+      "command": "GitHub Actions native-runtime job for windows-2025, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+      "test_events": {
+        "pass": 1595
+      },
+      "package_events": {
+        "pass": 14
+      },
+      "package_names": [
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows",
+        "github.com/agentstation/starmap/internal/sources/github",
+        "github.com/agentstation/starmap/internal/bootstrap",
+        "github.com/agentstation/starmap/pkg/productpaths",
+        "github.com/agentstation/starmap/pkg/productpaths/policy",
+        "github.com/agentstation/starmap/pkg/catalogs/storage",
+        "github.com/agentstation/starmap/internal/catalog/workspace",
+        "github.com/agentstation/starmap/internal/test/gitfixture",
+        "github.com/agentstation/starmap/internal/test/windowstoken",
+        "github.com/agentstation/starmap/internal/cli/app",
+        "github.com/agentstation/starmap",
+        "github.com/agentstation/starmap/runtime"
+      ],
+      "skipped_tests": []
+    },
+    "native-windows-2025-toolchain.txt": {
+      "artifact": {
+        "path": "native/windows-2025/toolchain.txt.gz",
+        "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+        "raw_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+      },
+      "command": "GitHub Actions native-runtime job for windows-2025, run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "ci-native-qualified": {
+      "artifact": {
+        "path": "ci-native-qualified.json.gz",
+        "sha256": "ada539eda8e7746c99739376309fc08de4379b3196ee401ef16474e065475fc5",
+        "raw_sha256": "3bd80340cba6d03a7d99329a3b599d41477037e9f4265676d862f282d6de6fdd"
+      },
+      "command": "GitHub CLI read of PR #146 or CI run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-artifact-metadata": {
+      "artifact": {
+        "path": "native-artifact-metadata.json.gz",
+        "sha256": "4a1d68e3b533d0e4939d59a4cb79b73bc4d398255ff6fc8b3d40e7b0f7d95d20",
+        "raw_sha256": "35f5eff11b411010eebb3529c37236a34bce6fc6a8c80c96a304e333e5540177"
+      },
+      "command": "GitHub CLI read of PR #146 or CI run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "auto-merge-enabled": {
+      "artifact": {
+        "path": "auto-merge-enabled.json.gz",
+        "sha256": "b34e956b5b89b247f079935e0fea674839e0a8fa3960ea716676d36fc7f51195",
+        "raw_sha256": "25602304bb96466fbf3e9ae54356e92665a647519af5d39fedff16d72c9ab390"
+      },
+      "command": "GitHub CLI read of PR #146 or CI run 34510928894",
+      "exit_code": 0,
+      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
+    },
+    "native-qualification-prose": {
+      "command": "make technical-writing-check",
+      "exit_code": null,
+      "result": "PASS: glossary checks and 1287 files, zero diagnostics. The process completed. Its tool session exit status was unavailable after context recovery.",
+      "artifact": {
+        "path": "native-qualification-prose.log.gz",
+        "sha256": "d468a79427ddd34e64b990a89a12eaf3430e17f1a6807cc10b385847a6b36745",
+        "raw_sha256": "157cb47abd42bc99bee1ba4f4a0773d4af1d67445813c19aa383319ea59ee008"
+      },
+      "source_scope": "Canonical documentation after native qualification. No product acceptance credit.",
+      "prose_files_sha256": {
+        "docs/plans/starport-production-catalog-plan.html": "28f98aa726edd264c1388f7b6c1fc95be87152332e49029895ba37476b1deb9d",
+        "docs/plans/proof/starport-production-catalog/csp4.md": "d8aa2121a594197f678d6d0ac0abe7410ceeca6cfcb49f16d400621d74e41435",
+        "docs/plans/proof/starport-production-catalog/csp4/subscriber-delivery-2026-09-10.md": "d26ba9622b24f45432f4188c45e929802b1cdd0ecc9680521ce5493e9fff7e8e"
+      }
     }
   },
   "local_verification": "../subscriber-verification-2026-09-10/verification.json",
   "limitations": [
-    "Native CI and merge remain pending.",
+    "All six native jobs pass. Automatic squash merge waits for the protected Verification Gate. The PR is not yet merged.",
     "The first delivery grants no CSP4 completion credit. All eight task checks remain UNVERIFIED.",
     "The remaining Starmap work and a separate Starport consumer PR after a compatible module release remain required."
-  ]
+  ],
+  "native_qualification": {
+    "status": "PASS",
+    "runners": {
+      "macos-15": {
+        "os": "darwin",
+        "arch": "arm64",
+        "host_os": "darwin",
+        "host_arch": "arm64",
+        "go": "go1.25.12",
+        "cgo_enabled": false,
+        "job_id": 102984570996,
+        "artifact_id": 10166037957,
+        "artifact_digest": "sha256:2b82a3b68e5fed1b941f2da016f8d9109e38b22d4f41ea228574a2ba575ee874",
+        "files": {
+          "git-acquisition.jsonl": {
+            "test_events": {
+              "pass": 2
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "publisher-ingestion.jsonl": {
+            "test_events": {
+              "pass": 4
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "tests.jsonl": {
+            "test_events": {
+              "pass": 1650
+            },
+            "package_events": {
+              "pass": 13
+            },
+            "skipped_tests": []
+          }
+        }
+      },
+      "macos-15-intel": {
+        "os": "darwin",
+        "arch": "amd64",
+        "host_os": "darwin",
+        "host_arch": "amd64",
+        "go": "go1.25.12",
+        "cgo_enabled": false,
+        "job_id": 102984571016,
+        "artifact_id": 10166363682,
+        "artifact_digest": "sha256:877c47d0ad635a8327384ac0939876dbadf807780e81558b114e2a4bd49e421e",
+        "files": {
+          "git-acquisition.jsonl": {
+            "test_events": {
+              "pass": 2
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "publisher-ingestion.jsonl": {
+            "test_events": {
+              "pass": 4
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "tests.jsonl": {
+            "test_events": {
+              "pass": 1650
+            },
+            "package_events": {
+              "pass": 13
+            },
+            "skipped_tests": []
+          }
+        }
+      },
+      "ubuntu-24.04": {
+        "os": "linux",
+        "arch": "amd64",
+        "host_os": "linux",
+        "host_arch": "amd64",
+        "go": "go1.25.12",
+        "cgo_enabled": false,
+        "job_id": 102984570925,
+        "artifact_id": 10165952913,
+        "artifact_digest": "sha256:34b82fecfb8057ec9596f1adb46ae79cbea3a380b425e3beb43635600a599106",
+        "files": {
+          "git-acquisition.jsonl": {
+            "test_events": {
+              "pass": 2
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "publisher-ingestion.jsonl": {
+            "test_events": {
+              "pass": 4
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "tests.jsonl": {
+            "test_events": {
+              "pass": 1594,
+              "skip": 1
+            },
+            "package_events": {
+              "pass": 13
+            },
+            "skipped_tests": [
+              "TestServiceConfigurationAdministratorOwnedRead"
+            ]
+          }
+        },
+        "privileged_service_configuration": "PASS"
+      },
+      "ubuntu-24.04-arm": {
+        "os": "linux",
+        "arch": "arm64",
+        "host_os": "linux",
+        "host_arch": "arm64",
+        "go": "go1.25.12",
+        "cgo_enabled": false,
+        "job_id": 102984571037,
+        "artifact_id": 10165930168,
+        "artifact_digest": "sha256:f1b7b4dec932f67a68c002e60bdfbeee3ddc95eddf19f8b595599b390933660a",
+        "files": {
+          "git-acquisition.jsonl": {
+            "test_events": {
+              "pass": 2
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "publisher-ingestion.jsonl": {
+            "test_events": {
+              "pass": 4
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "tests.jsonl": {
+            "test_events": {
+              "pass": 1594,
+              "skip": 1
+            },
+            "package_events": {
+              "pass": 13
+            },
+            "skipped_tests": [
+              "TestServiceConfigurationAdministratorOwnedRead"
+            ]
+          }
+        },
+        "privileged_service_configuration": "PASS"
+      },
+      "windows-11-arm": {
+        "os": "windows",
+        "arch": "arm64",
+        "host_os": "windows",
+        "host_arch": "arm64",
+        "go": "go1.25.12",
+        "cgo_enabled": false,
+        "job_id": 102984570753,
+        "artifact_id": 10166231874,
+        "artifact_digest": "sha256:ecf8977fb68062460cca053dd64cc58dc0e734eeec54a3c3375a2bfaa38570da",
+        "files": {
+          "git-acquisition.jsonl": {
+            "test_events": {
+              "pass": 2
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "publisher-ingestion.jsonl": {
+            "test_events": {
+              "pass": 4
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "tests.jsonl": {
+            "test_events": {
+              "pass": 1595
+            },
+            "package_events": {
+              "pass": 14
+            },
+            "skipped_tests": []
+          }
+        }
+      },
+      "windows-2025": {
+        "os": "windows",
+        "arch": "amd64",
+        "host_os": "windows",
+        "host_arch": "amd64",
+        "go": "go1.25.12",
+        "cgo_enabled": false,
+        "job_id": 102984570995,
+        "artifact_id": 10166231880,
+        "artifact_digest": "sha256:751bfaec9b2b8baf7f05a223898a6316a76809dadc69f81b3f954a8071be7a11",
+        "files": {
+          "git-acquisition.jsonl": {
+            "test_events": {
+              "pass": 2
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "publisher-ingestion.jsonl": {
+            "test_events": {
+              "pass": 4
+            },
+            "package_events": {
+              "pass": 1
+            },
+            "skipped_tests": []
+          },
+          "tests.jsonl": {
+            "test_events": {
+              "pass": 1595
+            },
+            "package_events": {
+              "pass": 14
+            },
+            "skipped_tests": []
+          }
+        }
+      }
+    },
+    "totals": {
+      "test_pass": 9714,
+      "test_fail": 0,
+      "test_skip": 2,
+      "package_pass": 92,
+      "package_fail": 0
+    },
+    "privileged_linux_runs": 2,
+    "count_scope": "JSON events include parent and subtest events across six runners. Two ordinary Linux runs skip the administrator test; both separate privileged runs pass. These are component results, not complete product acceptance."
+  }
 }
