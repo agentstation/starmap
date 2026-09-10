@@ -735,7 +735,7 @@
     "remaining": [
       "Bind exported scope records to original accepted observations and authenticated publisher namespaces.",
       "Preserve imported scope records through runtime reconstruction and derivative publication.",
-      "Validate generation-bound scope evidence, including missing or contradictory observation links.",
+      "Apply the generation-bound scope evidence check before local publication. Preserve every referenced receipt through reconciliation and derivative publication.",
       "Document protocol schema selection and migration behavior; generate package docs.",
       "Repeat full affected tests and minimum-Go checks after integration, then required review.",
       "Implement Starport explicit profile links and admission enforcement."
@@ -788,6 +788,151 @@
         },
         "lint": {
           "exit_code": 0
+        }
+      }
+    },
+    "generation_scope_evidence": {
+      "status": "Local activation checks pass. Runtime export, trusted namespaces, and local publication enforcement remain incomplete.",
+      "behavior": [
+        "Activation requires each effective inventory or positive fact to reference exactly one original provider observation in the generation manifest.",
+        "Observation timestamps must match. Complete inventories require complete successful observations. Partial degraded positive evidence remains valid.",
+        "Current remote clients accept supported legacy payloads. Clients explicitly pinned to schema 6 reject schema 7 before a payload request."
+      ],
+      "limits": [
+        "Manifest links do not prove binding selectors or publisher identity. The producer must validate original scoped receipts and the consumer must authenticate its configured publisher.",
+        "Client.newGeneration still validates the manifest and payload checksum only. Add scope-evidence validation before local commit without adding request-path work.",
+        "The full integration command started before the final provider-source restriction and pinned-client tests. Focused reruns cover these additions; final full qualification remains required."
+      ],
+      "fixture_correction": "Initial degraded fixtures omitted required manifest degradation metadata. Corrected fail-before run reports seven rejected-condition failures plus the parent, with both valid cases passing.",
+      "checks": {
+        "after_source_restriction": {
+          "exit_code": 0,
+          "pass": 12
+        },
+        "full_remote_pinned": {
+          "exit_code": 0,
+          "pass": 35
+        },
+        "minimum_go_1_25_12": {
+          "exit_code": 0,
+          "pass": 47
+        },
+        "legacy_activation_restart": {
+          "exit_code": 0,
+          "pass": 3
+        },
+        "ago": {
+          "exit_code": 0,
+          "findings": 0,
+          "errors": 0
+        },
+        "golangci_lint": {
+          "exit_code": 0
+        },
+        "godoc": {
+          "exit_code": 0
+        },
+        "technical_writing": {
+          "exit_code": 0,
+          "files": 1330,
+          "diagnostics": 0
+        }
+      },
+      "artifacts": {
+        "evidence-before": {
+          "path": "evidence-before.jsonl.gz",
+          "sha256": "c16ac6af8bcb78634fc01109bbea243df132a077f58ad0cf533be270f90b27ad",
+          "test_events": {
+            "pass": 1,
+            "fail": 9
+          }
+        },
+        "evidence-before-ready": {
+          "path": "evidence-before-ready.jsonl.gz",
+          "sha256": "e8be55117e92866e10e4baee9685a5da83d98ec74c7afc2d23b9174f7feca20d",
+          "test_events": {
+            "pass": 2,
+            "fail": 8
+          }
+        },
+        "evidence-after": {
+          "path": "evidence-after.jsonl.gz",
+          "sha256": "55eb24e2ee1011f0d464800b3de7420799f03c930ceebfd25cae691ef14a3f6d",
+          "test_events": {
+            "pass": 10
+          }
+        },
+        "source-evidence-before": {
+          "path": "source-evidence-before.jsonl.gz",
+          "sha256": "ae933c2cef23a4ef4b46b062a35935cfc73aad381950297524f965a09d2df700",
+          "test_events": {
+            "pass": 9,
+            "fail": 3
+          }
+        },
+        "source-evidence-after": {
+          "path": "source-evidence-after.jsonl.gz",
+          "sha256": "3b3acf965552166f7048672faa436577cc371944340e20114466252809f928af",
+          "test_events": {
+            "pass": 15
+          }
+        },
+        "evidence-min-go-final": {
+          "path": "evidence-min-go-final.jsonl.gz",
+          "sha256": "fd930a0dfddff99eaafa4213f1dfcd0cd72f1bb59ce706a23686545ca9905cff",
+          "test_events": {
+            "pass": 47
+          }
+        },
+        "remote-pinned": {
+          "path": "remote-pinned.jsonl.gz",
+          "sha256": "485795464fc66acc9dfdc948629dbdfe8d0d6c7377db9b2b150ba3098de892ff",
+          "test_events": {
+            "pass": 35
+          }
+        },
+        "activation-evidence-regression": {
+          "path": "activation-evidence-regression.jsonl.gz",
+          "sha256": "b44c2e4baa41ee018c0bbd8232a2272a8954c680a003853115892fefe9fa9686",
+          "test_events": {
+            "pass": 3
+          }
+        },
+        "evidence-ago-final": {
+          "path": "evidence-ago-final.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+        },
+        "evidence-lint-final": {
+          "path": "evidence-lint-final.log.gz",
+          "sha256": "a0e26fd8bf7a9bf1e323d88e6b7d36d61e2f050492be8eae9b320fc9708aab5b"
+        },
+        "godoc-ready": {
+          "path": "godoc-ready.log.gz",
+          "sha256": "55c7a47cd892ec349a7f33eb81d63423e365bccb82c5fff5c0b7169dcd900712"
+        },
+        "writing": {
+          "path": "writing.log.gz",
+          "sha256": "4be8273544c69cf7db85d2b1bf24fef8093fd20860cab82de2d1da09f5ea3bd4"
+        },
+        "writing-final": {
+          "path": "writing-final.log.gz",
+          "sha256": "520b3575d6296545fa562ad9279800dc4073aaeda62534c752e3662cdaef3b87"
+        },
+        "writing-ready": {
+          "path": "writing-ready.log.gz",
+          "sha256": "72295c9391cfb93028e255f4d449d7d130d2fc8018d424b2a952a46538603151"
+        }
+      },
+      "live_checks": {
+        "integration": {
+          "session_id": 80136,
+          "log": "/tmp/starmap-membership-transport-integration-2026-09-10.jsonl",
+          "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m ./pkg/catalogs ./pkg/catalogs/remote ./pkg/sources ./acquisition -json",
+          "observed": "Catalogs, remote, and sources finished successfully. Acquisition remains active."
+        },
+        "pr_143": {
+          "run_id": 34420248527,
+          "observed": "Verification Gate remains in_progress; all other checks pass."
         }
       }
     }
