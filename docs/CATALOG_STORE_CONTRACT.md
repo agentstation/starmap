@@ -223,7 +223,34 @@ Changed proposals must name the exact predecessor. Concurrent writers cannot bot
 `Publisher.BootstrapCatalog` explicitly adopts an ordinary store. It cannot reset an established authority.
 Unknown permission semantics, unreadable state, changed authority identity, and an exhausted sequence cause refusal.
 Publication never retries a stale proposal automatically. A successful call returns the complete generation for activation in the serving client.
-Serving-client activation and origin server configuration remain separate composition work.
+
+`Publisher.PrepareCatalog` selects the final generation without writing it. A later `Commit` or `Bootstrap` retains the same predecessor expectation.
+Preparation reserves no sequence. A competing publication can make the final commit conflict.
+
+## Runtime origin transactions
+
+`runtime.WithAuthorityOrigin` explicitly selects an origin identity, its publication store, and a qualified clock callback.
+The complete runtime catalog defines the permitted catalog. The deployment controls access to every mutation API and the underlying store.
+An origin cannot also use authoritative-subscriber startup. Incoming authoritative generations must retain their original identity through the subscriber path.
+
+The origin option selects the client's store regardless of the order of `WithClientOptions`.
+Other client options still configure the workspace and embedded bootstrap limits. All origin commits pass through the authority publisher and runtime publication guard.
+The runtime rejects direct mutation through its exposed client. Its acquisition and input transactions own publication instead.
+
+`Client.PrepareGeneration` encodes the candidate with exact evidence, times, and sync-run identity without writing storage.
+The runtime derives the authority sequence and final generation before it stages the retained-input journal.
+That journal binds the preceding catalog and the proposed authority identity. The runtime commits and activates the same prepared bytes.
+A lost commit reply leaves recovery evidence. On restart, the accepted store identity decides whether to apply or discard the staged inputs.
+
+An unchanged reconstruction proves its source identity against the accepted authority generation digest and preserves the existing sequence.
+An existing ordinary store requires explicit `OriginConfig.Bootstrap`. Restart cannot use that permission to reset an established authority.
+A different authority or unsupported permission schema prevents startup. The current runtime origin requires the publication lease during startup.
+
+`Runtime.ReadPermission` issues origin receipts from the current durable authority head.
+It can report a committed revision whose activation reply failed. A subscriber must enforce that revision before admitting inference.
+The clock callback must return qualified time evidence. Unknown clock validity prevents receipts while catalog diagnostics remain available.
+
+This API supplies origin runtime composition. Canonical CLI settings, native clock qualification, and shared-store follower activation still require implementation and evidence.
 
 ## Failure preservation and rollback
 

@@ -12,11 +12,14 @@ import (
 // acquisitionPolicyClientOptions gives an explicit policy a writable memory default.
 // A caller-supplied store takes precedence over this process-local store.
 func (o options) acquisitionPolicyClientOptions() []starmap.Option {
-	if o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
+	if o.origin == nil && o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
 		return o.client
 	}
 	selected := append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
-	if o.source.StartupPolicy == StartupRequireAuthority {
+	if o.origin != nil {
+		selected = append(selected, starmap.WithCatalogStore(o.origin.store))
+	}
+	if o.source.StartupPolicy == StartupRequireAuthority || o.origin != nil {
 		selected = append(selected, starmap.WithPublicationGuard(o.publicationCapability.guard))
 	}
 	return selected
@@ -25,6 +28,9 @@ func (o options) acquisitionPolicyClientOptions() []starmap.Option {
 // publishAcquisitionPolicyStartup applies declarations and removal of prior scoped evidence.
 // It aligns the client and runtime before either can serve.
 func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
+	if r.config.origin != nil {
+		return r.publishOriginStartup(ctx)
+	}
 	if r.requiresAuthority() {
 		return r.publishAuthorityStartup(ctx)
 	}

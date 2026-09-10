@@ -27,6 +27,21 @@ func (p *Publisher) BootstrapCatalog(ctx context.Context, input catalogs.Generat
 }
 
 func (p *Publisher) publishCatalog(ctx context.Context, input catalogs.Generation, expected string, bootstrap bool) (catalogs.Generation, error) {
+	candidate, err := p.PrepareCatalog(ctx, input, expected)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	if err := p.commit(ctx, candidate, expected, bootstrap); err != nil {
+		return catalogs.Generation{}, err
+	}
+	return candidate, nil
+}
+
+// PrepareCatalog selects an authority sequence from the exact durable predecessor without writing it.
+// The returned generation lets a caller bind its final identity to a recovery journal before Commit or Bootstrap.
+// Preparation reserves no sequence. The final commit must use the same expectation and can still conflict.
+// An ordinary predecessor requires Bootstrap even when preparation succeeds.
+func (p *Publisher) PrepareCatalog(ctx context.Context, input catalogs.Generation, expected string) (catalogs.Generation, error) {
 	if err := p.ready(ctx); err != nil {
 		return catalogs.Generation{}, err
 	}
@@ -44,9 +59,6 @@ func (p *Publisher) publishCatalog(ctx context.Context, input catalogs.Generatio
 		if err != nil {
 			return catalogs.Generation{}, err
 		}
-	}
-	if err := p.commit(ctx, candidate, expected, bootstrap); err != nil {
-		return catalogs.Generation{}, err
 	}
 	return candidate, nil
 }

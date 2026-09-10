@@ -27,6 +27,7 @@ Package permission prepares authority generations, orders their publication, and
   - [func \(p \*Publisher\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Publisher.Current>)
   - [func \(p \*Publisher\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Publisher.CurrentAuthorityHead>)
   - [func \(p \*Publisher\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Publisher.Get>)
+  - [func \(p \*Publisher\) PrepareCatalog\(ctx context.Context, input catalogs.Generation, expected string\) \(catalogs.Generation, error\)](<#Publisher.PrepareCatalog>)
   - [func \(p \*Publisher\) PublishCatalog\(ctx context.Context, input catalogs.Generation, expected string\) \(catalogs.Generation, error\)](<#Publisher.PublishCatalog>)
 - [type PublisherConfig](<#PublisherConfig>)
 
@@ -185,6 +186,15 @@ func (p *Publisher) Get(ctx context.Context, id string) (catalogs.Generation, er
 ```
 
 Get reads one immutable generation from the caller's store.
+
+<a name="Publisher.PrepareCatalog"></a>
+### func \(\*Publisher\) [PrepareCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/origin_publication.go#L44>)
+
+```go
+func (p *Publisher) PrepareCatalog(ctx context.Context, input catalogs.Generation, expected string) (catalogs.Generation, error)
+```
+
+PrepareCatalog selects an authority sequence from the exact durable predecessor without writing it. The returned generation lets a caller bind its final identity to a recovery journal before Commit or Bootstrap. Preparation reserves no sequence. The final commit must use the same expectation and can still conflict. An ordinary predecessor requires Bootstrap even when preparation succeeds.
 
 <a name="Publisher.PublishCatalog"></a>
 ### func \(\*Publisher\) [PublishCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/origin_publication.go#L18>)
