@@ -14,7 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 )
 
-const pinnedArchiveSHA256 = "4e170a3d05e48c20017f412347439623210e551c8fcec6d5c7f713f29b2b0eb9"
+const pinnedArchiveSHA256 = "09f431c751ffaa4a1586490032baa3608c7c504ed40ff40f977c61cdc4e70138"
 
 // ActivatePinned builds a portable fixture from the embedded generation.
 // It pins the exact archive digest as the offline trust root.
