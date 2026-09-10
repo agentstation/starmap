@@ -711,7 +711,16 @@ func main() {
   - [func \(cat \*Catalog\) RemovalPolicies\(\) \[\]CatalogRemovalPolicy](<#Catalog.RemovalPolicies>)
   - [func \(cat \*Catalog\) Removals\(\) \*CatalogRemovalSet](<#Catalog.Removals>)
   - [func \(cat \*Catalog\) ScopeMembership\(key MembershipScopeKey, provider ProviderID, model string\) \(present, known bool\)](<#Catalog.ScopeMembership>)
+- [type CatalogAuthorityHead](<#CatalogAuthorityHead>)
+  - [func \(h CatalogAuthorityHead\) SupportsPermissions\(\) bool](<#CatalogAuthorityHead.SupportsPermissions>)
+  - [func \(h CatalogAuthorityHead\) Validate\(\) error](<#CatalogAuthorityHead.Validate>)
+  - [func \(h CatalogAuthorityHead\) ValidateSuccessor\(next CatalogAuthorityHead\) error](<#CatalogAuthorityHead.ValidateSuccessor>)
 - [type CatalogPayload](<#CatalogPayload>)
+- [type CatalogPermissionEnvelope](<#CatalogPermissionEnvelope>)
+  - [func ParseCatalogPermissionEnvelope\(data \[\]byte\) \(CatalogPermissionEnvelope, error\)](<#ParseCatalogPermissionEnvelope>)
+  - [func \(e CatalogPermissionEnvelope\) ValidAt\(now time.Time, uncertainty time.Duration, clockKnown bool\) bool](<#CatalogPermissionEnvelope.ValidAt>)
+  - [func \(e CatalogPermissionEnvelope\) Validate\(\) error](<#CatalogPermissionEnvelope.Validate>)
+  - [func \(e CatalogPermissionEnvelope\) ValidateSuccessor\(next CatalogPermissionEnvelope\) error](<#CatalogPermissionEnvelope.ValidateSuccessor>)
 - [type CatalogRemovalKind](<#CatalogRemovalKind>)
 - [type CatalogRemovalPolicy](<#CatalogRemovalPolicy>)
 - [type CatalogRemovalScope](<#CatalogRemovalScope>)
@@ -1096,10 +1105,31 @@ const (
 )
 ```
 
+<a name="CatalogPermissionEnvelopeVersion"></a>
+
+```go
+const (
+    // CatalogPermissionEnvelopeVersion identifies the small envelope independently of the catalog manifest and payload versions.
+    CatalogPermissionEnvelopeVersion uint64 = 1
+    // MaxCatalogPermissionValidity bounds the initial internal production profile.
+    MaxCatalogPermissionValidity = 5 * time.Minute
+    // MaxCatalogPermissionClockUncertainty bounds the initial profile's clock uncertainty.
+    MaxCatalogPermissionClockUncertainty = 30 * time.Second
+    // MaxCatalogPermissionEnvelopeBytes bounds the complete permission envelope before decoding.
+    MaxCatalogPermissionEnvelopeBytes = 16 << 10
+)
+```
+
 <a name="CanonicalAliasSchemaVersion"></a>CanonicalAliasSchemaVersion is the first payload schema that retains canonical rename history.
 
 ```go
 const CanonicalAliasSchemaVersion uint64 = 9
+```
+
+<a name="CatalogPermissionSchemaVersion"></a>CatalogPermissionSchemaVersion identifies the permission semantics this reader enforces.
+
+```go
+const CatalogPermissionSchemaVersion uint64 = 1
 ```
 
 <a name="CatalogRemovalSchemaVersion"></a>CatalogRemovalSchemaVersion is the first payload schema that can express operator removals.
@@ -2541,6 +2571,50 @@ func (cat *Catalog) ScopeMembership(key MembershipScopeKey, provider ProviderID,
 
 ScopeMembership reads a precomputed scope without allocation or storage I/O. Missing scopes and incomplete absence return known=false. The provider must match.
 
+<a name="CatalogAuthorityHead"></a>
+## type [CatalogAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L10-L18>)
+
+CatalogAuthorityHead binds one authority publication to its catalog and required permission revision. The authority commits these fields together. Validation does not authenticate the authority.
+
+```go
+type CatalogAuthorityHead struct {
+    AuthorityID                string `json:"authority_id"`
+    PolicyID                   string `json:"policy_id"`
+    Sequence                   uint64 `json:"sequence"`
+    GenerationID               string `json:"generation_id"`
+    PayloadChecksum            string `json:"payload_checksum"`
+    RequiredPermissionRevision string `json:"required_permission_revision"`
+    PermissionSchemaVersion    uint64 `json:"permission_schema_version"`
+}
+```
+
+<a name="CatalogAuthorityHead.SupportsPermissions"></a>
+### func \(CatalogAuthorityHead\) [SupportsPermissions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L44>)
+
+```go
+func (h CatalogAuthorityHead) SupportsPermissions() bool
+```
+
+SupportsPermissions reports whether this reader understands every mandatory permission semantic. A compatible catalog payload cannot override an unsupported permission version.
+
+<a name="CatalogAuthorityHead.Validate"></a>
+### func \(CatalogAuthorityHead\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L22>)
+
+```go
+func (h CatalogAuthorityHead) Validate() error
+```
+
+Validate checks publication identity and digest shape independently of catalog payload compatibility. Unknown positive permission versions remain readable so the consumer can record the required revision before refusing admission.
+
+<a name="CatalogAuthorityHead.ValidateSuccessor"></a>
+### func \(CatalogAuthorityHead\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L50>)
+
+```go
+func (h CatalogAuthorityHead) ValidateSuccessor(next CatalogAuthorityHead) error
+```
+
+ValidateSuccessor rejects a different authority, an older sequence, or changed content under the same sequence. The caller authorizes authority and policy changes in a new context.
+
 <a name="CatalogPayload"></a>
 ## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L28>)
 
@@ -2559,6 +2633,56 @@ type CatalogPayload struct {
     CanonicalAliases []CanonicalAlias          `json:"canonical_aliases,omitempty"`
 }
 ```
+
+<a name="CatalogPermissionEnvelope"></a>
+## type [CatalogPermissionEnvelope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_envelope.go#L25-L30>)
+
+CatalogPermissionEnvelope carries a publication head and its finite permission receipt. A trusted authority can renew a receipt without changing the immutable publication head. Callers authenticate the envelope before acceptance. These methods validate structure and time only.
+
+```go
+type CatalogPermissionEnvelope struct {
+    Version    uint64               `json:"version"`
+    Head       CatalogAuthorityHead `json:"head"`
+    IssuedAt   time.Time            `json:"issued_at"`
+    ValidUntil time.Time            `json:"valid_until"`
+}
+```
+
+<a name="ParseCatalogPermissionEnvelope"></a>
+### func [ParseCatalogPermissionEnvelope](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_envelope.go#L82>)
+
+```go
+func ParseCatalogPermissionEnvelope(data []byte) (CatalogPermissionEnvelope, error)
+```
+
+ParseCatalogPermissionEnvelope strictly decodes the small permission envelope without reading a catalog manifest or payload. The caller must authenticate the response and apply successor, compatibility, and clock checks before admission.
+
+<a name="CatalogPermissionEnvelope.ValidAt"></a>
+### func \(CatalogPermissionEnvelope\) [ValidAt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_envelope.go#L52>)
+
+```go
+func (e CatalogPermissionEnvelope) ValidAt(now time.Time, uncertainty time.Duration, clockKnown bool) bool
+```
+
+ValidAt checks a validated receipt against a known clock bound without allocating memory. Unknown clock validity, excessive uncertainty, issue times beyond the clock bound, and expiry refuse the receipt. This time check grants no permission and does not authenticate the envelope.
+
+<a name="CatalogPermissionEnvelope.Validate"></a>
+### func \(CatalogPermissionEnvelope\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_envelope.go#L33>)
+
+```go
+func (e CatalogPermissionEnvelope) Validate() error
+```
+
+Validate checks the version, publication head, and bounded receipt lifetime.
+
+<a name="CatalogPermissionEnvelope.ValidateSuccessor"></a>
+### func \(CatalogPermissionEnvelope\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_envelope.go#L61>)
+
+```go
+func (e CatalogPermissionEnvelope) ValidateSuccessor(next CatalogPermissionEnvelope) error
+```
+
+ValidateSuccessor rejects head replay and receipt renewal that moves backward in issue time. An identical head and issue time identify the same receipt, including its expiry.
 
 <a name="CatalogRemovalKind"></a>
 ## type [CatalogRemovalKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/removal_target.go#L6>)
