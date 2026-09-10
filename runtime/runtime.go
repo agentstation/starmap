@@ -9,6 +9,7 @@ package runtime
 
 import (
 	"context"
+	stderrors "errors"
 	"sync"
 	"time"
 
@@ -109,10 +110,14 @@ type Runtime struct {
 	publicationMu sync.Mutex
 
 	// mu guards the retained layers and the published effective state.
-	mu        sync.RWMutex
-	layers    layerSet
-	effective starmap.CatalogState
-	report    statusState
+	mu                 sync.RWMutex
+	layers             layerSet
+	effective          starmap.CatalogState
+	report             statusState
+	permissions        authorityPermissions
+	permissionRuns     runGroup
+	permissionIO       sync.Mutex
+	authorityObservers authorityObservationGroup
 
 	instanceSeed string
 	directory    *flock.Flock
@@ -229,6 +234,10 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.cancel()
 		return nil, err
 	}
+	if err := runtime.initializeAuthority(); err != nil {
+		runtime.cancel()
+		return nil, err
+	}
 	if err := runtime.initializeSchedule(); err != nil {
 		runtime.cancel()
 		return nil, err
@@ -249,21 +258,9 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
 	}
 
-	// The require_source policy blocks inside the Open context and reads the
-	// source once. A failed read fails Open, so a deployment that needs
-	// upstream state never serves the embedded baseline instead. A non-owner
-	// replica reads nothing, because the lease owner supplies the state that
-	// this replica then consumes.
-	if runtime.config.source.StartupPolicy == StartupRequireSource {
-		if runtime.lease.status() == leaseLost {
-			logging.Info().
-				Str("holder", runtime.schedule.identity.Instance).
-				Msg("The lease owner supplies the source state; require_source reads nothing here")
-		} else if _, err := runtime.RefreshSource(ctx); err != nil {
-			runtime.abort()
-			return nil, errors.WrapResource(
-				"read", "catalog source", runtime.source.Identity(), err)
-		}
+	if err := runtime.prepareSourceStartup(ctx); err != nil {
+		runtime.abort()
+		return nil, err
 	}
 	runtime.startSchedules()
 	opened = true
@@ -326,16 +323,23 @@ func (r *Runtime) Close() error {
 		return nil
 	}
 	r.closeOnce.Do(func() {
+		r.authorityObservers.close()
 		active := r.runs.close()
+		permissionActive := r.permissionRuns.close()
 		r.cancel()
 		joined := make(chan error, 1)
 		go func() {
 			<-active
+			<-permissionActive
+			r.authorityObservers.active.Wait()
 			r.work.Wait()
 			r.lease.stop()
 			var err error
+			sealContext, sealCancel := context.WithTimeout(context.Background(), closeJoinTimeout)
+			err = r.sealAuthority(sealContext)
+			sealCancel()
 			if r.directory != nil {
-				err = r.directory.Close()
+				err = stderrors.Join(err, r.directory.Close())
 			}
 			joined <- err
 		}()
@@ -368,9 +372,10 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.layers.embedded = baseline
+	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources
-	if r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
+	if !r.requiresAuthority() && r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
 		if storedProviderPolicyRequired(current) {
 			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
 		}
@@ -393,9 +398,13 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 // commit durably publishes one effective catalog when the deployment holds a
 // writable store. The epoch that the run started under fences the commit, so an
 // instance that lost the lease cannot overwrite a newer generation.
-func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64, evidence starmap.CandidateEvidence) (starmap.CatalogState, error) {
+func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64, evidence starmap.CandidateEvidence, source *sourceLayer) (starmap.CatalogState, error) {
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
+	}
+	ctx = r.authorityPublicationContext(ctx)
+	if r.requiresAuthority() {
+		return r.commitAuthority(ctx, state, source, epoch)
 	}
 	if !r.client.PublishesDurably() {
 		// Without a durable store the runtime publishes in memory only. The

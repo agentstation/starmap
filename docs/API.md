@@ -46,6 +46,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func NewContext\(ctx context.Context, opts ...Option\) \(\*Client, error\)](<#NewContext>)
   - [func \(c \*Client\) Activate\(ctx context.Context, generation catalogs.Generation\) \(Publication, error\)](<#Client.Activate>)
   - [func \(c \*Client\) Catalog\(\) \*catalogs.Catalog](<#Client.Catalog>)
+  - [func \(c \*Client\) CurrentAuthorityHead\(\) catalogs.CatalogAuthorityHead](<#Client.CurrentAuthorityHead>)
   - [func \(c \*Client\) CurrentCatalogState\(\) CatalogState](<#Client.CurrentCatalogState>)
   - [func \(c \*Client\) CurrentGeneration\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.CurrentGeneration>)
   - [func \(c \*Client\) CurrentGenerationID\(\) string](<#Client.CurrentGenerationID>)
@@ -75,7 +76,9 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func WithCatalogStore\(store storage.Store\) Option](<#WithCatalogStore>)
   - [func WithEmbeddedBootstrapMaxAge\(maxAge time.Duration\) Option](<#WithEmbeddedBootstrapMaxAge>)
   - [func WithEmbeddedBootstrapMaxSizeBytes\(maxSizeBytes int64\) Option](<#WithEmbeddedBootstrapMaxSizeBytes>)
+  - [func WithPublicationGuard\(guard PublicationGuard\) Option](<#WithPublicationGuard>)
 - [type Publication](<#Publication>)
+- [type PublicationGuard](<#PublicationGuard>)
 - [type ReadinessIssue](<#ReadinessIssue>)
 - [type RollbackResult](<#RollbackResult>)
 - [type UpdateFunc](<#UpdateFunc>)
@@ -221,7 +224,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L128>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L129>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -232,7 +235,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L132>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L133>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -241,7 +244,7 @@ func New(opts ...Option) (*Client, error)
 New creates a Client using a background context. Call NewContext when the caller must cancel storage I/O during client setup.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L140>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L141>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -250,7 +253,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error)
 NewContext creates a Client with the given options. The caller\-owned context bounds reads from caller\-supplied storage and must be non\-nil. Construction never repairs or creates a workspace. Use RepairWorkspace for explicit repair, or open the connected runtime for application startup.
 
 <a name="Client.Activate"></a>
-### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L165>)
+### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L168>)
 
 ```go
 func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error)
@@ -266,6 +269,15 @@ func (c *Client) Catalog() *catalogs.Catalog
 ```
 
 Catalog returns the current immutable canonical catalog. It returns nil when called on a nil Client. After New or NewContext succeeds, Catalog is non\-failing, non\-nil, O\(1\), allocation\-free, and safe to retain across goroutines.
+
+<a name="Client.CurrentAuthorityHead"></a>
+### func \(\*Client\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/authority_head.go#L8>)
+
+```go
+func (c *Client) CurrentAuthorityHead() catalogs.CatalogAuthorityHead
+```
+
+CurrentAuthorityHead returns the authority head of the committed in\-memory publication. Construction and publication validate it with the complete generation. Ordinary generations return the zero head. The read allocates no memory and reads no storage. It does not authenticate an authority or renew permission.
 
 <a name="Client.CurrentCatalogState"></a>
 ### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L42>)
@@ -322,7 +334,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L322>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L325>)
 
 ```go
 func (c *Client) NextID() (string, error)
@@ -509,7 +521,7 @@ type ModelUpdatedHook func(old, updated catalogs.Model)
 ```
 
 <a name="Option"></a>
-## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L69>)
+## type [Option](<https://github.com/agentstation/starmap/blob/main/options.go#L70>)
 
 Option is a function that configures a Starmap instance.
 
@@ -518,7 +530,7 @@ type Option func(*options) error
 ```
 
 <a name="WithCatalogPath"></a>
-### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L84>)
+### func [WithCatalogPath](<https://github.com/agentstation/starmap/blob/main/options.go#L85>)
 
 ```go
 func WithCatalogPath(path string) Option
@@ -527,7 +539,7 @@ func WithCatalogPath(path string) Option
 WithCatalogPath configures the human\-editable provider YAML workspace used for both local observation and post\-commit materialization. Immutable generation state remains in the separately supplied CatalogStore.
 
 <a name="WithCatalogStore"></a>
-### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L42>)
+### func [WithCatalogStore](<https://github.com/agentstation/starmap/blob/main/options.go#L43>)
 
 ```go
 func WithCatalogStore(store storage.Store) Option
@@ -536,7 +548,7 @@ func WithCatalogStore(store storage.Store) Option
 WithCatalogStore configures the writable catalog store used by non\-dry sync, manual, remote, and scheduled catalog updates. Read\-only access and dry runs do not require a store. Starmap provides memory, filesystem, and conditional object\-storage implementations. Embedding applications own and inject any database\-backed implementation.
 
 <a name="WithEmbeddedBootstrapMaxAge"></a>
-### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L93>)
+### func [WithEmbeddedBootstrapMaxAge](<https://github.com/agentstation/starmap/blob/main/options.go#L94>)
 
 ```go
 func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
@@ -545,13 +557,22 @@ func WithEmbeddedBootstrapMaxAge(maxAge time.Duration) Option
 WithEmbeddedBootstrapMaxAge fails readiness while the active catalog is the embedded bootstrap and its generation age exceeds maxAge.
 
 <a name="WithEmbeddedBootstrapMaxSizeBytes"></a>
-### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L105>)
+### func [WithEmbeddedBootstrapMaxSizeBytes](<https://github.com/agentstation/starmap/blob/main/options.go#L106>)
 
 ```go
 func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 ```
 
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
+
+<a name="WithPublicationGuard"></a>
+### func [WithPublicationGuard](<https://github.com/agentstation/starmap/blob/main/publication_guard.go#L16>)
+
+```go
+func WithPublicationGuard(guard PublicationGuard) Option
+```
+
+WithPublicationGuard adds a guard to Update, Activate, and Rollback. Every configured guard must permit the operation. Construction and reads do not call guards. A guard must not call a mutation on the same client.
 
 <a name="Publication"></a>
 ## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L118-L123>)
@@ -565,6 +586,15 @@ type Publication struct {
     PayloadChecksum string
     SyncRunID       string
 }
+```
+
+<a name="PublicationGuard"></a>
+## type [PublicationGuard](<https://github.com/agentstation/starmap/blob/main/publication_guard.go#L12>)
+
+PublicationGuard authorizes a mutation before candidate work or activation. A hosting runtime can reserve publication while exposing the client for reads and hooks. Guards can run concurrently and must not mutate the client.
+
+```go
+type PublicationGuard func(context.Context) error
 ```
 
 <a name="ReadinessIssue"></a>

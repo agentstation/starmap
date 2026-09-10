@@ -100,7 +100,7 @@ func TestCurrentGenerationIDTracksBootstrapAndDurablePublication(t *testing.T) {
 	if bootstrapID == "" || client.CurrentGenerationID() != bootstrapID {
 		t.Fatalf("bootstrap generation ID = %q, readiness = %q", client.CurrentGenerationID(), bootstrapID)
 	}
-	client.swapCatalogGeneration(client.Catalog(), "durable-generation", "sha256:test", time.Time{})
+	client.swapCatalogGeneration(client.Catalog(), "durable-generation", "sha256:test", time.Time{}, catalogs.CatalogAuthorityHead{})
 	if got := client.CurrentGenerationID(); got != "durable-generation" {
 		t.Fatalf("published generation ID = %q", got)
 	}

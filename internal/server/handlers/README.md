@@ -19,6 +19,7 @@ Package handlers provides HTTP request handlers for the Starmap API.
   - [func \(h \*Handlers\) HandleCatalogGenerationManifest\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogGenerationManifest>)
   - [func \(h \*Handlers\) HandleCatalogManifest\(writer http.ResponseWriter, request \*http.Request\)](<#Handlers.HandleCatalogManifest>)
   - [func \(h \*Handlers\) HandleCatalogPayload\(writer http.ResponseWriter, request \*http.Request, generationID string\)](<#Handlers.HandleCatalogPayload>)
+  - [func \(h \*Handlers\) HandleCatalogPermission\(writer http.ResponseWriter, request \*http.Request\)](<#Handlers.HandleCatalogPermission>)
   - [func \(h \*Handlers\) HandleCatalogSourceChain\(w http.ResponseWriter, \_ \*http.Request\)](<#Handlers.HandleCatalogSourceChain>)
   - [func \(h \*Handlers\) HandleGetModel\(w http.ResponseWriter, \_ \*http.Request, modelID string\)](<#Handlers.HandleGetModel>)
   - [func \(h \*Handlers\) HandleGetProvider\(w http.ResponseWriter, \_ \*http.Request, providerID string\)](<#Handlers.HandleGetProvider>)
@@ -109,6 +110,15 @@ func (h *Handlers) HandleCatalogPayload(writer http.ResponseWriter, request *htt
 ```
 
 HandleCatalogPayload serves an immutable canonical payload by generation ID.
+
+<a name="Handlers.HandleCatalogPermission"></a>
+### func \(\*Handlers\) [HandleCatalogPermission](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/permission.go#L27>)
+
+```go
+func (h *Handlers) HandleCatalogPermission(writer http.ResponseWriter, request *http.Request)
+```
+
+HandleCatalogPermission serves a finite receipt independently of catalog availability. The reader owns issuance or relay validation. This handler never creates or renews a receipt. @Summary Current catalog permission receipt @Description Returns the confirmed upstream receipt with its original expiry. Catalog activation is not required. Unavailable permission returns 503. @Tags catalog @Produce application/vnd.agentstation.starmap.catalog\-permission\+json @Success 200 \{object\} catalogs.CatalogPermissionEnvelope @Failure 401 \{object\} response.Response @Failure 503 \{object\} response.Response @Router /api/v1/catalog/permission \[get\].
 
 <a name="Handlers.HandleCatalogSourceChain"></a>
 ### func \(\*Handlers\) [HandleCatalogSourceChain](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/sourcechain.go#L19>)

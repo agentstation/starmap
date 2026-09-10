@@ -112,6 +112,7 @@ func (r *Runtime) sourceChanges() <-chan struct{} {
 // startSchedules launches the periodic source and acquisition workers. A
 // runtime without an acquirer runs source refresh only.
 func (r *Runtime) startSchedules() {
+	r.startPermissionSchedule()
 	interval := r.config.source.PollInterval
 	wake := r.sourceChanges()
 	if r.source != nil && (interval > 0 || wake != nil) {

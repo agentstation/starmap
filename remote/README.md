@@ -22,11 +22,13 @@ Package remote provides a reactive Starmap catalog consumer.
 - [type Source](<#Source>)
   - [func NewSource\(ctx context.Context, config SourceConfig\) \(\*Source, error\)](<#NewSource>)
   - [func \(s \*Source\) AdoptInstanceIdentity\(instance string\)](<#Source.AdoptInstanceIdentity>)
+  - [func \(s \*Source\) BindAuthorityObserver\(observer func\(context.Context, catalogs.CatalogAuthorityHead\) error\) error](<#Source.BindAuthorityObserver>)
   - [func \(s \*Source\) Changes\(\) \<\-chan struct\{\}](<#Source.Changes>)
   - [func \(s \*Source\) Close\(\) error](<#Source.Close>)
   - [func \(s \*Source\) Health\(\) Health](<#Source.Health>)
   - [func \(s \*Source\) Identity\(\) string](<#Source.Identity>)
   - [func \(s \*Source\) Read\(ctx context.Context\) \(source.Read, error\)](<#Source.Read>)
+  - [func \(s \*Source\) ReadPermission\(ctx context.Context\) \(catalogs.CatalogPermissionEnvelope, error\)](<#Source.ReadPermission>)
 - [type SourceConfig](<#SourceConfig>)
 - [type StreamState](<#StreamState>)
 - [type Subscriber](<#Subscriber>)
@@ -79,7 +81,7 @@ const DefaultSourceIdentity = "starmap_cascade"
 ```
 
 <a name="ChainHealthCode"></a>
-## func [ChainHealthCode](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L332>)
+## func [ChainHealthCode](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L341>)
 
 ```go
 func ChainHealthCode(health status.Health) string
@@ -233,7 +235,7 @@ type PollingFallbackStatus struct {
 ```
 
 <a name="Source"></a>
-## type [Source](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L49-L63>)
+## type [Source](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L50-L64>)
 
 Source adapts the reactive subscriber onto the runtime source role. The subscriber streams upstream publications, and each Read reports the current verified generation, the sanitized upstream chain, and the propagated channel time of the origin.
 
@@ -246,7 +248,7 @@ type Source struct {
 ```
 
 <a name="NewSource"></a>
-### func [NewSource](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L74>)
+### func [NewSource](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L77>)
 
 ```go
 func NewSource(ctx context.Context, config SourceConfig) (*Source, error)
@@ -255,7 +257,7 @@ func NewSource(ctx context.Context, config SourceConfig) (*Source, error)
 NewSource builds the cascaded Starmap source. It starts no goroutine and sends no request. The first Read starts the subscriber.
 
 <a name="Source.AdoptInstanceIdentity"></a>
-### func \(\*Source\) [AdoptInstanceIdentity](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L134>)
+### func \(\*Source\) [AdoptInstanceIdentity](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L137>)
 
 ```go
 func (s *Source) AdoptInstanceIdentity(instance string)
@@ -263,8 +265,17 @@ func (s *Source) AdoptInstanceIdentity(instance string)
 
 AdoptInstanceIdentity takes the fleet instance identity of the runtime that owns this source. The subscriber then spreads its reconnects and phases its fallback polls on the same identity the runtime schedules with.
 
+<a name="Source.BindAuthorityObserver"></a>
+### func \(\*Source\) [BindAuthorityObserver](<https://github.com/agentstation/starmap/blob/main/remote/source_authority.go#L11>)
+
+```go
+func (s *Source) BindAuthorityObserver(observer func(context.Context, catalogs.CatalogAuthorityHead) error) error
+```
+
+BindAuthorityObserver connects the runtime's requirement recorder before source acquisition starts. The protocol reports verified current heads before payload processing, including failed and incompatible transfers.
+
 <a name="Source.Changes"></a>
-### func \(\*Source\) [Changes](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L129>)
+### func \(\*Source\) [Changes](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L132>)
 
 ```go
 func (s *Source) Changes() <-chan struct{}
@@ -273,7 +284,7 @@ func (s *Source) Changes() <-chan struct{}
 Changes reports each upstream publication the subscriber activated. The runtime refreshes on that wake, so a streamed delta crosses one hop in seconds instead of waiting for the next poll boundary.
 
 <a name="Source.Close"></a>
-### func \(\*Source\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L112>)
+### func \(\*Source\) [Close](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L115>)
 
 ```go
 func (s *Source) Close() error
@@ -282,7 +293,7 @@ func (s *Source) Close() error
 Close stops the subscriber lifecycle. It is idempotent.
 
 <a name="Source.Health"></a>
-### func \(\*Source\) [Health](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L109>)
+### func \(\*Source\) [Health](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L112>)
 
 ```go
 func (s *Source) Health() Health
@@ -291,7 +302,7 @@ func (s *Source) Health() Health
 Health returns the subscriber's own transport health. It stays independent of the upstream\-reported health that Read carries.
 
 <a name="Source.Identity"></a>
-### func \(\*Source\) [Identity](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L105>)
+### func \(\*Source\) [Identity](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L108>)
 
 ```go
 func (s *Source) Identity() string
@@ -300,7 +311,7 @@ func (s *Source) Identity() string
 Identity returns the safe identity of the cascaded source. It stays stable for the life of the source, because the retained layer identity depends on it.
 
 <a name="Source.Read"></a>
-### func \(\*Source\) [Read](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L142>)
+### func \(\*Source\) [Read](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L151>)
 
 ```go
 func (s *Source) Read(ctx context.Context) (source.Read, error)
@@ -308,8 +319,17 @@ func (s *Source) Read(ctx context.Context) (source.Read, error)
 
 Read reports the current upstream generation, the sanitized chain, and the propagated channel time. It bounds the chain before it reports a generation. The runtime owns the self, alias, and cycle rules, because only the runtime knows its own identity.
 
+<a name="Source.ReadPermission"></a>
+### func \(\*Source\) [ReadPermission](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L143>)
+
+```go
+func (s *Source) ReadPermission(ctx context.Context) (catalogs.CatalogPermissionEnvelope, error)
+```
+
+ReadPermission verifies one receipt without starting catalog synchronization or the event stream. The runtime must validate and retain the required revision before attempting catalog activation.
+
 <a name="SourceConfig"></a>
-## type [SourceConfig](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L24-L39>)
+## type [SourceConfig](<https://github.com/agentstation/starmap/blob/main/remote/source.go#L25-L40>)
 
 SourceConfig builds one cascaded Starmap source. It carries the subscriber configuration plus the identity rules that keep a cascade acyclic.
 

@@ -21,6 +21,9 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 }
 
 func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64, resets []ObservationReset, removal *removalUpdate) (starmap.CatalogState, error) {
+	if err := r.validateAuthorityPublication(source, len(providers)+len(manual)+len(resets), removal); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	manualRequested := len(manual) != 0
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
@@ -111,13 +114,14 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 			return starmap.CatalogState{}, err
 		}
 	}
-	durable, err := r.commit(ctx, state, epoch, candidate.buildEvidence)
+	durable, err := r.commit(ctx, state, epoch, candidate.buildEvidence, candidate.source)
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
 	r.mu.Lock()
 	r.layers = candidate
 	r.effective = durable
+	r.activateAuthorityLocked(candidate.source)
 	r.mu.Unlock()
 	r.broadcast(durable)
 	if !changed {

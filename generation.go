@@ -174,6 +174,7 @@ func (c *Client) publishCommittedGeneration(published *catalogs.Catalog, generat
 		generation.Manifest.GenerationID,
 		generation.Manifest.Payload.Checksum,
 		generation.Manifest.GeneratedAt,
+		generation.Manifest.AuthorityHead,
 	)
 	event := CatalogPublishedEvent{
 		GenerationID: generation.Manifest.GenerationID,
@@ -191,6 +192,7 @@ func (c *Client) bindCommittedGenerationIdentity(generation catalogs.Generation)
 	c.usingEmbeddedBootstrap = false
 	c.generationID = generation.Manifest.GenerationID
 	c.generationPayloadChecksum = generation.Manifest.Payload.Checksum
+	c.generationAuthorityHead = generation.Manifest.AuthorityHead
 	c.generationGeneratedAt = generation.Manifest.GeneratedAt
 	c.mu.Unlock()
 }
@@ -203,6 +205,7 @@ func (c *Client) publishCommittedGenerationIdentity(generation catalogs.Generati
 	c.usingEmbeddedBootstrap = false
 	c.generationID = generation.Manifest.GenerationID
 	c.generationPayloadChecksum = generation.Manifest.Payload.Checksum
+	c.generationAuthorityHead = generation.Manifest.AuthorityHead
 	c.generationGeneratedAt = generation.Manifest.GeneratedAt
 	c.generationSequence++
 	sequence := c.generationSequence

@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -64,9 +65,11 @@ type Source struct {
 
 // The cascaded source fills the reactive runtime source roles.
 var (
-	_ source.Source                = (*Source)(nil)
-	_ source.Watcher         = (*Source)(nil)
-	_ source.IdentityAdopter = (*Source)(nil)
+	_ source.Source              = (*Source)(nil)
+	_ source.PermissionReader    = (*Source)(nil)
+	_ source.AuthorityObservable = (*Source)(nil)
+	_ source.Watcher             = (*Source)(nil)
+	_ source.IdentityAdopter     = (*Source)(nil)
 )
 
 // NewSource builds the cascaded Starmap source. It starts no goroutine and
@@ -133,6 +136,12 @@ func (s *Source) Changes() <-chan struct{} { return s.subscriber.Updates() }
 // fallback polls on the same identity the runtime schedules with.
 func (s *Source) AdoptInstanceIdentity(instance string) {
 	s.subscriber.AdoptInstanceIdentity(instance)
+}
+
+// ReadPermission verifies one receipt without starting catalog synchronization or the event stream.
+// The runtime must validate and retain the required revision before attempting catalog activation.
+func (s *Source) ReadPermission(ctx context.Context) (catalogs.CatalogPermissionEnvelope, error) {
+	return s.subscriber.protocol.FetchPermissionEnvelope(ctx)
 }
 
 // Read reports the current upstream generation, the sanitized chain, and the

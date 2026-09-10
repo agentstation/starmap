@@ -12,15 +12,22 @@ import (
 // acquisitionPolicyClientOptions gives an explicit policy a writable memory default.
 // A caller-supplied store takes precedence over this process-local store.
 func (o options) acquisitionPolicyClientOptions() []starmap.Option {
-	if o.providerBindings == nil && o.acquisitionSources == nil {
+	if o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
 		return o.client
 	}
-	return append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
+	selected := append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
+	if o.source.StartupPolicy == StartupRequireAuthority {
+		selected = append(selected, starmap.WithPublicationGuard(o.publicationCapability.guard))
+	}
+	return selected
 }
 
 // publishAcquisitionPolicyStartup applies declarations and removal of prior scoped evidence.
 // It aligns the client and runtime before either can serve.
 func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
+	if r.requiresAuthority() {
+		return r.publishAuthorityStartup(ctx)
+	}
 	if r.config.providerBindings == nil && r.config.acquisitionSources == nil && !storedProviderPolicyRequired(r.client.CurrentCatalogState()) {
 		return nil
 	}
@@ -32,7 +39,7 @@ func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
 	if current.GenerationID == state.GenerationID && current.PayloadChecksum == state.PayloadChecksum {
 		return nil
 	}
-	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence)
+	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, nil)
 	if err != nil {
 		return err
 	}

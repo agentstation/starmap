@@ -30,6 +30,9 @@ services:
       # - STARMAP_CATALOG_SOURCE_TOKEN=
       # - STARMAP_CATALOG_SOURCE_POLL_INTERVAL=1h
       # - STARMAP_CATALOG_SOURCE_STARTUP_POLICY=prefer_source
+      # Internal authority requires both identities and qualified host clock evidence.
+      # - STARMAP_CATALOG_SOURCE_AUTHORITY_ID=enterprise
+      # - STARMAP_CATALOG_SOURCE_POLICY_ID=production
       # - STARMAP_CATALOG_SOURCE_MAX_AGE=6h
       # - STARMAP_CATALOG_SOURCE_MAX_HOPS=8
       # - STARMAP_CATALOG_SOURCE_ALIASES=replica-a,catalog.example.com

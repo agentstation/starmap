@@ -116,6 +116,7 @@ type Client struct {
 	updates                   updateCoordinator
 	generationID              string
 	generationPayloadChecksum string
+	generationAuthorityHead   catalogs.CatalogAuthorityHead
 	generationGeneratedAt     time.Time
 	generationSequence        uint64
 	usingEmbeddedBootstrap    bool
@@ -183,6 +184,7 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 	}
 	initial := embeddedCatalog
 	generationID := ""
+	var generationAuthorityHead catalogs.CatalogAuthorityHead
 	generationPayloadChecksum := bootstrapManifest.Payload.Checksum
 	generationGeneratedAt := bootstrapManifest.GeneratedAt
 	usingEmbeddedBootstrap := true
@@ -200,6 +202,7 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 				return nil, errors.WrapResource("decode", "stored current catalog generation", stored.Manifest.GenerationID, err)
 			}
 			generationID = stored.Manifest.GenerationID
+			generationAuthorityHead = stored.Manifest.AuthorityHead
 			generationPayloadChecksum = stored.Manifest.Payload.Checksum
 			generationGeneratedAt = stored.Manifest.GeneratedAt
 			usingEmbeddedBootstrap = false
@@ -243,6 +246,7 @@ func newClient(ctx context.Context, options *options) (*Client, error) {
 	}
 	sm.catalog = initial
 	sm.generationID = generationID
+	sm.generationAuthorityHead = generationAuthorityHead
 	sm.generationPayloadChecksum = generationPayloadChecksum
 	sm.generationGeneratedAt = generationGeneratedAt
 	sm.generationSequence = 1

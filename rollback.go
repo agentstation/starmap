@@ -41,6 +41,9 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 	if err := c.requireWritableCatalogStore(); err != nil {
 		return nil, err
 	}
+	if err := c.authorizePublication(ctx); err != nil {
+		return nil, err
+	}
 	catalogPath := c.options.catalogPath
 	if err := validateCatalogLayout(c.options.catalogStore, catalogPath); err != nil {
 		return nil, err

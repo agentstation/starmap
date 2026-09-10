@@ -19,6 +19,8 @@ const (
 	SourceToken          = catalogconfig.SourceToken
 	SourcePollInterval   = catalogconfig.SourcePollInterval
 	SourceStartupPolicy  = catalogconfig.SourceStartupPolicy
+	SourceAuthorityID    = catalogconfig.SourceAuthorityID
+	SourcePolicyID       = catalogconfig.SourcePolicyID
 	SourceMaxAge         = catalogconfig.SourceMaxAge
 	SourceMaxHops        = catalogconfig.SourceMaxHops
 	SourceAliases        = catalogconfig.SourceAliases

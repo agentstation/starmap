@@ -66,8 +66,10 @@ type options struct {
 	sourceConfiguration []sources.SourceActivity
 	leaseStore          LeaseStore
 
-	now    func() time.Time
-	random Random
+	now                        func() time.Time
+	random                     Random
+	permissionClockUncertainty func() (time.Duration, bool)
+	publicationCapability      *authorityPublicationCapability
 
 	// scheduleTimer paces the periodic workers. It stays unexported and nil in
 	// every deployment, so production keeps one stopped timer per wait. A test
@@ -112,6 +114,9 @@ func (r options) transferPolicy() remote.TransferPolicy {
 // resolve derives every setting that another setting implies. Open calls it
 // once, after it applies the options and before it validates them.
 func (r *options) resolve() {
+	if r.source.StartupPolicy == StartupRequireAuthority {
+		r.publicationCapability = &authorityPublicationCapability{owned: true}
+	}
 	// The source maximum age names the age at which the served catalog is
 	// stale, so it names the channel freshness thresholds too. An explicit
 	// freshness policy wins over the derivation.

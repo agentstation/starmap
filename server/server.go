@@ -62,6 +62,8 @@ func WithLogger(logger *zerolog.Logger) Option {
 
 // WithRuntime joins the server to one connected runtime. Readiness then
 // reports the runtime status, and Shutdown joins the runtime shutdown.
+// If the runtime implements ReadPermission(context.Context), the permission endpoint forwards its validated receipt.
+// A runtime without that capability cannot serve permission receipts.
 func WithRuntime(connected ConnectedRuntime) Option {
 	return func(options *options) error {
 		if connected == nil || reflect.ValueOf(connected).IsZero() {

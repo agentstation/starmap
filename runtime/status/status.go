@@ -116,9 +116,24 @@ type SourceHop struct {
 // usability, freshness, fallback, direct source health, and upstream-reported
 // health as five independent values, so a warning on one never hides another.
 type Status struct {
-	// Usable reports whether the runtime serves a catalog now. A runtime that
-	// serves the verified embedded catalog is usable.
+	// Usable reports whether the catalog can serve new work under the startup policy.
+	// An internal authority also requires a retained, current permission receipt.
 	Usable bool
+
+	// CatalogAvailable reports metadata availability independently of permission.
+	CatalogAvailable bool
+	// AuthorityRequired reports whether an internal authority controls catalog use.
+	AuthorityRequired bool
+	// AuthorityReady reports whether the active catalog enforces the required revision.
+	AuthorityReady bool
+	// PermissionValid reports whether the retained receipt currently permits new work.
+	PermissionValid bool
+	// RequiredPermissionRevision is the highest authenticated requirement.
+	RequiredPermissionRevision string
+	// EnforcedPermissionRevision is the active catalog's permission revision.
+	EnforcedPermissionRevision string
+	// PermissionValidUntil is the confirmed receipt's expiry before the runtime subtracts clock uncertainty.
+	PermissionValidUntil time.Time
 
 	// GenerationID identifies the served catalog generation.
 	GenerationID string

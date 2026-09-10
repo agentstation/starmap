@@ -4,6 +4,8 @@ import (
 	"math"
 	"testing"
 	"time"
+
+	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
 func TestEmbeddedBudgetReadinessReportsGenerationAgeVersionAndSize(t *testing.T) {
@@ -48,7 +50,7 @@ func TestEmbeddedBudgetReadinessFailsClosedForStaleAndOversizeBootstrap(t *testi
 		t.Fatalf("readiness issue codes = %#v", readiness.Issues)
 	}
 
-	client.swapCatalogGeneration(client.Catalog(), "published-generation", "sha256:test", time.Time{})
+	client.swapCatalogGeneration(client.Catalog(), "published-generation", "sha256:test", time.Time{}, catalogs.CatalogAuthorityHead{})
 	readiness = client.Readiness()
 	if !readiness.Ready || readiness.Embedded.Active {
 		t.Fatalf("published generation should supersede bootstrap budgets: %#v", readiness)

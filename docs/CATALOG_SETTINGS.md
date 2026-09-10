@@ -77,6 +77,25 @@ The current standalone update command and HTTP update adapter still require bind
 Do not use those paths to enforce a scoped acquisition policy.
 Starport adoption and complete product qualification remain open.
 
+## Internal authority runtime
+
+The require_authority startup policy keeps metadata available while permission controls new work.
+Select the starmap source, its URL, and both source authority and policy IDs.
+The runtime accepts only that authority's catalog and disables local acquisition.
+A retained catalog does not by itself authorize requests.
+Permission checks run independently of catalog checks and the shared acquisition lease.
+
+The runtime stores its highest requirement and finite receipt in catalog-runtime/permission.json beneath the state directory.
+This private checkpoint stays uncertain until shutdown finishes and retains every known requirement.
+After a crash, metadata remains available, but new work requires a fresh verified receipt.
+A completed shutdown permits offline restart while the retained receipt remains valid.
+
+The library host supplies cached clock evidence through WithPermissionClockUncertainty.
+Unknown clock validity blocks new work. The callback must use the same time source as WithClock.
+The current standalone composition supplies no clock qualification adapter.
+Authority receipt issuance and complete deployment qualification remain open.
+These settings do not establish a qualified internal-server recipe by themselves.
+
 ## Explicit dotenv files
 
 Service configuration does not discover dotenv files in the working directory.
@@ -297,7 +316,7 @@ Authenticates transport to the selected catalog source. It is separate from prov
 
 ## catalog_source_poll_interval
 
-Sets the period between automatic source checks. Zero disables periodic checks.
+Sets the period between automatic catalog checks. Zero disables periodic catalog checks.
 
 | Property | Value |
 |---|---|
@@ -328,7 +347,7 @@ Selects catalog availability before the first upstream reply.
 | YAML key | `catalog_source_startup_policy` |
 | Semantic ID | `catalog.source.startup.policy` |
 | Grammar | `string` |
-| Accepted names | `prefer_source`, `require_source`, `prefer_local` |
+| Accepted names | `prefer_source`, `require_source`, `require_authority`, `prefer_local` |
 | Default | `prefer_source` |
 | Explicit empty | false |
 | Explicit zero | false |
@@ -337,6 +356,52 @@ Selects catalog availability before the first upstream reply.
 | Applicability | `all` |
 | Change class | `runtime-replacement` |
 | Compatibility | `supported`, schema 1 |
+
+<a id="catalog-source-authority-id"></a>
+
+## catalog_source_authority_id
+
+Pins an internal authority or permission policy. The require_authority policy needs both identities.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_AUTHORITY_ID` |
+| CLI flag | `--catalog-source-authority-id value` |
+| YAML key | `catalog_source_authority_id` |
+| Semantic ID | `catalog.source.authority.id` |
+| Grammar | `string` |
+| Default | no internal authority selected |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `starmap` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
+
+<a id="catalog-source-policy-id"></a>
+
+## catalog_source_policy_id
+
+Pins an internal authority or permission policy. The require_authority policy needs both identities.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_POLICY_ID` |
+| CLI flag | `--catalog-source-policy-id value` |
+| YAML key | `catalog_source_policy_id` |
+| Semantic ID | `catalog.source.policy.id` |
+| Grammar | `string` |
+| Default | no internal authority selected |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `starmap` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+| Source group | `catalog-source` |
 
 <a id="catalog-source-max-age"></a>
 

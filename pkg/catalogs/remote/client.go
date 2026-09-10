@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -54,9 +55,12 @@ func PayloadPath(generationID string) string {
 
 // Client fetches one exact current generation from a versioned Starmap API.
 type Client struct {
-	baseURL       *url.URL
-	httpClient    *http.Client
-	schemaVersion uint64
+	baseURL           *url.URL
+	httpClient        *http.Client
+	schemaVersion     uint64
+	authorityMu       sync.Mutex
+	authorityObserver func(context.Context, catalogs.CatalogAuthorityHead) error
+	manifestStarted   bool
 }
 
 // NewClient creates a remote generation client. baseURL is the trusted,
@@ -220,11 +224,13 @@ func (c *Client) fetchManifest(
 	resourceID string,
 	ifNoneMatch string,
 ) (catalogs.GenerationManifest, bool, error) {
+	observer := c.beginManifestRead()
 	manifestData, notModified, err := c.fetchConditional(
 		ctx,
 		resourcePath,
 		ManifestMediaType,
 		ifNoneMatch,
+		maxBodyBytes,
 	)
 	if err != nil {
 		return catalogs.GenerationManifest{}, false, err
@@ -240,6 +246,11 @@ func (c *Client) fetchManifest(
 			resourceID,
 			err,
 		)
+	}
+	if observer != nil && resourcePath == ManifestPath {
+		if err := observer(ctx, manifest.AuthorityHead); err != nil {
+			return catalogs.GenerationManifest{}, false, err
+		}
 	}
 	if err := validateGenerationID(manifest.GenerationID); err != nil {
 		return catalogs.GenerationManifest{}, false, err
@@ -322,7 +333,7 @@ func (c *Client) fetchGenerationPayload(
 }
 
 func (c *Client) fetch(ctx context.Context, resourcePath, mediaType string) ([]byte, error) {
-	data, _, err := c.fetchConditional(ctx, resourcePath, mediaType, "")
+	data, _, err := c.fetchConditional(ctx, resourcePath, mediaType, "", maxBodyBytes)
 	return data, err
 }
 
@@ -331,6 +342,7 @@ func (c *Client) fetchConditional(
 	resourcePath string,
 	mediaType string,
 	ifNoneMatch string,
+	maxBytes int64,
 ) ([]byte, bool, error) {
 	if ctx == nil {
 		ctx = context.Background()
@@ -366,19 +378,19 @@ func (c *Client) fetchConditional(
 	if err != nil || actualMediaType != mediaType {
 		return nil, false, &errors.ValidationError{Field: "catalog_remote.content_type", Value: response.Header.Get("Content-Type"), Message: "does not match " + mediaType}
 	}
-	if response.ContentLength > maxBodyBytes {
+	if response.ContentLength > maxBytes {
 		return nil, false, &errors.ValidationError{
 			Field:   "catalog_remote.body",
 			Value:   response.ContentLength,
 			Message: "exceeds maximum size",
 		}
 	}
-	limited := io.LimitReader(response.Body, maxBodyBytes+1)
+	limited := io.LimitReader(response.Body, maxBytes+1)
 	data, err := io.ReadAll(limited)
 	if err != nil {
 		return nil, false, errors.WrapIO("read", target.String(), err)
 	}
-	if len(data) > maxBodyBytes {
+	if int64(len(data)) > maxBytes {
 		return nil, false, &errors.ValidationError{Field: "catalog_remote.body", Value: len(data), Message: "exceeds maximum size"}
 	}
 	return data, false, nil

@@ -55,6 +55,7 @@ func (r *Runtime) Status() Status {
 	r.mu.RLock()
 	state := r.report
 	effective := r.effective
+	permissions := r.permissions
 	hasSource := r.layers.source != nil
 	acceptedSources := slices.Clone(r.layers.acceptedSources)
 	var channelUpdatedAt time.Time
@@ -84,6 +85,20 @@ func (r *Runtime) Status() Status {
 		AcceptedAcquisitionSources: acceptedSources,
 		StartedAt:                  state.startedAt,
 		ObservedAt:                 now,
+	}
+	report.CatalogAvailable = effective.Catalog != nil
+	if r.requiresAuthority() {
+		uncertainty, known := r.permissionClock()
+		report.AuthorityRequired = true
+		report.AuthorityReady = permissions.enforced.Sequence != 0 && permissions.enforced.RequiredPermissionRevision == permissions.highest.RequiredPermissionRevision
+		report.PermissionValid = report.AuthorityReady && permissions.allowsNewAttempt(now, uncertainty, known)
+		if r.ctx.Err() != nil {
+			report.PermissionValid = false
+		}
+		report.Usable = report.CatalogAvailable && report.PermissionValid
+		report.RequiredPermissionRevision = permissions.highest.RequiredPermissionRevision
+		report.EnforcedPermissionRevision = permissions.enforced.RequiredPermissionRevision
+		report.PermissionValidUntil = permissions.activeReceipt.ValidUntil
 	}
 	if r.source != nil {
 		report.SourceIdentity = r.source.Identity()

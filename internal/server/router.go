@@ -95,6 +95,8 @@ func (s *Server) registerRoutes(mux *http.ServeMux, h *handlers.Handlers) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	})
 
+	mux.HandleFunc(prefix+"/catalog/permission", h.HandleCatalogPermission)
+
 	// Admin endpoints
 	mux.HandleFunc(prefix+"/catalog/manifest", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
