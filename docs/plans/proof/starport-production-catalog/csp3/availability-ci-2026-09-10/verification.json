@@ -480,6 +480,68 @@
     "run": 34447195101,
     "watch_session": 24659,
     "log": "/tmp/starmap-pr144-repaired-ci-watch-2026-09-10.log",
-    "state": "in_progress"
+    "state": "All six native jobs passed. Verification Gate is still running. Linux service-admin reads have one explicit skip each.",
+    "native": {
+      "macos-15": {
+        "test_events": {
+          "pass": 1570
+        },
+        "skipped_tests": [],
+        "failed_tests": [],
+        "artifact": "repaired-macos-15.jsonl.gz",
+        "sha256": "6f5d0daab8e704c14b3c1f03186bef8b52697b5648578198ddd1e6a2d9ea9f0a"
+      },
+      "macos-15-intel": {
+        "test_events": {
+          "pass": 1570
+        },
+        "skipped_tests": [],
+        "failed_tests": [],
+        "artifact": "repaired-macos-15-intel.jsonl.gz",
+        "sha256": "885a6a04f2132ef6327eaee3b912af221ba1ae424816ff83ad0be4df2e2778ff"
+      },
+      "ubuntu-24.04": {
+        "test_events": {
+          "pass": 1514,
+          "skip": 1
+        },
+        "skipped_tests": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "failed_tests": [],
+        "artifact": "repaired-ubuntu-24.04.jsonl.gz",
+        "sha256": "bcd2fb7781718ce4a9d1a226f2671bad5186db60288b72a1f69add99d7fc047a"
+      },
+      "ubuntu-24.04-arm": {
+        "test_events": {
+          "pass": 1514,
+          "skip": 1
+        },
+        "skipped_tests": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "failed_tests": [],
+        "artifact": "repaired-ubuntu-24.04-arm.jsonl.gz",
+        "sha256": "9594198c4d1dca82cb730d0357f8c4677ffccbf23ac716bb5240c9ce23675f0b"
+      },
+      "windows-11-arm": {
+        "test_events": {
+          "pass": 1515
+        },
+        "skipped_tests": [],
+        "failed_tests": [],
+        "artifact": "repaired-windows-11-arm.jsonl.gz",
+        "sha256": "aa45a53702055ac0e7c184ef121457c5be7ed475b977b889f1382b9160a3e3c6"
+      },
+      "windows-2025": {
+        "test_events": {
+          "pass": 1515
+        },
+        "skipped_tests": [],
+        "failed_tests": [],
+        "artifact": "repaired-windows-2025.jsonl.gz",
+        "sha256": "7fa69418ba11eccc471e845f703ccc92e68499d6817f3d27898728800ee2b096"
+      }
+    }
   }
 }

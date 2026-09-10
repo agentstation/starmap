@@ -1,0 +1,458 @@
+{
+  "task": "CSP3",
+  "decision": "D30",
+  "worktree": "/tmp/starmap-canonical-aliases-2026-09-10",
+  "branch": "codex/catalog-canonical-aliases",
+  "commit": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
+  "reviewed_dependency": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
+  "state": "Component committed. Full race acceptance is running. Pre-PR review, native CI, publication, and complete A08 remain unverified.",
+  "scope": [
+    "Strict canonical-aliases.yaml storage and original alias records through embedded/local acquisition.",
+    "Local workspace rename changes require selected baseline authority.",
+    "Release and channel publication bind successor history to the current attested channel and exact predecessor assets.",
+    "Missing or unreadable channel state fails closed. Publication uses the verified branch commit as its push parent.",
+    "Embedded PR verification checks rename history against the target branch.",
+    "Real provider HTTP client fixture covers preview, fresh acquisition, and retained restart."
+  ],
+  "checks": {
+    "yaml-before": {
+      "exit_code": 1,
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "fail": 6
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs": "fail"
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/pkg/catalogs:TestCanonicalAliasWorkspaceRoundTrip",
+        "github.com/agentstation/starmap/pkg/catalogs:TestCanonicalAliasWorkspaceRejectsInvalidRecords/null_",
+        "github.com/agentstation/starmap/pkg/catalogs:TestCanonicalAliasWorkspaceRejectsInvalidRecords/-_id:_author/old___target_id:_author/current___publisher_id:_upstream___state:_active___expires_at:_never_",
+        "github.com/agentstation/starmap/pkg/catalogs:TestCanonicalAliasWorkspaceRejectsInvalidRecords/-_id:_author/old___target_id:_author/current___publisher_id:_upstream_",
+        "github.com/agentstation/starmap/pkg/catalogs:TestCanonicalAliasWorkspaceRejectsInvalidRecords/-_id:_author/old___target_id:_author/old___publisher_id:_upstream___state:_active_",
+        "github.com/agentstation/starmap/pkg/catalogs:TestCanonicalAliasWorkspaceRejectsInvalidRecords"
+      ],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "yaml-before.jsonl.gz",
+        "sha256": "ae6b37982f24f0f29db74942a6b62ce6d19fb7b0721bdfd1fb0a25c4588238df",
+        "raw_sha256": "4a7b2cb847419d50fd262415450f4a4f718297f9f48524e3e15cf4ac63533627"
+      },
+      "note": "Six behavioral failures before YAML support.",
+      "equivalent_replay": "go test -race -count=1 -json ./pkg/catalogs -run CanonicalAliasWorkspace",
+      "invocation_note": "Equivalent replay from retained package and test events. The earlier command text was not retained in this proof."
+    },
+    "workspace-sources": {
+      "exit_code": 0,
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "pass": 1155
+        },
+        "github.com/agentstation/starmap/internal/sources/embedded": {
+          "pass": 2
+        },
+        "github.com/agentstation/starmap/internal/sources/local": {
+          "pass": 10
+        },
+        "github.com/agentstation/starmap/internal/catalog/pipeline": {
+          "pass": 105
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/sources/embedded": "pass",
+        "github.com/agentstation/starmap/internal/sources/local": "pass",
+        "github.com/agentstation/starmap/internal/catalog/pipeline": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "workspace-sources.jsonl.gz",
+        "sha256": "b71054409b21de33d6f195b3aac71f299c8330a0075bc615eae835e784cad0cc",
+        "raw_sha256": "b3df95b795feda0c37783735f7114027d1a262a41f183debe6647ffb4cef8f7d"
+      },
+      "note": "1272 passing events before the file-close error handling repair. The subsequent focused checks and lint cover that repair.",
+      "equivalent_replay": "go test -race -count=1 -json ./pkg/catalogs ./internal/sources/embedded ./internal/sources/local ./internal/catalog/pipeline",
+      "invocation_note": "Equivalent replay from retained package and test events. The earlier command text was not retained in this proof."
+    },
+    "workspace-final": {
+      "exit_code": 0,
+      "test_events": {
+        "github.com/agentstation/starmap/internal/sources/embedded": {
+          "pass": 1
+        },
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "pass": 6
+        },
+        "github.com/agentstation/starmap/internal/sources/local": {
+          "pass": 5
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/sources/embedded": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs": "pass",
+        "github.com/agentstation/starmap/internal/sources/local": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "workspace-final.jsonl.gz",
+        "sha256": "07c7d827f9a4d1830be1c19f8459878a1ab40069a2b9fbcb1f0aa22013520034",
+        "raw_sha256": "473ec9bccdfac3bd4b41adb1b744e40cea3f2a0d45b6085ae6e4bab41bc3a456"
+      },
+      "note": "Final focused workspace/source checks.",
+      "equivalent_replay": "go test -race -count=1 -json ./pkg/catalogs ./internal/sources/embedded ./internal/sources/local -run CanonicalAlias",
+      "invocation_note": "Equivalent replay from retained package and test events. The earlier command text was not retained in this proof."
+    },
+    "workspace-minimum": {
+      "exit_code": 0,
+      "test_events": {
+        "github.com/agentstation/starmap/internal/sources/embedded": {
+          "pass": 1
+        },
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "pass": 6
+        },
+        "github.com/agentstation/starmap/internal/sources/local": {
+          "pass": 5
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/sources/embedded": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs": "pass",
+        "github.com/agentstation/starmap/internal/sources/local": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "workspace-minimum.jsonl.gz",
+        "sha256": "b57d3f69611f766bc075fc39599cd6eecf1eb8cf5587bc358c1378cfb1c0c13c",
+        "raw_sha256": "324c0bf5a9439eeb386caf64c3a0afa835c4fffa268a132586d579dc2f69ba12"
+      },
+      "note": "Minimum supported toolchain.",
+      "equivalent_replay": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -json ./pkg/catalogs ./internal/sources/embedded ./internal/sources/local -run CanonicalAlias",
+      "invocation_note": "Equivalent replay from retained package and test events. The earlier command text was not retained in this proof."
+    },
+    "producer": {
+      "exit_code": 0,
+      "test_events": {
+        "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest": {
+          "pass": 5
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "producer.jsonl.gz",
+        "sha256": "f082d11e63c1ee3d96f5c7adbbeb9dcdcf4c7bd15943b8e0bbd625fcce6dfe4d",
+        "raw_sha256": "a471a6159e0ddf2182c239b0686110e4aab1d41945290afd9e84e47d400a774c"
+      },
+      "note": null,
+      "equivalent_replay": "go test -race -count=1 -json ./cmd/starmap-bootstrap-manifest -run TestBootstrapManifestPreservesCanonicalRenameHistory",
+      "invocation_note": "Equivalent replay from retained package and test events. The earlier command text was not retained in this proof."
+    },
+    "channel-before": {
+      "exit_code": 1,
+      "command": "go test -race -count=1 -json ./cmd/starmap-catalog-release -run TestChannelRequiresPublishedPredecessor",
+      "test_events": {
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": {
+          "fail": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": "fail"
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release:TestChannelRequiresPublishedPredecessor"
+      ],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "channel-before.jsonl.gz",
+        "sha256": "136935a7b0aeb6bd2b149dcc61c6c0ca008fe8e8e07d3029de69a0ef11c63150",
+        "raw_sha256": "7262af514a3eba4b664ff5225f995a3ce74b4b204f98949c4a0ccda103d99554"
+      },
+      "note": "Existing API advanced the channel without predecessor history."
+    },
+    "channel-after": {
+      "exit_code": 0,
+      "command": "go test -race -count=1 -json ./cmd/starmap-catalog-release -run TestChannelRequiresPublishedPredecessor",
+      "test_events": {
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "channel-after.jsonl.gz",
+        "sha256": "0e4a1a8bfc370d256a9669f435f43dddc0b9a09acc52cfe7dbed744d2b798a70",
+        "raw_sha256": "710bdc1856b2da79fcd0440ac30c656bf025da17f33ff492da67092aff818f71"
+      },
+      "note": null
+    },
+    "channel-full": {
+      "exit_code": 0,
+      "command": "go test -race -count=1 -json ./cmd/starmap-catalog-release",
+      "test_events": {
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": {
+          "pass": 35
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "channel-full.jsonl.gz",
+        "sha256": "a3a813a38870cc2b647922c8ffc8788a8468117ce6074e1a58b0d0dfe0b0eff0",
+        "raw_sha256": "4babe340ebb941d4d47f01cb397bd9a48cb3ca3017e7d3b0752d6d6d6ead96af"
+      },
+      "note": "35 events, including the four provider and metadata ingestion flows."
+    },
+    "publisher-artifact": {
+      "exit_code": 0,
+      "command": "go test -race -count=1 -json ./pkg/catalogs/artifact",
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 40
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "publisher-artifact.jsonl.gz",
+        "sha256": "9032def118a57327bcccc5e9ad31f09e544d851abd8412eed2b0b91deaaf3d59",
+        "raw_sha256": "d20c88d404b059b76ea9981b1a67a7b4d745a963323430aee0e6839313a7a072"
+      },
+      "note": null
+    },
+    "acquisition-flow": {
+      "exit_code": 1,
+      "command": "go test -race -count=1 -timeout 20m -json ./acquisition -run TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart",
+      "test_events": {},
+      "packages": {
+        "github.com/agentstation/starmap/acquisition": "fail"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "acquisition-flow.jsonl.gz",
+        "sha256": "26abd5fac64322b42df16c9ddada46f6fe042b94b892ddd1f26436f71ac17d8b",
+        "raw_sha256": "f8e2d7819af33fdf08f03f4af47d213e60e1a9daa1880446a9dc47378440af4c"
+      },
+      "note": "Fixture compile error from a nonexistent Len method. Not behavioral fail-before evidence."
+    },
+    "acquisition-flow-valid": {
+      "exit_code": 1,
+      "command": "go test -race -count=1 -timeout 20m -json ./acquisition -run TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart",
+      "test_events": {
+        "github.com/agentstation/starmap/acquisition": {
+          "fail": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/acquisition": "fail"
+      },
+      "failed_tests": [
+        "github.com/agentstation/starmap/acquisition:TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart"
+      ],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "acquisition-flow-valid.jsonl.gz",
+        "sha256": "240ad8d2d6aefab3a04220bbb2c56141c79a2870ce680683a3a325bb12480e84",
+        "raw_sha256": "35329aa01a9815f1bab9590817cedde74416d7920e29a3c2a1232a356e9b1ae4"
+      },
+      "note": "The accepted source contained a custom provider, but manual acquisition could not configure it without a local workspace. See the open source-configuration finding."
+    },
+    "acquisition-flow-workspace": {
+      "exit_code": 0,
+      "command": "go test -race -count=1 -timeout 20m -json ./acquisition -run TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart",
+      "test_events": {
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/acquisition": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "acquisition-flow-workspace.jsonl.gz",
+        "sha256": "47173c85f428352ce446cbab305dae046bfd9eb884e1a1eee7a976d204ea11d8",
+        "raw_sha256": "995307d311e65ca5ab95fac784066566ca63b692f65825184eb16963b7ecd9b5"
+      },
+      "note": "A local provider workspace supplies the supported acquisition configuration. The unchanged alias inventory survives local acquisition."
+    },
+    "production-minimum": {
+      "exit_code": 0,
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout 20m -json ./cmd/starmap-bootstrap-manifest ./cmd/starmap-catalog-release ./acquisition -run CanonicalAlias|CanonicalRename|PublishedPredecessor",
+      "test_events": {
+        "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest": {
+          "pass": 5
+        },
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": {
+          "pass": 26
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest": "pass",
+        "github.com/agentstation/starmap/cmd/starmap-catalog-release": "pass",
+        "github.com/agentstation/starmap/acquisition": "pass"
+      },
+      "failed_tests": [],
+      "skipped_tests": [],
+      "artifact": {
+        "path": "production-minimum.jsonl.gz",
+        "sha256": "4648f8fd95c3018a24af4af3e6cc66de5ae53e1a72c6629927674aa692df44f7",
+        "raw_sha256": "fbac711ada53b15bc121aaf263583d55c64fb58f7f97de401ec6d34edcd9ddcc"
+      },
+      "note": "32 passing events on the minimum supported toolchain."
+    }
+  },
+  "environment": {
+    "default_prefix": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 ",
+    "language_floor": "Go 1.25",
+    "minimum_toolchain": "go1.25.12"
+  },
+  "static": {
+    "ago": {
+      "exit_code": 0,
+      "note": "No findings. Tests are excluded by the repository policy.",
+      "artifact": {
+        "path": "ago.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 0,
+      "note": "0 issues.",
+      "artifact": {
+        "path": "lint.log.gz",
+        "sha256": "39d3713d7768a66c22a93c40300fba9c635dfa42950404729c5cdc8976596dc1",
+        "raw_sha256": "4b59bc9866bdeab1a37678dd0e3c108e985098c7bef22eb4ccfbefa2cb6d087f"
+      }
+    },
+    "workspace_lint_before": {
+      "exit_code": 1,
+      "note": "The new YAML reader did not handle the close error. Repaired without suppression.",
+      "artifact": {
+        "path": "workspace_lint_before.log.gz",
+        "sha256": "a9e7a390c0fbb80d23bba1bb785aabb6cbdb5c2132abc7433402a9397f4813c0",
+        "raw_sha256": "d9dcbdbd3b1659faa76241640c681ffb03e03184795d69e3cdaf5d3a4e4c44bb"
+      }
+    },
+    "prose_before": {
+      "exit_code": 2,
+      "note": "Three prose diagnostics, corrected without changing the contract.",
+      "artifact": {
+        "path": "prose_before.log.gz",
+        "sha256": "5ea6da5391bc8d401bf630c414a2e227cee23121fa41a03c4e3eaaa533651d47",
+        "raw_sha256": "6c9fdc854431d199a7462253d361905a1bf7581b3b1c5a9fa8cd3d3caa735991"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "note": "1375 files, zero diagnostics.",
+      "artifact": {
+        "path": "prose.log.gz",
+        "sha256": "dcc4f1e0467ce63908db6ad9fb20585f3afa69d74669b277bcc5d330b0191bbf",
+        "raw_sha256": "f0bc697a086415b72c824e3c44b272ce910ae1667134cf00798ae3e7357a1f85"
+      }
+    },
+    "godoc": {
+      "exit_code": 0,
+      "note": "Generated documentation updated.",
+      "artifact": {
+        "path": "godoc.log.gz",
+        "sha256": "dae696d95312060bc935ce41b2a3422ae54c0e0fcd331a3fdff4729f16058ebf",
+        "raw_sha256": "e97b3cb59f729433697948a78fc9f2627823b03894735334d7e42e2c7a8d26a8"
+      }
+    },
+    "docs_check": {
+      "exit_code": 0,
+      "note": "All generated documentation is current.",
+      "artifact": {
+        "path": "docs_check.log.gz",
+        "sha256": "f35af21cbae5140a657df6fc9c88555b77dcacdf41e1aafe66ecae89ecfd49a9",
+        "raw_sha256": "03c671e0c310f3afb3b9539b602311b0988837d0991ca497a2bbb09894da3461"
+      }
+    },
+    "workflow": {
+      "exit_code": 1,
+      "note": "Pre-existing SC2024 in the PR native service check. No new scheduled-publisher diagnostic.",
+      "artifact": {
+        "path": "workflow.log.gz",
+        "sha256": "a35c4aa5ebf27e38753e35607fe42e8093874f21bf6d52eecd5dae124f4e29f4",
+        "raw_sha256": "15e861b8618823b244de7430347a46e541d193930e2d0b654ffdbc171a88a827"
+      }
+    },
+    "workflow_baseline": {
+      "exit_code": 1,
+      "note": "The same SC2024 reproduced at acbfc247 before this change.",
+      "artifact": {
+        "path": "workflow_baseline.log.gz",
+        "sha256": "c1e51aebec024fab922d8fa9b91fe03e6d9c11a9a9d2028e96b2d7131364b4fd",
+        "raw_sha256": "221916a975ae71eeb98601bff71d93f766f17b7b7d55ed7c67bd0afe6f24307e"
+      }
+    },
+    "generation_workflow": {
+      "exit_code": 0,
+      "note": "The changed catalog-generation workflow passes actionlint.",
+      "artifact": {
+        "path": "generation_workflow.log.gz",
+        "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "embedded_predecessor": {
+      "exit_code": 0,
+      "note": "Compared with c474e2a419251b5127cca2179ab21b7503afccdf.",
+      "artifact": {
+        "path": "embedded_predecessor.log.gz",
+        "sha256": "24ae40f7c0b3bce5e2ede57027c2378fd2d576953b919977b9aba6e5b2534534",
+        "raw_sha256": "a2a66b44ce088cb734a2dc19cca5bef45c9a5444c45eb6118a2331ca312d838f"
+      }
+    }
+  },
+  "running": {
+    "full_acceptance": {
+      "session": 20470,
+      "log": "/tmp/starmap-canonical-alias-full-acceptance-2026-09-10.jsonl",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json . ./runtime ./acquisition ./internal/catalog/reconciler",
+      "source": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
+      "status": "running"
+    }
+  },
+  "open_findings": [
+    {
+      "id": "CSP3-source-provider-configuration",
+      "owner": "CSP3",
+      "state": "requires resolution before CSP3 completion",
+      "evidence": "acquisition-flow-valid.jsonl.gz; internal/catalog/pipeline/catalog_inputs.go; acquisition/acquirer.go:scopeToProvider",
+      "finding": "Manual Sync composes acquisition provider configuration from embedded and local catalogs. Runtime Acquirer instead uses the accepted current catalog. A custom provider in an accepted upstream baseline is missing from the manual path unless a local workspace supplies it.",
+      "next": "Make the selected-baseline and local override contract consistent across manual and scheduled acquisition. Preserve credential-plane separation and explicit local configuration precedence."
+    }
+  ],
+  "remaining": [
+    "Full package race acceptance and complete A08/A20 registered verification.",
+    "Provider omission and scoped/canonical exclusion through alias identity require explicit combined coverage.",
+    "Resolve the source-provider configuration finding at its acquisition boundary.",
+    "Required pre-PR review, native CI, merge, and Starport consumer integration."
+  ]
+}
