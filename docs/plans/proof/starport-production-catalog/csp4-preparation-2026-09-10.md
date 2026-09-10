@@ -1,6 +1,7 @@
 # CSP4 preparation
 
-CSP4 remains pending while CSP3 completes qualification and merge.
+CSP4 implementation starts from reviewed CSP3 dependency `b5af1e9c` while its final CI runs.
+CSP3 must merge before CSP4 publication. The current resume state owns execution status.
 This inspection changes no product code and gives no task completion credit.
 
 The inspected Starmap source is `3609f17174e4d42478b0bba47c2d2f34bcb3e2c0`.
@@ -83,3 +84,13 @@ The next design must cover a permission-retention write failure followed by rest
 An older retained receipt cannot prove that the process never learned a later withdrawal.
 Treat uncertain retained permission state as a refusal until fresh authority evidence resolves it.
 Preserve retained catalog metadata for diagnostics throughout that refusal.
+
+## Startup behavior probes
+
+The [baseline probes](csp4/startup-baseline-2026-09-10/verification.json) fail both target authority expectations against the existing strict online policy.
+The warm probe first accepts and retains a catalog, then fails to reopen while the configured source is offline.
+The cold probe refuses the refresh lease but still reports the embedded catalog as usable without accepted internal state.
+
+These probes establish the need for a distinct authority policy. Preserve strict online startup semantics.
+The proof retains the temporary test source and raw race output. The worktree no longer contains those temporary probes.
+Permanent authority tests must add authenticated identity, permission validity, retained receipts, and publication failure coverage.

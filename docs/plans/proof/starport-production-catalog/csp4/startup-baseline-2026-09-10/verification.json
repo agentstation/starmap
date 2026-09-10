@@ -1,0 +1,47 @@
+{
+  "task": "CSP4",
+  "base": "b5af1e9c67e065ebd688a19a7563bcc430f724bb",
+  "worktree": "/tmp/starmap-authority-retention-2026-09-10",
+  "branch": "codex/catalog-authority-retention",
+  "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -json -race -count=1 -timeout=5m -run ^TestCSP4Baseline ./runtime",
+  "exit_code": 1,
+  "failed_tests": [
+    "TestCSP4BaselineWarmRetainedStartup",
+    "TestCSP4BaselineColdLeaseFollower"
+  ],
+  "failure_messages": [
+    "csp4_startup_baseline_test.go:43: existing policy cannot retain offline startup after accepted generation accepted-internal: failed to read catalog source internal-authority: internal source is offline",
+    "csp4_startup_baseline_test.go:69: lease follower reports usable state without an accepted internal catalog"
+  ],
+  "test_events": {
+    "pass": 0,
+    "fail": 2,
+    "skip": 0
+  },
+  "source": {
+    "path": "probe.go.gz",
+    "sha256": "0ee8e0a37886766133d0a4f438afea2be558ece0d3d9f554f1d74727caff504b",
+    "raw_sha256": "d760f387e1176df0235430ec6776f5acb65aa0ae19ac6d83deeab38ee2374b50"
+  },
+  "output": {
+    "path": "result.jsonl.gz",
+    "sha256": "64ab2e5e503b6469c6f48fc70290561229e7af85ae1de16e84a0348a3f3193fa",
+    "raw_sha256": "e5e612b430b99e4c048950c3e231c4db2b32afa79bf0a09a2d7586e48a5a80f2"
+  },
+  "interpretation": "The existing strict online policy cannot supply the planned retained-authority startup contract. Its lease follower also reports the embedded catalog as usable without accepted internal state. These probes establish the need for a distinct authority policy, not a change to strict online startup semantics.",
+  "limitations": [
+    "The baseline fixture proves startup and readiness behavior only. It does not authenticate authority or qualify permission validity.",
+    "The temporary probes apply target authority expectations to the existing require_source policy. Preserve the existing strict online policy and add permanent tests against the new authority contract."
+  ],
+  "probe_removed_after_capture": true,
+  "post_probe_ago": {
+    "exit_code": 0,
+    "findings": 0,
+    "errors": 0,
+    "artifact": {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    }
+  }
+}
