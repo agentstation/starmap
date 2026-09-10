@@ -5,7 +5,7 @@
   "branch": "codex/catalog-canonical-aliases",
   "commit": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
   "reviewed_dependency": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
-  "state": "Component committed. Full race acceptance is running. Pre-PR review, native CI, publication, and complete A08 remain unverified.",
+  "state": "Full component race checks pass at bece41e4. All five A08 subcases pass at 7ca484dd. Combined CSP3 acceptance runs at a0cfc63e. Complete branch review, native CI, and merge remain unverified.",
   "scope": [
     "Strict canonical-aliases.yaml storage and original alias records through embedded/local acquisition.",
     "Local workspace rename changes require selected baseline authority.",
@@ -435,7 +435,7 @@
     {
       "id": "CSP3-source-provider-configuration",
       "owner": "CSP3",
-      "state": "requires resolution before CSP3 completion",
+      "state": "Local repair qualified and reviewed at 6cc955fc, integrated at a0cfc63e. Merge remains required.",
       "evidence": "acquisition-flow-valid.jsonl.gz; internal/catalog/pipeline/catalog_inputs.go; acquisition/acquirer.go:scopeToProvider",
       "finding": "Manual Sync composes acquisition provider configuration from embedded and local catalogs. Runtime Acquirer instead uses the accepted current catalog. A custom provider in an accepted upstream baseline is missing from the manual path unless a local workspace supplies it.",
       "next": "Make the selected-baseline and local override contract consistent across manual and scheduled acquisition. Preserve credential-plane separation and explicit local configuration precedence.",
@@ -447,10 +447,10 @@
     }
   ],
   "remaining": [
-    "Full package race acceptance and complete A08/A20 registered verification.",
-    "Provider omission and scoped/canonical exclusion through alias identity require explicit combined coverage.",
-    "Resolve the source-provider configuration finding at its acquisition boundary.",
-    "Required pre-PR review, native CI, merge, and Starport consumer integration."
+    "Complete A08/A20 registered verification on the integrated branch.",
+    "Integrate the fixed textual consumer fixture and aggregate CI time allowance after the active qualification run.",
+    "Pass required pre-PR review and native CI, then merge.",
+    "CSP8 and CSP10 own Starport consumer integration after this Starmap component."
   ],
   "full_race_qualification": {
     "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json . ./runtime ./acquisition ./internal/catalog/reconciler",
@@ -491,6 +491,53 @@
     "qualification_session": 31396,
     "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3 --json",
     "output": "/tmp/starmap-alias-csp3-integrated-2026-09-10.json",
-    "state": "running"
+    "state": "running",
+    "static": {
+      "consumers": {
+        "exit_code": 0,
+        "source": "a0cfc63e9b1c81702b2197f33dcfe11251a52973",
+        "artifact": {
+          "path": "starmap-alias-consumer-deps-2026-09-10.log.gz",
+          "sha256": "de0ebecccd00fa6c1466345e4d0b51a01946ebaaef6b4292ffc795a4e78b0afe",
+          "raw_sha256": "071fa04618437460a7c9f50a485e3a0d13fdd0d76925da39ef452227860b361f"
+        }
+      },
+      "ago": {
+        "exit_code": 0,
+        "source": "a0cfc63e9b1c81702b2197f33dcfe11251a52973",
+        "artifact": {
+          "path": "starmap-alias-integrated-ago-2026-09-10.json.gz",
+          "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+          "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+        }
+      },
+      "lint": {
+        "exit_code": 0,
+        "source": "a0cfc63e9b1c81702b2197f33dcfe11251a52973",
+        "artifact": {
+          "path": "starmap-alias-integrated-lint-2026-09-10.log.gz",
+          "sha256": "39d3713d7768a66c22a93c40300fba9c635dfa42950404729c5cdc8976596dc1",
+          "raw_sha256": "4b59bc9866bdeab1a37678dd0e3c108e985098c7bef22eb4ccfbefa2cb6d087f"
+        }
+      },
+      "docs": {
+        "exit_code": 0,
+        "source": "a0cfc63e9b1c81702b2197f33dcfe11251a52973",
+        "artifact": {
+          "path": "starmap-alias-integrated-docs-2026-09-10.log.gz",
+          "sha256": "f35af21cbae5140a657df6fc9c88555b77dcacdf41e1aafe66ecae89ecfd49a9",
+          "raw_sha256": "03c671e0c310f3afb3b9539b602311b0988837d0991ca497a2bbb09894da3461"
+        }
+      },
+      "prose": {
+        "exit_code": 0,
+        "source": "a0cfc63e9b1c81702b2197f33dcfe11251a52973",
+        "artifact": {
+          "path": "starmap-alias-integrated-prose-2026-09-10.log.gz",
+          "sha256": "5013a49b39398f9062384e20cef887bb7d4cf7d9d134d3c829529ba7053aa8e2",
+          "raw_sha256": "634abeab204949f9e0a64e0b078e8ae197d9db614771b9feabb61c865acbb655"
+        }
+      }
+    }
   }
 }
