@@ -134,6 +134,31 @@
       "exit_code": 0,
       "command": "make technical-writing-check",
       "source_scope": "Canonical planning worktree with the issuer storage inspection. 1286 files, zero diagnostics."
+    },
+    "issuer-consistency-prose-red": {
+      "artifact": {
+        "path": "issuer-consistency-prose-red.log.gz",
+        "sha256": "207f5a46fb04387383b27b59ec3329b330634b578e11cd75226d6be62e90c181",
+        "raw_sha256": "a7cdcff515240787b3f44f09b75e3a92476336e419b87251fb72ff8919c505b3"
+      },
+      "exit_code": 2,
+      "command": "make technical-writing-check",
+      "source_scope": "Intermediate issuer inspection. Three prose diagnostics precede the final repair and plan update."
+    },
+    "issuer-consistency-prose-final": {
+      "artifact": {
+        "path": "issuer-consistency-prose-final.log.gz",
+        "sha256": "79cd8cc071c05ce06822f2a76faed03df1de1d518479d0d687a63e74e48e546f",
+        "raw_sha256": "0f2d227136812af21fa964b599cbd080b86968c4aa74a6cf22610901006f8414"
+      },
+      "exit_code": 0,
+      "command": "make technical-writing-check",
+      "source_scope": "Canonical planning worktree with current-read consistency, publication timing, and migration inspection. 1286 files, zero diagnostics.",
+      "prose_files_sha256": {
+        "docs/plans/proof/starport-production-catalog/csp4/issuer-storage-inspection-2026-09-10.md": "556b87f3cdabb1ab989dd84a1e4a87b0cdf8547ed75d4bd0cb916c6ef2b51a22",
+        "docs/plans/proof/starport-production-catalog/csp4.md": "46e680c9a4704f6aaf33ea82b70080b8125cdcdf1f77afbc7eda0f401f1308a4",
+        "docs/plans/starport-production-catalog-plan.html": "6711cc816c6439a1f40b9f15389b4f53748dded423a8dc89c6e74911c49d9a40"
+      }
     }
   },
   "running_operations": [
@@ -142,7 +167,7 @@
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 make verify",
       "output": "/tmp/starmap-csp4-subscriber-verify-2-2026-09-10.log",
       "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab",
-      "last_observed_stage": "Initial package tests, pure-Go execution, file-size, package layout, ownership, dependency direction, canonical alias history, and verifier tests passed. Repository-wide race tests are running."
+      "last_observed_stage": "Initial package tests, pure-Go execution, structural and product verifier checks passed. Repository-wide race tests passed through the catalog, artifact, and authority packages. The race stage is still running."
     }
   ],
   "limitations": [

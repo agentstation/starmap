@@ -39,6 +39,7 @@ The first merge gives no task completion credit. All acceptance requirements rem
 
 The [clock research](csp4/authority-head-2026-09-10/clock-research.md) selects no clock adapter.
 The [issuer storage inspection](csp4/issuer-storage-inspection-2026-09-10.md) records the missing current-head contract for the second delivery.
+The object backend promises conditional writes, but does not promise current reads. Receipt issuance requires both guarantees and bounded observation timing.
 Complete product verification, required review, native CI, and merge before task completion.
 
 ## Runtime integration checkpoint history

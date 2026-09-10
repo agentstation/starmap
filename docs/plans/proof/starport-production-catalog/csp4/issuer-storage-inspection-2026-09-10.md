@@ -32,8 +32,50 @@ Qualification must cover a withdrawal during the read, delayed completion, lost 
 The existing five-minute bound and thirty-second uncertainty ceiling remain mandatory.
 The issuer must account for both its own clock evidence and the consumer's clock evidence.
 
+## Object read consistency
+
+The current `ObjectBackend` contract specifies atomic conditional writes and exact object-version tokens.
+It does not require a read to observe the latest committed pointer.
+An exact ETag identifies returned content. It does not establish that the content is current.
+Adding a head method that delegates to arbitrary `ObjectBackend.Get` would therefore leave the issuer's freshness requirement unproved.
+
+The second delivery must require an explicit current-read contract for receipt issuance.
+The read must observe a committed head selected during that operation, including commits from other writers.
+Ordinary generation storage can retain its existing interface. An adapter without the current-read guarantee cannot issue new permission receipts.
+The S3 adapter delegates endpoint, client, and transport selection to its caller.
+Its type alone cannot qualify every compatible service.
+
+Receipt timing must start before the current-head read.
+A head change during that read can leave the returned head superseded, even when the read contract holds.
+Delayed completion must consume the original validity interval. It must not start another five-minute interval.
+An expired interval requires refusal and a fresh observation.
+
+## Publication and migration checks
+
+The filesystem pointer contains a generation ID as text. The object pointer contains a JSON generation ID.
+Neither pointer currently carries a permission head. The generation manifest owns the head in the first delivery.
+Both stores return early when the selected generation already matches an identical commit.
+Any added head representation must account for those idempotent paths and existing authority generations.
+
+The storage design must bind permission metadata to the same immutable generation before pointer promotion.
+A separate mutable permission pointer would require another atomic publication contract.
+A record beside each immutable generation could preserve the current pointer formats, but needs explicit creation and migration rules.
+This inspection does not select a new file format or authorize silent migration during a read.
+
+Qualification must distinguish these cases:
+
+| Case | Required evidence |
+| --- | --- |
+| Conditional writes with stale reads | Ordinary storage remains usable; the issuer refuses to treat those reads as fresh authority. |
+| Withdrawal during a delayed head read | The returned receipt cannot extend the validity interval that began before the read. |
+| Existing authority generation without the new head representation | Reads report the missing capability or metadata; no cached head supplies a new receipt. |
+| Repeated identical commit | The defined migration or repair contract establishes complete permission metadata before reporting success. |
+| Newer catalog or manifest schema | Independent permission metadata remains readable, or receipt issuance fails without renewing retained permission. |
+| Older writer selects an ordinary generation | The issuer refuses new authority receipts; it cannot keep renewing the prior authority head. |
+
 ## Evidence paths
 
 The inspected files are `authority_head.go`, `pkg/catalogs/storage/store.go`, `memory.go`, `filesystem.go`, and `object.go`.
 The storage filenames share the `pkg/catalogs/storage/` parent.
+The S3 adapter is `pkg/catalogs/storage/s3/backend.go`.
 This inspection provides design evidence only. It does not qualify a storage adapter or a production deployment.
