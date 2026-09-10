@@ -480,10 +480,21 @@
     "dependency": "7734996783ac150faeed82eb0c9c416e723b1519",
     "dependency_pr": 143,
     "authorization": "The active workflow permits local integration from a documented reviewed dependency. Publication remains after actual dependency merge.",
-    "review": "Sol xhigh and Opus high found zero actionable findings for the dependency.",
+    "review": {
+      "status": "active",
+      "session": 98411,
+      "log": "/tmp/starmap-availability-integrated-pre-pr-review-2026-09-10.log",
+      "base": "7734996783ac150faeed82eb0c9c416e723b1519",
+      "head": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "publication_requirement": "Verify the eventual dependency merge tree equals the reviewed base tree before publication."
+    },
     "commit": "129e3f6852a95bf4f568ce3e548cd8d403a0b94d",
     "publication_state": "unpublished; dependency PR143 must merge before publication",
-    "status": "Eight focused integration events pass. Full CSP3 package checks remain active before fresh review.",
+    "status": "All focused, full package, ago, lint, and documentation checks pass. Dependency merge and fresh review remain required.",
     "focused": {
       "session": 74131,
       "exit_code": 0,
@@ -511,6 +522,38 @@
       "ago_exit": 0,
       "lint_exit": 0,
       "docs_check_exit": 0
+    },
+    "full_result": {
+      "exit_code": 0,
+      "packages": {
+        "github.com/agentstation/starmap/runtime": {
+          "result": "pass",
+          "elapsed_seconds": 1107.826
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "result": "pass",
+          "elapsed_seconds": 335.169
+        },
+        "github.com/agentstation/starmap/internal/catalog/reconciler": {
+          "result": "pass",
+          "elapsed_seconds": 2.229
+        }
+      },
+      "test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 722
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 100
+        },
+        "github.com/agentstation/starmap/internal/catalog/reconciler": {
+          "pass": 644
+        }
+      },
+      "artifact": {
+        "path": "cache-integration-full.jsonl.gz",
+        "sha256": "336b95910174dad44aa21a76fff8e10390721ca8aa771fd21c35625432194ae1"
+      }
     }
   },
   "removal_set_work": {
@@ -568,6 +611,93 @@
       "pkg/catalogs/removal_set.go",
       "pkg/catalogs/removal_set_test.go",
       "pkg/catalogs/README.md"
+    ]
+  },
+  "removal_policy_work": {
+    "state": "uncommitted implementation; runtime checks active",
+    "base": "c84c12d5",
+    "worktree": "/tmp/starmap-operator-removal-2026-09-10",
+    "branch": "codex/catalog-operator-removal",
+    "scope": [
+      "publisher-bound removal snapshots in catalog schema 8",
+      "copy, merge, payload preservation and acquisition rejection",
+      "runtime expected-generation replacement through publication journal version 3",
+      "private removals.json state and recovery",
+      "migration validation and local publisher protection"
+    ],
+    "catalog_focused": {
+      "exit_code": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "log": "/tmp/starmap-removal-policy-after-2026-09-10.jsonl"
+    },
+    "runtime_session": 76684,
+    "runtime_log": "/tmp/starmap-removal-runtime-first-2026-09-10.jsonl",
+    "remaining": [
+      "runtime failure and recovery qualification",
+      "schema compatibility and full affected package tests",
+      "upstream authority and transport qualification",
+      "operator preview and consumer routing",
+      "aliases"
+    ],
+    "acceptance_credit": false,
+    "catalog_full": {
+      "exit_code": 0,
+      "log": "/tmp/starmap-removal-policy-full-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "pass": 1122
+        },
+        "github.com/agentstation/starmap/pkg/sources": {
+          "pass": 126
+        }
+      },
+      "artifact": {
+        "path": "removal-policy-catalog-full.jsonl.gz",
+        "sha256": "b939214888f88e66585babfc60400648a8875ce97acd0dc5bb2e25f53e22a311"
+      }
+    },
+    "runtime_recovery": {
+      "exit_code": 0,
+      "log": "/tmp/starmap-removal-runtime-recovery-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 8
+        }
+      },
+      "artifact": {
+        "path": "removal-policy-runtime-recovery.jsonl.gz",
+        "sha256": "8a3419610f4a249fa9893c36a6905a17412ac10c7a5cdb01ff0df9e70fd1b8a2"
+      }
+    },
+    "repair_focused": {
+      "exit_code": 0,
+      "log": "/tmp/starmap-removal-policy-repair-2026-09-10.jsonl",
+      "test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 9
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 18
+        }
+      },
+      "artifact": {
+        "path": "removal-policy-repair.jsonl.gz",
+        "sha256": "35708c1b52b8a1345e4af56ffa7ab2f4f77ecc57cd6bfc2ef7ea8a49ed560a95"
+      }
+    },
+    "status": "Local catalog and source suites pass. Runtime refresh, restart, stale edit, restore, rejected commit, lost reply, and missing private state checks pass. Broader transport, minimum Go, lint, and documentation checks remain active.",
+    "active_checks": {
+      "minimum_go": 3171,
+      "lint": 8537,
+      "godoc": 72353,
+      "initial_transport": 59941
+    },
+    "findings": [
+      "Artifact import compared old manifests with only the newest schema. The import guard now checks the payload schema against supported reader versions.",
+      "Observation validation and input publication exceeded the existing complexity limit. Named validation and publication-input functions preserve their contracts.",
+      "An accepted removal with a missing private retention file must refuse restart instead of restoring access."
     ]
   }
 }
