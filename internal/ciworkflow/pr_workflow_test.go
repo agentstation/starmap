@@ -115,7 +115,7 @@ func TestMakeVerifyUsesCanonicalVerificationScript(t *testing.T) {
 		`GOLANGCI_LINT_VERSION="2.12.2"`,
 		`run make test-pure-go`,
 		`run make test-file-sizes`,
-		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=1`,
+		`run env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1`,
 		`cd "$TMPDIR"`,
 		`STARMAP_HOME="$TMPDIR/product"`,
 		`STARMAP_CATALOG_SOURCE=embedded`,
@@ -296,7 +296,8 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	}
 	for _, check := range []string{
 		`PINNED_ARTIFACT_MODULE=`,
-		`STARMAP_RELEASE_GOTOOLCHAIN`,
+		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.6}"`,
+		`export GOTOOLCHAIN`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,
 		`starmap/pkg/catalogs/artifact`,
