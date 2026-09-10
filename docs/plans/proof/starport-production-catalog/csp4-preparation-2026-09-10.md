@@ -51,3 +51,35 @@ This result identifies missing qualification and does not prove that every under
 The selected checks are the four A07 cases, A09 excluded membership, A10 cold refusal and warm startup, and A21 mixed-schema permission envelopes.
 The [baseline report](csp4-preparation-2026-09-10.json) retains the exact result.
 Register real Starmap behavior checks for this task and repeat consumer contracts during Starport integration.
+
+## Combined-source transport inspection
+
+This inspection uses combined CSP3 source `b5af1e9c67e065ebd688a19a7563bcc430f724bb` before its merge.
+It changes no product code. The original baseline report remains valid for the missing registry checks.
+
+The current remote client decodes a compatible generation manifest before it returns a catalog read.
+The `runtime/source.Read` value has no independent permission envelope.
+The `runtime.readSource` function returns immediately on source errors.
+It treats an unchanged catalog as a completed source check.
+These paths cannot learn a permission withdrawal when a newer payload or manifest exceeds the consumer's supported schema.
+
+CSP4 must verify the small permission envelope independently of catalog decoding.
+An unchanged catalog can still carry a renewed receipt or a higher required permission revision.
+An unsupported mandatory permission version must block admission without depending on the catalog parser.
+A notification or HTTP 304 response cannot renew permission without a verified receipt.
+
+The current remote `Publication` event carries only generation identity and sequence.
+The catalog store commits the complete generation and compares its expected generation identity.
+The authority's head must bind the required permission revision to its committed catalog reference.
+Subscribers need a separate retained record of the highest authenticated required revision, including when catalog activation fails.
+A failed payload activation cannot lower that record or restore earlier admission.
+
+The `runtime.Status.Usable` field reports whether any catalog exists, including the embedded baseline.
+CSP4 must report catalog availability separately from authority readiness and permission validity.
+The application must retain diagnostics when a cold internal runtime lacks an accepted catalog.
+It must not infer authorization from a lease holder or a source's safe display identity.
+
+The next design must cover a permission-retention write failure followed by restart.
+An older retained receipt cannot prove that the process never learned a later withdrawal.
+Treat uncertain retained permission state as a refusal until fresh authority evidence resolves it.
+Preserve retained catalog metadata for diagnostics throughout that refusal.
