@@ -3,6 +3,7 @@ package acquisition
 import (
 	"context"
 	"os"
+	"reflect"
 	"time"
 
 	"github.com/agentstation/starmap"
@@ -32,6 +33,8 @@ type ImportResult struct {
 // as a trusted, low-authority observation with the current catalog and human
 // workspace, then publishes the result atomically. A verification failure cannot
 // mutate the client. ImportRelease never activates the release wholesale.
+// Independent membership scopes retain their original receipts. Conflicting
+// records for one publisher and binding revision require explicit source selection.
 func (s *Syncer) ImportRelease(
 	ctx context.Context,
 	release artifact.Release,
@@ -80,6 +83,11 @@ func (s *Syncer) ImportRelease(
 		observations = append(observations, *localObservation)
 	}
 	observations = append(observations, releaseObservation)
+	// Merge only scope records here. Reconciliation owns catalog fact authority.
+	membership := catalogs.NewEmpty()
+	if err := membership.SetMembershipScopes(releaseCatalog.MembershipScopes()); err != nil {
+		return nil, err
+	}
 
 	var candidateCatalog *catalogs.Catalog
 	publication, err := s.client.Update(ctx, func(
@@ -94,8 +102,13 @@ func (s *Syncer) ImportRelease(
 		if reconcileErr != nil {
 			return nil, reconcileErr
 		}
+		if err := result.Catalog.MergeWith(membership); err != nil {
+			return nil, err
+		}
+		scopes := result.Catalog.MembershipScopes()
+		scopesChanged := !reflect.DeepEqual(current.MembershipScopes(), scopes)
 		if (result.Changeset == nil || !result.Changeset.HasChanges()) &&
-			len(result.ReviewCandidates) == 0 && !input.RequiresSeed() {
+			len(result.ReviewCandidates) == 0 && !input.RequiresSeed() && !scopesChanged {
 			return nil, nil
 		}
 		candidateCatalog, reconcileErr = result.Catalog.Build()
@@ -110,6 +123,19 @@ func (s *Syncer) ImportRelease(
 		links := make([]catalogs.SourceObservationLink, 0, len(observations))
 		for _, observation := range observations {
 			links = append(links, observation.Link())
+		}
+		var retained []catalogs.SourceObservationLink
+		if len(current.MembershipScopes()) != 0 {
+			// Update holds the mutation transaction, so this manifest matches current.
+			previous, err := s.client.CurrentGeneration(updateCtx)
+			if err != nil {
+				return nil, err
+			}
+			retained = previous.Manifest.SourceObservations
+		}
+		links, reconcileErr = importMembershipEvidence(scopes, links, retained, generation.Manifest.SourceObservations)
+		if reconcileErr != nil {
+			return nil, reconcileErr
 		}
 		return starmap.NewCandidate(candidateCatalog, starmap.CandidateEvidence{
 			SourceObservations: links,

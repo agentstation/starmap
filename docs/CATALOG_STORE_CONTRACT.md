@@ -354,6 +354,12 @@ The selected trusted source supplies the authority for imported publisher claims
 A publisher ID is not an authentication credential. Upstream records cannot claim the local runtime publisher ID or its configured aliases.
 Derivative publication and restart preserve accepted upstream IDs and original receipts.
 
+`acquisition.ImportRelease` merges verified artifacts with the current catalog.
+It preserves independent scopes and their original receipts, including imports that change only scope records.
+Repeated identical imports do not publish another generation.
+Different inventories for the same publisher and binding revision cause a conflict before publication.
+This merge cannot select a replacement scope authority. Use a configured catalog source or explicit trusted activation for replacement.
+
 Starport must resolve an explicit inference-profile link before applying account-specific restrictions.
 That link must bind the selected catalog authority, publisher, binding ID, and revision. An authority change requires link revalidation.
 Starport integration remains incomplete under CSP8 and CSP10.
