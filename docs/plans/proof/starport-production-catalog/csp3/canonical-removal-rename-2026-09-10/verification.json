@@ -157,6 +157,33 @@
         "github.com/agentstation/starmap/internal/catalog/reconciler": {
           "pass": 648
         }
+      },
+      "package_summaries": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 1103.569
+        },
+        {
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Action": "pass",
+          "Elapsed": 348.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "Action": "pass",
+          "Elapsed": 2.205
+        }
+      ],
+      "plan_execution_budget": {
+        "duration": "30m",
+        "tasks": [
+          "CSP3",
+          "CSP4",
+          "CSP5",
+          "CSP7"
+        ],
+        "reason": "Whole runtime and acquisition suites exceed earlier aggregate allowances. Named acceptance-test deadlines and test contents remain unchanged. Terminal task commands retain their historical bounds."
       }
     },
     "product": {

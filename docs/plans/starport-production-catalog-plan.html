@@ -124,6 +124,8 @@
 
 <p>The candidate gate checks 43 complete cases plus eight local subcases from publication-dependent parents. It reports those seven incomplete parents as UNVERIFIED. The complete production claim requires all 50 after CSP24. Earlier releases describe only their tested existing behavior.</p>
 
+<p>Whole runtime and acquisition suites now use a 30-minute execution allowance. The <a href="proof/starport-production-catalog/csp3/canonical-removal-rename-2026-09-10/verification.json">measured run</a> records 1,103.569 seconds for runtime and 348.210 seconds for acquisition. Named acceptance tests retain their existing deadlines. Terminal task commands retain their historical bounds.</p>
+
 <p>Primary ownership does not limit regression coverage. End-to-end cases must run again after their consumer changes. Every task must run relevant repository checks and the current AGENTS.md pre-PR roster. A substantive-code PR requires the repository autoreview gate after final checks and commit. No task adds another review gate.</p>
 
 <p>One task normally produces one PR. CSP0.2, CSP11, CSP19, and CSP20 permit the named ordered repository split. Record each PR and commit. Cross-repository local integration may use a temporary workspace override.</p>
@@ -210,7 +212,7 @@
 <li>Apply D30 alias retention without automatic expiry.</li><li>Preserve the <a href="proof/starport-production-catalog/csp3/nested-range-current-state-2026-09-09.json">merged nested-range repair</a> during A08 qualification.</li><li>Integrate provider and non-provider inputs through CLI, publisher, and server entry points.</li><li>Preserve permitted retained evidence and produce verified source receipts. Journal manual observations and D24 reset scopes while preserving the selected baseline and unrelated scopes.</li><li>Verify the <a href="proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp3">CSP3 discovery audit criteria</a> before task completion.</li></ol>
 
 <p><strong>Acceptance:</strong> A08 passes. Starmap ingestion subcases of A20 pass. Missing dependencies and partial replies cannot masquerade as source success. A08 alias checks cover time beyond thirty days, restart, explicit removal, and authoritative baseline replacement.</p><p><strong>Fail-before:</strong> Use fixtures where newer authorized pricing stays stale and partial replies resemble deletion.</p>
-<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP3</code></pre></article>
+<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./runtime ./acquisition ./internal/catalog/reconciler&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP3</code></pre></article>
 
 <article class="task" id="task-CSP3.1"><h3>CSP3.1 Remove unrelated provider copies from offering lookup</h3><p><strong>Problem:</strong> Each offering lookup copies the complete provider model map.</p>
 <p><strong>Owning concept and paths:</strong> SM · <code>pkg/catalogs/readonly.go, provider identity indexes, catalog read tests</code>. <strong>Depends on:</strong> CSP0.4.</p>
@@ -226,7 +228,7 @@
 <strong>Steps:</strong><ol><li>Bind generations to stable authority and policy identities.</li><li>Implement cold refusal, warm retained startup, and explicit authority transitions.</li><li>Reject incompatible schema, replay, invalid trust, and source-chain cycles.</li></ol>
 
 <p><strong>Acceptance:</strong> A07 passes with positive public download and rejection cases. Authority envelopes support cold refusal, retained startup, and permission-validity enforcement. Starport completes A09, A10, and A21.</p><p><strong>Fail-before:</strong> Cold and warm internal starts currently share an online source requirement.</p>
-<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 5m ./runtime ./remote ./pkg/catalogs/artifact&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP4</code></pre></article>
+<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./runtime ./remote ./pkg/catalogs/artifact&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP4</code></pre></article>
 
 <article class="task" id="task-CSP5"><h3>CSP5 Separate update controls and retain pinned state</h3><p><strong>Problem:</strong> Zero polling and disabled scheduling do not prohibit all catalog network work.</p>
 <p><strong>Owning concept and paths:</strong> SM · <code>runtime/scheduler.go, runtime/refresh.go, runtime policy, layer retention, pkg/catalogs/storage</code>. <strong>Depends on:</strong> CSP3, CSP4.</p>
@@ -234,7 +236,7 @@
 <strong>Steps:</strong><ol><li>Implement automatic, manual, offline, and pin contracts across every trigger.</li><li>Cancel superseded workers and enforce authority before manual operations.</li><li>Recover baseline, migration, workspace, evidence, and discovery stages. Exclude active writers, preserve unknown files, bound scans, and retain required generations during collection.</li><li>Compact acquisition history before its 64 MiB or 4,096-batch limits stop updates, preserving omitted offerings and original receipts through restart.</li><li>Classify errors after pointer publication and verify retries after an ambiguous directory flush.</li></ol>
 
 <p><strong>Acceptance:</strong> A19 passes. Runtime fixtures cover A22 and A23, including watcher events and restart. Owned-stage recovery must pass process-exit, active-writer, changed-file, and scan-limit checks. Add TestFilesystemCommitAmbiguousFlushOutcome for publication, flush failure, reopen, and idempotent retry.</p><p><strong>Fail-before:</strong> Show watcher refresh with zero polling and manual acquisition with automatic acquisition disabled.</p>
-<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 5m ./runtime ./pkg/catalogs/storage&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP5</code></pre></article>
+<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./runtime ./pkg/catalogs/storage&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP5</code></pre></article>
 
 <article class="task" id="task-CSP6"><h3>CSP6 Promote published catalog input into releases</h3><p><strong>Problem:</strong> Public catalog publication does not promote the default branch embedded input.</p>
 <p><strong>Owning concept and paths:</strong> SM · <code>catalog-generation workflow, embedded generator, release contracts</code>. <strong>Depends on:</strong> CSP2, CSP3, CSP4.</p>
@@ -250,7 +252,7 @@
 <strong>Steps:</strong><ol><li>Implement explicit reference and ambient precedence by role.</li><li>Preserve secret backends, bounded refresh, and complete-version rotation.</li><li>Report origins without values and reject alias or scope collisions.</li></ol>
 
 <p><strong>Acceptance:</strong> Starmap satisfies its portion of A11 and A12. No inference or account repository enters acquisition.</p><p><strong>Fail-before:</strong> Capture current conventional-name precedence and explicit-reference failure behavior.</p>
-<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 5m ./internal/auth ./acquisition&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP7</code></pre></article>
+<p><strong>Verification:</strong></p><pre><code># SM&#10;go test -race -count=1 -timeout 30m ./internal/auth ./acquisition&#10;# SM&#10;bash scripts/verify-catalog-product.sh --starport-root &quot;$CSP_STARPORT_WORKTREE&quot; --task CSP7</code></pre></article>
 
 <h3>Phase 2: Starport composition</h3>
 
