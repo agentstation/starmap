@@ -6,18 +6,21 @@
   "pr": {
     "number": 146,
     "url": "https://github.com/agentstation/starmap/pull/146",
-    "state": "OPEN",
+    "state": "MERGED",
     "is_draft": false,
     "auto_merge_enabled": true,
     "body_matches_prepared_file": true,
-    "prepared_body_sha256": "4c2fb02029f7f9f9839bebea5e6f61cef5e4aa193783c13401ba9e4cb8a6f77c"
+    "prepared_body_sha256": "4c2fb02029f7f9f9839bebea5e6f61cef5e4aa193783c13401ba9e4cb8a6f77c",
+    "merged_at": "2026-09-10T19:39:56Z",
+    "merge_commit": "faa9cc8b0bc01eb787f567f568f1b9fe05e0740a",
+    "passing_checks": 15
   },
   "ci": {
     "run_id": 34510928894,
     "url": "https://github.com/agentstation/starmap/actions/runs/34510928894",
     "head": "44a400a481748c5e7ae1268cecb63b260a91bdab",
-    "status": "in_progress",
-    "conclusion": "",
+    "status": "completed",
+    "conclusion": "success",
     "native_jobs": {
       "Runtime windows-11-arm": {
         "status": "completed",
@@ -676,11 +679,58 @@
         "docs/plans/proof/starport-production-catalog/csp4.md": "d8aa2121a594197f678d6d0ac0abe7410ceeca6cfcb49f16d400621d74e41435",
         "docs/plans/proof/starport-production-catalog/csp4/subscriber-delivery-2026-09-10.md": "d26ba9622b24f45432f4188c45e929802b1cdd0ecc9680521ce5493e9fff7e8e"
       }
+    },
+    "pr-merged": {
+      "command": "gh pr view 146 --repo agentstation/starmap --json number,url,title,state,baseRefName,headRefName,headRefOid,mergeCommit,mergedAt,statusCheckRollup",
+      "exit_code": 0,
+      "artifact": {
+        "path": "pr-merged.json.gz",
+        "sha256": "5eeb9dfd14be645e59b78f0cc0eed5d67291d6270625c6792ab9ac0efd190c48",
+        "raw_sha256": "77c82fdfd0ac920f150fde9da4899a0d10755cccd76a88fb677e9f902a601b41"
+      }
+    },
+    "ci-merged": {
+      "command": "gh run view 34510928894 --repo agentstation/starmap --json databaseId,url,headSha,status,conclusion,createdAt,updatedAt,jobs",
+      "exit_code": 0,
+      "artifact": {
+        "path": "ci-merged.json.gz",
+        "sha256": "eac5fa03e2e58627017b3eef784789f179ba6a50392d34b91cef69a7026adbea",
+        "raw_sha256": "1319c4136c2368a2536a76ed3d235038765c9b64ac2b368543032a525acfc830"
+      }
+    },
+    "main-alignment": {
+      "command": "git diff --exit-code reviewed^{tree} merged^{tree}; git merge merged-main; resolve overlapping files from qualified issuer HEAD; git diff --exit-code before^{tree} after^{tree}",
+      "exit_code": 0,
+      "artifact": {
+        "path": "main-alignment.json.gz",
+        "sha256": "6f9a725493b1ee918c6fbfe4b5cfa459d028b7c9c43f7631778f0cdfa8ba9baf",
+        "raw_sha256": "0476727c6bda0aff3bc4caea7d624668a30aa58ae60e6887ab0d5911ad4bef7a"
+      }
+    },
+    "merge-prose-red": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "source_scope": "Canonical merged-delivery proof and current resume state. Final run: 1289 files and zero diagnostics.",
+      "artifact": {
+        "path": "merge-prose-red.log.gz",
+        "sha256": "7f3cc67ab6374f48da9b4a765bfbb02483e15db4050ac46570d964beab39890d",
+        "raw_sha256": "076c6c6e907c2c9d639ab65802841d3054456a8af9b3fabc8886ba0aa745796f"
+      }
+    },
+    "merge-prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "source_scope": "Canonical merged-delivery proof and current resume state. Final run: 1289 files and zero diagnostics.",
+      "artifact": {
+        "path": "merge-prose.log.gz",
+        "sha256": "14ba843e39e5e88ce81dc1ea7bd75fb029e66baac474034f8187b9a62325e1ba",
+        "raw_sha256": "de8f4c3c570ba9de3fbc2e2ec63d8e7452ab0c7cb85218e1193017b8c75c0a75"
+      }
     }
   },
   "local_verification": "../subscriber-verification-2026-09-10/verification.json",
   "limitations": [
-    "All six native jobs pass. Automatic squash merge waits for the protected Verification Gate. The PR is not yet merged.",
+    "The first delivery merged with all fifteen checks passing. The actual merged tree equals the reviewed source tree.",
     "The first delivery grants no CSP4 completion credit. All eight task checks remain UNVERIFIED.",
     "The remaining Starmap work and a separate Starport consumer PR after a compatible module release remain required."
   ],
@@ -945,5 +995,22 @@
     },
     "privileged_linux_runs": 2,
     "count_scope": "JSON events include parent and subtest events across six runners. Two ordinary Linux runs skip the administrator test; both separate privileged runs pass. These are component results, not complete product acceptance."
+  },
+  "merge_qualification": {
+    "before": "48205c51886c084c81b65f06ce57fe9389036dd8",
+    "merged_main": "faa9cc8b0bc01eb787f567f568f1b9fe05e0740a",
+    "conflicts": [
+      "pkg/catalogs/README.md",
+      "pkg/catalogs/permission_head.go",
+      "runtime/authority_policy.go"
+    ],
+    "draft_sha256_before_resolution": {
+      "pkg/catalogs/permission/publication.go": "84889b4c5522dab4057b22723a5e78d9e1facb70ae4310ed760e1efc7acc9c8e",
+      "pkg/catalogs/permission/publication_test.go": "e665f940c63788994830b8dda7116443a2d9794f3b9330ac45632bf5880f23dd"
+    },
+    "after": "e27c473e85da077142fdb487ac0b87016af22da6",
+    "reviewed_merge_tree_equal": true,
+    "dependent_committed_tree_unchanged": true,
+    "draft_files_preserved_during_resolution": true
   }
 }

@@ -3,8 +3,11 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The active source is clean local `48205c51886c084c81b65f06ce57fe9389036dd8` in `/tmp/starmap-authority-issuer-2026-09-10`.
-The branch is `codex/catalog-authority-issuer`. It follows reviewed PR #146 source `44a400a4` and remains unpublished.
+The active committed source is local `e27c473e85da077142fdb487ac0b87016af22da6` in `/tmp/starmap-authority-issuer-2026-09-10`.
+The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b`. Its tree matches issuer checkpoint `48205c51` and remains unpublished.
+
+The worktree adds four draft Go files under `pkg/catalogs/permission` for publisher ordering.
+They contain `publication.go` and three publication tests.
 No owner decision remains.
 
 The [issuer proof](csp4/issuer-library-2026-09-10/verification.json) records the 13-file library checkpoint after independent authority storage.
@@ -58,14 +61,16 @@ The generator rejects `GOFLAGS=-p=2` despite a successful wrapper exit. A separa
 
 Required Sol and Opus review passes with zero accepted or actionable findings across two chunks.
 The [publication proof](csp4/subscriber-publication-2026-09-10/verification.json) binds PR #146 and CI run `34510928894` to reviewed `44a400a4`.
-All six native jobs pass. Automatic squash merge waits for the protected verification gate. CSP4 remains in progress.
+PR #146 merged as `faa9cc8b0bc01eb787f567f568f1b9fe05e0740a` at 19:39:56 UTC. All fifteen checks pass, including six native jobs.
+The merged tree equals reviewed `44a400a4`. CSP4 remains in progress.
 
 Native artifacts record 9,714 passing JSON test events and 92 successful package outcomes across six runners.
 The ordinary Linux runs skip the administrator-owned configuration check. Both separate privileged runs pass that check.
 These component results give no complete product acceptance credit.
 
-The current 91-file Starmap branch owns permission transport, retained subscriber enforcement, and relay.
-Merge it before publishing the dependent delivery. Isolated implementation can use its reviewed source while CI completes.
+The merged 91-file delivery owns permission transport, retained subscriber enforcement, and relay.
+Local merge `e27c473e` includes actual main and preserves the committed issuer tree.
+Three overlapping files required resolution from the qualified issuer source. Both draft publisher files remain intact.
 The [current authority storage contract](csp4/issuer-storage-contract-2026-09-10.md) owns the next storage change.
 
 The next Starmap delivery owns origin issuance, qualified clock evidence, shared-store follower activation, and authority transitions.
