@@ -1,5 +1,5 @@
 {
-  "status": "The scheduled-update audit found an omitted acquired offering. The local repair passes its focused regression. Full runtime qualification is active. No completion credit.",
+  "status": "The availability branch at af94de19 passes the complete runtime race suite with 722 events. Final A08 reporting, main integration, and pre-PR review remain open.",
   "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
   "branch": "codex/catalog-scoped-membership",
   "base_work_commit": "8a4c14d9",
@@ -251,6 +251,10 @@
     "removal-target-docs-final": {
       "path": "removal-target-docs-final.gz",
       "sha256": "02788f19780d8f1fe3a2a1138f4addf6a65dff1f41de896c4b7751b1a4d5be2b"
+    },
+    "scheduled-full-runtime": {
+      "path": "scheduled-full-runtime.gz",
+      "sha256": "212f108b03280b978fb2ffcb13f12ebda1273958c8445abf9c35e55e5a696443"
     }
   },
   "static": {
@@ -344,9 +348,14 @@
     },
     "full_runtime": {
       "session_id": 25272,
-      "status": "active",
+      "status": "completed",
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime -json",
-      "log": "/tmp/starmap-scheduled-absence-full-runtime-2026-09-10.jsonl"
+      "log": "/tmp/starmap-scheduled-absence-full-runtime-2026-09-10.jsonl",
+      "exit_code": 0,
+      "pass_count": 722,
+      "fail_count": 0,
+      "skip_count": 0,
+      "elapsed_seconds": 1124.688
     },
     "minimum_go": {
       "session_id": 23618,
@@ -433,5 +442,16 @@
       "prose_files": 1345,
       "generated_docs_final_exit": 0
     }
+  },
+  "final_a08": {
+    "status": "active",
+    "session_id": 48940,
+    "log": "/tmp/starmap-availability-final-a08-2026-09-10.json",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --case A08 --json"
+  },
+  "pr143_watch": {
+    "session_id": 4065,
+    "run_id": 34426991461,
+    "log": "/tmp/starmap-pr143-watch-2026-09-10.log"
   }
 }
