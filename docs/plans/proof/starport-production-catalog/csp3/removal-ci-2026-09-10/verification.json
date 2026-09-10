@@ -1105,5 +1105,36 @@
         "raw_sha256": "e795a1be98bbf7f14375dfa03bdc52264d3b0e89ed0925651e42b7db66bf30b4"
       }
     }
+  },
+  "main_integration": {
+    "commit": "eed4c93df8ca16e45cc1e8acd0476589079f49d1",
+    "main": "b9eca8897c6ee8f0eb147f228b40bf1fc94deb8f",
+    "previous_reviewed_source": "99304c36d1230dae1a51a209f3effd469b6370ab",
+    "tree": "bc464e539a918275550da57d0af27473539cb60e",
+    "same_tree_as_previous_review": true,
+    "conflict_resolution": "The incoming main tree exactly matches existing ancestor 63779c88. Restore the reviewed 99304c36 tree for all merge conflicts and prove complete tree equality before the merge commit.",
+    "checks": {
+      "workflow": {
+        "exit_code": 0,
+        "passed_events": 28,
+        "artifact": {
+          "path": "starmap-pr145-main-integration-workflow-2026-09-10.jsonl.gz",
+          "sha256": "8a56fd3202fcd1e61f7c974448a4250c9f340db9d545515f50c08af492ecd0d3",
+          "raw_sha256": "fd87d75cc3c0789e8619808d89024617fa23bae95d8bdcdef57100e29b6bf01b"
+        }
+      },
+      "shell": {
+        "exit_code": 0,
+        "artifact": {
+          "path": "starmap-pr145-main-integration-shell-2026-09-10.log.gz",
+          "sha256": "486aff30f3f03d532df68accf0b19da88e3c5ef27d64ccfd9d5bac7a8b68256d",
+          "raw_sha256": "fc28ad32995d77d94393a19132db62947e48251776c1c053ac2894a1c1540c19"
+        }
+      }
+    },
+    "review_session": 65209,
+    "review_log": "/tmp/starmap-pr145-main-integration-review-2026-09-10.log",
+    "pr_base": "main",
+    "published": false
   }
 }
