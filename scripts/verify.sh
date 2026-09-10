@@ -99,8 +99,8 @@ run ./scripts/test-catalog-package-ownership-verifier.sh
 run ./scripts/verify-catalog-dependency-direction.sh
 run ./scripts/test-catalog-dependency-direction-verifier.sh
 run python3 ./scripts/test_catalog_product_verify.py
-# Bound concurrent package processes while race tests build full catalog workspaces.
-run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=2
+# Run race-test packages serially because catalog workspaces consume substantial memory.
+run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=1
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
 run ./scripts/verify-container-smoke.sh

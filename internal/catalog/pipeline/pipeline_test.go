@@ -523,8 +523,8 @@ func newStubPipeline(store Store, result *reconciler.Result) *Pipeline {
 	runner.loadWorkspace = func(string) (*catalogs.Builder, error) {
 		return catalogs.NewEmpty(), nil
 	}
-	runner.loadEmbedded = func() (*catalogs.Builder, error) {
-		return catalogs.NewEmpty(), nil
+	runner.loadEmbedded = func() (*catalogs.Catalog, error) {
+		return catalogs.NewEmpty().Build()
 	}
 	runner.createSources = func(*pkgsync.Options, catalogInputs) []sources.Source {
 		return []sources.Source{&lifecycleTestSource{id: sources.LocalCatalogID, catalog: asSnapshot(catalogs.NewEmpty())}}

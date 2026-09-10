@@ -61,7 +61,7 @@ type Publication struct {
 }
 
 type loadWorkspaceFunc func(string) (*catalogs.Builder, error)
-type loadEmbeddedFunc func() (*catalogs.Builder, error)
+type loadEmbeddedFunc func() (*catalogs.Catalog, error)
 type sourcesFunc func(*pkgsync.Options, catalogInputs) []sources.Source
 type resolveDependenciesFunc func(context.Context, []sources.Source, *pkgsync.Options) ([]sources.Source, []error, error)
 type cleanupFunc func(context.Context, []sources.Source) error
@@ -103,7 +103,10 @@ func newPipeline(
 ) *Pipeline {
 	return &Pipeline{
 		loadWorkspace: loadHumanWorkspace,
-		loadEmbedded:  bootstrap.NewEmbeddedBuilder,
+		loadEmbedded: func() (*catalogs.Catalog, error) {
+			catalog, _, err := bootstrap.Embedded()
+			return catalog, err
+		},
 		createSources: func(options *pkgsync.Options, inputs catalogInputs) []sources.Source {
 			return filterSources(options, inputs, providerSourceComposition{
 				clientFactory:      providerFactory,
