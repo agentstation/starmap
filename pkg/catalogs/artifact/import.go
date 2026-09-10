@@ -64,9 +64,9 @@ func VerifyRelease(
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
-	if generation.Manifest.SchemaVersion != catalogs.CurrentCatalogSchemaVersion ||
+	if !catalogs.SupportsCatalogSchema(generation.Manifest.SchemaVersion) ||
 		!generation.Manifest.ConsumerCompatibility.SupportsSchema(
-			catalogs.CurrentCatalogSchemaVersion,
+			generation.Manifest.SchemaVersion,
 		) {
 		return catalogs.Generation{}, artifactValidation(
 			"release.compatibility",

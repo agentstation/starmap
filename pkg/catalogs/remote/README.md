@@ -166,7 +166,7 @@ func GenerationManifestPath(generationID string) string
 GenerationManifestPath returns the immutable manifest route for generationID.
 
 <a name="ManifestETag"></a>
-## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L385>)
+## func [ManifestETag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L389>)
 
 ```go
 func ManifestETag(generationID string) string
@@ -175,7 +175,7 @@ func ManifestETag(generationID string) string
 ManifestETag returns the strong entity tag for a generation manifest. A generation ID is immutable and restricted to HTTP entity\-tag\-safe bytes.
 
 <a name="MarshalManifest"></a>
-## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L390>)
+## func [MarshalManifest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L394>)
 
 ```go
 func MarshalManifest(manifest catalogs.GenerationManifest) ([]byte, error)
@@ -240,16 +240,16 @@ type Client struct {
 ```
 
 <a name="NewClient"></a>
-### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L67>)
+### func [NewClient](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L69>)
 
 ```go
 func NewClient(baseURL string, httpClient *http.Client, schemaVersion uint64) (*Client, error)
 ```
 
-NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain.
+NewClient creates a remote generation client. baseURL is the trusted, versioned HTTPS API root, for example https://starmap.example.com/api/v1. NewClient accepts plain HTTP only on loopback. The supplied HTTP client may add authentication or stricter TLS policy, but HTTPS responses must retain a standard verified certificate chain. The current schema selects all formats this client supports. An older schema selects only that format. The client rejects other formats before fetching payloads.
 
 <a name="Client.FetchCurrent"></a>
-### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L154>)
+### func \(\*Client\) [FetchCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L156>)
 
 ```go
 func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
@@ -258,7 +258,7 @@ func (c *Client) FetchCurrent(ctx context.Context) (catalogs.Generation, error)
 FetchCurrent fetches the current manifest followed by its immutable, generation\-addressed payload and validates their binding and compatibility.
 
 <a name="Client.FetchCurrentIfChanged"></a>
-### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L165-L168>)
+### func \(\*Client\) [FetchCurrentIfChanged](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L167-L170>)
 
 ```go
 func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string) (generation catalogs.Generation, changed bool, err error)
@@ -267,7 +267,7 @@ func (c *Client) FetchCurrentIfChanged(ctx context.Context, generationID string)
 FetchCurrentIfChanged conditionally fetches the current manifest relative to generationID. It returns changed=false without fetching a payload when the publisher reports that generationID is still current.
 
 <a name="Client.FetchGeneration"></a>
-### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L192>)
+### func \(\*Client\) [FetchGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/remote/client.go#L194>)
 
 ```go
 func (c *Client) FetchGeneration(ctx context.Context, generationID string) (catalogs.Generation, error)

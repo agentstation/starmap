@@ -57,7 +57,7 @@ func (m *directoryMigration) publishStage(ctx context.Context, checkpoint migrat
 		return err
 	}
 	defer func() { resultErr = stderrors.Join(resultErr, stage.Close()) }()
-	if err := validateMigrationCatalog(ctx, stage.directory); err != nil {
+	if err := validateMigrationCatalog(ctx, stage.directory, m.manifest.SourceIdentity); err != nil {
 		return err
 	}
 	if err := stage.Close(); err != nil {
@@ -116,7 +116,7 @@ func (m *directoryMigration) activatePublication(ctx context.Context, checkpoint
 	if err := verifyMigrationStage(ctx, root, m.manifest, true); err != nil {
 		return err
 	}
-	if err := validateMigrationCatalog(ctx, directory); err != nil {
+	if err := validateMigrationCatalog(ctx, directory, m.manifest.SourceIdentity); err != nil {
 		return err
 	}
 	if err := m.journal.advance(ctx, migrationPromoted); err != nil {

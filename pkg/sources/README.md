@@ -88,6 +88,7 @@ Package sources provides public APIs for working with AI model data sources.
   - [func \(pf \*ProviderFetcher\) HasClient\(id catalogs.ProviderID\) bool](<#ProviderFetcher.HasClient>)
   - [func \(pf \*ProviderFetcher\) List\(\) \[\]catalogs.ProviderID](<#ProviderFetcher.List>)
   - [func \(pf \*ProviderFetcher\) Providers\(\) \*catalogs.Providers](<#ProviderFetcher.Providers>)
+- [type ProviderMembershipAuthority](<#ProviderMembershipAuthority>)
 - [type ProviderOption](<#ProviderOption>)
   - [func WithProviderClientFactory\(factory ProviderClientFactory\) ProviderOption](<#WithProviderClientFactory>)
   - [func WithProviderCredentialResolver\(resolver ProviderCredentialResolver\) ProviderOption](<#WithProviderCredentialResolver>)
@@ -216,7 +217,7 @@ const MaxProviderBindingFieldBytes = 4096
 <a name="ProviderAcquisitionBindingSchemaVersion"></a>ProviderAcquisitionBindingSchemaVersion identifies the supported binding format.
 
 ```go
-const ProviderAcquisitionBindingSchemaVersion = 1
+const ProviderAcquisitionBindingSchemaVersion = 2
 ```
 
 <a name="IsExactGitCommit"></a>
@@ -675,7 +676,7 @@ func (o *Options) Apply(opts ...Option) *Options
 Apply applies a set of options to create configured sourceOptions This is a helper for sources to use internally.
 
 <a name="ProviderAcquisitionBinding"></a>
-## type [ProviderAcquisitionBinding](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L30-L53>)
+## type [ProviderAcquisitionBinding](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L43-L68>)
 
 ProviderAcquisitionBinding declares one provider scope under a deployment\-owned revision. It contains no credential material and does not prove upstream account ownership or completeness.
 
@@ -699,6 +700,8 @@ type ProviderAcquisitionBinding struct {
     Region string `json:"region" yaml:"region"`
     // APISurface names the provider operation that produced the observed records.
     APISurface string `json:"api_surface" yaml:"api_surface"`
+    // MembershipAuthority declares replacement permission independently of reply completeness.
+    MembershipAuthority ProviderMembershipAuthority `json:"membership_authority,omitempty" yaml:"membership_authority,omitempty"`
     // CredentialRole identifies catalog acquisition, never inference.
     CredentialRole ProviderBindingCredentialRole `json:"credential_role" yaml:"credential_role"`
     // CredentialProfileID names the declared authentication profile, without credential material.
@@ -707,7 +710,7 @@ type ProviderAcquisitionBinding struct {
 ```
 
 <a name="ProviderAcquisitionBinding.UnmarshalJSON"></a>
-### func \(\*ProviderAcquisitionBinding\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L57>)
+### func \(\*ProviderAcquisitionBinding\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L72>)
 
 ```go
 func (b *ProviderAcquisitionBinding) UnmarshalJSON(data []byte) error
@@ -716,7 +719,7 @@ func (b *ProviderAcquisitionBinding) UnmarshalJSON(data []byte) error
 UnmarshalJSON rejects unknown fields and unsupported binding schemas. Failed decoding leaves the receiver unchanged.
 
 <a name="ProviderAcquisitionBinding.Validate"></a>
-### func \(ProviderAcquisitionBinding\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L79>)
+### func \(ProviderAcquisitionBinding\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L94>)
 
 ```go
 func (b ProviderAcquisitionBinding) Validate() error
@@ -1043,6 +1046,28 @@ func (pf *ProviderFetcher) Providers() *catalogs.Providers
 ```
 
 Providers returns the providers available to the provider fetcher.
+
+<a name="ProviderMembershipAuthority"></a>
+## type [ProviderMembershipAuthority](<https://github.com/agentstation/starmap/blob/main/pkg/sources/provider_binding.go#L30>)
+
+ProviderMembershipAuthority declares which serving membership a binding may replace. Completeness remains a separate requirement for each observation.
+
+```go
+type ProviderMembershipAuthority string
+```
+
+<a name="ProviderMembershipEvidenceOnly"></a>
+
+```go
+const (
+    // ProviderMembershipEvidenceOnly grants no membership replacement authority.
+    ProviderMembershipEvidenceOnly ProviderMembershipAuthority = ""
+    // ProviderMembershipScope permits a binding to replace membership only within its declared scope.
+    ProviderMembershipScope ProviderMembershipAuthority = "scope"
+    // ProviderMembershipProvider permits a binding to replace the provider's public membership.
+    ProviderMembershipProvider ProviderMembershipAuthority = "provider"
+)
+```
 
 <a name="ProviderOption"></a>
 ## type [ProviderOption](<https://github.com/agentstation/starmap/blob/main/pkg/sources/providers.go#L62>)

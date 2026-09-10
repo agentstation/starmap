@@ -34,6 +34,7 @@ type Reconciler struct {
 	projectedEvidence      func(catalogs.ProviderID, provenance.Entry) bool
 	providerSelection      providerObservationSelection
 	baselineProviderSource sources.ID
+	membership             *MembershipState
 }
 
 // New creates a new Reconciler with options.
@@ -55,6 +56,7 @@ func New(opts ...Option) (*Reconciler, error) {
 		projectedEvidence:      options.projectedEvidence,
 		providerSelection:      options.providerSelection,
 		baselineProviderSource: options.baselineProviderSource,
+		membership:             options.membership,
 	}
 
 	return r, nil
@@ -62,12 +64,13 @@ func New(opts ...Option) (*Reconciler, error) {
 
 // reconcileContext holds shared state for reconciliation.
 type reconcileContext struct {
-	collector *collector
-	filter    *filter
-	merger    *merger
-	logger    *zerolog.Logger
-	startTime time.Time
-	baseline  *catalogs.Catalog // Baseline for comparison
+	collector  *collector
+	membership *MembershipState
+	filter     *filter
+	merger     *merger
+	logger     *zerolog.Logger
+	startTime  time.Time
+	baseline   *catalogs.Catalog // Baseline for comparison
 }
 
 // modelResult holds reconciled models and provenance.
@@ -120,6 +123,7 @@ func (r *Reconciler) Sources(ctx context.Context, primary sources.ID, srcs []sou
 	if err != nil {
 		return nil, err
 	}
+	// Provider absence changes scope availability and preserves visible catalog facts.
 	for _, issue := range reviewCandidates {
 		rctx.logger.Warn().
 			Str("issue_code", string(issue.Code)).
@@ -150,6 +154,20 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 	srcs, scoped, err := orderScopedObservations(ctx, srcs, r.providerSelection)
 	if err != nil {
 		return nil, err
+	}
+
+	membership := r.membership
+	if membership == nil {
+		selected := make([]sources.Observation, 0, len(srcs))
+		for _, observation := range srcs {
+			if observation.ProviderBinding != nil && r.providerSelection.permits(observation, observation.ProviderBinding.ProviderID) {
+				selected = append(selected, observation)
+			}
+		}
+		membership, err = ResolveMembership(ctx, selected)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Create collector
@@ -188,12 +206,13 @@ func (r *Reconciler) initialize(ctx context.Context, primary sources.ID, srcs []
 
 	// Create context
 	return &reconcileContext{
-		collector: collector,
-		filter:    newFilter(primary, primaryCatalog),
-		merger:    merger,
-		logger:    logger,
-		startTime: time.Now(),
-		baseline:  r.baseline,
+		collector:  collector,
+		membership: membership,
+		filter:     newFilter(primary, primaryCatalog),
+		merger:     merger,
+		logger:     logger,
+		startTime:  time.Now(),
+		baseline:   r.baseline,
 	}, nil
 }
 

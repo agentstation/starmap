@@ -302,16 +302,17 @@ A credential profile or material version does not establish account scope. Named
 ### Provider acquisition bindings
 
 A provider observation can carry a typed `sources.ProviderAcquisitionBinding` in its metadata and receipt.
-This version 1 contract contains the following fields:
+The current contract uses schema 2. Schema 1 remains readable without membership replacement authority.
 
 | Field | Contract |
 | --- | --- |
-| `schema_version` | Exactly `1`. |
+| `schema_version` | `2` for new bindings. Legacy `1` remains readable. |
 | `id`, `revision` | Stable deployment-owned identity and declared scope revision. |
 | `provider_id` | The single canonical provider contained in the observation. |
 | `public` | An explicit public scope, without account or project selectors. |
 | `account_id`, `project_id` | At least one is required when `public` is false. Both can apply to a private scope. |
 | `region`, `api_surface` | Required selectors, including an explicit region such as `global`. |
+| `membership_authority` | Empty for positive evidence only, `scope` for scope replacement, or `provider` for public provider replacement. Requires schema 2. |
 | `credential_role` | Exactly `catalog_acquisition`. |
 | `credential_profile_id` | The declared authentication profile. This field contains no resolved credential values. |
 
@@ -319,13 +320,57 @@ Each identifier or selector permits at most 4,096 UTF-8 bytes, without control c
 JSON decoding rejects unknown fields, unsupported schemas, and invalid bindings. Errors identify fields without echoing their values.
 A binding requires the provider source and exactly one matching provider. It does not authenticate the account or verify the declared credential profile.
 
-Scoped observations use `observation:v3:<sha256>` identities. Their identities include every binding field with the same byte-length encoding used for other metadata.
-Changing or removing a binding invalidates the existing receipt identity. Unscoped v2 and safe legacy identities cannot validate a scoped observation.
-The constructor, receipt, clone, and restore operations copy the binding. Retention and restart preserve its metadata and reject altered evidence.
+Schema-2 bindings produce `observation:v4:<sha256>` identities, including membership authority.
+Schema-1 bindings retain their original v3 identities. Unscoped observations retain v2 identities.
+Changing or removing a binding invalidates its receipt. The runtime never rewrites an old receipt into the new format.
+
+The constructor, receipt, clone, and restore operations copy the binding. Retention and restart reject altered evidence.
 
 The runtime retains separate records for each provider, binding identity, and binding revision.
-CSP3 must connect configured bindings to scheduled acquisition before operator support.
-A missing binding does not declare public scope. Existing unscoped evidence requires explicit treatment during that integration.
+Configured bindings apply to manual and scheduled acquisition. A missing binding does not declare public scope or permit deletion.
+Changing selectors or membership authority requires a new binding revision.
+
+### Scope replacement and transport
+
+A complete successful observation can replace scoped availability evidence only when its binding explicitly permits inventory replacement.
+Partial, failed, fallback, and unscoped observations cannot establish new absence.
+An empty complete inventory means known absence within its authorized scope. A missing inventory means unknown membership.
+
+`scope` replacement affects only the declared account, project, region, and API surface.
+`provider` authority requires a public binding and records the provider public inventory.
+Both forms preserve visible catalog offerings and definitions when a provider stops reporting a model.
+Independent accounts retain their own availability evidence. Inventory replacement does not authorize catalog deletion.
+
+Catalog schema 7 transports effective `membership_scopes` and references their original provider observation receipts in the generation manifest.
+Each record names its publisher, binding ID, binding revision, provider, scope selectors, and membership authority.
+The last complete inventory and later positive observations retain their original receipt IDs and times.
+Credential references and resolved values do not appear in these scope records.
+
+`DecodeCatalogGeneration` verifies the manifest, payload, schema agreement, and referenced receipts before activation.
+The current decoder also accepts schema 6 without scope records. A consumer explicitly pinned to schema 6 rejects schema 7.
+Legacy receipts keep their original payload bytes and identity during restore. Older binaries cannot read the new format merely because the new decoder reads old formats.
+
+The selected trusted source supplies the authority for imported publisher claims.
+A publisher ID is not an authentication credential. Upstream records cannot claim the local runtime publisher ID or its configured aliases.
+Derivative publication and restart preserve accepted upstream IDs and original receipts.
+
+`acquisition.ImportRelease` merges verified artifacts with the current catalog.
+It preserves independent scopes and their original receipts, including imports that change only scope records.
+Repeated identical imports do not publish another generation.
+Different inventories for the same publisher and binding revision cause a conflict before publication.
+This merge cannot select a replacement scope authority. Use a configured catalog source or explicit trusted activation for replacement.
+
+Starport must resolve an explicit inference-profile link before applying account-specific restrictions.
+That link must bind the selected catalog authority, publisher, binding ID, and revision. An authority change requires link revalidation.
+Starport integration remains incomplete under CSP8 and CSP10.
+
+Complete accepted scoped inventories retain their original receipts through the acquisition volume guard.
+Unscoped volume regressions retain the existing degraded classification. Failed and incomplete evidence cannot establish new absence.
+
+Starport must show observed absence and exclude the affected provider/account from automatic routing.
+Explicit operator removal defaults to that entry. Global canonical removal remains a separate action.
+A replacement Starmap baseline can remove entries it no longer contains. Internal authoritative permission withdrawals retain immediate enforcement.
+Explicit removal, Starport routing integration, and model rename expiry remain incomplete under CSP3 and CSP10.
 
 ### Explicit acquisition binding calls
 

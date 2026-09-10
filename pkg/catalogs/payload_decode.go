@@ -19,12 +19,13 @@ type payloadDecodeReport struct {
 }
 
 type payloadEnvelope struct {
-	SchemaVersion  uint64                     `json:"schema_version"`
-	Providers      []Provider                 `json:"providers"`
-	Authors        []Author                   `json:"authors"`
-	ProviderModels map[string]json.RawMessage `json:"provider_models"`
-	AuthorModels   map[string]json.RawMessage `json:"author_models"`
-	Provenance     provenance.Map             `json:"provenance"`
+	SchemaVersion    uint64                     `json:"schema_version"`
+	Providers        []Provider                 `json:"providers"`
+	Authors          []Author                   `json:"authors"`
+	ProviderModels   map[string]json.RawMessage `json:"provider_models"`
+	AuthorModels     map[string]json.RawMessage `json:"author_models"`
+	Provenance       provenance.Map             `json:"provenance"`
+	MembershipScopes []ProviderMembershipScope  `json:"membership_scopes"`
 }
 
 func (r payloadDecodeReport) err() error {
@@ -47,7 +48,7 @@ func DecodeCatalogPayload(data []byte) (*Catalog, error) {
 // DecodeSourceObservationPayload decodes a source candidate without requiring
 // resolved canonical authorship for every provider record. The returned
 // catalog is suitable only for reconciliation. Durable generation activation
-// must use DecodeCatalogPayload. Source observations use the bounded source
+// must use DecodeCatalogGeneration. Source observations use the bounded source
 // provider count. Canonical generation decoding retains its smaller limit.
 func DecodeSourceObservationPayload(data []byte) (*Catalog, error) {
 	catalog, report, err := decodeCatalogPayload(data, sourcepayload.MaxProviders, func(builder *Builder) (*Catalog, error) {
@@ -66,7 +67,11 @@ func decodeCatalogPayload(data []byte, maxProviders int, build catalogBuilder) (
 	if err != nil {
 		return nil, payloadDecodeReport{}, err
 	}
-	return buildDecodedCatalog(payload, build)
+	catalog, report, err := buildDecodedCatalog(payload, build)
+	if catalog != nil {
+		catalog.payloadSchemaVersion = payload.SchemaVersion
+	}
+	return catalog, report, err
 }
 
 func decodePayloadEnvelope(data []byte, maxProviders int) (payloadEnvelope, error) {
@@ -101,11 +106,16 @@ func decodePayloadEnvelope(data []byte, maxProviders int) (payloadEnvelope, erro
 			Format: "json", File: "catalog payload", Message: "invalid trailing JSON", Err: err,
 		}
 	}
-	if payload.SchemaVersion != CurrentCatalogSchemaVersion {
+	if !SupportsCatalogSchema(payload.SchemaVersion) {
 		return payloadEnvelope{}, &errors.ValidationError{
 			Field:   "schema_version",
 			Value:   payload.SchemaVersion,
 			Message: fmt.Sprintf("must be %d", CurrentCatalogSchemaVersion),
+		}
+	}
+	if payload.SchemaVersion == legacyCatalogSchemaVersion {
+		if _, exists := required["membership_scopes"]; exists {
+			return payloadEnvelope{}, &errors.ValidationError{Field: "membership_scopes", Message: "requires catalog schema version 7"}
 		}
 	}
 	for _, field := range []struct {
@@ -148,6 +158,9 @@ func buildDecodedCatalog(payload payloadEnvelope, build catalogBuilder) (*Catalo
 		return nil, payloadDecodeReport{}, err
 	}
 	builder.SetProvenance(payload.Provenance)
+	if err := builder.SetMembershipScopes(payload.MembershipScopes); err != nil {
+		return nil, payloadDecodeReport{}, err
+	}
 	catalog, err := build(builder)
 	return catalog, payloadDecodeReport{
 		ProviderModels: providerReport,

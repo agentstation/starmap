@@ -94,7 +94,7 @@ func TestAcquireBindingsValidatesBatchBeforeIO(t *testing.T) {
 			request := runtime.AcquisitionRequest{Current: current}
 			switch defect {
 			case "schema":
-				bindings[1].SchemaVersion++
+				bindings[1].SchemaVersion = sources.ProviderAcquisitionBindingSchemaVersion + 1
 			case "duplicate":
 				bindings[1] = bindings[0]
 			case "duplicate-revision":

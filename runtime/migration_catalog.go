@@ -6,7 +6,7 @@ import (
 	"github.com/agentstation/starmap"
 )
 
-func validateMigrationCatalog(ctx context.Context, directory string) error {
+func validateMigrationCatalog(ctx context.Context, directory, publisherID string) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -33,7 +33,7 @@ func validateMigrationCatalog(ctx context.Context, directory string) error {
 	if err != nil {
 		return err
 	}
-	layers := layerSet{source: source, providers: providers, manual: manual}
+	layers := layerSet{publisherID: publisherID, source: source, providers: providers, manual: manual}
 	if _, err := layers.build(ctx, client.EmbeddedCatalogState()); err != nil {
 		return err
 	}

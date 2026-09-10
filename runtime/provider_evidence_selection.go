@@ -32,6 +32,14 @@ func selectCurrentProviderEvidence(ctx context.Context, builder *catalogs.Builde
 			referenced[entry.ObservationID] = true
 		}
 	}
+	for _, scope := range builder.MembershipScopes() {
+		if scope.Inventory != nil {
+			referenced[scope.Inventory.ObservationID] = true
+		}
+		for _, addition := range scope.Additions {
+			referenced[addition.ObservationID] = true
+		}
+	}
 	for _, candidate := range collected.ReviewCandidates {
 		referenced[candidate.SourceObservationID] = true
 	}

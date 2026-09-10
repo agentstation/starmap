@@ -294,6 +294,7 @@ func buildImportCatalog(t testing.TB, builder *catalogs.Builder) *catalogs.Catal
 func importReleaseFixture(
 	t testing.TB,
 	catalog *catalogs.Catalog,
+	links ...catalogs.SourceObservationLink,
 ) artifact.Release {
 	t.Helper()
 	producerStore := storage.NewMemory()
@@ -305,7 +306,7 @@ func importReleaseFixture(
 		context.Context,
 		*catalogs.Catalog,
 	) (*starmap.Candidate, error) {
-		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
+		return starmap.NewCandidate(catalog, starmap.CandidateEvidence{SourceObservations: links})
 	}); err != nil {
 		t.Fatalf("producer Update: %v", err)
 	}

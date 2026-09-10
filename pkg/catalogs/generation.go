@@ -27,9 +27,9 @@ func (g Generation) Validate() error {
 	return nil
 }
 
-// SemanticChecksum returns the facts-only identity of the catalog the payload
-// carries. It excludes provenance, so a regenerated payload with the same facts
-// keeps the same value. The publisher keys the immutable release tag and the
+// SemanticChecksum identifies catalog facts and effective scope state.
+// It excludes field provenance. A scope evidence renewal changes this identity.
+// The publisher keys the immutable release tag and the
 // channel catalog digest by this value. The exact payload checksum stays in
 // the manifest.
 func (g Generation) SemanticChecksum() (string, error) {

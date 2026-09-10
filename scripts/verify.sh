@@ -100,7 +100,9 @@ run ./scripts/verify-catalog-dependency-direction.sh
 run ./scripts/test-catalog-dependency-direction-verifier.sh
 run python3 ./scripts/test_catalog_product_verify.py
 # Run race-test packages serially because catalog workspaces consume substantial memory.
-run env CGO_ENABLED=1 go test ./... -race -short -timeout=20m -p=1
+# The complete runtime suite exceeds twenty minutes on the hosted Linux runner.
+# Individual test deadlines still apply.
+run env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
 run ./scripts/verify-container-smoke.sh

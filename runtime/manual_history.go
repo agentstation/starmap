@@ -252,20 +252,28 @@ func validateManualHistory(history *manualBatch, policy *providerBindingPolicy) 
 	return nil
 }
 
-// manualInputs retains prior provider observations for manual and partial publication.
-func (l *layerSet) manualInputs(input []manualObservation, providers []ProviderLayer) []manualObservation {
+// manualInputs retains observations for manual, partial, and omitted-record publication.
+func (l *layerSet) manualInputs(ctx context.Context, input []manualObservation, providers []ProviderLayer) ([]manualObservation, error) {
 	partial := slices.ContainsFunc(providers, func(layer ProviderLayer) bool {
 		return layer.Receipt.Link.Completeness != sources.ObservationCompletenessComplete || layer.Receipt.Link.Status != sources.ObservationStatusSucceeded
 	})
-	if (len(input) != 0 || partial) && l.manual == nil {
+	retain := len(input) != 0 || partial
+	if !retain && l.manual == nil {
+		var err error
+		retain, err = l.providerInventoryOmitsRecords(ctx, providers)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if retain && l.manual == nil {
 		input = append(l.manualProviderAnchors(), input...)
 	}
-	if l.manual != nil || len(input) != 0 || partial {
+	if l.manual != nil || retain {
 		for _, layer := range providers {
 			input = append(input, manualObservation{Payload: layer.Payload, Receipt: layer.Receipt})
 		}
 	}
-	return input
+	return input, nil
 }
 
 func (l *layerSet) manualProviderAnchors() []manualObservation {
@@ -285,7 +293,11 @@ func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObserv
 			l.manual = &manualBatch{observations: anchors}
 		}
 	}
-	return selectManualObservations(ctx, l.manual, l.manualInputs(input, providers), resets)
+	input, err := l.manualInputs(ctx, input, providers)
+	if err != nil {
+		return nil, err
+	}
+	return selectManualObservations(ctx, l.manual, input, resets)
 }
 
 func supportedManualHistoryVersion(version int) bool {

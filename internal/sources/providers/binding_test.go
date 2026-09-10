@@ -104,7 +104,9 @@ func TestObserveBindingRejectsConfigurationBeforeResolution(t *testing.T) {
 		name   string
 		mutate func(*sources.ProviderAcquisitionBinding, *catalogs.Provider)
 	}{
-		{"invalid schema", func(b *sources.ProviderAcquisitionBinding, _ *catalogs.Provider) { b.SchemaVersion = 2 }},
+		{"invalid schema", func(b *sources.ProviderAcquisitionBinding, _ *catalogs.Provider) {
+			b.SchemaVersion = sources.ProviderAcquisitionBindingSchemaVersion + 1
+		}},
 		{"unknown provider", func(b *sources.ProviderAcquisitionBinding, _ *catalogs.Provider) { b.ProviderID = "unknown" }},
 		{"missing endpoint", func(_ *sources.ProviderAcquisitionBinding, p *catalogs.Provider) { p.Catalog = nil }},
 		{"missing credentials", func(_ *sources.ProviderAcquisitionBinding, p *catalogs.Provider) { p.Credentials = nil }},

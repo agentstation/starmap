@@ -66,7 +66,7 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 			Message: "does not match the requested retained generation",
 		}
 	}
-	published, err := catalogs.DecodeCatalogPayload(target.Payload)
+	published, err := catalogs.DecodeCatalogGeneration(target)
 	if err != nil {
 		return nil, errors.WrapResource("decode", "rollback generation", generationID, err)
 	}

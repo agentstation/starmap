@@ -184,7 +184,7 @@ func TestRetentionRecoveryRefusesUnresolvedHead(t *testing.T) {
 	if len(retained) != 0 {
 		t.Fatal("unresolved recovery retained inputs")
 	}
-	if err := validateMigrationCatalog(t.Context(), filepath.Dir(store.root)); !errors.IsConflict(err) {
+	if err := validateMigrationCatalog(t.Context(), filepath.Dir(store.root), "test-runtime"); !errors.IsConflict(err) {
 		t.Fatalf("migration accepted pending publication: %v", err)
 	}
 }

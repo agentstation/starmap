@@ -74,6 +74,10 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 		collected.SourceObservations = append(collected.SourceObservations, observation.Link())
 		l.acceptedSources = appendAcceptedSource(l.acceptedSources, observation)
 	}
+	membership, err := resolveManualMembership(ctx, providers, selection)
+	if err != nil {
+		return nil, collected, err
+	}
 	providerEvidence := providers
 	slices.SortStableFunc(providers, reconciler.CompareProviderObservations)
 	for len(providers) != 0 {
@@ -81,7 +85,7 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 		for end < len(providers) && reconciler.CompareProviderObservations(providers[0], providers[end]) == 0 {
 			end++
 		}
-		result, err := l.reconcileManualBatch(ctx, base, at, providers[:end], selection)
+		result, err := l.reconcileManualBatch(ctx, base, at, providers[:end], selection, reconciler.WithMembershipState(membership))
 		if err != nil {
 			return nil, collected, err
 		}
@@ -94,6 +98,9 @@ func (l *layerSet) reconcileManualInputs(ctx context.Context, base *catalogs.Cat
 	}
 	builder, err := catalogs.NewBuilderFrom(base)
 	if err != nil {
+		return nil, collected, err
+	}
+	if err := l.attachMembershipScopes(builder, membership); err != nil {
 		return nil, collected, err
 	}
 	collected.ReviewCandidates = slices.DeleteFunc(collected.ReviewCandidates, func(candidate evidence.ReviewCandidate) bool {
@@ -135,7 +142,7 @@ func (l *layerSet) reconcileManualMetadata(ctx context.Context, base *catalogs.C
 	return base, reviews, nil
 }
 
-func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *observationResetSelection) (*reconciler.Result, error) {
+func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Catalog, at time.Time, observations []sources.Observation, selection *observationResetSelection, extra ...reconciler.Option) (*reconciler.Result, error) {
 	baseSource := sources.EmbeddedCatalogID
 	if l.source != nil {
 		baseSource = sources.ReleaseArtifactID
@@ -156,9 +163,11 @@ func (l *layerSet) reconcileManualBatch(ctx context.Context, base *catalogs.Cata
 			at = observation.ObservedAt
 		}
 	}
-	return reconciler.ReconcileObservations(ctx, base, inputs, reconciler.WithChangeTime(at), reconciler.WithProjectedEvidencePolicy(func(provider catalogs.ProviderID, entry provenance.Entry) bool {
+	options := make([]reconciler.Option, 0, 3+len(extra))
+	options = append(options, reconciler.WithChangeTime(at), reconciler.WithProjectedEvidencePolicy(func(provider catalogs.ProviderID, entry provenance.Entry) bool {
 		return l.acquisitionSources.permits(entry.Source) && l.providerBindings.permitsProjectedEvidence(provider, entry) && selection.permitsProjection(provider, entry)
 	}), reconciler.WithProviderObservationSelection(selection.selection(observations)))
+	return reconciler.ReconcileObservations(ctx, base, inputs, append(options, extra...)...)
 }
 
 func compactManualEvidence(collected *starmap.CandidateEvidence) {
@@ -175,4 +184,16 @@ func compactManualEvidence(collected *starmap.CandidateEvidence) {
 	collected.ReviewCandidates = slices.CompactFunc(collected.ReviewCandidates, func(left, right evidence.ReviewCandidate) bool {
 		return evidence.CompareReviewCandidates(left, right) == 0
 	})
+}
+
+func resolveManualMembership(ctx context.Context, providers []sources.Observation, selection *observationResetSelection) (*reconciler.MembershipState, error) {
+	membershipInputs := make([]sources.Observation, 0, len(providers))
+	for _, observation := range providers {
+		binding := observation.ProviderBinding
+		if binding == nil || selection.excluded[observation.ID][""] || selection.excluded[observation.ID][binding.ProviderID] {
+			continue
+		}
+		membershipInputs = append(membershipInputs, observation)
+	}
+	return reconciler.ResolveMembership(ctx, membershipInputs)
 }

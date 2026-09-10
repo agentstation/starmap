@@ -129,6 +129,9 @@ Each object declares a schema version, binding ID, revision, provider, scope, AP
 The credential role must be ` + "`catalog_acquisition`" + `.
 The declarations contain no credential material and do not prove upstream account ownership.
 
+Schema 2 supports explicit [membership replacement authority](CATALOG_STORE_CONTRACT.md#scope-replacement-and-transport).
+Omission grants no replacement authority. Schema 1 remains readable and cannot grant that authority.
+
 An explicit ` + "`[]`" + ` permits no local provider acquisition.
 Omission retains legacy unscoped acquisition. Empty text and ` + "`null`" + ` are invalid.
 A higher-priority array replaces the entire lower array.

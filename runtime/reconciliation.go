@@ -41,11 +41,18 @@ func (l *layerSet) reconcileProviders(ctx context.Context, base *catalogs.Catalo
 			changedAt = observation.ObservedAt
 		}
 	}
-	result, err := reconciler.ReconcileObservations(ctx, base, observations, reconciler.WithChangeTime(changedAt))
+	membership, err := reconciler.ResolveMembership(ctx, observations)
+	if err != nil {
+		return nil, evidence, err
+	}
+	result, err := reconciler.ReconcileObservations(ctx, base, observations, reconciler.WithChangeTime(changedAt), reconciler.WithMembershipState(membership))
 	if err != nil {
 		return nil, evidence, err
 	}
 	if err := ctx.Err(); err != nil {
+		return nil, evidence, err
+	}
+	if err := l.attachMembershipScopes(result.Catalog, membership); err != nil {
 		return nil, evidence, err
 	}
 	evidence.ReviewCandidates = result.ReviewCandidates

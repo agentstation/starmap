@@ -68,6 +68,7 @@ type Builder struct {
 	authors        *Authors
 	authoredModels *authoredModelStore
 	provenance     *Provenance
+	membership     *membershipScopeStore
 	loadReport     LoadReport
 }
 
@@ -79,6 +80,7 @@ func New(opt Option, opts ...Option) (*Builder, error) {
 		authors:        NewAuthors(),
 		authoredModels: newAuthoredModelStore(),
 		provenance:     NewProvenance(),
+		membership:     &membershipScopeStore{},
 		config:         defaults().apply(append([]Option{opt}, opts...)...),
 	}
 
@@ -125,6 +127,7 @@ func NewEmpty() *Builder {
 		authors:        NewAuthors(),
 		authoredModels: newAuthoredModelStore(),
 		provenance:     NewProvenance(),
+		membership:     &membershipScopeStore{},
 		config:         defaults(),
 	}
 }
@@ -373,6 +376,9 @@ func (cat *Builder) DeleteAuthorModel(authorID AuthorID, slug string) error {
 
 // ReplaceWith replaces this catalog's contents with another.
 func (cat *Builder) ReplaceWith(source Reader) error {
+	if err := cat.SetMembershipScopes(source.MembershipScopes()); err != nil {
+		return err
+	}
 	// Clear existing data
 	cat.providers.Clear()
 	cat.authors.Clear()
@@ -414,6 +420,15 @@ func (cat *Builder) MergeWith(source Reader, opts ...MergeOption) error {
 		opt(mergeOpts)
 	}
 
+	if mergeOpts.Strategy == MergeEnrichEmpty || mergeOpts.Strategy == MergeAppendOnly {
+		scopes, err := mergeMembershipScopes(cat.MembershipScopes(), source.MembershipScopes())
+		if err != nil {
+			return err
+		}
+		if err := cat.SetMembershipScopes(scopes); err != nil {
+			return err
+		}
+	}
 	switch mergeOpts.Strategy {
 	case MergeReplaceAll:
 		return cat.ReplaceWith(source)
@@ -526,6 +541,7 @@ func (cat *Builder) Copy() (*Builder, error) {
 		authors:        NewAuthors(),
 		authoredModels: newAuthoredModelStore(),
 		provenance:     NewProvenance(),
+		membership:     &membershipScopeStore{},
 		config:         cat.config.copy(),
 		loadReport:     cat.LoadReport(),
 	}
