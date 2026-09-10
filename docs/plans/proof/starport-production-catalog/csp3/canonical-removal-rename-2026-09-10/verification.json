@@ -123,6 +123,16 @@
       },
       "exit_code": 0,
       "passed_tests": 73
+    },
+    "consumers": {
+      "exit_code": 0,
+      "compositions": 6,
+      "source": "13fe3a759a451106a824af5d9807b161352bd851",
+      "artifact": {
+        "path": "starmap-alias-canonical-removal-consumers-2026-09-10.log.gz",
+        "sha256": "5755e1af6660cc57595835a1977af0b25a40c4c6ae9c4f2241b7aa51de203794",
+        "raw_sha256": "d8afc810cbcb3ef576594706e21e4b6bdce4e2bd34bbf44a17c66c33f831d182"
+      }
     }
   },
   "running": {
