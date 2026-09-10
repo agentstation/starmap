@@ -245,18 +245,195 @@
         "sha256": "9ccb09cdb10b49d21506aa02a7c25536e2f7c6634fc2a083f373a75d6cc496bf",
         "raw_sha256": "44811924acf808fa6873a1faf35410073fb1fa12dd842274ddc10baa9448a79c"
       }
-    }
-  },
-  "running": {
+    },
     "complete_verification": {
       "source": "b3af02c3791e7ca36af191095808f8fac5bc6ac6",
       "worktree": "/tmp/starmap-canonical-aliases-2026-09-10",
-      "session": 53345,
+      "session": null,
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 make verify",
-      "output": "/tmp/starmap-alias-complete-verification-2026-09-10.log"
+      "output": "/tmp/starmap-alias-complete-verification-2026-09-10.log",
+      "exit_code": 0,
+      "artifact": {
+        "path": "starmap-alias-complete-verification-2026-09-10.log.gz",
+        "sha256": "753fa7f37208a4c4e05abd0aa1695dc438f82696f7d5e773492cd16e982af3cd",
+        "raw_sha256": "dde377012c9e66c3432a4758f0c54a9faa9aee3f6d6dd77623abcf6a92955b7f"
+      },
+      "phases": {
+        "go test ./...": {
+          "passed_packages": 81,
+          "packages_without_tests": 22
+        },
+        "make test-pure-go": {
+          "passed_packages": 7,
+          "packages_without_tests": 0
+        },
+        "make test-file-sizes": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "./scripts/verify-package-layout.sh": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "./scripts/test-package-layout-verifier.sh": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "./scripts/verify-catalog-package-ownership.sh": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "./scripts/test-catalog-package-ownership-verifier.sh": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "./scripts/verify-catalog-dependency-direction.sh": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "./scripts/test-catalog-dependency-direction-verifier.sh": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "bash ./scripts/verify-canonical-alias-history.sh": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "python3 ./scripts/test_catalog_product_verify.py": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1": {
+          "passed_packages": 81,
+          "packages_without_tests": 22
+        },
+        "go vet ./...": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "./scripts/verify-catalog-performance.sh": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "./scripts/verify-container-smoke.sh": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "devbox run golangci-lint run": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "go tool ago -stale-ignores ./...": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/catalog/pipeline >= 70%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/catalog/query >= 75%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/providers/clients >= 80%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/sources/providers >= 75%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/server/middleware >= 90%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/server/openrouter >= 85%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/server/params >= 95%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/server/response >= 95%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/server/sse >= 90%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/transport >= 40%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./pkg/catalogs/authority >= 90%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./pkg/catalogs >= 55%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./pkg/errors >= 80%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./internal/catalog/reconciler >= 75%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "coverage ./pkg/sources >= 35%": {
+          "passed_packages": 1,
+          "packages_without_tests": 0
+        },
+        "make docs-check": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "make technical-writing-check": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "git diff --check": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.qKFUAp/starmap ./cmd/starmap": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "run_cli version": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "run_cli validate catalog": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "run_cli providers": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        },
+        "run_cli models list --limit 5": {
+          "passed_packages": 0,
+          "packages_without_tests": 0
+        }
+      },
+      "coverage_thresholds_passed": 15,
+      "product_verifier_tests": 73,
+      "prose_files": 1378,
+      "prose_diagnostics": 0,
+      "catalog_snapshot_benchmarks": [
+        "BenchmarkClientCatalog-12    \t100000000\t        11.05 ns/op\t       0 B/op\t       0 allocs/op",
+        "BenchmarkClientCatalog-12    \t100000000\t        10.13 ns/op\t       0 B/op\t       0 allocs/op",
+        "BenchmarkClientCatalog-12    \t121619022\t        10.28 ns/op\t       0 B/op\t       0 allocs/op"
+      ],
+      "limitation": "The non-JSON full-suite output counts packages, not test events. The catalog snapshot benchmark does not measure total Starport request overhead."
     }
   },
-  "state": "Task component checks pass; full repository verification, branch review, native CI, and merge remain open.",
+  "running": {},
+  "state": "Full repository and task component checks pass. Combined review and native CI precede merge through PR145.",
   "generated_docs_failure": {
     "artifact": {
       "path": "starmap-alias-canonical-removal-docs-2026-09-10.log.gz",
@@ -273,6 +450,6 @@
     "changed_file": "scripts/test-catalog-package-ownership-verifier.sh",
     "check_log": "/tmp/starmap-alias-integrated-toolchain-shell-2026-09-10.log",
     "exit_code": 0,
-    "limitation": "Full product qualification continues against the unchanged production code in the repair worktree at 13fe3a75."
+    "limitation": "Expanded task checks passed at 13fe3a75. Complete repository verification passed at b3af02c3, including the repaired shell regression."
   }
 }

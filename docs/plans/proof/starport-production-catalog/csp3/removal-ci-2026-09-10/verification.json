@@ -1132,9 +1132,61 @@
         }
       }
     },
-    "review_session": 65209,
     "review_log": "/tmp/starmap-pr145-main-integration-review-2026-09-10.log",
     "pr_base": "main",
-    "published": false
+    "published": true,
+    "review": {
+      "exit_code": 0,
+      "findings": 0,
+      "confidence": 0.97,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "artifact": {
+        "path": "starmap-pr145-main-integration-review-2026-09-10.log.gz",
+        "sha256": "9030684da7138914c8538fef19fbdd3d5e74c4a75e02fd83fc8643856ae5f764",
+        "raw_sha256": "19f75c6c83e9282799db92567ffd7092a6ab94f0ca7df4cb15afdb124ca5ac69"
+      }
+    },
+    "ci_run": 34468955626,
+    "ci_watch_session": 45275,
+    "ci_watch_log": "/tmp/starmap-pr145-main-ci-watch-2026-09-10.log",
+    "automatic_merge": false
+  },
+  "combined_delivery": {
+    "plan": "Integrate the qualified canonical-alias branch into PR145, review the complete diff against main, then run final CI and merge.",
+    "reason": "Removal and alias rules share one catalog schema and identity contract. One delivery avoids repeated qualification of unchanged dependency trees.",
+    "source_candidate": "b3af02c3791e7ca36af191095808f8fac5bc6ac6",
+    "automatic_merge_disabled_until_combined_review": true,
+    "new_pr_required": false,
+    "commit": "b5af1e9c67e065ebd688a19a7563bcc430f724bb",
+    "tree": "b03e43ff13256f3b9809319f53b83d2a5287d24b",
+    "main": "b9eca8897c6ee8f0eb147f228b40bf1fc94deb8f",
+    "same_tree_as_qualified_candidate": true,
+    "contains_actual_main": true,
+    "published": false,
+    "complete_verification": {
+      "exit_code": 0,
+      "proof": "../canonical-removal-rename-2026-09-10/verification.json"
+    },
+    "history_guard": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "starmap-combined-alias-history-2026-09-10.log.gz",
+        "sha256": "9f04e0f117815acb77e6d3555ef8bc3986e3b7d48578488f7e0b08057a48847a",
+        "raw_sha256": "b1d523a1a6a0faad24210965ccd66674be230a76e349e7b53a8e077becb3342d"
+      }
+    },
+    "review": {
+      "state": "running",
+      "session": 23847,
+      "base": "b9eca8897c6ee8f0eb147f228b40bf1fc94deb8f",
+      "log": "/tmp/starmap-combined-catalog-review-2026-09-10.log",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ]
+    }
   }
 }
