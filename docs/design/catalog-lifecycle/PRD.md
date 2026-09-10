@@ -52,6 +52,9 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D24 | A fresh manual update resets prior local acquisition results while preserving the embedded or selected upstream baseline. Internal authority remains binding. | User confirmed on 2026-09-07 |
 | D25 | Account-specific catalog removals affect only inference profiles explicitly linked to that acquisition scope. Preserve model discovery and unrelated account routes. | User confirmed on 2026-09-07 |
 | D26 | Canonical catalog payloads permit 32 MiB. Raw source payloads retain 16 MiB. Encoders and decoders enforce identical catalog limits. | Engineering default based on a verified 23,683,266-byte generation. Owner preference remains pending. |
+| D27 | Ordinary provider absence changes observed availability and preserves visible catalog entries. Explicit operator removal or a replacement Starmap baseline can remove entries. | User confirmed on 2026-09-10 |
+| D28 | A model absent from a complete accepted provider inventory remains visible but is excluded from automatic routing for the affected provider/account. | User confirmed on 2026-09-10 |
+| D29 | Explicit removal affects only the selected provider/account entry by default. Canonical removal across providers is a separate action. | User confirmed on 2026-09-10 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
@@ -133,7 +136,7 @@ Section 8 of the specification defines the supported architecture targets.
 | P05 | The publisher requests a run every four hours and publishes only validated results. | Workflow configuration and failure-injection tests prove the publication order. |
 | P06 | Successful publication promotes the verified embedded input to the default branch. | A clean checkout builds with the promoted catalog digest. |
 | P07 | Starmap and Starport can follow the public catalog without provider keys. | A public-source test updates an empty installation without provider credentials. |
-| P08 | Local acquisition updates only the facts that its authority permits. | Conflicting evidence produces the specified winner and provenance. |
+| P08 | Local acquisition updates permitted facts and observed availability. Provider absence preserves visible catalog entries. | Absent models remain visible. The affected provider/account leaves automatic routing until valid evidence restores availability. |
 | P09 | Partial source failures preserve unaffected and last-known-good facts. | One failed provider cannot remove another provider's accepted records. |
 | P10 | Internal Starmap authority controls catalog membership and permitted enrichment. | Lower layers cannot restore an excluded offering. |
 | P11 | Catalog acquisition, inference, gateway authentication, and catalog transport use separate credential roles. | Role-isolation tests detect any cross-role lookup. |

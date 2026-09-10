@@ -766,7 +766,7 @@ Ordinary Starport startup can still download newer catalogs independently.
 ### 5.1 Publication admission and source receipts
 
 Every publication profile must name required sources, scope, maximum retained age,
-and any removal threshold that requires review. Record its policy version.
+and explicit operator removal policy. Record its policy version.
 Missing credentials do not make a required source optional.
 
 | Source result | Publication verdict |
@@ -775,13 +775,14 @@ Missing credentials do not make a required source optional.
 | Required source fails or is partial, with permitted retained evidence | Retain that scope within its age limit. Publish other valid changes and report retention. |
 | Required source has no permitted retained evidence | Reject publication. Keep the current branch promotion and channel. |
 | Optional source is absent or fails | Publish other valid scopes if the profile permits it. Do not invent freshness or deletions. |
-| Complete empty source or explicit tombstone | Apply deletion only within its authorized scope. Enforce the removal review threshold. |
+| Complete accepted provider inventory omits a model | Record observed absence. Preserve the visible catalog entry and exclude the affected provider/account from automatic routing. |
+| Explicit operator removal or replacement baseline | Remove only the entries selected by the explicit action or absent from the replacement baseline. Preserve unrelated entries. |
 | Disabled source or revoked scope | Apply the explicit removal policy. Never treat its old evidence as a current observation. |
 | No fresh source result | Confirm only the checks that actually completed. Reject any claim of a fresh acquisition. |
 
 A first run with no required evidence must fail even if embedded facts exist.
 A profile can explicitly select the embedded source as approved evidence.
-Incomplete empty replies must never satisfy a complete-deletion contract.
+Failed or incomplete replies must not establish new absence. Preserve prior availability and report stale evidence or the source error.
 Record rejected candidates and their causes without advancing either mutable head.
 
 Unchanged facts can reuse the immutable semantic artifact.
@@ -854,7 +855,8 @@ must distinguish source support from source eligibility in a particular run.
 | Starport account allow or deny | Apply gateway policy after catalog reconciliation. |
 | Empty or omitted field | Distinguish unknown, explicit null, zero, false, and deliberate deletion. |
 | Failed or incomplete source reply | Preserve prior accepted facts. Do not infer global deletion. |
-| Complete deletion or tombstone | Remove the record within the source's declared scope. Lower layers cannot restore it. |
+| Ordinary provider absence | Keep the entry visible with observed absence. Exclude that provider/account from automatic routing until accepted evidence restores availability. |
+| Explicit scoped removal | Hide only the selected provider/account entry by default. Lower layers cannot restore it. Global canonical removal requires a separate action. |
 | Unlinked new offering | Retain a review candidate. Exclude it from routable output until identity resolves. |
 
 Pricing is one validated commercial record, including currency, units, tiers, validity, and provenance.
@@ -863,6 +865,19 @@ Preserve a valid linked offering when optional pricing or limits are absent.
 Report any billing-related route exclusion separately from catalog membership.
 
 The first acceptable source in the configured authority order wins. Authority scores do not define numeric averaging or generic operator weights.
+
+D27 through D29 separate catalog identity, observed availability, and routing eligibility.
+Ordinary provider acquisition must never convert absence into automatic catalog deletion, including a complete empty inventory.
+Inventory replacement authority updates availability evidence for the declared scope. It does not grant permission to delete visible definitions or offerings.
+A replacement Starmap baseline can remove entries no longer present in that baseline.
+
+Explicit operator removal defaults to the affected provider/account entry. Canonical removal across providers remains a separate action.
+Operator removal records must survive refresh and restart until an explicit restore or defined baseline transition clears them.
+
+A complete accepted inventory can establish observed absence. Failed, incomplete, or stale fallback replies cannot establish new absence.
+Starport retains the visible model and excludes the affected provider/account from automatic routing.
+Other providers and accounts retain their own availability. Internal authoritative permission withdrawals retain their immediate enforcement contract under D1 and D13.
+
 
 Starport currently pins Starmap v0.16.5. The candidate source tree contains newer canonical reconciliation and membership corrections.
 CSP8 must adopt a compatible published module and repeat these contracts through Starport acquisition, restart, discovery, and inference admission.

@@ -1,0 +1,152 @@
+{
+  "status": "D27 through D29 replace the prior deletion behavior. Local repair is uncommitted. Full qualification and fresh review are active or pending. No completion credit.",
+  "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
+  "branch": "codex/catalog-scoped-membership",
+  "base_work_commit": "8a4c14d9",
+  "confirmed_decisions": {
+    "D27": "Ordinary provider absence preserves visible catalog records. Explicit operator removal or a replacement baseline may remove entries.",
+    "D28": "Keep the model visible and exclude the affected provider/account from automatic routing until accepted evidence restores availability.",
+    "D29": "Explicit removal affects the selected provider/account entry by default. Canonical removal across providers is a separate action."
+  },
+  "constraints": [
+    "Failed, incomplete, and stale fallback observations cannot establish new absence.",
+    "Other providers and accounts retain independent availability.",
+    "Internal authoritative permission withdrawal retains immediate enforcement.",
+    "No percentage-based automatic deletion or deletion-review threshold applies to ordinary provider absence."
+  ],
+  "fail_before": {
+    "reconciler": "Complete public inventory removed the visible offering. One child and its parent fail.",
+    "runtime": "Complete inventory, partial refresh, baseline refresh, and restart all lost the visible offering.",
+    "initial_fixture_error": "The first runtime attempt used the instanceIdentity method as a field. Preserve that build failure separately from the corrected runtime behavior failure.",
+    "pipeline": "Both scope and provider authority lost the original complete inventory receipt because the volume guard downgraded them. Two children and their parent fail."
+  },
+  "local_repair": [
+    "Remove automatic offering deletion and membership-based provenance/review pruning.",
+    "Remove the internal aggregate Permits query. Check each exported scope independently.",
+    "Retain original complete scoped inventory receipts through volume checks. Preserve existing unscoped degradation.",
+    "Test visible offerings and known scoped absence through refresh, restart, independent accounts, and reset."
+  ],
+  "focused": {
+    "exit_code": 0,
+    "pass": 33,
+    "fail": 0,
+    "skip": 0
+  },
+  "pipeline_focused": {
+    "exit_code": 0,
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "full": {
+    "session_id": 78012,
+    "status": "running",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 go test -race -count=1 -timeout 20m ./runtime ./acquisition ./internal/catalog/reconciler ./internal/catalog/pipeline -json",
+    "log": "/tmp/starmap-observed-absence-full-2026-09-10.jsonl"
+  },
+  "minimum_go": {
+    "session_id": 73444,
+    "status": "completed",
+    "log": "/tmp/starmap-observed-absence-min-go-2026-09-10.jsonl",
+    "exit_code": 0,
+    "pass": 37,
+    "fail": 0,
+    "skip": 0
+  },
+  "prior_review": {
+    "commit": "8a4c14d9",
+    "exit_code": 0,
+    "reviewers": {
+      "codex:gpt-5.6-sol:xhigh": 0,
+      "claude:opus:high": 0
+    },
+    "current_qualification": false,
+    "reason": "The owner changed the deletion contract after this review started. The revised branch requires fresh qualification and review."
+  },
+  "remaining": [
+    "Explicit operator removal and restore records",
+    "Starport linked-profile routing exclusion and visible availability",
+    "Model rename expiry decision",
+    "Full tests, documentation checks, fresh review, publication, native CI, and merge"
+  ],
+  "artifacts": {
+    "initial-before": {
+      "path": "initial-before.jsonl.gz",
+      "sha256": "3acac38ad2f595f6c859f4a1313a26cd6de63803294f8b9f269be5e5c0298bdd"
+    },
+    "runtime-before": {
+      "path": "runtime-before.jsonl.gz",
+      "sha256": "a523b8d54d86d18ad2875aab231bafeb40ec0130a39283cd8f3a469922568e21"
+    },
+    "focused": {
+      "path": "focused.jsonl.gz",
+      "sha256": "7ae3744d7bda11a457e2635e1fc69c9200e4fb781a7f2652b9c63b3afe4d4922"
+    },
+    "health-before": {
+      "path": "health-before.jsonl.gz",
+      "sha256": "bbf526a0ccce24f48bd21a9279989ed4b566f2ee78923dddb37da61277a6a9a9"
+    },
+    "health-after": {
+      "path": "health-after.jsonl.gz",
+      "sha256": "cf1d9e1631a5b906a635ab2122ad68e2c4b323670041dd16f0ea76174739c5c5"
+    },
+    "prior-review": {
+      "path": "prior-review.log.gz",
+      "sha256": "461e969f7395094eaac6a9b18186d4d0d7951918914868e0dcdd33217de1cee4"
+    },
+    "min-go": {
+      "path": "min-go.jsonl.gz",
+      "sha256": "298edd0e9562e329fb489396323c5274f306d97740baa668e63a00f6b05149f3"
+    },
+    "ago": {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    "lint": {
+      "path": "lint.log.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    "docs": {
+      "path": "docs.log.gz",
+      "sha256": "5d95f6cda30a94b9e0e5a600a4f8a439b17e5ee7e785dcaef466122aa2963b32"
+    },
+    "docs-check": {
+      "path": "docs-check.log.gz",
+      "sha256": "ece94277e36b4f2e03dd529785b79bfdcd6ed47c9fbf17f8ef1827517b7068f3"
+    },
+    "writing": {
+      "path": "writing.log.gz",
+      "sha256": "97bf9da308c66436f5cda09a40fff362e62ee290f5b2e4d30cd261b91ebf2c26"
+    },
+    "registry": {
+      "path": "registry.log.gz",
+      "sha256": "8380435bd3548b4aaf450e4d1ae9df5a290ffc3630cbc7a5c4e776b636cccc78"
+    },
+    "plan-prose": {
+      "path": "plan-prose.log.gz",
+      "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7"
+    }
+  },
+  "static": {
+    "ago": 0,
+    "lint": 0,
+    "godoc": 0,
+    "docs_check": 0,
+    "writing": 0,
+    "registry_tests": {
+      "exit_code": 0,
+      "count": 73
+    },
+    "plan_prose": {
+      "exit_code": 0,
+      "files": 4,
+      "diagnostics": 0
+    }
+  },
+  "a08_verifier": {
+    "session_id": 35121,
+    "status": "running",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOCACHE=/tmp/starmap-source-diagnostics-go-cache-2026-09-09 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --case A08 --json",
+    "log": "/tmp/starmap-observed-absence-a08-2026-09-10.json"
+  }
+}

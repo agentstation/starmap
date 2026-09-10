@@ -692,7 +692,7 @@
     ]
   },
   "transport_draft": {
-    "status": "Committed through 8a4c14d9. Full acquisition passes 100 test events. Required pre-PR review is running.",
+    "status": "Commit 8a4c14d9 passed prior checks and review. D27 through D29 require revised behavior before publication. See observed-availability-2026-09-10/verification.json.",
     "files": [
       "pkg/catalogs/membership_scope.go",
       "pkg/catalogs/membership_scope_test.go"
@@ -1788,14 +1788,17 @@
       "work_commit": "8a4c14d9f79b48ac0fb140529c13e1b17611786f"
     },
     "pre_pr_review": {
-      "status": "running",
+      "status": "completed",
       "work_commit": "8a4c14d9f79b48ac0fb140529c13e1b17611786f",
       "reviewers": [
         "codex:gpt-5.6-sol:xhigh",
         "claude:opus:high"
       ],
       "log": "/tmp/starmap-membership-pre-pr-review-2026-09-10.log",
-      "session_id": 69725
+      "session_id": 69725,
+      "exit_code": 0,
+      "findings": 0,
+      "superseded_by": "../observed-availability-2026-09-10/verification.json"
     }
   }
 }

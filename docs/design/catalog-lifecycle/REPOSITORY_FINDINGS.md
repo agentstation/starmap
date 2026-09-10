@@ -1615,3 +1615,17 @@ This low-authority merge does not select replacement authority. Configured sourc
 
 The [scope proof](../../plans/proof/starport-production-catalog/csp3/scoped-membership-2026-09-09/verification.json) records eight passing focused events on each Go toolchain.
 Commit `8a4c14d9` also passes all 100 acquisition test events. Pre-PR review is active. The repair has no merge or task completion credit.
+
+## Observed availability preserves discovery
+
+On 2026-09-10, the owner rejected automatic deletion when ordinary provider acquisition stops reporting a model.
+D27 through D29 require visible catalog entries, scoped automatic-routing exclusion, and explicit removal limited to the affected entry by default.
+A replacement Starmap baseline can remove entries. Internal permission withdrawal remains a separate immediate enforcement rule.
+
+The prior local branch filtered canonical offerings through `MembershipState.Permits` after a complete public provider inventory.
+It also pruned their provenance and review candidates. That behavior conflicts with the new decisions.
+New tests reproduce disappearance during reconciliation, partial refresh, baseline refresh, and restart.
+The repair preserves catalog facts and carries absence only in scope inventory evidence.
+
+The prior Sol and Opus review passed for commit `8a4c14d9`. It does not qualify the revised behavior.
+The scoped branch remains unpublished. Pipeline integration, explicit removal, Starport routing, full qualification, and fresh review remain required.
