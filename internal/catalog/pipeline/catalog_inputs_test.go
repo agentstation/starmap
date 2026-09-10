@@ -176,7 +176,11 @@ func TestPrepareRejectsProviderOutsideAcceptedCatalogBeforeAcquisition(t *testin
 		return sources.ProviderCredentialMaterial{}, nil
 	}))
 	p.loadEmbedded = func() (*catalogs.Catalog, error) { return embedded, nil }
-	if _, err := p.Prepare(t.Context(), accepted, pkgsync.WithDryRun(true), pkgsync.WithSources(sources.ProvidersID), pkgsync.WithProvider("excluded")); err == nil {
-		t.Fatal("acquired an embedded provider outside the accepted registry")
+	for _, selected := range [][]sources.ID{nil, {sources.ProvidersID}, {sources.ProvidersID, sources.ModelsDevHTTPID}} {
+		t.Run(fmt.Sprint(len(selected)), func(t *testing.T) {
+			if _, err := p.Prepare(t.Context(), accepted, pkgsync.WithDryRun(true), pkgsync.WithSources(selected...), pkgsync.WithProvider("excluded")); err == nil {
+				t.Fatal("acquired an embedded provider outside the accepted registry")
+			}
+		})
 	}
 }

@@ -195,7 +195,13 @@ func (p *Pipeline) prepare(
 	if err != nil {
 		return nil, err
 	}
-	if err = options.Validate(inputs.providerConfig.Providers()); err != nil {
+	validationProviders := inputs.providerConfig.Providers()
+	acquiresProviders := len(options.Sources) == 0 || slices.Contains(options.Sources, sources.ProvidersID)
+	// Metadata filters can name embedded providers without enabling their APIs.
+	if !acquiresProviders {
+		validationProviders = metadataProviderRegistry(inputs, options.ProviderID)
+	}
+	if err = options.Validate(validationProviders); err != nil {
 		return nil, err
 	}
 

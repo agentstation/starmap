@@ -411,7 +411,9 @@ Starport discovery, routing, and operator UI integration remain incomplete. This
 Manual and scheduled provider acquisition use the accepted catalog's provider definitions.
 An accepted upstream baseline can supply a custom provider without a local YAML workspace.
 An explicit local workspace can override provider configuration or add a provider, subject to the runtime's acquisition policy.
-An embedded provider outside the accepted registry cannot bypass that registry during manual acquisition.
+An embedded provider outside the accepted registry cannot bypass that registry during manual provider acquisition.
+
+A metadata-only source filter can still name an embedded provider. That filter does not enable a provider client or resolve its credentials.
 
 Provider selection does not resolve credentials. The selected acquisition profile and binding checks govern later credential resolution.
 These changes do not grant inference access or change credential-plane precedence.

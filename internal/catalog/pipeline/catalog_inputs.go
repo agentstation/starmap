@@ -142,3 +142,12 @@ func composeProviderCatalog(
 	}
 	return catalog, nil
 }
+
+// metadataProviderRegistry resolves metadata filters without enabling provider acquisition.
+func metadataProviderRegistry(inputs catalogInputs, filter *catalogs.ProviderID) catalogs.ProvidersReader {
+	configured := inputs.providerConfig.Providers()
+	if filter != nil && !configured.Exists(*filter) && inputs.embedded != nil {
+		return inputs.embedded.Providers()
+	}
+	return configured
+}
