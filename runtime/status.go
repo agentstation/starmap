@@ -88,10 +88,10 @@ func (r *Runtime) Status() Status {
 	}
 	report.CatalogAvailable = effective.Catalog != nil
 	if r.requiresAuthority() {
-		uncertainty, known := r.permissionClock()
+		clock := r.readPermissionClock()
 		report.AuthorityRequired = true
 		report.AuthorityReady = permissions.enforced.Sequence != 0 && permissions.enforced.RequiredPermissionRevision == permissions.highest.RequiredPermissionRevision
-		report.PermissionValid = report.AuthorityReady && permissions.allowsNewAttempt(now, uncertainty, known)
+		report.PermissionValid = report.AuthorityReady && permissions.allowsNewAttempt(clock.Time, clock.Uncertainty, clock.Known)
 		if r.ctx.Err() != nil {
 			report.PermissionValid = false
 		}

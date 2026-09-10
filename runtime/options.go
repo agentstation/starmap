@@ -6,6 +6,7 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/fleet"
+	"github.com/agentstation/starmap/pkg/catalogs/permission"
 	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
@@ -70,6 +71,7 @@ type options struct {
 	now                        func() time.Time
 	random                     Random
 	permissionClockUncertainty func() (time.Duration, bool)
+	permissionClockReading     func() permission.ClockReading
 	publicationCapability      *authorityPublicationCapability
 
 	// scheduleTimer paces the periodic workers. It stays unexported and nil in
@@ -128,6 +130,9 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if r.permissionClockReading != nil && r.permissionClockUncertainty != nil {
+		return &errors.ValidationError{Field: "permission_clock", Message: "select either a complete clock sample or the legacy uncertainty callback"}
+	}
 	if r.origin != nil && r.source.StartupPolicy == StartupRequireAuthority {
 		return originError("an authoritative subscriber cannot also be an origin")
 	}

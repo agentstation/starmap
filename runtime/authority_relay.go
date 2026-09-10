@@ -31,8 +31,8 @@ func (r *Runtime) ReadPermission(ctx context.Context) (catalogs.CatalogPermissio
 	r.mu.RLock()
 	p := r.permissions
 	r.mu.RUnlock()
-	uncertainty, known := r.permissionClock()
-	if !p.retained || p.pending || p.activeReceipt.Head != p.highest || !p.activeReceipt.ValidAt(r.config.now(), uncertainty, known) {
+	clock := r.readPermissionClock()
+	if !p.retained || p.pending || p.activeReceipt.Head != p.highest || !p.activeReceipt.ValidAt(clock.Time, clock.Uncertainty, clock.Known) {
 		return catalogs.CatalogPermissionEnvelope{}, &errors.ConflictError{Resource: "catalog permission", Message: "no confirmed valid receipt matches the highest required publication"}
 	}
 	return p.activeReceipt, nil

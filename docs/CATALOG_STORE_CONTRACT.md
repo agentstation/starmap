@@ -158,6 +158,12 @@ Unknown clock validity or uncertainty outside zero through 30 seconds refuses is
 The callback must support concurrent calls and account for clock corrections, suspend, restart, and expired evidence.
 Returning `time.Now()` with an assumed uncertainty does not qualify a clock.
 
+`runtime.WithPermissionClock` supplies a complete sample for each admission check, receipt relay, and permission status report.
+Each check uses the time and uncertainty from one callback result. The callback reads cached evidence and supports concurrent calls.
+The scheduler retains its own clock. Combining the complete sample with `WithPermissionClockUncertainty` causes a configuration error.
+
+The legacy uncertainty callback remains available when it qualifies the time from `WithClock`. Neither option provides native qualification.
+
 The issuer rejects changed authority identity, sequence rollback, and conflicting heads at the same sequence.
 Concurrent observations cannot replace a newer observed head with an older reply.
 A clock failure after a valid head read still retains that requirement in process memory.

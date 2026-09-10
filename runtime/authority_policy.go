@@ -1,8 +1,6 @@
 package runtime
 
 import (
-	"time"
-
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -42,28 +40,8 @@ func WithSourcePolicyID(identity string) Option {
 	return func(o *options) error { o.source.PolicyID = identity; return nil }
 }
 
-// WithPermissionClockUncertainty supplies the host's cached clock assurance.
-// The callback reads cached memory only. It reports uncertainty for WithClock's time
-// and false when its evidence is absent or expired. No callback means unknown.
-func WithPermissionClockUncertainty(sample func() (time.Duration, bool)) Option {
-	return func(o *options) error {
-		if sample == nil {
-			return &errors.ValidationError{Field: "permission_clock", Message: "is required"}
-		}
-		o.permissionClockUncertainty = sample
-		return nil
-	}
-}
-
 func (r *Runtime) requiresAuthority() bool {
 	return r != nil && r.config.source.StartupPolicy == StartupRequireAuthority
-}
-
-func (r *Runtime) permissionClock() (time.Duration, bool) {
-	if r.config.permissionClockUncertainty == nil {
-		return 0, false
-	}
-	return r.config.permissionClockUncertainty()
 }
 
 // AllowsNewAttempt checks current catalog permission using memory only.
@@ -79,6 +57,6 @@ func (r *Runtime) AllowsNewAttempt() bool {
 	if !r.requiresAuthority() {
 		return state.Catalog != nil
 	}
-	uncertainty, known := r.permissionClock()
-	return state.Catalog != nil && p.allowsNewAttempt(r.config.now(), uncertainty, known)
+	clock := r.readPermissionClock()
+	return state.Catalog != nil && p.allowsNewAttempt(clock.Time, clock.Uncertainty, clock.Known)
 }
