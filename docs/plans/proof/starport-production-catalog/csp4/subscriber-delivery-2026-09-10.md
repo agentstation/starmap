@@ -49,7 +49,8 @@ Both test modes pass 81 packages. Container smoke, all 15 coverage thresholds, s
 The catalog accessor records 8.167–8.523 ns/op, zero bytes, and zero allocations across three runs.
 The documentation generator rejects the build-concurrency flag despite a successful wrapper exit. Its clean-environment retry passes.
 
-Required Sol and Opus review continues. Native CI, PR publication, and merge remain pending.
+Required Sol and Opus review passes with zero accepted or actionable findings across two chunks.
+Starmap PR #146 is open at the reviewed source. Native CI and merge remain pending.
 The current plan resume state owns session IDs and output paths.
 
 ## Next delivery constraints

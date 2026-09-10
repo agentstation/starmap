@@ -1,0 +1,121 @@
+{
+  "task": "CSP4",
+  "delivery": "Starmap subscriber enforcement and receipt relay",
+  "source": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+  "base": "a87262e3b830f285eee2a82ebd85e3816d7d94c5",
+  "pr": {
+    "number": 146,
+    "url": "https://github.com/agentstation/starmap/pull/146",
+    "state": "OPEN",
+    "is_draft": false,
+    "auto_merge_enabled": false,
+    "body_matches_prepared_file": true,
+    "prepared_body_sha256": "4c2fb02029f7f9f9839bebea5e6f61cef5e4aa193783c13401ba9e4cb8a6f77c"
+  },
+  "ci": {
+    "run_id": 34510928894,
+    "url": "https://github.com/agentstation/starmap/actions/runs/34510928894",
+    "head": "44a400a481748c5e7ae1268cecb63b260a91bdab",
+    "status": "in_progress",
+    "conclusion": "",
+    "native_jobs": {
+      "Runtime windows-11-arm": {
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      "Runtime ubuntu-24.04": {
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      "Runtime windows-2025": {
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      "Runtime macos-15": {
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      "Runtime macos-15-intel": {
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      "Runtime ubuntu-24.04-arm": {
+        "status": "in_progress",
+        "conclusion": ""
+      }
+    }
+  },
+  "repository_required_checks": [
+    "Security & Reliability",
+    "Verification Gate"
+  ],
+  "additional_merge_requirement": "All six native Runtime jobs must pass before merge, even though branch protection lists only Security & Reliability and Verification Gate.",
+  "checks": {
+    "autoreview": {
+      "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base a87262e3b830f285eee2a82ebd85e3816d7d94c5 --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
+      "exit_code": 0,
+      "artifact": {
+        "path": "autoreview.log.gz",
+        "sha256": "25eb024875ded91843d45a1e8e3c9e5502bec1b97622d7ba1bffcbd52bcd33fb",
+        "raw_sha256": "91a2c5a08ef476908d5362d75dae4175b69c8b92ecec5e2b9a7cf4e59514acd9"
+      },
+      "reported_accepted_or_actionable_findings": 0,
+      "review_chunks": 2,
+      "bundle_bytes": 438796,
+      "secret_scan": "clean",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "result": "clean"
+    },
+    "pr-published": {
+      "command": "gh pr view 146 --repo agentstation/starmap --json number,url,state,isDraft,headRefOid,baseRefOid,mergeStateStatus,autoMergeRequest,statusCheckRollup,body",
+      "exit_code": 0,
+      "artifact": {
+        "path": "pr-published.json.gz",
+        "sha256": "0a7152a5b9e6caec701b689b27cbed3bf3ce713ba6d1269162189c833096ebff",
+        "raw_sha256": "941709e498df9b26ed5877f5dade5c7a1e855654d7a4136a42a6c1f217e20d6e"
+      }
+    },
+    "ci-published": {
+      "command": "gh run view 34510928894 --repo agentstation/starmap --json databaseId,url,status,conclusion,headSha,jobs",
+      "exit_code": 0,
+      "artifact": {
+        "path": "ci-published.json.gz",
+        "sha256": "1ffd9439108048a8e43d81307d576726faa85bf7d670710546731c552699b0dc",
+        "raw_sha256": "0eadc5add57a2b10c5f3c4f45cf2049ecf9362c77acd0bfe5ec342ea2e628c11"
+      }
+    },
+    "required-status-checks": {
+      "command": "gh api repos/agentstation/starmap/branches/main/protection/required_status_checks",
+      "exit_code": 0,
+      "artifact": {
+        "path": "required-status-checks.json.gz",
+        "sha256": "4cd562732ee3c520eb718db782d1a3ba71e13b0a2b11a829022824bb10bbdafc",
+        "raw_sha256": "ea8c7222c5c3b39971a8637e6b0e647c05b82ad72bad0b449269ff4de3732390"
+      }
+    },
+    "publication-prose": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "artifact": {
+        "path": "publication-prose.log.gz",
+        "sha256": "d468a79427ddd34e64b990a89a12eaf3430e17f1a6807cc10b385847a6b36745",
+        "raw_sha256": "157cb47abd42bc99bee1ba4f4a0773d4af1d67445813c19aa383319ea59ee008"
+      },
+      "source_scope": "Canonical plan publication checkpoint. 1287 files, zero diagnostics.",
+      "prose_files_sha256": {
+        "docs/plans/starport-production-catalog-plan.html": "e53affa5c85cdf282c6ce711236465a841f0e7e28039d340dfbca88c5b107de9",
+        "docs/plans/proof/starport-production-catalog/csp4.md": "52c6745e48828d1dbb75a6c42e2d6d78e437b5a2db5eac588a7f9bc9fc685159",
+        "docs/plans/proof/starport-production-catalog/csp4/subscriber-delivery-2026-09-10.md": "0d09ae6013cd9cf2ae7c09c726df79e8d840a233e0e3b0a195796a5eb6570f97"
+      }
+    }
+  },
+  "local_verification": "../subscriber-verification-2026-09-10/verification.json",
+  "limitations": [
+    "Native CI and merge remain pending.",
+    "The first delivery grants no CSP4 completion credit. All eight task checks remain UNVERIFIED.",
+    "The remaining Starmap work and a separate Starport consumer PR after a compatible module release remain required."
+  ]
+}

@@ -33,7 +33,9 @@ The complete retry passes at clean `44a400a4`. Both test modes pass 81 packages,
 All 15 coverage thresholds, static checks, isolated CLI checks, and the catalog accessor budget pass.
 The generator rejects `GOFLAGS=-p=2` despite a successful wrapper exit. A separate `GOFLAGS= make docs-check` run passes without that diagnostic.
 
-Required Sol and Opus review runs in session `28132`. Output: `/tmp/starmap-csp4-subscriber-autoreview-2026-09-10.log`.
+Required Sol and Opus review passes with zero accepted or actionable findings across two chunks.
+The [publication proof](csp4/subscriber-publication-2026-09-10/verification.json) binds PR #146 and CI run `34510928894` to reviewed `44a400a4`.
+All six native jobs must pass before merge. CSP4 remains in progress.
 
 The current 91-file Starmap branch owns permission transport, retained subscriber enforcement, and relay.
 Complete its repository checks, pre-PR review, native CI, and merge before the next delivery.

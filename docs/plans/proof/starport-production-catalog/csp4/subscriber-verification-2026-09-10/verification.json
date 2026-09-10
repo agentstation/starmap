@@ -353,17 +353,11 @@
       }
     }
   },
-  "running_operations": [
-    {
-      "session_id": 28132,
-      "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base a87262e3b830f285eee2a82ebd85e3816d7d94c5 --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
-      "output": "/tmp/starmap-csp4-subscriber-autoreview-2026-09-10.log",
-      "source_scope": "44a400a481748c5e7ae1268cecb63b260a91bdab"
-    }
-  ],
+  "running_operations": [],
   "limitations": [
-    "Required pre-PR autoreview, native CI, PR publication, and merge remain pending.",
+    "Required pre-PR review passed, and PR #146 is open at the qualified source. Native CI and merge remain pending.",
     "All eight task acceptance subcases remain UNVERIFIED. The first delivery gives no task completion credit.",
     "The remaining Starmap authority work and a separate Starport consumer PR after a compatible module release remain required."
-  ]
+  ],
+  "publication_proof": "../subscriber-publication-2026-09-10/verification.json"
 }
