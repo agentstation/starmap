@@ -692,7 +692,7 @@
     ]
   },
   "transport_draft": {
-    "status": "Uncommitted schema-7 scope transport and runtime integration draft. Local and upstream scope receipt persistence pass focused checks. Authenticated publisher handling and full qualification remain incomplete. Do not publish this draft.",
+    "status": "Schema-7 transport and runtime integration are committed locally through 2290162f. Focused trust, receipt, migration, compatibility, and consumer checks pass. Full qualification and required review remain incomplete. Do not publish before those checks finish.",
     "files": [
       "pkg/catalogs/membership_scope.go",
       "pkg/catalogs/membership_scope_test.go"
@@ -733,10 +733,9 @@
       }
     },
     "remaining": [
-      "Bind imported publisher namespaces to the configured authenticated source authority and qualify collision handling.",
-      "Document protocol schema selection and migration behavior; generate package docs.",
-      "Repeat full affected tests and minimum-Go checks after integration, then required review.",
-      "Implement Starport explicit profile links and admission enforcement."
+      "Complete full qualification and required review before publication.",
+      "CSP4 owns selected authority transitions. CSP10 owns authority-bound inference-profile links and admission enforcement.",
+      "Complete scoped removal and model alias acceptance, including the pending owner policy decisions."
     ],
     "implemented": [
       "Reader requires scope records; Builder copies and validates them under its own lock.",
@@ -1534,6 +1533,55 @@
           "Model rename compatibility expiry"
         ],
         "alias_coverage": "Existing author/provider alias tests do not prove canonical model rename expiry or cross-authority model alias rejection. A08.alias_cycle_scope remains incomplete."
+      }
+    },
+    "final_static_checks": {
+      "work_commit": "2290162f",
+      "vet_exit_code": 0,
+      "lint_exit_code": 0,
+      "godoc_exit_code": 0,
+      "docs_check_exit_code": 0,
+      "writing": {
+        "exit_code": 0,
+        "files": 1339,
+        "diagnostics": 0
+      },
+      "catalog_lookup_benchmark": {
+        "exit_code": 0,
+        "ns_per_op": [
+          9.225,
+          9.457,
+          9.086
+        ],
+        "bytes_per_op": 0,
+        "allocations_per_op": 0,
+        "scope": "Client.Catalog returns the current immutable snapshot. This does not measure full Starport request overhead."
+      },
+      "artifacts": {
+        "final-vet": {
+          "path": "final-vet.log.gz",
+          "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+        },
+        "final-lint": {
+          "path": "final-lint.log.gz",
+          "sha256": "a0e26fd8bf7a9bf1e323d88e6b7d36d61e2f050492be8eae9b320fc9708aab5b"
+        },
+        "final-performance": {
+          "path": "final-performance.log.gz",
+          "sha256": "de78ef3c82bc8f0835c2dd5504a43d85cba06ad0fcbe642768e1fdc5b9dc0563"
+        },
+        "activation-docs": {
+          "path": "activation-docs.log.gz",
+          "sha256": "55c7a47cd892ec349a7f33eb81d63423e365bccb82c5fff5c0b7169dcd900712"
+        },
+        "activation-docs-check": {
+          "path": "activation-docs-check.log.gz",
+          "sha256": "9e1d141a103778cadaba91510f49b9bde28392c4004b0121fdccac63190df2eb"
+        },
+        "activation-writing": {
+          "path": "activation-writing.log.gz",
+          "sha256": "c6dfbe2bdd1f1df840a3e5614788df35ccd7384c01bf79eaf8212c6d26df6407"
+        }
       }
     }
   }
