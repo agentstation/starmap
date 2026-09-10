@@ -1829,3 +1829,21 @@ Its retry uses the planned thirty-minute limit and remains unverified.
 The issuer retains its highest observation only in process memory.
 Durable publisher ordering, issuer authorization, production clock adapters, server wiring, and shared follower activation remain incomplete.
 This checkpoint is local and unmerged. All eight CSP4 acceptance subcases remain UNVERIFIED.
+
+## Durable authority publication order, 2026-09-10
+
+Local commit `4031c084ef18a4f6e272eb77c7fa897c1cc4c409` adds the explicit `permission.Publisher` store wrapper.
+The failing regression shows that generic storage accepts an older authority sequence after reopen.
+Generic storage does not claim to enforce that policy. The wrapper adds the authority-specific contract without changing ordinary storage behavior.
+
+Publication checks the durable predecessor and then uses the store's atomic compare-and-swap.
+A delayed writer cannot replace a newer committed generation. Exact retries still succeed, while changed immutable bytes fail.
+An existing ordinary store requires explicit bootstrap. An established authority cannot use bootstrap to replace its policy.
+The publisher rejects unsupported permission semantics while its independent head remains observable to receipt consumers.
+
+The [publication-order proof](../../plans/proof/starport-production-catalog/csp4/publisher-order-2026-09-10/verification.json) records 46 issuer and publisher race events on each toolchain.
+Lint, ago, and the 1,434-file prose check pass. The full documentation check finds five stale runtime source links from the earlier identity extraction.
+
+Commit `60f7b9cd` corrects those generated links. The complete documentation check then passes.
+The runtime suite passes 813 race events in 1,286.36 seconds with no failures or skips.
+Origin revision construction, clocks, server wiring, shared followers, authority transitions, and Starport qualification remain incomplete.

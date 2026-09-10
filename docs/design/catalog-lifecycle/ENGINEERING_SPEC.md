@@ -1777,6 +1777,20 @@ A delayed older read cannot replace a newer observation. Changed authority ident
 The owning publisher must enforce durable publication order across issuer restart and authorize each issuer.
 The library issuer alone does not qualify that publication contract, a production clock adapter, or the standalone server.
 
+`permission.NewPublisher` selects one fixed authority and policy for a caller-owned catalog store.
+Its atomic commit checks the durable predecessor before conditional publication. Every authority writer must use this contract.
+A process restart does not clear the predecessor. Unsupported permission semantics refuse new publication.
+The independent head remains observable for refusal diagnostics.
+
+An empty store permits an initial authority commit.
+An ordinary selected catalog requires explicit `Bootstrap` with the exact predecessor ID.
+Bootstrap cannot replace an established authority. Exact retries preserve the underlying immutable-generation identity contract.
+An unreadable predecessor cannot reset the sequence through an empty expectation.
+
+Origin composition constructs generations and authorizes publishers and issuers.
+That composition must derive the required revision from the permitted catalog and applicable policy.
+Direct underlying writes, deleted state, and restored older backups require separate recovery procedures.
+
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.
 Missing metadata, incompatible metadata, and an ordinary selected generation cannot renew a previous authority receipt.
 

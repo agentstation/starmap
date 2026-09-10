@@ -6,11 +6,11 @@
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
   "delivery_amendment": "CSP4 uses separate Starmap and Starport PRs; all eight task checks and completion requirements remain unchanged",
-  "local_links": 107,
-  "evidence_artifacts": 176,
-  "resume_words": 290,
-  "plan_words": 10387,
-  "plan_bytes": 111528,
+  "local_links": 108,
+  "evidence_artifacts": 193,
+  "resume_words": 285,
+  "plan_words": 10442,
+  "plan_bytes": 112051,
   "budget_exception": "The plan retains 38 task contracts for one product outcome. Resume reads current-resume, invariants, ledger, task-CSP4, the goal, and csp4.md#current-runtime-integration. Historical proof stays optional.",
   "cold_resume": "PASS: next action, worktree, source, running command, authorization, and remaining qualification have explicit current owners."
 }

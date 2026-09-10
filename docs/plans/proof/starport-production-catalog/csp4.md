@@ -3,31 +3,29 @@
 ## Current runtime integration
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
-The active committed source is local `e27c473e85da077142fdb487ac0b87016af22da6` in `/tmp/starmap-authority-issuer-2026-09-10`.
-The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b`. Its tree matches issuer checkpoint `48205c51` and remains unpublished.
+The active source is clean local `60f7b9cd208d1221abc4bd8e898eb84471c1aca3` in `/tmp/starmap-authority-issuer-2026-09-10`.
+The branch is `codex/catalog-authority-issuer`. It includes actual PR #146 merge `faa9cc8b` and remains unpublished.
 
-The worktree adds four draft Go files under `pkg/catalogs/permission` for publisher ordering.
-They contain `publication.go` and three publication tests.
-No owner decision remains.
+No owner decision remains. No local command remains running.
 
-The [issuer proof](csp4/issuer-library-2026-09-10/verification.json) records the 13-file library checkpoint after independent authority storage.
-The issuer observes the current stored head before each bounded receipt.
-Read delay and issuer uncertainty consume the interval that starts before storage access.
-Concurrent old replies, invalid clock evidence, and storage failures cannot renew stale permission.
-Durable publication ordering remains the publisher's responsibility.
+The [publication-order proof](csp4/publisher-order-2026-09-10/verification.json) records implementation `4031c084` and the final generated documentation correction.
+The publisher checks a durable predecessor before atomic publication. Reopening the store cannot permit an older authority sequence.
+An ordinary store requires explicit bootstrap. Established authorities reject repeated bootstrap, except for exact retries.
+Unknown permission semantics block new publication while independent metadata remains observable to receipt readers.
 
-Current issuer race checks pass 33 events on each toolchain. Runtime identity checks pass 21 events on each toolchain.
-All six external consumers, lint, ago, and the 1,430-file prose check pass.
-The complete catalog and storage suites pass 1,240 and 88 events respectively.
+Both toolchains pass 46 issuer and publisher race events. Lint, ago, and the 1,434-file prose check pass.
+The complete documentation check passes after correcting five stale runtime source links.
+The extended runtime suite passes 813 events in 1,286.36 seconds with no failures or skips.
+It uses the planned thirty-minute limit. The preceding ten-minute timeout remains in the historical proof.
 
-The broad runtime run reaches its default ten-minute timeout after 337 passing events.
-Session `9353` retries the runtime suite with the planned thirty-minute limit.
-Its output is `/tmp/starmap-csp4-issuer-runtime-regression-2026-09-10.jsonl`. The result remains UNVERIFIED until completion.
+The [issuer proof](csp4/issuer-library-2026-09-10/verification.json) retains 21 runtime identity events per toolchain and all six external consumer checks.
+The [storage proof](csp4/authority-record-2026-09-10/verification.json) retains independent records, current-read capabilities, and migration qualification.
+Current catalog and storage suites also pass 1,240 and 88 events respectively.
+The publisher proof preserves the nonprivate fixture failure, generic-store ordering gap, and the failed test draft.
 
-The proof preserves the new API scaffold failure, invalid-receiver panic, complexity finding, prose failures, and broad timeout.
-The scaffold failure does not represent a historical production defect.
-The [preceding storage proof](csp4/authority-record-2026-09-10/verification.json) retains record, migration, and current-read qualification.
-Next, enforce durable publication order and explicit issuer ownership. Production clocks, server wiring, shared followers, and Starport qualification remain required.
+Next, construct origin authority generations and derive their required permission revision from the permitted catalog and applicable policy.
+Authorize publishers and issuers explicitly in that composition. Qualify clocks, server wiring, shared followers, authority transitions, and Starport consumers.
+The current libraries do not complete the standalone production recipe.
 
 ### First subscriber delivery
 
