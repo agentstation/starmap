@@ -13,11 +13,13 @@
 
 <p>Qualify the canonical-removal rename repair before alias publication. Read the <a href="#task-CSP3">task criteria</a> and <a href="proof/starport-production-catalog/csp3/alias-retention-design-2026-09-10.md">alias contract</a>. D27 through D30 preserve visible absence, scoped removal, and aliases without expiry. Internal authority withdrawals remain immediate.</p>
 
-<p>Availability <a href="https://github.com/agentstation/starmap/pull/144">PR #144</a> points to head <code>63779c88</code> in <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>. CI at <code>8155e6e6</code> found a stale timeout expectation. The one-line repair passes 28 workflow tests on both Go versions and static checks. Both required reviewers pass with zero findings. Fresh run <code>34458807844</code> uses watch session <code>5300</code>. Pass CI before merge.</p>
+<p>Availability <a href="https://github.com/agentstation/starmap/pull/144">PR #144</a> points to head <code>63779c88</code> in <code>/tmp/starmap-scoped-membership-2026-09-09</code>, branch <code>codex/catalog-scoped-membership</code>. CI at <code>8155e6e6</code> found a stale timeout expectation. The one-line repair passes 28 workflow tests on both Go versions and static checks. Both required reviewers pass with zero findings. Fresh run <code>34458807844</code> uses watch session <code>5300</code>.</p>
+
+<p>All six availability native jobs pass. The aggregate Verification Gate remains active.</p>
 
 <p>Removal <a href="https://github.com/agentstation/starmap/pull/145">PR #145</a> targets the availability branch. Its worktree is <code>/tmp/starmap-operator-removal-2026-09-10</code>, branch <code>codex/catalog-operator-removal</code>. CI at <code>014d5ab4</code> found two stale workflow assertions. Repair <code>ce1d646a</code> passes 28 workflow tests on both Go versions and static checks. Both reviewers pass with zero findings.</p>
 
-<p>GitHub now holds the reviewed removal repair. Native run <code>34459251132</code> uses watch session <code>98518</code>.</p>
+<p>GitHub now holds the reviewed removal repair. Native run <code>34459251132</code> uses watch session <code>98518</code>. All six native jobs pass. The aggregate Verification Gate remains active.</p>
 
 <p>After #144 merges, verify the equivalent base and retarget #145 to main. Pass required checks before merge. Do not merge into the dependency branch.</p>
 

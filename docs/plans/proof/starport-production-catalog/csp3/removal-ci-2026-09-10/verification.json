@@ -726,6 +726,90 @@
       }
     },
     "published": true,
-    "ci_run": 34459251132
+    "ci_run": 34459251132,
+    "native": {
+      "source": "ce1d646a0184572f07bdb2be7d7cf7a268216669",
+      "ci_run": 34459251132,
+      "jobs": [
+        {
+          "platform": "native-runtime-macos-15",
+          "counts": {
+            "pass": 1587,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-macos-15.jsonl.gz",
+            "sha256": "fe96eec6c0b8da8e7ed18f2bcd892bbf5db3631d34e197c6cd9a2671726a28f3",
+            "raw_sha256": "f6043ecc04f8c633f835576cad036e9a021f0c1401b8d5a25ec8adb4c33a0947"
+          }
+        },
+        {
+          "platform": "native-runtime-macos-15-intel",
+          "counts": {
+            "pass": 1587,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-macos-15-intel.jsonl.gz",
+            "sha256": "fd4c5762322cca2d51819e4ae627f8dfc2ced7661c56ee69583bcffe3cc2bc20",
+            "raw_sha256": "34e4086207a6146dccf16925a10f97ca4b1c10433dd4962c85218e2a2ff84863"
+          }
+        },
+        {
+          "platform": "native-runtime-ubuntu-24.04",
+          "counts": {
+            "pass": 1531,
+            "fail": 0,
+            "skip": 1
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-ubuntu-24.04.jsonl.gz",
+            "sha256": "f706a856021fbaf8c1f683c6d1d40fcfb582bc159bdcbf76c0f58e33923c9ac9",
+            "raw_sha256": "16c3581339408209464b1c696ffb8524e16694e1b042fadbda616b7bcce44c79"
+          }
+        },
+        {
+          "platform": "native-runtime-ubuntu-24.04-arm",
+          "counts": {
+            "pass": 1531,
+            "fail": 0,
+            "skip": 1
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-ubuntu-24.04-arm.jsonl.gz",
+            "sha256": "26eb211ebc7a2ee271930fb786897264d3b9ff2f9dd5ac12e31c18d1ba435264",
+            "raw_sha256": "ef2e67adfed42aa5830159b8923f7cc027bd1197afb451c18365dc417cbb6a78"
+          }
+        },
+        {
+          "platform": "native-runtime-windows-11-arm",
+          "counts": {
+            "pass": 1532,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-windows-11-arm.jsonl.gz",
+            "sha256": "286ec7adc3763a6272d9048c1f6c068db4b79f820bafeda72b23739a3156b868",
+            "raw_sha256": "465ddb0615297d2bc9f75d7b3373d8c7a30743238667e88e487e1ba336cf3230"
+          }
+        },
+        {
+          "platform": "native-runtime-windows-2025",
+          "counts": {
+            "pass": 1532,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-windows-2025.jsonl.gz",
+            "sha256": "ca92d9ccd6ad096f85cd9d7c3b422b32e94eafba79fa85abaca59ca2b20a9575",
+            "raw_sha256": "873ee4c2857104ceda7c1bf0fd09a1405fb27e8d1c4dbd9e8d38437f775b6f03"
+          }
+        }
+      ]
+    }
   }
 }

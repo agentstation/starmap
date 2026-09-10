@@ -3,7 +3,7 @@
   "pr": "https://github.com/agentstation/starmap/pull/144",
   "head": "3a989949a77433fafb920976a6c2dc0988246843",
   "ci_run": 34444938562,
-  "state": "Reviewed contract repair 63779c88 is pushed. Both reviewers report zero findings. Fresh run 34458807844 is active.",
+  "state": "All six native jobs pass at reviewed head 63779c88. Aggregate Verification Gate remains active. Merge is pending.",
   "findings": [
     "Release import required the newest schema instead of any supported payload schema. The reviewed later removal branch already contained the narrow guard repair.",
     "The GitHub test fixture used a legacy manifest with a current-format payload. It now constructs a consistent legacy generation and validates the decoded catalog."
@@ -665,6 +665,90 @@
       "confidence": 0.96
     },
     "published": true,
-    "ci_run": 34458807844
+    "ci_run": 34458807844,
+    "native": {
+      "source": "63779c88feecbee53ecb73b2baa5b7437e09e2e0",
+      "ci_run": 34458807844,
+      "jobs": [
+        {
+          "platform": "native-runtime-macos-15",
+          "counts": {
+            "pass": 1570,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-macos-15.jsonl.gz",
+            "sha256": "b516ac0c7f90d4a382087b817a5d95e140062ea563917999aa0e8ac49e55f3d1",
+            "raw_sha256": "c2d6375699dd1df88905b99bd2b581aab95504165ea436e7a6be77aec1395860"
+          }
+        },
+        {
+          "platform": "native-runtime-macos-15-intel",
+          "counts": {
+            "pass": 1570,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-macos-15-intel.jsonl.gz",
+            "sha256": "9f53dea896cdba0eddc76e54314c870bf9438cba8d8bd845f73cb101bd43ae1b",
+            "raw_sha256": "56b91579a446781893dd3df331b1407dabeb948c33dbe049eda656ed27061e3a"
+          }
+        },
+        {
+          "platform": "native-runtime-ubuntu-24.04",
+          "counts": {
+            "pass": 1514,
+            "fail": 0,
+            "skip": 1
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-ubuntu-24.04.jsonl.gz",
+            "sha256": "618ef06afd14480e0c3b81f389fbe92ce89b9fd70ae221f389d71e7cb9551e1b",
+            "raw_sha256": "17a01c0c60640c1061e16ffb36f7f915467e9649e244ef28960010dd511b49a3"
+          }
+        },
+        {
+          "platform": "native-runtime-ubuntu-24.04-arm",
+          "counts": {
+            "pass": 1514,
+            "fail": 0,
+            "skip": 1
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-ubuntu-24.04-arm.jsonl.gz",
+            "sha256": "5c9a2d15a66779c35da5755c737379037f0449f1387811bb9593788b86ca8edd",
+            "raw_sha256": "361730b932b37701cc7fc47fccfa0b73ad670cf01f3cfe66f50c489e8df0c750"
+          }
+        },
+        {
+          "platform": "native-runtime-windows-11-arm",
+          "counts": {
+            "pass": 1515,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-windows-11-arm.jsonl.gz",
+            "sha256": "1018a068e4b2f03a47bc1210c81e085eb6c2eccdb3b00773b5407b7218356fda",
+            "raw_sha256": "656b54299d6267b1ec9ef4baaa1cd2b0ad9a3b3b1439b9c0e6ecf434a6c5b08f"
+          }
+        },
+        {
+          "platform": "native-runtime-windows-2025",
+          "counts": {
+            "pass": 1515,
+            "fail": 0,
+            "skip": 0
+          },
+          "artifact": {
+            "path": "contract-repaired-native-runtime-windows-2025.jsonl.gz",
+            "sha256": "8be6346b5b2fb1f66077046dadae59cf196dcd4da20d9c528f763eb1b53e7399",
+            "raw_sha256": "e3a8ab96eac68e0838b46deff1383107acf25647a4ce46d6417791ecd3740cca"
+          }
+        }
+      ]
+    }
   }
 }
