@@ -12,31 +12,59 @@ Package storage provides durable generation\-oriented catalog storage.
 
 ## Index
 
+- [type AuthorityHeadReader](<#AuthorityHeadReader>)
+- [type CurrentObjectReader](<#CurrentObjectReader>)
 - [type Filesystem](<#Filesystem>)
   - [func NewFilesystem\(path string\) \(\*Filesystem, error\)](<#NewFilesystem>)
   - [func \(s \*Filesystem\) Commit\(ctx context.Context, generation catalogs.Generation, expectedGenerationID string\) error](<#Filesystem.Commit>)
   - [func \(s \*Filesystem\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Filesystem.Current>)
+  - [func \(s \*Filesystem\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Filesystem.CurrentAuthorityHead>)
   - [func \(s \*Filesystem\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Filesystem.Get>)
   - [func \(s \*Filesystem\) Root\(\) string](<#Filesystem.Root>)
 - [type Memory](<#Memory>)
   - [func NewMemory\(\) \*Memory](<#NewMemory>)
   - [func \(s \*Memory\) Commit\(ctx context.Context, generation catalogs.Generation, expectedGenerationID string\) error](<#Memory.Commit>)
   - [func \(s \*Memory\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Memory.Current>)
+  - [func \(s \*Memory\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Memory.CurrentAuthorityHead>)
   - [func \(s \*Memory\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Memory.Get>)
 - [type MemoryObjectBackend](<#MemoryObjectBackend>)
   - [func NewMemoryObjectBackend\(\) \*MemoryObjectBackend](<#NewMemoryObjectBackend>)
   - [func \(b \*MemoryObjectBackend\) Get\(ctx context.Context, key string\) \(ObjectValue, error\)](<#MemoryObjectBackend.Get>)
+  - [func \(b \*MemoryObjectBackend\) GetCurrent\(ctx context.Context, key string\) \(ObjectValue, error\)](<#MemoryObjectBackend.GetCurrent>)
   - [func \(b \*MemoryObjectBackend\) Put\(ctx context.Context, key string, data \[\]byte, condition ObjectPutCondition\) \(ObjectValue, error\)](<#MemoryObjectBackend.Put>)
 - [type Object](<#Object>)
   - [func NewObject\(backend ObjectBackend, prefix string\) \(\*Object, error\)](<#NewObject>)
   - [func \(s \*Object\) Commit\(ctx context.Context, generation catalogs.Generation, expectedGenerationID string\) error](<#Object.Commit>)
   - [func \(s \*Object\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Object.Current>)
+  - [func \(s \*Object\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Object.CurrentAuthorityHead>)
   - [func \(s \*Object\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Object.Get>)
 - [type ObjectBackend](<#ObjectBackend>)
 - [type ObjectPutCondition](<#ObjectPutCondition>)
 - [type ObjectValue](<#ObjectValue>)
 - [type Store](<#Store>)
 
+
+<a name="AuthorityHeadReader"></a>
+## type [AuthorityHeadReader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/authority.go#L17-L19>)
+
+AuthorityHeadReader observes the current stored publication independently of catalog payload compatibility. The returned head must be current between invocation and completion, including other writers' publications. Reads do not repair metadata or renew receipts. Missing authority metadata returns an error. Receipt issuers start validity before this read and qualify their clocks separately.
+
+```go
+type AuthorityHeadReader interface {
+    CurrentAuthorityHead(context.Context) (catalogs.CatalogAuthorityHead, error)
+}
+```
+
+<a name="CurrentObjectReader"></a>
+## type [CurrentObjectReader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/authority_object.go#L17-L19>)
+
+CurrentObjectReader guarantees that GetCurrent observes a version current during the call. The guarantee includes other writers' completed publications and prohibits stale replica or cache reads. Ordinary ObjectBackend reads do not imply this capability.
+
+```go
+type CurrentObjectReader interface {
+    GetCurrent(context.Context, string) (ObjectValue, error)
+}
+```
 
 <a name="Filesystem"></a>
 ## type [Filesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L29-L35>)
@@ -75,6 +103,15 @@ func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error)
 ```
 
 Current returns the currently active generation.
+
+<a name="Filesystem.CurrentAuthorityHead"></a>
+### func \(\*Filesystem\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/authority_filesystem.go#L17>)
+
+```go
+func (s *Filesystem) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuthorityHead, error)
+```
+
+CurrentAuthorityHead reads the current pointer and its independent immutable permission record. This guarantee requires a local filesystem with the documented atomic publication semantics. The read does not load catalog data or repair missing metadata.
 
 <a name="Filesystem.Get"></a>
 ### func \(\*Filesystem\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L79>)
@@ -132,6 +169,15 @@ func (s *Memory) Current(ctx context.Context) (catalogs.Generation, error)
 
 Current returns the currently active generation.
 
+<a name="Memory.CurrentAuthorityHead"></a>
+### func \(\*Memory\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/authority.go#L22>)
+
+```go
+func (s *Memory) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuthorityHead, error)
+```
+
+CurrentAuthorityHead returns the selected authority head under the publication lock without copying its payload.
+
 <a name="Memory.Get"></a>
 ### func \(\*Memory\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L36>)
 
@@ -169,6 +215,15 @@ func (b *MemoryObjectBackend) Get(ctx context.Context, key string) (ObjectValue,
 ```
 
 Get returns a defensive copy of key.
+
+<a name="MemoryObjectBackend.GetCurrent"></a>
+### func \(\*MemoryObjectBackend\) [GetCurrent](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/authority_object.go#L22>)
+
+```go
+func (b *MemoryObjectBackend) GetCurrent(ctx context.Context, key string) (ObjectValue, error)
+```
+
+GetCurrent returns the object selected under the same lock as conditional writes.
 
 <a name="MemoryObjectBackend.Put"></a>
 ### func \(\*MemoryObjectBackend\) [Put](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L70>)
@@ -216,6 +271,15 @@ func (s *Object) Current(ctx context.Context) (catalogs.Generation, error)
 ```
 
 Current returns the currently active generation.
+
+<a name="Object.CurrentAuthorityHead"></a>
+### func \(\*Object\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/authority_object.go#L28>)
+
+```go
+func (s *Object) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuthorityHead, error)
+```
+
+CurrentAuthorityHead observes the current pointer through a qualified backend and reads its immutable permission record. An object backend without current\-read capability cannot supply fresh authority observations.
 
 <a name="Object.Get"></a>
 ### func \(\*Object\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L132>)

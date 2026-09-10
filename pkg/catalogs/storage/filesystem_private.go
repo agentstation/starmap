@@ -98,12 +98,21 @@ func (s *Filesystem) writeGeneration(ctx context.Context, generation catalogs.Ge
 	defer func() { _ = stage.Close() }()
 	owned := make(map[string]storeStageRecord)
 	defer cleanupStoreStage(parent, stage, name, identity, owned)
-	for _, record := range []struct {
+	records := []struct {
 		name string
 		data []byte
-	}{
-		{manifestFilename, manifest}, {payloadFilename, generation.Payload},
-	} {
+	}{{manifestFilename, manifest}, {payloadFilename, generation.Payload}}
+	authority, err := authorityRecordData(generation)
+	if err != nil {
+		return err
+	}
+	if authority != nil {
+		records = append(records, struct {
+			name string
+			data []byte
+		}{authorityFilename, authority})
+	}
+	for _, record := range records {
 		file, err := privatefiles.CreateFile(stage, record.name)
 		if err != nil {
 			return err
@@ -158,10 +167,7 @@ func (s *Filesystem) writeGeneration(ctx context.Context, generation catalogs.Ge
 	if len(entries) != len(owned) {
 		return &errors.ConflictError{Resource: "catalog candidate", Message: "candidate entries changed before publication"}
 	}
-	for _, record := range []struct {
-		name string
-		data []byte
-	}{{manifestFilename, manifest}, {payloadFilename, generation.Payload}} {
+	for _, record := range records {
 		data, err := staged.ReadFile(record.name, int64(len(record.data)))
 		if err != nil {
 			return err

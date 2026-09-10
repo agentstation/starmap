@@ -102,6 +102,43 @@ write is not a valid implementation.
 An identical retry after an ambiguous successful response returns success even
 though the original expected ID no longer equals current.
 
+## Independent current authority observations
+
+`storage.AuthorityHeadReader` is an optional role for receipt issuers.
+Its `CurrentAuthorityHead(ctx)` method returns a publication that was current between invocation and completion, including another writer's publication.
+The root client's method has a different signature and returns only its cached publication.
+A receipt issuer must start validity before the store read and qualify its clock separately.
+Neither method creates a permission receipt.
+
+Memory reads select the head under the publication lock without copying catalog payloads.
+The filesystem adapter reads the current pointer and its immutable `authority.json` record.
+This guarantee requires a local filesystem with the documented atomic publication semantics. Shared network filesystems remain unqualified.
+The method loads no catalog manifest or payload. Missing metadata returns an error and causes no repair.
+
+Authority generations store the record beside `manifest.json` and `catalog.json` before pointer promotion.
+The version-1 record contains the complete authority head and no receipt timestamps.
+Its 16 KiB limit and strict parser apply independently of catalog schema compatibility.
+The head's generation ID must match the selected pointer. Unknown positive permission schema versions remain observable.
+Consumers still refuse unsupported permission semantics.
+
+An ordinary generation has no authority record. Selecting one prevents renewal of a previous authority receipt.
+Existing authority generations without a record require an explicit identical commit that validates the complete stored generation.
+The commit creates missing metadata before reporting success, including when that generation is already current.
+An existing matching record is idempotent. A conflicting record causes refusal without replacement.
+
+Filesystem repair uses the commit lock and exclusive private-file publication. Object repair uses an immutable conditional create.
+Legacy store relocation preserves authority records and verifies their binding to each complete generation.
+Relocation leaves missing legacy records absent until an explicit commit repairs them.
+
+The object adapter requires its backend to implement `storage.CurrentObjectReader.GetCurrent` for the current pointer.
+That method must observe a version current during its call. An ETag or conditional write alone does not establish this guarantee.
+Backends without this capability retain ordinary catalog storage and refuse authority observations.
+The memory object backend implements the guarantee under its publication lock.
+The S3 adapter does not yet assert this capability for caller-selected endpoints and transports.
+
+These reads belong to receipt acquisition. Starport admission remains an in-memory decision.
+Origin issuance, production clock adapters, shared followers, and Starport consumer qualification remain separate CSP4 requirements.
+
 ## Failure preservation and rollback
 
 A refusal before current-pointer publication leaves the previous current generation complete and readable.

@@ -209,3 +209,36 @@ func TestPrivatePublicationPreservesModifiedStage(t *testing.T) {
 		t.Fatalf("cleanup removed modified file: %q %v", data, err)
 	}
 }
+
+func TestPrivateRecordCreatePreservesExistingAndConcurrentFiles(t *testing.T) {
+	for _, existing := range []bool{false, true} {
+		t.Run(map[bool]string{false: "concurrent", true: "existing"}[existing], func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "exclusive")
+			directory, err := NewDirectory(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			other := []byte("other publication")
+			if existing {
+				if err := directory.WriteFile("authority.json", other, ".test-"); err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				directory.beforePublish = func(string) error {
+					return os.WriteFile(filepath.Join(path, "authority.json"), other, FileMode)
+				}
+			}
+			if err := directory.WriteFileIfAbsentContext(t.Context(), "authority.json", []byte("candidate"), ".test-"); err == nil {
+				t.Fatal("replaced an existing publication")
+			}
+			data, err := directory.ReadFile("authority.json", 100)
+			if err != nil || !bytes.Equal(data, other) {
+				t.Fatalf("data=%q error=%v", data, err)
+			}
+			entries, err := directory.ReadDir()
+			if err != nil || len(entries) != 1 {
+				t.Fatalf("entries=%v error=%v", entries, err)
+			}
+		})
+	}
+}

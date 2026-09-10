@@ -715,6 +715,9 @@ func main() {
   - [func \(h CatalogAuthorityHead\) SupportsPermissions\(\) bool](<#CatalogAuthorityHead.SupportsPermissions>)
   - [func \(h CatalogAuthorityHead\) Validate\(\) error](<#CatalogAuthorityHead.Validate>)
   - [func \(h CatalogAuthorityHead\) ValidateSuccessor\(next CatalogAuthorityHead\) error](<#CatalogAuthorityHead.ValidateSuccessor>)
+- [type CatalogAuthorityRecord](<#CatalogAuthorityRecord>)
+  - [func ParseCatalogAuthorityRecord\(data \[\]byte\) \(CatalogAuthorityRecord, error\)](<#ParseCatalogAuthorityRecord>)
+  - [func \(r CatalogAuthorityRecord\) Validate\(\) error](<#CatalogAuthorityRecord.Validate>)
 - [type CatalogPayload](<#CatalogPayload>)
 - [type CatalogPermissionEnvelope](<#CatalogPermissionEnvelope>)
   - [func ParseCatalogPermissionEnvelope\(data \[\]byte\) \(CatalogPermissionEnvelope, error\)](<#ParseCatalogPermissionEnvelope>)
@@ -1119,6 +1122,17 @@ const (
     MaxCatalogPermissionClockUncertainty = 30 * time.Second
     // MaxCatalogPermissionEnvelopeBytes bounds the complete permission envelope before decoding.
     MaxCatalogPermissionEnvelopeBytes = 16 << 10
+)
+```
+
+<a name="CatalogAuthorityRecordVersion"></a>
+
+```go
+const (
+    // CatalogAuthorityRecordVersion identifies immutable permission metadata independently of catalog schemas.
+    CatalogAuthorityRecordVersion uint64 = 1
+    // MaxCatalogAuthorityRecordBytes bounds stored permission metadata before decoding.
+    MaxCatalogAuthorityRecordBytes = 16 << 10
 )
 ```
 
@@ -2616,6 +2630,36 @@ func (h CatalogAuthorityHead) ValidateSuccessor(next CatalogAuthorityHead) error
 ```
 
 ValidateSuccessor rejects a different authority, an older sequence, or changed content under the same sequence. The caller authorizes authority and policy changes in a new context.
+
+<a name="CatalogAuthorityRecord"></a>
+## type [CatalogAuthorityRecord](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_record.go#L17-L20>)
+
+CatalogAuthorityRecord binds independent permission metadata to one immutable generation. It contains no receipt and cannot establish permission freshness by itself.
+
+```go
+type CatalogAuthorityRecord struct {
+    Version uint64               `json:"version"`
+    Head    CatalogAuthorityHead `json:"head"`
+}
+```
+
+<a name="ParseCatalogAuthorityRecord"></a>
+### func [ParseCatalogAuthorityRecord](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_record.go#L32>)
+
+```go
+func ParseCatalogAuthorityRecord(data []byte) (CatalogAuthorityRecord, error)
+```
+
+ParseCatalogAuthorityRecord strictly decodes bounded immutable permission metadata. Unknown positive permission versions remain observable independently of catalog compatibility.
+
+<a name="CatalogAuthorityRecord.Validate"></a>
+### func \(CatalogAuthorityRecord\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_record.go#L23>)
+
+```go
+func (r CatalogAuthorityRecord) Validate() error
+```
+
+Validate checks the record format and publication identity without reading catalog data.
 
 <a name="CatalogPayload"></a>
 ## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L28>)

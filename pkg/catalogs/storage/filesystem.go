@@ -145,7 +145,7 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 			return err
 		}
 		if currentID == id {
-			return nil
+			return s.ensureAuthorityRecord(ctx, candidate)
 		}
 	} else if !errors.IsNotFound(existingErr) {
 		return existingErr
@@ -163,6 +163,9 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 		if err := s.writeGeneration(ctx, candidate); err != nil {
 			return err
 		}
+	}
+	if err := s.ensureAuthorityRecord(ctx, candidate); err != nil {
+		return err
 	}
 	return s.writeCurrent(ctx, id, directory)
 }
