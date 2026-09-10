@@ -1648,6 +1648,30 @@
         "status": "UNVERIFIED; owner review threshold pending"
       },
       "work_commit": "251b1431"
+    },
+    "partial_empty_registration": {
+      "subcase": "A08.partial_empty",
+      "status": "PASS on local candidate; no merged or whole-task completion credit",
+      "commands": 6,
+      "verifier_unit_tests": 73,
+      "artifacts": {
+        "partial-empty": {
+          "path": "partial-empty.json.gz",
+          "sha256": "3a594368f43629d54e1910956a54af8895e7617df3bcdabb03765b32c1844874"
+        },
+        "registry-tests": {
+          "path": "registry-tests.log.gz",
+          "sha256": "58020053ae0a7596daa5d5eda911164494a37f2ffa17046769b8ab7f1bd86ab7"
+        }
+      },
+      "snapshot_note": "The still-running CSP3 verifier read the preceding registry before this registration. Preserve its report and supplement it with this exact registry invocation.",
+      "remaining": [
+        "A08.scoped_tombstone, including actual acquisition removal policy",
+        "A08.alias_cycle_scope",
+        "Starport linked-profile enforcement",
+        "Review, publication, and merge"
+      ],
+      "work_commit": "6517c69b"
     }
   }
 }
