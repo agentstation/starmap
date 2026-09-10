@@ -4,7 +4,7 @@
   "source_base": "8a71193bc7587a025231be0d72f2002327fd67be",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer",
   "branch": "codex/catalog-authority-issuer",
-  "publication": "local commit, no PR or merge",
+  "publication": "PR #148 open, reviewed, CI active, unmerged",
   "acceptance": {
     "task": "CSP4",
     "status": "in_progress",
@@ -1547,13 +1547,7 @@
       "decoded_sha256": "89a6ed8abf42b7fefd11c3b4eaee87a16eee19866dd9b06c865d486f2b349df4"
     }
   ],
-  "running_commands": [
-    {
-      "session_id": 65368,
-      "command": "autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer/.tmp/csp4-origin-runtime/autoreview.log"
-    }
-  ],
+  "running_commands": [],
   "publication_preparation": {
     "checked_at": "2026-09-10T21:39:31.062457+00:00",
     "main": "faa9cc8b0bc01eb787f567f568f1b9fe05e0740a",
@@ -1563,5 +1557,6 @@
       "starport": 0
     },
     "next": "Complete make verify, required autoreview, native CI, and reviewed merge before counting any delivered acceptance."
-  }
+  },
+  "delivery_evidence": "../origin-delivery-2026-09-10/verification.json"
 }
