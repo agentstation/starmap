@@ -296,7 +296,8 @@ func TestPinnedArtifactConsumerIsOfflineAndDependencyBounded(t *testing.T) {
 	}
 	for _, check := range []string{
 		`PINNED_ARTIFACT_MODULE=`,
-		`STARMAP_RELEASE_GOTOOLCHAIN`,
+		`GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.6}"`,
+		`export GOTOOLCHAIN`,
 		`PINNED_MAX_NON_STANDARD_PACKAGES=32`,
 		`pinned_banned_pattern=`,
 		`starmap/pkg/catalogs/artifact`,
