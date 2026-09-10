@@ -87,4 +87,40 @@ indexes.
 join. It is inspectable output, not an editable source or a third authority.
 Catalog schema version 3 introduced the `author_models` and `provider_models`
 construction-record collections. Schema version 4 adds provider credential
-profiles and plane references. Starmap retains no reader for an earlier schema.
+profiles and plane references. The current reader accepts schemas 6 through 9. It rejects earlier schemas.
+
+
+## Canonical rename history
+
+A renamed definition can retain its old canonical ID as a working alias.
+The baseline publisher records each rename in `canonical-aliases.yaml` beside `authors.yaml` and `providers.yaml`:
+
+```yaml
+- id: author/old-model
+  target_id: author/current-model
+  publisher_id: catalog-publisher
+  state: active
+```
+
+The publisher commits the new definition and its rename record together.
+Each old ID retains its original target and publisher. Later renames extend the chain without rewriting earlier edges.
+A live definition cannot reuse a retired ID. Cycles and conflicting provider-route names cause validation errors.
+
+An active alias has no expiration time. It survives refresh, restart, and binary upgrades when the replacement baseline preserves its history.
+To stop resolving an alias, its publisher changes `state` to `removed` and retains the record.
+Omitting the record is invalid replacement history. Removing one alias does not remove other aliases that traverse its edge.
+
+`Catalog.CanonicalAliases` returns the immutable index. Its lookups allocate no memory and read no external storage.
+`Catalog.FindModel` resolves active canonical aliases before convenience names. A removed alias returns a not-found error.
+Exact definition and offering reads retain their existing contracts. Starport must apply operator exclusions and routing permissions after identity resolution.
+
+Local operators use `Runtime.ReplaceRemovalTargets` with `NewAliasRemovalTarget` for a local exclusion.
+The runtime keeps that exclusion in the existing removal snapshot. Restoring it clears only the local exclusion and cannot reverse baseline removal.
+
+Embedded acquisition reports model facts without copying baseline rename authority into an observation.
+Local acquisition accepts an unchanged projected alias inventory. It refuses edits that differ from the selected baseline.
+The baseline publisher must approve rename changes. Provider observations cannot create or remove aliases.
+
+Reconciliation resolves retained provider links through rename history while preserving original observation bytes.
+A stale embedded definition cannot revive a retired ID. An explicit local definition that reuses a retired ID causes a conflict.
+Catalog schema 9 transports `canonical_aliases` and alias removal targets. Earlier readers must reject that format.

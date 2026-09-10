@@ -38,6 +38,46 @@ jobs:
           go-version: "1.26.6"
           cache: true
 
+      - name: Read current catalog channel document
+        id: channel_current
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CURRENT_DIRECTORY=$(mktemp -d "${RUNNER_TEMP}/catalog-channel-current.XXXXXX")
+          CURRENT_COMMIT=""
+          CURRENT_DOCUMENT=""
+          PREVIOUS_DIRECTORY=""
+          # A missing branch permits first publication. A failed read does not.
+          if git ls-remote --exit-code origin "refs/heads/${CHANNEL_BRANCH}" > "$CURRENT_DIRECTORY/remote.txt"; then
+            git fetch --no-tags --depth=1 origin \
+              "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}"
+            CURRENT_COMMIT=$(git rev-parse "refs/remotes/origin/${CHANNEL_BRANCH}")
+            CURRENT_DOCUMENT="${CURRENT_DIRECTORY}/${CHANNEL_FILE}"
+            git show "${CURRENT_COMMIT}:${CHANNEL_FILE}" > "$CURRENT_DOCUMENT"
+            gh attestation verify "$CURRENT_DOCUMENT" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
+              --deny-self-hosted-runners
+            CURRENT_TAG=$(jq -er .tag "$CURRENT_DOCUMENT")
+            [[ "$CURRENT_TAG" =~ ^catalog-[a-f0-9]{64}$ ]]
+            PREVIOUS_DIRECTORY=$(mktemp -d "${RUNNER_TEMP}/catalog-channel-predecessor.XXXXXX")
+            gh release download "$CURRENT_TAG" --pattern 'starmap-catalog*' --dir "$PREVIOUS_DIRECTORY"
+            gh attestation verify "$PREVIOUS_DIRECTORY/starmap-catalog.tar.gz" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
+              --deny-self-hosted-runners
+          else
+            REMOTE_STATUS=$?
+            if [ "$REMOTE_STATUS" -ne 2 ]; then
+              exit "$REMOTE_STATUS"
+            fi
+          fi
+          {
+            printf 'commit=%s\n' "$CURRENT_COMMIT"
+            printf 'document=%s\n' "$CURRENT_DOCUMENT"
+            printf 'previous_directory=%s\n' "$PREVIOUS_DIRECTORY"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Select catalog store
         run: |
           printf 'STARMAP_GENERATION_STORE_PATH=%s/starmap-catalog-generation/catalog-store\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
@@ -139,6 +179,8 @@ jobs:
         run: |
           go run ./cmd/starmap-catalog-release \
             --generation-store "${STARMAP_GENERATION_STORE_PATH}" \
+            --channel-current "${{ steps.channel_current.outputs.document }}" \
+            --previous-release-dir "${{ steps.channel_current.outputs.previous_directory }}" \
             --output-dir dist/catalog-generation > catalog-release.json
           printf 'directory=%s\n' "$(jq -er .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
 
@@ -220,22 +262,6 @@ jobs:
             --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
             --deny-self-hosted-runners
 
-      - name: Read current catalog channel document
-        id: channel_current
-        run: |
-          CURRENT_DIRECTORY=${RUNNER_TEMP}/catalog-channel-current
-          rm -rf "$CURRENT_DIRECTORY"
-          mkdir -p "$CURRENT_DIRECTORY"
-          # Read the branch through git, never through raw.githubusercontent.com.
-          # That host caches a changed file for minutes. An absent branch is the
-          # first publication, and the sequence then starts at one.
-          if git fetch --no-tags --depth=1 origin \
-            "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}" 2>/dev/null; then
-            git show "refs/remotes/origin/${CHANNEL_BRANCH}:${CHANNEL_FILE}" \
-              > "${CURRENT_DIRECTORY}/${CHANNEL_FILE}"
-          fi
-          printf 'document=%s\n' "${CURRENT_DIRECTORY}/${CHANNEL_FILE}" >> "$GITHUB_OUTPUT"
-
       - name: Stage attested catalog channel document
         id: channel
         run: |
@@ -252,6 +278,7 @@ jobs:
             --channel-tag "${{ steps.change.outputs.tag }}" \
             --channel-published-at "$PUBLISHED_AT" \
             --channel-current "${{ steps.channel_current.outputs.document }}" \
+            --previous-release-dir "${{ steps.channel_current.outputs.previous_directory }}" \
             --channel-out "${CHANNEL_DIRECTORY}/${CHANNEL_FILE}" \
             --channel-attestation-verified > catalog-channel.json
           {
@@ -302,14 +329,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # A push needs the current tip as the parent. An absent branch is the
-          # first publication, and it becomes a root commit that carries no
-          # source history.
-          PARENT=""
-          if git fetch --no-tags --depth=1 origin \
-            "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}" 2>/dev/null; then
-            PARENT="$(git rev-parse "refs/remotes/origin/${CHANNEL_BRANCH}")"
-          fi
+          # Use the predecessor whose catalog passed validation. A concurrent
+          # branch change makes the normal push fail without overwriting it.
+          PARENT="${{ steps.channel_current.outputs.commit }}"
 
           # A private index leaves the working tree and the checked-out branch
           # untouched, so this commit reaches the channel branch alone.

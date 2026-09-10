@@ -19,10 +19,10 @@ const (
 // CanonicalAlias retains one immutable rename edge and its explicit state.
 // PublisherID requires separate source authentication. Removed edges preserve model identity across later renames and restores.
 type CanonicalAlias struct {
-	ID          ModelDefinitionID   `json:"id"`
-	TargetID    ModelDefinitionID   `json:"target_id"`
-	PublisherID string              `json:"publisher_id"`
-	State       CanonicalAliasState `json:"state"`
+	ID          ModelDefinitionID   `json:"id" yaml:"id"`
+	TargetID    ModelDefinitionID   `json:"target_id" yaml:"target_id"`
+	PublisherID string              `json:"publisher_id" yaml:"publisher_id"`
+	State       CanonicalAliasState `json:"state" yaml:"state"`
 }
 
 // Validate checks one explicit rename record independently of its catalog and transport.

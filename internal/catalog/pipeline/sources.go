@@ -56,7 +56,7 @@ func createSourcesWithConfig(
 	}
 	if inputs.workspaceInput.Exists {
 		srcs = append(
-			[]sources.Source{local.New(local.WithCatalogReport(inputs.workspace, inputs.workspaceReport))},
+			[]sources.Source{local.New(local.WithCatalogReport(inputs.workspace, inputs.workspaceReport), local.WithAliasBaseline(inputs.baseline))},
 			srcs...,
 		)
 	}

@@ -40,6 +40,11 @@ func TestSourceReturnsCompleteContentAddressedEmbeddedObservation(t *testing.T) 
 	}); err != nil {
 		t.Fatalf("SetProvider second provider: %v", err)
 	}
+	if err := builder.SetCanonicalAliasRecords([]catalogs.CanonicalAlias{{
+		ID: "test-author/old", TargetID: "test-author/embedded-one--model", PublisherID: "embedded", State: catalogs.CanonicalAliasActive,
+	}}); err != nil {
+		t.Fatal(err)
+	}
 	catalog, err := builder.Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -65,6 +70,9 @@ func TestSourceReturnsCompleteContentAddressedEmbeddedObservation(t *testing.T) 
 	}
 	if err := observation.Validate(); err != nil {
 		t.Fatalf("Validate: %v", err)
+	}
+	if len(observation.Catalog.CanonicalAliasRecords()) != 0 || len(catalog.CanonicalAliasRecords()) != 1 {
+		t.Fatal("embedded observation changed baseline authority or acquired rename authority")
 	}
 }
 

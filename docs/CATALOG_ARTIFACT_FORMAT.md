@@ -102,10 +102,22 @@ keyed by the facts-only semantic digest. The generation manifest's payload
 descriptor continues to bind the exact evidence-bearing bytes. A rerun cannot
 silently replace a published asset.
 
+Before staging a successor, the scheduled publisher reads and verifies the current channel and its selected immutable release.
+It compares the candidate's rename history with that exact predecessor. The channel stage repeats the check when it selects an existing release.
+An unreadable predecessor, missing history, reassigned target, or changed publisher blocks publication. Explicit alias removal retains the edge with `state: removed`.
+
+The staging command accepts `--channel-current <document>` and `--previous-release-dir <assets>` for this check.
+An existing channel requires its predecessor directory. An explicit missing or empty channel file causes refusal.
+The workflow verifies publisher attestations before these local checks. It uses the verified branch commit as the push parent, so concurrent changes cause refusal.
+
+`bash scripts/verify-canonical-alias-history.sh` also checks embedded YAML against a predecessor commit during PR verification.
+The default predecessor is `HEAD^`, which is the target branch in a GitHub PR merge checkout.
+Set `CATALOG_ALIAS_BASE_REF` to the actual base commit for a local branch review.
+
 Application releases never append catalog-generation assets. Hosted workflow
 execution evidence remains separate from deterministic local verification.
 
-The workflow pins GitHub's `actions/attest-build-provenance` v2 action to an
+The workflow pins GitHub's `actions/attest-build-provenance` action to an
 immutable commit. It grants `attestations: write` and `id-token: write`, then
 runs `gh attestation verify`
 with the exact repository, signer workflow, and hosted-runner policy before and

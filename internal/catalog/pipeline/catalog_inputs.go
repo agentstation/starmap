@@ -14,6 +14,7 @@ import (
 type catalogInputs struct {
 	workspace       *catalogs.Catalog
 	embedded        *catalogs.Catalog
+	baseline        *catalogs.Catalog
 	providerConfig  *catalogs.Catalog
 	workspaceReport catalogs.LoadReport
 	workspaceInput  workspace.InputExpectation

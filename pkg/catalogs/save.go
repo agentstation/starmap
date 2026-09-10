@@ -117,7 +117,7 @@ func (cat *Builder) saveIndexFiles(writeFile catalogFileWriter) error {
 			return errors.WrapIO("write", "provenance.yaml", err)
 		}
 	}
-	return nil
+	return cat.saveCanonicalAliasesYAML(writeFile)
 }
 
 func (cat *Builder) saveProviderModels(writeFile catalogFileWriter) error {
@@ -170,6 +170,7 @@ func (cat *Builder) saveAuthoredModels(writeFile catalogFileWriter) error {
 func removeManagedCatalogData(basePath string) error {
 	for _, filename := range []string{
 		"providers.yaml", "authors.yaml", "endpoints.yaml", "provenance.yaml",
+		canonicalAliasFileName,
 	} {
 		path := filepath.Join(basePath, filename)
 		if err := os.Remove(path); err != nil && !os.IsNotExist(err) {

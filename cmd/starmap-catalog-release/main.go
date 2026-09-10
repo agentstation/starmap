@@ -68,10 +68,11 @@ func run(args []string, output io.Writer) error {
 		"",
 		"advance the stable channel over this verified immutable release directory",
 	)
+	previousReleaseDir := flags.String("previous-release-dir", "", "verified immutable release selected by the current channel")
 	channelTag := flags.String("channel-tag", "", "immutable release tag that the channel selects")
 	channelPublishedAt := flags.String("channel-published-at", "", "RFC 3339 publication time of the immutable release")
 	channelUpdatedAt := flags.String("channel-updated-at", "", "RFC 3339 channel verification time; the default is now")
-	channelCurrent := flags.String("channel-current", "", "current channel document; an absent file is the first publication")
+	channelCurrent := flags.String("channel-current", "", "current channel document; omit only for the first publication")
 	channelOut := flags.String("channel-out", "", "path that receives the canonical channel document")
 	channelAttested := flags.Bool(
 		"channel-attestation-verified",
@@ -132,6 +133,7 @@ func run(args []string, output io.Writer) error {
 			publishedAt:         *channelPublishedAt,
 			updatedAt:           *channelUpdatedAt,
 			currentDocument:     *channelCurrent,
+			previousDirectory:   *previousReleaseDir,
 			outputPath:          *channelOut,
 			attestationVerified: *channelAttested,
 		})
@@ -164,6 +166,13 @@ func run(args []string, output io.Writer) error {
 			strings.TrimSpace(*generationStore),
 			err,
 		)
+	}
+	current, err := readCurrentChannel(*channelCurrent)
+	if err != nil {
+		return err
+	}
+	if err := validatePublishedSuccessor(current, *previousReleaseDir, generation); err != nil {
+		return err
 	}
 	semanticChecksum, err := generation.SemanticChecksum()
 	if err != nil {

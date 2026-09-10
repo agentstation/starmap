@@ -32,6 +32,7 @@ func run(args []string, output io.Writer, now time.Time) error {
 	flags := flag.NewFlagSet("starmap-bootstrap-manifest", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
 	catalogDir := flags.String("catalog-dir", "", "candidate embedded catalog directory")
+	previousCatalogDir := flags.String("previous-catalog-dir", "", "previous accepted catalog directory for rename history validation")
 	manifestPath := flags.String("output", "", "bootstrap generation manifest path")
 	endpointsPath := flags.String("endpoints-output", "", "optional generated endpoint projection path")
 	generationStorePath := flags.String(
@@ -48,20 +49,18 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if *catalogDir == "" || *manifestPath == "" {
 		return &errors.ValidationError{Field: "bootstrap_manifest.paths", Message: "catalog-dir and output are required"}
 	}
-	var catalog *catalogs.Catalog
-	err := workspace.Read(context.Background(), *catalogDir, func(workspace.InputExpectation) error {
-		builder, err := catalogs.NewFromPath(*catalogDir)
+	catalog, err := readCatalog(*catalogDir)
+	if err != nil {
+		return err
+	}
+	if *previousCatalogDir != "" {
+		previous, err := readCatalog(*previousCatalogDir)
 		if err != nil {
 			return err
 		}
-		if err := builder.LoadReport().Err(); err != nil {
+		if err := previous.CanonicalAliases().ValidateSuccessor(catalog.CanonicalAliases()); err != nil {
 			return err
 		}
-		catalog, err = builder.Build()
-		return err
-	})
-	if err != nil {
-		return err
 	}
 	current, err := readCurrentManifest(*manifestPath)
 	if err != nil {
@@ -137,6 +136,22 @@ func run(args []string, output io.Writer, now time.Time) error {
 		}
 	}
 	return json.NewEncoder(output).Encode(report)
+}
+
+func readCatalog(path string) (*catalogs.Catalog, error) {
+	var catalog *catalogs.Catalog
+	err := workspace.Read(context.Background(), path, func(workspace.InputExpectation) error {
+		builder, err := catalogs.NewFromPath(path)
+		if err != nil {
+			return err
+		}
+		if err := builder.LoadReport().Err(); err != nil {
+			return err
+		}
+		catalog, err = builder.Build()
+		return err
+	})
+	return catalog, err
 }
 
 func readCurrentManifest(path string) (*catalogs.BootstrapManifest, error) {

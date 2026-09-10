@@ -195,6 +195,7 @@ func (p *Pipeline) prepare(
 	if err != nil {
 		return nil, err
 	}
+	inputs.baseline = existing
 	if err = options.Validate(inputs.providerConfig.Providers()); err != nil {
 		return nil, err
 	}
