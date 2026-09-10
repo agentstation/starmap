@@ -264,6 +264,62 @@
     {
       "path": "store-lint.gz",
       "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
+    },
+    {
+      "path": "activation-schema-before.gz",
+      "sha256": "832f655b782411427b33d4479eac338b978f758e8706dabc72dc18a3534363b7"
+    },
+    {
+      "path": "activation-schema-before-corrected.gz",
+      "sha256": "15c3cc84cd46ce7b9b8c45689d83ef9f615e9aa61aa5a5bb822ebe0941006125"
+    },
+    {
+      "path": "activation-schema-before-ready.gz",
+      "sha256": "4a33314e3ebe7f1ce6a21aa49935da69b5cf5a84f6dd327d2d5215d7855d7231"
+    },
+    {
+      "path": "activation-schema-after.gz",
+      "sha256": "aeb6434d9e2459cdb18b53a7faa7771c7cf61bcc17725848f366faf45c7c30de"
+    },
+    {
+      "path": "activation-schema-after-corrected.gz",
+      "sha256": "84719e77df5519b64cf0b3559206244470d781f49a35e7ad744255aff0ca1168"
+    },
+    {
+      "path": "activation-integration.gz",
+      "sha256": "a6aaaa2f743c490a22c04e9200ba930bca2b44203f9dfce1208ba34ed5c95e90"
+    },
+    {
+      "path": "remote-schema-before.gz",
+      "sha256": "8638caaf634210b15e476af882c66654ade6113707371519945ca83f79dceb80"
+    },
+    {
+      "path": "remote-schema-before-corrected.gz",
+      "sha256": "48409cd12b909a57dc7fe67153659ec93269a999feaebb0fc2202ce9bd3de665"
+    },
+    {
+      "path": "remote-schema-after.gz",
+      "sha256": "a22a1f9a88bb93a1ab1817fafc0c60727ee2fb365465b7f65261ebe744f79592"
+    },
+    {
+      "path": "semantic-scope.gz",
+      "sha256": "d36feca11dfad1db9f026f2963f5d840554e72c42f40d662302d9d569ff09083"
+    },
+    {
+      "path": "activation-schema-restart.gz",
+      "sha256": "a590a56020ba6e80a4f3e728a18ed34321da15c5057b7f287e0c6876e50f5cc6"
+    },
+    {
+      "path": "schema-bootstrap.gz",
+      "sha256": "b90d89139803921e9421378947ae814577ed6580544d6eb818787afa9f640ff7"
+    },
+    {
+      "path": "schema-ago.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281"
+    },
+    {
+      "path": "schema-lint.gz",
+      "sha256": "a3a08811763fe2c6089a5610d9e3c38b4968d88486f1b0cfdcf1faedf19e055e"
     }
   ],
   "test_file": "internal/catalog/reconciler/scoped_membership_test.go",
@@ -677,13 +733,12 @@
       }
     },
     "remaining": [
-      "Finish schema-6 activation and remote protocol compatibility; update.go still requires only CurrentCatalogSchemaVersion.",
-      "Bind manifest schema to actual payload schema at activation.",
-      "Define scope evidence treatment in semantic checksums and test it.",
-      "Bind exported effective scopes to authenticated publisher identity and original observations.",
-      "Preserve imported scopes through reconstruction and derivative publication.",
-      "Add generated docs and repeat full checks after integration.",
-      "Implement Starport linked-profile enforcement."
+      "Bind exported scope records to original accepted observations and authenticated publisher namespaces.",
+      "Preserve imported scope records through runtime reconstruction and derivative publication.",
+      "Validate generation-bound scope evidence, including missing or contradictory observation links.",
+      "Document protocol schema selection and migration behavior; generate package docs.",
+      "Repeat full affected tests and minimum-Go checks after integration, then required review.",
+      "Implement Starport explicit profile links and admission enforcement."
     ],
     "implemented": [
       "Reader requires scope records; Builder copies and validates them under its own lock.",
@@ -691,6 +746,50 @@
       "Generic merge refuses conflicting inventories instead of choosing authority.",
       "Schema 7 encodes effective scope records. Decoder also accepts schema 6 without scope fields.",
       "Decoded schema-6 catalogs preserve their original encoding for receipt verification."
-    ]
+    ],
+    "activation": {
+      "status": "Local implementation and focused checks pass. Full qualification and review remain open.",
+      "owner": "pkg/catalogs.DecodeCatalogGeneration verifies exact bytes and matching manifest/payload schemas. Root activation, startup, rollback, import, GitHub loading, and remote fetch use the boundary.",
+      "legacy": "Client activation accepts supported schema 6. Derived generations advertise the schema their payload actually uses.",
+      "bootstrap": "Offline repository tool regenerated embedded generation metadata and endpoint identity for schema 7. No source/provider acquisition occurred.",
+      "fail_before": {
+        "activation_failed_test_events": 3,
+        "remote_failed_test_events": 3,
+        "fixture_errors": [
+          "Initial fixture called a nonexistent Client.Close method.",
+          "Client startup required regenerated schema-7 embedded metadata.",
+          "First implementation referenced a wrong parameter name.",
+          "Remote fixture initially omitted encoding/json import."
+        ]
+      },
+      "checks": {
+        "activation_focused": {
+          "exit_code": 0,
+          "pass": 4
+        },
+        "activation_integration": {
+          "exit_code": 0,
+          "pass": 9
+        },
+        "remote_full": {
+          "exit_code": 0,
+          "pass": 33
+        },
+        "semantic_scope": {
+          "exit_code": 0,
+          "pass": 22
+        },
+        "legacy_restart_and_derivation": {
+          "exit_code": 0,
+          "pass": 3
+        },
+        "ago": {
+          "exit_code": 0
+        },
+        "lint": {
+          "exit_code": 0
+        }
+      }
+    }
   }
 }
