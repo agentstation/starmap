@@ -339,7 +339,7 @@ func hexDigest(data []byte) string {
 	return hex.EncodeToString(sum[:])
 }
 
-// testGeneration builds one deterministic catalog generation.
+// testGeneration builds one deterministic legacy catalog generation.
 func testGeneration(t *testing.T, id string) catalogs.Generation {
 	t.Helper()
 	manifestData, err := os.ReadFile(manifestFixture)
@@ -358,10 +358,19 @@ func testGeneration(t *testing.T, id string) catalogs.Generation {
 	if err != nil {
 		t.Fatalf("encode catalog payload: %v", err)
 	}
+	var legacy catalogs.CatalogPayload
+	if err := json.Unmarshal(payload, &legacy); err != nil {
+		t.Fatalf("decode fixture payload: %v", err)
+	}
+	legacy.SchemaVersion = manifest.SchemaVersion
+	payload, err = json.Marshal(legacy)
+	if err != nil {
+		t.Fatalf("encode legacy fixture payload: %v", err)
+	}
 	manifest.GenerationID = id
 	manifest.Payload = catalogs.DescribeCatalogPayload(payload)
 	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
-	if err := generation.Validate(); err != nil {
+	if _, err := catalogs.DecodeCatalogGeneration(generation); err != nil {
 		t.Fatalf("validate generation: %v", err)
 	}
 	return generation
