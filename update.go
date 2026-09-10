@@ -214,6 +214,7 @@ func (c *Client) swapCatalogGeneration(
 	generationID string,
 	payloadChecksum string,
 	generatedAt time.Time,
+	authorityHead catalogs.CatalogAuthorityHead,
 ) (*catalogs.Catalog, uint64) {
 	c.mu.Lock()
 	oldCatalog := c.catalog
@@ -225,6 +226,7 @@ func (c *Client) swapCatalogGeneration(
 		c.generationID = generationID
 	}
 	c.generationPayloadChecksum = payloadChecksum
+	c.generationAuthorityHead = authorityHead
 	c.generationGeneratedAt = generatedAt
 	c.mu.Unlock()
 	return oldCatalog, sequence

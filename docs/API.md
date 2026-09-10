@@ -46,6 +46,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func NewContext\(ctx context.Context, opts ...Option\) \(\*Client, error\)](<#NewContext>)
   - [func \(c \*Client\) Activate\(ctx context.Context, generation catalogs.Generation\) \(Publication, error\)](<#Client.Activate>)
   - [func \(c \*Client\) Catalog\(\) \*catalogs.Catalog](<#Client.Catalog>)
+  - [func \(c \*Client\) CurrentAuthorityHead\(\) catalogs.CatalogAuthorityHead](<#Client.CurrentAuthorityHead>)
   - [func \(c \*Client\) CurrentCatalogState\(\) CatalogState](<#Client.CurrentCatalogState>)
   - [func \(c \*Client\) CurrentGeneration\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.CurrentGeneration>)
   - [func \(c \*Client\) CurrentGenerationID\(\) string](<#Client.CurrentGenerationID>)
@@ -223,7 +224,7 @@ type CatalogState struct {
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L128>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L129>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -234,7 +235,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L132>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L133>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -243,7 +244,7 @@ func New(opts ...Option) (*Client, error)
 New creates a Client using a background context. Call NewContext when the caller must cancel storage I/O during client setup.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L140>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L141>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -268,6 +269,15 @@ func (c *Client) Catalog() *catalogs.Catalog
 ```
 
 Catalog returns the current immutable canonical catalog. It returns nil when called on a nil Client. After New or NewContext succeeds, Catalog is non\-failing, non\-nil, O\(1\), allocation\-free, and safe to retain across goroutines.
+
+<a name="Client.CurrentAuthorityHead"></a>
+### func \(\*Client\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/authority_head.go#L8>)
+
+```go
+func (c *Client) CurrentAuthorityHead() catalogs.CatalogAuthorityHead
+```
+
+CurrentAuthorityHead returns the authority head of the committed in\-memory publication. Construction and publication validate it with the complete generation. Ordinary generations return the zero head. The read allocates no memory and reads no storage. It does not authenticate an authority or renew permission.
 
 <a name="Client.CurrentCatalogState"></a>
 ### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L42>)
@@ -324,7 +334,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L322>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L325>)
 
 ```go
 func (c *Client) NextID() (string, error)
