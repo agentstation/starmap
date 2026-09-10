@@ -19,6 +19,7 @@ type options struct {
 	projectedEvidence      func(catalogs.ProviderID, provenance.Entry) bool
 	providerSelection      providerObservationSelection
 	baselineProviderSource sources.ID
+	membership             *MembershipState
 }
 
 // WithProjectedEvidencePolicy controls reuse of unchanged facts from a local projection.

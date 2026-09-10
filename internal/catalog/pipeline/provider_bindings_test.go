@@ -165,7 +165,7 @@ func TestManualBindingsValidateBeforeSourceWork(t *testing.T) {
 			case "duplicate":
 				bindings[1].ID = bindings[0].ID
 			case "schema":
-				bindings[1].SchemaVersion++
+				bindings[1].SchemaVersion = sources.ProviderAcquisitionBindingSchemaVersion + 1
 			case "profile":
 				bindings[1].CredentialProfileID = "missing"
 			case "provider":
