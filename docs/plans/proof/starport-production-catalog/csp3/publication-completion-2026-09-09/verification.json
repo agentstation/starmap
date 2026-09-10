@@ -1,5 +1,5 @@
 {
-  "status": "Reviewed repair pushed to PR #142. Native qualification is pending.",
+  "status": "PR #142 merged after fifteen successful checks. Reviewed and merged trees match.",
   "head": "cbb8e32291444051c5f14af3660e2ccff6516610",
   "native_run": 34412052597,
   "failed_job": 102668564750,
@@ -82,10 +82,7 @@
       "sha256": "993388c7b02d7a061a5d201360233d1aa6cc4317123ea5d97b90675161aafc00"
     }
   ],
-  "remaining": [
-    "Collect native run 34414251026.",
-    "Merge PR #142 only after required checks pass."
-  ],
+  "remaining": [],
   "completion_credit": false,
   "commit": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
   "review": {
@@ -142,10 +139,20 @@
   "latest_ci": {
     "run": 34414251026,
     "head": "1b54481d04619d7cc52aa47f60dd2bf93cab0dba",
-    "status": "in_progress",
+    "status": "completed",
     "url": "https://github.com/agentstation/starmap/actions/runs/34414251026",
     "watch_session": 26598,
     "watch_log": "/tmp/starmap-pr142-1b544-native-watch-2026-09-09.log",
-    "partial_results": "native-results.json"
+    "partial_results": "native-results.json",
+    "conclusion": "success"
+  },
+  "merge": {
+    "commit": "fee76cc9675b977db1330f52fbf22ceb4c464392",
+    "merged_at": "2026-09-10T00:09:36Z",
+    "reviewed_tree": "f91d6ae533a62d428a43a8e9728393b23a3d0b24",
+    "merged_tree": "f91d6ae533a62d428a43a8e9728393b23a3d0b24",
+    "successful_checks": 15,
+    "native_platform_jobs": 6,
+    "raw": "merge-result.json"
   }
 }
