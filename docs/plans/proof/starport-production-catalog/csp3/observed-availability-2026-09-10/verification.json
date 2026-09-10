@@ -472,5 +472,14 @@
     "run_id": 34426991461,
     "log": "/tmp/starmap-pr143-watch-2026-09-10.log",
     "exit_code": 1
+  },
+  "reviewed_dependency_integration": {
+    "state": "prepared",
+    "worktree": "/tmp/starmap-scoped-membership-2026-09-09",
+    "before": "af94de19",
+    "dependency": "7734996783ac150faeed82eb0c9c416e723b1519",
+    "dependency_pr": 143,
+    "authorization": "The active workflow permits local integration from a documented reviewed dependency. Publication remains after actual dependency merge.",
+    "review": "Sol xhigh and Opus high found zero actionable findings for the dependency."
   }
 }
