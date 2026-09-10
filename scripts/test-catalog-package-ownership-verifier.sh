@@ -69,11 +69,6 @@ if grep -Eq 'make[[:space:]]+verify|scripts/verify\.sh' "$VERIFIER"; then
 	exit 1
 fi
 
-grep -Fq 'STARMAP_RELEASE_GOTOOLCHAIN' "$VERIFIER" || {
-	printf 'verifier does not pin the release toolchain for archive bytes\n' >&2
-	exit 1
-}
-
 # CPO-V13 must report a dependency change and ignore a version change. A gate
 # that also reported version changes would fail every routine dependency
 # update, which is what the earlier whole-file checksum did.
@@ -109,6 +104,28 @@ run_module_fixture() {
 		STARMAP_CATALOG_DIRECT_MODULES="$MODULE_FIXTURE/approved.txt" \
 		bash "$VERIFIER" >"$report" 2>&1 || true
 }
+
+# Check the environment at the Go process boundary. The verifier must use
+# the caller's toolchain for both minimum-version and development checks.
+mkdir -p "$FIXTURE/toolchain-bin"
+cat >"$FIXTURE/toolchain-bin/go" <<'GO_PROBE'
+#!/usr/bin/env bash
+printf '%s\n' "${GOTOOLCHAIN:-unset}" >>"$STARMAP_TOOLCHAIN_REPORT"
+exit 1
+GO_PROBE
+chmod +x "$FIXTURE/toolchain-bin/go"
+write_module_fixture v1.2.3
+for toolchain in go1.25.12 go1.26.6; do
+	toolchain_report="$FIXTURE/toolchain-$toolchain.txt"
+	PATH="$FIXTURE/toolchain-bin:$PATH" \
+		GOTOOLCHAIN="$toolchain" \
+		STARMAP_TOOLCHAIN_REPORT="$toolchain_report" \
+		run_module_fixture "$MODULE_FIXTURE/toolchain.txt"
+	if [[ ! -s "$toolchain_report" ]] || grep -Fvxq "$toolchain" "$toolchain_report"; then
+		printf 'verifier did not preserve caller toolchain %s\n' "$toolchain" >&2
+		exit 1
+	fi
+done
 
 for version in v1.2.3 v1.9.9; do
 	write_module_fixture "$version"
