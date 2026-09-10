@@ -1,0 +1,127 @@
+{
+  "task": "CSP3",
+  "worktree": "/tmp/starmap-alias-scope-qualification-2026-09-10",
+  "branch": "codex/catalog-alias-scope-qualification",
+  "commit": "7ca484ddc6c938be5428b89c02d451757a1b3ec9",
+  "base": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
+  "scope": "Test-only combined alias and scoped/canonical removal qualification. No Starport routing qualification.",
+  "checks": {
+    "current": {
+      "equivalent_replay": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 20m -json ./runtime -run TestCanonicalAliasPreservesScopedAbsenceAndOperatorExclusions",
+      "exit_code": 0,
+      "source": "7ca484ddc6c938be5428b89c02d451757a1b3ec9",
+      "test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "starmap-alias-scope-valid-2026-09-10.jsonl.gz",
+        "sha256": "134650e519225047e0f9f4cb5881c0e57fa74b3e32bb4674d746ef5ffe2f0603",
+        "raw_sha256": "22d4b7a59edc0b1b52c19f0f4f69b301b990603477c74618d149e58d404212fd"
+      }
+    },
+    "minimum": {
+      "equivalent_replay": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout 20m -json ./runtime -run TestCanonicalAliasPreservesScopedAbsenceAndOperatorExclusions",
+      "exit_code": 0,
+      "source": "7ca484ddc6c938be5428b89c02d451757a1b3ec9",
+      "test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "starmap-alias-scope-minimum-2026-09-10.jsonl.gz",
+        "sha256": "f1cb37e9ec7213ab6b52754eed71a760e714c9dd5d26680c0f2907680fcb7cad",
+        "raw_sha256": "5428cb0c93b5181db9b109e9f02318f7424f2117a6fee5fd71c96eef3bcf683b"
+      }
+    }
+  },
+  "verifier_unit_tests": {
+    "command": "python3 scripts/test_catalog_product_verify.py",
+    "exit_code": 0,
+    "tests": 73,
+    "artifact": {
+      "path": "starmap-alias-scope-verifier-tests-2026-09-10.log.gz",
+      "sha256": "a9a60d887b7a7948d12dd39ec53d9da91ce58a046dabaaf410abf49ba149ddd4",
+      "raw_sha256": "6b76f1fde92004b98662b2963c92228456bf114f1bb30af8b1bd41f4823512d8"
+    }
+  },
+  "static": {
+    "ago": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "starmap-alias-scope-ago-2026-09-10.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "starmap-alias-scope-lint-2026-09-10.log.gz",
+        "sha256": "b33cbb7615700d9c24ebd2657cc5dd14d988194cee9853a3c976f5dd9cf1b901",
+        "raw_sha256": "263b3e1b87fd0b9b667d8de39038c796d7b41cc67cd9c08ef551a1ce53a86f5a"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "artifact": {
+        "path": "starmap-alias-scope-prose-2026-09-10.log.gz",
+        "sha256": "fe0418afd61bab8b59dc53e7a0e8b71028fe26cfa05a2d0b6b64599ab960b426",
+        "raw_sha256": "1984d1123ae97021047ba1d8ca9d4d5a00bf0bf88c469c5940bf53cb2a3ac33c"
+      }
+    }
+  },
+  "registry": {
+    "A08.scoped_tombstone": 12,
+    "A08.alias_cycle_scope": 23
+  },
+  "running": {},
+  "fixture_compile_failures": [
+    {
+      "classification": "Fixture compile error, not fail-before product evidence",
+      "artifact": {
+        "path": "starmap-alias-scope-qualification-2026-09-10.jsonl.gz",
+        "sha256": "f02c2abd91fba9fb07a0ea4ff958d5ddaed4af210baebae8b33c037e8be0079e",
+        "raw_sha256": "94f4b66adc01b40a3c6d46554ecd941470760c104009835aef06189943adc83f"
+      }
+    },
+    {
+      "classification": "Fixture compile error, not fail-before product evidence",
+      "artifact": {
+        "path": "starmap-alias-scope-qualified-2026-09-10.jsonl.gz",
+        "sha256": "7f94bec771053c9a841068fb7208f2151a7e959d06cf7a9b220d57710fee8b91",
+        "raw_sha256": "0ea04a846b0828fb70c173f6e4e613d4a8acdfc66d79396cc63cb7533099d8ef"
+      }
+    }
+  ],
+  "A08": {
+    "command": "bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --case A08 --json",
+    "source": "7ca484ddc6c938be5428b89c02d451757a1b3ec9",
+    "gate_status": "PASS",
+    "selected_subcases": 5,
+    "subcases": {
+      "A08.alias_cycle_scope": "PASS",
+      "A08.field_authority": "PASS",
+      "A08.partial_empty": "PASS",
+      "A08.presence_zero_null": "PASS",
+      "A08.scoped_tombstone": "PASS"
+    },
+    "artifact": {
+      "path": "a08-2026-09-10.json.gz",
+      "sha256": "cdb7198d811cb1e44d6e09dae30725593dbd72d1a2d3cfbc2e5ed73794838de6",
+      "raw_sha256": "9a27658e8b282a75d8298961d748b0482f8faecb476d54094a795d3f26df1809"
+    },
+    "exit_status_note": "The original tool session ID was lost after output truncation. The completed verifier report records PASS and all selected subprocesses exited zero."
+  },
+  "integrated_commit": "a0cfc63e9b1c81702b2197f33dcfe11251a52973"
+}

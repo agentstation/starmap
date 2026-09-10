@@ -1,0 +1,453 @@
+{
+  "task": "CSP3",
+  "pr": 145,
+  "run": 34451894222,
+  "source": "ceec407fdf4f6874730a029d93d2e8c69d521ac9",
+  "workflow_conclusion": "failure",
+  "failure": "Verification Gate external pinned consumer rebuilt the embedded catalog against a stale archive digest. Local fixture repair is in progress.",
+  "failure_log": {
+    "path": "starmap-pr145-verification-failure-2026-09-10.log.gz",
+    "sha256": "10b0899cbce2963c0c994eca345c5af3a90e8874eadd26037715723d25472542",
+    "raw_sha256": "927ec71d37fdf85c41c53d8f0af21932bf698f48b072273932533f04ecb0ed72"
+  },
+  "native": {
+    "native-runtime-macos-15": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 739
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 25
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 54
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 31
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 247
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 47
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 131
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "native-runtime-macos-15.jsonl.gz",
+        "sha256": "23253a8c6fb9fce18e8e922951f9dea0a575ba7c07c13723457a8e8693bbf12b",
+        "raw_sha256": "ed281e1c576a3437dd0ab06d3f3e39bf8485812bb5f76e1eeb5addad78b5c3a6"
+      }
+    },
+    "native-runtime-macos-15-intel": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 25
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 54
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 31
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 739
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 247
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 47
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 131
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "native-runtime-macos-15-intel.jsonl.gz",
+        "sha256": "22dc934a47213cc8d9f1aeb7445baa3d6682e708fd98e5133e79bcd585bc6d95",
+        "raw_sha256": "0d95e4505535788138537e754d5462716a6ded9e494ebf2ac6267b71b5defa43"
+      }
+    },
+    "native-runtime-ubuntu-24.04": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 25
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 25,
+          "skip": 1
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 54
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 31
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 729
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 239
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 44
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 122
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "native-runtime-ubuntu-24.04.jsonl.gz",
+        "sha256": "facd14f9a687f2a07ae3da06d667228dee4d9205243228f41596cbcbd7eefbf2",
+        "raw_sha256": "35ab7e56bc4b3aea7f21d4f6801dca8f05df50d113dfd5ac6f65d9dcd421ea86"
+      }
+    },
+    "native-runtime-ubuntu-24.04-arm": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 25
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 25,
+          "skip": 1
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 54
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 31
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 729
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 239
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 44
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 122
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "native-runtime-ubuntu-24.04-arm.jsonl.gz",
+        "sha256": "07694b43c2d04830c5863ba7202f50570431db69c56a22d4a5b823d8768637ef",
+        "raw_sha256": "51c30922255bc9f5ef99bbc13184525c0580d7fd089e483c26ee04bc045c3a34"
+      }
+    },
+    "native-runtime-windows-11-arm": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 26
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 49
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 60
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 28
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 724
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 227
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 52
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 33
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 121
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        },
+        "github.com/agentstation/starmap/internal/test/windowstoken": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/test/windowstoken": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "native-runtime-windows-11-arm.jsonl.gz",
+        "sha256": "f62fc8d80f47a2639d384dc9e3c330209894f951c0d365f53eea0a166eb8d9fe",
+        "raw_sha256": "47c2a5f5d3a94e394c938389d1436725e71614d0c55bb9d970e80f50aa52eaac"
+      }
+    },
+    "native-runtime-windows-2025": {
+      "test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 103
+        },
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 26
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 71
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 49
+        },
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": {
+          "pass": 60
+        },
+        "github.com/agentstation/starmap/internal/sources/github": {
+          "pass": 28
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 724
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 227
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 52
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 33
+        },
+        "github.com/agentstation/starmap/internal/catalog/workspace": {
+          "pass": 121
+        },
+        "github.com/agentstation/starmap/internal/test/gitfixture": {
+          "pass": 2
+        },
+        "github.com/agentstation/starmap/internal/test/windowstoken": {
+          "pass": 1
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/filepublish": "pass",
+        "github.com/agentstation/starmap/internal/privatefiles": "pass",
+        "github.com/agentstation/starmap/internal/runtimeacl/windows": "pass",
+        "github.com/agentstation/starmap/internal/sources/github": "pass",
+        "github.com/agentstation/starmap/internal/bootstrap": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths": "pass",
+        "github.com/agentstation/starmap/pkg/productpaths/policy": "pass",
+        "github.com/agentstation/starmap/pkg/catalogs/storage": "pass",
+        "github.com/agentstation/starmap/internal/catalog/workspace": "pass",
+        "github.com/agentstation/starmap/internal/test/gitfixture": "pass",
+        "github.com/agentstation/starmap/internal/test/windowstoken": "pass",
+        "github.com/agentstation/starmap/internal/cli/app": "pass",
+        "github.com/agentstation/starmap": "pass",
+        "github.com/agentstation/starmap/runtime": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "native-runtime-windows-2025.jsonl.gz",
+        "sha256": "8d50695165d8db9a080fd4b5a1abb101a41fb11e516ba756e8201e4fcbc87236",
+        "raw_sha256": "624bf8e72e1cc6482cc92a957fc2797982ccb76eccc46743912c2787c8274a32"
+      }
+    }
+  },
+  "skip": "The ordinary Linux user cannot run the administrator-owned config case. The separate privileged workflow step passes on both Linux jobs.",
+  "fixture_repair": {
+    "commit": "0eb9edaca0cc95e16f44344a8d606d1b8fbb9aba",
+    "before": {
+      "path": "starmap-pinned-consumer-before-2026-09-10.jsonl.gz",
+      "sha256": "dc8455413f3c8fbe27cb8c85b9ad1c29f02a57bbd2b0a5e7acfa94c1226aafee",
+      "raw_sha256": "3e120c136845e00a07ecfc135d4f936ff6f22b27c9747b9124737c7d20fba2d4"
+    },
+    "after": {
+      "path": "starmap-pinned-consumer-after-2026-09-10.jsonl.gz",
+      "sha256": "57cf4de6372619f3c4aec82feda3f89d3f779af902ac5056b03a80eafca409b7",
+      "raw_sha256": "16d9407293b2eaf075d5b8b440393589535db7a4ddd593b91ffb6c81408b954f"
+    },
+    "minimum": {
+      "path": "starmap-pinned-consumer-minimum-2026-09-10.jsonl.gz",
+      "sha256": "8b434486c32b41a4fb76d23eb35295ed694cdd8b8b6d6d7a47450bcefbe20ffc",
+      "raw_sha256": "a01ed366ea619f2255780ece500d77c541e7b3da372a1faa38d37de617efbcde"
+    },
+    "dependencies": {
+      "path": "starmap-pinned-consumer-deps-2026-09-10.log.gz",
+      "sha256": "7cc29c2c70deeac8c32d3eda74dd458e52688c1afdcd4b88cca33ee06d0e063a",
+      "raw_sha256": "481f632b456df1115017dfdfe15cccbe5382411d6c94ede10e3fcbef86a959bf"
+    },
+    "ago": {
+      "path": "starmap-pinned-consumer-ago-2026-09-10.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    "prose": {
+      "path": "starmap-pinned-consumer-prose-2026-09-10.log.gz",
+      "sha256": "205561fd1ff4da0f790213bc19b81a4fcdebe2909bb85eb6bf4f706d78d6b399",
+      "raw_sha256": "c3bc98c25f9f6a2dd3d98280c79c33ce88c91fc5c74397fdc2a8440f731566b0"
+    },
+    "tests_current": 3,
+    "tests_minimum": 3,
+    "dependencies_exit_code": 0,
+    "review_exit_code": 1,
+    "review": {
+      "path": "starmap-removal-fixture-pre-pr-review-2026-09-10.log.gz",
+      "sha256": "93e6e9a4a91c85d650fa941044c76f4a83f97555039d2530bdd21545512c78a7",
+      "raw_sha256": "6cb6d61d2f7a33fd9d17827d84088f5bdc2a8147d9968d0427a2f4c79dd16de1"
+    },
+    "review_failure": "The helper cannot inspect binary changes. A textual fixed archive plus source-equivalence test now replaces the binary fixture. Qualification is active."
+  }
+}

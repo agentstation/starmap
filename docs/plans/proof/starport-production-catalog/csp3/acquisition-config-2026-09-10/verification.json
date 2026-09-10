@@ -4,8 +4,8 @@
   "worktree": "/tmp/starmap-acquisition-config-2026-09-10",
   "branch": "codex/catalog-acquisition-config",
   "base": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
-  "commit": "61b6e9903aea109211eb5602275311b087141e0f",
-  "state": "Local repair committed. Full acquisition race suite is running. Review, CI, and merge remain unverified.",
+  "commit": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+  "state": "Full repair qualification and both reviewers pass. Publication, CI, and merge remain unverified.",
   "contract": [
     "Manual acquisition uses the accepted catalog provider registry, as scheduled acquisition already does.",
     "An explicit local workspace can override that registry within runtime acquisition policy.",
@@ -32,7 +32,8 @@
         "path": "before-2026-09-10.jsonl.gz",
         "sha256": "42e150325e254f75fa4cd694a5a49674332eab10245b3e389b8e0384babd7b3d",
         "raw_sha256": "8f84ee34452f944aca2566b463b4bd911171818a8c9018dbe7c3e4da23cf2855"
-      }
+      },
+      "source": "61b6e9903aea109211eb5602275311b087141e0f"
     },
     "after": {
       "command": "go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline ./acquisition -run 'TestAcceptedBaselineProviderSupportsManualAcquisitionWithoutWorkspace|TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart|TestComposeProviderCatalog|TestPipeline|TestEmbeddedRevision'",
@@ -54,7 +55,8 @@
         "path": "after-2026-09-10.jsonl.gz",
         "sha256": "31d52e27680af4e4353f0006aa6eb71f084f068417a92226a089587708ee4060",
         "raw_sha256": "30863c60415d46042ad28da5d1e9750a68f8746dce21ec13674845407c12fd01"
-      }
+      },
+      "source": "61b6e9903aea109211eb5602275311b087141e0f"
     },
     "pipeline": {
       "command": "go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline",
@@ -72,7 +74,8 @@
         "path": "pipeline-2026-09-10.jsonl.gz",
         "sha256": "e8944f5fd062fa02ab419c2d13bc764e8400bb360ece7f3e76451101423948ae",
         "raw_sha256": "cc5b84aa3a7400ba05d189e81be369375f56b6254b65445482016fcda561474c"
-      }
+      },
+      "source": "61b6e9903aea109211eb5602275311b087141e0f"
     },
     "minimum": {
       "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline ./acquisition -run 'TestAccepted|TestPrepareRejectsProviderOutside|TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart'",
@@ -94,6 +97,99 @@
         "path": "minimum-2026-09-10.jsonl.gz",
         "sha256": "2a508655183f6dbe84da0b692370945bf0a1d69b2b944aefdd7acd0388a9c89e",
         "raw_sha256": "c3004de587832d951614ed305d43eda5fe6b0c0f4498ee235a7a91b22b7125c4"
+      },
+      "source": "61b6e9903aea109211eb5602275311b087141e0f"
+    },
+    "initial_full": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json ./acquisition",
+      "exit_code": 1,
+      "source": "61b6e9903aea109211eb5602275311b087141e0f",
+      "test_events": {
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 101,
+          "fail": 2
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/acquisition": "fail"
+      },
+      "failed_tests": [
+        "TestRealPinnedGitSourceAcquisition",
+        "TestSourceAcquirerPreservesProviderFiltersAndHTTPReceipts"
+      ],
+      "artifact": {
+        "path": "starmap-acquisition-config-full-2026-09-10.jsonl.gz",
+        "sha256": "94824eaec45099b68b6cbd2639a5c3a599642f9c3b36c55f11d83fb125997202",
+        "raw_sha256": "7de65916a0ae37305679b3dab720a76f19a34878243015ba607a4072d6bbed88"
+      }
+    },
+    "repair_focused": {
+      "equivalent_replay": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline ./acquisition -run 'TestAccepted|TestPrepareRejectsProviderOutside|TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart|TestRealPinnedGitSourceAcquisition|TestSourceAcquirerPreservesProviderFiltersAndHTTPReceipts'",
+      "exit_code": 0,
+      "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+      "test_events": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": {
+          "pass": 7
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 4
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": "pass",
+        "github.com/agentstation/starmap/acquisition": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "starmap-acquisition-config-filter-qualified-2026-09-10.jsonl.gz",
+        "sha256": "9a0193e8493cdd5ff7d3176d2d1d03d7aed9e27eec91f838830c69bf76c91925",
+        "raw_sha256": "9375c25d425ebe40bcd50da946fb8cdc9c36f4d36ca4650112270a3c6e9984f9"
+      }
+    },
+    "repair_minimum": {
+      "equivalent_replay": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline ./acquisition -run 'TestAccepted|TestPrepareRejectsProviderOutside|TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart|TestRealPinnedGitSourceAcquisition|TestSourceAcquirerPreservesProviderFiltersAndHTTPReceipts'",
+      "exit_code": 0,
+      "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+      "test_events": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": {
+          "pass": 7
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 4
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": "pass",
+        "github.com/agentstation/starmap/acquisition": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "starmap-acquisition-config-filter-minimum-2026-09-10.jsonl.gz",
+        "sha256": "c657dbcef8abf48635618f0f2d51f151731dc7221d930de6997fc9afc280dcf7",
+        "raw_sha256": "d0c50936117854b57e478c17b0e89920e50c1b31eb8cccffbca808a70c70d201"
+      }
+    },
+    "repaired_full": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json ./internal/catalog/pipeline ./acquisition",
+      "exit_code": 0,
+      "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+      "test_events": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": {
+          "pass": 112
+        },
+        "github.com/agentstation/starmap/acquisition": {
+          "pass": 103
+        }
+      },
+      "packages": {
+        "github.com/agentstation/starmap/internal/catalog/pipeline": "pass",
+        "github.com/agentstation/starmap/acquisition": "pass"
+      },
+      "failed_tests": [],
+      "artifact": {
+        "path": "starmap-acquisition-config-full-repaired-2026-09-10.jsonl.gz",
+        "sha256": "e1c3e6c60ecbc714e63ec564a9b27059870854000fdb727c28b0c31d1be2ebe2",
+        "raw_sha256": "9b58fb2fd5dd3069f2edacbc2c36d1cfbe5076185505306f7db3704d65cd9875"
       }
     }
   },
@@ -130,13 +226,56 @@
       "diagnostics": 0
     }
   },
-  "running": {
-    "full_acquisition": {
-      "session": 84266,
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json ./acquisition",
-      "log": "/tmp/starmap-acquisition-config-full-2026-09-10.jsonl",
-      "source": "61b6e9903aea109211eb5602275311b087141e0f",
-      "state": "running"
+  "running": {},
+  "initial_full_failure": "The accepted-only provider registry rejected two existing metadata-only source filters. The repair retains compiled metadata filters without enabling provider APIs or resolving credentials.",
+  "static_repaired": {
+    "ago": {
+      "exit_code": 0,
+      "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+      "artifact": {
+        "path": "starmap-acquisition-config-filter-ago-2026-09-10.json.gz",
+        "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+        "raw_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+      }
+    },
+    "lint": {
+      "exit_code": 0,
+      "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+      "artifact": {
+        "path": "starmap-acquisition-config-filter-lint-2026-09-10.log.gz",
+        "sha256": "6c8b52258d6322daacca9bd7b9187674328e02913e230d2d2bd522adb795b286",
+        "raw_sha256": "e60a9a271b079b1ba0980b3cb67c2991795bca58cde1415d34f000d444a535ea"
+      }
+    },
+    "prose": {
+      "exit_code": 0,
+      "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+      "artifact": {
+        "path": "starmap-acquisition-config-filter-prose-2026-09-10.log.gz",
+        "sha256": "591909cd13ae1f627b8cef40ab9f79503367a0efc40c524405791f91c8d8a690",
+        "raw_sha256": "6386913e4786a46c808b2af7efa1ba8f76c1310b258c0977222f9f950bb9f3f8"
+      }
+    },
+    "docs": {
+      "exit_code": 0,
+      "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+      "artifact": {
+        "path": "starmap-acquisition-config-docs-qualified-2026-09-10.log.gz",
+        "sha256": "7386f081656e9477ba8ee12b73b0ec4150fffb63a898f97cee6ff407edc24182",
+        "raw_sha256": "fe62b855ba7c8689152beddf8b721632bfe7d2e1cd9a54bca8eb8c4607807d55"
+      }
+    }
+  },
+  "review": {
+    "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base bece41e43a1fbc3fac82ec8a7078206fafd4d867 --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
+    "exit_code": 0,
+    "source": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+    "findings": 0,
+    "confidence": 0.97,
+    "artifact": {
+      "path": "starmap-acquisition-config-pre-pr-review-2026-09-10.log.gz",
+      "sha256": "9b14b7074d1857ef8f82b3a6470f461dcd31a90e5ce89d44476f009041e22869",
+      "raw_sha256": "a4186ba91f917c6cc5730c048e8b31aa1e40f16460239c3a5e2bc5a0e444349e"
     }
   }
 }

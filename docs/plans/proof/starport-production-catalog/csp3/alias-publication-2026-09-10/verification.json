@@ -430,15 +430,7 @@
       }
     }
   },
-  "running": {
-    "full_acceptance": {
-      "session": 20470,
-      "log": "/tmp/starmap-canonical-alias-full-acceptance-2026-09-10.jsonl",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json . ./runtime ./acquisition ./internal/catalog/reconciler",
-      "source": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
-      "status": "running"
-    }
-  },
+  "running": {},
   "open_findings": [
     {
       "id": "CSP3-source-provider-configuration",
@@ -459,5 +451,46 @@
     "Provider omission and scoped/canonical exclusion through alias identity require explicit combined coverage.",
     "Resolve the source-provider configuration finding at its acquisition boundary.",
     "Required pre-PR review, native CI, merge, and Starport consumer integration."
-  ]
+  ],
+  "full_race_qualification": {
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 go test -race -count=1 -timeout 20m -json . ./runtime ./acquisition ./internal/catalog/reconciler",
+    "exit_code": 0,
+    "source": "bece41e43a1fbc3fac82ec8a7078206fafd4d867",
+    "test_events": {
+      "github.com/agentstation/starmap": {
+        "pass": 103
+      },
+      "github.com/agentstation/starmap/runtime": {
+        "pass": 750
+      },
+      "github.com/agentstation/starmap/acquisition": {
+        "pass": 102
+      },
+      "github.com/agentstation/starmap/internal/catalog/reconciler": {
+        "pass": 648
+      }
+    },
+    "packages": {
+      "github.com/agentstation/starmap": "pass",
+      "github.com/agentstation/starmap/runtime": "pass",
+      "github.com/agentstation/starmap/acquisition": "pass",
+      "github.com/agentstation/starmap/internal/catalog/reconciler": "pass"
+    },
+    "failed_tests": [],
+    "artifact": {
+      "path": "starmap-canonical-alias-full-acceptance-2026-09-10.jsonl.gz",
+      "sha256": "8447bc982be80a58ac83a81ac4894b2a314babe6d65131b4ff19e2f5baabd5f2",
+      "raw_sha256": "73c06f37e4df90031f9d0300adecbbff61301c20b2e43f1968389536f519cdcf"
+    }
+  },
+  "integrated": {
+    "commit": "a0cfc63e9b1c81702b2197f33dcfe11251a52973",
+    "scope_tests": "7ca484ddc6c938be5428b89c02d451757a1b3ec9",
+    "provider_repair": "6cc955fc5328ded10be50b7f129631d7fce2db9c",
+    "fixture_repair": "0eb9edaca0cc95e16f44344a8d606d1b8fbb9aba",
+    "qualification_session": 31396,
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=1 bash scripts/verify-catalog-product.sh --starport-root /tmp/starport-readme-merged-2026-09-08 --task CSP3 --json",
+    "output": "/tmp/starmap-alias-csp3-integrated-2026-09-10.json",
+    "state": "running"
+  }
 }
