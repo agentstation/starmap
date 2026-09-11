@@ -4,6 +4,15 @@ These files come from the [September 8 catalog release](https://github.com/agent
 The capture record lists the source commits and file checksums.
 The archive retains its published bytes and schema 6 payload. Current Starmap supports this legacy schema.
 
+Run `python3 scripts/prepare_public_catalog_fixture.py` from the repository root before public-catalog acceptance tests.
+The explicit setup downloads the immutable archive and checks its captured size and checksum. It reuses a verified local copy.
+The archive stays outside version control. The tests embed the prepared archive.
+Their catalog requests stay on the local HTTP fixture.
+
+Ordinary tests skip these cases when the archive is absent. The product verifier treats those skipped cases as UNVERIFIED.
+CI prepares the archive first and requires it through `STARMAP_PUBLIC_FIXTURE_REQUIRED=1`.
+The setup refuses an invalid local copy. Remove that test artifact before preparing a replacement.
+
 The channel documents carry sequences 19 and 18. Each document has its own published Sigstore bundle.
 The archive bundle binds the archive digest to the Starmap catalog workflow.
 GitHub CLI verified all three bundles during capture on September 11, 2026.

@@ -7,8 +7,11 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
+	"io/fs"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"sync"
 	"testing"
@@ -35,6 +38,9 @@ func newPublicCatalogFixture(t *testing.T) *publicCatalogFixture {
 	t.Helper()
 	read := func(name string) []byte {
 		data, err := signedPublicCatalog.ReadFile("testdata/public-catalog-20260908/" + name)
+		if errors.Is(err, fs.ErrNotExist) && name == artifact.Filename && os.Getenv("STARMAP_PUBLIC_FIXTURE_REQUIRED") != "1" {
+			t.Skip("public catalog fixture is absent; run python3 scripts/prepare_public_catalog_fixture.py before testing")
+		}
 		if err != nil {
 			t.Fatal(err)
 		}
