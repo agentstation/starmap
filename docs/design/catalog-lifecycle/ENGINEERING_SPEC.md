@@ -1907,7 +1907,7 @@ These settings have node scope and require restart. They keep independent preced
 The parser preserves partial values. Host composition validates the complete profile before runtime Open and starts no observation during construction.
 An explicit disabled source clears earlier host clock selections. Absent source settings preserve injected host defaults.
 
-The [clock settings proof](../../plans/proof/starport-production-catalog/csp4/clock-settings-2026-09-11/verification.json) records focused checks, fixture corrections, and the running full verifier.
+The [clock settings proof](../../plans/proof/starport-production-catalog/csp4/clock-settings-2026-09-11/verification.json) records focused checks, fixture corrections, and all 41 full-verifier stages passing.
 Configuration declares bounds but does not qualify them. Starport adoption and production time-service qualification remain open.
 
 `hostclock.Observe` now supplies explicit Linux and macOS kernel observations.
@@ -2998,3 +2998,12 @@ need replacement. The remaining changes have these owners and dependencies:
 The [canonical plan](../../plans/starport-production-catalog-plan.html) owns implementation order and evidence.
 Its early first-use tasks preserve the final production qualification boundary.
 The review does not activate that plan, create commits, or authorize external publication.
+
+### Windows authentication candidate
+
+Candidate `437dc13c` requests the local service principal after the pipe identity check.
+It uses Windows SSPI Negotiate with packet privacy and identification-only access. Authentication failure produces no unauthenticated status fallback.
+Windows host policy can require domain services. The RPC transport retains its fixed pipe, byte bounds, and observation deadline.
+
+The [authentication proof](../../plans/proof/starport-production-catalog/csp4/windows-authentication-2026-09-11/verification.json) records portable checks and required native tests.
+Both Windows counter tests pass at the preceding source. Authenticated status reads, service-account privileges, and production clock bounds remain unqualified.

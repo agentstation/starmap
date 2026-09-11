@@ -1,0 +1,757 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_REVIEW_AND_NATIVE_REQUIRED",
+  "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
+  "base": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "contract": [
+    "Verify the SCM service process and pipe peer before requesting its principal on that same pipe.",
+    "Use process Windows credentials through system-directory SSPI Negotiate, packet privacy, and identification-only access. Refuse unavailable or weaker authentication.",
+    "Retain the two-second caller bound, one native worker, 16 KiB frames, 64 KiB total reply, no transport redial, and native handle cleanup.",
+    "Windows authentication policy can require domain services. No provider credential, password, service start, privilege enablement, or time-setting mutation enters product code."
+  ],
+  "checks": {
+    "fail_before": {
+      "source": "0dfa9a90",
+      "workflow": 34583505814,
+      "platforms": [
+        "windows-2025",
+        "windows-11-arm"
+      ],
+      "failure": "TestWindowsLocalTimeService receives RPC status 0x00000005 on both runners. Both native counter tests now pass."
+    },
+    "final_tests": [
+      {
+        "name": "final-go1.25.12-race",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-json",
+          "./pkg/catalogs/permission/..."
+        ],
+        "exit_code": 0,
+        "counts": {
+          "pass": 194,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-race.jsonl"
+      },
+      {
+        "name": "final-go1.25.12-amd64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-amd64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-amd64-hostclock.log"
+      },
+      {
+        "name": "final-go1.25.12-amd64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-amd64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-amd64-w32timerpc.log"
+      },
+      {
+        "name": "final-go1.25.12-arm64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-arm64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-arm64-hostclock.log"
+      },
+      {
+        "name": "final-go1.25.12-arm64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-arm64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.25.12-arm64-w32timerpc.log"
+      },
+      {
+        "name": "final-go1.26.6-race",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-json",
+          "./pkg/catalogs/permission/..."
+        ],
+        "exit_code": 0,
+        "counts": {
+          "pass": 194,
+          "fail": 0,
+          "skip": 0
+        },
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-race.jsonl"
+      },
+      {
+        "name": "final-go1.26.6-amd64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-amd64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-amd64-hostclock.log"
+      },
+      {
+        "name": "final-go1.26.6-amd64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-amd64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-amd64-w32timerpc.log"
+      },
+      {
+        "name": "final-go1.26.6-arm64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-arm64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-arm64-hostclock.log"
+      },
+      {
+        "name": "final-go1.26.6-arm64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-arm64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/final-go1.26.6-arm64-w32timerpc.log"
+      }
+    ],
+    "corrected_static": [
+      {
+        "name": "corrected-windows-lint",
+        "command": [
+          "golangci-lint",
+          "run",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "environment_overrides": {
+          "GOOS": "windows",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/corrected-windows-lint.log"
+      },
+      {
+        "name": "windows-vet",
+        "command": [
+          "go",
+          "vet",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "environment_overrides": {
+          "GOOS": "windows",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/windows-vet.log"
+      },
+      {
+        "name": "ago",
+        "command": [
+          "go",
+          "tool",
+          "ago",
+          "-stale-ignores",
+          "-format",
+          "json",
+          "./..."
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/ago.log"
+      },
+      {
+        "name": "corrected-docs",
+        "command": [
+          "go",
+          "generate",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/corrected-docs.log"
+      },
+      {
+        "name": "docs-check",
+        "command": [
+          "make",
+          "docs-check"
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/docs-check.log"
+      },
+      {
+        "name": "prose",
+        "command": [
+          "make",
+          "technical-writing-check"
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/prose.log"
+      },
+      {
+        "name": "diff",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/diff.log"
+      }
+    ],
+    "prior_attempt": [
+      {
+        "name": "docs-generate",
+        "command": [
+          "go",
+          "generate",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "environment_overrides": {},
+        "started_at": "2026-09-11T10:06:46.755913+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/docs-generate.log"
+      },
+      {
+        "name": "go1.25.12-race",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-json",
+          "./pkg/catalogs/permission/..."
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.25.12"
+        },
+        "started_at": "2026-09-11T10:06:46.820829+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.25.12-race.jsonl",
+        "counts": {
+          "pass": 194,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "go1.25.12-amd64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.25.12-amd64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.25.12",
+          "GOOS": "windows",
+          "GOARCH": "amd64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:49.156663+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.25.12-amd64-hostclock.log"
+      },
+      {
+        "name": "go1.25.12-amd64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.25.12-amd64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.25.12",
+          "GOOS": "windows",
+          "GOARCH": "amd64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:50.334510+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.25.12-amd64-w32timerpc.log"
+      },
+      {
+        "name": "go1.25.12-arm64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.25.12-arm64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.25.12",
+          "GOOS": "windows",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:50.815562+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.25.12-arm64-hostclock.log"
+      },
+      {
+        "name": "go1.25.12-arm64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.25.12-arm64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.25.12",
+          "GOOS": "windows",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:51.941890+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.25.12-arm64-w32timerpc.log"
+      },
+      {
+        "name": "go1.26.6-race",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-json",
+          "./pkg/catalogs/permission/..."
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.26.6"
+        },
+        "started_at": "2026-09-11T10:06:52.424359+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.26.6-race.jsonl",
+        "counts": {
+          "pass": 194,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "go1.26.6-amd64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.26.6-amd64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "GOOS": "windows",
+          "GOARCH": "amd64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:54.713539+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.26.6-amd64-hostclock.log"
+      },
+      {
+        "name": "go1.26.6-amd64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.26.6-amd64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "GOOS": "windows",
+          "GOARCH": "amd64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:55.862613+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.26.6-amd64-w32timerpc.log"
+      },
+      {
+        "name": "go1.26.6-arm64-hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.26.6-arm64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "GOOS": "windows",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:56.382512+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.26.6-arm64-hostclock.log"
+      },
+      {
+        "name": "go1.26.6-arm64-w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/windows-auth/go1.26.6-arm64-w32timerpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "GOOS": "windows",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:56.977476+00:00",
+        "exit_code": 0,
+        "log": ".tmp/csp4-host-clock/windows-auth/go1.26.6-arm64-w32timerpc.log"
+      },
+      {
+        "name": "windows-lint",
+        "command": [
+          "golangci-lint",
+          "run",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "environment_overrides": {
+          "GOOS": "windows",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "started_at": "2026-09-11T10:06:57.403715+00:00",
+        "exit_code": 1,
+        "log": ".tmp/csp4-host-clock/windows-auth/windows-lint.log"
+      }
+    ],
+    "additional_lint_failure": "A second focused lint run reported two G115 diagnostics in native buffer constructors. Final scoped contracts explain the caller bounds.",
+    "prose": "1495 files, zero diagnostics",
+    "native": "UNVERIFIED: native SSPI lifecycle, packet privacy, corruption/replay refusal, and W32Time status tests must run on Windows AMD64 and ARM64.",
+    "canonical_prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-runtime/windows-auth-prose-corrected.log"
+    }
+  },
+  "research": {
+    "sdk_header_url": "https://raw.githubusercontent.com/microsoft/win32metadata/main/generation/WinSDK/RecompiledIdlHeaders/shared/sspi.h",
+    "sdk_header_sha256": "65107c61362e16938e4edc5fdc47d812618e369d99c6a87afc697112ae9918f9",
+    "protocol": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/bb576d39-587b-484a-86a4-e1d378cf9497",
+    "dependencies": "No new module dependency. SSPI ABI declarations remain private to w32timerpc."
+  },
+  "limitations": [
+    "No claim that authentication alone resolves native access denial. CI also records a local w32tm query and privilege diagnostics.",
+    "Service-account privileges and deployment clock bounds still require qualification.",
+    "Pre-PR review is running. No push, native pass, merge, or task completion credit applies to this local candidate."
+  ],
+  "running_checks": [
+    {
+      "session_id": 45483,
+      "command": "autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
+      "result_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-windows-auth-review-20260911-4xsor_cp"
+    }
+  ],
+  "source_files": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "fa82a80b37aea838034af1dcb3ba5ec51053aac59c6acc21fa57e2733dd0da90"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/README.md",
+      "sha256": "753e888e5f233d1c7a914582badd65e7e1fa76d07100c274cf1229178eaedb5d"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/README.md",
+      "sha256": "b3fc29a6b54f82f99e30c2bcb541dc07562d63fc45c803663d908836ff7bb758"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/bounded_stream.go",
+      "sha256": "8faec1b2dfd15d840e024df917af3c0fd78da8976ec534cc04a5cfacc9d36e54"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/bounded_stream_test.go",
+      "sha256": "b93fd8ab00007b43521df8d08f80fe396db6f33e73631b4f59a660d526c7ab69"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query.go",
+      "sha256": "7bff787bdb949f122d848d88b97e219d2b2b41586a406b30758b0757e93cc657"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query_dispatch_test.go",
+      "sha256": "7873b2ba3cbfed31f4e87b137671c7e55119899fddd12db4b119047a1d0b1490"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query_test.go",
+      "sha256": "1e561e104b66061be6184c3d416c8269f839d8481c4474fd07980252d2e4f761"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/security_windows.go",
+      "sha256": "7528ac4f1619909c70ca8809075fdab53606cf7535c55c142ab0f20e4874b15a"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/sspi_windows.go",
+      "sha256": "e1eb11aeb7127fa50abf717c164ca840f254f9fcc45e6e9dbaef4f184d0662cf"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/sspi_windows_test.go",
+      "sha256": "1b8cc962168f7eb0666e2099c00c44a210758ba33de26dc1995883ad3e0fefe4"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "corrected-checks.json.gz",
+      "sha256": "af43883325ec5d34e6167cc56b9435c6c5c3a00bc26fa6ce542c7c3cc659d13a",
+      "decoded_sha256": "4c5674a0c9a5d8ad908a3f3971407193eb94dce337bcdc6a0ded02025a0438fa"
+    },
+    {
+      "path": "corrected-docs.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "corrected-windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "fe3edcd0e0cad006ee09723dd2ab64857e2496ee117b0fb94bfde91b9bbca045",
+      "decoded_sha256": "2bed3675200f5756129fe45690bb7724eb49c5665d9f69b9ea2c16409a3013c7"
+    },
+    {
+      "path": "docs-generate.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.25.12-amd64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.25.12-amd64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.25.12-arm64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.25.12-arm64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.25.12-race.jsonl.gz",
+      "sha256": "dbf510da0389669b2b51df6b9cb5f42f4be638f0749455f3d8412b55757dcf93",
+      "decoded_sha256": "bb0b7d45a9d4c18e84e95934dab53d188bf75e2a2879407866ae7892cd0846ac"
+    },
+    {
+      "path": "final-go1.26.6-amd64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.26.6-amd64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.26.6-arm64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.26.6-arm64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.26.6-race.jsonl.gz",
+      "sha256": "d2bfe021e8aa84c4a919fce36738da02f5889862008b3ec2bdc9fe05dd27a373",
+      "decoded_sha256": "0d1dcd0325ae00d6161177f78b0ccf96dc23d290f571e694de639f05395957c9"
+    },
+    {
+      "path": "final-tests.json.gz",
+      "sha256": "b06740cc54889b20cc82e0541089361bea8eac5df2af97d8024393a21176081c",
+      "decoded_sha256": "29e48e9b816a9ed22b3b67fea4619a6b420fb9d3080c7afb1b6573579f82f267"
+    },
+    {
+      "path": "go1.25.12-amd64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-race.jsonl.gz",
+      "sha256": "3ee5884282dedf238b92dfe13ee0105ac043f44c1d2ed33d7ea2c995017c540c",
+      "decoded_sha256": "e22080710f2e6fe67f659febc89827fa7685fcadf35a7f1ab8186397761aea30"
+    },
+    {
+      "path": "go1.26.6-amd64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-race.jsonl.gz",
+      "sha256": "4d7a33b394888cd3c071e181b2e39cf2cd0a881110dfbb7108e0c02a8d53078e",
+      "decoded_sha256": "33ab284c2f7b3b71843bfd169fb2bcebd083485d4c0b211ca7498e3ef69109ec"
+    },
+    {
+      "path": "manual-review-context.json.gz",
+      "sha256": "160ab154f9f11229c898299ca00477cdbc4e4923ef1b6b3358feb5f18d0711ca",
+      "decoded_sha256": "b16d13192485d76ddd1f531c9939149bbcf65abd904dec0165f6ab10c3fd8d3b"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "f178a5d8188ea132d96a553b2bbc08f273212ebb85519fabf12bd84ef6f67cf8",
+      "decoded_sha256": "041e38176222f6220b831e9dddb7e4a09e88201c9a2fbdb57d73c0f1a3498fb3"
+    },
+    {
+      "path": "review-directory.json.gz",
+      "sha256": "8546119f6558971026e2b968bddc92b0ae14051a0906856d364a429edda0a3e3",
+      "decoded_sha256": "e0e03a52e343bbbd0e9302db2b68faa89bbebbf991c917deb56c0265c8afca82"
+    },
+    {
+      "path": "verification.json.gz",
+      "sha256": "882eb31b4f49ba72a408202012f1e80f1460f10510addf002de190d7758b86db",
+      "decoded_sha256": "bd6127ae5475e5b1450b3d1057738fcb65aa5d3e15b6a1a9951e144b974ee96d"
+    },
+    {
+      "path": "windows-lint.log.gz",
+      "sha256": "07a5f059c2076cffaf72371f20515eb003e22baa54a2e73ea64f913bf374c998",
+      "decoded_sha256": "efe3bdae9604c579ca3f7c03c4dd51f9ca6c656ff06b1078c4bfadd8032a18bf"
+    },
+    {
+      "path": "windows-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "canonical-windows-auth-prose.log.gz",
+      "sha256": "e7208a8f2c1305cb9531da06f016415e6dd2da3863615a0f23b08219462d9e59",
+      "decoded_sha256": "f824f5198d817963fd3bb63d0fa09b706ec07c1d532a2ccef43598b3ad32a5dc"
+    },
+    {
+      "path": "canonical-windows-auth-prose.json.gz",
+      "sha256": "af14770f20d7ab318725d25755e470f1cf3dc4c5cea4c157a01139013a5b6ea9",
+      "decoded_sha256": "523cbeddfaa24c91c51fbd560c7b17cb5bfad1ece74206df2ff2e41bbec43abb"
+    },
+    {
+      "path": "canonical-windows-auth-prose-corrected.log.gz",
+      "sha256": "bd3d16825a3a43687b8460eb41c22f4ffee0ab1664813d7524b15b1300eb78c1",
+      "decoded_sha256": "343ac6c6fca0b56316ae7a24519f55c6b13400ec1daeb7700d57deb532408b17"
+    },
+    {
+      "path": "canonical-windows-auth-prose-corrected.json.gz",
+      "sha256": "483e9dc779651eeb220204d467e4e9a588d7397a99f9ec25c0753c311b903820",
+      "decoded_sha256": "5d40fe87772b0b0f7598ab017c5e5f69d24acf5d69639f890516febd76892e95"
+    }
+  ]
+}

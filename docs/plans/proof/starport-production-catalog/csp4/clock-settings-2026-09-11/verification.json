@@ -1,11 +1,11 @@
 {
   "task": "CSP4",
-  "status": "PASS_scoped_host_configuration_full_verification_running",
+  "status": "PASS_full_repository_host_configuration",
   "source_commit": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
   "base": "5f4ce61dfd26e8a8890dc84423ef06e6b4151775",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
   "branch": "codex/catalog-clock-lifecycle",
-  "publication": "Local committed candidate. Full repository verification runs before review and publication. Native parent PR151 has its own CI. No task completion credit.",
+  "publication": "Local committed candidate. All 41 repository verifier stages pass at e97d7fc3. Integrate qualified native parent changes before final review and publication. No task completion credit.",
   "contract": [
     "Eight canonical clock environment variables, flags, and YAML keys preserve presence. They have node scope, require restart, and are independent of the catalog source group.",
     "A portable profile owns numeric bounds without importing native adapters. Native monitor construction is passive and requires qualified host bounds. Windows requires three additional synchronization source bounds.",
@@ -60,22 +60,71 @@
     "static": "Scoped lint and vet, repository ago, generated documentation, and diff checks pass.",
     "prose": "PASS: 1490 files with zero diagnostics after fixing generated paragraph lengths, duration wording, and deployment example passive voice. All failed runs remain retained.",
     "product_verifier": "PASS: 73 regression tests. The first unittest module invocation failed because it omitted the script import directory; direct script execution passes.",
-    "canonical_documents": "PASS: four changed canonical documents with zero prose diagnostics. Plan maintenance verifies the 248-word resume, links, evidence bytes, source hashes, and unchanged task contracts."
+    "canonical_documents": "PASS: four changed canonical documents with zero prose diagnostics. Plan maintenance verifies the 248-word resume, links, evidence bytes, source hashes, and unchanged task contracts.",
+    "full_repository": {
+      "source_commit": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
+      "command": [
+        "make",
+        "verify"
+      ],
+      "started_at": "2026-09-11T08:44:41.829504+00:00",
+      "status": "completed",
+      "exit_code": 0,
+      "ended_at": "2026-09-11T09:56:53.222942+00:00",
+      "stage_count": 41,
+      "commands": [
+        "go test ./...",
+        "make test-pure-go",
+        "make test-file-sizes",
+        "./scripts/verify-package-layout.sh",
+        "./scripts/test-package-layout-verifier.sh",
+        "./scripts/verify-catalog-package-ownership.sh",
+        "./scripts/test-catalog-package-ownership-verifier.sh",
+        "./scripts/verify-catalog-dependency-direction.sh",
+        "./scripts/test-catalog-dependency-direction-verifier.sh",
+        "bash ./scripts/verify-canonical-alias-history.sh",
+        "python3 ./scripts/test_catalog_product_verify.py",
+        "python3 ./scripts/test_prepare_public_catalog_fixture.py",
+        "env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1",
+        "go vet ./...",
+        "./scripts/verify-catalog-performance.sh",
+        "./scripts/verify-container-smoke.sh",
+        "golangci-lint run",
+        "go tool ago -stale-ignores ./...",
+        "coverage ./internal/catalog/pipeline >= 70%",
+        "coverage ./internal/catalog/query >= 75%",
+        "coverage ./internal/providers/clients >= 80%",
+        "coverage ./internal/sources/providers >= 75%",
+        "coverage ./internal/server/middleware >= 90%",
+        "coverage ./internal/server/openrouter >= 85%",
+        "coverage ./internal/server/params >= 95%",
+        "coverage ./internal/server/response >= 95%",
+        "coverage ./internal/server/sse >= 90%",
+        "coverage ./internal/transport >= 40%",
+        "coverage ./pkg/catalogs/authority >= 90%",
+        "coverage ./pkg/catalogs >= 55%",
+        "coverage ./pkg/errors >= 80%",
+        "coverage ./internal/catalog/reconciler >= 75%",
+        "coverage ./pkg/sources >= 35%",
+        "make docs-check",
+        "make technical-writing-check",
+        "git diff --check",
+        "go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.H8WkG9/starmap ./cmd/starmap",
+        "run_cli version",
+        "run_cli validate catalog",
+        "run_cli providers",
+        "run_cli models list --limit 5"
+      ],
+      "scope": "Local Darwin execution. Native Windows authentication corrections are outside this tested source."
+    }
   },
   "limitations": [
-    "Full repository verification at this exact candidate is running. Pre-PR review and publication follow it.",
+    "Full repository verification passed at e97d7fc3 before the native Windows authentication correction. Integration, final review, native CI, and publication remain open.",
     "Production UTC and counter bounds still require operational qualification. Cross-builds are not native execution evidence.",
     "Starmap origin settings and shared-store followers, explicit authority transitions, Starport clock composition, and four mapped Starport checks remain open.",
     "The published Starport dependency still lacks the new APIs. Do not publish Starport with a private workspace dependency."
   ],
-  "running_checks": [
-    {
-      "session_id": 80929,
-      "command": "make verify",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle/.tmp/csp4-clock-settings/verify.log",
-      "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle/.tmp/csp4-clock-settings/verify-metadata.json"
-    }
-  ],
+  "running_checks": [],
   "source_files": [
     {
       "path": ".env.example",
@@ -511,6 +560,16 @@
       "path": "canonical-prose-corrected.log.gz",
       "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7",
       "decoded_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    },
+    {
+      "path": "complete-verify.log.gz",
+      "sha256": "11e90122067a2ea869eb2f1609a8dbd4f655aa6ea1c909739c166eff44b926cc",
+      "decoded_sha256": "331b93923f0f2501c561d64b9b4aff519d66622201576f0a228171fab2d3ffad"
+    },
+    {
+      "path": "complete-verify-metadata.json.gz",
+      "sha256": "91de17e1a3c547933ea66b99054303837986e955e059eadd3e4ad3bbf19bbcd7",
+      "decoded_sha256": "469d03c015c001237d58fe18f0ba03b4165364e65bc187f660d5947657de0e21"
     }
   ]
 }

@@ -19,10 +19,16 @@ PR #151 contains the correction.
 Native workflow `34583505814` passes both Windows counter tests and all Linux/macOS jobs.
 Both Windows status calls now return RPC access denied. Authentication and caller-privilege diagnosis remains open.
 
+Local `437dc13c` adds Windows SSPI authentication with packet privacy and native privacy tests.
+The [authentication proof](csp4/windows-authentication-2026-09-11/verification.json) records 194 portable race events per toolchain and eight Windows cross-builds.
+Static checks, documentation checks, and the 1,495-file prose check pass. Review session `45483` runs before publication and mandatory native execution.
+
 Clock configuration `e97d7fc3` adds eight canonical host settings and passive native composition.
 Its [proof](csp4/clock-settings-2026-09-11/verification.json) records 35 focused race events per toolchain with one Windows-only skip.
 Corrected settings packages pass 112 events. Four Windows cross-builds, static checks, generated docs, and the 1,490-file prose check pass.
-Full repository verification runs in session `80929` before review and publication. Preserve that candidate during the run.
+
+All 41 repository verifier stages pass at `e97d7fc3`. The proof retains the complete log and final metadata.
+Integrate the qualified native parent before final review and publication.
 
 The [monitor proof](csp4/clock-lifecycle-2026-09-11/verification.json) and [runtime proof](csp4/clock-runtime-2026-09-11/verification.json) retain the earlier lifecycle checks.
 Production clock bounds, configured permission owners, shared-store followers, authority transitions, and four Starport consumer checks remain open.

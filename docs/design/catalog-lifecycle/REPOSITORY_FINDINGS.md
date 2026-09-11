@@ -2205,7 +2205,7 @@ Four Windows cross-builds pass. Corrected settings packages pass 112 race events
 Lint, vet, ago, generated documentation, 73 verifier regression tests, and the 1,490-file prose check pass.
 
 The broad initial run records 580 passes and ten failures from missing example entries and obsolete fixtures.
-The corrected focused runs pass. Full repository verification now runs at the committed candidate before review and publication.
+The corrected focused runs pass. All 41 repository verifier stages now pass at `e97d7fc3`. Parent integration, final review, and publication remain open.
 Production clock bounds, Starport composition, and the remaining CSP4 authority cases still need qualification.
 
 ## Authority selection on restart, 2026-09-11
@@ -2217,3 +2217,16 @@ Candidate `8206a2a8` rejects that startup with a configuration error before work
 The [proof](../../plans/proof/starport-production-catalog/csp4/authority-selection-2026-09-11/verification.json) records twelve passing race events per toolchain and exact store preservation.
 Existing origin and authoritative-subscriber restarts still pass. Static and documentation checks pass.
 Integration, explicit authority transitions, full repository verification, review, and publication remain open.
+
+## Windows authenticated status candidate, 2026-09-11
+
+Commit `437dc13c` adds native SSPI authentication after the local pipe identity check.
+The same pipe supplies the service principal and carries the protected status query.
+The process uses its Windows identity with packet privacy and identification-only access. Product code enables no privilege and changes no clock setting.
+
+The [authentication proof](../../plans/proof/starport-production-catalog/csp4/windows-authentication-2026-09-11/verification.json) records 194 portable race events per toolchain and eight Windows cross-builds.
+Windows lint and vet, repository ago, generated docs, full docs checks, and the 1,495-file prose check pass.
+Native tests cover privacy, changed headers, changed payloads, changed signatures, replay, and native handle cleanup. They remain unexecuted at this candidate.
+
+Native CI must resolve the preceding RPC access denial. The fixture records local `w32tm` status and process privileges for diagnosis.
+Review session `45483` runs before publication. CSP4 retains all remaining clock, authority, and Starport qualification requirements.

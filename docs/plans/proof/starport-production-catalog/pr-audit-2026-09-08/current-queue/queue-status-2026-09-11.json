@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-11T09:20:31.045028+00:00",
+  "captured_at": "2026-09-11T10:16:53.534185+00:00",
   "repositories": {
     "starmap": [
       {
@@ -18,7 +18,7 @@
   "required_reviews": "Sol xhigh and Opus high PASS, zero findings; secret scan PASS",
   "repository_verification": "All 41 stages pass across the original and corrected remainder.",
   "native_jobs": "Workflow 34583505814 passes all Linux/macOS jobs and both Windows counter tests. Both Windows status calls fail with RPC access denied.",
-  "disposition": "Diagnose Windows RPC authentication and caller privilege requirements. Repair, verify, and review before new native qualification and merge.",
+  "disposition": "Local 437dc13c adds SSPI packet privacy. Review session45483 must pass before publication and native Windows qualification. Remote source remains 0dfa9a90.",
   "owner": "Catalog plan executor",
   "campaign_merged_prs": 28,
   "tasks_done": 9,
@@ -28,7 +28,7 @@
     {
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
       "head": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
-      "next_action": "Full make verify runs in session80929; review and publish after its native parent."
+      "next_action": "All 41 make verify stages passed at e97d7fc3. Integrate qualified native parent, then final review and publication."
     },
     {
       "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
@@ -39,6 +39,11 @@
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
       "head": "8206a2a8e8f0de12d895cca26bce08ea723b4263",
       "next_action": "Integrate native parent changes, finish origin settings and transitions, verify and review before publication."
+    },
+    {
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+      "head": "437dc13c92b38367f0534900a83884e67bfaebd1",
+      "next_action": "Finish review45483, publish, and require native Windows authentication evidence before merge."
     }
   ],
   "previous_capture": {
