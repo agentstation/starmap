@@ -384,6 +384,13 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources
+	if r.requiresAuthority() && r.layers.source == nil {
+		// Retain available diagnostics until this authority supplies a source generation.
+		// Without a retained source, initializeAuthority cannot approve this catalog.
+		r.effective = current
+		r.report.startedAt = r.config.now()
+		return nil
+	}
 	if selected, err := r.initializeOriginReplica(ctx, current, baseline); selected || err != nil {
 		return err
 	}
@@ -399,7 +406,7 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if err := current.Catalog.CanonicalAliases().ValidateSuccessor(state.Catalog.CanonicalAliases()); err != nil {
+	if err := current.Catalog.CanonicalAliases().ValidateAuthoritySuccessor(state.Catalog.CanonicalAliases(), current.AuthorityHead, state.AuthorityHead); err != nil {
 		return err
 	}
 	r.effective = state

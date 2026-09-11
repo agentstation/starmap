@@ -138,6 +138,26 @@ func (i *CanonicalAliasIndex) ValidateSuccessor(next *CanonicalAliasIndex) error
 	return nil
 }
 
+// ValidateAuthoritySuccessor retains alias history within one catalog authority and policy.
+// A different nonempty authority context supplies its own complete alias inventory.
+// The caller must separately authorize that context. This check grants no catalog permission.
+func (i *CanonicalAliasIndex) ValidateAuthoritySuccessor(next *CanonicalAliasIndex, previousHead, nextHead CatalogAuthorityHead) error {
+	if previousHead != (CatalogAuthorityHead{}) {
+		if err := previousHead.Validate(); err != nil {
+			return err
+		}
+	}
+	if nextHead != (CatalogAuthorityHead{}) {
+		if err := nextHead.Validate(); err != nil {
+			return err
+		}
+		if previousHead.AuthorityID != nextHead.AuthorityID || previousHead.PolicyID != nextHead.PolicyID {
+			return nil
+		}
+	}
+	return i.ValidateSuccessor(next)
+}
+
 // resolve flattens one edge chain without recursion. Removed intermediate IDs do not remove other aliases.
 func (i *CanonicalAliasIndex) resolve(start ModelDefinitionID) (ModelDefinitionID, error) {
 	if terminal, found := i.terminals[start]; found {

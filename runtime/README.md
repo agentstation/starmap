@@ -12,6 +12,17 @@ An authoritative stored catalog requires origin configuration or `require_author
 Removing those settings cannot convert the catalog to ordinary mode, even with a new runtime directory.
 The startup error preserves the stored generation. Restore the intended authority configuration before restarting.
 
+An explicit authority change requires a runtime restart with the new source, authority ID, and policy ID.
+`WithSourceAuthority` supplies the explicit identity selection. A changed authority or policy starts a new permission context.
+The previous catalog remains available for diagnostics. Its approval cannot authorize the new context, including after restart.
+
+The replacement authority must supply its own verified catalog and current permission receipt before inference can resume.
+Its complete catalog supplies its alias inventory. Alias history remains mandatory for updates within the same authority and policy.
+A failed catalog commit preserves the previous catalog and blocks inference. Restart recovers the pending input publication before another refresh.
+
+An origin cannot rename its established authority or policy in place. Select a separate catalog store for a new origin identity.
+Subscribers must then explicitly select that identity. Clearing origin settings does not authorize ordinary startup against the old store.
+
 An origin with a shared lease checks the accepted catalog store every 30 seconds.
 This check remains active when public source polling is disabled. An unchanged authority head causes no full catalog read.
 Followers activate compatible generations of the selected authority and policy without publishing or acquiring the refresh lease.

@@ -20,7 +20,8 @@ func (r *Runtime) preparePublication(ctx context.Context, state starmap.CatalogS
 	if err := ctx.Err(); err != nil {
 		return preparedPublication{}, err
 	}
-	if err := r.State().Catalog.CanonicalAliases().ValidateSuccessor(state.Catalog.CanonicalAliases()); err != nil {
+	currentState := r.State()
+	if err := currentState.Catalog.CanonicalAliases().ValidateAuthoritySuccessor(state.Catalog.CanonicalAliases(), currentState.AuthorityHead, state.AuthorityHead); err != nil {
 		return preparedPublication{}, err
 	}
 	prepared := preparedPublication{state: state}
