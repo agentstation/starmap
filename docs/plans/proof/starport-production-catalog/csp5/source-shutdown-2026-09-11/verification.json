@@ -1,0 +1,946 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "52c84e286b3a11304d3c9c4c84c89ede79203184",
+  "source_files": [
+    {
+      "path": "remote/source.go",
+      "sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "remote/source_shutdown_test.go",
+      "sha256": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820"
+    },
+    {
+      "path": "remote/subscriber.go",
+      "sha256": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "runtime/shutdown.go",
+      "sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "runtime/source_lifecycle.go",
+      "sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "runtime/source_lifecycle_test.go",
+      "sha256": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+    }
+  ],
+  "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+  "verified_at": "2026-09-11T21:23:59.161739+00:00",
+  "source_binding": "Each check retains its command, exact source hashes, snapshots, and exit status. The final source files bind checkpoint 52c84e28.",
+  "qualification": "Local owned-source shutdown checkpoint. Twelve mapped CSP5 subcases remain unverified. No PR or merge credit.",
+  "checks": {
+    "source-shutdown-timeout-red": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "3m",
+        "-run",
+        "^TestOwnedSourceCloseTimeoutKeepsDirectoryOwned$",
+        "-json",
+        "./remote"
+      ],
+      "started_at": "2026-09-11T21:10:47.561937+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source_shutdown_test.go": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T21:11:00.486864+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/remote": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "fail"
+        }
+      ]
+    },
+    "source-shutdown-timeout-green": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-run",
+        "^(TestOwnedSourceCloseTimeoutKeepsDirectoryOwned|TestRuntimeSourceOwnership|TestRuntimeClosesOnlyFinalOwnedSource|TestRuntimeReturnsOwnedSourceCloseFailure|TestFailedRuntimeOpenReturnsOwnedSourceCloseFailure|TestSourceStartupCancellation|TestCompositionClosesBuiltCascade|TestFailedCompositionOpenClosesBuiltCascade|TestSourceManualReadCancellation|TestManualRuntimeRefreshNeverOpensStream|TestCloseReportsBoundedJoinTimeout|TestCloseCancelsAndJoinsInitialFetch)$",
+        "-json",
+        "./runtime",
+        "./remote",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T21:12:46.656388+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source.go": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d",
+        "remote/source_shutdown_test.go": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1",
+        "remote/subscriber.go": "d7ac3b88def18842f8d78b9f0f53f22a42ee508afd11e232e536ffc8cde5412b",
+        "runtime/runtime.go": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6",
+        "runtime/shutdown.go": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e",
+        "runtime/source_lifecycle.go": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4",
+        "runtime/source_lifecycle_test.go": "d515e7e6595d3eb475930d1d3b076c94af95aad6ddf29d8f91948f9e4be6052a"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:13:35.444615+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 30
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 8
+        },
+        "github.com/agentstation/starmap/remote": {
+          "pass": 20
+        },
+        "github.com/agentstation/starmap/internal/catalog/settings": {
+          "pass": 2
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "pass"
+        }
+      ]
+    },
+    "source-shutdown-recovery": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "^(TestOwnedSourceCloseTimeoutKeepsDirectoryOwned|TestFailedOpenKeepsDirectoryUntilOwnedSourceStops|TestRuntimeSourceOwnership|TestRuntimeClosesOnlyFinalOwnedSource|TestRuntimeReturnsOwnedSourceCloseFailure|TestFailedRuntimeOpenReturnsOwnedSourceCloseFailure|TestSourceStartupCancellation|TestCompositionClosesBuiltCascade|TestFailedCompositionOpenClosesBuiltCascade|TestSourceManualReadCancellation|TestManualRuntimeRefreshNeverOpensStream|TestCloseReportsBoundedJoinTimeout|TestCloseCancelsAndJoinsInitialFetch|TestCloseTimeoutKeepsRuntimeDirectoryOwned|TestRuntimeDirectoryOwnershipIncludesLeaseRelease|TestCloseRejectsLateSourcePublication|TestCloseRejectsLateProviderPublication|TestFailedRuntimeOpenCancelsOwnedClock)$",
+        "-json",
+        "./runtime",
+        "./remote",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T21:14:07.177961+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source.go": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d",
+        "remote/source_shutdown_test.go": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820",
+        "remote/subscriber.go": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40",
+        "runtime/runtime.go": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6",
+        "runtime/shutdown.go": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e",
+        "runtime/source_lifecycle.go": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4",
+        "runtime/source_lifecycle_test.go": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:14:55.881017+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 36
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/remote": {
+          "pass": 20
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 14
+        },
+        "github.com/agentstation/starmap/internal/catalog/settings": {
+          "pass": 2
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "pass"
+        }
+      ]
+    },
+    "source-shutdown-ago": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T21:12:47.810908+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source.go": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d",
+        "remote/source_shutdown_test.go": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1",
+        "remote/subscriber.go": "d7ac3b88def18842f8d78b9f0f53f22a42ee508afd11e232e536ffc8cde5412b",
+        "runtime/runtime.go": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6",
+        "runtime/shutdown.go": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e",
+        "runtime/source_lifecycle.go": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4",
+        "runtime/source_lifecycle_test.go": "d515e7e6595d3eb475930d1d3b076c94af95aad6ddf29d8f91948f9e4be6052a"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:12:49.750917+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "source-shutdown-ago-final": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T21:14:30.568580+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source.go": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d",
+        "remote/source_shutdown_test.go": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820",
+        "remote/subscriber.go": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40",
+        "runtime/runtime.go": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6",
+        "runtime/shutdown.go": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e",
+        "runtime/source_lifecycle.go": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4",
+        "runtime/source_lifecycle_test.go": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:14:32.779441+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "source-shutdown-vet": {
+      "command": [
+        "go",
+        "vet",
+        "./runtime",
+        "./remote",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T21:14:30.568552+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source.go": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d",
+        "remote/source_shutdown_test.go": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820",
+        "remote/subscriber.go": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40",
+        "runtime/runtime.go": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6",
+        "runtime/shutdown.go": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e",
+        "runtime/source_lifecycle.go": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4",
+        "runtime/source_lifecycle_test.go": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:14:32.073472+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "source-shutdown-writing": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T21:12:47.817896+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source.go": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d",
+        "remote/source_shutdown_test.go": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1",
+        "remote/subscriber.go": "d7ac3b88def18842f8d78b9f0f53f22a42ee508afd11e232e536ffc8cde5412b",
+        "runtime/runtime.go": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6",
+        "runtime/shutdown.go": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e",
+        "runtime/source_lifecycle.go": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4",
+        "runtime/source_lifecycle_test.go": "d515e7e6595d3eb475930d1d3b076c94af95aad6ddf29d8f91948f9e4be6052a"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:13:36.334928+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "source-shutdown-packages": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-json",
+        "./remote",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T21:15:36.976922+00:00",
+      "base_commit": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
+      "source_files": {
+        "remote/source.go": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d",
+        "remote/source_shutdown_test.go": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820",
+        "remote/subscriber.go": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40",
+        "runtime/runtime.go": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6",
+        "runtime/shutdown.go": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e",
+        "runtime/source_lifecycle.go": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4",
+        "runtime/source_lifecycle_test.go": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:16:32.901906+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 87
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/catalog/settings": {
+          "pass": 24
+        },
+        "github.com/agentstation/starmap/remote": {
+          "pass": 63
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "pass"
+        }
+      ]
+    },
+    "lifecycle-packages": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "30m",
+        "-json",
+        "./runtime",
+        "./remote",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T20:58:40.213748+00:00",
+      "base_commit": "eeeba3762e85712df496f8186807e4952a410abe",
+      "source_files": {
+        "internal/catalog/settings/cascade_lifecycle_test.go": "5384fc54682622980fee543ac4aeeba34b60e60d7df9a484510a9da4ab221013",
+        "internal/catalog/settings/composition.go": "283882d2036cab8c9fc904734a1f405aa8a779ba5d590ec6efec26dcfe74026c",
+        "remote/source.go": "0bc4f9e66348b294d3ae8ffad41e9a92465e329e595abe7b2b78ab0aa393ed91",
+        "remote/source_startup_test.go": "09ef76196c8980d97fe6c206100fc6fac7c9a2358cffdd2cd413e3ba4976c661",
+        "remote/subscriber.go": "a83aa93142e00c5caea89c6d5e35d6ae84e33d7d4d84bdc4ba8076ff047ca5b9",
+        "runtime/authority_retention.go": "56b46188d219b8f2c7a2da148f6ba3e0bfcf46829becb2147f06bff96a873bb6",
+        "runtime/options.go": "bc2810096a04ff54033709f68f8b1169deb8c301fdfb62d3f1139716e77a1137",
+        "runtime/runtime.go": "3231195d548d01724f5b3895ff921ee1250aa6ce1983233f939f72abb9f2267c",
+        "runtime/source_lifecycle.go": "e4a2510cd6b0c751fb248182009d3e05543c44dcf6b268c50c909d48a62b5200",
+        "runtime/source_lifecycle_test.go": "cc79f0a34aed2e90bf4db2a39432f340c346e6b03793458e093562ccfb72aff4"
+      },
+      "status": "running",
+      "session_id": 13494,
+      "test_events": {
+        "pass": 684,
+        "skip": 2
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/catalog/settings": {
+          "pass": 24
+        },
+        "github.com/agentstation/starmap/remote": {
+          "pass": 62
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 598,
+          "skip": 2
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "pass"
+        }
+      ],
+      "qualification": "Earlier 48a9a6e5 lifecycle source only. This run does not cover the later shutdown timeout correction."
+    }
+  },
+  "limits": [
+    "The full lifecycle run covers earlier checkpoint 48a9a6e5 only. Its source must not qualify the timeout correction.",
+    "The prose check precedes a nil-receiver guard and two test additions. Those later edits change no source comments.",
+    "Generation pins, owned-stage recovery, history compaction, and ambiguous publication recovery remain open.",
+    "Full CSP5 checks, repository verification, review, native CI, and merges remain open.",
+    "Starport still uses the merged CSP4 module and owns its cascade separately. CSP8 must adopt the coordinated source lifecycle before consumer qualification."
+  ],
+  "artifacts": [
+    {
+      "path": "source-shutdown-timeout-red/changes.patch.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-timeout-red/source/remote/source_shutdown_test.go.gz",
+      "sha256": "bd2a919e18d61559ff6a93718543855872ad6c8b0af6e22c08d0303f80336959",
+      "decoded_sha256": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1"
+    },
+    {
+      "path": "source-shutdown-timeout-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-timeout-red/stdout.log.gz",
+      "sha256": "8606d8be3763268ef0b3dc1a2f38bb521ec7083c29f8620c3f5a5fdd292e034e",
+      "decoded_sha256": "6cb3684c59dbf93c12c1c97a3eb8b418bd8adbe9187d76bdd9ab905b033dfdc4"
+    },
+    {
+      "path": "source-shutdown-timeout-red/verification.json.gz",
+      "sha256": "e78c044b155e1cc40435c50fe5f19f466b1a617baf93dda943b785548c3aa356",
+      "decoded_sha256": "b5149c344642bf0aaf3da9f13fad1977a59b8d93d18fa6136571c8f23f293e99"
+    },
+    {
+      "path": "source-shutdown-timeout-green/changes.patch.gz",
+      "sha256": "2e19a1fa6ef0ec95d952c7ef125c8c7b7042bf988a206ea9a298a45bad2a21c3",
+      "decoded_sha256": "0fefb9cc9a55ba244bed2a416c7b727353bbe2b72c8a92ec2e47c54044845959"
+    },
+    {
+      "path": "source-shutdown-timeout-green/source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "source-shutdown-timeout-green/source/remote/source_shutdown_test.go.gz",
+      "sha256": "bd2a919e18d61559ff6a93718543855872ad6c8b0af6e22c08d0303f80336959",
+      "decoded_sha256": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1"
+    },
+    {
+      "path": "source-shutdown-timeout-green/source/remote/subscriber.go.gz",
+      "sha256": "409c5c3d6ad23e1eaaa118ff9e376b8e42f0bc2abf0e4d7f5f238037c5ee7b62",
+      "decoded_sha256": "d7ac3b88def18842f8d78b9f0f53f22a42ee508afd11e232e536ffc8cde5412b"
+    },
+    {
+      "path": "source-shutdown-timeout-green/source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "source-shutdown-timeout-green/source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "source-shutdown-timeout-green/source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "source-shutdown-timeout-green/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "ee517132f5039ce84a7e2fab4cf86ff4d5903a833b3dde99847b99d92bd08f14",
+      "decoded_sha256": "d515e7e6595d3eb475930d1d3b076c94af95aad6ddf29d8f91948f9e4be6052a"
+    },
+    {
+      "path": "source-shutdown-timeout-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-timeout-green/stdout.log.gz",
+      "sha256": "2cd62dbd0792fd1165355bc130e7df12bd3ced2dcf4e5964c44c5e61166b3789",
+      "decoded_sha256": "f7fef7d49d1cd40c91777909672f3c21b189ddd10b783c36075356f0bc2710f4"
+    },
+    {
+      "path": "source-shutdown-timeout-green/verification.json.gz",
+      "sha256": "7f1c381d7e7df2be4266a0df300e9feca2773459624037b8e3b6dab6ef8c1ae6",
+      "decoded_sha256": "b1b3a18575d4739e39ceea14050ffac5f56727fddd43204da94534bcc110ad30"
+    },
+    {
+      "path": "source-shutdown-recovery/changes.patch.gz",
+      "sha256": "ed934ef58f47154ae3ac9ac441a838f56cfce99fea8277f6a4eb69c5e1b1fd42",
+      "decoded_sha256": "ad248182ea0b4fb702b6b8af06579d4d6b080be0cc41e7f6eec040590d2f5538"
+    },
+    {
+      "path": "source-shutdown-recovery/source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "source-shutdown-recovery/source/remote/source_shutdown_test.go.gz",
+      "sha256": "92c1b1aeb407c96f460b2e441d1544303c0ce6b083522e681fbdfa4bdaac495a",
+      "decoded_sha256": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820"
+    },
+    {
+      "path": "source-shutdown-recovery/source/remote/subscriber.go.gz",
+      "sha256": "b0cc45737afd54a4935608a555ac1c6c9b39c6941efdb34905ba64ae4d77440e",
+      "decoded_sha256": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40"
+    },
+    {
+      "path": "source-shutdown-recovery/source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "source-shutdown-recovery/source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "source-shutdown-recovery/source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "source-shutdown-recovery/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "0d7bb4bce28e73f89f291418685ab972db08a6772f486307a1e97ee11d40715e",
+      "decoded_sha256": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+    },
+    {
+      "path": "source-shutdown-recovery/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-recovery/stdout.log.gz",
+      "sha256": "71cd9795c0543754373385c6c13c0541ee39ad0fbcb44baa5c2e5f7fcd0981ba",
+      "decoded_sha256": "566d125b3c05e7ca1d95bfdc7547716b5090e4ec97632484fb8120d0ae208aa5"
+    },
+    {
+      "path": "source-shutdown-recovery/verification.json.gz",
+      "sha256": "11a5fbcd2e0407f29add230a6ccad3eb612b89fc7fa5a7ae73163f7fd63b1c50",
+      "decoded_sha256": "cd3b992b0ed2476347eb351636192359f260375d543af47ce77452f4237cde8c"
+    },
+    {
+      "path": "source-shutdown-ago/changes.patch.gz",
+      "sha256": "2e19a1fa6ef0ec95d952c7ef125c8c7b7042bf988a206ea9a298a45bad2a21c3",
+      "decoded_sha256": "0fefb9cc9a55ba244bed2a416c7b727353bbe2b72c8a92ec2e47c54044845959"
+    },
+    {
+      "path": "source-shutdown-ago/source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "source-shutdown-ago/source/remote/source_shutdown_test.go.gz",
+      "sha256": "bd2a919e18d61559ff6a93718543855872ad6c8b0af6e22c08d0303f80336959",
+      "decoded_sha256": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1"
+    },
+    {
+      "path": "source-shutdown-ago/source/remote/subscriber.go.gz",
+      "sha256": "409c5c3d6ad23e1eaaa118ff9e376b8e42f0bc2abf0e4d7f5f238037c5ee7b62",
+      "decoded_sha256": "d7ac3b88def18842f8d78b9f0f53f22a42ee508afd11e232e536ffc8cde5412b"
+    },
+    {
+      "path": "source-shutdown-ago/source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "source-shutdown-ago/source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "source-shutdown-ago/source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "source-shutdown-ago/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "ee517132f5039ce84a7e2fab4cf86ff4d5903a833b3dde99847b99d92bd08f14",
+      "decoded_sha256": "d515e7e6595d3eb475930d1d3b076c94af95aad6ddf29d8f91948f9e4be6052a"
+    },
+    {
+      "path": "source-shutdown-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "source-shutdown-ago/verification.json.gz",
+      "sha256": "eed9bc1ddc0902a7d2e2b16ff03010790a8ef930a46b1b1898980d08d2b02781",
+      "decoded_sha256": "a36571f23134905c651c21cbdfc5892cd570c74cf724e2d2693e4315e3adf30d"
+    },
+    {
+      "path": "source-shutdown-ago-final/changes.patch.gz",
+      "sha256": "ed934ef58f47154ae3ac9ac441a838f56cfce99fea8277f6a4eb69c5e1b1fd42",
+      "decoded_sha256": "ad248182ea0b4fb702b6b8af06579d4d6b080be0cc41e7f6eec040590d2f5538"
+    },
+    {
+      "path": "source-shutdown-ago-final/source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "source-shutdown-ago-final/source/remote/source_shutdown_test.go.gz",
+      "sha256": "92c1b1aeb407c96f460b2e441d1544303c0ce6b083522e681fbdfa4bdaac495a",
+      "decoded_sha256": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820"
+    },
+    {
+      "path": "source-shutdown-ago-final/source/remote/subscriber.go.gz",
+      "sha256": "b0cc45737afd54a4935608a555ac1c6c9b39c6941efdb34905ba64ae4d77440e",
+      "decoded_sha256": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40"
+    },
+    {
+      "path": "source-shutdown-ago-final/source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "source-shutdown-ago-final/source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "source-shutdown-ago-final/source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "source-shutdown-ago-final/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "0d7bb4bce28e73f89f291418685ab972db08a6772f486307a1e97ee11d40715e",
+      "decoded_sha256": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+    },
+    {
+      "path": "source-shutdown-ago-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-ago-final/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "source-shutdown-ago-final/verification.json.gz",
+      "sha256": "19b9ee75f9f1d6554f0fd91e4c727e53f342b169970c7bc8f40e88fb58e1d0b9",
+      "decoded_sha256": "e89aa649b1e4e4123b1939633a57c64a59c2445859a17fb0897408d44edd4650"
+    },
+    {
+      "path": "source-shutdown-vet/changes.patch.gz",
+      "sha256": "ed934ef58f47154ae3ac9ac441a838f56cfce99fea8277f6a4eb69c5e1b1fd42",
+      "decoded_sha256": "ad248182ea0b4fb702b6b8af06579d4d6b080be0cc41e7f6eec040590d2f5538"
+    },
+    {
+      "path": "source-shutdown-vet/source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "source-shutdown-vet/source/remote/source_shutdown_test.go.gz",
+      "sha256": "92c1b1aeb407c96f460b2e441d1544303c0ce6b083522e681fbdfa4bdaac495a",
+      "decoded_sha256": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820"
+    },
+    {
+      "path": "source-shutdown-vet/source/remote/subscriber.go.gz",
+      "sha256": "b0cc45737afd54a4935608a555ac1c6c9b39c6941efdb34905ba64ae4d77440e",
+      "decoded_sha256": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40"
+    },
+    {
+      "path": "source-shutdown-vet/source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "source-shutdown-vet/source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "source-shutdown-vet/source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "source-shutdown-vet/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "0d7bb4bce28e73f89f291418685ab972db08a6772f486307a1e97ee11d40715e",
+      "decoded_sha256": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+    },
+    {
+      "path": "source-shutdown-vet/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-vet/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-vet/verification.json.gz",
+      "sha256": "5fddf3fb65b6ac2516a3bb7e6213396ddac9b991a6501c410913a0a55b28b2d4",
+      "decoded_sha256": "e6b612342d49f455e7fd45ee6d20d9294a56e51d2b791aac92bec71696289365"
+    },
+    {
+      "path": "source-shutdown-writing/changes.patch.gz",
+      "sha256": "2e19a1fa6ef0ec95d952c7ef125c8c7b7042bf988a206ea9a298a45bad2a21c3",
+      "decoded_sha256": "0fefb9cc9a55ba244bed2a416c7b727353bbe2b72c8a92ec2e47c54044845959"
+    },
+    {
+      "path": "source-shutdown-writing/source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "source-shutdown-writing/source/remote/source_shutdown_test.go.gz",
+      "sha256": "bd2a919e18d61559ff6a93718543855872ad6c8b0af6e22c08d0303f80336959",
+      "decoded_sha256": "5c5159255e6979c3d987cdd38bbe8ca61b14589fa1cb605a0b0b25a4b8caefa1"
+    },
+    {
+      "path": "source-shutdown-writing/source/remote/subscriber.go.gz",
+      "sha256": "409c5c3d6ad23e1eaaa118ff9e376b8e42f0bc2abf0e4d7f5f238037c5ee7b62",
+      "decoded_sha256": "d7ac3b88def18842f8d78b9f0f53f22a42ee508afd11e232e536ffc8cde5412b"
+    },
+    {
+      "path": "source-shutdown-writing/source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "source-shutdown-writing/source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "source-shutdown-writing/source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "source-shutdown-writing/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "ee517132f5039ce84a7e2fab4cf86ff4d5903a833b3dde99847b99d92bd08f14",
+      "decoded_sha256": "d515e7e6595d3eb475930d1d3b076c94af95aad6ddf29d8f91948f9e4be6052a"
+    },
+    {
+      "path": "source-shutdown-writing/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-writing/stdout.log.gz",
+      "sha256": "d2e43cc7d9a7144fa4b7c9f85687d4223335854f60fd5d00e38d98b2533b9cdc",
+      "decoded_sha256": "75c3228905426065b738b42d9d96e56a8cb1beff58dad2d9168a3b0da494613d"
+    },
+    {
+      "path": "source-shutdown-writing/verification.json.gz",
+      "sha256": "572041af6ea5b9928fa92d5a65e9edba41f3e7b7289369b31923921b19164354",
+      "decoded_sha256": "4397ef7150abaeb3c9c3ff03d47e03485c097490ff1cc713104c84fea042e7f4"
+    },
+    {
+      "path": "source-shutdown-packages/changes.patch.gz",
+      "sha256": "ed934ef58f47154ae3ac9ac441a838f56cfce99fea8277f6a4eb69c5e1b1fd42",
+      "decoded_sha256": "ad248182ea0b4fb702b6b8af06579d4d6b080be0cc41e7f6eec040590d2f5538"
+    },
+    {
+      "path": "source-shutdown-packages/source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "source-shutdown-packages/source/remote/source_shutdown_test.go.gz",
+      "sha256": "92c1b1aeb407c96f460b2e441d1544303c0ce6b083522e681fbdfa4bdaac495a",
+      "decoded_sha256": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820"
+    },
+    {
+      "path": "source-shutdown-packages/source/remote/subscriber.go.gz",
+      "sha256": "b0cc45737afd54a4935608a555ac1c6c9b39c6941efdb34905ba64ae4d77440e",
+      "decoded_sha256": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40"
+    },
+    {
+      "path": "source-shutdown-packages/source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "source-shutdown-packages/source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "source-shutdown-packages/source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "source-shutdown-packages/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "0d7bb4bce28e73f89f291418685ab972db08a6772f486307a1e97ee11d40715e",
+      "decoded_sha256": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+    },
+    {
+      "path": "source-shutdown-packages/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source-shutdown-packages/stdout.log.gz",
+      "sha256": "8ae4336c7e232db2efa1afb4b43c88f7eb240f60914481fdf76763beb8b9f6c6",
+      "decoded_sha256": "d5f9c6865200a07740c69a89f88f76922b0d660a93b3cdb78a6ab6d9d91a1754"
+    },
+    {
+      "path": "source-shutdown-packages/verification.json.gz",
+      "sha256": "0b1ab093e9dd3859b07b573d68527b6abd349ff59e6b8e294cd07442960d517b",
+      "decoded_sha256": "0d775624f191b90bf42ecd356ed9f9e933b65befacd2f100bde2732a90e6b07d"
+    },
+    {
+      "path": "lifecycle-packages/changes.patch.gz",
+      "sha256": "11cd6f0cb5deb08ba05417c7a821607883eea1cb64a3ab1c7cec7537aabfbf60",
+      "decoded_sha256": "ef69b6d23d7f733c8a510b87b732bde0c4ce7b940f4bd8267c9a78542d5c46af"
+    },
+    {
+      "path": "lifecycle-packages/source/internal/catalog/settings/cascade_lifecycle_test.go.gz",
+      "sha256": "f70680fc8e79772914d5f4909a30adf29dad6945a4e359bc248dc65fec40d819",
+      "decoded_sha256": "5384fc54682622980fee543ac4aeeba34b60e60d7df9a484510a9da4ab221013"
+    },
+    {
+      "path": "lifecycle-packages/source/internal/catalog/settings/composition.go.gz",
+      "sha256": "70ea9d68bc08465bd49bab2222ded9547f8b3ba62f2943f61875ecea7f79d633",
+      "decoded_sha256": "283882d2036cab8c9fc904734a1f405aa8a779ba5d590ec6efec26dcfe74026c"
+    },
+    {
+      "path": "lifecycle-packages/source/remote/source.go.gz",
+      "sha256": "3e4619593e65ab0c8ec8d613d6622a63aa38170f508692219e65c696efb2fa3a",
+      "decoded_sha256": "0bc4f9e66348b294d3ae8ffad41e9a92465e329e595abe7b2b78ab0aa393ed91"
+    },
+    {
+      "path": "lifecycle-packages/source/remote/source_startup_test.go.gz",
+      "sha256": "d17ac84c2f96ee9883f446ab900bd8bb130f2a4842c3de34be7ce0f28db9eecc",
+      "decoded_sha256": "09ef76196c8980d97fe6c206100fc6fac7c9a2358cffdd2cd413e3ba4976c661"
+    },
+    {
+      "path": "lifecycle-packages/source/remote/subscriber.go.gz",
+      "sha256": "ebd2a32e1ce20ff0dd22f6aa38f95fe295fd2ce017b5cb42850b0cc0154953f8",
+      "decoded_sha256": "a83aa93142e00c5caea89c6d5e35d6ae84e33d7d4d84bdc4ba8076ff047ca5b9"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/authority_retention.go.gz",
+      "sha256": "cf6dce7ff324717e25b1104fd5a745978fec4fe07f6af0da0721e14986f93758",
+      "decoded_sha256": "56b46188d219b8f2c7a2da148f6ba3e0bfcf46829becb2147f06bff96a873bb6"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/options.go.gz",
+      "sha256": "770a8afe5c01c56b6a4138a173e313872707a025d10e0dfc48c54453be82ef09",
+      "decoded_sha256": "bc2810096a04ff54033709f68f8b1169deb8c301fdfb62d3f1139716e77a1137"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/runtime.go.gz",
+      "sha256": "60d065ac48a35457aba79869f743094da15046667f237f6025b545106f7aa5c9",
+      "decoded_sha256": "3231195d548d01724f5b3895ff921ee1250aa6ce1983233f939f72abb9f2267c"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/source_lifecycle.go.gz",
+      "sha256": "44ff0a2987c1e8605db4b038337ea3deaf0c90b4bfb381cbbf4982c20ab34c73",
+      "decoded_sha256": "e4a2510cd6b0c751fb248182009d3e05543c44dcf6b268c50c909d48a62b5200"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "adce376b641b591db22a1eb08836aca9ee3e76caba1220c05037c396ca78b86a",
+      "decoded_sha256": "cc79f0a34aed2e90bf4db2a39432f340c346e6b03793458e093562ccfb72aff4"
+    },
+    {
+      "path": "lifecycle-packages/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lifecycle-packages/stdout.log.gz",
+      "sha256": "672cabbca6a183a0ded944cd787ca6ea948632980783e47c87cffd559fb03a83",
+      "decoded_sha256": "c8ce22e92795ab1da60e7118f30c58392d7ec6fdb7f322d22619b919d9eb4d93"
+    },
+    {
+      "path": "lifecycle-packages/verification.json.gz",
+      "sha256": "536473806cbdfde9e19637b8b4683e913440358486d0532c660d773df85ac443",
+      "decoded_sha256": "a2fa14c29b24b590546388bceb76223caccdf68c94926d2f8fe82907a8a88592"
+    },
+    {
+      "path": "committed-source/remote/source.go.gz",
+      "sha256": "eadd582d05e123f139fd9bbfacf010c35744a70161dd04f0ce764a085cf23538",
+      "decoded_sha256": "fad63802d86d924d4c684a0bb1591d81303578bfc6095888c0f9fb8ed86f5d5d"
+    },
+    {
+      "path": "committed-source/remote/source_shutdown_test.go.gz",
+      "sha256": "92c1b1aeb407c96f460b2e441d1544303c0ce6b083522e681fbdfa4bdaac495a",
+      "decoded_sha256": "59e99e66476092c294fb506c66e4b95d0df1c7a82e633911265e1002d87d1820"
+    },
+    {
+      "path": "committed-source/remote/subscriber.go.gz",
+      "sha256": "b0cc45737afd54a4935608a555ac1c6c9b39c6941efdb34905ba64ae4d77440e",
+      "decoded_sha256": "bbfe8548b23dd3d0b4fc164bd7c64550a861a30457786a4815bcb30dc59cae40"
+    },
+    {
+      "path": "committed-source/runtime/runtime.go.gz",
+      "sha256": "069d098464609d44b9ffa89eff7f6ac7c2b20c94e4abaf7c4c87205a6e4eb967",
+      "decoded_sha256": "7c98b7b1b0fdee93fec371204091e5eaaa25e64ac3e52f41a7d91a58a11e5bb6"
+    },
+    {
+      "path": "committed-source/runtime/shutdown.go.gz",
+      "sha256": "b03b98315ca545cac349c5b7364291aecf267b03f8a34841872649c342c83b9e",
+      "decoded_sha256": "91f9617f8c824279e4a18367f33b86c83bf6548086a39c88046b0e9f1d89143e"
+    },
+    {
+      "path": "committed-source/runtime/source_lifecycle.go.gz",
+      "sha256": "774835415d530d95c3077b37fcf855e953f34379f65a121b47568080582729f8",
+      "decoded_sha256": "dcd74a9ad6055c7245cf2e7fd9c8b327143e7ad04b83550df5692c38e440cde4"
+    },
+    {
+      "path": "committed-source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "0d7bb4bce28e73f89f291418685ab972db08a6772f486307a1e97ee11d40715e",
+      "decoded_sha256": "01beb239084e3c3ba6ffd457cdec3e1b716c0ed8f4014f328de331ef97f8243b"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "b08fac79c264bd276bdb920787f76309e3b7d4104ad2d94fa1e7e71a7bae3792",
+      "decoded_sha256": "1b8ded972dd0dfdde882d88b9e59b6d82a4c91428cae431180aa3ba9666d532c"
+    },
+    {
+      "path": "canonical-writing.log.gz",
+      "sha256": "39e9223c6e973a3860a98ebc206eff9e30dc74559824db1119746bb721bc42ad",
+      "decoded_sha256": "c85d728c25c77c3592c34dacafcc5332a65e4220c1a5527c64b831edb26cff78"
+    }
+  ],
+  "documentation_checks": {
+    "command": "make technical-writing-check",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-requirements",
+    "status": "passed",
+    "exit_code": 0,
+    "files": 1349,
+    "diagnostics": 0
+  }
+}

@@ -2377,5 +2377,13 @@ Caller-supplied sources remain caller-owned unless the caller selects the new op
 
 The [lifecycle proof](../../plans/proof/starport-production-catalog/csp5/cascade-lifecycle-2026-09-11/verification.json) records 27 passing focused race events and preserves the original failure.
 Canceled startup closes the constructed stream. A manual offline replacement can reopen the same runtime directory.
-Verify directory retention when a source-close timeout returns before its worker exits.
-The broad runtime package check remains active. Pins and retained-state recovery also remain open.
+
+The later timeout regression confirms that the runtime released its directory while a reconnect worker remained active.
+Checkpoint `52c84e28` replaces the owned-source close contract with `Shutdown(context.Context)`.
+
+The [shutdown proof](../../plans/proof/starport-production-catalog/csp5/source-shutdown-2026-09-11/verification.json) records 36 passing focused race events and 87 remote/settings events.
+Runtime cleanup retains the directory after its caller receives a timeout. Failed startup preserves its error and releases ownership only after cleanup.
+Standalone `Source.Close` remains bounded. Starport needs this coordinated lifecycle through CSP8.
+
+The broad runtime check remains active at earlier source `48a9a6e5`. It cannot qualify the timeout correction.
+Pins and retained-state recovery also remain open.

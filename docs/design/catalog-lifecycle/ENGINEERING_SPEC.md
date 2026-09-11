@@ -1206,7 +1206,13 @@ This partial implementation does not qualify the complete controls contract or a
 Local checkpoint `48a9a6e5` adds explicit source ownership, failed-startup cleanup, and initial-read cancellation.
 The [lifecycle proof](../../plans/proof/starport-production-catalog/csp5/cascade-lifecycle-2026-09-11/verification.json) records 27 passing focused race events.
 Starmap transfers constructed cascades through `WithOwnedSource`. A caller retains sources selected through `WithSource`.
-Source-close timeout ownership still needs verification. Pins and retained-state recovery remain open.
+
+Checkpoint `52c84e28` corrects source-close timeout ownership with `Shutdown(context.Context)`.
+The [shutdown proof](../../plans/proof/starport-production-catalog/csp5/source-shutdown-2026-09-11/verification.json) records 36 passing focused race events and complete remote/settings checks.
+
+Runtime cleanup retains the directory until the source worker exits. The caller's five-second close limit does not end cleanup.
+Standalone `Source.Close` keeps its configured timeout. Starport still needs the coordinated lifecycle through its module upgrade.
+Pins and retained-state recovery remain open.
 
 Existing `SOURCE_POLL_INTERVAL=0` stops periodic polling, but watcher events can
 still wake the source worker. Startup policy can also require a source read.

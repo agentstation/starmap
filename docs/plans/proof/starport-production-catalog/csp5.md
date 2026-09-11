@@ -3,7 +3,8 @@
 CSP5 remains in progress. The local implementation starts from Starmap `f9951ee6` on branch `codex/catalog-update-controls`.
 Its worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls`.
 
-Checkpoint `eeeba376` holds the local controls. Checkpoint `48a9a6e5` adds cascade lifecycle handling. It has no PR or merge. Starport remains at the merged CSP4 consumer source.
+Checkpoint `eeeba376` holds the local controls. Checkpoint `48a9a6e5` adds cascade lifecycle handling.
+Checkpoint `52c84e28` corrects source-close timeout ownership. No checkpoint has a PR or merge. Starport remains at the merged CSP4 consumer source.
 
 ## Current controls
 
@@ -64,9 +65,28 @@ Failed startup preserves source-close errors and releases the directory for a la
 ago and vet pass. The prose check passes before a test-only option-name correction that changes no prose.
 The full remote package passes 62 race events. The full settings package passes 24 race events. Neither package skips a test.
 
-The runtime package remains active in session `13494`. Its command is `go test -race -count=1 -timeout 30m -json ./runtime ./remote ./internal/catalog/settings`.
+The earlier runtime package remains active in session `13494`. Its source is `48a9a6e5`. Its command is `go test -race -count=1 -timeout 30m -json ./runtime ./remote ./internal/catalog/settings`.
 Read `.tmp/csp5-update-controls/lifecycle-packages/verification.json` and resume the existing session before starting another run.
 These focused and package results overlap. They do not complete any mapped CSP5 subcase.
+
+## Source-close timeout correction
+
+The [shutdown proof](csp5/source-shutdown-2026-09-11/verification.json) binds checkpoint `52c84e28` to exact commands, snapshots, and results.
+The regression stalls a real subscriber reconnect through an injected transport that delays cancellation.
+The runtime previously returned a close timeout and released its directory while that source worker remained active.
+
+`OwnedSource` now requires `Shutdown(context.Context)`. Runtime cleanup supplies a live context and retains directory ownership until the source joins.
+The caller still receives a typed timeout after five seconds. `Source.Close` keeps its bounded standalone behavior.
+Failed startup uses the same bounded cleanup. It preserves the original startup error and retains the directory through delayed shutdown.
+
+The corrected focused run passes 36 race events without failures or skips.
+It covers the stalled worker, context deadline, failed startup, lease release, late publication, and clock cleanup.
+Complete remote and settings packages pass 63 and 24 race events without failures or skips. These results overlap the focused run.
+ago and vet pass. The prose check precedes a nil-receiver guard and two test additions that change no source comments.
+
+The earlier broad run in session `13494` covers checkpoint `48a9a6e5` only.
+Its result cannot qualify the timeout correction. The proof preserves its separate source identity and current status.
+Starport still owns its cascade separately. CSP8 must adopt coordinated source shutdown before consumer qualification.
 
 ## Remaining work
 
@@ -74,9 +94,9 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Verify directory retention when an owned source reports a close timeout before its worker exits.
-The cooperative HTTP cancellation tests do not cover that case.
-Finish the active runtime package check before broadening verification.
+Inspect the existing earlier-source race session before starting another broad runtime run.
+Do not replace an observation timeout with a new test process.
+Continue generation pins and rollback under the task contract.
 
 Complete pin and rollback behavior without bypassing permission withdrawal.
 Complete owned-stage recovery, bounded history compaction, and ambiguous publication recovery.
