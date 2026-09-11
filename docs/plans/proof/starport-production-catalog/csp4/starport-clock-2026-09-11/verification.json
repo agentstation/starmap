@@ -595,6 +595,581 @@
       "path": "delivery-published-revision-probe.json.gz",
       "sha256": "2cc77116ddedf9bee8d25a4e6d687133e787074f29cece10914d357e61a8b0b0",
       "decoded_sha256": "cbbaef550a78aeb9b5bbf492af29f46d28859276a3c10ef550df993269116dff"
+    },
+    {
+      "path": "published-dependency.json.gz",
+      "sha256": "bc773a12d7b38cb26074e1e36d6476b1ca35e751ac4e611f94f7fda1a5d3289b",
+      "decoded_sha256": "6a6debccf1cd238232f62790d41da2d4baf05087f6f3931374fe67a60779603f"
+    },
+    {
+      "path": "published-verification.json.gz",
+      "sha256": "38c0069422df4789c90347b139188e9ef7df16699f2ba5da339457d363491abd",
+      "decoded_sha256": "5154632b789bf87b38cc976ec12a4cc31d539a2c89b3081c6d9917c4b31c3602"
+    },
+    {
+      "path": "published-run-checks.py.gz",
+      "sha256": "3ecf1747008ef46a8ce0880757cb4dd098b786bd550a4ad3fba886e571176f80",
+      "decoded_sha256": "d6a81252ce2b65fcdfbef1a7bffb77b3b05b9c0599649161fbfa905a7e6b6bfa"
+    },
+    {
+      "path": "published-run-checks-before-log-path-fix.py.raw.gz",
+      "sha256": "c7088b84562ce90f5a4f1e66d5f7b51c50d64e82945b3c45acf17da980b0d062",
+      "decoded_sha256": "c22f432aad589a2038de0796ebff03d6d67003a78928e9ca5c834ffc3144a162"
+    },
+    {
+      "path": "published-verification-before-log-path-fix.json.gz",
+      "sha256": "e1d1f91420e012b2d6b3cbad23003f73cb09b76797663ca57df8ef3814557bfc",
+      "decoded_sha256": "9605e961ac4e66f63f23ee8025f55211df8119a6d2b65dae47a9f91d1c6c6090"
+    },
+    {
+      "path": "published-01-verify-starmap-ownership.sh.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "decoded_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "published-02-verify-v1-architecture.sh.log.gz",
+      "sha256": "29311fcb758fa0d458655b0b85ee42bb10e1522cf161e5c0d5b67126312624c1",
+      "decoded_sha256": "261829f644b3925656f309dff1a745455b33d38fe7cdf2609225f8021a8991e0"
+    },
+    {
+      "path": "published-03-test-dependency-direction-verifier.sh.log.gz",
+      "sha256": "33c729e27eb33e08196e79f9590428e34f29bb411037d9d823d0a755b41dc926",
+      "decoded_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "path": "published-04-verify-dependency-direction.sh.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "published-05-verify-catalog-driven-providers.sh.log.gz",
+      "sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57",
+      "decoded_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "path": "published-06-verify-package-layout.sh.log.gz",
+      "sha256": "8f835bea46fe3d8bfff673a66d895f9c82c185b0b4127d2a7272bf9c20a6cde0",
+      "decoded_sha256": "e3c78218e52d5dbe522fd90ee94243b605aed54974f4c3169b6e163868d61a4e"
+    },
+    {
+      "path": "published-07-verify-readme-quickstart.sh.log.gz",
+      "sha256": "590e58248ac4493ca7bf0f5323d3fb399a7e4640bd622db8acd636497532c3f4",
+      "decoded_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    {
+      "path": "published-08-verify-v1-release.sh.log.gz",
+      "sha256": "e0ffa922a0e60d1f57f604679052119ac27586bb940535165b7a1f1c5da42d83",
+      "decoded_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    {
+      "path": "published-09-verify-release-workflow.sh.log.gz",
+      "sha256": "96bf8d6c38e5ac0572afbc7a8df353ac4d6a69cb294c7647ca5414e508709a53",
+      "decoded_sha256": "df43a433b0e2eacf0b82829fa989238b489484de7c8f1e18a4cbba228d81cdc9"
+    },
+    {
+      "path": "published-10-verify-developer-experience.sh.log.gz",
+      "sha256": "3d608c4e6e9ac08362dced268dd7dbb9f9c0f35ee62764112e6021b7f88d5263",
+      "decoded_sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5"
+    },
+    {
+      "path": "published-11-verify-doc-links.sh.log.gz",
+      "sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "decoded_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "path": "published-12-test-doc-link-verifier.sh.log.gz",
+      "sha256": "5917a4c6b3042bde9f5bb59ea1433ab5fddfe3daefe9e7f918198db3830fc9aa",
+      "decoded_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    {
+      "path": "published-13-verify-openrouter-parity.sh.log.gz",
+      "sha256": "1310b938dc434b2558b9f6cd4139ad9cdda706c10d20c82b5540f14a827e10f4",
+      "decoded_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "path": "published-14-verify-console-modernization.sh.log.gz",
+      "sha256": "f2412ad75efc942430b8de45a3f8f1b8eab6ac66bb66820a0066525f05699d01",
+      "decoded_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    {
+      "path": "published-15-verify-auth-onboarding.sh.log.gz",
+      "sha256": "947455903500d8627ced609e2b9075a2bb3ec8df5d16c76f1109211ca53d883c",
+      "decoded_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    {
+      "path": "published-16-verify-console-session-grants.sh.log.gz",
+      "sha256": "9e9a34f7885a1705e83c6b36627eaf138ad8ac6451f11e60bbf3cce65725c4c5",
+      "decoded_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    {
+      "path": "published-17-verify-model-modalities.sh.log.gz",
+      "sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1",
+      "decoded_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "path": "published-18-verify-files-api.sh.log.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "decoded_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "path": "published-19-verify-async-media-jobs.sh.log.gz",
+      "sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0",
+      "decoded_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "path": "published-20-verify-document-parser.sh.log.gz",
+      "sha256": "266af5aa2c0e5d7b5c4953d1f9cadcfdab7c4a60a1a9be85fcdf39048fe788da",
+      "decoded_sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7"
+    },
+    {
+      "path": "published-21-verify-reranking.sh.log.gz",
+      "sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29",
+      "decoded_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "path": "published-22-verify-catalog-performance.sh.log.gz",
+      "sha256": "06c429bbb540f43cfbe30b00008f47f24860ecc90dbb1a18bd3ffb879cb8b46a",
+      "decoded_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    {
+      "path": "published-23-verify-credential-sharing.sh.log.gz",
+      "sha256": "99ea064348720c3dc2d12e46c0768ccf3f95ff7287a7ff3769ee2cd77caf2b84",
+      "decoded_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    {
+      "path": "published-24-verify-enterprise-readiness.sh.log.gz",
+      "sha256": "095728a5bf92a10964b93dccfd9b67cab272c29c51e71b176c38bc40f98c217d",
+      "decoded_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    {
+      "path": "published-25-verify-console-polish.sh.log.gz",
+      "sha256": "68bb9095fdebb20cda82dd3f8b42eb209ba0bd9d4b37da08694d253f4333ef8d",
+      "decoded_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    {
+      "path": "published-26-verify-action-pins.sh.log.gz",
+      "sha256": "4b23c7f8802dff5e7684b8e940a7ea214487ea5dfb56e132d47873380e491349",
+      "decoded_sha256": "74fe1851e9e1c669f79b01ffc3b4ab7c662a13b54742b4e2000dfee22a19e0c8"
+    },
+    {
+      "path": "published-27-benchmark-overhead.sh.log.gz",
+      "sha256": "6234931e530e8bab7ab014919095aa59fbc44a057323f912161bd1b2811ca01d",
+      "decoded_sha256": "a1ced6c634abca51e775fd1933171ecb0673707e58e23fe603deec59e147645b"
+    },
+    {
+      "path": "published-28-smoke-first-run.sh.log.gz",
+      "sha256": "73aeca9385b2be30b5083c4aaa04a6a8abf540e3b94874f83a07d2f5c633257e",
+      "decoded_sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    {
+      "path": "published-29-go-test.log.gz",
+      "sha256": "eefbb84f2a1ef74b082c4cc4ff3c15b78ac68ee88385f64461a4505d8df85fe4",
+      "decoded_sha256": "9971397afc9e8fce592f9af23ac8745f4bd05aad05728ca8786108f93e27cb01"
+    },
+    {
+      "path": "published-30-go-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "published-31-make-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "published-32-make-build.log.gz",
+      "sha256": "8d88f8ffc92f866af05b37884023ab9a0086aea5b1435784778251317512b50e",
+      "decoded_sha256": "a536695efa0edbb4c620d9b9aafc8e99dd20aa1b2594ee7233430fa7f1298a22"
+    },
+    {
+      "path": "published-33-sdk-smoke.log.gz",
+      "sha256": "bb54cb72c34144550ed1ecccfc8945135e6b3bc2a52b71ce4d110fef47fb29f0",
+      "decoded_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585"
+    },
+    {
+      "path": "main-integration.json.gz",
+      "sha256": "2dcb076923e143d3aeb03c8282416ed08e6c53bc9b84b20fac372605596ffd63",
+      "decoded_sha256": "8425d882255900862a3e81a18d8e4cdc9ac5a36335adbb496544290dcfd5b7b0"
+    },
+    {
+      "path": "main-verification.json.gz",
+      "sha256": "5a5f61878e2c56672c4c935e662266ce214ad2503d0677c92a18c0b024d1d5df",
+      "decoded_sha256": "5a2f984dc8f896ae6104af657d3fd4fbf6ca435804fe038cb659a0837d5a60a0"
+    },
+    {
+      "path": "main-run-checks.py.gz",
+      "sha256": "7ae4e5d5f9e12921f181f4396d282661d7dff7770bc85c7583307e070952cca6",
+      "decoded_sha256": "65a99811289fc15db556b20bf616f354b30087df23f12bc0b5c0e37299fb4ac3"
+    },
+    {
+      "path": "main-01-benchmark-overhead.sh.log.gz",
+      "sha256": "0d01d182726ebc2042b7de763f60cc737f5da88c9efff8617ae66aed9dc57981",
+      "decoded_sha256": "b1eacbf35f0bbbf4e0af2780a810ccc05d9ecc5045f56999efec22ddfabbe655"
+    },
+    {
+      "path": "main-02-verify-starmap-ownership.sh.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "decoded_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "main-03-verify-v1-architecture.sh.log.gz",
+      "sha256": "29311fcb758fa0d458655b0b85ee42bb10e1522cf161e5c0d5b67126312624c1",
+      "decoded_sha256": "261829f644b3925656f309dff1a745455b33d38fe7cdf2609225f8021a8991e0"
+    },
+    {
+      "path": "main-04-test-dependency-direction-verifier.sh.log.gz",
+      "sha256": "33c729e27eb33e08196e79f9590428e34f29bb411037d9d823d0a755b41dc926",
+      "decoded_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "path": "main-05-verify-dependency-direction.sh.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "main-06-verify-catalog-driven-providers.sh.log.gz",
+      "sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57",
+      "decoded_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "path": "main-07-verify-package-layout.sh.log.gz",
+      "sha256": "0b2a3acbb41f2a65f375a9f1ff083cee0c66c685497b81d99435b4de8ca045bc",
+      "decoded_sha256": "3cf1e762927a6e139005f4affe2492d84dc88b3a223439754cd7709e19a18f39"
+    },
+    {
+      "path": "main-08-verify-readme-quickstart.sh.log.gz",
+      "sha256": "590e58248ac4493ca7bf0f5323d3fb399a7e4640bd622db8acd636497532c3f4",
+      "decoded_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    {
+      "path": "main-09-verify-v1-release.sh.log.gz",
+      "sha256": "e0ffa922a0e60d1f57f604679052119ac27586bb940535165b7a1f1c5da42d83",
+      "decoded_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    {
+      "path": "main-10-verify-release-workflow.sh.log.gz",
+      "sha256": "8087d70e993384fcd727ef2336631222b8c889ca0875aa4f4d5f4b664db98218",
+      "decoded_sha256": "b31587cb3ebe17601178d2ddbaaa552734e1238edb1306c438fabb66e01b196e"
+    },
+    {
+      "path": "main-11-verify-developer-experience.sh.log.gz",
+      "sha256": "3d608c4e6e9ac08362dced268dd7dbb9f9c0f35ee62764112e6021b7f88d5263",
+      "decoded_sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5"
+    },
+    {
+      "path": "main-12-verify-doc-links.sh.log.gz",
+      "sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "decoded_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "path": "main-13-test-doc-link-verifier.sh.log.gz",
+      "sha256": "5917a4c6b3042bde9f5bb59ea1433ab5fddfe3daefe9e7f918198db3830fc9aa",
+      "decoded_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    {
+      "path": "main-14-verify-openrouter-parity.sh.log.gz",
+      "sha256": "1310b938dc434b2558b9f6cd4139ad9cdda706c10d20c82b5540f14a827e10f4",
+      "decoded_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "path": "main-15-verify-console-modernization.sh.log.gz",
+      "sha256": "f2412ad75efc942430b8de45a3f8f1b8eab6ac66bb66820a0066525f05699d01",
+      "decoded_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    {
+      "path": "main-16-verify-auth-onboarding.sh.log.gz",
+      "sha256": "947455903500d8627ced609e2b9075a2bb3ec8df5d16c76f1109211ca53d883c",
+      "decoded_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    {
+      "path": "main-17-verify-console-session-grants.sh.log.gz",
+      "sha256": "9e9a34f7885a1705e83c6b36627eaf138ad8ac6451f11e60bbf3cce65725c4c5",
+      "decoded_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    {
+      "path": "main-18-verify-model-modalities.sh.log.gz",
+      "sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1",
+      "decoded_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "path": "main-19-verify-files-api.sh.log.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "decoded_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "path": "main-20-verify-async-media-jobs.sh.log.gz",
+      "sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0",
+      "decoded_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "path": "main-21-verify-document-parser.sh.log.gz",
+      "sha256": "266af5aa2c0e5d7b5c4953d1f9cadcfdab7c4a60a1a9be85fcdf39048fe788da",
+      "decoded_sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7"
+    },
+    {
+      "path": "main-22-verify-reranking.sh.log.gz",
+      "sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29",
+      "decoded_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "path": "main-23-verify-catalog-performance.sh.log.gz",
+      "sha256": "06c429bbb540f43cfbe30b00008f47f24860ecc90dbb1a18bd3ffb879cb8b46a",
+      "decoded_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    {
+      "path": "main-24-verify-credential-sharing.sh.log.gz",
+      "sha256": "99ea064348720c3dc2d12e46c0768ccf3f95ff7287a7ff3769ee2cd77caf2b84",
+      "decoded_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    {
+      "path": "main-25-verify-enterprise-readiness.sh.log.gz",
+      "sha256": "095728a5bf92a10964b93dccfd9b67cab272c29c51e71b176c38bc40f98c217d",
+      "decoded_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    {
+      "path": "main-26-verify-console-polish.sh.log.gz",
+      "sha256": "68bb9095fdebb20cda82dd3f8b42eb209ba0bd9d4b37da08694d253f4333ef8d",
+      "decoded_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    {
+      "path": "main-27-verify-action-pins.sh.log.gz",
+      "sha256": "4b23c7f8802dff5e7684b8e940a7ea214487ea5dfb56e132d47873380e491349",
+      "decoded_sha256": "74fe1851e9e1c669f79b01ffc3b4ab7c662a13b54742b4e2000dfee22a19e0c8"
+    },
+    {
+      "path": "main-28-smoke-first-run.sh.log.gz",
+      "sha256": "73aeca9385b2be30b5083c4aaa04a6a8abf540e3b94874f83a07d2f5c633257e",
+      "decoded_sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    {
+      "path": "main-29-go-test-._....log.gz",
+      "sha256": "0fba7f750b575fdcc43ba3482ab71ac985dfd9653b08caf828f5f1439ae9ccc2",
+      "decoded_sha256": "fe3f4bb33b0628345753e29253b352b1876bfccf387e798108f98a4be0354b67"
+    },
+    {
+      "path": "main-30-go-vet-._....log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "main-31-make-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "main-32-make-build.log.gz",
+      "sha256": "ac63a49e0f403036473355942366a5fd5498d4fa68d82c0b8a1e619ec93f6d60",
+      "decoded_sha256": "8f742ff805166aa46d5af47c4e4fd95b8dcfef5ee02bfd0a8d05ece88538829e"
+    },
+    {
+      "path": "main-33-smoke-openrouter-sdks.sh.log.gz",
+      "sha256": "bb54cb72c34144550ed1ecccfc8945135e6b3bc2a52b71ce4d110fef47fb29f0",
+      "decoded_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585"
+    },
+    {
+      "path": "final-main-integration.json.gz",
+      "sha256": "1bc0998831a6d139cadee1bc138c5406110534740d25b6a674ec532ddbc44e3e",
+      "decoded_sha256": "0e72a8e7508b59464c8b5b00682a71917125101a2030598721de0e73d5bc539f"
+    },
+    {
+      "path": "final-verification.json.gz",
+      "sha256": "194bfec8c6650f73b49833a0a13b47091150300b35f647256001d13aa47dff60",
+      "decoded_sha256": "2cbe8d99c81b65ad27521cdb2e65b9c13723b2dad0c1d47197e0d54eea5fb757"
+    },
+    {
+      "path": "final-01-benchmark-overhead.sh.log.gz",
+      "sha256": "0060f7130438d3dc2aa765ec52b379260f04dd89bb662b2f692253cd6d921b04",
+      "decoded_sha256": "abf3f0dcc3f1f116541c280eb472eb46b450d039550a807fdcb53044fa419c20"
+    },
+    {
+      "path": "final-02-verify-starmap-ownership.sh.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "decoded_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "final-03-verify-v1-architecture.sh.log.gz",
+      "sha256": "29311fcb758fa0d458655b0b85ee42bb10e1522cf161e5c0d5b67126312624c1",
+      "decoded_sha256": "261829f644b3925656f309dff1a745455b33d38fe7cdf2609225f8021a8991e0"
+    },
+    {
+      "path": "final-04-test-dependency-direction-verifier.sh.log.gz",
+      "sha256": "33c729e27eb33e08196e79f9590428e34f29bb411037d9d823d0a755b41dc926",
+      "decoded_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "path": "final-05-verify-dependency-direction.sh.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "final-06-verify-catalog-driven-providers.sh.log.gz",
+      "sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57",
+      "decoded_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "path": "final-07-verify-package-layout.sh.log.gz",
+      "sha256": "dd5b159f40919d207057d19a5002d69520d1de1ca81f96470ff9191a45ef153a",
+      "decoded_sha256": "613d74231a5a0add06d57d1f1099e6f4f572f7af3a5ae2641a82ea1cf0e6c59a"
+    },
+    {
+      "path": "final-08-verify-readme-quickstart.sh.log.gz",
+      "sha256": "590e58248ac4493ca7bf0f5323d3fb399a7e4640bd622db8acd636497532c3f4",
+      "decoded_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    {
+      "path": "final-09-verify-v1-release.sh.log.gz",
+      "sha256": "e0ffa922a0e60d1f57f604679052119ac27586bb940535165b7a1f1c5da42d83",
+      "decoded_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    {
+      "path": "final-10-verify-release-workflow.sh.log.gz",
+      "sha256": "72206fabc7025bd88d1d68d68222121a57c6db12af40119c43f29439dd15e77c",
+      "decoded_sha256": "90cd39eb08cbb69c24e6b17d1fd32b13cc3cdefc0cc60a2c0bcaeaad774bc557"
+    },
+    {
+      "path": "final-11-verify-developer-experience.sh.log.gz",
+      "sha256": "3d608c4e6e9ac08362dced268dd7dbb9f9c0f35ee62764112e6021b7f88d5263",
+      "decoded_sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5"
+    },
+    {
+      "path": "final-12-verify-doc-links.sh.log.gz",
+      "sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "decoded_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "path": "final-13-test-doc-link-verifier.sh.log.gz",
+      "sha256": "5917a4c6b3042bde9f5bb59ea1433ab5fddfe3daefe9e7f918198db3830fc9aa",
+      "decoded_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    {
+      "path": "final-14-verify-openrouter-parity.sh.log.gz",
+      "sha256": "1310b938dc434b2558b9f6cd4139ad9cdda706c10d20c82b5540f14a827e10f4",
+      "decoded_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "path": "final-15-verify-console-modernization.sh.log.gz",
+      "sha256": "f2412ad75efc942430b8de45a3f8f1b8eab6ac66bb66820a0066525f05699d01",
+      "decoded_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    {
+      "path": "final-16-verify-auth-onboarding.sh.log.gz",
+      "sha256": "947455903500d8627ced609e2b9075a2bb3ec8df5d16c76f1109211ca53d883c",
+      "decoded_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    {
+      "path": "final-17-verify-console-session-grants.sh.log.gz",
+      "sha256": "9e9a34f7885a1705e83c6b36627eaf138ad8ac6451f11e60bbf3cce65725c4c5",
+      "decoded_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    {
+      "path": "final-18-verify-model-modalities.sh.log.gz",
+      "sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1",
+      "decoded_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "path": "final-19-verify-files-api.sh.log.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "decoded_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "path": "final-20-verify-async-media-jobs.sh.log.gz",
+      "sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0",
+      "decoded_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "path": "final-21-verify-document-parser.sh.log.gz",
+      "sha256": "266af5aa2c0e5d7b5c4953d1f9cadcfdab7c4a60a1a9be85fcdf39048fe788da",
+      "decoded_sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7"
+    },
+    {
+      "path": "final-22-verify-reranking.sh.log.gz",
+      "sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29",
+      "decoded_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "path": "final-23-verify-catalog-performance.sh.log.gz",
+      "sha256": "06c429bbb540f43cfbe30b00008f47f24860ecc90dbb1a18bd3ffb879cb8b46a",
+      "decoded_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    {
+      "path": "final-24-verify-credential-sharing.sh.log.gz",
+      "sha256": "99ea064348720c3dc2d12e46c0768ccf3f95ff7287a7ff3769ee2cd77caf2b84",
+      "decoded_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    {
+      "path": "final-25-verify-enterprise-readiness.sh.log.gz",
+      "sha256": "095728a5bf92a10964b93dccfd9b67cab272c29c51e71b176c38bc40f98c217d",
+      "decoded_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    {
+      "path": "final-26-verify-console-polish.sh.log.gz",
+      "sha256": "68bb9095fdebb20cda82dd3f8b42eb209ba0bd9d4b37da08694d253f4333ef8d",
+      "decoded_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    {
+      "path": "final-27-verify-action-pins.sh.log.gz",
+      "sha256": "4b23c7f8802dff5e7684b8e940a7ea214487ea5dfb56e132d47873380e491349",
+      "decoded_sha256": "74fe1851e9e1c669f79b01ffc3b4ab7c662a13b54742b4e2000dfee22a19e0c8"
+    },
+    {
+      "path": "final-28-smoke-first-run.sh.log.gz",
+      "sha256": "73aeca9385b2be30b5083c4aaa04a6a8abf540e3b94874f83a07d2f5c633257e",
+      "decoded_sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    {
+      "path": "final-29-go-test-._....log.gz",
+      "sha256": "4268036961628d22ab1b347a4635a913a6a44ce4d2016c131128639736ea2132",
+      "decoded_sha256": "7970ec7a02ea7935e3c3bedd8ebd4b5ccb02aac617aa00d7a2d98f0ae75d4937"
+    },
+    {
+      "path": "final-30-go-vet-._....log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-31-make-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "final-32-make-build.log.gz",
+      "sha256": "b42ee46034ab83c3e7c9cd031960bb6d3f260d81fa77471c7156266349085a99",
+      "decoded_sha256": "58b0c3feaa28539012030211906af91949f4c0a1406cdbb4d5fcae3ca37c55fc"
+    },
+    {
+      "path": "final-33-smoke-openrouter-sdks.sh.log.gz",
+      "sha256": "bb54cb72c34144550ed1ecccfc8945135e6b3bc2a52b71ce4d110fef47fb29f0",
+      "decoded_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585"
+    },
+    {
+      "path": "final-review-command.json.gz",
+      "sha256": "6ed3a81a639d7a08f626f3cafaad833f2b8136252c7f26af75b724bd89e3cf46",
+      "decoded_sha256": "bc557702097db17b50163432767e283be89d9925993f1a7eb7c3b43f41ba1c99"
+    },
+    {
+      "path": "final-review.log.gz",
+      "sha256": "c84c265c8961051c0f753f9b0c62d138ba4c473cdc4487bb06195fcf8c257c8d",
+      "decoded_sha256": "2bb691c1b3e01368e05ec09c663aaca517bf01bbe7778cb65997d0eb04deb93a"
+    },
+    {
+      "path": "final-manual-review-context.json.gz",
+      "sha256": "b06261fc91ff08e0d96b2afaf36073e17aa0752da84ba8db6347a533da323e35",
+      "decoded_sha256": "6e9bb250aef8074e5fd7ae837cd1c870b16056494fce38c384a52f89d496b8aa"
+    },
+    {
+      "path": "final-pull-request.json.gz",
+      "sha256": "90ef1f47858bcc42060889973436ed0bcf0e58eaa73514cb212b3b6bd8e51b52",
+      "decoded_sha256": "9cda96384b04fae6994288548233b89034b082550551fcd08a097ad7740e52be"
+    },
+    {
+      "path": "final-review.md.gz",
+      "sha256": "610003a6c7efd973b68491e1dd9f2efe4d4e99347566f55101d19f7c42073577",
+      "decoded_sha256": "7bc08065ca632ca73087670d8d24c003f53b3ce75923aebf6b70f91fb57bba3c"
+    },
+    {
+      "path": "final-review.json.gz",
+      "sha256": "8039044a63882745383bd2a1d2332a33465e012e7db1fcf287741baa20ea371d",
+      "decoded_sha256": "477ed62e9a4ce3ef9c1e6b10f476bcb86ac7f6b8cd36decc7f80765418af9c5d"
     }
   ],
   "delivery_guard_followup": {
@@ -678,21 +1253,1067 @@
     "artifact": "delivery-catalog-contracts.json.gz",
     "limitation": "Cross-product ownership and catalog-driven contracts against the prepared source pair. Published dependency qualification remains open."
   },
-  "remaining_delivery_order": {
-    "status": "planned",
-    "publication_probe_artifact": "delivery-published-revision-probe.json.gz",
-    "probe_target_limitation": "The native-only commit proves module lookup before merge. Starport must instead pin the reviewed combined runtime after its publication.",
-    "repository_capabilities_observed": {
-      "isPrivate": false,
-      "mergeCommitAllowed": true
+  "remaining_delivery_order": [
+    "Complete the CSP4 task gate against the published pair.",
+    "Complete Starport pre-PR review and publication.",
+    "Complete combined Starmap CI and merge with a merge commit that preserves the pinned revision.",
+    "Merge Starport after required CI passes and Starmap merges."
+  ],
+  "published_dependency_followup": {
+    "source_commit": "a8708e03b99beff61ca341be5506f4159cd9eb9c",
+    "module": {
+      "Path": "github.com/agentstation/starmap",
+      "Version": "v0.16.6-0.20260911160903-6419ea856cf5",
+      "Info": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260911160903-6419ea856cf5.info",
+      "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260911160903-6419ea856cf5.mod",
+      "Zip": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260911160903-6419ea856cf5.zip",
+      "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911160903-6419ea856cf5",
+      "Sum": "h1:ZugiULs1xe328NNhE2BMiJnl7B8FBQ9l2gwxVYjMxBw=",
+      "GoModSum": "h1:KfTUU0WjvoGp8Mf3hG/g2wdF/vGcqfBh2+J9bjvHng0=",
+      "Origin": {
+        "VCS": "git",
+        "URL": "https://github.com/agentstation/starmap",
+        "Hash": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa"
+      }
     },
-    "sequence": [
-      "Complete native PR 151 and combined runtime verification.",
-      "Review and publish the combined Starmap runtime.",
-      "Resolve and pin that exact published runtime commit in Starport. Run final Starport checks and review while Starmap CI runs.",
-      "Merge the combined Starmap PR with a merge commit after its required checks pass. This retains the reviewed, pinned module commit in main history.",
-      "Merge the dependent Starport PR after its required checks pass and Starmap has merged."
+    "observed_at": "2026-09-11T18:06:34.492570+00:00",
+    "commands": [
+      [
+        "go",
+        "get",
+        "github.com/agentstation/starmap@6419ea856cf5c49cd3884a3ddd3000f57df5abfa"
+      ],
+      [
+        "go",
+        "mod",
+        "tidy"
+      ]
     ],
-    "limitation": "Neither publication nor merge is claimed complete. Native PR 151 retains its already enabled squash auto-merge."
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "files": [
+      {
+        "path": "go.mod",
+        "sha256": "7f7cf35a81671c25038cd2c0a2883cb16001de79e68b37e8b6fb3ba6f696a035"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "e4b0276808c3e00b81defb44b60f008d1dccb65398d75e1881f0e741511ba307"
+      }
+    ],
+    "limitation": "The runtime revision is published and reviewed. Native and combined implementation merges remain required."
+  },
+  "published_delivery_checks": {
+    "source_commit": "a8708e03b99beff61ca341be5506f4159cd9eb9c",
+    "source_tree": "1c239cd75df420291ae2f7d5ff543418c9054017",
+    "starmap_module": {
+      "Path": "github.com/agentstation/starmap",
+      "Version": "v0.16.6-0.20260911160903-6419ea856cf5",
+      "Time": "2026-09-11T16:09:03Z",
+      "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911160903-6419ea856cf5",
+      "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260911160903-6419ea856cf5.mod",
+      "GoVersion": "1.25.0",
+      "Sum": "h1:ZugiULs1xe328NNhE2BMiJnl7B8FBQ9l2gwxVYjMxBw=",
+      "GoModSum": "h1:KfTUU0WjvoGp8Mf3hG/g2wdF/vGcqfBh2+J9bjvHng0="
+    },
+    "started_at": "2026-09-11T18:04:50.366351+00:00",
+    "status": "passed",
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6",
+      "CATALOG_DRIVEN_STARMAP_ROOT": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911160903-6419ea856cf5",
+      "STARMAP_OWNERSHIP_STARMAP_ROOT": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911160903-6419ea856cf5",
+      "CSP_STARPORT_WORKTREE": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "CATALOG_DISTRIBUTION_STARPORT_ROOT": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "STARPORT_SMOKE_PORT": "53253"
+    },
+    "checks": [
+      {
+        "command": [
+          "bash",
+          "scripts/verify-starmap-ownership.sh"
+        ],
+        "started_at": "2026-09-11T18:04:50.366836+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/01-verify-starmap-ownership.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:05:59.561707+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-v1-architecture.sh"
+        ],
+        "started_at": "2026-09-11T18:05:59.562218+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/02-verify-v1-architecture.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:07:14.227817+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/test-dependency-direction-verifier.sh"
+        ],
+        "started_at": "2026-09-11T18:07:14.228872+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/03-test-dependency-direction-verifier.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:07:14.947942+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-dependency-direction.sh"
+        ],
+        "started_at": "2026-09-11T18:07:14.948350+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/04-verify-dependency-direction.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:07:15.541241+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-catalog-driven-providers.sh"
+        ],
+        "started_at": "2026-09-11T18:07:15.541712+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/05-verify-catalog-driven-providers.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:21.452334+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-package-layout.sh"
+        ],
+        "started_at": "2026-09-11T18:09:21.452889+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/06-verify-package-layout.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:27.957873+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-readme-quickstart.sh"
+        ],
+        "started_at": "2026-09-11T18:09:27.958319+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/07-verify-readme-quickstart.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:28.087300+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-v1-release.sh"
+        ],
+        "started_at": "2026-09-11T18:09:28.087674+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/08-verify-v1-release.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:28.164832+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-release-workflow.sh"
+        ],
+        "started_at": "2026-09-11T18:09:28.165304+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/09-verify-release-workflow.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:30.077788+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-developer-experience.sh"
+        ],
+        "started_at": "2026-09-11T18:09:30.078181+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/10-verify-developer-experience.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:30.372695+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-doc-links.sh"
+        ],
+        "started_at": "2026-09-11T18:09:30.373159+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/11-verify-doc-links.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:30.502277+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/test-doc-link-verifier.sh"
+        ],
+        "started_at": "2026-09-11T18:09:30.502798+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/12-test-doc-link-verifier.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:30.686166+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-openrouter-parity.sh"
+        ],
+        "started_at": "2026-09-11T18:09:30.686624+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/13-verify-openrouter-parity.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:30.813741+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-console-modernization.sh"
+        ],
+        "started_at": "2026-09-11T18:09:30.814154+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/14-verify-console-modernization.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:30.852473+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-auth-onboarding.sh"
+        ],
+        "started_at": "2026-09-11T18:09:30.852918+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/15-verify-auth-onboarding.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:30.928781+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-console-session-grants.sh"
+        ],
+        "started_at": "2026-09-11T18:09:30.929173+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/16-verify-console-session-grants.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:31.276335+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-model-modalities.sh"
+        ],
+        "started_at": "2026-09-11T18:09:31.276748+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/17-verify-model-modalities.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:31.517027+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-files-api.sh"
+        ],
+        "started_at": "2026-09-11T18:09:31.517466+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/18-verify-files-api.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:31.645742+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-async-media-jobs.sh"
+        ],
+        "started_at": "2026-09-11T18:09:31.646157+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/19-verify-async-media-jobs.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:31.774503+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-document-parser.sh"
+        ],
+        "started_at": "2026-09-11T18:09:31.774895+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/20-verify-document-parser.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:31.954143+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-reranking.sh"
+        ],
+        "started_at": "2026-09-11T18:09:31.954591+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/21-verify-reranking.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:32.299489+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-catalog-performance.sh"
+        ],
+        "started_at": "2026-09-11T18:09:32.299890+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/22-verify-catalog-performance.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:32.535532+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-credential-sharing.sh"
+        ],
+        "started_at": "2026-09-11T18:09:32.535952+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/23-verify-credential-sharing.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:32.769495+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-enterprise-readiness.sh"
+        ],
+        "started_at": "2026-09-11T18:09:32.770003+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/24-verify-enterprise-readiness.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:33.494401+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-console-polish.sh"
+        ],
+        "started_at": "2026-09-11T18:09:33.494846+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/25-verify-console-polish.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:33.682019+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-action-pins.sh"
+        ],
+        "started_at": "2026-09-11T18:09:33.682468+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/26-verify-action-pins.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:40.369608+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/benchmark-overhead.sh"
+        ],
+        "started_at": "2026-09-11T18:09:40.370059+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/27-benchmark-overhead.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:09:47.087846+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/smoke-first-run.sh"
+        ],
+        "started_at": "2026-09-11T18:09:47.088522+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/28-smoke-first-run.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:10:06.635233+00:00"
+      },
+      {
+        "command": [
+          "go",
+          "test",
+          "./..."
+        ],
+        "started_at": "2026-09-11T18:11:05.161186+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/29-go-test.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:11:11.967392+00:00"
+      },
+      {
+        "command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "started_at": "2026-09-11T18:11:11.967944+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/30-go-vet.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:11:13.722377+00:00"
+      },
+      {
+        "command": [
+          "make",
+          "lint"
+        ],
+        "started_at": "2026-09-11T18:11:13.723003+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/31-make-lint.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:11:27.062509+00:00"
+      },
+      {
+        "command": [
+          "make",
+          "build"
+        ],
+        "started_at": "2026-09-11T18:11:27.062995+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/32-make-build.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:11:38.693564+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/smoke-openrouter-sdks.sh"
+        ],
+        "started_at": "2026-09-11T18:11:38.693997+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-published/33-sdk-smoke.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:11:48.414197+00:00"
+      }
+    ],
+    "harness_interruption": {
+      "exit_code": 1,
+      "cause": "A command-derived log file name included the slash in ./..., so opening the log failed before go test started.",
+      "completed_commands": 28,
+      "remaining_commands": 5,
+      "observed_at": "2026-09-11T18:11:05.160328+00:00",
+      "tracked_source_changed": false
+    },
+    "finished_at": "2026-09-11T18:11:48.414640+00:00",
+    "summary": {
+      "commands": 33,
+      "passed": 33,
+      "failed": 0
+    },
+    "package_summary": {
+      "passed": 55,
+      "no_test_files": 7,
+      "test_event_counts": "Not emitted by the required go test ./... command."
+    },
+    "component_benchmark": {
+      "requests": 200,
+      "mock_upstream_delay_ms": 20,
+      "reported_p50_ms": 0,
+      "reported_p99_ms": 0,
+      "limitation": "Existing component timer with whole-millisecond reporting. This is not zero latency and does not qualify the full-path product target."
+    }
+  },
+  "main_integration": {
+    "before_commit": "a8708e03b99beff61ca341be5506f4159cd9eb9c",
+    "source_commit": "6a31720dd99902794c1c51079a1ac954e67172e0",
+    "main_commit": "72380b009485ab2871e39d2575dc9396ae5dbd09",
+    "source_tree": "aab6456b3d977c4dd3dde48a8167325e0b89e7e1",
+    "changed_files": [
+      ".dockerignore",
+      ".github/workflows/ci.yml",
+      ".github/workflows/native-release.yaml",
+      ".github/workflows/release.yaml",
+      ".goreleaser.yaml",
+      "Dockerfile",
+      "Makefile",
+      "README.md",
+      "scripts/audit-homebrew-cask.sh",
+      "scripts/build-console.sh",
+      "scripts/test-console-release.py",
+      "scripts/test-homebrew-audit.sh",
+      "scripts/test-homebrew-cask.sh",
+      "scripts/testdata/brew-audit-stub",
+      "scripts/testdata/starport-cask.rb.tmpl",
+      "scripts/verify-console-binary.py",
+      "scripts/verify-developer-experience.sh",
+      "scripts/verify-embedded-console.py",
+      "scripts/verify-homebrew-cask.sh",
+      "scripts/verify-native-release.py",
+      "scripts/verify-release-binaries.sh",
+      "scripts/verify-release-workflow.sh"
+    ],
+    "go_sources_and_modules_unchanged": true,
+    "integrated_at": "2026-09-11T18:23:55.832887+00:00",
+    "required_followup": "Repeat the current repository command roster and selected CSP4 gate before final review."
+  },
+  "main_integrated_checks": {
+    "source_commit": "6a31720dd99902794c1c51079a1ac954e67172e0",
+    "source_tree": "aab6456b3d977c4dd3dde48a8167325e0b89e7e1",
+    "starmap_module": {
+      "Path": "github.com/agentstation/starmap",
+      "Version": "v0.16.6-0.20260911160903-6419ea856cf5",
+      "Time": "2026-09-11T16:09:03Z",
+      "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911160903-6419ea856cf5",
+      "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260911160903-6419ea856cf5.mod",
+      "GoVersion": "1.25.0",
+      "Sum": "h1:ZugiULs1xe328NNhE2BMiJnl7B8FBQ9l2gwxVYjMxBw=",
+      "GoModSum": "h1:KfTUU0WjvoGp8Mf3hG/g2wdF/vGcqfBh2+J9bjvHng0="
+    },
+    "started_at": "2026-09-11T18:24:51.311565+00:00",
+    "status": "passed",
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6",
+      "CATALOG_DRIVEN_STARMAP_ROOT": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911160903-6419ea856cf5",
+      "STARMAP_OWNERSHIP_STARMAP_ROOT": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911160903-6419ea856cf5",
+      "CSP_STARPORT_WORKTREE": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "CATALOG_DISTRIBUTION_STARPORT_ROOT": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "STARPORT_SMOKE_PORT": "54210"
+    },
+    "checks": [
+      {
+        "command": [
+          "bash",
+          "scripts/benchmark-overhead.sh"
+        ],
+        "started_at": "2026-09-11T18:24:51.312103+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/01-benchmark-overhead.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:24:52.168525+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-starmap-ownership.sh"
+        ],
+        "started_at": "2026-09-11T18:24:52.168931+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/02-verify-starmap-ownership.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:25:58.054627+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-v1-architecture.sh"
+        ],
+        "started_at": "2026-09-11T18:25:58.055348+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/03-verify-v1-architecture.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:26:27.599318+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/test-dependency-direction-verifier.sh"
+        ],
+        "started_at": "2026-09-11T18:26:27.599713+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/04-test-dependency-direction-verifier.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:26:28.212004+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-dependency-direction.sh"
+        ],
+        "started_at": "2026-09-11T18:26:28.212389+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/05-verify-dependency-direction.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:26:28.847784+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-catalog-driven-providers.sh"
+        ],
+        "started_at": "2026-09-11T18:26:28.848304+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/06-verify-catalog-driven-providers.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:35.100584+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-package-layout.sh"
+        ],
+        "started_at": "2026-09-11T18:28:35.101411+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/07-verify-package-layout.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:41.529612+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-readme-quickstart.sh"
+        ],
+        "started_at": "2026-09-11T18:28:41.530063+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/08-verify-readme-quickstart.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:41.604237+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-v1-release.sh"
+        ],
+        "started_at": "2026-09-11T18:28:41.604698+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/09-verify-v1-release.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:41.678761+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-release-workflow.sh"
+        ],
+        "started_at": "2026-09-11T18:28:41.679245+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/10-verify-release-workflow.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:47.639195+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-developer-experience.sh"
+        ],
+        "started_at": "2026-09-11T18:28:47.639722+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/11-verify-developer-experience.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:47.983606+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-doc-links.sh"
+        ],
+        "started_at": "2026-09-11T18:28:47.984149+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/12-verify-doc-links.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:48.112306+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/test-doc-link-verifier.sh"
+        ],
+        "started_at": "2026-09-11T18:28:48.112798+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/13-test-doc-link-verifier.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:48.286920+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-openrouter-parity.sh"
+        ],
+        "started_at": "2026-09-11T18:28:48.287458+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/14-verify-openrouter-parity.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:48.419323+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-console-modernization.sh"
+        ],
+        "started_at": "2026-09-11T18:28:48.419871+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/15-verify-console-modernization.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:48.460911+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-auth-onboarding.sh"
+        ],
+        "started_at": "2026-09-11T18:28:48.461352+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/16-verify-auth-onboarding.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:48.533956+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-console-session-grants.sh"
+        ],
+        "started_at": "2026-09-11T18:28:48.534385+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/17-verify-console-session-grants.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:48.883594+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-model-modalities.sh"
+        ],
+        "started_at": "2026-09-11T18:28:48.884063+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/18-verify-model-modalities.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:49.128452+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-files-api.sh"
+        ],
+        "started_at": "2026-09-11T18:28:49.130496+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/19-verify-files-api.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:49.259915+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-async-media-jobs.sh"
+        ],
+        "started_at": "2026-09-11T18:28:49.260407+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/20-verify-async-media-jobs.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:49.393109+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-document-parser.sh"
+        ],
+        "started_at": "2026-09-11T18:28:49.393591+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/21-verify-document-parser.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:49.580303+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-reranking.sh"
+        ],
+        "started_at": "2026-09-11T18:28:49.580781+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/22-verify-reranking.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:50.042124+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-catalog-performance.sh"
+        ],
+        "started_at": "2026-09-11T18:28:50.042564+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/23-verify-catalog-performance.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:50.283588+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-credential-sharing.sh"
+        ],
+        "started_at": "2026-09-11T18:28:50.284034+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/24-verify-credential-sharing.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:50.470232+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-enterprise-readiness.sh"
+        ],
+        "started_at": "2026-09-11T18:28:50.470790+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/25-verify-enterprise-readiness.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:51.202616+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-console-polish.sh"
+        ],
+        "started_at": "2026-09-11T18:28:51.203115+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/26-verify-console-polish.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:51.391242+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-action-pins.sh"
+        ],
+        "started_at": "2026-09-11T18:28:51.391695+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/27-verify-action-pins.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:28:57.893690+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/smoke-first-run.sh"
+        ],
+        "started_at": "2026-09-11T18:28:57.894126+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/28-smoke-first-run.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:29:14.982598+00:00"
+      },
+      {
+        "command": [
+          "go",
+          "test",
+          "./..."
+        ],
+        "started_at": "2026-09-11T18:29:14.983232+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/29-go-test-._....log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:29:22.035672+00:00"
+      },
+      {
+        "command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "started_at": "2026-09-11T18:29:22.036369+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/30-go-vet-._....log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:29:22.963016+00:00"
+      },
+      {
+        "command": [
+          "make",
+          "lint"
+        ],
+        "started_at": "2026-09-11T18:29:22.963563+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/31-make-lint.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:29:25.714650+00:00"
+      },
+      {
+        "command": [
+          "make",
+          "build"
+        ],
+        "started_at": "2026-09-11T18:29:25.715123+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/32-make-build.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:29:38.038844+00:00"
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/smoke-openrouter-sdks.sh"
+        ],
+        "started_at": "2026-09-11T18:29:38.040855+00:00",
+        "status": "passed",
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-main/33-smoke-openrouter-sdks.sh.log",
+        "exit_code": 0,
+        "finished_at": "2026-09-11T18:29:48.100521+00:00"
+      }
+    ],
+    "finished_at": "2026-09-11T18:29:48.100986+00:00",
+    "summary": {
+      "commands": 33,
+      "passed": 33,
+      "failed": 0
+    },
+    "benchmark_order": "The unchanged required component benchmark ran first, before the CSP4 task gate.",
+    "component_benchmark_cached": true,
+    "qualification": "Current repository commands pass after main integration. Final task gate, review, publication, CI, and merge remain required."
+  },
+  "final_main_integration": {
+    "before_commit": "6a31720dd99902794c1c51079a1ac954e67172e0",
+    "source_commit": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+    "review_base": "5e437a2b512b41c5b1e639f6cae43ca4ca64048f",
+    "source_tree": "a0c779b3ede6673a7ba4cb3c8496f3fc6884ccfd",
+    "changed_files": [
+      "internal/app/app_test.go",
+      "internal/storage/open.go"
+    ],
+    "integrated_at": "2026-09-11T18:35:41.124941+00:00",
+    "reason": "PR 372 merged during the previous final checks. Its storage constructor now returns a nil interface on failure, avoiding cleanup panic.",
+    "required_followup": "Repeat the current repository roster and selected CSP4 gate before review against this immutable base."
+  },
+  "final_repository_checks": {
+    "status": "PASS",
+    "source_commit": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+    "source_tree": "a0c779b3ede6673a7ba4cb3c8496f3fc6884ccfd",
+    "commands": 33,
+    "completed_at": "2026-09-11T18:41:19.386808+00:00",
+    "evidence": "final-verification.json.gz",
+    "module": "v0.16.6-0.20260911160903-6419ea856cf5",
+    "go_work": "off",
+    "remaining": "Native CI, Starmap PR 152 merge, then Starport PR 373 merge."
+  },
+  "final_review": {
+    "source_commit": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+    "review_base": "5e437a2b512b41c5b1e639f6cae43ca4ca64048f",
+    "command": [
+      "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+      "--gate",
+      "pre-pr",
+      "--mode",
+      "auto",
+      "--base",
+      "5e437a2b512b41c5b1e639f6cae43ca4ca64048f",
+      "--reviewers",
+      "codex:gpt-5.6-sol:xhigh,claude:opus:high",
+      "--dataset",
+      ".tmp/csp4-starport-final/manual-review-context.json",
+      "--output",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-authority-final-review-p7ewuqyu/review.md",
+      "--json-output",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-authority-final-review-p7ewuqyu/review.json"
+    ],
+    "started_at": "2026-09-11T18:47:19.267796+00:00",
+    "status": "passed",
+    "output_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-authority-final-review-p7ewuqyu",
+    "exit_code": 0,
+    "finished_at": "2026-09-11T18:49:50.822709+00:00",
+    "verdict": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
+      "overall_confidence": 0.98
+    },
+    "secret_scan": "clean"
+  },
+  "final_pull_request": {
+    "baseRefOid": "5e437a2b512b41c5b1e639f6cae43ca4ca64048f",
+    "headRefOid": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+    "isDraft": false,
+    "mergeStateStatus": "BLOCKED",
+    "number": 373,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480259",
+        "name": "Lint",
+        "startedAt": "2026-09-11T18:50:48Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480313",
+        "name": "Test (ubuntu-latest)",
+        "startedAt": "2026-09-11T18:50:47Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480394",
+        "name": "Test (macos-latest)",
+        "startedAt": "2026-09-11T18:50:50Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480389",
+        "name": "Test (windows-latest)",
+        "startedAt": "2026-09-11T18:50:48Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480276",
+        "name": "Security Scan",
+        "startedAt": "2026-09-11T18:50:47Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480221",
+        "name": "Release Contract",
+        "startedAt": "2026-09-11T18:50:48Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480216",
+        "name": "OpenRouter SDK Compatibility",
+        "startedAt": "2026-09-11T18:50:48Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382480300",
+        "name": "Release Snapshot",
+        "startedAt": "2026-09-11T18:50:48Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:50:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starport/actions/runs/34635569656/job/103382479989",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-11T18:50:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      }
+    ],
+    "title": "Enforce catalog authority across Starport request admission",
+    "url": "https://github.com/agentstation/starport/pull/373"
   }
 }

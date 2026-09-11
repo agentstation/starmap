@@ -1094,6 +1094,36 @@
       "path": "plan-completed-checks-prose.log.gz",
       "sha256": "02851773df513e56c26b98c15fc182abab5441df1fbe9edf27329df7744101a8",
       "decoded_sha256": "534cf3fd432a4697262e58125b9e8b7cf21bbb4e6c36f8f2d89b8f88b2c2d3f8"
+    },
+    {
+      "path": "terminal-merged-pr.json.gz",
+      "sha256": "5b7d8efb73769f65aa92e9d4cb8e39096fc994945e48b71703bc083ca57946e9",
+      "decoded_sha256": "fc24ba8fe2fa1e1ae2fa7e8ec1d0d66ab8f48a8003027fadeb5146a84222a544"
+    },
+    {
+      "path": "terminal-completed-workflow.json.gz",
+      "sha256": "9d09e12ea6b9d218947ff2cd84bf1838fc644a62df337bfef9a5c0204e6408e7",
+      "decoded_sha256": "3d75b5a7410ee9981062f7b1540acc0e2ffc99f1a95d5bf692d161aa8f9e9e12"
+    },
+    {
+      "path": "terminal-completed-verification-job.log.gz",
+      "sha256": "b8b63fb63814aaf8c9b7c871887a5ae49f6de19beb6ed8a69ca37de0e3032b32",
+      "decoded_sha256": "1d0fd90af13a5227a80e54d1983a27a24c84a53d62b0e67ae0313320e5751b8c"
+    },
+    {
+      "path": "integrated-native-main-binding.json.gz",
+      "sha256": "f7ba4368f236e4db36365f4f5d4de22a459a1122ba1d040f14a2cdb8a8e7b85e",
+      "decoded_sha256": "7219e31fa45328d214fc669764f559c822c1a798f23c24600aff034d2e164fcf"
+    },
+    {
+      "path": "integrated-native-squash-merge-preview.log.gz",
+      "sha256": "f72b8b4446327e9ad43b6cef50f95fcff2d963a94ebf02c0020698ba6d52bfa1",
+      "decoded_sha256": "3ba8f825f2b9caad09f54731343acc151d865080e55c8ec481485d766ffa19f5"
+    },
+    {
+      "path": "integrated-native-main-merge.log.gz",
+      "sha256": "dc0d1fb7f57810b3fab404e8bc0b77f27f1db89929bad2cec4c6556cef036aee",
+      "decoded_sha256": "e1d81cfcefcdc98e8a5cf3eedaede63ddaaed8fd1187e06a315b0e378414b26f"
     }
   ],
   "repository_completion": {
@@ -1162,5 +1192,97 @@
     "files": 1337,
     "diagnostics": 0,
     "scope": "Plan and evidence prose only."
-  }
+  },
+  "merge": {
+    "commit": "76b91d349129c71b894b5f119b530181a41ea504",
+    "merged_at": "2026-09-11T18:10:42Z",
+    "tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+    "reviewed_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+    "checks_passed": 15,
+    "workflow_run": 34620963592
+  },
+  "native_workflow_snapshot": {
+    "databaseId": 34620963592,
+    "status": "completed",
+    "conclusion": "success",
+    "headSha": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34620963592",
+    "jobs": [
+      {
+        "name": "Verification Gate",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Constructor Network Passivity",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Security & Reliability",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime ubuntu-24.04",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Action Pin Provenance",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime macos-15",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Offline Server Persistence",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime windows-2025",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime ubuntu-24.04-arm",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime macos-15-intel",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime windows-11-arm",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "integrated_native_merge": {
+    "before_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+    "native_merge_commit": "76b91d349129c71b894b5f119b530181a41ea504",
+    "review_base": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+    "native_merge_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+    "review_base_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+    "tested_tree": "17d63e69b0c557679525f163f5299052713af203",
+    "merged_tree": "17d63e69b0c557679525f163f5299052713af203",
+    "source_tree_unchanged": true,
+    "review_base_tree_matches_main": true,
+    "native_already_in_reviewed_history": true,
+    "squash_merge_conflicts": [
+      "pkg/catalogs/permission/hostclock/README.md",
+      "pkg/catalogs/permission/hostclock/windows_observer.go"
+    ],
+    "resolution": "Preserved the reviewed branch versions because the native main tree exactly matches an ancestor already included in this branch. The resulting full tree equals the tested tree.",
+    "integrated_at": "2026-09-11T18:13:44.855525+00:00"
+  },
+  "current_status": "MERGED_NATIVE_DELIVERY"
 }

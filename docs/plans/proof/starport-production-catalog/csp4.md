@@ -3,15 +3,15 @@
 ## Current runtime integration
 
 The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-deliveries) separates merged work from the remaining CSP4 deliveries.
-Starmap PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
-CSP4 remains active because published dependency qualification, complete delivery verification, and merges remain open.
+Starmap PRs #146, #148, #149, #150, and #151 merged. Twenty-nine campaign PRs merged across nine completed tasks.
+CSP4 remains active because native CI and two implementation merges remain open.
 
 ### Portable query correction
 
 The [correction proof](csp4/windows-portable-entry-2026-09-11/verification.json) preserves the full verifier failure at `d1bb47e1`.
 Its complete race stage passes, but production lint reports seventeen unused portable RPC declarations.
 Native workflow `34609335965` fails on the same declarations after all six runtime jobs pass.
-PR #151 remains unmerged. The agent disabled its automatic merge before the correction.
+The agent disabled automatic merge for PR #151 before the correction.
 
 Commit `2b4aa1fe` keeps the existing QueryStatus entry in portable code and selects Windows authentication through a platform factory.
 Unsupported hosts close the supplied stream before sending RPC bytes. Portable wire tests remain enabled.
@@ -23,7 +23,8 @@ They record 11,704 passing test events and no failures. Four explicit skips rema
 Separate privileged checks pass the two Linux configuration cases. The two Windows skips are optional diagnostics. Both mandatory clock preflights pass 23 events.
 
 The CI merge checkout has the same tree as reviewed `2b4aa1fe`.
-The agent enabled automatic merge after every check except the repository Verification Gate passed. That gate still blocks the merge.
+The agent enabled automatic merge after every check except the repository Verification Gate passed.
+That final gate passed. PR #151 merged as `76b91d34` after all fifteen checks passed. Its tree equals reviewed `2b4aa1fe`.
 
 Combined source `6419ea85` passes all 41 repository stages across the original run and its continuation.
 The original verifier returned 2 after 34 passing stages because an ignored PR draft failed prose lint.
@@ -31,7 +32,26 @@ Correcting that draft changed no tracked source. The remaining seven original st
 
 The corrected source also passes all eight CSP4 subcases with 54 race events and no skips.
 The exact task race command passes 986 events: 901 runtime, 45 remote, and 40 artifact. No event fails or skips.
-The combined runtime and Starport still need review, publication, native CI, and merges.
+Both runtime reviewers report zero findings against native base `2b4aa1fe`. GitHub now serves reviewed runtime `6419ea85`.
+
+Integration commit `33118919` includes native main `76b91d34` and preserves the complete tested tree.
+Its two squash-merge conflicts retain the reviewed branch content. Both publication reviewers report zero findings.
+PR #152 runs native workflow `34632707283`.
+
+Starport `a8708e03` pins that public runtime and passes all 33 repository commands with `GOWORK=off`.
+The runner stopped before command 29 because its log path was invalid. The final five commands pass after that path correction.
+That published pair also passes all eight CSP4 subcases with 54 race events and no skips.
+The integrated proof records runtime review and PR #152.
+
+Starport integration `6a31720d` includes main `72380b00`, which adds the console-packaging fix across 22 files.
+Go sources and module files remain unchanged. Earlier checks used `a8708e03` without that main commit.
+All 33 repository commands and the eight-subcase CSP4 gate pass at `6a31720d`. The gate records 54 race events without skips.
+
+PR #372 merged during those checks. Final Starport `2a0246a7` includes its storage startup fix and uses immutable review base `5e437a2b`.
+All 33 final repository commands pass with the public module. The final pair passes all eight CSP4 subcases with 54 race events and no skips.
+
+Both Starport reviewers report zero findings, and the secret scan passes. PR #373 runs native CI in workflow `34635569656`.
+Starport CI and both remaining implementation merges stay open.
 
 ### Consumer checks and published dependency
 

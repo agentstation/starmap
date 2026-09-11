@@ -2330,10 +2330,21 @@ The [integrated task gate](../../plans/proof/starport-production-catalog/csp4/in
 It records 54 race events and no skips. The complete task race command also passes 986 events without failures or skips.
 
 The repository verifier later failed production lint. The [portable query correction](../../plans/proof/starport-production-catalog/csp4/windows-portable-entry-2026-09-11/verification.json) passes all six native jobs.
-Its 11,704 passing events include both Windows clock preflights. PR #151 waits for its repository gate.
+Its 11,704 passing events include both Windows clock preflights. PR #151 merged as `76b91d34` after fifteen passing checks.
 
 Combined source `6419ea85` passes all 41 repository stages across two invocations and all eight CSP4 subcases.
 The original verifier failed only an ignored PR draft prose check. The continuation passes the remaining stages without changing tracked source.
+
+Both runtime reviewers report zero findings. GitHub serves reviewed `6419ea85`, and Starport `a8708e03` pins that public module.
+Starport passes all 33 repository commands with `GOWORK=off`. Runtime integration `33118919` preserves the tested `6419ea85` tree.
+The published pair passes all eight CSP4 subcases with 54 race events. Both runtime publication reviewers report zero findings.
+
+All six native jobs pass for PR #152. Its final repository gate and merge remain open.
+Starport `2a0246a7` includes main `5e437a2b`, with the console-packaging and storage startup fixes.
+All 33 repository commands and eight task subcases pass.
+
+Both reviewers report zero findings. PR #373 awaits native CI and the Starmap merge.
+Starport publication and both remaining implementation merges remain required.
 This component evidence does not qualify the final released pair or complete CSP4 before its implementation merges.
 
 ## Real Valkey follow-up, 2026-09-11

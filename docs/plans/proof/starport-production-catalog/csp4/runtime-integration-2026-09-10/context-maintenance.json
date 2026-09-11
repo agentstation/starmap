@@ -5,19 +5,24 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 120,
-  "new_evidence_artifacts": 1493,
+  "local_links": 117,
+  "new_evidence_artifacts": 1677,
   "new_commit_source_files": 325,
-  "resume_words": 399,
-  "next_action": "Both explicit CSP4 commands pass at the previous source. The repository verifier and native CI failed production lint. Correction 2b4aa1fe passed required review and all six native jobs. PR 151 has automatic merge enabled and waits for the remaining repository gate in workflow 34620963592. All 41 repository stages pass across the original run and its continuation at combined source 6419ea85. The original invocation returned 2 for an ignored PR draft prose failure. The unchanged-source continuation returned 0. Eight CSP4 subcases pass with 54 race events. The exact task race command passes 986 events without failures or skips. Review and delivery remain open. After combined review and publication, pin that exact commit in Starport and run final checks during Starmap CI. Use a merge commit for the combined Starmap delivery to retain the pinned revision. Merge Starmap before Starport. Starport passes 22 preliminary guard commands, both catalog contract verifiers (12 ownership and 19 catalog-driven conditions), and 3049 full-suite Go test events with 39 skips against prepared source 6419ea85. Full vet, lint, first-run smoke, build, and SDK checks pass. Its package-layout command fails because the published Starmap pin lacks hostclock. Repeat after the dependency update. CSP11 owns fleet recovery and fencing.",
+  "resume_words": 272,
+  "next_action": "Starport 2a0246a7 includes main 5e437a2b and passes all 33 repository commands. The final task gate passes eight subcases and 54 race events. Both Starport reviewers pass with zero findings. PR 373 runs workflow 34635569656. Starmap PR 152 has six passing native jobs and automatic merge enabled for its final verification job. Merge Starmap before Starport. No owner decision remains.",
   "current_source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
   "starmap_integration_source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "external_running_checks": [
     {
-      "pull_request": 151,
-      "workflow_run": 34620963592,
-      "source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268"
+      "pull_request": 152,
+      "workflow_run": 34632707283,
+      "source": "33118919dc18e1f824ea618502f23b756e50813a"
+    },
+    {
+      "pull_request": 373,
+      "workflow_run": 34635569656,
+      "source": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d"
     }
   ]
 }

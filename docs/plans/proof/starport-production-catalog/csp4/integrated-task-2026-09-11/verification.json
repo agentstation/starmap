@@ -627,6 +627,321 @@
       "path": "corrected-task-race-summary.json.gz",
       "sha256": "8b63187446e54e7690aa9fcc13141578c87a0ac380a81b7808ac4374587377ba",
       "decoded_sha256": "881cb653fd69bc3c30f1d3e93074af171a4785ca963e99fbd9f27172d5d6b4f3"
+    },
+    {
+      "path": "runtime-review-command.json.gz",
+      "sha256": "8566c3f768a6c828a1a8e48ce80b3057c5407847e04784a2e5e143718fa41e76",
+      "decoded_sha256": "0f899597c127f017d6d7014856fe8ac0c24586aa3ca0e1bd1e99db29f64b79fd"
+    },
+    {
+      "path": "runtime-review.log.gz",
+      "sha256": "454d91d45300a20b43f82372a94a03d6a2d7bfe1be299febe582726a77a3ac78",
+      "decoded_sha256": "b6cc0b9f73a637e2f714f6f82c606999c91c22c4f0ca8dc767a7715f60994281"
+    },
+    {
+      "path": "runtime-review-command-before-path-fix.json.gz",
+      "sha256": "09d9e3267c07dec8ecdbb712254ffb8fe44d14dd52ea4eaa9970a32ea818b374",
+      "decoded_sha256": "64d03989b8d0a7c4bb14911b90546e9c1956c2e303f8d3a90893356a90634838"
+    },
+    {
+      "path": "runtime-review-before-path-fix.log.gz",
+      "sha256": "ca39bdc3bcd7d682860cb0ff043c6f9b75d12b953eeb02ee6fab4fa5994b5e7b",
+      "decoded_sha256": "e928edbfac57184007a85046cd693ced5b118764558b7cf178c68229fc7bd2b8"
+    },
+    {
+      "path": "runtime-manual-review-context.json.gz",
+      "sha256": "9139586345abe8fdd50a128cfb4722062ea44538e51a4e71605ae276d5ad6096",
+      "decoded_sha256": "5cf56c7eacff11196a74ea712df18441af032b73011908547188f898da97897d"
+    },
+    {
+      "path": "runtime-review-result.json.gz",
+      "sha256": "8039044a63882745383bd2a1d2332a33465e012e7db1fcf287741baa20ea371d",
+      "decoded_sha256": "477ed62e9a4ce3ef9c1e6b10f476bcb86ac7f6b8cd36decc7f80765418af9c5d"
+    },
+    {
+      "path": "runtime-review-result.md.raw.gz",
+      "sha256": "610003a6c7efd973b68491e1dd9f2efe4d4e99347566f55101d19f7c42073577",
+      "decoded_sha256": "7bc08065ca632ca73087670d8d24c003f53b3ce75923aebf6b70f91fb57bba3c"
+    },
+    {
+      "path": "runtime-publication-review-command.json.gz",
+      "sha256": "51e2c8be1fa8fa76bfa3f74b1d1be0219472ff29b70f05f782d30091812ba802",
+      "decoded_sha256": "6453d3ddda86430a648465839dbb268c58a6649f95665e9aa6474aa52c92fc06"
+    },
+    {
+      "path": "runtime-publication-review.log.gz",
+      "sha256": "44ddf6c742a9fd7fb774a01ba7fcf7d8c8db6a2b216d5ba603faf812d1b30aec",
+      "decoded_sha256": "ee393b00099d4483577807df10cf8b96844a8a463cf1343fe15cdef258e32d16"
+    },
+    {
+      "path": "runtime-pull-request.json.gz",
+      "sha256": "a8a389ce8676ba8f410c456f7c41ffd4c147546e5b84a1a4916a3587e9140e83",
+      "decoded_sha256": "86cbe43b1b7c75c423683c35996e21fa70f66b85b35320ec409f753d04b667af"
+    },
+    {
+      "path": "runtime-pull-request-checks.json.gz",
+      "sha256": "0f4a31cf86ea92c7b9f5aa7873f94edb9e8e19aa91853a3c8a1cc43d8b8238fa",
+      "decoded_sha256": "7f9fc0f25209dac57b260cce2ab1b6a949a049c5e286c9cd8615828d6db0c9e4"
+    },
+    {
+      "path": "runtime-native-main-binding.json.gz",
+      "sha256": "f7ba4368f236e4db36365f4f5d4de22a459a1122ba1d040f14a2cdb8a8e7b85e",
+      "decoded_sha256": "7219e31fa45328d214fc669764f559c822c1a798f23c24600aff034d2e164fcf"
+    },
+    {
+      "path": "runtime-publication-review-result.json.gz",
+      "sha256": "ef3e38ac2f2cb8c9f53e0c0ea443d9f79adfc0b9fc08b447c0790c4409ec1e6a",
+      "decoded_sha256": "9e12fa6e34280bc2152dfe6b777609f19861315a69061f21a1cc79cc9cb37741"
+    },
+    {
+      "path": "runtime-publication-review-result.md.raw.gz",
+      "sha256": "e2ab13c5c7c528bfd87e6804fa0c40891061a76379468ab9ea0b2f97d7a774a2",
+      "decoded_sha256": "8f7fe2b622c9d14de6e4a4477341df3d279a130279171b537a0643a5056a1cbc"
+    },
+    {
+      "path": "published-task-gate.meta.json.gz",
+      "sha256": "9d10ed706f87aea80d710428a260ad7b96b40ec4e945c01571d6831d7a78d446",
+      "decoded_sha256": "f010a0b2423261743328f023a196736fc6536207979fb8d0a0ff873c2ca504ba"
+    },
+    {
+      "path": "published-task-gate-report.json.gz",
+      "sha256": "229e681276bcb09970e0469e05a3e65ab1cb34c99f4b04c535613a40913b48ac",
+      "decoded_sha256": "1e42454e2941259dee923c264275480f4c4ad0eec05dc2586c0b507ecd7ea75b"
+    },
+    {
+      "path": "published-task-gate.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "published-task-gate-summary.json.gz",
+      "sha256": "fcd9d5043ef06853dbfa8627d6bf7bc4113e5c2491a6c95808f5107427769ff4",
+      "decoded_sha256": "41dedeb917265ab6c05fc277a0f998b58dd124fbc052de3c3a7281f0ce26738b"
+    },
+    {
+      "path": "main-pair-task-gate.meta.json.gz",
+      "sha256": "3c2e6a71040cd3066ba53357ef0d6140aa64865e15ed8cc273930d885c1d3ab2",
+      "decoded_sha256": "f5f04f23bba4d5cd541d7936c1a6c80ab3e28f8e9e071da372bf8f24ef4d7348"
+    },
+    {
+      "path": "main-pair-task-gate-report.json.gz",
+      "sha256": "dbd1ae0b143711c7522cc3e76773542f1197c7b9126b72791fb1d3e551719e18",
+      "decoded_sha256": "87393a53b63c722209ae7a1d713bef303dfdd0b89502bc0d13cb10119960f338"
+    },
+    {
+      "path": "main-pair-task-gate-summary.json.gz",
+      "sha256": "fcd9d5043ef06853dbfa8627d6bf7bc4113e5c2491a6c95808f5107427769ff4",
+      "decoded_sha256": "41dedeb917265ab6c05fc277a0f998b58dd124fbc052de3c3a7281f0ce26738b"
+    },
+    {
+      "path": "main-pair-task-gate.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15/git-acquisition.jsonl.gz",
+      "sha256": "a50f77e9f56af7ca1b39b747f34221bf55c4610c0d8296a533ebabcf1cc43afe",
+      "decoded_sha256": "9bf4050fa680ac160391b45f7881f5b00808f844c08e7f864cf2a6d412599a2e"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15/publisher-ingestion.jsonl.gz",
+      "sha256": "e4905beae6c0842a00542fb62c820fca66b7da892c0ef724bf7ebb4c91826789",
+      "decoded_sha256": "9e99fc89a21da1439ebf374736ffc743e38c752dc21b3783612e51b7f07361a3"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15/tests.jsonl.gz",
+      "sha256": "4923cdab42f1d9353eae34ea403a4891c927ee1de63f963dd037e0ee5dd402c4",
+      "decoded_sha256": "2806f5a77e910b58ab0d75c441b9d6cf2616923512aeb789c5a454bd0d3aaa94"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15/toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "decoded_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15-intel/git-acquisition.jsonl.gz",
+      "sha256": "371fd3375dd065fc41bcecf1dce103774403f1b89b0efcb4655a47c0812915da",
+      "decoded_sha256": "f914885d41387d4fe1ea63947ec06a3c59ede80cfe0a8e1649837b99db531d1f"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15-intel/publisher-ingestion.jsonl.gz",
+      "sha256": "69659635fc77c2c8d3d60c75a6add82d6e51cebc4c1fd3546b9f3cb6df314a28",
+      "decoded_sha256": "d981d81ac37668ac3c0f966b27c17fa0993d7376f4489029c135eb60df4029f8"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "sha256": "e0e2e692b1c2105a4e702c3c8e76f02947ec3fab8a4c787b74c4dfdadc95c2a0",
+      "decoded_sha256": "1827e776b31e002c6dbdb62421153700924e7e58a6506c0839c7595c9ad36c16"
+    },
+    {
+      "path": "runtime-native/native-runtime-macos-15-intel/toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04/git-acquisition.jsonl.gz",
+      "sha256": "776b5ccd3cfbbd439f5ee380aedf4e5277a7e3e9478aed426eba77079bc7fe1a",
+      "decoded_sha256": "b663682a6a85bd0a678f2a6c9b795eebc0a408b8aa1a53a2ccb428fd3fde803a"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04/publisher-ingestion.jsonl.gz",
+      "sha256": "2bec5f712652ecc26ec34bbc063f1df468af78a26ee26cae83c7255017a5c67a",
+      "decoded_sha256": "ecd7f282a35ddbc787a53cc3a816b42836c871c86c2920396e0e616f49dbf864"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04/service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "decoded_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "sha256": "a46083a57c7bde6a651a270ab4dee8624f761e10f562820667a9ddc4c2562b5f",
+      "decoded_sha256": "03fe3eb5d90d4a1087dcd3149e47ec337c91241a7c418c842ca0346dfc6c9c8a"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04/toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "decoded_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04-arm/git-acquisition.jsonl.gz",
+      "sha256": "cbe988fe26ea941a8c81736a2db3f89dfa9fbd41955612c953252844320aea3d",
+      "decoded_sha256": "b2ea641735bf6406f12d06080ffb7c76d62a707aeb1b99d90b68d0b3ed419e90"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "cd4dc6279b11b7c8561c0dfa8200d4455826ae5cc8ce87a9f17e0a9359156577",
+      "decoded_sha256": "c999d6532520777d06fa3183c5e6019a1409839b4356bcda995c852921c8ddd9"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04-arm/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256": "a6a690e65557c58ea098a788590712941e90640a4649106bea68e93dbaea2c9a",
+      "decoded_sha256": "0184c2b2c9a2e790a149f4b437dced4cf3adff8c057c1db532c53f54c2492d3d"
+    },
+    {
+      "path": "runtime-native/native-runtime-ubuntu-24.04-arm/toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "decoded_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/git-acquisition.jsonl.gz",
+      "sha256": "9dc12970d6a2e72df52d17023664429d8d274d5ed1800d6e231a0188f94bb725",
+      "decoded_sha256": "29a841e15a2d10cd2ead29a73b750a6f27bcc7c3098511c1b0a0fbf8f6715e95"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "d23c0af5b44af9e5558a41317809e1897a380f3182009bc12e9a69b615485f82",
+      "decoded_sha256": "34bedc163fea04ea62a181b633b5aa50a493c7cff13e1ca78ba4d1a36a7f7742"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "ed47dea5cb8e52a85924478b33ddf59e82f2ac813ed5450e8221fa1c719bb8e1",
+      "decoded_sha256": "4d07ce1c3873fe16e13b9791bece00ec53308e9790e79ca52872d30edb4f27af"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/windows-clock.jsonl.gz",
+      "sha256": "5f05ca5ae19ee56fb78b12c952953d007b8bfe7bf372a29b0c32496abfa74e8c",
+      "decoded_sha256": "3b3b70d9fcd678fea897d7309bd53b184d9b6929e82766aad085026f52e00c42"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/windows-time-access.json.gz",
+      "sha256": "56f77644e5857e18f7227db1c29f7d0a5e7fcb22da983e88e327939938c3f9f2",
+      "decoded_sha256": "30a8a2c16f5fe3cbc76bdac030a5e5d300010ecec784d5b1ee7a22b4b29a2df2"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/windows-time-service.json.gz",
+      "sha256": "42d11205e3308a6c44ccfc4838d96af8a8e02b56397fdf1858d8e07a348b65b4",
+      "decoded_sha256": "60bed02c3f633a0632cf479bb12a33319ea429700688b76d0465b487f1fccf1b"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-11-arm/windows-time-status.log.gz",
+      "sha256": "cfb1518ee1868a45cd164441e1a18c9588e84d7b3372cb2474959176d511e44e",
+      "decoded_sha256": "3805368eefb75f27ba4e7992b72df8cd10384c1909070a7a27cd9cf86bf89e05"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/git-acquisition.jsonl.gz",
+      "sha256": "6bd044ce50f0b9b566cc2aa59b4c95967b116b70e65793df1d42fded5c9b9c3a",
+      "decoded_sha256": "36664c49bcffea5687a734c318e9d55f2e29a9fe8d25cbcfcd3cae3ba05ca780"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/publisher-ingestion.jsonl.gz",
+      "sha256": "b865b5527b45c4b53423e39eabbb428fd9190ef7ff9397ca092817e5cd6e9e42",
+      "decoded_sha256": "e946f054d00288b5fae227f967d62f95b617e3ff529781a893c4e7cc67059199"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "eb7b7040111e9eb106d1ebd2a319548a9c00dedf4d445267c89190bb0ea8f9f4",
+      "decoded_sha256": "325ee390de1976ca8a66051c225ccc0ffadc22e80864885d92c33bfa357c6fa8"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/windows-clock.jsonl.gz",
+      "sha256": "038b5545b37073cb1a0abef8e3df7955c4a80d5dc663675e583a942b19e07b1b",
+      "decoded_sha256": "18910ac2af22c50d7434c3a1b432c42ba929872c0591a5f3e75b6e4bae904467"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/windows-time-access.json.gz",
+      "sha256": "01fb53aa1a38b2b630ed542beb27346abc36bd076703c8c58da41abc02c8c459",
+      "decoded_sha256": "5b77c1722899f306e8b9e48e03f9a58ad46edc46937cb82ccead8c3cf8b845c5"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/windows-time-service.json.gz",
+      "sha256": "ac9238a72c831134ff966b603a7128a5fe955fad04d5a4b499de289493fb7088",
+      "decoded_sha256": "950c92c2ea2355d0af7fd683b4e71aec0dd5709b1c6d157905843de2f108b3d7"
+    },
+    {
+      "path": "runtime-native/native-runtime-windows-2025/windows-time-status.log.gz",
+      "sha256": "02cdcf9934d6576d599e71da0b7acd6ec63edf8dde0ce7fe80a941cfc5ce2f86",
+      "decoded_sha256": "775090f42ede8effa20cb495ba23e2c1ce44d18c7cb5a4ab5edef54161780cc1"
+    },
+    {
+      "path": "final-pair-task-gate.meta.json.gz",
+      "sha256": "1d8fab6b535b08d71f4fced2570b9a02779bc0b19c70a4bca44e92edfae0cff0",
+      "decoded_sha256": "10ec0b2aee181dfd8304fa679f1e43575921395f349b7baeac46b537a34c8aa2"
+    },
+    {
+      "path": "final-pair-task-gate-report.json.gz",
+      "sha256": "f2047eeb08cc68ffc54b4d3ddabb120131ef678fb5408b24191720da31e6ce00",
+      "decoded_sha256": "06ad5ceacf3718c9b9f38307cbb480b0fbe46f8e5f4a43d47bf055662fb4ba93"
+    },
+    {
+      "path": "final-pair-task-gate-summary.json.gz",
+      "sha256": "fcd9d5043ef06853dbfa8627d6bf7bc4113e5c2491a6c95808f5107427769ff4",
+      "decoded_sha256": "41dedeb917265ab6c05fc277a0f998b58dd124fbc052de3c3a7281f0ce26738b"
+    },
+    {
+      "path": "final-pair-task-gate.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-pull-request-current.json.gz",
+      "sha256": "04776b488db5f29d11cd34bfebe11b9cca8ff33383b387b8ca34c00a821ca725",
+      "decoded_sha256": "116b07fc838ca7731f6e8e8f7223a9f682d7dfba61f65fd00f754b1a1a9c2b1b"
     }
   ],
   "corrected_source_rerun": {
@@ -713,5 +1028,665 @@
     },
     "limitation": "Temporary module workspace. Final published dependency qualification and implementation merges remain required."
   },
-  "current_status": "CORRECTED_SOURCE_REPOSITORY_AND_BOTH_TASK_COMMANDS_PASS_DELIVERY_PENDING"
+  "current_status": "FINAL_PAIR_TASK_AND_REPOSITORY_CHECKS_PASS_BOTH_REVIEWS_PASS_CI_AND_MERGES_PENDING",
+  "runtime_review": {
+    "metadata": {
+      "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+      "source_tree": "17d63e69b0c557679525f163f5299052713af203",
+      "review_base": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--base",
+        "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+        "--reviewers",
+        "codex:gpt-5.6-sol:xhigh,claude:opus:high",
+        "--dataset",
+        ".tmp/csp4-origin-integrated/manual-review-context.json",
+        "--output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-origin-final-review-4fsn6oa4/review.md",
+        "--json-output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-origin-final-review-4fsn6oa4/review.json"
+      ],
+      "context_sha256": "5cf56c7eacff11196a74ea712df18441af032b73011908547188f898da97897d",
+      "started_at": "2026-09-11T17:58:18.481968+00:00",
+      "status": "passed",
+      "output_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-origin-final-review-4fsn6oa4",
+      "exit_code": 0,
+      "finished_at": "2026-09-11T18:02:37.805811+00:00"
+    },
+    "result": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
+      "overall_confidence": 0.98
+    },
+    "bundle_bytes": 238903,
+    "secret_scan": "clean",
+    "passes": 1
+  },
+  "runtime_source_publication": {
+    "observed_at": "2026-09-11T18:07:20.080326+00:00",
+    "remote_branch": "codex/catalog-origin-settings",
+    "commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "pull_request": "not created",
+    "condition": "Native PR 151 must merge before combined PR publication. Verify its merged tree against review base 2b4aa1fe, integrate main without changing the tested runtime tree, and run the pre-PR helper with the same base and frozen context. The reviewed source revision is already public so Starport can finish dependency qualification."
+  },
+  "runtime_publication_review": {
+    "metadata": {
+      "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+      "review_base": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--base",
+        "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+        "--reviewers",
+        "codex:gpt-5.6-sol:xhigh,claude:opus:high",
+        "--dataset",
+        ".tmp/csp4-origin-integrated/manual-review-context.json",
+        "--output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-origin-final-review-4fsn6oa4/publication-review.md",
+        "--json-output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-origin-final-review-4fsn6oa4/publication-review.json"
+      ],
+      "started_at": "2026-09-11T18:14:12.112148+00:00",
+      "status": "passed",
+      "tree_binding": {
+        "before_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+        "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+        "native_merge_commit": "76b91d349129c71b894b5f119b530181a41ea504",
+        "review_base": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+        "native_merge_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+        "review_base_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+        "tested_tree": "17d63e69b0c557679525f163f5299052713af203",
+        "merged_tree": "17d63e69b0c557679525f163f5299052713af203",
+        "source_tree_unchanged": true,
+        "review_base_tree_matches_main": true,
+        "native_already_in_reviewed_history": true,
+        "squash_merge_conflicts": [
+          "pkg/catalogs/permission/hostclock/README.md",
+          "pkg/catalogs/permission/hostclock/windows_observer.go"
+        ],
+        "resolution": "Preserved the reviewed branch versions because the native main tree exactly matches an ancestor already included in this branch. The resulting full tree equals the tested tree.",
+        "integrated_at": "2026-09-11T18:13:44.855525+00:00"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T18:19:09.922229+00:00"
+    },
+    "result": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
+      "overall_confidence": 0.97
+    },
+    "bundle_bytes": 238903,
+    "review_cache_reused": false,
+    "scope": "The helper performed a fresh panel review after the native merge. Both reviewers report zero findings."
+  },
+  "runtime_pull_request": {
+    "baseRefOid": "76b91d349129c71b894b5f119b530181a41ea504",
+    "createdAt": "2026-09-11T18:20:20Z",
+    "headRefOid": "33118919dc18e1f824ea618502f23b756e50813a",
+    "isDraft": false,
+    "number": 152,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632705517/job/103373148742",
+        "name": "Analyze (actions)",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:01Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151626",
+        "name": "Constructor Network Passivity",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632705517/job/103373149031",
+        "name": "Analyze (go)",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632705517/job/103373148928",
+        "name": "Analyze (python)",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151775",
+        "name": "Offline Server Persistence",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151549",
+        "name": "Verification Gate",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151880",
+        "name": "Security & Reliability",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:20:41Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151591",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151732",
+        "name": "Runtime windows-2025",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151557",
+        "name": "Runtime windows-11-arm",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151568",
+        "name": "Runtime ubuntu-24.04",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151581",
+        "name": "Runtime ubuntu-24.04-arm",
+        "startedAt": "2026-09-11T18:20:31Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151681",
+        "name": "Runtime macos-15-intel",
+        "startedAt": "2026-09-11T18:20:28Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151688",
+        "name": "Runtime macos-15",
+        "startedAt": "2026-09-11T18:20:30Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:09Z",
+        "conclusion": "NEUTRAL",
+        "detailsUrl": "https://github.com/agentstation/starmap/runs/103373362814",
+        "name": "CodeQL",
+        "startedAt": "2026-09-11T18:21:06Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "Configure catalog authority origins and permission clock lifecycle",
+    "url": "https://github.com/agentstation/starmap/pull/152",
+    "observed_at": "2026-09-11T18:21:37.906666+00:00"
+  },
+  "runtime_native_integration": {
+    "before_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+    "native_merge_commit": "76b91d349129c71b894b5f119b530181a41ea504",
+    "review_base": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+    "native_merge_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+    "review_base_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+    "tested_tree": "17d63e69b0c557679525f163f5299052713af203",
+    "merged_tree": "17d63e69b0c557679525f163f5299052713af203",
+    "source_tree_unchanged": true,
+    "review_base_tree_matches_main": true,
+    "native_already_in_reviewed_history": true,
+    "squash_merge_conflicts": [
+      "pkg/catalogs/permission/hostclock/README.md",
+      "pkg/catalogs/permission/hostclock/windows_observer.go"
+    ],
+    "resolution": "Preserved the reviewed branch versions because the native main tree exactly matches an ancestor already included in this branch. The resulting full tree equals the tested tree.",
+    "integrated_at": "2026-09-11T18:13:44.855525+00:00"
+  },
+  "published_pair_task_gate": {
+    "metadata": {
+      "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+      "consumer_source_commit": "a8708e03b99beff61ca341be5506f4159cd9eb9c",
+      "command": [
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "--task",
+        "CSP4",
+        "--json"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "started_at": "2026-09-11T18:14:12.204459+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "finished_at": "2026-09-11T18:21:12.816691+00:00"
+    },
+    "summary": {
+      "selected_subcases": 8,
+      "gate_status": "PASS",
+      "qualification": "component checks only",
+      "unverified_cases": 49,
+      "test_events": {
+        "pass": 54
+      },
+      "subcases": {
+        "A07.public_no_provider_keys": "PASS",
+        "A07.invalid_signature": "PASS",
+        "A07.checksum_size_schema": "PASS",
+        "A07.replay_rejection": "PASS",
+        "A09.excluded_membership": "PASS",
+        "A10.cold_owner_refusal": "PASS",
+        "A10.warm_retained_authority": "PASS",
+        "A21.mixed_schema_permission_envelope": "PASS"
+      }
+    },
+    "limitation": "This source pair predates Starport main integration 6a31720d. Repeat the gate for that integration before review."
+  },
+  "current_task_gate": {
+    "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+    "consumer_source_commit": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+    "command": [
+      "bash",
+      "scripts/verify-catalog-product.sh",
+      "--starport-root",
+      "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "--task",
+      "CSP4",
+      "--json"
+    ],
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "started_at": "2026-09-11T18:39:38.484674+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "finished_at": "2026-09-11T18:46:22.786747+00:00",
+    "summary": {
+      "selected_subcases": 8,
+      "gate_status": "PASS",
+      "qualification": "component checks only",
+      "unverified_cases": 49,
+      "test_events": {
+        "pass": 54
+      },
+      "subcases": {
+        "A07.public_no_provider_keys": "PASS",
+        "A07.invalid_signature": "PASS",
+        "A07.checksum_size_schema": "PASS",
+        "A07.replay_rejection": "PASS",
+        "A09.excluded_membership": "PASS",
+        "A10.cold_owner_refusal": "PASS",
+        "A10.warm_retained_authority": "PASS",
+        "A21.mixed_schema_permission_envelope": "PASS"
+      }
+    }
+  },
+  "main_pair_task_gate": {
+    "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+    "consumer_source_commit": "6a31720dd99902794c1c51079a1ac954e67172e0",
+    "command": [
+      "bash",
+      "scripts/verify-catalog-product.sh",
+      "--starport-root",
+      "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "--task",
+      "CSP4",
+      "--json"
+    ],
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "started_at": "2026-09-11T18:25:07.991197+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "finished_at": "2026-09-11T18:31:59.083445+00:00",
+    "summary": {
+      "selected_subcases": 8,
+      "gate_status": "PASS",
+      "qualification": "component checks only",
+      "unverified_cases": 49,
+      "test_events": {
+        "pass": 54
+      },
+      "subcases": {
+        "A07.public_no_provider_keys": "PASS",
+        "A07.invalid_signature": "PASS",
+        "A07.checksum_size_schema": "PASS",
+        "A07.replay_rejection": "PASS",
+        "A09.excluded_membership": "PASS",
+        "A10.cold_owner_refusal": "PASS",
+        "A10.warm_retained_authority": "PASS",
+        "A21.mixed_schema_permission_envelope": "PASS"
+      }
+    }
+  },
+  "runtime_native_qualification": {
+    "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+    "workflow_run": 34632707283,
+    "jobs_passed": 6,
+    "test_events": {
+      "pass": 12210,
+      "skip": 8
+    },
+    "platforms": [
+      {
+        "runner": "macos-15",
+        "test_events": {
+          "pass": 2056,
+          "skip": 1
+        },
+        "skipped_tests": [
+          "TestWindowsMonitorFactoryRequiresSourceBounds"
+        ]
+      },
+      {
+        "runner": "macos-15-intel",
+        "test_events": {
+          "pass": 2056,
+          "skip": 1
+        },
+        "skipped_tests": [
+          "TestWindowsMonitorFactoryRequiresSourceBounds"
+        ]
+      },
+      {
+        "runner": "ubuntu-24.04",
+        "test_events": {
+          "pass": 2010,
+          "skip": 2
+        },
+        "skipped_tests": [
+          "TestServiceConfigurationAdministratorOwnedRead",
+          "TestWindowsMonitorFactoryRequiresSourceBounds"
+        ]
+      },
+      {
+        "runner": "ubuntu-24.04-arm",
+        "test_events": {
+          "pass": 2010,
+          "skip": 2
+        },
+        "skipped_tests": [
+          "TestServiceConfigurationAdministratorOwnedRead",
+          "TestWindowsMonitorFactoryRequiresSourceBounds"
+        ]
+      },
+      {
+        "runner": "windows-11-arm",
+        "test_events": {
+          "pass": 2039,
+          "skip": 1
+        },
+        "skipped_tests": [
+          "TestWindowsTimeServicePreparedPrivilege"
+        ]
+      },
+      {
+        "runner": "windows-2025",
+        "test_events": {
+          "pass": 2039,
+          "skip": 1
+        },
+        "skipped_tests": [
+          "TestWindowsTimeServicePreparedPrivilege"
+        ]
+      }
+    ],
+    "skips": "Four non-Windows hosts skip the Windows monitor factory. Two Linux service-owner cases pass in separate privileged runs. Two Windows optional diagnostics skip; mandatory clock preflights pass.",
+    "remaining": "Repository Verification Gate and actual merge.",
+    "automatic_merge": {
+      "enabled": true,
+      "method": "MERGE",
+      "head": "33118919dc18e1f824ea618502f23b756e50813a"
+    }
+  },
+  "runtime_pull_request_current": {
+    "autoMergeRequest": {
+      "authorEmail": null,
+      "commitBody": null,
+      "commitHeadline": null,
+      "mergeMethod": "MERGE",
+      "enabledAt": "2026-09-11T18:39:52Z",
+      "enabledBy": {
+        "id": "MDQ6VXNlcjU2ODc0MDY=",
+        "is_bot": false,
+        "login": "jackspirou",
+        "name": "Jack Spirou"
+      }
+    },
+    "baseRefOid": "76b91d349129c71b894b5f119b530181a41ea504",
+    "headRefOid": "33118919dc18e1f824ea618502f23b756e50813a",
+    "mergeCommit": null,
+    "number": 152,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632705517/job/103373148742",
+        "name": "Analyze (actions)",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:01Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151626",
+        "name": "Constructor Network Passivity",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:22:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632705517/job/103373149031",
+        "name": "Analyze (go)",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632705517/job/103373148928",
+        "name": "Analyze (python)",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:47Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151775",
+        "name": "Offline Server Persistence",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151549",
+        "name": "Verification Gate",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:22:48Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151880",
+        "name": "Security & Reliability",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:20:41Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151591",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:38:55Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151732",
+        "name": "Runtime windows-2025",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:35:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151557",
+        "name": "Runtime windows-11-arm",
+        "startedAt": "2026-09-11T18:20:26Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:29:32Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151568",
+        "name": "Runtime ubuntu-24.04",
+        "startedAt": "2026-09-11T18:20:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:27:39Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151581",
+        "name": "Runtime ubuntu-24.04-arm",
+        "startedAt": "2026-09-11T18:20:31Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:38:33Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151681",
+        "name": "Runtime macos-15-intel",
+        "startedAt": "2026-09-11T18:20:28Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:29:21Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34632707283/job/103373151688",
+        "name": "Runtime macos-15",
+        "startedAt": "2026-09-11T18:20:30Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T18:21:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/runs/103373362814",
+        "name": "CodeQL",
+        "startedAt": "2026-09-11T18:21:06Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "Configure catalog authority origins and permission clock lifecycle",
+    "url": "https://github.com/agentstation/starmap/pull/152"
+  }
 }
