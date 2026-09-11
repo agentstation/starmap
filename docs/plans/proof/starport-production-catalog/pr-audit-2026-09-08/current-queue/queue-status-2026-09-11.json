@@ -1,38 +1,180 @@
 {
-  "captured_at": "2026-09-11T03:18:45.200712+00:00",
+  "captured_at": "2026-09-11T04:30:58Z",
+  "scope": "Repository open PR inventory after PR149 merge",
   "repositories": {
-    "starmap": [
-      {
-        "baseRefName": "main",
-        "headRefName": "codex/catalog-public-acceptance",
-        "headRefOid": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
-        "isDraft": false,
-        "number": 149,
-        "title": "Fix provider documentation and qualify public catalog refresh",
-        "updatedAt": "2026-09-11T02:38:12Z"
-      }
-    ],
+    "starmap": [],
     "starport": []
   },
-  "current_pr": 149,
-  "head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
-  "base": "3273743274661a1f37402d124189980ad7f93060",
-  "required_reviews": "Sol and Opus PASS, 0 findings",
-  "unresolved_review_threads": 0,
-  "native_jobs": "6 PASS",
-  "pending": "Verification Gate",
-  "disposition": "Retain and automatically squash merge the reviewed head when branch protection passes.",
-  "owner": "Catalog plan executor",
-  "unpublished_work": [
-    {
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission",
-      "head": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
-      "next_action": "Integrate the actual PR149 merge and deliver the clock and consumer permission changes through the next PR. Required review passes at 20b1ee41.",
-      "source_changes": "Complete clock samples, cached clock evidence, consumer catalog admission, allocation-free checksum shape checks."
-    }
-  ],
-  "campaign_merged_prs": 26,
+  "campaign_merged_prs": 27,
   "tasks_done": 9,
-  "task_in_progress": "CSP4",
-  "merge_credit_added": false
+  "active_task": "CSP4",
+  "latest_merge": {
+    "baseRefOid": "3273743274661a1f37402d124189980ad7f93060",
+    "headRefOid": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+    "mergeCommit": {
+      "oid": "9ea36b3ea30713db512bccb2b76498a03556164c"
+    },
+    "mergedAt": "2026-09-11T04:30:58Z",
+    "number": 149,
+    "state": "MERGED",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:39:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555376888/job/103126844810",
+        "name": "Analyze (actions)",
+        "startedAt": "2026-09-11T02:38:16Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:39:11Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928528",
+        "name": "Constructor Network Passivity",
+        "startedAt": "2026-09-11T02:38:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:40:14Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555376888/job/103126844573",
+        "name": "Analyze (go)",
+        "startedAt": "2026-09-11T02:38:16Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:39:28Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555376888/job/103126844842",
+        "name": "Analyze (python)",
+        "startedAt": "2026-09-11T02:38:16Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:39:55Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928200",
+        "name": "Offline Server Persistence",
+        "startedAt": "2026-09-11T02:38:41Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T04:30:55Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928480",
+        "name": "Verification Gate",
+        "startedAt": "2026-09-11T02:39:19Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:39:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928578",
+        "name": "Security & Reliability",
+        "startedAt": "2026-09-11T02:38:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:38:54Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928781",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-11T02:38:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:55:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928504",
+        "name": "Runtime windows-2025",
+        "startedAt": "2026-09-11T02:38:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:52:03Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928661",
+        "name": "Runtime windows-11-arm",
+        "startedAt": "2026-09-11T02:38:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:46:29Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928646",
+        "name": "Runtime ubuntu-24.04",
+        "startedAt": "2026-09-11T02:38:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:43:56Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928729",
+        "name": "Runtime ubuntu-24.04-arm",
+        "startedAt": "2026-09-11T02:38:44Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:49:13Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928430",
+        "name": "Runtime macos-15-intel",
+        "startedAt": "2026-09-11T02:38:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:45:50Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34555379753/job/103126928461",
+        "name": "Runtime macos-15",
+        "startedAt": "2026-09-11T02:38:47Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T02:39:02Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/runs/103126990439",
+        "name": "CodeQL",
+        "startedAt": "2026-09-11T02:38:59Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "Fix provider documentation and qualify public catalog refresh"
+  },
+  "next_delivery": {
+    "starmap": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "starport": "c505a0944b2a5ef83a4273adf12b0f02f0f5145f",
+    "owner": "Catalog plan executor",
+    "action": "Complete Starmap verification and review before publication. Continue Starport request admission against that dependency."
+  }
 }

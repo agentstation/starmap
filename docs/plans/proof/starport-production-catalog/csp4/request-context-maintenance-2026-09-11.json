@@ -1,0 +1,18 @@
+{
+  "scope": "Plan maintenance only. No product acceptance credit.",
+  "before_bytes": 124487,
+  "after_bytes": 104500,
+  "moved_entries": 40,
+  "retained_entries": 9,
+  "moved_sha256": "0ccb066e8d57a9db469bf57d39bf96e6837f0154fd874d6fce5dfc410e418cd1",
+  "archive": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-11-0500.html",
+  "row_bytes_equal": true,
+  "budget_exception": "The plan retains all 38 task contracts and release criteria. Read current resume, ledger, invariants, goal, and active CSP4 criteria. Open linked evidence for a named verification question. Historical entries do not own current instructions.",
+  "cold_resume": {
+    "active_task": "CSP4",
+    "source": "Starmap e3943c97 and Starport 52970f7",
+    "next_action": "Finish combined Starmap verification and required review. Publish, qualify, and merge in dependency order.",
+    "authority": "Reviewed commits, PRs, native CI, and merges are authorized. Releases and hosted publication need separate approval. D27 through D30 remain accepted.",
+    "remaining": "Native clocks, configured permission composition, followers, explicit authority transitions, published stable dependency, and four Starport consumer cases. No task completion credit."
+  }
+}

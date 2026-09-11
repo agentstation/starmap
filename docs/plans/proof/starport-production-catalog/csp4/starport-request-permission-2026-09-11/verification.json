@@ -1,0 +1,324 @@
+{
+  "task": "CSP4",
+  "status": "PASS_local_request_permission",
+  "source_commit": "52970f7f2f9cbf7f6e68f62e221328ed68ccc343",
+  "base": "c505a0944b2a5ef83a4273adf12b0f02f0f5145f",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "starmap_source": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+  "workspace": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-authority-consumer/go.work",
+  "source_files": [
+    {
+      "path": "internal/catalog/attempt_permission.go",
+      "sha256": "f11103097eee3ffb3974d23c4e3440a3a617963edd6a70eedc9e0d0ec7ed11b7"
+    },
+    {
+      "path": "internal/catalog/attempt_permission_test.go",
+      "sha256": "927f726dac257d84d5cd90002ce159e5c57b4c105c66410b1d62c73115b658e5"
+    },
+    {
+      "path": "internal/failure/failure.go",
+      "sha256": "4d697f5b6c78b0c1b66e537fa2b4f2ed0dcced6c77a737182e83691452e1addb"
+    },
+    {
+      "path": "internal/proxy/cache.go",
+      "sha256": "782b97c71572f65e978ad59bdd2007427a2628ff2c018d744f83584b01bff804"
+    },
+    {
+      "path": "internal/proxy/catalog_permission_test.go",
+      "sha256": "421918b403bd54eb32810d9df83d2762762f22cc8e3745060087403c3727b8d0"
+    },
+    {
+      "path": "internal/router/catalog_permission_test.go",
+      "sha256": "4fff340a77418893be8bf88c6037a594745ecaed1c1081a44ec7be874bfa71fd"
+    },
+    {
+      "path": "internal/router/execution_adapter.go",
+      "sha256": "44e0ce4802bb2626ce1685d198241dd45c5548fba081a7f320746998ef9b6a7f"
+    },
+    {
+      "path": "internal/router/planner_adapter.go",
+      "sha256": "0b0cc77a46fd0f31c57a641b6edd784e39606616d92f76a4a28264e6f71176e2"
+    },
+    {
+      "path": "internal/server/controllers/base.go",
+      "sha256": "b2618392c3edd64f17aac4dcb8a3d8eca83078eb1bc6d8f519110b9bc2764c35"
+    },
+    {
+      "path": "internal/server/controllers/catalog_permission_error_test.go",
+      "sha256": "4e993b626a5805bf9b3836ac066948b71e8f6efa639a6f8e38cb2d5b75de5313"
+    },
+    {
+      "path": "internal/server/controllers/chat.go",
+      "sha256": "76d5d9f313f98ecd55ba586d2ad682c655af688632f01aedf5072cc8fa715193"
+    },
+    {
+      "path": "internal/server/controllers/chat_test.go",
+      "sha256": "dd8d9d5d8476b84775669825e2e981af2edee13300ae457a450e1ac6bc42f714"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "request-permission-red.jsonl.gz",
+      "sha256": "3ff44f130bd1c6b1786b907d526b1385fd6420a46df52faf7453d24f85c0cdf6",
+      "decoded_sha256": "c79a75e552e1e644cc8a3300d484c038f2019d3fdf43b1f5e46f05cf9fd58303",
+      "decoded_bytes": 37569
+    },
+    {
+      "path": "request-permission-green.jsonl.gz",
+      "sha256": "ab6f47f1efb6a32939a19b56bdce4800c666e21235113486fabfe67d992a2d1a",
+      "decoded_sha256": "0bc2fa8176967b22914a47e242563e34cc4d671bf3e0daac9dc2a6b10a430fc9",
+      "decoded_bytes": 6009
+    },
+    {
+      "path": "request-permission-green-corrected.jsonl.gz",
+      "sha256": "2b2e97958e645c74fa70c9e2eba126f0e3fe728decf4446a23aa75234cf9409e",
+      "decoded_sha256": "a6cb7b17dbd67a2d60dd826f0edbc946b169f23111a94e6b260f4b9ec094a7bb",
+      "decoded_bytes": 19874
+    },
+    {
+      "path": "request-permission-expanded.jsonl.gz",
+      "sha256": "0bda6b882cf5c9488e9c1faecaae70694000dd8ea657b9a9697e3bc9ac4eee51",
+      "decoded_sha256": "cf4ea0f15dd6650e362df58321efeb4df92146cb12fbb8432836795abe82e82a",
+      "decoded_bytes": 31436
+    },
+    {
+      "path": "request-permission-stream-header-red.jsonl.gz",
+      "sha256": "671adddf5afcff92bd7def495dcaad633afdc4cf162668201300685a90d6975d",
+      "decoded_sha256": "32e805080a950d428783d9e8723c4a16db685552e150ee4983c6f27a38171967",
+      "decoded_bytes": 7609
+    },
+    {
+      "path": "request-permission-final-focused.jsonl.gz",
+      "sha256": "05876a98b23e60058b0286f2826ee272de86c3295f36826a3c81daf5bff3a31b",
+      "decoded_sha256": "b8b4a713003d2b0cd26a9a214ba981a072037ed8c75cf0ffd5ec312fb182dff0",
+      "decoded_bytes": 37186
+    },
+    {
+      "path": "request-permission-packages.jsonl.gz",
+      "sha256": "70abd40c443b8a288f3d2476bd677b623a94e8f8765651387efbf7dde2b0edeb",
+      "decoded_sha256": "d728de65caf65403e49a918939c6eeb2a88a7d0604647dbf8b3e0e3826624f19",
+      "decoded_bytes": 804027
+    },
+    {
+      "path": "request-permission-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "request-permission-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "decoded_bytes": 40
+    },
+    {
+      "path": "request-permission-direction.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027",
+      "decoded_bytes": 380
+    },
+    {
+      "path": "request-permission-prose.log.gz",
+      "sha256": "13da405e0e5a60f667200b8660e5e629c1ec90f689581bcabb3df1e8a354e647",
+      "decoded_sha256": "f75a88abc20cdda9bea338439fceb113a4b36ed0a8d030f998a1eb600a9b7c4a",
+      "decoded_bytes": 6052
+    },
+    {
+      "path": "request-permission-full-prose.json.gz",
+      "sha256": "bd2d1816c155f7c8a1f2b1d0b3765a569887738529fd2ecae8fffc666a466abc",
+      "decoded_sha256": "6884b4bcd32f462948054838181ffbebb7943ae0aecc59f257d90ee2ac981072",
+      "decoded_bytes": 17456
+    },
+    {
+      "path": "request-permission-baseline-prose.json.gz",
+      "sha256": "f660aedef3ae3cceb676f8ef9e5136d6fde89229fb6ea5591e65a19450b5a26d",
+      "decoded_sha256": "0fd2928b5f10d1bc1b12784bccc9e80e70c0fef6e67ddb9c97c52eef7040ff36",
+      "decoded_bytes": 18735
+    },
+    {
+      "path": "request-permission-new-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "decoded_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "decoded_bytes": 33
+    },
+    {
+      "path": "request-permission-prose-comparison.json.gz",
+      "sha256": "6c979c14d7c735c37b3b30ae12efe21f4cf568f77782c71f08d3cd2e6d39ecb2",
+      "decoded_sha256": "7ff3b6a398a8cded01a700900889adccaec9e9b0c485d8bc6cc371947f883658",
+      "decoded_bytes": 265
+    },
+    {
+      "path": "request-new-comments.md.gz",
+      "sha256": "f66a515b4fd3db98b9c3eb696627e7a09c6adea4bc59c90cb83696281a75f6d7",
+      "decoded_sha256": "1106f68948cfeea5d4ec8e877f82d3d0765d13dd7c2c00c9d70ed662ac2f303f",
+      "decoded_bytes": 338
+    },
+    {
+      "path": "go.work.gz",
+      "sha256": "18732256c1a4dff256cf27b36019c323106a25c5af460b234c00b130a46c9f02",
+      "decoded_sha256": "3bd83f42c605a1735bb0bc9cdd2b991cc8d335067a5ecd0feab8fed35bc1b874",
+      "decoded_bytes": 174
+    },
+    {
+      "path": "request-red-internal_router_catalog_permission_test.go.gz",
+      "sha256": "41f84b29732950def18feeeccb7650e2da4dd943baadc306ce32bf9b3e0d3695",
+      "decoded_sha256": "68dd77e2269acf0ad9675a369f37950ef3ce77588bd78e43dfc077873e0c35ae",
+      "decoded_bytes": 3641
+    },
+    {
+      "path": "request-red-internal_proxy_catalog_permission_test.go.gz",
+      "sha256": "cd8e57d50712c753802c666dfbec268ce6da702846ed95cf9ab0c8fc73b9426a",
+      "decoded_sha256": "e1e199fcf724acb69019f2a96c4b292e3d72c50386a510d907ef6fe6494f140b",
+      "decoded_bytes": 3114
+    },
+    {
+      "path": "request-red-internal_server_controllers_catalog_permission_error_test.go.gz",
+      "sha256": "f91e8da636683966b6bddbf1420d799f985cfbe57beff14b19b1006b960c1785",
+      "decoded_sha256": "4e993b626a5805bf9b3836ac066948b71e8f6efa639a6f8e38cb2d5b75de5313",
+      "decoded_bytes": 792
+    },
+    {
+      "path": "request-permission-plan-prose.log.gz",
+      "sha256": "1d05dbbb6c2033b91d55306ae7df71aa6c85c8c0ed694bc891bf097c96b915c6",
+      "decoded_sha256": "e7fc5564f21c9824d0327f8f6c19066cdc229f8b9fd40dedaaa229c467b42e77",
+      "decoded_bytes": 792
+    },
+    {
+      "path": "request-permission-all-tests.jsonl.gz",
+      "sha256": "d6c85222d33ed6ffa3e65f3f54d74cbe1eaa76de1e3df4b15706aabde3227119",
+      "decoded_sha256": "d6918c00702eb766bdf64419b0184b13e8ede8245d4906717b011c12860b1c9e",
+      "decoded_bytes": 3785117
+    },
+    {
+      "path": "request-permission-all-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "request-permission-plan-prose-corrected.log.gz",
+      "sha256": "b47960693cd702eb7f9a012ad3d27c6e1eb111a664cb7ef80ff0cc1c72a666ac",
+      "decoded_sha256": "5b586ece3a810aba535dbd2f23288bce298c5367840a675462453b1ae793f171",
+      "decoded_bytes": 558
+    }
+  ],
+  "contract": [
+    "Catalog permission is checked before route selection and after credential resolution before each chat, streamed chat, embedding, or generic provider attempt. The shared attempt callback also governs retries and route fallbacks.",
+    "A failed permission check stops the current attempt chain without provider-health blame. The error is retryable for a new request.",
+    "Exact chat, embedding, and semantic cache hits check permission after lookup. Cached streams check again on first read and retain a refusal even if permission later recovers. An admitted stream can complete.",
+    "The HTTP chat handler reads the first event before writing response headers. Both OpenAI and OpenRouter return 503 when current permission is unavailable.",
+    "The successful snapshot permission check allocates zero times and performs no storage access. Existing route preparation and cache lookups have separate latency work."
+  ],
+  "checks": {
+    "toolchain": "go1.26.6",
+    "fail_before": {
+      "pass": 1,
+      "fail": 11,
+      "skip": 0
+    },
+    "initial_green": "INCOMPLETE: missing import caused proxy/controller compilation failures. Router had four passing events.",
+    "corrected_green": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    "expanded_green": {
+      "pass": 20,
+      "fail": 0,
+      "skip": 0
+    },
+    "stream_header_red": {
+      "pass": 0,
+      "fail": 3,
+      "skip": 0
+    },
+    "final_focused_race": {
+      "pass": 25,
+      "fail": 0,
+      "skip": 0,
+      "packages": 4
+    },
+    "package_race": {
+      "pass": 645,
+      "fail": 0,
+      "skip": 1,
+      "packages": 7,
+      "skipped": [
+        "TestGatewayOverheadBenchmark"
+      ],
+      "latency_qualification": "UNVERIFIED: the opt-in gateway benchmark did not run."
+    },
+    "vet": "PASS: seven affected packages",
+    "lint": "PASS: make lint with isolated GOLANGCI_LINT_CACHE, 0 issues",
+    "dependency_direction": "PASS: 6 conditions",
+    "new_prose": "PASS: new comments, 0 diagnostics",
+    "full_changed_file_prose": "FAIL: 35 existing diagnostics. Every rule, excerpt, and message matches the HEAD baseline. No new finding.",
+    "diff_check": "PASS",
+    "commands": [
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=10m -json ./internal/catalog ./internal/registry ./internal/router ./internal/proxy ./internal/execution ./internal/failure ./internal/server/controllers",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go vet ./internal/catalog ./internal/registry ./internal/router ./internal/proxy ./internal/execution ./internal/failure ./internal/server/controllers",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 GOLANGCI_LINT_CACHE=<private request-lint-cache> make lint",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 bash scripts/verify-dependency-direction.sh",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -count=1 -timeout=10m -json ./...",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go vet ./..."
+    ],
+    "all_tests": {
+      "exit_code": 0,
+      "pass": 3002,
+      "fail": 0,
+      "skip": 39,
+      "passed_packages": 55,
+      "skipped": [
+        "github.com/agentstation/starport/internal/account:TestAccountRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/account:TestEnsureDefaultIsIdempotent/valkey",
+        "github.com/agentstation/starport/internal/account:TestEnsureDefaultUnderConcurrentBoot/valkey",
+        "github.com/agentstation/starport/internal/account:TestDefaultAccountCannotBeDeleted/valkey",
+        "github.com/agentstation/starport/internal/account:TestRepositoryRejectsInvalidAccounts/valkey",
+        "github.com/agentstation/starport/internal/apikey:TestAPIKeyRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/authmode:TestRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/cache:TestValkeyIntegration",
+        "github.com/agentstation/starport/internal/cache:TestValkeyPubSubReconnection",
+        "github.com/agentstation/starport/internal/app:TestAppWithValkey",
+        "github.com/agentstation/starport/internal/credentials:TestProviderCredentialRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/presets:TestPresetRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/presets:TestPresetRevisionHistoryAndRollback/valkey",
+        "github.com/agentstation/starport/internal/presets:TestPresetRollbackNeedsATarget/valkey",
+        "github.com/agentstation/starport/internal/ratelimit:TestRateLimitRepositoryContract/valkey",
+        "github.com/agentstation/starport/internal/server/controllers:TestGatewayOverheadBenchmark",
+        "github.com/agentstation/starport/internal/storage:TestValkeyStore",
+        "github.com/agentstation/starport/internal/storage:TestValkeyPubSub",
+        "github.com/agentstation/starport/internal/usage:TestARecognizedDocumentCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/usage:TestARecognizedDocumentReportsItsPagesAndItsCost/valkey",
+        "github.com/agentstation/starport/internal/usage:TestANativelyReadDocumentCostsNothing/valkey",
+        "github.com/agentstation/starport/internal/usage:TestACachedReadIsRecordedAsCachedRatherThanFree/valkey",
+        "github.com/agentstation/starport/internal/usage:TestTheExtractionDurationSurvivesTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/usage:TestATurnThatAttachedNoDocumentReportsNoExtraction/valkey",
+        "github.com/agentstation/starport/internal/usage:TestAPricedMediaTurnCountsAgainstTheSpendBudget/valkey",
+        "github.com/agentstation/starport/internal/usage:TestAnUnpricedMediaTurnSpendsNothingAndSaysSo/valkey",
+        "github.com/agentstation/starport/internal/usage:TestMediaUnitsSurviveTheRoundTrip/valkey",
+        "github.com/agentstation/starport/internal/usage:TestATextRecordReadsBackWithoutMedia/valkey",
+        "github.com/agentstation/starport/internal/usage:TestRepositoryPutAndListByKey/valkey",
+        "github.com/agentstation/starport/internal/usage:TestListByKeyOrdersNewestFirstAcrossBackends/valkey",
+        "github.com/agentstation/starport/internal/usage:TestListFiltersAndCursorPagination/valkey",
+        "github.com/agentstation/starport/internal/usage:TestAdminListSpansKeys/valkey",
+        "github.com/agentstation/starport/internal/usage:TestAggregateCountersAccumulate/valkey",
+        "github.com/agentstation/starport/internal/usage:TestCostlessRecordCarriesReasonNotZero/valkey",
+        "github.com/agentstation/starport/internal/usage:TestRetentionTTLApplied/valkey",
+        "github.com/agentstation/starport/internal/usage:TestAccountCounterSumsEveryKeyItHolds/valkey",
+        "github.com/agentstation/starport/internal/usage:TestTeamCounterSumsEveryAttributedKey/valkey",
+        "github.com/agentstation/starport/internal/usage:TestListByAccountSpansEveryKey/valkey",
+        "github.com/agentstation/starport/internal/usage:TestListFiltersByGuardrailVerdictAndKeepsCacheFields/valkey"
+      ],
+      "qualification": "Local only. Valkey-backed cases and the opt-in overhead benchmark remain UNVERIFIED."
+    },
+    "all_vet": {
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "acceptance": "Local seam evidence only. No additional primary case, native-clock, real upstream trust, fleet, or released-pair qualification. Four Starport consumer subcases remain UNVERIFIED.",
+  "remaining": "Complete configured permission owner composition, qualified native clocks, shared-store followers, explicit authority transitions, published stable Starmap dependency, mapped consumer acceptance, full repository gates, required review, native CI, and merge.",
+  "plan_prose_initial": "FAIL: one seven-sentence findings paragraph. Split evidence from remaining checks.",
+  "plan_prose_final": "PASS: full canonical prose check after findings correction and history compaction."
+}

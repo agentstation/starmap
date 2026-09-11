@@ -2,10 +2,15 @@
 
 ## Current runtime integration
 
-The active combined worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot`, branch `codex/catalog-authority-snapshot`, at clean `768347ab`.
+The active combined worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot`, branch `codex/catalog-authority-snapshot`, at clean `e3943c97`.
 It adds atomic catalog authority snapshots and includes reviewed consumer and public-catalog changes.
 The [snapshot proof](csp4/authority-snapshot-2026-09-11/verification.json) records six scoped passing cases per toolchain, complete static checks, and ongoing combined verification.
-PR #149 must merge before this combined delivery. Native clocks and the four Starport consumer cases remain UNVERIFIED.
+PR #149 merged as `9ea36b3e` after fifteen passing checks. The combined tree equals tested `768347ab`.
+Native clocks and the four Starport consumer cases remain UNVERIFIED.
+
+Starport `52970f7` enforces current permission before route attempts and cache delivery.
+Its [request proof](csp4/starport-request-permission-2026-09-11/verification.json) records 645 package race events and one skipped overhead benchmark.
+Both API formats return HTTP 503 before stream headers when permission is unavailable. Four consumer cases remain UNVERIFIED.
 
 The combined public-catalog worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance`, branch `codex/catalog-public-acceptance`, at clean `0a143a94`.
 It includes actual main `32737432`, the provider-documentation repair, and signed public fixtures.

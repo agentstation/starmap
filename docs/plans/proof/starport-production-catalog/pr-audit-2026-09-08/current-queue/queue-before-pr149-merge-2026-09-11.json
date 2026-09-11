@@ -1,0 +1,38 @@
+{
+  "captured_at": "2026-09-11T03:18:45.200712+00:00",
+  "repositories": {
+    "starmap": [
+      {
+        "baseRefName": "main",
+        "headRefName": "codex/catalog-public-acceptance",
+        "headRefOid": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+        "isDraft": false,
+        "number": 149,
+        "title": "Fix provider documentation and qualify public catalog refresh",
+        "updatedAt": "2026-09-11T02:38:12Z"
+      }
+    ],
+    "starport": []
+  },
+  "current_pr": 149,
+  "head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+  "base": "3273743274661a1f37402d124189980ad7f93060",
+  "required_reviews": "Sol and Opus PASS, 0 findings",
+  "unresolved_review_threads": 0,
+  "native_jobs": "6 PASS",
+  "pending": "Verification Gate",
+  "disposition": "Retain and automatically squash merge the reviewed head when branch protection passes.",
+  "owner": "Catalog plan executor",
+  "unpublished_work": [
+    {
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission",
+      "head": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
+      "next_action": "Integrate the actual PR149 merge and deliver the clock and consumer permission changes through the next PR. Required review passes at 20b1ee41.",
+      "source_changes": "Complete clock samples, cached clock evidence, consumer catalog admission, allocation-free checksum shape checks."
+    }
+  ],
+  "campaign_merged_prs": 26,
+  "tasks_done": 9,
+  "task_in_progress": "CSP4",
+  "merge_credit_added": false
+}

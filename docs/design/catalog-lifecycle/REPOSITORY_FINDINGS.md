@@ -2083,3 +2083,17 @@ A deterministic source exercises the real Starmap runtime. Production compositio
 
 These tests do not qualify native clocks, network trust, or request-path enforcement.
 Route selection, every provider attempt, and exact or semantic cache delivery must call the new check.
+
+
+## Starport request permission, 2026-09-11
+
+Local `52970f7` checks current catalog permission before route selection and each provider attempt.
+Exact and semantic cache delivery also check permission. A refused cached stream remains refused if permission later returns.
+Both API formats return HTTP 503 before stream headers when the first read refuses permission. Admitted streams can complete.
+
+The [request proof](../../plans/proof/starport-production-catalog/csp4/starport-request-permission-2026-09-11/verification.json) records 25 focused race events and 645 package race events.
+One opt-in overhead benchmark skipped. The successful permission check allocates zero times.
+The tests do not qualify total gateway latency, native clocks, fleet behavior, or the released dependency pair.
+
+Vet, lint, six dependency checks, and new-comment checks pass. Thirty-five existing prose diagnostics match the prior source.
+Four Starport consumer cases remain UNVERIFIED until configured composition and its dependencies pass their required checks.

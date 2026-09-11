@@ -211,7 +211,7 @@
   "publication": {
     "status": "Unpublished",
     "integrated_reviewed_dependency": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
-    "required": "Actual PR149 main integration, complete checks, required review, native CI, and merge."
+    "required": "Complete verification, required review, publication, native CI, and merge."
   },
   "acceptance": "No new task or product acceptance credit. The four Starport consumer subcases and native clock qualification remain UNVERIFIED.",
   "canonical_prose": {
@@ -336,5 +336,13 @@
         "Elapsed": 1424.164
       }
     ]
+  },
+  "main_integration": {
+    "previous_source": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+    "source_commit": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "actual_main": "9ea36b3ea30713db512bccb2b76498a03556164c",
+    "tree": "1aaec8d715f65f3cdf6c60fff2b9a439d8489f79",
+    "tree_unchanged": true,
+    "method": "git merge-tree predicted exact equality before merge. git diff --exit-code confirms no changed files after merge. Ongoing verification remains bound to the original source and the same tree."
   }
 }

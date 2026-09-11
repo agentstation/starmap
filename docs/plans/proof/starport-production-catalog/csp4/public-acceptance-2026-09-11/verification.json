@@ -818,6 +818,48 @@
       "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
       "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad",
       "decoded_bytes": 65
+    },
+    {
+      "path": "pr149-merged.json.gz",
+      "sha256": "7bf6579b0d11ffd3b3cf7cff9c64e175ae3e593ba0fe68904f72496bb12f74e5",
+      "decoded_sha256": "bb6bfde398bd78479c3bee4547b3a95dc50d2a10af85b7fa3d853a784da73c63",
+      "decoded_bytes": 4758
+    },
+    {
+      "path": "pr149-verification-gate.log.gz",
+      "sha256": "8892cbcc9742a0cd32bf5b066e156c83fe4815d364f930b30a293b3a101c5901",
+      "decoded_sha256": "c24451a1e4c54fbf6e7d95667ef6ceb24a0723efada96e92664bd84c3c9eff8a",
+      "decoded_bytes": 304248
+    },
+    {
+      "path": "pr149-merge-prose.log.gz",
+      "sha256": "b70f93909230326bc37eed266a2310b626f8805860a5f8e4935f454613f87021",
+      "decoded_sha256": "49d7e6c7196f88ad6607947a32ce17a1237b5918e57d588c0f4a99aed2972567",
+      "decoded_bytes": 826
+    },
+    {
+      "path": "pr149-merge-prose-corrected.log.gz",
+      "sha256": "b70f93909230326bc37eed266a2310b626f8805860a5f8e4935f454613f87021",
+      "decoded_sha256": "49d7e6c7196f88ad6607947a32ce17a1237b5918e57d588c0f4a99aed2972567",
+      "decoded_bytes": 826
+    },
+    {
+      "path": "pr149-merge-prose-final.log.gz",
+      "sha256": "f237b4542e7310a6cd1b05897972963b177434ccbdae51fbb37ccae9723e7a26",
+      "decoded_sha256": "ba5f73d4ec66231d946e7630ea736640fc5985aa57799186d1103c03033dcac3",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "pr149-final-plan-prose.log.gz",
+      "sha256": "51c04e39d09f48bcfcfe5e74201e921f19874356a5aa98c9cc003194725cc1e9",
+      "decoded_sha256": "31e2a5ce174711185ace814d460b13e770bb8a14df495eafec88a740d661b907",
+      "decoded_bytes": 786
+    },
+    {
+      "path": "pr149-plan-prose-corrected.log.gz",
+      "sha256": "f237b4542e7310a6cd1b05897972963b177434ccbdae51fbb37ccae9723e7a26",
+      "decoded_sha256": "ba5f73d4ec66231d946e7630ea736640fc5985aa57799186d1103c03033dcac3",
+      "decoded_bytes": 558
     }
   ],
   "checks": [
@@ -1034,9 +1076,7 @@
       }
     ]
   },
-  "pending_gates": [
-    "Verification Gate and actual merge."
-  ],
+  "pending_gates": [],
   "previous_source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
   "handler_correction": {
     "contract": "Provider list responses select general DocsURL before the existing acquisition-documentation fallback. The optional field remains absent when neither value exists. Fresh and cached responses use the same policy.",
@@ -1238,10 +1278,14 @@
     "url": "https://github.com/agentstation/starmap/pull/149",
     "head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
     "base": "3273743274661a1f37402d124189980ad7f93060",
-    "status": "OPEN; all six native jobs pass; automatic squash merge waits for Verification Gate",
-    "merge": null,
+    "status": "MERGED",
+    "merge": "9ea36b3ea30713db512bccb2b76498a03556164c",
     "native_run": 34555379753,
-    "auto_merge_authorized_head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7"
+    "auto_merge_authorized_head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+    "merged_at": "2026-09-11T04:30:58Z",
+    "successful_checks": 15,
+    "reviewed_and_merged_tree": "e2fa4e45702cc92e0fac3be2908362c68c48c145",
+    "tree_equality": true
   },
   "checkout_correction": {
     "source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
@@ -1398,5 +1442,14 @@
     "ordinary_skips": "Two Linux service-owner tests skip without privilege. Each passes in its separate privileged service-owner.txt capture.",
     "review_threads": "0 unresolved, complete first page",
     "scope": "Public fixture and provider-documentation delivery. No native clock or consumer API credit."
+  },
+  "plan_merge_proof_checks": {
+    "initial": "FAIL: queue prose contained a nominalization.",
+    "first_correction": "FAIL: the edit targeted the wrong sentence.",
+    "final": "PASS: 1307 files, 0 diagnostics.",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make HAS_DEVBOX= technical-writing-check",
+    "exit_code": 0,
+    "resume_update": "FAIL: the current Starport paragraph had seven sentences. Split by source and remaining work.",
+    "resume_update_corrected": "PASS: 1307 files, 0 diagnostics."
   }
 }

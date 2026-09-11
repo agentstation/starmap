@@ -5,11 +5,11 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 131,
-  "new_evidence_artifacts": 315,
-  "new_commit_source_files": 89,
+  "local_links": 108,
+  "new_evidence_artifacts": 346,
+  "new_commit_source_files": 101,
   "resume_words": 340,
-  "current_source": "c505a0944b2a5ef83a4273adf12b0f02f0f5145f",
+  "current_source": "52970f7f2f9cbf7f6e68f62e221328ed68ccc343",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
   "clean_source": true,
   "running_implementation_commands": [
@@ -20,19 +20,8 @@
       "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/make-verify.log"
     }
   ],
-  "next_action": "Complete the combined snapshot checks at 768347ab. Verify PR149 automatic merge and integrate actual main before required review and publication. Continue native clocks and Starport admission.",
-  "external_running_checks": [
-    {
-      "repository": "agentstation/starmap",
-      "pr": 149,
-      "source": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
-      "run_id": 34555379753,
-      "job_id": 103126928480,
-      "name": "Verification Gate",
-      "status": "IN_PROGRESS",
-      "automatic_squash_merge_enabled": true
-    }
-  ],
+  "next_action": "Complete verification at unchanged tree e3943c97, then required review and publication. PR149 merged with fifteen successful checks. Continue native clocks and configured Starport permission composition.",
+  "external_running_checks": [],
   "public_acceptance_work": {
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
     "branch": "codex/catalog-public-acceptance",
