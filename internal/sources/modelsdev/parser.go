@@ -355,9 +355,8 @@ func (p *Provider) toStarmapProviderMetadata() *catalogs.Provider {
 		Name: p.Name,
 	}
 	if p.Doc != "" {
-		provider.Catalog = &catalogs.ProviderCatalog{}
 		doc := p.Doc
-		provider.Catalog.Docs = &doc
+		provider.DocsURL = &doc
 	}
 	fields := make(map[string]any)
 	if len(p.Env) > 0 {
