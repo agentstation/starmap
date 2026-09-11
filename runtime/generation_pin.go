@@ -69,9 +69,6 @@ func (r *Runtime) initializeGenerationPin(ctx context.Context) error {
 		if err := r.config.origin.validateCurrent(generation); err != nil {
 			return err
 		}
-		if generation.Manifest.GenerationID != r.client.CurrentGenerationID() {
-			return &errors.ConflictError{Resource: "origin generation pin", Message: "publish a new authority revision before pinning a prior catalog"}
-		}
 	}
 	r.pinnedSource = &sourceLayer{GenerationID: generation.Manifest.GenerationID, Payload: generation.Payload,
 		Manifest: &generation.Manifest, PublishedAt: generation.Manifest.GeneratedAt}
@@ -86,16 +83,70 @@ func (r *Runtime) initializeGenerationPin(ctx context.Context) error {
 // publishGenerationPin aligns the serving client before Open exposes the runtime.
 // The private capability does not reach acquisition callbacks or callers of Client.
 func (r *Runtime) publishGenerationPin(ctx context.Context) error {
-	if r.client.CurrentGenerationID() != r.config.generationPin {
+	target := catalogs.Generation{Manifest: r.pinnedSource.Manifest.Copy(), Payload: r.pinnedSource.Payload}
+	record := r.pinRecord
+	if record != nil && (record.Phase == pinReleased || record.Receipt.SelectedGenerationID != r.config.generationPin) {
+		record = nil
+	}
+	current := r.client.CurrentCatalogState()
+	if record != nil && record.Receipt.PayloadChecksum != target.Manifest.Payload.Checksum {
+		return pinRecordConflict("the selected payload differs from its acceptance record")
+	}
+	if record != nil && record.Phase == pinAccepted && current.GenerationID != record.Receipt.AcceptedGenerationID {
+		return pinRecordConflict("the catalog changed after pin acceptance")
+	}
+	if record != nil && current.GenerationID != record.Receipt.PreviousGenerationID && current.GenerationID != record.Receipt.AcceptedGenerationID {
+		return pinRecordConflict("the catalog differs from both recorded publication states")
+	}
+	generation, err := r.preparePinGeneration(ctx, target, record)
+	if err != nil {
+		return err
+	}
+	if record != nil && !pinRecordMatches(*record, generation) {
+		return pinRecordConflict("the prepared artifact differs from the recorded selection")
+	}
+	if record == nil {
+		operationID, err := r.client.NextID()
+		if err != nil {
+			return err
+		}
+		record = &generationPinRecord{Version: generationPinRecordVersion, Binding: r.pinBinding(), Phase: pinPrepared,
+			Receipt: GenerationPinAcceptance{OperationID: operationID, SelectedGenerationID: r.config.generationPin,
+				AcceptedGenerationID: generation.Manifest.GenerationID, PreviousGenerationID: current.GenerationID,
+				PayloadChecksum: generation.Manifest.Payload.Checksum, AuthorityHead: generation.Manifest.AuthorityHead, RequestedAt: r.config.now().UTC()}}
+		if err := r.store.savePinRecord(ctx, *record); err != nil {
+			return err
+		}
+	}
+	if current.GenerationID != generation.Manifest.GenerationID {
 		if err := r.lease.fence(r.lease.epoch()); err != nil {
 			return err
 		}
 		pinContext := context.WithValue(r.authorityPublicationContext(ctx), generationPinContextKey{}, r.config.pinCapability)
-		if _, err := r.client.Rollback(pinContext, r.config.generationPin); err != nil {
+		if r.config.origin != nil {
+			if _, err := r.client.Activate(pinContext, generation); err != nil {
+				return err
+			}
+		} else if _, err := r.client.Rollback(pinContext, generation.Manifest.GenerationID); err != nil {
 			return err
 		}
 	}
+	active := r.client.CurrentCatalogState()
+	if active.GenerationID != record.Receipt.AcceptedGenerationID || active.PayloadChecksum != record.Receipt.PayloadChecksum || active.AuthorityHead != record.Receipt.AuthorityHead {
+		return pinRecordConflict("activation differs from the recorded selection")
+	}
+	if record.Phase != pinAccepted {
+		accepted := *record
+		accepted.Phase, accepted.Receipt.AcceptedAt = pinAccepted, r.config.now().UTC()
+		if err := r.store.savePinRecord(ctx, accepted); err != nil {
+			return err
+		}
+		record = &accepted
+	}
 	r.mu.Lock()
+	r.pinRecord = record
+	r.pinnedSource = &sourceLayer{GenerationID: generation.Manifest.GenerationID, Manifest: &generation.Manifest,
+		Payload: generation.Payload, PublishedAt: generation.Manifest.GeneratedAt}
 	r.effective = r.client.CurrentCatalogState()
 	r.activateAuthorityLocked(r.pinnedSource)
 	r.mu.Unlock()

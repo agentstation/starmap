@@ -103,6 +103,7 @@ type Runtime struct {
 	config       options
 	source       Source
 	pinnedSource *sourceLayer
+	pinRecord    *generationPinRecord
 
 	// providerRetentionMu serializes observation selection and durable provider writes.
 	providerRetentionMu sync.Mutex
@@ -252,6 +253,9 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 	if err := runtime.loadRetainedLayers(ctx); err != nil {
 		return nil, err
 	}
+	if err := runtime.initializePinRecord(); err != nil {
+		return nil, err
+	}
 	if err := runtime.initializeEffective(ctx); err != nil {
 		return nil, err
 	}
@@ -275,6 +279,9 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
 	}
 
+	if err := runtime.finishPinRelease(ctx); err != nil {
+		return nil, err
+	}
 	if err := runtime.startPermissionClock(); err != nil {
 		return nil, err
 	}
