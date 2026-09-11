@@ -115,6 +115,7 @@ type Runtime struct {
 	effective          starmap.CatalogState
 	report             statusState
 	permissions        authorityPermissions
+	originFollowed     bool
 	permissionRuns     runGroup
 	permissionIO       sync.Mutex
 	authorityObservers authorityObservationGroup
@@ -143,6 +144,7 @@ type Runtime struct {
 // Open returns a connected runtime. It serves the verified embedded catalog
 // before the first upstream reply, so Catalog and State never wait for the
 // network. Open starts the source and acquisition schedules and returns.
+// An authoritative stored catalog requires origin configuration or require_authority.
 func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if ctx == nil {
 		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
@@ -194,6 +196,9 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	}
 	client, err := starmap.NewContext(ctx, config.acquisitionPolicyClientOptions()...)
 	if err != nil {
+		return nil, err
+	}
+	if err := config.validateStoredAuthoritySelection(client.CurrentCatalogState().AuthorityHead); err != nil {
 		return nil, err
 	}
 	if err := repairWorkspaceForStartup(ctx, client); err != nil {
@@ -248,7 +253,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.schedule.identity.Instance,
 		runtime.config.now,
 	)
-	if err := runtime.lease.start(runtime.ctx, &runtime.work, runtime.onLeaseLost); err != nil {
+	if err := runtime.lease.start(runtime.ctx, &runtime.work, runtime.onLeaseLost, !runtime.originFollowed); err != nil {
 		runtime.cancel()
 		return nil, err
 	}
@@ -258,6 +263,10 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
 	}
 
+	if err := runtime.startPermissionClock(); err != nil {
+		runtime.abort()
+		return nil, err
+	}
 	if err := runtime.prepareSourceStartup(ctx); err != nil {
 		runtime.abort()
 		return nil, err
@@ -375,6 +384,16 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources
+	if r.requiresAuthority() && r.layers.source == nil {
+		// Retain available diagnostics until this authority supplies a source generation.
+		// Without a retained source, initializeAuthority cannot approve this catalog.
+		r.effective = current
+		r.report.startedAt = r.config.now()
+		return nil
+	}
+	if selected, err := r.initializeOriginReplica(ctx, current, baseline); selected || err != nil {
+		return err
+	}
 	if !r.requiresAuthority() && r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
 		if storedProviderPolicyRequired(current) {
 			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
@@ -387,7 +406,7 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if err := current.Catalog.CanonicalAliases().ValidateSuccessor(state.Catalog.CanonicalAliases()); err != nil {
+	if err := current.Catalog.CanonicalAliases().ValidateAuthoritySuccessor(state.Catalog.CanonicalAliases(), current.AuthorityHead, state.AuthorityHead); err != nil {
 		return err
 	}
 	r.effective = state

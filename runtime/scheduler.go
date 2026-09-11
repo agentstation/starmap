@@ -11,13 +11,14 @@ import (
 	"github.com/agentstation/starmap/pkg/logging"
 )
 
-// Controller names of the two periodic runtime workers.
+// Controller names of the periodic runtime workers.
 const (
 	controllerSource      = "source"
 	controllerAcquisition = "acquisition"
+	controllerAccepted    = "accepted"
 )
 
-// scheduler holds the stable pacing of the two periodic runtime workers. The
+// scheduler holds the stable pacing of the periodic runtime workers. The
 // phase survives a restart, so a fleet keeps its spread across deployments.
 type scheduler struct {
 	identity          fleet.Identity
@@ -25,6 +26,8 @@ type scheduler struct {
 	sourceOffset      time.Duration
 	acquisitionPhase  time.Duration
 	acquisitionOffset time.Duration
+	acceptedPhase     time.Duration
+	acceptedOffset    time.Duration
 }
 
 // initializeSchedule derives the instance identity and the stable phases.
@@ -66,6 +69,18 @@ func (r *Runtime) initializeSchedule() error {
 	r.schedule.acquisitionOffset, err = fleet.StartupOffset(acquisitionIdentity, r.config.startupSpread)
 	if err != nil {
 		return err
+	}
+	if r.config.origin != nil && r.config.leaseStore != nil {
+		acceptedIdentity := sourceIdentity
+		acceptedIdentity.Controller = controllerAccepted
+		r.schedule.acceptedPhase, err = fleet.StablePhase(acceptedIdentity, originAcceptedPollInterval)
+		if err != nil {
+			return err
+		}
+		r.schedule.acceptedOffset, err = fleet.StartupOffset(acceptedIdentity, r.config.startupSpread)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -113,6 +128,18 @@ func (r *Runtime) sourceChanges() <-chan struct{} {
 // runtime without an acquirer runs source refresh only.
 func (r *Runtime) startSchedules() {
 	r.startPermissionSchedule()
+	if r.config.origin != nil && r.config.leaseStore != nil {
+		r.work.Go(func() {
+			r.runSchedule(controllerAccepted, originAcceptedPollInterval, r.schedule.acceptedOffset, r.schedule.acceptedPhase, false, nil, func(ctx context.Context) {
+				if r.lease.status() != leaseLost {
+					return
+				}
+				if err := r.refreshOriginAccepted(ctx); err != nil {
+					r.logScheduledFailure(controllerAccepted, err)
+				}
+			})
+		})
+	}
 	interval := r.config.source.PollInterval
 	wake := r.sourceChanges()
 	if r.source != nil && (interval > 0 || wake != nil) {

@@ -5,6 +5,13 @@ The host schedules observations through `permission.ClockCache.Refresh` outside 
 Cached permission reads use `ClockCache.Read`.
 The deployment must qualify its time service, counter drift, and counter error bounds.
 
+`NewMonitor(profile.Config)` selects the native adapter without I/O or background work.
+The source defaults to `disabled`. Native mode requires explicit cache age, refresh interval, counter drift, and positive counter uncertainty.
+Windows also requires its three synchronization source bounds.
+`runtime.WithPermissionClockMonitor` gives the connected runtime ownership of an unstarted monitor.
+Runtime startup begins observations. Shutdown invalidates cached evidence and cancels its refresh worker.
+Canonical environment variables and flags are listed in the [catalog settings reference](../../../../docs/CATALOG_SETTINGS.md).
+
 Linux uses a read-only `adjtimex` query and `CLOCK_BOOTTIME`.
 The adapter refuses unsynchronized clocks, pending leap states, invalid timestamps, and excessive uncertainty.
 The kernel defines the query fields and their units in the [adjtimex contract](https://man7.org/linux/man-pages/man2/adjtimex.2.html).
@@ -59,6 +66,7 @@ Package hostclock reads native clock evidence for explicit permission\-clock ref
 ## Index
 
 - [func Elapsed\(\) \(time.Duration, bool\)](<#Elapsed>)
+- [func NewMonitor\(config profile.Config\) \(\*permission.ClockMonitor, error\)](<#NewMonitor>)
 - [func Observe\(ctx context.Context\) \(permission.ClockReading, error\)](<#Observe>)
 - [type WindowsObserver](<#WindowsObserver>)
   - [func NewWindowsObserver\(profile WindowsProfile\) \(\*WindowsObserver, error\)](<#NewWindowsObserver>)
@@ -75,6 +83,15 @@ func Elapsed() (time.Duration, bool)
 
 Elapsed reads a nonnegative native elapsed counter that includes system sleep. It reads the counter without file or network I/O. Unsupported platforms return false. The deployment must qualify how the counter measures time and bounds rate error.
 
+<a name="NewMonitor"></a>
+## func [NewMonitor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/monitor.go#L13>)
+
+```go
+func NewMonitor(config profile.Config) (*permission.ClockMonitor, error)
+```
+
+NewMonitor selects native functions and validates a declared host profile without I/O. Disabled profiles return nil. The host must start and close a returned monitor explicitly. Configuration does not qualify the time service or its error bounds.
+
 <a name="Observe"></a>
 ## func [Observe](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/hostclock.go#L17>)
 
@@ -85,7 +102,7 @@ func Observe(ctx context.Context) (permission.ClockReading, error)
 Observe queries the host clock's current synchronization evidence. Call it through ClockCache.Refresh, outside permission checks and inference requests. The deployment must qualify its time service and counter error bounds separately. Unsupported platforms and unqualified clock states return no usable time.
 
 <a name="WindowsObserver"></a>
-## type [WindowsObserver](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L35>)
+## type [WindowsObserver](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L36>)
 
 WindowsObserver queries the local Windows time service with explicit error bounds. NewWindowsObserver starts no I/O. Use Observe for scheduled refreshes outside requests.
 
@@ -96,7 +113,7 @@ type WindowsObserver struct {
 ```
 
 <a name="NewWindowsObserver"></a>
-### func [NewWindowsObserver](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L39>)
+### func [NewWindowsObserver](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L40>)
 
 ```go
 func NewWindowsObserver(profile WindowsProfile) (*WindowsObserver, error)
@@ -105,7 +122,7 @@ func NewWindowsObserver(profile WindowsProfile) (*WindowsObserver, error)
 NewWindowsObserver validates a source profile without contacting a time service. Other platforms can validate profiles but cannot query Windows.
 
 <a name="WindowsObserver.Observe"></a>
-### func \(\*WindowsObserver\) [Observe](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L54>)
+### func \(\*WindowsObserver\) [Observe](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L49>)
 
 ```go
 func (o *WindowsObserver) Observe(ctx context.Context) (permission.ClockReading, error)
@@ -114,7 +131,7 @@ func (o *WindowsObserver) Observe(ctx context.Context) (permission.ClockReading,
 Observe reads one local W32Time status and derives UTC with its complete error bound. It changes no clock settings and stops when the observation context ends.
 
 <a name="WindowsProfile"></a>
-## type [WindowsProfile](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L21-L31>)
+## type [WindowsProfile](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/hostclock/windows_observer.go#L22-L32>)
 
 WindowsProfile supplies deployment\-qualified bounds for the W32Time source. It does not qualify the source or change Windows time\-service settings.
 

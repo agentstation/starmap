@@ -20,13 +20,17 @@ func (r *Runtime) preparePublication(ctx context.Context, state starmap.CatalogS
 	if err := ctx.Err(); err != nil {
 		return preparedPublication{}, err
 	}
-	if err := r.State().Catalog.CanonicalAliases().ValidateSuccessor(state.Catalog.CanonicalAliases()); err != nil {
+	currentState := r.State()
+	if err := currentState.Catalog.CanonicalAliases().ValidateAuthoritySuccessor(state.Catalog.CanonicalAliases(), currentState.AuthorityHead, state.AuthorityHead); err != nil {
 		return preparedPublication{}, err
 	}
 	prepared := preparedPublication{state: state}
 	origin := r.config.origin
 	if origin == nil {
 		return prepared, nil
+	}
+	if err := r.validateOriginTakeover(ctx); err != nil {
+		return preparedPublication{}, err
 	}
 	if source != nil && source.Manifest != nil && source.Manifest.AuthorityHead != (catalogs.CatalogAuthorityHead{}) {
 		return preparedPublication{}, originError("an upstream authority must retain its original identity")
@@ -87,7 +91,10 @@ func (origin *authorityOrigin) validateCurrent(current catalogs.Generation) erro
 	if _, err := catalogs.DecodeCatalogGeneration(current); err != nil {
 		return err
 	}
-	head := current.Manifest.AuthorityHead
+	return origin.validateHead(current.Manifest.AuthorityHead)
+}
+
+func (origin *authorityOrigin) validateHead(head catalogs.CatalogAuthorityHead) error {
 	if head.AuthorityID != origin.config.AuthorityID || head.PolicyID != origin.config.PolicyID || !head.SupportsPermissions() {
 		return originError("stored authority does not match the configured identity and supported permission schema")
 	}
@@ -143,10 +150,10 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 
 func (r *Runtime) publishOriginStartup(ctx context.Context) error {
 	r.mu.RLock()
-	state, evidence, source := r.effective, r.layers.buildEvidence, r.layers.source
+	state, evidence, source, followed := r.effective, r.layers.buildEvidence, r.layers.source, r.originFollowed
 	r.mu.RUnlock()
-	if r.lease.status() == leaseLost {
-		return originError("origin startup requires the publication lease")
+	if followed || r.lease.status() == leaseLost {
+		return r.selectOriginFollowerStartup(ctx)
 	}
 	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, source)
 	if err != nil {
@@ -154,6 +161,23 @@ func (r *Runtime) publishOriginStartup(ctx context.Context) error {
 	}
 	r.mu.Lock()
 	r.effective = committed
+	r.mu.Unlock()
+	return nil
+}
+
+// selectOriginFollowerStartup serves accepted state without replacing the shared catalog.
+// The issuer reads current authority metadata separately before it issues a receipt.
+func (r *Runtime) selectOriginFollowerStartup(ctx context.Context) error {
+	current, err := r.client.CurrentGeneration(ctx)
+	if err != nil {
+		return err
+	}
+	if err := r.config.origin.validateCurrent(current); err != nil {
+		return err
+	}
+	r.mu.Lock()
+	r.effective = r.client.CurrentCatalogState()
+	r.originFollowed = true
 	r.mu.Unlock()
 	return nil
 }

@@ -682,6 +682,7 @@ func main() {
   - [func NewCanonicalAliasIndex\(definitions \[\]ModelDefinitionID, records ...CanonicalAlias\) \(\*CanonicalAliasIndex, error\)](<#NewCanonicalAliasIndex>)
   - [func \(i \*CanonicalAliasIndex\) Lookup\(id ModelDefinitionID\) \(ModelDefinitionID, CanonicalAliasState, bool\)](<#CanonicalAliasIndex.Lookup>)
   - [func \(i \*CanonicalAliasIndex\) Records\(\) \[\]CanonicalAlias](<#CanonicalAliasIndex.Records>)
+  - [func \(i \*CanonicalAliasIndex\) ValidateAuthoritySuccessor\(next \*CanonicalAliasIndex, previousHead, nextHead CatalogAuthorityHead\) error](<#CanonicalAliasIndex.ValidateAuthoritySuccessor>)
   - [func \(i \*CanonicalAliasIndex\) ValidateSuccessor\(next \*CanonicalAliasIndex\) error](<#CanonicalAliasIndex.ValidateSuccessor>)
 - [type CanonicalAliasState](<#CanonicalAliasState>)
 - [type CapabilityMapping](<#CapabilityMapping>)
@@ -2308,6 +2309,15 @@ func (i *CanonicalAliasIndex) Records() []CanonicalAlias
 ```
 
 Records returns caller\-owned rename records in retired\-ID order.
+
+<a name="CanonicalAliasIndex.ValidateAuthoritySuccessor"></a>
+### func \(\*CanonicalAliasIndex\) [ValidateAuthoritySuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L144>)
+
+```go
+func (i *CanonicalAliasIndex) ValidateAuthoritySuccessor(next *CanonicalAliasIndex, previousHead, nextHead CatalogAuthorityHead) error
+```
+
+ValidateAuthoritySuccessor retains alias history within one catalog authority and policy. A different nonempty authority context supplies its own complete alias inventory. The caller must separately authorize that context. This check grants no catalog permission.
 
 <a name="CanonicalAliasIndex.ValidateSuccessor"></a>
 ### func \(\*CanonicalAliasIndex\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/canonical_alias.go#L125>)

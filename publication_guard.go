@@ -11,8 +11,8 @@ import (
 // Guards can run concurrently and must not mutate the client.
 type PublicationGuard func(context.Context) error
 
-// WithPublicationGuard adds a guard to Update, Activate, and Rollback. Every configured guard must permit the operation.
-// Construction and reads do not call guards. A guard must not call a mutation on the same client.
+// WithPublicationGuard adds a guard to Update, Activate, Reload, and Rollback. Every configured guard must permit the operation.
+// Construction and catalog lookups do not call guards. A guard must not call a mutation on the same client.
 func WithPublicationGuard(guard PublicationGuard) Option {
 	return func(o *options) error {
 		if guard == nil {

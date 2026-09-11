@@ -26,6 +26,7 @@ const (
 	// runKindSource reads the selected upstream source only.
 	runKindSource     runKind = "source"
 	runKindPermission runKind = "permission"
+	runKindAccepted   runKind = "accepted"
 
 	// runKindAcquisition observes configured acquisition sources.
 	runKindAcquisition runKind = "acquisition"
@@ -338,7 +339,13 @@ func (r *Runtime) execute(
 
 	report := RefreshReport{RunID: run.id, Kind: string(kind), StartedAt: r.config.now()}
 	// Directory ownership covers lease acquisition and all publication work.
-	workErr := r.lease.ensureHeld(runCtx)
+	var workErr error
+	if kind != runKindAccepted {
+		workErr = r.validateOriginTakeover(runCtx)
+		if workErr == nil {
+			workErr = r.lease.ensureHeld(runCtx)
+		}
+	}
 	if workErr == nil {
 		run.epoch = r.lease.epoch()
 		workErr = work(runCtx, &report, run.epoch)

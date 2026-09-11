@@ -112,9 +112,8 @@ func NewCandidate(
 // The current catalog is immutable and safe to retain.
 type UpdateFunc func(context.Context, *catalogs.Catalog) (*Candidate, error)
 
-// Publication identifies the durable generation produced by a successful
-// update. Published is false when the update function returns no candidate or
-// reactivates an identical retained generation.
+// Publication identifies the committed generation that an operation selects.
+// Published is false when the update returns no candidate or selects the active generation again.
 type Publication struct {
 	Published       bool
 	GenerationID    string

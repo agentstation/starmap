@@ -34,7 +34,10 @@ func TestPublicationGuardsArePassiveAndCumulative(t *testing.T) {
 	if _, err := client.Rollback(t.Context(), "retained-generation"); err != fs.ErrPermission {
 		t.Fatalf("rollback bypassed publication guards: %v", err)
 	}
-	if calls[0] != 3 || calls[1] != 3 || calls[2] != 0 || client.CurrentCatalogState() != before {
+	if _, err := client.Reload(t.Context(), nil); err != fs.ErrPermission {
+		t.Fatalf("reload bypassed publication guards: %v", err)
+	}
+	if calls[0] != 4 || calls[1] != 4 || calls[2] != 0 || client.CurrentCatalogState() != before {
 		t.Fatal("guards were overwritten or a refusal changed published state")
 	}
 }

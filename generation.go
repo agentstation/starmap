@@ -120,7 +120,8 @@ func (c *Client) commitReceivedGeneration(
 	if published == nil {
 		return Publication{}, &errors.ValidationError{Field: "catalog generation", Message: "decoded catalog is required"}
 	}
-	if err := c.Catalog().CanonicalAliases().ValidateSuccessor(published.CanonicalAliases()); err != nil {
+	current := c.CurrentCatalogState()
+	if err := current.Catalog.CanonicalAliases().ValidateAuthoritySuccessor(published.CanonicalAliases(), current.AuthorityHead, generation.Manifest.AuthorityHead); err != nil {
 		return Publication{}, err
 	}
 	if err := generation.Validate(); err != nil {

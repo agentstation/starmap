@@ -35,6 +35,9 @@ func WithPermissionClockUncertainty(sample func() (time.Duration, bool)) Option 
 }
 
 func (r *Runtime) readPermissionClock() permission.ClockReading {
+	if r.config.permissionClockMonitor != nil {
+		return r.config.permissionClockMonitor.Read()
+	}
 	if r.config.permissionClockReading != nil {
 		return r.config.permissionClockReading()
 	}

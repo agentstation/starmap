@@ -61,6 +61,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) PrepareGeneration\(ctx context.Context, candidate \*Candidate\) \(catalogs.Generation, error\)](<#Client.PrepareGeneration>)
   - [func \(c \*Client\) PublishesDurably\(\) bool](<#Client.PublishesDurably>)
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
+  - [func \(c \*Client\) Reload\(ctx context.Context, check func\(catalogs.Generation\) error\) \(Publication, error\)](<#Client.Reload>)
   - [func \(c \*Client\) RepairWorkspace\(ctx context.Context\) \(WorkspaceRepairResult, error\)](<#Client.RepairWorkspace>)
   - [func \(c \*Client\) Rollback\(ctx context.Context, generationID string\) \(\*RollbackResult, error\)](<#Client.Rollback>)
   - [func \(c \*Client\) Save\(\) error](<#Client.Save>)
@@ -257,7 +258,7 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error)
 NewContext creates a Client with the given options. The caller\-owned context bounds reads from caller\-supplied storage and must be non\-nil. Construction never repairs or creates a workspace. Use RepairWorkspace for explicit repair, or open the connected runtime for application startup.
 
 <a name="Client.Activate"></a>
-### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L168>)
+### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L167>)
 
 ```go
 func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error)
@@ -338,7 +339,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L325>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L326>)
 
 ```go
 func (c *Client) NextID() (string, error)
@@ -409,6 +410,15 @@ func (c *Client) Readiness() CatalogReadiness
 
 Readiness evaluates catalog availability and configured embedded\-bootstrap age/size budgets without performing I/O.
 
+<a name="Client.Reload"></a>
+### func \(\*Client\) [Reload](<https://github.com/agentstation/starmap/blob/main/reload.go#L14>)
+
+```go
+func (c *Client) Reload(ctx context.Context, check func(catalogs.Generation) error) (Publication, error)
+```
+
+Reload reads the caller's current catalog store and activates its validated generation without a store write. Publication guards apply because the operation can change this client's visible catalog. An optional check receives a separate generation copy before activation. It must not mutate this client. A failed read, check, or validation preserves the current snapshot. Acquisition and scheduling remain explicit.
+
 <a name="Client.RepairWorkspace"></a>
 ### func \(\*Client\) [RepairWorkspace](<https://github.com/agentstation/starmap/blob/main/workspace_repair.go#L27>)
 
@@ -446,7 +456,7 @@ func (c *Client) SaveTo(path string) error
 SaveTo atomically materializes the current committed generation into path. It never publishes a new generation.
 
 <a name="Client.Update"></a>
-### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L128>)
+### func \(\*Client\) [Update](<https://github.com/agentstation/starmap/blob/main/update.go#L127>)
 
 ```go
 func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, error)
@@ -585,12 +595,12 @@ WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded boot
 func WithPublicationGuard(guard PublicationGuard) Option
 ```
 
-WithPublicationGuard adds a guard to Update, Activate, and Rollback. Every configured guard must permit the operation. Construction and reads do not call guards. A guard must not call a mutation on the same client.
+WithPublicationGuard adds a guard to Update, Activate, Reload, and Rollback. Every configured guard must permit the operation. Construction and catalog lookups do not call guards. A guard must not call a mutation on the same client.
 
 <a name="Publication"></a>
-## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L118-L123>)
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/update.go#L117-L122>)
 
-Publication identifies the durable generation produced by a successful update. Published is false when the update function returns no candidate or reactivates an identical retained generation.
+Publication identifies the committed generation that an operation selects. Published is false when the update returns no candidate or selects the active generation again.
 
 ```go
 type Publication struct {

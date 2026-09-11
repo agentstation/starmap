@@ -51,6 +51,21 @@ services:
       # - STARMAP_CATALOG_REFRESH_TIMEOUT=0s
       # - STARMAP_STATE_DIR=/home/nonroot/starmap/state/catalog/runtime/default
       # - STARMAP_SCHEDULER_IDENTITY=
+      # Native permission time requires qualified bounds for this host.
+      # Set the four cache bounds before selecting native. Windows needs three additional bounds.
+      # See docs/CATALOG_SETTINGS.md. This example specifies no production error bounds.
+
+      # Origin declarations replace as one object. Supply qualified native clock bounds.
+      # - STARMAP_CATALOG_AUTHORITY_ORIGIN={"enabled":false}
+
+      # - STARMAP_CATALOG_PERMISSION_CLOCK_SOURCE=disabled
+      # STARMAP_CATALOG_PERMISSION_CLOCK_REFRESH_INTERVAL
+      # STARMAP_CATALOG_PERMISSION_CLOCK_MAX_AGE
+      # STARMAP_CATALOG_PERMISSION_CLOCK_MAX_DRIFT_PPM
+      # STARMAP_CATALOG_PERMISSION_CLOCK_COUNTER_UNCERTAINTY
+      # STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_AGE
+      # STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_DRIFT_PPM
+      # STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_SOURCE_UNCERTAINTY
 
       # Provider API keys (optional - for live data fetching)
       # Uncomment and set in .env file

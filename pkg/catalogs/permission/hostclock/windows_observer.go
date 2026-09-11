@@ -7,11 +7,12 @@ import (
 
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/permission"
+	clockprofile "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile"
 )
 
 const (
 	windowsTick             = 100 * time.Nanosecond
-	maxWindowsSourceAge     = 24 * time.Hour
+	maxWindowsSourceAge     = clockprofile.MaxWindowsSourceAge
 	windowsUnixEpochSeconds = 11_644_473_600
 	clockPartsPerMillion    = 1_000_000
 )
@@ -37,14 +38,8 @@ type WindowsObserver struct{ profile WindowsProfile }
 // NewWindowsObserver validates a source profile without contacting a time service.
 // Other platforms can validate profiles but cannot query Windows.
 func NewWindowsObserver(profile WindowsProfile) (*WindowsObserver, error) {
-	if profile.MaxSourceAge <= 0 || profile.MaxSourceAge > maxWindowsSourceAge {
-		return nil, invalidClock("Windows source age must be positive and within one day")
-	}
-	if profile.MaxSourceDriftPPM == 0 || profile.MaxSourceDriftPPM >= clockPartsPerMillion {
-		return nil, invalidClock("Windows source drift must be positive and below one million parts per million")
-	}
-	if profile.SourceUncertainty <= 0 || profile.SourceUncertainty > catalogs.MaxCatalogPermissionClockUncertainty {
-		return nil, invalidClock("Windows source uncertainty must be positive and within thirty seconds")
+	if err := clockprofile.Windows(profile).Validate(); err != nil {
+		return nil, err
 	}
 	return &WindowsObserver{profile: profile}, nil
 }

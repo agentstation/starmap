@@ -9,34 +9,43 @@ import (
 
 // Canonical names remain available to application composition.
 const (
-	Prefix               = catalogconfig.Prefix
-	Source               = catalogconfig.Source
-	SourceURL            = catalogconfig.SourceURL
-	SourceAPIKey         = catalogconfig.SourceAPIKey
-	SourceRepository     = catalogconfig.SourceRepository
-	SourceChannel        = catalogconfig.SourceChannel
-	SourceSignerWorkflow = catalogconfig.SourceSignerWorkflow
-	SourceToken          = catalogconfig.SourceToken
-	SourcePollInterval   = catalogconfig.SourcePollInterval
-	SourceStartupPolicy  = catalogconfig.SourceStartupPolicy
-	SourceAuthorityID    = catalogconfig.SourceAuthorityID
-	SourcePolicyID       = catalogconfig.SourcePolicyID
-	SourceMaxAge         = catalogconfig.SourceMaxAge
-	SourceMaxHops        = catalogconfig.SourceMaxHops
-	SourceAliases        = catalogconfig.SourceAliases
-	AcquisitionSources   = catalogconfig.AcquisitionSources
-	ModelsDevGitCommit   = catalogconfig.ModelsDevGitCommit
-	AcquisitionEnabled   = catalogconfig.AcquisitionEnabled
-	AcquisitionInterval  = catalogconfig.AcquisitionInterval
-	ProviderBindings     = catalogconfig.ProviderBindings
-	CoalesceWindow       = catalogconfig.CoalesceWindow
-	WorkspacePath        = catalogconfig.WorkspacePath
-	StartupSpread        = catalogconfig.StartupSpread
-	TransferIdleTimeout  = catalogconfig.TransferIdleTimeout
-	TransferMaxDuration  = catalogconfig.TransferMaxDuration
-	RefreshTimeout       = catalogconfig.RefreshTimeout
-	StateDirectory       = catalogconfig.StateDirectory
-	SchedulerIdentity    = catalogconfig.SchedulerIdentity
+	Prefix                                  = catalogconfig.Prefix
+	AuthorityOrigin                         = catalogconfig.AuthorityOrigin
+	Source                                  = catalogconfig.Source
+	SourceURL                               = catalogconfig.SourceURL
+	SourceAPIKey                            = catalogconfig.SourceAPIKey
+	SourceRepository                        = catalogconfig.SourceRepository
+	SourceChannel                           = catalogconfig.SourceChannel
+	SourceSignerWorkflow                    = catalogconfig.SourceSignerWorkflow
+	SourceToken                             = catalogconfig.SourceToken
+	SourcePollInterval                      = catalogconfig.SourcePollInterval
+	SourceStartupPolicy                     = catalogconfig.SourceStartupPolicy
+	SourceAuthorityID                       = catalogconfig.SourceAuthorityID
+	SourcePolicyID                          = catalogconfig.SourcePolicyID
+	SourceMaxAge                            = catalogconfig.SourceMaxAge
+	SourceMaxHops                           = catalogconfig.SourceMaxHops
+	SourceAliases                           = catalogconfig.SourceAliases
+	AcquisitionSources                      = catalogconfig.AcquisitionSources
+	ModelsDevGitCommit                      = catalogconfig.ModelsDevGitCommit
+	AcquisitionEnabled                      = catalogconfig.AcquisitionEnabled
+	AcquisitionInterval                     = catalogconfig.AcquisitionInterval
+	ProviderBindings                        = catalogconfig.ProviderBindings
+	CoalesceWindow                          = catalogconfig.CoalesceWindow
+	WorkspacePath                           = catalogconfig.WorkspacePath
+	StartupSpread                           = catalogconfig.StartupSpread
+	TransferIdleTimeout                     = catalogconfig.TransferIdleTimeout
+	TransferMaxDuration                     = catalogconfig.TransferMaxDuration
+	RefreshTimeout                          = catalogconfig.RefreshTimeout
+	StateDirectory                          = catalogconfig.StateDirectory
+	SchedulerIdentity                       = catalogconfig.SchedulerIdentity
+	PermissionClockSource                   = catalogconfig.PermissionClockSource
+	PermissionClockRefreshInterval          = catalogconfig.PermissionClockRefreshInterval
+	PermissionClockMaxAge                   = catalogconfig.PermissionClockMaxAge
+	PermissionClockMaxDriftPPM              = catalogconfig.PermissionClockMaxDriftPPM
+	PermissionClockCounterUncertainty       = catalogconfig.PermissionClockCounterUncertainty
+	PermissionClockWindowsMaxSourceAge      = catalogconfig.PermissionClockWindowsMaxSourceAge
+	PermissionClockWindowsMaxSourceDriftPPM = catalogconfig.PermissionClockWindowsMaxSourceDriftPPM
+	PermissionClockWindowsSourceUncertainty = catalogconfig.PermissionClockWindowsSourceUncertainty
 )
 
 // Config is the shared parsed catalog configuration.

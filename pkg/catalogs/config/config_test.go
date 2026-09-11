@@ -9,8 +9,8 @@ import (
 
 func TestPublicDescriptorsCoverCanonicalSettings(t *testing.T) {
 	descriptors := config.Descriptors()
-	if len(descriptors) != 27 {
-		t.Fatalf("descriptor count = %d, want all 27 supported settings", len(descriptors))
+	if len(descriptors) != 36 {
+		t.Fatalf("descriptor count = %d, want 27 catalog and 8 host clock settings", len(descriptors))
 	}
 	seen := make(map[string]bool)
 	for _, descriptor := range descriptors {

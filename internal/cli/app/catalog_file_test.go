@@ -69,7 +69,14 @@ func TestEveryCanonicalSettingLoadsFromYAML(t *testing.T) {
 				case catalogconfig.ProviderBindings:
 					expected = "[]"
 				default:
-					expected = t.TempDir()
+					switch descriptor.Type {
+					case catalogconfig.DurationValue:
+						expected = "1s"
+					case catalogconfig.IntegerValue:
+						expected = "500"
+					default:
+						expected = t.TempDir()
+					}
 				}
 			}
 			var value any = expected
@@ -86,6 +93,9 @@ func TestEveryCanonicalSettingLoadsFromYAML(t *testing.T) {
 			case catalogconfig.ListValue:
 				value = []string{}
 				expected = ""
+			case catalogconfig.AuthorityOriginValue:
+				value = map[string]any{"enabled": false}
+				expected = `{"enabled":false}`
 			case catalogconfig.ProviderBindingsValue:
 				value = []any{}
 				expected = "[]"
@@ -206,5 +216,33 @@ func TestProviderBindingsLoadFromYAMLAndFlagsReplaceEnvironment(t *testing.T) {
 	}
 	if loaded.CatalogOrigins[catalogconfig.ProviderBindings] != "override-1" {
 		t.Fatal("binding diagnostics lost their flag origin")
+	}
+}
+
+func TestAuthorityOriginYAMLAndEnvironmentUseWholeDeclaration(t *testing.T) {
+	clearCatalogEnvironment(t)
+	path := filepath.Join(t.TempDir(), "config.yaml")
+	content := "catalog_authority_origin:\n  enabled: true\n  authority_id: company\n  policy_id: production\n  bootstrap: true\n  permission_lifetime: 1m\n"
+	if err := os.WriteFile(path, []byte(content), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	loaded, err := loadConfig(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	parsed, err := loadCatalogSettings(loaded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !parsed.AuthorityOrigin.Enabled || !parsed.AuthorityOrigin.Bootstrap || parsed.AuthorityOrigin.AuthorityID != "company" {
+		t.Fatal("YAML origin not applied")
+	}
+	t.Setenv(catalogconfig.AuthorityOrigin, `{"enabled":false}`)
+	parsed, err = loadCatalogSettings(loaded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if parsed.AuthorityOrigin != (catalogconfig.OriginSettings{}) {
+		t.Fatal("environment disable inherited YAML origin fields")
 	}
 }
