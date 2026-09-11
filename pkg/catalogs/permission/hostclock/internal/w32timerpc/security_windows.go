@@ -2,6 +2,7 @@ package w32timerpc
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"sync"
 
@@ -28,12 +29,28 @@ func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
 		if err != nil {
 			return nil, err
 		}
-		if principal == nil || principal.Status != 0 || principal.PrincName == "" || len(principal.PrincName) > 1024 {
-			return nil, invalidReply("local W32Time principal is unavailable")
+		if err := validateLocalPrincipal(principal); err != nil {
+			return nil, err
 		}
 		return []dcerpc.Option{dcerpc.WithMechanism(factory), dcerpc.WithTargetName(principal.PrincName),
 			dcerpc.WithSecurtyProvider(dcerpc.AuthTypeGSSNegotiate), dcerpc.WithSeal(), dcerpc.Identify()}, nil
 	})
+}
+
+func validateLocalPrincipal(principal *mgmt.InquirePrincNameResponse) error {
+	if principal == nil {
+		return invalidReply("local W32Time principal reply is missing")
+	}
+	if principal.Status != 0 {
+		return invalidReply(fmt.Sprintf("local W32Time principal query failed: 0x%08x", principal.Status))
+	}
+	if principal.PrincName == "" {
+		return invalidReply("local W32Time principal query succeeded with an empty name")
+	}
+	if len(principal.PrincName) > 1024 {
+		return invalidReply("local W32Time principal exceeds the name limit")
+	}
+	return nil
 }
 
 // localSecurityFactory owns one ambient Windows security context per observation.
