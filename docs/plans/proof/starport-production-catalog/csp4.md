@@ -13,8 +13,11 @@ Native workflow `34580591626` passes all four Linux/macOS jobs. Both Windows job
 The failures name the direct `kernel32.dll` lookup and absent `W32TIME` pipe. A local correction uses the API set and `W32TIME_ALT` with caller identification.
 
 Correction `0dfa9a90` passes 187 permission race events per toolchain, eight Windows cross-builds, static checks, and complete prose.
-Its [binding proof](csp4/windows-binding-2026-09-11/verification.json) records zero findings from Sol and Opus, a passing secret scan, and publication to PR #151.
-Native workflow `34583505814` runs before merge. Native status access remains unverified.
+Its [binding proof](csp4/windows-binding-2026-09-11/verification.json) records zero findings from Sol and Opus and a passing secret scan.
+PR #151 contains the correction.
+
+Native workflow `34583505814` passes both Windows counter tests and all Linux/macOS jobs.
+Both Windows status calls now return RPC access denied. Authentication and caller-privilege diagnosis remains open.
 
 Clock configuration `e97d7fc3` adds eight canonical host settings and passive native composition.
 Its [proof](csp4/clock-settings-2026-09-11/verification.json) records 35 focused race events per toolchain with one Windows-only skip.
@@ -23,6 +26,10 @@ Full repository verification runs in session `80929` before review and publicati
 
 The [monitor proof](csp4/clock-lifecycle-2026-09-11/verification.json) and [runtime proof](csp4/clock-runtime-2026-09-11/verification.json) retain the earlier lifecycle checks.
 Production clock bounds, configured permission owners, shared-store followers, authority transitions, and four Starport consumer checks remain open.
+
+Origin selection `8206a2a8` refuses ordinary startup with an authoritative catalog store, including after runtime-directory replacement.
+Its [proof](csp4/authority-selection-2026-09-11/verification.json) records three failing events before the guard and twelve focused passing events per toolchain.
+Static checks, generated docs, and the 1,491-file prose check pass. Integration, full verification, and publication remain required.
 
 ## Earlier runtime integration checkpoints
 

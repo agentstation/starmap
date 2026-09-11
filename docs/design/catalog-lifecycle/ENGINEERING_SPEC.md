@@ -1825,6 +1825,11 @@ Explicit bootstrap can adopt an ordinary store only inside that guarded commit. 
 Origin permission reads observe the current durable head, including a commit whose activation reply failed.
 Unknown clock validity refuses receipts while catalog diagnostics remain available.
 
+Candidate `8206a2a8` refuses ordinary runtime startup when the selected store contains an authoritative catalog.
+Origin configuration or `require_authority` must remain explicit. A new runtime directory does not remove this requirement.
+The check precedes workspace recovery, input publication, and background work. Refusal preserves the stored generation.
+This guard does not implement an authority migration or govern direct writes outside the runtime.
+
 Canonical server settings and native clock qualification remain separate requirements.
 The current origin runtime requires the publication lease at startup. Shared-store follower activation and authority transitions still require implementation and qualification.
 Direct underlying writes, deleted state, and restored older backups require separate recovery procedures.

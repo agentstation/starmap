@@ -17,8 +17,8 @@
   "base": "852a548c4959e98af443f487922b9708fb594a91",
   "required_reviews": "Sol xhigh and Opus high PASS, zero findings; secret scan PASS",
   "repository_verification": "All 41 stages pass across the original and corrected remainder.",
-  "native_jobs": "Workflow 34583505814 runs all six native jobs for correction 0dfa9a90. Parent results retain four native passes and two Windows failures.",
-  "disposition": "Require native artifacts and all checks at reviewed 0dfa9a90, then merge PR #151.",
+  "native_jobs": "Workflow 34583505814 passes all Linux/macOS jobs and both Windows counter tests. Both Windows status calls fail with RPC access denied.",
+  "disposition": "Diagnose Windows RPC authentication and caller privilege requirements. Repair, verify, and review before new native qualification and merge.",
   "owner": "Catalog plan executor",
   "campaign_merged_prs": 28,
   "tasks_done": 9,
@@ -34,6 +34,11 @@
       "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
       "head": "95354f0c9f7dfc451a491f2ebf04ca55504a046a",
       "next_action": "Use a compatible published dependency, finish native clock composition and four consumer cases."
+    },
+    {
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+      "head": "8206a2a8e8f0de12d895cca26bce08ea723b4263",
+      "next_action": "Integrate native parent changes, finish origin settings and transitions, verify and review before publication."
     }
   ],
   "previous_capture": {

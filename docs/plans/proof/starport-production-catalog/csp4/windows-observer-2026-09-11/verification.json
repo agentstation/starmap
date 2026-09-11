@@ -756,7 +756,7 @@
     "completed_at": "2026-09-11T08:35:29.779642+00:00",
     "failed_original_stage": "Direct dependency inventory omitted the two new direct modules. Commit 5418420c corrects the inventory. Prior failure and correction evidence remain preserved."
   },
-  "current_publication": "PR #151 now contains reviewed correction 0dfa9a90. New native workflow 34583505814 runs. See ../windows-binding-2026-09-11/verification.json.",
+  "current_publication": "PR #151 at correction 0dfa9a90 passes both native counter tests. W32Time status returns access denied on both Windows architectures. See ../windows-binding-2026-09-11/verification.json.",
   "pre_pr_review": {
     "status": "PASS",
     "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",

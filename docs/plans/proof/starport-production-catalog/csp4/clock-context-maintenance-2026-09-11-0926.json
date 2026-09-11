@@ -1,0 +1,19 @@
+{
+  "scope": "Plan maintenance only. No product acceptance credit.",
+  "before_bytes": 110367,
+  "after_bytes": 103478,
+  "moved_entries": 12,
+  "retained_entries": 8,
+  "original_rows_sha256": "9f93c7ffcbe67bd54aacf178280d4e523f0b4d83fed157873cf89d28250af5c9",
+  "archive": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-11-0926.html",
+  "archived_rows_sha256": "d90d0ab6990cc8af340e6f649c8e9151c60784c2ad7adefdaba33e33730c80d3",
+  "row_comparison": "Exact row equality after rebasing proof-root-relative links. No evidence prose changes.",
+  "budget_exception": "The plan retains all 38 task contracts and release criteria. Resume from current state, ledger, invariants, goal, and active CSP4 criteria. Read historical proof only for a named evidence question.",
+  "cold_resume": {
+    "active_task": "CSP4",
+    "source": "Native correction 0dfa9a90; clock settings e97d7fc3; an uncommitted authority-selection fix based on e97d7fc3; Starport 95354f0.",
+    "next_action": "Qualify reviewed PR #151 in native workflow 34583505814 before merge. Finish verifier 80929 and selection checks 83726.",
+    "authority": "Reviewed commits, pushes, PRs, native CI, and merges are authorized. Releases and hosted publication require separate approval. D27 through D30 remain accepted.",
+    "remaining": "Configured origin settings, shared-store followers, explicit authority transitions, production clock qualification, a compatible published dependency, and four Starport consumer cases."
+  }
+}

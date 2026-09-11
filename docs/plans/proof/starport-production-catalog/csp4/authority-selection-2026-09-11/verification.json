@@ -1,0 +1,280 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_INTEGRATION_UNVERIFIED",
+  "source_commit": "8206a2a8e8f0de12d895cca26bce08ea723b4263",
+  "base": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "branch": "codex/catalog-origin-settings",
+  "contract": "An authoritative selected store cannot start an ordinary runtime after origin settings disappear. Refuse before workspace recovery, publication, or background work; preserve the durable generation.",
+  "fail_before": {
+    "source_base": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-json",
+      "-timeout=3m",
+      "./runtime",
+      "-run",
+      "^TestOriginPublicationRefusesImplicitAuthorityRemoval$"
+    ],
+    "exit_code": 1,
+    "counts": {
+      "pass": 0,
+      "fail": 3,
+      "skip": 0
+    },
+    "started_at": "2026-09-11T09:16:49.546733+00:00"
+  },
+  "fail_before_scope": "The test adds filesystem restarts with retained or fresh runtime state to baseline e97d7fc3. Both open an ordinary runtime before the guard. The final test adds a typed-error assertion.",
+  "checks": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "./runtime",
+        "-run",
+        "^(TestOriginPublication|TestAuthorityRuntimePreservesPublishedAuthorityGeneration|TestAuthorityRuntimeColdDiagnosticsDoNotAuthorizeBaseline)"
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "minimum-race",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "./runtime",
+        "-run",
+        "^(TestOriginPublication|TestAuthorityRuntimePreservesPublishedAuthorityGeneration|TestAuthorityRuntimeColdDiagnosticsDoNotAuthorizeBaseline)"
+      ],
+      "toolchain": "go1.25.12",
+      "exit_code": 0,
+      "counts": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "current-regression",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout=3m",
+        "./runtime",
+        "-run",
+        "^TestOriginPublicationRefusesImplicitAuthorityRemoval$"
+      ],
+      "toolchain": "go1.26.6",
+      "exit_code": 0,
+      "counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "lint",
+      "command": [
+        "golangci-lint",
+        "run",
+        "./runtime"
+      ],
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./runtime"
+      ],
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    {
+      "name": "ago",
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    {
+      "name": "generated-docs",
+      "command": [
+        "go",
+        "generate",
+        "./runtime"
+      ],
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    {
+      "name": "docs-check",
+      "command": [
+        "bash",
+        "scripts/check-docs.sh"
+      ],
+      "toolchain": "go1.26.6",
+      "exit_code": 127
+    },
+    {
+      "name": "docs-check-corrected",
+      "command": [
+        "make",
+        "docs-check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "prose",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "check_correction": "The guessed scripts/check-docs.sh path does not exist. Its exit127 is retained. The repository-owned make docs-check passes; prose and diff then pass.",
+  "source_files": [
+    {
+      "path": "runtime/README.md",
+      "sha256": "7c9f499bf7b21908cff4b795bf927a7af4c78ba51f8fde7c0ca457c658224fd7"
+    },
+    {
+      "path": "runtime/authority_policy.go",
+      "sha256": "aabc8da07c60b476cfb96db76d50ab40c4b5bec5c489662f73e4a0a18183d405"
+    },
+    {
+      "path": "runtime/origin_selection_test.go",
+      "sha256": "6f1495b885e41df2669a351bf2ce03c1ae94286c1c550e0a8d0bebc0757de902"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "3199ce681ab7a187d98291509358ac450dbf70b14a9c7c7bc597e43b8f12505c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "authority-selection-checks.json.gz",
+      "sha256": "c28fa70dc6dfb3dd0d0c69c7f7c27edbc194a0f460803a5d079171ad54c7f7bc",
+      "decoded_sha256": "89302320f549defcf2ce5715b95bcc72b689729bca7a4ade785b70abadfbc92a"
+    },
+    {
+      "path": "authority-selection-green.json.gz",
+      "sha256": "6f5e19302c265ffff81b0d74dcdf40cad685e4075a382e9002ff26f3a68d26a5",
+      "decoded_sha256": "c2aeaf67470545aaf94801595e7eea83150a5d8a21e0429926fa3815237f6b00"
+    },
+    {
+      "path": "authority-selection-green.jsonl.gz",
+      "sha256": "81425b1f555a85e22eeab078e343f9c8567886475402ed6e278d69c2a7c69e5c",
+      "decoded_sha256": "7b5f225a830bcfbabb94f3d05e85e430087304fc0e53591581aa0bca6b61cb55"
+    },
+    {
+      "path": "authority-selection-red.json.gz",
+      "sha256": "31be12871d173760c075a2963c48f476a02669b2eb9f92c6b511a62618e7fd49",
+      "decoded_sha256": "7d05cfb629664423f1441e367864a6af132e923ac0a406909e451ccbc55f4851"
+    },
+    {
+      "path": "authority-selection-red.jsonl.gz",
+      "sha256": "a007c59ec91bf2d9537d6a4855c62afbe93ec7c759cdb4a43d39631458ac1f8a",
+      "decoded_sha256": "f9c9b6e3e60f446c117a1f4beb635518c03b135ee8edd3d966d318472081fbcf"
+    },
+    {
+      "path": "authority-selection-remainder.json.gz",
+      "sha256": "4fc542589ded55d95cb52a2bdcb54d2b6027279a6f905618c6d67af8546e28b5",
+      "decoded_sha256": "72f9142c32ac4ba2d612257bf4dc366bd3b28fc9ab0f9c631770161a99e81bf0"
+    },
+    {
+      "path": "current-regression.log.gz",
+      "sha256": "3c3ee2d03e150fcfa3ab3ef588ace3fc368240cd0b59d2a4d74232e933172048",
+      "decoded_sha256": "f241cebd8cfc601cdccbce787c31a8d2163a69ca0dfc350852293c1617711577"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-check-corrected.log.gz",
+      "sha256": "19239532b8371f8a47bf4d37b2e876525e21f3866cbec2c8290b3b0cb5016270",
+      "decoded_sha256": "e9b932c126aa4beb4c68d7d5725213730e19e0a837b86dcaa31678dd06f1795d"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "aeb82571b4e25b214784d08a5dc36ea244df1ee6f8c6de2acd23cb77bb80d0fe",
+      "decoded_sha256": "2b8bd2f2e18b5cbe2f4b286e600e861b097477bb49e62643fddb275aaf0956fe"
+    },
+    {
+      "path": "generated-docs.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "minimum-race.log.gz",
+      "sha256": "dbefdcb75b4bc75512dcadab3c1683ccccd786ae0eb1e79c5959ab0666401d21",
+      "decoded_sha256": "6a6e210da5e50f596b1314c2971b4ea5846f700700792c40392673535163823d"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "deaf78e74d612e83ea8bbf9b227af36a1a80fc15b38642a6228eaf76d750f799",
+      "decoded_sha256": "f476b504a6aa5bf1a46490ed2d437b96f5bf0d886abca93c7975d48b7a811e09"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "running_checks": [],
+  "publication": "Local candidate only. Integrate native parent changes, complete repository verification and required review, then publish in dependency order.",
+  "limitations": [
+    "This startup check does not implement an explicit authority migration or repair an ungoverned direct storage write.",
+    "Origin configuration, shared-store followers, production clock qualification, and the four Starport cases remain incomplete.",
+    "No task completion or merge credit applies."
+  ]
+}

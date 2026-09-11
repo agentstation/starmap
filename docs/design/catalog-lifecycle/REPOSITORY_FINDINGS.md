@@ -2159,9 +2159,11 @@ Scoped lint, vet, ago, generated documentation, and the 1,489-file prose check p
 All 41 repository verification stages now pass across the initial run and corrected remainder.
 Sol at xhigh and Opus at high report zero findings. The secret scan passes.
 
-[PR #151](https://github.com/agentstation/starmap/pull/151) contains exact reviewed `5418420c`. All four Linux/macOS native jobs pass.
+The initial [PR #151](https://github.com/agentstation/starmap/pull/151) candidate is `5418420c`. All four Linux/macOS native jobs pass.
 Both Windows architectures fail the direct counter API lookup and the legacy time-service pipe test.
-Correction `0dfa9a90` passes local checks and both reviews. PR #151 now runs native workflow `34583505814`. The [binding proof](../../plans/proof/starport-production-catalog/csp4/windows-binding-2026-09-11/verification.json) retains counts and native limitations.
+
+PR #151 now contains correction `0dfa9a90`, which passes local checks and both reviews. Native workflow `34583505814` passes both Windows counter tests.
+Both W32Time status calls return RPC access denied. Authentication and caller-privilege diagnosis remains open. The [binding proof](../../plans/proof/starport-production-catalog/csp4/windows-binding-2026-09-11/verification.json) retains counts and native limitations.
 
 The candidate requires explicit source bounds, checks the service and pipe process, and limits the RPC exchange.
 Tests cover cancellation before and after dispatch, fragmented replies, malformed limits, source-age bounds, and recovery from a blocked native call.
@@ -2205,3 +2207,13 @@ Lint, vet, ago, generated documentation, 73 verifier regression tests, and the 1
 The broad initial run records 580 passes and ten failures from missing example entries and obsolete fixtures.
 The corrected focused runs pass. Full repository verification now runs at the committed candidate before review and publication.
 Production clock bounds, Starport composition, and the remaining CSP4 authority cases still need qualification.
+
+## Authority selection on restart, 2026-09-11
+
+The regression at `e97d7fc3` permits ordinary startup after origin configuration disappears.
+Both retained and new runtime directories reproduce the failure. The stored catalog remains authoritative while ordinary admission no longer requires its permission.
+
+Candidate `8206a2a8` rejects that startup with a configuration error before workspace recovery or background work.
+The [proof](../../plans/proof/starport-production-catalog/csp4/authority-selection-2026-09-11/verification.json) records twelve passing race events per toolchain and exact store preservation.
+Existing origin and authoritative-subscriber restarts still pass. Static and documentation checks pass.
+Integration, explicit authority transitions, full repository verification, review, and publication remain open.

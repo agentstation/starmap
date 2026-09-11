@@ -1,6 +1,6 @@
 {
   "task": "CSP4",
-  "status": "LOCAL_PASS_NATIVE_UNVERIFIED",
+  "status": "NATIVE_WINDOWS_STATUS_FAILED",
   "source_commit": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
   "base": "5418420cc676981a42ecc170b242a3ea674a343c",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
@@ -339,6 +339,126 @@
       "path": "review.md.gz",
       "sha256": "610003a6c7efd973b68491e1dd9f2efe4d4e99347566f55101d19f7c42073577",
       "decoded_sha256": "7bc08065ca632ca73087670d8d24c003f53b3ce75923aebf6b70f91fb57bba3c"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15/git-acquisition.jsonl.gz",
+      "sha256": "94e38c941f2f137bf0435a52c2ceea119ab0cd687ee9b91215c761e5ce99234c",
+      "decoded_sha256": "d25e2b9e7a9e31a944acc8b61e99f753daf102040dde331db9b25d8ea64bcef9"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15/publisher-ingestion.jsonl.gz",
+      "sha256": "61ba0266639f3a205dd57124c19291556111def4ba3f8459c1b3afbdd1548be5",
+      "decoded_sha256": "9c1c17612f12dae6671eeea161f7996e7b78aedb79be8f102f57452e164267e4"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15/tests.jsonl.gz",
+      "sha256": "252b919078f7b38abd7de9758f21d8c4684fe01d642e76616e4fcd0550642c93",
+      "decoded_sha256": "114b342e63e5ce50f1f4a7c853e5c12f0f9dc336af6a4afa9f983dc077e5196f"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15/toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "decoded_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15-intel/git-acquisition.jsonl.gz",
+      "sha256": "9f995f9955a7f60e388b00239593eff14d718bfd57c3d4a045ff280a87368f94",
+      "decoded_sha256": "192e79e62bc5810b49a99a301ada3408fcb309a7d7c593c28dc5ca963b35a96a"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15-intel/publisher-ingestion.jsonl.gz",
+      "sha256": "0992105eb40a9bacaefffff14a43f49cc4ed05ad1db5f8f6407c77e9dd72e375",
+      "decoded_sha256": "b0ceada043c6d6ea07463bbe5b01291b8205476b43e0488bada23d54af9511fe"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "sha256": "8ef666c661d1899dbc5195e9163d5a28da020aaf6565bb5447bc55e0a87184f2",
+      "decoded_sha256": "a7d10d7a6a24f58092098a2a404020a4669b3ca61ff732efb78c3438f3e9da7a"
+    },
+    {
+      "path": "native-correction/native-runtime-macos-15-intel/toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04/git-acquisition.jsonl.gz",
+      "sha256": "aa0d014fc9eeae5b4bb71ad8b07ce27a6e49f6df445dfa3f55180b77d7052403",
+      "decoded_sha256": "860e7bb7d9cd03393f4d68c7a6475bcbf03954cd65db401f37f8d872ce82f722"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04/publisher-ingestion.jsonl.gz",
+      "sha256": "9cc79ed618d2fcbad7dbeaee812defc98bc23c133595919a04eac894e6a77883",
+      "decoded_sha256": "370ed37de8185c0353550249d7f6a9085f95dfe4c1d745b3338eb971e1b346d7"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "sha256": "eaa42c5ca01c4d324dd0cd2f3aa03618519bc4e4f72623341b36f4e29de2fd39",
+      "decoded_sha256": "5111aed19992d13e3d0e5dc900d318fe0024d8173f55876480415237ebe0ef60"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04/toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "decoded_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04-arm/git-acquisition.jsonl.gz",
+      "sha256": "225505fcc81503eaa409043e48e0e2e31059d564d08d9123c54d423b55cdce86",
+      "decoded_sha256": "114ea7efe0ebc6ee6cfc94d2af647f9c871df49860a38916d95be8888ab31533"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "080ec7f84d727c051d7619bd3ece97c56a573f76b936d2f311ca35ce8cbdfc1f",
+      "decoded_sha256": "df2fafdc136bed0cce078f1ce77e21bbe41e2879c3090b277e3f772dfa54b7ec"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04-arm/service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "decoded_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256": "ded8fd720a5725a62549ef6099d1d7d0fdd7d53b6cb6f7faa46f15bee6950fb6",
+      "decoded_sha256": "2e816576d1a690226a22bd489fe80887a1e8d6b20651b6623abd944911e620f9"
+    },
+    {
+      "path": "native-correction/native-runtime-ubuntu-24.04-arm/toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "decoded_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "native-correction/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "a8a814292787fa61135862607d6a20e6e68c84b3b8250fb530852f9c530303c9",
+      "decoded_sha256": "be4efc1f86215f7b17aab1394f42de767c950672c37fc2e5b1f56f5d5d93ab84"
+    },
+    {
+      "path": "native-correction/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "native-correction/native-runtime-windows-11-arm/windows-time-service.json.gz",
+      "sha256": "42d11205e3308a6c44ccfc4838d96af8a8e02b56397fdf1858d8e07a348b65b4",
+      "decoded_sha256": "60bed02c3f633a0632cf479bb12a33319ea429700688b76d0465b487f1fccf1b"
+    },
+    {
+      "path": "native-correction/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "c11c67611ad7fa33d746396bffc85fba4f9d3ee538b6bd6dc6519837020d6e1d",
+      "decoded_sha256": "e9e7132ded05179c125a313dde8da256b016d7f0354fe7b939458d492c485513"
+    },
+    {
+      "path": "native-correction/native-runtime-windows-2025/toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "native-correction/native-runtime-windows-2025/windows-time-service.json.gz",
+      "sha256": "938edeacddbe31af23c470063703aa785866f2a5f8859e4a23223b2b0aed0a86",
+      "decoded_sha256": "0444bc9e530c7a22e47d70e72d0e316f94b57024aa90358939ca3b5a166ae0ba"
     }
   ],
   "parent_native_evidence": {
@@ -389,12 +509,11 @@
   "running_checks": [
     {
       "workflow_run": 34583505814,
-      "url": "https://github.com/agentstation/starmap/actions/runs/34583505814",
       "source_commit": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
-      "status": "in_progress"
+      "status": "Verification Gate remains in progress; both Windows jobs failed."
     }
   ],
-  "publication": "PR #151 now contains reviewed correction 0dfa9a90. All six native jobs run in workflow 34583505814 before merge.",
+  "publication": "PR #151 remains open at reviewed 0dfa9a90. Do not merge until native status access and all required checks pass.",
   "limitations": [
     "Production UTC accuracy, drift bounds, and service-account privileges remain unqualified.",
     "The corrected local RPC call needs native evidence on Windows AMD64 and ARM64.",
@@ -412,5 +531,230 @@
     "findings": 0,
     "secret_scan": "PASS",
     "confidence": 0.98
+  },
+  "native_correction_evidence": {
+    "source_commit": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
+    "workflow_run": 34583505814,
+    "status": "Windows status access fails on both architectures; all Linux/macOS jobs pass.",
+    "platforms": [
+      {
+        "runner": "native-runtime-macos-15",
+        "events": {
+          "pass": 1955,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "failure_output": [],
+        "elapsed_counter_result": [],
+        "toolchain": [
+          "go version go1.25.12 darwin/arm64",
+          "darwin",
+          "arm64",
+          "darwin",
+          "arm64",
+          "0"
+        ],
+        "events_scope": "tests.jsonl",
+        "auxiliary_jsonl_events": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "total_jsonl_events": {
+          "pass": 1961,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "runner": "native-runtime-macos-15-intel",
+        "events": {
+          "pass": 1955,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "failure_output": [],
+        "elapsed_counter_result": [],
+        "toolchain": [
+          "go version go1.25.12 darwin/amd64",
+          "darwin",
+          "amd64",
+          "darwin",
+          "amd64",
+          "0"
+        ],
+        "events_scope": "tests.jsonl",
+        "auxiliary_jsonl_events": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "total_jsonl_events": {
+          "pass": 1961,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "runner": "native-runtime-ubuntu-24.04",
+        "events": {
+          "pass": 1909,
+          "fail": 0,
+          "skip": 1
+        },
+        "failures": [],
+        "failure_output": [],
+        "elapsed_counter_result": [],
+        "toolchain": [
+          "go version go1.25.12 linux/amd64",
+          "linux",
+          "amd64",
+          "linux",
+          "amd64",
+          "0"
+        ],
+        "events_scope": "tests.jsonl",
+        "auxiliary_jsonl_events": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "total_jsonl_events": {
+          "pass": 1915,
+          "fail": 0,
+          "skip": 1
+        }
+      },
+      {
+        "runner": "native-runtime-ubuntu-24.04-arm",
+        "events": {
+          "pass": 1909,
+          "fail": 0,
+          "skip": 1
+        },
+        "failures": [],
+        "failure_output": [],
+        "elapsed_counter_result": [],
+        "toolchain": [
+          "go version go1.25.12 linux/arm64",
+          "linux",
+          "arm64",
+          "linux",
+          "arm64",
+          "0"
+        ],
+        "events_scope": "tests.jsonl",
+        "auxiliary_jsonl_events": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "total_jsonl_events": {
+          "pass": 1915,
+          "fail": 0,
+          "skip": 1
+        }
+      },
+      {
+        "runner": "native-runtime-windows-11-arm",
+        "events": {
+          "pass": 1892,
+          "fail": 1,
+          "skip": 0
+        },
+        "failures": [
+          "TestWindowsLocalTimeService"
+        ],
+        "failure_output": [
+          "=== RUN   TestWindowsLocalTimeService",
+          "pipe_windows_test.go:56: required local W32Time fixture: dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005",
+          "--- FAIL: TestWindowsLocalTimeService (0.01s)"
+        ],
+        "elapsed_counter_result": [
+          {
+            "Time": "2026-09-11T09:23:24.716699Z",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+            "Test": "TestWindowsNativeElapsed",
+            "Elapsed": 0.03
+          }
+        ],
+        "toolchain": [
+          "go version go1.25.12 windows/arm64",
+          "windows",
+          "arm64",
+          "windows",
+          "arm64",
+          "0"
+        ],
+        "events_scope": "tests.jsonl",
+        "auxiliary_jsonl_events": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "total_jsonl_events": {
+          "pass": 1892,
+          "fail": 1,
+          "skip": 0
+        }
+      },
+      {
+        "runner": "native-runtime-windows-2025",
+        "events": {
+          "pass": 1892,
+          "fail": 1,
+          "skip": 0
+        },
+        "failures": [
+          "TestWindowsLocalTimeService"
+        ],
+        "failure_output": [
+          "=== RUN   TestWindowsLocalTimeService",
+          "pipe_windows_test.go:56: required local W32Time fixture: dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005",
+          "--- FAIL: TestWindowsLocalTimeService (0.00s)"
+        ],
+        "elapsed_counter_result": [
+          {
+            "Time": "2026-09-11T09:23:43.4485263Z",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+            "Test": "TestWindowsNativeElapsed",
+            "Elapsed": 0.02
+          }
+        ],
+        "toolchain": [
+          "go version go1.25.12 windows/amd64",
+          "windows",
+          "amd64",
+          "windows",
+          "amd64",
+          "0"
+        ],
+        "events_scope": "tests.jsonl",
+        "auxiliary_jsonl_events": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "total_jsonl_events": {
+          "pass": 1892,
+          "fail": 1,
+          "skip": 0
+        }
+      }
+    ],
+    "remaining_failure": "W32TimeQueryStatus returns RPC fault 0x00000005 after the verified local pipe connection. Counter API tests now pass on both Windows architectures.",
+    "assessment": "Native diagnosis must distinguish the RPC authentication requirement from the caller system-time privilege check. Microsoft documents both. Do not claim the correction fully qualifies Windows.",
+    "sources": [
+      "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/bb576d39-587b-484a-86a4-e1d378cf9497"
+    ],
+    "research_exemplar": {
+      "path": "/Users/jack/src/github.com/alexbrainman/sspi",
+      "commit": "7d374ff0d59e135227dc613715b9403844c74288",
+      "status": "Read-only research. No product dependency or authentication implementation added."
+    }
   }
 }

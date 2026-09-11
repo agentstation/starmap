@@ -8,7 +8,8 @@ PR #151 contains reviewed correction `0dfa9a90`. All 41 local verifier stages pa
 Sol at xhigh and Opus at high report zero findings. The secret scan passes.
 
 All four Linux/macOS native jobs pass. Both Windows jobs fail the native counter API lookup and local time-service pipe tests.
-Correction `0dfa9a90` passes local checks and both reviews. Native workflow `34583505814` runs before merge.
+Correction `0dfa9a90` passes local checks and both reviews. Native workflow `34583505814` passes both counter tests and all Linux/macOS jobs.
+Both Windows status calls return access denied. Resolve that failure before merge.
 
 Clock configuration `e97d7fc3` runs full repository verification in a separate clean worktree.
 Starport `95354f0` retains configured authority pins and request permission checks. Four consumer cases remain incomplete.
