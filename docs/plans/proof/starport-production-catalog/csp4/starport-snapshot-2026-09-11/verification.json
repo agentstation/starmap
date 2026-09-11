@@ -1,0 +1,168 @@
+{
+  "task": "CSP4",
+  "status": "PASS_local_snapshot_binding; dependency and admission work remain",
+  "source_commit": "aceaf0b8c06c3f0ea415656d90e99bffea887652",
+  "base": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "source_files": [
+    {
+      "path": "internal/catalog/acceptance.go",
+      "sha256": "a24ec14119c70e8093c52a7a76353ff8fe6247ebbf1a4f39fb7c600abb1b1445"
+    },
+    {
+      "path": "internal/catalog/authority_snapshot_test.go",
+      "sha256": "752b51624e7afc21046bb844b69d3da172e387d954b409726cf0b377434cfc66"
+    },
+    {
+      "path": "internal/catalog/control_plane.go",
+      "sha256": "8729c075c2a690d66f84e5ab00b3bd1c445046d1b570e680b3562415043c4554"
+    },
+    {
+      "path": "internal/catalog/snapshot.go",
+      "sha256": "f5a664bd3e231aed86f34382c87809c4886dfa3acbb2253bdb3330eee7146520"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "snapshot-red.jsonl.gz",
+      "sha256": "464329e7083231e7f91ceaafc067fe8850c398a4952fbe917c9ab0e1f371b6ee",
+      "decoded_sha256": "e1844643243248735055c00ee116506568d996979017f54bbb90d04ff040d143",
+      "decoded_bytes": 62645
+    },
+    {
+      "path": "snapshot-red_test.go.gz",
+      "sha256": "e3c386c5bf513fed29626a7f9600526ea7a7b579c1c6bbfa2678941cf918984c",
+      "decoded_sha256": "752b51624e7afc21046bb844b69d3da172e387d954b409726cf0b377434cfc66",
+      "decoded_bytes": 5556
+    },
+    {
+      "path": "snapshot-green.jsonl.gz",
+      "sha256": "4d67fa34c84803a9ab5942640225ecc0079c2e27fe76d2f56f6080f65ad45361",
+      "decoded_sha256": "efaf940711a58e02bd5b414a1d9de7f8df31bebe85be053134efec40b1ed9d9b",
+      "decoded_bytes": 52154
+    },
+    {
+      "path": "snapshot-catalog-race.jsonl.gz",
+      "sha256": "23c647d9f6cac7f52486d2c4d05cf1606b02ed3939fc9bed86608becda9cd515",
+      "decoded_sha256": "1b944c88a25eb0a7a499f9d8a95cc536864c235fd293d541cff7b66cf02f3762",
+      "decoded_bytes": 194110
+    },
+    {
+      "path": "snapshot-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "snapshot-lint.log.gz",
+      "sha256": "86276f7c51fabe817fc3a8a35fa6f6e9a0015814d63aa2c27674a788d9a3f83c",
+      "decoded_sha256": "dbc03487901bc4434bfc8ea31cc85bbf0af3602a2ea52cba874981904f99b7c1",
+      "decoded_bytes": 47909
+    },
+    {
+      "path": "snapshot-lint-fresh.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "decoded_bytes": 40
+    },
+    {
+      "path": "snapshot-published-pin.log.gz",
+      "sha256": "2fc8f067870c07b584239f527017f565232a2f2a55cdfba2d458137eff837e53",
+      "decoded_sha256": "f194f251145ca64c2393188724afda70222d349a600e18b51f67bdc3441dae90",
+      "decoded_bytes": 345
+    },
+    {
+      "path": "snapshot-changed-comments.md.gz",
+      "sha256": "68bbaed73902deb12282ab669d53e4738842d19c9f9da0f717bd2ec305f183cd",
+      "decoded_sha256": "a35d30b781e7e0027239bb59153738a90d2ac0fe4eb433cabc2c39e849a52ae8",
+      "decoded_bytes": 188
+    },
+    {
+      "path": "snapshot-prose-complete.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "decoded_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "decoded_bytes": 33
+    },
+    {
+      "path": "go.work.gz",
+      "sha256": "18732256c1a4dff256cf27b36019c323106a25c5af460b234c00b130a46c9f02",
+      "decoded_sha256": "3bd83f42c605a1735bb0bc9cdd2b991cc8d335067a5ecd0feab8fed35bc1b874",
+      "decoded_bytes": 174
+    },
+    {
+      "path": "go.work.before-snapshot.gz",
+      "sha256": "8b158033b0bba678a8ab95ee61ff96e0f1a4efe8e5a67f7b736fc357c24f56b5",
+      "decoded_sha256": "669502820eb7e0de21ac153e5d37a5bc648bdcd60e734e6a9a15fb1c9609e3c5",
+      "decoded_bytes": 168
+    },
+    {
+      "path": "canonical-prose.log.gz",
+      "sha256": "22465b103604b245aa53c10891aa97b649d69d62d1d98f4191226838d6898c95",
+      "decoded_sha256": "8b733cf02f963debbfe70daa4ab27198ffb4ea45b04bca5ab03ea4338fe950bc",
+      "decoded_bytes": 558
+    }
+  ],
+  "dependency": {
+    "starmap_source": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+    "workspace": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-authority-consumer/go.work",
+    "published_pin": "v0.16.6-0.20260909001903-7be0a0270144",
+    "go_mod_unchanged": true,
+    "published_pin_compile": "FAIL: package github.com/agentstation/starmap/pkg/catalogs/permission is absent. No local replacement or module pin was committed.",
+    "required": "Merge the Starmap delivery and obtain a compatible stable module before Starport publication and merge."
+  },
+  "contract": [
+    "RoutableSnapshot retains the authority head with the catalog, including after an availability-only rebuild. The read returns a value and allocates zero times in its assertion.",
+    "Catalog projection validates head shape and binds it to the generation identity and payload checksum.",
+    "Acceptance requires exact agreement with the stored generation authority head before either advancing the accepted pointer or accepting an idempotent repeat.",
+    "Ordinary snapshots carry no authority head. Retained snapshots remain unchanged after replacement. A snapshot head alone grants no inference permission."
+  ],
+  "tests": {
+    "toolchain": "go1.26.6",
+    "workspace_starmap": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+    "red": {
+      "pass": 0,
+      "fail": 14,
+      "skip": 0
+    },
+    "focused_green": {
+      "pass": 14,
+      "fail": 0,
+      "skip": 0
+    },
+    "complete_catalog_race": {
+      "pass": 148,
+      "fail": 0,
+      "skip": 0,
+      "packages": 1,
+      "elapsed_seconds": 70.925
+    },
+    "focused_command": "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json -run <three named authority tests> ./internal/catalog",
+    "complete_command": "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=15m -json ./internal/catalog",
+    "names": [
+      "TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart",
+      "TestAuthorityCandidateRequiresExactStoredHead",
+      "TestAuthorityProjectionRejectsMismatchedHead"
+    ],
+    "storage": "Actual Badger storage in private test directories, with synchronous writes. Includes close and reopen. No mock store substitutes for these new assertions."
+  },
+  "static_checks": {
+    "vet": "PASS: go vet ./internal/catalog with the recorded workspace",
+    "lint": "PASS: make lint with a private GOLANGCI_LINT_CACHE, 0 issues",
+    "previous_lint": "The shared cache reported nine findings with deleted /private/tmp source paths. A fresh task cache passes without changing code or lint configuration.",
+    "prose": "PASS: all three added comments, extracted from the exact diff, pass strict lint. No other durable Starport prose changed.",
+    "ago": "The Starport module declares no ago tool. No tool or policy was added."
+  },
+  "remaining": [
+    "Current permission checks on every provider attempt, retry, and cache delivery.",
+    "Authority ordering, configuration, clock qualification, source transitions, and mixed-schema refusal.",
+    "Four mapped Starport consumer checks, full pre-PR check roster, required review, native CI, compatible published module, and merge."
+  ],
+  "acceptance": "No task completion or full Starport consumer acceptance credit.",
+  "canonical_prose": {
+    "result": "PASS",
+    "files": 1306,
+    "diagnostics": 0,
+    "process_exit": "Session expired before final retrieval. Complete log records all three checks passing."
+  }
+}

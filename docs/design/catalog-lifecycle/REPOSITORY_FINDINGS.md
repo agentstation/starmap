@@ -2042,3 +2042,18 @@ The combined client snapshot passes zero-allocation and zero-storage-read assert
 
 The [snapshot proof](../../plans/proof/starport-production-catalog/csp4/authority-snapshot-2026-09-11/verification.json) records these checks and the combined source.
 Broader verification, required review, native CI, and merge remain required. Starport admission still needs integration.
+
+
+## Starport authority snapshot binding, 2026-09-11
+
+Local `aceaf0b` retains the authority head in each routing snapshot.
+Availability-only rebuilds preserve it. Ordinary catalog replacement clears it, while previously retained snapshots remain unchanged.
+Acceptance compares exact authority metadata with the stored generation before advancing the head or accepting an idempotent repeat.
+
+The [binding proof](../../plans/proof/starport-production-catalog/csp4/starport-snapshot-2026-09-11/verification.json) records fourteen failing events before the fix.
+Fourteen focused events and 148 complete catalog race events then pass against local Starmap `768347ab`.
+The new tests use Badger directly and include close and reopen. Snapshot reads pass their zero-allocation assertion.
+Vet and lint pass. A fresh lint cache resolves findings that named deleted source paths without changing code or policy.
+
+The unchanged published module lacks the permission API package. The implementation remains local and requires a compatible published module.
+Current permission checks on attempts and cached responses remain incomplete. All four mapped Starport consumer checks remain UNVERIFIED.

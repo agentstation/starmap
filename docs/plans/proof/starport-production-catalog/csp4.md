@@ -72,10 +72,14 @@ The initial allocation check measured six allocations during checksum validation
 Both valid consumer admission and checksum validation now pass their zero-allocation assertions. Static checks, complete documentation, and the 1,457-file prose check pass.
 The proof retains the original readiness gap, allocation failure, and contradictory-head test failures.
 
-Starport source `d45bb30` remains clean in `/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer`, branch `codex/catalog-authority-consumer`.
-An isolated workspace compiles catalog, app, and router packages against Starmap `7641eaea`. It runs no behavior tests and changes no module pin.
-The release verifier passes sixteen checks with the published pseudo-version. The separate architecture V01 gate still requires a stable release.
-No module pin or release gate changed.
+Starport source `aceaf0b` is clean in `/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer`, branch `codex/catalog-authority-consumer`.
+The [binding proof](csp4/starport-snapshot-2026-09-11/verification.json) records fourteen focused events and 148 complete catalog race events.
+Real Badger tests prove retained authority after reopen and refusal of mismatched candidates, including idempotent repeats.
+The private workspace selects Starmap `768347ab`. No module pin changed.
+
+The current published pin lacks the permission API package, so the new Starport source cannot compile against it.
+The earlier release verifier passed sixteen checks at `d45bb30`. Architecture gate V01 still requires a stable release.
+Permission checks at provider attempts and cache delivery remain incomplete.
 
 Clock-parent verification at `7641eaea` passes 82 ordinary packages, 82 race packages, and fifteen coverage thresholds.
 The full command stops at prose checks on five copied research files. Compression preserves their exact bytes.

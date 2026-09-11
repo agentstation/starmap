@@ -142,6 +142,18 @@
       "sha256": "5ab0a396fea26a028d2abcebb370313514f5d60dce2554b5626371d262c02074",
       "decoded_sha256": "0128c77c9dcedeaa669bdd72e7309d3c9e95ee16b607aa5701c711f3453d7fb5",
       "decoded_bytes": 558
+    },
+    {
+      "path": "csp4-product.log.gz",
+      "sha256": "5ba6852cfaa53aa475f6aae280116b2d93267fc86d2972c465e0abc98785ab35",
+      "decoded_sha256": "ab941c2937711dcdc6a2c3da6f8eb7c39265f027891a429ff231ded17c6a7a27",
+      "decoded_bytes": 1257
+    },
+    {
+      "path": "combined-race.jsonl.gz",
+      "sha256": "14ab88f44cc05e79abf83ba9b0313c6ead0d2f4b56a8a316a3dbd87c2d0dd82b",
+      "decoded_sha256": "fd49aa64ee58aa94191fefe59c904b4bc0f055555ecc276a2bc8e4ae6ae0513f",
+      "decoded_bytes": 1665550
     }
   ],
   "contract": [
@@ -193,12 +205,6 @@
       "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
       "command": "PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jack/go/bin GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 CATALOG_GIT_FIXTURE_REQUIRED=1 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 make verify",
       "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/make-verify.log"
-    },
-    {
-      "session_id": 82167,
-      "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout=30m -json . ./runtime ./remote ./pkg/catalogs/artifact",
-      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/combined-race.jsonl"
     }
   ],
   "fixture_note": "The prepared public archive passes its size and checksum checks. CATALOG_PUBLIC_FIXTURE_REQUIRED is unused. The recognized absence switch is STARMAP_PUBLIC_FIXTURE_REQUIRED. These runs use the present archive and must report their actual skips.",
@@ -284,6 +290,50 @@
         "path": "internal/providers/connectors/runtime.go",
         "line": 13,
         "finding": "RuntimeLease retains a complete provider runtime and exposes its RoutableSnapshot. That snapshot provides the catalog identity for permission checks."
+      }
+    ]
+  },
+  "product_check": {
+    "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+    "starport_source": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 STARMAP_PUBLIC_FIXTURE_REQUIRED=1 bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer --task CSP4",
+    "exit_code": 1,
+    "result": "A07 PASS. Its four required subcases pass. Four mapped Starport consumer subcases remain UNVERIFIED.",
+    "primary_summary": "Summary: 1 passed, 49 failed. The task-scoped invocation leaves unselected cases UNVERIFIED. This is not a whole-plan regression."
+  },
+  "combined_race": {
+    "session_id": 82167,
+    "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout=30m -json . ./runtime ./remote ./pkg/catalogs/artifact",
+    "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/combined-race.jsonl",
+    "exit_code": 0,
+    "pass": 1059,
+    "fail": 0,
+    "skip": 0,
+    "packages": [
+      {
+        "Time": "2026-09-10T22:53:56.20326-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap",
+        "Elapsed": 643.611
+      },
+      {
+        "Time": "2026-09-10T22:54:13.210467-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/remote",
+        "Elapsed": 16.169
+      },
+      {
+        "Time": "2026-09-10T22:54:14.879071-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+        "Elapsed": 1.334
+      },
+      {
+        "Time": "2026-09-10T23:06:58.920976-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 1424.164
       }
     ]
   }
