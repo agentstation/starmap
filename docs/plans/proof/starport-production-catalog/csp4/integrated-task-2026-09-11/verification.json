@@ -592,32 +592,126 @@
       "path": "corrected-task-race-started.json.gz",
       "sha256": "23f75da326821ba977823eb734a8569d2d86c3303c972434c062fb4f65878db0",
       "decoded_sha256": "bc509ceb045e00ae9c19efe0fd6a90c320fda1b6b4c4d002327fd13ca27f82b4"
+    },
+    {
+      "path": "corrected-task-gate.meta.json.gz",
+      "sha256": "83de7f49c6dacd9638af1e124054890a004c8b443ceeb35563d8d749383299c6",
+      "decoded_sha256": "315fa52f310bb0dd6ea471301a3415a241010437650e44a39532623234ba116b"
+    },
+    {
+      "path": "corrected-task-gate-report.json.gz",
+      "sha256": "f85c1d3833540734d270870c613d3029a57708074c32a4744fa12a3d1b8b6046",
+      "decoded_sha256": "b52475260366727048d9162bfd86aa93ca21724ad9f970c173093ae294b68d4e"
+    },
+    {
+      "path": "corrected-task-gate.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "corrected-task-gate-summary.json.gz",
+      "sha256": "fcd9d5043ef06853dbfa8627d6bf7bc4113e5c2491a6c95808f5107427769ff4",
+      "decoded_sha256": "41dedeb917265ab6c05fc277a0f998b58dd124fbc052de3c3a7281f0ce26738b"
+    },
+    {
+      "path": "corrected-task-race.json.gz",
+      "sha256": "b38024f6f6a511dfdc1beeb6d405871a39dfb166cf77f93b486ff231ecbd3319",
+      "decoded_sha256": "decfa0f5ed19b2aca343cd93651979f17db76d75eeae54b28dc55f35efcf3fb2"
+    },
+    {
+      "path": "corrected-task-race.jsonl.gz",
+      "sha256": "b87763e18a23b86f56829eba53d72afe08f58b116622e12364991d0c400fdaab",
+      "decoded_sha256": "e54affa0872d6f805732d293a6cf2c7f509bf0834b69a966d4a44daf2b4f99be"
+    },
+    {
+      "path": "corrected-task-race-summary.json.gz",
+      "sha256": "8b63187446e54e7690aa9fcc13141578c87a0ac380a81b7808ac4374587377ba",
+      "decoded_sha256": "881cb653fd69bc3c30f1d3e93074af171a4785ca963e99fbd9f27172d5d6b4f3"
     }
   ],
   "corrected_source_rerun": {
-    "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
-    "source_tree": "17d63e69b0c557679525f163f5299052713af203",
-    "command": [
-      "go",
-      "test",
-      "-race",
-      "-count=1",
-      "-timeout=30m",
-      "-json",
-      "./runtime",
-      "./remote",
-      "./pkg/catalogs/artifact"
-    ],
-    "environment_overrides": {
-      "GOWORK": "off",
-      "GOTOOLCHAIN": "go1.26.6"
+    "metadata": {
+      "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+      "source_tree": "17d63e69b0c557679525f163f5299052713af203",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=30m",
+        "-json",
+        "./runtime",
+        "./remote",
+        "./pkg/catalogs/artifact"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "started_at": "2026-09-11T17:22:05.416992+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "finished_at": "2026-09-11T17:50:15.648439+00:00"
     },
-    "started_at": "2026-09-11T17:22:05.416992+00:00",
-    "status": "running",
-    "session_id": 26354,
-    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
-    "metadata": ".tmp/csp4-integrated-task/corrected-task-race.json",
-    "log": ".tmp/csp4-integrated-task/corrected-task-race.jsonl",
-    "limitation": "This run has not completed. Earlier task results remain bound to d1bb47e1. Final consumer qualification must use the published dependency."
-  }
+    "test_events": {
+      "pass": 986
+    },
+    "packages": {
+      "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+        "pass": 40
+      },
+      "github.com/agentstation/starmap/remote": {
+        "pass": 45
+      },
+      "github.com/agentstation/starmap/runtime": {
+        "pass": 901
+      }
+    },
+    "failed": [],
+    "skipped": []
+  },
+  "corrected_source_component_gate": {
+    "metadata": {
+      "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+      "consumer_source_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+      "command": [
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "--task",
+        "CSP4",
+        "--json"
+      ],
+      "environment_overrides": {
+        "GOWORK": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/go.work",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "started_at": "2026-09-11T17:37:42.325843+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "finished_at": "2026-09-11T17:44:42.895306+00:00"
+    },
+    "summary": {
+      "selected_subcases": 8,
+      "gate_status": "PASS",
+      "qualification": "component checks only",
+      "unverified_cases": 49,
+      "test_events": {
+        "pass": 54
+      },
+      "subcases": {
+        "A07.public_no_provider_keys": "PASS",
+        "A07.invalid_signature": "PASS",
+        "A07.checksum_size_schema": "PASS",
+        "A07.replay_rejection": "PASS",
+        "A09.excluded_membership": "PASS",
+        "A10.cold_owner_refusal": "PASS",
+        "A10.warm_retained_authority": "PASS",
+        "A21.mixed_schema_permission_envelope": "PASS"
+      }
+    },
+    "limitation": "Temporary module workspace. Final published dependency qualification and implementation merges remain required."
+  },
+  "current_status": "CORRECTED_SOURCE_REPOSITORY_AND_BOTH_TASK_COMMANDS_PASS_DELIVERY_PENDING"
 }

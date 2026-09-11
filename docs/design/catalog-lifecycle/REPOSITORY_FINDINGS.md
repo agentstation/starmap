@@ -2331,7 +2331,9 @@ It records 54 race events and no skips. The complete task race command also pass
 
 The repository verifier later failed production lint. The [portable query correction](../../plans/proof/starport-production-catalog/csp4/windows-portable-entry-2026-09-11/verification.json) passes all six native jobs.
 Its 11,704 passing events include both Windows clock preflights. PR #151 waits for its repository gate.
-Combined source `6419ea85` runs full verification.
+
+Combined source `6419ea85` passes all 41 repository stages across two invocations and all eight CSP4 subcases.
+The original verifier failed only an ignored PR draft prose check. The continuation passes the remaining stages without changing tracked source.
 This component evidence does not qualify the final released pair or complete CSP4 before its implementation merges.
 
 ## Real Valkey follow-up, 2026-09-11

@@ -35,8 +35,10 @@
       "make",
       "verify"
     ],
-    "status": "running",
-    "log": ".tmp/csp4-origin-integrated/portable-entry-verifier.log"
+    "status": "completed",
+    "log": ".tmp/csp4-origin-integrated/portable-entry-verifier.log",
+    "exit_code": 2,
+    "failure": "Ignored local PR draft prose. The tracked source did not change. See repository_completion for the continued checks."
   },
   "failure": {
     "previous_native_source": "75ac9d0751d666ed71393ca08f573e8a2739860e",
@@ -1027,6 +1029,138 @@
       "path": "native-portability-prose-corrected.log.gz",
       "sha256": "ed8b6e1d264531ff004f0b171c9fd84a6f03f20785125bcecd39a6bfde11d383",
       "decoded_sha256": "85611925e5e6708e5581b1d1a0c7bacd213ea847140b4d784745cdb8cba6fa5a"
+    },
+    {
+      "path": "integrated-6419-portable-entry-verifier.json.gz",
+      "sha256": "d143c995233ae00aedc3a79cef95ccdffe84b13bc060f69d7aae66ab6d9c4656",
+      "decoded_sha256": "eca8b355fecccb6ab655ac2d5578f23b2fd557b6ab7cf8fec7ec12ef108747eb"
+    },
+    {
+      "path": "integrated-6419-portable-entry-verifier.log.gz",
+      "sha256": "00118567740dc16ed9fc22af95f89c3c9b16e0fd9309b7d755b6c20469e6ef51",
+      "decoded_sha256": "c4ade660afe577f0c001f0b14b7ceb2d34cbedb5b5a4e038524430d4182d846f"
+    },
+    {
+      "path": "integrated-6419-remaining-gates-context.json.gz",
+      "sha256": "1241613fade34366741f65a548996f8485bfe539d73be4ee9fbbe1a760d96cec",
+      "decoded_sha256": "3bb768e5d49112ed94a6ca4b2ace06744516e50507c095c0998028d62bda0a6b"
+    },
+    {
+      "path": "integrated-6419-remaining-gates.json.gz",
+      "sha256": "827c94eef7568441daf9b8c506f6ebc0f8149391377bae6b9d3b4f051dbdb4f6",
+      "decoded_sha256": "fbce2a6a38fc28bcfd1d88fcb3bc1d9121d63d8881c9d710efe952deda4066e6"
+    },
+    {
+      "path": "integrated-6419-remaining-gates.log.gz",
+      "sha256": "bfe0952b65905681462883475dfc0732d6158631a7143b237c6f193e2ce20584",
+      "decoded_sha256": "519996129523908f3dd84e3bc6f609b5975d221aa1107b239416d4ea9448400d"
+    },
+    {
+      "path": "integrated-6419-verify-remaining.sh.gz",
+      "sha256": "0f537567950442198389bb18de4d13f0cbcdfc4895015beec83c6ba04c54e1af",
+      "decoded_sha256": "34e82b30ce5d01c57bc561112639904dd500f77ddf4da8bfa1d26f08c62b5466"
+    },
+    {
+      "path": "integrated-6419-pr-body-before-prose.md.raw.gz",
+      "sha256": "34d9225aae57d8646be1fab7d28ee1c66c9eb857dc4eac8cecb478ca5b1ea13e",
+      "decoded_sha256": "e66f7afb33872972ccb28682945aa9fee6f8259e7a0e675767abff515f9dbe5c"
+    },
+    {
+      "path": "integrated-6419-pr-body-draft.md.gz",
+      "sha256": "5c7a3e8ad54cf20f9716830cb1d00eae0a8ca2034632083923f325880d6c6bfc",
+      "decoded_sha256": "2577d8e5839c38f0f61e1d2819cc22f2d706efdcab3c9b5b05e0821001793975"
+    },
+    {
+      "path": "integrated-6419-repository-stage-results.json.gz",
+      "sha256": "a811f2ba21fcef8016d6b7abb882560a0702a6673f64dc9f2e8bb3e7566c993f",
+      "decoded_sha256": "aaa03eff159f1e5fbfed74cab99b02b02a68350f20e06bbb57ce40d67c6679f2"
+    },
+    {
+      "path": "plan-repository-completion-prose.json.gz",
+      "sha256": "a401c85bae69670a8f421c442d161b8e86c88e46a395d299c26faa22d1bbc466",
+      "decoded_sha256": "dab5c9d94e950e6f2680942bc472a1a92fc8f477f6f3ec5b73551a466eaa2bb2"
+    },
+    {
+      "path": "plan-repository-completion-prose.log.gz",
+      "sha256": "26eb049635a22c6b0f7b842df05b604cbcaf119bc5a9d68871c7d1196d3d02b7",
+      "decoded_sha256": "027eac61057bf1ec719b9a4cb10f1d52f05fc90b148db5a3d849e54274c3f693"
+    },
+    {
+      "path": "plan-completed-checks-prose.json.gz",
+      "sha256": "a9b6020a6d699e513b9b078f883054d9b0b2d68a36a0b3222a7f56ab6bdd401d",
+      "decoded_sha256": "9a074a53b2c7103cdd2a78661ed94ad7babe30a009c21c3d8cc083cade8275c0"
+    },
+    {
+      "path": "plan-completed-checks-prose.log.gz",
+      "sha256": "02851773df513e56c26b98c15fc182abab5441df1fbe9edf27329df7744101a8",
+      "decoded_sha256": "534cf3fd432a4697262e58125b9e8b7cf21bbb4e6c36f8f2d89b8f88b2c2d3f8"
     }
-  ]
+  ],
+  "repository_completion": {
+    "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "source_tree": "17d63e69b0c557679525f163f5299052713af203",
+    "status": "ALL_41_REPOSITORY_STAGES_PASS_ACROSS_ORIGINAL_AND_CONTINUED_RUN",
+    "original_invocation_exit_code": 2,
+    "original_invocation_failure": "Ignored local PR draft prose, after 34 successful stages.",
+    "continuation_exit_code": 0,
+    "passed_stage_count": 41,
+    "passed_stages": [
+      "go test ./...",
+      "make test-pure-go",
+      "make test-file-sizes",
+      "./scripts/verify-package-layout.sh",
+      "./scripts/test-package-layout-verifier.sh",
+      "./scripts/verify-catalog-package-ownership.sh",
+      "./scripts/test-catalog-package-ownership-verifier.sh",
+      "./scripts/verify-catalog-dependency-direction.sh",
+      "./scripts/test-catalog-dependency-direction-verifier.sh",
+      "bash ./scripts/verify-canonical-alias-history.sh",
+      "python3 ./scripts/test_catalog_product_verify.py",
+      "python3 ./scripts/test_prepare_public_catalog_fixture.py",
+      "env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1",
+      "go vet ./...",
+      "./scripts/verify-catalog-performance.sh",
+      "./scripts/verify-container-smoke.sh",
+      "devbox run golangci-lint run",
+      "go tool ago -stale-ignores ./...",
+      "coverage ./internal/catalog/pipeline >= 70%",
+      "coverage ./internal/catalog/query >= 75%",
+      "coverage ./internal/providers/clients >= 80%",
+      "coverage ./internal/sources/providers >= 75%",
+      "coverage ./internal/server/middleware >= 90%",
+      "coverage ./internal/server/openrouter >= 85%",
+      "coverage ./internal/server/params >= 95%",
+      "coverage ./internal/server/response >= 95%",
+      "coverage ./internal/server/sse >= 90%",
+      "coverage ./internal/transport >= 40%",
+      "coverage ./pkg/catalogs/authority >= 90%",
+      "coverage ./pkg/catalogs >= 55%",
+      "coverage ./pkg/errors >= 80%",
+      "coverage ./internal/catalog/reconciler >= 75%",
+      "coverage ./pkg/sources >= 35%",
+      "make docs-check",
+      "make technical-writing-check",
+      "git diff --check",
+      "go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.NbEY95/starmap ./cmd/starmap",
+      "run_cli version",
+      "run_cli validate catalog",
+      "run_cli providers",
+      "run_cli models list --limit 5"
+    ],
+    "scope": "All original repository verifier stages ran successfully against the unchanged tracked source across the original run and the continued final stages. The original make verify invocation still has exit code 2.",
+    "task_race_session": 26354,
+    "task_race_status": "running",
+    "original_invocation_artifact": "integrated-6419-portable-entry-verifier.json.gz",
+    "continuation_artifact": "integrated-6419-remaining-gates.json.gz",
+    "derivation_artifact": "integrated-6419-remaining-gates-context.json.gz",
+    "stage_results_artifact": "integrated-6419-repository-stage-results.json.gz"
+  },
+  "plan_prose_validation": {
+    "initial_exit_code": 2,
+    "failure": "Two evidence paragraphs exceeded six sentences.",
+    "final_exit_code": 0,
+    "files": 1337,
+    "diagnostics": 0,
+    "scope": "Plan and evidence prose only."
+  }
 }

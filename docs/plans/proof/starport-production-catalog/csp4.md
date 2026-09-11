@@ -25,9 +25,13 @@ Separate privileged checks pass the two Linux configuration cases. The two Windo
 The CI merge checkout has the same tree as reviewed `2b4aa1fe`.
 The agent enabled automatic merge after every check except the repository Verification Gate passed. That gate still blocks the merge.
 
-Combined source `6419ea85` includes the correction. Full repository verification runs in session `55757`.
-The exact CSP4 race command runs against this corrected source in session `26354`. The integrated task proof records its start and log.
-Its log is `.tmp/csp4-origin-integrated/portable-entry-verifier.log`. The combined runtime and Starport still need delivery checks, native CI, and merges.
+Combined source `6419ea85` passes all 41 repository stages across the original run and its continuation.
+The original verifier returned 2 after 34 passing stages because an ignored PR draft failed prose lint.
+Correcting that draft changed no tracked source. The remaining seven original stages returned 0. The correction proof preserves both results.
+
+The corrected source also passes all eight CSP4 subcases with 54 race events and no skips.
+The exact task race command passes 986 events: 901 runtime, 45 remote, and 40 artifact. No event fails or skips.
+The combined runtime and Starport still need review, publication, native CI, and merges.
 
 ### Consumer checks and published dependency
 
