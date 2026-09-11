@@ -21,15 +21,21 @@ Source health becomes healthy, while catalog freshness remains critical. Provide
 The publication failure blocks freshness, not decoding. These probes do not register A07 or complete its remaining negative and recovery cases.
 This review made no release or channel changes.
 
-Clock source `d5ef510b020aeec260c2e108d80f962ba4ae5858` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock`, branch `codex/catalog-native-clock`.
+Clock source `7641eaea2b98f9ffbefb2807f67253919227b234` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock`, branch `codex/catalog-native-clock`.
 Its [cache proof](csp4/clock-cache-2026-09-10/verification.json) records 127 permission tests per supported toolchain, including 37 new cache cases.
 The cache bounds query delay, counter error, rate drift, age, and concurrent invalidation. No production clock adapter qualifies yet.
 
-The clean parent remains in `/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock`, branch `codex/catalog-permission-clock`.
+The clean parent `7239f4b76ee4d079479ae1703ac6e0ac55683925` remains in `/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock`, branch `codex/catalog-permission-clock`.
 Its [clock proof](csp4/permission-clock-2026-09-10/verification.json) retains the complete-sample tests.
 Admission, relay, and permission status use one complete time and uncertainty sample.
 
-Full parent repository verification runs in session `13328` with host Go 1.27.0 for its race suite.
+Parent verification passes 82 ordinary packages, 82 race packages, and 15 coverage thresholds. The race suite uses host Go 1.27.0.
+The original invocation exits 2 because the prose gate scans two untracked Apple research files.
+Compression preserves those files without a product change. The prose gate then passes over 1,453 files, and the remaining six verifier stages pass.
+
+The combined proof covers all forty stages. The original command retains its failure and exact recovery evidence.
+Main integration preserves both tested clock trees.
+
 The explicitly pinned Go 1.26.6 and Go 1.25.12 authority/status runs each pass 51 events.
 Earlier unpinned artifact names do not establish Go 1.26.6 qualification. The proof preserves that correction. No owner decision remains.
 
@@ -38,7 +44,10 @@ Parent `717ba914` remains clean in `/Users/jack/src/github.com/agentstation/star
 The [runtime transaction proof](csp4/origin-runtime-2026-09-10/verification.json) records complete repository verification.
 
 Required Sol and Opus review passes with zero findings. All six native jobs pass with 10,170 test events and 92 package outcomes.
-Separate privileged Linux tests cover the two ordinary skips. Automatic squash merge waits for Verification Gate.
+Separate privileged Linux tests cover the two ordinary skips.
+
+PR #148 merged as `21e7356b621773fd1808bed5e7a83df7a0683ce7` on September 11 UTC.
+All fifteen checks pass. The merged tree equals reviewed `717ba914`. This is the 26th merged campaign PR.
 
 The [recovery record](csp4/worktree-recovery-2026-09-10.json) verifies the restored branches after their temporary directories disappeared.
 Canonical checkpoint `91aa43c6` preserves the completed checks. Historical proof keeps its original paths.
@@ -81,7 +90,7 @@ Full verification passes 82 packages in both ordinary and race modes. All 15 cov
 Documentation, prose, static analysis, and offline CLI checks pass. Catalog reads take 8.100–11.43 ns with zero allocations across three runs.
 
 The [delivery proof](csp4/origin-delivery-2026-09-10/verification.json) binds the reviewed head, public PR, and CI run `34540446314`.
-Next, confirm Verification Gate and the automatic merge of this reviewed library and runtime delivery.
+The merge now contains this reviewed library and runtime delivery. Dependent branches must include actual main commit `21e7356b`.
 Then continue canonical server settings, qualified clocks, shared-store followers, authority transitions, and Starport consumers.
 The current APIs do not complete the standalone production recipe.
 

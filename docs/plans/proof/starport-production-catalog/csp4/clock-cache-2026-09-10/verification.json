@@ -307,5 +307,11 @@
       "canonical-prose.log.gz",
       "canonical-prose-retry.log.gz"
     ]
+  },
+  "main_integration": {
+    "commit": "7641eaea2b98f9ffbefb2807f67253919227b234",
+    "parent": "7239f4b76ee4d079479ae1703ac6e0ac55683925",
+    "main": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
+    "tested_tree_unchanged": true
   }
 }

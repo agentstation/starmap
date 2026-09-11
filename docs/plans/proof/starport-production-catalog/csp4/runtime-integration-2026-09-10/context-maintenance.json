@@ -5,22 +5,14 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 120,
-  "new_evidence_artifacts": 98,
+  "local_links": 122,
+  "new_evidence_artifacts": 105,
   "new_commit_source_files": 37,
-  "resume_words": 299,
+  "resume_words": 330,
   "current_source": "b81b827067aa860096bed208e541dd84e31274ab",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs",
   "clean_source": true,
   "running_implementation_commands": [
-    {
-      "session_id": 13328,
-      "command": "make verify",
-      "source": "0d1920927164a3a64216d692912587256511fb26",
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock",
-      "log": ".tmp/csp4-permission-clock/make-verify.log",
-      "race_toolchain": "go1.27.0"
-    },
     {
       "session_id": 19923,
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make verify",
@@ -30,5 +22,15 @@
       "toolchain": "go1.26.6"
     }
   ],
-  "next_action": "Finish full verification, review, and PR delivery of the provider-documentation repair. Confirm the automatic merge of PR #148. Finish parent clock verification, native qualification, and the remaining CSP4 scope."
+  "next_action": "Finish full verification, review, and PR delivery of the provider-documentation repair. Include actual PR #148 merge 21e7356b in dependent deliveries. Continue native clock qualification and the remaining CSP4 scope.",
+  "public_acceptance_work": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
+    "branch": "codex/catalog-public-acceptance",
+    "base": "b81b827067aa860096bed208e541dd84e31274ab",
+    "status": "Uncommitted tests and captured public fixtures. Seven scoped runtime race events pass on Go 1.26.6. A07 registration and minimum-toolchain checks are active.",
+    "sessions": [
+      91649,
+      48174
+    ]
+  }
 }

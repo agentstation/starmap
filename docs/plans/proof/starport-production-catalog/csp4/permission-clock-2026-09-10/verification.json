@@ -245,16 +245,52 @@
       "path": "pinned-authority-go126.jsonl.gz",
       "sha256": "6494ace4736c79a95b9a5576425580c628682cf65f6865dff668490245cd9050",
       "decoded_sha256": "82a309ca379e085352714abf33f4b8a52f6d6db740a673824a71a1d363d71204"
-    }
-  ],
-  "running_commands": [
+    },
     {
-      "session_id": 13328,
-      "command": "make verify",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock/.tmp/csp4-permission-clock/make-verify.log"
+      "path": "completed-make-verify.log.gz",
+      "sha256": "550eff02e8e5421519f63f17bcb247fa624f100cc9a03f4010a29c8189a35028",
+      "decoded_sha256": "9a5d230856095565dd8d7791b418636ca85551d5ae4e0918f2e1041377c4ee33",
+      "decoded_bytes": 43040
+    },
+    {
+      "path": "completed-prose-recovery.log.gz",
+      "sha256": "307f941ce222297c329f0dd43fd87ae213fc4fcd4c6700b4c03c3782bf84cfe0",
+      "decoded_sha256": "405d13f56ea60d5073089336fea218aaa53b832e2633cbc4bbe6b6f2ddeebd26",
+      "decoded_bytes": 566
+    },
+    {
+      "path": "completed-verify-remainder.sh.gz",
+      "sha256": "8df257d62fc3ce23ee1de7010154af9254dba3a62a224c48f927213e4813bf1d",
+      "decoded_sha256": "f64a2e42264e52f30771fa528c88823a21a3c7d3d15fadfbbe09197c50d7fc10",
+      "decoded_bytes": 934
+    },
+    {
+      "path": "completed-verify-remainder.log.gz",
+      "sha256": "6d1a537a1ff599a6c9f070ae1b8f815ae5ab888c9f805a073580d3c06e6e6a18",
+      "decoded_sha256": "4094cd08d250770e0e5975debac4ea7a480e9c206f3dd619c885c5816ea55dcf",
+      "decoded_bytes": 39369
+    },
+    {
+      "path": "completed-research-compression.json.gz",
+      "sha256": "be718ab838651a8719d45444b0d0d17c5718c74fe950a8af1384c26bce2b5a53",
+      "decoded_sha256": "b24e833fb1833c4acc1903af16061adec29b0b59714ce9a4a01aba2c6f4600ef",
+      "decoded_bytes": 747
+    },
+    {
+      "path": "completed-xnu-kern-ntptime.c.gz.gz",
+      "sha256": "72a888173c6e5c85abc9ea25544aabd0ebc485ec3788e4e4b052207f5a103c49",
+      "decoded_sha256": "5ba93567269d91c80ed74e02383011e59d2b8f6d91caf86f0fc100bb5c94c7da",
+      "decoded_bytes": 7103
+    },
+    {
+      "path": "completed-apple-clock-gettime.c.gz.gz",
+      "sha256": "0cad81ef27b43de6d2511c2ba34785b58fc207bb3e9dc350355ec9f5787607fe",
+      "decoded_sha256": "2ba4b30f0210eb1f1ac849e667c819ec4d6db9bde55d16fbe4b32032e8ad47f9",
+      "decoded_bytes": 1845
     }
   ],
-  "next_action": "Complete full repository verification. Merge PR #148 after its required and native checks. Then qualify native clock adapters and the dependent clock delivery.",
+  "running_commands": [],
+  "next_action": "Continue native clock qualification and remaining CSP4 delivery. No native adapter or task completion credit.",
   "canonical_prose": {
     "status": "PASS",
     "files": 1295,
@@ -270,5 +306,30 @@
       "executable": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go"
     },
     "interpretation": "Earlier commands without explicit GOTOOLCHAIN do not establish Go 1.26.6 qualification. Their historical artifact filenames remain unchanged. The new explicitly pinned run establishes 51 passing authority/status events on Go 1.26.6. The ongoing full verifier uses the host Go 1.27.0 process for its race suite."
+  },
+  "full_verifier_gates": {
+    "status": "PASS_across_original_run_and_focused_recovery",
+    "source": "0d1920927164a3a64216d692912587256511fb26",
+    "ordinary_packages": 82,
+    "race_packages": 82,
+    "coverage_thresholds_passed": 15,
+    "gate_sections": 40,
+    "original_command": "make verify",
+    "original_exit_code": 2,
+    "original_failure": "The prose gate scanned two untracked Apple research source snapshots and reported 53 diagnostics. All prior code, race, coverage, container, and documentation stages passed.",
+    "recovery": "Preserved the exact third-party research bytes in gzip files. No product source, test, or prose rule changed. The prose gate passed over 1453 files. The remaining six verifier stages ran from the unchanged script tail and passed.",
+    "recovery_commands": [
+      "GOTOOLCHAIN=go1.27.0 make technical-writing-check",
+      "GOTOOLCHAIN=go1.27.0 bash .tmp/csp4-permission-clock/verify-remainder.sh"
+    ],
+    "toolchains": "The original race process used host Go 1.27.0. Recovery commands explicitly use Go 1.27.0. The separate pinned Go 1.26.6 and Go 1.25.12 authority/status checks remain the supported-toolchain evidence.",
+    "limitation": "The original make verify invocation exited 2. The combined evidence covers every gate, with the repaired prose gate and remaining stages in separate invocations."
+  },
+  "main_integration": {
+    "commit": "7239f4b76ee4d079479ae1703ac6e0ac55683925",
+    "main": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
+    "tree": "2193611189e0460eb08ff614e9bbbe8fca983417",
+    "tested_tree_unchanged": true,
+    "resolution": "The incoming main tree equals reviewed parent 717ba914. Four merge-history conflicts retain the clock change. The final index and committed tree exactly match checked 0d192092."
   }
 }

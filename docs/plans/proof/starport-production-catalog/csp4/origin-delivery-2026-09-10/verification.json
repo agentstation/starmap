@@ -7,11 +7,11 @@
   "pr": {
     "number": 148,
     "url": "https://github.com/agentstation/starmap/pull/148",
-    "state": "OPEN",
+    "state": "MERGED",
     "isDraft": false,
     "headRefOid": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
     "baseRefOid": "faa9cc8b0bc01eb787f567f568f1b9fe05e0740a",
-    "mergeStateStatus": "BLOCKED",
+    "mergeStateStatus": "UNKNOWN",
     "autoMergeRequest": {
       "authorEmail": null,
       "commitBody": null,
@@ -25,21 +25,23 @@
         "name": "Jack Spirou"
       }
     },
-    "mergedAt": null,
-    "mergeCommit": null
+    "mergedAt": "2026-09-11T00:27:30Z",
+    "mergeCommit": {
+      "oid": "21e7356b621773fd1808bed5e7a83df7a0683ce7"
+    }
   },
   "ci": {
-    "conclusion": "",
+    "conclusion": "success",
     "databaseId": 34540446314,
     "headSha": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
     "jobs": [
       {
-        "completedAt": "0001-01-01T00:00:00Z",
-        "conclusion": "",
+        "completedAt": "2026-09-11T00:27:01Z",
+        "conclusion": "success",
         "databaseId": 103081673053,
         "name": "Verification Gate",
         "startedAt": "2026-09-10T23:04:10Z",
-        "status": "in_progress",
+        "status": "completed",
         "steps": [
           {
             "completedAt": "2026-09-10T23:04:13Z",
@@ -114,52 +116,60 @@
             "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-11T00:26:16Z",
+            "conclusion": "success",
             "name": "Run verification gate",
             "number": 10,
             "startedAt": "2026-09-10T23:14:57Z",
-            "status": "in_progress"
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-11T00:26:17Z",
+            "conclusion": "success",
             "name": "Post Checkout pinned technical-writing skill",
             "number": 16,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-11T00:26:16Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-11T00:26:17Z",
+            "conclusion": "success",
             "name": "Post Set up release Go toolchain",
             "number": 17,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-11T00:26:17Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-11T00:26:17Z",
+            "conclusion": "success",
             "name": "Post Set up pinned Bun for Git acquisition fixtures",
             "number": 18,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-11T00:26:17Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-11T00:26:59Z",
+            "conclusion": "success",
             "name": "Post Set up minimum supported Go toolchain",
             "number": 19,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-11T00:26:17Z",
+            "status": "completed"
           },
           {
-            "completedAt": "0001-01-01T00:00:00Z",
-            "conclusion": "",
+            "completedAt": "2026-09-11T00:26:59Z",
+            "conclusion": "success",
             "name": "Post Checkout",
             "number": 20,
-            "startedAt": "0001-01-01T00:00:00Z",
-            "status": "pending"
+            "startedAt": "2026-09-11T00:26:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T00:26:59Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "startedAt": "2026-09-11T00:26:59Z",
+            "status": "completed"
           }
         ],
         "url": "https://github.com/agentstation/starmap/actions/runs/34540446314/job/103081673053"
@@ -1147,7 +1157,7 @@
         "url": "https://github.com/agentstation/starmap/actions/runs/34540446314/job/103081673556"
       }
     ],
-    "status": "in_progress",
+    "status": "completed",
     "url": "https://github.com/agentstation/starmap/actions/runs/34540446314"
   },
   "review": {
@@ -1372,6 +1382,48 @@
       "path": "native/native-runtime-windows-2025/toolchain.txt.gz",
       "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
       "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "pr148-merged.json.gz",
+      "sha256": "33cc86b8b31a28d1c032626924a06173ae77cdf66153accff924f6127d5a0b8f",
+      "decoded_sha256": "1633e99fc3114d22950fc705367b675f48f7a642c8ebefe0a2521c8d2bf04fe6",
+      "decoded_bytes": 4617
+    },
+    {
+      "path": "ci-complete.json.gz",
+      "sha256": "5b439b5eb6c8b8f05d18be07c6c7462cee119d2a061202307f0d547da4c33c6a",
+      "decoded_sha256": "e8a8a42c34f0836385e64288964f3870ff833367e8df73e6348f2ce544710a27",
+      "decoded_bytes": 24435
+    },
+    {
+      "path": "canonical-prose-acceptance-start.log.gz",
+      "sha256": "064fb198903d3eee082a9e7dbbf0ed72975321e0b632210dda016adca7dab383",
+      "decoded_sha256": "147a4c33ac159ae3463e235926bfdc359930cbfa9746205d82fe8c29f90cd4a7",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "canonical-prose-merged.log.gz",
+      "sha256": "ec57fdc820e09f30d8bd7f68d679cbe6cf1da04e815d312d3108a16627a07de7",
+      "decoded_sha256": "f69e0a2c40cc9f61ebeac743cb22eec7e3314e3d8473f6df8ed819d082bd8ede",
+      "decoded_bytes": 790
+    },
+    {
+      "path": "canonical-prose-merged-final.log.gz",
+      "sha256": "064fb198903d3eee082a9e7dbbf0ed72975321e0b632210dda016adca7dab383",
+      "decoded_sha256": "147a4c33ac159ae3463e235926bfdc359930cbfa9746205d82fe8c29f90cd4a7",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "canonical-prose-clock-complete.log.gz",
+      "sha256": "51712af483bce07a1351a8b1050c3ddfee188e8958d5520ff28f05974564837f",
+      "decoded_sha256": "42153894c64021a81a21574c846fb18caca063926180f8fa28486a4da81af6a5",
+      "decoded_bytes": 790
+    },
+    {
+      "path": "canonical-prose-clock-final.log.gz",
+      "sha256": "079c3015012f0842771b5b915bd4f2c8960586132efb90b60ee1af9601977a77",
+      "decoded_sha256": "02bf5f236f292881c2f807e73003c45156aa428db5865426bb858bebfd58f1c1",
+      "decoded_bytes": 558
     }
   ],
   "publication_prose": {
@@ -1437,5 +1489,21 @@
       ]
     },
     "scope": "PR #148 at 717ba914. These jobs do not include the dependent clock API commit."
+  },
+  "merged": {
+    "commit": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
+    "at": "2026-09-11T00:27:30Z",
+    "reviewed_head": "717ba9148a75ad74ca1758aa51cbb121b0f5fd18",
+    "tree": "6d613516659143f4c0c386c9f31da27cdf12a1db",
+    "reviewed_tree_equals_merged_tree": true,
+    "checks_passed": 15,
+    "campaign_merged_pr_count": 26,
+    "task_credit": "No CSP4 completion credit. All eight acceptance subcases remain UNVERIFIED."
+  },
+  "merge_plan_prose": {
+    "status": "PASS",
+    "files": 1299,
+    "diagnostics": 0,
+    "artifact": "canonical-prose-clock-final.log.gz"
   }
 }
