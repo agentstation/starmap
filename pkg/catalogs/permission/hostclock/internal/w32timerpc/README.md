@@ -9,14 +9,17 @@ The reader limits each fragment to 16 KiB and the full reply to 64 KiB.
 It checks allocation hints before decoding and preserves the observation deadline when the client changes stream deadlines.
 
 The connector reads service state and uses the local `W32TIME_ALT` pipe with caller identification.
-It grants no permission to act as the caller. It starts no service and changes no time setting.
+It starts no service and changes no time setting.
 Cancellation bounds the caller's wait. One process-wide slot limits native service-manager calls that cannot accept a context.
 That slot remains occupied until the outstanding query returns and releases its resources.
 
 After the peer check, the connector requests the service principal on the same pipe.
 A successful empty reply selects a null SSPI target for this verified local endpoint. A failed query still refuses authentication.
-Windows SSPI authenticates the process identity through Negotiate with packet privacy and identification-only access.
+Windows SSPI authenticates the process identity through Negotiate with packet privacy.
+The RPC context permits local impersonation so W32Time can check the caller's privilege. The pipe retains identification-only access.
+
 The connector rejects unavailable authentication and insufficient security flags. It never retries status without authentication.
+It refuses delegated or anonymous authentication.
 Native handles close after each observation, including failed exchanges.
 The security library loads from the Windows system directory only. No provider credential or password enters this exchange.
 

@@ -45,9 +45,8 @@ func observeLocalStatus(ctx context.Context) (*w32t.StatusInfo, error) {
 		return nil, err
 	}
 	defer func() { _ = windows.CloseHandle(process) }()
-	// Modern W32Time exposes W32TIME_ALT. Identification allows caller identity
-	// checks without permission to act as the caller. Verify the peer
-	// before sending any RPC bytes through this handle.
+	// Modern W32Time exposes W32TIME_ALT. The pipe uses caller identification.
+	// Verify the peer before sending any RPC bytes through this handle.
 	pipe, err := winio.DialPipeAccessImpLevel(ctx, `\\.\pipe\W32TIME_ALT`, windows.GENERIC_READ|windows.GENERIC_WRITE, winio.PipeImpLevelIdentification)
 	if err != nil {
 		return nil, err

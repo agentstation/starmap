@@ -245,12 +245,6 @@ jobs:
           STARMAP_WINDOWS_CLOCK_PRIVILEGE_PROBE: '1'
         run: |
           go test -json -count=1 -timeout=2m -run '^TestWindowsTimeServicePreparedPrivilege$' ./pkg/catalogs/permission/hostclock/internal/w32timerpc > native-evidence/windows-clock-privilege-probe.jsonl
-      - name: Compare Windows time-service security after an access failure
-        if: failure() && matrix.os == 'windows' && steps.windows_clock_preflight.outcome == 'failure'
-        timeout-minutes: 20
-        shell: bash
-        run: |
-          python scripts/probe_windows_clock_security.py --output native-evidence/windows-security-probe
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:

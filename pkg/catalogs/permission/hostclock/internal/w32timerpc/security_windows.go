@@ -36,7 +36,7 @@ func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
 		// Bind the native target to this reply, not an inherited GSSAPI context.
 		factory.target = principal.PrincName
 		return []dcerpc.Option{dcerpc.WithMechanism(factory), dcerpc.WithTargetName(principal.PrincName),
-			dcerpc.WithSecurtyProvider(dcerpc.AuthTypeGSSNegotiate), dcerpc.WithSeal(), dcerpc.Identify()}, nil
+			dcerpc.WithSecurtyProvider(dcerpc.AuthTypeGSSNegotiate), dcerpc.WithSeal(), dcerpc.Impersonate()}, nil
 	})
 }
 
@@ -72,10 +72,10 @@ func (f *localSecurityFactory) New(ctx context.Context) (gssapi.Mechanism, error
 		return nil, invalidReply("repeated local authentication context")
 	}
 	cc := gssapi.FromContext(ctx)
-	required := gssapi.Confidentiality | gssapi.Integrity | gssapi.ReplayDetection | gssapi.Sequencing | gssapi.Identify
+	required := gssapi.Confidentiality | gssapi.Integrity | gssapi.ReplayDetection | gssapi.Sequencing
 	if cc.IsServer || cc.Capabilities&required != required ||
 		cc.Capabilities&(gssapi.Delegation|gssapi.Anonymity) != 0 {
-		return nil, invalidReply("local authentication requires privacy and identification")
+		return nil, invalidReply("local authentication requires packet privacy")
 	}
 	session, err := newNativeSecurity(ctx, f.target)
 	if err != nil {
@@ -103,7 +103,7 @@ type localSecurity struct{ native *nativeSecurity }
 
 func (*localSecurity) Type() gssapi.OID { return localNegotiateOID }
 func (*localSecurity) Capabilities(context.Context) gssapi.Cap {
-	return gssapi.Confidentiality | gssapi.Integrity | gssapi.ReplayDetection | gssapi.Sequencing | gssapi.Identify
+	return gssapi.Confidentiality | gssapi.Integrity | gssapi.ReplayDetection | gssapi.Sequencing
 }
 func (s *localSecurity) Init(ctx context.Context, token *gssapi.Token) (*gssapi.Token, error) {
 	if token == nil {

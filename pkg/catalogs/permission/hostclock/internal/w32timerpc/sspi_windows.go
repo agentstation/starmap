@@ -16,7 +16,7 @@ const (
 	sspiContinue         = 0x00090312
 	sspiComplete         = 0x00090313
 	sspiCompleteContinue = 0x00090314
-	sspiPrivacyFlags     = 0x00000004 | 0x00000008 | 0x00000010 | 0x00010000 | 0x00020000
+	sspiPrivacyFlags     = 0x00000004 | 0x00000008 | 0x00000010 | 0x00010000
 	sspiContextFlags     = sspiPrivacyFlags | 0x00000200 | 0x00000800
 	sspiNativeDREP       = 0x00000010
 	sspiData             = 1
@@ -84,7 +84,7 @@ func loadSecurityAPI() (*securityAPI, error) {
 	return api, nil
 }
 
-// nativeSecurity owns ambient credentials and one identification-only context.
+// nativeSecurity owns ambient credentials and one local RPC security context.
 // Native work starts after pipe identity validation, within the observation worker.
 type nativeSecurity struct {
 	mu         sync.Mutex
@@ -227,7 +227,7 @@ func (s *nativeSecurity) step(ctx context.Context, input []byte) ([]byte, bool, 
 	complete := (status&0xffffffff) == 0 || (status&0xffffffff) == sspiComplete
 	if complete {
 		if flags&sspiPrivacyFlags != sspiPrivacyFlags || flags&(0x00000001|0x00040000) != 0 {
-			return nil, false, invalidReply("Windows did not grant private identification-only authentication")
+			return nil, false, invalidReply("Windows did not grant required packet privacy")
 		}
 		queried, _, _ := s.api.query.Call(uintptr(unsafe.Pointer(&s.context)), 0, uintptr(unsafe.Pointer(&s.sizes)))
 		if (queried & 0xffffffff) != 0 {
