@@ -1,0 +1,2329 @@
+{
+  "task": "CSP4",
+  "status": "DIAGNOSTIC_COMPLETE_PRODUCTION_FIX_PENDING",
+  "source_commit": "082c1daa479978a0fd501e658aa9ea5bff792db9",
+  "base": "a6545493cc5a56c548dd1ce978107e5882b3a5b0",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "pull_request": "https://github.com/agentstation/starmap/pull/151",
+  "contract": "Diagnostic overlays compare pipe and RPC security independently. Production Go source, authentication defaults, and mandatory native gates remain unchanged.",
+  "checks": [
+    {
+      "name": "python",
+      "command": [
+        "python3",
+        "-m",
+        "py_compile",
+        "scripts/probe_windows_clock_security.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "actionlint",
+      "command": [
+        "actionlint",
+        "-shellcheck=",
+        ".github/workflows/pr.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "workflow",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "./internal/ciworkflow"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "writing",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "cross_builds": [
+    {
+      "name": "go1.26.6-amd64-identification",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/identification/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-amd64-identification.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-amd64-pipe-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-amd64-pipe-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-amd64-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-amd64-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-amd64-pipe-and-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-and-rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-amd64-pipe-and-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-arm64-identification",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/identification/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-arm64-identification.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-arm64-pipe-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-arm64-pipe-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-arm64-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-arm64-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-arm64-pipe-and-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-and-rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.26.6-arm64-pipe-and-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-amd64-identification",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/identification/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-amd64-identification.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-amd64-pipe-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-amd64-pipe-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-amd64-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-amd64-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-amd64-pipe-and-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-and-rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-amd64-pipe-and-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-arm64-identification",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/identification/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-arm64-identification.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-arm64-pipe-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-arm64-pipe-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-arm64-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-arm64-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-arm64-pipe-and-rpc-impersonation",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-overlay",
+        "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/security-probe/overlays/pipe-and-rpc-impersonation/overlay.json",
+        "-o",
+        ".tmp/csp4-host-clock/security-probe/go1.25.12-arm64-pipe-and-rpc-impersonation.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "exit_code": 0
+    }
+  ],
+  "review": {
+    "findings": [],
+    "overall_correctness": "patch is correct",
+    "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
+    "overall_confidence": 0.97
+  },
+  "native_workflow_snapshot": {
+    "conclusion": "",
+    "databaseId": 34606766355,
+    "headSha": "082c1daa479978a0fd501e658aa9ea5bff792db9",
+    "jobs": [
+      {
+        "completedAt": "2026-09-11T13:54:36Z",
+        "conclusion": "success",
+        "databaseId": 103287293792,
+        "name": "Constructor Network Passivity",
+        "startedAt": "2026-09-11T13:54:10Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:54:13Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:54:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:15Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:54:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:26Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:54:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:32Z",
+            "conclusion": "success",
+            "name": "Verify passive constructors and the socket control",
+            "number": 4,
+            "startedAt": "2026-09-11T13:54:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:33Z",
+            "conclusion": "success",
+            "name": "Retain constructor network evidence",
+            "number": 5,
+            "startedAt": "2026-09-11T13:54:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:33Z",
+            "conclusion": "success",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 9,
+            "startedAt": "2026-09-11T13:54:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:34Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 10,
+            "startedAt": "2026-09-11T13:54:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:34Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "startedAt": "2026-09-11T13:54:34Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287293792"
+      },
+      {
+        "completedAt": "2026-09-11T13:54:40Z",
+        "conclusion": "failure",
+        "databaseId": 103287293937,
+        "name": "Runtime windows-2025",
+        "startedAt": "2026-09-11T13:53:02Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:05Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:18Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:35Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:38Z",
+            "conclusion": "success",
+            "name": "Set up pinned Bun for Git acquisition fixtures",
+            "number": 4,
+            "startedAt": "2026-09-11T13:53:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:41Z",
+            "conclusion": "success",
+            "name": "Prepare verified public catalog fixture",
+            "number": 5,
+            "startedAt": "2026-09-11T13:53:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:42Z",
+            "conclusion": "success",
+            "name": "Prepare Windows time-service fixture",
+            "number": 6,
+            "startedAt": "2026-09-11T13:53:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:29Z",
+            "conclusion": "failure",
+            "name": "Test Windows time-service access before the full suite",
+            "number": 7,
+            "startedAt": "2026-09-11T13:53:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:31Z",
+            "conclusion": "failure",
+            "name": "Diagnose Windows time-service privilege after an access failure",
+            "number": 8,
+            "startedAt": "2026-09-11T13:54:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:35Z",
+            "conclusion": "success",
+            "name": "Compare Windows time-service security after an access failure",
+            "number": 9,
+            "startedAt": "2026-09-11T13:54:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:35Z",
+            "conclusion": "skipped",
+            "name": "Test native runtime, configuration, and paths",
+            "number": 10,
+            "startedAt": "2026-09-11T13:54:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:35Z",
+            "conclusion": "skipped",
+            "name": "Test real Git acquisition and mandatory tools",
+            "number": 11,
+            "startedAt": "2026-09-11T13:54:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:35Z",
+            "conclusion": "skipped",
+            "name": "Test provider and metadata artifact publication",
+            "number": 12,
+            "startedAt": "2026-09-11T13:54:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:35Z",
+            "conclusion": "skipped",
+            "name": "Test administrator-owned Linux configuration",
+            "number": 13,
+            "startedAt": "2026-09-11T13:54:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:36Z",
+            "conclusion": "success",
+            "name": "Retain native test evidence",
+            "number": 14,
+            "startedAt": "2026-09-11T13:54:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:36Z",
+            "conclusion": "skipped",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 26,
+            "startedAt": "2026-09-11T13:54:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:36Z",
+            "conclusion": "skipped",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 27,
+            "startedAt": "2026-09-11T13:54:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:38Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 28,
+            "startedAt": "2026-09-11T13:54:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:38Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 29,
+            "startedAt": "2026-09-11T13:54:38Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287293937"
+      },
+      {
+        "completedAt": "2026-09-11T13:54:18Z",
+        "conclusion": "success",
+        "databaseId": 103287294016,
+        "name": "Security & Reliability",
+        "startedAt": "2026-09-11T13:53:02Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:03Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:12Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "success",
+            "name": "Set up release Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:26Z",
+            "conclusion": "success",
+            "name": "Install pinned vulnerability scanner",
+            "number": 4,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:40Z",
+            "conclusion": "success",
+            "name": "Scan reachable Go vulnerabilities",
+            "number": 5,
+            "startedAt": "2026-09-11T13:53:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:13Z",
+            "conclusion": "success",
+            "name": "Run bounded fuzz smoke",
+            "number": 6,
+            "startedAt": "2026-09-11T13:53:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:15Z",
+            "conclusion": "success",
+            "name": "Run migration and persistence fault fixtures",
+            "number": 7,
+            "startedAt": "2026-09-11T13:54:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:15Z",
+            "conclusion": "success",
+            "name": "Post Set up release Go toolchain",
+            "number": 13,
+            "startedAt": "2026-09-11T13:54:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:16Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 14,
+            "startedAt": "2026-09-11T13:54:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:16Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 15,
+            "startedAt": "2026-09-11T13:54:16Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294016"
+      },
+      {
+        "completedAt": "2026-09-11T13:53:16Z",
+        "conclusion": "success",
+        "databaseId": 103287294029,
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-11T13:53:02Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:04Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:10Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:13Z",
+            "conclusion": "success",
+            "name": "Verify action pins resolve to their advertised releases",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:13Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 6,
+            "startedAt": "2026-09-11T13:53:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:13Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 7,
+            "startedAt": "2026-09-11T13:53:13Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294029"
+      },
+      {
+        "completedAt": "2026-09-11T13:54:16Z",
+        "conclusion": "success",
+        "databaseId": 103287294034,
+        "name": "Offline Server Persistence",
+        "startedAt": "2026-09-11T13:53:02Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:04Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:10Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:13Z",
+            "conclusion": "success",
+            "name": "Verify cold offline startup and restart",
+            "number": 4,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:14Z",
+            "conclusion": "success",
+            "name": "Retain offline server evidence",
+            "number": 5,
+            "startedAt": "2026-09-11T13:54:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:14Z",
+            "conclusion": "success",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 9,
+            "startedAt": "2026-09-11T13:54:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:14Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 10,
+            "startedAt": "2026-09-11T13:54:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:14Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "startedAt": "2026-09-11T13:54:14Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294034"
+      },
+      {
+        "completedAt": "2026-09-11T14:09:48Z",
+        "conclusion": "success",
+        "databaseId": 103287294136,
+        "name": "Runtime macos-15-intel",
+        "startedAt": "2026-09-11T13:53:05Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:09Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:16Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:13Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:15Z",
+            "conclusion": "success",
+            "name": "Set up pinned Bun for Git acquisition fixtures",
+            "number": 4,
+            "startedAt": "2026-09-11T13:55:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:16Z",
+            "conclusion": "success",
+            "name": "Prepare verified public catalog fixture",
+            "number": 5,
+            "startedAt": "2026-09-11T13:55:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:16Z",
+            "conclusion": "skipped",
+            "name": "Prepare Windows time-service fixture",
+            "number": 6,
+            "startedAt": "2026-09-11T13:55:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:16Z",
+            "conclusion": "skipped",
+            "name": "Test Windows time-service access before the full suite",
+            "number": 7,
+            "startedAt": "2026-09-11T13:55:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:16Z",
+            "conclusion": "skipped",
+            "name": "Diagnose Windows time-service privilege after an access failure",
+            "number": 8,
+            "startedAt": "2026-09-11T13:55:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:16Z",
+            "conclusion": "skipped",
+            "name": "Compare Windows time-service security after an access failure",
+            "number": 9,
+            "startedAt": "2026-09-11T13:55:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:08:43Z",
+            "conclusion": "success",
+            "name": "Test native runtime, configuration, and paths",
+            "number": 10,
+            "startedAt": "2026-09-11T13:55:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:00Z",
+            "conclusion": "success",
+            "name": "Test real Git acquisition and mandatory tools",
+            "number": 11,
+            "startedAt": "2026-09-11T14:08:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:37Z",
+            "conclusion": "success",
+            "name": "Test provider and metadata artifact publication",
+            "number": 12,
+            "startedAt": "2026-09-11T14:09:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:37Z",
+            "conclusion": "skipped",
+            "name": "Test administrator-owned Linux configuration",
+            "number": 13,
+            "startedAt": "2026-09-11T14:09:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:39Z",
+            "conclusion": "success",
+            "name": "Retain native test evidence",
+            "number": 14,
+            "startedAt": "2026-09-11T14:09:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:40Z",
+            "conclusion": "success",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 26,
+            "startedAt": "2026-09-11T14:09:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:40Z",
+            "conclusion": "success",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 27,
+            "startedAt": "2026-09-11T14:09:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:41Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 28,
+            "startedAt": "2026-09-11T14:09:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:09:44Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 29,
+            "startedAt": "2026-09-11T14:09:41Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294136"
+      },
+      {
+        "completedAt": "2026-09-11T14:00:33Z",
+        "conclusion": "success",
+        "databaseId": 103287294140,
+        "name": "Runtime ubuntu-24.04",
+        "startedAt": "2026-09-11T13:53:03Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:06Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:10Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:17Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "success",
+            "name": "Set up pinned Bun for Git acquisition fixtures",
+            "number": 4,
+            "startedAt": "2026-09-11T13:53:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "success",
+            "name": "Prepare verified public catalog fixture",
+            "number": 5,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "skipped",
+            "name": "Prepare Windows time-service fixture",
+            "number": 6,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "skipped",
+            "name": "Test Windows time-service access before the full suite",
+            "number": 7,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "skipped",
+            "name": "Diagnose Windows time-service privilege after an access failure",
+            "number": 8,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "skipped",
+            "name": "Compare Windows time-service security after an access failure",
+            "number": 9,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:06Z",
+            "conclusion": "success",
+            "name": "Test native runtime, configuration, and paths",
+            "number": 10,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:11Z",
+            "conclusion": "success",
+            "name": "Test real Git acquisition and mandatory tools",
+            "number": 11,
+            "startedAt": "2026-09-11T14:00:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:29Z",
+            "conclusion": "success",
+            "name": "Test provider and metadata artifact publication",
+            "number": 12,
+            "startedAt": "2026-09-11T14:00:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:30Z",
+            "conclusion": "success",
+            "name": "Test administrator-owned Linux configuration",
+            "number": 13,
+            "startedAt": "2026-09-11T14:00:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:31Z",
+            "conclusion": "success",
+            "name": "Retain native test evidence",
+            "number": 14,
+            "startedAt": "2026-09-11T14:00:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:31Z",
+            "conclusion": "success",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 26,
+            "startedAt": "2026-09-11T14:00:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:31Z",
+            "conclusion": "success",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 27,
+            "startedAt": "2026-09-11T14:00:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:31Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 28,
+            "startedAt": "2026-09-11T14:00:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:31Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 29,
+            "startedAt": "2026-09-11T14:00:31Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294140"
+      },
+      {
+        "completedAt": "2026-09-11T13:58:21Z",
+        "conclusion": "success",
+        "databaseId": 103287294141,
+        "name": "Runtime ubuntu-24.04-arm",
+        "startedAt": "2026-09-11T13:53:05Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:07Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:13Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:24Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "success",
+            "name": "Set up pinned Bun for Git acquisition fixtures",
+            "number": 4,
+            "startedAt": "2026-09-11T13:53:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "success",
+            "name": "Prepare verified public catalog fixture",
+            "number": 5,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "skipped",
+            "name": "Prepare Windows time-service fixture",
+            "number": 6,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "skipped",
+            "name": "Test Windows time-service access before the full suite",
+            "number": 7,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "skipped",
+            "name": "Diagnose Windows time-service privilege after an access failure",
+            "number": 8,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "skipped",
+            "name": "Compare Windows time-service security after an access failure",
+            "number": 9,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:57:56Z",
+            "conclusion": "success",
+            "name": "Test native runtime, configuration, and paths",
+            "number": 10,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:01Z",
+            "conclusion": "success",
+            "name": "Test real Git acquisition and mandatory tools",
+            "number": 11,
+            "startedAt": "2026-09-11T13:57:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:18Z",
+            "conclusion": "success",
+            "name": "Test provider and metadata artifact publication",
+            "number": 12,
+            "startedAt": "2026-09-11T13:58:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:18Z",
+            "conclusion": "success",
+            "name": "Test administrator-owned Linux configuration",
+            "number": 13,
+            "startedAt": "2026-09-11T13:58:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:19Z",
+            "conclusion": "success",
+            "name": "Retain native test evidence",
+            "number": 14,
+            "startedAt": "2026-09-11T13:58:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:19Z",
+            "conclusion": "success",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 26,
+            "startedAt": "2026-09-11T13:58:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:19Z",
+            "conclusion": "success",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 27,
+            "startedAt": "2026-09-11T13:58:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:20Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 28,
+            "startedAt": "2026-09-11T13:58:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:58:20Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 29,
+            "startedAt": "2026-09-11T13:58:20Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294141"
+      },
+      {
+        "completedAt": "2026-09-11T13:55:43Z",
+        "conclusion": "failure",
+        "databaseId": 103287294142,
+        "name": "Runtime windows-11-arm",
+        "startedAt": "2026-09-11T13:53:03Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:05Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:27Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:26Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:29Z",
+            "conclusion": "success",
+            "name": "Set up pinned Bun for Git acquisition fixtures",
+            "number": 4,
+            "startedAt": "2026-09-11T13:54:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:33Z",
+            "conclusion": "success",
+            "name": "Prepare verified public catalog fixture",
+            "number": 5,
+            "startedAt": "2026-09-11T13:54:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:54:35Z",
+            "conclusion": "success",
+            "name": "Prepare Windows time-service fixture",
+            "number": 6,
+            "startedAt": "2026-09-11T13:54:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:25Z",
+            "conclusion": "failure",
+            "name": "Test Windows time-service access before the full suite",
+            "number": 7,
+            "startedAt": "2026-09-11T13:54:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:26Z",
+            "conclusion": "failure",
+            "name": "Diagnose Windows time-service privilege after an access failure",
+            "number": 8,
+            "startedAt": "2026-09-11T13:55:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:32Z",
+            "conclusion": "success",
+            "name": "Compare Windows time-service security after an access failure",
+            "number": 9,
+            "startedAt": "2026-09-11T13:55:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:32Z",
+            "conclusion": "skipped",
+            "name": "Test native runtime, configuration, and paths",
+            "number": 10,
+            "startedAt": "2026-09-11T13:55:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:32Z",
+            "conclusion": "skipped",
+            "name": "Test real Git acquisition and mandatory tools",
+            "number": 11,
+            "startedAt": "2026-09-11T13:55:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:32Z",
+            "conclusion": "skipped",
+            "name": "Test provider and metadata artifact publication",
+            "number": 12,
+            "startedAt": "2026-09-11T13:55:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:32Z",
+            "conclusion": "skipped",
+            "name": "Test administrator-owned Linux configuration",
+            "number": 13,
+            "startedAt": "2026-09-11T13:55:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:33Z",
+            "conclusion": "success",
+            "name": "Retain native test evidence",
+            "number": 14,
+            "startedAt": "2026-09-11T13:55:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:33Z",
+            "conclusion": "skipped",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 26,
+            "startedAt": "2026-09-11T13:55:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:33Z",
+            "conclusion": "skipped",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 27,
+            "startedAt": "2026-09-11T13:55:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:37Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 28,
+            "startedAt": "2026-09-11T13:55:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:55:37Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 29,
+            "startedAt": "2026-09-11T13:55:37Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294142"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 103287294149,
+        "name": "Verification Gate",
+        "startedAt": "2026-09-11T13:53:02Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:05Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:11Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:19Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "success",
+            "name": "Set up pinned Bun for Git acquisition fixtures",
+            "number": 4,
+            "startedAt": "2026-09-11T13:53:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:25Z",
+            "conclusion": "success",
+            "name": "Prepare verified public catalog fixture",
+            "number": 5,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:04:16Z",
+            "conclusion": "success",
+            "name": "Test minimum supported Go version",
+            "number": 6,
+            "startedAt": "2026-09-11T13:53:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:04:53Z",
+            "conclusion": "success",
+            "name": "Test minimum supported external consumer",
+            "number": 7,
+            "startedAt": "2026-09-11T14:04:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:05:00Z",
+            "conclusion": "success",
+            "name": "Set up release Go toolchain",
+            "number": 8,
+            "startedAt": "2026-09-11T14:04:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:06:02Z",
+            "conclusion": "success",
+            "name": "Install pinned verification tools",
+            "number": 9,
+            "startedAt": "2026-09-11T14:05:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:06:02Z",
+            "conclusion": "success",
+            "name": "Checkout pinned technical-writing skill",
+            "number": 10,
+            "startedAt": "2026-09-11T14:06:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Run verification gate",
+            "number": 11,
+            "startedAt": "2026-09-11T14:06:02Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Checkout pinned technical-writing skill",
+            "number": 18,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up release Go toolchain",
+            "number": 19,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 20,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 21,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Checkout",
+            "number": 22,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294149"
+      },
+      {
+        "completedAt": "2026-09-11T14:01:23Z",
+        "conclusion": "success",
+        "databaseId": 103287294243,
+        "name": "Runtime macos-15",
+        "startedAt": "2026-09-11T13:53:08Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-11T13:53:12Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-11T13:53:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:17Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "number": 2,
+            "startedAt": "2026-09-11T13:53:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:54Z",
+            "conclusion": "success",
+            "name": "Set up minimum supported Go toolchain",
+            "number": 3,
+            "startedAt": "2026-09-11T13:53:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:58Z",
+            "conclusion": "success",
+            "name": "Set up pinned Bun for Git acquisition fixtures",
+            "number": 4,
+            "startedAt": "2026-09-11T13:53:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:59Z",
+            "conclusion": "success",
+            "name": "Prepare verified public catalog fixture",
+            "number": 5,
+            "startedAt": "2026-09-11T13:53:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:59Z",
+            "conclusion": "skipped",
+            "name": "Prepare Windows time-service fixture",
+            "number": 6,
+            "startedAt": "2026-09-11T13:53:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:59Z",
+            "conclusion": "skipped",
+            "name": "Test Windows time-service access before the full suite",
+            "number": 7,
+            "startedAt": "2026-09-11T13:53:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:59Z",
+            "conclusion": "skipped",
+            "name": "Diagnose Windows time-service privilege after an access failure",
+            "number": 8,
+            "startedAt": "2026-09-11T13:53:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T13:53:59Z",
+            "conclusion": "skipped",
+            "name": "Compare Windows time-service security after an access failure",
+            "number": 9,
+            "startedAt": "2026-09-11T13:53:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:42Z",
+            "conclusion": "success",
+            "name": "Test native runtime, configuration, and paths",
+            "number": 10,
+            "startedAt": "2026-09-11T13:53:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:00:53Z",
+            "conclusion": "success",
+            "name": "Test real Git acquisition and mandatory tools",
+            "number": 11,
+            "startedAt": "2026-09-11T14:00:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:01:14Z",
+            "conclusion": "success",
+            "name": "Test provider and metadata artifact publication",
+            "number": 12,
+            "startedAt": "2026-09-11T14:00:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:01:14Z",
+            "conclusion": "skipped",
+            "name": "Test administrator-owned Linux configuration",
+            "number": 13,
+            "startedAt": "2026-09-11T14:01:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:01:16Z",
+            "conclusion": "success",
+            "name": "Retain native test evidence",
+            "number": 14,
+            "startedAt": "2026-09-11T14:01:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:01:16Z",
+            "conclusion": "success",
+            "name": "Post Set up pinned Bun for Git acquisition fixtures",
+            "number": 26,
+            "startedAt": "2026-09-11T14:01:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:01:16Z",
+            "conclusion": "success",
+            "name": "Post Set up minimum supported Go toolchain",
+            "number": 27,
+            "startedAt": "2026-09-11T14:01:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:01:17Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "number": 28,
+            "startedAt": "2026-09-11T14:01:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-11T14:01:20Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 29,
+            "startedAt": "2026-09-11T14:01:17Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/34606766355/job/103287294243"
+      }
+    ],
+    "status": "in_progress",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34606766355"
+  },
+  "limitations": [
+    "The diagnostic completes on both Windows architectures. The checked-in production preflight remains red at this diagnostic source.",
+    "All diagnostic runs follow a failed mandatory preflight. A successful overlay cannot qualify the checked-in production implementation.",
+    "The original review invocation used an absolute dataset path. The helper refused that argument before model review. The corrected relative path passes the same required review with zero findings.",
+    "The matrix identifies RPC/SSPI identification-only context as the access blocker on both tested Windows runners. RPC impersonation succeeds while the pipe keeps identification-only access."
+  ],
+  "primary_sources": [
+    "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/bb576d39-587b-484a-86a4-e1d378cf9497",
+    "https://raw.githubusercontent.com/microsoft/win32metadata/main/generation/WinSDK/RecompiledIdlHeaders/shared/sspi.h"
+  ],
+  "source_files": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "32ea678df56c105c6c296ef9922dfe03349dcc2ce9b5c6b57cdeb7d437ad964c"
+    },
+    {
+      "path": "scripts/probe_windows_clock_security.py",
+      "sha256": "98afc9e32444e46c005fd7301816d53284770d240752f175aa137cbbfac05c4d"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/pipe_windows.go",
+      "sha256": "a553d5f604d4dc4bf8abe1034a3ad3a4532f2922e2de668d268730584e08b034"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/security_windows.go",
+      "sha256": "bf352c231a50524b4d076bb89ab9c6c0d8e12fb836bfa055cc9d8804749cd828"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/sspi_windows.go",
+      "sha256": "f6176cbc81f73c49008684f37a400ee5901f41e8ca64d215fcb18dc827606ec9"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/privilege_windows_test.go",
+      "sha256": "2710d346ea4d2c91f6e4fd64b10967f1c89499a91e204e44245d76b5b3f64957"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "actionlint.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "83563eb9eaa4984fc91cdb6683385dfbf3a69f58e8107bf83c8bd4f620996384",
+      "decoded_sha256": "b24822b31a2b0fa0e2853b16ee0732b3342d186beb4dd1c96d661db6b1a905b2"
+    },
+    {
+      "path": "cross-build-checks.json.gz",
+      "sha256": "37885f1ad8ae4449565e2a6fd5602be5b58fbe95536ca3552c776ab4053beac9",
+      "decoded_sha256": "adf6b5ada2924b07ecdda288dd717230d1e5a7bda0bd02f5d1c5738a27e47c60"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-identification.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-pipe-and-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-pipe-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-identification.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-pipe-and-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-pipe-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-identification.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-pipe-and-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-pipe-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-identification.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-pipe-and-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-pipe-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-rpc-impersonation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "manual-review-context.json.gz",
+      "sha256": "0704ca5fcd096a0b930e69634962a508febf9b11e6e7d815020d54a24ce46d9e",
+      "decoded_sha256": "ca341c3bc553b064b74f9669dce92b7cb9f5944ae5982f664f734f94124d700c"
+    },
+    {
+      "path": "native-current-error.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-current.json.gz",
+      "sha256": "a15c607290c65618e29e0b96461c2720f5a01092a1d91dd5e888bc62745c67cc",
+      "decoded_sha256": "8508223e50f0b6a012619725232114a3b41bbe775ea87690ceffe27738ee3414"
+    },
+    {
+      "path": "overlays/identification/overlay.json.gz",
+      "sha256": "0f87d6f9e7b64dfd137d650adeff42486cb0f15c488eee473c371f3fe593f21a",
+      "decoded_sha256": "b3d17abb4df6e7981bbacf51ccb3040f509add6a7f642d3f8daa35a54c7c8484"
+    },
+    {
+      "path": "overlays/pipe-and-rpc-impersonation/overlay.json.gz",
+      "sha256": "045ad84f13f5d9558114ab2183e91ca776ef9f35c79691da13086e02f3c14c65",
+      "decoded_sha256": "39b5bf7c6e151febd4732b85652f5843079b7ecf122bd87ce06c3cc5362f04b0"
+    },
+    {
+      "path": "overlays/pipe-and-rpc-impersonation/pipe_windows.go.gz",
+      "sha256": "aa0cc9fa0e065df4e634a4d6b223831fa661b613fd1fc62bffb1e017d1ec8de8",
+      "decoded_sha256": "f97d407b96c6429682ae14a85928f96cec8e8da04a0f0c43c1e0b53c5ac07d81"
+    },
+    {
+      "path": "overlays/pipe-and-rpc-impersonation/security_windows.go.gz",
+      "sha256": "9cddbf06d8bab7da84a4fb7e3e9445a8e0a2870f447170f1ebf42524bc6fc1c7",
+      "decoded_sha256": "33c7d72eadfc19645302468141f7ab4925928ba527bf094ca8547cf42e43e947"
+    },
+    {
+      "path": "overlays/pipe-and-rpc-impersonation/sspi_windows.go.gz",
+      "sha256": "f0992ce38c7a654ce86bbae6f0bf2aaf960171c498d81d8fed7874cfd229af29",
+      "decoded_sha256": "e9962037a712f9a0862a6fb889fc858f30474311078ab36d57b359f43e819347"
+    },
+    {
+      "path": "overlays/pipe-impersonation/overlay.json.gz",
+      "sha256": "555ceffa56c4f360e1d52c731a6cd2ce10314f13100cf6d14310967047540702",
+      "decoded_sha256": "1a1213a203d70cf2c53264604d29aadd52290d9372975cd069e0fd281b13e505"
+    },
+    {
+      "path": "overlays/pipe-impersonation/pipe_windows.go.gz",
+      "sha256": "aa0cc9fa0e065df4e634a4d6b223831fa661b613fd1fc62bffb1e017d1ec8de8",
+      "decoded_sha256": "f97d407b96c6429682ae14a85928f96cec8e8da04a0f0c43c1e0b53c5ac07d81"
+    },
+    {
+      "path": "overlays/rpc-impersonation/overlay.json.gz",
+      "sha256": "948580b34984d7429e8b0de7b2b2ef8d1d9ee8a200da5751f8d01983ffdb22c8",
+      "decoded_sha256": "307bbd8d47bfc5409fd474e935af314967621f2a7ee532eb74e21ea9fa1fd294"
+    },
+    {
+      "path": "overlays/rpc-impersonation/security_windows.go.gz",
+      "sha256": "9cddbf06d8bab7da84a4fb7e3e9445a8e0a2870f447170f1ebf42524bc6fc1c7",
+      "decoded_sha256": "33c7d72eadfc19645302468141f7ab4925928ba527bf094ca8547cf42e43e947"
+    },
+    {
+      "path": "overlays/rpc-impersonation/sspi_windows.go.gz",
+      "sha256": "f0992ce38c7a654ce86bbae6f0bf2aaf960171c498d81d8fed7874cfd229af29",
+      "decoded_sha256": "e9962037a712f9a0862a6fb889fc858f30474311078ab36d57b359f43e819347"
+    },
+    {
+      "path": "overlays/security-probe.json.gz",
+      "sha256": "4dc4dc55dce9dffdb6ab08d590ac1f6d1fb76e913ce27f5a653e1156e6ced47f",
+      "decoded_sha256": "ea95189557d08d181d549775328baa5a4f7aece85ad9d85992dd2ddbc80e0541"
+    },
+    {
+      "path": "python.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-directory.json.gz",
+      "sha256": "837efebaf69922a35ee1028ab968f8a36969d3d1521ea0af99709c6d7c7b5e4f",
+      "decoded_sha256": "90ac152e300b381b5d0d36ebd1cf577370c56e17021166f734576fc4fcf6c70a"
+    },
+    {
+      "path": "review-exit.json.gz",
+      "sha256": "3f70af21b8f3c1dc75ccf268a76961c205ce15044cf2a51c8cca169fdb6b0ed3",
+      "decoded_sha256": "b84086e51aef58a3990dbb519f1054810d21abe9bd32fd25a44c4e8b7d7a26a8"
+    },
+    {
+      "path": "review-invocation-exit.json.gz",
+      "sha256": "edc0ede2c112ec645695c82b61e4ecc0db4932c0a0f0b56e24c14122d8a20ea6",
+      "decoded_sha256": "4ea29a7da72c3e7d6fe966d95fab21d87d955470e59144953bd18ed356129a8b"
+    },
+    {
+      "path": "review-invocation.log.gz",
+      "sha256": "fde2ca2d3168508ac7e71369054c9e8430584a42aaf345746706417b8990d851",
+      "decoded_sha256": "f04ece8f9b818d85a0c7f326876d63c0e25f9815119b994df473160ce17fb06a"
+    },
+    {
+      "path": "review-result.json.gz",
+      "sha256": "ef3e38ac2f2cb8c9f53e0c0ea443d9f79adfc0b9fc08b447c0790c4409ec1e6a",
+      "decoded_sha256": "9e12fa6e34280bc2152dfe6b777609f19861315a69061f21a1cc79cc9cb37741"
+    },
+    {
+      "path": "review.log.gz",
+      "sha256": "4aa7d9f2bb22da4bf262cd1e555c9d60ee4443e17400e92e2b1c80aa95abb8d0",
+      "decoded_sha256": "509fe1cdb6be4c3dcd9eb769a9257746b00654209886d6f6a64daaf8dd37ae42"
+    },
+    {
+      "path": "workflow.log.gz",
+      "sha256": "a79db6d0a05e2640062648e7e2a10b26819420472fac769f4503b8a789dc2b8e",
+      "decoded_sha256": "1313364a52b708ea18cab34fcbb785c28ac7153ab6e8e83fd507c2bcfd52c7b0"
+    },
+    {
+      "path": "writing.log.gz",
+      "sha256": "a2710e669b9be1685a03813336bc5848c3e83325c8fd5aeef13aaa4f4caf7ebb",
+      "decoded_sha256": "f5652575e8fd1540196e29bb4b0737312d04cff0e73c6f181406680835834d69"
+    },
+    {
+      "path": "native/windows-11-arm/windows-clock-privilege-probe.jsonl.gz",
+      "sha256": "a82ed6b6bc048bd21e7a7fe73d9dc478d192746c9726adb11bc1abfe62774372",
+      "decoded_sha256": "01441cbeef8bf5929f1a270420ffdb750cf2d258d8769db62247c41dd12e7290"
+    },
+    {
+      "path": "native/windows-11-arm/windows-clock.jsonl.gz",
+      "sha256": "dd8aea943fbb0b49bd699ae19f6f68838b6e1dfb77e871368b743a62ebf435d4",
+      "decoded_sha256": "c7e57d580d620c8bd1bec6c7aa21879a52b347f9e1e7dffbed7fa5a7b06c348b"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/identification/overlay.json.gz",
+      "sha256": "f31ec067b11b4748d857b26fa0a9cc85575f85d5dfe92e341083e6fee4cdd2a6",
+      "decoded_sha256": "a5faee7a72488b9eb6f50cfb5ea6e4cb24897f156de6d9e1735042ed5e3d5518"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/identification/probe.jsonl.gz",
+      "sha256": "4e2121763bd2f5667504c9566aa9df6a98f2a8cbb5a910f99392c4294a57b004",
+      "decoded_sha256": "1db95c69016dd7ed738ea666f4c0430ab0575e8692770fac57821210f11d16b1"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-and-rpc-impersonation/overlay.json.gz",
+      "sha256": "0d5b126779ccbc6e6a9af4a0ec1766839fde0377d9e1c91ea8eb8b2f780bfd7b",
+      "decoded_sha256": "bc5e6083b2e40c4da4a02ee1cd6982398808912b7b443ea889f2a30937292191"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-and-rpc-impersonation/pipe_windows.go.gz",
+      "sha256": "1a9eb7dbf29389bfffc953cd111ade7675e1d1aabcce947a95b78ca288e1954a",
+      "decoded_sha256": "483552e4701a112a949d03123d54f7e038ed2019808c9839fc0f85e54c3bcb7b"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-and-rpc-impersonation/probe.jsonl.gz",
+      "sha256": "0dd1c0c6b75af7b40729a556ba8e772666a11b32c606bfb6f239ccd98dbb2a38",
+      "decoded_sha256": "accc2e62490fe06f28ae5474368fdcef0d45c86007b6bdd7ba45d3da3e7b621a"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-and-rpc-impersonation/security_windows.go.gz",
+      "sha256": "cbe3d6f415876a619007fbe538dfc9602bbfac69044f6b29510bb8044e317b94",
+      "decoded_sha256": "698a56b26fa03ca344ead5043b46b56e222a9c67d3df4d64c9a7de722d496001"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-and-rpc-impersonation/sspi_windows.go.gz",
+      "sha256": "987631684cc453027bf167d7796e948ccc1d100eef70c2d62b54d4ecd2f046e6",
+      "decoded_sha256": "75815a514c5db631ca634c44a72e7c7dce34cd53a642dd1c5445334c94433fa6"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-impersonation/overlay.json.gz",
+      "sha256": "4f45b273dd8831b59b6c88e01d21fedf158cce031b1e64061d81ea0f645bc22b",
+      "decoded_sha256": "1f353cf20c54d95781633333f7f123e00adcedfa8e16239520eb35a328682dde"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-impersonation/pipe_windows.go.gz",
+      "sha256": "1a9eb7dbf29389bfffc953cd111ade7675e1d1aabcce947a95b78ca288e1954a",
+      "decoded_sha256": "483552e4701a112a949d03123d54f7e038ed2019808c9839fc0f85e54c3bcb7b"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/pipe-impersonation/probe.jsonl.gz",
+      "sha256": "d0945624e229429db514587622fb406c35ea7e7109f2e0bf6970ef9d94952ba9",
+      "decoded_sha256": "c8acb11aca827c3c46bb44d11c45ab529259919fe869e4231d0cd83bff05bac3"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/rpc-impersonation/overlay.json.gz",
+      "sha256": "9c56b89ecf8505f03749fa85021ca461ba23f288e277e8fa01df624e16eef67f",
+      "decoded_sha256": "f93d7c0ef8eedbd99ab9b652e9d8c0643d8cdd157eea0c882d1d8c44763a2c0f"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/rpc-impersonation/probe.jsonl.gz",
+      "sha256": "49550cc9c67889f663d4ca2156609484e545009d9e6f8e4c20aabb16b21ad035",
+      "decoded_sha256": "0044343bb46bdc4937b508b0b38eb33f14f55028fbd79ce2087b0088c4f85c01"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/rpc-impersonation/security_windows.go.gz",
+      "sha256": "cbe3d6f415876a619007fbe538dfc9602bbfac69044f6b29510bb8044e317b94",
+      "decoded_sha256": "698a56b26fa03ca344ead5043b46b56e222a9c67d3df4d64c9a7de722d496001"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/rpc-impersonation/sspi_windows.go.gz",
+      "sha256": "987631684cc453027bf167d7796e948ccc1d100eef70c2d62b54d4ecd2f046e6",
+      "decoded_sha256": "75815a514c5db631ca634c44a72e7c7dce34cd53a642dd1c5445334c94433fa6"
+    },
+    {
+      "path": "native/windows-11-arm/windows-security-probe/security-probe.json.gz",
+      "sha256": "96f59ca3baef5c438e9d7cbcef7946e06419dc2c7c3b1fa4c1af8e46e2dd1007",
+      "decoded_sha256": "322490018cda0bb31b2bb8de5f7653a1d4aba2999c298413eae506a677ce1bfd"
+    },
+    {
+      "path": "native/windows-11-arm/windows-time-access.json.gz",
+      "sha256": "52c6a55e5942a08a2d706e723317aabcf0742233f28197b57dd03b90bc5830ee",
+      "decoded_sha256": "53b44fe516b8ce013f7c2987ac3b86a229bd5313f09c59536a80db8d670844c2"
+    },
+    {
+      "path": "native/windows-11-arm/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "native/windows-11-arm/windows-time-service.json.gz",
+      "sha256": "ce77e71aba160a934315dc75351b02da8afec4433544ace8bd26e3e028cad9e1",
+      "decoded_sha256": "746f7adffaf0d899e21cf316418fb9af798343291b47b9449871c9a6363fe0d8"
+    },
+    {
+      "path": "native/windows-11-arm/windows-time-status.log.gz",
+      "sha256": "847a14cedc51e4251d4084d1787a50a7e60c3ee5354701084e7a61abfae02ad1",
+      "decoded_sha256": "41969f08f436330d23e73f49fb4b545f1fa84c55e9d8ffa34193c4b993d90997"
+    },
+    {
+      "path": "native/windows-2025/windows-clock-privilege-probe.jsonl.gz",
+      "sha256": "242e13e118475d2aa0953b311319bd3b63aa424cf18a49e5257acdf52249be87",
+      "decoded_sha256": "d2cd1a31a274c37469b5bce9a04ead96a0c637cddd33cc85c461566fbc31ca3a"
+    },
+    {
+      "path": "native/windows-2025/windows-clock.jsonl.gz",
+      "sha256": "0c3aaf175625967c8bc21510355a7853043fa55771b79876cb3b7273df72b38e",
+      "decoded_sha256": "bf8d3519d9c1ea28567944b22c4648a742a4ca657f3a7468625d8af29e4e423e"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/identification/overlay.json.gz",
+      "sha256": "f31ec067b11b4748d857b26fa0a9cc85575f85d5dfe92e341083e6fee4cdd2a6",
+      "decoded_sha256": "a5faee7a72488b9eb6f50cfb5ea6e4cb24897f156de6d9e1735042ed5e3d5518"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/identification/probe.jsonl.gz",
+      "sha256": "8880230f21ab36986f4244bd43dfa4aa1cce2a0de14387804594425e2c1add05",
+      "decoded_sha256": "695ebb9bed300a714f5ef65849725f53446215afbab0ad594401a0c81cc6d8e2"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-and-rpc-impersonation/overlay.json.gz",
+      "sha256": "b308d97ae046a24d69a3d19866a0553bb7140ae21f937a96a6ab6bbbd58f640f",
+      "decoded_sha256": "fdbd3ea50853edc7dea9b5a72bf7d024dd20520cdf612b108ab8e70efe74f245"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-and-rpc-impersonation/pipe_windows.go.gz",
+      "sha256": "1a9eb7dbf29389bfffc953cd111ade7675e1d1aabcce947a95b78ca288e1954a",
+      "decoded_sha256": "483552e4701a112a949d03123d54f7e038ed2019808c9839fc0f85e54c3bcb7b"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-and-rpc-impersonation/probe.jsonl.gz",
+      "sha256": "2f67f4208332a9b89723945c98a30e2acc70a27f225f1fd21a2e683294a19911",
+      "decoded_sha256": "4fd1a6e9ffe1b8d7eb01f8153be2f741c488a499ffba10f9a4dbb57b22d185e1"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-and-rpc-impersonation/security_windows.go.gz",
+      "sha256": "cbe3d6f415876a619007fbe538dfc9602bbfac69044f6b29510bb8044e317b94",
+      "decoded_sha256": "698a56b26fa03ca344ead5043b46b56e222a9c67d3df4d64c9a7de722d496001"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-and-rpc-impersonation/sspi_windows.go.gz",
+      "sha256": "987631684cc453027bf167d7796e948ccc1d100eef70c2d62b54d4ecd2f046e6",
+      "decoded_sha256": "75815a514c5db631ca634c44a72e7c7dce34cd53a642dd1c5445334c94433fa6"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-impersonation/overlay.json.gz",
+      "sha256": "52eac6568df142a9f9536cc6a4c0e5a9ccd65d68ff318bd9ad4aa74bd4be3c5a",
+      "decoded_sha256": "8dbe7363d8e3edfa1af781fd864a21664e6f46c7247349cf6662548cc7af3bf9"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-impersonation/pipe_windows.go.gz",
+      "sha256": "1a9eb7dbf29389bfffc953cd111ade7675e1d1aabcce947a95b78ca288e1954a",
+      "decoded_sha256": "483552e4701a112a949d03123d54f7e038ed2019808c9839fc0f85e54c3bcb7b"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/pipe-impersonation/probe.jsonl.gz",
+      "sha256": "e759cba908fb42a7ad612c1694b9f24ce4420e2c9118ab1587a003ec67def9fb",
+      "decoded_sha256": "b9f7ca359940e16058d00da98c8b42119e66d69b2e7b8bed94a5470e79e8bd07"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/rpc-impersonation/overlay.json.gz",
+      "sha256": "08d9e6166641011061ba8877e6bd1b61342066787ba08e764507d5ac81cf923f",
+      "decoded_sha256": "bc6b08fb4fdd0acd0b276a2df6ca52977cf8fc24904edf0df665c78c149f18e4"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/rpc-impersonation/probe.jsonl.gz",
+      "sha256": "b3f546619dbcc58e8391bce3e58f5a5473c770001ea970a8f1a00fad40d5adf4",
+      "decoded_sha256": "6a9ef637d03e8d5f01e95d28acbea879d55571fe9445c5db6da3cba22389e1cb"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/rpc-impersonation/security_windows.go.gz",
+      "sha256": "cbe3d6f415876a619007fbe538dfc9602bbfac69044f6b29510bb8044e317b94",
+      "decoded_sha256": "698a56b26fa03ca344ead5043b46b56e222a9c67d3df4d64c9a7de722d496001"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/rpc-impersonation/sspi_windows.go.gz",
+      "sha256": "987631684cc453027bf167d7796e948ccc1d100eef70c2d62b54d4ecd2f046e6",
+      "decoded_sha256": "75815a514c5db631ca634c44a72e7c7dce34cd53a642dd1c5445334c94433fa6"
+    },
+    {
+      "path": "native/windows-2025/windows-security-probe/security-probe.json.gz",
+      "sha256": "0da51a476517ea605352194730733d48dfe860c05e2cef568937f9f44e1b6eef",
+      "decoded_sha256": "687690df2dd693552687a6b7a21915953cf97d1738dd793ba9379787f66169a1"
+    },
+    {
+      "path": "native/windows-2025/windows-time-access.json.gz",
+      "sha256": "52c6a55e5942a08a2d706e723317aabcf0742233f28197b57dd03b90bc5830ee",
+      "decoded_sha256": "53b44fe516b8ce013f7c2987ac3b86a229bd5313f09c59536a80db8d670844c2"
+    },
+    {
+      "path": "native/windows-2025/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "native/windows-2025/windows-time-service.json.gz",
+      "sha256": "ce77e71aba160a934315dc75351b02da8afec4433544ace8bd26e3e028cad9e1",
+      "decoded_sha256": "746f7adffaf0d899e21cf316418fb9af798343291b47b9449871c9a6363fe0d8"
+    },
+    {
+      "path": "native/windows-2025/windows-time-status.log.gz",
+      "sha256": "48028fbca6a882bdb2d989e56a1fdcf13298956d20900db82752696bdd007202",
+      "decoded_sha256": "c664b8b61997ecdf7e51f52caa796b7a67ef401bc16ad05bb63fcef3b8f06f6a"
+    },
+    {
+      "path": "native-after.json.gz",
+      "sha256": "89cef5a66235e77833e6868496beec87c1bd175a1d5a8e6924c6e2b9fa10e2e4",
+      "decoded_sha256": "0d9c067b252e0fac97fbcdbef4acff8a12a78217d11cd2ac3d90cd1f9cb647a7"
+    }
+  ],
+  "diagnostic_results": {
+    "windows-11-arm": [
+      {
+        "profile": "identification",
+        "exit_code": 1,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:52: prepared process still cannot read W32Time: dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ]
+      },
+      {
+        "profile": "pipe-impersonation",
+        "exit_code": 1,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:52: prepared process still cannot read W32Time: dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ]
+      },
+      {
+        "profile": "rpc-impersonation",
+        "exit_code": 0,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=<nil>"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:57: prepared account: status_size=120"
+        ]
+      },
+      {
+        "profile": "pipe-and-rpc-impersonation",
+        "exit_code": 0,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=<nil>"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:57: prepared account: status_size=120"
+        ]
+      }
+    ],
+    "windows-2025": [
+      {
+        "profile": "identification",
+        "exit_code": 1,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:52: prepared process still cannot read W32Time: dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ]
+      },
+      {
+        "profile": "pipe-impersonation",
+        "exit_code": 1,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:52: prepared process still cannot read W32Time: dcerpc: invoke: /W32Time/v4.1/W32TimeQueryStatus: response: decode packet: error: code: 0x00000005"
+        ]
+      },
+      {
+        "profile": "rpc-impersonation",
+        "exit_code": 0,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=<nil>"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:57: prepared account: status_size=120"
+        ]
+      },
+      {
+        "profile": "pipe-and-rpc-impersonation",
+        "exit_code": 0,
+        "ordinary": [
+          "privilege_windows_test.go:32: ordinary account: enabled=false status_error=<nil>"
+        ],
+        "prepared": [
+          "privilege_windows_test.go:57: prepared account: status_size=120"
+        ]
+      }
+    ]
+  },
+  "production_candidate": "75ac9d07; production validation, review, publication, and native qualification remain separate."
+}

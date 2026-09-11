@@ -1,0 +1,371 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_COMMITTED_UNPUBLISHED",
+  "source_commit": "bb28a0bd0cb16961d0efdde7a61ddd73ade23a66",
+  "base": "9ffcb0f82a1339af46f39a1df22503364f48d0ea",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "branch": "codex/catalog-origin-settings",
+  "contract": [
+    "An existing shared authority keeps its accepted catalog during replica startup. Missing retained inputs prevent the initial lease request and shared publication.",
+    "A read-only replica needs no provider bindings to serve accepted state. Matching inputs allow initial ownership without replacing the generation.",
+    "Explicit refresh still requires matching inputs before ownership. The lease keeper supports delayed initial acquisition and retains fencing and close-race behavior."
+  ],
+  "fail_before": {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-timeout=3m",
+      "-run",
+      "^TestOriginReplicaStartupRetainsCatalogWithoutInputs$",
+      "./runtime"
+    ],
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "exit_code": 1
+  },
+  "checks": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=20m",
+        "-run",
+        "^Test(OriginReplicaStartup|OriginFollower|Lease)",
+        "./runtime"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0,
+      "events": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=20m",
+        "-run",
+        "^Test(OriginReplicaStartup|OriginFollower|Lease)",
+        "./runtime"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12"
+      },
+      "exit_code": 0,
+      "events": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=2m",
+        "-run",
+        "^Test(RuntimeLeaseFenceRejectsALostLease|TakeReleasesALeaseThatRacedClose)$",
+        "./runtime"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0,
+      "events": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=2m",
+        "-run",
+        "^Test(RuntimeLeaseFenceRejectsALostLease|TakeReleasesALeaseThatRacedClose)$",
+        "./runtime"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12"
+      },
+      "exit_code": 0,
+      "events": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/Users/jack/go/bin/golangci-lint",
+        "run",
+        "./..."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./runtime"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ago",
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "godoc",
+      "command": [
+        "make",
+        "godoc"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "writing",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "writing-final",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "diff-final",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "limitations": [
+    "The origin cases use an in-memory catalog store and a stub lease. They do not prove shared backend recovery, equivalent acquisition capabilities, or atomic lease/head fencing. CSP11 retains that scope.",
+    "Explicit authority transitions, native parent integration, full delivery checks, required review, publication, and merge remain open.",
+    "The last source change after race verification only clarifies the leaseLost comment. No executable Go statement changed."
+  ],
+  "source_files": [
+    {
+      "path": "runtime/README.md",
+      "sha256": "dbeb160fa748a69d55cc6241e58472cdc13d77da8189eeb890006479a769811b"
+    },
+    {
+      "path": "runtime/lease.go",
+      "sha256": "fe8383129d30e2d4fee878802b7792e20d5180b8470472823da289f10ef2df30"
+    },
+    {
+      "path": "runtime/lease_test.go",
+      "sha256": "c3c6f54bb3b9119c0a1368ea98b1c63f46136996fca72b453da693d6cdcd8661"
+    },
+    {
+      "path": "runtime/origin_adoption.go",
+      "sha256": "dd16824659c16d2f0fad7d49c19ab865ee8fcfd87c094ac1f5684f7266dfe50e"
+    },
+    {
+      "path": "runtime/origin_adoption_test.go",
+      "sha256": "581aeaaa7e5cefcbedbc5ae456e16924b172029a7176e415c698b90492aaa82f"
+    },
+    {
+      "path": "runtime/origin_publication.go",
+      "sha256": "01144a5d2a834c9a788d295165ad6dc60a31cc2746aa8ebf0ce456e5e651f0e8"
+    },
+    {
+      "path": "runtime/origin_restart_test.go",
+      "sha256": "cd920ced1fa80d3a311216057c11f50d4bd795d42c9d157d24e3e65a973cfad6"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "b29d898f83bab33a4decbdb155abce620d755a8ed694fd89b3dc171f2861f58e"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "before-command.json.gz",
+      "sha256": "a539e30afc520c17dd5a5bc485e444830df54c1ac5dd442f169cd6577c31c4cc",
+      "decoded_sha256": "37d05b7fdeccf720f85c1e44dcbc8c997c799cd35b120c7ef0e3068966f4684b"
+    },
+    {
+      "path": "before-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "before.jsonl.gz",
+      "sha256": "00aa28a983c506232712bc18f9ef560fcae6cf40629ee7402de7685098051063",
+      "decoded_sha256": "75ab4d5c0161eb3e36cd1c2c4f7858d1a00bb01c0798d17c4b4e2fe03f866b66"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "fda2b482a1e3aa97a68ba492d8522c21c665cf33891d397e47cf29d082d1fac9",
+      "decoded_sha256": "8136460e583127e486835f90f6651f3408a076009c13ced2fdfe13beda79501b"
+    },
+    {
+      "path": "diff-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-document-checks.json.gz",
+      "sha256": "40f7290ca656184d8da12bad30628244d0b84f722b764bbbf193677941aee98d",
+      "decoded_sha256": "83b8cbc36edcce136b760987125effced2bb4c96eecd5fcf9d4e1b54f6680965"
+    },
+    {
+      "path": "go1.25.12-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12.jsonl.gz",
+      "sha256": "632e69d808ec05c3deee1a8db893592b087a35ecdbb53de3c2187d47bda4a2fc",
+      "decoded_sha256": "4c8c6b853f0d20d77c532fdcae754e852eee7090b95ca191ffaa94700c876f31"
+    },
+    {
+      "path": "go1.26.6-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6.jsonl.gz",
+      "sha256": "6afe50f80a2bc38f747468392317ee9d980f8b6d48bc0e8263ec4a3829b611f4",
+      "decoded_sha256": "1cfb1177a54b377cde2b3debafffdc01117d077d68e5e2aefe61c7eae116b915"
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "509424edab2a12ead8ce3073edda9579c5359c28972057d7e81aa6e17259bbc8",
+      "decoded_sha256": "e617bbf26996554843c209f7c442053d78759ca3139d3194dd581dfbeab3045d"
+    },
+    {
+      "path": "lease-checks.json.gz",
+      "sha256": "00db4b8c54ed44a3ea809895a718d449e4a430bc2a51ef34926b3ca0e23f7504",
+      "decoded_sha256": "c80cc6eb8e67facad57c61507af0afb50fee20a8bcc6df3541a50cd524838519"
+    },
+    {
+      "path": "lease-go1.25.12-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lease-go1.25.12.jsonl.gz",
+      "sha256": "dba104863ba94997a1ff3898fc13b3850ff05051dc0680336a2de8dfa84cbfeb",
+      "decoded_sha256": "a8aa7fad248fce5190d539a50f9584350e7c209d6c9a2576b40138330dd600ac"
+    },
+    {
+      "path": "lease-go1.26.6-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lease-go1.26.6.jsonl.gz",
+      "sha256": "b6d33c19afb34a6fae3757858a22bfebb1f612f21654678780f569bb00ad93ec",
+      "decoded_sha256": "47a17344fc2e13d06a262faa77dfc401e8cadd35f1229c3b20999f1f639ed17f"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "static-checks.json.gz",
+      "sha256": "8037699c834c2ffc5b34e45a281738471ab069896afe97a8eee1f48dd029af1d",
+      "decoded_sha256": "76a560642b29f0aa9b9cc18c6b34d79e09319ed022bf6634a96da543250a9f58"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "writing-final.log.gz",
+      "sha256": "ce4c08058725234e37ca0a86f7da57ebbb23f1b1a07179bf19e93f2c95666047",
+      "decoded_sha256": "bf2dcd6f88b0c40684f41b954ff5abda1b172629186c3a2e82c8d954d8753a37"
+    },
+    {
+      "path": "writing-lease-comment.json.gz",
+      "sha256": "d7e55b2c0dc78b9afd9f12e27711930d9f7a152d4c89bfaed6c568f8976cc4a0",
+      "decoded_sha256": "eb68f91d6922e407d2a1272fad9139cef6415d68bddbf6c4f8beee1de3bf0bd3"
+    },
+    {
+      "path": "writing-lease-comment.log.gz",
+      "sha256": "ce4c08058725234e37ca0a86f7da57ebbb23f1b1a07179bf19e93f2c95666047",
+      "decoded_sha256": "bf2dcd6f88b0c40684f41b954ff5abda1b172629186c3a2e82c8d954d8753a37"
+    },
+    {
+      "path": "writing.log.gz",
+      "sha256": "ce4c08058725234e37ca0a86f7da57ebbb23f1b1a07179bf19e93f2c95666047",
+      "decoded_sha256": "bf2dcd6f88b0c40684f41b954ff5abda1b172629186c3a2e82c8d954d8753a37"
+    }
+  ]
+}

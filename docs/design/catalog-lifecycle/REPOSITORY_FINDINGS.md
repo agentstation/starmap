@@ -2269,3 +2269,28 @@ CSP11 owns shared input recovery, equivalent acquisition capability, and atomic 
 CSP4 still requires explicit authority transitions, native clock qualification, production composition, full delivery checks, review, and merges.
 Its eight mapped component checks pass with deterministic clocks. These checks do not prove the remaining production paths.
 Both Windows jobs remain red in PR #151 at `a6545493`. Both Linux and both macOS jobs pass.
+
+## Windows RPC correction and replica restart ownership, 2026-09-11
+
+Native diagnostic `082c1daa` compares pipe and RPC impersonation separately on Windows AMD64 and ARM64.
+Both architectures reject identification-only RPC, including after time privilege enablement. Both accept local RPC impersonation with identification-only pipe access.
+The [diagnostic proof](../../plans/proof/starport-production-catalog/csp4/windows-security-2026-09-11/verification.json) retains every profile, failure, and source hash.
+
+Production correction `75ac9d07` changes the RPC setting and preserves the pipe restriction, packet privacy, peer checks, and bounded replies.
+It enables no privilege and changes no time setting. Sol and Opus report zero findings.
+The [production proof](../../plans/proof/starport-production-catalog/csp4/windows-rpc-2026-09-11/verification.json) records four passing cross-builds and static checks.
+PR #151 contains the correction.
+
+Both Windows access preflights pass in native workflow `34609335965`. Full native and repository gates remain in progress. No merge credit applies.
+
+Origin `bb28a0bd` fixes initial ownership when a shared-store replica lacks retained acquisition inputs.
+The replica retains the accepted catalog without an initial lease request or shared write. Matching inputs permit ownership without replacing that catalog.
+The [restart proof](../../plans/proof/starport-production-catalog/csp4/origin-restart-2026-09-11/verification.json) records the failing startup regression and 21 origin checks per toolchain.
+Two additional lease checks pass per toolchain.
+
+These memory-store and stub-lease tests do not qualify a fleet backend.
+CSP11 retains shared input recovery, equivalent acquisition capability, and atomic fleet fencing.
+
+The prior current plan incorrectly kept restart eligibility in its implementation backlog after this local fix.
+The corrected record separates completed local checks from pending delivery gates and merges.
+Explicit authority transitions and production clock composition remain unfinished CSP4 work.

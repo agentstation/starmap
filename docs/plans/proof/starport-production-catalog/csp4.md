@@ -4,7 +4,7 @@
 
 The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-deliveries) separates merged work from the remaining CSP4 deliveries.
 Starmap PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
-CSP4 remains active because native qualification, production clock integration, restart eligibility, explicit transitions, and delivery merges remain open.
+CSP4 remains active because native qualification, production clock integration, explicit transitions, and delivery merges remain open.
 
 ### Consumer checks and published dependency
 
@@ -34,26 +34,26 @@ Production native clock composition, remaining Starport delivery checks, require
 
 ### Remaining native and origin delivery
 
-PR #151 contains `a6545493`. Workflow [34597460388](https://github.com/agentstation/starmap/actions/runs/34597460388) passes both Linux and both macOS runtime jobs.
-Both Windows status queries return access denied after privilege enablement. The registry proof retains the latest workflow snapshot.
-The native merge gate remains mandatory. The [cancellation proof](csp4/permission-cancellation-2026-09-11/verification.json) records the failure and review assessment.
+PR #151 contains reviewed `75ac9d07`. The [production proof](csp4/windows-rpc-2026-09-11/verification.json) records four Windows cross-builds, static checks, and zero findings from Sol and Opus.
+Both Windows access preflights pass in native workflow [34609335965](https://github.com/agentstation/starmap/actions/runs/34609335965). Full native and repository gates remain in progress.
+All required checks must pass before merge.
+
+The [diagnostic proof](csp4/windows-security-2026-09-11/verification.json) identifies RPC identification-only access as the blocker on both Windows architectures.
+Local RPC impersonation succeeds while the pipe retains identification-only access. Enabling the time privilege alone does not resolve the failure.
+The production correction retains packet privacy, peer validation, and reply bounds. It refuses delegation and anonymous authentication.
+It enables no privilege and changes no time setting.
 
 Clock configuration `e97d7fc3` passes all 41 repository verifier stages. Its [settings proof](csp4/clock-settings-2026-09-11/verification.json) retains those checks.
 Native parent integration, final review, publication, and merge remain required.
 
-Origin `9ffcb0f8` adds periodic accepted-store adoption and a running-follower input guard.
-The [adoption proof](csp4/origin-adoption-2026-09-11/verification.json) records 33 passing race events per supported toolchain, pinned lint, generated documentation, and prose.
-The initial regression fails because no follower refresh schedule exists. The proof preserves the first implementation failure and both linter setup failures.
+Origin `bb28a0bd` protects replica restart ownership after the periodic adoption work at `9ffcb0f8`.
+The [restart proof](csp4/origin-restart-2026-09-11/verification.json) records 21 origin and two lease race events per supported toolchain.
+A replica with missing retained inputs serves accepted state without an initial lease request or shared publication.
+A replica with matching inputs can take ownership without replacing the accepted generation. Read-only startup needs no provider bindings.
 
-Followers check the authority head every 30 seconds even when an operator disables public source polling.
-An unchanged head avoids a full catalog read. A changed compatible generation activates without shared writes or lease acquisition.
-Invalid payloads, incompatible schemas, changed identities, and replay preserve the accepted catalog.
-A running follower with missing retained inputs cannot take publication ownership.
-
-The takeover checks use a memory store and a stub lease. They do not qualify a fleet backend or cold restart eligibility.
-CSP11 owns shared input recovery, equivalent acquisition capability, and atomic lease/head fencing.
+The tests use a memory store and a stub lease. CSP11 owns full shared input recovery, equivalent acquisition capability, and atomic lease/head fencing.
 Explicit authority transitions, native parent integration, full delivery checks, review, publication, and merge remain required.
-The [earlier checkpoint](csp4/integration-history-before-origin-adoption-2026-09-11.md) preserves the prior current record.
+The [earlier checkpoint](csp4/integration-history-before-rpc-2026-09-11.md) preserves the previous current record.
 
 ## Native clock checkpoint history
 

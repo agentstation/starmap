@@ -1831,7 +1831,9 @@ The check precedes workspace recovery, input publication, and background work. R
 This guard does not implement an authority migration or govern direct writes outside the runtime.
 
 Canonical server settings and native clock qualification remain separate requirements.
-Candidate `9ffcb0f8` supports follower startup and periodic adoption without the publication lease. Explicit authority transitions and restart eligibility still require implementation and qualification.
+Candidate `bb28a0bd` adds replica restart ownership checks after follower startup and periodic adoption.
+Missing retained inputs prevent initial ownership while the replica serves accepted state.
+Explicit authority transitions still require implementation. Native integration and delivery qualification remain open.
 Direct underlying writes, deleted state, and restored older backups require separate recovery procedures.
 
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.
@@ -3013,6 +3015,14 @@ A successful empty principal reply selects a null SSPI target only on the verifi
 A failed principal query still refuses authentication. Required privacy and replay checks apply to both named and unnamed endpoints.
 The [unnamed-endpoint proof](../../plans/proof/starport-production-catalog/csp4/windows-unnamed-2026-09-11/verification.json) records this correction and its remaining native qualification.
 
+Candidate `75ac9d07` permits local RPC impersonation after the verified peer check. The named pipe retains identification-only access.
+The [diagnostic proof](../../plans/proof/starport-production-catalog/csp4/windows-security-2026-09-11/verification.json) shows that this RPC setting resolves native status access on both Windows architectures.
+Packet privacy and replay protection remain required. The connector refuses delegation and anonymous authentication.
+Product code enables no privilege and changes no time setting.
+
+The [production proof](../../plans/proof/starport-production-catalog/csp4/windows-rpc-2026-09-11/verification.json) records the reviewed publication and both passing Windows access preflights.
+Full native and repository checks remain in progress.
+
 ### Authority origin configuration contract
 
 The Starmap host accepts `catalog_authority_origin` as one YAML object.
@@ -3035,6 +3045,7 @@ Subscriber authority pins remain separate from the origin declaration.
 
 The [implementation proof](../../plans/proof/starport-production-catalog/csp4/origin-settings-2026-09-11/verification.json) records local verification and remaining delivery gates.
 The [follower adoption proof](../../plans/proof/starport-production-catalog/csp4/origin-adoption-2026-09-11/verification.json) records local startup, periodic adoption, and running-follower input checks.
-Explicit authority transitions, restart eligibility, and delivery qualification remain incomplete.
+The [restart proof](../../plans/proof/starport-production-catalog/csp4/origin-restart-2026-09-11/verification.json) records local ownership checks with missing and matching retained inputs.
+Explicit authority transitions and delivery qualification remain incomplete.
 CSP11 retains shared input recovery, acquisition capability equivalence, and atomic fleet fencing.
 Starport must adopt the compatible published contract and pass its consumer acceptance checks before production qualification.
