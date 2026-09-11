@@ -1,0 +1,126 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_VALKEY_INTEGRATION_PASS",
+  "source_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "integration": {
+    "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+    "GOWORK": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/go.work",
+    "GOTOOLCHAIN": "go1.26.6"
+  },
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "-timeout=10m",
+    "-run",
+    "^(TestAppWithValkey|TestValkeyStore|TestValkeyPubSub|TestKVStoreContract)$",
+    "./internal/app",
+    "./internal/storage"
+  ],
+  "exit_code": 0,
+  "test_events": {
+    "pass": 35,
+    "fail": 0,
+    "skip": 0
+  },
+  "backend_contract_pass_events": 6,
+  "server_version": "Server v=7.2.14 sha=00000000:0 malloc=jemalloc-5.3.0 bits=64 build=fcca1d4040dcb3c5",
+  "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+  "isolation": "A new container bound an ephemeral host port on 127.0.0.1. No host data volume was mounted. Persistence was disabled. The container was removed after testing.",
+  "cleanup": {
+    "command": [
+      "docker",
+      "rm",
+      "-f",
+      "6bfb0f4ae20737630d3ddc6b2b289e715f60a27b876ac0a403fe092b5151c3dd"
+    ],
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "contract": [
+    "The previously skipped application Valkey test starts the gateway with real Valkey storage and the existing test connector factories.",
+    "Real Valkey storage, pub/sub, and KVStore contract tests pass under the race detector. The same invocation covers the mock and Badger contract implementations."
+  ],
+  "limitations": [
+    "This check does not qualify multi-replica fencing, disaster recovery, PostgreSQL, native clock error bounds, or paid provider inference.",
+    "This invocation follows the repository-configured Valkey 7 image. It is not a claim about every Valkey or Redis version.",
+    "The prior package run remains recorded with its original Valkey skip. This separate follow-up provides real-service evidence.",
+    "Starport still needs a compatible published Starmap dependency and final delivery qualification."
+  ],
+  "source_files": [
+    {
+      "path": "docker-compose.yml",
+      "sha256": "e1f0d3045acd96897f512082844ab5a1337fc91f2ae9393a726bab8646e5bb09"
+    },
+    {
+      "path": "internal/app/valkey_integration_test.go",
+      "sha256": "84e37ec2987d965d95856e67980b7d1fda8a979753e65949728fbd629fb0aca6"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "sha256": "b7943c87592fd466cd7a42e73e0e7d987f264f800388a5540fc425825385cf06"
+    },
+    {
+      "path": "internal/storage/valkey_test.go",
+      "sha256": "b7bd5f457f6c45cc73f5d166a3773b357c5a1503a924567d01d9b0ce72d29d89"
+    },
+    {
+      "path": "internal/storage/kvstore_contract_test.go",
+      "sha256": "f4804ac411415dafe5d445e047db263823672d58c3533affc4b222f846b03cc1"
+    },
+    {
+      "path": "internal/storage/valkey.go",
+      "sha256": "21ffff15c3b046af61919dfee3360077b22b1b0f51ff42455f8e0589c334c952"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "container.log.gz",
+      "sha256": "e7f8487f021bd60ae572729c61250138a62d2160991f1278f5cf88ee6b5724ab",
+      "decoded_sha256": "da5a3caab83718fde7e27004a01460f87e6f265ba484c7d15bd478485975eeab"
+    },
+    {
+      "path": "image-pull.json.gz",
+      "sha256": "50920a6bee23276850cce10e4de857f70c894535701c99377542d7638b72a0ef",
+      "decoded_sha256": "953354b629b572c85e2a7cd806c23dc07dcf21dad5a01c8213b6ef0de15bb1d0"
+    },
+    {
+      "path": "image-pull.log.gz",
+      "sha256": "5fee4541003a3827480df7d996f2b6d07e4a3d1785ae5b769ec637dfd1b04677",
+      "decoded_sha256": "81ae7efa9c7a27a5189670e02f0fa3ffab7fd6b2c7cf84066a6aee9f9fe41f0b"
+    },
+    {
+      "path": "tests.jsonl.gz",
+      "sha256": "0d0c5d3cd3c554b4204c5a649c5cd6e7ecba4745c58d31fb2af744957b8a846e",
+      "decoded_sha256": "beae33702c4ce4af098ccae17131ca0aec0f7cede6cf159bb242df7747b1a5fd"
+    },
+    {
+      "path": "verification.json.gz",
+      "sha256": "06c8d6e994009657650c823ff960f0a5b0d12ea2e152bb0cea4f21ef4858da3e",
+      "decoded_sha256": "f6e2f2e9ad2ba725804d0231edc617d7fc5f46386da1f928a9aa66edda73cd6d"
+    },
+    {
+      "path": "valkey-prose.log.gz",
+      "sha256": "c3099364493011e0e2727c04544ee1b6addefdaf37bf09120d4d3f6788dfa31d",
+      "decoded_sha256": "4f2f476474a6d62862866a49a9e53fd7499f42884adfbe44813bbce4e4fcf282"
+    },
+    {
+      "path": "valkey-prose.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    }
+  ],
+  "canonical_prose": {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 0,
+    "files": 1330,
+    "diagnostics": 0
+  }
+}

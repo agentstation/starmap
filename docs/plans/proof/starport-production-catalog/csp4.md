@@ -67,6 +67,16 @@ CSP11 owns full shared input recovery, equivalent acquisition capability, and at
 Starport still needs a compatible published dependency and its final delivery checks.
 The [earlier checkpoint](csp4/integration-history-before-transition-2026-09-11.md) preserves the previous current record.
 
+### Real Valkey integration follow-up
+
+The [Valkey proof](csp4/valkey-2026-09-11/verification.json) records 35 passing race events at Starport `9669b61d`, with no skips.
+It covers real storage, pub/sub, the KVStore contract, and application startup with the existing test connector factories.
+The container used the repository-configured Valkey 7 image at a recorded digest. It reported version `7.2.14`.
+
+The service bound an ephemeral loopback port and mounted no host data volume. The test runner removed it after completion.
+The earlier package run keeps its historical skip. This follow-up supplies the previously absent real-service evidence.
+Fleet recovery, PostgreSQL, native clock bounds, and paid inference remain outside this check.
+
 ### Starport production clock composition
 
 Local `9669b61d` connects Starport to the canonical Starmap clock profile.

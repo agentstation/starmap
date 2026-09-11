@@ -2329,3 +2329,13 @@ Published dependency qualification, full delivery gates, required review, native
 The [integrated task gate](../../plans/proof/starport-production-catalog/csp4/integrated-task-2026-09-11/verification.json) passes eight selected subcases against Starmap `d1bb47e1` and Starport `9669b61d`.
 It records 54 race events and no skips. Full task-suite and repository verification remain in progress.
 This component evidence does not qualify the final released pair or complete CSP4 before its implementation merges.
+
+## Real Valkey follow-up, 2026-09-11
+
+The [Valkey integration proof](../../plans/proof/starport-production-catalog/csp4/valkey-2026-09-11/verification.json) records 35 passing race events at Starport `9669b61d`, with no skips.
+The application, storage, pub/sub, and KVStore contract checks use an isolated Valkey `7.2.14` container.
+The test runner pins the image digest, binds a loopback port, and removes the container afterward.
+This supplies the missing real-service evidence for the earlier skipped application check.
+
+The check uses the local combined Starmap workspace. It does not qualify fleet recovery, PostgreSQL, native clock bounds, or paid inference.
+The original skipped result remains in its historical proof.
