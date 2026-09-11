@@ -176,7 +176,7 @@ func (s *Object) Commit(ctx context.Context, generation catalogs.Generation, exp
 		return err
 	}
 	if existingErr == nil && state.exists && state.id == id {
-		return nil
+		return s.ensureAuthorityRecord(ctx, candidate)
 	}
 	actual := ""
 	if state.exists {
@@ -194,6 +194,9 @@ func (s *Object) Commit(ctx context.Context, generation catalogs.Generation, exp
 		return err
 	}
 	if err := s.putImmutable(ctx, s.generationKey(id, payloadFilename), candidate.Payload); err != nil {
+		return err
+	}
+	if err := s.ensureAuthorityRecord(ctx, candidate); err != nil {
 		return err
 	}
 	pointerData, err := json.Marshal(struct {

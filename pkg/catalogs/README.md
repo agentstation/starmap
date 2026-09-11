@@ -589,6 +589,7 @@ func main() {
 - [func NormalizeExtensionFields\(fields map\[string\]any\) map\[string\]any](<#NormalizeExtensionFields>)
 - [func ShallowCopyProviderModels\(models map\[string\]\*Model\) map\[string\]\*Model](<#ShallowCopyProviderModels>)
 - [func SupportsCatalogSchema\(version uint64\) bool](<#SupportsCatalogSchema>)
+- [func ValidateCatalogAuthorityIdentity\(authorityID, policyID string\) error](<#ValidateCatalogAuthorityIdentity>)
 - [func ValidateMembershipEvidence\(scopes \[\]ProviderMembershipScope, links \[\]SourceObservationLink\) error](<#ValidateMembershipEvidence>)
 - [func ValidateReviewCandidates\(candidates \[\]evidence.ReviewCandidate, observations \[\]SourceObservationLink\) error](<#ValidateReviewCandidates>)
 - [type ArchitectureType](<#ArchitectureType>)
@@ -715,6 +716,9 @@ func main() {
   - [func \(h CatalogAuthorityHead\) SupportsPermissions\(\) bool](<#CatalogAuthorityHead.SupportsPermissions>)
   - [func \(h CatalogAuthorityHead\) Validate\(\) error](<#CatalogAuthorityHead.Validate>)
   - [func \(h CatalogAuthorityHead\) ValidateSuccessor\(next CatalogAuthorityHead\) error](<#CatalogAuthorityHead.ValidateSuccessor>)
+- [type CatalogAuthorityRecord](<#CatalogAuthorityRecord>)
+  - [func ParseCatalogAuthorityRecord\(data \[\]byte\) \(CatalogAuthorityRecord, error\)](<#ParseCatalogAuthorityRecord>)
+  - [func \(r CatalogAuthorityRecord\) Validate\(\) error](<#CatalogAuthorityRecord.Validate>)
 - [type CatalogPayload](<#CatalogPayload>)
 - [type CatalogPermissionEnvelope](<#CatalogPermissionEnvelope>)
   - [func ParseCatalogPermissionEnvelope\(data \[\]byte\) \(CatalogPermissionEnvelope, error\)](<#ParseCatalogPermissionEnvelope>)
@@ -1122,6 +1126,17 @@ const (
 )
 ```
 
+<a name="CatalogAuthorityRecordVersion"></a>
+
+```go
+const (
+    // CatalogAuthorityRecordVersion identifies immutable permission metadata independently of catalog schemas.
+    CatalogAuthorityRecordVersion uint64 = 1
+    // MaxCatalogAuthorityRecordBytes bounds stored permission metadata before decoding.
+    MaxCatalogAuthorityRecordBytes = 16 << 10
+)
+```
+
 <a name="CanonicalAliasSchemaVersion"></a>CanonicalAliasSchemaVersion is the first payload schema that retains canonical rename history.
 
 ```go
@@ -1226,6 +1241,15 @@ func SupportsCatalogSchema(version uint64) bool
 ```
 
 SupportsCatalogSchema reports the formats this release can read and enforce. Version 7 adds effective scopes. Version 8 adds operator removal policies. Version 9 adds canonical rename history.
+
+<a name="ValidateCatalogAuthorityIdentity"></a>
+## func [ValidateCatalogAuthorityIdentity](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L74>)
+
+```go
+func ValidateCatalogAuthorityIdentity(authorityID, policyID string) error
+```
+
+ValidateCatalogAuthorityIdentity checks the bounded authority and policy names used by publishers and subscribers.
 
 <a name="ValidateMembershipEvidence"></a>
 ## func [ValidateMembershipEvidence](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/membership_evidence.go#L11>)
@@ -2591,7 +2615,7 @@ type CatalogAuthorityHead struct {
 ```
 
 <a name="CatalogAuthorityHead.SupportsPermissions"></a>
-### func \(CatalogAuthorityHead\) [SupportsPermissions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L49>)
+### func \(CatalogAuthorityHead\) [SupportsPermissions](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L48>)
 
 ```go
 func (h CatalogAuthorityHead) SupportsPermissions() bool
@@ -2609,13 +2633,43 @@ func (h CatalogAuthorityHead) Validate() error
 Validate checks publication identity and digest shape independently of catalog payload compatibility. Unknown positive permission versions remain readable so the consumer can record the required revision before refusing admission.
 
 <a name="CatalogAuthorityHead.ValidateSuccessor"></a>
-### func \(CatalogAuthorityHead\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L55>)
+### func \(CatalogAuthorityHead\) [ValidateSuccessor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_head.go#L54>)
 
 ```go
 func (h CatalogAuthorityHead) ValidateSuccessor(next CatalogAuthorityHead) error
 ```
 
 ValidateSuccessor rejects a different authority, an older sequence, or changed content under the same sequence. The caller authorizes authority and policy changes in a new context.
+
+<a name="CatalogAuthorityRecord"></a>
+## type [CatalogAuthorityRecord](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_record.go#L17-L20>)
+
+CatalogAuthorityRecord binds independent permission metadata to one immutable generation. It contains no receipt and cannot establish permission freshness by itself.
+
+```go
+type CatalogAuthorityRecord struct {
+    Version uint64               `json:"version"`
+    Head    CatalogAuthorityHead `json:"head"`
+}
+```
+
+<a name="ParseCatalogAuthorityRecord"></a>
+### func [ParseCatalogAuthorityRecord](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_record.go#L32>)
+
+```go
+func ParseCatalogAuthorityRecord(data []byte) (CatalogAuthorityRecord, error)
+```
+
+ParseCatalogAuthorityRecord strictly decodes bounded immutable permission metadata. Unknown positive permission versions remain observable independently of catalog compatibility.
+
+<a name="CatalogAuthorityRecord.Validate"></a>
+### func \(CatalogAuthorityRecord\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission_record.go#L23>)
+
+```go
+func (r CatalogAuthorityRecord) Validate() error
+```
+
+Validate checks the record format and publication identity without reading catalog data.
 
 <a name="CatalogPayload"></a>
 ## type [CatalogPayload](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/payload.go#L18-L28>)

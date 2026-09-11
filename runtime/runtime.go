@@ -395,10 +395,10 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	return nil
 }
 
-// commit durably publishes one effective catalog when the deployment holds a
+// commitOrdinary durably publishes one effective catalog when the deployment holds a
 // writable store. The epoch that the run started under fences the commit, so an
 // instance that lost the lease cannot overwrite a newer generation.
-func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch uint64, evidence starmap.CandidateEvidence, source *sourceLayer) (starmap.CatalogState, error) {
+func (r *Runtime) commitOrdinary(ctx context.Context, state starmap.CatalogState, epoch uint64, evidence starmap.CandidateEvidence, source *sourceLayer) (starmap.CatalogState, error) {
 	if err := ctx.Err(); err != nil {
 		return starmap.CatalogState{}, err
 	}
