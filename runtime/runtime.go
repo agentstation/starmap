@@ -285,8 +285,8 @@ func (r *Runtime) Catalog() *catalogs.Catalog {
 	return r.effective.Catalog
 }
 
-// State returns one atomic snapshot of the effective catalog and its
-// generation identity. It reaches no external system.
+// State returns one atomic snapshot of the effective catalog, generation identity, and authority head.
+// It allocates no memory and reaches no external system. The authority head does not grant permission.
 func (r *Runtime) State() starmap.CatalogState {
 	if r == nil {
 		return starmap.CatalogState{}

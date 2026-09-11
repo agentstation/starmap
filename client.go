@@ -29,16 +29,20 @@ func (c *Client) Catalog() *catalogs.Catalog {
 }
 
 // CatalogState holds one atomic snapshot. It pairs the current immutable
-// catalog with its generation identity, checksum, timestamp, and local sequence.
+// catalog with its generation identity, checksum, timestamp, local sequence, and authority head.
 type CatalogState struct {
 	Catalog         *catalogs.Catalog
 	GenerationID    string
 	PayloadChecksum string
 	GeneratedAt     time.Time
 	Sequence        uint64
+	// AuthorityHead identifies this catalog's committed authority generation.
+	// Ordinary and embedded catalogs have a zero head. This field does not grant permission.
+	AuthorityHead catalogs.CatalogAuthorityHead
 }
 
-// CurrentCatalogState returns one atomic catalog/generation pair.
+// CurrentCatalogState returns one atomic catalog snapshot, including its authority head.
+// It allocates no memory and reads no storage. Retained snapshots remain immutable.
 func (c *Client) CurrentCatalogState() CatalogState {
 	if c == nil {
 		return CatalogState{}
@@ -55,6 +59,7 @@ func (c *Client) CurrentCatalogState() CatalogState {
 		PayloadChecksum: c.generationPayloadChecksum,
 		GeneratedAt:     c.generationGeneratedAt,
 		Sequence:        c.generationSequence,
+		AuthorityHead:   c.generationAuthorityHead,
 	}
 }
 

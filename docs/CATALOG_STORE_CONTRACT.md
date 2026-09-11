@@ -158,6 +158,25 @@ Unknown clock validity or uncertainty outside zero through 30 seconds refuses is
 The callback must support concurrent calls and account for clock corrections, suspend, restart, and expired evidence.
 Returning `time.Now()` with an assumed uncertainty does not qualify a clock.
 
+`runtime.WithPermissionClock` supplies a complete sample for each admission check, receipt relay, and permission status report.
+Each check uses the time and uncertainty from one callback result. The callback reads cached evidence and supports concurrent calls.
+The scheduler retains its own clock. Combining the complete sample with `WithPermissionClockUncertainty` causes a configuration error.
+
+The legacy uncertainty callback remains available when it qualifies the time from `WithClock`. Neither option provides native qualification.
+
+`permission.NewClockCache` separates explicit clock observations from cached permission checks.
+Its constructor starts no observation. `Refresh(ctx)` serializes observations with a finite deadline.
+`Read()` uses one immutable sample and the configured elapsed counter. It does not consult the time service.
+
+The host qualifies the native source, the counter, and their error bounds.
+The counter must include system sleep. The cache includes query delay, counter error, and bounded rate drift in its uncertainty.
+Maximum age cannot exceed five minutes. An uncertainty above 30 seconds or an exhausted age bound refuses the sample.
+
+Failed observations, counter regressions, and explicit invalidation clear the evidence.
+An unfinished observation cannot undo concurrent invalidation. A caller canceled before observation preserves existing evidence.
+A new process starts without qualified evidence. The host must schedule refresh and invalidate known native failures.
+These APIs do not select or qualify a production native clock adapter.
+
 The issuer rejects changed authority identity, sequence rollback, and conflicting heads at the same sequence.
 Concurrent observations cannot replace a newer observed head with an older reply.
 A clock failure after a valid head read still retains that requirement in process memory.

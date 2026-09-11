@@ -13,6 +13,12 @@ Package permission prepares authority generations, orders their publication, and
 ## Index
 
 - [func PrepareGeneration\(input catalogs.Generation, config GenerationConfig\) \(catalogs.Generation, error\)](<#PrepareGeneration>)
+- [type ClockCache](<#ClockCache>)
+  - [func NewClockCache\(config ClockCacheConfig\) \(\*ClockCache, error\)](<#NewClockCache>)
+  - [func \(c \*ClockCache\) Invalidate\(\)](<#ClockCache.Invalidate>)
+  - [func \(c \*ClockCache\) Read\(\) ClockReading](<#ClockCache.Read>)
+  - [func \(c \*ClockCache\) Refresh\(ctx context.Context\) error](<#ClockCache.Refresh>)
+- [type ClockCacheConfig](<#ClockCacheConfig>)
 - [type ClockReading](<#ClockReading>)
 - [type GenerationConfig](<#GenerationConfig>)
 - [type Issuer](<#Issuer>)
@@ -42,6 +48,76 @@ func PrepareGeneration(input catalogs.Generation, config GenerationConfig) (cata
 PrepareGeneration binds an ordinary catalog to an explicitly selected origin authority. The entire input catalog defines the permitted catalog for this policy. The caller must apply its catalog policy before preparation and authorize the origin separately. An existing authority generation must retain its original identity through the subscriber or relay path. Preparation starts no I/O and returns independent copies of mutable data. Publication still requires Publisher and its exact durable predecessor.
 
 The required revision binds authority, policy, permission schema, and every semantic catalog fact. It excludes provenance and manifest observation metadata, but includes catalog scope evidence and rename history. This conservative revision changes even for metadata\-only catalog changes. Identical semantics under a new publication sequence keep the revision, while the generation identity changes.
+
+<a name="ClockCache"></a>
+## type [ClockCache](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/clock_cache.go#L35-L39>)
+
+ClockCache ages qualified UTC evidence without consulting a time service during reads. NewClockCache and Read never call Observe. The host schedules explicit Refresh calls. Permission issuers and connected runtimes can use Read as their complete clock callback.
+
+```go
+type ClockCache struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewClockCache"></a>
+### func [NewClockCache](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/clock_cache.go#L48>)
+
+```go
+func NewClockCache(config ClockCacheConfig) (*ClockCache, error)
+```
+
+NewClockCache constructs an unqualified cache without calling either clock function.
+
+<a name="ClockCache.Invalidate"></a>
+### func \(\*ClockCache\) [Invalidate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/clock_cache.go#L170>)
+
+```go
+func (c *ClockCache) Invalidate()
+```
+
+Invalidate clears clock evidence and prevents an earlier observation from restoring it. The host calls this method when native clock evidence becomes unqualified.
+
+<a name="ClockCache.Read"></a>
+### func \(\*ClockCache\) [Read](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/clock_cache.go#L126>)
+
+```go
+func (c *ClockCache) Read() ClockReading
+```
+
+Read returns one cached UTC estimate and its complete uncertainty bound. Expiry, counter failure, or regression clears that evidence until a successful refresh.
+
+<a name="ClockCache.Refresh"></a>
+### func \(\*ClockCache\) [Refresh](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/clock_cache.go#L69>)
+
+```go
+func (c *ClockCache) Refresh(ctx context.Context) error
+```
+
+Refresh replaces clock evidence after one bounded observation. Failed or invalid observations clear the previous evidence. Concurrent refreshes run in order. Invalidate or an unsafe counter read during observation prevents its publication.
+
+<a name="ClockCacheConfig"></a>
+## type [ClockCacheConfig](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/clock_cache.go#L16-L30>)
+
+ClockCacheConfig selects qualified observations and a process\-local elapsed counter. The host qualifies the observation source, counter, and error bounds on its platform.
+
+```go
+type ClockCacheConfig struct {
+    // Observe reads UTC with a known error bound. Its timestamp falls within the call.
+    // It stops when the context ends and changes no clock or time-service setting.
+    Observe func(context.Context) (ClockReading, error)
+    // Elapsed reads a nonnegative counter that includes system sleep, with no I/O.
+    // It supports concurrent calls and reports false after an unqualified discontinuity.
+    Elapsed func() (time.Duration, bool)
+    // MaxAge bounds observation age, including query delay, to at most five minutes.
+    MaxAge time.Duration
+    // MaxDriftPPM bounds counter rate error relative to actual elapsed time.
+    // It must be positive and less than one million parts per million.
+    MaxDriftPPM uint32
+    // CounterUncertainty bounds the absolute error of each counter reading.
+    CounterUncertainty time.Duration
+}
+```
 
 <a name="ClockReading"></a>
 ## type [ClockReading](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/issuer.go#L16-L20>)

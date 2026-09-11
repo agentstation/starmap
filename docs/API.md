@@ -210,9 +210,9 @@ type CatalogReadiness struct {
 ```
 
 <a name="CatalogState"></a>
-## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L33-L39>)
+## type [CatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L33-L42>)
 
-CatalogState holds one atomic snapshot. It pairs the current immutable catalog with its generation identity, checksum, timestamp, and local sequence.
+CatalogState holds one atomic snapshot. It pairs the current immutable catalog with its generation identity, checksum, timestamp, local sequence, and authority head.
 
 ```go
 type CatalogState struct {
@@ -221,11 +221,14 @@ type CatalogState struct {
     PayloadChecksum string
     GeneratedAt     time.Time
     Sequence        uint64
+    // AuthorityHead identifies this catalog's committed authority generation.
+    // Ordinary and embedded catalogs have a zero head. This field does not grant permission.
+    AuthorityHead catalogs.CatalogAuthorityHead
 }
 ```
 
 <a name="Client"></a>
-## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L108-L129>)
+## type [Client](<https://github.com/agentstation/starmap/blob/main/client.go#L113-L134>)
 
 Client manages an immutable canonical catalog, explicit publication, persistence, and event hooks. It owns no provider acquisition, scheduling goroutine, or cadence.
 
@@ -236,7 +239,7 @@ type Client struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L133>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/client.go#L138>)
 
 ```go
 func New(opts ...Option) (*Client, error)
@@ -245,7 +248,7 @@ func New(opts ...Option) (*Client, error)
 New creates a Client using a background context. Call NewContext when the caller must cancel storage I/O during client setup.
 
 <a name="NewContext"></a>
-### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L141>)
+### func [NewContext](<https://github.com/agentstation/starmap/blob/main/client.go#L146>)
 
 ```go
 func NewContext(ctx context.Context, opts ...Option) (*Client, error)
@@ -272,22 +275,22 @@ func (c *Client) Catalog() *catalogs.Catalog
 Catalog returns the current immutable canonical catalog. It returns nil when called on a nil Client. After New or NewContext succeeds, Catalog is non\-failing, non\-nil, O\(1\), allocation\-free, and safe to retain across goroutines.
 
 <a name="Client.CurrentAuthorityHead"></a>
-### func \(\*Client\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/authority_head.go#L8>)
+### func \(\*Client\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/authority_head.go#L9>)
 
 ```go
 func (c *Client) CurrentAuthorityHead() catalogs.CatalogAuthorityHead
 ```
 
-CurrentAuthorityHead returns the authority head of the committed in\-memory publication. Construction and publication validate it with the complete generation. Ordinary generations return the zero head. The read allocates no memory and reads no storage. It does not authenticate an authority or renew permission.
+CurrentAuthorityHead returns the authority head of the committed in\-memory publication. Construction and publication validate it with the complete generation. Ordinary generations return the zero head. The read allocates no memory and reads no storage. It does not authenticate an authority or renew permission. Use CurrentCatalogState when the catalog and authority head must identify the same publication.
 
 <a name="Client.CurrentCatalogState"></a>
-### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L42>)
+### func \(\*Client\) [CurrentCatalogState](<https://github.com/agentstation/starmap/blob/main/client.go#L46>)
 
 ```go
 func (c *Client) CurrentCatalogState() CatalogState
 ```
 
-CurrentCatalogState returns one atomic catalog/generation pair.
+CurrentCatalogState returns one atomic catalog snapshot, including its authority head. It allocates no memory and reads no storage. Retained snapshots remain immutable.
 
 <a name="Client.CurrentGeneration"></a>
 ### func \(\*Client\) [CurrentGeneration](<https://github.com/agentstation/starmap/blob/main/generation.go#L18>)
@@ -299,7 +302,7 @@ func (c *Client) CurrentGeneration(ctx context.Context) (catalogs.Generation, er
 CurrentGeneration returns this client's current immutable generation. Before any durable mutation, it returns the embedded bootstrap.
 
 <a name="Client.CurrentGenerationID"></a>
-### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L63>)
+### func \(\*Client\) [CurrentGenerationID](<https://github.com/agentstation/starmap/blob/main/client.go#L68>)
 
 ```go
 func (c *Client) CurrentGenerationID() string
@@ -389,7 +392,7 @@ func (c *Client) PrepareGeneration(ctx context.Context, candidate *Candidate) (c
 PrepareGeneration encodes a candidate with its final ordinary manifest and evidence. It writes no storage and changes no active catalog. The caller owns the returned bytes. A transaction can bind these exact bytes to its journal before Activate commits them. Preparation reserves no predecessor, so activation still requires the store's atomic compare\-and\-swap.
 
 <a name="Client.PublishesDurably"></a>
-### func \(\*Client\) [PublishesDurably](<https://github.com/agentstation/starmap/blob/main/client.go#L91>)
+### func \(\*Client\) [PublishesDurably](<https://github.com/agentstation/starmap/blob/main/client.go#L96>)
 
 ```go
 func (c *Client) PublishesDurably() bool
@@ -452,7 +455,7 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 Update serializes candidate construction, generation\-store CAS, and atomic in\-memory publication. Acquisition and scheduling remain explicit caller composition above Client.
 
 <a name="Client.WorkspacePath"></a>
-### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L80>)
+### func \(\*Client\) [WorkspacePath](<https://github.com/agentstation/starmap/blob/main/client.go#L85>)
 
 ```go
 func (c *Client) WorkspacePath() string

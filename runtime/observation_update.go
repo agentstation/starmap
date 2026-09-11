@@ -78,6 +78,9 @@ func (l *layerSet) selectedBaseline(embedded starmap.CatalogState) (starmap.Cata
 			return starmap.CatalogState{}, err
 		}
 		baseline = starmap.CatalogState{Catalog: decoded, GenerationID: l.source.GenerationID, PayloadChecksum: l.source.Checksum, GeneratedAt: l.source.PublishedAt}
+		if l.source.Manifest != nil {
+			baseline.AuthorityHead = l.source.Manifest.AuthorityHead
+		}
 	}
 	if baseline.Catalog == nil {
 		return starmap.CatalogState{}, &errors.ValidationError{Field: "effective catalog", Message: "has no baseline"}
