@@ -3,60 +3,50 @@
 ## Current runtime integration
 
 The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-deliveries) separates merged work from the remaining CSP4 deliveries.
-PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
-CSP4 remains active because native clocks, follower integration, explicit transitions, and four mapped Starport checks remain open.
+Starmap PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
+CSP4 remains active because native qualification, production clock integration, follower adoption, safe takeover, explicit transitions, and delivery merges remain open.
 
-### Native qualification and permission cancellation
+### Consumer checks and published dependency
 
-PR #151 now contains `a6545493`. Its [proof](csp4/permission-cancellation-2026-09-11/verification.json) records the cancellation regression and native privilege diagnostic.
-Cancellation before a permission source read preserves the accepted requirement. Cancellation after a new withdrawal retains the existing refusal behavior.
-The regression fails before the fix. Forty-five retention race events pass per Go 1.25.12 and 1.26.6.
+Starport `80f8064e` adds four authority acceptance cases. Its [proof](csp4/consumer-acceptance-2026-09-11/verification.json) records 45 passing race events across five repetitions.
+The cases cover excluded embedded membership, cold refusal, retained Badger startup, and unsupported-schema permission handling.
+An unchanged permission allows the retained catalog. A new permission requirement blocks it before replacement activation.
+A different authority or policy also refuses retained inference.
 
-The Windows probe changes one held privilege in a disposable test process and restores its original attributes.
-It leaves production privileges and the mandatory preflight unchanged. Sol reports zero findings.
-Opus flags the known red native gate. The merge block remains. Disabling that gate would conceal the unresolved failure.
+The tests use real Badger candidate, accepted, and lease stores with a deterministic source and qualified clock.
+They do not qualify native clocks or live provider routing.
+The first schema fixture confused a new publication with a permission withdrawal. The corrected table covers both cases and preserves that initial failure.
 
-Workflow [34597460388](https://github.com/agentstation/starmap/actions/runs/34597460388) fails the Windows status call before and after privilege enablement on both architectures.
-Enabling that privilege alone is insufficient. Investigate the verified local RPC authentication and impersonation contract. Other native jobs continue.
+Commit `1da7a26` makes the architecture version expression match the existing release verifier.
+All twelve architecture checks pass, including the full Go suite. Module replacement rejection remains unchanged.
+Starport resolves published Starmap `v0.16.6-0.20260911063726-852a548c4959` with `GOWORK=off`.
+The final stable released-pair qualification remains required.
 
-Its parent workflow 34593352017 passed 22 Windows preflight events per architecture and failed the status RPC with access denied.
-The parent also failed the macOS Intel warm-start case. The deterministic cancellation defect can explain that failure, but native confirmation remains required.
+### Task verifier
 
-Clock configuration `e97d7fc3` adds eight canonical host settings and passive native composition.
-All 41 repository verifier stages pass at that source. The [settings proof](csp4/clock-settings-2026-09-11/verification.json) retains those checks.
-Integrate the qualified native parent before final review and publication.
+The [registry proof](csp4/consumer-registry-2026-09-11/verification.json) records eight passing CSP4 subcases with no skipped named tests.
+Four consumer mappings use ten named checks across catalog, application, router, cache, and HTTP boundaries.
+The initial run skipped the absent signed fixture. Preparation verified its published size and checksum.
+The prepared run passed four public subcases and reported four missing consumer mappings. The registered run passes all eight.
 
-### Origin configuration and follower startup
+This task gate records component checks. Full A09, A10, and A21 qualification remains with CSP10.
+Production native clock composition, remaining Starport delivery checks, required review, publication, and merge remain open.
 
-Commit `b76b9f10` adds one complete origin declaration across YAML, environment, and CLI inputs.
-An enabled origin uses the application's canonical catalog store and native clock monitor.
-Disabling issuance preserves the selected store and refuses implicit ordinary startup with retained authority.
-The [settings proof](csp4/origin-settings-2026-09-11/verification.json) retains its tests.
+### Remaining native and origin delivery
 
-Commit `4bb4b870` lets a publication-lease follower serve a matching accepted authority catalog without shared writes.
-Its receipt issuer reads the latest shared authority head even when another writer advances beyond the local catalog.
-The [follower proof](csp4/origin-followers-2026-09-11/verification.json) records the failing startup cases and seven final passing race events per toolchain.
-Memory and filesystem fixtures pass. Static checks and 1,506-file prose pass.
+PR #151 contains `a6545493`. Workflow [34597460388](https://github.com/agentstation/starmap/actions/runs/34597460388) passes both Linux and both macOS runtime jobs.
+Both Windows status queries return access denied after privilege enablement. The registry proof retains the latest workflow snapshot.
+The native merge gate remains mandatory. The [cancellation proof](csp4/permission-cancellation-2026-09-11/verification.json) records the failure and review assessment.
 
+Clock configuration `e97d7fc3` passes all 41 repository verifier stages. Its [settings proof](csp4/clock-settings-2026-09-11/verification.json) retains those checks.
+Native parent integration, final review, publication, and merge remain required.
+
+Origin configuration and follower startup remain at `4bb4b870` beneath the registry commit.
+Followers serve matching accepted authority without shared writes. Their receipts read the current shared authority head.
+The [follower proof](csp4/origin-followers-2026-09-11/verification.json) records seven passing final race events per toolchain.
 Periodic catalog adoption, safe takeover, explicit transitions, and real fleet qualification remain open.
-Full verification, native parent integration, review, publication, and merge remain required.
 
-### Published Starport dependency
-
-Starport commit `190a8124` selects published Starmap `v0.16.6-0.20260911063726-852a548c4959` with `GOWORK=off`.
-The old pin cannot compile the authority consumer. The published replacement passes 161 catalog race events with zero skips.
-A transient Git module-cache error failed the first download. The retry succeeded without cache edits.
-
-The focused proxy, router, and controller permission checks pass 24 race events with zero skips.
-
-The architecture gate passes eleven checks, including the full Go suite, and fails V01 because its version expression accepts only release tags.
-This conflicts with the CSP4 published-module contract. Resolve that candidate check while retaining stable released-pair qualification.
-The [dependency proof](csp4/published-starport-dependency-2026-09-11/verification.json) records the exact failure and module resolution.
-
-The four mapped consumer cases remain UNVERIFIED: `A09.excluded_membership`, `A10.cold_owner_refusal`, `A10.warm_retained_authority`, and `A21.mixed_schema_permission_envelope`.
-The compatible published dependency removes that integration blocker. Full consumer delivery gates and merge remain required.
-
-Previous integration evidence remains in the [dated history](csp4/integration-history-before-cancellation-2026-09-11.md).
+Earlier current proof remains in the [dated history](csp4/integration-history-before-consumer-checks-2026-09-11.md).
 
 ## Native clock checkpoint history
 

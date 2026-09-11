@@ -1,0 +1,200 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_COMMITTED_UNPUBLISHED",
+  "source_commit": "80f8064e6ab0abcbd083210f88ba31243c653b8a",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "base": "55629266f05f687d489adfa93aa449fd24168883",
+  "contract": "Starport retains only the selected authority, refuses cold inference without a permission owner, and enforces new permission requirements before it accepts a replacement catalog schema.",
+  "source_files": [
+    {
+      "path": "internal/catalog/authority_acceptance_test.go",
+      "sha256": "8698f37cffab0e64dadf782c49537d3d1a5f468b43153ef79e247772fbab1710"
+    },
+    {
+      "path": "internal/catalog/attempt_permission_test.go",
+      "sha256": "aea582832c79773185e08429dea85e4e7f58b3498338582e82ec6170bde53a06"
+    },
+    {
+      "path": "scripts/verify-v1-architecture.sh",
+      "sha256": "f7827e0a0848a28a46dcc7ec66c06c1f66b4754076ce0f0d70b48851539daad2"
+    }
+  ],
+  "checks": {
+    "focused_race": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=5",
+        "-timeout=10m",
+        "-run",
+        "^TestAuthority(CatalogExcludesEmbeddedMembership|ColdStartupRefusesWithoutAcceptedOwner|WarmStartupUsesOnlyRetainedMatchingOwner|FutureSchemaPermissionEnvelope)$",
+        "./internal/catalog"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off"
+      },
+      "exit_code": 0,
+      "pass_events": 45,
+      "fail_events": 0,
+      "skip_events": 0
+    },
+    "architecture": {
+      "command": [
+        "bash",
+        "scripts/verify-v1-architecture.sh"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off"
+      },
+      "exit_code": 0,
+      "passed": 12,
+      "failed": 0,
+      "includes_full_go_suite": true
+    },
+    "static": [
+      {
+        "name": "lint",
+        "command": [
+          "golangci-lint",
+          "run",
+          "./internal/catalog/..."
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "vet",
+        "command": [
+          "go",
+          "vet",
+          "./internal/catalog/..."
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "prose",
+        "command": [
+          "make",
+          "technical-writing-check"
+        ],
+        "exit_code": 2
+      }
+    ],
+    "corrected_static": [
+      {
+        "name": "prose-corrected",
+        "command": [
+          "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+          "lint",
+          "internal/catalog/authority_acceptance_test.go",
+          "internal/catalog/attempt_permission_test.go",
+          "scripts/verify-v1-architecture.sh",
+          "--format",
+          "text"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "diff",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "failure_assessment": [
+    "The first fixture expected withdrawal from an unchanged permission revision. Six events passed and one failed. The corrected test covers both unchanged and withdrawn permission. This is a fixture error, not product fail-before evidence.",
+    "The initial public-product verifier skipped the absent immutable fixture. Its later prepared run records the actual public checks.",
+    "Starport has no make technical-writing-check target. The direct skill command passes all three changed files.",
+    "V01 previously refused a published pseudo-version. Its corrected expression matches the existing release verifier and retains module replacement rejection."
+  ],
+  "limitations": [
+    "The tests use real Badger candidate, accepted, and lease stores with a deterministic source and qualified clock. They do not qualify the native clock or a real provider.",
+    "The configured application, router, response cache, and HTTP boundaries have separate named checks in the task registry.",
+    "Production Starport native clock composition, complete delivery checks, required review, publication, and merge remain open.",
+    "The final stable released-pair qualification remains required. Component test success does not complete CSP4."
+  ],
+  "running_checks": [],
+  "artifacts": [
+    {
+      "path": "checks-corrected.json.gz",
+      "sha256": "068ed998fd429612352bf0ea906157379e20e04d8ffac81cda33588aaed98909",
+      "decoded_sha256": "a08960a3a3fdf41b9798702d0998eb2efe027affcfb39c1f9d6c5ebeffdde514"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "e59364757690c69f51558074001e12b5ffdbe1e9b3837ae7e6ab94c4455bf685",
+      "decoded_sha256": "91eae580823eea0b2673613243dee5426c5a22143f081159389142435851dec6"
+    },
+    {
+      "path": "corrected.json.gz",
+      "sha256": "fb54150e9a98cbbff26dedc3775a2e157db7eb783413d0d08d3282f6815d209c",
+      "decoded_sha256": "3046b30bf169dc36fecdccf3c01f669ce89e47ea9bc3922ef8a9b4fb1f4bf12a"
+    },
+    {
+      "path": "corrected.jsonl.gz",
+      "sha256": "8ad059f793d0133ae240882f8563a56be20a01c16ea94399337a7efe21ae7532",
+      "decoded_sha256": "4d90bd55d07a07b2aed9af7c53648514a22abe54cd2030d39f746f9044353306"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "first.json.gz",
+      "sha256": "70f5c89feaa049f797ae04bd0af0db32aa79fd0d86ef368f8e13c5d0d9b145df",
+      "decoded_sha256": "76ed974a08492d420d75700d05066dabe36c163ad07f5367f3cb5b4b137c59ce"
+    },
+    {
+      "path": "first.jsonl.gz",
+      "sha256": "88441bc3c5d89c333de19501bf8cd515979b356d53eb2ab5d7e6e0519f4084df",
+      "decoded_sha256": "93a070472f398fcd4a5be5e10d6326587f9e904d62362ac9868a433862eb465a"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "prose-corrected.log.gz",
+      "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b",
+      "decoded_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "f8b813c57fdc80c40726c69c79c55cc8829447edb885a17e7919caf2758f254b",
+      "decoded_sha256": "b60837734a5aaa66db5c976712e4d73e2587fb6a7a1935d23a902b500cf211e8"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "v01-corrected.json.gz",
+      "sha256": "353e4d6a002b5232f42bbc81a4c5c9e806439d09a4d98efda4ae273884d1939e",
+      "decoded_sha256": "10fc4b6291b24dc8e820eab54f7c6e929bab9960605ff993de74994f5bb29942"
+    },
+    {
+      "path": "v01-corrected.log.gz",
+      "sha256": "aa534686187e44e512a9de7784721e76fb44cb45272504efa943a1a2903fc2f2",
+      "decoded_sha256": "66045ba6acb9457368b04954b83e2205363709c533c895b85475d59d24783edb"
+    },
+    {
+      "path": "v1-corrected-full.json.gz",
+      "sha256": "df22e0945d15bbaf4efd90692823ef8780189f6720f207f616be9036eb3f78d6",
+      "decoded_sha256": "fcdea3a6bca35cc7b901d359c17dedefee2100525ecd9688cad7fe41ea45d00d"
+    },
+    {
+      "path": "v1-corrected-full.log.gz",
+      "sha256": "29311fcb758fa0d458655b0b85ee42bb10e1522cf161e5c0d5b67126312624c1",
+      "decoded_sha256": "261829f644b3925656f309dff1a745455b33d38fe7cdf2609225f8021a8991e0"
+    }
+  ]
+}
