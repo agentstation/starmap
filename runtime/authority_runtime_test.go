@@ -67,6 +67,9 @@ func TestAuthorityRuntimePreservesPublishedAuthorityGeneration(t *testing.T) {
 		if !reflect.DeepEqual(generation, expected) {
 			t.Fatalf("%s changed the authority generation: version=%d head=%+v", phase, generation.Manifest.ManifestVersion, generation.Manifest.AuthorityHead)
 		}
+		if r.State().AuthorityHead != expected.Manifest.AuthorityHead || r.Client().CurrentCatalogState().AuthorityHead != expected.Manifest.AuthorityHead {
+			t.Fatalf("%s lost the catalog snapshot authority head", phase)
+		}
 		if err := r.Close(); err != nil {
 			t.Fatal(err)
 		}
@@ -200,6 +203,9 @@ func TestAuthorityRuntimeWithdrawalBlocksBeforeFailedActivationAndRestart(t *tes
 	}
 	if r.AllowsNewAttempt() || r.State().GenerationID != before.GenerationID {
 		t.Fatal("failed replacement authorized stale policy or replaced metadata")
+	}
+	if r.State().AuthorityHead != before.AuthorityHead || r.State().AuthorityHead == next.Head {
+		t.Fatal("failed activation mixed the retained catalog and the withdrawn authority head")
 	}
 	if r.Status().RequiredPermissionRevision != next.Head.RequiredPermissionRevision {
 		t.Fatal("failed activation lost known withdrawal")

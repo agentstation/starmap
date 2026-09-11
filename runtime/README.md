@@ -1462,7 +1462,7 @@ ReplaceRemovalTargets replaces this runtime's operator removal snapshot. Expecte
 func (r *Runtime) State() starmap.CatalogState
 ```
 
-State returns one atomic snapshot of the effective catalog and its generation identity. It reaches no external system.
+State returns one atomic snapshot of the effective catalog, generation identity, and authority head. It allocates no memory and reaches no external system. The authority head does not grant permission.
 
 <a name="Runtime.Status"></a>
 ### func \(\*Runtime\) [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status.go#L49>)

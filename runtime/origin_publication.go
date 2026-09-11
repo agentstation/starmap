@@ -79,6 +79,7 @@ func (r *Runtime) preparePublication(ctx context.Context, state starmap.CatalogS
 	prepared.state.GenerationID = generation.Manifest.GenerationID
 	prepared.state.PayloadChecksum = generation.Manifest.Payload.Checksum
 	prepared.state.GeneratedAt = generation.Manifest.GeneratedAt
+	prepared.state.AuthorityHead = generation.Manifest.AuthorityHead
 	return prepared, nil
 }
 

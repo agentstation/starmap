@@ -76,9 +76,15 @@ func TestOriginPublicationRetainsIdentityOnRestartAndRebuild(t *testing.T) {
 	if first.Manifest.AuthorityHead.Sequence != 1 {
 		t.Fatal("initial authority is missing")
 	}
+	if connected.State().AuthorityHead != first.Manifest.AuthorityHead {
+		t.Fatal("origin snapshot lost its committed authority head")
+	}
 	state, err := connected.rebuild(t.Context(), connected.lease.epoch())
 	if err != nil || state.GenerationID != first.Manifest.GenerationID {
 		t.Fatalf("unchanged rebuild changed identity: %s, %v", state.GenerationID, err)
+	}
+	if state.AuthorityHead != first.Manifest.AuthorityHead {
+		t.Fatal("origin rebuild lost its snapshot authority head")
 	}
 	if err := connected.Close(); err != nil {
 		t.Fatal(err)
@@ -86,6 +92,9 @@ func TestOriginPublicationRetainsIdentityOnRestartAndRebuild(t *testing.T) {
 	recovered := openTestRuntime(t, opts...)
 	if recovered.State().GenerationID != first.Manifest.GenerationID {
 		t.Fatal("restart minted a new authority sequence")
+	}
+	if recovered.State().AuthorityHead != first.Manifest.AuthorityHead {
+		t.Fatal("origin restart lost its snapshot authority head")
 	}
 	if _, err := recovered.Client().Update(t.Context(), func(_ context.Context, c *catalogs.Catalog) (*starmap.Candidate, error) {
 		return starmap.NewCandidate(c, starmap.CandidateEvidence{})
