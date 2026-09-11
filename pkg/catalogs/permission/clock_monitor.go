@@ -135,7 +135,7 @@ func (m *ClockMonitor) Status() ClockMonitorStatus {
 	return status
 }
 
-// Close cancels observations, invalidates cached evidence, and waits for cleanup.
+// Close cancels work, invalidates cached evidence, and waits for its refresh worker.
 // It is safe before Start and for concurrent or repeated calls.
 // The configured observation source must honor its context, as ClockCacheConfig requires.
 func (m *ClockMonitor) Close() {

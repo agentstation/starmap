@@ -158,7 +158,7 @@ NewClockMonitor validates a host\-selected source and schedule without I/O. The 
 func (m *ClockMonitor) Close()
 ```
 
-Close cancels observations, invalidates cached evidence, and waits for cleanup. It is safe before Start and for concurrent or repeated calls. The configured observation source must honor its context, as ClockCacheConfig requires.
+Close cancels work, invalidates cached evidence, and waits for its refresh worker. It is safe before Start and for concurrent or repeated calls. The configured observation source must honor its context, as ClockCacheConfig requires.
 
 <a name="ClockMonitor.Read"></a>
 ### func \(\*ClockMonitor\) [Read](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/clock_monitor.go#L107>)
