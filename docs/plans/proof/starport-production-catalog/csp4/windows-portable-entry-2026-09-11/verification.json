@@ -1,0 +1,512 @@
+{
+  "task": "CSP4",
+  "status": "CORRECTION_REVIEWED_PUBLISHED_NATIVE_CI_AND_COMBINED_VERIFY_RUNNING",
+  "source_commit": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "source_files": [
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/README.md",
+      "sha256": "02575948519869a6644be034eb765f0d2802ca55e13c8889e486b438c20eef05"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/pipe_unavailable.go",
+      "sha256": "63b6acab5827510e4cc73f63ccb80099bc866508309d31dd4523c7c7bed3804c"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query.go",
+      "sha256": "cc4467b8c7be993deacaefa22025fdafacb26d93bbbc4fba9376b8309f6b4c66"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query_unavailable_test.go",
+      "sha256": "8ecf8d9bc284ff49f7d33402f099ced1cc3832bc9543be10838cfda6948dfcae"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/security_windows.go",
+      "sha256": "511f754af479554b0c6daaf8dc2b1937b880c33437b01cbf8bef01b4bd64f218"
+    }
+  ],
+  "integration": {
+    "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+    "branch": "codex/catalog-origin-settings",
+    "session_id": 55757,
+    "command": [
+      "make",
+      "verify"
+    ],
+    "status": "running",
+    "log": ".tmp/csp4-origin-integrated/portable-entry-verifier.log"
+  },
+  "failure": {
+    "previous_native_source": "75ac9d0751d666ed71393ca08f573e8a2739860e",
+    "previous_combined_source": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+    "local_repository_verifier_exit_code": 2,
+    "native_workflow": 34609335965,
+    "native_verification_gate": "FAILURE",
+    "unused_declarations": 17,
+    "explanation": "The Windows-only exported entry left portable RPC support unused on other hosts with production-only lint. Native runtime jobs and both complete race commands passed before this later lint failure."
+  },
+  "checks": {
+    "race": [
+      {
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=5m",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "toolchain": "go1.26.6",
+        "exit_code": 0,
+        "test_events": {
+          "pass": 68,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=5m",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "toolchain": "go1.25.12",
+        "exit_code": 0,
+        "test_events": {
+          "pass": 68,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    ],
+    "platform_lint": [
+      {
+        "command": [
+          "devbox",
+          "run",
+          "golangci-lint",
+          "run",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "GOOS": "darwin",
+        "GOARCH": "arm64",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "devbox",
+          "run",
+          "golangci-lint",
+          "run",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "devbox",
+          "run",
+          "golangci-lint",
+          "run",
+          "./pkg/catalogs/permission/hostclock/..."
+        ],
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "exit_code": 0
+      }
+    ],
+    "cross_builds": [
+      {
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/portable-entry/go1.26.6-amd64.test.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/portable-entry/go1.26.6-arm64.test.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/portable-entry/go1.25.12-amd64.test.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          ".tmp/csp4-host-clock/portable-entry/go1.25.12-arm64.test.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "exit_code": 0
+      }
+    ],
+    "static_initial": [
+      {
+        "command": [
+          "devbox",
+          "run",
+          "golangci-lint",
+          "run"
+        ],
+        "exit_code": 0,
+        "log": "static-0.log"
+      },
+      {
+        "command": [
+          "go",
+          "vet",
+          "./pkg/catalogs/permission/..."
+        ],
+        "exit_code": 0,
+        "log": "static-1.log"
+      },
+      {
+        "command": [
+          "go",
+          "tool",
+          "ago",
+          "-stale-ignores",
+          "./..."
+        ],
+        "exit_code": 0,
+        "log": "static-2.log"
+      },
+      {
+        "command": [
+          "make",
+          "docs-check"
+        ],
+        "exit_code": 0,
+        "log": "static-3.log"
+      },
+      {
+        "command": [
+          "make",
+          "technical-writing-check"
+        ],
+        "exit_code": 2,
+        "log": "static-4.log"
+      }
+    ],
+    "static_corrected": [
+      {
+        "command": [
+          "make",
+          "technical-writing-check"
+        ],
+        "exit_code": 0,
+        "log": "corrected-static-0.log"
+      },
+      {
+        "command": [
+          "make",
+          "test-pure-go"
+        ],
+        "exit_code": 0,
+        "log": "corrected-static-1.log"
+      }
+    ],
+    "prose": {
+      "files": 1528,
+      "diagnostics": 0
+    },
+    "canonical_prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0,
+      "files": 1333,
+      "diagnostics": 0,
+      "initial_diagnostics": 5,
+      "intermediate_diagnostics": 1,
+      "correction": "Separated HTML paragraphs and used active voice. Product requirements and source code did not change."
+    }
+  },
+  "review": {
+    "status": "PASS",
+    "exit_code": 0,
+    "source_commit": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "findings": [],
+    "result": "patch is correct"
+  },
+  "publication": {
+    "pull_request": 151,
+    "published_head": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+    "auto_merge_enabled_then_disabled": true,
+    "merge_commit": null,
+    "workflow_run": 34620963592,
+    "workflow_status": "in_progress",
+    "auto_merge": false
+  },
+  "limitations": [
+    "Required review passes for the correction. Fresh native CI and the combined repository verifier remain running.",
+    "The combined repository verifier remains running. The previous complete task gate remains evidence for its recorded source pair.",
+    "Cross-builds do not qualify Windows runtime behavior.",
+    "The generated old review report retained identical bytes as review.md.raw after maintained-prose lint discovered it in scratch Markdown. No source prose rule changed.",
+    "Automatic merge remains disabled while the new native jobs are unqualified. The repository requires native results in addition to the two branch-protection checks."
+  ],
+  "artifacts": [
+    {
+      "path": "before-lint.json.gz",
+      "sha256": "393aaa255ee29cbad599a395330b7f36d9054bac07e94a40ba675b143946ad80",
+      "decoded_sha256": "72c9c2eebeeefda3168381de0772f012ad15f7feeffbc11e053edbc5602d0eae"
+    },
+    {
+      "path": "before-lint.log.gz",
+      "sha256": "411ae3660bc909ac66a61dd415e34c172e65c009fcef2d1213d6e860a68da3ca",
+      "decoded_sha256": "701a0687b99122b97af49b5ab2f3449cfc2cbbc7291ed9c19d327775cf0c5beb"
+    },
+    {
+      "path": "ci-failure.log.gz",
+      "sha256": "059a3d41e9d7ec52480ec226d62b9b17849b399870cb32770b80cac85dfad327",
+      "decoded_sha256": "e000e4383949e7043d54be6c9abc2b923197f6043c2f0ad148da904be0135d92"
+    },
+    {
+      "path": "corrected-static-0.log.gz",
+      "sha256": "99b9767f7299f2187f28fa75c5c376546e37d880375b5ec33722ab12e5a0eb97",
+      "decoded_sha256": "709fbf68846598601e239a558d8ce4d51962f41078ea33eea9a8add21afc345a"
+    },
+    {
+      "path": "corrected-static-1.log.gz",
+      "sha256": "bf066f14bd81461e7c13b5916cfd51d370c30bf046a6f50f0ac60814a0b463ac",
+      "decoded_sha256": "9af5472b0673c11908af553c6f8dc43f21db383fbb8e159fe69382dfb0f1a455"
+    },
+    {
+      "path": "corrected-static.json.gz",
+      "sha256": "3a97889242d72428b10c096f5d7c04ce5ef54421533eaba619e2a6c3dcc6ec95",
+      "decoded_sha256": "bcaa5162bd9d83aa99b5e1cbea5cb904a540ec5963b6cde984eeffb93f15d448"
+    },
+    {
+      "path": "cross-builds.json.gz",
+      "sha256": "97c80f855b2db9a3e7161124093d712a420bed7fda6b703cc1c9a81eadddd05a",
+      "decoded_sha256": "271e92a7ffffbe4f0a0394b37918f5e3bda1828522e8fbaaba7ba3a8fb40cbab"
+    },
+    {
+      "path": "darwin-lint.log.gz",
+      "sha256": "db13b53e5a2fdb1adf2c834ba5329a29802a3502d8f2ba74546d63c10270110f",
+      "decoded_sha256": "88da53d4e1c2edf83f8c03568933627c5f5acae32aa5209d18b3ef6a4181f5db"
+    },
+    {
+      "path": "go1.25.12-amd64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-race.jsonl.gz",
+      "sha256": "78570f31f3c1c0c90ffaf12d54fe70a6cdb75bb79c19fd4798b50e062dda5da8",
+      "decoded_sha256": "19ddb3b7f656aa5dc4e395ecea4feba2769f94ee67c280e5b1c5dbac4269ebd0"
+    },
+    {
+      "path": "go1.26.6-amd64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-race.jsonl.gz",
+      "sha256": "bc55306de7b2dfc6f76d42ec6096da58bed07a1a4e5c38ff8f9aadec22ccf03f",
+      "decoded_sha256": "9c2089d02f0b83c363886dce37e0f551e1685067a82c095464afca5c1ef4463b"
+    },
+    {
+      "path": "lint.json.gz",
+      "sha256": "811b5489dee19f0c60e36ed30077d1cdebdf070cf4128767b22cb76dc71fb59f",
+      "decoded_sha256": "d831101bc05f50f0b60083aec1f1adb2cc673b42d1d9a80a565988cee8e41249"
+    },
+    {
+      "path": "linux-lint.log.gz",
+      "sha256": "db13b53e5a2fdb1adf2c834ba5329a29802a3502d8f2ba74546d63c10270110f",
+      "decoded_sha256": "88da53d4e1c2edf83f8c03568933627c5f5acae32aa5209d18b3ef6a4181f5db"
+    },
+    {
+      "path": "manual-review-context.json.gz",
+      "sha256": "a345b190514e39b2ab6bd5219e3a9ee7c8f5fb69c9f9d79d4ff51e7d88a98a34",
+      "decoded_sha256": "b4b465326033afabee705481f2da0ab02af7d02dff6070665f447bee5cf82654"
+    },
+    {
+      "path": "pr-before-publication.json.gz",
+      "sha256": "80b3d87a73384fed07c0e935223b698b234ec6b89e7428798223d782d8618090",
+      "decoded_sha256": "e84aeb203d123660e65c40bd8021bda89295833426b19b4130d85d2b4738e110"
+    },
+    {
+      "path": "race.json.gz",
+      "sha256": "7fc251deb22ea1e4517ec42db669a6692e2a6a150a5e2401b80fe5365e92a053",
+      "decoded_sha256": "9552c2abcbd026e8cfb776e1b5f20991f3557f67a25d1a160ea5172e8fd9d0aa"
+    },
+    {
+      "path": "static-0.log.gz",
+      "sha256": "db13b53e5a2fdb1adf2c834ba5329a29802a3502d8f2ba74546d63c10270110f",
+      "decoded_sha256": "88da53d4e1c2edf83f8c03568933627c5f5acae32aa5209d18b3ef6a4181f5db"
+    },
+    {
+      "path": "static-1.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "static-2.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "static-3.log.gz",
+      "sha256": "7893f583a7a260260b4a83afdb1a0ee5702a69e67cedeefd3970acd5dc5f6b6d",
+      "decoded_sha256": "fecfeccc31aa3655191cbc92299c34d08a59710ec9ce84e6ecdbf646e660132f"
+    },
+    {
+      "path": "static-4.log.gz",
+      "sha256": "17cbc73d0a0214c17f6b7ccf8b007d8645fd8b2ed67c0de3b6fdac79111088dc",
+      "decoded_sha256": "82dcab89068ad632a109c82157dcf3b58791332072cb53a0715383caceccf9dd"
+    },
+    {
+      "path": "static.json.gz",
+      "sha256": "f8b0c92af881a8dde4f2c8396679d4b92deead9e7ffde95e475cd7569fab002a",
+      "decoded_sha256": "b26b370d8f8bb58d8c1bb2783ae52ce9e44146a79112e3fa8d257c0017066e53"
+    },
+    {
+      "path": "windows-lint.log.gz",
+      "sha256": "db13b53e5a2fdb1adf2c834ba5329a29802a3502d8f2ba74546d63c10270110f",
+      "decoded_sha256": "88da53d4e1c2edf83f8c03568933627c5f5acae32aa5209d18b3ef6a4181f5db"
+    },
+    {
+      "path": "combined-before-verifier.json.gz",
+      "sha256": "4ab0767d473c033fee860d908ec5e15ebfba88c30dd2a65ae54bf13bd69cffa9",
+      "decoded_sha256": "1179b6f74ff199ea381920b5f264deb719d04dbc0c790ffb5610775916012e16"
+    },
+    {
+      "path": "combined-before-verifier.log.gz",
+      "sha256": "0376f743d334f1ae9be194fb313933ba67d2a3794dd752690d723f026dab8862",
+      "decoded_sha256": "5044722180afffae2ce3424061ab8ef4401a16894cc4d4ef4cec31b8555ae567"
+    },
+    {
+      "path": "review-command.json.gz",
+      "sha256": "31cf839300f644b6f460d709fe67f8ede51ced78abef30751db97c0805e8e4f1",
+      "decoded_sha256": "c9be712e2f5f959b3ca2a54b41677b841697ba53e1c9cfbb802f8942b4a1d164"
+    },
+    {
+      "path": "review.log.gz",
+      "sha256": "5c174219b39a18712afb18deafa7171493a2bb3b54278c4d61ebfdab58719930",
+      "decoded_sha256": "c73daba820f686c065cd0529b83fbd2d90b17d345110bbf50c1d7069f4efdc0b"
+    },
+    {
+      "path": "review.json.gz",
+      "sha256": "17d0919e790a2265aad8f4a0f4172d4277bd0074714e0234cb50b5fcc40ed4c6",
+      "decoded_sha256": "ba57953cb0d798dbd3e6e7a14f422d9643e64a5bab8b3f2607984f4a59698a38"
+    },
+    {
+      "path": "review.md.gz",
+      "sha256": "34289e9683708c68b807374e183abcbb3250e1ee8c31d83bd1d64b1585b6bbda",
+      "decoded_sha256": "22870021e75066072c65032be5e3f275178f355ba0f00885c39a23f5bdafd272"
+    },
+    {
+      "path": "pr-published.json.gz",
+      "sha256": "7025fc58823812f1befad6ecc709de178d83633e3015de52b11286b24653a701",
+      "decoded_sha256": "efa939b2bf3b4aee915b6c8cc46a85e239e76f4cf8a964fa0fd7c13302b7922e"
+    },
+    {
+      "path": "pr-body.md.gz",
+      "sha256": "7e522c5905662f0f5cd664038b2f2c66c902963af86a6fa7d7e40355faf6e7fe",
+      "decoded_sha256": "0d82211964ec8958222dbe0e8e8db4ba3739b98dcc33475b1cb780e3fecd5cd2"
+    },
+    {
+      "path": "canonical-prose-before.log.gz",
+      "sha256": "9f04629f0f6c2f6a6c83085866e269b3a7ff5cd299ef88c52909a325cc196f0b",
+      "decoded_sha256": "6d47ef7d932e31f8eb5be789ed78b77e753155daa47d3c216071e54c934332af"
+    },
+    {
+      "path": "canonical-prose-before.json.gz",
+      "sha256": "4f60a8f87e1800d70c8c3b1a0cdb234f3ea417a4a2048a7d2d0e10821ab9a863",
+      "decoded_sha256": "5c551d97800ba3d0e516d2912d05f677784f0e5e3a44067e4a2c5e7cb3ebc8e5"
+    },
+    {
+      "path": "native-workflow.json.gz",
+      "sha256": "373131382e05928295de87771df1f1ae2b586242017eafa550c75c92b568ed86",
+      "decoded_sha256": "629985cd2a1bf56949da5bcdb8208b377a94efdcb88be2b6dd3c9fd2ea3e2e41"
+    },
+    {
+      "path": "canonical-prose-corrected.log.gz",
+      "sha256": "6303c76bcc3b5c7ad051c60d3763e032c335ba33a5c42f4e0741f5265467811f",
+      "decoded_sha256": "7a717c421abba06b76201834e339f8b213caa7408bd1d95c71f98e03c7597c98"
+    },
+    {
+      "path": "canonical-prose-corrected.json.gz",
+      "sha256": "4f60a8f87e1800d70c8c3b1a0cdb234f3ea417a4a2048a7d2d0e10821ab9a863",
+      "decoded_sha256": "5c551d97800ba3d0e516d2912d05f677784f0e5e3a44067e4a2c5e7cb3ebc8e5"
+    },
+    {
+      "path": "portable-entry-prose-final.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "portable-entry-prose-final.log.gz",
+      "sha256": "a79d59df5bd82c6a2eed4b6595995510e532c0ef39354e5f0f1aeda747a8e893",
+      "decoded_sha256": "b36fe7d7fea6b18ba92c8bcc548557f1b58cacb8c06a3989fff9f19615df34fd"
+    },
+    {
+      "path": "portable-entry-prose-published.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "portable-entry-prose-published.log.gz",
+      "sha256": "a79d59df5bd82c6a2eed4b6595995510e532c0ef39354e5f0f1aeda747a8e893",
+      "decoded_sha256": "b36fe7d7fea6b18ba92c8bcc548557f1b58cacb8c06a3989fff9f19615df34fd"
+    }
+  ]
+}

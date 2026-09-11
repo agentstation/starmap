@@ -6,6 +6,22 @@ The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-d
 Starmap PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
 CSP4 remains active because published dependency qualification, complete delivery verification, and merges remain open.
 
+### Portable query correction
+
+The [correction proof](csp4/windows-portable-entry-2026-09-11/verification.json) preserves the full verifier failure at `d1bb47e1`.
+Its complete race stage passes, but production lint reports seventeen unused portable RPC declarations.
+Native workflow `34609335965` fails on the same declarations after all six runtime jobs pass.
+PR #151 remains unmerged. The agent disabled its automatic merge before the correction.
+
+Commit `2b4aa1fe` keeps the existing QueryStatus entry in portable code and selects Windows authentication through a platform factory.
+Unsupported hosts close the supplied stream before sending RPC bytes. Portable wire tests remain enabled.
+Both supported toolchains pass 68 race events. Three platform lint checks, four Windows cross-builds, and static checks pass.
+
+Both required reviewers report zero findings. PR #151 now contains the correction and runs native workflow `34620963592`.
+
+Combined source `6419ea85` includes the correction. Full repository verification runs in session `55757`.
+Its log is `.tmp/csp4-origin-integrated/portable-entry-verifier.log`. Native CI, combined delivery checks, and all remaining merges stay open.
+
 ### Consumer checks and published dependency
 
 Starport `80f8064e` adds four authority acceptance cases. Its [proof](csp4/consumer-acceptance-2026-09-11/verification.json) records 45 passing race events across five repetitions.
@@ -38,7 +54,7 @@ The report leaves 49 primary cases unverified because this invocation selects on
 
 The full task race command passes 986 events at `d1bb47e1` with `GOWORK=off` and `Go 1.26.6`.
 Runtime contributes 901 events, remote 45, and artifact 40. No event fails or skips.
-Both explicit CSP4 commands now pass. Full repository verification remains live in session `8874`.
+Both explicit CSP4 commands pass at that source. Its repository verification later failed production lint.
 Required review and implementation merges remain open.
 
 ### Remaining native and origin delivery
@@ -48,7 +64,7 @@ The [production proof](csp4/windows-rpc-2026-09-11/verification.json) retains al
 Both Windows suites pass 1,925 events, and both Windows access preflights pass 23 events.
 Each platform also passes two Git acquisition events and four publication events.
 The proof identifies the separate Linux administrator check and opt-in Windows diagnostic skips.
-The repository Verification Gate still runs in workflow [34609335965](https://github.com/agentstation/starmap/actions/runs/34609335965).
+The repository Verification Gate failed production lint in workflow [34609335965](https://github.com/agentstation/starmap/actions/runs/34609335965).
 
 Origin `5066856d` scopes alias history to the selected authority and policy.
 The [transition proof](csp4/authority-transition-2026-09-11/verification.json) records 109 passing race events per supported toolchain, static checks, and 1,514-file prose verification.
@@ -61,7 +77,7 @@ The first implementation required restart recovery after its deliberately failed
 
 Combined source `d1bb47e1` merges reviewed native parent `75ac9d07` without conflicts.
 It contains clock lifecycle, origin settings, follower restart, and subscriber transitions in one delivery.
-Full `make verify` runs in session `8874` against this unchanged source.
+Full `make verify` failed production lint in session `8874` against this source.
 The current log is `.tmp/csp4-origin-integrated/verifier.log` in the origin-settings worktree.
 Task checks, required review, publication, native CI, and merge remain required.
 

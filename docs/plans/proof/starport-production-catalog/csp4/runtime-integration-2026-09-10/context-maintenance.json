@@ -5,23 +5,23 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 122,
-  "new_evidence_artifacts": 1349,
-  "new_commit_source_files": 320,
-  "resume_words": 382,
-  "next_action": "Both explicit CSP4 commands pass. Finish native workflow 34609335965 and local verifier session 8874. Preserve frozen origin source d1bb47e1. Merge the native PR after required checks pass, publish the reviewed combined runtime, and pin it in Starport. Complete task checks, reviews, native CI, and merges in dependency order. CSP11 owns fleet recovery and fencing.",
-  "current_source": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
-  "starmap_integration_source": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "local_links": 120,
+  "new_evidence_artifacts": 1392,
+  "new_commit_source_files": 325,
+  "resume_words": 309,
+  "next_action": "Both explicit CSP4 commands pass at the previous source. The repository verifier and native CI failed production lint. Correction 2b4aa1fe passed required review and is published in PR 151. Pass native workflow 34620963592. Preserve combined source 6419ea85 while verifier 55757 runs. Complete reviews and merges in dependency order, then pin the published module in Starport. CSP11 owns fleet recovery and fencing.",
+  "current_source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+  "starmap_integration_source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "external_running_checks": [
     {
       "pull_request": 151,
-      "workflow_run": 34609335965,
-      "source": "75ac9d0751d666ed71393ca08f573e8a2739860e"
+      "workflow_run": 34620963592,
+      "source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268"
     },
     {
-      "session_id": 8874,
-      "source": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+      "session_id": 55757,
+      "source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
       "command": [
         "make",
         "verify"

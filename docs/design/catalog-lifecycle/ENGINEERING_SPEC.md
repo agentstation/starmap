@@ -3072,5 +3072,7 @@ The published dependency still needs an update. Delivery checks, required review
 
 The [integrated task gate](../../plans/proof/starport-production-catalog/csp4/integrated-task-2026-09-11/verification.json) passes eight selected subcases against Starmap `d1bb47e1` and Starport `9669b61d`.
 It records 54 race events and no skips. The complete task race command also passes 986 events without failures or skips.
-The repository verifier remains in progress.
+
+The repository verifier later failed production lint. The [portable query correction](../../plans/proof/starport-production-catalog/csp4/windows-portable-entry-2026-09-11/verification.json) passes focused checks.
+Combined source `6419ea85` now runs full verification.
 This component evidence does not qualify the final released pair or complete CSP4 before its implementation merges.
