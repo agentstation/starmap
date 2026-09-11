@@ -9,7 +9,7 @@ Native clock `5418420c` remains clean while the remaining verifier stages run in
 Its [proof](csp4/windows-observer-2026-09-11/verification.json) preserves the initial dependency-inventory failure and scoped passing checks.
 The corrected inventory passes all thirteen ownership conditions and the verifier regression tests.
 
-Clock lifecycle `ab84ba16` adds explicit host refresh work in a separate clean worktree.
+Clock lifecycle `94988d3a` adds explicit host refresh work in a separate clean worktree.
 Its [proof](csp4/clock-lifecycle-2026-09-11/verification.json) records 193 permission race events per toolchain and passing static checks.
 Settings, native profiles, host composition, and four Starport consumer checks remain open.
 

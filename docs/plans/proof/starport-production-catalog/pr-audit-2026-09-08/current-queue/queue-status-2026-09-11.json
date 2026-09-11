@@ -28,7 +28,7 @@
     "owner": "Catalog plan executor",
     "action": "Finish the remaining verifier stages at 5418420c, complete review, and publish native clock qualification.",
     "starmap_host_clock": "5418420cc676981a42ecc170b242a3ea674a343c",
-    "starmap_clock_lifecycle": "ab84ba16ad79d22401888cacf5366158e97b19e0"
+    "starmap_clock_lifecycle": "94988d3a06bbe98b14752c3df8a2cac20de3fdea"
   },
   "active_pr": null,
   "current_pr150": {

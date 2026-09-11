@@ -1876,7 +1876,7 @@ Construction starts no I/O. The host explicitly calls `Start(ctx)` and `Close()`
 The refresh interval must be positive and below half the maximum sample age. Each interval starts after the previous query completes.
 
 A failed observation clears cached evidence and records its error. The worker retries while diagnostics remain available.
-Parent cancellation immediately makes cached reads unqualified. Close invalidates the cache and waits for cleanup.
+Parent cancellation immediately makes cached reads unqualified. Close invalidates the cache and waits for its refresh worker.
 A late observation cannot restore evidence after shutdown. A monitor starts at most once.
 
 Successful cached reads allocate zero memory. Status reports worker activity, current validity, completed attempts, and the last observation error.

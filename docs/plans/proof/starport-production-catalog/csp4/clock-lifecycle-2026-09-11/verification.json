@@ -1,7 +1,7 @@
 {
   "task": "CSP4",
   "status": "PASS_scoped_lifecycle_checks_application_wiring_unverified",
-  "source_commit": "ab84ba16ad79d22401888cacf5366158e97b19e0",
+  "source_commit": "94988d3a06bbe98b14752c3df8a2cac20de3fdea",
   "base": "5418420cc676981a42ecc170b242a3ea674a343c",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
   "branch": "codex/catalog-clock-lifecycle",
@@ -11,7 +11,7 @@
     "Refresh interval is positive and below half the maximum sample age. Each interval starts after the previous observation completes.",
     "Unavailable sources clear clock evidence and remain observable while scheduled retries continue.",
     "Cached admission reads make no observation call and successful reads allocate zero memory.",
-    "Shutdown and parent cancellation refuse new clock reads. Close waits for observation cleanup. Late observations cannot restore evidence.",
+    "Shutdown and parent cancellation refuse new clock reads. Close waits for its refresh worker. Native adapters retain their documented cleanup boundaries. Late observations cannot restore evidence.",
     "A monitor starts only once. Concurrent start and close calls cannot create duplicate workers."
   ],
   "checks": {
@@ -35,7 +35,8 @@
     "documentation": "Package generation and final check pass. The initial check used an incorrect working directory and doubled repository-relative source links. No generated output changed for that correction.",
     "prose": "Full check passes: 1480 files, zero diagnostics. Original four comment diagnostics retained.",
     "read_allocations": "TestClockMonitorStartsExplicitlyAndStops asserts zero allocations for successful cached reads.",
-    "canonical_documents": "PASS: 141 files and zero prose diagnostics after one queue wording correction. The current resume contains 268 words."
+    "canonical_documents": "PASS: 141 files and zero prose diagnostics after one queue wording correction. The current resume contains 268 words.",
+    "behavior_source_commit": "ab84ba16ad79d22401888cacf5366158e97b19e0"
   },
   "limitations": [
     "Canonical settings, native profile qualification, and Starmap/Starport application composition remain unimplemented.",
@@ -47,7 +48,7 @@
   "source_files": [
     {
       "path": "pkg/catalogs/permission/clock_monitor.go",
-      "sha256": "0c580e0f74be2163fa86fb0f167df2ad8efb018b687f52d144648248c76cf059"
+      "sha256": "7e82f82c4a11d2451e28ec9270f0b565d704ecb134f08477ac14485d4c591eed"
     },
     {
       "path": "pkg/catalogs/permission/clock_monitor_test.go",
@@ -55,7 +56,7 @@
     },
     {
       "path": "pkg/catalogs/permission/README.md",
-      "sha256": "35eaef4198a50dd233afae57f849ac412d741b671d34c6962c3a3552b5d15e2a"
+      "sha256": "1a05c27736ad4a163b5a1dfdf9e18492945c431dfcf913b0b8e6220a5fa40330"
     }
   ],
   "artifacts": [
@@ -148,6 +149,37 @@
       "path": "clock-lifecycle-prose-final.log.gz",
       "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
       "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    },
+    {
+      "path": "generate-cleanup.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prose-cleanup.log.gz",
+      "sha256": "dbba5fed4d3e9110a4923122b3f659a55b535c933197c8c2951bf23f44147a7f",
+      "decoded_sha256": "b0421f30c24723de3267b4c2558203d9dfec2c4656e794d8aeb5d72533e48d09"
+    },
+    {
+      "path": "diff-cleanup.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cleanup-commit.log.gz",
+      "sha256": "7e807ec15c8c368921ffad49f58e05d3cd696a3d8d5a4f1492809a76ee697dce",
+      "decoded_sha256": "0ee5a0c8a7fa9f732cabae41386ca145e2aa70b76046d28538bab92a44204054"
+    },
+    {
+      "path": "clock-lifecycle-cleanup-prose.log.gz",
+      "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
+      "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
     }
-  ]
+  ],
+  "documentation_refinement": {
+    "commit": "94988d3a06bbe98b14752c3df8a2cac20de3fdea",
+    "prior_commit": "ab84ba16ad79d22401888cacf5366158e97b19e0",
+    "change": "Clarify that Close waits for the monitor refresh worker. A native Windows service-manager query can outlive that worker under the adapter's documented one-query bound. Only one source comment and generated documentation changed.",
+    "checks": "Full 1480-file prose check and diff check pass."
+  }
 }
