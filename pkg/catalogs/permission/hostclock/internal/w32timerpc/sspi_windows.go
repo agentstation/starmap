@@ -105,13 +105,18 @@ func newNativeSecurity(ctx context.Context, target string) (*nativeSecurity, err
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	if target == "" || len(target) > 1024 {
+	if len(target) > 1024 {
 		return nil, invalidReply("invalid local service principal")
 	}
-	name, err := windows.UTF16PtrFromString(target)
-	if err != nil {
-		return nil, err
+	var name *uint16
+	if target != "" {
+		var err error
+		name, err = windows.UTF16PtrFromString(target)
+		if err != nil {
+			return nil, err
+		}
 	}
+	// SSPI accepts a null target for an unnamed endpoint on the checked local pipe.
 	api, err := loadSecurityAPI()
 	if err != nil {
 		return nil, err

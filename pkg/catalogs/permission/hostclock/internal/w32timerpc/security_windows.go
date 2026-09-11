@@ -32,6 +32,9 @@ func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
 		if err := validateLocalPrincipal(principal); err != nil {
 			return nil, err
 		}
+		// An unnamed service still requires packet privacy on the checked pipe.
+		// Bind the native target to this reply, not an inherited GSSAPI context.
+		factory.target = principal.PrincName
 		return []dcerpc.Option{dcerpc.WithMechanism(factory), dcerpc.WithTargetName(principal.PrincName),
 			dcerpc.WithSecurtyProvider(dcerpc.AuthTypeGSSNegotiate), dcerpc.WithSeal(), dcerpc.Identify()}, nil
 	})
@@ -44,9 +47,6 @@ func validateLocalPrincipal(principal *mgmt.InquirePrincNameResponse) error {
 	if principal.Status != 0 {
 		return invalidReply(fmt.Sprintf("local W32Time principal query failed: 0x%08x", principal.Status))
 	}
-	if principal.PrincName == "" {
-		return invalidReply("local W32Time principal query succeeded with an empty name")
-	}
 	if len(principal.PrincName) > 1024 {
 		return invalidReply("local W32Time principal exceeds the name limit")
 	}
@@ -56,6 +56,7 @@ func validateLocalPrincipal(principal *mgmt.InquirePrincNameResponse) error {
 // localSecurityFactory owns one ambient Windows security context per observation.
 type localSecurityFactory struct {
 	mu      sync.Mutex
+	target  string
 	session *localSecurity
 	closed  bool
 }
@@ -72,11 +73,11 @@ func (f *localSecurityFactory) New(ctx context.Context) (gssapi.Mechanism, error
 	}
 	cc := gssapi.FromContext(ctx)
 	required := gssapi.Confidentiality | gssapi.Integrity | gssapi.ReplayDetection | gssapi.Sequencing | gssapi.Identify
-	if cc.IsServer || cc.TargetName == "" || cc.Capabilities&required != required ||
+	if cc.IsServer || cc.Capabilities&required != required ||
 		cc.Capabilities&(gssapi.Delegation|gssapi.Anonymity) != 0 {
 		return nil, invalidReply("local authentication requires privacy and identification")
 	}
-	session, err := newNativeSecurity(ctx, cc.TargetName)
+	session, err := newNativeSecurity(ctx, f.target)
 	if err != nil {
 		return nil, err
 	}

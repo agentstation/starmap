@@ -15,7 +15,8 @@ func TestWindowsPrincipalDiagnostics(t *testing.T) {
 	}{
 		{"missing", nil, "reply is missing"},
 		{"failed", &mgmt.InquirePrincNameResponse{Status: 5, PrincName: "private-principal"}, "query failed: 0x00000005"},
-		{"empty", &mgmt.InquirePrincNameResponse{}, "query succeeded with an empty name"},
+		{"failed-empty", &mgmt.InquirePrincNameResponse{Status: 5}, "query failed: 0x00000005"},
+		{"unnamed", &mgmt.InquirePrincNameResponse{}, ""},
 		{"long", &mgmt.InquirePrincNameResponse{PrincName: strings.Repeat("x", 1025)}, "exceeds the name limit"},
 		{"valid", &mgmt.InquirePrincNameResponse{PrincName: "host/localhost"}, ""},
 		{"boundary", &mgmt.InquirePrincNameResponse{PrincName: strings.Repeat("x", 1024)}, ""},

@@ -40,9 +40,15 @@ func TestWindowsSecurityLifecycle(t *testing.T) {
 }
 
 func TestWindowsSecurityPacketPrivacy(t *testing.T) {
+	for _, principal := range []string{"named", "unnamed"} {
+		t.Run(principal, func(t *testing.T) { testWindowsPacketPrivacy(t, principal == "unnamed") })
+	}
+}
+
+func testWindowsPacketPrivacy(t *testing.T, unnamed bool) {
 	for _, name := range []string{"roundtrip", "body tamper", "header tamper", "signature tamper", "replay"} {
 		t.Run(name, func(t *testing.T) {
-			client, server := nativeSecurityPair(t)
+			client, server := nativeSecurityPair(t, unnamed)
 			message := &gssapi.MessageTokenEx{Payloads: []*gssapi.PayloadEx{
 				{Payload: []byte("header"), Capabilities: gssapi.Integrity},
 				{Payload: []byte("private status bytes"), Capabilities: gssapi.Integrity | gssapi.Confidentiality},
@@ -91,17 +97,24 @@ func TestWindowsSecurityPacketPrivacy(t *testing.T) {
 }
 
 // nativeSecurityPair exercises the real Windows SSP on both sides of one exchange.
-func nativeSecurityPair(t *testing.T) (*nativeSecurity, *nativeSecurity) {
+func nativeSecurityPair(t *testing.T, unnamed bool) (*nativeSecurity, *nativeSecurity) {
 	t.Helper()
 	host, err := os.Hostname()
 	if err != nil {
 		t.Fatal(err)
 	}
-	client, err := newNativeSecurity(t.Context(), "host/"+host)
+	target := "host/" + host
+	if unnamed {
+		target = ""
+	}
+	client, err := newNativeSecurity(t.Context(), target)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(client.close)
+	if unnamed && client.target != nil {
+		t.Fatal("unnamed local peer did not select a null SSPI target")
+	}
 	server := &nativeSecurity{api: client.api, credential: invalidSecurityHandle(), context: invalidSecurityHandle()}
 	t.Cleanup(server.close)
 	pkg, err := windows.UTF16PtrFromString("Negotiate")

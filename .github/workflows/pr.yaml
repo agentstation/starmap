@@ -230,6 +230,12 @@ jobs:
           @{status_exit=$nativeStatusExit; privilege_exit=$LASTEXITCODE; scope='read-only local diagnostics'} |
             ConvertTo-Json | Set-Content native-evidence/windows-time-access.json
           'STARMAP_WINDOWS_CLOCK_FIXTURE_REQUIRED=1' | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Test Windows time-service access before the full suite
+        if: matrix.os == 'windows'
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          go test -json -count=1 -timeout=2m -run '^TestWindows(LocalTimeService|PrincipalDiagnostics|SecurityLifecycle|SecurityPacketPrivacy)$' ./pkg/catalogs/permission/hostclock/internal/w32timerpc > native-evidence/windows-clock.jsonl
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:

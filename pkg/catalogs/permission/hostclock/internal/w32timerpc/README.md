@@ -14,6 +14,7 @@ Cancellation bounds the caller's wait. One process-wide slot limits native servi
 That slot remains occupied until the outstanding query returns and releases its resources.
 
 After the peer check, the connector requests the service principal on the same pipe.
+A successful empty reply selects a null SSPI target for this verified local endpoint. A failed query still refuses authentication.
 Windows SSPI authenticates the process identity through Negotiate with packet privacy and identification-only access.
 The connector rejects unavailable authentication and insufficient security flags. It never retries status without authentication.
 Native handles close after each observation, including failed exchanges.
