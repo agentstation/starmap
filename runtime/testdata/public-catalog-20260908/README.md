@@ -2,6 +2,7 @@
 
 These files come from the [September 8 catalog release](https://github.com/agentstation/starmap/releases/tag/catalog-dcc4e4539c74a181c1789a8f275bf16893ce9698ea9644bf18a89cf10a067571).
 The capture record lists the source commits and file checksums.
+Git preserves the captured bytes during Windows checkout.
 The archive retains its published bytes and schema 6 payload. Current Starmap supports this legacy schema.
 
 Run `python3 scripts/prepare_public_catalog_fixture.py` from the repository root before public-catalog acceptance tests.

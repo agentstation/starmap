@@ -4,6 +4,8 @@
 import hashlib
 import io
 import json
+import shutil
+import subprocess
 from pathlib import Path
 import tempfile
 import unittest
@@ -70,6 +72,29 @@ class PublicCatalogFixtureTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, reason):
                 fixture.prepare(self.destination)
         self.assertFalse(self.destination.exists())
+
+
+class PublicCatalogCheckoutTests(unittest.TestCase):
+    def test_windows_checkout_preserves_captured_bytes(self):
+        capture = json.loads((fixture.FIXTURE / "capture.json").read_text())
+        relative = fixture.FIXTURE.relative_to(fixture.ROOT)
+        with tempfile.TemporaryDirectory(prefix="public-catalog-checkout-test-") as directory:
+            root = Path(directory)
+            target = root / relative
+            target.mkdir(parents=True)
+            shutil.copyfile(fixture.ROOT / ".gitattributes", root / ".gitattributes")
+            names = [name for name in capture["sha256"] if name != fixture.ARCHIVE]
+            for name in names:
+                shutil.copyfile(fixture.FIXTURE / name, target / name)
+            for args in [["init", "--quiet"], ["-c", "core.autocrlf=false", "add", "."]]:
+                subprocess.run(["git", *args], cwd=root, check=True, capture_output=True)
+            for name in names:
+                (target / name).unlink()
+            subprocess.run(["git", "-c", "core.autocrlf=true", "checkout-index", "--all", "--force"],
+                           cwd=root, check=True, capture_output=True)
+            for name in names:
+                digest = hashlib.sha256((target / name).read_bytes()).hexdigest()
+                self.assertEqual(digest, capture["sha256"][name], name)
 
 
 if __name__ == "__main__":
