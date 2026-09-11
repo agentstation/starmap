@@ -1871,6 +1871,18 @@ Concurrent invalidation prevents an unfinished observation from restoring prior 
 A new process starts without qualified evidence.
 This library contract does not select native adapters or their operational error bounds.
 
+Candidate `ab84ba16` adds `permission.NewClockMonitor` for host-owned observation work.
+Construction starts no I/O. The host explicitly calls `Start(ctx)` and `Close()`.
+The refresh interval must be positive and below half the maximum sample age. Each interval starts after the previous query completes.
+
+A failed observation clears cached evidence and records its error. The worker retries while diagnostics remain available.
+Parent cancellation immediately makes cached reads unqualified. Close invalidates the cache and waits for cleanup.
+A late observation cannot restore evidence after shutdown. A monitor starts at most once.
+
+Successful cached reads allocate zero memory. Status reports worker activity, current validity, completed attempts, and the last observation error.
+The [lifecycle proof](../../plans/proof/starport-production-catalog/csp4/clock-lifecycle-2026-09-11/verification.json) covers cancellation, expiry, recovery, and concurrent lifecycle calls.
+Application settings and host composition still require implementation. This monitor does not qualify native clock bounds.
+
 `hostclock.Observe` now supplies explicit Linux and macOS kernel observations.
 `hostclock.Elapsed` reads a counter that includes system sleep without file or network I/O.
 The [native observation proof](../../plans/proof/starport-production-catalog/csp4/host-clock-2026-09-11/verification.json) records local binding checks and refusals.
@@ -1887,7 +1899,7 @@ Native pipe access, service identity checks, and a source-age error profile rema
 The prototype adds no product dependencies or production support claim.
 The host must still qualify drift and error bounds, schedule refresh, and invalidate unsafe evidence.
 
-Candidate `88660313` now supplies `NewWindowsObserver(WindowsProfile)`.
+Candidate `5418420c` now supplies `NewWindowsObserver(WindowsProfile)`.
 The profile declares maximum source age, source drift, and additional UTC uncertainty. The constructor starts no I/O.
 The [observer proof](../../plans/proof/starport-production-catalog/csp4/windows-observer-2026-09-11/verification.json) records the portable contracts and Windows cross-builds.
 Native Windows execution and production clock qualification remain UNVERIFIED.

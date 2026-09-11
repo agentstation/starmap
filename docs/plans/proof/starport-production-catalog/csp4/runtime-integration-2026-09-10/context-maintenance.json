@@ -5,12 +5,12 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 116,
-  "new_evidence_artifacts": 545,
-  "new_commit_source_files": 155,
-  "resume_words": 372,
-  "current_source": "5418420cc676981a42ecc170b242a3ea674a343c",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "local_links": 117,
+  "new_evidence_artifacts": 563,
+  "new_commit_source_files": 158,
+  "resume_words": 268,
+  "current_source": "ab84ba16ad79d22401888cacf5366158e97b19e0",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
   "clean_source": true,
   "running_implementation_commands": [
     {

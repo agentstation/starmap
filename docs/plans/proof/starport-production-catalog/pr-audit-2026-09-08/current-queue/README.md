@@ -9,6 +9,8 @@ Its tree exactly matches reviewed `e3943c97`. PR #149 previously merged as `9ea3
 Starport `95354f0` retains configured authority pins and request permission checks. Four mapped consumer checks remain incomplete.
 
 Host clock `5418420c` includes the Windows observer and merged main. The inventory includes both new dependencies, and remaining verification runs. Native execution and operational clock profiles remain open.
+Clock lifecycle `ab84ba16` passes scoped checks in a separate local worktree. Application wiring remains open.
+
 Twenty-eight campaign PRs merged. Nine tasks are complete, and CSP4 remains active.
 
 ## Historical queue snapshots

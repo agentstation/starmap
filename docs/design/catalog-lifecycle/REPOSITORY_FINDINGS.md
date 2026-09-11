@@ -2165,3 +2165,13 @@ The candidate adds go-msrpc and go-winio without changing existing module versio
 Native tests will distinguish pipe interoperability from a source that meets the test profile.
 Neither result alone qualifies production UTC accuracy or nonadministrator service accounts.
 Host configuration, refresh scheduling, and the four mapped Starport cases remain incomplete.
+
+### Host clock lifecycle candidate
+
+Local commit `ab84ba16` adds a passive clock monitor with explicit startup and shutdown.
+The [lifecycle proof](../../plans/proof/starport-production-catalog/csp4/clock-lifecycle-2026-09-11/verification.json) records six focused cases and 193 permission race events per supported toolchain.
+Lint, vet, ago, generated documentation, and the 1,480-file prose check pass.
+
+The monitor keeps source queries outside admission reads. Failed observations clear permission time and remain visible in local status.
+Cancellation prevents late samples from restoring evidence. Successful cached reads pass a zero-allocation assertion.
+Canonical settings and Starmap/Starport host composition still require implementation.

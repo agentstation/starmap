@@ -1,0 +1,153 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_lifecycle_checks_application_wiring_unverified",
+  "source_commit": "ab84ba16ad79d22401888cacf5366158e97b19e0",
+  "base": "5418420cc676981a42ecc170b242a3ea674a343c",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
+  "branch": "codex/catalog-clock-lifecycle",
+  "publication": "Local committed candidate only. Depends on the unpublished native-clock parent. No acceptance completion credit.",
+  "contract": [
+    "Construction performs no I/O or background work. The host explicitly starts one worker and closes it.",
+    "Refresh interval is positive and below half the maximum sample age. Each interval starts after the previous observation completes.",
+    "Unavailable sources clear clock evidence and remain observable while scheduled retries continue.",
+    "Cached admission reads make no observation call and successful reads allocate zero memory.",
+    "Shutdown and parent cancellation refuse new clock reads. Close waits for observation cleanup. Late observations cannot restore evidence.",
+    "A monitor starts only once. Concurrent start and close calls cannot create duplicate workers."
+  ],
+  "checks": {
+    "fail_before": "red.log.gz: absent NewClockMonitor API fails compilation.",
+    "focused_monitor_race": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "go125_permission_subtree_race": {
+      "pass": 193,
+      "fail": 0,
+      "skip": 0
+    },
+    "go126_permission_subtree_race": {
+      "pass": 193,
+      "fail": 0,
+      "skip": 0
+    },
+    "static": "Permission subtree lint and vet pass. Repository ago check passes with zero findings.",
+    "documentation": "Package generation and final check pass. The initial check used an incorrect working directory and doubled repository-relative source links. No generated output changed for that correction.",
+    "prose": "Full check passes: 1480 files, zero diagnostics. Original four comment diagnostics retained.",
+    "read_allocations": "TestClockMonitorStartsExplicitlyAndStops asserts zero allocations for successful cached reads.",
+    "canonical_documents": "PASS: 141 files and zero prose diagnostics after one queue wording correction. The current resume contains 268 words."
+  },
+  "limitations": [
+    "Canonical settings, native profile qualification, and Starmap/Starport application composition remain unimplemented.",
+    "This independent lifecycle candidate has no whole-repository verifier run or pre-PR review. The parent native-clock verifier remains active in session 44964.",
+    "Four mapped Starport CSP4 checks remain UNVERIFIED.",
+    "Native observations require deployment-qualified source and elapsed-counter bounds. The monitor establishes no such bounds."
+  ],
+  "running_checks": [],
+  "source_files": [
+    {
+      "path": "pkg/catalogs/permission/clock_monitor.go",
+      "sha256": "0c580e0f74be2163fa86fb0f167df2ad8efb018b687f52d144648248c76cf059"
+    },
+    {
+      "path": "pkg/catalogs/permission/clock_monitor_test.go",
+      "sha256": "84179b8f4eaf951b3f3fcbe804145d0d906b7a4751d3a289719cb1a78eaabcda"
+    },
+    {
+      "path": "pkg/catalogs/permission/README.md",
+      "sha256": "35eaef4198a50dd233afae57f849ac412d741b671d34c6962c3a3552b5d15e2a"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "commit.log.gz",
+      "sha256": "5891211aec6c40efb0dc23c41448e18475e8e071b7b669228bb491c192d74287",
+      "decoded_sha256": "9a33f02c63ab3a4d9a24d024d4dced018372b48c5b714858c076c629b92038c7"
+    },
+    {
+      "path": "diff-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-corrected.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs.log.gz",
+      "sha256": "2158be8ddd44bba426c5f243c260a3ae96fe66eb966be1b295ef214e714fb2c1",
+      "decoded_sha256": "8c507580f958e2fd68278facd15b16ad7330a025fc8e30bbec609306841e8547"
+    },
+    {
+      "path": "generate-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-permission-race.jsonl.gz",
+      "sha256": "d5c5c5b93f00173abc19f24cfdef5b526e188d16b282207658742423eb98d5b7",
+      "decoded_sha256": "735a25081b4702909f834590bd871055b1ba592c4a4e6f6fb7620971c7ac3a12"
+    },
+    {
+      "path": "go1.26.6-permission-race.jsonl.gz",
+      "sha256": "79f323cface21c0d6376017d87b1ed97d1c5e64e63469112483cf4f6d8a8919a",
+      "decoded_sha256": "763c0c8f47e205f13f33d8dd751260d740d959601962bfe625f2a04e2c19d1e5"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "monitor-race.jsonl.gz",
+      "sha256": "c0b336c546b51a7006765823289469ce690892232ca9c54ea46ed6e6de5b577b",
+      "decoded_sha256": "afa3e17d99d22f58fe21567c4cb5b97582b3790855a4168a8b36ff2ea0914dd1"
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "dbba5fed4d3e9110a4923122b3f659a55b535c933197c8c2951bf23f44147a7f",
+      "decoded_sha256": "b0421f30c24723de3267b4c2558203d9dfec2c4656e794d8aeb5d72533e48d09"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "8c2676a779b20e5c83682c71e3a9f622d90b867d0e3e9be8eb5cbe2c88a1460d",
+      "decoded_sha256": "a4b8da0286339b3c489307c4f0ce2bad4beaa4d1c10bef37b806b3dd0de001f0"
+    },
+    {
+      "path": "red.log.gz",
+      "sha256": "dcb30199e69d36f3ee2c1dfd53aa4393945696bfbf7c8f1a16fbfbce9c1d6c88",
+      "decoded_sha256": "7ad728e55aa3feb4e2f919482e3bf170948550a40f2dfa1ff53901a3668ce5e4"
+    },
+    {
+      "path": "static-checks.json.gz",
+      "sha256": "a0eef6010d84a222ebe194c8267d2fee291f0c60e33f8b16efdd5d378f282ab4",
+      "decoded_sha256": "1648b2e479dae0cc5f378b8c5e64be6e72d8a09b5c1a4e206452be298fd19462"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "clock-lifecycle-prose.log.gz",
+      "sha256": "d762a7d011f33487b54b09ff9d14bdf8c1be4d92182c6a16e24004f78c8877d3",
+      "decoded_sha256": "b29bfb0298adb296c7c9ea6f10997c22dcc39b54896a4b70060df933783523d2"
+    },
+    {
+      "path": "clock-lifecycle-prose-final.log.gz",
+      "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
+      "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    }
+  ]
+}

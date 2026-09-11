@@ -2,7 +2,20 @@
 
 ## Current runtime integration
 
-The active combined worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot`, branch `codex/catalog-authority-snapshot`, at clean `e3943c97`.
+PR #150 merged as `852a548c` with fifteen successful checks and exact reviewed-tree equality.
+Both repositories have no open PRs. Twenty-eight campaign PRs merged, and CSP4 remains active.
+
+Native clock `5418420c` remains clean while the remaining verifier stages run in session `44964`.
+Its [proof](csp4/windows-observer-2026-09-11/verification.json) preserves the initial dependency-inventory failure and scoped passing checks.
+The corrected inventory passes all thirteen ownership conditions and the verifier regression tests.
+
+Clock lifecycle `ab84ba16` adds explicit host refresh work in a separate clean worktree.
+Its [proof](csp4/clock-lifecycle-2026-09-11/verification.json) records 193 permission race events per toolchain and passing static checks.
+Settings, native profiles, host composition, and four Starport consumer checks remain open.
+
+## Earlier runtime integration checkpoints
+
+The recorded combined worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot`, branch `codex/catalog-authority-snapshot`, at clean `e3943c97`.
 It adds atomic catalog authority snapshots and includes reviewed consumer and public-catalog changes.
 The [snapshot proof](csp4/authority-snapshot-2026-09-11/verification.json) records six scoped passing cases per toolchain, complete static checks, and combined verification.
 
