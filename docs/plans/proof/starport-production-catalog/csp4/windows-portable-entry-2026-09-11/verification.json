@@ -1,6 +1,6 @@
 {
   "task": "CSP4",
-  "status": "CORRECTION_REVIEWED_PUBLISHED_NATIVE_CI_AND_COMBINED_VERIFY_RUNNING",
+  "status": "ALL_SIX_NATIVE_JOBS_PASS_AUTO_MERGE_WAITS_FOR_REPOSITORY_GATE",
   "source_commit": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "branch": "codex/catalog-host-clock",
@@ -263,6 +263,299 @@
       "initial_diagnostics": 5,
       "intermediate_diagnostics": 1,
       "correction": "Separated HTML paragraphs and used active voice. Product requirements and source code did not change."
+    },
+    "native": {
+      "source_commit": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+      "workflow_run": 34620963592,
+      "status": "ALL_SIX_NATIVE_JOBS_PASS",
+      "test_events": {
+        "pass": 11704,
+        "fail": 0,
+        "skip": 4
+      },
+      "runners": [
+        {
+          "runner": "native-runtime-macos-15",
+          "files": [
+            {
+              "path": "git-acquisition.jsonl",
+              "test_events": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "publisher-ingestion.jsonl",
+              "test_events": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "tests.jsonl",
+              "test_events": {
+                "pass": 1966,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": true
+            }
+          ]
+        },
+        {
+          "runner": "native-runtime-macos-15-intel",
+          "files": [
+            {
+              "path": "git-acquisition.jsonl",
+              "test_events": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "publisher-ingestion.jsonl",
+              "test_events": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "tests.jsonl",
+              "test_events": {
+                "pass": 1966,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": true
+            }
+          ]
+        },
+        {
+          "runner": "native-runtime-ubuntu-24.04",
+          "files": [
+            {
+              "path": "git-acquisition.jsonl",
+              "test_events": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "publisher-ingestion.jsonl",
+              "test_events": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "tests.jsonl",
+              "test_events": {
+                "pass": 1920,
+                "fail": 0,
+                "skip": 1
+              },
+              "skipped_tests": [
+                "TestServiceConfigurationAdministratorOwnedRead"
+              ],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": true
+            }
+          ]
+        },
+        {
+          "runner": "native-runtime-ubuntu-24.04-arm",
+          "files": [
+            {
+              "path": "git-acquisition.jsonl",
+              "test_events": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "publisher-ingestion.jsonl",
+              "test_events": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "tests.jsonl",
+              "test_events": {
+                "pass": 1920,
+                "fail": 0,
+                "skip": 1
+              },
+              "skipped_tests": [
+                "TestServiceConfigurationAdministratorOwnedRead"
+              ],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": true
+            }
+          ]
+        },
+        {
+          "runner": "native-runtime-windows-11-arm",
+          "files": [
+            {
+              "path": "git-acquisition.jsonl",
+              "test_events": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "publisher-ingestion.jsonl",
+              "test_events": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "tests.jsonl",
+              "test_events": {
+                "pass": 1925,
+                "fail": 0,
+                "skip": 1
+              },
+              "skipped_tests": [
+                "TestWindowsTimeServicePreparedPrivilege"
+              ],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "windows-clock.jsonl",
+              "test_events": {
+                "pass": 23,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            }
+          ]
+        },
+        {
+          "runner": "native-runtime-windows-2025",
+          "files": [
+            {
+              "path": "git-acquisition.jsonl",
+              "test_events": {
+                "pass": 2,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "publisher-ingestion.jsonl",
+              "test_events": {
+                "pass": 4,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "tests.jsonl",
+              "test_events": {
+                "pass": 1925,
+                "fail": 0,
+                "skip": 1
+              },
+              "skipped_tests": [
+                "TestWindowsTimeServicePreparedPrivilege"
+              ],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            },
+            {
+              "path": "windows-clock.jsonl",
+              "test_events": {
+                "pass": 23,
+                "fail": 0,
+                "skip": 0
+              },
+              "skipped_tests": [],
+              "failed_packages": 0,
+              "unsupported_host_regression_passed": false
+            }
+          ]
+        }
+      ]
+    },
+    "ci_source_binding": {
+      "reviewed_head": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
+      "ci_merge_ref": "refs/pull/151/merge",
+      "ci_merge_commit": "fcc9a48c1290c4a1a984eb4384036a21e59f3843",
+      "parents": [
+        "852a548c4959e98af443f487922b9708fb594a91",
+        "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268"
+      ],
+      "tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+      "reviewed_tree": "1121fc4bf91248f3bed4a63dcfbbfe1fb6a571a9",
+      "tree_equal": true
+    },
+    "canonical_native_closeout_prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0,
+      "files": 1334,
+      "diagnostics": 0,
+      "initial_diagnostics": 2,
+      "correction": "Replaced the semicolon, split its paragraph, and named the actor. Product source and task criteria did not change."
     }
   },
   "review": {
@@ -283,14 +576,16 @@
     "merge_commit": null,
     "workflow_run": 34620963592,
     "workflow_status": "in_progress",
-    "auto_merge": false
+    "auto_merge": true,
+    "auto_merge_enabled_at": "2026-09-11T16:39:42Z",
+    "pending_required_job_id": 103334520070
   },
   "limitations": [
-    "Required review passes for the correction. Fresh native CI and the combined repository verifier remain running.",
+    "All six native runtime jobs pass. The repository Verification Gate and the combined runtime verifier remain running.",
     "The combined repository verifier remains running. The previous complete task gate remains evidence for its recorded source pair.",
     "Cross-builds do not qualify Windows runtime behavior.",
     "The generated old review report retained identical bytes as review.md.raw after maintained-prose lint discovered it in scratch Markdown. No source prose rule changed.",
-    "Automatic merge remains disabled while the new native jobs are unqualified. The repository requires native results in addition to the two branch-protection checks."
+    "Automatic merge was enabled only after every check except the required repository gate passed on the reviewed head. No merge or task completion applies yet."
   ],
   "artifacts": [
     {
@@ -507,6 +802,231 @@
       "path": "portable-entry-prose-published.log.gz",
       "sha256": "a79d59df5bd82c6a2eed4b6595995510e532c0ef39354e5f0f1aeda747a8e893",
       "decoded_sha256": "b36fe7d7fea6b18ba92c8bcc548557f1b58cacb8c06a3989fff9f19615df34fd"
+    },
+    {
+      "path": "native-results.json.gz",
+      "sha256": "d01f738887fe554f9f8fc36a53dffc5a56b26bc03af7af4aec8127eb527a95c6",
+      "decoded_sha256": "7c2ebeb6a1f69365998933d2648955f499d0566eac3a1c63dccca25f378af3d1"
+    },
+    {
+      "path": "native-qualified.json.gz",
+      "sha256": "17484cac84a7dc2d7c48f92ba01578bd8ff3fa6d0073740482637096230a44b2",
+      "decoded_sha256": "963952164f1fed0130d986e9aea64607d4e102075e9ed8849c6e2629c571d3ef"
+    },
+    {
+      "path": "ci-source-binding.json.gz",
+      "sha256": "569666c9d326dcf2a6fcb8dc54adb527e6ecccac071d1bb3ce529e11b811c0f0",
+      "decoded_sha256": "6b8392d21c554b8943987f224d35f83be402c7aaa4cadc3f8d18f4170a0724fc"
+    },
+    {
+      "path": "auto-merge-current.json.gz",
+      "sha256": "60b57cdcfed0e0431b26a7f275f481e7122ee76d2cc74646016074c30b89ecdd",
+      "decoded_sha256": "7ae8115d710ead897033538656f80f9049ebd71144b81a0fd197684d04540561"
+    },
+    {
+      "path": "native-ready-pr.json.gz",
+      "sha256": "343748b2858b8fe3a41d4ea5f5a5a3d81b2ae94694e8c75e6b480c8088e6f8c1",
+      "decoded_sha256": "88c33e51a4d40632f3044f7aff418806f8f28273cf4e1370538a835e1b19c58e"
+    },
+    {
+      "path": "native/native-runtime-macos-15/git-acquisition.jsonl.gz",
+      "sha256": "68c2ca0be19ecc95112a6f09ade45e758d37c3547b3de8bc638e2ec639308415",
+      "decoded_sha256": "78dd9505ce6469147b032ad05e5603ccf38f7fc68a00d96b3bbc0f20920786da"
+    },
+    {
+      "path": "native/native-runtime-macos-15/publisher-ingestion.jsonl.gz",
+      "sha256": "c60bcba6cab83b2ae36749aee6e6b71f113127a994cd2c516a313b7df136aeb5",
+      "decoded_sha256": "0f3cd7995b8a15481778363ae313d664f212cb6c10e2d9e07301fdea8e2b7dda"
+    },
+    {
+      "path": "native/native-runtime-macos-15/tests.jsonl.gz",
+      "sha256": "ec6dce042f0e09bc090787a97b3fe5751bcd2688efbb4f7346815dd893b0a476",
+      "decoded_sha256": "7321a90ef2c4d234d70b5e96a67323d5abd07b50982daf2bb142acd25d3d839b"
+    },
+    {
+      "path": "native/native-runtime-macos-15/toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "decoded_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/git-acquisition.jsonl.gz",
+      "sha256": "417f51b663ce05ef1d07713b642ef68544bc689c4036fc1c62e246216c1749ce",
+      "decoded_sha256": "60701948c5c234fc908e14386daee5883fa3147f224b032ac8752674a401bf75"
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/publisher-ingestion.jsonl.gz",
+      "sha256": "bd8143b038ba364ff5386810ef38f8ad3225b2f1771c7040feb96da1cfaa7ecd",
+      "decoded_sha256": "6b6178498a2633194f83740193948bbe1454818d230d1ac27295e7d75fd2a3ca"
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "sha256": "2caa5bd2470aa6fb356f86a1158d9e559b6acbf0e2d9089266a0d3aca4e192a7",
+      "decoded_sha256": "f6e0ddb3f3e4ac39d27f9753330cfd895bb65bf87f6dfd695f62ee378bdf0939"
+    },
+    {
+      "path": "native/native-runtime-macos-15-intel/toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/git-acquisition.jsonl.gz",
+      "sha256": "a4a217ce94a6e12d98d258aae84ccb4474a84d0bd522ffd40b860c2cdcb5b433",
+      "decoded_sha256": "ddf0aed4c1480dfc71a6904292938d6ffd200e8ebeb01988c1c57e0581eecfad"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/publisher-ingestion.jsonl.gz",
+      "sha256": "0237f8a2f11f3dfe0118f09530ab9c05b2d500de3d28cc0b7cdadced04c9a795",
+      "decoded_sha256": "f27fa5caa71a68eec03d23cf26bc4721a1bb1bf519521254dde375f725765db2"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "sha256": "8552dadd7f22e5a47ed6865f186e97f274836cb6cf953988f7fa5f1a27c8e815",
+      "decoded_sha256": "5ff362bc01ce5a16dc9279d4dba61bf04cd9f5fac97ce9a6473b6865e87c19d1"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04/toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "decoded_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/git-acquisition.jsonl.gz",
+      "sha256": "52db95806088a2135a68ea2902941303eb154e813a4bd4ef6f9ee97f1404be05",
+      "decoded_sha256": "238663612f8d4e6e1c1d820a7b1d5deaddb5d1c8d4a09200325af1c6508cf5f9"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "18841951ca393731494f106888ca1731a6bfaa6dec28af86694bc8d9304f4649",
+      "decoded_sha256": "b34bbd1859f0ecd7d1ab9d993d9160657c7ac02bf784c3f74ac780a1dfc3a86b"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256": "93247fb55bfde75ffcad83cc0520ec67ca7d9058710e45373877ec1bad453852",
+      "decoded_sha256": "efbb39b61abb2c1a654bda205e8ec53d916a22c74aca899540e8da8420b33c78"
+    },
+    {
+      "path": "native/native-runtime-ubuntu-24.04-arm/toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "decoded_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/git-acquisition.jsonl.gz",
+      "sha256": "32693baf5d56c5c1b40d4a4dce0bd320a7d2497768ae5a205089725c1d81a4ce",
+      "decoded_sha256": "246c7a906103f945ba049601c63acd390f64f1e45472bf8282c4b43d1ddecf69"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "4ef80d24888e8549ebf1eda9a5ffa82574178420b2377f9dedc4c68b3f7ab960",
+      "decoded_sha256": "07464d060d4d62fa9ec9a5afc3e1dc52021b053348c7132e4c5e57f199503d66"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "e31402f31e2db027376bc2e4670ec4a09fedb464f8ac3866e739e7d63d64c34e",
+      "decoded_sha256": "61026e06121462134d815c2bd4b3eb93928c8bb86b2de845f79c91236a31365b"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/windows-clock.jsonl.gz",
+      "sha256": "2d211c62136e2a7b1d5e976afcd16134aacf051859fbcd062f965c0b04dca6ec",
+      "decoded_sha256": "1d690ce5c9ac3eb0276768f685178d04ee862ed168767e948d82c0cf53ac218e"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/windows-time-access.json.gz",
+      "sha256": "52c6a55e5942a08a2d706e723317aabcf0742233f28197b57dd03b90bc5830ee",
+      "decoded_sha256": "53b44fe516b8ce013f7c2987ac3b86a229bd5313f09c59536a80db8d670844c2"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/windows-time-service.json.gz",
+      "sha256": "ac9238a72c831134ff966b603a7128a5fe955fad04d5a4b499de289493fb7088",
+      "decoded_sha256": "950c92c2ea2355d0af7fd683b4e71aec0dd5709b1c6d157905843de2f108b3d7"
+    },
+    {
+      "path": "native/native-runtime-windows-11-arm/windows-time-status.log.gz",
+      "sha256": "3df45df9a65054d2b3f90eda47bf83453dff72ce17e97a1bbcd00044dce86d72",
+      "decoded_sha256": "8d515b01f1bf2e77a1e7b02ec25768ffd08698af5217fed9a0537fa2e3f0fb9a"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/git-acquisition.jsonl.gz",
+      "sha256": "5f264e700772dd786317b60f70f698a99355b595c86e70976b844faf137b9d31",
+      "decoded_sha256": "0116a57e8896e9c338ab0a3573ca6723fe0ebaa161be1a20e94c2a13a854ad96"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/publisher-ingestion.jsonl.gz",
+      "sha256": "0879b89e90d9b93bb641b61cbd5735eea7de16da26fbe0b947c0ef24b009da0c",
+      "decoded_sha256": "66a6646669981f05deb0199b3a4a894d5df74540e468a1d5abe5bd8c53453c8e"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "04173ac10c229a8a4722407fe80be12335e38c78d19875fa6247131231f10458",
+      "decoded_sha256": "34b3d7b30c1ff7fc7cd51615442c0c54e4a2da599f4688d1efa03bc53f384ea0"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/windows-clock.jsonl.gz",
+      "sha256": "b9ea084d8b23864102d5cb1e519e9645b8251eded56afb9c0d64956e78b9946e",
+      "decoded_sha256": "893b32fbdd3b073d64582b4ab2d8a405f9f4a0677bf1e50d94237b59fb715920"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/windows-time-access.json.gz",
+      "sha256": "e64cbb8d2932f75cd0a54aeb98cb7bc9be65011fe9ab2c8fe622c6eb7063e756",
+      "decoded_sha256": "03666af60a70a347f04c6eb6d19e1294828db7b4baa5e10460c4e08957e9e3c7"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/windows-time-service.json.gz",
+      "sha256": "da19eaff97758e2f2fa4780f59b04e31e91bf0a0336b589bbf7157acad49873e",
+      "decoded_sha256": "15d44a4991727dbcbe8c373c3e702a8abd19a20958f168d611adfcdf3d3371a6"
+    },
+    {
+      "path": "native/native-runtime-windows-2025/windows-time-status.log.gz",
+      "sha256": "b6ab5b8cf2bdaa44974d1f9051eb861166447bf7c8b0f67e0067498d89beb20d",
+      "decoded_sha256": "aba6bee5366837a5d3bb2c52e6df252ba2dd9350ad82cac17a9a1fa9cdbb259f"
+    },
+    {
+      "path": "native-portability-prose.json.gz",
+      "sha256": "4f60a8f87e1800d70c8c3b1a0cdb234f3ea417a4a2048a7d2d0e10821ab9a863",
+      "decoded_sha256": "5c551d97800ba3d0e516d2912d05f677784f0e5e3a44067e4a2c5e7cb3ebc8e5"
+    },
+    {
+      "path": "native-portability-prose.log.gz",
+      "sha256": "4dbb7843c9be5976950ccd0f419aee690cb75af71e93274d71f4b4f1c352f562",
+      "decoded_sha256": "ec5b278d6d7af278a7176d3ede7f03dc12d81f1d465f763ce1a85da7cad4e91c"
+    },
+    {
+      "path": "native-portability-prose-corrected.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "native-portability-prose-corrected.log.gz",
+      "sha256": "ed8b6e1d264531ff004f0b171c9fd84a6f03f20785125bcecd39a6bfde11d383",
+      "decoded_sha256": "85611925e5e6708e5581b1d1a0c7bacd213ea847140b4d784745cdb8cba6fa5a"
     }
   ]
 }

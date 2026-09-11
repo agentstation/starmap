@@ -17,10 +17,16 @@ Commit `2b4aa1fe` keeps the existing QueryStatus entry in portable code and sele
 Unsupported hosts close the supplied stream before sending RPC bytes. Portable wire tests remain enabled.
 Both supported toolchains pass 68 race events. Three platform lint checks, four Windows cross-builds, and static checks pass.
 
-Both required reviewers report zero findings. PR #151 now contains the correction and runs native workflow `34620963592`.
+Both required reviewers report zero findings. All six native jobs pass in workflow `34620963592`.
+They record 11,704 passing test events and no failures. Four explicit skips remain in the ordinary suites.
+
+Separate privileged checks pass the two Linux configuration cases. The two Windows skips are optional diagnostics. Both mandatory clock preflights pass 23 events.
+
+The CI merge checkout has the same tree as reviewed `2b4aa1fe`.
+The agent enabled automatic merge after every check except the repository Verification Gate passed. That gate still blocks the merge.
 
 Combined source `6419ea85` includes the correction. Full repository verification runs in session `55757`.
-Its log is `.tmp/csp4-origin-integrated/portable-entry-verifier.log`. Native CI, combined delivery checks, and all remaining merges stay open.
+Its log is `.tmp/csp4-origin-integrated/portable-entry-verifier.log`. The combined runtime and Starport still need delivery checks, native CI, and merges.
 
 ### Consumer checks and published dependency
 
