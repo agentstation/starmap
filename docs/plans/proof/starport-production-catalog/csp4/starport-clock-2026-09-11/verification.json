@@ -420,6 +420,212 @@
       "path": "windows-arm64-config.log.gz",
       "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
       "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "delivery-static-guards.json.gz",
+      "sha256": "34cbbea3e7a179d898cf1fb080faaa5bed036c2c93a925cdada32148da2363a2",
+      "decoded_sha256": "e4d8a825e6c808b55318994101a58f2ca787e1fa999386c4965463e8ea587228"
+    },
+    {
+      "path": "delivery-test-dependency-direction-verifier.sh.log.gz",
+      "sha256": "33c729e27eb33e08196e79f9590428e34f29bb411037d9d823d0a755b41dc926",
+      "decoded_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "path": "delivery-test-doc-link-verifier.sh.log.gz",
+      "sha256": "5917a4c6b3042bde9f5bb59ea1433ab5fddfe3daefe9e7f918198db3830fc9aa",
+      "decoded_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    {
+      "path": "delivery-verify-action-pins.sh.log.gz",
+      "sha256": "4b23c7f8802dff5e7684b8e940a7ea214487ea5dfb56e132d47873380e491349",
+      "decoded_sha256": "74fe1851e9e1c669f79b01ffc3b4ab7c662a13b54742b4e2000dfee22a19e0c8"
+    },
+    {
+      "path": "delivery-verify-async-media-jobs.sh.log.gz",
+      "sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0",
+      "decoded_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "path": "delivery-verify-auth-onboarding.sh.log.gz",
+      "sha256": "947455903500d8627ced609e2b9075a2bb3ec8df5d16c76f1109211ca53d883c",
+      "decoded_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    {
+      "path": "delivery-verify-catalog-performance.sh.log.gz",
+      "sha256": "06c429bbb540f43cfbe30b00008f47f24860ecc90dbb1a18bd3ffb879cb8b46a",
+      "decoded_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    {
+      "path": "delivery-verify-console-modernization.sh.log.gz",
+      "sha256": "f2412ad75efc942430b8de45a3f8f1b8eab6ac66bb66820a0066525f05699d01",
+      "decoded_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    {
+      "path": "delivery-verify-console-polish.sh.log.gz",
+      "sha256": "68bb9095fdebb20cda82dd3f8b42eb209ba0bd9d4b37da08694d253f4333ef8d",
+      "decoded_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    {
+      "path": "delivery-verify-console-session-grants.sh.log.gz",
+      "sha256": "9e9a34f7885a1705e83c6b36627eaf138ad8ac6451f11e60bbf3cce65725c4c5",
+      "decoded_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    {
+      "path": "delivery-verify-credential-sharing.sh.log.gz",
+      "sha256": "99ea064348720c3dc2d12e46c0768ccf3f95ff7287a7ff3769ee2cd77caf2b84",
+      "decoded_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    {
+      "path": "delivery-verify-dependency-direction.sh.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "delivery-verify-developer-experience.sh.log.gz",
+      "sha256": "3d608c4e6e9ac08362dced268dd7dbb9f9c0f35ee62764112e6021b7f88d5263",
+      "decoded_sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5"
+    },
+    {
+      "path": "delivery-verify-doc-links.sh.log.gz",
+      "sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "decoded_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "path": "delivery-verify-document-parser.sh.log.gz",
+      "sha256": "266af5aa2c0e5d7b5c4953d1f9cadcfdab7c4a60a1a9be85fcdf39048fe788da",
+      "decoded_sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7"
+    },
+    {
+      "path": "delivery-verify-enterprise-readiness.sh.log.gz",
+      "sha256": "095728a5bf92a10964b93dccfd9b67cab272c29c51e71b176c38bc40f98c217d",
+      "decoded_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    {
+      "path": "delivery-verify-files-api.sh.log.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "decoded_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "path": "delivery-verify-model-modalities.sh.log.gz",
+      "sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1",
+      "decoded_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "path": "delivery-verify-openrouter-parity.sh.log.gz",
+      "sha256": "1310b938dc434b2558b9f6cd4139ad9cdda706c10d20c82b5540f14a827e10f4",
+      "decoded_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "path": "delivery-verify-package-layout.sh.log.gz",
+      "sha256": "5bb2dd8a6ce6602108677e0dca1db5fbcf7b8d9203caff6a23d211a056dd0630",
+      "decoded_sha256": "45d87bf925c37a2c1347c9b5629fc10f76a64804422266c37727b46069efee09"
+    },
+    {
+      "path": "delivery-verify-readme-quickstart.sh.log.gz",
+      "sha256": "590e58248ac4493ca7bf0f5323d3fb399a7e4640bd622db8acd636497532c3f4",
+      "decoded_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    {
+      "path": "delivery-verify-release-workflow.sh.log.gz",
+      "sha256": "96bf8d6c38e5ac0572afbc7a8df353ac4d6a69cb294c7647ca5414e508709a53",
+      "decoded_sha256": "df43a433b0e2eacf0b82829fa989238b489484de7c8f1e18a4cbba228d81cdc9"
+    },
+    {
+      "path": "delivery-verify-reranking.sh.log.gz",
+      "sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29",
+      "decoded_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "path": "delivery-verify-v1-release.sh.log.gz",
+      "sha256": "e0ffa922a0e60d1f57f604679052119ac27586bb940535165b7a1f1c5da42d83",
+      "decoded_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    {
+      "path": "delivery-source-suite.json.gz",
+      "sha256": "b56640fef58e216f39c5b4ba6f17ec5a25ede62819d9e775770684a660eacee8",
+      "decoded_sha256": "cfb8670117859c9125b336d72a1a4851df2b64737bf855931379ad407e1f977b"
+    },
+    {
+      "path": "delivery-tests.log.gz",
+      "sha256": "15c97b3f8d9c3214ad118b15aa026f07ed2ed2f09341f6d935d2824b8d1ab3ca",
+      "decoded_sha256": "acf1279efc702da6ab20aa9b416fe24e805323367f943cdd61d4f4828be57303"
+    },
+    {
+      "path": "delivery-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "delivery-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "delivery-first-run.log.gz",
+      "sha256": "73aeca9385b2be30b5083c4aaa04a6a8abf540e3b94874f83a07d2f5c633257e",
+      "decoded_sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    {
+      "path": "delivery-build.log.gz",
+      "sha256": "c5cfa5e939a51c109fb742b5a356e440fc8d212a1e908a6a4b27847078faa9f5",
+      "decoded_sha256": "5894816cdfde92ab3c159918d3a21cc9ba7a704c449dc10ce19c0aed95438383"
+    },
+    {
+      "path": "delivery-sdk-smoke.log.gz",
+      "sha256": "bb54cb72c34144550ed1ecccfc8945135e6b3bc2a52b71ce4d110fef47fb29f0",
+      "decoded_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585"
     }
-  ]
+  ],
+  "delivery_guard_followup": {
+    "source_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+    "source_tree": "7cb0ea32958b08902eaa2d416692bb13955edc04",
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "summary": {
+      "commands": 23,
+      "passed": 22,
+      "failed": 1
+    },
+    "artifact": "delivery-static-guards.json.gz",
+    "failure": "verify-package-layout.sh cannot compile against the committed published Starmap pin because that version does not contain pkg/catalogs/permission/hostclock. Repeat after the combined Starmap publication and dependency update.",
+    "limitation": "These commands do not complete full Starport verification or qualify a published product pair."
+  },
+  "prepared_source_followup": {
+    "source_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+    "source_tree": "7cb0ea32958b08902eaa2d416692bb13955edc04",
+    "starmap_source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "environment_overrides": {
+      "GOWORK": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/go.work",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "commands_passed": 6,
+    "test_events": {
+      "pass": 3049,
+      "skip": 39,
+      "fail": 0
+    },
+    "package_events": {
+      "skip": 7,
+      "pass": 55,
+      "fail": 0
+    },
+    "skip_summary": {
+      "valkey_service_cases": 38,
+      "separate_overhead_benchmark": 1
+    },
+    "artifact": "delivery-source-suite.json.gz",
+    "checks": [
+      "Full Go test suite",
+      "Full Go vet",
+      "Full make lint",
+      "First-run smoke",
+      "Console and binary build",
+      "Raw HTTP and Python, TypeScript, and Go SDK smoke"
+    ],
+    "build_warnings": "The unchanged console emits route-test exclusion and chunk-size warnings. The build log retains them.",
+    "limitation": "The local module workspace selects the prepared Starmap source. Published dependency qualification, the remaining delivery commands, required review, native CI, and merge remain open."
+  }
 }

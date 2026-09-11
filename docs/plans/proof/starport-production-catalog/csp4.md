@@ -118,6 +118,17 @@ The tests use an untracked workspace with Starmap `d1bb47e1`.
 The committed published dependency predates the required clock API. Publish the combined runtime and update that pin before final qualification.
 Native lifecycle tests prove observation attempts and shutdown, not the declared host error bounds.
 
+A later run at `9669b61d` passes 22 of 23 repository guard commands with `GOWORK=off`.
+The package-layout command cannot compile because the committed Starmap pin lacks the hostclock package.
+The clock proof preserves every command and its output. Repeat that check after the published dependency update.
+These results do not complete Starport delivery qualification.
+
+The prepared pair `6419ea85` and `9669b61d` passes the full Starport Go suite with 3,049 test events and zero failures.
+Thirty-eight Valkey service cases and the separate overhead benchmark skip. Full vet, lint, first-run smoke, console build, and binary build pass.
+
+Raw HTTP and the Python, TypeScript, and Go SDK checks pass. The console build retains its route-test exclusion and chunk-size warnings.
+The clock proof preserves all six commands and their outputs. Published dependency qualification remains open.
+
 The new prose passes with zero diagnostics. The full operator guide retains its 48 unrelated baseline diagnostics.
 Required review, delivery gates, native Starport CI, and merge remain open.
 The [previous current record](csp4/integration-history-before-starport-clock-2026-09-11.md) preserves earlier state.
