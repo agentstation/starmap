@@ -49,6 +49,8 @@ func managedFilePolicy(id string) (productpaths.FilePolicy, error) {
 		policy = makePolicy([]string{catalogconfig.Source, catalogconfig.SourceURL}, "Explicit file catalog source.", "operator", "Preserve until all consumers select another source or retain a permitted generation.")
 	case "baseline":
 		policy = makePolicy(data, "Verified embedded catalog export on persistent startup.", "reproducible", "Remove only if the same binary can reproduce the baseline. Never remove an active export.")
+	case "baseline-recovery":
+		policy = makePolicy(data, "Private journals and exclusive ownership for baseline export recovery.", "recovery", "Preserve changed or unrecognized stages. Keep the writer lock for the lifetime of the baseline directory.")
 	case "catalog-store":
 		policy = makePolicy(append(slices.Clone(state), "STARMAP_CATALOG_STORE_PATH"), "Filesystem catalog store selected by the standalone application.", "durable", "Preserve the current pointer and referenced generations. Use a consistent backup before replacement.")
 	case "runtime-owner", "runtime-lock", "runtime-seed":

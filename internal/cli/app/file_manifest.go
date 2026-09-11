@@ -32,6 +32,7 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 		add("source-file", paths.SourceFile, "file", "available", "Operator-supplied file catalog source.", "Preserve the selected catalog payload and its access policy.")
 	}
 	add("baseline", paths.Baselines, "tree", "available", "Persistent application startup.", "Preserve or reproduce from the same binary.", "*/manifest.json", "*/catalog.json", ".baseline-*/**")
+	add("baseline-recovery", child(paths.Baselines, ".starmap-baseline"), "tree", "available", "Baseline export and interrupted-stage recovery.", "Preserve journals and the writer lock until verified recovery completes.", ".owner.lock", "*.json", ".record-*")
 	add("catalog-store", paths.CatalogStore, "tree", "available", "Accepted catalog publication.", "Preserve generations and the current pointer through a consistent backup.", "current", ".commit.lock", "generations/*/manifest.json", "generations/*/catalog.json", "generations/.candidate-*/**", ".current-*")
 	for _, item := range []struct{ id, name, creation, recovery string }{
 		{"runtime-owner", "owner.json", "Persistent runtime initialization.", "Preserve the product, deployment, and instance binding."},

@@ -690,6 +690,26 @@ The excluded provider no longer returns through the baseline. This check does no
 Explicit local inputs still need source evidence when the runtime reconstructs a generation. A previously merged head cannot substitute for that evidence.
 
 
+## Interrupted baseline export
+
+Application startup recovers interrupted baseline exports before it creates or verifies the installed baseline.
+The private `<baseline>/.starmap-baseline/` directory holds `.owner.lock` and one `<operation-id>.json` journal per unfinished export.
+The published baseline directory still contains only `manifest.json` and `catalog.json`.
+
+Export and recovery hold the same filesystem lock. Journals bind the original lock, stage, and file identities.
+Recovery verifies file modes, modification times, and content digests before deleting a recorded stage.
+A durable cleanup phase permits recovery after partial deletion. Recovery never deletes a published baseline.
+
+A replaced lock cannot adopt earlier journals. Changed, unrecorded, or unsupported recovery files remain in place.
+
+The scan refuses more than 4,096 combined entries in the baseline and recovery directories before deleting any stage.
+Retained content snapshots have a 64 MiB aggregate verification budget. Stability checks can reread those bytes.
+Stages beyond that budget remain in place. These recovery limits do not limit catalog generation size.
+The exporter reports completed recovery operations and relative paths that need separate ownership review.
+
+Use `starmap config paths --inspect` to locate recovery files and their owner-only access policy.
+Keep the writer lock for the lifetime of the baseline directory. Preserve journals with their stages until verified recovery completes.
+
 ## Provider reset retention
 
 `Runtime.UpdateObservations` accepts optional `ProviderObservationReset` scopes.
