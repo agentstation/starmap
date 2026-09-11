@@ -5,6 +5,17 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
+// WithoutPermissionClock clears earlier monitor and callback selections.
+// No clock evidence remains until a later option supplies a clock explicitly.
+func WithoutPermissionClock() Option {
+	return func(o *options) error {
+		o.permissionClockMonitor = nil
+		o.permissionClockReading = nil
+		o.permissionClockUncertainty = nil
+		return nil
+	}
+}
+
 // WithPermissionClockMonitor assigns one unstarted monitor to this runtime.
 // Open starts it before source startup and owns its shutdown after a successful start.
 // A failed Open cancels any monitor it started. It leaves a monitor owned elsewhere alone.

@@ -118,6 +118,28 @@ The Starmap source API key authenticates catalog transport.
 The GitHub source token authenticates GitHub access.
 Neither is a provider inference key.
 
+## Permission clock configuration
+
+The permission clock source defaults to disabled. Public and embedded catalog use need no native clock profile.
+Internal authority permissions require qualified time evidence before they can authorize new work.
+Selecting native mode requires explicit cache age, refresh interval, counter drift, and counter uncertainty.
+Windows also requires synchronization source age, source drift, and additional source uncertainty.
+
+The refresh interval must be less than half the maximum cache age.
+Configuration declares these bounds. It does not qualify the host, time service, or error profile.
+
+Clock settings have node scope and require restart after changes.
+Each host supplies its own qualified values. They do not inherit from another product or from shared deployment configuration.
+Changing the catalog source does not reset clock settings.
+
+An explicit disabled source clears an earlier host clock selection.
+The public parser preserves each setting separately. Application composition validates the complete native profile before runtime startup.
+
+Construction starts no clock query. Runtime startup owns background observations, and runtime shutdown cancels them.
+Request admission reads cached evidence without a time-service query.
+An unqualified observation invalidates that evidence while catalog diagnostics remain available.
+Native clock status errors are local diagnostics and need redaction before public exposure.
+
 ## Provider binding declarations
 
 ` + "`catalog_provider_bindings`" + ` selects the complete active binding set for connected-runtime acquisition.

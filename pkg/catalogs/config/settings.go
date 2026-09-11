@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/runtime"
 )
@@ -16,7 +17,7 @@ import (
 // Prefix is the canonical Starmap environment prefix.
 const Prefix = "STARMAP_"
 
-// The canonical catalog setting names. Each name selects one runtime option.
+// The canonical catalog setting names select runtime options or host configuration.
 const (
 	// Source selects the upstream catalog source. The default is public.
 	Source = Prefix + "CATALOG_SOURCE"
@@ -115,7 +116,7 @@ const (
 // os.LookupEnv satisfies it.
 type Lookup func(name string) (string, bool)
 
-// setting is one canonical name and the runtime option that it selects.
+// setting defines one canonical name, optional runtime option, and parsed host value.
 type setting struct {
 	name    string
 	flag    string
@@ -124,10 +125,14 @@ type setting struct {
 }
 
 // Config holds the canonical catalog settings that one process read. It carries
-// one runtime option for each supplied setting. The parser accepts every
+// runtime options and a separate host clock profile. The parser accepts every
 // canonical name, the starmap source included. Only Composition rejects a
 // source that this build supplies no implementation for.
 type Config struct {
+	// PermissionClock selects native observations and declared bounds for this host.
+	// The hosting application composes and validates this profile before runtime startup.
+	PermissionClock profile.Config
+
 	// SourceKind is the selected upstream source. The default is public.
 	SourceKind runtime.SourceKind
 
@@ -178,14 +183,14 @@ type Config struct {
 	// values retains presence independently from the parsed value.
 	values map[string]string
 
-	// options holds one runtime option for each supplied setting.
+	// options holds runtime options for settings that do not require host composition.
 	options []runtime.Option
 }
 
 // table returns every canonical setting in its documented order. The order is
 // stable, so a report and a test read one sequence.
 func table() []setting {
-	return []setting{
+	return append([]setting{
 		{
 			name: Source, flag: "catalog-source", capture: captureSourceKind,
 			apply: stringOption(runtime.WithCatalogSource),
@@ -296,7 +301,7 @@ func table() []setting {
 			capture: captureSchedulerIdentity,
 			apply:   stringOption(runtime.WithSchedulerIdentity),
 		},
-	}
+	}, clockSettings()...)
 }
 
 // Names returns every canonical catalog setting name in documented order.
@@ -355,9 +360,12 @@ func Load(lookup Lookup) (Config, error) {
 		if err := validateValue(describe(entry), value); err != nil {
 			return Config{}, err
 		}
-		option, err := entry.apply(value)
-		if err != nil {
-			return Config{}, err
+		if entry.apply != nil {
+			option, err := entry.apply(value)
+			if err != nil {
+				return Config{}, err
+			}
+			config.options = append(config.options, option)
 		}
 		if entry.capture != nil {
 			if err := entry.capture(value, &config); err != nil {
@@ -366,7 +374,6 @@ func Load(lookup Lookup) (Config, error) {
 		}
 		config.values[entry.name] = value
 		config.configured = append(config.configured, entry.name)
-		config.options = append(config.options, option)
 	}
 	return config, nil
 }
@@ -375,6 +382,7 @@ func Load(lookup Lookup) (Config, error) {
 func (c Config) Configured() []string { return slices.Clone(c.configured) }
 
 // Options returns the runtime options that the supplied settings select.
+// The host must separately compose PermissionClock with the native clock adapter.
 func (c Config) Options() []runtime.Option { return slices.Clone(c.options) }
 
 func captureSourceKind(value string, config *Config) error {

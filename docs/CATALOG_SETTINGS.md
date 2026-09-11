@@ -50,6 +50,28 @@ The Starmap source API key authenticates catalog transport.
 The GitHub source token authenticates GitHub access.
 Neither is a provider inference key.
 
+## Permission clock configuration
+
+The permission clock source defaults to disabled. Public and embedded catalog use need no native clock profile.
+Internal authority permissions require qualified time evidence before they can authorize new work.
+Selecting native mode requires explicit cache age, refresh interval, counter drift, and counter uncertainty.
+Windows also requires synchronization source age, source drift, and additional source uncertainty.
+
+The refresh interval must be less than half the maximum cache age.
+Configuration declares these bounds. It does not qualify the host, time service, or error profile.
+
+Clock settings have node scope and require restart after changes.
+Each host supplies its own qualified values. They do not inherit from another product or from shared deployment configuration.
+Changing the catalog source does not reset clock settings.
+
+An explicit disabled source clears an earlier host clock selection.
+The public parser preserves each setting separately. Application composition validates the complete native profile before runtime startup.
+
+Construction starts no clock query. Runtime startup owns background observations, and runtime shutdown cancels them.
+Request admission reads cached evidence without a time-service query.
+An unqualified observation invalidates that evidence while catalog diagnostics remain available.
+Native clock status errors are local diagnostics and need redaction before public exposure.
+
 ## Provider binding declarations
 
 `catalog_provider_bindings` selects the complete active binding set for connected-runtime acquisition.
@@ -753,5 +775,182 @@ Sets a stable identity for this runtime instance.
 | Sensitive | false |
 | Scope | `node` |
 | Applicability | `all` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-source"></a>
+
+## catalog_permission_clock_source
+
+Selects native permission clock evidence. Native mode requires qualified bounds for this host.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_SOURCE` |
+| CLI flag | `--catalog-permission-clock-source value` |
+| YAML key | `catalog_permission_clock_source` |
+| Semantic ID | `catalog.permission.clock.source` |
+| Grammar | `string` |
+| Accepted names | `disabled`, `native` |
+| Default | no native observations |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-refresh-interval"></a>
+
+## catalog_permission_clock_refresh_interval
+
+Sets the background observation period. It must be less than half the maximum cache age.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_REFRESH_INTERVAL` |
+| CLI flag | `--catalog-permission-clock-refresh-interval value` |
+| YAML key | `catalog_permission_clock_refresh_interval` |
+| Semantic ID | `catalog.permission.clock.refresh.interval` |
+| Grammar | `duration` |
+| Default | operator-qualified bound |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `native permission clock` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-max-age"></a>
+
+## catalog_permission_clock_max_age
+
+Bounds cached observation age to at most five minutes.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_MAX_AGE` |
+| CLI flag | `--catalog-permission-clock-max-age value` |
+| YAML key | `catalog_permission_clock_max_age` |
+| Semantic ID | `catalog.permission.clock.max.age` |
+| Grammar | `duration` |
+| Default | operator-qualified bound |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `native permission clock` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-max-drift-ppm"></a>
+
+## catalog_permission_clock_max_drift_ppm
+
+Bounds elapsed-counter rate error in parts per million, below one million.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_MAX_DRIFT_PPM` |
+| CLI flag | `--catalog-permission-clock-max-drift-ppm value` |
+| YAML key | `catalog_permission_clock_max_drift_ppm` |
+| Semantic ID | `catalog.permission.clock.max.drift.ppm` |
+| Grammar | `integer` |
+| Default | operator-qualified bound |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `native permission clock` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-counter-uncertainty"></a>
+
+## catalog_permission_clock_counter_uncertainty
+
+Bounds each elapsed-counter reading error. Supply a positive duration, at most thirty seconds.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_COUNTER_UNCERTAINTY` |
+| CLI flag | `--catalog-permission-clock-counter-uncertainty value` |
+| YAML key | `catalog_permission_clock_counter_uncertainty` |
+| Semantic ID | `catalog.permission.clock.counter.uncertainty` |
+| Grammar | `duration` |
+| Default | operator-qualified bound |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `native permission clock` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-windows-max-source-age"></a>
+
+## catalog_permission_clock_windows_max_source_age
+
+Bounds Windows synchronization age to at most one day.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_AGE` |
+| CLI flag | `--catalog-permission-clock-windows-max-source-age value` |
+| YAML key | `catalog_permission_clock_windows_max_source_age` |
+| Semantic ID | `catalog.permission.clock.windows.max.source.age` |
+| Grammar | `duration` |
+| Default | operator-qualified bound |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `native permission clock on Windows` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-windows-max-source-drift-ppm"></a>
+
+## catalog_permission_clock_windows_max_source_drift_ppm
+
+Bounds Windows synchronization source drift in parts per million, below one million.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_DRIFT_PPM` |
+| CLI flag | `--catalog-permission-clock-windows-max-source-drift-ppm value` |
+| YAML key | `catalog_permission_clock_windows_max_source_drift_ppm` |
+| Semantic ID | `catalog.permission.clock.windows.max.source.drift.ppm` |
+| Grammar | `integer` |
+| Default | operator-qualified bound |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `native permission clock on Windows` |
+| Change class | `restart` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-permission-clock-windows-source-uncertainty"></a>
+
+## catalog_permission_clock_windows_source_uncertainty
+
+Adds qualified Windows source error. Supply a positive duration, at most thirty seconds.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_SOURCE_UNCERTAINTY` |
+| CLI flag | `--catalog-permission-clock-windows-source-uncertainty value` |
+| YAML key | `catalog_permission_clock_windows_source_uncertainty` |
+| Semantic ID | `catalog.permission.clock.windows.source.uncertainty` |
+| Grammar | `duration` |
+| Default | operator-qualified bound |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `node` |
+| Applicability | `native permission clock on Windows` |
 | Change class | `restart` |
 | Compatibility | `supported`, schema 1 |

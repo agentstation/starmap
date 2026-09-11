@@ -101,6 +101,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func WithStateDirectory\(directory string\) Option](<#WithStateDirectory>)
   - [func WithTransferIdleTimeout\(timeout time.Duration\) Option](<#WithTransferIdleTimeout>)
   - [func WithTransferMaxDuration\(duration time.Duration\) Option](<#WithTransferMaxDuration>)
+  - [func WithoutPermissionClock\(\) Option](<#WithoutPermissionClock>)
 - [type OriginConfig](<#OriginConfig>)
 - [type OwnerRecordStatus](<#OwnerRecordStatus>)
   - [func InspectDirectoryOwnerRecord\(ctx context.Context, directory string, owner DirectoryOwner, identity string\) \(OwnerRecordStatus, error\)](<#InspectDirectoryOwnerRecord>)
@@ -927,7 +928,7 @@ func WithPermissionClock(sample func() permission.ClockReading) Option
 WithPermissionClock supplies one qualified time and uncertainty sample for each permission check. The callback reads cached evidence and supports concurrent calls. It starts no I/O. It governs admission, permission relay, and permission status independently of the scheduler clock. Use WithPermissionClockUncertainty only when this option is absent. The caller owns native clock qualification.
 
 <a name="WithPermissionClockMonitor"></a>
-### func [WithPermissionClockMonitor](<https://github.com/agentstation/starmap/blob/main/runtime/clock_monitor.go#L13>)
+### func [WithPermissionClockMonitor](<https://github.com/agentstation/starmap/blob/main/runtime/clock_monitor.go#L24>)
 
 ```go
 func WithPermissionClockMonitor(monitor *permission.ClockMonitor) Option
@@ -1178,6 +1179,15 @@ func WithTransferMaxDuration(duration time.Duration) Option
 
 WithTransferMaxDuration bounds one whole transfer.
 
+<a name="WithoutPermissionClock"></a>
+### func [WithoutPermissionClock](<https://github.com/agentstation/starmap/blob/main/runtime/clock_monitor.go#L10>)
+
+```go
+func WithoutPermissionClock() Option
+```
+
+WithoutPermissionClock clears earlier monitor and callback selections. No clock evidence remains until a later option supplies a clock explicitly.
+
 <a name="OriginConfig"></a>
 ## type [OriginConfig](<https://github.com/agentstation/starmap/blob/main/runtime/origin.go#L15-L23>)
 
@@ -1414,7 +1424,7 @@ func (r *Runtime) ObservationInputs(ctx context.Context) (ObservationInputs, err
 ObservationInputs returns the current catalog and its selected baseline. It reads retained memory, starts no acquisition, and writes no files. A later update reads new snapshots under runtime operation ownership.
 
 <a name="Runtime.PermissionClockStatus"></a>
-### func \(\*Runtime\) [PermissionClockStatus](<https://github.com/agentstation/starmap/blob/main/runtime/clock_monitor.go#L42>)
+### func \(\*Runtime\) [PermissionClockStatus](<https://github.com/agentstation/starmap/blob/main/runtime/clock_monitor.go#L53>)
 
 ```go
 func (r *Runtime) PermissionClockStatus() permission.ClockMonitorStatus

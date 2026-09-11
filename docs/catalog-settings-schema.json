@@ -726,6 +726,216 @@
       "introduced": 1,
       "compatibility": "supported",
       "anchor": "scheduler-identity"
+    },
+    {
+      "description": "Selects native permission clock evidence. Native mode requires qualified bounds for this host.",
+      "allowed_values": [
+        "disabled",
+        "native"
+      ],
+      "id": "catalog.permission.clock.source",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_SOURCE",
+      "key": "catalog_permission_clock_source",
+      "flag": "catalog-permission-clock-source",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_SOURCE"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "disabled",
+      "default_meaning": "no native observations",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": null,
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-source"
+    },
+    {
+      "description": "Sets the background observation period. It must be less than half the maximum cache age.",
+      "id": "catalog.permission.clock.refresh.interval",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_REFRESH_INTERVAL",
+      "key": "catalog_permission_clock_refresh_interval",
+      "flag": "catalog-permission-clock-refresh-interval",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_REFRESH_INTERVAL"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "",
+      "default_meaning": "operator-qualified bound",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "native permission clock"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-refresh-interval"
+    },
+    {
+      "description": "Bounds cached observation age to at most five minutes.",
+      "id": "catalog.permission.clock.max.age",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_MAX_AGE",
+      "key": "catalog_permission_clock_max_age",
+      "flag": "catalog-permission-clock-max-age",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_MAX_AGE"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "",
+      "default_meaning": "operator-qualified bound",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "native permission clock"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-max-age"
+    },
+    {
+      "description": "Bounds elapsed-counter rate error in parts per million, below one million.",
+      "id": "catalog.permission.clock.max.drift.ppm",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_MAX_DRIFT_PPM",
+      "key": "catalog_permission_clock_max_drift_ppm",
+      "flag": "catalog-permission-clock-max-drift-ppm",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_MAX_DRIFT_PPM"
+      ],
+      "type": "integer",
+      "unit": "parts per million",
+      "default": "",
+      "default_meaning": "operator-qualified bound",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "native permission clock"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-max-drift-ppm"
+    },
+    {
+      "description": "Bounds each elapsed-counter reading error. Supply a positive duration, at most thirty seconds.",
+      "id": "catalog.permission.clock.counter.uncertainty",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_COUNTER_UNCERTAINTY",
+      "key": "catalog_permission_clock_counter_uncertainty",
+      "flag": "catalog-permission-clock-counter-uncertainty",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_COUNTER_UNCERTAINTY"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "",
+      "default_meaning": "operator-qualified bound",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "native permission clock"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-counter-uncertainty"
+    },
+    {
+      "description": "Bounds Windows synchronization age to at most one day.",
+      "id": "catalog.permission.clock.windows.max.source.age",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_AGE",
+      "key": "catalog_permission_clock_windows_max_source_age",
+      "flag": "catalog-permission-clock-windows-max-source-age",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_AGE"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "",
+      "default_meaning": "operator-qualified bound",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "native permission clock on Windows"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-windows-max-source-age"
+    },
+    {
+      "description": "Bounds Windows synchronization source drift in parts per million, below one million.",
+      "id": "catalog.permission.clock.windows.max.source.drift.ppm",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_DRIFT_PPM",
+      "key": "catalog_permission_clock_windows_max_source_drift_ppm",
+      "flag": "catalog-permission-clock-windows-max-source-drift-ppm",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_MAX_SOURCE_DRIFT_PPM"
+      ],
+      "type": "integer",
+      "unit": "parts per million",
+      "default": "",
+      "default_meaning": "operator-qualified bound",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "native permission clock on Windows"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-windows-max-source-drift-ppm"
+    },
+    {
+      "description": "Adds qualified Windows source error. Supply a positive duration, at most thirty seconds.",
+      "id": "catalog.permission.clock.windows.source.uncertainty",
+      "name": "STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_SOURCE_UNCERTAINTY",
+      "key": "catalog_permission_clock_windows_source_uncertainty",
+      "flag": "catalog-permission-clock-windows-source-uncertainty",
+      "environment": [
+        "STARMAP_CATALOG_PERMISSION_CLOCK_WINDOWS_SOURCE_UNCERTAINTY"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "",
+      "default_meaning": "operator-qualified bound",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "node",
+      "source_binding": "",
+      "applicability": [
+        "native permission clock on Windows"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-permission-clock-windows-source-uncertainty"
     }
   ]
 }

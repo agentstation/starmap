@@ -103,7 +103,7 @@
           "kind": "go_test",
           "repository": "starmap",
           "package": "./internal/catalog/settings",
-          "test": "TestEveryCanonicalNameMapsToOption"
+          "test": "TestEveryCanonicalNameMapsToConfiguration"
         },
         {
           "kind": "go_test",

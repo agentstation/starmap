@@ -58,6 +58,28 @@ func TestManagedPermissionClockConfigurationIsPassive(t *testing.T) {
 	}
 }
 
+func TestWithoutPermissionClockClearsEarlierSelections(t *testing.T) {
+	monitor := runtimeTestClockMonitor(t, func(context.Context) (permission.ClockReading, error) { return permission.ClockReading{}, nil })
+	for _, selected := range []Option{
+		WithPermissionClockMonitor(monitor),
+		WithPermissionClock(func() permission.ClockReading { return permission.ClockReading{Known: true} }),
+		WithPermissionClockUncertainty(func() (time.Duration, bool) { return 0, true }),
+	} {
+		config, err := defaults().apply(selected, WithoutPermissionClock())
+		if err != nil {
+			t.Fatal(err)
+		}
+		r := &Runtime{config: *config}
+		if r.readPermissionClock().Known || config.permissionClockMonitor != nil || config.permissionClockReading != nil || config.permissionClockUncertainty != nil {
+			t.Fatal("disabled clock retained an earlier selection")
+		}
+	}
+	config, err := defaults().apply(WithoutPermissionClock(), WithPermissionClockMonitor(monitor))
+	if err != nil || config.permissionClockMonitor != monitor {
+		t.Fatal("later explicit clock selection did not win")
+	}
+}
+
 func TestRuntimeOwnsPermissionClockLifecycle(t *testing.T) {
 	monitor := runtimeTestClockMonitor(t, func(context.Context) (permission.ClockReading, error) {
 		return permission.ClockReading{Time: time.Now(), Uncertainty: time.Millisecond, Known: true}, nil

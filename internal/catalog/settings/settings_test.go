@@ -14,42 +14,50 @@ import (
 )
 
 // sampleValues holds one valid value for every canonical catalog setting. A new
-// canonical name without an entry here fails TestEveryCanonicalNameMapsToOption.
+// canonical name without an entry here fails TestEveryCanonicalNameMapsToConfiguration.
 func sampleValues() map[string]string {
 	return map[string]string{
-		settings.Source:               "embedded",
-		settings.SourceURL:            "https://example.test/catalog",
-		settings.SourceAPIKey:         "placeholder",
-		settings.SourceRepository:     "example/catalog",
-		settings.SourceChannel:        "catalog/v1",
-		settings.SourceSignerWorkflow: ".github/workflows/publish.yml",
-		settings.SourceToken:          "placeholder",
-		settings.SourcePollInterval:   "30m",
-		settings.SourceStartupPolicy:  "prefer_source",
-		settings.SourceAuthorityID:    "enterprise",
-		settings.SourcePolicyID:       "production",
-		settings.SourceMaxAge:         "12h",
-		settings.SourceMaxHops:        "4",
-		settings.SourceAliases:        "replica-a,replica-b",
-		settings.AcquisitionEnabled:   "false",
-		settings.AcquisitionSources:   "providers",
-		settings.ModelsDevGitCommit:   strings.Repeat("a", 40),
-		settings.AcquisitionInterval:  "2h",
-		settings.ProviderBindings:     "[]",
-		settings.CoalesceWindow:       "45s",
-		settings.WorkspacePath:        "/var/lib/starmap/catalog",
-		settings.StartupSpread:        "5m",
-		settings.TransferIdleTimeout:  "90s",
-		settings.TransferMaxDuration:  "30m",
-		settings.RefreshTimeout:       "10m",
-		settings.StateDirectory:       "/var/lib/starmap/state",
-		settings.SchedulerIdentity:    "replica-a",
+		settings.Source:                                  "embedded",
+		settings.SourceURL:                               "https://example.test/catalog",
+		settings.SourceAPIKey:                            "placeholder",
+		settings.SourceRepository:                        "example/catalog",
+		settings.SourceChannel:                           "catalog/v1",
+		settings.SourceSignerWorkflow:                    ".github/workflows/publish.yml",
+		settings.SourceToken:                             "placeholder",
+		settings.SourcePollInterval:                      "30m",
+		settings.SourceStartupPolicy:                     "prefer_source",
+		settings.SourceAuthorityID:                       "enterprise",
+		settings.SourcePolicyID:                          "production",
+		settings.SourceMaxAge:                            "12h",
+		settings.SourceMaxHops:                           "4",
+		settings.SourceAliases:                           "replica-a,replica-b",
+		settings.AcquisitionEnabled:                      "false",
+		settings.AcquisitionSources:                      "providers",
+		settings.ModelsDevGitCommit:                      strings.Repeat("a", 40),
+		settings.AcquisitionInterval:                     "2h",
+		settings.ProviderBindings:                        "[]",
+		settings.CoalesceWindow:                          "45s",
+		settings.WorkspacePath:                           "/var/lib/starmap/catalog",
+		settings.StartupSpread:                           "5m",
+		settings.TransferIdleTimeout:                     "90s",
+		settings.TransferMaxDuration:                     "30m",
+		settings.RefreshTimeout:                          "10m",
+		settings.StateDirectory:                          "/var/lib/starmap/state",
+		settings.SchedulerIdentity:                       "replica-a",
+		settings.PermissionClockSource:                   "native",
+		settings.PermissionClockRefreshInterval:          "10s",
+		settings.PermissionClockMaxAge:                   "1m",
+		settings.PermissionClockMaxDriftPPM:              "500",
+		settings.PermissionClockCounterUncertainty:       "1us",
+		settings.PermissionClockWindowsMaxSourceAge:      "1h",
+		settings.PermissionClockWindowsMaxSourceDriftPPM: "500",
+		settings.PermissionClockWindowsSourceUncertainty: "1ms",
 	}
 }
 
-// TestEveryCanonicalNameMapsToOption proves that each canonical name selects
-// exactly one runtime option and that the parser accepts no other name.
-func TestEveryCanonicalNameMapsToOption(t *testing.T) {
+// TestEveryCanonicalNameMapsToConfiguration checks runtime options and host-owned values.
+// Clock settings stay separate until the host selects a native adapter.
+func TestEveryCanonicalNameMapsToConfiguration(t *testing.T) {
 	values := sampleValues()
 	names := settings.Names()
 	if len(names) != len(values) {
@@ -73,8 +81,19 @@ func TestEveryCanonicalNameMapsToOption(t *testing.T) {
 		if len(configured) != 1 || configured[0] != name {
 			t.Fatalf("configured for %s = %v, want exactly [%s]", name, configured, name)
 		}
-		if options := config.Options(); len(options) != 1 {
-			t.Fatalf("options for %s = %d, want 1", name, len(options))
+		wantOptions := 1
+		switch name {
+		case settings.PermissionClockSource, settings.PermissionClockRefreshInterval,
+			settings.PermissionClockMaxAge, settings.PermissionClockMaxDriftPPM,
+			settings.PermissionClockCounterUncertainty, settings.PermissionClockWindowsMaxSourceAge,
+			settings.PermissionClockWindowsMaxSourceDriftPPM, settings.PermissionClockWindowsSourceUncertainty:
+			wantOptions = 0
+		}
+		if options := config.Options(); len(options) != wantOptions {
+			t.Fatalf("options for %s = %d, want %d", name, len(options), wantOptions)
+		}
+		if actual, present := config.Value(name); !present || actual != values[name] {
+			t.Fatalf("setting %s lost its supplied value", name)
 		}
 	}
 

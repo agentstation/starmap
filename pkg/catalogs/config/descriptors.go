@@ -181,6 +181,11 @@ func describe(entry setting) Descriptor {
 	case SchedulerIdentity:
 		d.Description = "Sets a stable identity for this runtime instance."
 		d.Scope, d.AllowEmpty, d.DefaultMeaning = NodeScope, true, "runtime-derived instance identity"
+	case PermissionClockSource, PermissionClockRefreshInterval, PermissionClockMaxAge,
+		PermissionClockMaxDriftPPM, PermissionClockCounterUncertainty,
+		PermissionClockWindowsMaxSourceAge, PermissionClockWindowsMaxSourceDriftPPM,
+		PermissionClockWindowsSourceUncertainty:
+		describeClock(&d)
 	}
 	if d.Scope == NodeScope {
 		d.Mutability = "restart"

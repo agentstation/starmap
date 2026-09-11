@@ -69,7 +69,14 @@ func TestEveryCanonicalSettingLoadsFromYAML(t *testing.T) {
 				case catalogconfig.ProviderBindings:
 					expected = "[]"
 				default:
-					expected = t.TempDir()
+					switch descriptor.Type {
+					case catalogconfig.DurationValue:
+						expected = "1s"
+					case catalogconfig.IntegerValue:
+						expected = "500"
+					default:
+						expected = t.TempDir()
+					}
 				}
 			}
 			var value any = expected

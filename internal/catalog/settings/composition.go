@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/agentstation/starmap/internal/fleet"
+	"github.com/agentstation/starmap/pkg/catalogs/permission/hostclock"
 	protocol "github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -53,10 +54,14 @@ type Composition struct {
 }
 
 // Options returns the runtime options in precedence order: the process base
-// options first, then one option for each supplied canonical setting, then the
+// options first, then canonical runtime options and the host clock, then the
 // injected roles. A later option replaces an earlier one, so a canonical
 // setting always wins over a base default.
 func (c Composition) Options() ([]runtime.Option, error) {
+	monitor, err := hostclock.NewMonitor(c.Config.PermissionClock)
+	if err != nil {
+		return nil, err
+	}
 	source := c.Source
 	if source == nil && c.Config.SourceKind == runtime.SourceStarmap {
 		built, err := c.cascadeSource()
@@ -68,6 +73,12 @@ func (c Composition) Options() ([]runtime.Option, error) {
 	options := make([]runtime.Option, 0, len(c.Base)+len(c.Config.Options())+len(c.Extra)+3)
 	options = append(options, c.Base...)
 	options = append(options, c.Config.Options()...)
+	if c.Config.PermissionClock.Source != "" {
+		options = append(options, runtime.WithoutPermissionClock())
+	}
+	if monitor != nil {
+		options = append(options, runtime.WithPermissionClockMonitor(monitor))
+	}
 	if source != nil {
 		options = append(options, runtime.WithSource(source))
 	}
