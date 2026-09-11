@@ -160,7 +160,7 @@ func ParseAPI(apiPath string) (*API, error)
 ParseAPI parses the api.json file and returns an API.
 
 <a name="API.GetProvider"></a>
-### func \(\*API\) [GetProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L943>)
+### func \(\*API\) [GetProvider](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L942>)
 
 ```go
 func (a *API) GetProvider(providerID catalogs.ProviderID) (*Provider, bool)
@@ -816,7 +816,7 @@ type Model struct {
 ```
 
 <a name="Model.ToStarmapModel"></a>
-### func \(\*Model\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L384>)
+### func \(\*Model\) [ToStarmapModel](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L383>)
 
 ```go
 func (m *Model) ToStarmapModel() (*catalogs.Model, error)
@@ -866,7 +866,7 @@ type Provider struct {
 ```
 
 <a name="Provider.Model"></a>
-### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L949>)
+### func \(\*Provider\) [Model](<https://github.com/agentstation/starmap/blob/main/internal/sources/modelsdev/parser.go#L948>)
 
 ```go
 func (p *Provider) Model(modelID string) (*Model, bool)

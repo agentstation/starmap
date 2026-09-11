@@ -1,8 +1,10 @@
 package reconciler
 
 import (
+	"reflect"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/sources/modelsdev"
 	testcatalog "github.com/agentstation/starmap/internal/test/catalog"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/authority"
@@ -215,4 +217,57 @@ func TestMergeProvidersCombinesSourceExtensions(t *testing.T) {
 	}
 }
 
-// TestMergeComplexStructures tests merging of complex nested structures.
+func TestMergeModelsDevDocsPreservesProviderContracts(t *testing.T) {
+	baseline, err := testcatalog.EmbeddedBuilder()
+	if err != nil {
+		t.Fatalf("load embedded catalog: %v", err)
+	}
+	for _, providerID := range []catalogs.ProviderID{"cohere", "openai"} {
+		for _, sourceID := range []sources.ID{sources.ModelsDevHTTPID, sources.ModelsDevGitID} {
+			t.Run(string(providerID)+"/"+string(sourceID), func(t *testing.T) {
+				original, err := baseline.Provider(providerID)
+				if err != nil {
+					t.Fatalf("baseline provider: %v", err)
+				}
+				if err := original.ValidateContract(); err != nil {
+					t.Fatalf("baseline contract: %v", err)
+				}
+				observed, err := (&modelsdev.Provider{
+					ID: string(providerID), Name: original.Name,
+					Doc: "https://example.test/provider-docs",
+				}).ToStarmapProvider()
+				if err != nil {
+					t.Fatalf("convert models.dev provider: %v", err)
+				}
+				authorities := authority.New()
+				merger := newMerger(authorities, NewAuthorityStrategy(authorities), nil)
+				providers, err := merger.Providers(map[sources.ID][]*catalogs.Provider{
+					sources.LocalCatalogID: {&original},
+					sourceID:               {observed},
+				})
+				if err != nil {
+					t.Fatalf("merge providers: %v", err)
+				}
+				if len(providers) != 1 {
+					t.Fatalf("provider count = %d, want 1", len(providers))
+				}
+				got := providers[0]
+				if err := got.ValidateContract(); err != nil {
+					t.Fatalf("merged provider contract: %v", err)
+				}
+				if !reflect.DeepEqual(got.Catalog, original.Catalog) {
+					t.Errorf("catalog acquisition changed: got %#v, want %#v", got.Catalog, original.Catalog)
+				}
+				if !reflect.DeepEqual(got.Inference, original.Inference) {
+					t.Errorf("inference endpoints changed: got %#v, want %#v", got.Inference, original.Inference)
+				}
+				if !reflect.DeepEqual(got.Credentials, original.Credentials) {
+					t.Errorf("provider credential contract changed")
+				}
+				if !reflect.DeepEqual(got.DocsURL, original.DocsURL) {
+					t.Errorf("curated provider documentation changed")
+				}
+			})
+		}
+	}
+}

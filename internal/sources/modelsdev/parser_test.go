@@ -453,12 +453,14 @@ func TestProviderToStarmapProviderPreservesModelsDevMetadata(t *testing.T) {
 		t.Fatalf("ToStarmapProvider returned error: %v", err)
 	}
 
-	if provider.Catalog == nil ||
-		provider.Catalog.Docs == nil ||
-		*provider.Catalog.Docs != "https://example.test/docs" ||
-		provider.Catalog.Endpoint.URL != "" ||
-		provider.Catalog.Endpoint.Type != "" {
-		t.Fatalf("provider catalog = %#v", provider.Catalog)
+	if provider.DocsURL == nil || *provider.DocsURL != "https://example.test/docs" {
+		t.Fatalf("provider documentation = %v", provider.DocsURL)
+	}
+	if provider.Catalog != nil {
+		t.Fatalf("documentation created catalog acquisition: %#v", provider.Catalog)
+	}
+	if err := provider.ValidateContract(); err != nil {
+		t.Fatalf("provider contract: %v", err)
 	}
 	if got := provider.Extensions["models.dev"].Fields["env"]; !reflect.DeepEqual(got, []any{"EXAMPLE_API_KEY"}) {
 		t.Fatalf("provider env extension = %#v", got)
@@ -534,12 +536,14 @@ func TestProcessFetchIncludesModelsWithNonCoreCostData(t *testing.T) {
 	if provider.Name != "Provider" {
 		t.Fatalf("provider name = %q, want models.dev provider name", provider.Name)
 	}
-	if provider.Catalog == nil ||
-		provider.Catalog.Docs == nil ||
-		*provider.Catalog.Docs != "https://example.test/docs" ||
-		provider.Catalog.Endpoint.URL != "" ||
-		provider.Catalog.Endpoint.Type != "" {
-		t.Fatalf("provider catalog = %#v", provider.Catalog)
+	if provider.DocsURL == nil || *provider.DocsURL != "https://example.test/docs" {
+		t.Fatalf("provider documentation = %v", provider.DocsURL)
+	}
+	if provider.Catalog != nil {
+		t.Fatalf("documentation created catalog acquisition: %#v", provider.Catalog)
+	}
+	if err := provider.ValidateContract(); err != nil {
+		t.Fatalf("provider contract: %v", err)
 	}
 	if got := provider.Extensions["models.dev"].Fields["env"]; !reflect.DeepEqual(got, []any{"PROVIDER_API_KEY"}) {
 		t.Fatalf("provider env extension = %#v", got)
@@ -788,4 +792,43 @@ func containsModality(modalities []catalogs.ModelModality, want catalogs.ModelMo
 
 func boolPtr(v bool) *bool {
 	return &v
+}
+
+func TestMergeModelsDevProviderDocumentation(t *testing.T) {
+	for _, test := range []struct {
+		name     string
+		existing string
+		incoming string
+		want     string
+	}{
+		{name: "absent"},
+		{name: "observed", incoming: "https://example.test/observed", want: "https://example.test/observed"},
+		{name: "retained", existing: "https://example.test/curated", incoming: "https://example.test/observed", want: "https://example.test/curated"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			provider := catalogs.Provider{ID: "example", Name: "Example"}
+			if test.existing != "" {
+				value := test.existing
+				provider.DocsURL = &value
+			}
+			metadata := (&Provider{ID: "example", Name: "Example", Doc: test.incoming}).toStarmapProviderMetadata()
+			mergeModelsDevProviderMetadata(&provider, metadata)
+			if test.want == "" {
+				if provider.DocsURL != nil {
+					t.Fatalf("absent documentation = %q", *provider.DocsURL)
+				}
+			} else if provider.DocsURL == nil || *provider.DocsURL != test.want {
+				t.Fatalf("documentation = %v, want %q", provider.DocsURL, test.want)
+			}
+			if provider.Catalog != nil {
+				t.Fatal("provider documentation created catalog acquisition")
+			}
+			if metadata.DocsURL != nil {
+				*metadata.DocsURL = "https://example.test/changed"
+				if *provider.DocsURL != test.want {
+					t.Fatal("source mutation changed retained provider documentation")
+				}
+			}
+		})
+	}
 }

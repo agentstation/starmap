@@ -227,27 +227,11 @@ func mergeModelsDevProviderMetadata(provider *catalogs.Provider, metadata *catal
 	if provider.Name == "" || provider.Name == string(provider.ID) {
 		provider.Name = metadata.Name
 	}
-	mergeModelsDevCatalogMetadata(provider, metadata)
+	if provider.DocsURL == nil && metadata.DocsURL != nil {
+		docs := *metadata.DocsURL
+		provider.DocsURL = &docs
+	}
 	mergeModelsDevExtensions(provider, metadata)
-}
-
-func mergeModelsDevCatalogMetadata(provider, metadata *catalogs.Provider) {
-	if metadata.Catalog == nil {
-		return
-	}
-	if provider.Catalog == nil {
-		catalogCopy := *metadata.Catalog
-		if metadata.Catalog.Docs != nil {
-			docs := *metadata.Catalog.Docs
-			catalogCopy.Docs = &docs
-		}
-		provider.Catalog = &catalogCopy
-		return
-	}
-	if provider.Catalog.Docs == nil && metadata.Catalog.Docs != nil {
-		docs := *metadata.Catalog.Docs
-		provider.Catalog.Docs = &docs
-	}
 }
 
 func mergeModelsDevExtensions(provider, metadata *catalogs.Provider) {
