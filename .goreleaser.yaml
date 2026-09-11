@@ -128,7 +128,8 @@ release:
     
     **Homebrew (macOS/Linux):**
     ```bash
-    brew install agentstation/tap/starmap
+    brew trust --cask agentstation/tap/starmap
+    brew install --cask agentstation/tap/starmap
     ```
     
     **Go Install:**
@@ -254,12 +255,12 @@ homebrew_casks:
       - starmap
     
     # Post-install hook for unsigned binaries (macOS)
-    hooks:
-      post:
-        install: |
-          if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
-            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/starmap"], sudo: false
-          end
+    custom_block: |
+      postflight_steps do
+        on_macos do
+          run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{ "{{staged_path}}" }}/starmap"], sudo: false
+        end
+      end
     
     # Shell completions (files included in the archive)
     completions:
