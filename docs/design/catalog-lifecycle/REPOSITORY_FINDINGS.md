@@ -2371,6 +2371,11 @@ Local corrections add separate source-refresh and network controls, finite casca
 Verified local imports remain available and survive restart. Configuration descriptors and deployment examples now include both settings.
 Focused race checks pass at their recorded snapshots. Remote, public configuration, acquisition, and corrected settings package tests pass.
 
-Automatic cascade shutdown still needs a verified ownership contract.
-The source detaches its stream context, while runtime shutdown does not close an injected source.
-CSP5 must correct replacement behavior before task completion. Pins and retained-state recovery also remain open.
+The cascade shutdown regression confirms that runtime shutdown left a constructed source stream active.
+Local checkpoint `48a9a6e5` adds `WithOwnedSource` and uses it for cascades that Starmap constructs.
+Caller-supplied sources remain caller-owned unless the caller selects the new option.
+
+The [lifecycle proof](../../plans/proof/starport-production-catalog/csp5/cascade-lifecycle-2026-09-11/verification.json) records 27 passing focused race events and preserves the original failure.
+Canceled startup closes the constructed stream. A manual offline replacement can reopen the same runtime directory.
+Verify directory retention when a source-close timeout returns before its worker exits.
+The broad runtime package check remains active. Pins and retained-state recovery also remain open.

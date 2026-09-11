@@ -5,13 +5,20 @@
   "done": 10,
   "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 112,
-  "new_evidence_artifacts": 2195,
-  "new_commit_source_files": 353,
-  "resume_words": 265,
-  "next_action": "All CSP5 checks are terminal. Verify automatic cascade shutdown ownership next. Implement pins, owned-stage recovery, history compaction, and ambiguous publication recovery. Focused controls pass but all twelve mapped subcases remain unverified.",
-  "current_source": "eeeba3762e85712df496f8186807e4952a410abe",
+  "local_links": 111,
+  "new_evidence_artifacts": 2382,
+  "new_commit_source_files": 363,
+  "resume_words": 257,
+  "next_action": "Resume runtime race session 13494. Verify source-close timeout ownership, then implement pins, owned-stage recovery, history compaction, and ambiguous publication recovery. All twelve mapped subcases remain unverified.",
+  "current_source": "48a9a6e5f594ad8938f75de1ab167e2fcbefcf53",
   "starmap_integration_source": null,
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
-  "external_running_checks": []
+  "external_running_checks": [],
+  "local_running_checks": [
+    {
+      "session_id": 13494,
+      "check": "CSP5 lifecycle-packages",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls"
+    }
+  ]
 }

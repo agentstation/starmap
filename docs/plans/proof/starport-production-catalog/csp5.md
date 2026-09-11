@@ -2,7 +2,8 @@
 
 CSP5 remains in progress. The local implementation starts from Starmap `f9951ee6` on branch `codex/catalog-update-controls`.
 Its worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls`.
-Checkpoint `eeeba376` holds the local controls. It has no PR or merge. Starport remains at the merged CSP4 consumer source.
+
+Checkpoint `eeeba376` holds the local controls. Checkpoint `48a9a6e5` adds cascade lifecycle handling. It has no PR or merge. Starport remains at the merged CSP4 consumer source.
 
 ## Current controls
 
@@ -45,7 +46,27 @@ The Go overlay changes only `runtime/refresh.go` to the base version. The proof 
 
 The broader package run completed with exit 1 because the settings package found three reference gaps.
 The corrected settings package passes all 22 events. The original run passes 53 remote, 108 public configuration, and 104 acquisition events.
-No passing package skips a test. Both original and corrected results retain their exact source snapshots. All recorded sessions are terminal.
+No passing package skips a test. Both original and corrected results retain their exact source snapshots. All checks in the earlier control proof are terminal.
+
+## Cascade lifecycle checkpoint
+
+The [lifecycle proof](csp5/cascade-lifecycle-2026-09-11/verification.json) binds the local checkpoint to its commands and source snapshots.
+The original regression confirms that runtime shutdown left its constructed cascade stream active.
+Separate fixture and compile failures remain in the proof. The corrected focused run passes 27 race events without failures or skips.
+
+`WithOwnedSource` transfers the selected source to runtime shutdown. `WithSource` keeps ownership with the caller.
+The Starmap composition transfers the cascade source it constructs. Failed startup uses the same cleanup as runtime shutdown.
+
+A canceled initial read now stops without attaching the continuing stream to one request context.
+Tests cover manifest, payload, stream-header, and catch-up cancellation, retry, repeated close, failed startup, and manual offline replacement.
+Failed startup preserves source-close errors and releases the directory for a later runtime.
+
+ago and vet pass. The prose check passes before a test-only option-name correction that changes no prose.
+The full remote package passes 62 race events. The full settings package passes 24 race events. Neither package skips a test.
+
+The runtime package remains active in session `13494`. Its command is `go test -race -count=1 -timeout 30m -json ./runtime ./remote ./internal/catalog/settings`.
+Read `.tmp/csp5-update-controls/lifecycle-packages/verification.json` and resume the existing session before starting another run.
+These focused and package results overlap. They do not complete any mapped CSP5 subcase.
 
 ## Remaining work
 
@@ -53,9 +74,9 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Verify automatic cascade shutdown ownership before implementing generation pins.
-The current remote source detaches its stream context, while runtime shutdown does not close an injected source.
-Composition and runtime ownership need a defined cancellation and join contract for replacement.
+Verify directory retention when an owned source reports a close timeout before its worker exits.
+The cooperative HTTP cancellation tests do not cover that case.
+Finish the active runtime package check before broadening verification.
 
 Complete pin and rollback behavior without bypassing permission withdrawal.
 Complete owned-stage recovery, bounded history compaction, and ambiguous publication recovery.

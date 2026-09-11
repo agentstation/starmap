@@ -1202,7 +1202,11 @@ These names are target contracts, not flags that the inspected release accepts.
 Local CSP5 checkpoint `eeeba376` implements both controls on Starmap base `f9951ee6`.
 The [control proof](../../plans/proof/starport-production-catalog/csp5/update-controls-2026-09-11/verification.json) records finite manual reads, offline acquisition refusal, and local-import restart checks.
 This partial implementation does not qualify the complete controls contract or a Starport release.
-Automatic cascade shutdown ownership, pins, and retained-state recovery remain open.
+
+Local checkpoint `48a9a6e5` adds explicit source ownership, failed-startup cleanup, and initial-read cancellation.
+The [lifecycle proof](../../plans/proof/starport-production-catalog/csp5/cascade-lifecycle-2026-09-11/verification.json) records 27 passing focused race events.
+Starmap transfers constructed cascades through `WithOwnedSource`. A caller retains sources selected through `WithSource`.
+Source-close timeout ownership still needs verification. Pins and retained-state recovery remain open.
 
 Existing `SOURCE_POLL_INTERVAL=0` stops periodic polling, but watcher events can
 still wake the source worker. Startup policy can also require a source read.
