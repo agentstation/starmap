@@ -1,2 +1,5 @@
 # Keep digest-bound catalog inputs byte-identical on every checkout.
 internal/embedded/catalog/** -text
+
+# Preserve signed fixture bytes when checkout converts text line endings.
+runtime/testdata/public-catalog-*/** -text

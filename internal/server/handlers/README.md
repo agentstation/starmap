@@ -139,7 +139,7 @@ func (h *Handlers) HandleGetModel(w http.ResponseWriter, _ *http.Request, modelI
 HandleGetModel handles GET /api/v1/models/\{id\}. @Summary Get model by ID @Description Retrieve detailed information about a specific model @Tags models @Accept json @Produce json @Param id path string true "Model ID" @Success 200 \{object\} response.Response\{data=catalogs.ModelDefinition\} @Failure 404 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/models/\{id\} \[get\].
 
 <a name="Handlers.HandleGetProvider"></a>
-### func \(\*Handlers\) [HandleGetProvider](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L84>)
+### func \(\*Handlers\) [HandleGetProvider](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L86>)
 
 ```go
 func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, providerID string)
@@ -148,7 +148,7 @@ func (h *Handlers) HandleGetProvider(w http.ResponseWriter, _ *http.Request, pro
 HandleGetProvider handles GET /api/v1/providers/\{id\}. @Summary Get provider by ID @Description Retrieve detailed information about a specific provider @Tags providers @Accept json @Produce json @Param id path string true "Provider ID" @Success 200 \{object\} response.Response\{data=catalogs.Provider\} @Failure 404 \{object\} response.Response\{error=response.Error\} @Failure 500 \{object\} response.Response\{error=response.Error\} @Security ApiKeyAuth @Router /api/v1/providers/\{id\} \[get\].
 
 <a name="Handlers.HandleGetProviderModels"></a>
-### func \(\*Handlers\) [HandleGetProviderModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L126>)
+### func \(\*Handlers\) [HandleGetProviderModels](<https://github.com/agentstation/starmap/blob/main/internal/server/handlers/providers.go#L128>)
 
 ```go
 func (h *Handlers) HandleGetProviderModels(w http.ResponseWriter, _ *http.Request, providerID string)

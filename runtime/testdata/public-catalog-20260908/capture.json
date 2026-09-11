@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/agentstation/starmap",
+  "release": "catalog-dcc4e4539c74a181c1789a8f275bf16893ce9698ea9644bf18a89cf10a067571",
+  "channel_commit": "1aff2ec7580f0105f3932b4a2fe453a2d0853be2",
+  "previous_channel_commit": "ac94ab50d48a7d4af3cfa8d2b00c9ab6139bd14a",
+  "captured_at": "2026-09-11",
+  "verification": "GitHub CLI verified both channel documents and the archive against agentstation/starmap/.github/workflows/catalog-generation.yaml with self-hosted runners denied. The Starmap default verifier also accepted the current channel and archive in a live probe.",
+  "sha256": {
+    "archive-bundle.json": "d192d9e61b890a42e53850bd4d1741e24d47f9fca5a3c825859f87acdf691587",
+    "channel-bundle.json": "a8987821af2f7593d9f50f05f24f4adc5dd7a56da604a2f32026ae4d5150e391",
+    "channel.json": "339995f46b45654443c6e686523d56aeae5fb5c87e05ccc0b6dcf11f97880440",
+    "previous-channel-bundle.json": "7e6e8d254a44235c6c3fb0eb97f7819b38258767b43c1ddba1c96ae66ff54bd5",
+    "previous-channel.json": "c4fae216ee0e58bc0a41c4063c3bfa15299964c85d5193a806284b3ede0a8854",
+    "starmap-catalog.intoto.json": "63efddb02a6e8e1614fa569d0f5a7c71e582ada50213d2c7089ef77f16a6d03e",
+    "starmap-catalog.tar.gz": "ab5461b5441a632ee450ff8adf34d1f404e4f18b6c74638a880016221c177ffa",
+    "starmap-catalog.tar.gz.sha256": "f901b3bdf9648df372951e9281c5fc381fe64f2632632deaf0d624d9a883cd1e"
+  }
+}

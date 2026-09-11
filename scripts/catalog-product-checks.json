@@ -1660,6 +1660,41 @@
           "test": "TestCanonicalRemovalSurvivesRenameAndRestartUntilRestore"
         }
       ]
+    },
+    "A07.public_no_provider_keys": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./runtime",
+      "test": "TestPublicCatalogActivatesWithoutProviderCredentials"
+    },
+    "A07.invalid_signature": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./runtime",
+      "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+    },
+    "A07.checksum_size_schema": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/artifact",
+          "test": "TestVerifyReleaseFailsClosedBeforeReturningGeneration"
+        }
+      ]
+    },
+    "A07.replay_rejection": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./runtime",
+      "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
     }
   }
 }
