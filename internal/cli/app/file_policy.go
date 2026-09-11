@@ -56,7 +56,7 @@ func managedFilePolicy(id string) (productpaths.FilePolicy, error) {
 	case "migration-pending", "migration-receipt", "migration-completed", "migration-retired":
 		policy = makePolicy(runtime, "Runtime migration and legacy-root acknowledgement.", "recovery", "Keep until the migration procedure permits removal. Retirement records must still fence old runtime starts.")
 	case "runtime-evidence":
-		policy = makePolicy(runtime, "Permitted retained source and provider evidence.", "durable", "Preserve evidence required for retained startup and authority enforcement. This state is not a disposable source cache.")
+		policy = makePolicy(runtime, "Retained catalog evidence and operator recovery records.", "durable", "Preserve evidence required for retained startup and authority enforcement. This state is not a disposable source cache.")
 	case "runtime-record-staging":
 		policy = makePolicy(runtime, "Temporary owner and migration record writes.", "recovery", "Remove only after proving operation ownership and completing or abandoning the interrupted write.")
 	case "github-discovery":
