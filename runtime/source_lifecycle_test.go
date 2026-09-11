@@ -5,11 +5,14 @@ import (
 	stderrors "errors"
 	"os"
 	"path/filepath"
+	"sync"
 	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 type closeTestSource struct {
@@ -21,7 +24,7 @@ func (*closeTestSource) Identity() string { return "owned-source-test" }
 func (*closeTestSource) Read(context.Context) (SourceRead, error) {
 	return SourceRead{Health: HealthOK}, nil
 }
-func (s *closeTestSource) Close() error {
+func (s *closeTestSource) Shutdown(context.Context) error {
 	s.closes.Add(1)
 	return s.failure
 }
@@ -131,4 +134,64 @@ func TestFailedRuntimeOpenReturnsOwnedSourceCloseFailure(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+}
+
+type waitingShutdownSource struct {
+	closeTestSource
+	entered chan struct{}
+	release chan struct{}
+	start   sync.Once
+}
+
+func (s *waitingShutdownSource) Shutdown(ctx context.Context) error {
+	s.start.Do(func() { close(s.entered) })
+	select {
+	case <-s.release:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+}
+
+func TestFailedOpenKeepsDirectoryUntilOwnedSourceStops(t *testing.T) {
+	directory := privateRuntimeDirectory(t)
+	if err := os.WriteFile(filepath.Join(directory, migrationPendingName), []byte("pending"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	source := &waitingShutdownSource{entered: make(chan struct{}), release: make(chan struct{})}
+	release := sync.OnceFunc(func() { close(source.release) })
+	defer release()
+	finished := make(chan error, 1)
+	go func() {
+		connected, err := Open(t.Context(), WithStateDirectory(directory), WithOwnedSource(source), WithCatalogSource("embedded"),
+			WithAcquisitionEnabled(false), WithSourcePollInterval(0))
+		if connected != nil {
+			_ = connected.Close()
+		}
+		finished <- err
+	}()
+	select {
+	case <-source.entered:
+	case <-time.After(time.Second):
+		t.Fatal("failed Open did not start source shutdown")
+	}
+	select {
+	case err := <-finished:
+		var conflict *pkgerrors.ConflictError
+		if !stderrors.Is(err, pkgerrors.ErrTimeout) || !stderrors.As(err, &conflict) {
+			t.Fatalf("Open error=%v, want migration refusal and shutdown timeout", err)
+		}
+	case <-time.After(closeJoinTimeout + time.Second):
+		t.Fatal("failed Open exceeded the shutdown bound")
+	}
+	lock, err := acquireDirectory(t.Context(), directory)
+	if lock != nil {
+		_ = lock.Close()
+	}
+	var conflict *pkgerrors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Fatalf("failed Open released its directory before source shutdown: %v", err)
+	}
+	release()
+	requireDirectoryRelease(t, directory)
 }

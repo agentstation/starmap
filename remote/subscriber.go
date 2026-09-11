@@ -367,6 +367,44 @@ func (s *Subscriber) Close() error {
 	if s == nil {
 		return nil
 	}
+	done := s.stop()
+	if done == nil {
+		return nil
+	}
+	timer := time.NewTimer(s.config.ShutdownTimeout)
+	defer timer.Stop()
+	select {
+	case <-done:
+		return nil
+	case <-timer.C:
+		return errors.NewTimeoutError(
+			"close remote catalog subscriber",
+			s.config.ShutdownTimeout.String(),
+			"owned lifecycle did not stop",
+		)
+	}
+}
+
+func (s *Subscriber) shutdown(ctx context.Context) error {
+	if s == nil {
+		return nil
+	}
+	if ctx == nil {
+		return &errors.ValidationError{Field: "remote.context", Message: "is required"}
+	}
+	done := s.stop()
+	if done == nil {
+		return nil
+	}
+	select {
+	case <-done:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+}
+
+func (s *Subscriber) stop() <-chan struct{} {
 	s.mu.Lock()
 	cancel := s.cancel
 	done := s.done
@@ -386,22 +424,7 @@ func (s *Subscriber) Close() error {
 	if cancel != nil {
 		cancel()
 	}
-	if done == nil {
-		return nil
-	}
-
-	timer := time.NewTimer(s.config.ShutdownTimeout)
-	defer timer.Stop()
-	select {
-	case <-done:
-		return nil
-	case <-timer.C:
-		return errors.NewTimeoutError(
-			"close remote catalog subscriber",
-			s.config.ShutdownTimeout.String(),
-			"owned lifecycle did not stop",
-		)
-	}
+	return done
 }
 
 func (s *Subscriber) run(

@@ -162,11 +162,17 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 			err = stderrors.Join(err, partial.Close())
 			return
 		}
-		if config.ownedSource != nil {
-			err = stderrors.Join(err, config.ownedSource.Close())
-		}
-		if directory != nil {
-			err = stderrors.Join(err, directory.Close())
+		if config.ownedSource != nil || directory != nil {
+			err = stderrors.Join(err, joinRuntimeShutdown(func() error {
+				var shutdownErr error
+				if config.ownedSource != nil {
+					shutdownErr = config.ownedSource.Shutdown(context.Background())
+				}
+				if directory != nil {
+					shutdownErr = stderrors.Join(shutdownErr, directory.Close())
+				}
+				return shutdownErr
+			}))
 		}
 	}()
 	if _, err := config.apply(opts...); err != nil {
@@ -332,11 +338,10 @@ func (r *Runtime) Close() error {
 		active := r.runs.close()
 		permissionActive := r.permissionRuns.close()
 		r.cancel()
-		joined := make(chan error, 1)
-		go func() {
+		r.closeErr = joinRuntimeShutdown(func() error {
 			var err error
 			if r.config.ownedSource != nil {
-				err = r.config.ownedSource.Close()
+				err = r.config.ownedSource.Shutdown(context.Background())
 			}
 			<-active
 			<-permissionActive
@@ -351,19 +356,8 @@ func (r *Runtime) Close() error {
 			if r.directory != nil {
 				err = stderrors.Join(err, r.directory.Close())
 			}
-			joined <- err
-		}()
-		timer := time.NewTimer(closeJoinTimeout)
-		defer timer.Stop()
-		select {
-		case err := <-joined:
-			r.closeErr = err
-		case <-timer.C:
-			r.closeErr = &errors.TimeoutError{
-				Operation: "close starmap runtime",
-				Duration:  closeJoinTimeout.String(),
-			}
-		}
+			return err
+		})
 		r.updatesMu.Lock()
 		r.updatesClosed = true
 		close(r.updates)

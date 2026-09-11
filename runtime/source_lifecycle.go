@@ -1,10 +1,14 @@
 package runtime
 
+import "context"
+
 // OwnedSource supplies a source and its shutdown operation.
-// Close must cancel and join source-owned work. Repeated calls must be safe.
+// Shutdown cancels and joins source-owned work unless its context ends first.
+// With a live context, it must finish joining before returning any cleanup error.
+// Repeated calls must be safe.
 type OwnedSource interface {
 	Source
-	Close() error
+	Shutdown(context.Context) error
 }
 
 // WithOwnedSource transfers the selected source to the runtime during Open.

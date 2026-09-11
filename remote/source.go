@@ -119,6 +119,16 @@ func (s *Source) Close() error {
 	return s.subscriber.Close()
 }
 
+// Shutdown cancels the subscriber and waits until its worker exits or ctx ends.
+// A runtime uses a live context to retain directory ownership after its close timeout.
+// Close remains the bounded standalone shutdown operation.
+func (s *Source) Shutdown(ctx context.Context) error {
+	if s == nil {
+		return nil
+	}
+	return s.subscriber.shutdown(ctx)
+}
+
 // Changes reports each upstream publication the subscriber activated. The
 // runtime refreshes on that wake, so a streamed delta crosses one hop in
 // seconds instead of waiting for the next poll boundary.
