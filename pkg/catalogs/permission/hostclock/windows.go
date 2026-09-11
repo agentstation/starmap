@@ -19,5 +19,5 @@ func elapsedNative() (time.Duration, bool) {
 }
 
 func observeNative(context.Context) (permission.ClockReading, error) {
-	return permission.ClockReading{}, invalidClock("Windows clock observation is not yet supported")
+	return permission.ClockReading{}, invalidClock("Windows observation requires an explicit profile through NewWindowsObserver")
 }

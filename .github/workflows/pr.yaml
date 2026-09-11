@@ -210,6 +210,20 @@ jobs:
         timeout-minutes: 2
         shell: bash
         run: python3 scripts/prepare_public_catalog_fixture.py
+      - name: Prepare Windows time-service fixture
+        if: matrix.os == 'windows'
+        timeout-minutes: 2
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Path native-evidence -Force | Out-Null
+          $before = (Get-Service W32Time).Status.ToString()
+          Start-Service W32Time
+          $service = Get-Service W32Time
+          $service.WaitForStatus('Running', [TimeSpan]::FromSeconds(30))
+          @{before=$before; after=$service.Status.ToString(); action='Start existing time service on this disposable CI runner'} |
+            ConvertTo-Json | Set-Content native-evidence/windows-time-service.json
+          'STARMAP_WINDOWS_CLOCK_FIXTURE_REQUIRED=1' | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:
