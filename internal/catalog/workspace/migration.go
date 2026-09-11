@@ -11,10 +11,13 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
+
+const legacyAuthorityRecordName = "authority.json"
 
 // LegacyLayoutMigrationResult describes one completed machine-store relocation
 // and human-workspace projection.
@@ -287,12 +290,17 @@ func inspectLegacyStore(
 		if err != nil {
 			return catalogs.Generation{}, nil, 0, errors.WrapIO("read", dir, err)
 		}
-		if len(children) != 2 ||
-			children[0].Name() != "catalog.json" ||
-			children[1].Name() != "manifest.json" {
+		hasAuthorityRecord := len(children) == 3 && children[0].Name() == legacyAuthorityRecordName
+		catalogChildren := children
+		if hasAuthorityRecord {
+			catalogChildren = children[1:]
+		}
+		if len(catalogChildren) != 2 ||
+			catalogChildren[0].Name() != "catalog.json" ||
+			catalogChildren[1].Name() != "manifest.json" {
 			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
 				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
-				Message: "must contain exactly catalog.json and manifest.json",
+				Message: "must contain catalog.json, manifest.json, and only an optional authority.json record",
 			}
 		}
 		manifestData, err := os.ReadFile(filepath.Join(dir, "manifest.json")) //nolint:gosec
@@ -318,11 +326,35 @@ func inspectLegacyStore(
 				"validate", "retained catalog generation", manifest.GenerationID, err,
 			)
 		}
+		if hasAuthorityRecord {
+			if err := validateLegacyAuthorityRecord(dir, generation); err != nil {
+				return catalogs.Generation{}, nil, 0, err
+			}
+		}
 		if _, err := validateMigrationGeneration(generation); err != nil {
 			return catalogs.Generation{}, nil, 0, err
 		}
 	}
 	return current, catalog, len(entries), nil
+}
+
+func validateLegacyAuthorityRecord(path string, generation catalogs.Generation) error {
+	directory, err := privatefiles.ExistingDirectory(path)
+	if err != nil {
+		return err
+	}
+	data, err := directory.ReadFile(legacyAuthorityRecordName, catalogs.MaxCatalogAuthorityRecordBytes)
+	if err != nil {
+		return err
+	}
+	record, err := catalogs.ParseCatalogAuthorityRecord(data)
+	if err != nil {
+		return err
+	}
+	if record.Head != generation.Manifest.AuthorityHead {
+		return &errors.ValidationError{Field: "legacy_catalog_layout.authority", Message: "must match the complete generation authority head"}
+	}
+	return nil
 }
 
 func validateMigrationGeneration(generation catalogs.Generation) (*catalogs.Catalog, error) {

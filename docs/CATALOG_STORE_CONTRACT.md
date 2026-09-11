@@ -102,6 +102,156 @@ write is not a valid implementation.
 An identical retry after an ambiguous successful response returns success even
 though the original expected ID no longer equals current.
 
+## Independent current authority observations
+
+`storage.AuthorityHeadReader` is an optional role for receipt issuers.
+Its `CurrentAuthorityHead(ctx)` method returns a publication that was current between invocation and completion, including another writer's publication.
+The root client's method has a different signature and returns only its cached publication.
+A receipt issuer must start validity before the store read and qualify its clock separately.
+Neither method creates a permission receipt.
+
+Memory reads select the head under the publication lock without copying catalog payloads.
+The filesystem adapter reads the current pointer and its immutable `authority.json` record.
+This guarantee requires a local filesystem with the documented atomic publication semantics. Shared network filesystems remain unqualified.
+The method loads no catalog manifest or payload. Missing metadata returns an error and causes no repair.
+
+Authority generations store the record beside `manifest.json` and `catalog.json` before pointer promotion.
+The version-1 record contains the complete authority head and no receipt timestamps.
+Its 16 KiB limit and strict parser apply independently of catalog schema compatibility.
+The head's generation ID must match the selected pointer. Unknown positive permission schema versions remain observable.
+Consumers still refuse unsupported permission semantics.
+
+An ordinary generation has no authority record. Selecting one prevents renewal of a previous authority receipt.
+Existing authority generations without a record require an explicit identical commit that validates the complete stored generation.
+The commit creates missing metadata before reporting success, including when that generation is already current.
+An existing matching record is idempotent. A conflicting record causes refusal without replacement.
+
+Filesystem repair uses the commit lock and exclusive private-file publication. Object repair uses an immutable conditional create.
+Legacy store relocation preserves authority records and verifies their binding to each complete generation.
+Relocation leaves missing legacy records absent until an explicit commit repairs them.
+
+The object adapter requires its backend to implement `storage.CurrentObjectReader.GetCurrent` for the current pointer.
+That method must observe a version current during its call. An ETag or conditional write alone does not establish this guarantee.
+Backends without this capability retain ordinary catalog storage and refuse authority observations.
+The memory object backend implements the guarantee under its publication lock.
+The S3 adapter does not yet assert this capability for caller-selected endpoints and transports.
+
+These reads belong to receipt acquisition. Starport admission remains an in-memory decision.
+The library issuer described below is available.
+Production clock adapters, server wiring, shared followers, and Starport consumer qualification remain separate CSP4 requirements.
+
+## Library permission issuer
+
+`permission.NewIssuer` selects one `storage.AuthorityHeadReader`, authority ID, policy ID, and clock callback.
+Its constructor starts no I/O or background activity.
+The caller must authorize that issuer and enforce durable publication order.
+This constructor does not establish either guarantee for an arbitrary catalog store.
+
+Each `ReadPermission(ctx)` call observes the current stored head.
+The receipt interval starts at the earliest qualified clock time before that read.
+Storage delay and issuer uncertainty consume the interval. Consumers also account for their own uncertainty.
+
+A zero lifetime selects five minutes. Explicit positive lifetimes cannot exceed that maximum.
+Unknown clock validity or uncertainty outside zero through 30 seconds refuses issuance.
+
+`ClockReading` binds the returned time to cached qualification evidence for that time.
+The callback must support concurrent calls and account for clock corrections, suspend, restart, and expired evidence.
+Returning `time.Now()` with an assumed uncertainty does not qualify a clock.
+
+The issuer rejects changed authority identity, sequence rollback, and conflicting heads at the same sequence.
+Concurrent observations cannot replace a newer observed head with an older reply.
+A clock failure after a valid head read still retains that requirement in process memory.
+This process memory does not establish durable replay protection across issuer restart.
+
+Storage failure returns an error without renewing the previous receipt.
+A bounded clock correction can preserve an unchanged, still-valid receipt with its original expiry.
+The issuer can report a newer permission schema from independent metadata when catalog data is unreadable.
+That receipt grants no permission to consumers that cannot enforce the reported schema.
+
+## Authority publication ordering
+
+`permission.NewPublisher` wraps a caller-selected store for one fixed authority and policy.
+Its constructor starts no I/O. It implements `storage.Store` and the optional current-head role.
+The underlying store must supply the current-read guarantee before the wrapper can return an authority observation.
+
+Every authority writer must use this publication contract.
+The caller authorizes the publisher and supplies a complete authority generation with the correct required permission revision.
+This wrapper validates publication order. `permission.PrepareGeneration` derives a revision for a complete permitted catalog.
+The origin must select and apply its catalog policy before preparation.
+Direct underlying writes, deleted state, and restored older backups need separate recovery procedures.
+
+`Commit` checks the stored predecessor before the final atomic compare-and-swap.
+A process restart does not clear this predecessor. A delayed writer cannot overwrite a newer accepted generation.
+Changed authority identity, sequence rollback, and conflicting content under an existing sequence cause refusal.
+An exact retry still succeeds. The underlying immutable store rejects changed manifest or payload bytes under the same generation ID.
+
+The first authority can populate an empty store.
+An existing ordinary catalog requires an explicit `Bootstrap` call with its exact predecessor ID.
+Bootstrap cannot replace an established authority. An identical bootstrap retry remains valid after an ambiguous successful response.
+A missing predecessor read cannot reset an existing sequence through an empty expectation.
+
+The publisher refuses candidates or predecessors whose mandatory permission semantics it cannot enforce.
+Its independent head read still exposes unknown positive permission versions to receipt readers.
+Consumers must refuse those semantics. The capability does not authorize publication under an unsupported policy.
+
+## Authority generation construction
+
+`permission.PrepareGeneration` accepts an ordinary generation and explicit authority, policy, and positive sequence values.
+It verifies the complete catalog, including schema agreement and accepted membership evidence, before constructing the authority manifest.
+The input catalog must already represent the policy's complete permitted catalog. Gateway account grants and budgets remain separate contracts.
+An authority generation cannot enter this path. Subscribers and relays preserve its original authority identity instead.
+
+The required permission revision binds authority, policy, permission schema, and the catalog's semantic checksum.
+It covers membership, scoped removal policy, canonical identity, alias state, and serving facts.
+Provenance and manifest observation metadata do not change this revision. Catalog scope evidence remains part of it.
+This conservative contract also changes the revision when other catalog facts change. An incompatible replica must then block new attempts.
+
+The authority generation ID separately binds the complete source manifest, selected identity, sequence, and required revision.
+Exact preparation retries return identical bytes. New sequences or changed source evidence receive a different generation ID.
+The result preserves exact payload bytes and copies mutable data. Neither preparation nor its hashes run during inference admission.
+
+Preparation starts no I/O. The caller still selects the durable predecessor and uses `Publisher` for atomic publication.
+
+Elapsed publication time cannot expire a canonical alias. Explicit operator or baseline removal changes its retained state and the required revision.
+The preparation library does not wire an origin server, authorize publishers, qualify clocks, or select a shared storage service.
+
+`Publisher.PublishCatalog` selects the next sequence from the stored authority and combines preparation with atomic publication.
+It verifies an ordinary input before reading storage. An empty store starts at sequence one.
+An exact retry derives the current generation identity and verifies immutable equality through the underlying store.
+Changed proposals must name the exact predecessor. Concurrent writers cannot both replace that predecessor with different generations.
+
+`Publisher.BootstrapCatalog` explicitly adopts an ordinary store. It cannot reset an established authority.
+Unknown permission semantics, unreadable state, changed authority identity, and an exhausted sequence cause refusal.
+Publication never retries a stale proposal automatically. A successful call returns the complete generation for activation in the serving client.
+
+`Publisher.PrepareCatalog` selects the final generation without writing it. A later `Commit` or `Bootstrap` retains the same predecessor expectation.
+Preparation reserves no sequence. A competing publication can make the final commit conflict.
+
+## Runtime origin transactions
+
+`runtime.WithAuthorityOrigin` explicitly selects an origin identity, its publication store, and a qualified clock callback.
+The complete runtime catalog defines the permitted catalog. The deployment controls access to every mutation API and the underlying store.
+An origin cannot also use authoritative-subscriber startup. Incoming authoritative generations must retain their original identity through the subscriber path.
+
+The origin option selects the client's store regardless of the order of `WithClientOptions`.
+Other client options still configure the workspace and embedded bootstrap limits. All origin commits pass through the authority publisher and runtime publication guard.
+The runtime rejects direct mutation through its exposed client. Its acquisition and input transactions own publication instead.
+
+`Client.PrepareGeneration` encodes the candidate with exact evidence, times, and sync-run identity without writing storage.
+The runtime derives the authority sequence and final generation before it stages the retained-input journal.
+That journal binds the preceding catalog and the proposed authority identity. The runtime commits and activates the same prepared bytes.
+A lost commit reply leaves recovery evidence. On restart, the accepted store identity decides whether to apply or discard the staged inputs.
+
+An unchanged reconstruction proves its source identity against the accepted authority generation digest and preserves the existing sequence.
+An existing ordinary store requires explicit `OriginConfig.Bootstrap`. Restart cannot use that permission to reset an established authority.
+A different authority or unsupported permission schema prevents startup. The current runtime origin requires the publication lease during startup.
+
+`Runtime.ReadPermission` issues origin receipts from the current durable authority head.
+It can report a committed revision whose activation reply failed. A subscriber must enforce that revision before admitting inference.
+The clock callback must return qualified time evidence. Unknown clock validity prevents receipts while catalog diagnostics remain available.
+
+This API supplies origin runtime composition. Canonical CLI settings, native clock qualification, and shared-store follower activation still require implementation and evidence.
+
 ## Failure preservation and rollback
 
 A refusal before current-pointer publication leaves the previous current generation complete and readable.

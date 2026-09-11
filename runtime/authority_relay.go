@@ -7,7 +7,8 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// ReadPermission returns the confirmed upstream receipt from memory without renewing it.
+// ReadPermission issues an origin receipt or returns a confirmed upstream receipt without renewing it.
+// Origins read current authoritative storage with a qualified clock. Relays read retained receipts from memory.
 // It forwards a required revision even when this runtime cannot activate its catalog or permission schema.
 // A newer manifest without a matching receipt, uncertain retention, or unknown clock validity prevents delivery.
 // Callers must authenticate the downstream connection and enforce the receipt's original expiry.
@@ -20,6 +21,9 @@ func (r *Runtime) ReadPermission(ctx context.Context) (catalogs.CatalogPermissio
 	}
 	if err := r.ctx.Err(); err != nil {
 		return catalogs.CatalogPermissionEnvelope{}, err
+	}
+	if r.config.origin != nil {
+		return r.config.origin.issuer.ReadPermission(ctx)
 	}
 	if !r.requiresAuthority() {
 		return catalogs.CatalogPermissionEnvelope{}, &errors.ConfigError{Component: "permission relay", Message: "requires an internal catalog authority"}

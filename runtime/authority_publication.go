@@ -20,7 +20,7 @@ func (owner *authorityPublicationCapability) guard(ctx context.Context) error {
 }
 
 func (r *Runtime) authorityPublicationContext(ctx context.Context) context.Context {
-	if !r.requiresAuthority() {
+	if !r.requiresAuthority() && r.config.origin == nil {
 		return ctx
 	}
 	return context.WithValue(ctx, authorityPublicationContextKey{}, r.config.publicationCapability)
