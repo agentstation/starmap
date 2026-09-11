@@ -3,6 +3,7 @@ cloud.google.com/go/secretmanager
 github.com/Azure/azure-sdk-for-go/sdk/azcore
 github.com/Azure/azure-sdk-for-go/sdk/azidentity
 github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
+github.com/Microsoft/go-winio
 github.com/agentstation/utc
 github.com/aws/aws-sdk-go-v2
 github.com/aws/aws-sdk-go-v2/config
@@ -17,6 +18,7 @@ github.com/google/uuid
 github.com/hashicorp/vault/api
 github.com/joho/godotenv
 github.com/mattn/go-isatty
+github.com/oiweiwei/go-msrpc
 github.com/olekukonko/tablewriter
 github.com/openbao/openbao/api/v2
 github.com/patrickmn/go-cache
