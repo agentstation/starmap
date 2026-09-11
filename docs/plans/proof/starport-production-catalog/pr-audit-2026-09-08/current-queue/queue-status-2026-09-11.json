@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T10:51:57.407649+00:00",
+  "captured_at": "2026-09-11T11:29:58.206853+00:00",
   "repositories": {
     "starmap": [
       {
-        "headRefOid": "e4a80fa68400613728b505e6616e30be52814e2d",
+        "headRefOid": "e6bf2fcef85ea19702860dbf9989ebce386f8ba1",
         "isDraft": false,
         "number": 151,
         "title": "Add native clocks for catalog permission checks",
@@ -13,11 +13,11 @@
     "starport": []
   },
   "current_pr": 151,
-  "head": "e4a80fa68400613728b505e6616e30be52814e2d",
+  "head": "e6bf2fcef85ea19702860dbf9989ebce386f8ba1",
   "base": "852a548c4959e98af443f487922b9708fb594a91",
-  "required_reviews": "Sol: zero findings. Opus: one P0 known native merge blocker. Mandatory fixture retained. Diagnostic branch publication only; fresh review required before merge.",
-  "repository_verification": "All 41 stages pass across the original and corrected remainder.",
-  "native_jobs": "Workflow 34591105915 runs at diagnostic e4a80fa6. Prior native SSPI tests pass, while both W32Time principal checks fail.",
+  "required_reviews": "Sol xhigh and Opus high: zero findings at e6bf2fce. Secret scan passed.",
+  "repository_verification": "Seventeen local commands pass at e6bf2fce. The original native adapter passed all 41 stages. Fresh required CI remains mandatory.",
+  "native_jobs": "Workflow 34593352017: each Windows preflight passes 22 events and fails the status RPC with access denied. Full Windows suites do not run after preflight failure. Security and Reliability passes.",
   "disposition": "Require both native Windows jobs and all repository checks before merging the reviewed PR.",
   "owner": "Catalog plan executor",
   "campaign_merged_prs": 28,
@@ -37,8 +37,8 @@
     },
     {
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
-      "head": "8206a2a8e8f0de12d895cca26bce08ea723b4263",
-      "next_action": "Integrate native parent changes, finish origin settings and transitions, verify and review before publication."
+      "head": "b76b9f10912bf9cfe31ca02d363859ef2434513e",
+      "next_action": "Scoped verification passes. Continue shared-store followers and transitions. Integrate qualified native parent before full verification, review, and publication."
     }
   ],
   "previous_capture": {

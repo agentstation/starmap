@@ -1,0 +1,564 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_COMMITTED_UNPUBLISHED",
+  "base": "8206a2a8e8f0de12d895cca26bce08ea723b4263",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "branch": "codex/catalog-origin-settings",
+  "running_checks": [],
+  "limitations": [
+    "No publication or merge credit. Native parent integration, complete repository verification, review, shared-store followers, explicit transitions, and Starport consumer acceptance remain open."
+  ],
+  "source_commit": "b76b9f10912bf9cfe31ca02d363859ef2434513e",
+  "checks": [
+    {
+      "name": "go1.25.12-config",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout",
+        "10m",
+        "./pkg/catalogs/config",
+        "./internal/catalog/settings"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.25.12"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/go1.25.12-config.log",
+      "counts": {
+        "pass": 120,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "go1.26.6-config",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout",
+        "10m",
+        "./pkg/catalogs/config",
+        "./internal/catalog/settings"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/go1.26.6-config.log",
+      "counts": {
+        "pass": 120,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "go1.25.12-origin",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout",
+        "10m",
+        "-run",
+        "^(TestAuthorityOrigin|TestWithoutAuthorityOrigin|TestComposition.*Origin|TestOriginPublication|TestEveryCanonicalSettingLoadsFromYAML)",
+        "./runtime",
+        "./internal/cli/app"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.25.12"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/go1.25.12-origin.log",
+      "counts": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "go1.26.6-origin",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout",
+        "10m",
+        "-run",
+        "^(TestAuthorityOrigin|TestWithoutAuthorityOrigin|TestComposition.*Origin|TestOriginPublication|TestEveryCanonicalSettingLoadsFromYAML)",
+        "./runtime",
+        "./internal/cli/app"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/go1.26.6-origin.log",
+      "counts": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "lint",
+      "command": [
+        "go",
+        "tool",
+        "golangci-lint",
+        "run",
+        "./pkg/catalogs/config/...",
+        "./internal/catalog/settings/...",
+        "./internal/cli/app/...",
+        "./runtime/..."
+      ],
+      "environment_overrides": {},
+      "exit_code": 2,
+      "log": ".tmp/csp4-origin-settings/lint.log"
+    },
+    {
+      "name": "lint-corrected",
+      "command": [
+        "golangci-lint",
+        "run",
+        "./pkg/catalogs/config/...",
+        "./internal/catalog/settings/...",
+        "./internal/cli/app/...",
+        "./runtime/..."
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/lint-corrected.log"
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./pkg/catalogs/config/...",
+        "./internal/catalog/settings/...",
+        "./internal/cli/app/...",
+        "./runtime/..."
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/vet.log"
+    },
+    {
+      "name": "ago",
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/ago.log"
+    },
+    {
+      "name": "generate-runtime",
+      "command": [
+        "go",
+        "generate",
+        "./runtime"
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/generate-runtime.log"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "make",
+        "docs-check"
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/docs.log"
+    },
+    {
+      "name": "prose",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 2,
+      "log": ".tmp/csp4-origin-settings/prose.log"
+    },
+    {
+      "name": "regenerate-reference",
+      "command": [
+        "go",
+        "test",
+        "./internal/catalog/settings",
+        "-run",
+        "^TestCatalogSettingsReferenceIsCurrent$",
+        "-args",
+        "-update-settings-reference"
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/regenerate-reference.log"
+    },
+    {
+      "name": "prose-final",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/prose-final.log"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": ".tmp/csp4-origin-settings/diff.log"
+    }
+  ],
+  "source_files": [
+    {
+      "path": ".env.example",
+      "sha256": "d39a29c8fbc6c98a1e0e7be1eb375c05e94c3ce8cef69a77c61b1490ea68198f"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "e6a4d96dd2bb82887237959d02e2a620a4bce0ff4254fcb29fb40e235ce6122b"
+    },
+    {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "sha256": "86bd94940248afbcd1724f32506b79a49aded097e122023472ca08df2513820e"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "sha256": "62049de68c97f47c436a8efbc90f02db7b0d7e3b1b3c1da7131722443c63be92"
+    },
+    {
+      "path": "internal/catalog/settings/composition.go",
+      "sha256": "30e0766ff7f5787e3586b4d64fcee0a423f489734cf8ee2bcae1592104225744"
+    },
+    {
+      "path": "internal/catalog/settings/reference_test.go",
+      "sha256": "80c4861e2e2a95fcfd6eb2e5b2b2ae244f168b82071976e912fad83cc5e47de3"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "sha256": "a338067d0d6eebba47de18de1539d837f0fa272f2026fa6c514d36770662eee2"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "sha256": "021e57a8409079032b5725e20dbb0878cb51a7533e6ca68716c5588685d0423d"
+    },
+    {
+      "path": "internal/cli/app/app.go",
+      "sha256": "00816ee598fc9c3f75b79f7efce05ac6e19bafa856de4cad69039beec0497fbc"
+    },
+    {
+      "path": "internal/cli/app/catalog_file.go",
+      "sha256": "848d32ddb1b4e9652f39695885014963ad4d3b170d5291f53c688750402b2330"
+    },
+    {
+      "path": "internal/cli/app/catalog_file_test.go",
+      "sha256": "4537b8113f4c3a1b12ed96ac676694e8b426386e8df5923d2e838fe2820a2ce2"
+    },
+    {
+      "path": "internal/cli/app/catalog_runtime.go",
+      "sha256": "cc2796637c2dd1615bdc076948847ffd50c4f81ad689a5af00eb633bcb2fdb48"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "sha256": "cd72baf8651bf487eed3211fc0b81c87532e3f9af8bc53b3dfe0b5bb232c8c8f"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "a259590a0d5d7e6997f74d0cd57d1eb3a80da16e520d73b7734155f21d90bdf2"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "cb576160686aea1ff87a0a83d60fdfcb4838f17fbb0ca267a42beffa52a56eda"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "e770b40125c75001d2c37b82f3bffc7d75deaa74c843b6e0389e215b50deba32"
+    },
+    {
+      "path": "runtime/acquisition_policy_publication.go",
+      "sha256": "4fd226acf95030231d36a8d935fe0eca50061de77749cb51be9127e22e0604d5"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "3be68c9049462b4db11bb05e7506aa34a389a8e5ec4ad1e9ea54cc0345d02df8"
+    },
+    {
+      "path": "runtime/origin.go",
+      "sha256": "c774699c80a37aea281cd74f96fb54f6ced9f84928b02f10b70be68d2ac81077"
+    },
+    {
+      "path": "runtime/origin_selection_test.go",
+      "sha256": "776b7a01a6056fcffe730089d8ceefb91ed4a12d6bebeeb0c22d2fb28de56f39"
+    },
+    {
+      "path": "internal/catalog/settings/origin_test.go",
+      "sha256": "a197887c361aaedc39035b1dd2dd514c7a71a8963ca120d4cd43c11a78a22fb3"
+    },
+    {
+      "path": "pkg/catalogs/config/origin.go",
+      "sha256": "167227c47b131ea3edd9426377d0d7f99258fa0a6e157a6cbff56a254324a436"
+    },
+    {
+      "path": "pkg/catalogs/config/origin_test.go",
+      "sha256": "4067279dcb6c964d4cdd8cf3038359b3942793cb18a63e3b0df2e20df816d291"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago-policy.json.gz",
+      "sha256": "27568fae17da9bea19074ecd68e3e61ed10aa40bb1f14e2b2bf72899a7dcee98",
+      "decoded_sha256": "26546ffa43fa8ec4c65a1e08381818b02e9ffd25cf39d88885a3ca2c98189b30"
+    },
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "authority-selection-checks.json.gz",
+      "sha256": "c28fa70dc6dfb3dd0d0c69c7f7c27edbc194a0f460803a5d079171ad54c7f7bc",
+      "decoded_sha256": "89302320f549defcf2ce5715b95bcc72b689729bca7a4ade785b70abadfbc92a"
+    },
+    {
+      "path": "authority-selection-green.json.gz",
+      "sha256": "6f5e19302c265ffff81b0d74dcdf40cad685e4075a382e9002ff26f3a68d26a5",
+      "decoded_sha256": "c2aeaf67470545aaf94801595e7eea83150a5d8a21e0429926fa3815237f6b00"
+    },
+    {
+      "path": "authority-selection-green.jsonl.gz",
+      "sha256": "81425b1f555a85e22eeab078e343f9c8567886475402ed6e278d69c2a7c69e5c",
+      "decoded_sha256": "7b5f225a830bcfbabb94f3d05e85e430087304fc0e53591581aa0bca6b61cb55"
+    },
+    {
+      "path": "authority-selection-red.json.gz",
+      "sha256": "31be12871d173760c075a2963c48f476a02669b2eb9f92c6b511a62618e7fd49",
+      "decoded_sha256": "7d05cfb629664423f1441e367864a6af132e923ac0a406909e451ccbc55f4851"
+    },
+    {
+      "path": "authority-selection-red.jsonl.gz",
+      "sha256": "a007c59ec91bf2d9537d6a4855c62afbe93ec7c759cdb4a43d39631458ac1f8a",
+      "decoded_sha256": "f9c9b6e3e60f446c117a1f4beb635518c03b135ee8edd3d966d318472081fbcf"
+    },
+    {
+      "path": "authority-selection-remainder.json.gz",
+      "sha256": "4fc542589ded55d95cb52a2bdcb54d2b6027279a6f905618c6d67af8546e28b5",
+      "decoded_sha256": "72f9142c32ac4ba2d612257bf4dc366bd3b28fc9ab0f9c631770161a99e81bf0"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "159a3f3142d4f3e390a504f1c58decb7ef22251ff961584534f68f94773e6655",
+      "decoded_sha256": "0590e662b8a7a08ef1de3cb3f4cf55809a4d80882dce237285181f5cee471925"
+    },
+    {
+      "path": "current-regression.log.gz",
+      "sha256": "3c3ee2d03e150fcfa3ab3ef588ace3fc368240cd0b59d2a4d74232e933172048",
+      "decoded_sha256": "f241cebd8cfc601cdccbce787c31a8d2163a69ca0dfc350852293c1617711577"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-check-corrected.log.gz",
+      "sha256": "19239532b8371f8a47bf4d37b2e876525e21f3866cbec2c8290b3b0cb5016270",
+      "decoded_sha256": "e9b932c126aa4beb4c68d7d5725213730e19e0a837b86dcaa31678dd06f1795d"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "aeb82571b4e25b214784d08a5dc36ea244df1ee6f8c6de2acd23cb77bb80d0fe",
+      "decoded_sha256": "2b8bd2f2e18b5cbe2f4b286e600e861b097477bb49e62643fddb275aaf0956fe"
+    },
+    {
+      "path": "docs.log.gz",
+      "sha256": "f91ad18dc6c5bdcf02f50d1871b60ad9ee18d7a0e29f554bd0cd3487591b5e0b",
+      "decoded_sha256": "23c5093f4bbb8ad9a2351178680df7d1e208ad6ee0e21c857860e9514c2c95a4"
+    },
+    {
+      "path": "fail-before.json.gz",
+      "sha256": "e39e2c1884aa17dd9aeebe302a583e463968ed80af5a6cbdbede177a2f93a255",
+      "decoded_sha256": "6d5a5015075c3b55976a8bf5ac514930a2fcd9cc07a87d7213d2ddade1e40c7c"
+    },
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "e666dc4ec4be3828764840bafde361e19bd511b2fcb3103ef6efca770926ff48",
+      "decoded_sha256": "ce6957d3c4a7b1a9f8fc4ab9bb8b5b1c1596c9fd5fb012c5dff4ce153ef1ec31"
+    },
+    {
+      "path": "focused.json.gz",
+      "sha256": "ff6f0066533859003717c438b5ead59e5f649445067a897ef5df7ea62feb8b54",
+      "decoded_sha256": "63728a7407c6886afb844fbb48bfc765006387b0764e097eccd1e3a3bcd09028"
+    },
+    {
+      "path": "focused.jsonl.gz",
+      "sha256": "19b4c6d4be00c6c9518f4abeeedd5508bcc5b11f3377049f3b41b7b286c3ec73",
+      "decoded_sha256": "2ca247c39afe6ea97bfc94b293697f216ce8ccfb8503f7eb4450603245778586"
+    },
+    {
+      "path": "generate-reference.log.gz",
+      "sha256": "132c2f44ae5029b113fa954a6a35d3204a61d30282b4df32549ddb67aca2015f",
+      "decoded_sha256": "2827bd8dfffe8bcaa767a7f31d6b386488b8107e2d04e4b8aa8ec93650187f3a"
+    },
+    {
+      "path": "generate-runtime.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generated-docs.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-config.log.gz",
+      "sha256": "0fa39b9f52a00da4dfd24d314804ea5aa418b1739d9b5628025d3f845e792fd1",
+      "decoded_sha256": "162c310d8969fa6fc67fda806e13ff4dea40a2735ea8f7abfdb349f6737ea173"
+    },
+    {
+      "path": "go1.25.12-origin.log.gz",
+      "sha256": "ea9ed3bd9ec56fbd9889ba453fc8369714c1c74740b43cc1288bebce4f20fdaf",
+      "decoded_sha256": "899107c31dac581bc032070bda8a7f39e38ed464d092911a0b917bafa65208a4"
+    },
+    {
+      "path": "go1.26.6-config.log.gz",
+      "sha256": "4b26884374603c9e1009967a2b4730e84648c4337490659bd7ab10df8657b0bc",
+      "decoded_sha256": "c785aa6a06e4117cb6f062093c9611e9edace1c7f8fbbc4afa397a32314204c0"
+    },
+    {
+      "path": "go1.26.6-origin.log.gz",
+      "sha256": "e2753139f012761502791b885b211c8aae447d6b422b6bc9327c92a89385b9ba",
+      "decoded_sha256": "35af78a79f3856dbca2b54afec917ae10c92455ccdf44970b1cf6c404910d864"
+    },
+    {
+      "path": "initial-checks.json.gz",
+      "sha256": "6efe4d9c9bde2c4e470aa1330066585e8844aceb8ab8d649c49afedb0d3ccc7b",
+      "decoded_sha256": "7fdf1a65f644b2a1234e9206df2908a972c4f260104fad2afc5b10d91807cc8e"
+    },
+    {
+      "path": "initial-go1.25.12-config.log.gz",
+      "sha256": "09644ab9e217051afca45b69f38588a280e4afee3d9d90633bbd5cd6ee1d13d0",
+      "decoded_sha256": "702b990f6cb885ac9fc94856a9083b114a1a7c22ba3bea303358876ee4760a0e"
+    },
+    {
+      "path": "intended-files.json.gz",
+      "sha256": "7d20cc2c86be49ce826d595148928b896a9478c308235575c0d2b7916c558eaf",
+      "decoded_sha256": "841d2033ef288fefd3f07cdc9d716a8b45b982ae452edb3380312d8712d77895"
+    },
+    {
+      "path": "lint-corrected.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "33dbf67dc07bf055e68da407f6a388d425e565d6c147822eb9c2c2a7411dc6e1",
+      "decoded_sha256": "a2568c5a8b9193d3d01bde87db56b164cfaf0fbf0ba1834c6ad38c62edf64236"
+    },
+    {
+      "path": "minimum-race.log.gz",
+      "sha256": "dbefdcb75b4bc75512dcadab3c1683ccccd786ae0eb1e79c5959ab0666401d21",
+      "decoded_sha256": "6a6e210da5e50f596b1314c2971b4ea5846f700700792c40392673535163823d"
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "845c8d5f61cc905da5ff588c0fd526e0160dc84b25ee772e656a4ce13daf146b",
+      "decoded_sha256": "1139bbe39346758d422d157f5ba5025414f52f4de7d152af39dbfe3b843e1707"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "592fcaf498c13af0fcfbaba507305e6cae53bc5ab8d97a137d5129c166e2cfa4",
+      "decoded_sha256": "7389860b7d5919fb738a6120b1e3b1a0d3163f14b3bccf974efe721a424054f4"
+    },
+    {
+      "path": "regenerate-reference.log.gz",
+      "sha256": "daf75f83d2b3248d5b2ba75972ac0dc56a6cf2874bbbc1a6adc2119b48cab2e3",
+      "decoded_sha256": "ec6e3d1054cc2f673b7b03b31176574ba09658cb9268fcb31164d592a2d8e1d8"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "canonical-origin-delivery-prose.log.gz",
+      "sha256": "f04a9b17279a46419913c43e3b0cde2d85514260f752249d6700968f4c590d05",
+      "decoded_sha256": "f387bf324a449fda5399d2cbf7ebe3b97660a03a034183137b2baabbc09a5923"
+    },
+    {
+      "path": "canonical-origin-delivery-prose.json.gz",
+      "sha256": "c9126ea4d54a0aa05bca58ceb9fb13eb0518b7e927fbaaf5a5ad62a81c84fc97",
+      "decoded_sha256": "d4369d4b0a4c8b91c2d54e1aa9e26c21594b277625fe1fa9d7797c867b7c4653"
+    },
+    {
+      "path": "canonical-origin-delivery-prose-final.log.gz",
+      "sha256": "eba66ddf8ad344c2e9ad403fbea2fb9d5fc4bd09c1ec2f38bedd66194e40de44",
+      "decoded_sha256": "f196559d639c9cd5d28b7630c54faccc72899a78cd3fbe27dfc8b54b06b1bf51"
+    },
+    {
+      "path": "canonical-origin-delivery-prose-final.json.gz",
+      "sha256": "f3aa23e3fcfc82785e143af5c2831da4452441921a86aa1f73bf4d759be5db69",
+      "decoded_sha256": "fc88e4bb85e16d64246e24ca80ad723252dab706460a2317c3406f2351f0d831"
+    },
+    {
+      "path": "canonical-delivery-history.json.gz",
+      "sha256": "6d4e1ad4751a3db7f2d9fa0fb7a5ae59048f7caf8e1420844e6835f76c1919a8",
+      "decoded_sha256": "6e7ad3442bcead354784de200f3533623f3394b0ee32c9d1417a197a325c68e3"
+    }
+  ],
+  "contract": [
+    "A higher-priority origin declaration replaces all lower identity, bootstrap, and lifetime fields.",
+    "Explicit disablement preserves the selected store and its existing authority requirements.",
+    "The Starmap host composes its canonical store and a native permission clock. Construction starts no storage I/O.",
+    "An ordinary store requires explicit bootstrap. Receipt issuance requires qualified clock evidence."
+  ],
+  "fail_before": {
+    "source": "8206a2a8e8f0de12d895cca26bce08ea723b4263",
+    "test": "TestAuthorityOriginSettingsAcceptCompleteDeclarations",
+    "failed_test_events": 3,
+    "failure": "The schema rejects enabled and disabled origin declarations as unknown catalog settings."
+  },
+  "verification_summary": {
+    "configuration_events_each_toolchain": 120,
+    "runtime_and_cli_events_each_toolchain": 49,
+    "toolchains": [
+      "go1.25.12",
+      "go1.26.6"
+    ],
+    "focused_events": 46,
+    "prose_files": 1505,
+    "prose_diagnostics": 0,
+    "current_checks": "PASS",
+    "retained_failures": [
+      "Missing example setting in the initial configuration suite.",
+      "Invalid golangci-lint invocation corrected to the repository command.",
+      "Three prose diagnostics corrected in examples and generated reference."
+    ]
+  },
+  "canonical_verification": {
+    "prose_files": 1313,
+    "prose_diagnostics": 0,
+    "task_contracts_and_invariants": "unchanged",
+    "local_plan_links": 110,
+    "history_entries_moved": 1,
+    "current_resume_words": 306
+  }
+}

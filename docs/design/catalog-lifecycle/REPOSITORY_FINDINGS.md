@@ -2231,3 +2231,24 @@ Native tests cover privacy, changed headers, changed payloads, changed signature
 Both service reads fail at the combined principal check. Both read-only `w32tm` queries succeed.
 Sol and Opus report zero findings for `437dc13c`. The [diagnostic candidate](../../plans/proof/starport-production-catalog/csp4/windows-principal-2026-09-11/verification.json) separates each rejected reply category without changing security policy.
 CSP4 retains all remaining clock, authority, and Starport qualification requirements.
+
+Both Windows architectures at `e4a80fa6` confirm that W32Time returns a successful principal reply with an empty name.
+Each passes 1,913 test events and fails only the service read. The native SSPI tests pass.
+Correction `e6bf2fce` selects a null SSPI target for this verified local endpoint and preserves all required authentication flags.
+Its [proof](../../plans/proof/starport-production-catalog/csp4/windows-unnamed-2026-09-11/verification.json) records local verification, zero review findings, and native execution.
+
+Both Windows preflights pass 22 events and fail the status RPC with access denied.
+The service query remains unqualified, and both full Windows suites remain unrun at this source.
+
+## Configured authority origins, 2026-09-11
+
+The Starmap origin API existed before the CLI could configure an origin.
+The fail-before check rejects both enabled and disabled declarations as unknown catalog settings.
+The implementation now accepts one complete declaration, composes the native clock, and uses the canonical catalog store.
+Its [proof](../../plans/proof/starport-production-catalog/csp4/origin-settings-2026-09-11/verification.json) preserves the fail-before and local verification.
+
+Tests verify whole-declaration replacement without inherited authority, policy, bootstrap, or lifetime fields.
+They also verify origin publication and refusal of implicit ordinary startup after origin disablement.
+Local configuration checks pass 120 events per toolchain. Runtime and CLI checks pass 49 events per toolchain.
+Native parent integration, full verification, review, publication, and merge remain open.
+The plan's delivery checklist preserves the remaining shared-store, transition, and Starport acceptance work.

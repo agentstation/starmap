@@ -3008,3 +3008,31 @@ Windows host policy can require domain services. The RPC transport retains its f
 The [authentication proof](../../plans/proof/starport-production-catalog/csp4/windows-authentication-2026-09-11/verification.json) records portable checks and required native tests.
 Both Windows runners pass the native SSPI privacy, tampering, replay, and cleanup tests at this source.
 Both service reads fail the principal check. Authenticated status reads, service-account privileges, and production clock bounds remain unqualified.
+
+A successful empty principal reply selects a null SSPI target only on the verified local service pipe.
+A failed principal query still refuses authentication. Required privacy and replay checks apply to both named and unnamed endpoints.
+The [unnamed-endpoint proof](../../plans/proof/starport-production-catalog/csp4/windows-unnamed-2026-09-11/verification.json) records this correction and its remaining native qualification.
+
+### Authority origin configuration contract
+
+The Starmap host accepts `catalog_authority_origin` as one YAML object.
+`STARMAP_CATALOG_AUTHORITY_ORIGIN` and `--catalog-authority-origin` accept the same declaration as JSON.
+The declaration contains `enabled`, `authority_id`, `policy_id`, `bootstrap`, and `permission_lifetime`.
+Each higher-priority declaration replaces the complete lower declaration.
+Unknown fields, duplicate JSON fields, null values, and incomplete enabled declarations fail validation.
+
+An enabled origin requires both identities, the application's canonical catalog store, and an explicitly configured native clock.
+An origin cannot adopt an existing ordinary catalog without explicit bootstrap permission.
+An omitted receipt lifetime selects five minutes. An explicit lifetime must exceed zero and cannot exceed five minutes.
+An unknown clock prevents receipt issuance while catalog diagnostics remain available.
+The host starts and closes the clock with its runtime.
+
+An explicit disabled declaration contains only `enabled: false`.
+It clears origin issuance but retains the selected store and its authority requirements.
+It does not authorize an ordinary catalog fallback or replace stored authority with a public baseline.
+Omitting the setting preserves origin options that a library host supplies.
+Subscriber authority pins remain separate from the origin declaration.
+
+The [implementation proof](../../plans/proof/starport-production-catalog/csp4/origin-settings-2026-09-11/verification.json) records local verification and remaining delivery gates.
+Shared-store followers and explicit authority transitions remain incomplete.
+Starport must adopt the compatible published contract and pass its consumer acceptance checks before production qualification.

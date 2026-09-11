@@ -4,12 +4,12 @@ Updated 2026-09-11 UTC. Starmap has one open PR, [#151](https://github.com/agent
 The [queue evidence](queue-status-2026-09-11.json) records its owner, reviewed source, checks, and next action.
 The [previous capture](queue-before-pr151.json.gz) preserves the empty queues after the PR #150 merge.
 
-PR #151 contains diagnostic `e4a80fa6`, following the SSPI authentication candidate.
-Sol reports zero findings. Opus flags the known native failure as a merge blocker. The secret scan passes.
-Local diagnostic checks pass 194 permission race events per toolchain, four Windows cross-builds, static checks, and 1,497-file prose.
+PR #151 contains correction `e6bf2fce` for unnamed local service endpoints.
+Sol and Opus report zero findings. The secret scan passes.
+Seventeen local checks pass, including 194 permission race events per toolchain and eight Windows cross-builds.
 
-Workflow `34588801426` passes SSPI privacy and cleanup tests on both Windows architectures. Both W32Time reads fail at the principal check.
-Diagnostic `e4a80fa6` preserves rejection policy and distinguishes each failure category. Its local checks pass. Native workflow `34591105915` runs for the published diagnostic candidate.
+Workflow `34593352017` passes 22 preflight events on each Windows architecture and fails the status RPC with access denied.
+Both full Windows suites remain unrun after the mandatory preflight failure. Security and Reliability passes.
 The authenticated query must pass on both Windows architectures before merge.
 
 Clock configuration `e97d7fc3` passes all 41 repository verifier stages in its separate worktree. It still needs the qualified parent and final review.
