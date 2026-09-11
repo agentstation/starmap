@@ -567,9 +567,11 @@ func validateChecksum(field, checksum string) error {
 	if !found || len(digest) != sha256.Size*2 {
 		return validationError(field, checksum, "must use sha256:<64 lowercase hexadecimal characters>")
 	}
-	decoded, err := hex.DecodeString(digest)
-	if err != nil || hex.EncodeToString(decoded) != digest {
-		return validationError(field, checksum, "must use sha256:<64 lowercase hexadecimal characters>")
+	for i := range len(digest) {
+		c := digest[i]
+		if (c < '0' || c > '9') && (c < 'a' || c > 'f') {
+			return validationError(field, checksum, "must use sha256:<64 lowercase hexadecimal characters>")
+		}
 	}
 	return nil
 }

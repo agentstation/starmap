@@ -101,6 +101,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type Runtime](<#Runtime>)
   - [func Open\(ctx context.Context, opts ...Option\) \(\*Runtime, error\)](<#Open>)
   - [func \(r \*Runtime\) AcquisitionSources\(\) \(\[\]sources.ID, bool\)](<#Runtime.AcquisitionSources>)
+  - [func \(r \*Runtime\) AllowsCatalogAttempt\(head catalogs.CatalogAuthorityHead\) bool](<#Runtime.AllowsCatalogAttempt>)
   - [func \(r \*Runtime\) AllowsNewAttempt\(\) bool](<#Runtime.AllowsNewAttempt>)
   - [func \(r \*Runtime\) Catalog\(\) \*catalogs.Catalog](<#Runtime.Catalog>)
   - [func \(r \*Runtime\) Client\(\) \*starmap.Client](<#Runtime.Client>)
@@ -1318,6 +1319,15 @@ func (r *Runtime) AcquisitionSources() ([]sources.ID, bool)
 ```
 
 AcquisitionSources returns an owned explicit source set and its presence. Without a selection, the supplied acquisition roles keep their defaults.
+
+<a name="Runtime.AllowsCatalogAttempt"></a>
+### func \(\*Runtime\) [AllowsCatalogAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_consumer.go#L11>)
+
+```go
+func (r *Runtime) AllowsCatalogAttempt(head catalogs.CatalogAuthorityHead) bool
+```
+
+AllowsCatalogAttempt checks permission for a consumer's separately accepted catalog. The consumer must bind this validated authority head to its exact catalog before publication. A retained catalog can serve new attempts only while its permission revision remains current. Equal permission revisions allow route preparation without interrupting the previous catalog. Ordinary sources use the same admission policy as AllowsNewAttempt. Call this memory\-only check for every attempt, retry, and cached response delivery.
 
 <a name="Runtime.AllowsNewAttempt"></a>
 ### func \(\*Runtime\) [AllowsNewAttempt](<https://github.com/agentstation/starmap/blob/main/runtime/authority_policy.go#L50>)
