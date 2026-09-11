@@ -1,0 +1,189 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_authority_configuration",
+  "source_commit": "95354f0c9f7dfc451a491f2ebf04ca55504a046a",
+  "base": "52970f7f2f9cbf7f6e68f62e221328ed68ccc343",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "dependency": {
+    "commit": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "selection": "Private Go workspace only. Published module pin unchanged."
+  },
+  "contract": [
+    "Explicit require_authority startup requires a starmap source, exact authority and policy identity pins, and disabled acquisition.",
+    "Canonical Starmap identity validation rejects absent, oversized, whitespace, and control-character identities. Other startup policies reject authority pins.",
+    "Configuration loader and application composition forward the selected identity to the real Starmap runtime. Cold startup keeps metadata diagnostics and refuses new inference without source I/O."
+  ],
+  "checks": {
+    "environment": "GOTOOLCHAIN=go1.26.6 GOWORK=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-authority-consumer/go.work GOFLAGS=-p=2 GOMAXPROCS=4",
+    "corrected_red": {
+      "command": "go test -race -count=1 -timeout=5m -json -run '^(TestCatalogAuthoritySettingsLoadAndValidate|TestConfiguredAuthorityColdStartupKeepsDiagnostics)$' ./internal/config ./internal/app",
+      "pass": 7,
+      "fail": 5,
+      "packages": 2
+    },
+    "focused_final": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "packages": 2
+    },
+    "affected_packages": {
+      "command": "go test -race -count=1 -timeout=10m -json ./internal/config ./internal/catalog ./internal/app",
+      "pass": 394,
+      "fail": 0,
+      "skip": 1,
+      "packages": 3,
+      "skipped": [
+        "TestAppWithValkey"
+      ],
+      "source_note": "Before the final test-only simplification from JSON field assertions to direct field assertions. Focused final rerun passes."
+    },
+    "vet": "PASS: go vet ./internal/config ./internal/catalog ./internal/app",
+    "lint": "PASS: make lint with a separate GOLANGCI_LINT_CACHE; zero issues",
+    "dependencies": "PASS: bash scripts/verify-dependency-direction.sh; six conditions",
+    "prose": {
+      "new_files": "PASS: three files, zero diagnostics",
+      "new_env_comments": "PASS: one extracted document, zero diagnostics",
+      "changed_existing_files": "97 diagnostics exactly match HEAD baseline by rule, excerpt, and message; no introduced diagnostics"
+    }
+  },
+  "retained_failures": [
+    "Initial app test used nonexistent BadgerConfig.DataDir. Corrected fixture uses Path; the corrected red reproduces the missing authority configuration.",
+    "Shared lint cache returned findings from a removed checkout. A fresh task cache reports zero issues without source or policy changes.",
+    "The prose linter cannot parse .env.example directly. Extraction of the changed comments passes. The first larger extraction joined commented environment examples into prose and failed."
+  ],
+  "acceptance": "Four mapped Starport consumer cases remain UNVERIFIED. No task completion credit.",
+  "remaining": [
+    "Qualified host clock adapter and scheduler",
+    "Warm retained authority, exclusions, mixed schema, and end-to-end consumer qualification",
+    "Compatible published module, required pre-PR review, native CI, and merge"
+  ],
+  "source_files": [
+    {
+      "path": ".env.example",
+      "sha256": "5f40a1833522c46804c24bbfadff1e5e1e0afcd73debf485f835314bf31a6109"
+    },
+    {
+      "path": "docs/OPERATOR-GUIDE.md",
+      "sha256": "04d5b954ab2865ef4a1ff4b158a8f19c7cf5ba7333107fba9eb01d4dff0936a3"
+    },
+    {
+      "path": "internal/app/app.go",
+      "sha256": "24bd3f427b8d4aa578bcd5c5fb8577c88925f7158fa635165a9b5c3ca2aaa7a9"
+    },
+    {
+      "path": "internal/app/catalog_authority_test.go",
+      "sha256": "886e0c1559effc976d129fd4a632af0abf6ad55c4178889b98da22f0ef4acf4c"
+    },
+    {
+      "path": "internal/catalog/settings.go",
+      "sha256": "8693a0e9d5afa75c28f5524fb5482f34f119b9e37c5e7a09b2a6138c05abeb73"
+    },
+    {
+      "path": "internal/config/catalog.go",
+      "sha256": "c28e69e9479794a2d3448c5d3135856d8686e802aab5584d73c785d85ee3af04"
+    },
+    {
+      "path": "internal/config/catalog_authority.go",
+      "sha256": "ef9f8d90a4af0e28a3c9718c9f07c9910f42d636ed4c0aea158aa9c62439e680"
+    },
+    {
+      "path": "internal/config/catalog_authority_test.go",
+      "sha256": "f08826a031e6244aa93eb210ab47ac7ac4348f09fb5480302016f9fb22188f8d"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "authority-settings-baseline-prose.json.gz",
+      "sha256": "cde814122e1f5bf4fe98f7873692833efd2db722e23065a4b9ad9072a8e11873",
+      "decoded_sha256": "24507c11d9c8979f77f9bfc41d669fa327b7bfa8f10ac060c75db682e7e8a855"
+    },
+    {
+      "path": "authority-settings-baseline-prose.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "authority-settings-dependencies.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "authority-settings-env-prose-final.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "decoded_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    {
+      "path": "authority-settings-env-prose.log.gz",
+      "sha256": "bf8e469830a0bfd31f1ae2a25e79e6b9ac8d89479ab716a60980ad4560ba5c23",
+      "decoded_sha256": "425b42c1ed7646d49a876ba82be3d4a38174bfc094c260ee97139f499ed4eec5"
+    },
+    {
+      "path": "authority-settings-existing-prose.json.gz",
+      "sha256": "56a3da7ca9862528c258b64a4608ac331e23bd025d9629977159bcb14285a31c",
+      "decoded_sha256": "7f4cd1381a57cccbf9e8f3f0f89c6de1f85f2b163dadb1fb605a2a10c3e6fd83"
+    },
+    {
+      "path": "authority-settings-final.jsonl.gz",
+      "sha256": "ee347e8035eced0d6e88cffc0c6cb3cf2eec764facf56aa787e99c623f0914e0",
+      "decoded_sha256": "c94949fdfe4446db012de547148930a635ade4808fa1fddd5bd16176cdbb6c9b"
+    },
+    {
+      "path": "authority-settings-green.jsonl.gz",
+      "sha256": "0feeb2271f4a7eda25e44c142212e8425e5e280a2e2344562a8e42802a5cef31",
+      "decoded_sha256": "aa6b31c3de97428d69739730314575c09e12f08bd8d019143d00a894a81e58a5"
+    },
+    {
+      "path": "authority-settings-lint-fresh.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "authority-settings-lint.log.gz",
+      "sha256": "12785b3090557ffbc4405f3e24b7aeb40cbbd003a965245f7b187b005f98e48c",
+      "decoded_sha256": "018498d23beb42dfa4644decd7a0a4803d19b11a0e325e0962091b9b32f7e274"
+    },
+    {
+      "path": "authority-settings-new-prose.log.gz",
+      "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b",
+      "decoded_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    {
+      "path": "authority-settings-packages.jsonl.gz",
+      "sha256": "da1ed31a5e9b06ece08a5892b2176f4e0c9a7a5d87e7edc6a75ed2255242afce",
+      "decoded_sha256": "7853ae98c6cb931144ad1772744a0df6c760c2f8e93c1d3543d76d2885b2a4a5"
+    },
+    {
+      "path": "authority-settings-prose-comparison.json.gz",
+      "sha256": "206fb829eacbcc28a68dfda980890327e392d4d765d2f032bdea20e4408973ab",
+      "decoded_sha256": "74258045284a72e2159b78cf3ae47e99b6e046bbb308c00ac4bfcfe08ffd3cbd"
+    },
+    {
+      "path": "authority-settings-red-corrected.jsonl.gz",
+      "sha256": "7fc525f0e4b66a16bab53c7ed01f9364f1002ca7d87def847cdd9aaf66de3cac",
+      "decoded_sha256": "d74ae3fae3ddb47459528b723305201b5f7e2fd67eb6e28f5a5f5286a0cae7b2"
+    },
+    {
+      "path": "authority-settings-red.jsonl.gz",
+      "sha256": "f4843d12131493a5a7a17b402c2b28e0948f63e7caba75a6dd42dc3eef91d930",
+      "decoded_sha256": "771275c7b48da412410981ac1a828838855d529466d3efe9214cbca8298b9ee0"
+    },
+    {
+      "path": "authority-settings-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "canonical-prose.log.gz",
+      "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
+      "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    }
+  ],
+  "canonical_prose": {
+    "status": "PASS",
+    "files": 141,
+    "diagnostics": 0,
+    "scope": "docs/design/catalog-lifecycle and docs/plans"
+  }
+}

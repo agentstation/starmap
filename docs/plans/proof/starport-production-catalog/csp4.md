@@ -11,6 +11,12 @@ All 41 verifier stages pass across the initial command and the corrected remaind
 PR #149 merged as `9ea36b3e` after fifteen passing checks. The combined tree equals tested `768347ab`.
 Native clocks and the four Starport consumer cases remain UNVERIFIED.
 
+Starport `95354f0` adds configured authority and policy identity pins.
+Its [configuration proof](csp4/starport-authority-settings-2026-09-11/verification.json) records twelve focused tests and 394 package race events.
+One Valkey integration case skips. Lint, vet, and six dependency checks pass.
+Cold construction retains catalog diagnostics and refuses inference without contacting the upstream.
+Native clock qualification and the four mapped consumer cases remain open.
+
 Starport `52970f7` enforces current permission before route attempts and cache delivery.
 Its [request proof](csp4/starport-request-permission-2026-09-11/verification.json) records 645 package race events and one skipped overhead benchmark.
 Both API formats return HTTP 503 before stream headers when permission is unavailable. Four consumer cases remain UNVERIFIED.

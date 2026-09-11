@@ -1876,6 +1876,12 @@ Each sample's uncertainty must bound its returned time.
 The current standalone composition has no clock qualification adapter. It therefore cannot yet qualify an internal production recipe.
 CSP4 must still qualify publisher receipts, replicas that read shared catalog state, and the required Starport acceptance cases.
 
+Starport now forwards `STARPORT_CATALOG_SOURCE_AUTHORITY_ID` and `STARPORT_CATALOG_SOURCE_POLICY_ID` to the connected runtime.
+Its loader requires both pins for `require_authority`, a `starmap` source, and disabled acquisition.
+Other startup policies reject these pins. Starmap validates their exact bytes.
+Cold construction keeps metadata diagnostics and refuses inference without a source request.
+This configured behavior does not qualify warm authority startup or native clocks.
+
 Test lost events, unsupported catalog schemas, restart, partition, and expired permission receipts.
 Diagnostics must report required and enforced revisions and the remaining validity interval.
 

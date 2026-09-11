@@ -238,6 +238,146 @@
       "sha256": "9bc548cd57c4c45bbffc23dfd7a61dcc3bdd0358dffff7a15ff5e305967f5935",
       "decoded_sha256": "4605efbb3f10695e1da7c76c2b1fe2dbedfb90086dca8c266a747e898a88bb49",
       "decoded_bytes": 558
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-git-acquisition.jsonl.gz",
+      "sha256": "44b57ed6d447765411f6614df89f754e8de3dcb3562047bcebad5450d080a645",
+      "decoded_sha256": "b06fe27a18994355fc1668d819a973eab8b4be548b3db246677b5ec0be150ec7"
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-publisher-ingestion.jsonl.gz",
+      "sha256": "b6b5b96fbdb6ed267f767762a52ea68814eef98c29f66c5d25b3509f997a1292",
+      "decoded_sha256": "66c70bfaf3aa983acb1f093a9ce3047bdd0163cda29e410779dd1ab2c8afe0ce"
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-tests.jsonl.gz",
+      "sha256": "d6aa4e3fd0123866baab4f760b2285307e354d3ead358fa9c92a9722c80d269e",
+      "decoded_sha256": "a9a67f051ef2e94656d3123b2af38a56f3f147b79222ac1e724969999bdc4536"
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "decoded_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-intel-git-acquisition.jsonl.gz",
+      "sha256": "814cc42f1fedbdab06f252c5583f80539d9a10f2b9ded2ee8fc31770569fa6ee",
+      "decoded_sha256": "f2e36eb06e8d6cc8d07c39469f71313d98f84ab55cb80c72e4bfb5759258d784"
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-intel-publisher-ingestion.jsonl.gz",
+      "sha256": "64870eb7fc6741497e2e1bc80a6f4005cc8af5b6e40370158a4ecc58fac280dc",
+      "decoded_sha256": "f946ac4e0cd8307500425bf5659889cccc3ef497c72ccc3d319873938d7d6d1c"
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-intel-tests.jsonl.gz",
+      "sha256": "25a4aad85db6faa96902a0308f52bd9a9a2040a80fde69a519958ac4abaac8d6",
+      "decoded_sha256": "58cfd9447e0d4e2c2c7cf6d4c21c0f8e93c84a1626c9beda19f85d0b8943c3aa"
+    },
+    {
+      "path": "pr150-native-runtime-macos-15-intel-toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-git-acquisition.jsonl.gz",
+      "sha256": "caa0ec7042125762b34b061b8229fa98f4c65a766ad54a024e52fec9e3431d2a",
+      "decoded_sha256": "bd9374ed1020dfaa0ba8cc8341ab789174e852b4fdf5e612f3b7887329a5f08b"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-publisher-ingestion.jsonl.gz",
+      "sha256": "4335dd466a55bfa210458efc961c4684049019f10ce548db9a3076555b907497",
+      "decoded_sha256": "7c724b17dbf7f3575b0d800ee2729186ac9c9ac54a73540d59800d959f3fd46a"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "decoded_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-tests.jsonl.gz",
+      "sha256": "d722fcbeec5c58526ec49d129f7da0feae74ca28e1129e856bc55b992d549ded",
+      "decoded_sha256": "9d71350da30dad028b25ed765389d54919f4d5e44b7cd55eb97f8eeeba1d98db"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "decoded_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-arm-git-acquisition.jsonl.gz",
+      "sha256": "1cd26f8964abc0e119c172742da0756ca4e8f03a523821f22216ad9a2c4fd20f",
+      "decoded_sha256": "8c2e25004b8b1bdef354c718f4529d043806c4ab52991f3ae027c6c32de8735b"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-arm-publisher-ingestion.jsonl.gz",
+      "sha256": "536d05c5df9018e8e8128145783c6719fa61b2865750e9e0616de37a039c978d",
+      "decoded_sha256": "dc4814aa700daf618bd385cc7b8d9d44b937e71ec4c808a81cf4388db77f2bdd"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-arm-service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "decoded_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-arm-tests.jsonl.gz",
+      "sha256": "0d0c204bfe406714493e5dc8baf9ef937d168da24143edffec23460f2761f43f",
+      "decoded_sha256": "ee5eadc7b28bb15f3ce63b92d523f084d887374e5dc6777485d696bd34518525"
+    },
+    {
+      "path": "pr150-native-runtime-ubuntu-24.04-arm-toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "decoded_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "pr150-native-runtime-windows-11-arm-git-acquisition.jsonl.gz",
+      "sha256": "6d705f7382fce96031d65b98d777eeb31961c5cce282efa36c208131465279e0",
+      "decoded_sha256": "634a1f9d5a8b0b83b746e93e7ecb2a44b6f51e23637788aa96e87227f428bcdc"
+    },
+    {
+      "path": "pr150-native-runtime-windows-11-arm-publisher-ingestion.jsonl.gz",
+      "sha256": "e3a3e81cbbc1c5faa6ad3a0cab96d0fe97c83f3ccfd5a6bffe7cb59cd29fae36",
+      "decoded_sha256": "65c98529073f371d5b7f3dcca0fef3bf1d04930db77ec6f4d497dd9a496f2dd0"
+    },
+    {
+      "path": "pr150-native-runtime-windows-11-arm-tests.jsonl.gz",
+      "sha256": "ac3bf2e21628fd3d493998c4c7d391cb00946decc8a348dd14a5dfb060573c54",
+      "decoded_sha256": "e48d9b26dcf4d6a4a479b625d648b42f3a2f9f57a50e84ec6aa62b4c705afe27"
+    },
+    {
+      "path": "pr150-native-runtime-windows-11-arm-toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "pr150-native-runtime-windows-2025-git-acquisition.jsonl.gz",
+      "sha256": "3b3b7c9d641608f68e89d89e6536586fd43309f83779c734343e9737457d1ec1",
+      "decoded_sha256": "063b8b53acb58b072d5de4c18bc7eb2c70e29738ccef838eedd7a2fe05362a99"
+    },
+    {
+      "path": "pr150-native-runtime-windows-2025-publisher-ingestion.jsonl.gz",
+      "sha256": "4a5664a6fa35645496feb3230fd5e8618cfcae2c5ac0b0aa59b27e3fcc900254",
+      "decoded_sha256": "e3818b546c4b4e8d879e454cabf91d4a3306ec9fdc2bba5381b8f58a8f881306"
+    },
+    {
+      "path": "pr150-native-runtime-windows-2025-tests.jsonl.gz",
+      "sha256": "fbf2c71e7f280913eb9e8963097ddcf287d073b65c3933ba85043d2cf193e0b3",
+      "decoded_sha256": "3f65b41057b82a608a0b199232238a01ddeaf7f74618283cdc48841c52b1f18c"
+    },
+    {
+      "path": "pr150-native-runtime-windows-2025-toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "native-pr150-current.json.gz",
+      "sha256": "f00aa85b54502282f84324954cbb8cfc54f80c78ea7aaf1eb45bc5fa2a4e65b4",
+      "decoded_sha256": "05c6c1eb54c6969065b6887b2f9a481c9a318f62c89749913ca922e8b6f543c5"
+    },
+    {
+      "path": "native-pr150-jobs.json.gz",
+      "sha256": "7f120899a8adf81fa86045f676480af328db195d18a656287caa617e15ceb407",
+      "decoded_sha256": "673333b18c9a7ca75e204b47c1a90f3ee017bf99da927dc63c02ea77abd27509"
     }
   ],
   "contract": [
@@ -635,5 +775,77 @@
     "exit_code": 0,
     "files": 1310,
     "diagnostics": 0
+  },
+  "native_pr150": {
+    "run": 34564827145,
+    "head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "status": "All six native jobs PASS. Verification Gate still runs.",
+    "pass": 10422,
+    "fail": 0,
+    "skip": 2,
+    "passed_packages": 92,
+    "runners": [
+      {
+        "runner": "macos-15",
+        "tests": {
+          "pass": 1774
+        },
+        "passed_packages": 15,
+        "skips": [],
+        "privileged_service_owner_check": "Not applicable"
+      },
+      {
+        "runner": "macos-15-intel",
+        "tests": {
+          "pass": 1774
+        },
+        "passed_packages": 15,
+        "skips": [],
+        "privileged_service_owner_check": "Not applicable"
+      },
+      {
+        "runner": "ubuntu-24.04",
+        "tests": {
+          "pass": 1718,
+          "skip": 1
+        },
+        "passed_packages": 15,
+        "skips": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "privileged_service_owner_check": "PASS in service-owner.txt"
+      },
+      {
+        "runner": "ubuntu-24.04-arm",
+        "tests": {
+          "pass": 1718,
+          "skip": 1
+        },
+        "passed_packages": 15,
+        "skips": [
+          "TestServiceConfigurationAdministratorOwnedRead"
+        ],
+        "privileged_service_owner_check": "PASS in service-owner.txt"
+      },
+      {
+        "runner": "windows-11-arm",
+        "tests": {
+          "pass": 1719
+        },
+        "passed_packages": 16,
+        "skips": [],
+        "privileged_service_owner_check": "Not applicable"
+      },
+      {
+        "runner": "windows-2025",
+        "tests": {
+          "pass": 1719
+        },
+        "passed_packages": 16,
+        "skips": [],
+        "privileged_service_owner_check": "Not applicable"
+      }
+    ],
+    "scope": "Runtime and permission library APIs. Does not qualify native host clock adapters or released product pair."
   }
 }

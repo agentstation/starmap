@@ -2097,3 +2097,17 @@ The tests do not qualify total gateway latency, native clocks, fleet behavior, o
 
 Vet, lint, six dependency checks, and new-comment checks pass. Thirty-five existing prose diagnostics match the prior source.
 Four Starport consumer cases remain UNVERIFIED until configured composition and its dependencies pass their required checks.
+
+
+## Starport authority configuration, 2026-09-11
+
+Local `95354f0` loads authority and policy identity pins and forwards them to Starmap.
+The `require_authority` policy requires a Starmap source and disabled acquisition.
+Other startup policies reject identity pins. Starmap owns exact identity validation.
+
+The [configuration proof](../../plans/proof/starport-production-catalog/csp4/starport-authority-settings-2026-09-11/verification.json) records twelve focused tests and 394 package race events.
+One Valkey integration case skips. Cold construction preserves metadata diagnostics and refuses inference without source I/O.
+Vet, lint, and six dependency checks pass. Existing prose diagnostics match the prior source.
+
+The operator guide states the remaining clock limitation. No qualified host clock adapter makes authority inference ready yet.
+The four consumer cases and the released dependency pair remain UNVERIFIED.
