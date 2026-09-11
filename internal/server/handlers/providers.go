@@ -51,7 +51,9 @@ func (h *Handlers) HandleListProviders(w http.ResponseWriter, _ *http.Request) {
 			providerInfo["headquarters"] = *prov.Headquarters
 		}
 
-		if prov.Catalog != nil && prov.Catalog.Docs != nil {
+		if prov.DocsURL != nil {
+			providerInfo["docs_url"] = *prov.DocsURL
+		} else if prov.Catalog != nil && prov.Catalog.Docs != nil {
 			providerInfo["docs_url"] = *prov.Catalog.Docs
 		}
 
