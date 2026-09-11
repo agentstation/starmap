@@ -2294,3 +2294,20 @@ CSP11 retains shared input recovery, equivalent acquisition capability, and atom
 The prior current plan incorrectly kept restart eligibility in its implementation backlog after this local fix.
 The corrected record separates completed local checks from pending delivery gates and merges.
 Explicit authority transitions and production clock composition remain unfinished CSP4 work.
+
+## Subscriber transitions and native runtime qualification, 2026-09-11
+
+The positive authority-transition test fails when the replacement omits the previous authority's alias inventory.
+Commit `5066856d` scopes alias history to an authority and policy pair. Same-context and ordinary updates retain the existing alias checks.
+A fresh runtime directory also exposed an invalid startup comparison against embedded aliases.
+The runtime now retains available catalog diagnostics until an approved source generation arrives.
+
+The [transition proof](../../plans/proof/starport-production-catalog/csp4/authority-transition-2026-09-11/verification.json) records 109 passing race events per toolchain. Go `1.25.12` and `1.26.6` both pass.
+Tests cover changed authorities and policies, failed writes, restart recovery, exact replacement activation, and retained offline startup.
+The first implementation attempted a retry before journal recovery. The final test follows the existing restart contract and verifies the exact storage failure.
+Static checks, generated documentation, and the 1,514-file prose check pass.
+
+All six native runtime jobs pass at `75ac9d07` in PR #151. The [production proof](../../plans/proof/starport-production-catalog/csp4/windows-rpc-2026-09-11/verification.json) retains every artifact and identifies skipped diagnostics.
+Only the repository Verification Gate remains before the native parent merge.
+Combined origin source `d1bb47e1` integrates that reviewed parent and starts full repository verification.
+Its result remains unverified. Starport clock composition, delivery review, publication, native CI, and merges remain open.

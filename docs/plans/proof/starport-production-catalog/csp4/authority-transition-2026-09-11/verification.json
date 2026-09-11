@@ -1,0 +1,291 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_COMMITTED_PARENT_INTEGRATED_VERIFIER_RUNNING",
+  "source_commit": "5066856d33064dd48fe0377bbb09337784623b61",
+  "base": "bb28a0bd0cb16961d0efdde7a61ddd73ade23a66",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "branch": "codex/catalog-origin-settings",
+  "contract": [
+    "An explicit source authority or policy change starts a new permission context. Previous approval cannot authorize it.",
+    "Alias history belongs to an authority and policy pair. A separately authorized replacement supplies its complete inventory. Ordinary and same-context updates retain alias history.",
+    "A runtime without retained source inputs keeps the selected stored catalog for diagnostics and blocks inference until approved source activation.",
+    "Failed catalog writes preserve the prior catalog. Restart recovers staged inputs before retry. Successful replacement and its approval survive a retained offline restart."
+  ],
+  "checks": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=20m",
+        "-run",
+        "^Test(AuthorityRuntime|AuthorityConsumer|OriginReplica|OriginPublicationRefusesImplicit|CanonicalAlias)",
+        "./runtime",
+        "./pkg/catalogs",
+        "."
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0,
+      "test_events": {
+        "pass": 109,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "pass": 35,
+          "fail": 0,
+          "skip": 0
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 74,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=20m",
+        "-run",
+        "^Test(AuthorityRuntime|AuthorityConsumer|OriginReplica|OriginPublicationRefusesImplicit|CanonicalAlias)",
+        "./runtime",
+        "./pkg/catalogs",
+        "."
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12"
+      },
+      "exit_code": 0,
+      "test_events": {
+        "pass": 109,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs": {
+          "pass": 35,
+          "fail": 0,
+          "skip": 0
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 74,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    }
+  ],
+  "static_checks": [
+    {
+      "name": "lint",
+      "command": [
+        "/Users/jack/go/bin/golangci-lint",
+        "run",
+        "./runtime",
+        "./pkg/catalogs",
+        "."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./runtime",
+        "./pkg/catalogs",
+        "."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ago",
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0
+    }
+  ],
+  "documentation": {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 0,
+    "files": 1514,
+    "diagnostics": 0
+  },
+  "failures": [
+    "The initial two-case transition regression fails because alias history from the previous authority blocks replacement.",
+    "The first implementation reaches the rejecting store. Immediate retry then refuses the pending input journal. The final test follows the existing restart recovery contract and requires the exact storage error.",
+    "Adding fresh-runtime-directory cases reveals startup alias validation against the embedded baseline. The correction retains selected diagnostics without granting permission."
+  ],
+  "integration": {
+    "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+    "native_parent": "75ac9d0751d666ed71393ca08f573e8a2739860e",
+    "merge": "clean",
+    "verifier": {
+      "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+      "command": [
+        "make",
+        "verify"
+      ],
+      "started_at": "2026-09-11T14:40:19.817543+00:00",
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6",
+        "PATH": "/Users/jack/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Users/jack/.codex/tmp/arg0/codex-arg0RSEevF:/Users/jack/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/opt/homebrew/share/google-cloud-sdk/bin:/Users/jack/.pyenv/shims:/Users/jack/.cargo/bin:/Users/jack/bin:/Users/jack/.local/bin:/Users/jack/go/bin:/Users/jack/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/Applications/ChatGPT.app/Contents/Resources"
+      },
+      "status": "running"
+    },
+    "session_id": 8874
+  },
+  "limitations": [
+    "The source and clock fixtures are deterministic. Tests use a memory catalog store and a real local input journal. They do not qualify distributed backend recovery or Starport production clock composition.",
+    "The 109 passing race events per toolchain cover source 5066856d. The combined source d1bb47e1 still needs its full verifier, task gate, required review, publication, native checks, and merge.",
+    "Origin identity remains stable within its store. An operator selects another catalog store for a new origin identity. No in-place identity reset or implicit ordinary downgrade is added."
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "before-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "before.jsonl.gz",
+      "sha256": "9c6673f31d79c5e9c1d636a38e39550737541207b46a3f23d3a23256a6c96f34",
+      "decoded_sha256": "8f523ca1bb866d2cda49c53a5964ef3ad8068649043b0eb94bc45cf9d46351b9"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "cf1f0528b921e1ec4b38c13a2abf37af93fdd416479c392db40e6c7b6e33633f",
+      "decoded_sha256": "5bea471a003c87df7ca23a8ee2521ffc982bc9a41c294d58b4cf9e4029f24049"
+    },
+    {
+      "path": "first-after-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "first-after.jsonl.gz",
+      "sha256": "d8f387df6e52b66ab75975e12e255868d0dcbc0327977b7321a7ce9839b29b3b",
+      "decoded_sha256": "c4cdaab02826c28e97597434c13940144a456f766e37614a9ca4398bcb4ea119"
+    },
+    {
+      "path": "go1.25.12-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12.jsonl.gz",
+      "sha256": "6f86d8c02c33589475e0968dcc5875fdc7fe1895af6ae7cb6996b269597a9d78",
+      "decoded_sha256": "cd45def6100956f15af8a980c8fcd515c5380aa53d21cb6895a6d3e191fe9954"
+    },
+    {
+      "path": "go1.26.6-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6.jsonl.gz",
+      "sha256": "06d7a84cd4222d0518352e7654cbe758acb6dab3da7449fe9f4b98f90121dbda",
+      "decoded_sha256": "ac244863ab00697c5be27e2193174f19d7d26593699c95296f39b1a6345136ec"
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "509424edab2a12ead8ce3073edda9579c5359c28972057d7e81aa6e17259bbc8",
+      "decoded_sha256": "e617bbf26996554843c209f7c442053d78759ca3139d3194dd581dfbeab3045d"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "recovery-after-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "recovery-after.jsonl.gz",
+      "sha256": "d58f8a6ef12aa60c435b0ff378bd66e9f830d050d4aac805f75d5ff2e94e2de2",
+      "decoded_sha256": "64f8c69f07dd8bce67621fe5e30ddde07d93c6c1a4d1f50b4f5b6fb2269a2f1e"
+    },
+    {
+      "path": "static-checks.json.gz",
+      "sha256": "0878457ae0f9c80f25d93ff00b8319a6d86ac1e3f41de46311c91b6522236058",
+      "decoded_sha256": "d6142fadd1ec81dc4fba4c90815ff4bc1d456c2a2995c6eb64a3a852095c3b91"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "writing.log.gz",
+      "sha256": "c740eabb6193dc4180bc12a30ec2d94a38960549cd268594752862a062da86d9",
+      "decoded_sha256": "a93adab2154de6c8cb2a9971907b855ee9d1376139cb7e9fb649909190504077"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "docs/API.md",
+      "sha256": "192f93ac525733bcaf79b11d8e1fa7cb1426b65349576917c5613aac9b538e27"
+    },
+    {
+      "path": "generation.go",
+      "sha256": "9f158fbc4ffa03e82f51dbe41690c6c1ef097e97d6a9fd001132cdace684fc8f"
+    },
+    {
+      "path": "pkg/catalogs/README.md",
+      "sha256": "9c3ff738b76a1b19c8135a06b0a889400804ca60cb704062f77ff8c3fceba6b9"
+    },
+    {
+      "path": "pkg/catalogs/canonical_alias.go",
+      "sha256": "4d2116cab8f2d98bc9edb0324db1c2a40b872650bc89073313b0c8d263212f2f"
+    },
+    {
+      "path": "pkg/catalogs/canonical_alias_authority_test.go",
+      "sha256": "3d149c4d3a7cfc09c26b16044c9e56eb3f697c8254c9f84b029b0ecdddbfbda1"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "14e00e8b1949ec372b4b226f7b285d20256964ad38848ca878f4b783aa4390c0"
+    },
+    {
+      "path": "runtime/authority_transition_test.go",
+      "sha256": "4204fe68a519f3a9d3d7788821d2e52683879ec86f4bcec8de56486ce2abe983"
+    },
+    {
+      "path": "runtime/origin_publication.go",
+      "sha256": "d49cc6dd501ad80fbd1b85da671d3dfbe26a2cde922579cf89dfa2bcf451c3c8"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "b1cacf6aebb9c030f6f588ff8b32e7955bf50f1c7b2cde334cc8737888289eb2"
+    }
+  ]
+}

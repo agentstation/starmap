@@ -4,7 +4,7 @@
 
 The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-deliveries) separates merged work from the remaining CSP4 deliveries.
 Starmap PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
-CSP4 remains active because native qualification, production clock integration, explicit transitions, and delivery merges remain open.
+CSP4 remains active because production clock integration, complete delivery verification, and merges remain open.
 
 ### Consumer checks and published dependency
 
@@ -34,26 +34,31 @@ Production native clock composition, remaining Starport delivery checks, require
 
 ### Remaining native and origin delivery
 
-PR #151 contains reviewed `75ac9d07`. The [production proof](csp4/windows-rpc-2026-09-11/verification.json) records four Windows cross-builds, static checks, and zero findings from Sol and Opus.
-Both Windows access preflights pass in native workflow [34609335965](https://github.com/agentstation/starmap/actions/runs/34609335965). Full native and repository gates remain in progress.
-All required checks must pass before merge.
+All six native runtime jobs pass at `75ac9d07` in PR #151.
+The [production proof](csp4/windows-rpc-2026-09-11/verification.json) retains all six artifacts and exact test counts.
+Both Windows suites pass 1,925 events, and both Windows access preflights pass 23 events.
+Each platform also passes two Git acquisition events and four publication events.
+The proof identifies the separate Linux administrator check and opt-in Windows diagnostic skips.
+The repository Verification Gate still runs in workflow [34609335965](https://github.com/agentstation/starmap/actions/runs/34609335965).
 
-The [diagnostic proof](csp4/windows-security-2026-09-11/verification.json) identifies RPC identification-only access as the blocker on both Windows architectures.
-Local RPC impersonation succeeds while the pipe retains identification-only access. Enabling the time privilege alone does not resolve the failure.
-The production correction retains packet privacy, peer validation, and reply bounds. It refuses delegation and anonymous authentication.
-It enables no privilege and changes no time setting.
+Origin `5066856d` scopes alias history to the selected authority and policy.
+The [transition proof](csp4/authority-transition-2026-09-11/verification.json) records 109 passing race events per supported toolchain, static checks, and 1,514-file prose verification.
+The cases cover authority and policy changes with retained or fresh runtime directories, failed publication, recovery, replacement activation, and retained restart.
+Prior approval cannot authorize the changed context. Same-authority updates retain the alias-history checks.
 
-Clock configuration `e97d7fc3` passes all 41 repository verifier stages. Its [settings proof](csp4/clock-settings-2026-09-11/verification.json) retains those checks.
-Native parent integration, final review, publication, and merge remain required.
+The initial transition test reproduces an alias-history conflict across authorities.
+Fresh runtime state also exposed startup alias validation against the embedded baseline. The correction retains diagnostics without granting permission.
+The first implementation required restart recovery after its deliberately failed store write. The final test follows that existing journal contract.
 
-Origin `bb28a0bd` protects replica restart ownership after the periodic adoption work at `9ffcb0f8`.
-The [restart proof](csp4/origin-restart-2026-09-11/verification.json) records 21 origin and two lease race events per supported toolchain.
-A replica with missing retained inputs serves accepted state without an initial lease request or shared publication.
-A replica with matching inputs can take ownership without replacing the accepted generation. Read-only startup needs no provider bindings.
+Combined source `d1bb47e1` merges reviewed native parent `75ac9d07` without conflicts.
+It contains clock lifecycle, origin settings, follower restart, and subscriber transitions in one delivery.
+Full `make verify` runs in session `8874` against this unchanged source.
+The current log is `.tmp/csp4-origin-integrated/verifier.log` in the origin-settings worktree.
+Task checks, required review, publication, native CI, and merge remain required.
 
-The tests use a memory store and a stub lease. CSP11 owns full shared input recovery, equivalent acquisition capability, and atomic lease/head fencing.
-Explicit authority transitions, native parent integration, full delivery checks, review, publication, and merge remain required.
-The [earlier checkpoint](csp4/integration-history-before-rpc-2026-09-11.md) preserves the previous current record.
+CSP11 owns full shared input recovery, equivalent acquisition capability, and atomic lease/head fencing.
+Starport still needs production clock composition and its final delivery checks.
+The [earlier checkpoint](csp4/integration-history-before-transition-2026-09-11.md) preserves the previous current record.
 
 ## Native clock checkpoint history
 

@@ -5,18 +5,27 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 118,
-  "new_evidence_artifacts": 1244,
-  "new_commit_source_files": 286,
-  "resume_words": 292,
-  "next_action": "Complete explicit authority transitions while native workflow 34609335965 runs. Integrate qualified clocks into Starport. Finish delivery checks, review, and merges in dependency order. CSP11 owns complete fleet recovery and fencing.",
-  "current_source": "75ac9d0751d666ed71393ca08f573e8a2739860e",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "local_links": 117,
+  "new_evidence_artifacts": 1299,
+  "new_commit_source_files": 295,
+  "resume_words": 320,
+  "next_action": "Connect Starport to production clock settings while native workflow 34609335965 and local verifier session 8874 run. Preserve the frozen origin source d1bb47e1. Finish task checks, review, publication, native CI, and merges in dependency order. CSP11 owns fleet recovery and fencing.",
+  "current_source": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
   "external_running_checks": [
     {
       "pull_request": 151,
       "workflow_run": 34609335965,
       "source": "75ac9d0751d666ed71393ca08f573e8a2739860e"
+    },
+    {
+      "session_id": 8874,
+      "source": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+      "command": [
+        "make",
+        "verify"
+      ],
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
     }
   ]
 }

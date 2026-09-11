@@ -1833,7 +1833,9 @@ This guard does not implement an authority migration or govern direct writes out
 Canonical server settings and native clock qualification remain separate requirements.
 Candidate `bb28a0bd` adds replica restart ownership checks after follower startup and periodic adoption.
 Missing retained inputs prevent initial ownership while the replica serves accepted state.
-Explicit authority transitions still require implementation. Native integration and delivery qualification remain open.
+
+Candidate `5066856d` supports explicit subscriber authority and policy changes without carrying alias history across those contexts.
+Native parent integration completes at `d1bb47e1`. Combined delivery qualification remains open.
 Direct underlying writes, deleted state, and restored older backups require separate recovery procedures.
 
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.
@@ -3021,7 +3023,7 @@ Packet privacy and replay protection remain required. The connector refuses dele
 Product code enables no privilege and changes no time setting.
 
 The [production proof](../../plans/proof/starport-production-catalog/csp4/windows-rpc-2026-09-11/verification.json) records the reviewed publication and both passing Windows access preflights.
-Full native and repository checks remain in progress.
+All six native runtime jobs pass. The repository Verification Gate remains in progress.
 
 ### Authority origin configuration contract
 
@@ -3046,6 +3048,11 @@ Subscriber authority pins remain separate from the origin declaration.
 The [implementation proof](../../plans/proof/starport-production-catalog/csp4/origin-settings-2026-09-11/verification.json) records local verification and remaining delivery gates.
 The [follower adoption proof](../../plans/proof/starport-production-catalog/csp4/origin-adoption-2026-09-11/verification.json) records local startup, periodic adoption, and running-follower input checks.
 The [restart proof](../../plans/proof/starport-production-catalog/csp4/origin-restart-2026-09-11/verification.json) records local ownership checks with missing and matching retained inputs.
-Explicit authority transitions and delivery qualification remain incomplete.
+
+The [transition proof](../../plans/proof/starport-production-catalog/csp4/authority-transition-2026-09-11/verification.json) records replacement approval, failed publication, recovery, and retained restart.
+A changed source authority or policy starts a new permission context. Its predecessor remains diagnostic until the replacement supplies valid approval.
+Alias history remains mandatory within one authority and policy. A separately authorized replacement supplies its own complete alias inventory.
+Combined delivery qualification remains incomplete.
+
 CSP11 retains shared input recovery, acquisition capability equivalence, and atomic fleet fencing.
 Starport must adopt the compatible published contract and pass its consumer acceptance checks before production qualification.
