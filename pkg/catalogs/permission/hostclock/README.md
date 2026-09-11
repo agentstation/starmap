@@ -13,7 +13,13 @@ macOS uses `ntp_gettime` and `CLOCK_MONOTONIC_RAW`.
 Apple defines the time error fields in [XNU's NTP interface](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/kern_ntptime.c).
 Its elapsed counter uses [mach_continuous_time](https://developer.apple.com/documentation/kernel/1646199-mach_continuous_time), which includes system sleep.
 
-Windows currently returns no usable observation or elapsed counter.
+Windows uses the Go runtime's interrupt-time counter through `time.Since`.
+The Go 1.25.12 and 1.26.6 runtimes read Windows interrupt time on AMD64 and ARM64.
+Microsoft describes sleep and hibernation accounting in [Interrupt Time](https://learn.microsoft.com/en-us/windows/win32/sysinfo/interrupt-time).
+Native tests compare elapsed intervals with `QueryInterruptTime` and check allocations.
+These interval checks do not simulate system sleep or qualify a counter error bound.
+
+Windows still returns no usable UTC observation.
 These adapters do not select a production error profile or start background work.
 Native CI and complete authority deployment qualification remain required.
 
