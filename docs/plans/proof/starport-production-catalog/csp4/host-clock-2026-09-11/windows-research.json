@@ -1,0 +1,82 @@
+{
+  "task": "CSP4",
+  "status": "Research only. No Windows adapter or dependency changes.",
+  "candidate": "Read W32Time QueryStatus through a local named pipe and validate the pipe server against the running W32Time service.",
+  "verified_facts": [
+    "MS-W32T specifies an unauthenticated RPC interface at PIPE/W32TIME. QueryStatus is opnum 6. This does not establish local caller access or peer identity.",
+    "go-msrpc v1.5.4 supplies generated QueryStatus decoding and explicit WithInsecure RPC authentication selection. Its ordinary named-pipe transport uses SMB; a direct local pipe adapter remains unverified.",
+    "The TCP custom dialer accepts net.Conn. Reusing that stream path for a local named pipe would require wire-contract, no-network, deadline, and close qualification before adoption.",
+    "go-winio v0.6.2 supplies context-bounded pipe connection, anonymous impersonation by default, and an Fd method on returned pipe connections.",
+    "W32Time SYNC state is 2. HOLD, SPIKE, UNSET, and unknown values need explicit refusal policy.",
+    "LastSyncTicks is an absolute Windows UTC timestamp in 100ns units since 1601. TimeLastGoodSync is an elapsed duration in 100ns units. Do not interchange these fields.",
+    "RootDelay, RootDispersion, and SystemPhaseOffset use 100ns units. ClockPrecision is a power-of-two exponent in seconds."
+  ],
+  "unverified": [
+    "Direct local pipe access under local developer and service accounts",
+    "Trustworthy service process and pipe process identity checks, including shutdown and PID changes",
+    "RPC framing, strict size/deadline bounds, cancellation, and teardown without SMB or TCP traffic",
+    "Native status field behavior and a conservative error bound that includes source age",
+    "A Windows counter that includes sleep and its operational error profile"
+  ],
+  "sources": [
+    {
+      "worktree": "/Users/jack/src/github.com/oiweiwei/go-msrpc",
+      "release": "v1.5.4",
+      "commit": "828bda6fc98d96f97999a87df33b497c47462671",
+      "files": [
+        {
+          "path": "go.mod",
+          "sha256": "4c4a31057876ff5f501b18af98bdf04f1ae0e6f68ab9fac5ed772c17bbffb304"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "2b94170e5064c3af92c74abb2682500b5da30d2842f86c78a8a4a3d363571120"
+        },
+        {
+          "path": "dcerpc/conn.go",
+          "sha256": "ecbb79bebb5695f35826192177f5d35427aca074e292847cdd9250682d6712e4"
+        },
+        {
+          "path": "dcerpc/options.go",
+          "sha256": "cf456d57892b2799f6041dbf4ae42c59a5ffd2734aeeb2c634e9797df22c9d1f"
+        },
+        {
+          "path": "dcerpc/transport_settings.go",
+          "sha256": "fc34b6dd33db36d631feeeba63a87834eec760ed64f945ab2603ac8d5864874b"
+        },
+        {
+          "path": "msrpc/w32t/w32t.go",
+          "sha256": "a543dd7d0781f49e49fd4c34f2a2d96aa76c56c37d45925cf6866c5f541ecc81"
+        }
+      ]
+    },
+    {
+      "worktree": "/Users/jack/src/github.com/microsoft/go-winio",
+      "release": "v0.6.2",
+      "commit": "3c9576c9346a1892dee136329e7e15309e82fb4f",
+      "files": [
+        {
+          "path": "go.mod",
+          "sha256": "47fb19990ebb31954f3aa784ff45f4c93a9e86ac3e1297d7ca87c614aeffe2cb"
+        },
+        {
+          "path": "pipe.go",
+          "sha256": "5d44e412369336bc4d888a7032d1c2c87f6295c8ca3457563d56dd669eed6b1a"
+        },
+        {
+          "path": "file.go",
+          "sha256": "ddb8d81357fb9c5c1a8cf9f1de7490437df227785ee9ab82d3d94d06143b19c4"
+        }
+      ]
+    }
+  ],
+  "references": [
+    "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/e0803f6b-e175-4b87-ba63-bbcf51175655",
+    "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/f60ebce0-df96-4c96-b40b-fdbd34a2c936",
+    "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/1da649d7-3edf-4a9a-98c2-907ecacd1633",
+    "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/b4abb4b0-6d6e-41e4-bd41-d54980d0598a",
+    "https://github.com/oiweiwei/go-msrpc/releases/tag/v1.5.4",
+    "https://github.com/microsoft/go-winio/releases/tag/v0.6.2"
+  ],
+  "next_action": "Prototype the local pipe RPC transport in isolated scratch before changing product dependencies. Validate the Windows clock evidence profile at its owning boundary. Keep the current unsupported fallback until the native adapter qualifies."
+}
