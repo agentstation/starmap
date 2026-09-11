@@ -43,6 +43,10 @@ type Composition struct {
 	// deployment. A single instance needs none.
 	LeaseStore runtime.LeaseStore
 
+	// OriginStore supplies the selected catalog store for an explicit origin declaration.
+	// Composition constructs no store and starts no storage I/O.
+	OriginStore storage.Store
+
 	// Base holds options that the process supplies before every setting. A
 	// canonical setting overrides a base option of the same name.
 	Base []runtime.Option
@@ -78,6 +82,19 @@ func (c Composition) Options() ([]runtime.Option, error) {
 	}
 	if monitor != nil {
 		options = append(options, runtime.WithPermissionClockMonitor(monitor))
+	}
+	if _, present := c.Config.Value(AuthorityOrigin); present {
+		options = append(options, runtime.WithoutAuthorityOrigin())
+		origin := c.Config.AuthorityOrigin
+		if origin.Enabled {
+			if c.OriginStore == nil || monitor == nil {
+				return nil, &errors.ConfigError{Component: "catalog authority origin", Message: "an enabled origin requires a catalog store and a configured native permission clock"}
+			}
+			options = append(options, runtime.WithAuthorityOrigin(c.OriginStore, runtime.OriginConfig{
+				AuthorityID: origin.AuthorityID, PolicyID: origin.PolicyID, Bootstrap: origin.Bootstrap,
+				PermissionLifetime: origin.PermissionLifetime, Clock: monitor.Read,
+			}))
+		}
 	}
 	if source != nil {
 		options = append(options, runtime.WithSource(source))

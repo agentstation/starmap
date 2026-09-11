@@ -91,6 +91,14 @@ func catalogFileValue(descriptor catalogconfig.Descriptor, value any) (string, e
 		if descriptor.Type == catalogconfig.ListValue {
 			return strings.Join(typed, ","), nil
 		}
+	case map[string]any:
+		if descriptor.Type == catalogconfig.AuthorityOriginValue {
+			encoded, err := json.Marshal(typed)
+			if err != nil {
+				return "", invalid
+			}
+			return string(encoded), nil
+		}
 	}
 	return "", invalid
 }

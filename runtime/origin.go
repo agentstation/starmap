@@ -50,6 +50,17 @@ func WithAuthorityOrigin(store storage.Store, config OriginConfig) Option {
 			return err
 		}
 		o.origin = &authorityOrigin{config: config, publisher: publisher, issuer: issuer, store: &originPublicationStore{Publisher: publisher, bootstrap: config.Bootstrap}}
+		o.originStore = store
+		return nil
+	}
+}
+
+// WithoutAuthorityOrigin clears earlier origin issuance and publication options.
+// The selected store remains in use. Its authority still requires an explicit transition
+// before ordinary startup, or a matching require_authority subscriber configuration.
+func WithoutAuthorityOrigin() Option {
+	return func(o *options) error {
+		o.origin = nil
 		return nil
 	}
 }

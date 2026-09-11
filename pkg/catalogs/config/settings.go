@@ -129,6 +129,10 @@ type setting struct {
 // canonical name, the starmap source included. Only Composition rejects a
 // source that this build supplies no implementation for.
 type Config struct {
+	// AuthorityOrigin holds the selected origin declaration. Value reports its presence.
+	// The hosting application supplies its catalog store and qualified clock.
+	AuthorityOrigin OriginSettings
+
 	// PermissionClock selects native observations and declared bounds for this host.
 	// The hosting application composes and validates this profile before runtime startup.
 	PermissionClock profile.Config
@@ -191,6 +195,7 @@ type Config struct {
 // stable, so a report and a test read one sequence.
 func table() []setting {
 	return append([]setting{
+		{name: AuthorityOrigin, flag: "catalog-authority-origin", capture: captureAuthorityOrigin},
 		{
 			name: Source, flag: "catalog-source", capture: captureSourceKind,
 			apply: stringOption(runtime.WithCatalogSource),

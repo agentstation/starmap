@@ -103,6 +103,29 @@ An unchanged flag does not override another input.
 The parser trims surrounding whitespace and preserves explicit false, zero, and permitted empty values.
 An empty value fails unless its descriptor permits it.
 
+## Authority origin configuration
+
+An internal Starmap origin publishes one permitted catalog and issues permission receipts.
+Set catalog_authority_origin as one YAML object with enabled, authority_id, policy_id, bootstrap, and permission_lifetime fields.
+The environment and CLI accept the same object as JSON.
+Each higher-priority declaration replaces the complete object.
+Authority and policy identities never inherit from a replaced declaration.
+
+An enabled origin requires both identities, the selected catalog store, and a configured native permission clock.
+The application uses its canonical catalog store path.
+
+Omitted bootstrap is false. Set it explicitly to adopt an existing ordinary catalog.
+Omitted permission_lifetime selects five minutes. An explicit duration must exceed zero and cannot exceed five minutes.
+The native clock settings require qualified bounds for the host.
+Unknown time prevents permission issuance while catalog diagnostics remain available.
+
+Set enabled to false as the object's only field to disable origin issuance.
+This setting does not remove the stored authority or permit ordinary catalog fallback.
+An existing authoritative store still requires a matching authority mode or an explicit transition.
+Omitting the whole setting preserves origin options supplied by a library host.
+A subscriber uses catalog_source_authority_id and catalog_source_policy_id instead.
+It cannot also publish as an origin.
+
 ## Source and credential boundaries
 
 The source group contains the kind, endpoint, repository, channel, signing workflow, and transport credentials.

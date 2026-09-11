@@ -12,10 +12,13 @@ import (
 // acquisitionPolicyClientOptions gives an explicit policy a writable memory default.
 // A caller-supplied store takes precedence over this process-local store.
 func (o options) acquisitionPolicyClientOptions() []starmap.Option {
-	if o.origin == nil && o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
+	if o.originStore == nil && o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
 		return o.client
 	}
 	selected := append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
+	if o.originStore != nil {
+		selected = append(selected, starmap.WithCatalogStore(o.originStore))
+	}
 	if o.origin != nil {
 		selected = append(selected, starmap.WithCatalogStore(o.origin.store))
 	}

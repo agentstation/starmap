@@ -17,6 +17,7 @@ import (
 // canonical name without an entry here fails TestEveryCanonicalNameMapsToConfiguration.
 func sampleValues() map[string]string {
 	return map[string]string{
+		settings.AuthorityOrigin:                         `{"enabled":false}`,
 		settings.Source:                                  "embedded",
 		settings.SourceURL:                               "https://example.test/catalog",
 		settings.SourceAPIKey:                            "placeholder",
@@ -83,7 +84,7 @@ func TestEveryCanonicalNameMapsToConfiguration(t *testing.T) {
 		}
 		wantOptions := 1
 		switch name {
-		case settings.PermissionClockSource, settings.PermissionClockRefreshInterval,
+		case settings.AuthorityOrigin, settings.PermissionClockSource, settings.PermissionClockRefreshInterval,
 			settings.PermissionClockMaxAge, settings.PermissionClockMaxDriftPPM,
 			settings.PermissionClockCounterUncertainty, settings.PermissionClockWindowsMaxSourceAge,
 			settings.PermissionClockWindowsMaxSourceDriftPPM, settings.PermissionClockWindowsSourceUncertainty:

@@ -132,7 +132,14 @@ func (a *App) composition(extra []runtime.Option) (settings.Composition, error) 
 	}
 	resolvedExtras = append(resolvedExtras, runtime.WithSourceAcquirer(sourceAcquirer))
 	resolvedExtras = append(resolvedExtras, extra...)
-	return settings.Composition{Config: a.catalogSettings, Acquirer: acquirer, Base: base, Extra: resolvedExtras}, nil
+	composition := settings.Composition{Config: a.catalogSettings, Acquirer: acquirer, Base: base, Extra: resolvedExtras}
+	if a.catalogSettings.AuthorityOrigin.Enabled {
+		composition.OriginStore, err = a.catalogStore()
+		if err != nil {
+			return settings.Composition{}, err
+		}
+	}
+	return composition, nil
 }
 
 // baseCatalogOptions returns the options that this process supplies before any

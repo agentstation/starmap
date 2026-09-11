@@ -8,6 +8,7 @@ import (
 	"github.com/agentstation/starmap/internal/fleet"
 	"github.com/agentstation/starmap/pkg/catalogs/permission"
 	"github.com/agentstation/starmap/pkg/catalogs/remote"
+	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
@@ -34,6 +35,7 @@ const (
 // offline client options that Open forwards to the client under it.
 type options struct {
 	origin       *authorityOrigin
+	originStore  storage.Store
 	source       SourcePolicy
 	sourceToken  string
 	sourceAPIKey string

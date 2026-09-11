@@ -31,6 +31,8 @@ const (
 	ListValue ValueType = "string-list"
 	// ProviderBindingsValue accepts a JSON array of provider acquisition bindings.
 	ProviderBindingsValue ValueType = "provider-bindings"
+	// AuthorityOriginValue accepts one JSON object that selects an authority origin.
+	AuthorityOriginValue ValueType = "authority-origin"
 )
 
 // Scope identifies the authority that owns a setting.
@@ -89,6 +91,10 @@ func describe(entry setting) Descriptor {
 	source := runtime.DefaultSourcePolicy()
 	acquisition := runtime.DefaultAcquisitionPolicy()
 	switch entry.name {
+	case AuthorityOrigin:
+		d.Description = "Selects one complete authority origin declaration. Disabling issuance preserves the store's authority and requires an explicit transition before ordinary startup."
+		d.Type, d.Mutability, d.Default = AuthorityOriginValue, "restart", `{"enabled":false}`
+		d.DefaultMeaning = "omission preserves host origin options. An explicit declaration replaces the complete origin selection"
 	case Source:
 		d.Description = "Selects the upstream catalog source."
 		d.Default = string(source.Kind)

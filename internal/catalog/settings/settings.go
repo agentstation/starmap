@@ -10,6 +10,7 @@ import (
 // Canonical names remain available to application composition.
 const (
 	Prefix                                  = catalogconfig.Prefix
+	AuthorityOrigin                         = catalogconfig.AuthorityOrigin
 	Source                                  = catalogconfig.Source
 	SourceURL                               = catalogconfig.SourceURL
 	SourceAPIKey                            = catalogconfig.SourceAPIKey

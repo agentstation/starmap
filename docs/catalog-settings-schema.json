@@ -2,6 +2,32 @@
   "schema_version": 1,
   "settings": [
     {
+      "description": "Selects one complete authority origin declaration. Disabling issuance preserves the store's authority and requires an explicit transition before ordinary startup.",
+      "id": "catalog.authority.origin",
+      "name": "STARMAP_CATALOG_AUTHORITY_ORIGIN",
+      "key": "catalog_authority_origin",
+      "flag": "catalog-authority-origin",
+      "environment": [
+        "STARMAP_CATALOG_AUTHORITY_ORIGIN"
+      ],
+      "type": "authority-origin",
+      "unit": "",
+      "default": "{\"enabled\":false}",
+      "default_meaning": "omission preserves host origin options. An explicit declaration replaces the complete origin selection",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "restart",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-authority-origin"
+    },
+    {
       "description": "Selects the upstream catalog source.",
       "allowed_values": [
         "public",

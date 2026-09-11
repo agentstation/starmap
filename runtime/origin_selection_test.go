@@ -64,3 +64,29 @@ func TestOriginPublicationRefusesImplicitAuthorityRemoval(t *testing.T) {
 		})
 	}
 }
+
+func TestWithoutAuthorityOriginPreservesSelectedStore(t *testing.T) {
+	store := storage.NewMemory()
+	base := []Option{WithStateDirectory(privateRuntimeDirectory(t)), WithCatalogSource("embedded"), WithAcquisitionEnabled(false), WithSourcePollInterval(0)}
+	origin := openTestRuntime(t, append(base, WithAuthorityOrigin(store, originTestConfig()))...)
+	before, err := store.Current(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := origin.Close(); err != nil {
+		t.Fatal(err)
+	}
+	opts := append(base, WithAuthorityOrigin(store, originTestConfig()), WithoutAuthorityOrigin(), WithClientOptions(starmap.WithCatalogStore(storage.NewMemory())))
+	ordinary, err := Open(t.Context(), opts...)
+	if ordinary != nil {
+		_ = ordinary.Close()
+	}
+	var configErr *errors.ConfigError
+	if !stderrors.As(err, &configErr) || configErr.Component != "catalog authority" {
+		t.Fatalf("cleared origin failed to retain authority guard: %v", err)
+	}
+	after, err := store.Current(t.Context())
+	if err != nil || !reflect.DeepEqual(before, after) {
+		t.Fatal("disabling origin changed the selected store")
+	}
+}

@@ -315,6 +315,15 @@ func (a *App) catalogClientOptions() ([]starmap.Option, error) {
 }
 
 func (a *App) catalogStoreOption() (starmap.Option, error) {
+	store, err := a.catalogStore()
+	if err != nil {
+		return nil, err
+	}
+	return starmap.WithCatalogStore(store), nil
+}
+
+// catalogStore selects the same store for ordinary clients and authority origins.
+func (a *App) catalogStore() (storage.Store, error) {
 	paths, err := a.ResolvedPaths()
 	if err != nil {
 		return nil, err
@@ -330,7 +339,7 @@ func (a *App) catalogStoreOption() (starmap.Option, error) {
 	if err != nil {
 		return nil, errors.WrapResource("create", "catalog store", path, err)
 	}
-	return starmap.WithCatalogStore(store), nil
+	return store, nil
 }
 
 // MigrateCatalogWorkspace explicitly relocates the pre-plan catalog store
