@@ -258,6 +258,10 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
 	}
 
+	if err := runtime.startPermissionClock(); err != nil {
+		runtime.abort()
+		return nil, err
+	}
 	if err := runtime.prepareSourceStartup(ctx); err != nil {
 		runtime.abort()
 		return nil, err

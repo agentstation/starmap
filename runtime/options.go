@@ -72,6 +72,7 @@ type options struct {
 	random                     Random
 	permissionClockUncertainty func() (time.Duration, bool)
 	permissionClockReading     func() permission.ClockReading
+	permissionClockMonitor     *permission.ClockMonitor
 	publicationCapability      *authorityPublicationCapability
 
 	// scheduleTimer paces the periodic workers. It stays unexported and nil in
@@ -130,6 +131,9 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if r.permissionClockMonitor != nil && (r.permissionClockReading != nil || r.permissionClockUncertainty != nil) {
+		return &errors.ValidationError{Field: "permission_clock", Message: "select either a managed monitor or an external clock callback"}
+	}
 	if r.permissionClockReading != nil && r.permissionClockUncertainty != nil {
 		return &errors.ValidationError{Field: "permission_clock", Message: "select either a complete clock sample or the legacy uncertainty callback"}
 	}
