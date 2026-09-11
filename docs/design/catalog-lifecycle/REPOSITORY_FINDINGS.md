@@ -2175,3 +2175,13 @@ Lint, vet, ago, generated documentation, and the 1,480-file prose check pass.
 The monitor keeps source queries outside admission reads. Failed observations clear permission time and remain visible in local status.
 Cancellation prevents late samples from restoring evidence. Successful cached reads pass a zero-allocation assertion.
 Canonical settings and Starmap/Starport host composition still require implementation.
+
+### Managed runtime clock candidate
+
+Local commit `5f4ce61d` gives one permission clock monitor to the connected runtime.
+The [runtime proof](../../plans/proof/starport-production-catalog/csp4/clock-runtime-2026-09-11/verification.json) records six focused race cases per toolchain and 65 related runtime cases.
+Runtime lint and vet, repository ago, generated documentation, and 1,482-file prose pass.
+
+Failed startup cancels an owned monitor. A duplicate ownership attempt preserves the first runtime.
+An origin can use the managed clock for receipt issuance. Successful cached runtime reads allocate zero memory.
+The configuration parser and the CLI/Starport hosts do not yet select a managed clock.

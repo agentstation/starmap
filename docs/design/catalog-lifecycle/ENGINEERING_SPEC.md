@@ -1883,6 +1883,18 @@ Successful cached reads allocate zero memory. Status reports worker activity, cu
 The [lifecycle proof](../../plans/proof/starport-production-catalog/csp4/clock-lifecycle-2026-09-11/verification.json) covers cancellation, expiry, recovery, and concurrent lifecycle calls.
 Application settings and host composition still require implementation. This monitor does not qualify native clock bounds.
 
+Candidate `5f4ce61d` adds `runtime.WithPermissionClockMonitor` for explicit runtime ownership.
+Option resolution starts no clock work and rejects a managed monitor alongside either external clock callback.
+Open starts the selected monitor before source startup. A failed Open cancels a monitor it started.
+
+A runtime cannot claim a monitor that another runtime owns. A rejected claim leaves the original owner intact.
+Close joins the monitor worker inside the runtime's existing five-second shutdown bound.
+An origin can supply the same monitor's `Read` method to `OriginConfig.Clock` for receipt issuance.
+
+`Runtime.PermissionClockStatus` returns local diagnostics without a new observation. Public hosts must redact its error details.
+The [runtime clock proof](../../plans/proof/starport-production-catalog/csp4/clock-runtime-2026-09-11/verification.json) covers ownership, cleanup, recovery, and receipt issuance.
+Canonical host settings, native profiles, and CLI/Starport composition still require implementation.
+
 `hostclock.Observe` now supplies explicit Linux and macOS kernel observations.
 `hostclock.Elapsed` reads a counter that includes system sleep without file or network I/O.
 The [native observation proof](../../plans/proof/starport-production-catalog/csp4/host-clock-2026-09-11/verification.json) records local binding checks and refusals.

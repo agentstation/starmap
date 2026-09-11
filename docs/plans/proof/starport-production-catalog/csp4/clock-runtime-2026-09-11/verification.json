@@ -1,0 +1,168 @@
+{
+  "task": "CSP4",
+  "status": "PASS_managed_runtime_clock_contracts_host_configuration_unverified",
+  "source_commit": "5f4ce61dfd26e8a8890dc84423ef06e6b4151775",
+  "base": "94988d3a06bbe98b14752c3df8a2cac20de3fdea",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
+  "branch": "codex/catalog-clock-lifecycle",
+  "publication": "Local committed candidate. Native parent 5418420c remains unpublished with repository verification running. No new task completion credit.",
+  "contract": [
+    "WithPermissionClockMonitor accepts one caller-constructed unstarted monitor. Option resolution starts no clock work and rejects either external permission-clock callback with a managed monitor.",
+    "Open starts the monitor before required source startup and takes ownership only after successful monitor startup.",
+    "Failed Open cancels its owned monitor. A failed attempt to claim a monitor owned by another runtime preserves the first owner.",
+    "Runtime Close joins the monitor worker inside its existing five-second bound. The monitor refuses cached reads when the runtime context ends.",
+    "ReadPermissionClock uses only the managed cache. Successful reads pass a zero-allocation assertion.",
+    "An origin can supply the same monitor.Read to OriginConfig.Clock. Receipt issuance and shutdown use that clock.",
+    "PermissionClockStatus exposes local diagnostics without an observation. Public hosts must redact LastError."
+  ],
+  "checks": {
+    "fail_before": "red.log.gz reproduces the absent runtime option and status method.",
+    "initial_fixture_failure": "focused-race.jsonl.gz records three passes followed by a panic in the startup-failure fixture. Its one-second query bound permitted a legitimate scheduled retry to close the same signal twice.",
+    "fixture_correction": "The runtime lifecycle fixture now permits a one-minute query, uses one-time signals, and honors source cancellation. Production code did not change for this correction.",
+    "go126_focused_race": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "go125_focused_race": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "go126_related_runtime_race": {
+      "pass": 65,
+      "fail": 0,
+      "skip": 0,
+      "scope": "Existing authority-clock, authority-runtime, origin, close, and new monitor lifecycle cases. Includes directory ownership retention after close timeout."
+    },
+    "static": "Runtime lint and vet pass. Repository ago passes with zero findings. Generated runtime documentation and diff checks pass.",
+    "prose": "Complete maintained prose check: 1482 files, zero diagnostics.",
+    "canonical_documents": "PASS: 141 files, zero prose diagnostics. Plan links, source hashes, evidence bytes, unchanged acceptance contracts, and the 283-word resume pass."
+  },
+  "limitations": [
+    "Canonical settings, native clock profiles, and CLI/Starport application composition remain unimplemented.",
+    "This candidate has no complete repository verifier run or pre-PR review. Complete those after final host composition before publication.",
+    "The original native-clock candidate has its own active repository verifier in session 44964. Do not edit that worktree until it ends.",
+    "Shared-store followers, explicit authority transitions, and four mapped Starport checks remain UNVERIFIED."
+  ],
+  "running_checks": [],
+  "source_files": [
+    {
+      "path": "runtime/clock_monitor.go",
+      "sha256": "f228f68d6869739cea4a81a0d27db6ee10c0edc2a050a81b632c214fdb0f0837"
+    },
+    {
+      "path": "runtime/clock_monitor_test.go",
+      "sha256": "e660cabb1da23a87ba705c54b2470cac2d236387daf2aac82ea3d1873a135f42"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "28d6e216fd50fc52af1f324c4fdbcc8d09dedc3eda7fb862736743bd731261bf"
+    },
+    {
+      "path": "runtime/authority_clock.go",
+      "sha256": "1e9da8c5bd7f9f8dc92ceaf9ffe8426b047f41391df4b0f1a8de1739ab6eb145"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "fd59f34ac54b11dcc9b93509858df4d2f52d1f7d10d8f86634739e370695f883"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "0e096d185d1ea281563e95343a42419734ada951a39be8f7d13d0b1aefa39b89"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "commit.log.gz",
+      "sha256": "a6aebbbdebd1428e36895b5440bf373c972bc590ebf10561683a3fd5fe326081",
+      "decoded_sha256": "e31501eb541b302eb473e95182b635e71f7d18653fcd99c7a60af65dfb2af7c3"
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "focused-race.jsonl.gz",
+      "sha256": "7d54df9e82c9d10296e9a03741a7a0eb17463a7c9c91614f5dcc8ac2bfbee933",
+      "decoded_sha256": "a7e2a8e3dcac86a8b61cfc254bb6376c7eb151f6447017ed4d1c91a0ae5e7279"
+    },
+    {
+      "path": "generate.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-focused-fixed-race.jsonl.gz",
+      "sha256": "4ad57378e6819336168d40c72db9f17cc338a4c4b62b488f6b993dac3a7acb6c",
+      "decoded_sha256": "79303b61ee4d28bf16958e14bdafa924f8e7ac8b57b5359cee00b245c6ac6c74"
+    },
+    {
+      "path": "go1.26.6-focused-fixed-race.jsonl.gz",
+      "sha256": "d898ad4682fe63cd279983e981e0b121c88734681e5991f9deac424d89bc3678",
+      "decoded_sha256": "4af9af5e2b33e469e36d0b165dd43caa1cc5dfcab87f23142585b4ee07e20165"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "5b603e335bb40deb4734f80ed774d90ca7b551dc4dccf93990ed4fc150d20119",
+      "decoded_sha256": "c88b7f1d557df1408789cb34f15af7336a46e3eac74d287207b40699a5b399e4"
+    },
+    {
+      "path": "red.log.gz",
+      "sha256": "61fbe8922e33d6b8f2577e4f3a3c27440e316c062194b6fbb9b6339b9b2f257e",
+      "decoded_sha256": "e73e99c4c16a87b5894313a21483f10bdd72e85665542716c040882143ae3aca"
+    },
+    {
+      "path": "related-check-command.json.gz",
+      "sha256": "ff8d82f8f875d9dc00e12bc5f077ce46e66e59ccc6ef0c6df3b2b335556e92ee",
+      "decoded_sha256": "ac473cd6f289f1d896d16360abaef62ce4da704ac032e594fb0d7881fe3127c0"
+    },
+    {
+      "path": "related-runtime-race.jsonl.gz",
+      "sha256": "ce6eff88f6f5dc1a0584362daeaecc5123d4ae9c89157b9ef58e97b5ef6b0271",
+      "decoded_sha256": "dddb1e73c671db8fff1d7b5ae62d41e404fd93896e324dc653de903da9f3dc53"
+    },
+    {
+      "path": "static-checks.json.gz",
+      "sha256": "e1242ef33dd7c30f3951d44540f513695fa779e04ca1f97a9802c7d94eedf066",
+      "decoded_sha256": "0f1bc72bb1388b4686cdf4c5ac82f15cdfe30d4f5ad1bc5f5b7b9d850bf621eb"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "clock-runtime-prose.log.gz",
+      "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
+      "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    },
+    {
+      "path": "open-starmap-clock-runtime.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "decoded_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "open-starport-clock-runtime.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "decoded_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "queue_check": {
+    "captured_at": "2026-09-11T08:13:30.974400+00:00",
+    "starmap_open_prs": 0,
+    "starport_open_prs": 0,
+    "starmap_main": "852a548c4959e98af443f487922b9708fb594a91"
+  }
+}

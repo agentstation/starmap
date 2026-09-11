@@ -13,6 +13,10 @@ Clock lifecycle `94988d3a` adds explicit host refresh work in a separate clean w
 Its [proof](csp4/clock-lifecycle-2026-09-11/verification.json) records 193 permission race events per toolchain and passing static checks.
 Settings, native profiles, host composition, and four Starport consumer checks remain open.
 
+Runtime integration `5f4ce61d` now owns explicit monitor startup and shutdown.
+Its [proof](csp4/clock-runtime-2026-09-11/verification.json) records six focused cases per toolchain and 65 related runtime cases.
+Static checks and the 1,482-file prose check pass. Host configuration and native profiles remain open.
+
 ## Earlier runtime integration checkpoints
 
 The recorded combined worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot`, branch `codex/catalog-authority-snapshot`, at clean `e3943c97`.
