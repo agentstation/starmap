@@ -6,22 +6,23 @@
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 108,
-  "new_evidence_artifacts": 347,
+  "new_evidence_artifacts": 361,
   "new_commit_source_files": 101,
-  "resume_words": 340,
+  "resume_words": 272,
   "current_source": "52970f7f2f9cbf7f6e68f62e221328ed68ccc343",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
   "clean_source": true,
-  "running_implementation_commands": [
+  "running_implementation_commands": [],
+  "next_action": "Qualify PR150 at e3943c97, then mark ready and merge. All 41 local verifier stages have evidence. PR149 merged with fifteen successful checks. Continue native clocks and configured Starport permission composition.",
+  "external_running_checks": [
     {
-      "session_id": 86818,
-      "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
-      "command": "PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jack/go/bin GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 CATALOG_GIT_FIXTURE_REQUIRED=1 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 make verify",
-      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/make-verify.log"
+      "pr": 150,
+      "repository": "agentstation/starmap",
+      "head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+      "status": "Six native jobs and required checks run.",
+      "owner": "Catalog plan executor"
     }
   ],
-  "next_action": "Complete verification at unchanged tree e3943c97, then required review and publication. PR149 merged with fifteen successful checks. Continue native clocks and configured Starport permission composition.",
-  "external_running_checks": [],
   "public_acceptance_work": {
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
     "branch": "codex/catalog-public-acceptance",

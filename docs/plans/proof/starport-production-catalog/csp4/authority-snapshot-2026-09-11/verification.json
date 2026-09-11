@@ -154,6 +154,90 @@
       "sha256": "14ab88f44cc05e79abf83ba9b0313c6ead0d2f4b56a8a316a3dbd87c2d0dd82b",
       "decoded_sha256": "fd49aa64ee58aa94191fefe59c904b4bc0f055555ecc276a2bc8e4ae6ae0513f",
       "decoded_bytes": 1665550
+    },
+    {
+      "path": "make-verify.log.gz",
+      "sha256": "7e2cfd57f319e6e8ee4843cfc770bc5626a072a96276245874658a42188e51fe",
+      "decoded_sha256": "06533c788757731f6e44127f1df00666f70b2edcf701267931f7755046368c2d",
+      "decoded_bytes": 29530
+    },
+    {
+      "path": "install-pinned-lint.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "verify-remainder.sh.gz",
+      "sha256": "d50d4184ed393191ee9ed3d15512d813a7b0d52c1e45f16cd914592e14f271e3",
+      "decoded_sha256": "d7ac41ae747ae710a5fef97fde5a328690a5ebf5ff272ee5bbd13e7d4238d4ef",
+      "decoded_bytes": 3626
+    },
+    {
+      "path": "verify-remainder.log.gz",
+      "sha256": "4143f07dc1312d139cc281b1a086497a8682f9dce06310323a7f5bc1c18206bc",
+      "decoded_sha256": "52fa2add9a180ceaa1d8fd139a6fb83c83cfa5ef7b2bb674a047b6cb8b2eb96e",
+      "decoded_bytes": 43709
+    },
+    {
+      "path": "verification-recovery-plan-prose.log.gz",
+      "sha256": "b47960693cd702eb7f9a012ad3d27c6e1eb111a664cb7ef80ff0cc1c72a666ac",
+      "decoded_sha256": "5b586ece3a810aba535dbd2f23288bce298c5367840a675462453b1ae793f171",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "snapshot-reviewed-preparation-prose.log.gz",
+      "sha256": "263f11e31ba5b1157757bc5538ae5d450f4e2c27ee61e4ad340b8cced64420d8",
+      "decoded_sha256": "edf6cd6cc8e2ca9d1d7be5b02f6981e70cb4cdcc0c6bf8bbff4882210957e12d",
+      "decoded_bytes": 789
+    },
+    {
+      "path": "review.json.gz",
+      "sha256": "58db74b597f21c798a9aa031dca52b7afa0da5aa9014d44a6011a1dd4d899355",
+      "decoded_sha256": "dfbe1e6a952f18bc86c1ca1c98401e4010b9b15eb45a67ec860d9d354987dbb2",
+      "decoded_bytes": 247
+    },
+    {
+      "path": "review.log.gz",
+      "sha256": "5533073cf520b85f2010cab48c5a1fb53cb1d33ed489cffb03c7ee70b54ae6d3",
+      "decoded_sha256": "f3a00470b99b510942f81787746404dc0c7760ba46ecc508f6e9ebee9390a4ec",
+      "decoded_bytes": 783
+    },
+    {
+      "path": "review.txt.gz",
+      "sha256": "09b2e00fdc30fa9e497a0db0344a2221baf9254ade1b99933d7b1163c91a8ba4",
+      "decoded_sha256": "bd7178e532912d484d271abc1f5e62372287aca94efb2f914907ba0a1f814295",
+      "decoded_bytes": 221
+    },
+    {
+      "path": "snapshot-review-preparation-prose-corrected.log.gz",
+      "sha256": "b47960693cd702eb7f9a012ad3d27c6e1eb111a664cb7ef80ff0cc1c72a666ac",
+      "decoded_sha256": "5b586ece3a810aba535dbd2f23288bce298c5367840a675462453b1ae793f171",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "pr150.json.gz",
+      "sha256": "afff3c293d444103f73faf2cee65a5591eb63fcc1cd8fa927ff7abf68ad17699",
+      "decoded_sha256": "fac479b438580943a9b349bfe8b2f027b9c458c03f921e4271d3b7c82b292eac",
+      "decoded_bytes": 4701
+    },
+    {
+      "path": "queue-starmap-pr150.json.gz",
+      "sha256": "5cc29aec9e805879d3599fae74f690f14002560a94b729028d06e8f29db835d3",
+      "decoded_sha256": "0b16c1a121ab4707f4253c77acb0e01b77ced8750deb84b346041c0a17f6d6a4",
+      "decoded_bytes": 210
+    },
+    {
+      "path": "queue-starport-pr150.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "decoded_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "decoded_bytes": 3
+    },
+    {
+      "path": "pr150-publication-plan-prose.log.gz",
+      "sha256": "9bc548cd57c4c45bbffc23dfd7a61dcc3bdd0358dffff7a15ff5e305967f5935",
+      "decoded_sha256": "4605efbb3f10695e1da7c76c2b1fe2dbedfb90086dca8c266a747e898a88bb49",
+      "decoded_bytes": 558
     }
   ],
   "contract": [
@@ -199,19 +283,173 @@
     "docs": "Complete generation and documentation check pass.",
     "generation_retry": "Default make godoc selected Devbox and started package setup. The task stopped that command with exit 143, removed its ten generated script files, and used the installed tools with HAS_DEVBOX=."
   },
-  "running_checks": [
-    {
-      "session_id": 86818,
-      "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
-      "command": "PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jack/go/bin GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 CATALOG_GIT_FIXTURE_REQUIRED=1 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 make verify",
-      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/make-verify.log"
-    }
-  ],
+  "running_checks": [],
   "fixture_note": "The prepared public archive passes its size and checksum checks. CATALOG_PUBLIC_FIXTURE_REQUIRED is unused. The recognized absence switch is STARMAP_PUBLIC_FIXTURE_REQUIRED. These runs use the present archive and must report their actual skips.",
   "publication": {
-    "status": "Unpublished",
-    "integrated_reviewed_dependency": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
-    "required": "Complete verification, required review, publication, native CI, and merge."
+    "status": "OPEN_DRAFT",
+    "url": "https://github.com/agentstation/starmap/pull/150",
+    "number": 150,
+    "head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "base": "9ea36b3ea30713db512bccb2b76498a03556164c",
+    "check_snapshot": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T05:09:44Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564824705/job/103154679227",
+        "name": "Analyze (actions)",
+        "startedAt": "2026-09-11T05:08:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T05:09:28Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683546",
+        "name": "Constructor Network Passivity",
+        "startedAt": "2026-09-11T05:08:49Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564824705/job/103154679076",
+        "name": "Analyze (go)",
+        "startedAt": "2026-09-11T05:08:48Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T05:09:44Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564824705/job/103154679221",
+        "name": "Analyze (python)",
+        "startedAt": "2026-09-11T05:08:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683426",
+        "name": "Offline Server Persistence",
+        "startedAt": "2026-09-11T05:08:49Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683493",
+        "name": "Verification Gate",
+        "startedAt": "2026-09-11T05:08:50Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683644",
+        "name": "Security & Reliability",
+        "startedAt": "2026-09-11T05:08:49Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T05:09:01Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683484",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-11T05:08:49Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683798",
+        "name": "Runtime windows-2025",
+        "startedAt": "2026-09-11T05:08:50Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683779",
+        "name": "Runtime windows-11-arm",
+        "startedAt": "2026-09-11T05:08:50Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683686",
+        "name": "Runtime ubuntu-24.04",
+        "startedAt": "2026-09-11T05:08:49Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683560",
+        "name": "Runtime ubuntu-24.04-arm",
+        "startedAt": "2026-09-11T05:08:51Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683772",
+        "name": "Runtime macos-15-intel",
+        "startedAt": "2026-09-11T05:08:53Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34564827145/job/103154683774",
+        "name": "Runtime macos-15",
+        "startedAt": "2026-09-11T05:08:54Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-11T05:09:36Z",
+        "conclusion": "NEUTRAL",
+        "detailsUrl": "https://github.com/agentstation/starmap/runs/103154834030",
+        "name": "CodeQL",
+        "startedAt": "2026-09-11T05:09:34Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "required": [
+      "All required checks and six native jobs pass.",
+      "Mark ready and merge under existing owner authorization.",
+      "Record the actual merged source and native artifacts."
+    ],
+    "owner": "Catalog plan executor",
+    "authority": "Reviewed PR publication, native CI, and merge are authorized. Releases and hosted publication remain separate."
   },
   "acceptance": "No new task or product acceptance credit. The four Starport consumer subcases and native clock qualification remain UNVERIFIED.",
   "canonical_prose": {
@@ -344,5 +582,58 @@
     "tree": "1aaec8d715f65f3cdf6c60fff2b9a439d8489f79",
     "tree_unchanged": true,
     "method": "git merge-tree predicted exact equality before merge. git diff --exit-code confirms no changed files after merge. Ongoing verification remains bound to the original source and the same tree."
+  },
+  "full_verifier_initial": {
+    "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+    "tree_preserved_by": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "exit_code": 2,
+    "ordinary_packages_pass": 82,
+    "race_packages_pass": 82,
+    "other_completed": "Pure Go, file sizes, package ownership and direction, alias history, verifier regressions, fixture setup regressions, vet, catalog performance.",
+    "container": "UNVERIFIED in the initial command because its PATH excluded /usr/local/bin/docker.",
+    "stopped_at": "Lint requires 2.12.2. PATH supplied 2.13.1 built with Go 1.27.0.",
+    "recovery": "Installed 2.12.2 with Go 1.26.6 in task-local bin. Added a task-local Docker symlink to the already-running 29.7.2 daemon. Run the unchanged remaining verifier stages, starting with container smoke. No production source or checker changed."
+  },
+  "full_verifier_remainder": {
+    "exit_code": 0,
+    "source_commit": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "stage_starts": 26,
+    "coverage_thresholds_pass": 15,
+    "lint": "2.12.2, 0 issues",
+    "ago": "PASS",
+    "documentation": "PASS complete docs-check",
+    "prose": "1455 files, 0 diagnostics",
+    "container": "PASS: linux/amd64 server runs with read-only root and writable state volume. Docker daemon 29.7.2.",
+    "total_unique_verifier_stages": 41,
+    "qualification": "All 41 stages have passing evidence across the initial command and corrected remainder. This is not one successful make verify invocation.",
+    "final_marker": "repository verification passed"
+  },
+  "canonical_recovery_prose": {
+    "recovery": "PASS: 1309 files, 0 diagnostics.",
+    "review_preparation": "FAIL: current CSP4 proof paragraph had eight sentences. Split source and verification evidence.",
+    "review_preparation_corrected": "PASS: 1309 files, 0 diagnostics."
+  },
+  "pre_pr_review": {
+    "source_commit": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "base": "9ea36b3ea30713db512bccb2b76498a03556164c",
+    "exit_code": 0,
+    "reviewers": [
+      "codex:gpt-5.6-sol:high",
+      "claude:opus:high"
+    ],
+    "verdict": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=high: 0 finding(s).",
+      "overall_confidence": 0.98
+    },
+    "secret_scan": "clean, 3.4 seconds",
+    "bundle_bytes": 99802,
+    "review_passes": 1
+  },
+  "canonical_publication_prose": {
+    "exit_code": 0,
+    "files": 1310,
+    "diagnostics": 0
   }
 }

@@ -5,30 +5,26 @@
 
 <p><a href="https://github.com/agentstation/starmap/pull/148">Starmap PR #148</a> merged as <code>21e7356b</code> with fifteen passing checks. Its tree equals reviewed <code>717ba914</code>. Dependent deliveries must include this main commit.</p>
 
-<p>Next action: <a href="#next-action">complete snapshot verification and merge the reviewed dependency</a>.</p>
+<p>Next action: <a href="#next-action">qualify PR #150 and merge the reviewed dependency</a>.</p>
 
 <h1>Starmap and Starport production catalog</h1>
 <section id="current-resume"><h2>Current resume state</h2>
 
 <p>Updated 2026-09-11 UTC. CSP4 is active. Nine of 38 tasks are complete. Twenty-seven campaign PRs merged.</p>
 
-<p id="next-action">Complete combined verification at <code>e3943c97</code> in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot</code>, branch <code>codex/catalog-authority-snapshot</code>. It includes snapshot change <code>44f10ac2</code>, reviewed consumer <code>20b1ee41</code>, and actual main <code>9ea36b3e</code>. Integration preserves the tested <code>768347ab</code> tree. The worktree is clean.</p>
+<p id="next-action">Qualify <a href="https://github.com/agentstation/starmap/pull/150">Starmap PR #150</a> at <code>e3943c97</code>. All six native jobs run. After required checks pass, mark it ready and merge under existing authority. Record the actual merge and native evidence. Continue the remaining CSP4 composition while CI runs.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp4/authority-snapshot-2026-09-11/verification.json">snapshot proof</a> records six passing race cases per supported toolchain and five earlier failures. Snapshot reads allocate zero times and read no storage. Complete static checks pass. Combined race checks pass 1,059 events across four packages without failures or skips. Full verification session <code>86818</code> runs. The proof names their exact output files.</p>
+<p>The source is clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot</code>, branch <code>codex/catalog-authority-snapshot</code>. It includes actual main <code>9ea36b3e</code> and preserves the tested <code>768347ab</code> tree. The <a href="proof/starport-production-catalog/csp4/authority-snapshot-2026-09-11/verification.json">snapshot proof</a> records 1,059 combined race events, 82 ordinary packages, and 82 race packages. All 41 verifier stages pass across the initial command and corrected remainder. Sol and Opus report zero findings. The secret scan passes.</p>
 
-<p><a href="https://github.com/agentstation/starmap/pull/149">PR #149</a> merged as <code>9ea36b3e</code> after fifteen successful checks. The <a href="proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json">proof</a> confirms exact equality with the reviewed tree. All six native jobs pass. Both Linux skips pass with privilege. No PR remains open in either repository.</p>
+<p>PR #149 merged after fifteen successful checks. Its <a href="proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json">proof</a> retains native results and exact tree equality. Only PR #150 remains open across both repositories.</p>
 
-<p>Preserve <code>/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission</code> at clean <code>20b1ee41</code>, branch <code>codex/catalog-consumer-permission</code>. Its <a href="proof/starport-production-catalog/csp4/consumer-permission-2026-09-11/verification.json">review proof</a> records zero Sol/Opus findings and 938 combined race events. The extended delivery needs new review and native CI.</p>
+<p>Starport <code>52970f7</code> is clean in <code>/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer</code>, branch <code>codex/catalog-authority-consumer</code>. The <a href="proof/starport-production-catalog/csp4/starport-request-permission-2026-09-11/verification.json">request proof</a> records 3,002 ordinary and 645 race events, with 39 and one skips respectively. The separate controller threshold check passes. This does not qualify full gateway latency.</p>
 
-<p>Clock parent <code>7641eaea</code> remains clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock</code>, branch <code>codex/catalog-native-clock</code>. All forty verifier stages have evidence across the original run and corrected remainder. Native clock qualification remains open.</p>
+<p>The private Starport workspace selects Starmap <code>e3943c97</code>. Its unchanged published pin lacks these APIs. A compatible stable module remains required. Native clocks, configured permission owners, shared-store followers, explicit transitions, and four Starport consumer checks remain open.</p>
 
-<p>Starport <code>52970f7</code> is clean in <code>/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer</code>, branch <code>codex/catalog-authority-consumer</code>. The <a href="proof/starport-production-catalog/csp4/starport-request-permission-2026-09-11/verification.json">request permission proof</a> records 25 focused race events and 645 package race events. One opt-in overhead benchmark skipped. Route attempts and cache delivery now enforce current permission. Both API formats return HTTP 503 before stream headers.</p>
+<p>Follow <a href="#task-CSP4">CSP4 criteria</a> and the <a href="proof/starport-production-catalog/csp4.md#current-runtime-integration">current proof</a>. Preserve D27–D30 and historical worktrees. No local command remains active. PR #150 CI is active. The owner authorizes reviewed commits, pushes, PRs, native CI, and merges. Releases and hosted publication require separate authority.</p>
 
-<p>The private workspace selects Starmap <code>e3943c97</code>. The unchanged published pin lacks these APIs. Four consumer checks and a compatible stable module remain required.</p>
-
-<p>Follow <a href="#task-CSP4">CSP4 criteria</a> and the <a href="proof/starport-production-catalog/csp4.md#current-runtime-integration">current proof</a>. Continue native clocks, server settings, shared-store followers, authority transitions, and Starport admission. Complete configured permission composition and the mapped consumer checks.</p>
-
-<p>The canonical branch is <code>codex/catalog-qualification</code>. Preserve D27–D30, historical worktrees, and the <a href="#goal">whole-plan goal</a>. The owner authorizes reviewed commits, pushes, PRs, native CI, and merges. Releases and hosted publication require separate authority. No owner decision remains.</p>
+<p>The canonical branch is <code>codex/catalog-qualification</code>. Preserve the <a href="#goal">whole-plan goal</a>. No owner decision remains.</p>
 
 </section>
 
@@ -497,4 +493,5 @@
 <tr><td>2026-09-11</td><td>CSP4</td><td>Merged the public-catalog delivery.</td><td>PR #149 merged as <code>9ea36b3e</code> with fifteen successful checks and exact reviewed-tree equality. Integration <code>e3943c97</code> preserves the tested snapshot tree. The <a href="proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json">merge proof</a> records the final gate. Twenty-seven campaign PRs merged. CSP4 remains active.</td></tr>
 <tr><td>2026-09-11</td><td>CSP4</td><td>Enforced current catalog permission on Starport request paths.</td><td>Local <code>52970f7</code> passes 25 focused and 645 complete package race events. One opt-in benchmark skipped. The <a href="proof/starport-production-catalog/csp4/starport-request-permission-2026-09-11/verification.json">request proof</a> retains fourteen failing events across two red runs, vet, lint, and six dependency checks. Both API formats return 503 before stream headers. Thirty-five prose findings match the prior source. New comments pass. Consumer acceptance, native clocks, and publication remain open.</td></tr>
 <tr><td>2026-09-11</td><td>CSP4</td><td>Compacted prior execution history.</td><td>Forty entries moved unchanged into <a href="proof/starport-production-catalog/execution-history-2026-09-11-0500.html">linked history</a>. The <a href="proof/starport-production-catalog/csp4/request-context-maintenance-2026-09-11.json">maintenance record</a> confirms exact row hashes and unchanged task contracts. Nine recent entries remain. The current resume state owns all next actions.</td></tr>
+<tr><td>2026-09-11</td><td>CSP4</td><td>Published reviewed snapshot and permission APIs for native CI.</td><td><a href="https://github.com/agentstation/starmap/pull/150">PR #150</a> opens at <code>e3943c97</code>. The <a href="proof/starport-production-catalog/csp4/authority-snapshot-2026-09-11/verification.json">proof</a> records all 41 verifier stages across the original command and corrected remainder. Both reviewers report zero findings. Six native jobs run. No task completion or merge credit applies yet.</td></tr>
 </tbody></table></section></main></body></html>
