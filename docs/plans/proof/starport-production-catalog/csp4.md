@@ -4,7 +4,7 @@
 
 The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-deliveries) separates merged work from the remaining CSP4 deliveries.
 Starmap PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
-CSP4 remains active because native qualification, production clock integration, follower adoption, safe takeover, explicit transitions, and delivery merges remain open.
+CSP4 remains active because native qualification, production clock integration, restart eligibility, explicit transitions, and delivery merges remain open.
 
 ### Consumer checks and published dependency
 
@@ -41,12 +41,19 @@ The native merge gate remains mandatory. The [cancellation proof](csp4/permissio
 Clock configuration `e97d7fc3` passes all 41 repository verifier stages. Its [settings proof](csp4/clock-settings-2026-09-11/verification.json) retains those checks.
 Native parent integration, final review, publication, and merge remain required.
 
-Origin configuration and follower startup remain at `4bb4b870` beneath the registry commit.
-Followers serve matching accepted authority without shared writes. Their receipts read the current shared authority head.
-The [follower proof](csp4/origin-followers-2026-09-11/verification.json) records seven passing final race events per toolchain.
-Periodic catalog adoption, safe takeover, explicit transitions, and real fleet qualification remain open.
+Origin `9ffcb0f8` adds periodic accepted-store adoption and a running-follower input guard.
+The [adoption proof](csp4/origin-adoption-2026-09-11/verification.json) records 33 passing race events per supported toolchain, pinned lint, generated documentation, and prose.
+The initial regression fails because no follower refresh schedule exists. The proof preserves the first implementation failure and both linter setup failures.
 
-Earlier current proof remains in the [dated history](csp4/integration-history-before-consumer-checks-2026-09-11.md).
+Followers check the authority head every 30 seconds even when an operator disables public source polling.
+An unchanged head avoids a full catalog read. A changed compatible generation activates without shared writes or lease acquisition.
+Invalid payloads, incompatible schemas, changed identities, and replay preserve the accepted catalog.
+A running follower with missing retained inputs cannot take publication ownership.
+
+The takeover checks use a memory store and a stub lease. They do not qualify a fleet backend or cold restart eligibility.
+CSP11 owns shared input recovery, equivalent acquisition capability, and atomic lease/head fencing.
+Explicit authority transitions, native parent integration, full delivery checks, review, publication, and merge remain required.
+The [earlier checkpoint](csp4/integration-history-before-origin-adoption-2026-09-11.md) preserves the prior current record.
 
 ## Native clock checkpoint history
 

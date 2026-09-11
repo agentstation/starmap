@@ -1,0 +1,465 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_COMMITTED_UNPUBLISHED",
+  "source_commit": "9ffcb0f82a1339af46f39a1df22503364f48d0ea",
+  "base": "a1862f01f6c337e08997816459ea6d60bbc79da2",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "branch": "codex/catalog-origin-settings",
+  "contract": [
+    "Client.Reload validates and activates the accepted store generation without a store write. It orders mutations and applies publication guards.",
+    "Shared-lease origin followers poll the authority head every 30 seconds independently of public source polling. An unchanged head avoids a full catalog read.",
+    "A running follower must reconstruct matching retained inputs before publication ownership. Missing inputs cause a conflict before lease acquisition."
+  ],
+  "fail_before": {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-timeout=2m",
+      "-run",
+      "^TestOriginFollowerAdoptsSharedCatalogWithoutAcquisition$",
+      "./runtime"
+    ],
+    "environment_overrides": {
+      "GOWORK": "off"
+    },
+    "exit_code": 1
+  },
+  "checks": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=20m",
+        "-run",
+        "^Test(Reload|PublicationGuard|OriginFollower)",
+        ".",
+        "./runtime"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0,
+      "events": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=20m",
+        "-run",
+        "^Test(Reload|PublicationGuard|OriginFollower)",
+        ".",
+        "./runtime"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.25.12"
+      },
+      "exit_code": 0,
+      "events": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "lint-toolchain-pinned",
+      "command": [
+        "/Users/jack/go/bin/golangci-lint",
+        "run",
+        "./..."
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "godoc",
+      "command": [
+        "make",
+        "godoc"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "technical-writing",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 2
+    },
+    {
+      "name": "technical-writing-final",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0
+    },
+    {
+      "name": "diff-check-final",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off",
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "exit_code": 0
+    }
+  ],
+  "prior_static_checks": [
+    {
+      "name": "lint",
+      "command": [
+        "golangci-lint",
+        "run",
+        "./..."
+      ],
+      "exit_code": 1
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ago",
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0
+    }
+  ],
+  "failed_attempts": [
+    "The initial regression fails because the follower has no accepted-store refresh schedule.",
+    "The first implementation run fails its five-second adoption wait. Its log records cancellation during cleanup. Later runs remove duplicate decoding and allow 30 seconds for fixture processing. This wait is not a product latency target.",
+    "Global golangci-lint 2.13.1 reports two findings in unchanged native observer code. Pinned 2.12.2 initially panics while it reads Go 1.27 sources. Pinned 2.12.2 with GOTOOLCHAIN=go1.26.6 passes.",
+    "The first prose check reports two source-comment diagnostics. The final edit changes those comments only, and all 1,511 files pass.",
+    "The first canonical documentation check reports one seven-sentence paragraph. A paragraph split fixes it, and the final 1,322-file prose check passes."
+  ],
+  "limitations": [
+    "Focused component evidence only. Full delivery verification, review, native integration, publication, and merge remain required.",
+    "The takeover tests use an in-memory catalog store and a stub lease. They prove the running-follower input guard, not a complete fleet backend.",
+    "Cold restart eligibility, shared retained-input recovery, equivalent acquisition capability, and atomic lease/head fencing remain unqualified. CSP11 owns full fleet recovery and fencing.",
+    "Explicit authority transitions and Starport production clock composition remain incomplete.",
+    "Both Windows native jobs still fail at PR #151 head a6545493. Linux and macOS jobs pass. No Windows gate is waived.",
+    "Two source comments changed after the race checks. No executable Go statement changed after those checks."
+  ],
+  "source_files": [
+    {
+      "path": "docs/API.md",
+      "sha256": "42c6082075961af924a983a6adb2b298538e1e70e75c28f47fbf49a8b4d41a4f"
+    },
+    {
+      "path": "publication_guard.go",
+      "sha256": "8a9119f9f7e02e40172b16b9ecef407e1e22d492f61a36c9e091f0df6d258422"
+    },
+    {
+      "path": "publication_guard_test.go",
+      "sha256": "fc48e8125ffe8cbe824ee17544797860fc8284c5b9c56dcc097d1a4b414dda45"
+    },
+    {
+      "path": "reload.go",
+      "sha256": "65a465f7850e8fd109fd2a98ef416b34bfa89be4650f150cb23c726ff65e70d8"
+    },
+    {
+      "path": "reload_test.go",
+      "sha256": "0b7148798bf7a806803253126b8091501e7687b178f77e8edadeb0486f46f658"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "e968af3cb85fc81bc23f4ea316aa42079271ea24d005a7953665418a7e8b9add"
+    },
+    {
+      "path": "runtime/origin_adoption.go",
+      "sha256": "e776d77cee6967430e76ccb99d626ef82da36bb9699a3e0b036febe830b318cc"
+    },
+    {
+      "path": "runtime/origin_adoption_test.go",
+      "sha256": "37d89f59c74d399a91f79311de3b9ba452b7e0e8b874640fea8424f72ffeb2e2"
+    },
+    {
+      "path": "runtime/origin_follower_test.go",
+      "sha256": "24bac75513d8e2e7eb3cd3a4971fb866081b79451e0bce2e210ef23f3bd840bb"
+    },
+    {
+      "path": "runtime/origin_publication.go",
+      "sha256": "40312eaa2324356acd882cb5b90031620099fce1e852b75d9e99a8d024c49a50"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "d48804a4ddd523409b3130b09a80b717fa302dd63ecba0883210225064b512db"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "d28d964f67c73a0441fc49582b393b79a82c5c72ea8d6ed026014d61dd614e9e"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "sha256": "9783a93aae354a505413f264710bd0a8c12c0623df1f8c8d43a2ab3c889b0ee8"
+    },
+    {
+      "path": "update.go",
+      "sha256": "55a8bbbba08df97d6ef8599c13957f82b78c8a48566d6045362157c79020cb38"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "before-command.json.gz",
+      "sha256": "153b8285dadc2062fdb9ca711af8eb99ec7e0ec1fb3e2c134eadca768ffd353b",
+      "decoded_sha256": "62bbebd66b8223c93f7749b2e2b58e791f8cbeaf6334a93fdcd5f87c55b44f17"
+    },
+    {
+      "path": "before-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "before.jsonl.gz",
+      "sha256": "683d031945f7f49bb77b297363acff81e23f517d1cd321801f24fb47f998f4d6",
+      "decoded_sha256": "8d4167ebb793fabe096b649aa314fffb8a8e31bbb3eac9fb37eaaac0be73e0eb"
+    },
+    {
+      "path": "delivery-checks.json.gz",
+      "sha256": "27b676140ff9c151ce7dfeeaa196bd6bbdcaad32125a26f518a4de75570e1d8e",
+      "decoded_sha256": "e73cd002dd641cdd430aec142af148ae058f05ca367e5b571af571a7f25c2cd8"
+    },
+    {
+      "path": "delivery-final-checks.json.gz",
+      "sha256": "0919b3b5fcfb5ea42e1af89ab982ff6a16254d50531b65b9c5a03a65560a4df3",
+      "decoded_sha256": "7e59860dec5928c3293ba554f53482b4cbac034da83ce74442762713fb11dae9"
+    },
+    {
+      "path": "delivery-pinned-checks.json.gz",
+      "sha256": "b4be0225d2912eea93a07825e985f760e64107cc1b3de242c0e444ca2531d8bd",
+      "decoded_sha256": "3e13aac4134d6a6f9f157564ff5a6ccb12a8e7130a79dcf8942f1614f4a9e47c"
+    },
+    {
+      "path": "diff-check-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-checks.json.gz",
+      "sha256": "9d4ba0b93e333b00f0c6dee348e47a28dcc4622504bd8bcb22ac8a4842b6e3f5",
+      "decoded_sha256": "8524331ea1386dbbfef726234dfa690c4196789df256bf48ba79b57925b48d2e"
+    },
+    {
+      "path": "final-go1.25.12-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.25.12.jsonl.gz",
+      "sha256": "491653c440e8fd1d0b3539c9ad4b4a2d761fb70f5d9374eb7bdc41336f9a76ec",
+      "decoded_sha256": "7f33b7dfefc1a3e76ca5687dc8f90928feb1e3b26514b58e324d80fa84cd6910"
+    },
+    {
+      "path": "final-go1.26.6-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-go1.26.6.jsonl.gz",
+      "sha256": "f1c246a5dfcc5d7762dc43749fd5a57436cba17174869e184ea8eaec12fc9ffe",
+      "decoded_sha256": "7b6b99112eb3a614b10fa8042424e33590342f14ee1c835a6e9b843a67e8bb02"
+    },
+    {
+      "path": "first-after-command.json.gz",
+      "sha256": "b32c50d4be649cbed349213e8a2eb75fbb43f99e66c012aef3c11948882d6bb7",
+      "decoded_sha256": "0359129c8eae48a431c82f84356fc27f3b510437499a7890954e81da4be34c76"
+    },
+    {
+      "path": "first-after-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "first-after.jsonl.gz",
+      "sha256": "cf25ecb731594bd4b0dd8a9d480beca73a10ed15bc97360b1d05afe96def4533",
+      "decoded_sha256": "603d9489078677edb83ba9bd86910057ce70acf0b26c2a77c4e0dc4a6abbe687"
+    },
+    {
+      "path": "followers-command.json.gz",
+      "sha256": "6eecc654205a89ab1b462b1d2334af52592f08b192248208e516d52899279c55",
+      "decoded_sha256": "a625fbf9f018424c6a33be30ba6a3ac39904202f0c914b3f8ca7c62c941e50c0"
+    },
+    {
+      "path": "followers-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "followers.jsonl.gz",
+      "sha256": "88aa692c5b4808a359e7968d018ee847f09e91bffa5f06bc5cc0ddf31194232f",
+      "decoded_sha256": "3fa3ad6f214548e86c0515ec701666e8dd8679abcd47a81f1eca669301fdd2e9"
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "509424edab2a12ead8ce3073edda9579c5359c28972057d7e81aa6e17259bbc8",
+      "decoded_sha256": "e617bbf26996554843c209f7c442053d78759ca3139d3194dd581dfbeab3045d"
+    },
+    {
+      "path": "lint-pinned.log.gz",
+      "sha256": "c64441577a547af6150b46a8c5aeee18e33bc5f3cc725ce8062882592c5d8706",
+      "decoded_sha256": "d8c08b4859e8add8e9a2a93959a4a53c999eb8df56d46994ff715b0bce14525d"
+    },
+    {
+      "path": "lint-toolchain-pinned.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "06c151e446dd7e4c8893ad603e536ffa0aaf844f7780861c29734046d5e3ce2d",
+      "decoded_sha256": "cf08f8b17317a2656f286c97b9c988d67f74ca95ccf8bb581387a2ff383495fb"
+    },
+    {
+      "path": "reload-command.json.gz",
+      "sha256": "2d057d0e803d8d2744f5dc344120993b95e68115109c1d518ddda8f1c1068326",
+      "decoded_sha256": "bae00ec794fd655c8c6bc33a7bb272386c0dfcf6a18d18469a6bc0cd5f1ca3c1"
+    },
+    {
+      "path": "reload-errors.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reload.jsonl.gz",
+      "sha256": "097d4a95dac1c417a2018edf0fd54c1dee007b09db627dacc9b4292ce5496bc2",
+      "decoded_sha256": "ecdd1d19b2fd8afd8c27560a1815cbb229e5b6284e6758ce0490fd1b95d4b8ac"
+    },
+    {
+      "path": "static-checks.json.gz",
+      "sha256": "fd456c1318571fac80b3d94426dcee9b6bc3f5a0a6c0e4b0f0857842a56f935a",
+      "decoded_sha256": "cacce7740e13a9e68b91bcb95d65f7cface1e29ac3c61e25e0a570ff9a391659"
+    },
+    {
+      "path": "technical-writing-final.log.gz",
+      "sha256": "8d2b3795ef4fcca6461df52717da0259cd4a795c9e7f2bb398c3bdc5c262b758",
+      "decoded_sha256": "951d4a5a7d5f6c3caab9083f4d1938f11c8467b71980a5aab447c7e1174f2bbb"
+    },
+    {
+      "path": "technical-writing.log.gz",
+      "sha256": "89a3e0cb75efb3b143b74e59c46b9b595149202575063942236855203fc3b764",
+      "decoded_sha256": "8e07ea1b97ffdcd4366d9fe5c6250e9a9e054f7bee8cdfd7e8e39516402da96f"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "plan-adoption-maintenance.log.gz",
+      "sha256": "e48faae5342d1b29df449edb866743b880056581161c382cbfb76cb84338fff2",
+      "decoded_sha256": "4187b0929436c721ccf4841fc21f8de8a8447a180ed8467f3bcda3fb775ac22d"
+    },
+    {
+      "path": "plan-adoption-writing.log.gz",
+      "sha256": "2b58f1e8039e1701d616d12d3316401c5cedea55a18d6ab2923330d42593b2cc",
+      "decoded_sha256": "d51b39d94e450d4fa858a9d752e893540333484bb7d233fa6f43533ef36fef5f"
+    },
+    {
+      "path": "plan-adoption-writing-final.log.gz",
+      "sha256": "e45396a42563da004d071f4ed52731c1b01b665550ed150fd7c17ee02d096d62",
+      "decoded_sha256": "c7b27f690676ecb1147722b46ad7a1c6037c7301670f391f9d6ec4679d177d40"
+    },
+    {
+      "path": "plan-adoption-diff-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "plan-adoption-document-checks.json.gz",
+      "sha256": "ec6b572e50a3a83026ff58e793960a264c21ef201f544256219753e5c6bf4756",
+      "decoded_sha256": "46c6f6519cf1bc3adc61b47db86adffcae46fe05831487cba592263e44835820"
+    },
+    {
+      "path": "plan-adoption-document-final-checks.json.gz",
+      "sha256": "d062a438b8f8c9a1add71de89ecfd37e1a5de933d95a77732d6d4ee9288dcf8c",
+      "decoded_sha256": "95ae0891f8c55f3adce3b63b3030019ab5c50806d100a00acc9d7f0d9a004e76"
+    }
+  ],
+  "plan_checks": [
+    {
+      "name": "adoption-maintenance",
+      "command": [
+        "python3",
+        ".tmp/csp4-origin-runtime/maintenance.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "adoption-writing",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 2
+    },
+    {
+      "name": "adoption-writing-final",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "adoption-diff-final",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

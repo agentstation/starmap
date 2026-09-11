@@ -2252,3 +2252,20 @@ They also verify origin publication and refusal of implicit ordinary startup aft
 Local configuration checks pass 120 events per toolchain. Runtime and CLI checks pass 49 events per toolchain.
 Native parent integration, full verification, review, publication, and merge remain open.
 The plan's delivery checklist preserves the remaining shared-store, transition, and Starport acceptance work.
+
+## Origin follower adoption, 2026-09-11
+
+Local `9ffcb0f8` adds `Client.Reload` and periodic accepted-store checks for shared-lease origin followers.
+The [proof](../../plans/proof/starport-production-catalog/csp4/origin-adoption-2026-09-11/verification.json) records 33 passing race events per supported toolchain.
+Pinned lint, generated documentation, and the 1,511-file prose check pass.
+The fail-before test shows that a follower previously lacked a refresh schedule for accepted storage.
+
+Followers adopt compatible generations without shared writes or lease acquisition. An unchanged authority head avoids a full catalog read.
+Invalid updates preserve the accepted catalog. A running follower needs matching retained inputs before it can take publication ownership.
+
+The tests use a memory store and a stub lease. Cold restart eligibility and full fleet failover remain unqualified.
+CSP11 owns shared input recovery, equivalent acquisition capability, and atomic backend fencing.
+
+CSP4 still requires explicit authority transitions, native clock qualification, production composition, full delivery checks, review, and merges.
+Its eight mapped component checks pass with deterministic clocks. These checks do not prove the remaining production paths.
+Both Windows jobs remain red in PR #151 at `a6545493`. Both Linux and both macOS jobs pass.

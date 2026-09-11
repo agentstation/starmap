@@ -1831,7 +1831,7 @@ The check precedes workspace recovery, input publication, and background work. R
 This guard does not implement an authority migration or govern direct writes outside the runtime.
 
 Canonical server settings and native clock qualification remain separate requirements.
-The current origin runtime requires the publication lease at startup. Shared-store follower activation and authority transitions still require implementation and qualification.
+Candidate `9ffcb0f8` supports follower startup and periodic adoption without the publication lease. Explicit authority transitions and restart eligibility still require implementation and qualification.
 Direct underlying writes, deleted state, and restored older backups require separate recovery procedures.
 
 Permission metadata must bind to the same immutable generation before the accepted pointer changes.
@@ -3034,5 +3034,7 @@ Omitting the setting preserves origin options that a library host supplies.
 Subscriber authority pins remain separate from the origin declaration.
 
 The [implementation proof](../../plans/proof/starport-production-catalog/csp4/origin-settings-2026-09-11/verification.json) records local verification and remaining delivery gates.
-Shared-store followers and explicit authority transitions remain incomplete.
+The [follower adoption proof](../../plans/proof/starport-production-catalog/csp4/origin-adoption-2026-09-11/verification.json) records local startup, periodic adoption, and running-follower input checks.
+Explicit authority transitions, restart eligibility, and delivery qualification remain incomplete.
+CSP11 retains shared input recovery, acquisition capability equivalence, and atomic fleet fencing.
 Starport must adopt the compatible published contract and pass its consumer acceptance checks before production qualification.

@@ -5,12 +5,12 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 111,
-  "new_evidence_artifacts": 1072,
-  "new_commit_source_files": 253,
-  "resume_words": 306,
-  "next_action": "Complete periodic follower adoption, safe takeover, and explicit authority transitions. Resolve Windows access and integrate qualified native clocks into Starport. Finish delivery checks, review, and merges in dependency order.",
-  "current_source": "a1862f01f6c337e08997816459ea6d60bbc79da2",
+  "local_links": 113,
+  "new_evidence_artifacts": 1108,
+  "new_commit_source_files": 267,
+  "resume_words": 311,
+  "next_action": "Complete explicit authority transitions and origin restart eligibility. Resolve Windows access and integrate qualified native clocks into Starport. Finish delivery checks, review, and merges in dependency order. CSP11 owns complete fleet recovery and fencing.",
+  "current_source": "9ffcb0f82a1339af46f39a1df22503364f48d0ea",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
   "external_running_checks": [
     {
