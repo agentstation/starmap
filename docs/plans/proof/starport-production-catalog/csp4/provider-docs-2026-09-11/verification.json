@@ -1,0 +1,330 @@
+{
+  "task": "CSP4",
+  "owning_seam": "CSP6 catalog publication repair discovered during CSP4 public-download qualification",
+  "status": "PASS_scoped_provider_documentation_checks",
+  "acceptance": "All eight CSP4 checks remain UNVERIFIED. No task completion credit.",
+  "source_commit": "b81b827067aa860096bed208e541dd84e31274ab",
+  "base": "faa9cc8b0bc01eb787f567f568f1b9fe05e0740a",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs",
+  "branch": "codex/catalog-provider-docs",
+  "publication": "Local checkpoint only. Full repository verification, pre-PR review, CI, and merge remain required.",
+  "contract": [
+    "Models.dev general provider documentation maps to Provider.DocsURL. It does not create Catalog acquisition metadata.",
+    "The shared fetch path fills absent provider documentation with an independent copy. Existing documentation remains authoritative.",
+    "Cohere and OpenAI preserve curated documentation, acquisition endpoints, inference endpoints, and credential declarations across HTTP and Git source reconciliation."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 go test -race -count=1 -timeout=5m -json ./internal/sources/modelsdev ./internal/catalog/reconciler ./internal/catalog/pipeline ./internal/embedded",
+      "artifact": "final-race-go126.jsonl.gz",
+      "test_events": {
+        "pass": 846,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T19:13:48.904576-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "Elapsed": 8.904
+        },
+        {
+          "Time": "2026-09-10T19:14:02.259554-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+          "Elapsed": 11.143
+        },
+        {
+          "Time": "2026-09-10T19:14:11.769295-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/embedded",
+          "Elapsed": 9.103
+        },
+        {
+          "Time": "2026-09-10T19:14:55.953896-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "Elapsed": 76.816
+        }
+      ]
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 go test -race -count=1 -timeout=5m -json ./internal/sources/modelsdev ./internal/catalog/reconciler ./internal/catalog/pipeline ./internal/embedded",
+      "artifact": "final-race-go125.jsonl.gz",
+      "test_events": {
+        "pass": 846,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T19:14:28.46697-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "Elapsed": 11.227
+        },
+        {
+          "Time": "2026-09-10T19:14:45.584782-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+          "Elapsed": 14.546
+        },
+        {
+          "Time": "2026-09-10T19:15:01.981874-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/embedded",
+          "Elapsed": 15.209
+        },
+        {
+          "Time": "2026-09-10T19:15:35.971221-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "Elapsed": 79.479
+        }
+      ]
+    }
+  ],
+  "other_checks": {
+    "lint": "PASS, zero findings",
+    "ago": "PASS, zero findings or errors",
+    "docs": "PASS after three generated source-link corrections",
+    "prose": "PASS on final source, 1415 files, zero diagnostics",
+    "isolated_allocation_regression": "30 passes, zero failures. One initial combined-suite failure remains recorded. Final combined suites pass without changing the test threshold."
+  },
+  "fail_before": [
+    "Workflow 34538080930 at faa9cc8b failed Refresh candidate catalog because Cohere gained an empty acquisition endpoint type.",
+    "Initial focused tests reproduce the Cohere failure and missing DocsURL. The first integration test draft incorrectly expected observed documentation to override curated links.",
+    "The parser-only repair exposed the second mapping in the shared fetch path. Both supported-toolchain initial suites failed that test.",
+    "The initial Go 1.26 combined suite also reported 10 versus 17 allocations in TestAbsentProjectedEvidenceDoesNotCopyUnrelatedModels. No deterministic cause is established. Thirty isolated runs and final combined suites pass."
+  ],
+  "source_note": "The live source and runtime probes use the exact committed source. All tested executable code matches this commit. The commit also removes an unrelated stale comment immediately before the new reconciliation test.",
+  "running_checks": [
+    {
+      "session_id": 19923,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make verify",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs/.tmp/csp4-provider-docs/make-verify.log"
+    }
+  ],
+  "public_channel": {
+    "channel_sequence": 19,
+    "channel_updated_at": "2026-09-08T12:54:48.479607899Z",
+    "tag": "catalog-dcc4e4539c74a181c1789a8f275bf16893ce9698ea9644bf18a89cf10a067571",
+    "catalog_schema": 6,
+    "consumer_compatibility": {
+      "min_schema_version": 6,
+      "max_schema_version": 6
+    },
+    "current_source_schema": 9,
+    "archive_sha256": "ab5461b5441a632ee450ff8adf34d1f404e4f18b6c74638a880016221c177ffa",
+    "size_and_checksum": "PASS for downloaded archive and statement against channel metadata",
+    "cryptographic_verification": "PASS: GitHub CLI verified the channel and archive against the expected repository, signer workflow, and hosted-runner policy. This does not qualify the Starmap source or activation path.",
+    "publication_authority": "No release or channel update was dispatched.",
+    "legacy_schema_support": "Current SupportsCatalogSchema explicitly accepts schema 6. The emitted schema does not identify every supported read schema.",
+    "live_source": "PASS: the default Starmap GitHub adapter observes and retains the signed release with no token or provider credentials.",
+    "live_runtime": "PASS: runtime.Open starts usable on embedded fallback, then RefreshSource publishes the signed September 8 generation. Fallback clears, source health is ok, and freshness remains critical. Provider acquisition stays disabled.",
+    "acceptance_registration": "These live probes supply scoped evidence. They do not register or complete A07, its negative cases, restart behavior, or the complete product pair."
+  },
+  "source_files": [
+    {
+      "path": "internal/catalog/reconciler/merger_provider_test.go",
+      "sha256": "03ee94f899548ec7fc3794290737366ff67a064a767596d8fac6e807ef79aa90"
+    },
+    {
+      "path": "internal/sources/modelsdev/README.md",
+      "sha256": "ba65b44920c1061c59296073c34f8a49d0e28392292720c87fbad3cc44a22b34"
+    },
+    {
+      "path": "internal/sources/modelsdev/base.go",
+      "sha256": "4acdb8ac9432a1f769e14c2ac2065a2e5fe1658d0c1c0d205e99a595723726bd"
+    },
+    {
+      "path": "internal/sources/modelsdev/parser.go",
+      "sha256": "472e431a642b8773607680c5263c1267f45f42a124a1ab9823585ee11df9e4a1"
+    },
+    {
+      "path": "internal/sources/modelsdev/parser_test.go",
+      "sha256": "3e292936440a723fe2a06bde258c60552d0e22befb4a2d0abc4c74769c1575e9"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "red.jsonl.gz",
+      "sha256": "3a86374d3353d136c8e5372a537593624355adced18c153a27784d4ba85edec7",
+      "decoded_sha256": "66e91230dd6cecf51c30eb0e927e599b1bd4b29bcd1d9fcdabdf77ddef896986",
+      "decoded_bytes": 10302
+    },
+    {
+      "path": "green.jsonl.gz",
+      "sha256": "507b690afb0742faea8212b593e03b7585f9079d4d3451b6489a120da4e991f5",
+      "decoded_sha256": "350b761d15ebf02c9f261aff736713eb343a9705ad552ad5ef574234761923c3",
+      "decoded_bytes": 9954
+    },
+    {
+      "path": "race-go126.jsonl.gz",
+      "sha256": "a3ea4bcf3fd7192a2b53053276d60bbba5ebc04de8f8885cfc77ba95e9d304e4",
+      "decoded_sha256": "ea9d388e5c2931f76192d081482e6381a98fa6ba82aaf219ed730d1c6da1fdf7",
+      "decoded_bytes": 1059932
+    },
+    {
+      "path": "race-go125.jsonl.gz",
+      "sha256": "b96f7db94135ac0d1c8f6ee855f64cf4a12ba6b9ead709c34cd2b30edc6e6c73",
+      "decoded_sha256": "3012fb1c7063823b86ef6ff149867634c5a038586186607ea8d7ef0cd1ba8e93",
+      "decoded_bytes": 1059834
+    },
+    {
+      "path": "allocations-go126.jsonl.gz",
+      "sha256": "13e09fb764a8b6ffc6b22841e5cb40c55a67494d23690cba15c6cd7e72ef09bb",
+      "decoded_sha256": "666978256ee585f14fe1121d6053da42eb339f6ce363414eea7375d23e10ee9b",
+      "decoded_bytes": 38885
+    },
+    {
+      "path": "final-race-go126.jsonl.gz",
+      "sha256": "65ae8e80b61ef68ce73fce129d6d28e1c07875c9ef2e9869570ab88bbddd3fd5",
+      "decoded_sha256": "2d05021f29673245f0666c49ab061184d94044941e8d3a474e2b26f8229a198c",
+      "decoded_bytes": 1063059
+    },
+    {
+      "path": "final-race-go125.jsonl.gz",
+      "sha256": "2c1f8f1ce649902eb36f8914a24003e83d00017ab4e21c3e156c8c393d4b9288",
+      "decoded_sha256": "6dd1de4fe0464122f2505bb3e06de40ea7c567a513819fe04c6687ee26b3a5e5",
+      "decoded_bytes": 1063160
+    },
+    {
+      "path": "final-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "decoded_bytes": 10
+    },
+    {
+      "path": "final-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "decoded_bytes": 289
+    },
+    {
+      "path": "docs-check.log.gz",
+      "sha256": "ceb6f99b66cf749093f26623764b6d37b76a51846061db810b5f672b315351de",
+      "decoded_sha256": "8ec18d15edd80035f696678217b31616d969076852d6b9b09dc721e0e1474870",
+      "decoded_bytes": 5814
+    },
+    {
+      "path": "docs-check-final.log.gz",
+      "sha256": "13b1f48bbe883cfdfe365ed42bc0bee020beb4be96851f5c333cf870aaec5179",
+      "decoded_sha256": "456975c7a3658afa70e6fe21b4c5d9fc86cb565e5212bb0a8520f4f11f956f4f",
+      "decoded_bytes": 1504
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "ec51b996c7c2b7d24f607f4b6c80a4ffc7878c98ca5f0aa0f22a4dedbe4ea45e",
+      "decoded_sha256": "c5a97a92e17a21ff80f167fe22f0602f20681a5b2d42860e8b943c583b42824c",
+      "decoded_bytes": 560
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "ec51b996c7c2b7d24f607f4b6c80a4ffc7878c98ca5f0aa0f22a4dedbe4ea45e",
+      "decoded_sha256": "c5a97a92e17a21ff80f167fe22f0602f20681a5b2d42860e8b943c583b42824c",
+      "decoded_bytes": 560
+    },
+    {
+      "path": "public-channel.json.gz",
+      "sha256": "53bffe8b9907460ef4a639cf99ecc94856c6db9c7a4ffa7275d02b35fbab057a",
+      "decoded_sha256": "339995f46b45654443c6e686523d56aeae5fb5c87e05ccc0b6dcf11f97880440",
+      "decoded_bytes": 1127
+    },
+    {
+      "path": "channel-attestation.json.gz",
+      "sha256": "a4bf341010f7679219c830f39110103871b82eea6db6c556cc263edce1abb958",
+      "decoded_sha256": "8c0fab53895c76625a93127f1c8339900993f7f53675ec09f442b02b10971b63",
+      "decoded_bytes": 13795
+    },
+    {
+      "path": "channel-attestation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "archive-attestation.json.gz",
+      "sha256": "b04c36ff0e59446e04f70df8e378cccc9a3841e2c61005c2c0b8866b065bd038",
+      "decoded_sha256": "ba6e0bdebe1d7d8b1fa625ca57c920c22548d9ebe9f988ad0e613327a08c429e",
+      "decoded_bytes": 13848
+    },
+    {
+      "path": "archive-attestation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "public_probe.go.gz",
+      "sha256": "1a636ccfadbbfa497ffef9a2e730c084743e11523a116e56cc5846a48323aa45",
+      "decoded_sha256": "b48591a684cdf978fb490e3b5624b8f472b41da91ed4c3d004d17f62321b0121",
+      "decoded_bytes": 893
+    },
+    {
+      "path": "public-source-observation.json.gz",
+      "sha256": "7bb9865809efd0aea7cf8a82031f9e279283cf3ab0eb088e50c96788a6f4f164",
+      "decoded_sha256": "d4ec94f3ae3615cacad11aa9a4bd6bb7b1f33f807f64445cb69282874f8458c4",
+      "decoded_bytes": 460
+    },
+    {
+      "path": "public-source-observation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "runtime_public_probe.go.gz",
+      "sha256": "d9f1ba02b5f8566e078217fa2fc1d338ae24c174600b966a22b09aeea561d33b",
+      "decoded_sha256": "fe63354fc99788e63dc629d5fc0d6e54060f711b1a8b8de7959bd28c3c726e7c",
+      "decoded_bytes": 1001
+    },
+    {
+      "path": "public-runtime-activation.json.gz",
+      "sha256": "3276806d7c508f196df164062f87efc9fd1e6652e1a37521248dc84773057512",
+      "decoded_sha256": "bd613ff380f86a1702d58f2e741a18d00894fe9400ff433bcbe6a865bd004f83",
+      "decoded_bytes": 3720
+    },
+    {
+      "path": "public-runtime-activation.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "catalog-publication-failure.log.gz",
+      "sha256": "6e7658b2e38bf43ecb9371466c74a7408f5735d9524e402041f3d75e6c65ab2c",
+      "decoded_sha256": "6aadb924af6ac03f640eb978932a463880430f412a48d21bafd8fcadd3708ea2",
+      "decoded_bytes": 297679
+    },
+    {
+      "path": "canonical-prose.log.gz",
+      "sha256": "23fce153963dd6a863f4f69c46271800ad5d8be63e73b42dffafc9121c0f8564",
+      "decoded_sha256": "bf4d0eb0ba4640ee0018cf885d7c25b71d0ba322ae3649aff8a4c219117f063e",
+      "decoded_bytes": 1545
+    },
+    {
+      "path": "canonical-prose-final.log.gz",
+      "sha256": "064fb198903d3eee082a9e7dbbf0ed72975321e0b632210dda016adca7dab383",
+      "decoded_sha256": "147a4c33ac159ae3463e235926bfdc359930cbfa9746205d82fe8c29f90cd4a7",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "canonical-prose-live.log.gz",
+      "sha256": "cbb52580ea5abcb8b31bb6527986a23bb76fc3e81bef8242f6989b71e23d760d",
+      "decoded_sha256": "6b4418eef1d2f437c642b97cfeee75a826cb9c24cca8162be4656a9618ae7c7f",
+      "decoded_bytes": 980
+    },
+    {
+      "path": "canonical-prose-live-final.log.gz",
+      "sha256": "064fb198903d3eee082a9e7dbbf0ed72975321e0b632210dda016adca7dab383",
+      "decoded_sha256": "147a4c33ac159ae3463e235926bfdc359930cbfa9746205d82fe8c29f90cd4a7",
+      "decoded_bytes": 558
+    }
+  ],
+  "canonical_checks": {
+    "prose": "PASS, 1298 files, zero diagnostics",
+    "maintenance": "PASS, 38 tasks, 9 done, CSP4 alone active, all protected task and goal sections unchanged"
+  }
+}

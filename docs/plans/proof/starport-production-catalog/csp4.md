@@ -4,7 +4,24 @@
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
 
-The active worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock`, branch `codex/catalog-native-clock`, at clean `d5ef510b020aeec260c2e108d80f962ba4ae5858`.
+The active repair worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs`, branch `codex/catalog-provider-docs`, at clean `b81b827067aa860096bed208e541dd84e31274ab`.
+The [repair proof](csp4/provider-docs-2026-09-11/verification.json) records 846 race events per supported toolchain across four packages.
+Lint, ago, generated documentation, and the 1,415-file prose check pass. Full Go 1.26.6 verification runs in session `19923`.
+
+The catalog workflow fails after models.dev documentation creates invalid acquisition metadata for Cohere.
+Both parser and fetch mappings now use `DocsURL`. Curated documentation and provider contracts retain their existing authority.
+CSP6 owns this publication repair, found during CSP4 public-download qualification. CSP4 remains the only active task.
+
+The public channel still names September 8's schema 6 catalog. Current source emits schema 9 and explicitly supports schema 6 reads.
+GitHub CLI verifies the channel and archive attestations. The live Starmap source also verifies and decodes that release without credentials.
+
+The live runtime starts usable on embedded fallback. Explicit refresh activates the signed public generation and clears fallback.
+Source health becomes healthy, while catalog freshness remains critical. Provider acquisition stays disabled.
+
+The publication failure blocks freshness, not decoding. These probes do not register A07 or complete its remaining negative and recovery cases.
+This review made no release or channel changes.
+
+Clock source `d5ef510b020aeec260c2e108d80f962ba4ae5858` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock`, branch `codex/catalog-native-clock`.
 Its [cache proof](csp4/clock-cache-2026-09-10/verification.json) records 127 permission tests per supported toolchain, including 37 new cache cases.
 The cache bounds query delay, counter error, rate drift, age, and concurrent invalidation. No production clock adapter qualifies yet.
 

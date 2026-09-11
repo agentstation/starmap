@@ -1944,3 +1944,31 @@ Earlier unpinned artifact names do not establish Go 1.26.6 qualification.
 An explicit Go 1.26.6 rerun at `0d192092` passes all 51 authority/status events.
 The [parent proof](../../plans/proof/starport-production-catalog/csp4/permission-clock-2026-09-10/verification.json) records that correction.
 All eight CSP4 acceptance checks remain UNVERIFIED.
+
+## Provider documentation and public publication, 2026-09-11
+
+Workflow `34538080930` fails provider validation at source `faa9cc8b`.
+The models.dev parser places a general documentation URL inside an empty catalog-acquisition configuration. The shared fetch path copies that configuration.
+Cohere has no catalog-acquisition endpoint, so the resulting endpoint type fails validation.
+
+Local repair `b81b8270` maps this URL to `Provider.DocsURL` in both paths.
+The shared fetch path copies absent documentation and preserves existing documentation.
+Reconciliation retains Cohere and OpenAI acquisition, inference, credential, and curated-documentation contracts for both HTTP and Git observations.
+
+The [repair proof](../../plans/proof/starport-production-catalog/csp4/provider-docs-2026-09-11/verification.json) records 846 passing race events per supported toolchain across four packages.
+Lint, ago, generated documentation, and the 1,415-file prose check pass. Full repository verification remains active.
+The initial allocation test failure remains recorded. Thirty isolated runs and both final combined suites pass without a threshold change.
+
+The public channel remains at sequence 19 from September 8's publication. Its catalog declares only schema 6 compatibility.
+Current Starmap emits the schema 9 format and explicitly supports schema 6 reads. The emitted schema does not identify every supported read schema.
+Read-only GitHub CLI checks verify the channel and archive attestations against the expected workflow.
+
+Live probes at `b81b8270` also verify the source adapter and connected runtime without credentials.
+The runtime starts usable on embedded fallback. Explicit refresh activates the signed public generation and clears fallback.
+Source health becomes healthy. Catalog freshness remains critical because publication stopped at September 8. Provider acquisition stays disabled.
+
+The failure blocks freshness, not legacy decoding. This review made no release or channel changes.
+
+CSP6 owns the publication repair. CSP4 remains the only active task.
+The probes supply live evidence but do not register A07 or complete its negative and recovery checks.
+All eight CSP4 subcases remain UNVERIFIED. No task receives completion credit from this local checkpoint.
