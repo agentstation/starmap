@@ -1,0 +1,392 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_PASS_NATIVE_UNVERIFIED",
+  "source_commit": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
+  "base": "5418420cc676981a42ecc170b242a3ea674a343c",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "contract": "Use the supported Windows realtime API set and modern local W32Time endpoint. Preserve caller-identification limits, peer process checks, cancellation, and RPC reply bounds.",
+  "checks": [
+    {
+      "name": "go1.25.12-race",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "./pkg/catalogs/permission/..."
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 187,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "go1.25.12-amd64-hostclock",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.25.12-amd64-hostclock.exe",
+        "./pkg/catalogs/permission/hostclock"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-amd64-w32timerpc",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.25.12-amd64-w32timerpc.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-arm64-hostclock",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.25.12-arm64-hostclock.exe",
+        "./pkg/catalogs/permission/hostclock"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "go1.25.12-arm64-w32timerpc",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.25.12-arm64-w32timerpc.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-race",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "./pkg/catalogs/permission/..."
+      ],
+      "exit_code": 0,
+      "counts": {
+        "pass": 187,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "go1.26.6-amd64-hostclock",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.26.6-amd64-hostclock.exe",
+        "./pkg/catalogs/permission/hostclock"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-amd64-w32timerpc",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.26.6-amd64-w32timerpc.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-arm64-hostclock",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.26.6-arm64-hostclock.exe",
+        "./pkg/catalogs/permission/hostclock"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "go1.26.6-arm64-w32timerpc",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/windows-ci-fix/go1.26.6-arm64-w32timerpc.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "windows-lint",
+      "command": [
+        "golangci-lint",
+        "run",
+        "./pkg/catalogs/permission/hostclock/..."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "windows-vet",
+      "command": [
+        "go",
+        "vet",
+        "./pkg/catalogs/permission/hostclock/..."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ago",
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "prose",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "source_files": [
+    {
+      "path": "pkg/catalogs/permission/hostclock/README.md",
+      "sha256": "4ba179f7a069663da1423baa7fafa98cbf22002b9ef23b17928a962153f093d7"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/README.md",
+      "sha256": "9be49699918ef49a82b9a16b91ac8cd59627209062cba8d841f30ae392bfaf2f"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/pipe_windows.go",
+      "sha256": "a553d5f604d4dc4bf8abe1034a3ad3a4532f2922e2de668d268730584e08b034"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_test.go",
+      "sha256": "721029ff4c597706082e7c961ff0d4b480a23dc7dbec040fe6656560522e52b1"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "scoped/ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "scoped/diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.25.12-amd64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.25.12-amd64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.25.12-arm64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.25.12-arm64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.25.12-race.jsonl.gz",
+      "sha256": "9ea02c7dfb9c123878f2216be146156dfbc9b4567fb44e2d8c8ef90ea3e691d7",
+      "decoded_sha256": "5446b4cd2cbc69ce9367d8a70c6b8c0f94b37b75b844fa50cde851216869d6ae"
+    },
+    {
+      "path": "scoped/go1.26.6-amd64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.26.6-amd64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.26.6-arm64-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.26.6-arm64-w32timerpc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped/go1.26.6-race.jsonl.gz",
+      "sha256": "39afffa422bb744ae84dfc239f4fc821ce8808f86524016b4e56582ef22656dc",
+      "decoded_sha256": "b66a40e755234714b19e2eded7699743f3dfc6e2b694b0c59f2f2130be0f25d2"
+    },
+    {
+      "path": "scoped/manual-review-context.json.gz",
+      "sha256": "a499d358b96d150dec51455af5687e5749725b37a206985247d416dc8d884b16",
+      "decoded_sha256": "fff6953d4358dd3a0f7cd363ba65faa2ed8116d5d841fbbce447664ae8f323da"
+    },
+    {
+      "path": "scoped/prose.log.gz",
+      "sha256": "5d7a0a3ee9fcb6ef944556657e7c5ad28b9393e701d72595e6c7b54b8d3ef02c",
+      "decoded_sha256": "2cf870c7fcfa1ca9d3a424f742ce52bb68177bef428da877d6bad392effa825e"
+    },
+    {
+      "path": "scoped/review-directory.json.gz",
+      "sha256": "86809d7de3959784eaca431f3d2738e0007192c8feea07111d4c4fc4d28fd13b",
+      "decoded_sha256": "cd8851dbdbdcaacabc94c1692f42a08b866e3eddfe6be9a7d39080b1d2542d02"
+    },
+    {
+      "path": "scoped/verification.json.gz",
+      "sha256": "26072ef2b97a83948fd8efa212907d9bedd697168674ec9732465629326070b1",
+      "decoded_sha256": "e15d180c296325653894e3d159635413c3e6a584b8526cfc7f33e6fddb132faa"
+    },
+    {
+      "path": "scoped/windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "scoped/windows-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-parent/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "d81a4b60f2b28b040ee403630d6cf46e6ea6e1fe63b92f557cd81e8854d0052f",
+      "decoded_sha256": "921fe52ae455b0a8714190f55d7fa9984d0ab83b4f1f5fe402087d07d702982e"
+    },
+    {
+      "path": "native-parent/native-runtime-windows-2025/toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "native-parent/native-runtime-windows-2025/windows-time-service.json.gz",
+      "sha256": "42d11205e3308a6c44ccfc4838d96af8a8e02b56397fdf1858d8e07a348b65b4",
+      "decoded_sha256": "60bed02c3f633a0632cf479bb12a33319ea429700688b76d0465b487f1fccf1b"
+    },
+    {
+      "path": "native-parent/native-runtime-macos-15-intel/git-acquisition.jsonl.gz",
+      "sha256": "05cb0aa0f29f0cb769c3dfd5b6752abf779cc974eaecbb633a7061dd6a4d5185",
+      "decoded_sha256": "568da422643129d32551720fa63e07ad581c9c937eeb096775a52a3e380417df"
+    },
+    {
+      "path": "native-parent/native-runtime-macos-15-intel/publisher-ingestion.jsonl.gz",
+      "sha256": "75e2bae1d674f0b5ecc552151a3f3c320d49d99a8e221cd22d7dee86134eb663",
+      "decoded_sha256": "2fb717d10f76811b3e56eccbdaa6d77c8ea7b81c0352b6f5c0f62ed7b2a3dc1f"
+    },
+    {
+      "path": "native-parent/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "sha256": "f1395598df7d9aef5c144e3496f201af03d662e31ce1b8bbf17629c4cee2a41a",
+      "decoded_sha256": "4d131e6d29ad7c30385a9e50a13fcd22b6765b9ca5fc4b5e6e115b78c1c4638e"
+    },
+    {
+      "path": "native-parent/native-runtime-macos-15-intel/toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    }
+  ],
+  "parent_native_evidence": {
+    "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
+    "workflow_run": 34580591626,
+    "additional_platforms": [
+      {
+        "runner": "native-runtime-windows-2025",
+        "events": {
+          "pass": 1891,
+          "fail": 2,
+          "skip": 0
+        },
+        "toolchain": [
+          "go version go1.25.12 windows/amd64",
+          "windows",
+          "amd64",
+          "windows",
+          "amd64",
+          "0"
+        ],
+        "failures": [
+          "TestWindowsNativeElapsed",
+          "TestWindowsLocalTimeService"
+        ]
+      },
+      {
+        "runner": "native-runtime-macos-15-intel",
+        "events": {
+          "pass": 1955,
+          "fail": 0,
+          "skip": 0
+        },
+        "toolchain": [
+          "go version go1.25.12 darwin/amd64",
+          "darwin",
+          "amd64",
+          "darwin",
+          "amd64",
+          "0"
+        ],
+        "failures": []
+      }
+    ],
+    "existing_proof": "../windows-observer-2026-09-11/verification.json",
+    "result": "All four Linux/macOS jobs pass. Both Windows jobs fail the same two binding tests."
+  },
+  "running_checks": [
+    {
+      "session_id": 47028,
+      "command": "autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
+      "output": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-windows-binding-review-20260911-0ycuqikx/review.json"
+    }
+  ],
+  "publication": "PR151 remains at 5418420c until the correction review passes. Native CI must then qualify the correction.",
+  "limitations": [
+    "Production UTC accuracy, drift bounds, and service-account privileges remain unqualified.",
+    "The corrected local RPC call needs native evidence on Windows AMD64 and ARM64.",
+    "No CSP4 completion or new merge credit applies."
+  ]
+}

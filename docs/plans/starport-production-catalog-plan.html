@@ -5,16 +5,16 @@
 
 <p><a href="https://github.com/agentstation/starmap/pull/148">Starmap PR #148</a> merged as <code>21e7356b</code> with fifteen passing checks. Its tree equals reviewed <code>717ba914</code>. Dependent deliveries must include this main commit.</p>
 
-<p>Next action: <a href="#next-action">qualify PR #150 and merge the reviewed dependency</a>.</p>
+<p>Next action: <a href="#next-action">qualify the Windows correction for PR #151</a>.</p>
 
 <h1>Starmap and Starport production catalog</h1>
 <section id="current-resume"><h2>Current resume state</h2>
 
 <p>Updated 2026-09-11 UTC. CSP4 is active. Nine of 38 tasks are complete. Twenty-eight campaign PRs merged.</p>
 
-<p id="next-action">Check native CI for <a href="https://github.com/agentstation/starmap/pull/151">PR #151</a> at reviewed <code>5418420c</code>. Verify native artifacts before merge. The owner already authorizes the merge after required checks. Starport has no open PRs.</p>
+<p id="next-action">Qualify the Windows binding correction in <a href="https://github.com/agentstation/starmap/pull/151">PR #151</a>. The <a href="proof/starport-production-catalog/csp4/windows-observer-2026-09-11/verification.json">observer proof</a> retains exact failures and the local correction. Verify, review, and publish the correction, then require native evidence before merge. Starport has no open PRs.</p>
 
-<p>Host clock <code>5418420c</code> is clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock</code>, branch <code>codex/catalog-host-clock</code>. Its <a href="proof/starport-production-catalog/csp4/windows-observer-2026-09-11/verification.json">observer proof</a> records all 41 repository stages passing, 215 scoped race events per toolchain, eight Windows cross-builds, and zero findings from Sol and Opus. Native workflow <code>34580591626</code> runs six platform jobs. The former verifier and review sessions ended.</p>
+<p>Host clock <code>0dfa9a90</code> is clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock</code>, branch <code>codex/catalog-host-clock</code>. The <a href="proof/starport-production-catalog/csp4/windows-binding-2026-09-11/verification.json">binding proof</a> records 187 permission race events per toolchain, eight Windows cross-builds, and passing static and prose checks. Parent workflow <code>34580591626</code> passes four native jobs. Both Windows jobs fail the same two bindings. Correction review runs in session <code>47028</code>. Native execution remains required.</p>
 
 <p>Clock configuration <code>e97d7fc3</code> is clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle</code>, branch <code>codex/catalog-clock-lifecycle</code>. Its <a href="proof/starport-production-catalog/csp4/clock-settings-2026-09-11/verification.json">settings proof</a> records eight canonical host settings, passive native composition, and corrected scoped checks. Full <code>make verify</code> runs in session <code>80929</code>. Read <code>.tmp/csp4-clock-settings/verify-metadata.json</code> and <code>verify.log</code> in that worktree. Preserve the candidate until verification ends, then complete review and publication in dependency order.</p>
 

@@ -6,12 +6,12 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 116,
-  "new_evidence_artifacts": 675,
-  "new_commit_source_files": 191,
-  "resume_words": 274,
-  "current_source": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
+  "local_links": 117,
+  "new_evidence_artifacts": 706,
+  "new_commit_source_files": 195,
+  "resume_words": 287,
+  "current_source": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "clean_source": true,
   "running_implementation_commands": [
     {
@@ -21,12 +21,12 @@
       "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle/.tmp/csp4-clock-settings/verify-metadata.json"
     }
   ],
-  "next_action": "Verify native CI artifacts for reviewed PR151, then merge after required checks. Finish full repository verification for e97d7fc3 in session80929, then review and publish in dependency order.",
+  "next_action": "Finish review47028 for correction0dfa9a90, then publish to PR151 and require native CI before merge. Finish full repository verification for e97d7fc3 in session80929, then review and publish in dependency order.",
   "external_running_checks": [
     {
       "pull_request": 151,
       "workflow_run": 34580591626,
-      "status": "native CI running"
+      "status": "Both Windows jobs failed; correction0dfa9a90 runs review47028"
     }
   ],
   "public_acceptance_work": {

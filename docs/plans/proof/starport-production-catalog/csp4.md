@@ -8,7 +8,12 @@ Twenty-eight campaign PRs merged, and CSP4 remains active.
 Native clock `5418420c` is now [PR #151](https://github.com/agentstation/starmap/pull/151).
 Its [proof](csp4/windows-observer-2026-09-11/verification.json) records all 41 local verifier stages passing after the dependency inventory correction.
 Sol at xhigh and Opus at high report zero findings. The secret scan passes.
-Native workflow `34580591626` runs before merge. Starport has no open PRs.
+
+Native workflow `34580591626` passes all four Linux/macOS jobs. Both Windows jobs fail the same two tests. Starport has no open PRs.
+The failures name the direct `kernel32.dll` lookup and absent `W32TIME` pipe. A local correction uses the API set and `W32TIME_ALT` with caller identification.
+
+Correction `0dfa9a90` passes 187 permission race events per toolchain, eight Windows cross-builds, static checks, and complete prose.
+Its [binding proof](csp4/windows-binding-2026-09-11/verification.json) records correction review in session `47028`. Native status access remains unverified.
 
 Clock configuration `e97d7fc3` adds eight canonical host settings and passive native composition.
 Its [proof](csp4/clock-settings-2026-09-11/verification.json) records 35 focused race events per toolchain with one Windows-only skip.

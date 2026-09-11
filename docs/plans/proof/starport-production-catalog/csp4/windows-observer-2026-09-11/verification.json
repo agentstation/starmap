@@ -710,6 +710,36 @@
       "path": "native-artifact-directory.json.gz",
       "sha256": "71d5eab62a3b7a15fe162df1296c1607f5b2051de9e97a75a674ce715534db64",
       "decoded_sha256": "334fafb86d3551c267d7b4ef0403a37fa16128df1bd350e75279fc92d98e02e2"
+    },
+    {
+      "path": "native-pr151/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "27f8c052457899f3f4cec2fb00e0702549340e7c05d7c6272cc6086ade02557d",
+      "decoded_sha256": "c001cf9511f5eac786ca9fca5705a58141aa29cd45f338aa2fe9682d915f0eb9"
+    },
+    {
+      "path": "native-pr151/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "native-pr151/native-runtime-windows-11-arm/windows-time-service.json.gz",
+      "sha256": "ce77e71aba160a934315dc75351b02da8afec4433544ace8bd26e3e028cad9e1",
+      "decoded_sha256": "746f7adffaf0d899e21cf316418fb9af798343291b47b9449871c9a6363fe0d8"
+    },
+    {
+      "path": "windows-arm64-ci-failed.log.gz",
+      "sha256": "fde4678d815c8655fe9f8ac28fe36705587d96460b03c1ca87b20e69ca14874a",
+      "decoded_sha256": "3b3f17fe62c3a6fd9194cb533861b48bf12a25040e3f1c8789182ec240ef44f6"
+    },
+    {
+      "path": "windows-arm64-ci-job.log.gz",
+      "sha256": "0718a171587c7f36b5105650fc5d3776494bd72fa061117d0835859e55fbbbd5",
+      "decoded_sha256": "8b6407b2fdbca54bf3d53fb93e79a3560dbe59567fa5044cfee4bed1b5b6e467"
+    },
+    {
+      "path": "windows-arm64-ci-job-complete.log.gz",
+      "sha256": "5535b93b4cb03771bb75ced0fcf9a08ad836730b2d0801e0240a9adb8296a8ec",
+      "decoded_sha256": "f193a1b03c8d239cf308223b9a142170654ddd9bd8dec8facc3293492b183352"
     }
   ],
   "inventory_correction": {
@@ -726,7 +756,7 @@
     "completed_at": "2026-09-11T08:35:29.779642+00:00",
     "failed_original_stage": "Direct dependency inventory omitted the two new direct modules. Commit 5418420c corrects the inventory. Prior failure and correction evidence remain preserved."
   },
-  "current_publication": "PR151 published at exact reviewed 5418420c. Native CI is running. Merge remains pending.",
+  "current_publication": "PR151 remains at 5418420c. Correction 0dfa9a90 passes local checks and runs pre-PR review. See ../windows-binding-2026-09-11/verification.json.",
   "pre_pr_review": {
     "status": "PASS",
     "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
@@ -745,7 +775,7 @@
     "url": "https://github.com/agentstation/starmap/pull/151",
     "head": "5418420cc676981a42ecc170b242a3ea674a343c",
     "workflow_run": 34580591626,
-    "status": "Three native jobs and their artifacts pass. Windows, macOS Intel, and Verification Gate remain pending."
+    "status": "Windows ARM64 failed two native binding tests. Repair in progress. Merge prohibited until corrected review and native checks pass."
   },
   "native_qualification_partial": {
     "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
@@ -815,8 +845,39 @@
         ]
       }
     ],
-    "status": "PARTIAL; Windows and macOS Intel remain pending",
+    "status": "PARTIAL; both Windows jobs failed",
     "job_binding": "All three artifact sets match completed successful jobs in workflow34580591626 at head5418420c.",
-    "ordinary_linux_skips": "Each Linux service-owner case skips without privilege. Both separate privileged captures pass."
+    "ordinary_linux_skips": "Each Linux service-owner case skips without privilege. Both separate privileged captures pass.",
+    "additional_platform_evidence": "../windows-binding-2026-09-11/verification.json"
+  },
+  "native_ci_failure": {
+    "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
+    "workflow_run": 34580591626,
+    "job": 103202967815,
+    "platform": "windows/arm64",
+    "events": {
+      "pass": 1891,
+      "fail": 2,
+      "skip": 0
+    },
+    "tests": [
+      {
+        "package": "pkg/catalogs/permission/hostclock",
+        "test": "TestWindowsNativeElapsed",
+        "error": "QueryInterruptTime procedure not found in kernel32.dll."
+      },
+      {
+        "package": "pkg/catalogs/permission/hostclock/internal/w32timerpc",
+        "test": "TestWindowsLocalTimeService",
+        "error": "The local W32TIME pipe does not exist."
+      }
+    ],
+    "assessment": "Microsoft documents QueryInterruptTime in the realtime API set and W32TIME_ALT for modern Windows. go-winio defaults to anonymous pipe identity, but W32Time checks caller privileges. A local candidate selects the API set and W32TIME_ALT with identification. Native validation remains pending.",
+    "sources": [
+      "https://learn.microsoft.com/en-us/uwp/win32-and-com/win32-apis",
+      "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/bb576d39-587b-484a-86a4-e1d378cf9497",
+      "https://learn.microsoft.com/en-us/windows/win32/secauthz/impersonation-levels"
+    ],
+    "remaining_risk": "Native RPC status access with identification must pass on both Windows architectures. Do not claim the correction works before that evidence."
   }
 }
