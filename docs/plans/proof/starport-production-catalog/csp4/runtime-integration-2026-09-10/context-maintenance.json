@@ -5,24 +5,23 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 115,
-  "new_evidence_artifacts": 489,
-  "new_commit_source_files": 123,
-  "resume_words": 359,
-  "current_source": "41071ef4c0289a9c100c696406f7e36543be4177",
+  "local_links": 116,
+  "new_evidence_artifacts": 545,
+  "new_commit_source_files": 155,
+  "resume_words": 372,
+  "current_source": "5418420cc676981a42ecc170b242a3ea674a343c",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "clean_source": true,
-  "running_implementation_commands": [],
-  "next_action": "Automatic squash merge for PR150 at e3943c97 waits for Verification Gate. Verify and record the actual merge. All 41 local verifier stages have evidence. PR149 merged with fifteen successful checks. Continue Windows clock support, qualified clock profiles, host scheduling, and configured Starport permission composition.",
-  "external_running_checks": [
+  "running_implementation_commands": [
     {
-      "pr": 150,
-      "repository": "agentstation/starmap",
-      "head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
-      "status": "All six native jobs pass. Automatic merge waits for Verification Gate.",
-      "owner": "Catalog plan executor"
+      "session_id": 44964,
+      "command": "bash .tmp/csp4-host-clock/windows-observer/verify-remainder.sh",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder.log",
+      "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder-metadata.json"
     }
   ],
+  "next_action": "PR150 merged as 852a548c with fifteen successful checks and exact tree equality. Finish the remaining verifier stages for host-clock 5418420c, then pre-PR review and native clock qualification.",
+  "external_running_checks": [],
   "public_acceptance_work": {
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
     "branch": "codex/catalog-public-acceptance",

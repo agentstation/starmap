@@ -1,16 +1,15 @@
 # Current pull request queue
 
-Updated 2026-09-11 UTC. Starmap [PR #150](https://github.com/agentstation/starmap/pull/150) is the only open PR across both repositories.
-The [queue evidence](queue-status-2026-09-11.json) records its exact head and automatic merge state.
+Updated 2026-09-11 UTC. Both repositories have no open PRs.
+The [queue evidence](queue-status-2026-09-11.json) records the current inventory and the PR #150 merge.
 
-PR #150 contains reviewed `e3943c97`. All six native jobs pass. Automatic squash merge waits for Verification Gate.
-The catalog plan executor will verify the actual merge before recording completion.
-PR #149 merged as `9ea36b3e` after fifteen successful checks. Its tree matches reviewed `0a143a94` exactly.
+Starmap [PR #150](https://github.com/agentstation/starmap/pull/150) merged as `852a548c` after fifteen successful checks.
+Its tree exactly matches reviewed `e3943c97`. PR #149 previously merged as `9ea36b3e`.
 
-Starport `95354f0` adds configured authority pins to its request permission checks. The four mapped consumer checks remain incomplete.
-Starmap `41071ef4` adds the Windows elapsed counter after the Linux and macOS observations.
-Windows native execution, UTC observation, and production clock profiles remain open.
-Twenty-seven campaign PRs merged. Nine tasks are complete, and CSP4 remains active.
+Starport `95354f0` retains configured authority pins and request permission checks. Four mapped consumer checks remain incomplete.
+
+Host clock `5418420c` includes the Windows observer and merged main. The inventory includes both new dependencies, and remaining verification runs. Native execution and operational clock profiles remain open.
+Twenty-eight campaign PRs merged. Nine tasks are complete, and CSP4 remains active.
 
 ## Historical queue snapshots
 

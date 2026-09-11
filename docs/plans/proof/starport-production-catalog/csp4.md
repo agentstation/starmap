@@ -7,8 +7,10 @@ It adds atomic catalog authority snapshots and includes reviewed consumer and pu
 The [snapshot proof](csp4/authority-snapshot-2026-09-11/verification.json) records six scoped passing cases per toolchain, complete static checks, and combined verification.
 
 All 41 verifier stages pass across the initial command and the corrected remainder. Sol and Opus report zero findings at `e3943c97`.
-[PR #150](https://github.com/agentstation/starmap/pull/150) now runs native CI.
 PR #149 merged as `9ea36b3e` after fifteen passing checks. The combined tree equals tested `768347ab`.
+
+[PR #150](https://github.com/agentstation/starmap/pull/150) merged as `852a548c` with fifteen successful checks and exact reviewed-tree equality.
+Both repositories have no open PRs. Twenty-eight campaign PRs merged.
 Native clocks and the four Starport consumer cases remain UNVERIFIED.
 
 Host clock `0868781d` adds explicit Linux and macOS observations.

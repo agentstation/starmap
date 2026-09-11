@@ -1879,13 +1879,23 @@ Windows now uses the Go runtime's interrupt-time counter through `time.Since`.
 The supported runtime sources read that native counter on both Windows architectures.
 The [counter proof](../../plans/proof/starport-production-catalog/csp4/windows-counter-2026-09-11/verification.json) records four cross-builds.
 Native Windows execution remains UNVERIFIED.
-Windows still returns no usable UTC observation.
+The default `hostclock.Observe` still refuses Windows UTC observations without an explicit profile.
 
 An isolated W32Time prototype passes twelve stream-contract tests on each supported Go toolchain.
 It uses generated QueryStatus decoding with a fixed local stream, reply bounds, and cancellation.
 Native pipe access, service identity checks, and a source-age error profile remain unqualified.
 The prototype adds no product dependencies or production support claim.
 The host must still qualify drift and error bounds, schedule refresh, and invalidate unsafe evidence.
+
+Candidate `88660313` now supplies `NewWindowsObserver(WindowsProfile)`.
+The profile declares maximum source age, source drift, and additional UTC uncertainty. The constructor starts no I/O.
+The [observer proof](../../plans/proof/starport-production-catalog/csp4/windows-observer-2026-09-11/verification.json) records the portable contracts and Windows cross-builds.
+Native Windows execution and production clock qualification remain UNVERIFIED.
+
+The observer checks the local time-service process and pipe before it requests status.
+It derives time and age from one status, bounds both timestamp fields, and rejects unsafe or excessive uncertainty.
+The two-second query limit bounds the caller's wait. A blocked Windows service-manager call retains the single native query slot until cleanup.
+CI starts the existing service only on disposable runners. Application code starts no service and changes no time setting.
 
 The library clock callback reads only cached evidence.
 Each sample's uncertainty must bound its returned time.

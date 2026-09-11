@@ -383,6 +383,16 @@
       "path": "pr150-auto-merge.json.gz",
       "sha256": "567b5ee30d9bd85b2f69292a9646451f50054831645f042b01f8228c20176d02",
       "decoded_sha256": "7114b5d599f15f0ae1ee61810d219717a7b497000912cb9471e4a0a7f2f137a3"
+    },
+    {
+      "path": "pr150-merged.json.gz",
+      "sha256": "08daf580058854dfc51768b9e07e288d2e58c3ea54825b831f88e8c65e8c51d8",
+      "decoded_sha256": "cb67854e78ee0f435e3dd13b25afbbb5659d83176884dc8baecf59687f05b476"
+    },
+    {
+      "path": "pr150-merged-tree.json.gz",
+      "sha256": "aa262ef2ac12db4cd2f097613103fc2c479917f4a84d2044559a535de8a52b74",
+      "decoded_sha256": "ea5a6e20b98cecebdaeb757ee9637d9166151440f547bec4d1e1c57d56961da4"
     }
   ],
   "contract": [
@@ -862,5 +872,20 @@
     "is_draft": false,
     "merge_commit": null,
     "completion_credit": "None until the actual merge and source equality are verified."
-  }
+  },
+  "merge": {
+    "pr": 150,
+    "repository": "agentstation/starmap",
+    "merge_commit": "852a548c4959e98af443f487922b9708fb594a91",
+    "merged_at": "2026-09-11T06:37:26Z",
+    "reviewed_head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "merged_tree": "1aaec8d715f65f3cdf6c60fff2b9a439d8489f79",
+    "reviewed_tree": "1aaec8d715f65f3cdf6c60fff2b9a439d8489f79",
+    "exact_tree_equality": true,
+    "required_checks": 15,
+    "all_checks_success": true,
+    "origin_main": "852a548c4959e98af443f487922b9708fb594a91",
+    "source_clean": true
+  },
+  "current_publication": "PR150 merged as 852a548c4959e98af443f487922b9708fb594a91 on 2026-09-11T06:37:26Z. All fifteen checks pass; reviewed and merged trees are identical."
 }

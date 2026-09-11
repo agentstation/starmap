@@ -1,0 +1,601 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_candidate_checks_remainder_verification_running",
+  "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
+  "base": "852a548c4959e98af443f487922b9708fb594a91",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "publication": "Local candidate. No pre-PR review or native CI yet.",
+  "main_integration": {
+    "before": "aaa3ac43f45826811d45273a1d803f4cabe341d3",
+    "after": "88660313dc37edf8d452a8dcd9bb7c8b5a613142",
+    "main": "852a548c4959e98af443f487922b9708fb594a91",
+    "tree_before": "b35de057e2591db971b0e8a790fed351e8aefd33",
+    "tree_after": "b35de057e2591db971b0e8a790fed351e8aefd33",
+    "exact_tree_equality": true,
+    "source_clean": true
+  },
+  "contract": [
+    "NewWindowsObserver requires an explicit profile and performs no I/O. The default Windows Observe still refuses without that profile.",
+    "The profile bounds source age, rate error, and additional UTC uncertainty. One W32Time status binds the last synchronization timestamp and elapsed age in 100ns units. Source drift includes timestamp precision and quantization.",
+    "Unsafe synchronization, leap, stratum, source flags, malformed timestamps, overflow, and excessive combined error return no usable time.",
+    "The native reader uses a local anonymous pipe and query-only service handles. It checks the pipe server PID against the running W32Time process before RPC and retains a process handle for its completion check.",
+    "A fixed stream, disabled DNS resolver, fragment/reply limits, and deadline clamps bound QueryStatus transport. No application credential is selected.",
+    "At most one native service-manager call remains outstanding. Caller cancellation returns while an uninterruptible native call retains its slot until cleanup.",
+    "CI will start the existing W32Time service on disposable Windows runners and require real pipe/status tests. Application code starts no service or time synchronization."
+  ],
+  "checks": {
+    "fail_before": "red.jsonl.gz and red.log.gz reproduce the absent Windows observer API.",
+    "go126_permission_and_workflow_race": {
+      "pass": 215,
+      "fail": 0,
+      "skip": 0
+    },
+    "go125_permission_and_workflow_race": {
+      "pass": 215,
+      "fail": 0,
+      "skip": 0
+    },
+    "portable_transport_and_evidence": {
+      "pass": 60,
+      "fail": 0,
+      "skip": 0
+    },
+    "windows_cross_build": [
+      {
+        "toolchain": "go1.25.12",
+        "architecture": "amd64",
+        "package": "./pkg/catalogs/permission/hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.25.12-amd64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.25.12",
+        "architecture": "amd64",
+        "package": "./pkg/catalogs/permission/hostclock/internal/w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.25.12-amd64-rpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.25.12",
+        "architecture": "arm64",
+        "package": "./pkg/catalogs/permission/hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.25.12-arm64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.25.12",
+        "architecture": "arm64",
+        "package": "./pkg/catalogs/permission/hostclock/internal/w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.25.12-arm64-rpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.26.6",
+        "architecture": "amd64",
+        "package": "./pkg/catalogs/permission/hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.26.6-amd64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.26.6",
+        "architecture": "amd64",
+        "package": "./pkg/catalogs/permission/hostclock/internal/w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.26.6-amd64-rpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.26.6",
+        "architecture": "arm64",
+        "package": "./pkg/catalogs/permission/hostclock",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.26.6-arm64-hostclock.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.26.6",
+        "architecture": "arm64",
+        "package": "./pkg/catalogs/permission/hostclock/internal/w32timerpc",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/go1.26.6-arm64-rpc.exe",
+          "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "lint": "Pinned golangci-lint 2.12.2 passes Darwin and Windows selections after correcting conversion checks, cleanup acknowledgments, and native/policy ownership. Original 32 and four findings retained.",
+    "ago": "Whole repository on Darwin and hostclock subtree on Windows pass with zero findings, stale ignores, or errors.",
+    "vet": "Permission subtree on Darwin and Windows ARM64 pass. Remaining full repository checks are pending.",
+    "documentation": "Both generated package documentation checks pass.",
+    "prose": "Complete check: 1489 files, zero diagnostics. Original five diagnostics retained.",
+    "native_windows": "UNVERIFIED. Cross-compilation is not execution.",
+    "full_verification_initial": {
+      "source_commit": "88660313dc37edf8d452a8dcd9bb7c8b5a613142",
+      "exit_code": 2,
+      "log": "verify.log.gz",
+      "result": "First five stages pass. CPO-V13 fails because the direct module inventory omits the two new Windows transport dependencies. No behavior test failure."
+    },
+    "canonical_documents": "PASS: 141 files, zero prose diagnostics after correcting five findings. Plan maintenance checks all linked artifacts and source hashes."
+  },
+  "dependencies": {
+    "added_direct": {
+      "github.com/oiweiwei/go-msrpc": "v1.5.4",
+      "github.com/Microsoft/go-winio": "v0.6.2"
+    },
+    "existing_versions_changed": false,
+    "selection_evidence": "Prior isolated prototype and shadow module graph are retained in windows-counter-2026-09-11. Native qualification remains required before production support."
+  },
+  "running_checks": [
+    {
+      "session_id": 44964,
+      "command": "bash .tmp/csp4-host-clock/windows-observer/verify-remainder.sh",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder.log",
+      "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder-metadata.json"
+    }
+  ],
+  "limitations": [
+    "Native Windows pipe access, process identity, default-counter intervals, and UTC status fields have not executed yet.",
+    "The test profile is not a qualified production clock profile. Native kernel/Windows observations alone do not certify UTC accuracy or suspend/resume behavior.",
+    "Nonadministrator Windows service-account qualification remains open.",
+    "Full repository verification, pre-PR review, native CI, and merge of the host-clock candidate remain required.",
+    "Host configuration, clock refresh scheduling, permission owners, shared-store followers, and the four mapped Starport consumer cases remain incomplete."
+  ],
+  "source_files": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "9021e2cdee18f0c5bb5c14586586c3ff7ae4a06ec49b526b0ef2269d4a80312e"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "7306762e1cba1767c7a4f2758e77f23f9e6ee1262e579587ecdfcfa931e87508"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "c250f40d5efcff10df08b824d63da9b6079f100cde2ff1e7014236b58b67c886"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/README.md",
+      "sha256": "f1d394c9656ee0de4d36a381ae4a145210a12f23d014f0e4046220039de0499c"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/darwin.go",
+      "sha256": "a970e1905e68114ebc9386ac91ab92bb83a4c1ea1bcef24f4000688c218a1c5b"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/darwin_test.go",
+      "sha256": "74492a6960a9fa3cc6b401de4b1f056748addac443182c3d1426ba82f99c3178"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/generate.go",
+      "sha256": "baf9a5f90357620174897934d7490e47b69f60e4b4463d36ae2701542f0fde51"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/hostclock.go",
+      "sha256": "1c841a2b7cf1e1faa7e479fb12f482aa6794de72d7f5482cad62e3d80eba7efb"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/hostclock_test.go",
+      "sha256": "f75e01ac1451870f619b5a1852b80c3fe4af607e4d1b4a3f5581f654d8790502"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/README.md",
+      "sha256": "58644d3ca48cb7fae4c8dbb0fffbc2eedd1fbb6c9472d9c0b1f6b6104b336e96"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/bounded_stream.go",
+      "sha256": "dc8fb2e0a66ebf780bb8afb5b6824ce05de99db176452824f65ed615ada66e90"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/bounded_stream_test.go",
+      "sha256": "993205a0f36471a3a2735621e04c748edf16a71f3dc4e006d138443e1935cb3f"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/doc.go",
+      "sha256": "017249040c508cdda08dd036b38f45a373b71fde25207684e8cf4cf0d5425373"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/generate.go",
+      "sha256": "09246126c81815238afa7ea7aca7352a002b3bcdcf353e70f526016b2a1726c5"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/observation.go",
+      "sha256": "d339e2a86e8bf1fa4dcdd41425faf9854a23febee1943f3e2c845dbaaa98c2c6"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/observation_test.go",
+      "sha256": "34c102b252507f0e313e0cd2dd7e2efd8771cf15271f309189f5bf0d0101723e"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/pipe_unavailable.go",
+      "sha256": "4cfdf57a027f154f4084f07adc86c69a24b0b479f78d48aa929996d3f9208749"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/pipe_windows.go",
+      "sha256": "111f5e4548b5db2fa0192ca9d143018341ee7cb04cab0ec149e9863c8f23982d"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/pipe_windows_test.go",
+      "sha256": "c083e3b13a121e52727ec5e44e9b192fc12219c9eccc3287d9048929808528f7"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query.go",
+      "sha256": "63410fc06a8ba74618ffe4d103395850473f463cf77c6c7d639cfc046dd1cf46"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query_dispatch_test.go",
+      "sha256": "a307538b007d9b24e2fb5559be479452f4aa9c783055cefeecf4e6d475c69581"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/query_test.go",
+      "sha256": "8cbee4ea8a20c57bd148fbe7e76785e499191e3e77bd112bb1748dd1a229c0dd"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/linux.go",
+      "sha256": "3b98faf6576749da790db4079a71e8d442ffc9485bed1b2ee7727b1158a95ed4"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/linux_test.go",
+      "sha256": "76771178acfe93d43e94c9b2385f2e9715ee67c71c1f587b3dfe2f7c79ccba0c"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/unsupported.go",
+      "sha256": "82b17c9717ff83fc59595681e77588f367471735bb6d69bf8d5a654f2e9ee69d"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows.go",
+      "sha256": "2d0decbb7417411cb673fd2da9a20e8de32a0281d916a73254b6583fe9853130"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_observer.go",
+      "sha256": "e07da6c408b957c014f1dfe28958e2e5883eaf64a15622111f9aa2784646ddd9"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_observer_test.go",
+      "sha256": "19cb7c5a9212c1a94ac5677a9566807c2014145407a5ad4e79910e33a0866ccc"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_query.go",
+      "sha256": "154ed12d4755e1671652aa6f93934400976f44ceeb7535f5248b1d0d995b7aff"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_test.go",
+      "sha256": "70d5817686400cf246b9909f455b2e47da3a24e721bd1ba666030bb03da7011c"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_unavailable.go",
+      "sha256": "609e0627d095bf6d290d0ae97e830e51025584b32ef26b531660ef078077eb00"
+    },
+    {
+      "path": "scripts/testdata/direct-modules.txt",
+      "sha256": "0df5f550a4c0dbac8d45b1282411977e66b7f20492f25cb5267222f18cdd9312"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago-final.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-windows-final.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "commit.log.gz",
+      "sha256": "bb1409aebcfac2cc37e2a87c665eb2754c419e14fabbf9d299a3008eb76081a4",
+      "decoded_sha256": "8a5beb7b459f071ca14ecb0585cee877990ff0673d58d65de6e5693cc5255013"
+    },
+    {
+      "path": "cross-build-final.json.gz",
+      "sha256": "c547325a6f5654b55f1b13164e34bc02abee8fcf83a38c98f6a222063388d37e",
+      "decoded_sha256": "56600de50202bf6a6563cebeb30bd6d06ab5630865c0538410136ec677a72f71"
+    },
+    {
+      "path": "cross-build.json.gz",
+      "sha256": "c547325a6f5654b55f1b13164e34bc02abee8fcf83a38c98f6a222063388d37e",
+      "decoded_sha256": "56600de50202bf6a6563cebeb30bd6d06ab5630865c0538410136ec677a72f71"
+    },
+    {
+      "path": "dependency-get.log.gz",
+      "sha256": "8dae0e743df1f50d5e4d1299449067063bd9ea7fec6cae42a845c585bacfaa49",
+      "decoded_sha256": "9569fad2e1e48dfc7a64350ef36616907324bd7f6f2ae194b84db04bf9cc7785"
+    },
+    {
+      "path": "evidence-tests.jsonl.gz",
+      "sha256": "3b4442ba14da747568d1f2faa746ddfd14490f3f2846532abec4262c1cfd9938",
+      "decoded_sha256": "619e845b0eae614575caaf38b7e1190719bf5c6a7c55c0aee45043032df5d08d"
+    },
+    {
+      "path": "evidence-tests.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-hostclock-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-hostclock-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-rpc-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64-rpc-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-hostclock-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-hostclock-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-rpc-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64-rpc-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-hostclock-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-hostclock-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-rpc-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64-rpc-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-hostclock-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-hostclock-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-rpc-cross-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64-rpc-cross.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lint-darwin-refined.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "lint-darwin.log.gz",
+      "sha256": "110cfcf05111bc5708a259da90a8001296095e3314f8b45447ba37ea2e3f9fa2",
+      "decoded_sha256": "765398892ec0368071137c4dda8bce0edcf1026b8be8cf18f425ab74cd8c11ee"
+    },
+    {
+      "path": "lint-windows-final.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "lint-windows.log.gz",
+      "sha256": "d6e005e0710cc5180db30be7ad552a45c6865ddef64c9c6075fd600d4b38ed0f",
+      "decoded_sha256": "3d7ce640c2552619b73de36d6bcc353e52eca96476b0a2f1679f33355ae5df09"
+    },
+    {
+      "path": "main-integration.json.gz",
+      "sha256": "395ea256e38007f12c04699eff10f71a165f548b396b46716466ccc920a58362",
+      "decoded_sha256": "84d5068ac4a38e06a3cf5b426b9458c545355a20cca1aea88c44ae2d67ac1b8e"
+    },
+    {
+      "path": "main-merge.log.gz",
+      "sha256": "5c5ff8a3c9cebbf389f0ede4773f2ed5a08d9990bf20c028e85125897374d119",
+      "decoded_sha256": "3932df71ce6b1a5831ef19ca12435553ca183f6a79d507a66511b5e43f1bb3ba"
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "f9faac775b5f4ba874d54ea242a9dae37a99e0fdde3b904e04ee548d9e28861a",
+      "decoded_sha256": "25a9fe253ea9c0e9ebeddf2c61bb6b23b90e27af2ccba1762a4c2b7da7cf752a"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "cccaca682d1826d0120240732cadf596bdd15e0d81f8329a69f3bb11854abffb",
+      "decoded_sha256": "4d43d1f25ad28f8784c57471eccd8b30f4a54d89a90e4162cf00dba921f3c51e"
+    },
+    {
+      "path": "race-all.jsonl.gz",
+      "sha256": "d4283ac6e1258da738e54fa6f74bdd9ac6bfcfa1601003bcbbd3b8efa6fa5c44",
+      "decoded_sha256": "18f6519c68bfe52ea9df48658f966f7da7aa97a3efa178bccbeeaba407ad8ffc"
+    },
+    {
+      "path": "race-all.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "race-final.jsonl.gz",
+      "sha256": "480ba23e346fda068399fa592ad9c50d2cc1278c22345af2471849ca08c6a904",
+      "decoded_sha256": "76cc7eac5c16e86f2e1a1ca58fc53280c2ca146245a673baed6784096d5d8049"
+    },
+    {
+      "path": "race-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "race-go125.jsonl.gz",
+      "sha256": "5a8b9e6bc592be54f264a34dedc73aad77b37da7c51aa08001709d338e831d78",
+      "decoded_sha256": "07f2dba9fc176aed613fed5eaf628d89af653796cb8b9c96d95b67eb0b5b4b89"
+    },
+    {
+      "path": "race-go125.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "red.jsonl.gz",
+      "sha256": "08e6c06ac76b851ce9defd82efbfb88039abb38dba8c6ee5b5fed0cfad47c4ef",
+      "decoded_sha256": "1b8c869b3e2b862d2a3cce4ce05f00e82cab6e86b176c12333e7f85fd7338084"
+    },
+    {
+      "path": "red.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "refined-tests.jsonl.gz",
+      "sha256": "df8946130d25a3e48f87e205281a5f11ddb33213a9fad43321c11afe1393edc0",
+      "decoded_sha256": "a7d860abd62b2c2c4e230d504c1991c9b7632eb51d35bf667c1d2ce7a47126f1"
+    },
+    {
+      "path": "refined-tests.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tidy.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "transport-complete.jsonl.gz",
+      "sha256": "a5fd05e4921bd20ca9d7479507e1e4f13d4c6fca684302e1312352dba85912fb",
+      "decoded_sha256": "62212188cc02a99ab4e0a5444c3ffc6ac725e024774f054170c22a5b81f67ca7"
+    },
+    {
+      "path": "transport-complete.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "transport-first.jsonl.gz",
+      "sha256": "d6060660231119511468a1211c7b549f2943aa17368d01ddc6b2b38d05b972b3",
+      "decoded_sha256": "47e4cf13f97529f4a1db147b7ce7518950b2e0ef62dfab51d11c9c1347734a5a"
+    },
+    {
+      "path": "transport-first.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "vet-windows.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verify.log.gz",
+      "sha256": "1337de8f309cecf40c304c235243e3e76f82b94e7c890ed46a033492666c9aaf",
+      "decoded_sha256": "90f32af9a608623c29308960f08d1f879cbf1edf568f7549c75752e05ca1c244"
+    },
+    {
+      "path": "verify-metadata.json.gz",
+      "sha256": "1d4e40b13e3be96fe6d97c6d2408ab1fe56651000885900e6fb4903f38f9a4ef",
+      "decoded_sha256": "f1fadcd68f19995b257ee7e52a3db979e7a1495a7ab3d0908741faef1eccfef6"
+    },
+    {
+      "path": "windows-observer-prose.log.gz",
+      "sha256": "9429790fd1d550b0e03fcd129c554ad5e99810440fba9d137bf97b968cd51c19",
+      "decoded_sha256": "4bab73af979b857a50f9299d8e9c53e056389f0813099d2799576ac460e29bea"
+    },
+    {
+      "path": "windows-observer-prose-final.log.gz",
+      "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
+      "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    }
+  ],
+  "inventory_correction": {
+    "commit": "5418420cc676981a42ecc170b242a3ea674a343c",
+    "change": "Record go-winio and go-msrpc in the direct-module inventory. CPO-V01 through CPO-V13 and verifier regression tests pass. No production or test source changed."
+  }
+}

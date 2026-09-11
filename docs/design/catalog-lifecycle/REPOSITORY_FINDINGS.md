@@ -2146,3 +2146,22 @@ They do not prove native Windows pipe access, process identity checks, cancellat
 The standalone Windows probe uses 126 nonstandard packages and builds for both architectures.
 A shadow module graph adds eighteen modules without changing existing versions.
 The product dependency files remain unchanged. Native access, UTC uncertainty, operational profiles, and host scheduling remain open.
+
+## Windows observer candidate and authority merge, 2026-09-11
+
+Starmap PR #150 merged as `852a548c` after fifteen successful checks.
+The merged tree exactly matches reviewed `e3943c97`. Both repositories have no open PRs.
+
+Local host-clock candidate `5418420c` includes that main revision and the Windows observer.
+Its [proof](../../plans/proof/starport-production-catalog/csp4/windows-observer-2026-09-11/verification.json) records 215 race events per supported toolchain and eight Windows test cross-builds.
+Scoped lint, vet, ago, generated documentation, and the 1,489-file prose check pass.
+The remaining repository verifier stages run after a dependency inventory correction. Pre-PR review and native Windows execution remain open.
+
+The candidate requires explicit source bounds, checks the service and pipe process, and limits the RPC exchange.
+Tests cover cancellation before and after dispatch, fragmented replies, malformed limits, source-age bounds, and recovery from a blocked native call.
+One native query can remain active after caller cancellation. Its slot prevents more native calls until it finishes.
+
+The candidate adds go-msrpc and go-winio without changing existing module versions.
+Native tests will distinguish pipe interoperability from a source that meets the test profile.
+Neither result alone qualifies production UTC accuracy or nonadministrator service accounts.
+Host configuration, refresh scheduling, and the four mapped Starport cases remain incomplete.
