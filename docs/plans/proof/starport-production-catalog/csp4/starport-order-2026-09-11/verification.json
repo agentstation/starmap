@@ -1,0 +1,125 @@
+{
+  "task": "CSP4",
+  "status": "PASS_local_acceptance_order",
+  "source_commit": "1979d347493f727e7235073693f4d13d65a1bd4f",
+  "base": "aceaf0b8c06c3f0ea415656d90e99bffea887652",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "dependency_source": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+  "source_files": [
+    {
+      "path": "internal/catalog/acceptance.go",
+      "sha256": "547bea108b8bc4dbd43cefd3d5ebef57c6d2301e8ec4fc8823a2cb74cf1880c9"
+    },
+    {
+      "path": "internal/catalog/authority_order_test.go",
+      "sha256": "7258f6a26b4e495467f4ed8ce993dd4cba80d8810e1f97b1e6abfcb987421b1e"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "authority-order-red.jsonl.gz",
+      "sha256": "972dca4dde5790e7c0368d712a8f93fded24e043e2f441f85239574e138d398d",
+      "decoded_sha256": "ce7e353dbc01a50f2674093d9a87080d512d3943fd03e1a8e86b564a41c83eb1",
+      "decoded_bytes": 60184
+    },
+    {
+      "path": "authority-order-red_test.go.gz",
+      "sha256": "8c7ce660a3fa2c4c0cf46fbbe7bcf65a1c850a03920bb5122d879c20c3c871a4",
+      "decoded_sha256": "7258f6a26b4e495467f4ed8ce993dd4cba80d8810e1f97b1e6abfcb987421b1e",
+      "decoded_bytes": 3128
+    },
+    {
+      "path": "authority-order-green.jsonl.gz",
+      "sha256": "5af23d6097197f90b585e83c1aa277528ae768f57216f836c4294bd25f0fffe6",
+      "decoded_sha256": "26b34ad240c07882d8089876b75ec38390223d3aa4a62ab9d5ff98a3cce0c041",
+      "decoded_bytes": 93118
+    },
+    {
+      "path": "authority-order-catalog-race.jsonl.gz",
+      "sha256": "2158c03a8629b8158c2838a69f8ae6a58107add393b0361f26fc0745731e2919",
+      "decoded_sha256": "ab68b943fffcb62168331abb2e17759318a2e052147b0ca06f562cb136bacd42",
+      "decoded_bytes": 275095
+    },
+    {
+      "path": "authority-order-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "authority-order-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "decoded_bytes": 40
+    },
+    {
+      "path": "authority-order-comments.md.gz",
+      "sha256": "60d22a56fbee2f1b297592c4c8393ef37b3635ae5676cd646b9334dbd807b530",
+      "decoded_sha256": "504ab1478c1babbf41a90bf22c7f0cb5cd6eda31f4a19bd0439c7ea8c88e0a1d",
+      "decoded_bytes": 157
+    },
+    {
+      "path": "authority-order-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "decoded_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "decoded_bytes": 33
+    },
+    {
+      "path": "starport-order-prose.log.gz",
+      "sha256": "9e698ccdb95c881b0f83baa17ca3ba78748ced9357e818fc5f6ea6cda7c7c305",
+      "decoded_sha256": "568442147047f0cf839f89045f3062b4db9770695e0808e64e2779620178e594",
+      "decoded_bytes": 786
+    },
+    {
+      "path": "starport-order-prose-corrected.log.gz",
+      "sha256": "22465b103604b245aa53c10891aa97b649d69d62d1d98f4191226838d6898c95",
+      "decoded_sha256": "8b733cf02f963debbfe70daa4ab27198ffb4ea45b04bca5ab03ea4338fe950bc",
+      "decoded_bytes": 558
+    }
+  ],
+  "contract": [
+    "Authority acceptance uses CatalogAuthorityHead.ValidateSuccessor, preserving its identity, sequence, and same-sequence content checks.",
+    "Ordinary generation acceptance retains its existing timestamp order. Crossing between ordinary and authority state requires an explicit transition outside candidate acceptance.",
+    "Acceptance checks durable state again on every retry. Tests reopen real Badger storage and compare the exact retained manifest and payload.",
+    "No request-path work, schema change, module pin change, native qualification, or authority transition mechanism is included."
+  ],
+  "checks": {
+    "toolchain": "go1.26.6",
+    "workspace": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-authority-consumer/go.work",
+    "red": {
+      "pass": 1,
+      "fail": 9,
+      "skip": 0
+    },
+    "focused_green": {
+      "pass": 22,
+      "fail": 0,
+      "skip": 0
+    },
+    "catalog_race": {
+      "pass": 158,
+      "fail": 0,
+      "skip": 0,
+      "packages": 1,
+      "elapsed_seconds": 63.131
+    },
+    "vet": "PASS: go vet ./internal/catalog",
+    "lint": "PASS: make lint with task-local GOLANGCI_LINT_CACHE, 0 issues",
+    "prose": "PASS: exact added comments, 1 file and 0 diagnostics",
+    "commands": [
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json -run ^TestAuthorityAcceptanceUsesPublicationSequence$ ./internal/catalog",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json -run ^(TestAuthorityAcceptanceUsesPublicationSequence|TestRemoteRuntimeAcceptsOnlyMatchingForwardState|TestAcceptRejectsStaleLeaseEpoch)$ ./internal/catalog",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=15m -json ./internal/catalog"
+    ]
+  },
+  "remaining": "Current permission admission, explicit authority transitions, native clocks, configuration, shared followers, compatible stable module, four mapped consumer checks, full checks, review, CI, and merge.",
+  "acceptance": "No additional task or consumer acceptance credit.",
+  "canonical_prose": {
+    "status": "PASS",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make HAS_DEVBOX= technical-writing-check",
+    "files": 1306,
+    "diagnostics": 0,
+    "previous_failure": "A paragraph exceeded six sentences. Revised paragraph boundaries preserve the facts."
+  }
+}

@@ -2057,3 +2057,29 @@ Vet and lint pass. A fresh lint cache resolves findings that named deleted sourc
 
 The unchanged published module lacks the permission API package. The implementation remains local and requires a compatible published module.
 Current permission checks on attempts and cached responses remain incomplete. All four mapped Starport consumer checks remain UNVERIFIED.
+
+
+## Starport authority acceptance order, 2026-09-11
+
+Local `1979d34` uses the Starmap authority sequence contract when accepting an authoritative generation.
+Timestamp order previously rejected a newer sequence after a clock correction and accepted an older sequence with a later timestamp.
+The fix rejects replay, conflicting content at the same sequence, and implicit authority changes. Ordinary generations retain timestamp ordering.
+
+The [order proof](../../plans/proof/starport-production-catalog/csp4/starport-order-2026-09-11/verification.json) records nine failing events before the fix.
+Twenty-two focused events and 158 complete catalog race events then pass against local Starmap `768347ab`.
+Tests use real Badger storage and verify the retained manifest and payload after reopen.
+Explicit source transitions and current request permission checks remain incomplete.
+
+
+## Starport snapshot permission owner, 2026-09-11
+
+Local `c505a09` binds accepted catalog snapshots to the current Starmap permission owner.
+The new snapshot check refuses cold internal metadata, known withdrawal, and a closed runtime. It preserves retained metadata for diagnostics.
+Every publication path preserves the binding. Ordinary standalone catalog reads still work without a connected runtime.
+
+The [permission proof](../../plans/proof/starport-production-catalog/csp4/starport-permission-2026-09-11/verification.json) records three failures before the API addition.
+Three focused tests and 171 complete catalog/registry race events then pass. Valid permission reads allocate zero times.
+A deterministic source exercises the real Starmap runtime. Production composition and shutdown use real Badger storage.
+
+These tests do not qualify native clocks, network trust, or request-path enforcement.
+Route selection, every provider attempt, and exact or semantic cache delivery must call the new check.

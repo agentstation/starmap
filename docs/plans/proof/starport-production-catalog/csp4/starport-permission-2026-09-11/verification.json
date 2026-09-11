@@ -1,0 +1,191 @@
+{
+  "task": "CSP4",
+  "status": "PASS_local_permission_binding",
+  "source_commit": "c505a0944b2a5ef83a4273adf12b0f02f0f5145f",
+  "base": "1979d347493f727e7235073693f4d13d65a1bd4f",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "dependency_source": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+  "source_files": [
+    {
+      "path": "internal/catalog/attempt_permission.go",
+      "sha256": "74147b8f1b6fbec06428a6e06573db8cfdaee87d88d22d690f8924893b501b70"
+    },
+    {
+      "path": "internal/catalog/attempt_permission_test.go",
+      "sha256": "6a6827963bf1c46fe9bb12ce09d23586e28a799bafbbff500e5adeef31c4c991"
+    },
+    {
+      "path": "internal/catalog/control_plane.go",
+      "sha256": "9581f6e73755844457ca141c7a6383c9f90c2f9933d9fb6ae9545508b9452fff"
+    },
+    {
+      "path": "internal/catalog/runtime.go",
+      "sha256": "f70a2d4f5f6045cecd2e20c11a3acf664ec40a3579329c6d996793e5da21c0ff"
+    },
+    {
+      "path": "internal/catalog/snapshot.go",
+      "sha256": "e8ca4c554bffa25e5bd657b77474aaa3d313c713948c6f3490f1d45660a5477c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "attempt-permission-red.jsonl.gz",
+      "sha256": "841ec1cbf62577d1aee68836a1a89484ddc807b9ec9433ede4ebb90e6c505c75",
+      "decoded_sha256": "12f819f883958a1e6013c3ab52a6d622b44879208ca271384a4a31d952ee9ede",
+      "decoded_bytes": 10607
+    },
+    {
+      "path": "attempt-permission-red_test.go.gz",
+      "sha256": "5e470044b74f3e03a11aaccc595cba0bfbb772c5e838f6b5d48ac4e2c5414385",
+      "decoded_sha256": "6a6827963bf1c46fe9bb12ce09d23586e28a799bafbbff500e5adeef31c4c991",
+      "decoded_bytes": 5214
+    },
+    {
+      "path": "attempt-permission-green.jsonl.gz",
+      "sha256": "d8c1fc4e0b664e31c40e65b11c6d8f7f8e2abcf93cbd5d183ac4299fabe809d3",
+      "decoded_sha256": "9433b40d9af830d95b54e012aa2826d13946afce948567694f3dd73277138213",
+      "decoded_bytes": 6833
+    },
+    {
+      "path": "attempt-permission-catalog-registry-race.jsonl.gz",
+      "sha256": "a13fa77e6eb259fb51b18c5f5498ebde57c1298e38d750bf623dc29dab836e0a",
+      "decoded_sha256": "dcab63356ae8becbb68b565ab69785e578a4137dfeced0dde501d9c064982620",
+      "decoded_bytes": 290227
+    },
+    {
+      "path": "attempt-permission-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "attempt-permission-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "decoded_bytes": 40
+    },
+    {
+      "path": "attempt-permission-prose.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "decoded_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "decoded_bytes": 33
+    },
+    {
+      "path": "starport-permission-prose.log.gz",
+      "sha256": "ed330e6b0df4fd6b835cc101bc6c7edd53564aa4c3f3b0aac08f38281581881f",
+      "decoded_sha256": "c1d9212509db8c753a28d852c2535f3ffb3498d1b1073388851701c36e52bb6d",
+      "decoded_bytes": 792
+    },
+    {
+      "path": "starport-permission-prose-corrected.log.gz",
+      "sha256": "f237b4542e7310a6cd1b05897972963b177434ccbdae51fbb37ccae9723e7a26",
+      "decoded_sha256": "ba5f73d4ec66231d946e7630ea736640fc5985aa57799186d1103c03033dcac3",
+      "decoded_bytes": 558
+    }
+  ],
+  "contract": [
+    "ControlPlane retains an optional source permission owner and binds it before every snapshot publication.",
+    "Production runtime composition separates the durable accepted source from the live connected permission owner. A failed control-plane constructor closes the connected runtime and cascade.",
+    "RoutableSnapshot.AllowsNewAttempt uses the exact retained head with the current runtime permission check. A catalog alone cannot authorize an authority head. A plain ordinary library snapshot remains usable.",
+    "A cold embedded snapshot remains unauthorized under internal authority. Known withdrawal after a source read failure refuses retained snapshots without changing metadata. Runtime close refuses further use."
+  ],
+  "checks": {
+    "toolchain": "go1.26.6",
+    "workspace": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-authority-consumer/go.work",
+    "red": {
+      "pass": 0,
+      "fail": 3,
+      "skip": 0
+    },
+    "focused_green": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "catalog_registry_race": {
+      "pass": 171,
+      "fail": 0,
+      "skip": 0,
+      "packages": 2
+    },
+    "vet": "PASS: go vet ./internal/catalog ./internal/registry",
+    "lint": "PASS: make lint with task-local GOLANGCI_LINT_CACHE, 0 issues",
+    "prose": "PASS: new permission source, 1 file and 0 diagnostics",
+    "allocation_assertion": "0 allocations per valid permission read",
+    "test_transport": "Deterministic source and fixed qualified-clock fixture exercise the real Starmap runtime. This is not native-clock or network trust qualification.",
+    "storage": "Real Badger exercises production composition and close. In-memory Starmap storage isolates the source-withdrawal behavior.",
+    "commands": [
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json -run ^(TestSnapshotPermissionTracksWithdrawalWithoutReplacingMetadata|TestRuntimeSnapshotPermissionStopsAfterClose|TestAuthoritySnapshotNeedsPermissionOwner)$ ./internal/catalog",
+      "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=15m -json ./internal/catalog ./internal/registry"
+    ]
+  },
+  "remaining": "Invoke the check before route selection, provider attempts and retries, and exact or semantic cache delivery. Complete error mapping, explicit source transitions, native clocks, configuration, followers, compatible module, consumer checks, full checks, review, native CI, and merge.",
+  "acceptance": "No additional task or consumer acceptance credit. Request paths do not call the new method yet.",
+  "next_integration_audit": {
+    "source_commit": "c505a0944b2a5ef83a4273adf12b0f02f0f5145f",
+    "read_only": true,
+    "files": [
+      {
+        "path": "internal/router/planner_adapter.go",
+        "sha256": "3cfc31474e63619de0011a0070cbb01203ffb54e5d6ac2894b0dc0bd97e69aa3"
+      },
+      {
+        "path": "internal/router/execution_adapter.go",
+        "sha256": "84aa9e66134637ed5646e84b8c40f02679ea2ba8587831edb7c715fb0e49e0dc"
+      },
+      {
+        "path": "internal/router/operation.go",
+        "sha256": "ec81e493f679255f3cb07513108a7f133e1b8f6054079e7cac1f01f3101e8b28"
+      },
+      {
+        "path": "internal/router/router.go",
+        "sha256": "64492f2fcbae4fe02a6142fd4e3a1cfc09cce03b9245f748a7e000c4e745ddaf"
+      },
+      {
+        "path": "internal/router/embeddings.go",
+        "sha256": "431f53d8ef0f0f2d4b77005406d3ffca4f38294e3c750ad377b5922fbe2e5b8d"
+      },
+      {
+        "path": "internal/proxy/cache.go",
+        "sha256": "aabc3f088aa4f696e7e514b3b5ef47adea51707d557c302415a92d8d1bf1279b"
+      },
+      {
+        "path": "internal/server/controllers/base.go",
+        "sha256": "51aff85d249dfe72190f7e27b3d9471c9f2dbf575305dadd07e02f5b61f04639"
+      },
+      {
+        "path": "internal/failure/failure.go",
+        "sha256": "9ee7c309bc09a1265f46a4e8b3144a957a7b0fc661a72c0e7b5cb23e6b8326db"
+      },
+      {
+        "path": "internal/execution/executor.go",
+        "sha256": "6c38b229f4ea0dd4d42f75c647af75825a220708e769360811b56d5a27467642"
+      }
+    ],
+    "findings": [
+      "Router planOperation owns catalog-based route selection. It currently calls availability.Refresh before catalog inspection and has no permission check.",
+      "bindSelectedEndpoint is shared by chat, streaming, embeddings, and generic operations. All four call sites stop their executor attempt on its failure. A permission check must also cover routes with an empty operation.",
+      "Cache ProcessChatCompletion, ProcessChatCompletionStream, and ProcessEmbeddings can deliver before router admission. Both exact and semantic chat hits need checks.",
+      "cachedEventStream must check permission before its first delivery. Once admitted, a retained stream can finish under the accepted policy unless an emergency policy cancels it.",
+      "The existing ProviderUnavailable failure kind describes a provider response. Using it for a catalog permission refusal would misstate the cause. HTTP error mapping must produce a retryable gateway refusal without provider-health mutation.",
+      "The executor stops on AttemptActionStop and releases availability without recording a provider-health failure. New per-attempt permission checks must preserve this behavior."
+    ],
+    "remaining_tests": [
+      "Cold refusal before route selection",
+      "Withdrawal before an initial provider call, retry, or fallback",
+      "Exact chat and embedding cache hits after a slow lookup",
+      "Semantic chat and stream cache hits",
+      "Withdrawal between cached stream creation and first read, and permitted completion after admission",
+      "Safe retryable HTTP errors in both protocols",
+      "Diagnostics remain available"
+    ]
+  },
+  "canonical_prose": {
+    "status": "PASS",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make HAS_DEVBOX= technical-writing-check",
+    "files": 1307,
+    "diagnostics": 0,
+    "previous_failure": "A paragraph exceeded six sentences. Revised paragraph boundaries preserve the facts."
+  }
+}

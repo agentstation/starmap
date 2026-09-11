@@ -72,7 +72,7 @@ The initial allocation check measured six allocations during checksum validation
 Both valid consumer admission and checksum validation now pass their zero-allocation assertions. Static checks, complete documentation, and the 1,457-file prose check pass.
 The proof retains the original readiness gap, allocation failure, and contradictory-head test failures.
 
-Starport source `aceaf0b` is clean in `/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer`, branch `codex/catalog-authority-consumer`.
+Starport source `c505a09` is clean in `/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer`, branch `codex/catalog-authority-consumer`.
 The [binding proof](csp4/starport-snapshot-2026-09-11/verification.json) records fourteen focused events and 148 complete catalog race events.
 Real Badger tests prove retained authority after reopen and refusal of mismatched candidates, including idempotent repeats.
 The private workspace selects Starmap `768347ab`. No module pin changed.
@@ -415,3 +415,10 @@ Do not suppress them or count the draft as task completion.
 
 The [main integration](csp4/main-integration-2026-09-10.json) records actual CSP3 merge `a87262e3`.
 The integration preserves the qualified committed tree and every draft file.
+
+
+### Starport permission binding and authority order
+
+The [order proof](csp4/starport-order-2026-09-11/verification.json) records sequence checks and explicit-transition refusals.
+The [permission proof](csp4/starport-permission-2026-09-11/verification.json) records snapshot binding to live permission, with 171 catalog/registry race events.
+No request-path call, native qualification, or consumer acceptance credit applies yet.
