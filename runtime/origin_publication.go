@@ -146,7 +146,7 @@ func (r *Runtime) publishOriginStartup(ctx context.Context) error {
 	state, evidence, source := r.effective, r.layers.buildEvidence, r.layers.source
 	r.mu.RUnlock()
 	if r.lease.status() == leaseLost {
-		return originError("origin startup requires the publication lease")
+		return r.selectOriginFollowerStartup(ctx)
 	}
 	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, source)
 	if err != nil {
@@ -154,6 +154,22 @@ func (r *Runtime) publishOriginStartup(ctx context.Context) error {
 	}
 	r.mu.Lock()
 	r.effective = committed
+	r.mu.Unlock()
+	return nil
+}
+
+// selectOriginFollowerStartup serves accepted state without replacing the shared catalog.
+// The issuer reads current authority metadata separately before it issues a receipt.
+func (r *Runtime) selectOriginFollowerStartup(ctx context.Context) error {
+	current, err := r.client.CurrentGeneration(ctx)
+	if err != nil {
+		return err
+	}
+	if err := r.config.origin.validateCurrent(current); err != nil {
+		return err
+	}
+	r.mu.Lock()
+	r.effective = r.client.CurrentCatalogState()
 	r.mu.Unlock()
 	return nil
 }
