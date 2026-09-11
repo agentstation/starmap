@@ -12,7 +12,7 @@ func TestFragmentedQueryStatus(t *testing.T) {
 	defer server.Close()
 	done := make(chan error, 1)
 	go func() { done <- serveStatus(server, true, nil) }()
-	status, err := QueryStatus(t.Context(), client)
+	status, err := queryStatus(t.Context(), client, nil)
 	if err != nil || status == nil || status.Source != "test-source" || status.TimeLastGoodSync != 100000 {
 		t.Fatalf("fragmented response: %+v, %v", status, err)
 	}
@@ -31,7 +31,7 @@ func TestCancellationAfterQueryDispatch(t *testing.T) {
 	serverDone := make(chan error, 1)
 	go func() { serverDone <- serveStatus(server, false, func() { close(started); <-ctx.Done() }) }()
 	done := make(chan error, 1)
-	go func() { _, err := QueryStatus(ctx, c); done <- err }()
+	go func() { _, err := queryStatus(ctx, c, nil); done <- err }()
 	select {
 	case <-started:
 	case <-time.After(time.Second):

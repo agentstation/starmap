@@ -75,3 +75,37 @@ func TestDeadlineCannotBeExtended(t *testing.T) {
 		}
 	}
 }
+
+func TestAuthenticatedFrameBounds(t *testing.T) {
+	for _, kind := range []byte{12, 15, 2} {
+		p := packet(kind, 1, make([]byte, 96))
+		if kind != 2 {
+			binary.LittleEndian.PutUint16(p[16:], 4280)
+			binary.LittleEndian.PutUint16(p[18:], 4280)
+		}
+		binary.LittleEndian.PutUint16(p[10:], 16)
+		p[len(p)-24], p[len(p)-23] = 9, 6
+		c := &boundedStream{Conn: &bufferConn{Reader: bytes.NewReader(p)}, authenticated: true}
+		if n, err := io.Copy(io.Discard, c); n != int64(len(p)) || err != nil {
+			t.Fatalf("authenticated frame %d: %d, %v", kind, n, err)
+		}
+	}
+	for name, mutate := range map[string]func([]byte){
+		"oversized token":   func(p []byte) { binary.LittleEndian.PutUint16(p[10:], uint16(len(p))) },
+		"wrong provider":    func(p []byte) { p[len(p)-24] = 10 },
+		"privacy downgrade": func(p []byte) { p[len(p)-23] = 2 },
+		"padding underflow": func(p []byte) { p[len(p)-22] = 255 },
+		"reserved field":    func(p []byte) { p[len(p)-21] = 1 },
+	} {
+		t.Run(name, func(t *testing.T) {
+			p := packet(2, 1, make([]byte, 64))
+			binary.LittleEndian.PutUint16(p[10:], 16)
+			p[len(p)-24], p[len(p)-23] = 9, 6
+			mutate(p)
+			c := &boundedStream{Conn: &bufferConn{Reader: bytes.NewReader(p)}, authenticated: true}
+			if n, err := io.Copy(io.Discard, c); n != 0 || err == nil {
+				t.Fatalf("invalid authentication reached decoder: %d, %v", n, err)
+			}
+		})
+	}
+}

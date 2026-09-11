@@ -39,9 +39,10 @@ func (noDNS) LookupIPAddr(context.Context, string) ([]net.IPAddr, error) {
 	return nil, invalidReply("DNS is prohibited")
 }
 
-// QueryStatus reads W32Time status from a stream. The caller must check its peer first.
-// It owns and closes the stream. It invokes only the generated QueryStatus operation.
-func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
+type statusSecurity func(context.Context, dcerpc.Conn) ([]dcerpc.Option, error)
+
+// queryStatus owns one checked stream. A nil security callback serves wire fixtures.
+func queryStatus(ctx context.Context, raw net.Conn, security statusSecurity) (*w32t.StatusInfo, error) {
 	if ctx == nil || raw == nil {
 		return nil, invalidReply("a W32Time observation context and stream are required")
 	}
@@ -54,13 +55,20 @@ func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
 	if err := raw.SetDeadline(deadline); err != nil {
 		return nil, err
 	}
-	stream := &boundedStream{Conn: raw, deadline: deadline}
+	stream := &boundedStream{Conn: raw, deadline: deadline, authenticated: security != nil}
 	conn, err := dcerpc.Dial(ctx, streamBinding, dcerpc.WithDialer(&fixedStream{conn: stream}), dcerpc.WithDNSResolver(noDNS{}), dcerpc.WithTimeout(2*time.Second), dcerpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
 	defer func() { _ = conn.Close(context.Background()) }()
-	client, err := w32time.NewW32TimeClient(ctx, conn, dcerpc.WithInsecure())
+	opts := []dcerpc.Option{dcerpc.WithInsecure()}
+	if security != nil {
+		opts, err = security(ctx, conn)
+		if err != nil {
+			return nil, err
+		}
+	}
+	client, err := w32time.NewW32TimeClient(ctx, conn, opts...)
 	if err != nil {
 		return nil, err
 	}

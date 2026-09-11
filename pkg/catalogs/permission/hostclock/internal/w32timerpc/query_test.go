@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/oiweiwei/go-msrpc/dcerpc"
 	"github.com/oiweiwei/go-msrpc/msrpc/w32t"
 	w32time "github.com/oiweiwei/go-msrpc/msrpc/w32t/w32time/v4"
 	"github.com/oiweiwei/go-msrpc/ndr"
@@ -21,6 +22,19 @@ type tracked struct {
 	closed atomic.Bool
 }
 
+func TestAuthenticationFailureClosesStream(t *testing.T) {
+	client, server := net.Pipe()
+	defer server.Close()
+	c := &tracked{Conn: client}
+	want := errors.New("authentication unavailable")
+	_, err := queryStatus(t.Context(), c, func(context.Context, dcerpc.Conn) ([]dcerpc.Option, error) {
+		return nil, want
+	})
+	if !errors.Is(err, want) || !c.closed.Load() {
+		t.Fatalf("authentication failure did not close stream: %v, %v", err, c.closed.Load())
+	}
+}
+
 func (c *tracked) Close() error { c.closed.Store(true); return c.Conn.Close() }
 
 func TestQueryStatusWire(t *testing.T) {
@@ -29,7 +43,7 @@ func TestQueryStatusWire(t *testing.T) {
 	c := &tracked{Conn: client}
 	serverDone := make(chan error, 1)
 	go func() { serverDone <- serveStatus(server, false, nil) }()
-	got, err := QueryStatus(t.Context(), c)
+	got, err := queryStatus(t.Context(), c, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,7 +66,7 @@ func TestCanceledBindClosesStream(t *testing.T) {
 	started := make(chan struct{})
 	go func() { var b [1]byte; _, _ = server.Read(b[:]); close(started) }()
 	done := make(chan error, 1)
-	go func() { _, err := QueryStatus(ctx, c); done <- err }()
+	go func() { _, err := queryStatus(ctx, c, nil); done <- err }()
 	<-started
 	cancel()
 	select {

@@ -223,7 +223,28 @@ jobs:
           $service.WaitForStatus('Running', [TimeSpan]::FromSeconds(30))
           @{before=$before; after=$service.Status.ToString(); action='Start existing time service on this disposable CI runner'} |
             ConvertTo-Json | Set-Content native-evidence/windows-time-service.json
+          $nativeStatus = & "$env:SystemRoot\System32\w32tm.exe" /query /status /verbose 2>&1
+          $nativeStatusExit = $LASTEXITCODE
+          $nativeStatus | Set-Content native-evidence/windows-time-status.log
+          & "$env:SystemRoot\System32\whoami.exe" /priv | Set-Content native-evidence/windows-time-privileges.log
+          @{status_exit=$nativeStatusExit; privilege_exit=$LASTEXITCODE; scope='read-only local diagnostics'} |
+            ConvertTo-Json | Set-Content native-evidence/windows-time-access.json
           'STARMAP_WINDOWS_CLOCK_FIXTURE_REQUIRED=1' | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Test Windows time-service access before the full suite
+        id: windows_clock_preflight
+        if: matrix.os == 'windows'
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          go test -json -count=1 -timeout=2m -run '^TestWindows(LocalTimeService|PrincipalDiagnostics|SecurityLifecycle|SecurityPacketPrivacy)$' ./pkg/catalogs/permission/hostclock/internal/w32timerpc > native-evidence/windows-clock.jsonl
+      - name: Diagnose Windows time-service privilege after an access failure
+        if: failure() && matrix.os == 'windows' && steps.windows_clock_preflight.outcome == 'failure'
+        timeout-minutes: 5
+        shell: bash
+        env:
+          STARMAP_WINDOWS_CLOCK_PRIVILEGE_PROBE: '1'
+        run: |
+          go test -json -count=1 -timeout=2m -run '^TestWindowsTimeServicePreparedPrivilege$' ./pkg/catalogs/permission/hostclock/internal/w32timerpc > native-evidence/windows-clock-privilege-probe.jsonl
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:
