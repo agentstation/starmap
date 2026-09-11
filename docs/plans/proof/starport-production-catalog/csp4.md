@@ -2,9 +2,27 @@
 
 ## Current runtime integration
 
-CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
+The combined public-catalog worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance`, branch `codex/catalog-public-acceptance`, at clean `e12253fc`.
+It includes actual main `21e7356b`, the provider-documentation repair, and signed public fixtures.
+The [acceptance proof](csp4/public-acceptance-2026-09-11/verification.json) records four A07 checks passing after main integration.
 
-The active repair worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs`, branch `codex/catalog-provider-docs`, at clean `b81b827067aa860096bed208e541dd84e31274ab`.
+The development toolchain passes seven scoped runtime race events. The minimum toolchain passes fourteen runtime/artifact events.
+All five negative runtime cases return their expected error category. Failure and restart preserve the accepted catalog.
+The verifier regression passes 73 tests. Static checks and the 1,406-file prose check pass.
+
+Integrated runtime, remote, and artifact verification runs in session `98209`. The integrated CSP4 verifier passes four A07 checks.
+Its four Starport consumer checks remain UNVERIFIED.
+
+The isolated generation probe passes in 92.017 seconds. Providers, authors, models, and cross-references each report zero issues.
+The probe uses the committed source without provider credentials. It creates only a local candidate.
+
+
+One PR will deliver the public checks and provider-documentation repair. Required review, native CI, and merge remain open.
+These local checks do not qualify the released pair or complete CSP4.
+
+CSP4 remains in progress. Four A07 subcases now pass locally. Four Starport consumer subcases remain UNVERIFIED.
+
+The preserved repair checkpoint is `/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs`, branch `codex/catalog-provider-docs`, at clean `b81b827067aa860096bed208e541dd84e31274ab`.
 The [repair proof](csp4/provider-docs-2026-09-11/verification.json) records 846 race events per supported toolchain across four packages.
 Lint, ago, generated documentation, and the 1,415-file prose check pass. Full Go 1.26.6 verification runs in session `19923`.
 
@@ -18,7 +36,7 @@ GitHub CLI verifies the channel and archive attestations. The live Starmap sourc
 The live runtime starts usable on embedded fallback. Explicit refresh activates the signed public generation and clears fallback.
 Source health becomes healthy, while catalog freshness remains critical. Provider acquisition stays disabled.
 
-The publication failure blocks freshness, not decoding. These probes do not register A07 or complete its remaining negative and recovery cases.
+The publication failure blocks freshness, not decoding. The live probes remain separate from the new repeatable A07 tests.
 This review made no release or channel changes.
 
 Clock source `7641eaea2b98f9ffbefb2807f67253919227b234` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock`, branch `codex/catalog-native-clock`.

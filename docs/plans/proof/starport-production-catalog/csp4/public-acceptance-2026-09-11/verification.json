@@ -1,0 +1,397 @@
+{
+  "task": "CSP4",
+  "status": "PASS_integrated_local_A07_checks",
+  "acceptance": "All four A07 checks pass locally. No task completion or released-pair credit before review, native CI, and merge. Four Starport consumer subcases remain required.",
+  "source_commit": "e12253fc80312ec76e976058ae0def74eb016746",
+  "tested_before_main_integration": "65b9b5fe",
+  "base": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
+  "branch": "codex/catalog-public-acceptance",
+  "delivery": "One PR will combine the models.dev provider-documentation repair with public-catalog acceptance tests. The provider repair checkpoint remains b81b8270. Native clocks and Starport consumers are separate remaining work.",
+  "source_files": [
+    {
+      "path": "internal/catalog/reconciler/merger_provider_test.go",
+      "sha256": "03ee94f899548ec7fc3794290737366ff67a064a767596d8fac6e807ef79aa90"
+    },
+    {
+      "path": "internal/sources/modelsdev/README.md",
+      "sha256": "ba65b44920c1061c59296073c34f8a49d0e28392292720c87fbad3cc44a22b34"
+    },
+    {
+      "path": "internal/sources/modelsdev/base.go",
+      "sha256": "4acdb8ac9432a1f769e14c2ac2065a2e5fe1658d0c1c0d205e99a595723726bd"
+    },
+    {
+      "path": "internal/sources/modelsdev/parser.go",
+      "sha256": "472e431a642b8773607680c5263c1267f45f42a124a1ab9823585ee11df9e4a1"
+    },
+    {
+      "path": "internal/sources/modelsdev/parser_test.go",
+      "sha256": "3e292936440a723fe2a06bde258c60552d0e22befb4a2d0abc4c74769c1575e9"
+    },
+    {
+      "path": "runtime/public_catalog_acceptance_test.go",
+      "sha256": "806886e0d63b5a50d7f6403d8c57702587a8ffdb3d400d373d08b9506df843ef"
+    },
+    {
+      "path": "runtime/public_catalog_fixture_test.go",
+      "sha256": "e245297f88ac9469acbe490caf62dddd4bd0ded28a614e083e9d43a5150d4022"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/README.md",
+      "sha256": "cbe383e7cdc1b8e6d1f6176d127e7de518a9c163f6b3aaf97cc586ca4c681356"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/archive-bundle.json",
+      "sha256": "d192d9e61b890a42e53850bd4d1741e24d47f9fca5a3c825859f87acdf691587"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/capture.json",
+      "sha256": "c417a57c2d8735ff30e3889915d9df26e0460f33321ff76ccfc50599fe620076"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/channel-bundle.json",
+      "sha256": "a8987821af2f7593d9f50f05f24f4adc5dd7a56da604a2f32026ae4d5150e391"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/channel.json",
+      "sha256": "339995f46b45654443c6e686523d56aeae5fb5c87e05ccc0b6dcf11f97880440"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/previous-channel-bundle.json",
+      "sha256": "7e6e8d254a44235c6c3fb0eb97f7819b38258767b43c1ddba1c96ae66ff54bd5"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/previous-channel.json",
+      "sha256": "c4fae216ee0e58bc0a41c4063c3bfa15299964c85d5193a806284b3ede0a8854"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/starmap-catalog.intoto.json",
+      "sha256": "63efddb02a6e8e1614fa569d0f5a7c71e582ada50213d2c7089ef77f16a6d03e"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz",
+      "sha256": "ab5461b5441a632ee450ff8adf34d1f404e4f18b6c74638a880016221c177ffa"
+    },
+    {
+      "path": "runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz.sha256",
+      "sha256": "f901b3bdf9648df372951e9281c5fc381fe64f2632632deaf0d624d9a883cd1e"
+    },
+    {
+      "path": "scripts/catalog-product-checks.json",
+      "sha256": "e14c8beab750e3fdceb4430762376067b4e8c55c58a72c95a3e6ba471abba886"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "red.json.gz",
+      "sha256": "2a466d630a58d39faf2abdafb4ac475ba5e8b3d7b6579f268d91b5fbaa45d312",
+      "decoded_sha256": "184995b3865db6b6bb7b51bf62513f70d291ce6d26b16e1c7b994e2595ee4997",
+      "decoded_bytes": 6952
+    },
+    {
+      "path": "initial-tests.jsonl.gz",
+      "sha256": "92e04f10441bdfb28500b2b2f26dd43d6dbf26b6d45445ce0d89f7a91df322d9",
+      "decoded_sha256": "f3e9beb61e187a86326d640697ac10c0c5c200b03cbc6137e0373dd4de1c553e",
+      "decoded_bytes": 9442
+    },
+    {
+      "path": "private-tests.jsonl.gz",
+      "sha256": "9f5d497c7eb99a09f0e63affacbbd83120d110939eddc77a30aecb45fcf5ec54",
+      "decoded_sha256": "b65f141d5118be73bc9e15850272ef2152977d90cd81b4ceec01a10ba810306a",
+      "decoded_bytes": 8940
+    },
+    {
+      "path": "asset-url-tests.jsonl.gz",
+      "sha256": "ddac323dc445fbf9e9c51110ffb627a66241b9c6a1c7d248905a5f03a8c00977",
+      "decoded_sha256": "a0c8c66de3def52f675f5506bf67569da08a864b3ffdc95d426bb0b0ba7e49f4",
+      "decoded_bytes": 7105
+    },
+    {
+      "path": "typed-tests.jsonl.gz",
+      "sha256": "03d8cac97e25ad9fc5444fc1f72e3dbb90e7a4b6674e7438814b9a7312d78a75",
+      "decoded_sha256": "6ada38d35b74ecfb079f6106bce921236aed71e077901a75384709b8b365d0a1",
+      "decoded_bytes": 9518
+    },
+    {
+      "path": "bounded-tests.jsonl.gz",
+      "sha256": "f71b35569499d095d9552e40a4f832f1f74d661885b0f2b8f5838fcc65bf3665",
+      "decoded_sha256": "21d37330567a6415d57846a4ecc098c8f80dc3c8aaabdfefe4ab9b1d5417ae73",
+      "decoded_bytes": 9035
+    },
+    {
+      "path": "go125-tests.jsonl.gz",
+      "sha256": "ab9fbb5150536dea55bb93e1560adb8738da0a254291b7a8a0384e3291b0e49e",
+      "decoded_sha256": "75aa71d597cf57579afa984e99e1b80d078e6f1c84b83ff5eaa1739e155fb47a",
+      "decoded_bytes": 17749
+    },
+    {
+      "path": "a07-go126.json.gz",
+      "sha256": "6b7672a91b6289a4d10f53aa9f5b8accaba23891eddac136e87d47a46b2fa4a9",
+      "decoded_sha256": "a6632d1a4d2f235208849da6e4259caf2f6db000dd10f4d642ae265ebf24ee76",
+      "decoded_bytes": 46808
+    },
+    {
+      "path": "initial-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "decoded_bytes": 10
+    },
+    {
+      "path": "initial-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "decoded_bytes": 289
+    },
+    {
+      "path": "initial-prose.log.gz",
+      "sha256": "0a4053b78918e1b1a3d927b18d2097115e4bbcc1c17b15da7ba32ccd4aee1537",
+      "decoded_sha256": "ee6294984cfc91a19fff6a8188ae9faffa51756cded21d56f0ab0c1397892aa0",
+      "decoded_bytes": 568
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "0a4053b78918e1b1a3d927b18d2097115e4bbcc1c17b15da7ba32ccd4aee1537",
+      "decoded_sha256": "ee6294984cfc91a19fff6a8188ae9faffa51756cded21d56f0ab0c1397892aa0",
+      "decoded_bytes": 568
+    },
+    {
+      "path": "verifier-tests.log.gz",
+      "sha256": "07c39974ccd405ba67fa9a4341d36f5354e7ed923181848af8c3f8b045edbb21",
+      "decoded_sha256": "9337507a5276c39e585efa81de1431dedd041588fbaf86520f400033fd81a66d",
+      "decoded_bytes": 9271
+    },
+    {
+      "path": "integrated-csp4.json.gz",
+      "sha256": "9f04d16ae5f784fd7db2dd29ba98683e00a05bf873da0c96e32673b6106d333c",
+      "decoded_sha256": "43cb8c16a460e5b41c1095dba1c497b3e18b86679e60d0dccb305aeaf53cb552",
+      "decoded_bytes": 47302
+    },
+    {
+      "path": "integrated-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "decoded_bytes": 10
+    },
+    {
+      "path": "integrated-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "decoded_bytes": 289
+    },
+    {
+      "path": "integrated-docs.log.gz",
+      "sha256": "65140ba65d38fb9499fb1e6c6a6cb10f45b64eb2b64f09e4935710f8a9bf0022",
+      "decoded_sha256": "2e837f9e0b504ea6b3313a4bdf5f6604a1c02bbb301afd98c5a6215accd14701",
+      "decoded_bytes": 1546
+    },
+    {
+      "path": "integrated-prose.log.gz",
+      "sha256": "4d6071bb4d781b9a145c8eafa8e161055babb06b7a763bb5d823b45244deec1b",
+      "decoded_sha256": "919dc74009b1ed2db188a2dc35e712edfed367a7d00e8d17ee03e8a21abc81f6",
+      "decoded_bytes": 568
+    },
+    {
+      "path": "canonical-prose-public.log.gz",
+      "sha256": "ab53bf604350a63db6003d58238a45d2cfcb6f6cdb3e67bc269c9c8ad21e19ba",
+      "decoded_sha256": "6a1bf7a3b6a5380837507e75cee22d1fe10a460ca035311a31afe972a5f8bb6b",
+      "decoded_bytes": 1155
+    },
+    {
+      "path": "canonical-prose-public-final.log.gz",
+      "sha256": "079c3015012f0842771b5b915bd4f2c8960586132efb90b60ee1af9601977a77",
+      "decoded_sha256": "02bf5f236f292881c2f807e73003c45156aa428db5865426bb858bebfd58f1c1",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "generation_probe.py.gz",
+      "sha256": "b75fe8bff6d332078594a33b3e7c57ec64ce035c8a3cfe52a4680a34491d83df",
+      "decoded_sha256": "5453be654a401230b8ac89ae740a1e1f3e32a397546b9fc9ab4b21f7054f3c2a",
+      "decoded_bytes": 1818
+    },
+    {
+      "path": "generation-probe-runner.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "live-generation.log.gz",
+      "sha256": "03d0338629943e414d8c59ed345d06a889b0632d57775cae90d13836dd801da8",
+      "decoded_sha256": "557c570d27b97b30838f4841ab187d75a1463cb56c890a88aef3c4c8584befef",
+      "decoded_bytes": 118090
+    },
+    {
+      "path": "live-generation-probe.json.gz",
+      "sha256": "3e54e0bca0d1726edb9f6765a2d5bed2c96c71c34edb1ed163e6413c1771eaf2",
+      "decoded_sha256": "1d94f59160cd04c1159f71606ce3c5dd552a5fb916c3c7b050c7ffd84e31316b",
+      "decoded_bytes": 446
+    },
+    {
+      "path": "live-generation-report.json.gz",
+      "sha256": "cb4e8e73263a31ffdc398c68f45946fdc11316630ab9c07701d04a0584641843",
+      "decoded_sha256": "3ac609857121fdbe2e4df828ac2201951e939a8e4efbd54f3ee2a554b0e4dc63",
+      "decoded_bytes": 419
+    },
+    {
+      "path": "canonical-prose-integrated.log.gz",
+      "sha256": "96403bba50701448fe198497b185c75aa8d5e2b0b67acada56ddfe07598aab27",
+      "decoded_sha256": "34e1f30954c0cc7aca775b11b317684eaf4d564a286595e3aeec07eb610d71ae",
+      "decoded_bytes": 790
+    }
+  ],
+  "checks": [
+    {
+      "artifact": "bounded-tests.jsonl.gz",
+      "test_events": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 104.64
+        }
+      ]
+    },
+    {
+      "artifact": "go125-tests.jsonl.gz",
+      "test_events": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 1.264
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 97.58
+        }
+      ]
+    }
+  ],
+  "product_verifier": {
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 python3 scripts/catalog_product_verify.py --case A07 --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-starmap-main --json",
+    "artifact": "a07-go126.json.gz",
+    "selected_subcases": 4,
+    "selected_result": "PASS",
+    "global_summary": "Summary: 1 passed, 49 failed",
+    "qualification": "component checks only"
+  },
+  "static_checks": {
+    "lint": "0 findings",
+    "ago": "0 findings and 0 errors",
+    "prose": "1406 files, 0 diagnostics",
+    "verifier_regression": "73 tests pass"
+  },
+  "failure_history": [
+    {
+      "artifact": "red.json.gz",
+      "reason": "All four A07 subcases had no registered executable check."
+    },
+    {
+      "artifact": "initial-tests.jsonl.gz",
+      "reason": "The first fixture used a temporary directory without required private permissions."
+    },
+    {
+      "artifact": "private-tests.jsonl.gz",
+      "reason": "The fixture API used browser_download_url instead of the required asset url field."
+    },
+    {
+      "artifact": "typed-tests.jsonl.gz",
+      "reason": "A thirty-second per-request limit expired during real archive verification. The final tests allow ninety seconds and still assert each specific error category."
+    }
+  ],
+  "scope_notes": [
+    "Signed fixture bytes retain the original GitHub attestations. Tests use production signature verification, compiled roots, and publisher policy over a local HTTP fixture.",
+    "The artifact package checks unsupported schema refusal before returning a generation. That seam uses a verification callback. These runtime fixtures do not manufacture a signature for a future schema.",
+    "The signed September 8 schema 6 catalog remains readable. Stale public freshness is a separate publisher failure."
+  ],
+  "running_checks": [
+    {
+      "session_id": 98209,
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance/.tmp/csp4-public-acceptance/integrated-runtime-suite.jsonl"
+    }
+  ],
+  "integrated_product_verifier": {
+    "source_commit": "e12253fc80312ec76e976058ae0def74eb016746",
+    "artifact": "integrated-csp4.json.gz",
+    "exit_code": 1,
+    "selected_subcases": 8,
+    "results": {
+      "A07.public_no_provider_keys": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation."
+      },
+      "A07.invalid_signature": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation."
+      },
+      "A07.checksum_size_schema": {
+        "status": "PASS"
+      },
+      "A07.replay_rejection": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation."
+      },
+      "A09.excluded_membership": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A10.cold_owner_refusal": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A10.warm_retained_authority": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      },
+      "A21.mixed_schema_permission_envelope": {
+        "status": "UNVERIFIED",
+        "reason": "No behavior check is registered."
+      }
+    },
+    "scope": "Four A07 checks pass. Four Starport consumer checks remain UNVERIFIED. CSP4 remains incomplete."
+  },
+  "integrated_static_checks": {
+    "lint": "0 findings",
+    "ago": "0 findings and 0 errors",
+    "documentation": "PASS complete docs-check with GOFLAGS empty",
+    "prose": "1451 files, 0 diagnostics"
+  },
+  "canonical_checks": {
+    "prose": "1299 files, 0 diagnostics after three prose corrections",
+    "link_integrity": "123 local links, 38 tasks, 9 done, CSP4 alone active, all task criteria and goal unchanged"
+  },
+  "live_generation": {
+    "command": "bash scripts/generate-embedded-catalog.sh",
+    "source_commit": "e12253fc80312ec76e976058ae0def74eb016746",
+    "isolation": "git archive of the exact committed tree into a new temporary directory, with a credential-free environment",
+    "exit_code": 0,
+    "duration_seconds": 92.0172598361969,
+    "validation_components": {
+      "Providers": "PASS, 0 issues",
+      "Authors": "PASS, 0 issues",
+      "Models": "PASS, 0 issues",
+      "Cross-references": "PASS, 0 issues"
+    },
+    "report": {
+      "changed": true,
+      "previous_generation_id": "catalog-20260910T063828Z-0bbbff4c5fd3",
+      "generation_id": "catalog-20260910T063828Z-0bbbff4c5fd3.local.f9273e6aae71",
+      "generated_at": "2026-09-11T01:03:52.065764Z",
+      "payload_checksum": "sha256:dbc759f9d9d6940f49dda75c0819ba61d6f6f874c07a8c570500cf457e2bd82f",
+      "semantic_checksum": "sha256:e057d9465c06868a75c27c9c0f0d4962e8c5e11f5e4ab0b40b15c18398dfedea",
+      "payload_size_bytes": 31764139
+    },
+    "scope": "Local candidate generation only. No hosted release, attestation, or channel publication."
+  }
+}

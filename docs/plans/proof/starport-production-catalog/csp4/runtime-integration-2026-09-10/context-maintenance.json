@@ -5,12 +5,12 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 122,
-  "new_evidence_artifacts": 105,
-  "new_commit_source_files": 37,
-  "resume_words": 330,
-  "current_source": "b81b827067aa860096bed208e541dd84e31274ab",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs",
+  "local_links": 123,
+  "new_evidence_artifacts": 131,
+  "new_commit_source_files": 55,
+  "resume_words": 332,
+  "current_source": "e12253fc80312ec76e976058ae0def74eb016746",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
   "clean_source": true,
   "running_implementation_commands": [
     {
@@ -22,15 +22,14 @@
       "toolchain": "go1.26.6"
     }
   ],
-  "next_action": "Finish full verification, review, and PR delivery of the provider-documentation repair. Include actual PR #148 merge 21e7356b in dependent deliveries. Continue native clock qualification and the remaining CSP4 scope.",
+  "next_action": "Finish integrated verification, then review and deliver one PR for the provider-documentation repair and public-catalog acceptance. Continue native clock qualification and the remaining CSP4 scope.",
   "public_acceptance_work": {
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
     "branch": "codex/catalog-public-acceptance",
     "base": "b81b827067aa860096bed208e541dd84e31274ab",
-    "status": "Uncommitted tests and captured public fixtures. Seven scoped runtime race events pass on Go 1.26.6. A07 registration and minimum-toolchain checks are active.",
+    "status": "Committed e12253fc includes main 21e7356b, provider repair, and public fixtures. Four A07 checks pass after main integration. Runtime verification runs. The isolated live generation probe passes four validation components with zero issues.",
     "sessions": [
-      91649,
-      48174
+      98209
     ]
   }
 }
