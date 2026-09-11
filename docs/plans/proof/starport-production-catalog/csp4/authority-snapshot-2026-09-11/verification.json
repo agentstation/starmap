@@ -1,0 +1,290 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_atomic_snapshot; combined verification in progress",
+  "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+  "scoped_source_commit": "44f10ac228f56fff53ccf3506ce8cc7b4e2d9ed2",
+  "base": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot",
+  "branch": "codex/catalog-authority-snapshot",
+  "source_files": [
+    {
+      "path": "authority_head.go",
+      "sha256": "600a7520570472c9146c80578d7ed5e2c4fd977995aa11aab6a7cbea0bb8c93b"
+    },
+    {
+      "path": "authority_head_test.go",
+      "sha256": "3d12690dba8731f39cdfdb2aca5807d25cca5d70706dae40261d39c3429926a3"
+    },
+    {
+      "path": "client.go",
+      "sha256": "ca50c3c53057130037e58ad92b41fd19f55a228bc2ac959572a5316212f6f60b"
+    },
+    {
+      "path": "docs/API.md",
+      "sha256": "ea040ea96215406fa0ce389d7536ad7631bba218c3af08ae905621d14146ad0d"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "c1d06d01b26c70bd419713d61484de51ca288d4001259d215c6f5c969e249bc5"
+    },
+    {
+      "path": "runtime/authority_runtime_test.go",
+      "sha256": "9bb22f15c4a32e931dd8d81e45233fed772c63651857535fa5c6f84f19568ec5"
+    },
+    {
+      "path": "runtime/authority_snapshot_test.go",
+      "sha256": "600e38454a0eca78b67cf93b195c80b37d8e12177cbbd45dbfbe8ead46064f77"
+    },
+    {
+      "path": "runtime/observation_update.go",
+      "sha256": "35ee9c192ebd1ad314e05110f63c70264b85e9ad21c5542d393f120df1d32f16"
+    },
+    {
+      "path": "runtime/origin_publication.go",
+      "sha256": "3fb2399614b3211d346dd3b99ebbeeb7d171174cd1bbf82d57eff2fcbe988a78"
+    },
+    {
+      "path": "runtime/origin_transaction_test.go",
+      "sha256": "048fef27dccc54710518beb58e91d76569f1c06dabd92c525ebcbfd320a46957"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "0cc0fec3c3d0be382415e9015a1c2766e8ad9f2e307edc9e8733130a1f3d397b"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "fail-before.patch.gz",
+      "sha256": "bed4745800b165590cd44fbb34d245c71e4b59a3cca1cf260abfb650fe922f4c",
+      "decoded_sha256": "941d217fcd7916a13183ee86ba44dc055dabede604f5b5dfe7414a903f8b86a2",
+      "decoded_bytes": 7639
+    },
+    {
+      "path": "fail-before.jsonl.gz",
+      "sha256": "a41be6a61051b6f6508e4d0e769155594ad018bc2ef8e64384c70829df7fead6",
+      "decoded_sha256": "596a8596deaec08ded8f94429739648f20b813f8aadb50723f9e5d568400d9c6",
+      "decoded_bytes": 3735
+    },
+    {
+      "path": "red-corrected.patch.gz",
+      "sha256": "78fe8109624fd4e8a39386d30012700e7a3218e234272f49ff04d02345c8951b",
+      "decoded_sha256": "3fb754a26b430617893156fd1e4e918028a08bb38c5d2b98dda4369a154e932d",
+      "decoded_bytes": 9192
+    },
+    {
+      "path": "red-authority-snapshot.go.gz",
+      "sha256": "6ac60fd93fd79e3dd3b39de3be3c103a31709a5a2a3f968c437f07779b67a453",
+      "decoded_sha256": "600e38454a0eca78b67cf93b195c80b37d8e12177cbbd45dbfbe8ead46064f77",
+      "decoded_bytes": 1064
+    },
+    {
+      "path": "red-corrected.jsonl.gz",
+      "sha256": "3138c0a320690f0ca7d6ecbe16bda310c64e8abf11884972ec6e6b19c177ae72",
+      "decoded_sha256": "179b42e47efaeaef7a696038c3fc08ebc19dda37a8043eed953370a71bff9e09",
+      "decoded_bytes": 8900
+    },
+    {
+      "path": "green.patch.gz",
+      "sha256": "fec497d3c2bf147312454a54ba4979287610f7b630d77b749abc8912a2bc0b19",
+      "decoded_sha256": "fb4424b8a03d7ee4f695b4b7d24139d3f36d0d5f0aceb84bc0e5a16c5ddb8a7d",
+      "decoded_bytes": 13002
+    },
+    {
+      "path": "green-go126.jsonl.gz",
+      "sha256": "330f229d5adda5611f9240d173bd104d0442912f5df3a1f851418b9b653c9c29",
+      "decoded_sha256": "8ef44f432ccf9690bf3413dfc58eb5aa8f508134272580bd465bc80c2c29a199",
+      "decoded_bytes": 6429
+    },
+    {
+      "path": "green-go125.jsonl.gz",
+      "sha256": "96b415fe305a75bc14d2b7eb9f3bc0f82e1f6b1022582bb1a730fd8f10ec18b3",
+      "decoded_sha256": "498782d5ffd3d99ed76acebd2bf74d83b47d026136012babdfe4ed0b85ec68e6",
+      "decoded_bytes": 6424
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "decoded_bytes": 289
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "a4929a2f4561d15e3c9fbe935c4def8d47117f7f70ccbaaa2e2aba18fc293240",
+      "decoded_sha256": "b2895528e75633998666006510235a72ce9f8da2915a6f1afd9c468641cd6a5b",
+      "decoded_bytes": 368
+    },
+    {
+      "path": "godoc-local.log.gz",
+      "sha256": "5187bbba1c7c2f3647699865a0fb34fb18080cb22bdcfcca48e52c948b214035",
+      "decoded_sha256": "00b35dbc0fd3b88eb4d37ff12acc93dadd9ef0a51ad664ca8a51978757ee2f3e",
+      "decoded_bytes": 146
+    },
+    {
+      "path": "static.log.gz",
+      "sha256": "a22c4bb0955ab9b662ea064f84d8bf8e8478bf7976e61cbe64a0ca31183b8d43",
+      "decoded_sha256": "b1706412f62d824b7463c64a02cb85af283e3b49022c0fcde436c416069852d2",
+      "decoded_bytes": 2590
+    },
+    {
+      "path": "prepare-public-fixture.log.gz",
+      "sha256": "7ff73873731271e9a7ae4fcb431f79df9012cfabb0503b7c34a451e43702cfe0",
+      "decoded_sha256": "c40cd79c1af14944e73aee10e3160e6f359f6c50ceba9e23d66addfe75228a80",
+      "decoded_bytes": 211
+    },
+    {
+      "path": "canonical-atomic-snapshot-prose.log.gz",
+      "sha256": "d423e6515d772b4fbf5e02ca29d0cdc07240380ab5582680fbbacbac3c3e23f7",
+      "decoded_sha256": "9fd4e3f36cfb963fce309a057f2f94a0fc4e7cf289352d76b4c6311a037ee5d9",
+      "decoded_bytes": 1157
+    },
+    {
+      "path": "canonical-atomic-snapshot-prose-corrected.log.gz",
+      "sha256": "5ab0a396fea26a028d2abcebb370313514f5d60dce2554b5626371d262c02074",
+      "decoded_sha256": "0128c77c9dcedeaa669bdd72e7309d3c9e95ee16b607aa5701c711f3453d7fb5",
+      "decoded_bytes": 558
+    }
+  ],
+  "contract": [
+    "CatalogState carries catalog identity, payload checksum, and authority head under one read lock. It reads no storage and allocates zero times in the measured read assertion.",
+    "Source selection, origin publication, retained restart, and failed replacement preserve the catalog/head binding. Ordinary reconciliation clears upstream authority.",
+    "The snapshot identifies its publication. It does not authenticate an authority, renew permission, or establish fleet freshness. Starport must retain it and check current permission per attempt and cache delivery."
+  ],
+  "fail_before": {
+    "initial": "One root fixture type error prevents its tests from compiling. Runtime publication loses the new snapshot head. Preserve this draft separately.",
+    "corrected": "The field declaration exists, but publication does not propagate it. Five tests fail and one passes across two packages.",
+    "commands": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json -run <six named snapshot cases> . ./runtime",
+    "interpretation": "An API extension with propagation regressions. The former documented CatalogState contract did not include authority metadata."
+  },
+  "scoped_tests": {
+    "source_commit": "44f10ac228f56fff53ccf3506ce8cc7b4e2d9ed2",
+    "toolchains": [
+      "go1.26.6",
+      "go1.25.12"
+    ],
+    "per_toolchain": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "packages": 2
+    },
+    "tests": [
+      "TestCurrentAuthorityHeadReadsPublishedStateWithoutStorage",
+      "TestCatalogSnapshotAuthorityRemainsBoundDuringPublication",
+      "TestAuthoritySnapshotPreservesSelectedSourceHead",
+      "TestAuthorityRuntimePreservesPublishedAuthorityGeneration",
+      "TestAuthorityRuntimeWithdrawalBlocksBeforeFailedActivationAndRestart",
+      "TestOriginPublicationRetainsIdentityOnRestartAndRebuild"
+    ]
+  },
+  "static_checks": {
+    "source_commit": "44f10ac228f56fff53ccf3506ce8cc7b4e2d9ed2",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make HAS_DEVBOX= lint technical-writing-check docs-check",
+    "status": "PASS",
+    "prose_files": 1448,
+    "prose_diagnostics": 0,
+    "lint_findings": 0,
+    "ago_findings": 0,
+    "docs": "Complete generation and documentation check pass.",
+    "generation_retry": "Default make godoc selected Devbox and started package setup. The task stopped that command with exit 143, removed its ten generated script files, and used the installed tools with HAS_DEVBOX=."
+  },
+  "running_checks": [
+    {
+      "session_id": 86818,
+      "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+      "command": "PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jack/go/bin GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 CATALOG_GIT_FIXTURE_REQUIRED=1 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 make verify",
+      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/make-verify.log"
+    },
+    {
+      "session_id": 82167,
+      "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout=30m -json . ./runtime ./remote ./pkg/catalogs/artifact",
+      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/combined-race.jsonl"
+    }
+  ],
+  "fixture_note": "The prepared public archive passes its size and checksum checks. CATALOG_PUBLIC_FIXTURE_REQUIRED is unused. The recognized absence switch is STARMAP_PUBLIC_FIXTURE_REQUIRED. These runs use the present archive and must report their actual skips.",
+  "publication": {
+    "status": "Unpublished",
+    "integrated_reviewed_dependency": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+    "required": "Actual PR149 main integration, complete checks, required review, native CI, and merge."
+  },
+  "acceptance": "No new task or product acceptance credit. The four Starport consumer subcases and native clock qualification remain UNVERIFIED.",
+  "canonical_prose": {
+    "result": "PASS",
+    "files": 1305,
+    "diagnostics": 0,
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make HAS_DEVBOX= technical-writing-check",
+    "previous_failure": "Two long sentences and missing blank lines between HTML paragraphs. Corrected prose preserves the requirements and scope."
+  },
+  "consumer_integration_audit": {
+    "status": "READ_ONLY; no Starport implementation credit",
+    "source_commit": "d45bb30ce13774ca7a25e206a6c9a6168bbe8548",
+    "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+    "files": [
+      {
+        "path": "internal/app/app.go",
+        "sha256": "743cc88500c495eca58f1295f2f41cd5d741408670be06fecb4a162c18d0ee4a"
+      },
+      {
+        "path": "internal/catalog/acceptance.go",
+        "sha256": "4da0b96ed2ad16f7b8fb97df23188f7328a9e8465264142301741f1b759f23d1"
+      },
+      {
+        "path": "internal/catalog/control_plane.go",
+        "sha256": "d32c7d9cdb108ce8ad3e03b3b80ea65922f62b498489114e6998165ec8126b19"
+      },
+      {
+        "path": "internal/catalog/snapshot.go",
+        "sha256": "a9c95ffb78e5289b0f648038b9069b8d3e8d06eaadfe04ebe79828215934a6fe"
+      },
+      {
+        "path": "internal/execution/executor.go",
+        "sha256": "6c38b229f4ea0dd4d42f75c647af75825a220708e769360811b56d5a27467642"
+      },
+      {
+        "path": "internal/providers/connectors/runtime.go",
+        "sha256": "615f8af5fe1d80598593ab906a5df992105d58332ce1a7f0554fcef70f229c53"
+      },
+      {
+        "path": "internal/proxy/proxy.go",
+        "sha256": "0e32d6aca833dfb2fff529a69958a9828e80b0ded739cf8f6fd240b4a1c25860"
+      }
+    ],
+    "observations": [
+      {
+        "path": "internal/catalog/snapshot.go",
+        "line": 104,
+        "finding": "RoutableSnapshot does not retain an authority head. newRoutableSnapshot must preserve the new atomic Starmap field through availability-only rebuilds."
+      },
+      {
+        "path": "internal/catalog/acceptance.go",
+        "line": 58,
+        "finding": "Accept compares the candidate with stored checksum and timestamp. It must also validate exact authority metadata before accepting or returning idempotent success."
+      },
+      {
+        "path": "internal/catalog/control_plane.go",
+        "line": 325,
+        "finding": "validateCatalogState checks catalog presence and generation identity. Authority snapshots also need validated head shape and binding to that identity and checksum."
+      },
+      {
+        "path": "internal/app/app.go",
+        "line": 1392,
+        "finding": "Route validation precedes accepted-store advancement and runtime publication. A failed replacement can retain an older snapshot whose permission revision is now withdrawn."
+      },
+      {
+        "path": "internal/execution/executor.go",
+        "line": 222,
+        "finding": "session.begin governs individual attempts and retries. Admission must check the request lease snapshot against current permission here or at an equivalent guaranteed attempt boundary."
+      },
+      {
+        "path": "internal/proxy/proxy.go",
+        "line": 135,
+        "finding": "The cache wrapper can return before ordinary routing and attempt execution. Cache delivery needs its own permission check against the same retained request snapshot."
+      },
+      {
+        "path": "internal/providers/connectors/runtime.go",
+        "line": 13,
+        "finding": "RuntimeLease retains a complete provider runtime and exposes its RoutableSnapshot. That snapshot provides the catalog identity for permission checks."
+      }
+    ]
+  }
+}

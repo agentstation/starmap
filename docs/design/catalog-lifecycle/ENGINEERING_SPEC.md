@@ -1755,6 +1755,12 @@ That snapshot follows catalog publication under the same client lock. Failed pub
 The snapshot does not prove publisher identity, fleet freshness, or permission validity.
 The issuer must establish those conditions separately before it can return a receipt.
 
+Use `CurrentCatalogState` for one atomic catalog and authority head read.
+`CatalogState.AuthorityHead` travels with the immutable catalog through runtime publication and retained startup.
+Separate catalog and head reads can observe different publications. Ordinary and embedded snapshots carry a zero head.
+Starport must preserve this binding in its accepted routing snapshot.
+It must check current permission for each attempt and cached response delivery.
+
 Receipt issuance from shared storage requires a current-read guarantee.
 The returned head must be current at some point between the read's invocation and completion.
 That guarantee includes other writers' committed publications. Conditional writes and exact object-version tokens alone do not establish it.

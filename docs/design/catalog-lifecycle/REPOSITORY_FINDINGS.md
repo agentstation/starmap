@@ -2024,3 +2024,21 @@ The valid consumer check and checksum validator pass zero-allocation assertions.
 
 The new Starport consumer worktree compiles three packages against the prepared Starmap source through an isolated workspace.
 It runs no behavior tests and changes no module pin. All four required Starport consumer checks remain UNVERIFIED.
+
+
+## Atomic catalog authority snapshots, 2026-09-11
+
+Consumer source `20b1ee41` exposes catalog state and authority heads through separate reads.
+A publication between those reads can pair metadata from different generations.
+The existing catalog snapshot contract does not include the authority head.
+
+Commit `44f10ac2` adds `CatalogState.AuthorityHead` under the existing publication lock.
+Runtime source selection, origin publication, and retained startup preserve that binding. Ordinary reconciliation clears upstream authority.
+A failed activation preserves the retained catalog head while permission state records the withdrawal.
+
+Five regression cases fail before propagation. Both supported toolchains pass six focused cases.
+They cover publication, concurrency, retained startup, source selection, origin rebuild, and failed activation.
+The combined client snapshot passes zero-allocation and zero-storage-read assertions.
+
+The [snapshot proof](../../plans/proof/starport-production-catalog/csp4/authority-snapshot-2026-09-11/verification.json) records these checks and the combined source.
+Broader verification, required review, native CI, and merge remain required. Starport admission still needs integration.

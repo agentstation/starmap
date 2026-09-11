@@ -5,15 +5,28 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 124,
-  "new_evidence_artifacts": 266,
-  "new_commit_source_files": 67,
-  "resume_words": 369,
-  "current_source": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission",
+  "local_links": 126,
+  "new_evidence_artifacts": 281,
+  "new_commit_source_files": 78,
+  "resume_words": 315,
+  "current_source": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot",
   "clean_source": true,
-  "running_implementation_commands": [],
-  "next_action": "Wait for Verification Gate, then verify the automatic merge of PR149 for provider documentation and public-catalog acceptance. Continue native clock qualification and the remaining CSP4 scope.",
+  "running_implementation_commands": [
+    {
+      "session_id": 86818,
+      "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+      "command": "PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jack/go/bin GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 CATALOG_GIT_FIXTURE_REQUIRED=1 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 make verify",
+      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/make-verify.log"
+    },
+    {
+      "session_id": 82167,
+      "source_commit": "768347ab19bdffc0aa84119adb279a6b0f9965b6",
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 CATALOG_PUBLIC_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout=30m -json . ./runtime ./remote ./pkg/catalogs/artifact",
+      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-authority-snapshot/.tmp/csp4-authority-snapshot/combined-race.jsonl"
+    }
+  ],
+  "next_action": "Complete the combined snapshot checks at 768347ab. Verify PR149 automatic merge and integrate actual main before required review and publication. Continue native clocks and Starport admission.",
   "external_running_checks": [
     {
       "repository": "agentstation/starmap",
