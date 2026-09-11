@@ -17,13 +17,20 @@ Windows uses the Go runtime's interrupt-time counter through `time.Since`.
 The Go 1.25.12 and 1.26.6 runtimes read Windows interrupt time on AMD64 and ARM64.
 Microsoft describes sleep and hibernation accounting in [Interrupt Time](https://learn.microsoft.com/en-us/windows/win32/sysinfo/interrupt-time).
 Native tests compare elapsed intervals with `QueryInterruptTime` and check allocations.
+The comparison uses the [documented API set](https://learn.microsoft.com/en-us/uwp/win32-and-com/win32-apis#apis-from-api-ms-win-core-realtime-l1-1-1dll), `api-ms-win-core-realtime-l1-1-1.dll`.
+The ARM64 runner lacks the direct `kernel32.dll` export.
 These interval checks do not simulate system sleep or qualify a counter error bound.
 
 Windows UTC observations require `NewWindowsObserver(profile)`.
 The caller supplies qualified source-age, drift, and UTC error bounds. Construction performs no I/O.
 The reader checks the local W32Time pipe against the running service process before it requests status.
+Modern Windows exposes `W32TIME_ALT`. The local pipe permits caller identification without permission to act as that caller.
 It bounds the reply, validates synchronization evidence, and includes timestamp precision and source drift in the error bound.
 The default `Observe` function continues to refuse Windows observations without that profile.
+
+Microsoft requires the caller to hold the system-time privilege for W32Time RPC methods.
+The [protocol's product behavior](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/bb576d39-587b-484a-86a4-e1d378cf9497) describes the endpoint and privilege requirements.
+Native CI must prove local status access. Production service-account qualification remains separate.
 
 Observations have a two-second limit. A canceled caller can return while a Windows service-manager call remains blocked.
 At most one native query remains active. Its slot stays occupied until Windows returns and cleanup completes.

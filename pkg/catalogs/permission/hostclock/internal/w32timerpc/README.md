@@ -8,7 +8,8 @@ The RPC client receives one fixed stream through its dialer hook. It cannot sele
 The reader limits each fragment to 16 KiB and the full reply to 64 KiB.
 It checks allocation hints before decoding and preserves the observation deadline when the client changes stream deadlines.
 
-The connector reads service state and uses an anonymous local pipe. It starts no service and changes no time setting.
+The connector reads service state and uses the local `W32TIME_ALT` pipe with caller identification.
+It grants no permission to act as the caller. It starts no service and changes no time setting.
 Cancellation bounds the caller's wait. One process-wide slot limits native service-manager calls that cannot accept a context.
 That slot remains occupied until the outstanding query returns and releases its resources.
 

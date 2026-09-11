@@ -11,7 +11,7 @@ import (
 )
 
 func TestWindowsNativeElapsed(t *testing.T) {
-	query := windows.NewLazySystemDLL("kernel32.dll").NewProc("QueryInterruptTime")
+	query := windows.NewLazySystemDLL("api-ms-win-core-realtime-l1-1-1.dll").NewProc("QueryInterruptTime")
 	if err := query.Find(); err != nil {
 		t.Fatal(err)
 	}
