@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T10:25:11.511985+00:00",
+  "captured_at": "2026-09-11T10:51:57.407649+00:00",
   "repositories": {
     "starmap": [
       {
-        "headRefOid": "437dc13c92b38367f0534900a83884e67bfaebd1",
+        "headRefOid": "e4a80fa68400613728b505e6616e30be52814e2d",
         "isDraft": false,
         "number": 151,
         "title": "Add native clocks for catalog permission checks",
@@ -13,11 +13,11 @@
     "starport": []
   },
   "current_pr": 151,
-  "head": "437dc13c92b38367f0534900a83884e67bfaebd1",
+  "head": "e4a80fa68400613728b505e6616e30be52814e2d",
   "base": "852a548c4959e98af443f487922b9708fb594a91",
-  "required_reviews": "Sol xhigh and Opus high PASS, zero findings; secret scan PASS",
+  "required_reviews": "Sol: zero findings. Opus: one P0 known native merge blocker. Mandatory fixture retained. Diagnostic branch publication only; fresh review required before merge.",
   "repository_verification": "All 41 stages pass across the original and corrected remainder.",
-  "native_jobs": "Workflow 34588801426 runs at reviewed 437dc13c. The preceding 0dfa9a90 run retains Windows status failures.",
+  "native_jobs": "Workflow 34591105915 runs at diagnostic e4a80fa6. Prior native SSPI tests pass, while both W32Time principal checks fail.",
   "disposition": "Require both native Windows jobs and all repository checks before merging the reviewed PR.",
   "owner": "Catalog plan executor",
   "campaign_merged_prs": 28,

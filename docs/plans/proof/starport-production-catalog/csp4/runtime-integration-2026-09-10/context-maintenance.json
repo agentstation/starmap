@@ -6,26 +6,26 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 106,
-  "new_evidence_artifacts": 790,
-  "new_commit_source_files": 210,
-  "resume_words": 327,
-  "current_source": "437dc13c92b38367f0534900a83884e67bfaebd1",
+  "local_links": 107,
+  "new_evidence_artifacts": 850,
+  "new_commit_source_files": 212,
+  "resume_words": 331,
+  "current_source": "e4a80fa68400613728b505e6616e30be52814e2d",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "clean_source": true,
   "running_implementation_commands": [
     {
-      "workflow_run": 34588801426,
-      "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
-      "status": "Native Windows runtime tests and other repository checks running."
+      "workflow_run": 34591105915,
+      "source_commit": "e4a80fa68400613728b505e6616e30be52814e2d",
+      "status": "Native diagnostic run. All checks must pass before merge."
     }
   ],
-  "next_action": "Require native Windows and all checks in workflow34588801426 at reviewed and published 437dc13c before merging PR151. All 41 local clock-settings stages passed at e97d7fc3. Integrate qualified parent changes before final dependent review/publication.",
+  "next_action": "Inspect native workflow34591105915 at diagnostic e4a80fa6. Resolve the principal failure without weakening native checks. Require final review and passing native Windows checks before merge.",
   "external_running_checks": [
     {
       "pull_request": 151,
-      "workflow_run": 34588801426,
-      "status": "Native checks run at reviewed 437dc13c; no merge credit applies"
+      "workflow_run": 34591105915,
+      "status": "Diagnostic e4a80fa6 is published; native failure diagnosis runs before final review and merge"
     }
   ],
   "public_acceptance_work": {

@@ -1,6 +1,6 @@
 {
   "task": "CSP4",
-  "status": "REVIEW_PASS_NATIVE_CI_RUNNING",
+  "status": "REVIEW_PASS_NATIVE_WINDOWS_PRINCIPAL_FAILURE",
   "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
   "base": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
@@ -508,6 +508,160 @@
       "secret_scan": "PASS",
       "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
       "review_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-windows-auth-review-20260911-4xsor_cp"
+    },
+    "native_34588801426": {
+      "source": "437dc13c92b38367f0534900a83884e67bfaebd1",
+      "counts": {
+        "native-runtime-macos-15": {
+          "git-acquisition.jsonl": {
+            "counts": {
+              "pass": 2,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "publisher-ingestion.jsonl": {
+            "counts": {
+              "pass": 4,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "tests.jsonl": {
+            "counts": {
+              "pass": 1962,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          }
+        },
+        "native-runtime-macos-15-intel": {
+          "git-acquisition.jsonl": {
+            "counts": {
+              "pass": 2,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "publisher-ingestion.jsonl": {
+            "counts": {
+              "pass": 4,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "tests.jsonl": {
+            "counts": {
+              "pass": 1962,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          }
+        },
+        "native-runtime-ubuntu-24.04": {
+          "git-acquisition.jsonl": {
+            "counts": {
+              "pass": 2,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "publisher-ingestion.jsonl": {
+            "counts": {
+              "pass": 4,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "tests.jsonl": {
+            "counts": {
+              "pass": 1916,
+              "fail": 0,
+              "skip": 1
+            },
+            "failures": [],
+            "skips": [
+              "TestServiceConfigurationAdministratorOwnedRead"
+            ]
+          }
+        },
+        "native-runtime-ubuntu-24.04-arm": {
+          "git-acquisition.jsonl": {
+            "counts": {
+              "pass": 2,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "publisher-ingestion.jsonl": {
+            "counts": {
+              "pass": 4,
+              "fail": 0,
+              "skip": 0
+            },
+            "failures": [],
+            "skips": []
+          },
+          "tests.jsonl": {
+            "counts": {
+              "pass": 1916,
+              "fail": 0,
+              "skip": 1
+            },
+            "failures": [],
+            "skips": [
+              "TestServiceConfigurationAdministratorOwnedRead"
+            ]
+          }
+        },
+        "native-runtime-windows-11-arm": {
+          "tests.jsonl": {
+            "counts": {
+              "pass": 1906,
+              "fail": 1,
+              "skip": 0
+            },
+            "failures": [
+              "TestWindowsLocalTimeService"
+            ],
+            "skips": []
+          }
+        },
+        "native-runtime-windows-2025": {
+          "tests.jsonl": {
+            "counts": {
+              "pass": 1906,
+              "fail": 1,
+              "skip": 0
+            },
+            "failures": [
+              "TestWindowsLocalTimeService"
+            ],
+            "skips": []
+          }
+        }
+      },
+      "observation": "Both Windows architectures pass native SSPI lifecycle, packet privacy, body/header/signature tampering, and replay tests. Both fail TestWindowsLocalTimeService at the combined principal check. Both read-only w32tm queries succeed.",
+      "unknown": "The combined check does not distinguish missing response, nonzero RPC status, empty name, and excessive name. No returned status or name can be inferred from this failure.",
+      "qualification": "Native service status and production clock bounds remain UNVERIFIED."
     }
   },
   "research": {
@@ -521,13 +675,7 @@
     "Service-account privileges and deployment clock bounds still require qualification.",
     "Pre-PR review passes and the reviewed branch is published. Native CI remains required. No merge or task completion credit applies."
   ],
-  "running_checks": [
-    {
-      "workflow_run": 34588801426,
-      "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
-      "status": "Native Windows runtime tests and other repository checks running."
-    }
-  ],
+  "running_checks": [],
   "source_files": [
     {
       "path": ".github/workflows/pr.yaml",
@@ -774,6 +922,161 @@
       "path": "review.md.gz",
       "sha256": "5f416cbfe8b786952ec93b09c7953c3e74ff85d9233fb440db39256626aec502",
       "decoded_sha256": "73ef1f3505d34e01f253af047de2dfbc9d236203d88a5086ce22f7a01a6b8d6c"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15/git-acquisition.jsonl.gz",
+      "sha256": "0630466874bf442fbd42f411a7a38e50582ceb0a20a8c8737fd88c7760df3fd4",
+      "decoded_sha256": "8c098132db4429ec61f66e60b5f4909e3508596b7af8e7bbda9c808ee8401f68"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15/publisher-ingestion.jsonl.gz",
+      "sha256": "bf49526c0f6768adbd43348bdd2da780df62839fb803841ca122c5d9e66b2c4e",
+      "decoded_sha256": "18fa0bb9eb69e38ef05af0d5e16d1bacc8d7bc485c49620a4e95ecbaa697b6f2"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15/tests.jsonl.gz",
+      "sha256": "081886f98fdd38a2337279c490839a307b07dfaa3637b3847674997b8538b89d",
+      "decoded_sha256": "625c081921ddc59c9adae3e3e1a72a40c34aee58fabbd2904393f104c3ba5bb0"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15/toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "decoded_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15-intel/git-acquisition.jsonl.gz",
+      "sha256": "d4b2a6f7d360584b8c83b79d7cfa508a584c151f99172c1da12d44e935133cd0",
+      "decoded_sha256": "071a9239f1d3a4d19b66d68d7bb31060feab183f01bc72957b5846ffd621693a"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15-intel/publisher-ingestion.jsonl.gz",
+      "sha256": "ef181e9d5a566ba2dfcdabfe8f966c78435d262b1cccb9cd881aea901a189a0d",
+      "decoded_sha256": "df36e9bff439a660fd3e8544f2f91d4dd028512f04b2f6e173b835c52d8db226"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "sha256": "75ac71c7c2ae9d9cd78e0a14d32fc45ef14ed90b67aeab6895469a2dba85e4da",
+      "decoded_sha256": "5e8e91814f8491d3097445dca52d353194174348d85214680898841cc893ad23"
+    },
+    {
+      "path": "native-34588801426/native-runtime-macos-15-intel/toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04/git-acquisition.jsonl.gz",
+      "sha256": "53a56dd27c7b363e9275d7e99f4bf86d561bae473c86af23291b20cb6e59c3cd",
+      "decoded_sha256": "769d9dc82820713e9ac3c5321a6a6e63b60d24cbcfc6c0cc1662f5301d55afd5"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04/publisher-ingestion.jsonl.gz",
+      "sha256": "ff6a0d0a95fe665d4612538d5dc49db7b8695a1e5b8ec0c7da516cd7404e21dd",
+      "decoded_sha256": "a83faf2ca178d5d269e103281c806119e405e464b1b33664f68f7db44f87436c"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "sha256": "847e3c403717bb188abf32ee64c8ca230aae240bd48f1351c3a01d6c0609af6f",
+      "decoded_sha256": "80ff92aba27d229ee12e9d2281f722779533cae47acb7b1f2723a30e9b6ce97b"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04/toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "decoded_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04-arm/git-acquisition.jsonl.gz",
+      "sha256": "133e56c208ea8ae39e3a79a152c00176acb9ed2bd4dd1c13d1d5f04ce3e86162",
+      "decoded_sha256": "00d75425095f7974472fffd37ab1917f7993659d14a54d7d349a0fcd6decb12e"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "6409efad449e7c04eeb42f076bc221030f9a150c41d98d0d0f2752e676572c12",
+      "decoded_sha256": "c0bbcfe9cf9a8a71cb09a962f71f57ceea53ebfcc2e689df6199bbea3c293b5b"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04-arm/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256": "1d3a3ca78a3bbe1f8239327be8c1b890f64d15f6a9efae441933994b8de30d7d",
+      "decoded_sha256": "f01c26483d910364d3c7c410fbcd61ee1c6c8fc01a25182fb6519ee32eacf64e"
+    },
+    {
+      "path": "native-34588801426/native-runtime-ubuntu-24.04-arm/toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "decoded_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "12a219f295d413ae3926eb40b242fbed29a8ae1e1ec4ef21ff1d0dba1220f70b",
+      "decoded_sha256": "68c9394a9c920fd2d81d841cb6bb73a48e37e338c68e487161b62eebe3c5c463"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-11-arm/windows-time-access.json.gz",
+      "sha256": "e64cbb8d2932f75cd0a54aeb98cb7bc9be65011fe9ab2c8fe622c6eb7063e756",
+      "decoded_sha256": "03666af60a70a347f04c6eb6d19e1294828db7b4baa5e10460c4e08957e9e3c7"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-11-arm/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-11-arm/windows-time-service.json.gz",
+      "sha256": "ce77e71aba160a934315dc75351b02da8afec4433544ace8bd26e3e028cad9e1",
+      "decoded_sha256": "746f7adffaf0d899e21cf316418fb9af798343291b47b9449871c9a6363fe0d8"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-11-arm/windows-time-status.log.gz",
+      "sha256": "0196971a5e7c82cfe0d9f5e1bfbabdc1e901aacc80c87a93f037bab1735b45c2",
+      "decoded_sha256": "c7c7c12b8edb00445c053cfb63956b09ed52b90463b50465397e54d9f81c957f"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "7e9165477c5e605c3d192a66a6b49a6356a177f2a4f1e1a4461369097a3fb41e",
+      "decoded_sha256": "77b25a5143650c4105bfcc308190de1eff07a4de843a35c5d49a5924009b03b6"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-2025/toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-2025/windows-time-access.json.gz",
+      "sha256": "e64cbb8d2932f75cd0a54aeb98cb7bc9be65011fe9ab2c8fe622c6eb7063e756",
+      "decoded_sha256": "03666af60a70a347f04c6eb6d19e1294828db7b4baa5e10460c4e08957e9e3c7"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-2025/windows-time-privileges.log.gz",
+      "sha256": "b4ab370164f1c3baf18a8259521ce9c03b2a59f8463f9dfb16bf92294b20dddc",
+      "decoded_sha256": "cda1d7b0e546f2a7ce49417c9bb9b11381302103634fa8ec0d76c9132f688ed8"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-2025/windows-time-service.json.gz",
+      "sha256": "da19eaff97758e2f2fa4780f59b04e31e91bf0a0336b589bbf7157acad49873e",
+      "decoded_sha256": "15d44a4991727dbcbe8c373c3e702a8abd19a20958f168d611adfcdf3d3371a6"
+    },
+    {
+      "path": "native-34588801426/native-runtime-windows-2025/windows-time-status.log.gz",
+      "sha256": "8409613dc827422b7561375bf3f3533f66fef42186a628579a57d462569d9af6",
+      "decoded_sha256": "28c0d3887a9f76ab38a61caec2655d5c702791c7cce5fe248c94b0df1c9b84de"
+    },
+    {
+      "path": "native-34588801426/workflow.json.gz",
+      "sha256": "861dad83362e8cc5090595f50e5770a20e98aa6b5a831e1f8f1b04518748ff73",
+      "decoded_sha256": "d1b2a63617981b352c9dbf111fbb0605f0825e9306fc38e6795a4a400ccdd064"
     }
   ],
   "publication": {
@@ -782,6 +1085,6 @@
     "base": "852a548c4959e98af443f487922b9708fb594a91",
     "workflow_run": 34588801426,
     "workflow_url": "https://github.com/agentstation/starmap/actions/runs/34588801426",
-    "status": "Open, ready, native checks running. No auto-merge enabled."
+    "status": "Superseded by diagnostic e4a80fa6 after both Windows principal checks failed. The remaining Verification Gate was canceled by the next task-branch push."
   }
 }

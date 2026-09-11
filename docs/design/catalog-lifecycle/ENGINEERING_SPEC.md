@@ -3006,4 +3006,5 @@ It uses Windows SSPI Negotiate with packet privacy and identification-only acces
 Windows host policy can require domain services. The RPC transport retains its fixed pipe, byte bounds, and observation deadline.
 
 The [authentication proof](../../plans/proof/starport-production-catalog/csp4/windows-authentication-2026-09-11/verification.json) records portable checks and required native tests.
-Both Windows counter tests pass at the preceding source. Authenticated status reads, service-account privileges, and production clock bounds remain unqualified.
+Both Windows runners pass the native SSPI privacy, tampering, replay, and cleanup tests at this source.
+Both service reads fail the principal check. Authenticated status reads, service-account privileges, and production clock bounds remain unqualified.

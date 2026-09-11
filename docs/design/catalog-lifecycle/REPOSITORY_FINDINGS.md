@@ -2226,8 +2226,8 @@ The process uses its Windows identity with packet privacy and identification-onl
 
 The [authentication proof](../../plans/proof/starport-production-catalog/csp4/windows-authentication-2026-09-11/verification.json) records 194 portable race events per toolchain and eight Windows cross-builds.
 Windows lint and vet, repository ago, generated docs, full docs checks, and the 1,495-file prose check pass.
-Native tests cover privacy, changed headers, changed payloads, changed signatures, replay, and native handle cleanup. They remain unexecuted at this candidate.
+Native tests cover privacy, changed headers, changed payloads, changed signatures, replay, and native handle cleanup. They pass on both Windows architectures.
 
-Native CI must resolve the preceding RPC access denial. The fixture records local `w32tm` status and process privileges for diagnosis.
-Sol and Opus report zero findings. PR #151 contains `437dc13c`, with native workflow `34588801426` running before merge.
+Both service reads fail at the combined principal check. Both read-only `w32tm` queries succeed.
+Sol and Opus report zero findings for `437dc13c`. The [diagnostic candidate](../../plans/proof/starport-production-catalog/csp4/windows-principal-2026-09-11/verification.json) separates each rejected reply category without changing security policy.
 CSP4 retains all remaining clock, authority, and Starport qualification requirements.

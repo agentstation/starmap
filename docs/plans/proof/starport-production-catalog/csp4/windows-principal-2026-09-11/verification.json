@@ -1,0 +1,439 @@
+{
+  "task": "CSP4",
+  "status": "DIAGNOSTIC_PUBLISHED_NATIVE_CI_RUNNING",
+  "source_commit": "e4a80fa68400613728b505e6616e30be52814e2d",
+  "base": "437dc13c92b38367f0534900a83884e67bfaebd1",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "purpose": "Distinguish missing reply, nonzero RPC status, empty name, and excessive principal name. Preserve all rejection conditions and avoid printing principal values.",
+  "fail_before": {
+    "workflow": 34588801426,
+    "source": "437dc13c92b38367f0534900a83884e67bfaebd1",
+    "test": "TestWindowsLocalTimeService",
+    "platforms": [
+      "windows-2025",
+      "windows-11-arm"
+    ],
+    "result": "Both fail with the combined principal diagnostic. The cause remains unknown."
+  },
+  "checks": [
+    {
+      "name": "go1.25.12-race",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "./pkg/catalogs/permission/..."
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.25.12"
+      },
+      "started_at": "2026-09-11T10:42:26.016767+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/go1.25.12-race.log",
+      "counts": {
+        "pass": 194,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "go1.25.12-amd64",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/principal-diagnostic/go1.25.12-amd64.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "started_at": "2026-09-11T10:42:28.110256+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/go1.25.12-amd64.log"
+    },
+    {
+      "name": "go1.25.12-arm64",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/principal-diagnostic/go1.25.12-arm64.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.25.12",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "started_at": "2026-09-11T10:42:28.975347+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/go1.25.12-arm64.log"
+    },
+    {
+      "name": "go1.26.6-race",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "./pkg/catalogs/permission/..."
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.26.6"
+      },
+      "started_at": "2026-09-11T10:42:29.550932+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/go1.26.6-race.log",
+      "counts": {
+        "pass": 194,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "go1.26.6-amd64",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/principal-diagnostic/go1.26.6-amd64.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "started_at": "2026-09-11T10:42:31.643586+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/go1.26.6-amd64.log"
+    },
+    {
+      "name": "go1.26.6-arm64",
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp4-host-clock/principal-diagnostic/go1.26.6-arm64.exe",
+        "./pkg/catalogs/permission/hostclock/internal/w32timerpc"
+      ],
+      "environment_overrides": {
+        "GOTOOLCHAIN": "go1.26.6",
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "started_at": "2026-09-11T10:42:32.284776+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/go1.26.6-arm64.log"
+    },
+    {
+      "name": "windows-lint",
+      "command": [
+        "golangci-lint",
+        "run",
+        "./pkg/catalogs/permission/hostclock/..."
+      ],
+      "environment_overrides": {
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "started_at": "2026-09-11T10:42:32.891897+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/windows-lint.log"
+    },
+    {
+      "name": "windows-vet",
+      "command": [
+        "go",
+        "vet",
+        "./pkg/catalogs/permission/hostclock/..."
+      ],
+      "environment_overrides": {
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "started_at": "2026-09-11T10:42:40.082603+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/windows-vet.log"
+    },
+    {
+      "name": "ago",
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "environment_overrides": {},
+      "started_at": "2026-09-11T10:42:41.866623+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/ago.log"
+    },
+    {
+      "name": "prose",
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "environment_overrides": {},
+      "started_at": "2026-09-11T10:42:43.469741+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/prose.log"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "environment_overrides": {},
+      "started_at": "2026-09-11T10:43:30.122123+00:00",
+      "exit_code": 0,
+      "log": ".tmp/csp4-host-clock/principal-diagnostic/diff.log"
+    }
+  ],
+  "limitations": [
+    "Six Windows diagnostic cases are cross-compiled but require native execution.",
+    "No security policy change or merge credit applies. Native status and production clock qualification remain open."
+  ],
+  "source_files": [
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/security_windows.go",
+      "sha256": "cd15bb66820dd79824f85371a7ef6b1686eb91ab13b4b96d5a038ea4e046987d"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/internal/w32timerpc/security_windows_test.go",
+      "sha256": "3faeaf2252a8ff1318b827001e7bf1057de9d1ae44aadbf6adb6bc4c29b577ad"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "3db765eb6883ccb92313fda38ef602a0d2b47c8544aa239cab9aca0d62394d7f",
+      "decoded_sha256": "496e60e5d9575f6353a3c8b9677217a6c1c48ba0613688e9a2e337eb739f7f5f"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-amd64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-race.log.gz",
+      "sha256": "ca09e254ec37ffb73d0d1c547699831e5d0c1905bb91b59363b29d0c3f52b5cf",
+      "decoded_sha256": "94c0e490ffdd56b8d54b3b0f77ecdb3b64176264589ee47ef5e6c679ae3acb41"
+    },
+    {
+      "path": "go1.26.6-amd64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-race.log.gz",
+      "sha256": "e9f9878cf659bdfb330279219246b6b98364cda634306fb25ea83de34b7138d8",
+      "decoded_sha256": "cc04215363f557e57ef09292e9b251e8d27f72715d08b025f10e78f00557648c"
+    },
+    {
+      "path": "manual-review-context.json.gz",
+      "sha256": "9c89ca29ed6514f932509b1cd82bfaef619f5e25530a5ebf455346096408c2d6",
+      "decoded_sha256": "419e05ec41a3f4c1e39bb4768ae33425591e534b71ef09e4cbed4cc8920f2817"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "bf3f553a770b2520dd4117bafc528c57de59fb042758950637e03b6e04c12951",
+      "decoded_sha256": "82ea1849eed3e0cca63523257fdf3dafcfe99dfccc9b0312a50c0d01bb18eab2"
+    },
+    {
+      "path": "review-directory.json.gz",
+      "sha256": "9c060898ed8a28ec548b7ed930bf96cd384fa8f32679ed5e07f1d391ec6f0d5f",
+      "decoded_sha256": "f51d913ab7ac53edc737c7d99d29d73080ec6d1428dea581a359c5b32f783b26"
+    },
+    {
+      "path": "windows-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "windows-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review.json.gz",
+      "sha256": "0114e1020785e8f4776461c0ec3ea555c5858e2022b8cf4fc18de17e735923e6",
+      "decoded_sha256": "6a9b81491b9ebfa8adc69b58e70c6ed103010615d20a9770611e2b455691963e"
+    },
+    {
+      "path": "review.md.gz",
+      "sha256": "2cc4836e1260389a49e810ea35068410ae499c93eecc0142dd0e62ae59ca0de9",
+      "decoded_sha256": "d4583245c9fe2b4adc0f62cd669c25d336d1f6a80a879c46e24b8327dd9c4f88"
+    },
+    {
+      "path": "review-assessment.json.gz",
+      "sha256": "158e9cffb84eef865dd41348fdd92009caf2c85ef5a987f53004424a19ec1ef4",
+      "decoded_sha256": "90eba0b3b3526aa64f861cb96709913829df55940d021eb41624c68065e4d8dc"
+    },
+    {
+      "path": "pr-body.md.gz",
+      "sha256": "b38c520f7c951b189031d4a5c46cc6058ea2df699c6de8a97ca417daadd96ca5",
+      "decoded_sha256": "2a46a1bfd72addb1ec2d8794c958b073c19f9da32241bea7e0635bca50a44595"
+    },
+    {
+      "path": "principal-prose.log.gz",
+      "sha256": "641ad98c10579e5b65c0aece89f37fa1cda8caa50842dca1e64920f84413fb82",
+      "decoded_sha256": "fbf9428ae473ca3719f654dd88cb93257e81a54d0dbf7be298bb710c88b59c54"
+    },
+    {
+      "path": "principal-prose.json.gz",
+      "sha256": "8142b3820e05874518b7e90afb3956ebce99836f92e14d93e3b13edab4ca3012",
+      "decoded_sha256": "41d438abff361dba7648461efbac3a453d3ef281189074db8a6d181b8980fbad"
+    },
+    {
+      "path": "principal-prose-corrected.log.gz",
+      "sha256": "59235c8d267a6e24d45311a8df5d0f9fd5c5f2d65cea3f9f143004f5dd2cfe9e",
+      "decoded_sha256": "e9eac69c9a26cceb3dcd0d95492f29e5002d7fc083546c17983d958fbf6a1090"
+    },
+    {
+      "path": "principal-prose-corrected.json.gz",
+      "sha256": "e79fdec4325b21bf386e95017d640dc2f618a4541249675d659c30ff1d671bca",
+      "decoded_sha256": "0060a80b19d47d67eb2e351067fe62fceaf66c25e49df94e5255bc88264d2c12"
+    },
+    {
+      "path": "security-failure-api.log.gz",
+      "sha256": "7b4db21eeeff90194e80dbf37704a8c37010df1c3a05e7c3b0b2b8035a952985",
+      "decoded_sha256": "46d32f521ce53f94e1d9465aac317fb2cd747a4f9435380819c98bc288471326"
+    },
+    {
+      "path": "fuzz-local.log.gz",
+      "sha256": "df71a4fd5fc221a6e195150d51b90a54978b2ab94418b70ee92dfc6504a7d82a",
+      "decoded_sha256": "91013dd22b1b02ddc3a9ddffe92dcf3c86f26c8a681a6d6645ba84ba3d5ad989"
+    },
+    {
+      "path": "fuzz-local.json.gz",
+      "sha256": "e3bbbcb7b44c03c903d2f1b4730647ea83ab185c05e550bd4aa2e48218a31943",
+      "decoded_sha256": "465afe5e12edc4714f9529a4535816504a71084dd521d76ee771508c4c6d4e4c"
+    },
+    {
+      "path": "principal-publication-prose.log.gz",
+      "sha256": "74fa50863753c2ee49e7da73912043cddef26de46b4abc9a34d0a9e1ae78808f",
+      "decoded_sha256": "0836c7ba2d26d61069836d9963bf96bb7e2dc86e72ba5270aa9d5022c5bf8e91"
+    },
+    {
+      "path": "principal-publication-prose.json.gz",
+      "sha256": "ba76ad82805500c94401781a71f447168ca553bde2260f250d56db27d8cd9f00",
+      "decoded_sha256": "c226c2779b6053f42c80dd09a4cd6f2149d3b8242758c73163c1f383ea56b393"
+    },
+    {
+      "path": "principal-publication-prose-corrected.log.gz",
+      "sha256": "59235c8d267a6e24d45311a8df5d0f9fd5c5f2d65cea3f9f143004f5dd2cfe9e",
+      "decoded_sha256": "e9eac69c9a26cceb3dcd0d95492f29e5002d7fc083546c17983d958fbf6a1090"
+    },
+    {
+      "path": "principal-publication-prose-corrected.json.gz",
+      "sha256": "7bed429ca3d19f121181ebeab5fb60a0cf0b778dc194bf91107138a63168df2c",
+      "decoded_sha256": "f2eb5a6568626c54e63cd52ebf04564b505a94786d6f6227e3d33fec271d4497"
+    }
+  ],
+  "running_checks": [
+    {
+      "workflow_run": 34591105915,
+      "source_commit": "e4a80fa68400613728b505e6616e30be52814e2d",
+      "status": "Native diagnostic run. All checks must pass before merge."
+    }
+  ],
+  "review": {
+    "source": "e4a80fa68400613728b505e6616e30be52814e2d",
+    "exit_code": 1,
+    "findings": 1,
+    "reviewers": "Sol xhigh: zero findings. Opus high: one P0 finding.",
+    "assessment": {
+      "source_commit": "e4a80fa68400613728b505e6616e30be52814e2d",
+      "review_result": "One Opus P0 finding, no Sol findings. Secret scan passed. The advisory gate exited 1.",
+      "finding": "Windows fixture remains required and the diagnostic-only candidate is expected to fail until the status cause is resolved.",
+      "assessment": "Accept the stated merge blocker. Reject the proposed removal or opt-in gating of the required fixture flag: it would weaken the native acceptance check. This candidate is for diagnostic execution in an existing unmerged PR. No assertion of native success or merge authorization based on this review is made.",
+      "disposition": "Publish the reviewed diagnostic increment to the task branch for native evidence. Keep PR151 unmerged and preserve the required fixture. Resolve the service failure, verify the final candidate, and run fresh pre-PR review before any merge.",
+      "owner_authority": "The user authorizes reviewed task-branch pushes and native CI. Merges require passing required checks.",
+      "recorded_at": "2026-09-11T10:49:45.133402+00:00"
+    },
+    "secret_scan": "PASS"
+  },
+  "publication": {
+    "pull_request": "https://github.com/agentstation/starmap/pull/151",
+    "head": "e4a80fa68400613728b505e6616e30be52814e2d",
+    "workflow_run": 34591105915,
+    "workflow_url": "https://github.com/agentstation/starmap/actions/runs/34591105915",
+    "status": "Open and unmerged. No auto-merge. The required native fixture remains enabled."
+  },
+  "ci_security_failure": {
+    "workflow_run": 34591105915,
+    "job": 103236433894,
+    "source": "e4a80fa68400613728b505e6616e30be52814e2d",
+    "test": "FuzzSourceExtensionNoPanic",
+    "observation": "The 10-second CI fuzz run completed 164705 executions, then reported context deadline exceeded without a reproducer or panic.",
+    "local_check": {
+      "command": [
+        "go",
+        "test",
+        "./pkg/catalogs",
+        "-run",
+        "^$",
+        "-fuzz",
+        "^FuzzSourceExtensionNoPanic$",
+        "-fuzztime=10s"
+      ],
+      "toolchain": "go1.26.6",
+      "exit_code": 0
+    },
+    "local_executions": 941996,
+    "disposition": "Cause unconfirmed. Preserve failure, change no production code or test policy, and require a successful CI job before merge."
+  },
+  "canonical_prose": {
+    "result": "PASS",
+    "files": 1312,
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "prior_failures": "Preserved two paragraph-limit failures and the initial paragraph-limit failure, with both corrected passes."
+  }
+}
