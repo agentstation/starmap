@@ -60,3 +60,22 @@ The kernel also grows maximum time error with elapsed seconds and reports unsync
 The Windows RPC status contract remains a candidate observation source.
 The current design selects no DLL binding or RPC adapter. Complete Windows clock qualification remains open.
 The cross-platform cache does not resolve that native requirement.
+
+
+## Windows elapsed-counter candidates
+
+Microsoft documents `GetTickCount64` as elapsed milliseconds since startup.
+Its typical resolution is 10–16 milliseconds. That typical range is not a qualified maximum error bound for every supported host.
+The [counter contract](https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-gettickcount64) defines the return value and platform requirements.
+The [interrupt-time contract](https://learn.microsoft.com/en-us/windows/win32/sysinfo/interrupt-time) recommends this counter for elapsed time that includes sleep and hibernation.
+
+`QueryInterruptTimePrecise` reads hardware for finer precision and returns its result through an output pointer.
+Its [API contract](https://learn.microsoft.com/en-us/windows/win32/api/realtimeapiset/nf-realtimeapiset-queryinterrupttimeprecise) documents no error result.
+Neither interface establishes UTC correctness. The native profile still needs a separate time-service observation and a supported error-growth bound.
+
+`W32TimeQueryStatus` is a documented RPC operation.
+Its [protocol contract](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/7e80a465-f5f4-4c3c-87ef-12f76e45f8d1) returns synchronization state, phase offset, delay, dispersion, and observation timing.
+That contract alone does not establish an exported DLL function with the same name and signature.
+A production adapter must qualify its actual transport and native behavior before selection.
+
+This September 11 review changes no runtime source or platform support claim.

@@ -238,6 +238,18 @@
       "sha256": "96403bba50701448fe198497b185c75aa8d5e2b0b67acada56ddfe07598aab27",
       "decoded_sha256": "34e1f30954c0cc7aca775b11b317684eaf4d564a286595e3aeec07eb610d71ae",
       "decoded_bytes": 790
+    },
+    {
+      "path": "integrated-go125-tests.jsonl.gz",
+      "sha256": "3712751beed3cc9142dce28cd048b84e6e0bd1b972bc6ca9d6b08c3afe6f9761",
+      "decoded_sha256": "d1077f33d370334b0631d5a084de227ec794bb7bc1f43dd390f2de700fb009a9",
+      "decoded_bytes": 17751
+    },
+    {
+      "path": "canonical-prose-generation.log.gz",
+      "sha256": "079c3015012f0842771b5b915bd4f2c8960586132efb90b60ee1af9601977a77",
+      "decoded_sha256": "02bf5f236f292881c2f807e73003c45156aa428db5865426bb858bebfd58f1c1",
+      "decoded_bytes": 558
     }
   ],
   "checks": [
@@ -273,6 +285,28 @@
           "Package": "github.com/agentstation/starmap/runtime",
           "Action": "pass",
           "Elapsed": 97.58
+        }
+      ]
+    },
+    {
+      "artifact": "integrated-go125-tests.jsonl.gz",
+      "source_commit": "e12253fc80312ec76e976058ae0def74eb016746",
+      "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOMAXPROCS=2 go test -race -count=1 -timeout=5m -json ./runtime ./pkg/catalogs/artifact -run '^TestPublicCatalog|^TestVerifyReleaseFailsClosedBeforeReturningGeneration$'",
+      "test_events": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 1.613
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 94.217
         }
       ]
     }
@@ -392,6 +426,10 @@
       "semantic_checksum": "sha256:e057d9465c06868a75c27c9c0f0d4962e8c5e11f5e4ab0b40b15c18398dfedea",
       "payload_size_bytes": 31764139
     },
-    "scope": "Local candidate generation only. No hosted release, attestation, or channel publication."
+    "scope": "Local candidate generation only. No hosted release, attestation, or channel publication.",
+    "validated_providers": 17,
+    "validated_models": 618,
+    "credentialed_providers_skipped_without_requests": 13,
+    "public_deepinfra_models_received": 191
   }
 }
