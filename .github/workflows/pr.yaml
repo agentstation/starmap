@@ -223,7 +223,7 @@ jobs:
           test "$(go env GOHOSTOS)" = "$EXPECTED_OS"
           test "$(go env GOARCH)" = "$EXPECTED_ARCH"
           test "$(go env GOHOSTARCH)" = "$EXPECTED_ARCH"
-          native_packages=(. ./runtime ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./internal/catalog/workspace ./internal/test/gitfixture)
+          native_packages=(. ./runtime ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./pkg/catalogs/permission/... ./internal/catalog/workspace ./internal/test/gitfixture)
           if [ "$EXPECTED_OS" = windows ]; then
             native_packages+=(./internal/test/windowstoken)
           fi
