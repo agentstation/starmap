@@ -25,6 +25,9 @@ Windows UTC observations require `NewWindowsObserver(profile)`.
 The caller supplies qualified source-age, drift, and UTC error bounds. Construction performs no I/O.
 The reader checks the local W32Time pipe against the running service process before it requests status.
 Modern Windows exposes `W32TIME_ALT`. The local pipe permits caller identification without permission to act as that caller.
+After checking the pipe owner, the reader requests the service principal and uses Windows SSPI with packet privacy.
+Authentication uses the process identity. Windows domain policy can require access to domain services.
+The reader rejects authentication failures and never substitutes an unauthenticated status call.
 It bounds the reply, validates synchronization evidence, and includes timestamp precision and source drift in the error bound.
 The default `Observe` function continues to refuse Windows observations without that profile.
 
