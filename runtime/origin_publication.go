@@ -149,9 +149,9 @@ func (r *Runtime) commit(ctx context.Context, state starmap.CatalogState, epoch 
 
 func (r *Runtime) publishOriginStartup(ctx context.Context) error {
 	r.mu.RLock()
-	state, evidence, source := r.effective, r.layers.buildEvidence, r.layers.source
+	state, evidence, source, followed := r.effective, r.layers.buildEvidence, r.layers.source, r.originFollowed
 	r.mu.RUnlock()
-	if r.lease.status() == leaseLost {
+	if followed || r.lease.status() == leaseLost {
 		return r.selectOriginFollowerStartup(ctx)
 	}
 	committed, err := r.commit(ctx, state, r.lease.epoch(), evidence, source)

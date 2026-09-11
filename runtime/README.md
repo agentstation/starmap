@@ -16,8 +16,13 @@ An origin with a shared lease checks the accepted catalog store every 30 seconds
 This check remains active when public source polling is disabled. An unchanged authority head causes no full catalog read.
 Followers activate compatible generations of the selected authority and policy without publishing or acquiring the refresh lease.
 
-A follower needs matching retained inputs before it can take acquisition ownership.
-Missing inputs cause a conflict before lease acquisition. The accepted catalog remains available for reads.
+Startup of an existing shared authority retains the accepted catalog.
+A replica with missing inputs makes no initial lease request, even when the lease is available.
+It can serve accepted state without provider bindings.
+Matching inputs allow initial publication ownership without replacing the accepted generation.
+
+An explicit refresh needs matching retained inputs before it can take acquisition ownership.
+Missing inputs cause a conflict. The accepted catalog remains available for reads.
 Fleet deployments also require shared input recovery, equivalent acquisition capability, and atomic backend fencing.
 
 <!-- gomarkdoc:embed:start -->

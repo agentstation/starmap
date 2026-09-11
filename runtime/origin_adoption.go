@@ -4,12 +4,40 @@ import (
 	"context"
 	"time"
 
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 // Accepted-store polling remains active when an operator disables public source polling.
 const originAcceptedPollInterval = 30 * time.Second
+
+// initializeOriginReplica selects shared accepted state before lease acquisition.
+// The caller holds r.mu during startup, before the runtime serves callers.
+func (r *Runtime) initializeOriginReplica(ctx context.Context, current, baseline starmap.CatalogState) (bool, error) {
+	if r.config.origin == nil || r.config.leaseStore == nil || current.AuthorityHead == (catalogs.CatalogAuthorityHead{}) {
+		return false, nil
+	}
+	generation, err := r.client.CurrentGeneration(ctx)
+	if err != nil {
+		return false, err
+	}
+	if err := r.config.origin.validateCurrent(generation); err != nil {
+		return false, err
+	}
+	local, err := r.layers.build(ctx, baseline)
+	if err != nil {
+		return false, err
+	}
+	matches, err := r.config.origin.matchesSource(generation, local)
+	if err != nil {
+		return false, err
+	}
+	r.originFollowed = !matches
+	r.effective = current
+	r.report.startedAt = r.config.now()
+	return true, nil
+}
 
 func (r *Runtime) refreshOriginAccepted(ctx context.Context) error {
 	if r.config.origin == nil {

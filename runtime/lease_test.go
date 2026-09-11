@@ -86,7 +86,7 @@ func TestRuntimeLeaseFenceRejectsALostLease(t *testing.T) {
 	leases := &stubLeaseStore{}
 	keeper := newLeaseKeeper(leases, "holder", time.Now)
 	var work sync.WaitGroup
-	if err := keeper.start(context.Background(), &work, nil); err != nil {
+	if err := keeper.start(context.Background(), &work, nil, true); err != nil {
 		t.Fatalf("start: %v", err)
 	}
 	t.Cleanup(func() {

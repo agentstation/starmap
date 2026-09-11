@@ -81,7 +81,7 @@ func TestOriginFollowerRejectsInvalidSharedCatalog(t *testing.T) {
 			if follower.State() != before || follower.client.CurrentCatalogState().AuthorityHead != before.AuthorityHead {
 				t.Fatal("failed adoption changed the retained catalog")
 			}
-			if store.writes.Load() != 0 || leases.acquireCount() != 1 {
+			if store.writes.Load() != 0 || leases.acquireCount() != 0 {
 				t.Fatal("failed adoption wrote storage or acquired the lease")
 			}
 		})

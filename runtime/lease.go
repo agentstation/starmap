@@ -62,7 +62,7 @@ const (
 	// leaseHeld means this instance owns the lease.
 	leaseHeld leaseState = "lease_held"
 
-	// leaseLost means another instance took the lease.
+	// leaseLost means this instance does not hold the required lease.
 	leaseLost leaseState = "lease_lost"
 )
 
@@ -99,16 +99,19 @@ func newLeaseKeeper(store LeaseStore, holder string, now func() time.Time) *leas
 	return &leaseKeeper{store: store, holder: holder, now: now, state: state}
 }
 
-// start takes the lease and renews it until the context ends. Another holder
+// start prepares lease ownership and optionally takes the initial lease. Another holder
 // makes this instance a consumer of accepted state, not a failure: the keeper
 // records lease_lost and Open returns a usable runtime.
-func (k *leaseKeeper) start(ctx context.Context, work *sync.WaitGroup, onLost func()) error {
+func (k *leaseKeeper) start(ctx context.Context, work *sync.WaitGroup, onLost func(), acquire bool) error {
 	if k.store == nil {
 		return nil
 	}
 	k.base = ctx
 	k.work = work
 	k.onLost = onLost
+	if !acquire {
+		return nil
+	}
 	err := k.take(ctx)
 	if isLeaseRefusal(err) {
 		logging.Info().

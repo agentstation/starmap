@@ -253,7 +253,7 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.schedule.identity.Instance,
 		runtime.config.now,
 	)
-	if err := runtime.lease.start(runtime.ctx, &runtime.work, runtime.onLeaseLost); err != nil {
+	if err := runtime.lease.start(runtime.ctx, &runtime.work, runtime.onLeaseLost, !runtime.originFollowed); err != nil {
 		runtime.cancel()
 		return nil, err
 	}
@@ -384,6 +384,9 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources
+	if selected, err := r.initializeOriginReplica(ctx, current, baseline); selected || err != nil {
+		return err
+	}
 	if !r.requiresAuthority() && r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
 		if storedProviderPolicyRequired(current) {
 			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
