@@ -16,6 +16,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/permission"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 func TestGenerationPinRecordsOneAcceptanceAcrossRestart(t *testing.T) {
@@ -344,5 +345,103 @@ func TestGenerationPinRecoversFailedAcceptanceWrite(t *testing.T) {
 	receipt, durable := recovered.PinAcceptance()
 	if !durable || receipt.OperationID != prepared.Receipt.OperationID || recovered.State().GenerationID != selected.Manifest.GenerationID {
 		t.Fatal("recovery replaced an accepted operation")
+	}
+}
+
+func TestGenerationPinRetriesUnconfirmedStorePublication(t *testing.T) {
+	store := &pinCommitFaultStore{Memory: storage.NewMemory()}
+	selected, previous := aliasGeneration(t, "unconfirmed-selected"), aliasGeneration(t, "unconfirmed-previous")
+	if err := store.Commit(t.Context(), selected, ""); err != nil {
+		t.Fatal(err)
+	}
+	if err := store.Commit(t.Context(), previous, selected.Manifest.GenerationID); err != nil {
+		t.Fatal(err)
+	}
+	var calls atomic.Int64
+	store.afterCommit = func() error {
+		calls.Add(1)
+		return &pkgerrors.PublicationError{Resource: "catalog current generation", ID: selected.Manifest.GenerationID, Err: fs.ErrInvalid}
+	}
+	options := []Option{WithCatalogSource("embedded"), WithStateDirectory(privateRuntimeDirectory(t)), WithGenerationPin(selected.Manifest.GenerationID), WithClientOptions(starmap.WithCatalogStore(store))}
+	for range 2 {
+		if unexpected, err := Open(t.Context(), options...); err == nil {
+			_ = unexpected.Close()
+			t.Error("startup accepted a pointer whose durability retry still fails")
+		}
+	}
+	if calls.Load() != 2 {
+		t.Errorf("startup skipped the pending commit retry: %d attempts", calls.Load())
+	}
+	store.afterCommit = func() error { calls.Add(1); return nil }
+	recovered := openTestRuntime(t, options...)
+	if recovered.State().GenerationID != selected.Manifest.GenerationID || calls.Load() != 3 {
+		t.Fatal("startup did not confirm the recorded publication before readiness")
+	}
+}
+
+func TestGenerationPinPreservesUnresolvedAcceptance(t *testing.T) {
+	for _, change := range []string{"clear-pending", "replace-pending", "move-pending-head", "move-accepted-head"} {
+		t.Run(change, func(t *testing.T) {
+			store := &pinCommitFaultStore{Memory: storage.NewMemory()}
+			selected, previous := aliasGeneration(t, "boundary-selected"), aliasGeneration(t, "boundary-previous")
+			if err := store.Commit(t.Context(), selected, ""); err != nil {
+				t.Fatal(err)
+			}
+			if err := store.Commit(t.Context(), previous, selected.Manifest.GenerationID); err != nil {
+				t.Fatal(err)
+			}
+			directory := privateRuntimeDirectory(t)
+			options := []Option{WithCatalogSource("embedded"), WithStateDirectory(directory), WithGenerationPin(selected.Manifest.GenerationID), WithClientOptions(starmap.WithCatalogStore(store))}
+			if change == "move-accepted-head" {
+				accepted := openTestRuntime(t, options...)
+				if err := accepted.Close(); err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				store.reject.Store(true)
+				if unexpected, err := Open(t.Context(), options...); err == nil {
+					_ = unexpected.Close()
+					t.Fatal("fixture did not preserve a pending selection")
+				}
+			}
+			path := filepath.Join(directory, "catalog-runtime", generationPinRecordFile)
+			before, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			switch change {
+			case "clear-pending":
+				options = append(options, WithGenerationPin(""))
+			case "replace-pending":
+				options = append(options, WithGenerationPin(previous.Manifest.GenerationID))
+			default:
+				current, err := store.Current(t.Context())
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := store.Commit(t.Context(), aliasGeneration(t, "boundary-intervening"), current.Manifest.GenerationID); err != nil {
+					t.Fatal(err)
+				}
+			}
+			current, err := store.Current(t.Context())
+			if err != nil {
+				t.Fatal(err)
+			}
+			unexpected, err := Open(t.Context(), options...)
+			if unexpected != nil {
+				_ = unexpected.Close()
+			}
+			if !pkgerrors.IsConflict(err) {
+				t.Fatalf("incompatible selection did not return a conflict: %v", err)
+			}
+			after, err := os.ReadFile(path)
+			if err != nil || !bytes.Equal(before, after) {
+				t.Fatalf("refusal replaced the original acceptance record: %v", err)
+			}
+			retained, err := store.Current(t.Context())
+			if err != nil || retained.Manifest.GenerationID != current.Manifest.GenerationID {
+				t.Fatalf("refusal changed the accepted catalog: %v", err)
+			}
+		})
 	}
 }

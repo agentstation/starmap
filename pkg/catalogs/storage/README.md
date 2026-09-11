@@ -67,7 +67,7 @@ type CurrentObjectReader interface {
 ```
 
 <a name="Filesystem"></a>
-## type [Filesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L29-L35>)
+## type [Filesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L30-L37>)
 
 Filesystem stores immutable generation directories and an atomically replaced current pointer beneath one root directory.
 
@@ -78,7 +78,7 @@ type Filesystem struct {
 ```
 
 <a name="NewFilesystem"></a>
-### func [NewFilesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L39>)
+### func [NewFilesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L41>)
 
 ```go
 func NewFilesystem(path string) (*Filesystem, error)
@@ -87,16 +87,16 @@ func NewFilesystem(path string) (*Filesystem, error)
 NewFilesystem configures a filesystem catalog store without accessing or creating its root. Operations require private access to existing store entries and never change their permissions.
 
 <a name="Filesystem.Commit"></a>
-### func \(\*Filesystem\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L92>)
+### func \(\*Filesystem\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L96>)
 
 ```go
 func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error
 ```
 
-Commit writes an immutable generation before atomically replacing current.
+Commit writes an immutable generation before atomically replacing current. PublicationError identifies a visible current pointer with unconfirmed durability. An identical retry confirms directory durability without replacing the pointer.
 
 <a name="Filesystem.Current"></a>
-### func \(\*Filesystem\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L62>)
+### func \(\*Filesystem\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L64>)
 
 ```go
 func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error)
@@ -114,7 +114,7 @@ func (s *Filesystem) CurrentAuthorityHead(ctx context.Context) (catalogs.Catalog
 CurrentAuthorityHead reads the current pointer and its independent immutable permission record. This guarantee requires a local filesystem with the documented atomic publication semantics. The read does not load catalog data or repair missing metadata.
 
 <a name="Filesystem.Get"></a>
-### func \(\*Filesystem\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L79>)
+### func \(\*Filesystem\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L81>)
 
 ```go
 func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, error)
@@ -123,7 +123,7 @@ func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, e
 Get returns an immutable generation by ID.
 
 <a name="Filesystem.Root"></a>
-### func \(\*Filesystem\) [Root](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L54>)
+### func \(\*Filesystem\) [Root](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L56>)
 
 ```go
 func (s *Filesystem) Root() string

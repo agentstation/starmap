@@ -102,6 +102,23 @@ write is not a valid implementation.
 An identical retry after an ambiguous successful response returns success even
 though the original expected ID no longer equals current.
 
+### Filesystem publication failures
+
+The filesystem store can publish the current pointer before its final directory flush fails.
+It returns `*errors.PublicationError` with resource `catalog current generation` and the selected generation ID.
+The wrapped error preserves the filesystem cause. The selected bytes remain readable, but the failed operation does not confirm durability.
+An error alone cannot prove that the previous generation remains current.
+
+Retry the same generation, complete content, and original expected ID.
+The filesystem store verifies that retained content matches the candidate.
+It synchronizes the generation directory, its parent, and the current directory before reporting success.
+The retry preserves the current pointer and generation identity. A continuing flush failure returns another publication error.
+Different content under the same ID returns a conflict.
+
+Private-file publication uses the same error type with resource `private file` and the file name.
+That record can be generation metadata. Its publication does not imply selection as the current catalog.
+These durability operations run during explicit publication and recovery. Catalog lookups continue to use the active in-memory state.
+
 ## Independent current authority observations
 
 `storage.AuthorityHeadReader` is an optional role for receipt issuers.

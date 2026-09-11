@@ -118,7 +118,8 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 			return err
 		}
 	}
-	if current.GenerationID != generation.Manifest.GenerationID {
+	pendingPublication := record.Phase == pinPrepared && record.Receipt.PreviousGenerationID != record.Receipt.AcceptedGenerationID
+	if current.GenerationID != generation.Manifest.GenerationID || pendingPublication {
 		if err := r.lease.fence(r.lease.epoch()); err != nil {
 			return err
 		}
@@ -135,14 +136,15 @@ func (r *Runtime) publishGenerationPin(ctx context.Context) error {
 	if active.GenerationID != record.Receipt.AcceptedGenerationID || active.PayloadChecksum != record.Receipt.PayloadChecksum || active.AuthorityHead != record.Receipt.AuthorityHead {
 		return pinRecordConflict("activation differs from the recorded selection")
 	}
+	accepted := *record
 	if record.Phase != pinAccepted {
-		accepted := *record
 		accepted.Phase, accepted.Receipt.AcceptedAt = pinAccepted, r.config.now().UTC()
-		if err := r.store.savePinRecord(ctx, accepted); err != nil {
-			return err
-		}
-		record = &accepted
 	}
+	// Reassert the same receipt to confirm durability after a possible directory flush failure.
+	if err := r.store.savePinRecord(ctx, accepted); err != nil {
+		return err
+	}
+	record = &accepted
 	r.mu.Lock()
 	r.pinRecord = record
 	r.pinnedSource = &sourceLayer{GenerationID: generation.Manifest.GenerationID, Manifest: &generation.Manifest,
