@@ -329,6 +329,16 @@
       "path": "native-parent/native-runtime-macos-15-intel/toolchain.txt.gz",
       "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
       "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe"
+    },
+    {
+      "path": "review.json.gz",
+      "sha256": "8039044a63882745383bd2a1d2332a33465e012e7db1fcf287741baa20ea371d",
+      "decoded_sha256": "477ed62e9a4ce3ef9c1e6b10f476bcb86ac7f6b8cd36decc7f80765418af9c5d"
+    },
+    {
+      "path": "review.md.gz",
+      "sha256": "610003a6c7efd973b68491e1dd9f2efe4d4e99347566f55101d19f7c42073577",
+      "decoded_sha256": "7bc08065ca632ca73087670d8d24c003f53b3ce75923aebf6b70f91fb57bba3c"
     }
   ],
   "parent_native_evidence": {
@@ -378,15 +388,29 @@
   },
   "running_checks": [
     {
-      "session_id": 47028,
-      "command": "autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
-      "output": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-windows-binding-review-20260911-0ycuqikx/review.json"
+      "workflow_run": 34583505814,
+      "url": "https://github.com/agentstation/starmap/actions/runs/34583505814",
+      "source_commit": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
+      "status": "in_progress"
     }
   ],
-  "publication": "PR151 remains at 5418420c until the correction review passes. Native CI must then qualify the correction.",
+  "publication": "PR #151 now contains reviewed correction 0dfa9a90. All six native jobs run in workflow 34583505814 before merge.",
   "limitations": [
     "Production UTC accuracy, drift bounds, and service-account privileges remain unqualified.",
     "The corrected local RPC call needs native evidence on Windows AMD64 and ARM64.",
     "No CSP4 completion or new merge credit applies."
-  ]
+  ],
+  "pre_pr_review": {
+    "source_commit": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
+    "status": "PASS",
+    "session_id": 47028,
+    "exit_code": 0,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "findings": 0,
+    "secret_scan": "PASS",
+    "confidence": 0.98
+  }
 }

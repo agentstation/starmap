@@ -4,11 +4,11 @@ Updated 2026-09-11 UTC. Starmap has one open PR, [#151](https://github.com/agent
 The [queue evidence](queue-status-2026-09-11.json) records its owner, reviewed source, checks, and next action.
 The [previous capture](queue-before-pr151.json.gz) preserves the empty queues after the PR #150 merge.
 
-PR #151 contains reviewed `5418420c`. All 41 local verifier stages pass.
+PR #151 contains reviewed correction `0dfa9a90`. All 41 local verifier stages pass at the preceding candidate.
 Sol at xhigh and Opus at high report zero findings. The secret scan passes.
 
 All four Linux/macOS native jobs pass. Both Windows jobs fail the native counter API lookup and local time-service pipe tests.
-Correction `0dfa9a90` passes local checks. Its review runs before publication and native qualification.
+Correction `0dfa9a90` passes local checks and both reviews. Native workflow `34583505814` runs before merge.
 
 Clock configuration `e97d7fc3` runs full repository verification in a separate clean worktree.
 Starport `95354f0` retains configured authority pins and request permission checks. Four consumer cases remain incomplete.

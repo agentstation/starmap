@@ -2161,7 +2161,7 @@ Sol at xhigh and Opus at high report zero findings. The secret scan passes.
 
 [PR #151](https://github.com/agentstation/starmap/pull/151) contains exact reviewed `5418420c`. All four Linux/macOS native jobs pass.
 Both Windows architectures fail the direct counter API lookup and the legacy time-service pipe test.
-Correction `0dfa9a90` passes local checks and runs review. The [binding proof](../../plans/proof/starport-production-catalog/csp4/windows-binding-2026-09-11/verification.json) retains counts and native limitations.
+Correction `0dfa9a90` passes local checks and both reviews. PR #151 now runs native workflow `34583505814`. The [binding proof](../../plans/proof/starport-production-catalog/csp4/windows-binding-2026-09-11/verification.json) retains counts and native limitations.
 
 The candidate requires explicit source bounds, checks the service and pipe process, and limits the RPC exchange.
 Tests cover cancellation before and after dispatch, fragmented replies, malformed limits, source-age bounds, and recovery from a blocked native call.

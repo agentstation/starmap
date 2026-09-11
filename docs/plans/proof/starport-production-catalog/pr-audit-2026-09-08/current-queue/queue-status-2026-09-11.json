@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T09:13:00.875887+00:00",
+  "captured_at": "2026-09-11T09:20:31.045028+00:00",
   "repositories": {
     "starmap": [
       {
-        "headRefOid": "5418420cc676981a42ecc170b242a3ea674a343c",
+        "headRefOid": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
         "isDraft": false,
         "number": 151,
         "title": "Add native clocks for catalog permission checks",
@@ -13,23 +13,18 @@
     "starport": []
   },
   "current_pr": 151,
-  "head": "5418420cc676981a42ecc170b242a3ea674a343c",
+  "head": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
   "base": "852a548c4959e98af443f487922b9708fb594a91",
   "required_reviews": "Sol xhigh and Opus high PASS, zero findings; secret scan PASS",
   "repository_verification": "All 41 stages pass across the original and corrected remainder.",
-  "native_jobs": "All four Linux/macOS jobs pass. Both Windows jobs fail the native API lookup and legacy W32Time pipe checks.",
-  "disposition": "Correction0dfa9a90 passes local checks and runs review47028. Publish after review, require new native artifacts and all checks, then merge.",
+  "native_jobs": "Workflow 34583505814 runs all six native jobs for correction 0dfa9a90. Parent results retain four native passes and two Windows failures.",
+  "disposition": "Require native artifacts and all checks at reviewed 0dfa9a90, then merge PR #151.",
   "owner": "Catalog plan executor",
   "campaign_merged_prs": 28,
   "tasks_done": 9,
   "task_in_progress": "CSP4",
   "merge_credit_added": false,
   "unpublished_work": [
-    {
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
-      "head": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
-      "next_action": "Finish pre-PR review47028, publish, and qualify native Windows."
-    },
     {
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
       "head": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
