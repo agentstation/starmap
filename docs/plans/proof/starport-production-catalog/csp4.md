@@ -64,7 +64,14 @@ The production code remains unchanged in `dd847561`.
 Windows CI also rejects development and authority fixtures that precreate Starmap state directories under the Administrators owner.
 Commit `ba9b0d8e` lets the real Starmap constructor create those directories with its native access rules.
 `TestDevLetsStarmapCreateCatalogState` fails before the product correction. Ten repeated development and authority checks pass 180 events afterward.
-Vet, lint, and corrected prose checks pass. Repository checks, the task gate, review, PR update, and native Windows qualification remain required.
+
+Vet, lint, and corrected prose checks pass. All 33 final repository commands pass at `ba9b0d8e`.
+The corrected pair passes eight CSP4 subcases with 56 race events and no failures or skips.
+Two new events cover unavailable and pending startup responses. The corrected suite retains every earlier task test.
+
+Sol and Opus report zero findings against immutable base `5e437a2b`. The secret scan passes.
+PR #373 now names `ba9b0d8e` and runs corrected native workflow `34638778802`.
+Starmap PR #152 has six passing native jobs and awaits its final repository gate. Both implementation merges remain required.
 
 ### Consumer checks and published dependency
 

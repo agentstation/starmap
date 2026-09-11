@@ -942,6 +942,36 @@
       "path": "runtime-pull-request-current.json.gz",
       "sha256": "04776b488db5f29d11cd34bfebe11b9cca8ff33383b387b8ca34c00a821ca725",
       "decoded_sha256": "116b07fc838ca7731f6e8e8f7223a9f682d7dfba61f65fd00f754b1a1a9c2b1b"
+    },
+    {
+      "path": "windows-state-pair-task-gate.meta.json.gz",
+      "sha256": "f41d279df91beeba5ce918bab10619e8aec2805528e7ebfb2213e968fe720bf9",
+      "decoded_sha256": "e171f8df0e225e219d7aba5546bd87a1ab3c4128eadf65791140afda1ef0e48d"
+    },
+    {
+      "path": "windows-state-pair-task-gate-report.json.gz",
+      "sha256": "8f8fcfdc86ed1abd572f15ebd74d128c6a14250c9a4ca704250e163c53a24576",
+      "decoded_sha256": "e803d48085d90808a691aa29645cf549a1d2af07bda9b4beb2d12b508dacec57"
+    },
+    {
+      "path": "windows-state-pair-task-gate-summary.json.gz",
+      "sha256": "f7ee7c12bb0211e6c61528d248a0f0d6245f21b4587cc242836a1f04361e6f56",
+      "decoded_sha256": "3355b2fd1a1ffa0a5a3cdce3956197d127cd76ecc97345a3efb899eb683715d2"
+    },
+    {
+      "path": "windows-state-pair-task-gate.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-pull-request-post-correction.json.gz",
+      "sha256": "cf32b1f6607d0ea80709fb14796fe21541a87a69292c111e9d9e82ac664d1029",
+      "decoded_sha256": "384a5375270f73d15152f4bff3a8f7df622c3f237643e915d2b0cfcbe5e87b31"
+    },
+    {
+      "path": "runtime-workflow-post-correction.json.gz",
+      "sha256": "724d08d9adf925865cc5da717580fa8e751e2fb6f2a67794cca88f9597f46d62",
+      "decoded_sha256": "e73835952606e40ce7fcc91c2e5a1286b9011a92e2ad2fe08c8f384913afc5b9"
     }
   ],
   "corrected_source_rerun": {
@@ -1028,7 +1058,7 @@
     },
     "limitation": "Temporary module workspace. Final published dependency qualification and implementation merges remain required."
   },
-  "current_status": "FINAL_PAIR_TASK_AND_REPOSITORY_CHECKS_PASS_BOTH_REVIEWS_PASS_CI_AND_MERGES_PENDING",
+  "current_status": "All eight CSP4 subcases pass against Starmap 33118919 and Starport ba9b0d8e, with 56 passing race events and no failures or skips. Both code reviews pass. Runtime PR 152 awaits its final verification job. Corrected consumer PR 373 runs native CI. Both merges remain required.",
   "runtime_review": {
     "metadata": {
       "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
@@ -1357,7 +1387,7 @@
   },
   "current_task_gate": {
     "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
-    "consumer_source_commit": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+    "consumer_source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
     "command": [
       "bash",
       "scripts/verify-catalog-product.sh",
@@ -1371,17 +1401,23 @@
       "GOWORK": "off",
       "GOTOOLCHAIN": "go1.26.6"
     },
-    "started_at": "2026-09-11T18:39:38.484674+00:00",
+    "started_at": "2026-09-11T19:12:40.303113+00:00",
     "status": "passed",
     "exit_code": 0,
-    "finished_at": "2026-09-11T18:46:22.786747+00:00",
+    "finished_at": "2026-09-11T19:19:28.810644+00:00",
     "summary": {
       "selected_subcases": 8,
       "gate_status": "PASS",
       "qualification": "component checks only",
       "unverified_cases": 49,
       "test_events": {
-        "pass": 54
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "added_subcases": {
+        "TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable": 1,
+        "TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending": 1
       },
       "subcases": {
         "A07.public_no_provider_keys": "PASS",
@@ -1529,10 +1565,10 @@
         "name": "Jack Spirou"
       }
     },
-    "baseRefOid": "76b91d349129c71b894b5f119b530181a41ea504",
     "headRefOid": "33118919dc18e1f824ea618502f23b756e50813a",
     "mergeCommit": null,
-    "number": 152,
+    "mergeStateStatus": "BLOCKED",
+    "mergedAt": null,
     "state": "OPEN",
     "statusCheckRollup": [
       {
@@ -1686,7 +1722,6 @@
         "workflowName": ""
       }
     ],
-    "title": "Configure catalog authority origins and permission clock lifecycle",
     "url": "https://github.com/agentstation/starmap/pull/152"
   }
 }

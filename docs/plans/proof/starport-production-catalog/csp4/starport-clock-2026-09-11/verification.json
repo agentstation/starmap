@@ -1285,6 +1285,216 @@
       "path": "windows-state-prose-corrected.log.gz",
       "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b",
       "decoded_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
+    },
+    {
+      "path": "windows-state-final-verification.json.gz",
+      "sha256": "8f76e0401b91a6d64b77d2ce57b942069a8516616e4a31d53985a75bea9f859c",
+      "decoded_sha256": "e83e4e70135ed9e6ce1b109f9901263db3ff7557eca9c4e8c0255db1fa879752"
+    },
+    {
+      "path": "windows-state-final-01-benchmark-overhead.sh.log.gz",
+      "sha256": "f5664b2a3a5c09e7343adfbeddf2d429ab0ff8d6d723b1a10d06e4fd8fb56f76",
+      "decoded_sha256": "71b1a49109249b4bcc92c501ad236d2b6fbfea474a8511c24b6ee66aad7d3d27"
+    },
+    {
+      "path": "windows-state-final-02-verify-starmap-ownership.sh.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "decoded_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "windows-state-final-03-verify-v1-architecture.sh.log.gz",
+      "sha256": "29311fcb758fa0d458655b0b85ee42bb10e1522cf161e5c0d5b67126312624c1",
+      "decoded_sha256": "261829f644b3925656f309dff1a745455b33d38fe7cdf2609225f8021a8991e0"
+    },
+    {
+      "path": "windows-state-final-04-test-dependency-direction-verifier.sh.log.gz",
+      "sha256": "33c729e27eb33e08196e79f9590428e34f29bb411037d9d823d0a755b41dc926",
+      "decoded_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "path": "windows-state-final-05-verify-dependency-direction.sh.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "windows-state-final-06-verify-catalog-driven-providers.sh.log.gz",
+      "sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57",
+      "decoded_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "path": "windows-state-final-07-verify-package-layout.sh.log.gz",
+      "sha256": "3b552b51558363c64620b3fb833ae4e25c518f97884b8595fb98194d0f922b38",
+      "decoded_sha256": "c0c20c5c2e7db4197cdfce8af78069e14b20ab25d48d80fb4f1209925d154f49"
+    },
+    {
+      "path": "windows-state-final-08-verify-readme-quickstart.sh.log.gz",
+      "sha256": "590e58248ac4493ca7bf0f5323d3fb399a7e4640bd622db8acd636497532c3f4",
+      "decoded_sha256": "47f29784b60e4bb2b1578966e76740d2eb1c8003ace95deed9381a7cf47a2ca0"
+    },
+    {
+      "path": "windows-state-final-09-verify-v1-release.sh.log.gz",
+      "sha256": "e0ffa922a0e60d1f57f604679052119ac27586bb940535165b7a1f1c5da42d83",
+      "decoded_sha256": "75074e58905a5ca1cb126c5686d11dc26445ae78dade9e1333a6429781ca7d81"
+    },
+    {
+      "path": "windows-state-final-10-verify-release-workflow.sh.log.gz",
+      "sha256": "f1c884a62d251c60632d402d6f4b68d42f1c0f7abc6410cf8c154f5e135c2630",
+      "decoded_sha256": "e1ee6de2a91a74786a7e57010c79580f32f227ae4ccf9615f6b914eeb84b57da"
+    },
+    {
+      "path": "windows-state-final-11-verify-developer-experience.sh.log.gz",
+      "sha256": "3d608c4e6e9ac08362dced268dd7dbb9f9c0f35ee62764112e6021b7f88d5263",
+      "decoded_sha256": "10524699a6c0461194d21217459b148daa9d422508d73a058e410d9d1661a7b5"
+    },
+    {
+      "path": "windows-state-final-12-verify-doc-links.sh.log.gz",
+      "sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "decoded_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "path": "windows-state-final-13-test-doc-link-verifier.sh.log.gz",
+      "sha256": "5917a4c6b3042bde9f5bb59ea1433ab5fddfe3daefe9e7f918198db3830fc9aa",
+      "decoded_sha256": "69ea9d7375bbb4907e620ae48e022bb88f04aae68545a8942d01ddcf6744f9ec"
+    },
+    {
+      "path": "windows-state-final-14-verify-openrouter-parity.sh.log.gz",
+      "sha256": "1310b938dc434b2558b9f6cd4139ad9cdda706c10d20c82b5540f14a827e10f4",
+      "decoded_sha256": "ace79624055952778486dc7cf25da2986a30de02bd540e4b70f65201b1d3f7dd"
+    },
+    {
+      "path": "windows-state-final-15-verify-console-modernization.sh.log.gz",
+      "sha256": "f2412ad75efc942430b8de45a3f8f1b8eab6ac66bb66820a0066525f05699d01",
+      "decoded_sha256": "185cebeb477b2b21b6a132c98b99abd3d13ee8aacf9346c35de5eb139e00e518"
+    },
+    {
+      "path": "windows-state-final-16-verify-auth-onboarding.sh.log.gz",
+      "sha256": "947455903500d8627ced609e2b9075a2bb3ec8df5d16c76f1109211ca53d883c",
+      "decoded_sha256": "a9f3f2754f2ecd95b04e7b4e728a5158fc3da0a828a9e1b221d8cae9075212c0"
+    },
+    {
+      "path": "windows-state-final-17-verify-console-session-grants.sh.log.gz",
+      "sha256": "9e9a34f7885a1705e83c6b36627eaf138ad8ac6451f11e60bbf3cce65725c4c5",
+      "decoded_sha256": "2ca175ead00523a30b79eef397b9c4405addfd7282e54eba83bbaa9b458cfcb0"
+    },
+    {
+      "path": "windows-state-final-18-verify-model-modalities.sh.log.gz",
+      "sha256": "3738b2d3c25d14e3da51f208030a04c8450ad39d5ccfba1461f9ad2b4c7d6be1",
+      "decoded_sha256": "d57998380e34f83055a70a74d9fdeff70eae984d343f8ae8a9c6703288238e8a"
+    },
+    {
+      "path": "windows-state-final-19-verify-files-api.sh.log.gz",
+      "sha256": "9c6c662407490bef317cfb3e2c57aa66b7f2da180dad489172f8a168c59841f0",
+      "decoded_sha256": "35598574923ffd7dc391ef6b76bc96aa39c6a3b8c4450fb8871b69a2e5012986"
+    },
+    {
+      "path": "windows-state-final-20-verify-async-media-jobs.sh.log.gz",
+      "sha256": "9bcb3a6a34098bbeb762592013637ba21d678f07360d23f02be3ebcfa8d3c1b0",
+      "decoded_sha256": "543f39ad89b92167ef4f002ac871d08a3d9e15f41894ba07caad9b059fa7bbcb"
+    },
+    {
+      "path": "windows-state-final-21-verify-document-parser.sh.log.gz",
+      "sha256": "266af5aa2c0e5d7b5c4953d1f9cadcfdab7c4a60a1a9be85fcdf39048fe788da",
+      "decoded_sha256": "9d57be0d3f2aaedd1a2c3c82ce437dc2feba052469cbffbfb98dd780b2519ef7"
+    },
+    {
+      "path": "windows-state-final-22-verify-reranking.sh.log.gz",
+      "sha256": "bd3044b6cc5ce3ae1f99d444db24c19d0c427c982c69980d6ea5f2ca98b24e29",
+      "decoded_sha256": "6b685274b742a26a13f1a34e597d307376708b2141ba568c45d62e078d1f654c"
+    },
+    {
+      "path": "windows-state-final-23-verify-catalog-performance.sh.log.gz",
+      "sha256": "06c429bbb540f43cfbe30b00008f47f24860ecc90dbb1a18bd3ffb879cb8b46a",
+      "decoded_sha256": "eb824de909dc3d4c8fe352da20f0dc3ba326e3f8bfe18daa2d63e3fd431656be"
+    },
+    {
+      "path": "windows-state-final-24-verify-credential-sharing.sh.log.gz",
+      "sha256": "99ea064348720c3dc2d12e46c0768ccf3f95ff7287a7ff3769ee2cd77caf2b84",
+      "decoded_sha256": "c74926b4e4352f4c6e5f688d628e76d44bb7d84f422900408de977ca33a4bec2"
+    },
+    {
+      "path": "windows-state-final-25-verify-enterprise-readiness.sh.log.gz",
+      "sha256": "095728a5bf92a10964b93dccfd9b67cab272c29c51e71b176c38bc40f98c217d",
+      "decoded_sha256": "466350440fbde6b80d1f91c8d8bdfac58d3af69453ff4d5696862584e5a4207b"
+    },
+    {
+      "path": "windows-state-final-26-verify-console-polish.sh.log.gz",
+      "sha256": "68bb9095fdebb20cda82dd3f8b42eb209ba0bd9d4b37da08694d253f4333ef8d",
+      "decoded_sha256": "664858a2c06adebacd61ca8ce09a3cec33b5c758fe7f7d7635dc428db7f1556e"
+    },
+    {
+      "path": "windows-state-final-27-verify-action-pins.sh.log.gz",
+      "sha256": "4b23c7f8802dff5e7684b8e940a7ea214487ea5dfb56e132d47873380e491349",
+      "decoded_sha256": "74fe1851e9e1c669f79b01ffc3b4ab7c662a13b54742b4e2000dfee22a19e0c8"
+    },
+    {
+      "path": "windows-state-final-28-smoke-first-run.sh.log.gz",
+      "sha256": "73aeca9385b2be30b5083c4aaa04a6a8abf540e3b94874f83a07d2f5c633257e",
+      "decoded_sha256": "13df9cf24049e80dbd789601314d6896dc1a5674feff1997aab89e9fff49ff03"
+    },
+    {
+      "path": "windows-state-final-29-go-test-._....log.gz",
+      "sha256": "479555e11055ba2812bde58b6e245be7232a938bfed6f2e30933fc9c2e787d1d",
+      "decoded_sha256": "aac35b40ca0e1bea2dc3ed77e0df533f94d327ef91ed5b53e7be64dee2ac8e43"
+    },
+    {
+      "path": "windows-state-final-30-go-vet-._....log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-state-final-31-make-lint.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "windows-state-final-32-make-build.log.gz",
+      "sha256": "e50264aee05d2c358c0e2d40476c7c986d54d8813eb04928bdaabb10f11395b5",
+      "decoded_sha256": "b22d035cd0319bd61670bda14144e96e86a567c4f1b97977bbd4772eae8096ec"
+    },
+    {
+      "path": "windows-state-final-33-smoke-openrouter-sdks.sh.log.gz",
+      "sha256": "bb54cb72c34144550ed1ecccfc8945135e6b3bc2a52b71ce4d110fef47fb29f0",
+      "decoded_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585"
+    },
+    {
+      "path": "windows-state-review-command.json.gz",
+      "sha256": "804e9e52e5b5f886a028191089013023edab83ac7120d96e7bd46320f13b7cc3",
+      "decoded_sha256": "e3388583764cad9efc5475fbb15a3f32f4c0222acb2d2f686930374ab9a32c87"
+    },
+    {
+      "path": "windows-state-review.log.gz",
+      "sha256": "dd5b61cc596f263baa8654a8822abfc445435310502b2ec7785f7e2c9c354464",
+      "decoded_sha256": "12523add997aa55c9a7fe20bbdd1c70c34e715abfacff8ee1470265002c0a81f"
+    },
+    {
+      "path": "windows-state-review.json.gz",
+      "sha256": "8039044a63882745383bd2a1d2332a33465e012e7db1fcf287741baa20ea371d",
+      "decoded_sha256": "477ed62e9a4ce3ef9c1e6b10f476bcb86ac7f6b8cd36decc7f80765418af9c5d"
+    },
+    {
+      "path": "windows-state-review.md.gz",
+      "sha256": "610003a6c7efd973b68491e1dd9f2efe4d4e99347566f55101d19f7c42073577",
+      "decoded_sha256": "7bc08065ca632ca73087670d8d24c003f53b3ce75923aebf6b70f91fb57bba3c"
+    },
+    {
+      "path": "windows-state-review-context.json.gz",
+      "sha256": "4a2a32106c9905ffcd0c11e100b5ce06e1c8d8f4d2fdafadf4d2a04f2454a265",
+      "decoded_sha256": "eb6bd7d842525800a7b14403c0b03ce84de6e4f9553a3ed7f72884bfb6d9eea4"
+    },
+    {
+      "path": "windows-state-pr-body.md.gz",
+      "sha256": "29f7b7d4ffed0c8b9c56cb514a51adc800b147015ea089dce1faa2d0fefd875e",
+      "decoded_sha256": "690b23c343aaff3e50986004a2216d41071364065e828c48d5767b2d0090ff7b"
+    },
+    {
+      "path": "windows-state-pull-request.json.gz",
+      "sha256": "1ac7c325b625573e7ea6111c1df0621872b56c73e90d019faae8fa28e051e39e",
+      "decoded_sha256": "b8728c8bf99298e0687a097e7d7468494ffce874c8558d0d3f3fcc4594191207"
+    },
+    {
+      "path": "windows-state-workflow.json.gz",
+      "sha256": "5544f0844564edfb0861d5b45aaf10aabacb3a87fe9f39e3647d0501bd418ec7",
+      "decoded_sha256": "a21dd56c5dbd741a7a0bd505cf3a1511af1c4f59f66f7e07286ceb208749bbc3"
     }
   ],
   "delivery_guard_followup": {
@@ -1369,10 +1579,9 @@
     "limitation": "Cross-product ownership and catalog-driven contracts against the prepared source pair. Published dependency qualification remains open."
   },
   "remaining_delivery_order": [
-    "Complete the CSP4 task gate against the published pair.",
-    "Complete Starport pre-PR review and publication.",
-    "Complete combined Starmap CI and merge with a merge commit that preserves the pinned revision.",
-    "Merge Starport after required CI passes and Starmap merges."
+    "Complete Starmap PR 152 verification and preserve pinned runtime ancestry through its merge.",
+    "Complete corrected Starport PR 373 CI and merge after Starmap.",
+    "Record both merges and close CSP4 only when all task criteria pass."
   ],
   "published_dependency_followup": {
     "source_commit": "a8708e03b99beff61ca341be5506f4159cd9eb9c",
@@ -2516,18 +2725,18 @@
       }
     },
     "production_code_changed": false,
-    "remaining": "Complete repository and task checks, then review and update existing PR 373.",
+    "remaining": "The final ba9b0d8e correction passes repository checks, the task gate, and review. PR 373 runs native CI.",
     "running_checks": [],
     "interrupted_followup": "Stopped repository and task runs with observed exit 130 after Windows CI revealed an additional directory-ownership defect. The repository run passed 27 commands before interruption."
   },
   "windows_state_correction": {
     "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
-    "status": "committed_pending_verification",
+    "status": "reviewed_published_pending_native_ci",
     "cause": "Starport development and the authority test fixture precreated the Starmap runtime directory using os.MkdirAll. On the Windows runner that directory belongs to Administrators rather than the process account, so the native owner check correctly rejects it.",
     "correction": "Let Starmap create its own state directory with its native creation policy. Preserve refusal of unsafe preexisting directories.",
     "dirty_files": [],
     "fail_before": "TestDevLetsStarmapCreateCatalogState fails on macOS before the product correction. Native Windows CI captures ten top-level development and authority failures.",
-    "remaining": "Focused checks, commit, full repository and task verification, required review, PR update, and native CI.",
+    "remaining": "Native CI and both implementation merges. No owner decision remains.",
     "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
     "focused_verification": {
       "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
@@ -2643,16 +2852,59 @@
         "skip": 0
       }
     },
-    "running_checks": [
-      {
-        "session_id": 12552,
-        "metadata": ".tmp/csp4-starport-windows-state/verification.json"
-      },
-      {
-        "session_id": 11148,
-        "metadata": ".tmp/csp4-integrated-task/windows-state-pair-task-gate.meta.json",
-        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
+    "running_checks": [],
+    "repository_verification": {
+      "status": "PASS",
+      "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "source_tree": "0ff07e000973a6571a4476acd6d92b9c46b23a0c",
+      "commands": 33,
+      "completed_at": "2026-09-11T19:17:29.109695+00:00",
+      "evidence": "windows-state-final-verification.json.gz"
+    },
+    "pre_pr_review": {
+      "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "review_base": "5e437a2b512b41c5b1e639f6cae43ca4ca64048f",
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--base",
+        "5e437a2b512b41c5b1e639f6cae43ca4ca64048f",
+        "--reviewers",
+        "codex:gpt-5.6-sol:xhigh,claude:opus:high",
+        "--dataset",
+        ".tmp/csp4-starport-windows-state/manual-review-context.json",
+        "--output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-authority-final-review-btbo6uq2/review.md",
+        "--json-output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-authority-final-review-btbo6uq2/review.json"
+      ],
+      "started_at": "2026-09-11T19:20:43.753581+00:00",
+      "status": "passed",
+      "output_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starport-authority-final-review-btbo6uq2",
+      "exit_code": 0,
+      "finished_at": "2026-09-11T19:24:38.044711+00:00",
+      "findings": 0,
+      "secret_scan": "clean",
+      "bundle_bytes": 144351,
+      "verdict": {
+        "findings": [],
+        "overall_correctness": "patch is correct",
+        "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
+        "overall_confidence": 0.98
       }
-    ]
+    },
+    "publication": {
+      "pull_request": 373,
+      "url": "https://github.com/agentstation/starport/pull/373",
+      "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "state": "OPEN",
+      "workflow_run": 34638778802,
+      "workflow_snapshot": "windows-state-workflow.json.gz",
+      "dependency": "Merge Starmap PR 152 first while preserving pinned runtime 6419ea856cf5.",
+      "workflow_created_at": "2026-09-11T19:25:43Z"
+    }
   }
 }
