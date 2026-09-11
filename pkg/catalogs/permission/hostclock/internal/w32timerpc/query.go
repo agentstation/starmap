@@ -2,11 +2,11 @@ package w32timerpc
 
 import (
 	"context"
-	"github.com/agentstation/starmap/pkg/errors"
 	"net"
 	"sync/atomic"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/oiweiwei/go-msrpc/dcerpc"
 	"github.com/oiweiwei/go-msrpc/msrpc/w32t"
 	w32time "github.com/oiweiwei/go-msrpc/msrpc/w32t/w32time/v4"
@@ -40,6 +40,21 @@ func (noDNS) LookupIPAddr(context.Context, string) ([]net.IPAddr, error) {
 }
 
 type statusSecurity func(context.Context, dcerpc.Conn) ([]dcerpc.Option, error)
+
+// QueryStatus authenticates to a checked local pipe and reads W32Time status.
+// It closes the stream and native security handles before returning.
+// Unsupported hosts refuse the query before sending any RPC bytes.
+func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
+	security, cleanup, err := newStatusSecurity()
+	if err != nil {
+		if raw != nil {
+			_ = raw.Close()
+		}
+		return nil, err
+	}
+	defer cleanup()
+	return queryStatus(ctx, raw, security)
+}
 
 // queryStatus owns one checked stream. A nil security callback serves wire fixtures.
 func queryStatus(ctx context.Context, raw net.Conn, security statusSecurity) (*w32t.StatusInfo, error) {

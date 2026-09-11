@@ -3,23 +3,18 @@ package w32timerpc
 import (
 	"context"
 	"fmt"
-	"net"
 	"sync"
 
 	"github.com/oiweiwei/go-msrpc/dcerpc"
 	mgmt "github.com/oiweiwei/go-msrpc/msrpc/mgmt/mgmt/v1"
-	"github.com/oiweiwei/go-msrpc/msrpc/w32t"
 	"github.com/oiweiwei/go-msrpc/ssp/gssapi"
 )
 
 var localNegotiateOID = gssapi.OID{1, 3, 6, 1, 5, 5, 2}
 
-// QueryStatus authenticates to a checked local pipe and reads W32Time status.
-// It closes the stream and native security handles before returning.
-func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
+func newStatusSecurity() (statusSecurity, func(), error) {
 	factory := &localSecurityFactory{}
-	defer factory.close()
-	return queryStatus(ctx, raw, func(ctx context.Context, conn dcerpc.Conn) ([]dcerpc.Option, error) {
+	return func(ctx context.Context, conn dcerpc.Conn) ([]dcerpc.Option, error) {
 		client, err := mgmt.NewManagementClient(ctx, conn, dcerpc.WithInsecure())
 		if err != nil {
 			return nil, err
@@ -37,7 +32,7 @@ func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
 		factory.target = principal.PrincName
 		return []dcerpc.Option{dcerpc.WithMechanism(factory), dcerpc.WithTargetName(principal.PrincName),
 			dcerpc.WithSecurtyProvider(dcerpc.AuthTypeGSSNegotiate), dcerpc.WithSeal(), dcerpc.Impersonate()}, nil
-	})
+	}, factory.close, nil
 }
 
 func validateLocalPrincipal(principal *mgmt.InquirePrincNameResponse) error {
