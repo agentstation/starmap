@@ -1,17 +1,18 @@
 # Current pull request queue
 
-Updated 2026-09-11 UTC. Both repositories have no open PRs.
-The [queue evidence](queue-status-2026-09-11.json) records the current inventory and the PR #150 merge.
+Updated 2026-09-11 UTC. Starmap has one open PR, [#151](https://github.com/agentstation/starmap/pull/151). Starport has none.
+The [queue evidence](queue-status-2026-09-11.json) records its owner, reviewed source, checks, and next action.
+The [previous capture](queue-before-pr151.json.gz) preserves the empty queues after the PR #150 merge.
 
-Starmap [PR #150](https://github.com/agentstation/starmap/pull/150) merged as `852a548c` after fifteen successful checks.
-Its tree exactly matches reviewed `e3943c97`. PR #149 previously merged as `9ea36b3e`.
+PR #151 contains reviewed `5418420c`. All 41 local verifier stages pass.
+Sol at xhigh and Opus at high report zero findings. The secret scan passes.
 
-Starport `95354f0` retains configured authority pins and request permission checks. Four mapped consumer checks remain incomplete.
+Three native jobs pass. Other native jobs and Verification Gate remain pending.
+The catalog plan executor will verify the native artifacts and merge after required checks.
 
-Host clock `5418420c` includes the Windows observer and merged main. The inventory includes both new dependencies, and remaining verification runs. Native execution and operational clock profiles remain open.
-Clock lifecycle `5f4ce61d` passes scoped runtime ownership checks in a separate local worktree. Application wiring remains open.
-
-Twenty-eight campaign PRs merged. Nine tasks are complete, and CSP4 remains active.
+Clock configuration `e97d7fc3` runs full repository verification in a separate clean worktree.
+Starport `95354f0` retains configured authority pins and request permission checks. Four consumer cases remain incomplete.
+No open PR is stale or superseded. Twenty-eight campaign PRs merged, nine tasks are complete, and CSP4 remains active.
 
 ## Historical queue snapshots
 

@@ -625,6 +625,91 @@
       "path": "starport-pr151-queues.json.gz",
       "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
       "decoded_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "native-pr151/native-runtime-macos-15/git-acquisition.jsonl.gz",
+      "sha256": "8ba44e37f89237e068ad8ba7e8cba4318425cccda598c48554bb931274628c4d",
+      "decoded_sha256": "fa29146c9cc2309e459a7e07aed6cb520f9bbb34c4ebc11321c7f003703f83fc"
+    },
+    {
+      "path": "native-pr151/native-runtime-macos-15/publisher-ingestion.jsonl.gz",
+      "sha256": "155b8b16f070a141d340d7235b9cf10e1d5d3444c9b64cbbded3ed4569808c56",
+      "decoded_sha256": "8c10687ed08e3a11898963d0adff8fe575c7d1c4b1319fa3c57581b06ecda01b"
+    },
+    {
+      "path": "native-pr151/native-runtime-macos-15/tests.jsonl.gz",
+      "sha256": "19f831be3450ace295154b2a336570b77f517392530ad6b8db2dc363c23123c9",
+      "decoded_sha256": "a02a6cb47b8bce9030a7ff84ee529255cf11ef8ee64f4f99295ad6f8df383976"
+    },
+    {
+      "path": "native-pr151/native-runtime-macos-15/toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "decoded_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04/git-acquisition.jsonl.gz",
+      "sha256": "b7786ef018e9a9b631defa08180e7149659e3eccc48a1efde5105ab42564eb70",
+      "decoded_sha256": "ae74384567b5511b6edd64b9a4049f57d88dc9265b7a07ac6f7e3e4c24b29562"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04/publisher-ingestion.jsonl.gz",
+      "sha256": "9edbd6eeaf6d8d0fc9e68150c104a668a404cfb8658187b4cca55889fec45f55",
+      "decoded_sha256": "846ca66ec3207c722041ee37b6c4dab5a835c40d899ee929e9aa0f31c81050f0"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04/service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "decoded_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "sha256": "f32b676005bb2b7aa543cbbbfe30c46a04e57c1e490c7a764f8f58a27f244dc2",
+      "decoded_sha256": "80f4f484db3443bbf4d933d528f1c71ca27b2a2f321bb9e0274d6f4f8e9c87fc"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04/toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "decoded_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04-arm/git-acquisition.jsonl.gz",
+      "sha256": "0a1ab6f920c1a4531f6a879655937a50263657641be3c4c3998424b43b3418c1",
+      "decoded_sha256": "a33eb43b53ebf877a1ef9427f1e72d2883641f080cf9ccd2255d8187b7d99056"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "ef201759246e2b40a6c5ce9a80ef510088119e0b88325479bba4494dd6b17a64",
+      "decoded_sha256": "7b1a5a67825cfa0a06526f31b9061fa27db84fd70880c6ae143061e61c11dd06"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04-arm/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256": "7fbf117b0cc67f1ed95f7842e443635ec9c245236b940690ec4ea5fb5055ffd4",
+      "decoded_sha256": "34e80fe49f2e2c3a5d723457cd0769ab12e3f053a3189f940e3d21bb47a594a5"
+    },
+    {
+      "path": "native-pr151/native-runtime-ubuntu-24.04-arm/toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "decoded_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca"
+    },
+    {
+      "path": "native-partial-run.json.gz",
+      "sha256": "160230d8037f1d68a41964374a7d11e4bf044577c33ffc63f62c6b7f2ed6010b",
+      "decoded_sha256": "b1821f3dc834fee3f8335169278247589102c2bb295414c36bf6286ec440145b"
+    },
+    {
+      "path": "native-partial-summary.json.gz",
+      "sha256": "6b390d675f7d7d6fdc5f573fcc85fe3333718a37dc010c8f55af4e59a71f8cf9",
+      "decoded_sha256": "3139756696a15422b709c7c3292a562ba7ae8e72af3dd2e1e245e80928cac6a6"
+    },
+    {
+      "path": "native-artifact-directory.json.gz",
+      "sha256": "71d5eab62a3b7a15fe162df1296c1607f5b2051de9e97a75a674ce715534db64",
+      "decoded_sha256": "334fafb86d3551c267d7b4ef0403a37fa16128df1bd350e75279fc92d98e02e2"
     }
   ],
   "inventory_correction": {
@@ -660,6 +745,78 @@
     "url": "https://github.com/agentstation/starmap/pull/151",
     "head": "5418420cc676981a42ecc170b242a3ea674a343c",
     "workflow_run": 34580591626,
-    "status": "native CI running"
+    "status": "Three native jobs and their artifacts pass. Windows, macOS Intel, and Verification Gate remain pending."
+  },
+  "native_qualification_partial": {
+    "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
+    "workflow_run": 34580591626,
+    "platforms": [
+      {
+        "runner": "native-runtime-macos-15",
+        "events": {
+          "pass": 1961,
+          "fail": 0,
+          "skip": 0
+        },
+        "clock_events": {
+          "pass": 45,
+          "fail": 0,
+          "skip": 0
+        },
+        "toolchain": [
+          "go version go1.25.12 darwin/arm64",
+          "darwin",
+          "arm64",
+          "darwin",
+          "arm64",
+          "0"
+        ]
+      },
+      {
+        "runner": "native-runtime-ubuntu-24.04",
+        "events": {
+          "pass": 1915,
+          "fail": 0,
+          "skip": 1
+        },
+        "clock_events": {
+          "pass": 55,
+          "fail": 0,
+          "skip": 0
+        },
+        "toolchain": [
+          "go version go1.25.12 linux/amd64",
+          "linux",
+          "amd64",
+          "linux",
+          "amd64",
+          "0"
+        ]
+      },
+      {
+        "runner": "native-runtime-ubuntu-24.04-arm",
+        "events": {
+          "pass": 1915,
+          "fail": 0,
+          "skip": 1
+        },
+        "clock_events": {
+          "pass": 55,
+          "fail": 0,
+          "skip": 0
+        },
+        "toolchain": [
+          "go version go1.25.12 linux/arm64",
+          "linux",
+          "arm64",
+          "linux",
+          "arm64",
+          "0"
+        ]
+      }
+    ],
+    "status": "PARTIAL; Windows and macOS Intel remain pending",
+    "job_binding": "All three artifact sets match completed successful jobs in workflow34580591626 at head5418420c.",
+    "ordinary_linux_skips": "Each Linux service-owner case skips without privilege. Both separate privileged captures pass."
   }
 }
