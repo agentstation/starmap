@@ -18,6 +18,14 @@ Both supported toolchains pass 142 permission events. The elapsed reads allocate
 The macOS host supplies a bounded sample. The Linux container supplies unqualified time, which the adapter refuses.
 Windows support, operational bounds, and host scheduling remain incomplete.
 
+Host clock `41071ef4` adds the Windows elapsed counter.
+Its [counter and prototype proof](csp4/windows-counter-2026-09-11/verification.json) records four Windows cross-builds and 142 Darwin permission race events.
+Windows native interval and allocation tests have not executed. Windows UTC observations still refuse permission.
+
+The isolated W32Time prototype passes twelve stream tests on each supported toolchain.
+It retains generated QueryStatus decoding, fixed transport selection, cancellation, reply bounds, and deadline checks.
+Native Windows access and the source-age error profile remain unqualified. Product dependencies remain unchanged.
+
 Starport `95354f0` adds configured authority and policy identity pins.
 Its [configuration proof](csp4/starport-authority-settings-2026-09-11/verification.json) records twelve focused tests and 394 package race events.
 One Valkey integration case skips. Lint, vet, and six dependency checks pass.

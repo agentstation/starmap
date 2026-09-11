@@ -8,7 +8,8 @@ The catalog plan executor will verify the actual merge before recording completi
 PR #149 merged as `9ea36b3e` after fifteen successful checks. Its tree matches reviewed `0a143a94` exactly.
 
 Starport `95354f0` adds configured authority pins to its request permission checks. The four mapped consumer checks remain incomplete.
-Starmap `0868781d` adds local Linux and macOS clock observations. Windows and production clock profiles remain open.
+Starmap `41071ef4` adds the Windows elapsed counter after the Linux and macOS observations.
+Windows native execution, UTC observation, and production clock profiles remain open.
 Twenty-seven campaign PRs merged. Nine tasks are complete, and CSP4 remains active.
 
 ## Historical queue snapshots

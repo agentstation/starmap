@@ -2118,7 +2118,7 @@ The four consumer cases and the released dependency pair remain UNVERIFIED.
 Local Starmap `0868781d` adds Linux and macOS host clock adapters.
 Explicit observations read kernel synchronization evidence and reject unsafe states, timestamps, and uncertainty.
 The elapsed counters include system sleep and pass zero-allocation checks.
-Windows currently returns no usable clock evidence.
+At that commit, Windows supplies neither a UTC observation nor an elapsed counter.
 
 The [native proof](../../plans/proof/starport-production-catalog/csp4/host-clock-2026-09-11/verification.json) records 25 Linux and 15 macOS events.
 The macOS binding returns a sample with 500.001 ms uncertainty and agrees with the host UTC interval.
@@ -2128,3 +2128,21 @@ A positive synchronized Linux observation remains UNVERIFIED.
 Both supported toolchains pass 142 permission events. All 28 workflow tests, lint, vet, ago, documentation, and prose checks pass.
 No host clock setting changed. Production error profiles, native Windows support, and host scheduling remain incomplete.
 The four Starport consumer cases remain UNVERIFIED.
+
+## Windows clock prototype, 2026-09-11
+
+Local Starmap `41071ef4` adds an elapsed counter through the Go runtime's Windows interrupt-time reading.
+The [counter and prototype proof](../../plans/proof/starport-production-catalog/csp4/windows-counter-2026-09-11/verification.json) retains the implementation and supported runtime source hashes.
+Both supported toolchains cross-compile the Windows AMD64 and ARM64 tests.
+Native Windows interval and allocation tests have not executed. UTC observation still refuses permission.
+
+The Darwin permission suite passes 142 race events. Windows lint and vet selections, ago, generated documentation, and prose checks pass.
+The complete prose check covers 1,473 files with zero diagnostics.
+
+A separate W32Time prototype passes twelve race events on each supported toolchain.
+The tests cover QueryStatus decoding, blocked-bind cancellation, fixed transport selection, reply bounds, and deadlines.
+They do not prove native Windows pipe access, process identity checks, cancellation after query dispatch, or complete response fragmentation.
+
+The standalone Windows probe uses 126 nonstandard packages and builds for both architectures.
+A shadow module graph adds eighteen modules without changing existing versions.
+The product dependency files remain unchanged. Native access, UTC uncertainty, operational profiles, and host scheduling remain open.

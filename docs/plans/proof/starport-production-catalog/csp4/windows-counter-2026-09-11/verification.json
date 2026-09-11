@@ -1,0 +1,472 @@
+{
+  "task": "CSP4",
+  "status": "PASS_cross_build_and_local_prototype_only",
+  "source_commit": "41071ef4c0289a9c100c696406f7e36543be4177",
+  "base": "0868781d11db6601d082ebb4d45da48586177d91",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "publication": "Local commit only; no PR or pre-PR review.",
+  "contract": [
+    "Windows elapsed reads use time.Since with a private immutable process epoch. The pinned Go runtimes read native Windows interrupt time without filesystem or network I/O.",
+    "Negative elapsed results return unknown. Windows UTC observations still return a typed refusal.",
+    "Native tests compare elapsed intervals with QueryInterruptTime and measure allocations. Those Windows tests have not executed."
+  ],
+  "checks": {
+    "windows_cross_build": [
+      {
+        "toolchain": "go1.25.12",
+        "arch": "amd64",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-counter/go1.25.12-amd64.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.25.12",
+        "arch": "arm64",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-counter/go1.25.12-arm64.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.26.6",
+        "arch": "amd64",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-counter/go1.26.6-amd64.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      },
+      {
+        "toolchain": "go1.26.6",
+        "arch": "arm64",
+        "command": [
+          "go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-counter/go1.26.6-arm64.exe",
+          "./pkg/catalogs/permission/hostclock"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "darwin_permission_race": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOWORK=off go test -race -count=1 -timeout=5m -json ./pkg/catalogs/permission/...",
+      "pass": 142,
+      "fail": 0,
+      "skip": 0
+    },
+    "windows_lint": "pinned golangci-lint 2.12.2, AMD64 build selection, zero issues",
+    "windows_vet": "Go1.26.6 ARM64 build selection, exit 0",
+    "ago": "Whole repository on Darwin and Windows hostclock package: zero findings, stale ignores, or errors.",
+    "godoc": "Scoped generated documentation check passes.",
+    "prose": "Complete make technical-writing-check passes: 1473 files, zero diagnostics.",
+    "diff": "git diff --check passes; intended files committed; worktree clean."
+  },
+  "prototype": {
+    "location": "/tmp/starmap-windows-clock-prototype-20260911-WKTXRw",
+    "product_dependencies_changed": false,
+    "command": "GOTOOLCHAIN=go1.26.6 GOWORK=off go test -race -count=1 -timeout=20s -json ./...",
+    "go126": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    "go125": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    "tested_contracts": [
+      "Generated W32Time QueryStatus decoding over a substituted in-process stream; request opnum 6 and anonymous bind.",
+      "Context cancellation closes a blocked bind and its stream. A fixed dialer refuses address changes and reconnects. DNS resolver is explicitly disabled.",
+      "A stream guard rejects unsupported frame representations, unexpected response types, authentication trailers, invalid fragment size, and excessive allocation hints before the RPC decoder sees them.",
+      "Reply bytes are limited to 64 KiB and fragments to 16 KiB. Connection deadlines cannot exceed the observation deadline."
+    ],
+    "windows_cross_build": "Standalone probe builds for AMD64 and ARM64 on Go1.26.6. Test binary builds for AMD64 on Go1.25.12 and Go1.26.6. Both Windows architecture vet selections pass. No native execution.",
+    "binary_bytes": {
+      "amd64": 5840384,
+      "arm64": 5401600
+    },
+    "nonstandard_package_count": 126,
+    "module_impact": {
+      "added": {
+        "github.com/Microsoft/go-winio": "v0.6.2",
+        "github.com/oiweiwei/go-msrpc": "v1.5.4"
+      },
+      "changed": {},
+      "note": "Shadow module only. No product dependency changes or native Windows execution.",
+      "module_graph_added": {
+        "github.com/PuerkitoBio/goquery": "v1.13.0",
+        "github.com/andybalholm/cascadia": "v1.3.4",
+        "github.com/geoffgarside/ber": "v1.1.0",
+        "github.com/go-xmlfmt/xmlfmt": "v1.1.3",
+        "github.com/hashicorp/go-uuid": "v1.0.3",
+        "github.com/indece-official/go-ebcdic": "v1.2.0",
+        "github.com/jcmturner/aescts/v2": "v2.0.0",
+        "github.com/jcmturner/dnsutils/v2": "v2.0.0",
+        "github.com/jcmturner/gofork": "v1.7.6",
+        "github.com/jcmturner/goidentity/v6": "v6.0.1",
+        "github.com/jcmturner/gokrb5/v8": "v8.4.4",
+        "github.com/jcmturner/rpc/v2": "v2.0.3",
+        "github.com/miekg/dns": "v1.1.73",
+        "github.com/oiweiwei/go-math": "v1.0.0",
+        "github.com/oiweiwei/go-msrpc": "v1.5.4",
+        "github.com/oiweiwei/go-oem": "v1.0.0",
+        "github.com/oiweiwei/go-smb2.fork": "v1.0.2",
+        "github.com/oiweiwei/gokrb5.fork/v9": "v9.0.7"
+      },
+      "module_graph_changed": {}
+    },
+    "native_candidate": "Local anonymous go-winio pipe access; query-only SCM handles; pipe server PID matched to running W32Time with retained process handle and post-query service check. This path is cross-compiled only."
+  },
+  "runtime_sources": [
+    {
+      "toolchain": "go1.25.12",
+      "file": "src/runtime/time_windows.h",
+      "sha256": "f50c5452a69fda66f7fbf895aa73c5d50de0cd24f7b285637fbaa6837c8f300c"
+    },
+    {
+      "toolchain": "go1.25.12",
+      "file": "src/runtime/time_windows_amd64.s",
+      "sha256": "637661f93b27e0b416ba78f7358c36fd3b5b54de3684edc10ad175615e1d446d"
+    },
+    {
+      "toolchain": "go1.25.12",
+      "file": "src/runtime/time_windows_arm64.s",
+      "sha256": "fb5b46a255f00959fec7cbc55b65bd726ffe29325105c4b0f206a6d448474588"
+    },
+    {
+      "toolchain": "go1.25.12",
+      "file": "src/runtime/sys_windows_amd64.s",
+      "sha256": "21a305d4f89f1646da3486c030d0ee68fdf87d117453e628a55834a2083d4106"
+    },
+    {
+      "toolchain": "go1.25.12",
+      "file": "src/runtime/sys_windows_arm64.s",
+      "sha256": "d3f90b7e7f50ebc6679174c48108c6b00d212bcf56511e960b82eb1fd6bc0c8a"
+    },
+    {
+      "toolchain": "go1.26.6",
+      "file": "src/runtime/time_windows.h",
+      "sha256": "f50c5452a69fda66f7fbf895aa73c5d50de0cd24f7b285637fbaa6837c8f300c"
+    },
+    {
+      "toolchain": "go1.26.6",
+      "file": "src/runtime/time_windows_amd64.s",
+      "sha256": "637661f93b27e0b416ba78f7358c36fd3b5b54de3684edc10ad175615e1d446d"
+    },
+    {
+      "toolchain": "go1.26.6",
+      "file": "src/runtime/time_windows_arm64.s",
+      "sha256": "fb5b46a255f00959fec7cbc55b65bd726ffe29325105c4b0f206a6d448474588"
+    },
+    {
+      "toolchain": "go1.26.6",
+      "file": "src/runtime/sys_windows_amd64.s",
+      "sha256": "24efe0d0cc1f7743cd4bfc889fbc6dabb73409bd865c7ec7a1e86eaa01863516"
+    },
+    {
+      "toolchain": "go1.26.6",
+      "file": "src/runtime/sys_windows_arm64.s",
+      "sha256": "1ff1a9cea659c0c59dedc651c95468efbfda889fc3d44766b5f48cab1e4ecf24"
+    }
+  ],
+  "references": [
+    "https://learn.microsoft.com/en-us/windows/win32/sysinfo/interrupt-time",
+    "https://learn.microsoft.com/en-us/windows/win32/api/realtimeapiset/nf-realtimeapiset-queryinterrupttime",
+    "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/e0803f6b-e175-4b87-ba63-bbcf51175655",
+    "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-w32t/f60ebce0-df96-4c96-b40b-fdbd34a2c936"
+  ],
+  "limitations": [
+    "No native Windows test execution, sleep transition, UTC qualification, or counter allocation measurement yet.",
+    "No Windows UTC implementation, source-age/drift profile, refresh scheduler, or host composition yet.",
+    "The local RPC prototype does not establish that Windows W32Time accepts the wire exchange, that ordinary or service accounts can open its pipe, or that restart and process identity checks qualify.",
+    "Prototype race tests cover blocked bind cancellation, not cancellation after QueryStatus dispatch or every fragmented response/recovery case.",
+    "A compatible released Starmap module and Starport consumer qualification remain required. CSP4 is not complete."
+  ],
+  "next_action": "Finish Windows QueryStatus transport tests and native pipe qualification before product dependency adoption. Define the qualified source-age and error profile, then integrate observation, cache refresh, and host permission composition. Verify PR150 automatic merge when its final gate completes.",
+  "pr150_snapshot": {
+    "state": "OPEN",
+    "headRefOid": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "mergeCommit": null,
+    "mergedAt": null
+  },
+  "source_files": [
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows.go",
+      "sha256": "8d6555124e2c0d35898a1fc7e7927be0509fccf79165ff7b402a66a482ad53d3"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_test.go",
+      "sha256": "2f9e3952842ea28b28c6ac4a4e7954a5fbb21b590ffa6776f9015140591e748d"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/unsupported.go",
+      "sha256": "82b17c9717ff83fc59595681e77588f367471735bb6d69bf8d5a654f2e9ee69d"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/README.md",
+      "sha256": "ae1a8bd11cb65514ad36ed40860aabc2ac57197e681b3eae8926a24a27c5c9f6"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago-windows.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "commit.log.gz",
+      "sha256": "8bda70e49616d9efde286a192a0fd19e788bdd3e2aabf58902887515984684a6",
+      "decoded_sha256": "844328a45a59908614da3778a3354254518002e5ffde0518117cfb2a717a5b85"
+    },
+    {
+      "path": "cross-build.json.gz",
+      "sha256": "68b32743288c98dbb9619e410b859775f65f1a367075a75c04bb6d0510c0c723",
+      "decoded_sha256": "231d40025c93a0f67bbdc2a30539ebb09df694b6555cce6ef57229f14f3c3e69"
+    },
+    {
+      "path": "go1.25.12-amd64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-arm64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-amd64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-arm64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lint-windows.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "permission-race.jsonl.gz",
+      "sha256": "1e497d47feb5babc170af5b5f181f766007c074d733087d115bea94c97c1ea0c",
+      "decoded_sha256": "513b20a9823e3faf916bff1cfe658b666eaa8d12bd23664a37b5b7783fdc403d"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "4d3914e9e57f3d9528a41adf5b7b0389defeface07f5bc9dd5054fd364ba6451",
+      "decoded_sha256": "683056e06669d7066e5b3beb76fe2b398fb8181f43028ef88866f8e742c41bb8"
+    },
+    {
+      "path": "vet-windows.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prototype-bounded_stream.go.gz",
+      "sha256": "57f8caa12e071dab3bc987293548a643ec9d12083b0b012498f06937450849d8",
+      "decoded_sha256": "02595c7f0ab0756bf480c90217ab9504b48858889d2262adbaa7b4bb5482749f"
+    },
+    {
+      "path": "prototype-bounded_stream_test.go.gz",
+      "sha256": "c2ebb32d88b90266f83f3b2ee8363e734f6033f646828e2b4d49ed743d475ce7",
+      "decoded_sha256": "f7fd35e782a1ab615dfa594157e359f7120514a0ef92cf6e76f80d193bd6f047"
+    },
+    {
+      "path": "prototype-cmd-probe-main_windows.go.gz",
+      "sha256": "af54515597b425008cb2da77370ce0ea27343c0207e0be3b67005b7be50776f7",
+      "decoded_sha256": "bfb70b4fbcb6082c404a70d47aca732eac5e8ae0f5837e649e28e6c346550c65"
+    },
+    {
+      "path": "prototype-go.mod.gz",
+      "sha256": "65cca0dfe1eec0cfd0b618721df0337d6a19608a342ee5c4b3a4d064d546f0b3",
+      "decoded_sha256": "4b1bb9dd6f67c130fb7e9a66c514f9f20504c61ddb3dc0797bf2b2c661428fa9"
+    },
+    {
+      "path": "prototype-go.sum.gz",
+      "sha256": "f454b4c1987c3a3c77ed032ca164f8474b71fbbc075d019da49cc39f93fe5135",
+      "decoded_sha256": "7d025f06b150eaeb179175d9b4d983e661f25407c81682b987e90f0a2f3a96c5"
+    },
+    {
+      "path": "prototype-pipe_windows.go.gz",
+      "sha256": "17a1189c8c9dab99803bd38250ca3654bb142cdd3d6dcbcaf21e22e8842a50fd",
+      "decoded_sha256": "7a63719bb0b77f08f739993549852abad55a05128747c2f6520c5df4a11cec0f"
+    },
+    {
+      "path": "prototype-prototype-bounded-tests.jsonl.gz",
+      "sha256": "1d01450ec33346f468202d6d98359fc2643a8142f88a286196c96206fb8b3ccb",
+      "decoded_sha256": "e214a89f3a9b44f3ff0a5a323fc9853227a05e1c8d8f40d1446ae19346c526c7"
+    },
+    {
+      "path": "prototype-prototype-go125-tests.jsonl.gz",
+      "sha256": "55e8128a8a62d873d082725bb3374ae80c7644cfaa8fec328f8a09ea0fdf9a3d",
+      "decoded_sha256": "510c21e6264144b37f6472a79544f17bd0f393412b4139e63a7d3b4ae53ee2cf"
+    },
+    {
+      "path": "prototype-prototype-tests.jsonl.gz",
+      "sha256": "2be055e2e315eb5efe513ace6bad113a6f144f449bacb540fb9e47847f59c1f7",
+      "decoded_sha256": "772180575ed702d5bc9e1a72375ed16de3a49248b29235aa3768988c3bfc488a"
+    },
+    {
+      "path": "prototype-query.go.gz",
+      "sha256": "d1e4200e5dad0353374848fa4562377f7e83d721cda6d43ea75549dc947f88e7",
+      "decoded_sha256": "3c55e2f5031cac0491fc7a50c2b2d69eae75a2041ab4115d0c5326eceeb58a6a"
+    },
+    {
+      "path": "prototype-query_test.go.gz",
+      "sha256": "72d8acc38e4dca70d27a52cd8e821d86dc268d1a00968c95c7ef400f4018e9cc",
+      "decoded_sha256": "42db1d5d5443a422cafc4b977a0b08b5d886bc122e74b1a69c8ae1fbc9952281"
+    },
+    {
+      "path": "prototype-starmap-dependency-impact.json.gz",
+      "sha256": "172a5372c87ccfdca5ae75b8be35df98d7ad1294bbcd873d219d4e6ef4b3f98e",
+      "decoded_sha256": "37bc5565103c10aa7d227b65da34a9a6d6ff1e3f5dcd333c8bf748249aac6224"
+    },
+    {
+      "path": "prototype-starmap-shadow-get.log.gz",
+      "sha256": "8dae0e743df1f50d5e4d1299449067063bd9ea7fec6cae42a845c585bacfaa49",
+      "decoded_sha256": "9569fad2e1e48dfc7a64350ef36616907324bd7f6f2ae194b84db04bf9cc7785"
+    },
+    {
+      "path": "prototype-vet-windows-amd64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prototype-vet-windows-arm64.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prototype-windows-amd64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prototype-windows-amd64-dependencies.json.gz",
+      "sha256": "47b7a3c95cb3b40a0d83078c29e8ffe292f711ad935c7eec4ba2c2e7aeb8726c",
+      "decoded_sha256": "a68802205381e24ec699875208304601d81403dce02389c7c38e3cc451d4e90a"
+    },
+    {
+      "path": "prototype-windows-amd64-go1.25.12.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prototype-windows-amd64-go1.26.6.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prototype-windows-arm64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prototype-windows-arm64-dependencies.json.gz",
+      "sha256": "47b7a3c95cb3b40a0d83078c29e8ffe292f711ad935c7eec4ba2c2e7aeb8726c",
+      "decoded_sha256": "a68802205381e24ec699875208304601d81403dce02389c7c38e3cc451d4e90a"
+    },
+    {
+      "path": "go1.25.12-time_windows.h.gz",
+      "sha256": "f7071b229d821055cbdeb102dd7462eac5d31526488ca84e3728661e69dfc966",
+      "decoded_sha256": "f50c5452a69fda66f7fbf895aa73c5d50de0cd24f7b285637fbaa6837c8f300c"
+    },
+    {
+      "path": "go1.25.12-time_windows_amd64.s.gz",
+      "sha256": "03c3006ba62c3406b3b8978d0c3cd73527cd29ca7a42bfd1b91a60458929cb61",
+      "decoded_sha256": "637661f93b27e0b416ba78f7358c36fd3b5b54de3684edc10ad175615e1d446d"
+    },
+    {
+      "path": "go1.25.12-time_windows_arm64.s.gz",
+      "sha256": "1908d57ccb0d64d19a7b43174bde743006d7f00d4b9fddc66e7f0480bd181c0d",
+      "decoded_sha256": "fb5b46a255f00959fec7cbc55b65bd726ffe29325105c4b0f206a6d448474588"
+    },
+    {
+      "path": "go1.25.12-sys_windows_amd64.s.gz",
+      "sha256": "0f79aaf6f922232fe21a18e676b495250b61fe93bff8e922d3cdebdd6ed12145",
+      "decoded_sha256": "21a305d4f89f1646da3486c030d0ee68fdf87d117453e628a55834a2083d4106"
+    },
+    {
+      "path": "go1.25.12-sys_windows_arm64.s.gz",
+      "sha256": "a6398d646139befa2411a82241da19e03338131bfd688c2c7245ae457cdc4d7e",
+      "decoded_sha256": "d3f90b7e7f50ebc6679174c48108c6b00d212bcf56511e960b82eb1fd6bc0c8a"
+    },
+    {
+      "path": "go1.26.6-time_windows.h.gz",
+      "sha256": "f7071b229d821055cbdeb102dd7462eac5d31526488ca84e3728661e69dfc966",
+      "decoded_sha256": "f50c5452a69fda66f7fbf895aa73c5d50de0cd24f7b285637fbaa6837c8f300c"
+    },
+    {
+      "path": "go1.26.6-time_windows_amd64.s.gz",
+      "sha256": "03c3006ba62c3406b3b8978d0c3cd73527cd29ca7a42bfd1b91a60458929cb61",
+      "decoded_sha256": "637661f93b27e0b416ba78f7358c36fd3b5b54de3684edc10ad175615e1d446d"
+    },
+    {
+      "path": "go1.26.6-time_windows_arm64.s.gz",
+      "sha256": "1908d57ccb0d64d19a7b43174bde743006d7f00d4b9fddc66e7f0480bd181c0d",
+      "decoded_sha256": "fb5b46a255f00959fec7cbc55b65bd726ffe29325105c4b0f206a6d448474588"
+    },
+    {
+      "path": "go1.26.6-sys_windows_amd64.s.gz",
+      "sha256": "88c7db9d6b4767b37db022d47256c19af493a63264750865816787a8d1052a64",
+      "decoded_sha256": "24efe0d0cc1f7743cd4bfc889fbc6dabb73409bd865c7ec7a1e86eaa01863516"
+    },
+    {
+      "path": "go1.26.6-sys_windows_arm64.s.gz",
+      "sha256": "dbeebccc6a9fc81d09c82ecbe443e67e3808253af21f0d0978d8e8c8cc5409c6",
+      "decoded_sha256": "1ff1a9cea659c0c59dedc651c95468efbfda889fc3d44766b5f48cab1e4ecf24"
+    },
+    {
+      "path": "canonical-windows-counter-prose.log.gz",
+      "sha256": "2e869356ea64d5510a3da0e69d839dfcb45c33900e8353c376938be755dd42c7",
+      "decoded_sha256": "a0aa18251b756b3e5c31b99042f177bc8a2f7ddc726e8964a5da3ba88de355e5"
+    },
+    {
+      "path": "canonical-windows-counter-prose-corrected.log.gz",
+      "sha256": "c0ac5dc03f6b1d2d06acbe88b02e9c32d64a52b3c6b5102e36864edb460f105d",
+      "decoded_sha256": "e3e7697288b173f167b0bf0ab8998cb3ec57840d8631622767a0178a23f6a1d4"
+    },
+    {
+      "path": "canonical-windows-counter-prose-final.log.gz",
+      "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
+      "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    }
+  ],
+  "canonical_maintenance": {
+    "prose": "141 files, zero diagnostics after replacing one semicolon and splitting the platform paragraph. Both original diagnostics retained.",
+    "ledger": "38 tasks; nine done; CSP4 alone in progress. No new acceptance or merge credit.",
+    "source": "41071ef4c0289a9c100c696406f7e36543be4177, clean local worktree.",
+    "native_windows": "UNVERIFIED"
+  }
+}

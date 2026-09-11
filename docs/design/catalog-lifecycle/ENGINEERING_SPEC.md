@@ -1874,7 +1874,17 @@ This library contract does not select native adapters or their operational error
 `hostclock.Observe` now supplies explicit Linux and macOS kernel observations.
 `hostclock.Elapsed` reads a counter that includes system sleep without file or network I/O.
 The [native observation proof](../../plans/proof/starport-production-catalog/csp4/host-clock-2026-09-11/verification.json) records local binding checks and refusals.
-Windows currently returns no usable observation or elapsed counter.
+
+Windows now uses the Go runtime's interrupt-time counter through `time.Since`.
+The supported runtime sources read that native counter on both Windows architectures.
+The [counter proof](../../plans/proof/starport-production-catalog/csp4/windows-counter-2026-09-11/verification.json) records four cross-builds.
+Native Windows execution remains UNVERIFIED.
+Windows still returns no usable UTC observation.
+
+An isolated W32Time prototype passes twelve stream-contract tests on each supported Go toolchain.
+It uses generated QueryStatus decoding with a fixed local stream, reply bounds, and cancellation.
+Native pipe access, service identity checks, and a source-age error profile remain unqualified.
+The prototype adds no product dependencies or production support claim.
 The host must still qualify drift and error bounds, schedule refresh, and invalidate unsafe evidence.
 
 The library clock callback reads only cached evidence.
