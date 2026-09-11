@@ -201,6 +201,12 @@
       "sha256": "b47960693cd702eb7f9a012ad3d27c6e1eb111a664cb7ef80ff0cc1c72a666ac",
       "decoded_sha256": "5b586ece3a810aba535dbd2f23288bce298c5367840a675462453b1ae793f171",
       "decoded_bytes": 558
+    },
+    {
+      "path": "request-permission-overhead.log.gz",
+      "sha256": "61c40452aedf60214d9c6b692dffd03ef772f292e9e70ed0ce3dce78794bcb07",
+      "decoded_sha256": "97aa9f475a577d9858792a484d425dc9b399e46d8499ca40c2e83b4339b8f5dc",
+      "decoded_bytes": 233
     }
   ],
   "contract": [
@@ -315,6 +321,18 @@
     "all_vet": {
       "exit_code": 0,
       "status": "PASS"
+    },
+    "controller_overhead_gate": {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": "GOTOOLCHAIN=go1.26.6 GOWORK=<recorded workspace> GOFLAGS=-p=2 GOMAXPROCS=4 bash scripts/benchmark-overhead.sh",
+      "requests": 200,
+      "mock_upstream_ms": 20,
+      "reported_p50_ms": 0,
+      "reported_p99_ms": 0,
+      "test_seconds": 4.2,
+      "measurement_boundary": "Existing controller timer and integer-millisecond report. This does not establish zero latency or full gateway performance.",
+      "effect_on_prior_skips": "The all-package run retains its 39 skips. This separate opt-in run supplies evidence for the controller threshold only."
     }
   },
   "acceptance": "Local seam evidence only. No additional primary case, native-clock, real upstream trust, fleet, or released-pair qualification. Four Starport consumer subcases remain UNVERIFIED.",
