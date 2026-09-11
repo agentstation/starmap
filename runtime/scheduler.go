@@ -128,6 +128,9 @@ func (r *Runtime) sourceChanges() <-chan struct{} {
 // runtime without an acquirer runs source refresh only.
 func (r *Runtime) startSchedules() {
 	r.startPermissionSchedule()
+	if r.config.generationPin != "" {
+		return
+	}
 	if r.config.origin != nil && r.config.leaseStore != nil {
 		r.work.Go(func() {
 			r.runSchedule(controllerAccepted, originAcceptedPollInterval, r.schedule.acceptedOffset, r.schedule.acceptedPhase, false, nil, func(ctx context.Context) {

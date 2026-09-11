@@ -402,6 +402,28 @@ Selects automatic source refresh or explicit manual reads. Manual mode suppresse
 | Change class | `runtime-replacement` |
 | Compatibility | `supported`, schema 1 |
 
+<a id="catalog-generation-pin"></a>
+
+## catalog_generation_pin
+
+Selects a retained generation and blocks catalog changes. Permission observation continues. An empty value clears the pin.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_GENERATION_PIN` |
+| CLI flag | `--catalog-generation-pin value` |
+| YAML key | `catalog_generation_pin` |
+| Semantic ID | `catalog.generation.pin` |
+| Grammar | `string` |
+| Default | no generation pin |
+| Explicit empty | true |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
 <a id="catalog-network-mode"></a>
 
 ## catalog_network_mode

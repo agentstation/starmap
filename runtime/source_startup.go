@@ -11,6 +11,9 @@ import (
 // require_source reads once under the Open context when this runtime owns the lease.
 // Authority observation binds after other startup checks, before any source worker can read a manifest.
 func (r *Runtime) prepareSourceStartup(ctx context.Context) error {
+	if r.config.generationPin != "" {
+		return r.bindSourceAuthority()
+	}
 	if r.config.source.StartupPolicy == StartupRequireSource {
 		if !r.automaticSourceReads() {
 			r.mu.RLock()

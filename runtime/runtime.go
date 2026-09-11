@@ -99,9 +99,10 @@ type Acquirer interface {
 // observations, and rebuilds one immutable effective catalog from those
 // layers. Reads reach no external system.
 type Runtime struct {
-	client *starmap.Client
-	config options
-	source Source
+	client       *starmap.Client
+	config       options
+	source       Source
+	pinnedSource *sourceLayer
 
 	// providerRetentionMu serializes observation selection and durable provider writes.
 	providerRetentionMu sync.Mutex
@@ -375,6 +376,9 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	baseline := r.client.EmbeddedCatalogState()
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.config.generationPin != "" {
+		return r.initializeGenerationPin(ctx)
+	}
 	r.layers.embedded = baseline
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
@@ -425,7 +429,7 @@ func (r *Runtime) commitOrdinary(ctx context.Context, state starmap.CatalogState
 		// effective catalog stays correct. It does not survive a restart.
 		return state, nil
 	}
-	if restored, err := r.restoreAcquisitionPolicyGeneration(ctx, state, epoch); err != nil {
+	if restored, err := r.restoreRetainedGeneration(ctx, state, epoch); err != nil {
 		return starmap.CatalogState{}, err
 	} else if restored {
 		return r.client.CurrentCatalogState(), nil

@@ -19,6 +19,7 @@ const (
 	SourceSignerWorkflow                    = catalogconfig.SourceSignerWorkflow
 	SourceToken                             = catalogconfig.SourceToken
 	SourceRefreshMode                       = catalogconfig.SourceRefreshMode
+	GenerationPin                           = catalogconfig.GenerationPin
 	NetworkMode                             = catalogconfig.NetworkMode
 	SourcePollInterval                      = catalogconfig.SourcePollInterval
 	SourceStartupPolicy                     = catalogconfig.SourceStartupPolicy

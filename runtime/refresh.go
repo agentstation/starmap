@@ -311,6 +311,9 @@ func (r *Runtime) execute(
 	if err := ctx.Err(); err != nil {
 		return RefreshReport{}, err
 	}
+	if err := r.validateGenerationMutation(); err != nil {
+		return RefreshReport{}, err
+	}
 	id, err := r.client.NextID()
 	if err != nil {
 		return RefreshReport{}, err

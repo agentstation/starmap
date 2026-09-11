@@ -34,12 +34,14 @@ const (
 // options holds every setting that belongs to the connected runtime, plus the
 // offline client options that Open forwards to the client under it.
 type options struct {
-	origin       *authorityOrigin
-	originStore  storage.Store
-	source       SourcePolicy
-	sourceToken  string
-	sourceAPIKey string
-	updatePolicy UpdatePolicy
+	origin        *authorityOrigin
+	originStore   storage.Store
+	source        SourcePolicy
+	sourceToken   string
+	sourceAPIKey  string
+	updatePolicy  UpdatePolicy
+	generationPin string
+	pinCapability *generationPinCapability
 
 	acquisition        AcquisitionPolicy
 	providerBindings   *providerBindingPolicy
@@ -123,6 +125,9 @@ func (r options) transferPolicy() remote.TransferPolicy {
 // resolve derives every setting that another setting implies. Open calls it
 // once, after it applies the options and before it validates them.
 func (r *options) resolve() {
+	if r.generationPin != "" {
+		r.pinCapability = &generationPinCapability{owned: true}
+	}
 	if r.source.StartupPolicy == StartupRequireAuthority || r.origin != nil {
 		r.publicationCapability = &authorityPublicationCapability{owned: true}
 	}

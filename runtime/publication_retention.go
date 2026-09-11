@@ -21,6 +21,9 @@ func (r *Runtime) publishInputs(ctx context.Context, source *sourceLayer, provid
 }
 
 func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceLayer, providers []ProviderLayer, manual []manualObservation, epoch uint64, resets []ObservationReset, removal *removalUpdate) (starmap.CatalogState, error) {
+	if err := r.validateGenerationMutation(); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if err := r.validateAuthorityPublication(source, len(providers)+len(manual)+len(resets), removal); err != nil {
 		return starmap.CatalogState{}, err
 	}

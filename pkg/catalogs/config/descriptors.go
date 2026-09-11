@@ -126,6 +126,10 @@ func describe(entry setting) Descriptor {
 		d.Description = "Selects automatic source refresh or explicit manual reads. Manual mode suppresses startup reads, polling, and source watchers."
 		d.Default = string(runtime.SourceRefreshAutomatic)
 		d.AllowedValues = []string{string(runtime.SourceRefreshAutomatic), string(runtime.SourceRefreshManual)}
+	case GenerationPin:
+		d.Description = "Selects a retained generation and blocks catalog changes. Permission observation continues. An empty value clears the pin."
+		d.AllowEmpty = true
+		d.DefaultMeaning = "no generation pin"
 	case NetworkMode:
 		d.Description = "Controls catalog network acquisition. Offline mode preserves local imports and does not change inference or selected storage access."
 		d.Default = string(runtime.NetworkConfigured)

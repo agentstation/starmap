@@ -67,6 +67,7 @@ func (r *Runtime) Status() Status {
 	report := Status{
 		Usable:                     effective.Catalog != nil,
 		GenerationID:               effective.GenerationID,
+		GenerationPin:              r.config.generationPin,
 		PayloadChecksum:            effective.PayloadChecksum,
 		SourceHealth:               orUnknown(state.sourceHealth),
 		SourceReason:               state.sourceReason,

@@ -108,7 +108,7 @@ func (r *Runtime) sourceReadAllowed() bool {
 }
 
 func (r *Runtime) automaticSourceReads() bool {
-	return r.config.updatePolicy.SourceRefreshMode == SourceRefreshAutomatic && r.sourceReadAllowed()
+	return r.config.generationPin == "" && r.config.updatePolicy.SourceRefreshMode == SourceRefreshAutomatic && r.sourceReadAllowed()
 }
 
 func offlineCatalogOperation(operation string) error {
@@ -118,6 +118,9 @@ func offlineCatalogOperation(operation string) error {
 func (r *Runtime) validateAcquisitionAccess(selected []sources.ID) error {
 	if r == nil {
 		return &errors.ValidationError{Field: "runtime", Message: "is required"}
+	}
+	if err := r.validateGenerationMutation(); err != nil {
+		return err
 	}
 	if err := r.validateAuthorityPublication(nil, 1, nil); err != nil {
 		return err

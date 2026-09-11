@@ -46,6 +46,9 @@ const (
 	// SourceRefreshMode selects automatic or explicit-only source refresh.
 	SourceRefreshMode = Prefix + "CATALOG_SOURCE_REFRESH_MODE"
 
+	// GenerationPin selects one retained catalog until the configuration changes.
+	GenerationPin = Prefix + "CATALOG_GENERATION_PIN"
+
 	// NetworkMode controls outbound catalog acquisition independently of inference.
 	NetworkMode = Prefix + "CATALOG_NETWORK_MODE"
 
@@ -146,6 +149,9 @@ type Config struct {
 	// SourceKind is the selected upstream source. The default is public.
 	SourceKind runtime.SourceKind
 
+	// GenerationPin names the retained generation selected by configuration.
+	GenerationPin string
+
 	// SourceRefreshMode selects automatic or manual source reads.
 	SourceRefreshMode runtime.SourceRefreshMode
 
@@ -240,6 +246,10 @@ func table() []setting {
 		{
 			name: SourceRefreshMode, flag: "catalog-source-refresh-mode",
 			apply: stringOption(runtime.WithSourceRefreshMode), capture: captureSourceRefreshMode,
+		},
+		{
+			name: GenerationPin, flag: "catalog-generation-pin",
+			apply: stringOption(runtime.WithGenerationPin), capture: func(value string, c *Config) error { c.GenerationPin = value; return nil },
 		},
 		{
 			name: NetworkMode, flag: "catalog-network-mode",

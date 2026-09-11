@@ -252,6 +252,32 @@
       "anchor": "catalog-source-refresh-mode"
     },
     {
+      "description": "Selects a retained generation and blocks catalog changes. Permission observation continues. An empty value clears the pin.",
+      "id": "catalog.generation.pin",
+      "name": "STARMAP_CATALOG_GENERATION_PIN",
+      "key": "catalog_generation_pin",
+      "flag": "catalog-generation-pin",
+      "environment": [
+        "STARMAP_CATALOG_GENERATION_PIN"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "no generation pin",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-generation-pin"
+    },
+    {
       "description": "Controls catalog network acquisition. Offline mode preserves local imports and does not change inference or selected storage access.",
       "allowed_values": [
         "configured",

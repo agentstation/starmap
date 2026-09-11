@@ -52,7 +52,7 @@ func (r *Runtime) activateAuthorityLocked(source *sourceLayer) {
 	if !r.requiresAuthority() {
 		return
 	}
-	if source == nil || source.Manifest == nil || !r.authorityClientMatches(r.effective) {
+	if source == nil || source.Manifest == nil || source.Manifest.AuthorityHead != r.effective.AuthorityHead || source.Manifest.GenerationID != r.effective.GenerationID || source.Manifest.Payload.Checksum != r.effective.PayloadChecksum || !r.authorityClientMatches(r.effective) {
 		r.permissions.enforced = catalogs.CatalogAuthorityHead{}
 		return
 	}

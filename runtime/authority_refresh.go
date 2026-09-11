@@ -91,7 +91,7 @@ func (r *Runtime) readPermission(ctx context.Context) error {
 	next, err = r.permissions.confirmRetention(receipt)
 	if err == nil {
 		r.permissions = next
-		r.activateAuthorityLocked(r.layers.source)
+		r.activateAuthorityLocked(r.selectedAuthoritySource())
 	}
 	r.mu.Unlock()
 	return err

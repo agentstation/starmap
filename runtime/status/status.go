@@ -135,6 +135,9 @@ type Status struct {
 	// PermissionValidUntil is the confirmed receipt's expiry before the runtime subtracts clock uncertainty.
 	PermissionValidUntil time.Time
 
+	// GenerationPin is the retained generation selected by configuration.
+	GenerationPin string
+
 	// GenerationID identifies the served catalog generation.
 	GenerationID string
 

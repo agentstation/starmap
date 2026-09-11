@@ -12,7 +12,7 @@ import (
 // acquisitionPolicyClientOptions gives an explicit policy a writable memory default.
 // A caller-supplied store takes precedence over this process-local store.
 func (o options) acquisitionPolicyClientOptions() []starmap.Option {
-	if o.originStore == nil && o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
+	if o.generationPin == "" && o.originStore == nil && o.source.StartupPolicy != StartupRequireAuthority && o.providerBindings == nil && o.acquisitionSources == nil {
 		return o.client
 	}
 	selected := append([]starmap.Option{starmap.WithCatalogStore(storage.NewMemory())}, o.client...)
@@ -25,20 +25,23 @@ func (o options) acquisitionPolicyClientOptions() []starmap.Option {
 	if o.source.StartupPolicy == StartupRequireAuthority || o.origin != nil {
 		selected = append(selected, starmap.WithPublicationGuard(o.publicationCapability.guard))
 	}
+	if o.generationPin != "" {
+		selected = append(selected, starmap.WithPublicationGuard(o.generationPinGuard))
+	}
 	return selected
 }
 
-// publishAcquisitionPolicyStartup applies declarations and removal of prior scoped evidence.
+// publishAcquisitionPolicyStartup applies retained inputs and active declarations.
 // It aligns the client and runtime before either can serve.
 func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
+	if r.config.generationPin != "" {
+		return r.publishGenerationPin(ctx)
+	}
 	if r.config.origin != nil {
 		return r.publishOriginStartup(ctx)
 	}
 	if r.requiresAuthority() {
 		return r.publishAuthorityStartup(ctx)
-	}
-	if r.config.providerBindings == nil && r.config.acquisitionSources == nil && !storedProviderPolicyRequired(r.client.CurrentCatalogState()) {
-		return nil
 	}
 	r.mu.RLock()
 	state := r.effective
@@ -58,10 +61,10 @@ func (r *Runtime) publishAcquisitionPolicyStartup(ctx context.Context) error {
 	return nil
 }
 
-// restoreAcquisitionPolicyGeneration reuses immutable bytes only for the selected identity.
-// A prior policy can return only when the current declarations select it again.
-func (r *Runtime) restoreAcquisitionPolicyGeneration(ctx context.Context, state starmap.CatalogState, epoch uint64) (bool, error) {
-	if (r.config.providerBindings == nil && r.config.acquisitionSources == nil && !storedProviderPolicyRequired(r.client.CurrentCatalogState())) || state.GenerationID == "" || state.GenerationID == r.client.CurrentGenerationID() {
+// restoreRetainedGeneration reuses immutable bytes only for the selected identity.
+// The runtime rebuild selects this identity before it retrieves the immutable artifact.
+func (r *Runtime) restoreRetainedGeneration(ctx context.Context, state starmap.CatalogState, epoch uint64) (bool, error) {
+	if state.GenerationID == "" || state.GenerationID == r.client.CurrentGenerationID() {
 		return false, nil
 	}
 	generation, err := r.client.Generation(ctx, state.GenerationID)
