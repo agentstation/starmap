@@ -3069,3 +3069,7 @@ Admission keeps the existing cached clock reads without native observation queri
 
 The [Starport clock proof](../../plans/proof/starport-production-catalog/csp4/starport-clock-2026-09-11/verification.json) records local integration against combined Starmap `d1bb47e1`.
 The published dependency still needs an update. Delivery checks, required review, native CI, and merge remain open.
+
+The [integrated task gate](../../plans/proof/starport-production-catalog/csp4/integrated-task-2026-09-11/verification.json) passes eight selected subcases against Starmap `d1bb47e1` and Starport `9669b61d`.
+It records 54 race events and no skips. Full task-suite and repository verification remain in progress.
+This component evidence does not qualify the final released pair or complete CSP4 before its implementation merges.

@@ -32,6 +32,13 @@ The prepared run passed four public subcases and reported four missing consumer 
 This task gate records component checks. Full A09, A10, and A21 qualification remains with CSP10.
 The later clock candidate connects production composition. Its published dependency, remaining delivery checks, required review, publication, and merge remain open.
 
+The [integrated task proof](csp4/integrated-task-2026-09-11/verification.json) repeats the gate against Starmap `d1bb47e1` and Starport `9669b61d`.
+All eight selected subcases pass with 54 race events and no skips. These checks use the temporary module workspace.
+The report leaves 49 primary cases unverified because this invocation selects only CSP4. It completes A07 within that selection.
+
+The broad runtime race suite runs in session `50784`, with output at `.tmp/csp4-integrated-task/task-race.jsonl`.
+Full repository verification remains live in session `8874`. Neither unfinished command supplies completion credit.
+
 ### Remaining native and origin delivery
 
 All six native runtime jobs pass at `75ac9d07` in PR #151.
@@ -76,6 +83,7 @@ A canceled construction context does not close the runtime. Its owner must call 
 The tests use an untracked workspace with Starmap `d1bb47e1`.
 The committed published dependency predates the required clock API. Publish the combined runtime and update that pin before final qualification.
 Native lifecycle tests prove observation attempts and shutdown, not the declared host error bounds.
+
 The new prose passes with zero diagnostics. The full operator guide retains its 48 unrelated baseline diagnostics.
 Required review, delivery gates, native Starport CI, and merge remain open.
 The [previous current record](csp4/integration-history-before-starport-clock-2026-09-11.md) preserves earlier state.

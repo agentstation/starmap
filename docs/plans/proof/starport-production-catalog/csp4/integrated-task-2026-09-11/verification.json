@@ -1,0 +1,545 @@
+{
+  "task": "CSP4",
+  "status": "INTEGRATED_COMPONENT_GATE_PASS_BROAD_VERIFICATION_RUNNING",
+  "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "branch": "codex/catalog-origin-settings",
+  "consumer_source_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+  "consumer_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "source_files": [
+    {
+      "path": "scripts/verify-catalog-product.sh",
+      "sha256": "a28e82709a808c40574758c02712fba350bb783718dbd16b7948acb05dd1b5f2"
+    },
+    {
+      "path": "scripts/catalog_product_verify.py",
+      "sha256": "08be77c46f86d2861af0956d7b2a753d14e5d5377d7dec696e86aa0ff05a1906"
+    },
+    {
+      "path": "scripts/catalog-product-checks.json",
+      "sha256": "0b870997b590746d0faf41968c2d9e001a32072629b207ef1e67ac04668373f9"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/acceptance-map.json",
+      "sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391"
+    },
+    {
+      "path": "runtime/public_catalog_acceptance_test.go",
+      "sha256": "806886e0d63b5a50d7f6403d8c57702587a8ffdb3d400d373d08b9506df843ef"
+    },
+    {
+      "path": "pkg/catalogs/artifact/import_test.go",
+      "sha256": "1f899e976f4c0863db7bfdc1f86d4c888bf35b5ffcda4a9e16980d25b8783c4a"
+    }
+  ],
+  "consumer_files": [
+    {
+      "path": "internal/app/catalog_authority_test.go",
+      "sha256": "886e0c1559effc976d129fd4a632af0abf6ad55c4178889b98da22f0ef4acf4c"
+    },
+    {
+      "path": "internal/catalog/authority_acceptance_test.go",
+      "sha256": "05e2066e26315c70d34f92872e4ff66f1e9632161de8144835d97319d6816d44"
+    },
+    {
+      "path": "internal/catalog/authority_snapshot_test.go",
+      "sha256": "752b51624e7afc21046bb844b69d3da172e387d954b409726cf0b377434cfc66"
+    },
+    {
+      "path": "internal/proxy/catalog_permission_test.go",
+      "sha256": "421918b403bd54eb32810d9df83d2762762f22cc8e3745060087403c3727b8d0"
+    },
+    {
+      "path": "internal/router/catalog_permission_test.go",
+      "sha256": "4fff340a77418893be8bf88c6037a594745ecaed1c1081a44ec7be874bfa71fd"
+    },
+    {
+      "path": "internal/server/controllers/catalog_permission_error_test.go",
+      "sha256": "4e993b626a5805bf9b3836ac066948b71e8f6efa639a6f8e38cb2d5b75de5313"
+    },
+    {
+      "path": "internal/server/controllers/chat_test.go",
+      "sha256": "dd8d9d5d8476b84775669825e2e981af2edee13300ae457a450e1ac6bc42f714"
+    }
+  ],
+  "checks": {
+    "component_gate": {
+      "gate_status": "PASS",
+      "qualification": "component checks only",
+      "selected_subcases": 8,
+      "statuses": {
+        "A07.public_no_provider_keys": "PASS",
+        "A07.invalid_signature": "PASS",
+        "A07.checksum_size_schema": "PASS",
+        "A07.replay_rejection": "PASS",
+        "A09.excluded_membership": "PASS",
+        "A10.cold_owner_refusal": "PASS",
+        "A10.warm_retained_authority": "PASS",
+        "A21.mixed_schema_permission_envelope": "PASS"
+      },
+      "test_events": {
+        "pass": 54,
+        "fail": 0,
+        "skip": 0
+      },
+      "invocations": [
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPublicCatalogActivatesWithoutProviderCredentials$",
+            "./runtime"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 1,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState$",
+            "./runtime"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 6,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState$",
+            "./runtime"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 6,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestVerifyReleaseFailsClosedBeforeReturningGeneration$",
+            "./pkg/catalogs/artifact"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 7,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState$",
+            "./runtime"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 6,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthorityCatalogExcludesEmbeddedMembership$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 1,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthorityColdStartupRefusesWithoutAcceptedOwner$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 1,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestConfiguredAuthorityColdStartupKeepsDiagnostics$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 1,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCatalogPermissionFailureUsesRetryableGatewayStatus$",
+            "./internal/server/controllers"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 3,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestChatStreamCatalogPermissionBeforeHeaders$",
+            "./internal/server/controllers"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 3,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 4,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 1,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthorityFutureSchemaPermissionEnvelope$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 3,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestRouterRechecksCatalogPermissionBeforeAttempts$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 6,
+            "fail": 0,
+            "skip": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCacheDeliveryRechecksCatalogPermission$",
+            "./internal/proxy"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+          "exit_code": 0,
+          "test_events": {
+            "pass": 5,
+            "fail": 0,
+            "skip": 0
+          }
+        }
+      ],
+      "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+      "registry_sha256": "0b870997b590746d0faf41968c2d9e001a32072629b207ef1e67ac04668373f9"
+    },
+    "command": {
+      "command": [
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "--task",
+        "CSP4",
+        "--json"
+      ],
+      "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+      "consumer_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+      "GOWORK": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/go.work",
+      "GOTOOLCHAIN": "go1.26.6",
+      "started_at": "2026-09-11T15:11:43.078518+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-09-11T15:18:26.627974+00:00"
+    },
+    "canonical_prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0,
+      "files": 1329,
+      "diagnostics": 0,
+      "initial_exit_code": 2,
+      "initial_diagnostics": 1,
+      "correction": "Split overlong paragraphs in csp4.md without changing their facts. The final full check passes.",
+      "final_command_log": "integrated-task-prose-corrected.log.gz"
+    }
+  },
+  "running_checks": [
+    {
+      "session_id": 50784,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "30m",
+        "-json",
+        "./runtime",
+        "./remote",
+        "./pkg/catalogs/artifact"
+      ],
+      "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+      "GOWORK": "off"
+    },
+    {
+      "session_id": 8874,
+      "command": [
+        "make",
+        "verify"
+      ],
+      "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+      "GOWORK": "off"
+    },
+    {
+      "pull_request": 151,
+      "workflow_run": 34609335965,
+      "job_id": 103295961492,
+      "source_commit": "75ac9d0751d666ed71393ca08f573e8a2739860e"
+    }
+  ],
+  "limitations": [
+    "This is the current integrated component gate, not all 50 primary cases or released-pair qualification.",
+    "The report marks 49 primary cases unverified because only the eight CSP4 subcases were selected. A07 is the only complete primary case in this invocation.",
+    "Starport uses an untracked Go workspace. Its published dependency update, final delivery gates, review, native CI, and merge remain open.",
+    "The broad task race suite and repository verifier remain live. Their incomplete output supplies no completion credit."
+  ],
+  "artifacts": [
+    {
+      "path": "task-gate.json.gz",
+      "sha256": "9337fc2b295ceea70af1328a1267e72296e738fcca3cc95f1a2db77bbb691e0e",
+      "decoded_sha256": "1744a6f2cced229d6a16479a7b1424d9de051dc66efc6813cf628c86dac650fc"
+    },
+    {
+      "path": "task-gate-command.json.gz",
+      "sha256": "0557412036677229dcfe48aff7c7f878d9eb214c9e9a20a31b1c04b55210caae",
+      "decoded_sha256": "79dc3a05566d3238f33716a265514f29a0f37f840e72bbe2f162f7ae8bef7a43"
+    },
+    {
+      "path": "task-gate-summary.json.gz",
+      "sha256": "20d80144ffc203bb5630bfae4ad6923fa985c049ad20a43f450b55e0e674d959",
+      "decoded_sha256": "d8cfd19ae01b35d702f10fdc8f9dbc7e41c55582ce83b7fb28afb51ce59a69f1"
+    },
+    {
+      "path": "task-gate.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "task-race.json.gz",
+      "sha256": "96383da675fdae3f6c4f6a0601a7c679158045e4e8978cc7270ea36258ab3db1",
+      "decoded_sha256": "a32e042417b500ada732adc583b55e02c780239bda7e6f265d58254f799e096a"
+    },
+    {
+      "path": "starport-clock-canonical-prose.log.gz",
+      "sha256": "551d64bfabd8b73ea385081ac7312931d45eeb2f441b71a042b28c76532f944f",
+      "decoded_sha256": "07bad0343dc49d19883ee34c970366e8f88ab77fe0925698ac2c7a656d31d8b7"
+    },
+    {
+      "path": "starport-clock-canonical-prose.json.gz",
+      "sha256": "4f60a8f87e1800d70c8c3b1a0cdb234f3ea417a4a2048a7d2d0e10821ab9a863",
+      "decoded_sha256": "5c551d97800ba3d0e516d2912d05f677784f0e5e3a44067e4a2c5e7cb3ebc8e5"
+    },
+    {
+      "path": "starport-clock-canonical-prose-corrected.log.gz",
+      "sha256": "62ea31eea82037d10baf9a47713335d22b41cafa46e6f5bec12df9255037ed71",
+      "decoded_sha256": "cf16ac4f5ed89456619b67fc59772f04a7a78f3ec92c5d3b8065face8b5b5e02"
+    },
+    {
+      "path": "starport-clock-canonical-prose-corrected.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "integrated-task-prose.log.gz",
+      "sha256": "2b8244557f83f9284a1b7fe2fddf2718bc03f48cd52c1054d886c2c0851f44d0",
+      "decoded_sha256": "de5dd54fa3ef155ce6630b3a1482d9e97b82c8fa38eaa4e2f6f5984da148b163"
+    },
+    {
+      "path": "integrated-task-prose.json.gz",
+      "sha256": "4f60a8f87e1800d70c8c3b1a0cdb234f3ea417a4a2048a7d2d0e10821ab9a863",
+      "decoded_sha256": "5c551d97800ba3d0e516d2912d05f677784f0e5e3a44067e4a2c5e7cb3ebc8e5"
+    },
+    {
+      "path": "integrated-task-prose-corrected.log.gz",
+      "sha256": "f16da51746db46f479f13fa06ba74149d0c18815142ec7239373406f773a04b1",
+      "decoded_sha256": "7abe194f36516e16310106f4255cad0c26db446502be6a30757474a028960a2c"
+    },
+    {
+      "path": "integrated-task-prose-corrected.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    }
+  ]
+}

@@ -2325,3 +2325,7 @@ New prose has zero diagnostics. The full operator guide retains 48 unrelated bas
 
 Tests use a temporary workspace with Starmap `d1bb47e1`. The committed published dependency predates the clock API.
 Published dependency qualification, full delivery gates, required review, native CI, and merge remain open.
+
+The [integrated task gate](../../plans/proof/starport-production-catalog/csp4/integrated-task-2026-09-11/verification.json) passes eight selected subcases against Starmap `d1bb47e1` and Starport `9669b61d`.
+It records 54 race events and no skips. Full task-suite and repository verification remain in progress.
+This component evidence does not qualify the final released pair or complete CSP4 before its implementation merges.
