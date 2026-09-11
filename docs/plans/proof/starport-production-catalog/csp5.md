@@ -4,7 +4,9 @@ CSP5 remains in progress. The local implementation starts from Starmap `f9951ee6
 Its worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls`.
 
 Checkpoint `eeeba376` holds the local controls. Checkpoint `48a9a6e5` adds cascade lifecycle handling.
-Checkpoint `52c84e28` corrects source-close timeout ownership. No checkpoint has a PR or merge. Starport remains at the merged CSP4 consumer source.
+Checkpoint `52c84e28` corrects source-close timeout ownership. Checkpoint `b3cf9b68` rechecks queued publication guards.
+
+Checkpoint `32951a7b` adds configured pins and consistent unpin startup. No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
 
@@ -65,8 +67,10 @@ Failed startup preserves source-close errors and releases the directory for a la
 ago and vet pass. The prose check passes before a test-only option-name correction that changes no prose.
 The full remote package passes 62 race events. The full settings package passes 24 race events. Neither package skips a test.
 
-The earlier runtime package remains active in session `13494`. Its source is `48a9a6e5`. Its command is `go test -race -count=1 -timeout 30m -json ./runtime ./remote ./internal/catalog/settings`.
-Read `.tmp/csp5-update-controls/lifecycle-packages/verification.json` and resume the existing session before starting another run.
+The earlier lifecycle run completed against `48a9a6e5` with 989 passes and two explicit skips.
+Runtime passes 903 events, remote passes 62, and settings passes 24.
+The two public-catalog tests skipped because their immutable fixture was absent. The latest proof retains their exact reasons.
+Its command was `go test -race -count=1 -timeout 30m -json ./runtime ./remote ./internal/catalog/settings`.
 These focused and package results overlap. They do not complete any mapped CSP5 subcase.
 
 ## Source-close timeout correction
@@ -85,8 +89,43 @@ Complete remote and settings packages pass 63 and 24 race events without failure
 ago and vet pass. The prose check precedes a nil-receiver guard and two test additions that change no source comments.
 
 The earlier broad run in session `13494` covers checkpoint `48a9a6e5` only.
-Its result cannot qualify the timeout correction. The proof preserves its separate source identity and current status.
+Its result cannot qualify the timeout correction. The latest pin proof records its completion and separate source identity.
 Starport still owns its cascade separately. CSP8 must adopt coordinated source shutdown before consumer qualification.
+
+## Configured generation pins
+
+The [pin proof](csp5/generation-pins-2026-09-11/verification.json) binds checkpoints `b3cf9b68` and `32951a7b` to their exact checks.
+The queued-mutation regression shows update, activation, reload, and rollback bypassing a guard changed while they waited.
+The corrected guard runs again after entry to the mutation transaction. All 24 selected guard, reload, and rollback events pass.
+
+`STARMAP_CATALOG_GENERATION_PIN` and `WithGenerationPin` select one retained artifact before startup can rebuild from retained inputs.
+The host persists this value in its selected configuration authority. An explicit empty value clears the pin during runtime replacement.
+The descriptor has deployment scope and the `runtime-replacement` change class. No separate pin configuration file exists.
+The generated reference, descriptor schema, environment example, and Compose example include the setting.
+
+Pins block source reads, scheduled acquisition, watcher subscriptions, imports, removals, and direct client mutations.
+Independent permission observation continues. Permission enforcement uses the selected artifact's exact manifest and payload identity.
+A permission withdrawal blocks new attempts while retaining pinned metadata. An incompatible authority cannot accept the pin.
+Invalid identity, payload, schema, or missing artifacts fail startup and leave accepted storage unchanged.
+
+The first pin configuration test shows ignored selection, network requests, candidate work, and direct rollback across two starts.
+The first runtime test had two fixture errors: it removed a persistent alias and passed an empty import.
+After fixture correction, unpin exposed a runtime/client mismatch. Startup now restores the same verified retained generation in both views.
+The filesystem test reopens the store twice before clearing the pin and restoring the latest retained inputs.
+
+Corrected focused checks pass 86 race events without failures or skips.
+All 111 public configuration events pass. The initial internal settings run missed one sample value. Its corrected run passes all 24 events.
+
+ago and vet pass. The prose check passes before that test-only sample correction, which changes no comments.
+
+Full runtime/storage session `36556` starts from clean `32951a7b`.
+Its command is `env STARMAP_PUBLIC_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout 30m -json ./runtime ./pkg/catalogs/storage`.
+The preparation command downloaded and verified the immutable public fixture before this run.
+The proof preserves a running snapshot. Read `.tmp/csp5-update-controls/generation-pin-runtime-storage/verification.json` for its final status.
+
+This checkpoint does not record a durable rollback acceptance event or qualify complete pin recovery.
+An origin can pin its current authority generation. An origin rollback still requires implementation that issues a new authority revision.
+Authority-binding receipts, generation retention, and full task acceptance remain open.
 
 ## Remaining work
 
@@ -94,9 +133,9 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Inspect the existing earlier-source race session before starting another broad runtime run.
+Resume current-source session `36556` before starting another broad runtime run.
 Do not replace an observation timeout with a new test process.
-Continue generation pins and rollback under the task contract.
+Continue acceptance records, origin rollback publication, and complete pin recovery under the task contract.
 
 Complete pin and rollback behavior without bypassing permission withdrawal.
 Complete owned-stage recovery, bounded history compaction, and ambiguous publication recovery.

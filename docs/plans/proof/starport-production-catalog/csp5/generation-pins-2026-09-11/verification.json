@@ -1,0 +1,3158 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "32951a7b83c1e898afc438d2e04e8928cab53aec",
+  "source_files": [
+    {
+      "path": ".env.example",
+      "sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "sha256": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "pkg/catalogs/config/generation_pin_test.go",
+      "sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "publication_guard.go",
+      "sha256": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d"
+    },
+    {
+      "path": "publication_guard_test.go",
+      "sha256": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec"
+    },
+    {
+      "path": "reload.go",
+      "sha256": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9"
+    },
+    {
+      "path": "rollback.go",
+      "sha256": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39"
+    },
+    {
+      "path": "runtime/acquisition_policy_publication.go",
+      "sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "runtime/authority_catalog.go",
+      "sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "runtime/authority_refresh.go",
+      "sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "runtime/authority_retention.go",
+      "sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "runtime/generation_pin.go",
+      "sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "runtime/generation_pin_test.go",
+      "sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "runtime/publication_retention.go",
+      "sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "runtime/source_startup.go",
+      "sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "runtime/status.go",
+      "sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "runtime/status/status.go",
+      "sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "runtime/update_policy.go",
+      "sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "update.go",
+      "sha256": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+    }
+  ],
+  "base_commit": "52c84e286b3a11304d3c9c4c84c89ede79203184",
+  "verified_at": "2026-09-11T21:52:38.520669+00:00",
+  "source_binding": "Each check retains its command, source hashes, snapshots, and exit status. Checkpoint b3cf9b68 owns queued guards. Checkpoint 32951a7b owns configured pins and startup alignment. The running full check starts from clean 32951a7b.",
+  "qualification": "Local generation-selection checkpoint. All twelve mapped CSP5 subcases remain unverified. No PR or merge credit.",
+  "checks": {
+    "pin-guard-queue-red": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^TestPublicationGuardRechecksQueuedMutation$",
+        "-json",
+        "."
+      ],
+      "started_at": "2026-09-11T21:27:41.459673+00:00",
+      "base_commit": "52c84e286b3a11304d3c9c4c84c89ede79203184",
+      "source_files": {
+        "publication_guard_test.go": "82b7549e11b9bdcfd2d92742300d19ba159af475e25a9365bfc376170048c780"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T21:27:54.178328+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 5
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap": {
+          "fail": 5
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap",
+          "result": "fail"
+        }
+      ]
+    },
+    "pin-guard-queue-red-corrected": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^TestPublicationGuardRechecksQueuedMutation$",
+        "-json",
+        "."
+      ],
+      "started_at": "2026-09-11T21:28:27.982522+00:00",
+      "base_commit": "52c84e286b3a11304d3c9c4c84c89ede79203184",
+      "source_files": {
+        "publication_guard_test.go": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T21:28:39.990782+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 5
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap": {
+          "fail": 5
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap",
+          "result": "fail"
+        }
+      ]
+    },
+    "pin-guard-queue-green": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-run",
+        "^(TestPublicationGuard.*|TestReload.*|TestRollback.*)$",
+        "-json",
+        "."
+      ],
+      "started_at": "2026-09-11T21:29:08.855946+00:00",
+      "base_commit": "52c84e286b3a11304d3c9c4c84c89ede79203184",
+      "source_files": {
+        "publication_guard.go": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d",
+        "publication_guard_test.go": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec",
+        "reload.go": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9",
+        "rollback.go": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39",
+        "update.go": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:29:22.637084+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 24
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap": {
+          "pass": 24
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap",
+          "result": "pass"
+        }
+      ]
+    },
+    "pin-guard-ago": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T21:32:23.679022+00:00",
+      "base_commit": "52c84e286b3a11304d3c9c4c84c89ede79203184",
+      "source_files": {
+        "publication_guard.go": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d",
+        "publication_guard_test.go": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec",
+        "reload.go": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9",
+        "rollback.go": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39",
+        "update.go": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:32:25.400039+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "pin-guard-writing": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T21:32:23.679016+00:00",
+      "base_commit": "52c84e286b3a11304d3c9c4c84c89ede79203184",
+      "source_files": {
+        "publication_guard.go": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d",
+        "publication_guard_test.go": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec",
+        "reload.go": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9",
+        "rollback.go": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39",
+        "update.go": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:33:11.799078+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "lifecycle-packages": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "30m",
+        "-json",
+        "./runtime",
+        "./remote",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T20:58:40.213748+00:00",
+      "base_commit": "eeeba3762e85712df496f8186807e4952a410abe",
+      "source_files": {
+        "internal/catalog/settings/cascade_lifecycle_test.go": "5384fc54682622980fee543ac4aeeba34b60e60d7df9a484510a9da4ab221013",
+        "internal/catalog/settings/composition.go": "283882d2036cab8c9fc904734a1f405aa8a779ba5d590ec6efec26dcfe74026c",
+        "remote/source.go": "0bc4f9e66348b294d3ae8ffad41e9a92465e329e595abe7b2b78ab0aa393ed91",
+        "remote/source_startup_test.go": "09ef76196c8980d97fe6c206100fc6fac7c9a2358cffdd2cd413e3ba4976c661",
+        "remote/subscriber.go": "a83aa93142e00c5caea89c6d5e35d6ae84e33d7d4d84bdc4ba8076ff047ca5b9",
+        "runtime/authority_retention.go": "56b46188d219b8f2c7a2da148f6ba3e0bfcf46829becb2147f06bff96a873bb6",
+        "runtime/options.go": "bc2810096a04ff54033709f68f8b1169deb8c301fdfb62d3f1139716e77a1137",
+        "runtime/runtime.go": "3231195d548d01724f5b3895ff921ee1250aa6ce1983233f939f72abb9f2267c",
+        "runtime/source_lifecycle.go": "e4a2510cd6b0c751fb248182009d3e05543c44dcf6b268c50c909d48a62b5200",
+        "runtime/source_lifecycle_test.go": "cc79f0a34aed2e90bf4db2a39432f340c346e6b03793458e093562ccfb72aff4"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:27:31.421010+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 989,
+        "skip": 2
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/catalog/settings": {
+          "pass": 24
+        },
+        "github.com/agentstation/starmap/remote": {
+          "pass": 62
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 903,
+          "skip": 2
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ],
+      "skipped_tests": [
+        "TestPublicCatalogActivatesWithoutProviderCredentials",
+        "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+      ],
+      "qualification": "Earlier 48a9a6e5 lifecycle source only. This completed run does not cover shutdown timeout fixes or generation pins.",
+      "skip_reason": "The immutable public catalog fixture was absent. Both public-catalog tests explicitly skipped. The current full run requires the prepared fixture."
+    },
+    "generation-pin-red": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "4m",
+        "-run",
+        "^TestGenerationPinConfigurationSelectsRetainedCatalog$",
+        "-json",
+        "./pkg/catalogs/config"
+      ],
+      "started_at": "2026-09-11T21:39:39.473354+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        "pkg/catalogs/config/generation_pin_test.go": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T21:40:07.641507+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/config": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "fail"
+        }
+      ]
+    },
+    "generation-pin-green": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "4m",
+        "-run",
+        "^TestGenerationPinConfigurationSelectsRetainedCatalog$",
+        "-json",
+        "./pkg/catalogs/config"
+      ],
+      "started_at": "2026-09-11T21:41:43.116776+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "f9a8de6201cf7562b00170ea969b192d4fdd10bed55bc737045cc8e20053d217",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "a62ceb8a5b30ecdac1f1baab705075aba5974c17de34a2750a67e208a3c49c87",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "10de8acc7813b39d0110cb8288d6961daa86db8a5719fb600fecddbb56142b50",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:42:14.722510+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/config": {
+          "pass": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "pass"
+        }
+      ]
+    },
+    "generation-pin-runtime-initial": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "6m",
+        "-run",
+        "^TestGenerationPin",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T21:43:45.103271+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "f9a8de6201cf7562b00170ea969b192d4fdd10bed55bc737045cc8e20053d217",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "a62ceb8a5b30ecdac1f1baab705075aba5974c17de34a2750a67e208a3c49c87",
+        "runtime/generation_pin_test.go": "fffe33ae764b387a194a63e40b1acf8d8be32b185f9f0fe15aa956201f455fc9",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "10de8acc7813b39d0110cb8288d6961daa86db8a5719fb600fecddbb56142b50",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T21:43:59.669096+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 3,
+        "pass": 11
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 3,
+          "pass": 11
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "generation-pin-runtime-corrected": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "6m",
+        "-run",
+        "^TestGenerationPin",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T21:44:29.583338+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "f9a8de6201cf7562b00170ea969b192d4fdd10bed55bc737045cc8e20053d217",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "a62ceb8a5b30ecdac1f1baab705075aba5974c17de34a2750a67e208a3c49c87",
+        "runtime/generation_pin_test.go": "8e1c256be9fbaba7f175ceab0a8b0b02fc4d681a8ce32c97569e611d7704c3c7",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "10de8acc7813b39d0110cb8288d6961daa86db8a5719fb600fecddbb56142b50",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T21:44:44.036428+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1,
+        "pass": 13
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 1,
+          "pass": 13
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "generation-pin-runtime-green": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "6m",
+        "-run",
+        "^TestGenerationPin",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T21:45:36.299846+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8e1c256be9fbaba7f175ceab0a8b0b02fc4d681a8ce32c97569e611d7704c3c7",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:45:52.105959+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 14
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 14
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "generation-pin-focused": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-run",
+        "^(TestGenerationPin.*|TestProviderPolicy.*|TestDurableRuntimeKeepsTheDerivedEffectiveIdentity|TestUnchangedRebuildCommitsNoSecondGeneration|TestRestartReportsTheCommittedEffectiveIdentity|TestSourcelessDurableRestartKeepsOneDerivedIdentity|TestAuthorityRuntime.*)$",
+        "-json",
+        "./runtime",
+        "./pkg/catalogs/config"
+      ],
+      "started_at": "2026-09-11T21:47:29.900215+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:50:47.855189+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 86
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 84
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/config": {
+          "pass": 2
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "generation-pin-settings": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-json",
+        "./internal/catalog/settings",
+        "./pkg/catalogs/config"
+      ],
+      "started_at": "2026-09-11T21:47:29.912897+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T21:48:42.191493+00:00",
+      "status": "failed",
+      "test_events": {
+        "pass": 134,
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/config": {
+          "pass": 111
+        },
+        "github.com/agentstation/starmap/internal/catalog/settings": {
+          "pass": 23,
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "fail"
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "pass"
+        }
+      ]
+    },
+    "generation-pin-settings-corrected": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "4m",
+        "-json",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T21:49:26.615253+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "internal/catalog/settings/settings_test.go": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:50:21.064996+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 24
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/catalog/settings": {
+          "pass": 24
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "pass"
+        }
+      ]
+    },
+    "generation-pin-ago": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T21:47:29.904341+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:47:32.321989+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "generation-pin-writing": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T21:47:29.900193+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:48:19.909673+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "generation-pin-vet": {
+      "command": [
+        "go",
+        "vet",
+        "./runtime",
+        "./pkg/catalogs/config",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T21:48:56.021625+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:48:57.082350+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "generation-pin-ago-final": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T21:51:14.312418+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "internal/catalog/settings/settings_test.go": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:51:15.960491+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "generation-pin-public-fixture": {
+      "command": [
+        "python3",
+        "scripts/prepare_public_catalog_fixture.py"
+      ],
+      "started_at": "2026-09-11T21:51:14.321866+00:00",
+      "base_commit": "b3cf9b68adb1359fca7485a554847a29a79d0fe4",
+      "source_files": {
+        ".env.example": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb",
+        "docker-compose.yml": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7",
+        "docs/CATALOG_SETTINGS.md": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833",
+        "docs/catalog-settings-schema.json": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46",
+        "internal/catalog/settings/settings.go": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a",
+        "internal/catalog/settings/settings_test.go": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5",
+        "pkg/catalogs/config/config_test.go": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e",
+        "pkg/catalogs/config/descriptors.go": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80",
+        "pkg/catalogs/config/generation_pin_test.go": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7",
+        "pkg/catalogs/config/settings.go": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93",
+        "runtime/acquisition_policy_publication.go": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9",
+        "runtime/authority_catalog.go": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32",
+        "runtime/authority_refresh.go": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd",
+        "runtime/authority_retention.go": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7",
+        "runtime/generation_pin.go": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4",
+        "runtime/generation_pin_test.go": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c",
+        "runtime/options.go": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9",
+        "runtime/publication_retention.go": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a",
+        "runtime/refresh.go": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6",
+        "runtime/runtime.go": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7",
+        "runtime/scheduler.go": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c",
+        "runtime/source_startup.go": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729",
+        "runtime/status.go": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694",
+        "runtime/status/status.go": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89",
+        "runtime/update_policy.go": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T21:51:14.856202+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "generation-pin-runtime-storage": {
+      "command": [
+        "env",
+        "STARMAP_PUBLIC_FIXTURE_REQUIRED=1",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "30m",
+        "-json",
+        "./runtime",
+        "./pkg/catalogs/storage"
+      ],
+      "started_at": "2026-09-11T21:51:33.261919+00:00",
+      "base_commit": "32951a7b83c1e898afc438d2e04e8928cab53aec",
+      "source_files": {},
+      "status": "running",
+      "session_id": 36556,
+      "test_events": {
+        "pass": 90
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 88
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 2
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "result": "pass"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "The earlier lifecycle run covers 48a9a6e5 only. Its two explicit skips do not qualify public catalog behavior.",
+    "The first pin runtime fixture removed a persistent alias and supplied an empty import. Corrected fixtures expose the separate unpin startup mismatch.",
+    "The initial settings run passes all 111 public configuration events. Its sole failure is the missing sample value for the new descriptor; the corrected internal package passes 24 events.",
+    "ago and vet pass. The prose check precedes one test-only sample value that changes no comments.",
+    "Pin configuration belongs to the selected configuration authority. This checkpoint does not add a durable acceptance event or a separate pin configuration file.",
+    "An origin can pin its current authority generation. Rolling an origin back to older payload requires a new authority revision and remains unimplemented.",
+    "Complete pin recovery, authority-binding receipts, rollback issuance, owned-stage recovery, generation retention, history compaction, and ambiguous publication retry remain open.",
+    "Full task checks, repository verification, review, native CI, and merges remain open. Starport remains on its merged CSP4 module."
+  ],
+  "artifacts": [
+    {
+      "path": "pin-guard-queue-red/changes.patch.gz",
+      "sha256": "db420baa5bce951d93e028b3fb8ebb6a3d57e019642cb37c970d994d577bf8ba",
+      "decoded_sha256": "1e8e68c5c8670e9c0f2b712bd52ea3a166c649bc04a4f9555e8589de60082170"
+    },
+    {
+      "path": "pin-guard-queue-red/source/publication_guard_test.go.gz",
+      "sha256": "ab586cef135f945f2414ac0432a4b03a6c4e14a6fd19faf681ca1cb5180073f7",
+      "decoded_sha256": "82b7549e11b9bdcfd2d92742300d19ba159af475e25a9365bfc376170048c780"
+    },
+    {
+      "path": "pin-guard-queue-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-guard-queue-red/stdout.log.gz",
+      "sha256": "412f6f9003a07e7e3b5d8b357dc4ea6b1f6f672a6884641806443728a5b39264",
+      "decoded_sha256": "736640fc4806378a0d23a58fdf61980493289dd146b6dd26324718d4f2f0432f"
+    },
+    {
+      "path": "pin-guard-queue-red/verification.json.gz",
+      "sha256": "4a0196a72e961db413fb7184c33608594f0ce7ce0fba0153339603b2c5c2a387",
+      "decoded_sha256": "23ac4c26f44b2ea10352c308f1e756b107dfcccd7db0757be7e00d54fe895326"
+    },
+    {
+      "path": "pin-guard-queue-red-corrected/changes.patch.gz",
+      "sha256": "a20392c6a406b4a42dfdca1cfd4c6bf3cd658f9c28897629769193d7a031847f",
+      "decoded_sha256": "e7d620dd69ee64a754cf1694b64deb872d8b6ee092e7983b7c2c5846d68f0c86"
+    },
+    {
+      "path": "pin-guard-queue-red-corrected/source/publication_guard_test.go.gz",
+      "sha256": "3f647420aa7757ad1dc16755193de6b764e8b501c694e140624f9a016c61678d",
+      "decoded_sha256": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec"
+    },
+    {
+      "path": "pin-guard-queue-red-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-guard-queue-red-corrected/stdout.log.gz",
+      "sha256": "f863100e6c87d3589ccd6bd061beaee9fcb130fa0b3629e164e52601ab436e27",
+      "decoded_sha256": "9667e1dd845ff442e6a6c0a8d473e104827a60d7b01bb45c79e72378ce2b865c"
+    },
+    {
+      "path": "pin-guard-queue-red-corrected/verification.json.gz",
+      "sha256": "ed3d462ad54b63a1e617f5e46231ffd071a27ea21545a34d8fc368e15d44baf8",
+      "decoded_sha256": "8fab2afb8032be6e9f1f3ffa921247201ff37d6991aec0827127a373ff379b38"
+    },
+    {
+      "path": "pin-guard-queue-green/changes.patch.gz",
+      "sha256": "689346f98527ce7d782c3105598e6a7ea2a1e5b9e43dea750c7c47f383674d6f",
+      "decoded_sha256": "094b638967ed42286754a170bd485aae5a04422a0dbe921964dfadcf63e68878"
+    },
+    {
+      "path": "pin-guard-queue-green/source/publication_guard.go.gz",
+      "sha256": "fe33319adf0acbd91babda73234d879ea5a15207e7eb59bebd1ca677420d1948",
+      "decoded_sha256": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d"
+    },
+    {
+      "path": "pin-guard-queue-green/source/publication_guard_test.go.gz",
+      "sha256": "3f647420aa7757ad1dc16755193de6b764e8b501c694e140624f9a016c61678d",
+      "decoded_sha256": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec"
+    },
+    {
+      "path": "pin-guard-queue-green/source/reload.go.gz",
+      "sha256": "5a79b0c3e6b824448774305e489293307d7e86a0f401a82fd705779b70a0e628",
+      "decoded_sha256": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9"
+    },
+    {
+      "path": "pin-guard-queue-green/source/rollback.go.gz",
+      "sha256": "8f62eadb5d4b2ac406935cbd9502cb43dbbca8a413c59d67e79874176cc0c588",
+      "decoded_sha256": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39"
+    },
+    {
+      "path": "pin-guard-queue-green/source/update.go.gz",
+      "sha256": "1630bcbbd6550ddc921f78542829fc8626efc2b77c4a7c29f227af1032bff28b",
+      "decoded_sha256": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+    },
+    {
+      "path": "pin-guard-queue-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-guard-queue-green/stdout.log.gz",
+      "sha256": "9642533620d688391714a65231d513b98e8e66551a5fa92024443fd397548b73",
+      "decoded_sha256": "f01408a86bb8b4e8fec53c0d1a41278de3909cfedfe01d1e50c630379d5f0849"
+    },
+    {
+      "path": "pin-guard-queue-green/verification.json.gz",
+      "sha256": "f64f7f96a465d483ca3954381d28168b1a67d3b8600d99c7f9fd33eb1b3060d2",
+      "decoded_sha256": "362162d6e54ee3f1bfe83e2ecff168403b5660887ded143238a6755f814f7c32"
+    },
+    {
+      "path": "pin-guard-ago/changes.patch.gz",
+      "sha256": "689346f98527ce7d782c3105598e6a7ea2a1e5b9e43dea750c7c47f383674d6f",
+      "decoded_sha256": "094b638967ed42286754a170bd485aae5a04422a0dbe921964dfadcf63e68878"
+    },
+    {
+      "path": "pin-guard-ago/source/publication_guard.go.gz",
+      "sha256": "fe33319adf0acbd91babda73234d879ea5a15207e7eb59bebd1ca677420d1948",
+      "decoded_sha256": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d"
+    },
+    {
+      "path": "pin-guard-ago/source/publication_guard_test.go.gz",
+      "sha256": "3f647420aa7757ad1dc16755193de6b764e8b501c694e140624f9a016c61678d",
+      "decoded_sha256": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec"
+    },
+    {
+      "path": "pin-guard-ago/source/reload.go.gz",
+      "sha256": "5a79b0c3e6b824448774305e489293307d7e86a0f401a82fd705779b70a0e628",
+      "decoded_sha256": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9"
+    },
+    {
+      "path": "pin-guard-ago/source/rollback.go.gz",
+      "sha256": "8f62eadb5d4b2ac406935cbd9502cb43dbbca8a413c59d67e79874176cc0c588",
+      "decoded_sha256": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39"
+    },
+    {
+      "path": "pin-guard-ago/source/update.go.gz",
+      "sha256": "1630bcbbd6550ddc921f78542829fc8626efc2b77c4a7c29f227af1032bff28b",
+      "decoded_sha256": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+    },
+    {
+      "path": "pin-guard-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-guard-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "pin-guard-ago/verification.json.gz",
+      "sha256": "acdd1dc874499ad918e368dd55fa508349127301eaa42ee487b1977897299c1a",
+      "decoded_sha256": "fa173c06873859e84cf27fc9955d70bbc03212fb20f52d7a98def11dd918748c"
+    },
+    {
+      "path": "pin-guard-writing/changes.patch.gz",
+      "sha256": "689346f98527ce7d782c3105598e6a7ea2a1e5b9e43dea750c7c47f383674d6f",
+      "decoded_sha256": "094b638967ed42286754a170bd485aae5a04422a0dbe921964dfadcf63e68878"
+    },
+    {
+      "path": "pin-guard-writing/source/publication_guard.go.gz",
+      "sha256": "fe33319adf0acbd91babda73234d879ea5a15207e7eb59bebd1ca677420d1948",
+      "decoded_sha256": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d"
+    },
+    {
+      "path": "pin-guard-writing/source/publication_guard_test.go.gz",
+      "sha256": "3f647420aa7757ad1dc16755193de6b764e8b501c694e140624f9a016c61678d",
+      "decoded_sha256": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec"
+    },
+    {
+      "path": "pin-guard-writing/source/reload.go.gz",
+      "sha256": "5a79b0c3e6b824448774305e489293307d7e86a0f401a82fd705779b70a0e628",
+      "decoded_sha256": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9"
+    },
+    {
+      "path": "pin-guard-writing/source/rollback.go.gz",
+      "sha256": "8f62eadb5d4b2ac406935cbd9502cb43dbbca8a413c59d67e79874176cc0c588",
+      "decoded_sha256": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39"
+    },
+    {
+      "path": "pin-guard-writing/source/update.go.gz",
+      "sha256": "1630bcbbd6550ddc921f78542829fc8626efc2b77c4a7c29f227af1032bff28b",
+      "decoded_sha256": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+    },
+    {
+      "path": "pin-guard-writing/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-guard-writing/stdout.log.gz",
+      "sha256": "d2e43cc7d9a7144fa4b7c9f85687d4223335854f60fd5d00e38d98b2533b9cdc",
+      "decoded_sha256": "75c3228905426065b738b42d9d96e56a8cb1beff58dad2d9168a3b0da494613d"
+    },
+    {
+      "path": "pin-guard-writing/verification.json.gz",
+      "sha256": "ae18b723b6c6eb0bb73a0cca8fe6dbcebe7b6a5134c8d6e6df28b4951911b40f",
+      "decoded_sha256": "215a06a484ef0d5e205465f035b8f012541f60e1a72ea7f5badca20c9d206f32"
+    },
+    {
+      "path": "lifecycle-packages/changes.patch.gz",
+      "sha256": "11cd6f0cb5deb08ba05417c7a821607883eea1cb64a3ab1c7cec7537aabfbf60",
+      "decoded_sha256": "ef69b6d23d7f733c8a510b87b732bde0c4ce7b940f4bd8267c9a78542d5c46af"
+    },
+    {
+      "path": "lifecycle-packages/source/internal/catalog/settings/cascade_lifecycle_test.go.gz",
+      "sha256": "f70680fc8e79772914d5f4909a30adf29dad6945a4e359bc248dc65fec40d819",
+      "decoded_sha256": "5384fc54682622980fee543ac4aeeba34b60e60d7df9a484510a9da4ab221013"
+    },
+    {
+      "path": "lifecycle-packages/source/internal/catalog/settings/composition.go.gz",
+      "sha256": "70ea9d68bc08465bd49bab2222ded9547f8b3ba62f2943f61875ecea7f79d633",
+      "decoded_sha256": "283882d2036cab8c9fc904734a1f405aa8a779ba5d590ec6efec26dcfe74026c"
+    },
+    {
+      "path": "lifecycle-packages/source/remote/source.go.gz",
+      "sha256": "3e4619593e65ab0c8ec8d613d6622a63aa38170f508692219e65c696efb2fa3a",
+      "decoded_sha256": "0bc4f9e66348b294d3ae8ffad41e9a92465e329e595abe7b2b78ab0aa393ed91"
+    },
+    {
+      "path": "lifecycle-packages/source/remote/source_startup_test.go.gz",
+      "sha256": "d17ac84c2f96ee9883f446ab900bd8bb130f2a4842c3de34be7ce0f28db9eecc",
+      "decoded_sha256": "09ef76196c8980d97fe6c206100fc6fac7c9a2358cffdd2cd413e3ba4976c661"
+    },
+    {
+      "path": "lifecycle-packages/source/remote/subscriber.go.gz",
+      "sha256": "ebd2a32e1ce20ff0dd22f6aa38f95fe295fd2ce017b5cb42850b0cc0154953f8",
+      "decoded_sha256": "a83aa93142e00c5caea89c6d5e35d6ae84e33d7d4d84bdc4ba8076ff047ca5b9"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/authority_retention.go.gz",
+      "sha256": "cf6dce7ff324717e25b1104fd5a745978fec4fe07f6af0da0721e14986f93758",
+      "decoded_sha256": "56b46188d219b8f2c7a2da148f6ba3e0bfcf46829becb2147f06bff96a873bb6"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/options.go.gz",
+      "sha256": "770a8afe5c01c56b6a4138a173e313872707a025d10e0dfc48c54453be82ef09",
+      "decoded_sha256": "bc2810096a04ff54033709f68f8b1169deb8c301fdfb62d3f1139716e77a1137"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/runtime.go.gz",
+      "sha256": "60d065ac48a35457aba79869f743094da15046667f237f6025b545106f7aa5c9",
+      "decoded_sha256": "3231195d548d01724f5b3895ff921ee1250aa6ce1983233f939f72abb9f2267c"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/source_lifecycle.go.gz",
+      "sha256": "44ff0a2987c1e8605db4b038337ea3deaf0c90b4bfb381cbbf4982c20ab34c73",
+      "decoded_sha256": "e4a2510cd6b0c751fb248182009d3e05543c44dcf6b268c50c909d48a62b5200"
+    },
+    {
+      "path": "lifecycle-packages/source/runtime/source_lifecycle_test.go.gz",
+      "sha256": "adce376b641b591db22a1eb08836aca9ee3e76caba1220c05037c396ca78b86a",
+      "decoded_sha256": "cc79f0a34aed2e90bf4db2a39432f340c346e6b03793458e093562ccfb72aff4"
+    },
+    {
+      "path": "lifecycle-packages/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lifecycle-packages/stdout.log.gz",
+      "sha256": "ad8fc8b469443be2b2d032afda03de8c2ed446ec0bd226fced6e6d27d9767051",
+      "decoded_sha256": "40c3f6d8709da8acfab87283e7816f2b9a16c21d2ffd278dbd2812e344cdc742"
+    },
+    {
+      "path": "lifecycle-packages/verification.json.gz",
+      "sha256": "caf1134974d42a2de1ed36e194ccfa6c79c9d8fadc7dd4197e3b5cfdb9dc5e1b",
+      "decoded_sha256": "b33943485d98485eef790ad2ee9398f569e475bdce0d0a28f38974caccc4c639"
+    },
+    {
+      "path": "generation-pin-red/changes.patch.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-red/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "765d7a855d40c9b344eb57f0aad55448bb88a59d8a6e7d30b30b1f8da41dcb96",
+      "decoded_sha256": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c"
+    },
+    {
+      "path": "generation-pin-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-red/stdout.log.gz",
+      "sha256": "f70ca047cdd69cf25b852dd3c60d6961ed1d1acc6e58acde9dd5f99fc2ea9005",
+      "decoded_sha256": "353ea1b177561b9f5f79423facde5d202fe2e4bd9a5e2c181af50dd2526ccce3"
+    },
+    {
+      "path": "generation-pin-red/verification.json.gz",
+      "sha256": "85bfc419ff82a3f3939ca4abbf36a234d2486d611a1798355db15cb7eadc317a",
+      "decoded_sha256": "a6f262aaaeaaac549ec9b873e63e570b75ca12f0154412ebdd53ad6ecd2cd65c"
+    },
+    {
+      "path": "generation-pin-green/changes.patch.gz",
+      "sha256": "0e2cdc0800f6c28a4b72c805ea9470d7b977bcd7b8f75adf2900c01631d1165a",
+      "decoded_sha256": "1bb849312ab2cbe7f07bf3e189637f0dbe83a3201d8ee7110c882b68d1d0fe79"
+    },
+    {
+      "path": "generation-pin-green/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-green/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-green/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "765d7a855d40c9b344eb57f0aad55448bb88a59d8a6e7d30b30b1f8da41dcb96",
+      "decoded_sha256": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c"
+    },
+    {
+      "path": "generation-pin-green/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "6ecc4d67da80290a1c34d5d31e4e81f18a5b43d740416ffbd5a0d35d7250723a",
+      "decoded_sha256": "f9a8de6201cf7562b00170ea969b192d4fdd10bed55bc737045cc8e20053d217"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/generation_pin.go.gz",
+      "sha256": "f4f3877fc9a2f0a6b2370a461358881ff787fdf5510994bbc46cb1cc9ae367ff",
+      "decoded_sha256": "a62ceb8a5b30ecdac1f1baab705075aba5974c17de34a2750a67e208a3c49c87"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/runtime.go.gz",
+      "sha256": "fd3366aec6ef433849a0c26d908855726b7e9b319137c75755814ab0efd981b9",
+      "decoded_sha256": "10de8acc7813b39d0110cb8288d6961daa86db8a5719fb600fecddbb56142b50"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-green/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-green/stdout.log.gz",
+      "sha256": "fae6cfdcd80a47eeb9d7f3361d0f9d8226bf8b281283445ddc5988e7f0791acb",
+      "decoded_sha256": "3682f4a015dd0ad725ec2282d52a936f598b944558c5e3f72f742a414ba5e9e0"
+    },
+    {
+      "path": "generation-pin-green/verification.json.gz",
+      "sha256": "1c24a9fa98e59f41df1b4e96ef16f4dc2035ea583dab7e8573c100b6387b60af",
+      "decoded_sha256": "aa9bfde8243ee58ee0d42b25082243ff1e51e3a371915a87d344ab8233be43b7"
+    },
+    {
+      "path": "generation-pin-runtime-initial/changes.patch.gz",
+      "sha256": "0e2cdc0800f6c28a4b72c805ea9470d7b977bcd7b8f75adf2900c01631d1165a",
+      "decoded_sha256": "1bb849312ab2cbe7f07bf3e189637f0dbe83a3201d8ee7110c882b68d1d0fe79"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "765d7a855d40c9b344eb57f0aad55448bb88a59d8a6e7d30b30b1f8da41dcb96",
+      "decoded_sha256": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "6ecc4d67da80290a1c34d5d31e4e81f18a5b43d740416ffbd5a0d35d7250723a",
+      "decoded_sha256": "f9a8de6201cf7562b00170ea969b192d4fdd10bed55bc737045cc8e20053d217"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/generation_pin.go.gz",
+      "sha256": "f4f3877fc9a2f0a6b2370a461358881ff787fdf5510994bbc46cb1cc9ae367ff",
+      "decoded_sha256": "a62ceb8a5b30ecdac1f1baab705075aba5974c17de34a2750a67e208a3c49c87"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/generation_pin_test.go.gz",
+      "sha256": "dd362ec1709ebefc3283a61ff07c43cb4469df5aa413ebefc4b0f50ec8cb9008",
+      "decoded_sha256": "fffe33ae764b387a194a63e40b1acf8d8be32b185f9f0fe15aa956201f455fc9"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/runtime.go.gz",
+      "sha256": "fd3366aec6ef433849a0c26d908855726b7e9b319137c75755814ab0efd981b9",
+      "decoded_sha256": "10de8acc7813b39d0110cb8288d6961daa86db8a5719fb600fecddbb56142b50"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-runtime-initial/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-runtime-initial/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-runtime-initial/stdout.log.gz",
+      "sha256": "833a5575ec7321d4220c9db26b59d6a6031ab562112ef0da3cf6cebd0b616129",
+      "decoded_sha256": "7e845d0d4c0e20994825d885d906eeeb77d9aca8e347ba460ec2896225d512e7"
+    },
+    {
+      "path": "generation-pin-runtime-initial/verification.json.gz",
+      "sha256": "5c7f9e2183c5fd11e281c36a782206fc611c3fa3cc0ce9a204226fdf040898e1",
+      "decoded_sha256": "9614870117c2d81d2056c6638464e262af04e4d72ef9ae27b95f9eee64e6bf02"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/changes.patch.gz",
+      "sha256": "0e2cdc0800f6c28a4b72c805ea9470d7b977bcd7b8f75adf2900c01631d1165a",
+      "decoded_sha256": "1bb849312ab2cbe7f07bf3e189637f0dbe83a3201d8ee7110c882b68d1d0fe79"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "765d7a855d40c9b344eb57f0aad55448bb88a59d8a6e7d30b30b1f8da41dcb96",
+      "decoded_sha256": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "6ecc4d67da80290a1c34d5d31e4e81f18a5b43d740416ffbd5a0d35d7250723a",
+      "decoded_sha256": "f9a8de6201cf7562b00170ea969b192d4fdd10bed55bc737045cc8e20053d217"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/generation_pin.go.gz",
+      "sha256": "f4f3877fc9a2f0a6b2370a461358881ff787fdf5510994bbc46cb1cc9ae367ff",
+      "decoded_sha256": "a62ceb8a5b30ecdac1f1baab705075aba5974c17de34a2750a67e208a3c49c87"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/generation_pin_test.go.gz",
+      "sha256": "92b621e66525a15946544a650b2671cb06c8a6357635f169364a7e183b969dd1",
+      "decoded_sha256": "8e1c256be9fbaba7f175ceab0a8b0b02fc4d681a8ce32c97569e611d7704c3c7"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/runtime.go.gz",
+      "sha256": "fd3366aec6ef433849a0c26d908855726b7e9b319137c75755814ab0efd981b9",
+      "decoded_sha256": "10de8acc7813b39d0110cb8288d6961daa86db8a5719fb600fecddbb56142b50"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/stdout.log.gz",
+      "sha256": "72bbecb10d05ddb67d826e703c0a3ced42daf4afd638870f8207e84e00dd1f21",
+      "decoded_sha256": "d57554eeff3af415290dd3a61788ac62d93ad1d81a90b9af6e6f990da4b41700"
+    },
+    {
+      "path": "generation-pin-runtime-corrected/verification.json.gz",
+      "sha256": "86b3b46b7501193e1490fe21124b3dd3bdeb3ce8aa878bc29a9dc48d4ed0e7de",
+      "decoded_sha256": "a08f1fc945774e48b5de2c4be623b50e7a7dcb1f8133d8877a6855f27c8a15fb"
+    },
+    {
+      "path": "generation-pin-runtime-green/changes.patch.gz",
+      "sha256": "6fc92cdce96b09c12c508b1efdf17d244d3c17cfe3b8b802367ef42dd7df9bea",
+      "decoded_sha256": "e1d7a46d816bebbb31b844b0c23cc23eb8228cb0f211227d80753785a4b790d2"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "765d7a855d40c9b344eb57f0aad55448bb88a59d8a6e7d30b30b1f8da41dcb96",
+      "decoded_sha256": "9368c6d0643df0c3e24675ef99383e9e1ccc919c2ac5d9c8270d8d42a389cf1c"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/generation_pin_test.go.gz",
+      "sha256": "92b621e66525a15946544a650b2671cb06c8a6357635f169364a7e183b969dd1",
+      "decoded_sha256": "8e1c256be9fbaba7f175ceab0a8b0b02fc4d681a8ce32c97569e611d7704c3c7"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-runtime-green/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-runtime-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-runtime-green/stdout.log.gz",
+      "sha256": "e8e68d693bfd847e266b5e5032b36c16e39ea0a4df146e51fa34c0a593aaaa8d",
+      "decoded_sha256": "8736fe6c04ec79952fc99ef09dbf06d74821329445b63a1aa7e1a557a3519a6f"
+    },
+    {
+      "path": "generation-pin-runtime-green/verification.json.gz",
+      "sha256": "21aeaf05fe1d1825cfc58fd68a22a75837cdf9d113202c75029464e4a566ba0f",
+      "decoded_sha256": "4940e95bf12be13c2c9491543b9b6e5d7cf8d183da39c356794dc0e625b197bf"
+    },
+    {
+      "path": "generation-pin-focused/changes.patch.gz",
+      "sha256": "eddf0827144986f67d3ce5986d9b60db0f0c149680c857d49e72970229010c24",
+      "decoded_sha256": "05473f41dc5cec9c51226cb733b7ddcb41e5a5197678deb4be41d359cf2288fd"
+    },
+    {
+      "path": "generation-pin-focused/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-focused/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-focused/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-focused/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-focused/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-focused/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-focused/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-focused/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-focused/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-focused/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-focused/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-focused/stdout.log.gz",
+      "sha256": "982477c25970ab8fe8e63273f5093b54a6867bbf0340e9f6354e8c55563c9cd5",
+      "decoded_sha256": "18ecab1ffb133d482eead59c16523a26cd5ecc9b587f1b7510580616ffb9df47"
+    },
+    {
+      "path": "generation-pin-focused/verification.json.gz",
+      "sha256": "5184508915279f8375b1d3e142782735d89ad2bc4993d74adfc316037068ff6c",
+      "decoded_sha256": "ff98128a161b76b20fc99c4ef849215a62426c5f293016b35832479b2bb6141b"
+    },
+    {
+      "path": "generation-pin-settings/changes.patch.gz",
+      "sha256": "eddf0827144986f67d3ce5986d9b60db0f0c149680c857d49e72970229010c24",
+      "decoded_sha256": "05473f41dc5cec9c51226cb733b7ddcb41e5a5197678deb4be41d359cf2288fd"
+    },
+    {
+      "path": "generation-pin-settings/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-settings/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-settings/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-settings/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-settings/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-settings/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-settings/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-settings/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-settings/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-settings/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-settings/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-settings/stdout.log.gz",
+      "sha256": "2e8cc5b0a5fa92f5bcbb8289c7a03b9c7d5b12c757f2e082320a52557462582e",
+      "decoded_sha256": "c23051f71d3653284efcfcb1e8ce666ed11105453bcd23d4ed80df99b7dffbe4"
+    },
+    {
+      "path": "generation-pin-settings/verification.json.gz",
+      "sha256": "9044cd422faba9430fb6b17e07daad1e43055f43c2341ee1fd4c4aa266b9a038",
+      "decoded_sha256": "a8542f73f011fcc6df77adfec5c1fbbed72959392ed5859ccaf5ff2b53a6582e"
+    },
+    {
+      "path": "generation-pin-settings-corrected/changes.patch.gz",
+      "sha256": "960d3520075d053c28409192a8757e78a220f8f6bd3f4acab8330df4d680792f",
+      "decoded_sha256": "dc0754fd79c958a6f78946566f1e70b65abadfd9c77a5a5b005e413376c9621d"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "83c0de168201d230598750c50f298506ed9b30cf587d4b28e7cb34668dbe0119",
+      "decoded_sha256": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-settings-corrected/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-settings-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-settings-corrected/stdout.log.gz",
+      "sha256": "795632a518c8be05ba60e1b25648b7fdb569d57416ed1b4a76cb05cf2ec624fd",
+      "decoded_sha256": "0159abcf86afc76af62fad0c7a3343793e55cd087bd83e4b0adf6326198f3d28"
+    },
+    {
+      "path": "generation-pin-settings-corrected/verification.json.gz",
+      "sha256": "0661499074dbcbd26f3b5c87411731e0def21a8723fb21cc85a2f9055ed0031d",
+      "decoded_sha256": "b85df3bd6423189038daf8352202ea34a118fef5b84629165f8eeaa49e3f8c56"
+    },
+    {
+      "path": "generation-pin-ago/changes.patch.gz",
+      "sha256": "eddf0827144986f67d3ce5986d9b60db0f0c149680c857d49e72970229010c24",
+      "decoded_sha256": "05473f41dc5cec9c51226cb733b7ddcb41e5a5197678deb4be41d359cf2288fd"
+    },
+    {
+      "path": "generation-pin-ago/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-ago/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-ago/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-ago/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-ago/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-ago/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-ago/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-ago/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-ago/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-ago/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "generation-pin-ago/verification.json.gz",
+      "sha256": "caab42f5d0b9c8e9b0258e89ffdc92f0ee06bf8808b70b341086412900e745d3",
+      "decoded_sha256": "b8113fa412c7400d0d33f8d3b14370ad342f773a96fa02a34cd80472828604e0"
+    },
+    {
+      "path": "generation-pin-writing/changes.patch.gz",
+      "sha256": "eddf0827144986f67d3ce5986d9b60db0f0c149680c857d49e72970229010c24",
+      "decoded_sha256": "05473f41dc5cec9c51226cb733b7ddcb41e5a5197678deb4be41d359cf2288fd"
+    },
+    {
+      "path": "generation-pin-writing/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-writing/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-writing/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-writing/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-writing/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-writing/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-writing/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-writing/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-writing/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-writing/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-writing/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-writing/stdout.log.gz",
+      "sha256": "1b52b2f384738a963a47a16cd7d4954cf7c9eb30fcfb85b489f6ac10cfedf255",
+      "decoded_sha256": "f6d022964456da64fcf969fc361b422122730970c72a7915fa6f28f016d1ab98"
+    },
+    {
+      "path": "generation-pin-writing/verification.json.gz",
+      "sha256": "8f61760a7c198375e10491a60910e8de59429ba49501742d0420dfb4da12577e",
+      "decoded_sha256": "910889d86c586963346cd2608ab7d2d72658c7ea1a7930bd667db977956e6817"
+    },
+    {
+      "path": "generation-pin-vet/changes.patch.gz",
+      "sha256": "eddf0827144986f67d3ce5986d9b60db0f0c149680c857d49e72970229010c24",
+      "decoded_sha256": "05473f41dc5cec9c51226cb733b7ddcb41e5a5197678deb4be41d359cf2288fd"
+    },
+    {
+      "path": "generation-pin-vet/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-vet/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-vet/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-vet/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-vet/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-vet/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-vet/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-vet/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-vet/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-vet/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-vet/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-vet/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-vet/verification.json.gz",
+      "sha256": "0bf652ca1ba884473e7c59c978e6d00041afb3568bd6f495192209a5727fe876",
+      "decoded_sha256": "441147d9ba641a402db8dff38ae24b65a8028625c6096517c60b494e56a5e6b0"
+    },
+    {
+      "path": "generation-pin-ago-final/changes.patch.gz",
+      "sha256": "960d3520075d053c28409192a8757e78a220f8f6bd3f4acab8330df4d680792f",
+      "decoded_sha256": "dc0754fd79c958a6f78946566f1e70b65abadfd9c77a5a5b005e413376c9621d"
+    },
+    {
+      "path": "generation-pin-ago-final/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-ago-final/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-ago-final/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-ago-final/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-ago-final/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-ago-final/source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "83c0de168201d230598750c50f298506ed9b30cf587d4b28e7cb34668dbe0119",
+      "decoded_sha256": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5"
+    },
+    {
+      "path": "generation-pin-ago-final/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-ago-final/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-ago-final/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-ago-final/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-ago-final/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-ago-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-ago-final/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "generation-pin-ago-final/verification.json.gz",
+      "sha256": "d414ee3b6020bba763c8bbeb7f3143e4a02ddc49d3a71596fb233f2f97230743",
+      "decoded_sha256": "4cb7c0306008992b4690455fddf9f38b97fc42b0628fbfb3af899e12d960bc3d"
+    },
+    {
+      "path": "generation-pin-public-fixture/changes.patch.gz",
+      "sha256": "960d3520075d053c28409192a8757e78a220f8f6bd3f4acab8330df4d680792f",
+      "decoded_sha256": "dc0754fd79c958a6f78946566f1e70b65abadfd9c77a5a5b005e413376c9621d"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "83c0de168201d230598750c50f298506ed9b30cf587d4b28e7cb34668dbe0119",
+      "decoded_sha256": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "generation-pin-public-fixture/source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "generation-pin-public-fixture/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-public-fixture/stdout.log.gz",
+      "sha256": "e4024df9f717d2103d37ec6a8d956837dca232406cc1353cb2f49e15389687bd",
+      "decoded_sha256": "3086883b7ddd146cd54d8765b146d350bd701fa7748c890fb90b0f48ee0b1e01"
+    },
+    {
+      "path": "generation-pin-public-fixture/verification.json.gz",
+      "sha256": "7c29fb3569d9a50fa907e6e360e162f2f405cba8c9f5857f02e23c5741e8dcfe",
+      "decoded_sha256": "dd77ba1f13fdca62f3dfc6acd7f68b46b1d99607dcacffc2fc76ce54fe4fba4b"
+    },
+    {
+      "path": "generation-pin-runtime-storage/changes.patch.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-runtime-storage/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "generation-pin-runtime-storage/stdout.log.gz",
+      "sha256": "683dc7c78fe3594274664bc833df186274f05c91572805a68df8a2014f4532a6",
+      "decoded_sha256": "5b5eef670559047f0daa7e611f96b7b627daab4a76599b618b15a876ad6fee2d"
+    },
+    {
+      "path": "generation-pin-runtime-storage/verification.json.gz",
+      "sha256": "c96afa9e0b33cde9cac7bd44df2ee74b2a45b06197f0abf948aa75fc7b4509c3",
+      "decoded_sha256": "0823daa7b54a8ac25175f27c67c27bce21a14fc32d24ff44f7e9aac24f914c74"
+    },
+    {
+      "path": "committed-source/.env.example.gz",
+      "sha256": "9f35a547c21dabb192114fa4f6097cf5dd4be7d475b57c299cdf7d2adc1457a9",
+      "decoded_sha256": "f24600d32bab671cdf39acd4a7752065d8dd5e229dd387146f2a3381328adcdb"
+    },
+    {
+      "path": "committed-source/docker-compose.yml.gz",
+      "sha256": "4f835b00577510828a87003dc409eeceb0561341f95e05762598ed69fb95e098",
+      "decoded_sha256": "b7d26f1c3bd33a645894ddd1d3548cd69f740d9515b995e4550cd990a9df6af7"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "e97352e8edfa1ffb153c8125ff59fb05b147fdf4b27113cb001c81181084c864",
+      "decoded_sha256": "c23592ddd3779d769a88a1ba93fcbfe34527b103492b043680e803c43e9b0833"
+    },
+    {
+      "path": "committed-source/docs/catalog-settings-schema.json.gz",
+      "sha256": "f8793d615b340241021ee6cf115fe8e36c03761735c67388f92b3c73c9b3fa00",
+      "decoded_sha256": "dd0136b252621e088d16fc9db00e776dfa5eb297979ce5f4314c9ba3bcb49e46"
+    },
+    {
+      "path": "committed-source/internal/catalog/settings/settings.go.gz",
+      "sha256": "8930ba6905e84142df65e0d64e8a0dfd986fb01f6c6aad24b6e21d53f7adb27a",
+      "decoded_sha256": "41b9917a4f9e0b4f6f252350d2e07adfef07b75d67442c2c2d4a7712e549279a"
+    },
+    {
+      "path": "committed-source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "83c0de168201d230598750c50f298506ed9b30cf587d4b28e7cb34668dbe0119",
+      "decoded_sha256": "1dbb029efba726ff85774c80bbec3c28ad39918bac609643b61fb5e5fd7acad5"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "662438573e21af9b81e19dbefee52e228edd693972e1bd55b5ce9ed7d484b094",
+      "decoded_sha256": "07bdddf8d264eb45865993126c40af4b7a17975d28818c8f821a1af068fa4d6e"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "9759939a673ed8dd409ba9f53a4b11f94b8cca03fd6a45fe6029c3dd16d76f84",
+      "decoded_sha256": "012b96d9c0ee819c549d247d88365a398bf5bb54109bd16434bff9bb36386e80"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/config/generation_pin_test.go.gz",
+      "sha256": "4c18fac6339ed06b7b0163d0ecdf9de1e4eb02f30d7a150f1c1acad32d1f2d50",
+      "decoded_sha256": "74fa241a39f96b22de594ff13bdfae83a34046b3ff791535b59929e5cc5dfca7"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "e2ecb59589a0bd9afbd8404c9771af449cd9959d6abda2a076db247556f516ee",
+      "decoded_sha256": "be567d61b055f154e99a8e40d64925e3769bba15483854298639f92861809f93"
+    },
+    {
+      "path": "committed-source/publication_guard.go.gz",
+      "sha256": "fe33319adf0acbd91babda73234d879ea5a15207e7eb59bebd1ca677420d1948",
+      "decoded_sha256": "075ee9815bc1e2dc154f68b44bee6f1a03dc958d12e99b65ff2015713eeb690d"
+    },
+    {
+      "path": "committed-source/publication_guard_test.go.gz",
+      "sha256": "3f647420aa7757ad1dc16755193de6b764e8b501c694e140624f9a016c61678d",
+      "decoded_sha256": "e5cbb4cd4207ebb6dee84b280ecc41e2d875c85a9c744ee8cdcf4da82f9b05ec"
+    },
+    {
+      "path": "committed-source/reload.go.gz",
+      "sha256": "5a79b0c3e6b824448774305e489293307d7e86a0f401a82fd705779b70a0e628",
+      "decoded_sha256": "d8b468ba95ca9c7c91f0f85848844196488c6e7e42969a00075dc4e0402b6ac9"
+    },
+    {
+      "path": "committed-source/rollback.go.gz",
+      "sha256": "8f62eadb5d4b2ac406935cbd9502cb43dbbca8a413c59d67e79874176cc0c588",
+      "decoded_sha256": "fc1b44bf43502709820004472b1d0ef6af7c7c05a796309515c181dad0a6aa39"
+    },
+    {
+      "path": "committed-source/runtime/acquisition_policy_publication.go.gz",
+      "sha256": "8e5be05e0f3f78012a472eb9ef54618eef7ffb92195eb5c42035f7af5363cc8b",
+      "decoded_sha256": "8c82f5362669b447f5c52ec8c300c022d6bac13fca2f71b0474752253cbcd1a9"
+    },
+    {
+      "path": "committed-source/runtime/authority_catalog.go.gz",
+      "sha256": "50aca9a1fee6ff64975072ed08087ec975d90c51fbd4d381860ebc69bd843c21",
+      "decoded_sha256": "a1a6121e8c373b1e97058fd0826aec7f0b5936d8343e0757a4915cbe397d6a32"
+    },
+    {
+      "path": "committed-source/runtime/authority_refresh.go.gz",
+      "sha256": "c54d0d8871b11e0ab8ad1ba06838bd03236a735d1c054995431dccf63d296133",
+      "decoded_sha256": "eb6a8fa7fdc61b9359d119fa667bd538b9fedc8055bcf12a5bafdbe4df3bf5cd"
+    },
+    {
+      "path": "committed-source/runtime/authority_retention.go.gz",
+      "sha256": "fefe4c807585bdd2f3ef29d2035adcf04df3bf21ff1c28815c46cd0f0af01168",
+      "decoded_sha256": "7d610fd0dbbc269b4a5b6454fd86e04870ae91705a5ab2c2ce34cb8eb846a7c7"
+    },
+    {
+      "path": "committed-source/runtime/generation_pin.go.gz",
+      "sha256": "7d4dcbac4b0d6557345999811be437deb9d00a871bf23ce9c94dbeecdd6f3a3d",
+      "decoded_sha256": "5a31b101343fb7e9049794b188450d1bd4fb8e7f5e984d2283cccea60e67cda4"
+    },
+    {
+      "path": "committed-source/runtime/generation_pin_test.go.gz",
+      "sha256": "49203fc17746ee0164f54392c8fbd3ebe31a944fcb6da54896c109534ad9a166",
+      "decoded_sha256": "8acc676d28d8ee78903118747a693391e883693d97757f0576fe152691f72a2c"
+    },
+    {
+      "path": "committed-source/runtime/options.go.gz",
+      "sha256": "5524938a60de8e93e426b1ac7278c09cfe32920cdf6ebef71b8d6c991e2dc51c",
+      "decoded_sha256": "8022eee4fb454e9ba5858fb257f5255940ab4b33e147aeb21cbdd71f189fdfa9"
+    },
+    {
+      "path": "committed-source/runtime/publication_retention.go.gz",
+      "sha256": "ca8036f1ca0f6774cd3d38f426419ba4840bd1b669734559bd64c19780a692d2",
+      "decoded_sha256": "b9bb4dfeef7261013c8eb9c77ad41f3548d572800d8ea039b368e6e8c767945a"
+    },
+    {
+      "path": "committed-source/runtime/refresh.go.gz",
+      "sha256": "fc6506f4745423514bd88edd98554d92f6e47152696072a238f6a1e292d9cd3e",
+      "decoded_sha256": "9725e7e5ac8b57b1ea13c6603f1c200bba0eee6b126ac6dfa99077f5012a30a6"
+    },
+    {
+      "path": "committed-source/runtime/runtime.go.gz",
+      "sha256": "18fbd6d5520edd1f20665928ffa33d8f492fe47dd043526ca34e2545e45a7920",
+      "decoded_sha256": "312fdf1f0719ed352062cae33de0c5c232158dedc05264ee991b274725331ce7"
+    },
+    {
+      "path": "committed-source/runtime/scheduler.go.gz",
+      "sha256": "56cb19e34337f107df92f8d54f22ffd07803280d0e41c66b0cb35abaf1fe482b",
+      "decoded_sha256": "dae3577185927105d0334078f3badb76da17a826476bba3b399961a146cf9a5c"
+    },
+    {
+      "path": "committed-source/runtime/source_startup.go.gz",
+      "sha256": "a6253d045a2174e9431ae0c3bdb02fe76539bfba2489ec7a2c774e61a4adee11",
+      "decoded_sha256": "a096ddfb566c30098912fdcc7b07838ae6b5f2c895632e1a027a3e632d685729"
+    },
+    {
+      "path": "committed-source/runtime/status.go.gz",
+      "sha256": "2a163dc1ac6c03cf3459a03bf8a296b9785bb2dbfdd7552f3e1babdb3e92a2ca",
+      "decoded_sha256": "aface7f84898c33a4f3071b9f08ae10bc62b816624abeb6d13c7c68812284694"
+    },
+    {
+      "path": "committed-source/runtime/status/status.go.gz",
+      "sha256": "a3fe02634cb729a8bcca0a9872041578ff7dc2e8b787a76e5fec2b005edd4197",
+      "decoded_sha256": "6eadbd032e89f791cab61c478f670b930d36ce9e6a5acd72708646a4be94da89"
+    },
+    {
+      "path": "committed-source/runtime/update_policy.go.gz",
+      "sha256": "d8f62d66d399e8c5c62097529f7a5b54509d319e3115284dc941f87a5322b93d",
+      "decoded_sha256": "246802f992f6af787d2c89a146e0afaef1da524085b81dfceaf545a4361c6af6"
+    },
+    {
+      "path": "committed-source/update.go.gz",
+      "sha256": "1630bcbbd6550ddc921f78542829fc8626efc2b77c4a7c29f227af1032bff28b",
+      "decoded_sha256": "805a549aa757325f7d059a285617f4617ef1cdd635c2475f14a7ba5ab494934e"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "bc8d27e47fe6317df9505e285a3a8abb8dc689894cb4ee9f93d896b1c02e05e9",
+      "decoded_sha256": "812617d61c69d690d7a45cd2f56646b8aa56dea189174861b053fd2d47afc724"
+    },
+    {
+      "path": "canonical-writing-initial/canonical-writing.log.gz",
+      "sha256": "85d13e543b6ff22564e710bcb5ea7d2fc86c3d31fb57e314e09a2027dd9662e4",
+      "decoded_sha256": "0f679c7983edb1b6ec29b3116d7a5bfd8b5edf0e8ae518aa031bec1bbe07c19f"
+    },
+    {
+      "path": "canonical-writing-initial/ENGINEERING_SPEC.md.gz",
+      "sha256": "8dd23f4d2cc67a591a026cccb6ea7e249ecc0288995513fa52f7f2f5e05cb5f6",
+      "decoded_sha256": "ad72b58200089632da2809c98aa409cd2fe831163d0b3d16088a06fa8afb0cf8"
+    },
+    {
+      "path": "canonical-writing-initial/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "36b7b4313e68112dfeb8b0a6ca0dba83b3287b46a462818e545d3b7df15b9745",
+      "decoded_sha256": "d50ba6fcbbf6dda0fec713a556e14899773cb305f2b2e19bf5b055fb2c219fd5"
+    },
+    {
+      "path": "canonical-writing-initial/starport-production-catalog-plan.html.gz",
+      "sha256": "e89bc2f8fa96c996a21d20d79ed180260e438d6ec721ef27d04c84f0746e4a16",
+      "decoded_sha256": "b87d3e0b7244299e7f5aac6b6c75a351451d587c657c8e928fd9f002d00479dc"
+    },
+    {
+      "path": "canonical-writing-initial/csp5.md.gz",
+      "sha256": "1cdbde2ec018727f9ff0ba6683d6c63b23e636c5caacb66bd2fd816c396c67df",
+      "decoded_sha256": "79e69f1a51f9d3e5b01406f3bab2e02a019b95e8684c013c588a400099455a0f"
+    },
+    {
+      "path": "canonical-writing-corrected.log.gz",
+      "sha256": "1ce28a7c57d8098d07c83318cf9cd35ed0944ce8caec8a27e6727b97097cd7a5",
+      "decoded_sha256": "aedcd4b39b02f359327e143051170c9ed1a913b49e559cbb4b099d285a31d784"
+    }
+  ],
+  "canonical_checks": {
+    "initial_writing": {
+      "exit_code": 2,
+      "diagnostics": 8,
+      "source_binding": "The archived canonical source records these prose failures. They do not change the implementation commit."
+    },
+    "corrected_writing": {
+      "exit_code": 0,
+      "files": 1352,
+      "diagnostics": 0
+    }
+  }
+}

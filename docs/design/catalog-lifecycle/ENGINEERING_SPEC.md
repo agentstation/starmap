@@ -1212,7 +1212,12 @@ The [shutdown proof](../../plans/proof/starport-production-catalog/csp5/source-s
 
 Runtime cleanup retains the directory until the source worker exits. The caller's five-second close limit does not end cleanup.
 Standalone `Source.Close` keeps its configured timeout. Starport still needs the coordinated lifecycle through its module upgrade.
-Pins and retained-state recovery remain open.
+
+Checkpoint `32951a7b` adds `STARMAP_CATALOG_GENERATION_PIN` and `WithGenerationPin`.
+The [pin proof](../../plans/proof/starport-production-catalog/csp5/generation-pins-2026-09-11/verification.json) records 86 passing focused race events and separate configuration checks.
+The selected configuration authority owns the pin. Runtime replacement applies a changed value or an explicit empty unpin.
+Selection precedes startup rebuilds, and independent permission observation continues.
+Durable acceptance records, origin rollback issuance, complete pin recovery, and retained-state recovery remain open.
 
 Existing `SOURCE_POLL_INTERVAL=0` stops periodic polling, but watcher events can
 still wake the source worker. Startup policy can also require a source read.

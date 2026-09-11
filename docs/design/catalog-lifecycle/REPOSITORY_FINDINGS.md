@@ -2387,3 +2387,17 @@ Standalone `Source.Close` remains bounded. Starport needs this coordinated lifec
 
 The broad runtime check remains active at earlier source `48a9a6e5`. It cannot qualify the timeout correction.
 Pins and retained-state recovery also remain open.
+
+## Configured generation selection checkpoint: 2026-09-11
+
+Local Starmap `32951a7b` adds generation pin configuration. Parent `b3cf9b68` rechecks publication guards after queued mutations enter their transaction.
+The [pin proof](../../plans/proof/starport-production-catalog/csp5/generation-pins-2026-09-11/verification.json) preserves the guard bypass, ignored selection, and unpin startup mismatch.
+Corrected focused checks pass 86 race events. Public configuration passes 111 events. Corrected internal settings pass 24.
+
+The selected configuration authority owns `CATALOG_GENERATION_PIN`. No separate pin configuration file exists.
+
+The runtime selects a verified retained artifact before startup rebuilds. Clearing the pin restores consistent runtime and client state from retained inputs.
+Pinned metadata survives permission withdrawal, but new inference attempts remain blocked. Pins cannot approve a different internal authority.
+
+The current source has no durable rollback acceptance record. An origin rollback still needs a new authority revision.
+The complete CSP5 contract, full runtime/storage run, repository verification, review, native CI, and merge remain open.
