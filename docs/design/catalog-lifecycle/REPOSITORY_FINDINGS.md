@@ -2357,3 +2357,20 @@ This supplies the missing real-service evidence for the earlier skipped applicat
 
 The check uses the local combined Starmap workspace. It does not qualify fleet recovery, PostgreSQL, native clock bounds, or paid inference.
 The original skipped result remains in its historical proof.
+
+## CSP5 update controls, 2026-09-11
+
+The [control proof](../../plans/proof/starport-production-catalog/csp5/update-controls-2026-09-11/verification.json) records local changes on Starmap base `f9951ee6`.
+Local checkpoint `eeeba376` contains the controls. Starport still uses the merged CSP4 dependency.
+
+The initial tests confirm that unknown offline settings permit HTTP requests and manual mode subscribes to watcher events.
+A corrected cascade fixture confirms that the previous refresh path opens an event stream during explicit manual refresh.
+Manual acquisition and preview also resolve credentials before any offline refusal.
+
+Local corrections add separate source-refresh and network controls, finite cascade reads, and pre-acquisition access checks.
+Verified local imports remain available and survive restart. Configuration descriptors and deployment examples now include both settings.
+Focused race checks pass at their recorded snapshots. Remote, public configuration, acquisition, and corrected settings package tests pass.
+
+Automatic cascade shutdown still needs a verified ownership contract.
+The source detaches its stream context, while runtime shutdown does not close an injected source.
+CSP5 must correct replacement behavior before task completion. Pins and retained-state recovery also remain open.

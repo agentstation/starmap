@@ -1,0 +1,2994 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "qualification": "Local partial implementation only. Twelve mapped task subcases remain unverified. No PR, merge, or completion credit.",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "eeeba3762e85712df496f8186807e4952a410abe",
+  "source_files": [
+    {
+      "path": ".env.example",
+      "sha256": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9"
+    },
+    {
+      "path": "acquisition/network_policy_test.go",
+      "sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "acquisition/runtime.go",
+      "sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5"
+    },
+    {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "sha256": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "sha256": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "sha256": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "pkg/catalogs/config/update_controls_test.go",
+      "sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "remote/source.go",
+      "sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "remote/source_manual_test.go",
+      "sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "remote/subscriber.go",
+      "sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "remote/subscriber_manual.go",
+      "sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "runtime/acquisition_update.go",
+      "sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "runtime/authority_refresh.go",
+      "sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "runtime/manual_observation.go",
+      "sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "runtime/options.go",
+      "sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "runtime/refresh.go",
+      "sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "runtime/scheduler.go",
+      "sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "runtime/source/source.go",
+      "sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "runtime/source_acquisition.go",
+      "sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "runtime/source_startup.go",
+      "sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "runtime/update_policy.go",
+      "sha256": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a"
+    },
+    {
+      "path": "runtime/update_policy_test.go",
+      "sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "runtime/vocabulary.go",
+      "sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    }
+  ],
+  "source_binding": "Tests ran against working source before checkpoint commit eeeba376. Each check retains exact source hashes and snapshots. source_files binds the final committed files, including reference corrections.",
+  "verified_at": "2026-09-11T20:39:00.179711+00:00",
+  "baseline_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+  "checks": {
+    "manual-stream-red": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "3m",
+        "-run",
+        "^TestManualRuntimeRefreshNeverOpensStream$",
+        "-json",
+        "./remote"
+      ],
+      "started_at": "2026-09-11T20:22:35.241090+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "5b82c2895999e493df2d79b8ed513115b9a3b026182bbe8c7e3b5e14d7a83e9d",
+        "remote/source_manual_test.go": "9a0d507d9c7f50f19b158431171da71ec3b3a62ccdc25da16eba67a7249582cd",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "3dbd1210984071798a3918b34b7a59aa4bb4dbb436bf7685d2192d40a003fdf9",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T20:22:56.964036+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "fail"
+        }
+      ]
+    },
+    "controls-green": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^(TestManualRuntimeRefreshNeverOpensStream|TestOfflineConfigurationStopsExplicitCatalogNetwork|TestManualSourceConfigurationDoesNotSubscribe)$",
+        "-json",
+        "./remote",
+        "./pkg/catalogs/config"
+      ],
+      "started_at": "2026-09-11T20:23:45.702118+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "9a0d507d9c7f50f19b158431171da71ec3b3a62ccdc25da16eba67a7249582cd",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "0056551880a22dd0daf10d9fd8244dcf524d47d73703af91bdb5fbb719c95cea",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T20:24:04.440681+00:00",
+      "status": "failed",
+      "test_events": {
+        "pass": 5,
+        "fail": 1
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "fail"
+        }
+      ]
+    },
+    "controls-green-corrected": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^(TestManualRuntimeRefreshNeverOpensStream|TestSourceManualReadCancellation|TestOfflineConfigurationStopsExplicitCatalogNetwork|TestManualSourceConfigurationDoesNotSubscribe)$",
+        "-json",
+        "./remote",
+        "./pkg/catalogs/config"
+      ],
+      "started_at": "2026-09-11T20:25:06.787155+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:25:20.653359+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 13
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "pass"
+        }
+      ]
+    },
+    "manual-stream-red-qualified": {
+      "command": [
+        "go",
+        "test",
+        "-overlay=.tmp/csp5-update-controls/manual-stream-overlay/overlay.json",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "3m",
+        "-run",
+        "^TestManualRuntimeRefreshNeverOpensStream$",
+        "-json",
+        "./remote"
+      ],
+      "started_at": "2026-09-11T20:25:47.025985+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T20:26:00.072546+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "fail"
+        }
+      ]
+    },
+    "manual-acquisition-red": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^(TestOfflineConfigurationStopsExplicitCatalogNetwork|TestOfflineManualAcquisitionDoesNotResolveCredentials)$",
+        "-json",
+        "./pkg/catalogs/config",
+        "./acquisition"
+      ],
+      "started_at": "2026-09-11T20:27:34.936310+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T20:28:11.697795+00:00",
+      "status": "failed",
+      "test_events": {
+        "pass": 3,
+        "fail": 5
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "fail"
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "fail"
+        }
+      ]
+    },
+    "manual-acquisition-green": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^(TestOfflineConfigurationStopsExplicitCatalogNetwork|TestOfflineManualAcquisitionDoesNotResolveCredentials)$",
+        "-json",
+        "./pkg/catalogs/config",
+        "./acquisition"
+      ],
+      "started_at": "2026-09-11T20:29:05.467929+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "36c293a3be42c11ea009e4b5d7ad727969ca82f2bbe42caa54cdc7c95c687508",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:29:20.073370+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 8
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass"
+        }
+      ]
+    },
+    "local-import": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^TestOfflineVerifiedLocalImportSurvivesRestart$",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T20:29:52.749603+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:30:43.549536+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 1
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "ago-initial": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T20:25:20.378870+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:25:22.469424+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_results": []
+    },
+    "ago-controls": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T20:31:44.252431+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:31:46.353630+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_results": []
+    },
+    "writing-initial": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T20:29:53.894583+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-11T20:30:50.457051+00:00",
+      "status": "failed",
+      "test_events": {},
+      "package_results": []
+    },
+    "writing-corrected": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T20:31:43.213502+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:32:32.476205+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_results": []
+    },
+    "affected-packages": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "15m",
+        "-json",
+        "./remote",
+        "./pkg/catalogs/config",
+        "./internal/catalog/settings",
+        "./acquisition"
+      ],
+      "started_at": "2026-09-11T20:30:41.919029+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T20:37:31.281740+00:00",
+      "status": "failed",
+      "test_events": {
+        "pass": 284,
+        "fail": 3
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/remote",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "fail"
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "result": "pass"
+        }
+      ]
+    },
+    "settings-corrected": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/settings"
+      ],
+      "started_at": "2026-09-11T20:33:10.290541+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        ".env.example": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9",
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "docker-compose.yml": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5",
+        "docs/CATALOG_SETTINGS.md": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2",
+        "docs/catalog-settings-schema.json": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "internal/catalog/settings/settings_test.go": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:33:37.102061+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 22
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "result": "pass"
+        }
+      ]
+    },
+    "writing-settings": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T20:33:11.436314+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        ".env.example": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9",
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "docker-compose.yml": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5",
+        "docs/CATALOG_SETTINGS.md": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2",
+        "docs/catalog-settings-schema.json": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "internal/catalog/settings/settings_test.go": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:34:01.654957+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_results": []
+    },
+    "runtime-regression": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "15m",
+        "-run",
+        "^(TestObservation.*|TestOfflineVerifiedLocalImportSurvivesRestart|TestRequireSourceFailsOpenWhenTheSourceFails|TestPreferSourceReadsOnceOnAColdStart|TestZeroAcquisitionIntervalRunsOneStartupPass|TestCloseRejectsLateSourcePublication|TestSourceRetentionRejectsCancellationAfterRead)$",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T20:34:21.583315+00:00",
+      "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "source_files": {
+        ".env.example": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9",
+        "acquisition/network_policy_test.go": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275",
+        "acquisition/runtime.go": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a",
+        "docker-compose.yml": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5",
+        "docs/CATALOG_SETTINGS.md": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2",
+        "docs/catalog-settings-schema.json": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5",
+        "internal/catalog/settings/settings.go": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8",
+        "internal/catalog/settings/settings_test.go": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4",
+        "pkg/catalogs/config/config_test.go": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802",
+        "pkg/catalogs/config/descriptors.go": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284",
+        "pkg/catalogs/config/settings.go": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4",
+        "pkg/catalogs/config/update_controls_test.go": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb",
+        "remote/source.go": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186",
+        "remote/source_manual_test.go": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7",
+        "remote/subscriber.go": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961",
+        "remote/subscriber_manual.go": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6",
+        "runtime/acquisition_update.go": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f",
+        "runtime/authority_refresh.go": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5",
+        "runtime/manual_observation.go": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1",
+        "runtime/options.go": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a",
+        "runtime/refresh.go": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85",
+        "runtime/scheduler.go": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b",
+        "runtime/source/source.go": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970",
+        "runtime/source_acquisition.go": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710",
+        "runtime/source_startup.go": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11",
+        "runtime/update_policy.go": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a",
+        "runtime/update_policy_test.go": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6",
+        "runtime/vocabulary.go": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T20:35:15.403700+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 12
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Whole CSP5 task verification has not run against a completed implementation.",
+    "Generation pins, owned-stage recovery, history compaction, and ambiguous publication recovery remain open.",
+    "Automatic cascade shutdown ownership still needs verification and correction.",
+    "Starport still pins the merged CSP4 module. New controls have no Starport release qualification."
+  ],
+  "artifacts": [
+    {
+      "path": "manual-stream-red/changes.patch.gz",
+      "sha256": "48b770b4bb6c309408efe07cf158a9ef080385abd4e0b2503c341cce20117e38",
+      "decoded_sha256": "f04c352407124b5ef412eadfe0f601137508e69bfea7f3abd081698b9be750c4"
+    },
+    {
+      "path": "manual-stream-red/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "manual-stream-red/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "manual-stream-red/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "manual-stream-red/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "manual-stream-red/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "59ee6c5245eb495c1eaade0052cb47df73038205f8f5071a2fdeacb5d270e3c8",
+      "decoded_sha256": "5b82c2895999e493df2d79b8ed513115b9a3b026182bbe8c7e3b5e14d7a83e9d"
+    },
+    {
+      "path": "manual-stream-red/source/remote/source_manual_test.go.gz",
+      "sha256": "6de40f11f69262afe457642f62d74c9a4c62e6199f26700421d38852e0c5febe",
+      "decoded_sha256": "9a0d507d9c7f50f19b158431171da71ec3b3a62ccdc25da16eba67a7249582cd"
+    },
+    {
+      "path": "manual-stream-red/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "manual-stream-red/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "manual-stream-red/source/runtime/refresh.go.gz",
+      "sha256": "72c99b5219e87188dd43414df90c5121af090b187a8e4e4db537600caa149885",
+      "decoded_sha256": "3dbd1210984071798a3918b34b7a59aa4bb4dbb436bf7685d2192d40a003fdf9"
+    },
+    {
+      "path": "manual-stream-red/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "manual-stream-red/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "manual-stream-red/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "manual-stream-red/source/runtime/update_policy.go.gz",
+      "sha256": "71af5826420fdb6d61069e01c07f3f4a0fd7a33cebf13f2b905f308568d726fc",
+      "decoded_sha256": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414"
+    },
+    {
+      "path": "manual-stream-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "manual-stream-red/stdout.log.gz",
+      "sha256": "6e8d73a9bd2826d9e854be146276327d4fd5b09c0ec36b5c1c0432789f84ed71",
+      "decoded_sha256": "0ecf5a14f392a71b9b5b4965287d6c4d3915180b8e3a26bc302412945c186aa4"
+    },
+    {
+      "path": "manual-stream-red/verification.json.gz",
+      "sha256": "20acc2ddc3eaa31fbcbce9345435f79608cea4d48d547dea3c8eac4af7a93588",
+      "decoded_sha256": "8563d77148896d266cf5f3ddbf75f4c8de1c1d1055735a400364cf8fe87a336d"
+    },
+    {
+      "path": "controls-green/changes.patch.gz",
+      "sha256": "ff176f339cb57334e2624b54c702cd2019b7818ee3cd8ad4fb8e670c632216c2",
+      "decoded_sha256": "833a55521714b22b1cbc5a41dedf7ad6f29245320130f6dbb37d6c92c17974e5"
+    },
+    {
+      "path": "controls-green/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "controls-green/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "controls-green/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "controls-green/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "controls-green/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "37fb1d53284bd8d66c404b2e2ea36dcce48cd9b37a66b210d5b6a5b41a50e025",
+      "decoded_sha256": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752"
+    },
+    {
+      "path": "controls-green/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "controls-green/source/remote/source_manual_test.go.gz",
+      "sha256": "6de40f11f69262afe457642f62d74c9a4c62e6199f26700421d38852e0c5febe",
+      "decoded_sha256": "9a0d507d9c7f50f19b158431171da71ec3b3a62ccdc25da16eba67a7249582cd"
+    },
+    {
+      "path": "controls-green/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "controls-green/source/remote/subscriber_manual.go.gz",
+      "sha256": "155f16b800595f76702c51cd42950a747d81d96beaddd5ba188dd95b20860265",
+      "decoded_sha256": "0056551880a22dd0daf10d9fd8244dcf524d47d73703af91bdb5fbb719c95cea"
+    },
+    {
+      "path": "controls-green/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "controls-green/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "controls-green/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "controls-green/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "controls-green/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "controls-green/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "controls-green/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "controls-green/source/runtime/update_policy.go.gz",
+      "sha256": "71af5826420fdb6d61069e01c07f3f4a0fd7a33cebf13f2b905f308568d726fc",
+      "decoded_sha256": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414"
+    },
+    {
+      "path": "controls-green/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "controls-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "controls-green/stdout.log.gz",
+      "sha256": "40bb6bb86f0fd79cfd370329b8ee9e9d4e2a90cd12e802cec8b05dcba5b6038b",
+      "decoded_sha256": "0f15140a63a1877a104b4cbbf9ebb291e409536ed3286559751887d55daeafd1"
+    },
+    {
+      "path": "controls-green/verification.json.gz",
+      "sha256": "c669677f8e8f3def98e792e383e43f0d945156bf0c0c5519ee606bdde5b27976",
+      "decoded_sha256": "f4c75f2b65be5482dd3ec37b83ecfb9b88bdba0313a6d68c1101498c8e379379"
+    },
+    {
+      "path": "controls-green-corrected/changes.patch.gz",
+      "sha256": "ff176f339cb57334e2624b54c702cd2019b7818ee3cd8ad4fb8e670c632216c2",
+      "decoded_sha256": "833a55521714b22b1cbc5a41dedf7ad6f29245320130f6dbb37d6c92c17974e5"
+    },
+    {
+      "path": "controls-green-corrected/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "controls-green-corrected/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "controls-green-corrected/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "controls-green-corrected/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "controls-green-corrected/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "37fb1d53284bd8d66c404b2e2ea36dcce48cd9b37a66b210d5b6a5b41a50e025",
+      "decoded_sha256": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752"
+    },
+    {
+      "path": "controls-green-corrected/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "controls-green-corrected/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "controls-green-corrected/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "controls-green-corrected/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/update_policy.go.gz",
+      "sha256": "71af5826420fdb6d61069e01c07f3f4a0fd7a33cebf13f2b905f308568d726fc",
+      "decoded_sha256": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414"
+    },
+    {
+      "path": "controls-green-corrected/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "controls-green-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "controls-green-corrected/stdout.log.gz",
+      "sha256": "9be3861a3b88bae976f63370a3794c71cbdd68ebc6269b4a284ac351857a700b",
+      "decoded_sha256": "8f8ae8ec04f2de9f33e67a433b3d9c790afb054e857ae4cf60e6a1854f09c2ea"
+    },
+    {
+      "path": "controls-green-corrected/verification.json.gz",
+      "sha256": "83ca1af5260479674248efa0757ebb97f7f240b9829bf2b77d31b98b49cef13e",
+      "decoded_sha256": "d1a93d6b8b343b08f2cf7361425345219fe938800a0ea66dd41aa81be1e6efd3"
+    },
+    {
+      "path": "manual-stream-red-qualified/changes.patch.gz",
+      "sha256": "ff176f339cb57334e2624b54c702cd2019b7818ee3cd8ad4fb8e670c632216c2",
+      "decoded_sha256": "833a55521714b22b1cbc5a41dedf7ad6f29245320130f6dbb37d6c92c17974e5"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "37fb1d53284bd8d66c404b2e2ea36dcce48cd9b37a66b210d5b6a5b41a50e025",
+      "decoded_sha256": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/update_policy.go.gz",
+      "sha256": "71af5826420fdb6d61069e01c07f3f4a0fd7a33cebf13f2b905f308568d726fc",
+      "decoded_sha256": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414"
+    },
+    {
+      "path": "manual-stream-red-qualified/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "manual-stream-red-qualified/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "manual-stream-red-qualified/stdout.log.gz",
+      "sha256": "c985f9ad07bfe674e51d4ed4542159c21713d6e6f2da31e60d7e68255ec6b94b",
+      "decoded_sha256": "ec36058356e17888a30f57ec13bfd60ae5f7e751df8b435046f3849ed51ed1ac"
+    },
+    {
+      "path": "manual-stream-red-qualified/verification.json.gz",
+      "sha256": "7a1f21afe999c6dd417464ce6328ef0b8d63b243f353569f08ff3111b8e3d0ae",
+      "decoded_sha256": "65cf6bed0ca1361caa6c5b2bfd9b009ec731a9f5aaa758eb131ffa93a6315238"
+    },
+    {
+      "path": "manual-acquisition-red/changes.patch.gz",
+      "sha256": "ff176f339cb57334e2624b54c702cd2019b7818ee3cd8ad4fb8e670c632216c2",
+      "decoded_sha256": "833a55521714b22b1cbc5a41dedf7ad6f29245320130f6dbb37d6c92c17974e5"
+    },
+    {
+      "path": "manual-acquisition-red/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "manual-acquisition-red/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "manual-acquisition-red/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "manual-acquisition-red/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "manual-acquisition-red/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "manual-acquisition-red/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "manual-acquisition-red/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "manual-acquisition-red/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "manual-acquisition-red/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "manual-acquisition-red/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/update_policy.go.gz",
+      "sha256": "71af5826420fdb6d61069e01c07f3f4a0fd7a33cebf13f2b905f308568d726fc",
+      "decoded_sha256": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414"
+    },
+    {
+      "path": "manual-acquisition-red/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "manual-acquisition-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "manual-acquisition-red/stdout.log.gz",
+      "sha256": "6c3b3d7123c90ca02fc5ff7ad54aa6c4364ba4cdf450e7446ebb94ec278f16ef",
+      "decoded_sha256": "2f61fca412b0c752a05fe2c1904ade367d65da2b06fa05ee75ef452967c24843"
+    },
+    {
+      "path": "manual-acquisition-red/verification.json.gz",
+      "sha256": "ed90cc7218da64e3ab08cea211a29a2fddad8b14c2c55ec2a9125bbaf80cf861",
+      "decoded_sha256": "1a29fb91e3ebe52f19585cde6f920f281eedb63cf43a384aa7522c93a8c261f9"
+    },
+    {
+      "path": "manual-acquisition-green/changes.patch.gz",
+      "sha256": "595a6b2e21fad54d9691354bf55b92ec6742660a72ae3126ae99cfef7702f29d",
+      "decoded_sha256": "ee596f0162ea3b42dcdd65773ff8054a812e057b8a28b7f2f886e6bc5fb355ef"
+    },
+    {
+      "path": "manual-acquisition-green/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "manual-acquisition-green/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "manual-acquisition-green/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "manual-acquisition-green/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "manual-acquisition-green/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "manual-acquisition-green/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "manual-acquisition-green/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "manual-acquisition-green/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "manual-acquisition-green/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "manual-acquisition-green/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "manual-acquisition-green/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/acquisition_update.go.gz",
+      "sha256": "df273ead1829270a3d54d267e4777153f136fb505ee82307e1586ddd4e4cc380",
+      "decoded_sha256": "36c293a3be42c11ea009e4b5d7ad727969ca82f2bbe42caa54cdc7c95c687508"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/update_policy.go.gz",
+      "sha256": "cb375ba79591119d31834b9d6d850ca1092e9dd903f203f316a463fa508f24b8",
+      "decoded_sha256": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1"
+    },
+    {
+      "path": "manual-acquisition-green/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "manual-acquisition-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "manual-acquisition-green/stdout.log.gz",
+      "sha256": "b37b915171df290e931ab8a4e7b044df5d08973d31cada125406161f12dfcadd",
+      "decoded_sha256": "1191677673cde148d7895e79446cfecd67c02f8e04ee69c0bc4f70e83ad02972"
+    },
+    {
+      "path": "manual-acquisition-green/verification.json.gz",
+      "sha256": "3ddbeecd1fb56728f30e4e30fbe4441e1f0c73dcc534417b6e5b55de7ab745fa",
+      "decoded_sha256": "8f46036e199204d6d0226ddf04bde79c05917542f9c6cfbdd4c44c65bf375779"
+    },
+    {
+      "path": "local-import/changes.patch.gz",
+      "sha256": "727f89b57a2a0fc5cf9ba96ab5b787fb266cdab639a37405e46c2724881a62de",
+      "decoded_sha256": "2dea2a7600d148bebed19dc8bdef28433535aff2ab26d4af86a2fef3b73c97ae"
+    },
+    {
+      "path": "local-import/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "local-import/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "local-import/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "local-import/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "local-import/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "local-import/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "local-import/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "local-import/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "local-import/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "local-import/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "local-import/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "local-import/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "local-import/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "local-import/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "local-import/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "local-import/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "local-import/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "local-import/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "local-import/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "local-import/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "local-import/source/runtime/update_policy.go.gz",
+      "sha256": "cb375ba79591119d31834b9d6d850ca1092e9dd903f203f316a463fa508f24b8",
+      "decoded_sha256": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1"
+    },
+    {
+      "path": "local-import/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "local-import/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "local-import/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local-import/stdout.log.gz",
+      "sha256": "d2cbfac4b34a3213cc6c120d1c011766c09a68edf15624e93c6dc38942b02c24",
+      "decoded_sha256": "acb461bd46ab18a58cc51e3e4f7a5834341ae1d84797d2cbdb18637241efe315"
+    },
+    {
+      "path": "local-import/verification.json.gz",
+      "sha256": "d51f3ed6e054cb1dc3dd1afb50781ca8f3de8b22d67830034d45d858192a573f",
+      "decoded_sha256": "44e3e117b976d06935401f3dc3d52fac18bee0eaabaa8e4dce11f25d204b6004"
+    },
+    {
+      "path": "ago-initial/changes.patch.gz",
+      "sha256": "ff176f339cb57334e2624b54c702cd2019b7818ee3cd8ad4fb8e670c632216c2",
+      "decoded_sha256": "833a55521714b22b1cbc5a41dedf7ad6f29245320130f6dbb37d6c92c17974e5"
+    },
+    {
+      "path": "ago-initial/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "ago-initial/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "ago-initial/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "ago-initial/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "ago-initial/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "37fb1d53284bd8d66c404b2e2ea36dcce48cd9b37a66b210d5b6a5b41a50e025",
+      "decoded_sha256": "cb8c6be9c1d8fe9363283865ae77e7ee18e2ebe4834f71d052e32c75f53d5752"
+    },
+    {
+      "path": "ago-initial/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "ago-initial/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "ago-initial/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "ago-initial/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "ago-initial/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "ago-initial/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "ago-initial/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "ago-initial/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "ago-initial/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "ago-initial/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "ago-initial/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "ago-initial/source/runtime/update_policy.go.gz",
+      "sha256": "71af5826420fdb6d61069e01c07f3f4a0fd7a33cebf13f2b905f308568d726fc",
+      "decoded_sha256": "eb94dbd32a0b9493dddbd0cc9b00b60f015c5137e31f48567c43c52044a3e414"
+    },
+    {
+      "path": "ago-initial/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "ago-initial/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "ago-initial/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-initial/verification.json.gz",
+      "sha256": "13c9a015c8b5fc7f277985dd466a272bf620cbe8ff630a44bbc63b9fd5150e91",
+      "decoded_sha256": "26ccc2a9517d4c039c730c878143f1f18cc0462ce823e3e533a0471b65e72a92"
+    },
+    {
+      "path": "ago-controls/changes.patch.gz",
+      "sha256": "727f89b57a2a0fc5cf9ba96ab5b787fb266cdab639a37405e46c2724881a62de",
+      "decoded_sha256": "2dea2a7600d148bebed19dc8bdef28433535aff2ab26d4af86a2fef3b73c97ae"
+    },
+    {
+      "path": "ago-controls/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "ago-controls/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "ago-controls/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "ago-controls/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "ago-controls/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "ago-controls/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "ago-controls/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "ago-controls/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "ago-controls/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "ago-controls/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "ago-controls/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "ago-controls/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "ago-controls/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "ago-controls/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "ago-controls/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "ago-controls/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "ago-controls/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "ago-controls/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "ago-controls/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "ago-controls/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "ago-controls/source/runtime/update_policy.go.gz",
+      "sha256": "049cd36246d29c13e6c7818ff189b458165f49acd0813c7a912e1225acd32f37",
+      "decoded_sha256": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a"
+    },
+    {
+      "path": "ago-controls/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "ago-controls/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "ago-controls/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "ago-controls/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-controls/verification.json.gz",
+      "sha256": "661b71f779794c62cbd0bb2fcd9695ab6345081014a3549874519d952680e94e",
+      "decoded_sha256": "757d77b6a65bf022d66ed22632f0fce3da376c41b5701a7570d87de0ad343c73"
+    },
+    {
+      "path": "writing-initial/changes.patch.gz",
+      "sha256": "727f89b57a2a0fc5cf9ba96ab5b787fb266cdab639a37405e46c2724881a62de",
+      "decoded_sha256": "2dea2a7600d148bebed19dc8bdef28433535aff2ab26d4af86a2fef3b73c97ae"
+    },
+    {
+      "path": "writing-initial/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "writing-initial/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "writing-initial/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "writing-initial/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "writing-initial/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "writing-initial/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "writing-initial/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "writing-initial/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "writing-initial/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "writing-initial/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "writing-initial/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "writing-initial/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "writing-initial/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "writing-initial/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "writing-initial/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "writing-initial/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "writing-initial/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "writing-initial/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "writing-initial/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "writing-initial/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "writing-initial/source/runtime/update_policy.go.gz",
+      "sha256": "cb375ba79591119d31834b9d6d850ca1092e9dd903f203f316a463fa508f24b8",
+      "decoded_sha256": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1"
+    },
+    {
+      "path": "writing-initial/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "writing-initial/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "writing-initial/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "writing-initial/stdout.log.gz",
+      "sha256": "0dcd63094add78603b0984177ef2c2ed9bf6652ef72db6e8c652a7d4cdb7b2e3",
+      "decoded_sha256": "e140ee108aad4036641aa950a0c8d19028234d84340af94dd4da753531293b3f"
+    },
+    {
+      "path": "writing-initial/verification.json.gz",
+      "sha256": "ccce8fc58000f95583154679c528e85982ab546695658089c616742100a9eb4b",
+      "decoded_sha256": "ba43c73a88b20cb5840af8fd96635aafb536386071d87171024dea67bb6032d2"
+    },
+    {
+      "path": "writing-corrected/changes.patch.gz",
+      "sha256": "727f89b57a2a0fc5cf9ba96ab5b787fb266cdab639a37405e46c2724881a62de",
+      "decoded_sha256": "2dea2a7600d148bebed19dc8bdef28433535aff2ab26d4af86a2fef3b73c97ae"
+    },
+    {
+      "path": "writing-corrected/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "writing-corrected/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "writing-corrected/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "writing-corrected/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "writing-corrected/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "writing-corrected/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "writing-corrected/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "writing-corrected/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "writing-corrected/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "writing-corrected/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "writing-corrected/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "writing-corrected/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "writing-corrected/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "writing-corrected/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "writing-corrected/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "writing-corrected/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "writing-corrected/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "writing-corrected/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "writing-corrected/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "writing-corrected/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "writing-corrected/source/runtime/update_policy.go.gz",
+      "sha256": "049cd36246d29c13e6c7818ff189b458165f49acd0813c7a912e1225acd32f37",
+      "decoded_sha256": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a"
+    },
+    {
+      "path": "writing-corrected/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "writing-corrected/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "writing-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "writing-corrected/stdout.log.gz",
+      "sha256": "ecb20ba9a6b6a9273b5084df7ea9d9003fc5a92d8f2b6ac4b9c1c5ae4a2cd2ff",
+      "decoded_sha256": "85e98f10f234f52d50f620ee4d2035d8d38c5fccd4726690c0331bdbe7159683"
+    },
+    {
+      "path": "writing-corrected/verification.json.gz",
+      "sha256": "e9b2abfa669a043acb38935057c329a5e01bff5fb55f17d3ea3c6e377dd8adc9",
+      "decoded_sha256": "77cec4ebb33ea3a80d85ce7e4805cd4199f58feff1379240744c61119c23ed50"
+    },
+    {
+      "path": "affected-packages/changes.patch.gz",
+      "sha256": "727f89b57a2a0fc5cf9ba96ab5b787fb266cdab639a37405e46c2724881a62de",
+      "decoded_sha256": "2dea2a7600d148bebed19dc8bdef28433535aff2ab26d4af86a2fef3b73c97ae"
+    },
+    {
+      "path": "affected-packages/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "affected-packages/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "affected-packages/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "affected-packages/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "affected-packages/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "affected-packages/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "affected-packages/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "affected-packages/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "affected-packages/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "affected-packages/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "affected-packages/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "affected-packages/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "affected-packages/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "affected-packages/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "affected-packages/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "affected-packages/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "affected-packages/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "affected-packages/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "affected-packages/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "affected-packages/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "affected-packages/source/runtime/update_policy.go.gz",
+      "sha256": "cb375ba79591119d31834b9d6d850ca1092e9dd903f203f316a463fa508f24b8",
+      "decoded_sha256": "35990828f10ca300018453b84ae69bbcd6ee875307735df13877b6e7d8ebc7c1"
+    },
+    {
+      "path": "affected-packages/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "affected-packages/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "affected-packages/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "affected-packages/stdout.log.gz",
+      "sha256": "291979f68aaab0aca0d1d76f12554eb3932a826719d736a7cb727cb14563199c",
+      "decoded_sha256": "95aa3b59edf35f6f0ac6f1432cdc7810945fa3547b3102e988f7f91a1e7b532e"
+    },
+    {
+      "path": "affected-packages/verification.json.gz",
+      "sha256": "9ec49c71313fae8a7f81c22d5dbc492cfc49237c30f11224e17fc0fd6202f56e",
+      "decoded_sha256": "787460bec527cff9383e9e28642359fb41ed4ed44aa2d5f8d0b408ec5b701771"
+    },
+    {
+      "path": "settings-corrected/changes.patch.gz",
+      "sha256": "9f11ebb8b122568798c7ccfe0d3b20bee92ca76e9d2f855d92b68b2fc40691d5",
+      "decoded_sha256": "a60754350ce2e447419acfb6da4fd95e6571401cf849f2c7cec11b0c8ade8724"
+    },
+    {
+      "path": "settings-corrected/source/.env.example.gz",
+      "sha256": "2d3946d4a2cd22de91063af52694d9dc60278e59264c1c25e4f066615e04b03e",
+      "decoded_sha256": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9"
+    },
+    {
+      "path": "settings-corrected/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "settings-corrected/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "settings-corrected/source/docker-compose.yml.gz",
+      "sha256": "7c83fc05b4545df586824c576024b37a5701eb18fcfaa34000630973085196fd",
+      "decoded_sha256": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5"
+    },
+    {
+      "path": "settings-corrected/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "5b704d85d47cc9f7ff3edacc3620e106ac4da1b323ef039ea4ed3fdd56a40ef3",
+      "decoded_sha256": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2"
+    },
+    {
+      "path": "settings-corrected/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "904e822cdb1b6941d73884b3874004610df2f562b336d241233a0571923e492e",
+      "decoded_sha256": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5"
+    },
+    {
+      "path": "settings-corrected/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "settings-corrected/source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "32b143888acf934154ffa617877f771c8bfb196fe1eb3631a66a8c2c5ff3c8f0",
+      "decoded_sha256": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4"
+    },
+    {
+      "path": "settings-corrected/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "settings-corrected/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "settings-corrected/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "settings-corrected/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "settings-corrected/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "settings-corrected/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "settings-corrected/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "settings-corrected/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "settings-corrected/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "settings-corrected/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "settings-corrected/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "settings-corrected/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "settings-corrected/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "settings-corrected/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "settings-corrected/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "settings-corrected/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "settings-corrected/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "settings-corrected/source/runtime/update_policy.go.gz",
+      "sha256": "049cd36246d29c13e6c7818ff189b458165f49acd0813c7a912e1225acd32f37",
+      "decoded_sha256": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a"
+    },
+    {
+      "path": "settings-corrected/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "settings-corrected/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "settings-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "settings-corrected/stdout.log.gz",
+      "sha256": "9ef47935e7b66be854ed28e015bc3b58b4b23c7bb3ff2f95ba35982dbdb89ce2",
+      "decoded_sha256": "aaa06aae621b851bdb105ca7562e97bacb84d5cad0aaf2c5a58a8468db15da31"
+    },
+    {
+      "path": "settings-corrected/verification.json.gz",
+      "sha256": "467917238182fcef78441861b6fee91a250ddccccf368ee2533a29b2c8140c70",
+      "decoded_sha256": "7a3246ca48ff03c4af58f593f7a7e5b4c5f6cf419cba062b2f5582bcdc5bb907"
+    },
+    {
+      "path": "writing-settings/changes.patch.gz",
+      "sha256": "9f11ebb8b122568798c7ccfe0d3b20bee92ca76e9d2f855d92b68b2fc40691d5",
+      "decoded_sha256": "a60754350ce2e447419acfb6da4fd95e6571401cf849f2c7cec11b0c8ade8724"
+    },
+    {
+      "path": "writing-settings/source/.env.example.gz",
+      "sha256": "2d3946d4a2cd22de91063af52694d9dc60278e59264c1c25e4f066615e04b03e",
+      "decoded_sha256": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9"
+    },
+    {
+      "path": "writing-settings/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "writing-settings/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "writing-settings/source/docker-compose.yml.gz",
+      "sha256": "7c83fc05b4545df586824c576024b37a5701eb18fcfaa34000630973085196fd",
+      "decoded_sha256": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5"
+    },
+    {
+      "path": "writing-settings/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "5b704d85d47cc9f7ff3edacc3620e106ac4da1b323ef039ea4ed3fdd56a40ef3",
+      "decoded_sha256": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2"
+    },
+    {
+      "path": "writing-settings/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "904e822cdb1b6941d73884b3874004610df2f562b336d241233a0571923e492e",
+      "decoded_sha256": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5"
+    },
+    {
+      "path": "writing-settings/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "writing-settings/source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "32b143888acf934154ffa617877f771c8bfb196fe1eb3631a66a8c2c5ff3c8f0",
+      "decoded_sha256": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4"
+    },
+    {
+      "path": "writing-settings/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "writing-settings/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "writing-settings/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "writing-settings/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "writing-settings/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "writing-settings/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "writing-settings/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "writing-settings/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "writing-settings/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "writing-settings/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "writing-settings/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "writing-settings/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "writing-settings/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "writing-settings/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "writing-settings/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "writing-settings/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "writing-settings/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "writing-settings/source/runtime/update_policy.go.gz",
+      "sha256": "049cd36246d29c13e6c7818ff189b458165f49acd0813c7a912e1225acd32f37",
+      "decoded_sha256": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a"
+    },
+    {
+      "path": "writing-settings/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "writing-settings/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "writing-settings/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "writing-settings/stdout.log.gz",
+      "sha256": "ecb20ba9a6b6a9273b5084df7ea9d9003fc5a92d8f2b6ac4b9c1c5ae4a2cd2ff",
+      "decoded_sha256": "85e98f10f234f52d50f620ee4d2035d8d38c5fccd4726690c0331bdbe7159683"
+    },
+    {
+      "path": "writing-settings/verification.json.gz",
+      "sha256": "d5c851851cc3920b7cfdcecab2e6b812889b09b10c53c08f737ad368c2b78c3e",
+      "decoded_sha256": "6a25e967b38e5c2e4d9c7295cb6aecbc5bda3cd5d1fb53aa581da49c0b6803ab"
+    },
+    {
+      "path": "runtime-regression/changes.patch.gz",
+      "sha256": "9f11ebb8b122568798c7ccfe0d3b20bee92ca76e9d2f855d92b68b2fc40691d5",
+      "decoded_sha256": "a60754350ce2e447419acfb6da4fd95e6571401cf849f2c7cec11b0c8ade8724"
+    },
+    {
+      "path": "runtime-regression/source/.env.example.gz",
+      "sha256": "2d3946d4a2cd22de91063af52694d9dc60278e59264c1c25e4f066615e04b03e",
+      "decoded_sha256": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9"
+    },
+    {
+      "path": "runtime-regression/source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "runtime-regression/source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "runtime-regression/source/docker-compose.yml.gz",
+      "sha256": "7c83fc05b4545df586824c576024b37a5701eb18fcfaa34000630973085196fd",
+      "decoded_sha256": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5"
+    },
+    {
+      "path": "runtime-regression/source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "5b704d85d47cc9f7ff3edacc3620e106ac4da1b323ef039ea4ed3fdd56a40ef3",
+      "decoded_sha256": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2"
+    },
+    {
+      "path": "runtime-regression/source/docs/catalog-settings-schema.json.gz",
+      "sha256": "904e822cdb1b6941d73884b3874004610df2f562b336d241233a0571923e492e",
+      "decoded_sha256": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5"
+    },
+    {
+      "path": "runtime-regression/source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "runtime-regression/source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "32b143888acf934154ffa617877f771c8bfb196fe1eb3631a66a8c2c5ff3c8f0",
+      "decoded_sha256": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4"
+    },
+    {
+      "path": "runtime-regression/source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "runtime-regression/source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "runtime-regression/source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "runtime-regression/source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "runtime-regression/source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "runtime-regression/source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "runtime-regression/source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "runtime-regression/source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "runtime-regression/source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "runtime-regression/source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "runtime-regression/source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "runtime-regression/source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "runtime-regression/source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "runtime-regression/source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "runtime-regression/source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "runtime-regression/source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "runtime-regression/source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "runtime-regression/source/runtime/update_policy.go.gz",
+      "sha256": "049cd36246d29c13e6c7818ff189b458165f49acd0813c7a912e1225acd32f37",
+      "decoded_sha256": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a"
+    },
+    {
+      "path": "runtime-regression/source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "runtime-regression/source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "runtime-regression/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-regression/stdout.log.gz",
+      "sha256": "7cea64d990583f9e6e5bb27735873d4ccc9eb51c45457a67ecfa83ed8b24ec48",
+      "decoded_sha256": "a6a47bde1ad3f76b95eb3728e829238e981e08b33d1b9342551958949a1168a5"
+    },
+    {
+      "path": "runtime-regression/verification.json.gz",
+      "sha256": "9a06a6b0b837a276fc21d07f1b816f33c4f02d226830bd1ede2792561c103e02",
+      "decoded_sha256": "d018f2cfb9ecce9549d08161f8f47fbe765f9586b94f75302aed2e275544c87d"
+    },
+    {
+      "path": "initial/fail-before.json.gz",
+      "sha256": "619fff4189f4a108ef8bcc792977117929d82354036d0866d3b11e6a0de0a8f9",
+      "decoded_sha256": "f80ce3229d81e1af822c0b34cfda33fdf71176e95a3c6d3aa1043f83b217ce09"
+    },
+    {
+      "path": "initial/fail-before.jsonl.gz",
+      "sha256": "6317a9bd7873aafecf50fcd63c7d46953b96064657aeaba3f3a5fe5bd26580d4",
+      "decoded_sha256": "2e60711a05c8c1d2ac277a5d8d5a8f97c0564e311621ce5db8a4e2a019d079b8"
+    },
+    {
+      "path": "initial/fail-before.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "initial/manual-stream-fail-before.json.gz",
+      "sha256": "54042fcb95e851e3f916d65e84694e2dc45e7cb2e0a4dc42c93118c5b7a2c7ac",
+      "decoded_sha256": "7c091d28404682eab228958e8dc4e273a878561d3ecdbd7d537eb7b42e1255e4"
+    },
+    {
+      "path": "initial/manual-stream-fail-before.jsonl.gz",
+      "sha256": "20d0836b53fd8626dcb4f937862485a9ba0390c35d6eabd50fc8ddc70f21b409",
+      "decoded_sha256": "ff59ac8b0312d1726731a8a2fed700fa89ef2fd945379ac3b134ee6197a62b45"
+    },
+    {
+      "path": "initial/manual-stream-fail-before.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "initial/manual-stream-fail-before-test.go.gz",
+      "sha256": "35c168bc618515b3396fc19c69b71fd2b29d76108d1fb1535e13a9d115ba7ae8",
+      "decoded_sha256": "2e8c5a938b59d00b781e67f1935182d537e751b31f888bf4f26707dc7a911e63"
+    },
+    {
+      "path": "manual-stream-overlay/overlay.json.gz",
+      "sha256": "4823ed29ac35840efe4f63d969efbdf642a4f074f4e73b00e8735d9b2b789053",
+      "decoded_sha256": "71de59d7a4a4d79d420cf0879e15c3c2f7c4b7e52fd8696a2ab35b36e45311f9"
+    },
+    {
+      "path": "manual-stream-overlay/refresh.go.gz",
+      "sha256": "957ed0677728b240617ddd6feb0c52e96ed89d2453146be7a49240176797429c",
+      "decoded_sha256": "d48804a4ddd523409b3130b09a80b717fa302dd63ecba0883210225064b512db"
+    },
+    {
+      "path": "current-source/.env.example.gz",
+      "sha256": "2d3946d4a2cd22de91063af52694d9dc60278e59264c1c25e4f066615e04b03e",
+      "decoded_sha256": "a896ee2271dccd4f94a2f3fef70a448b4249b5bc1dde19ba3cfc7d6ddae3c1b9"
+    },
+    {
+      "path": "current-source/acquisition/network_policy_test.go.gz",
+      "sha256": "f7f0f1a821053ee1553cb30914792c16c8eb9ed537a7a72f725a9feb31fbc977",
+      "decoded_sha256": "e7e8cfe1496cf7a897b4e06af0929e6ae652b34c1d27a98534e31787f50bd275"
+    },
+    {
+      "path": "current-source/acquisition/runtime.go.gz",
+      "sha256": "2fd4b2c96c89b5a3b5b4f39b9714225659dc808078311f08823b72d9a16912ce",
+      "decoded_sha256": "349dfa72649dd0f50abc1ba9bac164965d97c39f76f0d349ac2917750f67c71a"
+    },
+    {
+      "path": "current-source/docker-compose.yml.gz",
+      "sha256": "7c83fc05b4545df586824c576024b37a5701eb18fcfaa34000630973085196fd",
+      "decoded_sha256": "96b84a6fe360a0ff8a59a85c814dda2cbb9fb6bc81939a744b4bc9d01650f4b5"
+    },
+    {
+      "path": "current-source/docs/CATALOG_SETTINGS.md.gz",
+      "sha256": "5b704d85d47cc9f7ff3edacc3620e106ac4da1b323ef039ea4ed3fdd56a40ef3",
+      "decoded_sha256": "aefcaf673b3ff64460278992f634fba3d1aad7037e55b9c73854e86781b39ed2"
+    },
+    {
+      "path": "current-source/docs/catalog-settings-schema.json.gz",
+      "sha256": "904e822cdb1b6941d73884b3874004610df2f562b336d241233a0571923e492e",
+      "decoded_sha256": "4875cf17cab77a7207e338ed816dd4bd9b75016f68695f52ffb4a130c04b1de5"
+    },
+    {
+      "path": "current-source/internal/catalog/settings/settings.go.gz",
+      "sha256": "67a6f6985bf271a8c9ff36c4202263158d177f9e3e180d11ffad1ba62498fa4d",
+      "decoded_sha256": "d61d6bc52c85c74b88b7f9f3cfc93720f0b06add1965f2aeced0f62a1e474ee8"
+    },
+    {
+      "path": "current-source/internal/catalog/settings/settings_test.go.gz",
+      "sha256": "32b143888acf934154ffa617877f771c8bfb196fe1eb3631a66a8c2c5ff3c8f0",
+      "decoded_sha256": "1522d6bd1b643b920806c537ddcaf2cea944eb0bf45d3e9f0ae4956b7a7959f4"
+    },
+    {
+      "path": "current-source/pkg/catalogs/config/config_test.go.gz",
+      "sha256": "f739441c06caadc0fe45bd207e55e7f7e220cf66ec4540d560f8769293781352",
+      "decoded_sha256": "a7107c50e316c96dca85bd8db6806bd2c8f7bceeda4efa70df0ca5ad1f02e802"
+    },
+    {
+      "path": "current-source/pkg/catalogs/config/descriptors.go.gz",
+      "sha256": "feac811269ce9bd10bf1b37bd06075e9a69f53b841f526616e1ed1c707a357e3",
+      "decoded_sha256": "72c94cce83bc32446dbf24eba6eec419cdc3ec186efa5fccf7d1974ded5b7284"
+    },
+    {
+      "path": "current-source/pkg/catalogs/config/settings.go.gz",
+      "sha256": "535fee39612ddf5684b0d4d5310b4621920479b9ef569ebbb15cf60cbcfa99b5",
+      "decoded_sha256": "433049540ec410f574d9eed8f928b9f9a41500e35c8d6392db37028c2794aeb4"
+    },
+    {
+      "path": "current-source/pkg/catalogs/config/update_controls_test.go.gz",
+      "sha256": "d93eab9fbb6238f72f6e45a6fdcdabcdcd6b7246896be2de21b23d75500686dc",
+      "decoded_sha256": "a5c478ef54cfe4618c4c034dfb626544c6e44a3425f4ab5857932bd21b134ebb"
+    },
+    {
+      "path": "current-source/remote/source.go.gz",
+      "sha256": "e65f3621754c8562a35d418da98b88286bfaaa7dca1c84a7c5fa4f21d4b3493b",
+      "decoded_sha256": "5f02cc99ca0f0584c691eff763aca9813bd1ad2611e39f34f168c8aac21c4186"
+    },
+    {
+      "path": "current-source/remote/source_manual_test.go.gz",
+      "sha256": "50a9dd30d4cca438cefa88e183de83f3ce88267c935ca7068559ca04c62ac180",
+      "decoded_sha256": "1b51dcf232b7dfc44efbaae2aee7494e515fb8c7c1eac90d4c81f876647498c7"
+    },
+    {
+      "path": "current-source/remote/subscriber.go.gz",
+      "sha256": "255e3c9fbbd1e214b56dbbe43be5f8ff61cbdeff2ee940a6a702079680a2f6e9",
+      "decoded_sha256": "11fcde16d671950eb327bc6e627802886aece598dc5c9b28cd4d5a52260a9961"
+    },
+    {
+      "path": "current-source/remote/subscriber_manual.go.gz",
+      "sha256": "723e6b2ac686c27cf4140630e3d4c68d81c558a2364236e6380518a672ec7304",
+      "decoded_sha256": "32f88f1fdbdd18e5162083f03071dddeda7c7764cf080a1b62ca5a7f967a80d6"
+    },
+    {
+      "path": "current-source/runtime/acquisition_update.go.gz",
+      "sha256": "bc7c3cffbaaa8e2777b9949b4b161ab75b9b4f73cace198438a015aba42de3aa",
+      "decoded_sha256": "b15ba89225bc4dab117c15209d3af128acb2433da78a64dcd7f06f61d264db1f"
+    },
+    {
+      "path": "current-source/runtime/authority_refresh.go.gz",
+      "sha256": "592a27bd20cafd079ffcf00cb544bb1816e298e6090c6a868230a4dc398eaf44",
+      "decoded_sha256": "57edb373490ca4614c3f5e5a41a1af370a946a7bd75535527d3b5a36daf92db5"
+    },
+    {
+      "path": "current-source/runtime/manual_observation.go.gz",
+      "sha256": "5adf9f9d8a9c1c59121ce88f6d796357b83cb6aad34e3ab1b4eaab835f22555f",
+      "decoded_sha256": "06bb9d9fed68d5748089b80c673b5bb69089a457ec07066bfbe3018bc2c70fa1"
+    },
+    {
+      "path": "current-source/runtime/options.go.gz",
+      "sha256": "ede1156a75ef0a9eb9b06b256cfe086aaebc97ee0bcfe9da6828b09a7a5e6188",
+      "decoded_sha256": "c00eb1c6be808ec4192b85054387fba2b083757bf6b3fcd17a0ef10ef56b109a"
+    },
+    {
+      "path": "current-source/runtime/refresh.go.gz",
+      "sha256": "d0b6d7c89d4cdabcf8c451b47d009b77efd9c9d3ddb163dea8e75ff4dcc7611a",
+      "decoded_sha256": "80f2c3411105479c91020d9fd9d7849c79d63c3f9466d496c796f906e5a2fa85"
+    },
+    {
+      "path": "current-source/runtime/scheduler.go.gz",
+      "sha256": "d0a5c1d1029a6496b2fb5549f9c0c47a646888efb280d22e8c0a9471b9bb03ce",
+      "decoded_sha256": "0c83aa40d9e6cd7500b9e08e3416df8b6d109fd1ac93131433e969a340ce193b"
+    },
+    {
+      "path": "current-source/runtime/source/source.go.gz",
+      "sha256": "589f82e31be6615b9909052225d4d96143d7d07852c4f6162f3cbd897b0b6ce7",
+      "decoded_sha256": "cab1d6c961cde185ed3aafe6db0c45a19ede2fed5a78635f1071c194f5cdf970"
+    },
+    {
+      "path": "current-source/runtime/source_acquisition.go.gz",
+      "sha256": "b5c68ec4f1589b5734e6b4fb0c5f0b3ca03812a0f6ec7acc718413b837b2d451",
+      "decoded_sha256": "3a09ec2a5e8dcf9a929a64330a16bb159febe67a62cbd5f0b3067effe3333710"
+    },
+    {
+      "path": "current-source/runtime/source_startup.go.gz",
+      "sha256": "bfc290830ccc0f67ec126b3c0503044128c0445ef3303308bc8f95e97593c1ce",
+      "decoded_sha256": "73885479cfb5918b76f7f2bc2e76a6c5fd68a5e6a21e11a22ce692fa938f4b11"
+    },
+    {
+      "path": "current-source/runtime/update_policy.go.gz",
+      "sha256": "049cd36246d29c13e6c7818ff189b458165f49acd0813c7a912e1225acd32f37",
+      "decoded_sha256": "84b6322ee964d3dd081785a2b0243a5d1a874ba9d132938bc15ad8bc514ddd0a"
+    },
+    {
+      "path": "current-source/runtime/update_policy_test.go.gz",
+      "sha256": "9d09494b01274ac9f2d901a76d0fec4a96c3132e4c0b13b818933f2a695d82c5",
+      "decoded_sha256": "aabdca935bc2dc439a39140e8298b6fd3b7b2bbfd3961a8d47a3787a3e5f4bb6"
+    },
+    {
+      "path": "current-source/runtime/vocabulary.go.gz",
+      "sha256": "1b40876c7ccc8560c320b66ad4c8b05e6e18a54e8feccedf278757678581512b",
+      "decoded_sha256": "51a350c2f0b1e772f78390e722e109c18c3b1b2035b465f9df0ff4f1dd052e75"
+    },
+    {
+      "path": "current-source/changes.patch.gz",
+      "sha256": "958654d64d59ada97d5e1975ffca185cf613100aaa4e5daf3c2cb6af75e3ae9e",
+      "decoded_sha256": "3bd511cdd16224b2e14cf758d5a81421f39c16196e9264555e79f334d60a7699"
+    }
+  ]
+}

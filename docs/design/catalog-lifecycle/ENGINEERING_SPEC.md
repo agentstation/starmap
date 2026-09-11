@@ -1198,6 +1198,12 @@ New suffixes in this table use the product's `CATALOG_` prefix.
 The proposed values for `SOURCE_REFRESH_MODE` are `automatic` and `manual`.
 The proposed values for `NETWORK_MODE` are `configured` and `offline`.
 These names are target contracts, not flags that the inspected release accepts.
+
+Local CSP5 checkpoint `eeeba376` implements both controls on Starmap base `f9951ee6`.
+The [control proof](../../plans/proof/starport-production-catalog/csp5/update-controls-2026-09-11/verification.json) records finite manual reads, offline acquisition refusal, and local-import restart checks.
+This partial implementation does not qualify the complete controls contract or a Starport release.
+Automatic cascade shutdown ownership, pins, and retained-state recovery remain open.
+
 Existing `SOURCE_POLL_INTERVAL=0` stops periodic polling, but watcher events can
 still wake the source worker. Startup policy can also require a source read.
 
