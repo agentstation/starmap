@@ -2430,3 +2430,15 @@ The tests also refuse incompatible pending configuration and unrelated catalog h
 Go 1.26.6 checks pass 236 storage/private-file/error events, 37 pin events, and 31 consumer events without failures or skips.
 The filesystem test injects a synchronization failure after real publication. It does not qualify physical power-loss behavior or native platforms.
 Owned-stage recovery, generation retention, history compaction, and full CSP5 qualification remain open.
+
+## Retained record inventory correction: 2026-09-11
+
+Starmap `ceef5480` includes `catalog-runtime/removals.json` and `catalog-runtime/generation-pin.json` in the runtime evidence inventory.
+The [inventory proof](../../plans/proof/starport-production-catalog/csp5/file-inventory-2026-09-11/verification.json) preserves the omission in both canonical and explicitly selected runtime directories.
+Both records retain the existing owner-only policy. Inspection reports metadata without exposing receipt contents or opening application state.
+
+Corrected checks pass 8 application and 86 product-path race events without failures or skips.
+The ago and prose checks pass. The engineering path table now includes the pin receipt and distinguishes it from configuration authority.
+
+Both regression runs record optional workspace repair timeouts after durable catalog activation. This correction does not qualify workspace projection.
+Baseline export still lacks persistent staging ownership. Recovery, retention, compaction, full verification, and merge remain CSP5 work.

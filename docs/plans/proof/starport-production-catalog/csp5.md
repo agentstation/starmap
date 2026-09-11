@@ -194,6 +194,28 @@ The filesystem tests inject a synchronization failure after real link or rename 
 They verify visible bytes, reopen, continued refusal, successful retry, and retained prior content.
 Physical power-loss and native platform qualification remain separate. All recorded checks are terminal.
 
+## Retained record inventory
+
+The [inventory proof](csp5/file-inventory-2026-09-11/verification.json) binds commit `ceef5480` to its exact commands and source snapshots.
+The original regression found two runtime files absent from the manifest and inspection output: `removals.json` and `generation-pin.json`.
+Both the canonical runtime directory and an explicit override reproduced the omission.
+
+The runtime evidence inventory now names both files and applies its existing owner-only policy.
+The engineering path table also identifies the 32 KiB pin receipt and its recovery role.
+Configuration authority still owns the pin setting. The receipt does not replace configuration.
+
+The regression creates the files through real application startup, operator removal, catalog publication, and pinned restart.
+Inspection reports their paths and private-file policy without changing their bytes or exposing the receipt contents.
+The inspection application stays passive. Unrecognized runtime files remain outside the managed inventory.
+
+Corrected checks pass 8 application and 86 product-path race events without failures or skips.
+The ago check reports no findings, stale ignores, or incomplete errors. The prose check passes 1,534 files with no diagnostics.
+All commands select Go 1.26.6 and `GOWORK=off`. All recorded checks are terminal.
+
+Both regression runs record optional YAML workspace repair timeouts after durable catalog activation.
+The inventory correction does not change or qualify workspace projection. Full CSP5 verification remains required.
+Baseline export still has process-local cleanup only. Recovery must verify persistent ownership before it removes stages from exited writers.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.

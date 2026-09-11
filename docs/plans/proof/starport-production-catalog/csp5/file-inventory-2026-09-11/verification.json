@@ -1,0 +1,457 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+  "source_files": [
+    {
+      "path": "internal/cli/app/file_manifest.go",
+      "sha256": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06"
+    },
+    {
+      "path": "internal/cli/app/file_manifest_retention_test.go",
+      "sha256": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+    },
+    {
+      "path": "internal/cli/app/file_policy.go",
+      "sha256": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+    }
+  ],
+  "base_commit": "de8b5abe1750d73171f016d4baa9766247f81cb8",
+  "verified_at": "2026-09-11T23:16:52.108665+00:00",
+  "source_binding": "Each command selects Go 1.26.6 and GOWORK=off. The original and corrected command snapshots bind their results to the exact source. No runtime publication implementation changes in this correction.",
+  "qualification": "Local file inventory correction. All twelve mapped CSP5 subcases remain unverified. No PR or merge credit.",
+  "checks": {
+    "file-manifest-retention-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/cli/app",
+        "-run",
+        "^TestFileInspectionCoversRetainedRemovalAndPin$"
+      ],
+      "started_at": "2026-09-11T23:07:31.217526+00:00",
+      "base_commit": "de8b5abe1750d73171f016d4baa9766247f81cb8",
+      "source_files": {
+        "internal/cli/app/file_manifest_retention_test.go": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T23:11:31.506334+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 3
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "fail": 3
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "fail"
+        }
+      ]
+    },
+    "file-manifest-retention-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-json",
+        "./internal/cli/app",
+        "-run",
+        "^Test(FileInspectionCoversRetainedRemovalAndPin|ConfigPathsCommandIsPassiveAndReportsOrigins|ConfigPathsInspectionReportsFilesWithoutInitialization|FileManifestReportsDisabledWorkspaceAndPlannedFeatures|FileManifestPreservesLeafAnchorsWithoutCredentialValues|FileManifestCoversWorkspaceRecoveryArtifacts)$"
+      ],
+      "started_at": "2026-09-11T23:12:04.493663+00:00",
+      "base_commit": "de8b5abe1750d73171f016d4baa9766247f81cb8",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06",
+        "internal/cli/app/file_manifest_retention_test.go": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687",
+        "internal/cli/app/file_policy.go": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:16:04.861759+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 8
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 8
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "pass"
+        }
+      ]
+    },
+    "file-manifest-retention-contracts": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./pkg/productpaths/..."
+      ],
+      "started_at": "2026-09-11T23:12:04.496170+00:00",
+      "base_commit": "de8b5abe1750d73171f016d4baa9766247f81cb8",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06",
+        "internal/cli/app/file_manifest_retention_test.go": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687",
+        "internal/cli/app/file_policy.go": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:12:06.475060+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 86
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 51
+        },
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 35
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "result": "pass"
+        }
+      ]
+    },
+    "file-manifest-retention-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T23:11:08.823079+00:00",
+      "base_commit": "de8b5abe1750d73171f016d4baa9766247f81cb8",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06",
+        "internal/cli/app/file_manifest_retention_test.go": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687",
+        "internal/cli/app/file_policy.go": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:11:10.699799+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "file-manifest-retention-writing": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T23:11:15.897673+00:00",
+      "base_commit": "de8b5abe1750d73171f016d4baa9766247f81cb8",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06",
+        "internal/cli/app/file_manifest_retention_test.go": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687",
+        "internal/cli/app/file_policy.go": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:12:04.417357+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    }
+  },
+  "limits": [
+    "The regression uses real application startup, filesystem publication, operator removal, and pinned restart with the embedded catalog.",
+    "Both canonical and selected runtime directories must report the private records without exposing their contents or initializing the inspection application.",
+    "Both regression runs record optional YAML workspace repair timing out after durable catalog activation. This file inventory correction does not qualify that projection behavior.",
+    "The original full runtime/storage timeout remains historical failure evidence. These focused checks do not replace full task qualification.",
+    "Owned-stage collection, bounded generation retention, acquisition-history compaction, full repository checks, review, native CI, and merges remain required."
+  ],
+  "artifacts": [
+    {
+      "path": "file-manifest-retention-red/changes.patch.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "file-manifest-retention-red/source/internal/cli/app/file_manifest_retention_test.go.gz",
+      "sha256": "62f8c628890ea2a4082fcbaa1a16858f47ec43541c30b565f4c1fe99774f3c53",
+      "decoded_sha256": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+    },
+    {
+      "path": "file-manifest-retention-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "file-manifest-retention-red/stdout.log.gz",
+      "sha256": "e281fb8e77cce15e149897427a0b86d7a8daecf5162ff55a10dda870e1bebf10",
+      "decoded_sha256": "003b4fc906bed69ad0422e775febff1caa3d14aad4c1802f0bbe983a83752456"
+    },
+    {
+      "path": "file-manifest-retention-red/verification.json.gz",
+      "sha256": "8e168ad7554f94fe06d85ac4926af3768e0d4dd1b99b796dd9d31652b5c71073",
+      "decoded_sha256": "53c17b16fc2721d10f1a8f74bcd0bcd2e11d9001f3a12a1ff79b0f76971ce9ad"
+    },
+    {
+      "path": "file-manifest-retention-green/changes.patch.gz",
+      "sha256": "24f67c0c21e386fa415e363f1c04e50ae20cc822ef8b95da1f453ef8ea76cbf6",
+      "decoded_sha256": "3c08dd0f0f6a6632ad2248e13fdf772f5ccce07577909e03ed5db4a82af140b2"
+    },
+    {
+      "path": "file-manifest-retention-green/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "16addd1025191c27bff3a4af656cab7c797b21ceba5b9fa2d7fc18ea35648af8",
+      "decoded_sha256": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06"
+    },
+    {
+      "path": "file-manifest-retention-green/source/internal/cli/app/file_manifest_retention_test.go.gz",
+      "sha256": "62f8c628890ea2a4082fcbaa1a16858f47ec43541c30b565f4c1fe99774f3c53",
+      "decoded_sha256": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+    },
+    {
+      "path": "file-manifest-retention-green/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "3a6a06f4469ec0aa89d84b7ed2ba8c7f27a861a7c3434737e3d0782dd8de4fbe",
+      "decoded_sha256": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+    },
+    {
+      "path": "file-manifest-retention-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "file-manifest-retention-green/stdout.log.gz",
+      "sha256": "155bd158f16b7c5732483eb82898b94a3f4e1bacd59d09c39dd89672a31f9783",
+      "decoded_sha256": "3dd00b4e6a9ca50aae70734557005d9528b140e33d627de6074d20060fe0e399"
+    },
+    {
+      "path": "file-manifest-retention-green/verification.json.gz",
+      "sha256": "523c0c412a48b349116a3e40af304cf5460abafebc580107a2383f2ee3e3c782",
+      "decoded_sha256": "f572caaf582aa469a72417e49072f568c1885b824d3a62e7248a83e92ce99906"
+    },
+    {
+      "path": "file-manifest-retention-contracts/changes.patch.gz",
+      "sha256": "24f67c0c21e386fa415e363f1c04e50ae20cc822ef8b95da1f453ef8ea76cbf6",
+      "decoded_sha256": "3c08dd0f0f6a6632ad2248e13fdf772f5ccce07577909e03ed5db4a82af140b2"
+    },
+    {
+      "path": "file-manifest-retention-contracts/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "16addd1025191c27bff3a4af656cab7c797b21ceba5b9fa2d7fc18ea35648af8",
+      "decoded_sha256": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06"
+    },
+    {
+      "path": "file-manifest-retention-contracts/source/internal/cli/app/file_manifest_retention_test.go.gz",
+      "sha256": "62f8c628890ea2a4082fcbaa1a16858f47ec43541c30b565f4c1fe99774f3c53",
+      "decoded_sha256": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+    },
+    {
+      "path": "file-manifest-retention-contracts/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "3a6a06f4469ec0aa89d84b7ed2ba8c7f27a861a7c3434737e3d0782dd8de4fbe",
+      "decoded_sha256": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+    },
+    {
+      "path": "file-manifest-retention-contracts/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "file-manifest-retention-contracts/stdout.log.gz",
+      "sha256": "60f900c5c58ade084577b4f655e56a8352c6fc69aa1204d7c42cc0f36e43b173",
+      "decoded_sha256": "e39cf3fa322fe9947f8fd6d738a285a287d4ab7042f8ab0f8276548f66d1d5e3"
+    },
+    {
+      "path": "file-manifest-retention-contracts/verification.json.gz",
+      "sha256": "d87b907cc2981369636cc913b3171acc9e72bd882b0c9fc2bf8b1881e91ba085",
+      "decoded_sha256": "d2d668e216fd2f4b1be2c73839a9dd502a40f1b9df10d2d91ad1b0e753447755"
+    },
+    {
+      "path": "file-manifest-retention-ago/changes.patch.gz",
+      "sha256": "24f67c0c21e386fa415e363f1c04e50ae20cc822ef8b95da1f453ef8ea76cbf6",
+      "decoded_sha256": "3c08dd0f0f6a6632ad2248e13fdf772f5ccce07577909e03ed5db4a82af140b2"
+    },
+    {
+      "path": "file-manifest-retention-ago/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "16addd1025191c27bff3a4af656cab7c797b21ceba5b9fa2d7fc18ea35648af8",
+      "decoded_sha256": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06"
+    },
+    {
+      "path": "file-manifest-retention-ago/source/internal/cli/app/file_manifest_retention_test.go.gz",
+      "sha256": "62f8c628890ea2a4082fcbaa1a16858f47ec43541c30b565f4c1fe99774f3c53",
+      "decoded_sha256": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+    },
+    {
+      "path": "file-manifest-retention-ago/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "3a6a06f4469ec0aa89d84b7ed2ba8c7f27a861a7c3434737e3d0782dd8de4fbe",
+      "decoded_sha256": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+    },
+    {
+      "path": "file-manifest-retention-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "file-manifest-retention-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "file-manifest-retention-ago/verification.json.gz",
+      "sha256": "888e2293f5e9baafe9b3f7a8d655d3f7954b83555d1dfd418292c6c38fecae4e",
+      "decoded_sha256": "f0eb06ff2a28fa211497a110acc471995bf1de3be6542abfdd965ba5bb2b21e8"
+    },
+    {
+      "path": "file-manifest-retention-writing/changes.patch.gz",
+      "sha256": "24f67c0c21e386fa415e363f1c04e50ae20cc822ef8b95da1f453ef8ea76cbf6",
+      "decoded_sha256": "3c08dd0f0f6a6632ad2248e13fdf772f5ccce07577909e03ed5db4a82af140b2"
+    },
+    {
+      "path": "file-manifest-retention-writing/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "16addd1025191c27bff3a4af656cab7c797b21ceba5b9fa2d7fc18ea35648af8",
+      "decoded_sha256": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06"
+    },
+    {
+      "path": "file-manifest-retention-writing/source/internal/cli/app/file_manifest_retention_test.go.gz",
+      "sha256": "62f8c628890ea2a4082fcbaa1a16858f47ec43541c30b565f4c1fe99774f3c53",
+      "decoded_sha256": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+    },
+    {
+      "path": "file-manifest-retention-writing/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "3a6a06f4469ec0aa89d84b7ed2ba8c7f27a861a7c3434737e3d0782dd8de4fbe",
+      "decoded_sha256": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+    },
+    {
+      "path": "file-manifest-retention-writing/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "file-manifest-retention-writing/stdout.log.gz",
+      "sha256": "53d2e2150771e58da65d0572e70f3e1c6efb6843005f4f964858400bccee3a76",
+      "decoded_sha256": "d68ecfcb148b0cfc156ce7b534749f802edfc738fa762993c5f021fe0dffc719"
+    },
+    {
+      "path": "file-manifest-retention-writing/verification.json.gz",
+      "sha256": "d0c7edbf8b05f9bc87d4bacdbde852c7f41a150b1056b510e19cd75836fa029d",
+      "decoded_sha256": "f927eec33c15e954759ce73427e7c6d184444356d4191665976e983c97f7d4af"
+    },
+    {
+      "path": "committed-source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "16addd1025191c27bff3a4af656cab7c797b21ceba5b9fa2d7fc18ea35648af8",
+      "decoded_sha256": "56b6f1589c269c4eb6d7f847df069321618cab3739ec979491c2c39d7fd3bc06"
+    },
+    {
+      "path": "committed-source/internal/cli/app/file_manifest_retention_test.go.gz",
+      "sha256": "62f8c628890ea2a4082fcbaa1a16858f47ec43541c30b565f4c1fe99774f3c53",
+      "decoded_sha256": "be8118418eb0c144e10336eb70ead4a3522d0a7822de1408236bbbba0a0a2687"
+    },
+    {
+      "path": "committed-source/internal/cli/app/file_policy.go.gz",
+      "sha256": "3a6a06f4469ec0aa89d84b7ed2ba8c7f27a861a7c3434737e3d0782dd8de4fbe",
+      "decoded_sha256": "d1bdbbd6a34045041a34107861edfede197dcf7ff019a572ce743322ca55c149"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "087c2edf627db2c820b87cf60c314f410776db358b69da6a71776780cc5c7899",
+      "decoded_sha256": "0494373555b1ffbcb7ae61b6875afd067637f01db1fe6a314acb102927016034"
+    },
+    {
+      "path": "manual-source-summary.json.gz",
+      "sha256": "79085bcbc30e054a639d588ffbb251fbd8a692bbf218fe0b749506149cd38c12",
+      "decoded_sha256": "25134eb473a38f851a6774f63c41515f843c842e4ed0740aa2ad98200a48c430"
+    },
+    {
+      "path": "canonical-writing-failed.log.gz",
+      "sha256": "782cd9999832263221d53d87f37fcbaa554539ffdc6f60ce8c766f2463dff6dc",
+      "decoded_sha256": "0764aedcfcea0f587456564da3b889b8ea605e0b26fbe09aa45226d47670b57a"
+    },
+    {
+      "path": "canonical-writing-failed/csp5.md.gz",
+      "sha256": "e599197d7125be85b0ad417e83c900d14877e18d6a18b92927f96579b035b0b7",
+      "decoded_sha256": "3b4ef6d3f2a8fd207104233c759e6654d9a69c5ccf8e3db47054ea357c14b976"
+    },
+    {
+      "path": "canonical-writing-corrected.log.gz",
+      "sha256": "a2d7d05223bce0e5113c284cdbcfcc6d29aebfcd4b59b92373258c7b26a0dda0",
+      "decoded_sha256": "6ffdeef56265b0030d0da1e86124f19f1f5b184122ea88607e1c5770aa0bc5ee"
+    }
+  ],
+  "manual_source_validation": {
+    "purpose": "Post-check source and result summary. This script does not run product tests.",
+    "first_attempt": {
+      "status": "failed",
+      "error": "AttributeError: 'str' object has no attribute 'get'",
+      "cause": "The temporary summary parser treated an ago JSON scalar line as a Go test event."
+    },
+    "corrected_attempt": {
+      "status": "passed",
+      "source_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files_match_every_final_check": true,
+      "application_test_events": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "product_path_test_events": {
+        "pass": 86,
+        "fail": 0,
+        "skip": 0
+      },
+      "ago_exit_code": 0,
+      "writing_exit_code": 0,
+      "worktree_clean": true
+    }
+  },
+  "canonical_writing": {
+    "first_attempt": {
+      "exit_code": 2,
+      "files": 1361,
+      "diagnostics": 1,
+      "rule": "nominalization",
+      "source": "docs/plans/proof/starport-production-catalog/csp5.md:217",
+      "base_commit": "f8843a0bb6d7b92541d574d28bb4cfc18029d1fc"
+    },
+    "corrected_attempt": {
+      "exit_code": 0,
+      "files": 1361,
+      "diagnostics": 0,
+      "source_change": "Replaced the nominalized recovery instruction with a direct verb. Requirements remain unchanged."
+    }
+  }
+}
