@@ -587,6 +587,37 @@
       "path": "task-race-prose.log.gz",
       "sha256": "10f9df74ca3528d6e129cd3f5eb3d79892cb3b93c75f11727da6a70a777934f5",
       "decoded_sha256": "d3f85ed30602e15744763f60ac2785bc6b76c26c1044a1b8256be5533fff1752"
+    },
+    {
+      "path": "corrected-task-race-started.json.gz",
+      "sha256": "23f75da326821ba977823eb734a8569d2d86c3303c972434c062fb4f65878db0",
+      "decoded_sha256": "bc509ceb045e00ae9c19efe0fd6a90c320fda1b6b4c4d002327fd13ca27f82b4"
     }
-  ]
+  ],
+  "corrected_source_rerun": {
+    "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "source_tree": "17d63e69b0c557679525f163f5299052713af203",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout=30m",
+      "-json",
+      "./runtime",
+      "./remote",
+      "./pkg/catalogs/artifact"
+    ],
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "started_at": "2026-09-11T17:22:05.416992+00:00",
+    "status": "running",
+    "session_id": 26354,
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+    "metadata": ".tmp/csp4-integrated-task/corrected-task-race.json",
+    "log": ".tmp/csp4-integrated-task/corrected-task-race.jsonl",
+    "limitation": "This run has not completed. Earlier task results remain bound to d1bb47e1. Final consumer qualification must use the published dependency."
+  }
 }

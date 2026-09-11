@@ -26,6 +26,7 @@ The CI merge checkout has the same tree as reviewed `2b4aa1fe`.
 The agent enabled automatic merge after every check except the repository Verification Gate passed. That gate still blocks the merge.
 
 Combined source `6419ea85` includes the correction. Full repository verification runs in session `55757`.
+The exact CSP4 race command runs against this corrected source in session `26354`. The integrated task proof records its start and log.
 Its log is `.tmp/csp4-origin-integrated/portable-entry-verifier.log`. The combined runtime and Starport still need delivery checks, native CI, and merges.
 
 ### Consumer checks and published dependency

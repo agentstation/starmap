@@ -6,10 +6,10 @@
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 120,
-  "new_evidence_artifacts": 1472,
+  "new_evidence_artifacts": 1473,
   "new_commit_source_files": 325,
-  "resume_words": 382,
-  "next_action": "Both explicit CSP4 commands pass at the previous source. The repository verifier and native CI failed production lint. Correction 2b4aa1fe passed required review and all six native jobs. PR 151 has automatic merge enabled and waits for the remaining repository gate in workflow 34620963592. Preserve combined source 6419ea85 while verifier 55757 runs. After combined review and publication, pin that exact commit in Starport and run final checks during Starmap CI. Use a merge commit for the combined Starmap delivery to retain the pinned revision. Merge Starmap before Starport. Starport passes 22 preliminary guard commands, both catalog contract verifiers (12 ownership and 19 catalog-driven conditions), and 3049 full-suite Go test events with 39 skips against prepared source 6419ea85. Full vet, lint, first-run smoke, build, and SDK checks pass. Its package-layout command fails because the published Starmap pin lacks hostclock. Repeat after the dependency update. CSP11 owns fleet recovery and fencing.",
+  "resume_words": 392,
+  "next_action": "Both explicit CSP4 commands pass at the previous source. The repository verifier and native CI failed production lint. Correction 2b4aa1fe passed required review and all six native jobs. PR 151 has automatic merge enabled and waits for the remaining repository gate in workflow 34620963592. Preserve combined source 6419ea85 while repository verifier 55757 and exact CSP4 task race command 26354 run. After combined review and publication, pin that exact commit in Starport and run final checks during Starmap CI. Use a merge commit for the combined Starmap delivery to retain the pinned revision. Merge Starmap before Starport. Starport passes 22 preliminary guard commands, both catalog contract verifiers (12 ownership and 19 catalog-driven conditions), and 3049 full-suite Go test events with 39 skips against prepared source 6419ea85. Full vet, lint, first-run smoke, build, and SDK checks pass. Its package-layout command fails because the published Starmap pin lacks hostclock. Repeat after the dependency update. CSP11 owns fleet recovery and fencing.",
   "current_source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
   "starmap_integration_source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
@@ -25,6 +25,22 @@
       "command": [
         "make",
         "verify"
+      ],
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
+    },
+    {
+      "session_id": 26354,
+      "source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=30m",
+        "-json",
+        "./runtime",
+        "./remote",
+        "./pkg/catalogs/artifact"
       ],
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
     }
