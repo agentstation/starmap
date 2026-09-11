@@ -11,6 +11,13 @@ All 41 verifier stages pass across the initial command and the corrected remaind
 PR #149 merged as `9ea36b3e` after fifteen passing checks. The combined tree equals tested `768347ab`.
 Native clocks and the four Starport consumer cases remain UNVERIFIED.
 
+Host clock `0868781d` adds explicit Linux and macOS observations.
+Its [native proof](csp4/host-clock-2026-09-11/verification.json) records 25 Linux and 15 macOS test events.
+Both supported toolchains pass 142 permission events. The elapsed reads allocate zero times.
+
+The macOS host supplies a bounded sample. The Linux container supplies unqualified time, which the adapter refuses.
+Windows support, operational bounds, and host scheduling remain incomplete.
+
 Starport `95354f0` adds configured authority and policy identity pins.
 Its [configuration proof](csp4/starport-authority-settings-2026-09-11/verification.json) records twelve focused tests and 394 package race events.
 One Valkey integration case skips. Lint, vet, and six dependency checks pass.

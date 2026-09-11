@@ -1,0 +1,313 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_native_clock_observations",
+  "source_commit": "0868781d11db6601d082ebb4d45da48586177d91",
+  "base": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
+  "branch": "codex/catalog-host-clock",
+  "publication": "Local commit only. No PR or pre-PR review.",
+  "contract": [
+    "Explicit hostclock.Observe reads native synchronization and uncertainty evidence outside request handling. It changes no clock settings.",
+    "Linux uses adjtimex with zero modes and a CLOCK_BOOTTIME elapsed counter. macOS uses ntp_gettime and CLOCK_MONOTONIC_RAW backed by mach_continuous_time.",
+    "Both adapters reject unsafe synchronization or leap states, malformed timestamps, and excessive uncertainty. Arithmetic rejects overflow before conversion.",
+    "Elapsed reads do not open files or send network requests. Both native elapsed allocation checks report zero allocations.",
+    "Windows remains unsupported and supplies no usable observation or elapsed counter.",
+    "No adapter selects a qualified production drift/error profile or starts a scheduler. Host composition remains required."
+  ],
+  "checks": {
+    "red": [
+      "red.jsonl.gz: public observation API absent",
+      "darwin-red.jsonl.gz: native Darwin parser and ABI contract absent"
+    ],
+    "linux": {
+      "command": "docker run --rm --network=none --read-only --tmpfs /tmp:rw,exec -v /Users/jack/src/github.com/agentstation/starmap-catalog-host-clock:/src:ro -v /Users/jack/go/pkg/mod:/go/pkg/mod:ro -v /tmp/starmap-host-clock-linux-go-cache-20260911:/build-cache -w /src -e GOTOOLCHAIN=local -e GOCACHE=/build-cache -e GOFLAGS=-p=2 -e GOMAXPROCS=4 golang@sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36 go test -race -count=1 -timeout=5m -json ./pkg/catalogs/permission/hostclock",
+      "pass": 25,
+      "fail": 0,
+      "skip": 0,
+      "native_observation": "Host reports an unqualified synchronization/leap state. Refusal passes. A positive synchronized Linux observation remains UNVERIFIED."
+    },
+    "darwin": {
+      "environment": "macOS 15.7.2 arm64",
+      "command": "GOTOOLCHAIN=go1.25.12 CGO_ENABLED=0 GOFLAGS= go test -count=1 -json ./pkg/catalogs/permission/hostclock",
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "native_observation": "2026-09-11T05:47:42.65354155Z with 500.001ms uncertainty. Timestamp agrees with the host UTC interval. This validates the local binding, not the accuracy of an external time source."
+    },
+    "permission_packages": [
+      {
+        "toolchain": "go1.25.12",
+        "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS= GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json ./pkg/catalogs/permission/...",
+        "pass": 142,
+        "fail": 0,
+        "skip": 0,
+        "packages": 2
+      },
+      {
+        "toolchain": "go1.26.6",
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json ./pkg/catalogs/permission/...",
+        "pass": 142,
+        "fail": 0,
+        "skip": 0,
+        "packages": 2
+      }
+    ],
+    "windows": "Go 1.25.12 cross-compiles both AMD64 and ARM64 unsupported fallbacks. No native Windows execution or adapter qualification.",
+    "workflow": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= go test -count=1 -json ./internal/ciworkflow",
+      "pass": 28,
+      "fail": 0,
+      "skip": 0
+    },
+    "lint": "PASS: golangci-lint 2.12.2 on Darwin and Linux build selections; zero issues",
+    "vet": "PASS: go vet ./pkg/catalogs/permission/...",
+    "ago": "PASS: complete repository scan with zero findings, stale ignores, or errors",
+    "docs": "PASS: complete make docs-check and final package gomarkdoc check",
+    "prose": "PASS: make technical-writing-check; 1471 files, zero diagnostics"
+  },
+  "retained_failures": [
+    "The first prose check reports two comment findings. The revised comment check identifies the remaining performs phrase precisely.",
+    "The second prose check also reads the task-owned Go build cache README. The cache moves outside the repository; no check exclusion or policy changes."
+  ],
+  "remaining": [
+    "Windows clock observation and elapsed adapter",
+    "Qualified deployment profiles, cache invalidation signals, and host refresh scheduling",
+    "Positive native Linux synchronization evidence and full six-platform qualification",
+    "Canonical origin configuration, shared-store followers, explicit transitions, and Starport consumer checks",
+    "Complete repository verification, required pre-PR review, publication, native CI, and merge"
+  ],
+  "acceptance": "No task completion or released-pair credit. Four Starport consumer cases remain UNVERIFIED.",
+  "references": [
+    "https://man7.org/linux/man-pages/man2/adjtimex.2.html",
+    "https://man7.org/linux/man-pages/man2/clock_gettime.2.html",
+    "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/kern_ntptime.c",
+    "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/timex.h",
+    "https://developer.apple.com/documentation/kernel/1646199-mach_continuous_time"
+  ],
+  "source_files": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "dbfd81117331e7364968694736d921e646c3056f248fac7c9995fe03f469ba31"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/README.md",
+      "sha256": "23b625735bc6e592f183b2f0a0a05cade1465e926727c65b588c52b315bf3b87"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/darwin.go",
+      "sha256": "a970e1905e68114ebc9386ac91ab92bb83a4c1ea1bcef24f4000688c218a1c5b"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/darwin_test.go",
+      "sha256": "74492a6960a9fa3cc6b401de4b1f056748addac443182c3d1426ba82f99c3178"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/generate.go",
+      "sha256": "baf9a5f90357620174897934d7490e47b69f60e4b4463d36ae2701542f0fde51"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/hostclock.go",
+      "sha256": "1c841a2b7cf1e1faa7e479fb12f482aa6794de72d7f5482cad62e3d80eba7efb"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/hostclock_test.go",
+      "sha256": "f75e01ac1451870f619b5a1852b80c3fe4af607e4d1b4a3f5581f654d8790502"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/linux.go",
+      "sha256": "3b98faf6576749da790db4079a71e8d442ffc9485bed1b2ee7727b1158a95ed4"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/linux_test.go",
+      "sha256": "76771178acfe93d43e94c9b2385f2e9715ee67c71c1f587b3dfe2f7c79ccba0c"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/unsupported.go",
+      "sha256": "8ba8e10660626d01aaf667c76e8a71b349d23b0377e0f82c7ad8ee30b0b82a0d"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago-committed-scope.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-complete.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-final.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-initial.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "ago-policy.json.gz",
+      "sha256": "27568fae17da9bea19074ecd68e3e61ed10aa40bb1f14e2b2bf72899a7dcee98",
+      "decoded_sha256": "26546ffa43fa8ec4c65a1e08381818b02e9ffd25cf39d88885a3ca2c98189b30"
+    },
+    {
+      "path": "cache-location.json.gz",
+      "sha256": "03788937ace846856c6503fdbab38da8fb0c36a0f01c6513d9c4399fec9669a9",
+      "decoded_sha256": "2e2907e08f282a03015dbd03bcbc07d67d1a84914190d1cb6ad1f4ef7da1756f"
+    },
+    {
+      "path": "comment-prose.json.gz",
+      "sha256": "4062932057c9e65c32f7f5442152b17f584a27cc0f5140a84f99b4b4bde354d2",
+      "decoded_sha256": "40a6a18b44a6b2f9a6579afdc1c71aebadc221fa97a50275f6213f9846a5c83b"
+    },
+    {
+      "path": "darwin-abi-final.jsonl.gz",
+      "sha256": "fe86384ec884231dea866cdc6266e4247cf8cd631dead9e4ffa3f42a604ab696",
+      "decoded_sha256": "536e73a1b92e015047b4a0d4ee7c142e94acf7f46c349af05ef41db8be00e301"
+    },
+    {
+      "path": "darwin-cgo0-go125.jsonl.gz",
+      "sha256": "74c19f9dcd13e1ba981978343366d70cfa37f4d1a3210af0a653a4e6d04582b3",
+      "decoded_sha256": "0e99c9a12998160ed5a9cf698e57145a950164c03b2faf2bf0bbc1cf102daa8a"
+    },
+    {
+      "path": "darwin-green.jsonl.gz",
+      "sha256": "493dd62d9a9eca0a2a33e01ef6e8c3013eda5a75fa7b2222262c96ee5b9b64be",
+      "decoded_sha256": "96a9671a6de6613c244140bbafde0c5ec4246a6084ff2c11cdf2a69ddd8284d7"
+    },
+    {
+      "path": "darwin-initial.jsonl.gz",
+      "sha256": "ffc9be1fdcfb5f9a72dbd53f785aeb57c0996133b78d1695fef07a7aea40d2f5",
+      "decoded_sha256": "3e548c9812af97111e7adb2396439c3a783a6d53712f9d779724c80fb0eadbbf"
+    },
+    {
+      "path": "darwin-red.jsonl.gz",
+      "sha256": "a853a071d39f953fc678ce5f75f5e96718d310785b9b91b4cafa06e36d6f4d3b",
+      "decoded_sha256": "4c6101e40c9ed73f4bc956f4c88fda1b38f22db9156e5323fa530fe5f9e168be"
+    },
+    {
+      "path": "docker-pull.log.gz",
+      "sha256": "b3e0315b455a05f64494c45cb2925bc61aa05486c4d565cd292ad31c393d2c21",
+      "decoded_sha256": "a36ce6f2f58cc04677d96a76975012ee51d3d5f1d6ce333848a3a601688375f5"
+    },
+    {
+      "path": "docs-final.log.gz",
+      "sha256": "afab00529f54283b8e02e0a673f167158f5816425a940a1b8236de7f26ff250c",
+      "decoded_sha256": "796d4391a82d393aa6a36bbc50552449cde422d5ee3eccf26513c77dea07167f"
+    },
+    {
+      "path": "godoc-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "godoc.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "hostclock-doc-check.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lint-initial.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "lint-linux.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "linux-abi-final.jsonl.gz",
+      "sha256": "0c0ed1bce92a942e146a718a2260729f15a270f39b6ac436255ed5dc33c53783",
+      "decoded_sha256": "4a9a8ddbf18c6ffd048a5348849a93ff8ec0a0ac9459d9ce6a51fd2030956cd6"
+    },
+    {
+      "path": "linux-final.jsonl.gz",
+      "sha256": "f318fd5ce144b7af7062bc5b63379dd8f7870c5534d0af3841dc833a0c5b9896",
+      "decoded_sha256": "198da86c6ff35dfec2323a90aec749252096cc67ac9e6d1fab7bccbc938eaa51"
+    },
+    {
+      "path": "linux-initial.jsonl.gz",
+      "sha256": "ccb5861f18f486d9cd374467b064fed1b939a3372534f745781c1ecfdb3ab43c",
+      "decoded_sha256": "f0e7c4b713d8381c242c8b252dd6dfbf8790dd7e7e92a4be98a34735ad79571d"
+    },
+    {
+      "path": "native-environment.json.gz",
+      "sha256": "fb8973992d403888de710d18fd6e94deb6b9222d388ed4fbb3bddefbe36009f7",
+      "decoded_sha256": "6c868f3f1c6e3328ae7987d9f9a4d06a724720aa1ccc8dedc54f34ffaee51d66"
+    },
+    {
+      "path": "permission-go125.jsonl.gz",
+      "sha256": "100bb9dd6818af847e9685859daeb69aecace24a31aec24a87f2bfb299571ca3",
+      "decoded_sha256": "47ae908b4d24882242bfbf5bf9f926bccc06f4b2994ed2be0a528c87f789a38c"
+    },
+    {
+      "path": "permission-go126.jsonl.gz",
+      "sha256": "7b68c3884afdc06e1d0be052631694b9bb61b594725af8822c5e4aab9ebd0299",
+      "decoded_sha256": "5ae1a4a55b25f8e68bd7a229c5b54fc1dfcb97422c3836c38db4a1852c44b8b6"
+    },
+    {
+      "path": "prose-corrected.log.gz",
+      "sha256": "fabdea9af39d6275e5e7ba349f374308a01490c9244abc8e36501907327a7faf",
+      "decoded_sha256": "825562397e93e6d77850e6485ddccd42d23ab3dd8b87430c593e80d28992e962"
+    },
+    {
+      "path": "prose-final.log.gz",
+      "sha256": "326f56daaaf1eba8eecfadbdd83848794185e4edce3fa5901692dd7c7f74b463",
+      "decoded_sha256": "60e682cce7925b789fb12092c24977eed0216610c1a5e35557eb9a42d462a4f3"
+    },
+    {
+      "path": "prose-initial.log.gz",
+      "sha256": "48963c99ce12daea8b49b21990224f35e8dcf660f3873cd5c48faa116228a7d5",
+      "decoded_sha256": "cc0ee9490ff3169ecdcbc1612a0ad1c4c84f98fa0e07ce9788f039c19dc897f2"
+    },
+    {
+      "path": "red.jsonl.gz",
+      "sha256": "02f83d5eafc6560a9acd6575bab941c851459a43def1dc8b7abd3c36b2f25983",
+      "decoded_sha256": "ebcbc91a516e63b052b767fe23d1699c916e2af716b76e59e5f86038324a1fcc"
+    },
+    {
+      "path": "vet-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-amd64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-arm64-build.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workflow-tests.jsonl.gz",
+      "sha256": "957d72f152851913f31c78e9b5ac4931139a18355e76498ebf535f0f6c93772e",
+      "decoded_sha256": "494fba76d286d60089d0ccb1b6d9ffd2d3ece58b9022fd152e4d4ac6ff04177c"
+    },
+    {
+      "path": "canonical-host-clock-plan-prose.log.gz",
+      "sha256": "c43b8fbee7ae496b7476e87f2c63f72de2e9b838f3b1a20d2270108d6dea882e",
+      "decoded_sha256": "7f7e703e1ad880bcd1cdc52226c5168716bef54821f918e76fa0eca3d3e913b2"
+    },
+    {
+      "path": "canonical-host-clock-plan-prose-final.log.gz",
+      "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
+      "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    }
+  ],
+  "canonical_prose": {
+    "status": "PASS",
+    "files": 141,
+    "diagnostics": 0,
+    "retained_failure": "A current-proof paragraph exceeded six sentences. A paragraph break preserves its content."
+  },
+  "verification_source_note": "The final change to native tests also compares returned timestamps with the host UTC interval. The final Darwin and Linux package reruns pass. Earlier complete permission-package runs retain their original test inputs."
+}

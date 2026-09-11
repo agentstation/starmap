@@ -1871,9 +1871,15 @@ Concurrent invalidation prevents an unfinished observation from restoring prior 
 A new process starts without qualified evidence.
 This library contract does not select native adapters or their operational error bounds.
 
+`hostclock.Observe` now supplies explicit Linux and macOS kernel observations.
+`hostclock.Elapsed` reads a counter that includes system sleep without file or network I/O.
+The [native observation proof](../../plans/proof/starport-production-catalog/csp4/host-clock-2026-09-11/verification.json) records local binding checks and refusals.
+Windows currently returns no usable observation or elapsed counter.
+The host must still qualify drift and error bounds, schedule refresh, and invalidate unsafe evidence.
+
 The library clock callback reads only cached evidence.
 Each sample's uncertainty must bound its returned time.
-The current standalone composition has no clock qualification adapter. It therefore cannot yet qualify an internal production recipe.
+The standalone composition does not yet select and refresh a qualified clock. It cannot yet qualify an internal production recipe.
 CSP4 must still qualify publisher receipts, replicas that read shared catalog state, and the required Starport acceptance cases.
 
 Starport now forwards `STARPORT_CATALOG_SOURCE_AUTHORITY_ID` and `STARPORT_CATALOG_SOURCE_POLICY_ID` to the connected runtime.

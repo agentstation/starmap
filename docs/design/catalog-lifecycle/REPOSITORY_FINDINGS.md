@@ -2111,3 +2111,20 @@ Vet, lint, and six dependency checks pass. Existing prose diagnostics match the 
 
 The operator guide states the remaining clock limitation. No qualified host clock adapter makes authority inference ready yet.
 The four consumer cases and the released dependency pair remain UNVERIFIED.
+
+
+## Native clock observations, 2026-09-11
+
+Local Starmap `0868781d` adds Linux and macOS host clock adapters.
+Explicit observations read kernel synchronization evidence and reject unsafe states, timestamps, and uncertainty.
+The elapsed counters include system sleep and pass zero-allocation checks.
+Windows currently returns no usable clock evidence.
+
+The [native proof](../../plans/proof/starport-production-catalog/csp4/host-clock-2026-09-11/verification.json) records 25 Linux and 15 macOS events.
+The macOS binding returns a sample with 500.001 ms uncertainty and agrees with the host UTC interval.
+The Linux container supplies unqualified clock state, which the adapter refuses.
+A positive synchronized Linux observation remains UNVERIFIED.
+
+Both supported toolchains pass 142 permission events. All 28 workflow tests, lint, vet, ago, documentation, and prose checks pass.
+No host clock setting changed. Production error profiles, native Windows support, and host scheduling remain incomplete.
+The four Starport consumer cases remain UNVERIFIED.
