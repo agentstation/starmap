@@ -8,6 +8,7 @@ import (
 
 // PublicationGuard authorizes a mutation before candidate work or activation.
 // A hosting runtime can reserve publication while exposing the client for reads and hooks.
+// A queued operation checks guards again after entering its mutation transaction.
 // Guards can run concurrently and must not mutate the client.
 type PublicationGuard func(context.Context) error
 
