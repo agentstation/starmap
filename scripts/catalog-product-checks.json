@@ -1695,6 +1695,81 @@
       "repository": "starmap",
       "package": "./runtime",
       "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+    },
+    "A09.excluded_membership": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/catalog",
+      "test": "TestAuthorityCatalogExcludesEmbeddedMembership"
+    },
+    "A10.cold_owner_refusal": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityColdStartupRefusesWithoutAcceptedOwner"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestConfiguredAuthorityColdStartupKeepsDiagnostics"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestCatalogPermissionFailureUsesRetryableGatewayStatus"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestChatStreamCatalogPermissionBeforeHeaders"
+        }
+      ]
+    },
+    "A10.warm_retained_authority": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart"
+        }
+      ]
+    },
+    "A21.mixed_schema_permission_envelope": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAuthorityFutureSchemaPermissionEnvelope"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        }
+      ]
     }
   }
 }
