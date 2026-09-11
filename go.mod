@@ -10,6 +10,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.1
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v1.5.0
+	github.com/Microsoft/go-winio v0.6.2
 	github.com/agentstation/utc v0.2.0
 	github.com/aws/aws-sdk-go-v2 v1.46.0
 	github.com/aws/aws-sdk-go-v2/config v1.33.2
@@ -24,6 +25,7 @@ require (
 	github.com/hashicorp/vault/api v1.23.0
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-isatty v0.0.24
+	github.com/oiweiwei/go-msrpc v1.5.4
 	github.com/olekukonko/tablewriter v1.1.4
 	github.com/openbao/openbao/api/v2 v2.6.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
@@ -76,6 +78,7 @@ require (
 	github.com/fatih/color v1.19.0 // indirect
 	github.com/felixge/httpsnoop v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
+	github.com/geoffgarside/ber v1.1.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -119,15 +122,27 @@ require (
 	github.com/hashicorp/go-secure-stdlib/parseutil v0.2.0 // indirect
 	github.com/hashicorp/go-secure-stdlib/strutil v0.1.2 // indirect
 	github.com/hashicorp/go-sockaddr v1.0.7 // indirect
+	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/hcl v1.0.1-vault-7 // indirect
 	github.com/in-toto/attestation v1.2.0 // indirect
 	github.com/in-toto/in-toto-golang v0.11.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/indece-official/go-ebcdic v1.2.0 // indirect
+	github.com/jcmturner/aescts/v2 v2.0.0 // indirect
+	github.com/jcmturner/dnsutils/v2 v2.0.0 // indirect
+	github.com/jcmturner/gofork v1.7.6 // indirect
+	github.com/jcmturner/goidentity/v6 v6.0.1 // indirect
+	github.com/jcmturner/gokrb5/v8 v8.4.4 // indirect
+	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-runewidth v0.0.19 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/oiweiwei/go-math v1.0.0 // indirect
+	github.com/oiweiwei/go-oem v1.0.0 // indirect
+	github.com/oiweiwei/go-smb2.fork v1.0.2 // indirect
+	github.com/oiweiwei/gokrb5.fork/v9 v9.0.7 // indirect
 	github.com/oklog/ulid/v2 v2.1.1 // indirect
 	github.com/olekukonko/cat v0.0.0-20250911104152-50322a0618f6 // indirect
 	github.com/olekukonko/errors v1.2.0 // indirect

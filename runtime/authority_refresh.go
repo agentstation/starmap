@@ -53,6 +53,10 @@ func (r *Runtime) readPermission(ctx context.Context) error {
 	p := r.permissions
 	r.mu.RUnlock()
 	if err := r.store.savePermission(ctx, p, true); err != nil {
+		// Cancellation before a source read cannot change the accepted requirement.
+		if stderrors.Is(err, context.Canceled) || stderrors.Is(err, context.DeadlineExceeded) {
+			return err
+		}
 		r.mu.Lock()
 		r.permissions.retained, r.permissions.pending = false, false
 		r.mu.Unlock()

@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"context"
+	stderrors "errors"
 	"io/fs"
 	"reflect"
 	"strings"
@@ -389,6 +390,53 @@ func TestAuthorityRuntimeExplicitIdentityChangeCannotReuseApproval(t *testing.T)
 	restarted := openTestRuntime(t, append(opts, WithSourceAuthority("another-enterprise", "production"))...)
 	if restarted.AllowsNewAttempt() || restarted.Status().AuthorityReady {
 		t.Fatal("new authority reused the old approval")
+	}
+}
+
+func TestAuthorityRuntimeCanceledCheckpointPreservesRetainedPermission(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		context func(context.Context) (context.Context, context.CancelFunc)
+		want    error
+	}{
+		{name: "canceled", context: func(parent context.Context) (context.Context, context.CancelFunc) {
+			ctx, cancel := context.WithCancel(parent)
+			cancel()
+			return ctx, cancel
+		}, want: context.Canceled},
+		{name: "expired", context: func(parent context.Context) (context.Context, context.CancelFunc) {
+			return context.WithDeadline(parent, time.Unix(0, 0))
+		}, want: context.DeadlineExceeded},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			s, opts := authorityRuntimeFixture(t)
+			opts = append(opts, WithStateDirectory(privateRuntimeDirectory(t)))
+			r := openTestRuntime(t, opts...)
+			if _, err := r.RefreshSource(t.Context()); err != nil {
+				t.Fatal(err)
+			}
+			s.permissionMu.Lock()
+			s.permissionErr = fs.ErrNotExist
+			s.permissionMu.Unlock()
+			canceled, cancel := test.context(t.Context())
+			defer cancel()
+			if err := r.readPermission(canceled); !stderrors.Is(err, test.want) {
+				t.Fatalf("canceled checkpoint: %v", err)
+			}
+			if !r.AllowsNewAttempt() {
+				t.Fatal("cancellation before source access discarded accepted permission")
+			}
+			if err := r.Close(); err != nil {
+				t.Fatal(err)
+			}
+			warm := openTestRuntime(t, append(opts, WithClientOptions(starmap.WithCatalogStore(storage.NewMemory())))...)
+			if !warm.AllowsNewAttempt() {
+				t.Fatal("clean shutdown discarded the untouched retained permission")
+			}
+			if warm.State().PayloadChecksum != warm.Client().CurrentCatalogState().PayloadChecksum {
+				t.Fatal("warm publication client lost its retained catalog")
+			}
+		})
 	}
 }
 
