@@ -58,6 +58,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func \(c \*Client\) OnModelAdded\(fn ModelAddedHook\)](<#Client.OnModelAdded>)
   - [func \(c \*Client\) OnModelRemoved\(fn ModelRemovedHook\)](<#Client.OnModelRemoved>)
   - [func \(c \*Client\) OnModelUpdated\(fn ModelUpdatedHook\)](<#Client.OnModelUpdated>)
+  - [func \(c \*Client\) PrepareGeneration\(ctx context.Context, candidate \*Candidate\) \(catalogs.Generation, error\)](<#Client.PrepareGeneration>)
   - [func \(c \*Client\) PublishesDurably\(\) bool](<#Client.PublishesDurably>)
   - [func \(c \*Client\) Readiness\(\) CatalogReadiness](<#Client.Readiness>)
   - [func \(c \*Client\) RepairWorkspace\(ctx context.Context\) \(WorkspaceRepairResult, error\)](<#Client.RepairWorkspace>)
@@ -377,6 +378,15 @@ func (c *Client) OnModelUpdated(fn ModelUpdatedHook)
 ```
 
 OnModelUpdated registers a callback that receives changed models.
+
+<a name="Client.PrepareGeneration"></a>
+### func \(\*Client\) [PrepareGeneration](<https://github.com/agentstation/starmap/blob/main/prepare.go#L14>)
+
+```go
+func (c *Client) PrepareGeneration(ctx context.Context, candidate *Candidate) (catalogs.Generation, error)
+```
+
+PrepareGeneration encodes a candidate with its final ordinary manifest and evidence. It writes no storage and changes no active catalog. The caller owns the returned bytes. A transaction can bind these exact bytes to its journal before Activate commits them. Preparation reserves no predecessor, so activation still requires the store's atomic compare\-and\-swap.
 
 <a name="Client.PublishesDurably"></a>
 ### func \(\*Client\) [PublishesDurably](<https://github.com/agentstation/starmap/blob/main/client.go#L91>)

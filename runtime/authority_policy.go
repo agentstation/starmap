@@ -1,15 +1,11 @@
 package runtime
 
 import (
-	"strings"
 	"time"
-	"unicode"
-	"unicode/utf8"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 )
-
-const maxAuthorityIdentityBytes = 256
 
 func (p SourcePolicy) validateAuthority() error {
 	if p.StartupPolicy != StartupRequireAuthority {
@@ -21,11 +17,8 @@ func (p SourcePolicy) validateAuthority() error {
 	if p.Kind != SourceStarmap {
 		return &errors.ValidationError{Field: "source_policy.kind", Message: "require_authority needs a starmap source"}
 	}
-	for _, identity := range []string{p.AuthorityID, p.PolicyID} {
-		if identity == "" || len(identity) > maxAuthorityIdentityBytes || strings.TrimSpace(identity) != identity ||
-			!utf8.ValidString(identity) || strings.ContainsFunc(identity, unicode.IsControl) {
-			return &errors.ValidationError{Field: "source_policy.authority", Message: "requires bounded authority and policy identities without surrounding whitespace or control characters"}
-		}
+	if err := catalogs.ValidateCatalogAuthorityIdentity(p.AuthorityID, p.PolicyID); err != nil {
+		return &errors.ValidationError{Field: "source_policy.authority", Message: "requires bounded authority and policy identities without surrounding whitespace or control characters"}
 	}
 	return nil
 }

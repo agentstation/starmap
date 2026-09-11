@@ -32,6 +32,7 @@ const (
 // options holds every setting that belongs to the connected runtime, plus the
 // offline client options that Open forwards to the client under it.
 type options struct {
+	origin       *authorityOrigin
 	source       SourcePolicy
 	sourceToken  string
 	sourceAPIKey string
@@ -114,7 +115,7 @@ func (r options) transferPolicy() remote.TransferPolicy {
 // resolve derives every setting that another setting implies. Open calls it
 // once, after it applies the options and before it validates them.
 func (r *options) resolve() {
-	if r.source.StartupPolicy == StartupRequireAuthority {
+	if r.source.StartupPolicy == StartupRequireAuthority || r.origin != nil {
 		r.publicationCapability = &authorityPublicationCapability{owned: true}
 	}
 	// The source maximum age names the age at which the served catalog is
@@ -127,6 +128,9 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if r.origin != nil && r.source.StartupPolicy == StartupRequireAuthority {
+		return originError("an authoritative subscriber cannot also be an origin")
+	}
 	if err := r.validateCompletedMigration(); err != nil {
 		return err
 	}

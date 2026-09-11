@@ -88,7 +88,17 @@ func (d *Directory) WriteFile(name string, data []byte, prefix string) error {
 
 // WriteFileContext checks cancellation before access and immediately before destination publication.
 // The caller serializes writers. A canceled publication preserves the previous destination.
-func (d *Directory) WriteFileContext(ctx context.Context, name string, data []byte, prefix string) (resultErr error) {
+func (d *Directory) WriteFileContext(ctx context.Context, name string, data []byte, prefix string) error {
+	return d.writeFileContext(ctx, name, data, prefix, true)
+}
+
+// WriteFileIfAbsentContext publishes private bytes only when no destination exists.
+// The write preserves a competing destination, including one created during publication.
+func (d *Directory) WriteFileIfAbsentContext(ctx context.Context, name string, data []byte, prefix string) error {
+	return d.writeFileContext(ctx, name, data, prefix, false)
+}
+
+func (d *Directory) writeFileContext(ctx context.Context, name string, data []byte, prefix string, replace bool) (resultErr error) {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -106,6 +116,9 @@ func (d *Directory) WriteFileContext(ctx context.Context, name string, data []by
 	before, err := optionalRecordInfo(root, name)
 	if err != nil {
 		return err
+	}
+	if !replace && before != nil {
+		return changed(name)
 	}
 	stage := prefix + rand.Text()
 	file, err := CreateFile(root, stage)

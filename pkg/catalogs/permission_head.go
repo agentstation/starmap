@@ -25,12 +25,11 @@ type CatalogAuthorityHead struct {
 // Validate checks publication identity and digest shape independently of catalog payload compatibility.
 // Unknown positive permission versions remain readable so the consumer can record the required revision before refusing admission.
 func (h CatalogAuthorityHead) Validate() error {
-	for _, field := range []struct{ name, value string }{
-		{"authority_id", h.AuthorityID}, {"policy_id", h.PolicyID}, {"generation_id", h.GenerationID},
-	} {
-		if len(field.value) > maxPermissionIdentityBytes || !validMembershipIdentifier(field.value) {
-			return validationError("permission."+field.name, nil, "must be a bounded nonempty identity without surrounding whitespace or control characters")
-		}
+	if err := ValidateCatalogAuthorityIdentity(h.AuthorityID, h.PolicyID); err != nil {
+		return err
+	}
+	if err := validatePermissionIdentity("generation_id", h.GenerationID); err != nil {
+		return err
 	}
 	if h.Sequence == 0 {
 		return validationError("permission.sequence", nil, "must be positive")
@@ -67,6 +66,21 @@ func (h CatalogAuthorityHead) ValidateSuccessor(next CatalogAuthorityHead) error
 	}
 	if next.Sequence == h.Sequence && next != h {
 		return validationError("permission.sequence", nil, "already identifies different publication content")
+	}
+	return nil
+}
+
+// ValidateCatalogAuthorityIdentity checks the bounded authority and policy names used by publishers and subscribers.
+func ValidateCatalogAuthorityIdentity(authorityID, policyID string) error {
+	if err := validatePermissionIdentity("authority_id", authorityID); err != nil {
+		return err
+	}
+	return validatePermissionIdentity("policy_id", policyID)
+}
+
+func validatePermissionIdentity(field, value string) error {
+	if len(value) > maxPermissionIdentityBytes || !validMembershipIdentifier(value) {
+		return validationError("permission."+field, nil, "must be a bounded nonempty identity without surrounding whitespace or control characters")
 	}
 	return nil
 }
