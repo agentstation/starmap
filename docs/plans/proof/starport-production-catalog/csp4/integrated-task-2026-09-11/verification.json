@@ -1058,7 +1058,7 @@
     },
     "limitation": "Temporary module workspace. Final published dependency qualification and implementation merges remain required."
   },
-  "current_status": "All eight CSP4 subcases pass against Starmap 33118919 and Starport ba9b0d8e, with 56 passing race events and no failures or skips. Both code reviews pass. Runtime PR 152 awaits its final verification job. Corrected consumer PR 373 runs native CI. Both merges remain required.",
+  "current_status": "CSP4 complete after both implementation merges. Merged trees equal the reviewed source pair. All eight mapped subcases pass with 56 race events and no skips.",
   "runtime_review": {
     "metadata": {
       "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
@@ -1723,5 +1723,11 @@
       }
     ],
     "url": "https://github.com/agentstation/starmap/pull/152"
+  },
+  "completion": {
+    "status": "PASS",
+    "proof": "../merged-qualification-2026-09-11/verification.json",
+    "source_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "consumer_source_commit": "cb6f03a26ff070172ab503aca11a0c5014040a19"
   }
 }

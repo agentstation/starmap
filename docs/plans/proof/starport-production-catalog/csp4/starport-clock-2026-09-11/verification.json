@@ -1648,11 +1648,7 @@
     "artifact": "delivery-catalog-contracts.json.gz",
     "limitation": "Cross-product ownership and catalog-driven contracts against the prepared source pair. Published dependency qualification remains open."
   },
-  "remaining_delivery_order": [
-    "Complete Starmap PR 152 verification and preserve pinned runtime ancestry through its merge.",
-    "Merge Starport PR 373 after Starmap. All ten Starport CI checks pass at ba9b0d8e.",
-    "Record both merges and close CSP4 only when all task criteria pass."
-  ],
+  "remaining_delivery_order": [],
   "published_dependency_followup": {
     "source_commit": "a8708e03b99beff61ca341be5506f4159cd9eb9c",
     "module": {
@@ -2801,12 +2797,12 @@
   },
   "windows_state_correction": {
     "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
-    "status": "reviewed_published_ci_pass_dependency_merge_pending",
+    "status": "merged",
     "cause": "Starport development and the authority test fixture precreated the Starmap runtime directory using os.MkdirAll. On the Windows runner that directory belongs to Administrators rather than the process account, so the native owner check correctly rejects it.",
     "correction": "Let Starmap create its own state directory with its native creation policy. Preserve refusal of unsafe preexisting directories.",
     "dirty_files": [],
     "fail_before": "TestDevLetsStarmapCreateCatalogState fails on macOS before the product correction. Native Windows CI captures ten top-level development and authority failures.",
-    "remaining": "Starmap PR 152 still runs its final Verification Gate. Merge it first while preserving runtime 6419ea85, then merge fully qualified Starport PR 373.",
+    "remaining": "None for this correction. CSP4 completed after both implementation merges.",
     "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
     "focused_verification": {
       "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
@@ -3018,5 +3014,9 @@
       "workflow_evidence": "native-corrected-completed-workflow.json.gz",
       "pull_request_evidence": "native-corrected-verified-pull-request.json.gz"
     }
+  },
+  "completion": {
+    "merge_commit": "cb6f03a26ff070172ab503aca11a0c5014040a19",
+    "proof": "../merged-qualification-2026-09-11/verification.json"
   }
 }

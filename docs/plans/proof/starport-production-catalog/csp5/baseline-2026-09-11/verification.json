@@ -1,0 +1,46 @@
+{
+  "source_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+  "consumer_source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+  "consumer_merge_commit": "cb6f03a26ff070172ab503aca11a0c5014040a19",
+  "command": [
+    "bash",
+    "scripts/verify-catalog-product.sh",
+    "--starport-root",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+    "--task",
+    "CSP5",
+    "--json"
+  ],
+  "started_at": "2026-09-11T20:02:41.425854+00:00",
+  "scope": "Registry baseline only. Missing mappings do not prove a product behavior defect.",
+  "exit_code": 1,
+  "finished_at": "2026-09-11T20:02:41.500324+00:00",
+  "task": "CSP5",
+  "status": "UNVERIFIED",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_files": [],
+  "artifacts": [
+    {
+      "path": "verification.json.gz",
+      "sha256": "486409e5fc78066733d5a7a53f0a82c7a1dba56696a1aeb23febf5d98828d799",
+      "decoded_sha256": "357d11380af2f3404435f7dff55d3438890e1b8d7ae646d3ef4cdb6ae4906730"
+    },
+    {
+      "path": "task-report.json.gz",
+      "sha256": "fbbedca3d2a515d49e579a5ca2bb8f2fbb876c91bdc58b7156ca5cc2385b24b2",
+      "decoded_sha256": "975a148e40c2c24b349f94b6f83556c5cd38a24ac096bdd01f09c271963635da"
+    },
+    {
+      "path": "task-stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "implementation-preflight.json.gz",
+      "sha256": "3ecf404e3ddc48802f2ed132f23672c149a2e5ee1f4a32dfed9a466d7eaa7142",
+      "decoded_sha256": "2111197f20e00a42b88decaf9e0647685859fc74d00b08dc07031a292595a471"
+    }
+  ],
+  "selected_subcases": 12,
+  "next_action": "Add behavior-specific red tests before implementation. The current failure proves missing registry coverage only."
+}

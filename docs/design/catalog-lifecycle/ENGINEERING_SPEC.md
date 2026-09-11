@@ -3083,10 +3083,11 @@ Both runtime reviewers report zero findings. GitHub serves reviewed `6419ea85`, 
 Starport passes all 33 repository commands with `GOWORK=off`. Runtime integration `33118919` preserves the tested `6419ea85` tree.
 The published pair passes all eight CSP4 subcases with 54 race events. Both runtime publication reviewers report zero findings.
 
-All six native jobs pass for PR #152. Its final repository gate and merge remain open.
-Starport `2a0246a7` includes main `5e437a2b`, with the console-packaging and storage startup fixes.
-All 33 repository commands and eight task subcases pass.
+Starmap PR #152 merged as `f9951ee6` after all fifteen CI checks passed.
+Starport correction `ba9b0d8e` fixes the startup-test race and lets Starmap create its state directory with native access rules.
+All 33 required repository commands, eight task subcases, and both review panels pass.
 
-Both reviewers report zero findings. PR #373 awaits native CI and the Starmap merge.
-Starport publication and both remaining implementation merges remain required.
-This component evidence does not qualify the final released pair or complete CSP4 before its implementation merges.
+Starport PR #373 merged as `cb6f03a2` after all ten CI checks passed.
+The [completion proof](../../plans/proof/starport-production-catalog/csp4/merged-qualification-2026-09-11/verification.json) confirms both merged trees equal their reviewed source.
+The final pair records 56 mapped race events with no failures or skips. CSP4 is complete.
+Full released-pair, fleet, and production latency qualification remain separate plan work.

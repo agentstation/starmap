@@ -1,6 +1,21 @@
 # CSP4 authority and retained startup
 
-## Current runtime integration
+<a id="current-runtime-integration"></a>
+
+## Completion
+
+CSP4 completed on 2026-09-11 after both final implementation PRs merged.
+Starmap #152 merged as `f9951ee6`. Starport #373 merged afterward as `cb6f03a2`.
+The [completion proof](csp4/merged-qualification-2026-09-11/verification.json) binds both merged trees to their reviewed and tested source.
+Starmap retains the published revision that Starport pins.
+
+All eight mapped task subcases pass, with 56 race events and no skips. The broad task race command passes 986 events.
+All fifteen Starmap checks and ten Starport checks pass. Both final review panels report zero findings.
+Native skips retain their documented scope. Final released-pair and fleet qualification remain separate tasks.
+
+The following sections preserve earlier implementation checkpoints. Their pending actions describe those checkpoints, not the current delivery state.
+
+## Runtime integration history
 
 The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-deliveries) separates merged work from the remaining CSP4 deliveries.
 Starmap PRs #146, #148, #149, #150, and #151 merged. Twenty-nine campaign PRs merged across nine completed tasks.

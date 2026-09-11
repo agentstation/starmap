@@ -2,22 +2,16 @@
   "scope": "Plan maintenance only. No product acceptance credit.",
   "status": "PASS",
   "tasks": 38,
-  "done": 9,
-  "in_progress": "CSP4",
+  "done": 10,
+  "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 113,
-  "new_evidence_artifacts": 1762,
+  "local_links": 112,
+  "new_evidence_artifacts": 1772,
   "new_commit_source_files": 325,
-  "resume_words": 347,
-  "next_action": "All ten Starport CI checks pass at ba9b0d8e. Starmap PR 152 awaits its final verification job. Merge Starmap first while preserving the pinned revision, then merge Starport. Read-only observer session 42989 waits on the exact runs.",
-  "current_source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
-  "starmap_integration_source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
-  "external_running_checks": [
-    {
-      "pull_request": 152,
-      "workflow_run": 34632707283,
-      "source": "33118919dc18e1f824ea618502f23b756e50813a"
-    }
-  ]
+  "resume_words": 276,
+  "next_action": "CSP4 is complete after verified merges f9951ee6 and cb6f03a2. CSP5 is active in starmap-catalog-update-controls. The registry baseline has twelve unverified subcases. Capture behavior-specific red tests before implementation.",
+  "current_source": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+  "starmap_integration_source": null,
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "external_running_checks": []
 }

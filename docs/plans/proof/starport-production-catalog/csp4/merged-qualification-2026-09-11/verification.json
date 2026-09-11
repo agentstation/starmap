@@ -1,0 +1,163 @@
+{
+  "task": "CSP4",
+  "status": "PASS",
+  "source_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+  "consumer_source_commit": "cb6f03a26ff070172ab503aca11a0c5014040a19",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "consumer_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "source_files": [],
+  "consumer_files": [],
+  "source_tree": "17d63e69b0c557679525f163f5299052713af203",
+  "consumer_tree": "0ff07e000973a6571a4476acd6d92b9c46b23a0c",
+  "qualification": "CSP4 component completion. Final released-pair qualification remains incomplete.",
+  "verified_at": "2026-09-11T20:05:33.804023+00:00",
+  "merges": {
+    "starmap": {
+      "status": "PASS",
+      "merge_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "reviewed_source": "33118919dc18e1f824ea618502f23b756e50813a",
+      "pinned_module_source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+      "tree": "17d63e69b0c557679525f163f5299052713af203",
+      "tree_equal": true,
+      "pinned_module_is_ancestor": true,
+      "required_checks": 15,
+      "verified_at": "2026-09-11T19:59:57.152285+00:00"
+    },
+    "starport": {
+      "status": "PASS",
+      "merge_commit": "cb6f03a26ff070172ab503aca11a0c5014040a19",
+      "reviewed_source": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "tree": "0ff07e000973a6571a4476acd6d92b9c46b23a0c",
+      "tree_equal": true,
+      "required_checks": 10,
+      "merged_at": "2026-09-11T20:00:04Z",
+      "verified_at": "2026-09-11T20:01:00.953548+00:00"
+    }
+  },
+  "source_binding": "Both merged trees exactly equal their reviewed and tested branch trees. The published Starmap module source remains an ancestor of Starmap main. No source changed during either merge.",
+  "task_gate": {
+    "source_commit": "33118919dc18e1f824ea618502f23b756e50813a",
+    "consumer_source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+    "command": [
+      "bash",
+      "scripts/verify-catalog-product.sh",
+      "--starport-root",
+      "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "--task",
+      "CSP4",
+      "--json"
+    ],
+    "environment_overrides": {
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6"
+    },
+    "started_at": "2026-09-11T19:12:40.303113+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "finished_at": "2026-09-11T19:19:28.810644+00:00",
+    "summary": {
+      "selected_subcases": 8,
+      "gate_status": "PASS",
+      "qualification": "component checks only",
+      "unverified_cases": 49,
+      "test_events": {
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "added_subcases": {
+        "TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable": 1,
+        "TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending": 1
+      },
+      "subcases": {
+        "A07.public_no_provider_keys": "PASS",
+        "A07.invalid_signature": "PASS",
+        "A07.checksum_size_schema": "PASS",
+        "A07.replay_rejection": "PASS",
+        "A09.excluded_membership": "PASS",
+        "A10.cold_owner_refusal": "PASS",
+        "A10.warm_retained_authority": "PASS",
+        "A21.mixed_schema_permission_envelope": "PASS"
+      }
+    }
+  },
+  "broad_task_race": {
+    "source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "same_tree_as_merge": true,
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-timeout",
+      "30m",
+      "./runtime",
+      "./remote",
+      "./pkg/catalogs/artifact"
+    ],
+    "test_events": {
+      "pass": 986,
+      "fail": 0,
+      "skip": 0
+    },
+    "evidence": "../integrated-task-2026-09-11/verification.json"
+  },
+  "repository_checks": {
+    "starmap": {
+      "local_stages": 41,
+      "required_pr_checks": 15,
+      "native_jobs": 6
+    },
+    "starport": {
+      "local_commands": 33,
+      "required_pr_checks": 10,
+      "native_jobs": 3
+    }
+  },
+  "reviews": {
+    "starmap": "Sol and Opus: zero findings. Final publication review bound to 33118919.",
+    "starport": "Sol and Opus: zero findings. Final publication review bound to ba9b0d8e."
+  },
+  "preserved_evidence": {
+    "integrated": "../integrated-task-2026-09-11/verification.json",
+    "starport": "../starport-clock-2026-09-11/verification.json"
+  },
+  "limits": [
+    "Full A09, A10, and A21 qualification remains with CSP10.",
+    "CSP11 retains complete fleet recovery and fencing.",
+    "Native suite skips retain their documented scope. The eight mapped task cases have no skips.",
+    "No released-pair, hosted documentation, or production latency qualification follows from this component completion."
+  ],
+  "artifacts": [
+    {
+      "path": "starmap-pull-request.json.gz",
+      "sha256": "2d19f87a8cef2d9729b5f01525a503b0a57d03684b6802b6dfa7d2815252ed07",
+      "decoded_sha256": "6bf9cc8262237859520645be87a8bf20d14e7544294c3bec80ab0ad7160383a1"
+    },
+    {
+      "path": "starmap-ancestry-and-tree.json.gz",
+      "sha256": "9142c81c7ddd2873fccb62d28f99f867990f64c9c745bef4aedbd3aaf2c78002",
+      "decoded_sha256": "86275c20dd98128128bad615cb55ba3fa23bb04d8345192fa7c2d88d9d440925"
+    },
+    {
+      "path": "starmap-workflow.json.gz",
+      "sha256": "c416f07e48645468675691f827b70ecd5904447d70ffa040cf6d43f280bf2aaf",
+      "decoded_sha256": "578e16c55da6166e060262b305e0ae9664b6fba6de2772e4b8dea9f43abc9f55"
+    },
+    {
+      "path": "starmap-verification-gate.log.gz",
+      "sha256": "707361328b316523d36608e77f21cb14f7783055a93e2c9dc059661604c60600",
+      "decoded_sha256": "5643ac3cf46e16408f0a3c93b3beb6b814303b90b68fa6cb57a6b1e8af12b28b"
+    },
+    {
+      "path": "starport-pull-request.json.gz",
+      "sha256": "a0797195c455bdbe0db1a60d1f86a92333cfd2186def9eedcc71a1e69d46d19c",
+      "decoded_sha256": "3d845d7d27529e1600eb5c855ee39c7df93f4e9d2b20e97e47757eb1468b560e"
+    },
+    {
+      "path": "starport-tree-equality.json.gz",
+      "sha256": "7622035a136bf0d4da224d64a9acbff05308f98711afb6dda02cc57ab51d7834",
+      "decoded_sha256": "b8cc5f899d110f86236cd4108725a89969262458c0288081102c8268d88c1d01"
+    }
+  ]
+}
