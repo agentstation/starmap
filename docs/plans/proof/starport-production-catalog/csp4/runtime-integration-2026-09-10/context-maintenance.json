@@ -1,38 +1,22 @@
 {
   "scope": "Plan maintenance only. No product acceptance credit.",
-  "previous_goal_turn": "progress: configured native clocks at e97d7fc3; parent verification and review passed; PR151 native CI running",
   "status": "PASS",
   "tasks": 38,
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 110,
-  "new_evidence_artifacts": 960,
-  "new_commit_source_files": 241,
-  "resume_words": 306,
-  "current_source": "b76b9f10912bf9cfe31ca02d363859ef2434513e",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
-  "clean_source": true,
-  "running_implementation_commands": [
-    {
-      "workflow": 34593352017,
-      "state": "in_progress",
-      "note": "Windows preflight fails on both architectures. Other jobs still run."
-    }
-  ],
-  "next_action": "Continue shared-store followers and explicit authority transitions from b76b9f10. Diagnose Windows status RPC access denial from native evidence. Integrate the qualified parent before full verification, review, and publication.",
+  "local_links": 112,
+  "new_evidence_artifacts": 1038,
+  "new_commit_source_files": 249,
+  "resume_words": 318,
+  "next_action": "Complete the four mapped Starport consumer checks against published Starmap. Continue periodic follower adoption, safe takeover, and explicit authority transitions. Review native workflow 34597460388 before any merge.",
+  "current_source": "190a812427adc3a182beeb3acd444bb60e87f5b7",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
   "external_running_checks": [
     {
       "pull_request": 151,
-      "workflow_run": 34593352017,
-      "status": "Reviewed e6bf2fce is published. Both Windows preflights fail the status RPC with access denied."
+      "workflow_run": 34597460388,
+      "source": "a6545493cc5a56c548dd1ce978107e5882b3a5b0"
     }
-  ],
-  "public_acceptance_work": {
-    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
-    "branch": "codex/catalog-public-acceptance",
-    "base": "b81b827067aa860096bed208e541dd84e31274ab",
-    "status": "Committed 0a143a94 integrates actual main 32737432 and includes the provider repair, public fixtures, and Windows checkout correction. Four A07 checks pass after main integration. Runtime verification passes 912 events across three packages. The isolated live generation probe passes four validation components with zero issues.",
-    "sessions": []
-  }
+  ]
 }

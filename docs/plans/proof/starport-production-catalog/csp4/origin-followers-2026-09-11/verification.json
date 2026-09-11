@@ -1,0 +1,255 @@
+{
+  "status": "LOCAL_PASS_COMMITTED_UNPUBLISHED",
+  "contract": "A publication-lease follower may start with the accepted matching authority catalog. It writes no shared generation and issues receipts from current shared authority metadata.",
+  "fail_before": {
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-run",
+      "^TestOriginFollower",
+      "./runtime"
+    ],
+    "exit_code": 1,
+    "base": "b76b9f10"
+  },
+  "checks": {
+    "initial_startup": [
+      {
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-run",
+          "^Test(OriginFollower.*|OriginPublicationRequiresExplicitOrdinaryBootstrap|OriginPublicationRefusesImplicitAuthorityRemoval|WithoutAuthorityOriginPreservesSelectedStore)$",
+          "./runtime"
+        ],
+        "toolchain": "go1.25.12",
+        "exit_code": 0,
+        "events": {
+          "pass": 12,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-run",
+          "^Test(OriginFollower.*|OriginPublicationRequiresExplicitOrdinaryBootstrap|OriginPublicationRefusesImplicitAuthorityRemoval|WithoutAuthorityOriginPreservesSelectedStore)$",
+          "./runtime"
+        ],
+        "toolchain": "go1.26.6",
+        "exit_code": 0,
+        "events": {
+          "pass": 12,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    ],
+    "final_follower_and_static": [
+      {
+        "name": "latest-followers-go1.25.12",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-run",
+          "^TestOriginFollower",
+          "./runtime"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.25.12"
+        },
+        "exit_code": 0,
+        "log": ".tmp/csp4-origin-followers/latest-followers-go1.25.12.log",
+        "events": {
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "latest-followers-go1.26.6",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-run",
+          "^TestOriginFollower",
+          "./runtime"
+        ],
+        "environment_overrides": {
+          "GOTOOLCHAIN": "go1.26.6"
+        },
+        "exit_code": 0,
+        "log": ".tmp/csp4-origin-followers/latest-followers-go1.26.6.log",
+        "events": {
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "lint",
+        "command": [
+          "golangci-lint",
+          "run",
+          "./runtime/..."
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-origin-followers/lint.log"
+      },
+      {
+        "name": "vet",
+        "command": [
+          "go",
+          "vet",
+          "./runtime/..."
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-origin-followers/vet.log"
+      },
+      {
+        "name": "ago",
+        "command": [
+          "go",
+          "tool",
+          "ago",
+          "-stale-ignores",
+          "-format",
+          "json",
+          "./..."
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-origin-followers/ago.log"
+      },
+      {
+        "name": "prose",
+        "command": [
+          "make",
+          "technical-writing-check"
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-origin-followers/prose.log"
+      },
+      {
+        "name": "diff",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "environment_overrides": {},
+        "exit_code": 0,
+        "log": ".tmp/csp4-origin-followers/diff.log"
+      }
+    ]
+  },
+  "limitations": [
+    "This delivers follower startup and independent current-head receipt issuance. Periodic catalog adoption and safe publication takeover remain open.",
+    "Initial 12-event checks predate the final leader-advance assertion. The final seven-event runs pass on each supported toolchain, including that assertion.",
+    "Memory and filesystem stores pass. Real fleet storage and failover qualification remain unverified.",
+    "Complete verification, review, native parent integration, publication, and merge remain required. No CSP4 completion credit applies."
+  ],
+  "running_checks": [],
+  "task": "CSP4",
+  "source_commit": "4bb4b870360fc10e93caf6d914d68313d6fcabf2",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+  "branch": "codex/catalog-origin-settings",
+  "base": "852a548c4959e98af443f487922b9708fb594a91",
+  "source_files": [
+    {
+      "path": "runtime/origin_publication.go",
+      "sha256": "14559d26dcc559157b327d13062e62892102faa5294db28a5e9f53c1bf811f40"
+    },
+    {
+      "path": "runtime/origin_follower_test.go",
+      "sha256": "3194920ba6461f96bdf84d250a6e32a309171c5f01c542f761028d122ffe99e0"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-startup.jsonl.gz",
+      "sha256": "2861b8ccaef0820048722ea6a594c756d2226c9547545490001c4f03c484e3d4",
+      "decoded_sha256": "048500ee25f95e04a5bbae072f98f1e8d7e7f0366095009b1e2fcad04d35a3d4"
+    },
+    {
+      "path": "go1.26.6-startup.jsonl.gz",
+      "sha256": "de590f1687e6d20bb510366c31c7d89fbb9eac02b898e9adc3e940dbdbfac470",
+      "decoded_sha256": "4a1ea206b7bf9122d85a015a4d43691128c56a3830a59f0c06d6f8ef87fb3377"
+    },
+    {
+      "path": "latest-checks.json.gz",
+      "sha256": "1fe2746c61c1b29d63bc610c3f18c47d5214075bcd4162fa2cc67b68c4018aac",
+      "decoded_sha256": "9d1ee11f1884b32438be76f2cc9a9e4dea808e1522ba1ac9b1ff8fb16c1f362b"
+    },
+    {
+      "path": "latest-followers-go1.25.12.log.gz",
+      "sha256": "9144452d8f5ce16410e7941628e9cfc0b8a07dab6086be09663070abea7be38c",
+      "decoded_sha256": "a55ce3eeba4d709722ef488feca3ea2bd89f86ec6626a99dfef1efc773a02139"
+    },
+    {
+      "path": "latest-followers-go1.26.6.log.gz",
+      "sha256": "061054a34b838afdefa284487b308e68ff3ed21dbeb9e7a9cc61474d2d95d4be",
+      "decoded_sha256": "8b20e8bf0349818a325f03c614683c895712a3305f43d1f5f6a9b6e12840a6b9"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "c8a21f82d0ef42225903306a6d60b18e9527fa8dd870f496a7b9b8b204ee92ba",
+      "decoded_sha256": "9cd551b71e002654cdc6da62d075f6bd39fac83cf355aa0ddaf86c8c7e76ce0c"
+    },
+    {
+      "path": "startup-checks.json.gz",
+      "sha256": "0f180d9425629310fdc64333f7bd342fd0df895a8b655100fab0a032f3668377",
+      "decoded_sha256": "539c73d9c97c175871079e4409a563d67c7ed2e27ef303f16320b0f9b25b98d7"
+    },
+    {
+      "path": "startup-red.json.gz",
+      "sha256": "031309f462ae620ae7fa960ea9c85bc8f9c8dd785091b1a930775320d02479da",
+      "decoded_sha256": "fcacfb7a976b80ca3f898d6fff66344088dc3c916a957364266b939b12ad47bb"
+    },
+    {
+      "path": "startup-red.jsonl.gz",
+      "sha256": "e1f7b4bda0ae844701031995710717c35bfcfc9eedf50bb011703b9450a039c7",
+      "decoded_sha256": "e5673a30ab043b927dd35e5e2ffa04df6b8dbcb356f52d6f9b615212d72cbc60"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

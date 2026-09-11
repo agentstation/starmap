@@ -1,0 +1,307 @@
+{
+  "status": "COMMITTED_PUBLISHED_DEPENDENCY_FOCUSED_PASS",
+  "contract": "The authority consumer uses a published merged Starmap module with GOWORK=off and no replacement.",
+  "fail_before": {
+    "command": [
+      "go",
+      "test",
+      "-run",
+      "^TestCatalogAuthoritySnapshot",
+      "./internal/catalog"
+    ],
+    "environment_overrides": {
+      "GOWORK": "off"
+    },
+    "exit_code": 1
+  },
+  "checks": [
+    {
+      "name": "catalog-race",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=15m",
+        "./internal/catalog"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-published-dependency/catalog-race.log",
+      "events": {
+        "pass": 161,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "permission-consumers",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "Permission|Authority",
+        "./internal/proxy",
+        "./internal/router",
+        "./internal/server/controllers"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-published-dependency/permission-consumers.log",
+      "events": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "name": "module-resolution",
+      "command": [
+        "go",
+        "list",
+        "-m",
+        "-json",
+        "github.com/agentstation/starmap"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-published-dependency/module-resolution.log"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "environment_overrides": {
+        "GOWORK": "off"
+      },
+      "exit_code": 0,
+      "log": ".tmp/csp4-published-dependency/diff.log"
+    }
+  ],
+  "integration_checks": [
+    {
+      "name": "tidy",
+      "command": [
+        "go",
+        "mod",
+        "tidy"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "module",
+      "command": [
+        "go",
+        "list",
+        "-m",
+        "-json",
+        "github.com/agentstation/starmap"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "verify-starmap-ownership",
+      "command": [
+        "bash",
+        "scripts/verify-starmap-ownership.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "verify-v1-architecture",
+      "command": [
+        "bash",
+        "scripts/verify-v1-architecture.sh"
+      ],
+      "exit_code": 1
+    }
+  ],
+  "module": {
+    "Path": "github.com/agentstation/starmap",
+    "Version": "v0.16.6-0.20260911063726-852a548c4959",
+    "Time": "2026-09-11T06:37:26Z",
+    "Dir": "/Users/jack/go/pkg/mod/github.com/agentstation/starmap@v0.16.6-0.20260911063726-852a548c4959",
+    "GoMod": "/Users/jack/go/pkg/mod/cache/download/github.com/agentstation/starmap/@v/v0.16.6-0.20260911063726-852a548c4959.mod",
+    "GoVersion": "1.25.0",
+    "Sum": "h1:q2jY9QqEg75Z/uUWDQAOlosoR+4Dnd7OlE5alaCDlGw=",
+    "GoModSum": "h1:wdYVFHoRUG+qGBz0cLp2PXxov/zQVq42+/+nX0Fj4/o="
+  },
+  "limitations": [
+    "Four mapped CSP4 consumer cases remain unverified. The 161 catalog and 24 permission-consumer race events do not replace those cases.",
+    "This is a published pseudo-version at merged Starmap 852a548c. Stable released-pair qualification remains a later plan requirement.",
+    "The first module download failed with a transient shared Git cache error. The retry succeeded without cache changes.",
+    "Remaining repository delivery checks, native clock composition, review, publication, and merge remain required."
+  ],
+  "running_checks": [],
+  "gate_failure": "verify-v1-architecture: 11 pass, 1 fail. V01 accepts only release tags; it rejects this valid published pseudo-version. V12 full Go suite passes. Reconcile the candidate published-module contract without relaxing final stable-release requirements.",
+  "remaining_guards": [
+    {
+      "name": "test-dependency-direction-verifier",
+      "command": [
+        "bash",
+        "scripts/test-dependency-direction-verifier.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "verify-dependency-direction",
+      "command": [
+        "bash",
+        "scripts/verify-dependency-direction.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "verify-catalog-driven-providers",
+      "command": [
+        "bash",
+        "scripts/verify-catalog-driven-providers.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "verify-package-layout",
+      "command": [
+        "bash",
+        "scripts/verify-package-layout.sh"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "task": "CSP4",
+  "source_commit": "190a812427adc3a182beeb3acd444bb60e87f5b7",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "base": "55629266f05f687d489adfa93aa449fd24168883",
+  "source_files": [
+    {
+      "path": "go.mod",
+      "sha256": "97919ab32ec51c4aaaea08c58a1aa2ca663a447efc27918bbda215143d4018aa"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "b15527be114e13bff1eae99524489cb6c73b91cb320a9fe135f8c3d555713685"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "catalog-race.log.gz",
+      "sha256": "42c667e8982c8f94061e0a97c73cdd828a6c36db10fea6d6f50b9fb6ce02635c",
+      "decoded_sha256": "2dd9c04b089dc8bb0b979bd0edfc6eac799fadc99fc1387a784487e9c420141d"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "a10ca9e44d38c6b1f69bf49fdf4f02d4e7e20132d2bcd2a27481cb457d8cd589",
+      "decoded_sha256": "4c600aebef273541f59f3e516d98995df2d6f6368f0a894de0c00e4ea19d94d4"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go-get-retry.json.gz",
+      "sha256": "ba5b011cbdc7083dfe439ba5220b7110a08e7291c01c98764ce8a1c35bce7c39",
+      "decoded_sha256": "85c9a1810e204d25a13725e3dc753c9c849f225aa58467e705022663e5d85619"
+    },
+    {
+      "path": "go-get-retry.log.gz",
+      "sha256": "b2b17c8fec91a68e2b38ffef478c2289a849fd4748e36f856074ab38e987d3ee",
+      "decoded_sha256": "75de7085d00ed725fba03c0534d051193cb394a845ada7f2289cde338e65cc2f"
+    },
+    {
+      "path": "go-get.json.gz",
+      "sha256": "1171186d4fdac6122acab111ef15e4b56ef52d1dc025c0068c90e5af2afe1380",
+      "decoded_sha256": "1fea305c883722be8f00b11a543fe2b9cb365b8129dd4631c4e10d4b975ad100"
+    },
+    {
+      "path": "go-get.log.gz",
+      "sha256": "ffb2f76dcf7ed7bef6f66f621d021678a16fe5d054d4a55fef55565400520f46",
+      "decoded_sha256": "b2d5a666db45089667cfaaf6b91aea49ea0ca1badceb2f567f63dafe7d2f86aa"
+    },
+    {
+      "path": "integration-checks.json.gz",
+      "sha256": "8efa688bebc119326fac1364f25e2ef5438deb68e23b4ba0beafb3a35fada586",
+      "decoded_sha256": "8fefd67803e4772737c1a3a82226ac5625b7e11c4166e4d7b03120c8138b4b3f"
+    },
+    {
+      "path": "module-final.log.gz",
+      "sha256": "26d19e4bf1652e830d524aae27f916a1823003c1f9de9ea8d296c7dc2feace2a",
+      "decoded_sha256": "f97670b2804249fb96720ae2f62370eb40eba02849dc9ac972ec7c2db2db937e"
+    },
+    {
+      "path": "module-resolution.log.gz",
+      "sha256": "26d19e4bf1652e830d524aae27f916a1823003c1f9de9ea8d296c7dc2feace2a",
+      "decoded_sha256": "f97670b2804249fb96720ae2f62370eb40eba02849dc9ac972ec7c2db2db937e"
+    },
+    {
+      "path": "old-pin-red.json.gz",
+      "sha256": "eaf5477809798ed9ad7ebc631e5298804f7dd47f0f9cf082b80674f95031a2b7",
+      "decoded_sha256": "fa95f0698047cf594e3d83ad6d2cf2da5c6da4d2bb6f3f5a3fa9135dbf28e0e4"
+    },
+    {
+      "path": "old-pin-red.log.gz",
+      "sha256": "ac594677f9e1a92a0bb372650c8358ef6a74fe23880edf850ba7e08f40e5e74f",
+      "decoded_sha256": "b08f2e0ad434d4f084f79ddd1a73bd6edf3abf9360ce3592f02f6a9ba7ddd97f"
+    },
+    {
+      "path": "permission-consumers.log.gz",
+      "sha256": "b7a683746249cd95ecc458e75025cdb44bfc9bc48ec8a9295bcde45f863802c9",
+      "decoded_sha256": "359f6a364c3574d761d8f66d17d799e8d72c649dc6087f9882386a4c0bc350f4"
+    },
+    {
+      "path": "remaining-guards.json.gz",
+      "sha256": "7b2ae40fe446b04eb6ac905096375eb082c6a4c6618a93b6dda7ae6376bc6dac",
+      "decoded_sha256": "dc3dbe89011221d404acc0b40bf6223fcb1a37a864a6a55a4803a01c888c68da"
+    },
+    {
+      "path": "test-dependency-direction-verifier.log.gz",
+      "sha256": "33c729e27eb33e08196e79f9590428e34f29bb411037d9d823d0a755b41dc926",
+      "decoded_sha256": "8a71d7001424e24289e0d2a024579a006638b5fa0e7331ad4452c835278e6651"
+    },
+    {
+      "path": "tidy-final.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verify-catalog-driven-providers.log.gz",
+      "sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57",
+      "decoded_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "path": "verify-dependency-direction.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "verify-package-layout.log.gz",
+      "sha256": "7bd410a61c39daa492428e2ce79a33a9fcab46f7f94c95454599e63bd98dd66d",
+      "decoded_sha256": "e217591036756c242013726e8b9b2582ad500c59feab54cd89b6ee0715fcee37"
+    },
+    {
+      "path": "verify-starmap-ownership.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "decoded_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "verify-v1-architecture.log.gz",
+      "sha256": "15f41429557c7646d8d53ab093158d0f122c2f7208f7fe775970caecbccca6f3",
+      "decoded_sha256": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980"
+    }
+  ]
+}

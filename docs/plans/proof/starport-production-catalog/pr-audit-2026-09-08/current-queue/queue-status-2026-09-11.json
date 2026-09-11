@@ -1,9 +1,9 @@
 {
-  "captured_at": "2026-09-11T11:29:58.206853+00:00",
+  "captured_at": "2026-09-11T12:19:05.395361+00:00",
   "repositories": {
     "starmap": [
       {
-        "headRefOid": "e6bf2fcef85ea19702860dbf9989ebce386f8ba1",
+        "headRefOid": "a6545493cc5a56c548dd1ce978107e5882b3a5b0",
         "isDraft": false,
         "number": 151,
         "title": "Add native clocks for catalog permission checks",
@@ -13,11 +13,11 @@
     "starport": []
   },
   "current_pr": 151,
-  "head": "e6bf2fcef85ea19702860dbf9989ebce386f8ba1",
+  "head": "a6545493cc5a56c548dd1ce978107e5882b3a5b0",
   "base": "852a548c4959e98af443f487922b9708fb594a91",
-  "required_reviews": "Sol xhigh and Opus high: zero findings at e6bf2fce. Secret scan passed.",
-  "repository_verification": "Seventeen local commands pass at e6bf2fce. The original native adapter passed all 41 stages. Fresh required CI remains mandatory.",
-  "native_jobs": "Workflow 34593352017: each Windows preflight passes 22 events and fails the status RPC with access denied. Full Windows suites do not run after preflight failure. Security and Reliability passes.",
+  "required_reviews": "Sol xhigh: zero findings. Opus high: one known native merge blocker. Secret scan passes. The required preflight remains enabled.",
+  "repository_verification": "45 retention race events per supported toolchain pass. The test-only Windows privilege probe passes cross-build and static checks. Native access remains unqualified.",
+  "native_jobs": "Workflow 34597460388: both Windows status calls fail with privilege disabled and enabled. Both Linux jobs and macOS ARM pass. macOS Intel and Verification Gate remain in progress.",
   "disposition": "Require both native Windows jobs and all repository checks before merging the reviewed PR.",
   "owner": "Catalog plan executor",
   "campaign_merged_prs": 28,
@@ -32,13 +32,13 @@
     },
     {
       "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
-      "head": "95354f0c9f7dfc451a491f2ebf04ca55504a046a",
-      "next_action": "Use a compatible published dependency, finish native clock composition and four consumer cases."
+      "head": "190a812427adc3a182beeb3acd444bb60e87f5b7",
+      "next_action": "The published dependency passes 185 focused race events. Reconcile V01 tag-only check with the candidate contract and finish four consumer cases and native composition before publication."
     },
     {
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
-      "head": "b76b9f10912bf9cfe31ca02d363859ef2434513e",
-      "next_action": "Scoped verification passes. Continue shared-store followers and transitions. Integrate qualified native parent before full verification, review, and publication."
+      "head": "4bb4b870360fc10e93caf6d914d68313d6fcabf2",
+      "next_action": "Finish periodic follower adoption, safe takeover, and explicit transitions. Integrate qualified native parent, then full verification, review, and publication."
     }
   ],
   "previous_capture": {

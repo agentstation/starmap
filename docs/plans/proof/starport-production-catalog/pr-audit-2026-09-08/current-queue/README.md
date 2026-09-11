@@ -1,20 +1,22 @@
 # Current pull request queue
 
 Updated 2026-09-11 UTC. Starmap has one open PR, [#151](https://github.com/agentstation/starmap/pull/151). Starport has none.
-The [queue evidence](queue-status-2026-09-11.json) records its owner, reviewed source, checks, and next action.
-The [previous capture](queue-before-pr151.json.gz) preserves the empty queues after the PR #150 merge.
+The [queue evidence](queue-status-2026-09-11.json) records current heads and remaining gates.
 
-PR #151 contains correction `e6bf2fce` for unnamed local service endpoints.
-Sol and Opus report zero findings. The secret scan passes.
-Seventeen local checks pass, including 194 permission race events per toolchain and eight Windows cross-builds.
+PR #151 contains `a6545493`, the permission cancellation fix and Windows privilege diagnostic.
+Forty-five retention race events pass per supported toolchain. Sol reports zero findings.
+Opus flags the known native failure. The merge block remains, and every native test stays mandatory.
 
-Workflow `34593352017` passes 22 preflight events on each Windows architecture and fails the status RPC with access denied.
-Both full Windows suites remain unrun after the mandatory preflight failure. Security and Reliability passes.
-The authenticated query must pass on both Windows architectures before merge.
+Workflow `34597460388` fails Windows status access before and after enabling the held time privilege on both architectures.
+Other native jobs continue. Investigate the verified RPC authentication and impersonation contract before merge.
 
-Clock configuration `e97d7fc3` passes all 41 repository verifier stages in its separate worktree. It still needs the qualified parent and final review.
-Starport `95354f0` retains configured authority pins and request permission checks. Four consumer cases remain incomplete.
-No open PR is stale or superseded. Twenty-eight campaign PRs merged, nine tasks are complete, and CSP4 remains active.
+Origin follower startup `4bb4b870` passes seven final race events per toolchain and writes no shared catalog.
+Periodic adoption, safe takeover, and transitions remain incomplete.
+Clock configuration `e97d7fc3` passes all 41 verifier stages but still requires the qualified parent and final review.
+
+Starport `190a8124` pins a published merged dependency and passes 185 focused race events with zero skips.
+Its architecture gate passes eleven checks, including the full Go suite, and fails the tag-only V01 expression.
+Four mapped consumer cases remain incomplete. Twenty-eight campaign PRs merged, nine tasks are complete, and CSP4 remains active.
 
 ## Historical queue snapshots
 
