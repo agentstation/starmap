@@ -2004,3 +2004,23 @@ Static checks, complete documentation, and the 1,458-file prose check pass.
 The required review initially refused the output location, then a binary change. Neither attempt ran a reviewer.
 Explicit fixture setup resolves the binary refusal. Required Sol and Opus review passes against the complete final branch diff with zero findings.
 The [acceptance proof](../../plans/proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json) retains both refusals and the replacement checks.
+
+
+## Windows fixtures and consumer permission, 2026-09-11
+
+PR #149 fails signed channel verification on both Windows architectures at `079c390b`.
+A fresh Git checkout with Windows text conversion reproduces changed fixture digests. Source `f29ec2a4` preserves the signed bytes through attributes.
+Eight setup tests and fourteen runtime/artifact race events pass locally. Native rerun remains required.
+
+Starport accepts a routing catalog after Starmap activates a candidate. Runtime readiness alone does not identify the catalog Starport can still enforce.
+Local source `3d023778` adds `AllowsCatalogAttempt` for a consumer's validated authority head. The consumer must authenticate that head and bind it to its catalog.
+
+An old required revision refuses after withdrawal. Equal permission revisions preserve service during route preparation.
+Known sequence contradictions also refuse. The [consumer proof](../../plans/proof/starport-production-catalog/csp4/consumer-permission-2026-09-11/verification.json) retains each regression.
+
+Both supported toolchains pass 307 scoped race events. The complete catalog suite passes 1,253 events without failures or skips.
+Canonical checksum validation now preserves the same accepted syntax without temporary decode-and-encode buffers.
+The valid consumer check and checksum validator pass zero-allocation assertions. These measurements do not establish total Starport request overhead.
+
+The new Starport consumer worktree compiles three packages against the prepared Starmap source through an isolated workspace.
+It runs no behavior tests and changes no module pin. All four required Starport consumer checks remain UNVERIFIED.

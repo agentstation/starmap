@@ -11,29 +11,22 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-11 UTC. CSP4 is active. Nine of 38 tasks are complete. Twenty-six campaign PRs merged.</p>
 
-<p id="next-action">Verify native CI and merge <a href="https://github.com/agentstation/starmap/pull/149">PR #149</a>. Work in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance</code>, branch <code>codex/catalog-public-acceptance</code>, at clean <code>079c390b</code>. It includes actual main <code>21e7356b</code>, the provider-documentation repair, and signed public fixtures.</p>
+<p id="next-action">Verify native CI for reviewed <a href="https://github.com/agentstation/starmap/pull/149">PR #149</a>, then merge. Worktree <code>/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance</code>, branch <code>codex/catalog-public-acceptance</code>, is clean at <code>0a143a94</code>. It includes actual main <code>32737432</code>. The remote PR names this commit. Sol and Opus integrated-base review passes with zero findings.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json">public acceptance proof</a> records all four local A07 checks passing after main integration. The scoped race checks pass seven runtime events on the development toolchain. They pass fourteen runtime/artifact events on the minimum toolchain. The verifier regression passes 73 tests.</p>
+<p>The <a href="proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json">public proof</a> retains four local A07 passes and both Windows failures. Windows checkout changed signed fixture bytes. The attribute correction passes eight setup tests and fourteen runtime/artifact race events. Sol and Opus correction review passes with zero findings. No merge or released-pair credit applies yet.</p>
 
-<p>Explicit fixture setup passes seven tests. CI requires the pinned archive. Missing fixtures give no acceptance credit.</p>
+<p>Consumer source <code>20b1ee41</code> is clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission</code>, branch <code>codex/catalog-consumer-permission</code>. Its <a href="proof/starport-production-catalog/csp4/consumer-permission-2026-09-11/verification.json">proof</a> records 307 scoped race events per toolchain and 1,253 catalog events. The new API checks permission for a consumer's retained catalog. Valid warm checks allocate zero times. Full runtime race verification runs in session <code>37028</code>. Review, native CI, and merge remain required.</p>
 
-<p>Final runtime/remote/artifact verification passes 912 events across three packages. The integrated verifier passes A07 and reports four Starport consumer cases UNVERIFIED. The isolated generation probe passes all four validation components with zero issues. The final provider API correction passes 82 events per toolchain. Required Sol/Opus review passes with zero findings. Local checks give no merge or released-pair credit.</p>
+<p>Clock parent <code>7641eaea</code> remains clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock</code>, branch <code>codex/catalog-native-clock</code>. Complete Go 1.26.6 verification runs in session <code>88653</code>. Its log is <code>.tmp/csp4-clock-delivery/make-verify.log</code>. Native clock qualification remains open.</p>
 
-<p>Preserve <code>/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs</code>, branch <code>codex/catalog-provider-docs</code>, at clean <code>b81b8270</code> after all forty repository verification stages pass. Its <a href="proof/starport-production-catalog/csp4/provider-docs-2026-09-11/verification.json">proof</a> records 846 race events per supported toolchain. Both test modes pass 81 packages at that checkpoint. The combined PR owns delivery of this repair.</p>
+<p>Starport source <code>d45bb30</code> is clean in <code>/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer</code>, branch <code>codex/catalog-authority-consumer</code>. Three packages compile with an isolated workspace against <code>7641eaea</code>. No behavior checks ran or module pins changed. All four Starport consumer subcases remain UNVERIFIED.</p>
 
-<p>The publication failure blocks freshness. Current Starmap supports and activates September 8's signed schema 6 catalog without credentials. Both models.dev mappings now preserve documentation in <code>DocsURL</code>.</p>
+<p>Read <a href="#task-CSP4">CSP4 criteria</a> and the <a href="proof/starport-production-catalog/csp4.md#current-runtime-integration">current proof</a>. Continue native clocks, server settings, shared-store followers, authority transitions, and Starport admission. Bind permission to accepted routing snapshots and check every attempt and cache delivery.</p>
 
-<p>Clock source <code>7641eaea</code> remains clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock</code>, branch <code>codex/catalog-native-clock</code>. Its <a href="proof/starport-production-catalog/csp4/clock-cache-2026-09-10/verification.json">proof</a> records 127 permission tests per toolchain. Native qualification remains required.</p>
-
-<p>Parent <code>7239f4b7</code> remains clean in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock</code>. All forty verifier stages pass across the original run and focused prose recovery. Both clock trees include main and equal their tested trees.</p>
-
-<p>Read the <a href="#task-CSP4">task criteria</a> and <a href="proof/starport-production-catalog/csp4.md#current-runtime-integration">current proof</a>. Server settings, clocks, followers, authority transitions, and Starport consumers remain required. Preserve separate Homebrew PR #147 and its worktree.</p>
-
-<p>Starport remains clean <code>d45bb30</code> in <code>/Users/jack/src/github.com/agentstation/starport-catalog-starmap-main</code>, branch <code>codex/catalog-starmap-main</code>. V01 needs a compatible stable release.</p>
+<p>Preserve the recorded provider repair, clock parent, and original Starport worktrees. Separate Homebrew PR #147 merged as <code>32737432</code>. Preserve its worktree. V01 still needs a compatible stable release.</p>
 
 <p>The canonical branch is <code>codex/catalog-qualification</code>. Preserve D27–D30 and the <a href="#goal">whole-plan goal</a>. The owner authorizes reviewed commits, pushes, PRs, native CI, and merges. Releases and hosted publication need separate authority. No owner decision remains.</p>
 </section>
-
 
 <section id="outcome"><h2>Outcome</h2><blockquote>Starport delivers a verified catalog and a working inference gateway from local development through a qualified single-region fleet. Starmap owns catalog facts and acquisition. Both products share configuration semantics and preserve catalog authority. Starport serves valid working state from memory with measured latency and resource limits. Installation, operation, recovery, and documentation have tested contracts.</blockquote></section>
 <section id="progress"><h2>Progress</h2><div class="bar" role="img" aria-label="Completion derives from the status ledger"><div class="fill"></div></div><p class="counts">9 of 38 tasks terminal. CSP4 is in progress.</p></section>

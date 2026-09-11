@@ -2,13 +2,17 @@
   "task": "CSP4",
   "status": "PASS_integrated_local_A07_checks",
   "acceptance": "All four A07 checks pass locally. No task completion or released-pair credit before review, native CI, and merge. Four Starport consumer subcases remain required.",
-  "source_commit": "079c390b29d0dedaa59840ddd4c73656ac647c71",
+  "source_commit": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
   "tested_before_main_integration": "65b9b5fe",
   "base": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
   "branch": "codex/catalog-public-acceptance",
   "delivery": "One PR will combine the models.dev provider-documentation repair with public-catalog acceptance tests. The provider repair checkpoint remains b81b8270. Native clocks and Starport consumers are separate remaining work.",
   "source_files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "b1c0fadc2fe5a64181c1394802d057e8969c02bb1c249bd01bdb0085f47bbaed"
+    },
     {
       "path": ".github/workflows/pr.yaml",
       "sha256": "67d6014c7cb7ea93d5c8cbd6835d439f99c9098d23798a1e59ca8e779175ca55"
@@ -55,7 +59,7 @@
     },
     {
       "path": "runtime/testdata/public-catalog-20260908/README.md",
-      "sha256": "9760c6c6f9f7a06100b2458c6c12bb326d3cab7b578e6ca2bb757859d84fbef5"
+      "sha256": "05b6db7b2b6c40f2d4d6155d7490efb638273730536ef1db45b74c2ff233d6e9"
     },
     {
       "path": "runtime/testdata/public-catalog-20260908/archive-bundle.json",
@@ -99,7 +103,7 @@
     },
     {
       "path": "scripts/test_prepare_public_catalog_fixture.py",
-      "sha256": "a183e4f8340ba1f29b97473bb6790316ec2160e423a45738bc680e17d24b3899"
+      "sha256": "1f3248eb920cda10e7c2a14af201bee384dc25991881272f5656ab67896eeb33"
     },
     {
       "path": "scripts/verify.sh",
@@ -472,6 +476,156 @@
       "sha256": "a25f809aedacdb902a5471945e1b017abbae37c52887525fe55c3aea92a5d2b4",
       "decoded_sha256": "1f906461b969d4eaa5a37ee610a5479a1415244429b574d4076764cead5fbb28",
       "decoded_bytes": 558
+    },
+    {
+      "path": "windows-amd64-initial.log.gz",
+      "sha256": "cd1590a4e0053dafb8a5c6ea92ad3debee43a65bd41403a370b02334f34ffffc",
+      "decoded_sha256": "f30ac720192ff88a5648ba5b50976993dbe613a9948c92b3367c0a8cf941a0a6",
+      "decoded_bytes": 46455
+    },
+    {
+      "path": "windows-arm64-initial.log.gz",
+      "sha256": "52a5a054a26a00315ec6e8a07d7d8231ba61c984253947380eb44fa60fdfedc9",
+      "decoded_sha256": "677a6d36d20b01b24dc8654a4c504191cb826088c78935e4a05417a9fc98ebc5",
+      "decoded_bytes": 47761
+    },
+    {
+      "path": "checkout-red.log.gz",
+      "sha256": "ac4117991354f7f973b773352e1bcc340d999339d97beda6563a88ccd412a7ae",
+      "decoded_sha256": "47f875bc0bd0a80b729b8b328a10f2db705cef935af07f1ea0745e3c6fc97e28",
+      "decoded_bytes": 1081
+    },
+    {
+      "path": "checkout-red-corrected.log.gz",
+      "sha256": "7c9f30c1c6b9fda177a0dd7f56f7c62e0326f397d6b67412d30b3c6fc3b7e746",
+      "decoded_sha256": "8af47b05fd0aba7713b62127bba496e433336ea59188a80206bd2789b2579980",
+      "decoded_bytes": 2036
+    },
+    {
+      "path": "checkout-green.log.gz",
+      "sha256": "e1b6effa2774df18bed80a8658a9aec45aa5255268bb01a4982219a6e880d6f4",
+      "decoded_sha256": "fc374024b67fa6013390e4523f88741443faa8f39a67e0d7e947d0578532e53c",
+      "decoded_bytes": 1081
+    },
+    {
+      "path": "checkout-prose.log.gz",
+      "sha256": "5f188556906dbdb105a49200c0ed6e6d88bab77ddfe7f7e8b1a4b9dfeb67b271",
+      "decoded_sha256": "d77819e219c821884f9d8f36895b4a774fe062402f34a0429ebb1eae837106de",
+      "decoded_bytes": 568
+    },
+    {
+      "path": "checkout-go126.jsonl.gz",
+      "sha256": "85d8605608f0cf5cbaef215f8b073bd348e08d31004aadadca47b1da373e74a7",
+      "decoded_sha256": "01165991cd8d0063e8407f533502f16570d7e8dbdd3245d49d282a03410d99da",
+      "decoded_bytes": 17756
+    },
+    {
+      "path": "windows-initial/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33",
+      "decoded_bytes": 65
+    },
+    {
+      "path": "windows-initial/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "099df96891ad3f6779a0514520b591045a2a4a5a5d4542d845b1c4a00f5aa7a1",
+      "decoded_sha256": "bc9370be031de560d65e84caf7440955ffd2bdeddd404a9ff3cb4d67da1156e0",
+      "decoded_bytes": 2506050
+    },
+    {
+      "path": "windows-initial/native-runtime-windows-2025/toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad",
+      "decoded_bytes": 65
+    },
+    {
+      "path": "windows-initial/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "8f045173d5c0a9422dbf57a339895a2062edd40ab2539dcadff029267feb2e6b",
+      "decoded_sha256": "7af161db35ecb19d993c0fe535e32ebf4a6901e125df65109b4c647da3d64b2e",
+      "decoded_bytes": 2507047
+    },
+    {
+      "path": "checkout-review.json.gz",
+      "sha256": "d3de3a1842b46e16521ebec2fc6cd143e82e3fba1d8be5d9280cbb8f7054cd4e",
+      "decoded_sha256": "a1f4ac429b3ded5e026c1d23e2adbac70ae37931b296f77f22bd7cbe49581bca",
+      "decoded_bytes": 247
+    },
+    {
+      "path": "checkout-review.txt.gz",
+      "sha256": "3eb9f9955fc29bf31014b85872de92bf1de0f91103fa837b4b6ad439522aa809",
+      "decoded_sha256": "81b198167f16fb0e901676d3bfd84e030ada0717164e003821982f82e345511f",
+      "decoded_bytes": 221
+    },
+    {
+      "path": "checkout-review.log.gz",
+      "sha256": "b62fe262c011255e982e94c3a9c07aa1480df70289620e6bda82a7cec616ac72",
+      "decoded_sha256": "e0adef95b16960c01b8b8f4afd22dac5cb0d87d5b7651cced296cab283d4a13c",
+      "decoded_bytes": 956
+    },
+    {
+      "path": "homebrew-integration.json.gz",
+      "sha256": "da5d850f49f01a7c293580e83373ea70ebdfa001054a1c4a51e81cedf6b49317",
+      "decoded_sha256": "d285d8872d454290dc232e1f7f33b2a35878ba9f4ee90b383e7d3e9a96340f05",
+      "decoded_bytes": 363
+    },
+    {
+      "path": "homebrew-release-check.log.gz",
+      "sha256": "1a5be04331a157d25c5c4e7427b5233ea482e00107b85f9c21b047c73447c9a7",
+      "decoded_sha256": "298eaea974609ca1827b14d2bf9a91df89b10ffd71aae648061e883773a028b7",
+      "decoded_bytes": 733
+    },
+    {
+      "path": "homebrew-prose.log.gz",
+      "sha256": "4b1f8dc467dfd83792e432c01bee1ed8eff4560249140b542a3de7da80e6be5f",
+      "decoded_sha256": "94cac14105c5050b680b48dfc95b0569264843395fd14b0e31fe58675d89b4c4",
+      "decoded_bytes": 568
+    },
+    {
+      "path": "pr149-before-main-push.json.gz",
+      "sha256": "62783714ecd37c723fdf7b4ce00297b7c66221aed4682683850d94d2eae057fd",
+      "decoded_sha256": "974082830c6c052c74b9cb54ab54a480af3e2c40999a5ae90de7d4d831a7de1c",
+      "decoded_bytes": 4589
+    },
+    {
+      "path": "main-review.json.gz",
+      "sha256": "d3de3a1842b46e16521ebec2fc6cd143e82e3fba1d8be5d9280cbb8f7054cd4e",
+      "decoded_sha256": "a1f4ac429b3ded5e026c1d23e2adbac70ae37931b296f77f22bd7cbe49581bca",
+      "decoded_bytes": 247
+    },
+    {
+      "path": "main-review.txt.gz",
+      "sha256": "3eb9f9955fc29bf31014b85872de92bf1de0f91103fa837b4b6ad439522aa809",
+      "decoded_sha256": "81b198167f16fb0e901676d3bfd84e030ada0717164e003821982f82e345511f",
+      "decoded_bytes": 221
+    },
+    {
+      "path": "pr149-main-pushed.json.gz",
+      "sha256": "66c5dbf762d971f7952916383b2123b89208b66ea9d70b038094fd877b58d221",
+      "decoded_sha256": "a51da75120a5efb9cdffd6f0a235045432b46db3267b6bddc984733b6eaff125",
+      "decoded_bytes": 4651
+    },
+    {
+      "path": "canonical-main-prose-failure.log.gz",
+      "sha256": "490b98fefd37a114575f75864a5ae0d07bbf82027c5b164133ce58286630f932",
+      "decoded_sha256": "7dceff40b7abed10fb2fab0011c0656c09175bb6389075b4d6c9f82bbbc8baf1",
+      "decoded_bytes": 835
+    },
+    {
+      "path": "canonical-main-prose-corrected.log.gz",
+      "sha256": "59368fcc5e3d287a6099dd9ed497ce63e318bcfcda72ff9d739968f086bc9223",
+      "decoded_sha256": "b279d560807811e039b2af670502df0e7eb632aa44e7425853f012481870a639",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "csp4-main-reviewed-canonical-prose.log.gz",
+      "sha256": "cd2994a3bdbe96ebc01e2855919792dbc6339c9b675c3ac9861763f9db87b0ad",
+      "decoded_sha256": "425348a8db1ed6d06edbb9c7f573f51f92b247dcc6a8a7de96bbf08dc16ed4a6",
+      "decoded_bytes": 790
+    },
+    {
+      "path": "csp4-delivery-canonical-prose.log.gz",
+      "sha256": "51e6254940b9134e17e443a5d5502e7c2e169214923bd4668f00974fda6e880c",
+      "decoded_sha256": "6909537b959a0cb4c7eedf8da24b9c1fe1c9d8a5a517d803dfa7968e032d8df4",
+      "decoded_bytes": 558
     }
   ],
   "checks": [
@@ -627,7 +781,10 @@
   },
   "canonical_checks": {
     "prose": "1300 files, 0 diagnostics after splitting one seven-sentence plan paragraph",
-    "link_integrity": "123 local links, 38 tasks, 9 done, CSP4 alone active, all task criteria and goal unchanged"
+    "link_integrity": "123 local links, 38 tasks, 9 done, CSP4 alone active, all task criteria and goal unchanged",
+    "main_integration_prose": "1302 files, 0 diagnostics after correcting one restricted word in the proof narrative",
+    "latest_prose": "1303 files, 0 diagnostics",
+    "prose_failure_history": "Restricted word and seven-sentence paragraph corrected in proof prose. No implementation or acceptance changes."
   },
   "live_generation": {
     "command": "bash scripts/generate-embedded-catalog.sh",
@@ -686,9 +843,9 @@
     ]
   },
   "pending_gates": [
-    "Native CI and merge."
+    "Final native CI and merge."
   ],
-  "previous_source_commit": "f0a2d3d2a00868686950887f8adfe15c277df464",
+  "previous_source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
   "handler_correction": {
     "contract": "Provider list responses select general DocsURL before the existing acquisition-documentation fallback. The optional field remains absent when neither value exists. Fresh and cached responses use the same policy.",
     "source_commit": "f0a2d3d2a00868686950887f8adfe15c277df464",
@@ -887,9 +1044,97 @@
   "publication": {
     "pr": 149,
     "url": "https://github.com/agentstation/starmap/pull/149",
-    "head": "079c390b29d0dedaa59840ddd4c73656ac647c71",
-    "base": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
-    "status": "OPEN, native CI and repository checks running",
-    "merge": null
+    "head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+    "base": "3273743274661a1f37402d124189980ad7f93060",
+    "status": "OPEN; reviewed main integration pushed; final native CI pending",
+    "merge": null,
+    "native_run": 34555379753
+  },
+  "checkout_correction": {
+    "source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
+    "failed_run": 34552695954,
+    "failed_head": "079c390b29d0dedaa59840ddd4c73656ac647c71",
+    "jobs": {
+      "windows_amd64": 103118709112,
+      "windows_arm64": 103118709111
+    },
+    "native_failure": "Both public-catalog tests fail channel signature verification on both Windows architectures.",
+    "reproduction": "A fresh temporary Git repository with core.autocrlf=true changes captured fixture digests before the attribute correction.",
+    "contract": "Captured public fixture bytes have -text attributes. The fixture unit suite verifies all captured text artifacts after a fresh Windows-style checkout.",
+    "test_draft": "The first checkout test retained unchanged files and passed without forcing a checkout. The corrected red test removes files before checkout and reproduces the checksum failure.",
+    "unit_tests": "8 PASS",
+    "runtime_checks": {
+      "artifact": "checkout-go126.jsonl.gz",
+      "source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
+      "command": "STARMAP_PUBLIC_FIXTURE_REQUIRED=1 GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json ./runtime ./pkg/catalogs/artifact -run '^TestPublicCatalog|^TestVerifyReleaseFailsClosedBeforeReturningGeneration$'",
+      "test_events": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 1.205
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 106.567
+        }
+      ]
+    },
+    "prose": "1461 files, 0 diagnostics",
+    "pending": "Native CI at the final integrated source and merge.",
+    "pre_pr_review": {
+      "exit_code": 0,
+      "source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
+      "verdict": {
+        "findings": [],
+        "overall_correctness": "patch is correct",
+        "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=high: 0 finding(s).",
+        "overall_confidence": 0.99
+      },
+      "secret_scan": "clean",
+      "reviewers": [
+        "codex:gpt-5.6-sol:high",
+        "claude:opus:high"
+      ],
+      "artifact": "checkout-review.log.gz"
+    }
+  },
+  "main_integration": {
+    "source": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+    "base": "3273743274661a1f37402d124189980ad7f93060",
+    "previous_source": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
+    "branch_diff_unchanged": true,
+    "diff_sha256": "bc1a906c063f994e943aa4faf534c076bcc1924a332338b8d38d011f70fe1014",
+    "incoming_files": [
+      ".goreleaser.yaml",
+      "README.md"
+    ],
+    "release_check": "1 configuration validated",
+    "prose_check": "1462 files, 0 diagnostics",
+    "homebrew_pr": 147,
+    "homebrew_merge": "3273743274661a1f37402d124189980ad7f93060",
+    "campaign_merge_credit": false,
+    "pre_pr_review": {
+      "source_commit": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+      "exit_code": 0,
+      "reviewers": [
+        "codex:gpt-5.6-sol:high",
+        "claude:opus:high"
+      ],
+      "verdict": {
+        "findings": [],
+        "overall_correctness": "patch is correct",
+        "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=high: 0 finding(s).",
+        "overall_confidence": 0.99
+      },
+      "secret_scan": "clean, 3.3 seconds",
+      "bundle_bytes": 81264,
+      "review_passes": 1
+    }
   }
 }

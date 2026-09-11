@@ -2,8 +2,8 @@
 
 ## Current runtime integration
 
-The combined public-catalog worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance`, branch `codex/catalog-public-acceptance`, at clean `079c390b`.
-It includes actual main `21e7356b`, the provider-documentation repair, and signed public fixtures.
+The combined public-catalog worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance`, branch `codex/catalog-public-acceptance`, at clean `0a143a94`.
+It includes actual main `32737432`, the provider-documentation repair, and signed public fixtures.
 The [acceptance proof](csp4/public-acceptance-2026-09-11/verification.json) records four A07 checks passing after main integration.
 
 The development toolchain passes seven scoped runtime race events. The minimum toolchain passes fourteen runtime/artifact events.
@@ -34,8 +34,41 @@ The explicit fixture setup resolves the binary refusal without a review bypass. 
 The earlier complete forty-stage run remains bound to its source commit.
 
 [PR #149](https://github.com/agentstation/starmap/pull/149) delivers the public checks and complete provider-documentation repair.
-Required Sol/Opus review passes with zero findings. Native CI and merge remain open.
+The original Sol/Opus review passes with zero findings at `079c390b`. Integrated-base review passes with zero findings. Final native CI and merge remain open.
 These local checks do not qualify the released pair or complete CSP4.
+
+The first PR #149 native run fails both public signature tests on both Windows architectures.
+Windows text checkout changes captured JSON bytes. A fresh-checkout regression reproduces the changed digest before the attribute correction.
+
+Source `f29ec2a4` preserves those bytes. Eight setup tests, fourteen runtime/artifact race events, and the 1,461-file prose check pass.
+Sol and Opus correction review passes with zero findings. The remote PR now names `f29ec2a4`.
+
+The separate Homebrew PR #147 merged as `32737432`. Integration `0a143a94` adds its README and release configuration.
+The full PR diff has the same bytes against the new base. Release validation and the 1,462-file prose check pass.
+Sol and Opus review passes again against the new base. The remote PR names `0a143a94`.
+
+This separate Homebrew merge adds no campaign credit.
+
+Consumer source `20b1ee41` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission`, branch `codex/catalog-consumer-permission`.
+The [consumer permission proof](csp4/consumer-permission-2026-09-11/verification.json) records 307 scoped race events per supported toolchain.
+The complete catalog suite passes 1,253 events at `3d023778`. Main integration changes only the README and release configuration.
+Full runtime, remote, and artifact race verification runs in session `37028`.
+
+`AllowsCatalogAttempt` checks the caller's accepted authority head against current permission state. Runtime readiness alone cannot authorize a withdrawn consumer catalog.
+Equal permission revisions permit continued use during route preparation. Contradictory known heads, unknown clocks, expiry, and foreign authority identities refuse.
+
+The consumer must bind the authenticated, validated head to its exact catalog. Starport still needs that integration.
+
+The initial allocation check measured six allocations during checksum validation. The final validator preserves lowercase SHA-256 syntax without temporary decode-and-encode buffers.
+Both valid consumer admission and checksum validation now pass their zero-allocation assertions. Static checks, complete documentation, and the 1,457-file prose check pass.
+The proof retains the original readiness gap, allocation failure, and contradictory-head test failures.
+
+Starport source `d45bb30` remains clean in `/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer`, branch `codex/catalog-authority-consumer`.
+An isolated workspace compiles catalog, app, and router packages against Starmap `7641eaea`. It runs no behavior tests and changes no module pin.
+The release verifier passes sixteen checks with the published pseudo-version. The separate architecture V01 gate still requires a stable release.
+No module pin or release gate changed.
+
+Complete clock-parent verification runs in session `88653` at `7641eaea`. Its log is `.tmp/csp4-clock-delivery/make-verify.log` in the clock worktree.
 
 CSP4 remains in progress. Four A07 subcases now pass locally. Four Starport consumer subcases remain UNVERIFIED.
 
