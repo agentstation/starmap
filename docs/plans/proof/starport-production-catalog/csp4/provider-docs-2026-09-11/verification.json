@@ -1,13 +1,13 @@
 {
   "task": "CSP4",
   "owning_seam": "CSP6 catalog publication repair discovered during CSP4 public-download qualification",
-  "status": "PASS_scoped_provider_documentation_checks",
-  "acceptance": "All eight CSP4 checks remain UNVERIFIED. No task completion credit.",
+  "status": "PASS_complete_provider_repair_verifier",
+  "acceptance": "At this historical provider-repair checkpoint all eight CSP4 checks were UNVERIFIED. Later A07 evidence belongs to the combined public-acceptance delivery.",
   "source_commit": "b81b827067aa860096bed208e541dd84e31274ab",
   "base": "faa9cc8b0bc01eb787f567f568f1b9fe05e0740a",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs",
   "branch": "codex/catalog-provider-docs",
-  "publication": "Local checkpoint only. Full repository verification, pre-PR review, CI, and merge remain required.",
+  "publication": "Local provider-repair checkpoint passes the complete forty-stage repository verifier. The combined public-acceptance branch owns pre-PR review, CI, and merge.",
   "contract": [
     "Models.dev general provider documentation maps to Provider.DocsURL. It does not create Catalog acquisition metadata.",
     "The shared fetch path fills absent provider documentation with an independent copy. Existing documentation remains authoritative.",
@@ -99,13 +99,7 @@
     "The initial Go 1.26 combined suite also reported 10 versus 17 allocations in TestAbsentProjectedEvidenceDoesNotCopyUnrelatedModels. No deterministic cause is established. Thirty isolated runs and final combined suites pass."
   ],
   "source_note": "The live source and runtime probes use the exact committed source. All tested executable code matches this commit. The commit also removes an unrelated stale comment immediately before the new reconciliation test.",
-  "running_checks": [
-    {
-      "session_id": 19923,
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make verify",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs/.tmp/csp4-provider-docs/make-verify.log"
-    }
-  ],
+  "running_checks": [],
   "public_channel": {
     "channel_sequence": 19,
     "channel_updated_at": "2026-09-08T12:54:48.479607899Z",
@@ -321,10 +315,230 @@
       "sha256": "064fb198903d3eee082a9e7dbbf0ed72975321e0b632210dda016adca7dab383",
       "decoded_sha256": "147a4c33ac159ae3463e235926bfdc359930cbfa9746205d82fe8c29f90cd4a7",
       "decoded_bytes": 558
+    },
+    {
+      "path": "make-verify.log.gz",
+      "sha256": "23ea1d30974f360ee16c4748840ca4efdf64fb0ec6cd2130365793830e140760",
+      "decoded_sha256": "8436a49f888ce4a19e2bb41825a90c953b53aca049b9afaa2e548ad0dc708cfe",
+      "decoded_bytes": 72185
     }
   ],
   "canonical_checks": {
     "prose": "PASS, 1298 files, zero diagnostics",
     "maintenance": "PASS, 38 tasks, 9 done, CSP4 alone active, all protected task and goal sections unchanged"
+  },
+  "full_verifier": {
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make verify",
+    "source_commit": "b81b827067aa860096bed208e541dd84e31274ab",
+    "exit_code": 0,
+    "stages": 40,
+    "stage_results": [
+      {
+        "command": "go test ./...",
+        "status": "PASS",
+        "passing_packages": 81
+      },
+      {
+        "command": "make test-pure-go",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "make test-file-sizes",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/verify-package-layout.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/test-package-layout-verifier.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/verify-catalog-package-ownership.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/test-catalog-package-ownership-verifier.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/verify-catalog-dependency-direction.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/test-catalog-dependency-direction-verifier.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "bash ./scripts/verify-canonical-alias-history.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "python3 ./scripts/test_catalog_product_verify.py",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1",
+        "status": "PASS",
+        "passing_packages": 81
+      },
+      {
+        "command": "go vet ./...",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/verify-catalog-performance.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "./scripts/verify-container-smoke.sh",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "devbox run golangci-lint run",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "go tool ago -stale-ignores ./...",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/catalog/pipeline >= 70%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/catalog/query >= 75%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/providers/clients >= 80%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/sources/providers >= 75%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/server/middleware >= 90%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/server/openrouter >= 85%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/server/params >= 95%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/server/response >= 95%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/server/sse >= 90%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/transport >= 40%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./pkg/catalogs/authority >= 90%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./pkg/catalogs >= 55%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./pkg/errors >= 80%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./internal/catalog/reconciler >= 75%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "coverage ./pkg/sources >= 35%",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "make docs-check",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "make technical-writing-check",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "git diff --check",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.m9gJxn/starmap ./cmd/starmap",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "run_cli version",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "run_cli validate catalog",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "run_cli providers",
+        "status": "PASS",
+        "passing_packages": null
+      },
+      {
+        "command": "run_cli models list --limit 5",
+        "status": "PASS",
+        "passing_packages": null
+      }
+    ],
+    "ordinary_packages": 81,
+    "race_packages": 81,
+    "coverage_thresholds": 15,
+    "prose_files": 1417,
+    "artifact": "make-verify.log.gz",
+    "source_note": "This checkpoint predates PR 148 integration, the public acceptance fixtures, and the later provider-list API correction. Those changes retain their separate checks."
   }
 }

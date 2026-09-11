@@ -2,7 +2,7 @@
   "task": "CSP4",
   "status": "PASS_integrated_local_A07_checks",
   "acceptance": "All four A07 checks pass locally. No task completion or released-pair credit before review, native CI, and merge. Four Starport consumer subcases remain required.",
-  "source_commit": "e12253fc80312ec76e976058ae0def74eb016746",
+  "source_commit": "079c390b29d0dedaa59840ddd4c73656ac647c71",
   "tested_before_main_integration": "65b9b5fe",
   "base": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
@@ -10,8 +10,24 @@
   "delivery": "One PR will combine the models.dev provider-documentation repair with public-catalog acceptance tests. The provider repair checkpoint remains b81b8270. Native clocks and Starport consumers are separate remaining work.",
   "source_files": [
     {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "67d6014c7cb7ea93d5c8cbd6835d439f99c9098d23798a1e59ca8e779175ca55"
+    },
+    {
       "path": "internal/catalog/reconciler/merger_provider_test.go",
       "sha256": "03ee94f899548ec7fc3794290737366ff67a064a767596d8fac6e807ef79aa90"
+    },
+    {
+      "path": "internal/server/handlers/README.md",
+      "sha256": "22082a5b955e2c18462023d276a6d6d3da8b4fc52e21513b71fcc3f4f31cf215"
+    },
+    {
+      "path": "internal/server/handlers/provider_documentation_test.go",
+      "sha256": "87e70b74f9caa8cdcd0c3dd4a5a85146ec0841464f64d33e40108446183f19ce"
+    },
+    {
+      "path": "internal/server/handlers/providers.go",
+      "sha256": "608d3adf64c1070573333dd3be02be298a79a359da1863531741acc6d4637261"
     },
     {
       "path": "internal/sources/modelsdev/README.md",
@@ -35,11 +51,11 @@
     },
     {
       "path": "runtime/public_catalog_fixture_test.go",
-      "sha256": "e245297f88ac9469acbe490caf62dddd4bd0ded28a614e083e9d43a5150d4022"
+      "sha256": "8e7c08e20a3f6caabbb3f76f7aefac0ba24351af3d015d99311557f5165e1667"
     },
     {
       "path": "runtime/testdata/public-catalog-20260908/README.md",
-      "sha256": "cbe383e7cdc1b8e6d1f6176d127e7de518a9c163f6b3aaf97cc586ca4c681356"
+      "sha256": "9760c6c6f9f7a06100b2458c6c12bb326d3cab7b578e6ca2bb757859d84fbef5"
     },
     {
       "path": "runtime/testdata/public-catalog-20260908/archive-bundle.json",
@@ -70,16 +86,24 @@
       "sha256": "63efddb02a6e8e1614fa569d0f5a7c71e582ada50213d2c7089ef77f16a6d03e"
     },
     {
-      "path": "runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz",
-      "sha256": "ab5461b5441a632ee450ff8adf34d1f404e4f18b6c74638a880016221c177ffa"
-    },
-    {
       "path": "runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz.sha256",
       "sha256": "f901b3bdf9648df372951e9281c5fc381fe64f2632632deaf0d624d9a883cd1e"
     },
     {
       "path": "scripts/catalog-product-checks.json",
       "sha256": "e14c8beab750e3fdceb4430762376067b4e8c55c58a72c95a3e6ba471abba886"
+    },
+    {
+      "path": "scripts/prepare_public_catalog_fixture.py",
+      "sha256": "504ecfea288347b5575769730072bd9de10942f5beeab7d1d804a83386fd94cc"
+    },
+    {
+      "path": "scripts/test_prepare_public_catalog_fixture.py",
+      "sha256": "a183e4f8340ba1f29b97473bb6790316ec2160e423a45738bc680e17d24b3899"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "dffa663323b2541820571f0ebe151e49b90cf02aa114bc43110c6f4a4793adc1"
     }
   ],
   "artifacts": [
@@ -250,6 +274,204 @@
       "sha256": "079c3015012f0842771b5b915bd4f2c8960586132efb90b60ee1af9601977a77",
       "decoded_sha256": "02bf5f236f292881c2f807e73003c45156aa428db5865426bb858bebfd58f1c1",
       "decoded_bytes": 558
+    },
+    {
+      "path": "integrated-runtime-suite.jsonl.gz",
+      "sha256": "350de866ad09b7064673be101b2c74405c7250f8381e3a1a13985ad78d517136",
+      "decoded_sha256": "7895dd4f55a4d05fdf46022ee4ade65f3108cc44e3eb35fad28efdbe9af48390",
+      "decoded_bytes": 1523485
+    },
+    {
+      "path": "handler-red.jsonl.gz",
+      "sha256": "567250b832f7c9618cd1af511b0f66b593c8b201d51729f40cd688143472d076",
+      "decoded_sha256": "2bedb5e84f655907fa8fc4166d0e9a5c6f48ccc041873b977a488265e33785be",
+      "decoded_bytes": 7355
+    },
+    {
+      "path": "handler-valid-fixture-red.jsonl.gz",
+      "sha256": "67fbbdbeeca1238788b42e5579b35e3f91d93e185b7524fd9f06ea127fd7781b",
+      "decoded_sha256": "a120fa5e20ac12c9ccd361691637deda315f4069beea284c2813fe8fc922f843",
+      "decoded_bytes": 7183
+    },
+    {
+      "path": "handler-go126.jsonl.gz",
+      "sha256": "5476efb1f323bccfccf7794cea1006c60c48bf599f814eb8f20e4e4ae821f321",
+      "decoded_sha256": "f541f883c500561348473a88a6f827885d519140103ea5d1ee3d03b3c21180de",
+      "decoded_bytes": 86345
+    },
+    {
+      "path": "handler-go125.jsonl.gz",
+      "sha256": "355d5d50dfbaafe34606d262795885ac4456215fb9b623764b3a40ddc9f08cd3",
+      "decoded_sha256": "3f98882d80cc87d5fcac058173573c4cca732b097a8bc40ef737a51b0c412eb7",
+      "decoded_bytes": 86353
+    },
+    {
+      "path": "handler-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "decoded_bytes": 10
+    },
+    {
+      "path": "handler-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "decoded_bytes": 289
+    },
+    {
+      "path": "handler-docs.log.gz",
+      "sha256": "65140ba65d38fb9499fb1e6c6a6cb10f45b64eb2b64f09e4935710f8a9bf0022",
+      "decoded_sha256": "2e837f9e0b504ea6b3313a4bdf5f6604a1c02bbb301afd98c5a6215accd14701",
+      "decoded_bytes": 1546
+    },
+    {
+      "path": "handler-prose.log.gz",
+      "sha256": "44948a90ae89603b5cd3b0f93c98b7f8604ec1afa4767db310540ec4c3524210",
+      "decoded_sha256": "d8c5e9f0cae596e0f7180bf0c3d7a4c0764af9dee822ecf950593c29878891b2",
+      "decoded_bytes": 568
+    },
+    {
+      "path": "autoreview.log.gz",
+      "sha256": "239f47b76c47877af366b9812d9c7980b1206f5ef3872ac9bf172068a92e1da2",
+      "decoded_sha256": "617c487d519a88c3458b89be696e1a6bd0593bf7852c0153585a6857b72d8b67",
+      "decoded_bytes": 102
+    },
+    {
+      "path": "prepared-csp4.json.gz",
+      "sha256": "379178b7c53aefbe67971efb3c0dd6d603dd35f8918c84861ab0a21aea8f9f80",
+      "decoded_sha256": "fe4bd7b2a44365ddff486d3084f756edbb062ab583e1dae795f814b73d7c372d",
+      "decoded_bytes": 47301
+    },
+    {
+      "path": "prepared-go125.jsonl.gz",
+      "sha256": "ec9b8fcba7de703b3d3ad1ee91ea7d65222f07c39e1aa7d55b59a4d880833061",
+      "decoded_sha256": "55d8a00839b29e4f7ea320d1a0d5f35c89951390fd732df805720fb2c552fe8b",
+      "decoded_bytes": 17750
+    },
+    {
+      "path": "prepared-workflow-tests.jsonl.gz",
+      "sha256": "7b543dc42bd5b7a256fb9545d1c18589ed30c7342a665b5cf2258c7b2cdb41c5",
+      "decoded_sha256": "5ce2852286d05d94ba0d89e7721c0b87766f665582c9da7def65c5ec12a8981c",
+      "decoded_bytes": 27849
+    },
+    {
+      "path": "prepared-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "decoded_bytes": 10
+    },
+    {
+      "path": "prepared-ago.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5",
+      "decoded_bytes": 289
+    },
+    {
+      "path": "prepared-docs.log.gz",
+      "sha256": "65140ba65d38fb9499fb1e6c6a6cb10f45b64eb2b64f09e4935710f8a9bf0022",
+      "decoded_sha256": "2e837f9e0b504ea6b3313a4bdf5f6604a1c02bbb301afd98c5a6215accd14701",
+      "decoded_bytes": 1546
+    },
+    {
+      "path": "prepared-prose.log.gz",
+      "sha256": "8378e9ad2ddb2e95227d4b0494961c07d1bf718396524e6b7722aa594ed5f0cb",
+      "decoded_sha256": "0eb330b8134e458c11449b9a167380927ab6ef11737639c50d856b88b2983682",
+      "decoded_bytes": 568
+    },
+    {
+      "path": "prepared-verifier-tests.log.gz",
+      "sha256": "40f948d6903912e34bc067c41a2be013e20146cb142ae892cea118e9ee87dad8",
+      "decoded_sha256": "b7a54cff4cd162f40c09068f081514552d2940a434fb7710ff95b42b5a6034d6",
+      "decoded_bytes": 9271
+    },
+    {
+      "path": "fixture-unit-tests.log.gz",
+      "sha256": "a647682f39e796b40001b845ee696c9cf5d3a07de51266005179ed422f922a05",
+      "decoded_sha256": "bf2f5f69dac03d9adbb6f3404fea4403d5e569bde77f22bf062c49bfa8e9e5b9",
+      "decoded_bytes": 942
+    },
+    {
+      "path": "fixture-download.json.gz",
+      "sha256": "6b010487453f797cbbd11c2f9b53373e01e4791a2636e044a9cd3d656da8590e",
+      "decoded_sha256": "533cc32de91d28da6107e6cc487d49b5b66e0172107b7ae8d9c524d7d57f79e8",
+      "decoded_bytes": 142
+    },
+    {
+      "path": "fixture-download.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded_bytes": 0
+    },
+    {
+      "path": "fixture-cache.json.gz",
+      "sha256": "1dd73bc03ca18d333bbc3f0c1c2e8d43328ff89facfe09ab128db09caff4fe05",
+      "decoded_sha256": "31ffa84a31122ce2609423f028049fde6a435ff01f62b2902a434a652d65f7a5",
+      "decoded_bytes": 201
+    },
+    {
+      "path": "fixture-absence-checks.json.gz",
+      "sha256": "cb136035eceb222725930b0d8bbe9bae516da1577c11788e4bd3eb03a86d024f",
+      "decoded_sha256": "7dbd235c03b3df237813e1ac5dea219e32fd6597fa6b56c7c6845d943c9fda1d",
+      "decoded_bytes": 158
+    },
+    {
+      "path": "fixture-required-absent.jsonl.gz",
+      "sha256": "2024f2ec63c5fb7cc4ea6a91b8bfddf28d9d850ebb74c8f1872d9aea16550b3d",
+      "decoded_sha256": "03cbbd47d6deeaae6a9a7d7093a4188fe573c256f3f695cbc93ddc605b0718ce",
+      "decoded_bytes": 2927
+    },
+    {
+      "path": "fixture-absent-acceptance.json.gz",
+      "sha256": "abe4faf58c830c76cf4d078a94d5ef331d6d20794e4221a274f8c349cdbb564f",
+      "decoded_sha256": "ece795197086978daac7e32820ce8a50c34ca77f02c4cfe2213f3d2e5f8359a2",
+      "decoded_bytes": 26551
+    },
+    {
+      "path": "review-output-location-refusal.log.gz",
+      "sha256": "239f47b76c47877af366b9812d9c7980b1206f5ef3872ac9bf172068a92e1da2",
+      "decoded_sha256": "617c487d519a88c3458b89be696e1a6bd0593bf7852c0153585a6857b72d8b67",
+      "decoded_bytes": 102
+    },
+    {
+      "path": "review-binary-refusal.log.gz",
+      "sha256": "0b85eabb306ebc4e89c2dab1072df47596f58f436e0c65ee650b3413afb36cae",
+      "decoded_sha256": "d1537c089e6c605b0cd6548966a9d2d5d0b7c4c2faa9ca7b7f1c8a628b1ca9d9",
+      "decoded_bytes": 502
+    },
+    {
+      "path": "prepared-review.json.gz",
+      "sha256": "58db74b597f21c798a9aa031dca52b7afa0da5aa9014d44a6011a1dd4d899355",
+      "decoded_sha256": "dfbe1e6a952f18bc86c1ca1c98401e4010b9b15eb45a67ec860d9d354987dbb2",
+      "decoded_bytes": 247
+    },
+    {
+      "path": "prepared-review.txt.gz",
+      "sha256": "09b2e00fdc30fa9e497a0db0344a2221baf9254ade1b99933d7b1163c91a8ba4",
+      "decoded_sha256": "bd7178e532912d484d271abc1f5e62372287aca94efb2f914907ba0a1f814295",
+      "decoded_bytes": 221
+    },
+    {
+      "path": "prepared-review.log.gz",
+      "sha256": "6ba6a204479c5ff67792ba7694254e757b31a9b695d807c98b8516bdca7ab47a",
+      "decoded_sha256": "699d7b9959dfc8d98c1a507a552f0a507e468df4eb4851742623f44bd3cb4fdc",
+      "decoded_bytes": 784
+    },
+    {
+      "path": "pr149-initial.json.gz",
+      "sha256": "7b5e74c385d27642ca9280cad43a1f485e86329ca0657d7a8a69ddc4bd2a90af",
+      "decoded_sha256": "0e3bcce8973fb7aee215039eb8a15b07f0bf743eec2005e18a9540dffb6b5d44",
+      "decoded_bytes": 4357
+    },
+    {
+      "path": "canonical-csp4-public-prepared-prose.log.gz",
+      "sha256": "e1ac7b4373a62f7b58ece3ffe151f8d3ec1d545dc80f662d48336a30d66eb1fa",
+      "decoded_sha256": "0ab6de622cc60445186fc1a49c12e9388dcb143227396d79155c2f162fd2bbc3",
+      "decoded_bytes": 786
+    },
+    {
+      "path": "canonical-csp4-public-prepared-prose-final.log.gz",
+      "sha256": "a25f809aedacdb902a5471945e1b017abbae37c52887525fe55c3aea92a5d2b4",
+      "decoded_sha256": "1f906461b969d4eaa5a37ee610a5479a1415244429b574d4076764cead5fbb28",
+      "decoded_bytes": 558
     }
   ],
   "checks": [
@@ -341,6 +563,14 @@
     {
       "artifact": "typed-tests.jsonl.gz",
       "reason": "A thirty-second per-request limit expired during real archive verification. The final tests allow ninety seconds and still assert each specific error category."
+    },
+    {
+      "artifact": "review-output-location-refusal.log.gz",
+      "reason": "The helper requires review outputs outside the reviewed repository. No model ran."
+    },
+    {
+      "artifact": "review-binary-refusal.log.gz",
+      "reason": "The helper refuses binary changes. No model ran. Final source uses explicit pinned fixture setup and removes the binary from the final branch diff."
     }
   ],
   "scope_notes": [
@@ -348,13 +578,7 @@
     "The artifact package checks unsupported schema refusal before returning a generation. That seam uses a verification callback. These runtime fixtures do not manufacture a signature for a future schema.",
     "The signed September 8 schema 6 catalog remains readable. Stale public freshness is a separate publisher failure."
   ],
-  "running_checks": [
-    {
-      "session_id": 98209,
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance/.tmp/csp4-public-acceptance/integrated-runtime-suite.jsonl"
-    }
-  ],
+  "running_checks": [],
   "integrated_product_verifier": {
     "source_commit": "e12253fc80312ec76e976058ae0def74eb016746",
     "artifact": "integrated-csp4.json.gz",
@@ -402,7 +626,7 @@
     "prose": "1451 files, 0 diagnostics"
   },
   "canonical_checks": {
-    "prose": "1299 files, 0 diagnostics after three prose corrections",
+    "prose": "1300 files, 0 diagnostics after splitting one seven-sentence plan paragraph",
     "link_integrity": "123 local links, 38 tasks, 9 done, CSP4 alone active, all task criteria and goal unchanged"
   },
   "live_generation": {
@@ -430,6 +654,242 @@
     "validated_providers": 17,
     "validated_models": 618,
     "credentialed_providers_skipped_without_requests": 13,
-    "public_deepinfra_models_received": 191
+    "public_deepinfra_models_received": 191,
+    "validated_model_count_scope": "Sum of provider.Models entry counts, not a distinct canonical-model count."
+  },
+  "complete_runtime_suite": {
+    "artifact": "integrated-runtime-suite.jsonl.gz",
+    "source_commit": "e12253fc80312ec76e976058ae0def74eb016746",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
+    "exit_code": 0,
+    "test_events": {
+      "pass": 912,
+      "fail": 0,
+      "skip": 0
+    },
+    "package_outcomes": [
+      {
+        "Package": "github.com/agentstation/starmap/remote",
+        "Action": "pass",
+        "Elapsed": 17.127
+      },
+      {
+        "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+        "Action": "pass",
+        "Elapsed": 1.323
+      },
+      {
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Action": "pass",
+        "Elapsed": 1373.259
+      }
+    ]
+  },
+  "pending_gates": [
+    "Native CI and merge."
+  ],
+  "previous_source_commit": "f0a2d3d2a00868686950887f8adfe15c277df464",
+  "handler_correction": {
+    "contract": "Provider list responses select general DocsURL before the existing acquisition-documentation fallback. The optional field remains absent when neither value exists. Fresh and cached responses use the same policy.",
+    "source_commit": "f0a2d3d2a00868686950887f8adfe15c277df464",
+    "checks": [
+      {
+        "artifact": "handler-go126.jsonl.gz",
+        "source_commit": "f0a2d3d2a00868686950887f8adfe15c277df464",
+        "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json ./internal/server/handlers ./internal/server/cache ./internal/server/openrouter",
+        "test_events": {
+          "pass": 82,
+          "fail": 0,
+          "skip": 0
+        },
+        "package_outcomes": [
+          {
+            "Package": "github.com/agentstation/starmap/internal/server/cache",
+            "Action": "pass",
+            "Elapsed": 1.992
+          },
+          {
+            "Package": "github.com/agentstation/starmap/internal/server/openrouter",
+            "Action": "pass",
+            "Elapsed": 12.345
+          },
+          {
+            "Package": "github.com/agentstation/starmap/internal/server/handlers",
+            "Action": "pass",
+            "Elapsed": 20.139
+          }
+        ]
+      },
+      {
+        "artifact": "handler-go125.jsonl.gz",
+        "source_commit": "f0a2d3d2a00868686950887f8adfe15c277df464",
+        "command": "GOTOOLCHAIN=go1.25.12 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=5m -json ./internal/server/handlers ./internal/server/cache ./internal/server/openrouter",
+        "test_events": {
+          "pass": 82,
+          "fail": 0,
+          "skip": 0
+        },
+        "package_outcomes": [
+          {
+            "Package": "github.com/agentstation/starmap/internal/server/cache",
+            "Action": "pass",
+            "Elapsed": 1.5270000000000001
+          },
+          {
+            "Package": "github.com/agentstation/starmap/internal/server/openrouter",
+            "Action": "pass",
+            "Elapsed": 12.435
+          },
+          {
+            "Package": "github.com/agentstation/starmap/internal/server/handlers",
+            "Action": "pass",
+            "Elapsed": 19.995
+          }
+        ]
+      }
+    ],
+    "failure_history": [
+      "The initial test fixture omitted canonical authors required by the embedded OpenAI author map.",
+      "The valid fixture then reproduced both missing general documentation and wrong precedence in fresh and cached API responses."
+    ],
+    "static_checks": {
+      "lint": "0 findings",
+      "ago": "0 findings and 0 errors",
+      "documentation": "complete docs-check PASS",
+      "prose_log": "handler-prose.log.gz"
+    },
+    "source_scope": "Only provider-list presentation, its test, and two generated README source links changed after the 912-event runtime suite. Runtime and catalog-source implementation remain unchanged."
+  },
+  "prepared_fixture": {
+    "source_commit": "079c390b29d0dedaa59840ddd4c73656ac647c71",
+    "contract": [
+      "Explicit setup anonymously downloads the immutable published archive and checks captured size and SHA-256 before same-directory replacement. A verified cache needs no network.",
+      "Tests embed the prepared archive and send catalog requests only to their local HTTP fixture. Missing archives skip ordinary tests, yield UNVERIFIED product checks, and fail CI when STARMAP_PUBLIC_FIXTURE_REQUIRED=1.",
+      "The archive is absent from the final tracked tree. CI explicitly prepares and requires it in verification and all native jobs."
+    ],
+    "fixture_setup": "Anonymous download and verified-cache reuse both PASS, 411974 bytes.",
+    "unit_tests": 7,
+    "workflow_checks": {
+      "artifact": "prepared-workflow-tests.jsonl.gz",
+      "source_commit": "079c390b29d0dedaa59840ddd4c73656ac647c71",
+      "test_events": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Action": "pass",
+          "Elapsed": 1.314
+        }
+      ]
+    },
+    "minimum_toolchain_checks": {
+      "artifact": "prepared-go125.jsonl.gz",
+      "source_commit": "079c390b29d0dedaa59840ddd4c73656ac647c71",
+      "test_events": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_outcomes": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 1.198
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 94.481
+        }
+      ]
+    },
+    "product_verifier": {
+      "artifact": "prepared-csp4.json.gz",
+      "exit_code": 1,
+      "results": {
+        "A07.public_no_provider_keys": {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation."
+        },
+        "A07.invalid_signature": {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation."
+        },
+        "A07.checksum_size_schema": {
+          "status": "PASS"
+        },
+        "A07.replay_rejection": {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation."
+        },
+        "A09.excluded_membership": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A10.cold_owner_refusal": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A10.warm_retained_authority": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        },
+        "A21.mixed_schema_permission_envelope": {
+          "status": "UNVERIFIED",
+          "reason": "No behavior check is registered."
+        }
+      },
+      "qualification": "component checks only",
+      "scope": "Four A07 checks PASS. Four Starport consumer checks UNVERIFIED. CSP4 remains incomplete."
+    },
+    "absence_checks": [
+      {
+        "artifact": "fixture-absent-acceptance.json",
+        "exit_code": 1
+      },
+      {
+        "artifact": "fixture-required-absent.jsonl",
+        "exit_code": 1
+      }
+    ],
+    "static_checks": {
+      "lint": "0 issues",
+      "ago": "0 findings and 0 errors",
+      "documentation": "complete docs-check PASS",
+      "prose": "1458 files, 0 diagnostics",
+      "verifier_regression": "73 tests PASS"
+    },
+    "complete_verifier_scope": "The forty-stage complete run remains bound to b81b8270. Final source adds a forty-first stage for seven fixture setup tests, which pass separately. Native CI must run the full final source."
+  },
+  "pre_pr_review": {
+    "source_commit": "079c390b29d0dedaa59840ddd4c73656ac647c71",
+    "exit_code": 0,
+    "reviewers": [
+      "codex:gpt-5.6-sol:high",
+      "claude:opus:high"
+    ],
+    "gate": "pre-pr",
+    "mode": "auto",
+    "base": "origin/main",
+    "findings": 0,
+    "verdict": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=high: 0 finding(s).",
+      "overall_confidence": 0.98
+    },
+    "secret_scan": "clean",
+    "log": "prepared-review.log.gz"
+  },
+  "publication": {
+    "pr": 149,
+    "url": "https://github.com/agentstation/starmap/pull/149",
+    "head": "079c390b29d0dedaa59840ddd4c73656ac647c71",
+    "base": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
+    "status": "OPEN, native CI and repository checks running",
+    "merge": null
   }
 }

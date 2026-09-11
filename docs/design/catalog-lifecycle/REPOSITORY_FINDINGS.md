@@ -1956,7 +1956,8 @@ The shared fetch path copies absent documentation and preserves existing documen
 Reconciliation retains Cohere and OpenAI acquisition, inference, credential, and curated-documentation contracts for both HTTP and Git observations.
 
 The [repair proof](../../plans/proof/starport-production-catalog/csp4/provider-docs-2026-09-11/verification.json) records 846 passing race events per supported toolchain across four packages.
-Lint, ago, generated documentation, and the 1,415-file prose check pass. Full repository verification remains active.
+Lint, ago, generated documentation, and the 1,415-file prose check pass. The full repository verifier passes all forty stages at the repair checkpoint.
+Both test modes pass 81 packages, and all fifteen coverage thresholds pass.
 The initial allocation test failure remains recorded. Thirty isolated runs and both final combined suites pass without a threshold change.
 
 The public channel remains at sequence 19 from September 8's publication. Its catalog declares only schema 6 compatibility.
@@ -1970,5 +1971,36 @@ Source health becomes healthy. Catalog freshness remains critical because public
 The failure blocks freshness, not legacy decoding. This review made no release or channel changes.
 
 CSP6 owns the publication repair. CSP4 remains the only active task.
-The probes supply live evidence but do not register A07 or complete its negative and recovery checks.
-All eight CSP4 subcases remain UNVERIFIED. No task receives completion credit from this local checkpoint.
+The combined source `e12253fc` includes the repair, actual main `21e7356b`, and signed public-catalog acceptance fixtures.
+Its [acceptance proof](../../plans/proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json) records all four A07 checks passing after main integration.
+Signature, checksum, size, and replay failures retain the accepted catalog. Restart preserves that catalog while the source is unavailable.
+
+The complete runtime, remote, and artifact race suite passes 912 events across three packages without failures or skips.
+The minimum-toolchain check passes fourteen scoped events across two packages. Static checks, complete documentation, and prose also pass.
+
+An isolated copy runs the scheduled generation script without provider credentials.
+All four validation components pass with zero issues. The validator checks seventeen providers and 618 model entries across those providers.
+Thirteen credentialed providers skip acquisition without a request. DeepInfra supplies 191 models through its public endpoint.
+
+Four Starport consumer subcases remain UNVERIFIED. Review, native CI, and merge remain required for this delivery.
+CSP4 receives no task completion credit from these local checks.
+
+The provider-list API also read documentation only from the acquisition contract.
+Final source `f0a2d3d2` prefers `DocsURL` and retains that existing fallback.
+Both supported toolchains pass 82 handler, cache, and OpenRouter events. Fresh and cached responses preserve the documentation policy.
+The 912-event runtime suite predates this API-only correction. Its runtime and catalog-source files remain unchanged.
+
+
+## Explicit public fixture setup, 2026-09-11
+
+Source `079c390b` prepares the immutable archive before tests and verifies its captured size and checksum.
+The final tracked tree excludes the archive. Catalog tests embed the prepared bytes and use their local HTTP fixture.
+Missing archives skip ordinary tests and yield UNVERIFIED acceptance cases. CI explicitly prepares and requires the archive.
+
+Seven setup tests cover integrity, cache reuse, and failed publication. The anonymous download verifies 411,974 bytes.
+All four A07 checks pass. The minimum-toolchain race suite passes fourteen test events, and workflow tests pass 28 events.
+Static checks, complete documentation, and the 1,458-file prose check pass.
+
+The required review initially refused the output location, then a binary change. Neither attempt ran a reviewer.
+Explicit fixture setup resolves the binary refusal. Required Sol and Opus review passes against the complete final branch diff with zero findings.
+The [acceptance proof](../../plans/proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json) retains both refusals and the replacement checks.

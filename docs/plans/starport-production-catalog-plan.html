@@ -11,13 +11,15 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-11 UTC. CSP4 is active. Nine of 38 tasks are complete. Twenty-six campaign PRs merged.</p>
 
-<p id="next-action">Finish combined public-catalog verification, then review, publish, and merge its PR. Work in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance</code>, branch <code>codex/catalog-public-acceptance</code>, at clean <code>e12253fc</code>. It includes actual main <code>21e7356b</code>, the provider-documentation repair, and signed public fixtures.</p>
+<p id="next-action">Verify native CI and merge <a href="https://github.com/agentstation/starmap/pull/149">PR #149</a>. Work in <code>/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance</code>, branch <code>codex/catalog-public-acceptance</code>, at clean <code>079c390b</code>. It includes actual main <code>21e7356b</code>, the provider-documentation repair, and signed public fixtures.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json">public acceptance proof</a> records all four local A07 checks passing after main integration. The scoped race checks pass seven runtime events on the development toolchain. They pass fourteen runtime/artifact events on the minimum toolchain. The verifier regression passes 73 tests. Static checks and prose pass.</p>
+<p>The <a href="proof/starport-production-catalog/csp4/public-acceptance-2026-09-11/verification.json">public acceptance proof</a> records all four local A07 checks passing after main integration. The scoped race checks pass seven runtime events on the development toolchain. They pass fourteen runtime/artifact events on the minimum toolchain. The verifier regression passes 73 tests.</p>
 
-<p>Final runtime/remote/artifact verification runs in session <code>98209</code>. The integrated verifier passes A07 and reports four Starport consumer cases UNVERIFIED. The isolated generation probe passes all four validation components with zero issues. Local checks give no merge or released-pair credit.</p>
+<p>Explicit fixture setup passes seven tests. CI requires the pinned archive. Missing fixtures give no acceptance credit.</p>
 
-<p>Preserve <code>/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs</code>, branch <code>codex/catalog-provider-docs</code>, at clean <code>b81b8270</code> while full verification runs in session <code>19923</code>. Its <a href="proof/starport-production-catalog/csp4/provider-docs-2026-09-11/verification.json">proof</a> records 846 race events per supported toolchain. The combined PR owns delivery of this repair.</p>
+<p>Final runtime/remote/artifact verification passes 912 events across three packages. The integrated verifier passes A07 and reports four Starport consumer cases UNVERIFIED. The isolated generation probe passes all four validation components with zero issues. The final provider API correction passes 82 events per toolchain. Required Sol/Opus review passes with zero findings. Local checks give no merge or released-pair credit.</p>
+
+<p>Preserve <code>/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs</code>, branch <code>codex/catalog-provider-docs</code>, at clean <code>b81b8270</code> after all forty repository verification stages pass. Its <a href="proof/starport-production-catalog/csp4/provider-docs-2026-09-11/verification.json">proof</a> records 846 race events per supported toolchain. Both test modes pass 81 packages at that checkpoint. The combined PR owns delivery of this repair.</p>
 
 <p>The publication failure blocks freshness. Current Starmap supports and activates September 8's signed schema 6 catalog without credentials. Both models.dev mappings now preserve documentation in <code>DocsURL</code>.</p>
 

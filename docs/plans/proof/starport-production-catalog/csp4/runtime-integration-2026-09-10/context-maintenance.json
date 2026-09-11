@@ -6,30 +6,27 @@
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 123,
-  "new_evidence_artifacts": 133,
-  "new_commit_source_files": 55,
-  "resume_words": 332,
-  "current_source": "e12253fc80312ec76e976058ae0def74eb016746",
+  "new_evidence_artifacts": 167,
+  "new_commit_source_files": 61,
+  "resume_words": 367,
+  "current_source": "079c390b29d0dedaa59840ddd4c73656ac647c71",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
   "clean_source": true,
   "running_implementation_commands": [
     {
-      "session_id": 19923,
+      "session_id": 88653,
+      "source": "7641eaea2b98f9ffbefb2807f67253919227b234",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock",
       "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make verify",
-      "source": "b81b827067aa860096bed208e541dd84e31274ab",
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs",
-      "log": ".tmp/csp4-provider-docs/make-verify.log",
-      "toolchain": "go1.26.6"
+      "log": ".tmp/csp4-clock-delivery/make-verify.log"
     }
   ],
-  "next_action": "Finish integrated verification, then review and deliver one PR for the provider-documentation repair and public-catalog acceptance. Continue native clock qualification and the remaining CSP4 scope.",
+  "next_action": "Verify CI and merge reviewed PR149 for provider documentation and public-catalog acceptance. Continue native clock qualification and the remaining CSP4 scope.",
   "public_acceptance_work": {
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
     "branch": "codex/catalog-public-acceptance",
     "base": "b81b827067aa860096bed208e541dd84e31274ab",
-    "status": "Committed e12253fc includes main 21e7356b, provider repair, and public fixtures. Four A07 checks pass after main integration. Runtime verification runs. The isolated live generation probe passes four validation components with zero issues.",
-    "sessions": [
-      98209
-    ]
+    "status": "Committed 079c390b includes main 21e7356b, the complete provider documentation repair, and public fixtures. Four A07 checks pass after main integration. Runtime verification passes 912 events across three packages. The isolated live generation probe passes four validation components with zero issues.",
+    "sessions": []
   }
 }

@@ -2,7 +2,7 @@
 
 ## Current runtime integration
 
-The combined public-catalog worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance`, branch `codex/catalog-public-acceptance`, at clean `e12253fc`.
+The combined public-catalog worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance`, branch `codex/catalog-public-acceptance`, at clean `079c390b`.
 It includes actual main `21e7356b`, the provider-documentation repair, and signed public fixtures.
 The [acceptance proof](csp4/public-acceptance-2026-09-11/verification.json) records four A07 checks passing after main integration.
 
@@ -10,21 +10,39 @@ The development toolchain passes seven scoped runtime race events. The minimum t
 All five negative runtime cases return their expected error category. Failure and restart preserve the accepted catalog.
 The verifier regression passes 73 tests. Static checks and the 1,406-file prose check pass.
 
-Integrated runtime, remote, and artifact verification runs in session `98209`. The integrated CSP4 verifier passes four A07 checks.
+Integrated runtime, remote, and artifact verification passes 912 events across three packages.
+There are no failures or skips. Runtime completes in 1,373.259 seconds. The integrated CSP4 verifier passes four A07 checks.
 Its four Starport consumer checks remain UNVERIFIED.
 
 The isolated generation probe passes in 92.017 seconds. Providers, authors, models, and cross-references each report zero issues.
 The probe uses the committed source without provider credentials. It creates only a local candidate.
 
 
-One PR will deliver the public checks and provider-documentation repair. Required review, native CI, and merge remain open.
+The provider-list API now prefers general documentation and keeps its acquisition-documentation fallback.
+Fresh and cached response tests reproduce the gap before this correction. Both supported toolchains pass 82 handler, cache, and OpenRouter events.
+
+Explicit fixture setup now downloads and verifies the published archive before tests. The final tracked tree excludes the archive.
+The prepared tests send catalog requests only to their local HTTP fixture. Missing archives yield UNVERIFIED acceptance cases.
+CI requires the prepared archive and fails when it is absent. Both absence checks reproduce these outcomes.
+
+The setup passes seven tests for integrity, cache reuse, and failed publication. Anonymous download verifies 411,974 bytes.
+The minimum-toolchain race check passes fourteen test events across two packages. Workflow tests pass 28 events.
+All four A07 checks pass with the prepared fixture. Lint, ago, complete documentation, and the 1,458-file prose check pass.
+
+The first review attempt refused an output path inside the repository. The second refused a binary change before model review.
+The explicit fixture setup resolves the binary refusal without a review bypass. The final verifier adds the seven-test fixture stage.
+The earlier complete forty-stage run remains bound to its source commit.
+
+[PR #149](https://github.com/agentstation/starmap/pull/149) delivers the public checks and complete provider-documentation repair.
+Required Sol/Opus review passes with zero findings. Native CI and merge remain open.
 These local checks do not qualify the released pair or complete CSP4.
 
 CSP4 remains in progress. Four A07 subcases now pass locally. Four Starport consumer subcases remain UNVERIFIED.
 
 The preserved repair checkpoint is `/Users/jack/src/github.com/agentstation/starmap-catalog-provider-docs`, branch `codex/catalog-provider-docs`, at clean `b81b827067aa860096bed208e541dd84e31274ab`.
 The [repair proof](csp4/provider-docs-2026-09-11/verification.json) records 846 race events per supported toolchain across four packages.
-Lint, ago, generated documentation, and the 1,415-file prose check pass. Full Go 1.26.6 verification runs in session `19923`.
+Lint, ago, generated documentation, and the 1,415-file prose check pass. The full repository verifier passes all forty stages at `b81b8270`.
+Both ordinary and race modes pass 81 packages. All fifteen coverage thresholds pass, and prose covers 1,417 files.
 
 The catalog workflow fails after models.dev documentation creates invalid acquisition metadata for Cohere.
 Both parser and fetch mappings now use `DocsURL`. Curated documentation and provider contracts retain their existing authority.
