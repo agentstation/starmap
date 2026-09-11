@@ -56,7 +56,6 @@ type Source struct {
 
 	startMu sync.Mutex
 	started bool
-	cancel  context.CancelFunc
 
 	mu                sync.Mutex
 	lastGenerationID  string
@@ -116,13 +115,6 @@ func (s *Source) Health() Health { return s.subscriber.Health() }
 func (s *Source) Close() error {
 	if s == nil {
 		return nil
-	}
-	s.startMu.Lock()
-	cancel := s.cancel
-	s.cancel = nil
-	s.startMu.Unlock()
-	if cancel != nil {
-		cancel()
 	}
 	return s.subscriber.Close()
 }
@@ -246,17 +238,23 @@ func (s *Source) readCurrent(ctx context.Context) (source.Read, error) {
 // next read opens the lifecycle again. The runtime poll recovers on its own
 // after an operator rotates the key, and it recovers when the upstream returns.
 func (s *Source) start(ctx context.Context) error {
+	if ctx == nil {
+		return &errors.ValidationError{Field: "remote.context", Message: "is required"}
+	}
 	s.startMu.Lock()
 	defer s.startMu.Unlock()
 	if s.started {
+		s.subscriber.mu.Lock()
+		state := s.subscriber.state
+		s.subscriber.mu.Unlock()
+		if state != stateRunning {
+			return &errors.ConflictError{Resource: "remote catalog source", Expected: "running", Actual: state.String(), Message: "the source lifecycle has ended"}
+		}
 		return nil
 	}
-	lifetime, cancel := context.WithCancel(context.WithoutCancel(ctx))
-	if err := s.subscriber.Start(lifetime); err != nil {
-		cancel()
+	if err := s.subscriber.start(ctx, context.WithoutCancel(ctx)); err != nil {
 		return err
 	}
-	s.cancel = cancel
 	s.started = true
 	return nil
 }

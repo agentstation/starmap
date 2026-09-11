@@ -66,6 +66,7 @@ type options struct {
 	listenAddress     string
 
 	customSource        Source
+	ownedSource         OwnedSource
 	acquirer            Acquirer
 	sourceAcquirer      SourceAcquirer
 	sourceConfiguration []sources.SourceActivity
@@ -362,6 +363,7 @@ func WithSource(source Source) Option {
 			return &errors.ValidationError{Field: "source", Message: "is required"}
 		}
 		r.customSource = source
+		r.ownedSource = nil
 		return nil
 	}
 }

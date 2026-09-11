@@ -205,21 +205,26 @@ func (s *Subscriber) State() starmap.CatalogState {
 // PollingFallbackPolicy enables it. HTTP 401 and 403 responses are terminal and
 // never retry or enter polling fallback.
 func (s *Subscriber) Start(ctx context.Context) error {
+	return s.start(ctx, ctx)
+}
+
+// start keeps initialization cancellation separate from the accepted stream lifetime.
+func (s *Subscriber) start(initial, lifetime context.Context) error {
 	if s == nil {
 		return &errors.ValidationError{
 			Field: "remote.subscriber", Message: "is required",
 		}
 	}
-	if ctx == nil {
+	if initial == nil || lifetime == nil {
 		return &errors.ValidationError{
 			Field: "remote.context", Message: "is required",
 		}
 	}
-	if err := ctx.Err(); err != nil {
+	if err := initial.Err(); err != nil {
 		return err
 	}
 
-	runCtx, cancel := context.WithCancel(ctx)
+	runCtx, cancel := context.WithCancel(lifetime)
 	s.mu.Lock()
 	if s.state != stateIdle {
 		actual := s.state.String()
@@ -238,6 +243,14 @@ func (s *Subscriber) Start(ctx context.Context) error {
 	s.done = make(chan struct{})
 	done := s.done
 	s.mu.Unlock()
+	stopInitial := context.AfterFunc(initial, func() {
+		s.mu.Lock()
+		defer s.mu.Unlock()
+		if s.state == stateStarting && s.done == done {
+			cancel()
+		}
+	})
+	defer stopInitial()
 
 	started := false
 	defer func() {
@@ -257,7 +270,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 		close(done)
 	}()
 
-	initial, err := s.protocol.FetchCurrent(runCtx)
+	initialGeneration, err := s.protocol.FetchCurrent(runCtx)
 	if err != nil {
 		s.recordHealthError("initial_fetch", err)
 		if runErr := runCtx.Err(); runErr != nil {
@@ -267,13 +280,13 @@ func (s *Subscriber) Start(ctx context.Context) error {
 			return err
 		}
 		s.observeRefusal(err)
-		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
+		if err := s.beginRun(initial, runCtx, nil, done, 1, StreamStateRetrying); err != nil {
 			return err
 		}
 		started = true
 		return nil
 	}
-	if _, err := s.activate(runCtx, initial); err != nil {
+	if _, err := s.activate(runCtx, initialGeneration); err != nil {
 		s.recordHealthError("initial_activate", err)
 		return err
 	}
@@ -288,7 +301,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 			return err
 		}
 		s.observeRefusal(err)
-		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
+		if err := s.beginRun(initial, runCtx, nil, done, 1, StreamStateRetrying); err != nil {
 			return err
 		}
 		started = true
@@ -307,13 +320,13 @@ func (s *Subscriber) Start(ctx context.Context) error {
 			return err
 		}
 		s.observeRefusal(err)
-		if err := s.beginRun(runCtx, nil, done, 1, StreamStateRetrying); err != nil {
+		if err := s.beginRun(initial, runCtx, nil, done, 1, StreamStateRetrying); err != nil {
 			return err
 		}
 		started = true
 		return nil
 	}
-	if err := s.beginRun(runCtx, stream, done, 0, StreamStateStreaming); err != nil {
+	if err := s.beginRun(initial, runCtx, stream, done, 0, StreamStateStreaming); err != nil {
 		_ = stream.Close()
 		return err
 	}
@@ -322,6 +335,7 @@ func (s *Subscriber) Start(ctx context.Context) error {
 }
 
 func (s *Subscriber) beginRun(
+	initial context.Context,
 	ctx context.Context,
 	stream *protocol.EventStream,
 	done chan struct{},
@@ -330,6 +344,9 @@ func (s *Subscriber) beginRun(
 ) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if err := initial.Err(); err != nil {
+		return err
+	}
 	if s.state != stateStarting {
 		return &errors.ConflictError{
 			Resource: "remote catalog subscriber",
