@@ -89,7 +89,8 @@ Starmap provides:
 
 ```bash
 # Homebrew (macOS/Linux)
-brew install agentstation/tap/starmap
+brew trust --cask agentstation/tap/starmap
+brew install --cask agentstation/tap/starmap
 
 # Or install from source
 go install github.com/agentstation/starmap/cmd/starmap@latest
