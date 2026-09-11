@@ -3056,3 +3056,16 @@ Combined delivery qualification remains incomplete.
 
 CSP11 retains shared input recovery, acquisition capability equivalence, and atomic fleet fencing.
 Starport must adopt the compatible published contract and pass its consumer acceptance checks before production qualification.
+
+## Starport permission clock composition candidate
+
+Candidate `9669b61d` reads clock settings through Starmap's canonical descriptors and parser.
+Process environment values precede files. Within each source, Starport names precede their Starmap aliases.
+An explicit empty value does not select an alias. Clock settings remain independent of catalog source selection.
+
+The application passes one portable profile to its catalog composition. Starmap validates the native profile before catalog store construction.
+The connected runtime starts and closes its monitor. The application owns explicit runtime shutdown after construction-context cancellation.
+Admission keeps the existing cached clock reads without native observation queries.
+
+The [Starport clock proof](../../plans/proof/starport-production-catalog/csp4/starport-clock-2026-09-11/verification.json) records local integration against combined Starmap `d1bb47e1`.
+The published dependency still needs an update. Delivery checks, required review, native CI, and merge remain open.

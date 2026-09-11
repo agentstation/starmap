@@ -4,7 +4,7 @@
 
 The plan [delivery checklist](../../starport-production-catalog-plan.html#csp4-deliveries) separates merged work from the remaining CSP4 deliveries.
 Starmap PRs #146, #148, #149, and #150 merged. Twenty-eight campaign PRs merged across nine completed tasks.
-CSP4 remains active because production clock integration, complete delivery verification, and merges remain open.
+CSP4 remains active because published dependency qualification, complete delivery verification, and merges remain open.
 
 ### Consumer checks and published dependency
 
@@ -30,7 +30,7 @@ The initial run skipped the absent signed fixture. Preparation verified its publ
 The prepared run passed four public subcases and reported four missing consumer mappings. The registered run passes all eight.
 
 This task gate records component checks. Full A09, A10, and A21 qualification remains with CSP10.
-Production native clock composition, remaining Starport delivery checks, required review, publication, and merge remain open.
+The later clock candidate connects production composition. Its published dependency, remaining delivery checks, required review, publication, and merge remain open.
 
 ### Remaining native and origin delivery
 
@@ -57,8 +57,28 @@ The current log is `.tmp/csp4-origin-integrated/verifier.log` in the origin-sett
 Task checks, required review, publication, native CI, and merge remain required.
 
 CSP11 owns full shared input recovery, equivalent acquisition capability, and atomic lease/head fencing.
-Starport still needs production clock composition and its final delivery checks.
+Starport still needs a compatible published dependency and its final delivery checks.
 The [earlier checkpoint](csp4/integration-history-before-transition-2026-09-11.md) preserves the previous current record.
+
+### Starport production clock composition
+
+Local `9669b61d` connects Starport to the canonical Starmap clock profile.
+The [clock proof](csp4/starport-clock-2026-09-11/verification.json) records 429 package race events, including all 26 new clock events.
+One optional Valkey integration case skips because its test URL is absent.
+Six Windows cross-builds, vet, lint, ownership checks, dependency checks, and documentation links pass.
+
+The loader reads both product prefixes through the canonical clock parser.
+Process environment values precede files. Within each source, the Starport name precedes its Starmap alias, including explicit empty values.
+The runtime owns native monitor startup and shutdown. Invalid clock profiles fail before catalog storage construction.
+
+A canceled construction context does not close the runtime. Its owner must call Close.
+
+The tests use an untracked workspace with Starmap `d1bb47e1`.
+The committed published dependency predates the required clock API. Publish the combined runtime and update that pin before final qualification.
+Native lifecycle tests prove observation attempts and shutdown, not the declared host error bounds.
+The new prose passes with zero diagnostics. The full operator guide retains its 48 unrelated baseline diagnostics.
+Required review, delivery gates, native Starport CI, and merge remain open.
+The [previous current record](csp4/integration-history-before-starport-clock-2026-09-11.md) preserves earlier state.
 
 ## Native clock checkpoint history
 

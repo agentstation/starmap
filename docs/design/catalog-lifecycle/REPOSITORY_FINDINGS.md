@@ -2311,3 +2311,17 @@ All six native runtime jobs pass at `75ac9d07` in PR #151. The [production proof
 Only the repository Verification Gate remains before the native parent merge.
 Combined origin source `d1bb47e1` integrates that reviewed parent and starts full repository verification.
 Its result remains unverified. Starport clock composition, delivery review, publication, native CI, and merges remain open.
+
+## Starport native clock configuration, 2026-09-11
+
+The previous Starport loader silently ignored permission clock settings. Twenty configuration test events failed before the change.
+Candidate `9669b61d` reads both product prefixes through Starmap's canonical parser and gives the native monitor to the runtime.
+Its [proof](../../plans/proof/starport-production-catalog/csp4/starport-clock-2026-09-11/verification.json) records 429 package race events, including 26 new clock events.
+The optional Valkey integration case skips without its test URL. Six Windows cross-builds and the affected static checks pass.
+
+The first lifecycle test assumed construction-context cancellation closed the runtime. The existing runtime detaches that context and requires explicit Close.
+The corrected test verifies that ownership contract and monitor shutdown. Both the initial failure and final pass remain in the proof.
+New prose has zero diagnostics. The full operator guide retains 48 unrelated baseline diagnostics.
+
+Tests use a temporary workspace with Starmap `d1bb47e1`. The committed published dependency predates the clock API.
+Published dependency qualification, full delivery gates, required review, native CI, and merge remain open.

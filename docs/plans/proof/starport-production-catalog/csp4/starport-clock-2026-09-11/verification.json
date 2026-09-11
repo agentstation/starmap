@@ -1,0 +1,425 @@
+{
+  "task": "CSP4",
+  "status": "LOCAL_INTEGRATION_PASS_PUBLISHED_DEPENDENCY_AND_DELIVERY_PENDING",
+  "source_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+  "base": "80f8064e6ab0abcbd083210f88ba31243c653b8a",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+  "branch": "codex/catalog-authority-consumer",
+  "integration": {
+    "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+    "mechanism": "Untracked go.work selects both local modules. No committed module replacement.",
+    "published_starmap_pin": "v0.16.6-0.20260911063726-852a548c4959",
+    "limitation": "The published pin predates the required clock API. Publish the combined Starmap source and update this pin before final Starport delivery qualification."
+  },
+  "environment_overrides": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "GOWORK": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/go.work"
+  },
+  "contract": [
+    "Starmap owns the eight clock descriptors, parsing, and host-bound validation.",
+    "Clock aliases apply within each source. Process environment beats files. STARPORT names beat STARMAP aliases within one source, including explicit empty values.",
+    "The catalog runtime starts and closes its native monitor. Clock validation precedes catalog storage construction.",
+    "Permission checks retain the Starmap cached-read contract. Clock composition adds no per-request source query."
+  ],
+  "checks": [
+    {
+      "name": "packages",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=20m",
+        "./internal/config",
+        "./internal/catalog",
+        "./internal/app"
+      ],
+      "status": "complete",
+      "started_at": "2026-09-11T15:01:07.723100+00:00",
+      "exit_code": 0
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./internal/config",
+        "./internal/catalog",
+        "./internal/app"
+      ],
+      "status": "complete",
+      "started_at": "2026-09-11T15:02:41.613328+00:00",
+      "exit_code": 0
+    }
+  ],
+  "test_events": {
+    "pass": 429,
+    "fail": 0,
+    "skip": 1
+  },
+  "new_contract_pass_events": [
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/unknown_source",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/empty_source",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/missing_uncertainty",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/invalid_duration",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/unbounded_age",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/unsafe_interval",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/zero_drift",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/overflow_drift",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration/partial_Windows_bounds",
+    "TestCatalogPermissionClockRejectsInvalidConfiguration",
+    "TestCatalogPermissionClockNamesAndPrecedence/STARPORT_CATALOG_PERMISSION_CLOCK_",
+    "TestCatalogPermissionClockNamesAndPrecedence/STARMAP_CATALOG_PERMISSION_CLOCK_",
+    "TestCatalogPermissionClockNamesAndPrecedence/same_source_product_name_wins",
+    "TestCatalogPermissionClockNamesAndPrecedence/environment_alias_beats_file_product_name",
+    "TestCatalogPermissionClockNamesAndPrecedence/file_alias",
+    "TestCatalogPermissionClockNamesAndPrecedence",
+    "TestCatalogPermissionClockIncompleteProfileFails/embedded",
+    "TestCatalogPermissionClockIncompleteProfileFails/public",
+    "TestCatalogPermissionClockIncompleteProfileFails/starmap",
+    "TestCatalogPermissionClockIncompleteProfileFails",
+    "TestCatalogSettingsPreserveConfiguredPermissionClock",
+    "TestConfiguredPermissionClockLifecycle/close",
+    "TestConfiguredPermissionClockLifecycle/canceled_construction_context",
+    "TestConfiguredPermissionClockLifecycle",
+    "TestConfiguredPermissionClockDisabledStartsNoMonitor",
+    "TestConfiguredPermissionClockRefusesBeforeStoreConstruction"
+  ],
+  "cross_builds": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/windows-amd64-config.test.exe",
+        "./internal/config"
+      ],
+      "GOOS": "windows",
+      "GOARCH": "amd64",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/windows-amd64-catalog.test.exe",
+        "./internal/catalog"
+      ],
+      "GOOS": "windows",
+      "GOARCH": "amd64",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/windows-amd64-app.test.exe",
+        "./internal/app"
+      ],
+      "GOOS": "windows",
+      "GOARCH": "amd64",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/windows-arm64-config.test.exe",
+        "./internal/config"
+      ],
+      "GOOS": "windows",
+      "GOARCH": "arm64",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/windows-arm64-catalog.test.exe",
+        "./internal/catalog"
+      ],
+      "GOOS": "windows",
+      "GOARCH": "arm64",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/windows-arm64-app.test.exe",
+        "./internal/app"
+      ],
+      "GOOS": "windows",
+      "GOARCH": "arm64",
+      "exit_code": 0
+    }
+  ],
+  "lint": {
+    "command": [
+      "go",
+      "run",
+      "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2",
+      "run",
+      "./internal/config",
+      "./internal/catalog",
+      "./internal/app"
+    ],
+    "exit_code": 0
+  },
+  "guards": [
+    {
+      "command": [
+        "bash",
+        "scripts/verify-starmap-ownership.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-dependency-direction.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/verify-doc-links.sh"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "prose": {
+    "new_content": {
+      "files": 6,
+      "diagnostics": 0,
+      "exit_code": 0
+    },
+    "existing_operator_guide": {
+      "baseline_diagnostics": 48,
+      "current_diagnostics": 48,
+      "exit_code": 1,
+      "limitation": "Existing unrelated prose remains unchanged. Whole-guide conformance is not claimed."
+    }
+  },
+  "failures_preserved": [
+    {
+      "artifact": "before.jsonl.gz",
+      "description": "The old loader silently ignored clock settings. All 20 added configuration test events failed before implementation. The test file was formatted afterward."
+    },
+    {
+      "artifact": "focused.jsonl.gz",
+      "description": "The first integration test incorrectly treated the construction context as runtime lifetime. Its 24 pass and two fail events are retained. Runtime.Open detaches that context and its owner must call Close. The corrected test verifies explicit shutdown after construction-context cancellation."
+    }
+  ],
+  "unverified": [
+    "TestAppWithValkey skipped because TEST_VALKEY_URL was unset.",
+    "Cross-builds prove compilation, not native Starport execution.",
+    "Native lifecycle tests require an observation attempt, not qualified UTC evidence on the test host. Deployments must qualify their declared clock bounds.",
+    "Full delivery gates, published dependency qualification, pre-PR review, native Starport CI, and merge remain open."
+  ],
+  "source_files": [
+    {
+      "path": ".env.example",
+      "sha256": "789483a25489140f00e9dba32abbe9c694b7a33b76c44aeaa7850b4a3f58a23b"
+    },
+    {
+      "path": "docs/OPERATOR-GUIDE.md",
+      "sha256": "f10e71a738909b23a9b139710003ac549701ffdf9a227a204fb5945c67eec581"
+    },
+    {
+      "path": "internal/app/app.go",
+      "sha256": "33e6cb29e122554f862c333f3fa5cd64ba57d368978a64d87918549eacd2dcfc"
+    },
+    {
+      "path": "internal/app/catalog_clock_test.go",
+      "sha256": "f0ea9b6619096256494ee213011f03a3cdf166eb024554503e4a144f73e8f2ac"
+    },
+    {
+      "path": "internal/catalog/authority_acceptance_test.go",
+      "sha256": "05e2066e26315c70d34f92872e4ff66f1e9632161de8144835d97319d6816d44"
+    },
+    {
+      "path": "internal/catalog/runtime.go",
+      "sha256": "e69bb354d84cb80c56355c356ca51fa9c8d78e5a310154ccb8fa51707155bedf"
+    },
+    {
+      "path": "internal/catalog/settings.go",
+      "sha256": "2651c443d0a566d21114043d3c4b9150f42a33dd749ec45f31119ab59318ca7d"
+    },
+    {
+      "path": "internal/catalog/settings_clock_test.go",
+      "sha256": "afc9d1a7ab27f667686e5e595ddf08d3d4ed59887a7619ae61bb42ac622744ae"
+    },
+    {
+      "path": "internal/config/README.md",
+      "sha256": "a13d60007a3e064ba2d0480722495775851c393bb807ed81227bffbe2a9077b6"
+    },
+    {
+      "path": "internal/config/catalog.go",
+      "sha256": "c2e0abde08aa63771aff26c0e8b01ea74cc21e5597321ee7c9e9f6f4c1ab5024"
+    },
+    {
+      "path": "internal/config/catalog_clock.go",
+      "sha256": "da8ce04bbfa558d68a7e892a961b5741ed7ad7090602b5ba04fc50b40b4082c3"
+    },
+    {
+      "path": "internal/config/catalog_clock_test.go",
+      "sha256": "d4287982d282c1d94b1d47fa35ebfb213388bf04e30b27f1953e16819cdf843a"
+    },
+    {
+      "path": "internal/config/loader.go",
+      "sha256": "363111ad31b26f6d74d57a8340c3dff820b83a49ba0c63114f11d29ad291aab4"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "before.json.gz",
+      "sha256": "ece6a64f440826db21f3d2ae0043a1f5829761a4a385f0d6e45d0c9b6fa6666a",
+      "decoded_sha256": "90f2d14fff7902d72de48df961a376d971821e4145427ffe8d35b314034a1e36"
+    },
+    {
+      "path": "before.jsonl.gz",
+      "sha256": "96ddb022cf4a5458417e0bd082f21a35e34f9b3771ce3281f09842ceebb1f94b",
+      "decoded_sha256": "92504b44e7e453115974f20d8610758842263b85ce44c247bda3db1e1bbba4cc"
+    },
+    {
+      "path": "checks.json.gz",
+      "sha256": "8ab5f67b31be1b91f86593559f1345866eb6e93803745b2c4bdcc4cc2accee3e",
+      "decoded_sha256": "8a083098620d466efe2b96fb4a656fc0c8170ac6e4e1098d926efc005e6de95f"
+    },
+    {
+      "path": "cross-builds.json.gz",
+      "sha256": "d0ad890ffd14995eeb87c5d1180b04369809ea41c41b937bb871e61b81d594f6",
+      "decoded_sha256": "4524d61d8d24f1c1e80b17aaab00e7ab6232d1f0c43eb95cc35ca6872498ab0a"
+    },
+    {
+      "path": "focused.json.gz",
+      "sha256": "039c7d41b1a1417188ba087def4fefc423d3f216845c740e2a341599130cea0d",
+      "decoded_sha256": "e861e1bd540a83b79b0761ec0429d841c41b09572e427b597fb8a29b343980e7"
+    },
+    {
+      "path": "focused.jsonl.gz",
+      "sha256": "27d9c6f13b0f1e871ba27c563c98e2ca3f514c29695c898d40eca69091b2e7a4",
+      "decoded_sha256": "a40ac2347fc09823f101565e317beaceffd3eef12e95245e439f9f657eb207cf"
+    },
+    {
+      "path": "go.work.gz",
+      "sha256": "0057d71373cef8e56561d63ad254c3881d218e70e38c05529d143c6963dcf886",
+      "decoded_sha256": "a8316ce5509afee07fe238c70f856ea07e4b823660d9ad0181ad018e8f0e0f37"
+    },
+    {
+      "path": "guards.json.gz",
+      "sha256": "bb51582a3345c5cd1565b14aa15757ae060808eccc0a1cfc9166892cdcd94ca1",
+      "decoded_sha256": "99ab7846d0d90bd3ccc57608e065838efc9d466b5e426c4f9a1730a721485031"
+    },
+    {
+      "path": "lint.json.gz",
+      "sha256": "8c926f045bb643de182878e8cdf775e010a74675e5fdcdf16f7b92a7f198ea55",
+      "decoded_sha256": "3ee8b3bf1c8a0212bca685c15ff1a8be1ba01d18910760cfc207ebc8939e1461"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "operator-clock.md.gz",
+      "sha256": "a2acefa4635f3f260a4f45cfd279aaa84d0dc12eaa2c8afc4b866d9076948e7e",
+      "decoded_sha256": "89579760caf43387291868e68f0f8af2149b0bd90c3bfa71af703e5d94469708"
+    },
+    {
+      "path": "packages.log.gz",
+      "sha256": "9db561fda7f4bc00c4c7a43634381c88b8a734f23947afd95502d86333761dc3",
+      "decoded_sha256": "790cea34993c2058ce3544fc8d663f12b87b5014baeb36044e5046caa792f3f4"
+    },
+    {
+      "path": "prose-baseline.json.gz",
+      "sha256": "6a064dc6d52a14bc5d2f2452ce5efb8bb51928754d889db3bb9a70c4cd009771",
+      "decoded_sha256": "3be665ee476e6cc94e267a1f28e9fa6ed2c2b835a6424187c88dcdd9c842a311"
+    },
+    {
+      "path": "prose-baseline.md.gz",
+      "sha256": "88fe256e800324a8c1080d42a53b6f3214732aa4a102dc05a57164d41a213389",
+      "decoded_sha256": "04d5b954ab2865ef4a1ff4b158a8f19c7cf5ba7333107fba9eb01d4dff0936a3"
+    },
+    {
+      "path": "prose-current.json.gz",
+      "sha256": "5a2a1ac7d6befe4e8fd23743ef3faa5be632b56bcf06cc597ac01d7373946529",
+      "decoded_sha256": "c2042fc7dbec0c1dd338ac20e60f56c984b787d1ecc146e6e01e14669b43d907"
+    },
+    {
+      "path": "prose-current.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prose-full.json.gz",
+      "sha256": "4f82371e2a88c83bc4baef9ba0a211c41d3967a099be45eb2a46c648ab35ff83",
+      "decoded_sha256": "3fdcb2d3d4cd35f2ffb3504d3561263d0a320db8c0cfcb80daf13432d775cacc"
+    },
+    {
+      "path": "verify-dependency-direction.log.gz",
+      "sha256": "713096b1e6aecd4a95faef13526488600df899e13d42416233f04528485bfdd9",
+      "decoded_sha256": "3a49bf0772b6d01f07c91a8c2a646acdfeaaa97cbb1b191026f789ae6f7d9027"
+    },
+    {
+      "path": "verify-doc-links.log.gz",
+      "sha256": "1e8b495a4813c7aee62176073ceb333331f989692202f925e8399959191eeee2",
+      "decoded_sha256": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324"
+    },
+    {
+      "path": "verify-starmap-ownership.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "decoded_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-amd64-app.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-amd64-catalog.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-amd64-config.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-arm64-app.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-arm64-catalog.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-arm64-config.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
