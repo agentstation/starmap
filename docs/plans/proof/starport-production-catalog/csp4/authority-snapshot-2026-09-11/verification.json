@@ -378,6 +378,11 @@
       "path": "native-pr150-jobs.json.gz",
       "sha256": "7f120899a8adf81fa86045f676480af328db195d18a656287caa617e15ceb407",
       "decoded_sha256": "673333b18c9a7ca75e204b47c1a90f3ee017bf99da927dc63c02ea77abd27509"
+    },
+    {
+      "path": "pr150-auto-merge.json.gz",
+      "sha256": "567b5ee30d9bd85b2f69292a9646451f50054831645f042b01f8228c20176d02",
+      "decoded_sha256": "7114b5d599f15f0ae1ee61810d219717a7b497000912cb9471e4a0a7f2f137a3"
     }
   ],
   "contract": [
@@ -847,5 +852,15 @@
       }
     ],
     "scope": "Runtime and permission library APIs. Does not qualify native host clock adapters or released product pair."
+  },
+  "auto_merge": {
+    "status": "Enabled after all six native jobs and eight other checks passed. Verification Gate remains in progress.",
+    "head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
+    "base": "9ea36b3ea30713db512bccb2b76498a03556164c",
+    "method": "SQUASH",
+    "enabled_at": "2026-09-11T05:55:58Z",
+    "is_draft": false,
+    "merge_commit": null,
+    "completion_credit": "None until the actual merge and source equality are verified."
   }
 }

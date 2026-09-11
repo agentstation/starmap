@@ -1,11 +1,11 @@
 {
-  "captured_at": "2026-09-11T05:31:07.630950+00:00",
+  "captured_at": "2026-09-11T05:57:10.450359+00:00",
   "scope": "Open PR inventory capped at 100 per repository. PR150 is the only returned open PR.",
   "repositories": {
     "starmap": [
       {
         "headRefOid": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
-        "isDraft": true,
+        "isDraft": false,
         "number": 150,
         "title": "Bind catalog snapshots to current authority permission",
         "url": "https://github.com/agentstation/starmap/pull/150"
@@ -348,10 +348,25 @@
     "url": "https://github.com/agentstation/starmap/pull/150"
   },
   "current_pr150": {
+    "autoMergeRequest": {
+      "authorEmail": null,
+      "commitBody": null,
+      "commitHeadline": null,
+      "mergeMethod": "SQUASH",
+      "enabledAt": "2026-09-11T05:55:58Z",
+      "enabledBy": {
+        "id": "MDQ6VXNlcjU2ODc0MDY=",
+        "is_bot": false,
+        "login": "jackspirou",
+        "name": "Jack Spirou"
+      }
+    },
     "baseRefOid": "9ea36b3ea30713db512bccb2b76498a03556164c",
     "headRefOid": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
-    "isDraft": true,
+    "isDraft": false,
+    "mergeCommit": null,
     "mergeStateStatus": "BLOCKED",
+    "mergedAt": null,
     "number": 150,
     "state": "OPEN",
     "statusCheckRollup": [
@@ -506,6 +521,7 @@
         "workflowName": ""
       }
     ],
-    "title": "Bind catalog snapshots to current authority permission"
+    "title": "Bind catalog snapshots to current authority permission",
+    "url": "https://github.com/agentstation/starmap/pull/150"
   }
 }

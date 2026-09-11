@@ -6,20 +6,20 @@
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 113,
-  "new_evidence_artifacts": 441,
+  "new_evidence_artifacts": 442,
   "new_commit_source_files": 119,
-  "resume_words": 344,
+  "resume_words": 342,
   "current_source": "0868781d11db6601d082ebb4d45da48586177d91",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "clean_source": true,
   "running_implementation_commands": [],
-  "next_action": "Qualify PR150 at e3943c97, then mark ready and merge. All 41 local verifier stages have evidence. PR149 merged with fifteen successful checks. Continue Windows clock support, qualified clock profiles, host scheduling, and configured Starport permission composition.",
+  "next_action": "Automatic squash merge for PR150 at e3943c97 waits for Verification Gate. Verify and record the actual merge. All 41 local verifier stages have evidence. PR149 merged with fifteen successful checks. Continue Windows clock support, qualified clock profiles, host scheduling, and configured Starport permission composition.",
   "external_running_checks": [
     {
       "pr": 150,
       "repository": "agentstation/starmap",
       "head": "e3943c9740602bf57431aef38b4c6cea6b30ef47",
-      "status": "All six native jobs pass. Verification Gate runs.",
+      "status": "All six native jobs pass. Automatic merge waits for Verification Gate.",
       "owner": "Catalog plan executor"
     }
   ],

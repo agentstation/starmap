@@ -1,12 +1,14 @@
 # Current pull request queue
 
 Updated 2026-09-11 UTC. Starmap [PR #150](https://github.com/agentstation/starmap/pull/150) is the only open PR across both repositories.
-The [queue evidence](queue-status-2026-09-11.json) records its exact head and initial checks.
+The [queue evidence](queue-status-2026-09-11.json) records its exact head and automatic merge state.
 
-PR #150 contains reviewed `e3943c97`. Six native jobs run. The catalog plan executor will mark it ready and merge after all required checks pass.
+PR #150 contains reviewed `e3943c97`. All six native jobs pass. Automatic squash merge waits for Verification Gate.
+The catalog plan executor will verify the actual merge before recording completion.
 PR #149 merged as `9ea36b3e` after fifteen successful checks. Its tree matches reviewed `0a143a94` exactly.
 
-Starport `52970f7` enforces current permission before provider attempts and cached response delivery. Its configured consumer checks remain incomplete.
+Starport `95354f0` adds configured authority pins to its request permission checks. The four mapped consumer checks remain incomplete.
+Starmap `0868781d` adds local Linux and macOS clock observations. Windows and production clock profiles remain open.
 Twenty-seven campaign PRs merged. Nine tasks are complete, and CSP4 remains active.
 
 ## Historical queue snapshots
