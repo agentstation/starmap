@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"context"
+	"slices"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -17,7 +18,16 @@ type ObservationUpdate struct {
 
 // UpdateAcquisition prepares and commits one acquisition under runtime ownership.
 // Failed preparation preserves accepted state. The callback must not mutate this runtime.
-func (r *Runtime) UpdateAcquisition(ctx context.Context, prepare func(context.Context, ObservationInputs) (ObservationUpdate, error)) (starmap.CatalogState, error) {
+// requestedSources declares every source the callback can read. Omission permits network acquisition only in configured mode.
+func (r *Runtime) UpdateAcquisition(ctx context.Context, prepare func(context.Context, ObservationInputs) (ObservationUpdate, error), requestedSources ...sources.ID) (starmap.CatalogState, error) {
+	requestedSources = slices.Clone(requestedSources)
+	if err := r.validateAcquisitionAccess(requestedSources); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	return r.updateAcquisition(ctx, prepare, requestedSources)
+}
+
+func (r *Runtime) updateAcquisition(ctx context.Context, prepare func(context.Context, ObservationInputs) (ObservationUpdate, error), requestedSources []sources.ID) (starmap.CatalogState, error) {
 	if prepare == nil {
 		return starmap.CatalogState{}, &errors.ValidationError{Field: "acquisition.prepare", Message: "is required"}
 	}
@@ -29,6 +39,9 @@ func (r *Runtime) UpdateAcquisition(ctx context.Context, prepare func(context.Co
 		}
 		update, err := prepare(runCtx, inputs)
 		if err != nil {
+			return err
+		}
+		if err := validateAcquisitionResults(update.Observations, requestedSources); err != nil {
 			return err
 		}
 		if err := runCtx.Err(); err != nil {
@@ -54,7 +67,12 @@ func (r *Runtime) UpdateAcquisition(ctx context.Context, prepare func(context.Co
 
 // PreviewAcquisition computes an acquisition against one captured runtime snapshot.
 // It writes no catalog, workspace, or runtime state. The callback owns source reads.
-func (r *Runtime) PreviewAcquisition(ctx context.Context, prepare func(context.Context, ObservationInputs) (ObservationUpdate, error)) (starmap.CatalogState, error) {
+// requestedSources has the same access contract as UpdateAcquisition.
+func (r *Runtime) PreviewAcquisition(ctx context.Context, prepare func(context.Context, ObservationInputs) (ObservationUpdate, error), requestedSources ...sources.ID) (starmap.CatalogState, error) {
+	requestedSources = slices.Clone(requestedSources)
+	if err := r.validateAcquisitionAccess(requestedSources); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if prepare == nil {
 		return starmap.CatalogState{}, &errors.ValidationError{Field: "acquisition.prepare", Message: "is required"}
 	}
@@ -64,6 +82,9 @@ func (r *Runtime) PreviewAcquisition(ctx context.Context, prepare func(context.C
 	}
 	update, err := prepare(ctx, inputs)
 	if err != nil {
+		return starmap.CatalogState{}, err
+	}
+	if err := validateAcquisitionResults(update.Observations, requestedSources); err != nil {
 		return starmap.CatalogState{}, err
 	}
 	if err := ctx.Err(); err != nil {

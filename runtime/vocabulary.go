@@ -22,6 +22,9 @@ type Source = source.Source
 // SourceWatcher is an optional Source that reports each upstream change.
 type SourceWatcher = source.Watcher
 
+// SourceManualReader reads one generation without a background lifecycle.
+type SourceManualReader = source.ManualReader
+
 // SourceIdentityAdopter is an optional Source that takes the fleet instance
 // identity of its runtime.
 type SourceIdentityAdopter = source.IdentityAdopter

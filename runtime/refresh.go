@@ -363,6 +363,9 @@ func (r *Runtime) execute(
 // readSource reads the upstream source, retains the generation, and publishes
 // the rebuilt effective catalog.
 func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch uint64) error {
+	if !r.sourceReadAllowed() {
+		return offlineCatalogOperation("network source reads")
+	}
 	if r.requiresAuthority() {
 		if err := r.RefreshPermission(ctx); err != nil {
 			return err
@@ -472,12 +475,22 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 // declared not-before boundary and warns while the request budget nears its
 // bound, so a refused fleet does not retry at one instant.
 func (r *Runtime) readWithRetry(ctx context.Context, source Source) (SourceRead, error) {
+	readSource := source.Read
+	if r.config.updatePolicy.SourceRefreshMode == SourceRefreshManual {
+		if manual, ok := source.(SourceManualReader); ok {
+			readSource = manual.ReadOnce
+		} else if _, reactive := source.(SourceWatcher); reactive {
+			return SourceRead{}, &errors.ConfigError{
+				Component: "catalog source", Message: "manual source mode requires ReadOnce for reactive sources",
+			}
+		}
+	}
 	policy := fleet.DefaultRetryPolicy()
 	random := fleet.Random(r.config.random)
 	delay := time.Duration(0)
 	var lastErr error
 	for retries := 0; ; retries++ {
-		read, err := source.Read(ctx)
+		read, err := readSource(ctx)
 		if err == nil {
 			return read, nil
 		}

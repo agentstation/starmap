@@ -19,6 +19,8 @@ func sampleValues() map[string]string {
 	return map[string]string{
 		settings.AuthorityOrigin:                         `{"enabled":false}`,
 		settings.Source:                                  "embedded",
+		settings.SourceRefreshMode:                       "manual",
+		settings.NetworkMode:                             "offline",
 		settings.SourceURL:                               "https://example.test/catalog",
 		settings.SourceAPIKey:                            "placeholder",
 		settings.SourceRepository:                        "example/catalog",

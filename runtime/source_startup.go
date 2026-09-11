@@ -12,7 +12,14 @@ import (
 // Authority observation binds after other startup checks, before any source worker can read a manifest.
 func (r *Runtime) prepareSourceStartup(ctx context.Context) error {
 	if r.config.source.StartupPolicy == StartupRequireSource {
-		if r.lease.status() == leaseLost {
+		if !r.automaticSourceReads() {
+			r.mu.RLock()
+			retained := r.layers.source != nil
+			r.mu.RUnlock()
+			if !retained {
+				return &errors.ConfigError{Component: "catalog startup policy", Message: "require_source needs retained source state when automatic source reads are disabled"}
+			}
+		} else if r.lease.status() == leaseLost {
 			logging.Info().
 				Str("holder", r.schedule.identity.Instance).
 				Msg("The lease owner supplies the source state; require_source reads nothing here")

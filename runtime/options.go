@@ -39,6 +39,7 @@ type options struct {
 	source       SourcePolicy
 	sourceToken  string
 	sourceAPIKey string
+	updatePolicy UpdatePolicy
 
 	acquisition        AcquisitionPolicy
 	providerBindings   *providerBindingPolicy
@@ -97,6 +98,7 @@ func defaults() *options {
 		directoryOwner:      DirectoryOwner{Product: "starmap", Deployment: "local", Instance: "default"},
 		source:              DefaultSourcePolicy(),
 		acquisition:         DefaultAcquisitionPolicy(),
+		updatePolicy:        DefaultUpdatePolicy(),
 		freshness:           DefaultFreshnessPolicy(),
 		startupSpread:       fleet.DefaultStartupSpread,
 		transferIdleTimeout: DefaultTransferIdleTimeout,
@@ -133,6 +135,9 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if err := r.updatePolicy.Validate(); err != nil {
+		return err
+	}
 	if r.permissionClockMonitor != nil && (r.permissionClockReading != nil || r.permissionClockUncertainty != nil) {
 		return &errors.ValidationError{Field: "permission_clock", Message: "select either a managed monitor or an external clock callback"}
 	}

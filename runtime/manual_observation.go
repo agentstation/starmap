@@ -94,7 +94,13 @@ func (r *Runtime) PublishObservations(ctx context.Context, observations ...sourc
 	if len(observations) == 0 {
 		return starmap.CatalogState{}, &errors.ValidationError{Field: "manual.observations", Message: "at least one observation is required"}
 	}
-	return r.UpdateObservations(ctx, func(context.Context, ObservationInputs) ([]sources.Observation, error) {
-		return observations, nil
-	})
+	if r == nil {
+		return starmap.CatalogState{}, &errors.ValidationError{Field: "runtime", Message: "is required"}
+	}
+	if err := r.validateAuthorityPublication(nil, len(observations), nil); err != nil {
+		return starmap.CatalogState{}, err
+	}
+	return r.updateAcquisition(ctx, func(context.Context, ObservationInputs) (ObservationUpdate, error) {
+		return ObservationUpdate{Observations: observations}, nil
+	}, nil)
 }

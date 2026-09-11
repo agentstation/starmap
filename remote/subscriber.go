@@ -23,6 +23,7 @@ const (
 	stateStarting
 	stateRunning
 	stateStopped
+	stateReading
 )
 
 // Subscriber owns one explicitly started remote catalog lifecycle.
@@ -893,6 +894,8 @@ func (s lifecycleState) String() string {
 		return "running"
 	case stateStopped:
 		return "stopped"
+	case stateReading:
+		return "reading"
 	default:
 		return "unknown(" + strconv.Itoa(int(s)) + ")"
 	}

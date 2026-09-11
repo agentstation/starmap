@@ -66,6 +66,7 @@ type Source struct {
 // The cascaded source fills the reactive runtime source roles.
 var (
 	_ source.Source              = (*Source)(nil)
+	_ source.ManualReader        = (*Source)(nil)
 	_ source.PermissionReader    = (*Source)(nil)
 	_ source.AuthorityObservable = (*Source)(nil)
 	_ source.Watcher             = (*Source)(nil)
@@ -152,6 +153,24 @@ func (s *Source) Read(ctx context.Context) (source.Read, error) {
 	if err := s.start(ctx); err != nil {
 		return source.Read{}, err
 	}
+	return s.readCurrent(ctx)
+}
+
+// ReadOnce verifies one upstream generation and its source chain without an event stream.
+// Close cancels the complete read. Each later call fetches the current generation again.
+func (s *Source) ReadOnce(ctx context.Context) (source.Read, error) {
+	readCtx, finish, err := s.subscriber.startManualRead(ctx)
+	if err != nil {
+		return source.Read{}, err
+	}
+	defer finish()
+	if err := s.subscriber.catchUp(readCtx); err != nil {
+		return source.Read{}, err
+	}
+	return s.readCurrent(readCtx)
+}
+
+func (s *Source) readCurrent(ctx context.Context) (source.Read, error) {
 	chain, chainErr := s.subscriber.protocol.FetchSourceChain(ctx)
 	// An upstream that serves no chain answers with a status, and an origin
 	// answers with a not-found status. Both stay readable without disclosure.

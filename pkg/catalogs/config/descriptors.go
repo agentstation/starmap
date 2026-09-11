@@ -122,6 +122,14 @@ func describe(entry setting) Descriptor {
 		if entry.name == SourceToken {
 			d.Applicability = []string{"public", "github"}
 		}
+	case SourceRefreshMode:
+		d.Description = "Selects automatic source refresh or explicit manual reads. Manual mode suppresses startup reads, polling, and source watchers."
+		d.Default = string(runtime.SourceRefreshAutomatic)
+		d.AllowedValues = []string{string(runtime.SourceRefreshAutomatic), string(runtime.SourceRefreshManual)}
+	case NetworkMode:
+		d.Description = "Controls catalog network acquisition. Offline mode preserves local imports and does not change inference or selected storage access."
+		d.Default = string(runtime.NetworkConfigured)
+		d.AllowedValues = []string{string(runtime.NetworkConfigured), string(runtime.NetworkOffline)}
 	case SourcePollInterval:
 		d.Description = "Sets the period between automatic catalog checks. Zero disables periodic catalog checks."
 		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", source.PollInterval.String(), true

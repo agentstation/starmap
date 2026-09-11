@@ -379,6 +379,52 @@ Authenticates transport to the selected catalog source. It is separate from prov
 | Compatibility | `supported`, schema 1 |
 | Source group | `catalog-source` |
 
+<a id="catalog-source-refresh-mode"></a>
+
+## catalog_source_refresh_mode
+
+Selects automatic source refresh or explicit manual reads. Manual mode suppresses startup reads, polling, and source watchers.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_SOURCE_REFRESH_MODE` |
+| CLI flag | `--catalog-source-refresh-mode value` |
+| YAML key | `catalog_source_refresh_mode` |
+| Semantic ID | `catalog.source.refresh.mode` |
+| Grammar | `string` |
+| Accepted names | `automatic`, `manual` |
+| Default | `automatic` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-network-mode"></a>
+
+## catalog_network_mode
+
+Controls catalog network acquisition. Offline mode preserves local imports and does not change inference or selected storage access.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_NETWORK_MODE` |
+| CLI flag | `--catalog-network-mode value` |
+| YAML key | `catalog_network_mode` |
+| Semantic ID | `catalog.network.mode` |
+| Grammar | `string` |
+| Accepted names | `configured`, `offline` |
+| Default | `configured` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
 <a id="catalog-source-poll-interval"></a>
 
 ## catalog_source_poll_interval

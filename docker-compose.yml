@@ -29,6 +29,8 @@ services:
       # - STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW=
       # - STARMAP_CATALOG_SOURCE_TOKEN=
       # - STARMAP_CATALOG_SOURCE_POLL_INTERVAL=1h
+      # - STARMAP_CATALOG_SOURCE_REFRESH_MODE=automatic
+      # - STARMAP_CATALOG_NETWORK_MODE=configured
       # - STARMAP_CATALOG_SOURCE_STARTUP_POLICY=prefer_source
       # Internal authority requires both identities and qualified host clock evidence.
       # - STARMAP_CATALOG_SOURCE_AUTHORITY_ID=enterprise

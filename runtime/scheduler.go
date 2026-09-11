@@ -141,8 +141,11 @@ func (r *Runtime) startSchedules() {
 		})
 	}
 	interval := r.config.source.PollInterval
-	wake := r.sourceChanges()
-	if r.source != nil && (interval > 0 || wake != nil) {
+	var wake <-chan struct{}
+	if r.automaticSourceReads() {
+		wake = r.sourceChanges()
+	}
+	if r.automaticSourceReads() && r.source != nil && (interval > 0 || wake != nil) {
 		offset := r.schedule.sourceOffset
 		phase := r.schedule.sourcePhase
 		startup := r.sourceNeedsStartupPass()
@@ -154,7 +157,7 @@ func (r *Runtime) startSchedules() {
 			})
 		})
 	}
-	if r.config.acquisition.Enabled && r.hasAcquisition() {
+	if r.config.updatePolicy.NetworkMode != NetworkOffline && r.config.acquisition.Enabled && r.hasAcquisition() {
 		interval := r.config.acquisition.Interval
 		offset := r.schedule.acquisitionOffset
 		phase := r.schedule.acquisitionPhase

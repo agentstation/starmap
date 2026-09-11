@@ -43,6 +43,12 @@ const (
 	// token.
 	SourceToken = Prefix + "CATALOG_SOURCE_TOKEN"
 
+	// SourceRefreshMode selects automatic or explicit-only source refresh.
+	SourceRefreshMode = Prefix + "CATALOG_SOURCE_REFRESH_MODE"
+
+	// NetworkMode controls outbound catalog acquisition independently of inference.
+	NetworkMode = Prefix + "CATALOG_NETWORK_MODE"
+
 	// SourcePollInterval is the conditional channel check period.
 	SourcePollInterval = Prefix + "CATALOG_SOURCE_POLL_INTERVAL"
 
@@ -140,6 +146,12 @@ type Config struct {
 	// SourceKind is the selected upstream source. The default is public.
 	SourceKind runtime.SourceKind
 
+	// SourceRefreshMode selects automatic or manual source reads.
+	SourceRefreshMode runtime.SourceRefreshMode
+
+	// NetworkMode selects configured or offline catalog acquisition.
+	NetworkMode runtime.NetworkMode
+
 	// SourceURL is the safe endpoint or file identity of a custom source.
 	SourceURL string
 
@@ -224,6 +236,14 @@ func table() []setting {
 		{
 			name: SourceToken, flag: "catalog-source-token",
 			apply: stringOption(runtime.WithSourceToken),
+		},
+		{
+			name: SourceRefreshMode, flag: "catalog-source-refresh-mode",
+			apply: stringOption(runtime.WithSourceRefreshMode), capture: captureSourceRefreshMode,
+		},
+		{
+			name: NetworkMode, flag: "catalog-network-mode",
+			apply: stringOption(runtime.WithCatalogNetworkMode), capture: captureNetworkMode,
 		},
 		{
 			name: SourcePollInterval, flag: "catalog-source-poll-interval",
@@ -355,7 +375,7 @@ func Load(lookup Lookup) (Config, error) {
 			Field: "settings.lookup", Message: "is required",
 		}
 	}
-	config := Config{SourceKind: runtime.SourcePublic, values: make(map[string]string)}
+	config := Config{SourceKind: runtime.SourcePublic, SourceRefreshMode: runtime.SourceRefreshAutomatic, NetworkMode: runtime.NetworkConfigured, values: make(map[string]string)}
 	for _, entry := range table() {
 		value, found := lookup(entry.name)
 		value = strings.TrimSpace(value)
@@ -551,4 +571,16 @@ func intOption(
 		}
 		return option(parsed), nil
 	}
+}
+
+func captureSourceRefreshMode(value string, config *Config) error {
+	mode, err := runtime.ParseSourceRefreshMode(value)
+	config.SourceRefreshMode = mode
+	return err
+}
+
+func captureNetworkMode(value string, config *Config) error {
+	mode, err := runtime.ParseNetworkMode(value)
+	config.NetworkMode = mode
+	return err
 }
