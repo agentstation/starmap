@@ -1,28 +1,34 @@
 {
   "scope": "Plan maintenance only. No product acceptance credit.",
-  "previous_goal_turn": "progress: native dependency inventory correction, clock monitor implementation, and committed proof",
+  "previous_goal_turn": "progress: configured native clocks at e97d7fc3; parent verification and review passed; PR151 native CI running",
   "status": "PASS",
   "tasks": 38,
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 119,
-  "new_evidence_artifacts": 585,
-  "new_commit_source_files": 164,
-  "resume_words": 283,
-  "current_source": "5f4ce61dfd26e8a8890dc84423ef06e6b4151775",
+  "local_links": 116,
+  "new_evidence_artifacts": 658,
+  "new_commit_source_files": 191,
+  "resume_words": 248,
+  "current_source": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
   "clean_source": true,
   "running_implementation_commands": [
     {
-      "session_id": 44964,
-      "command": "bash .tmp/csp4-host-clock/windows-observer/verify-remainder.sh",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder.log",
-      "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder-metadata.json"
+      "session_id": 80929,
+      "command": "make verify",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle/.tmp/csp4-clock-settings/verify.log",
+      "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle/.tmp/csp4-clock-settings/verify-metadata.json"
     }
   ],
-  "next_action": "PR150 merged as 852a548c with fifteen successful checks and exact tree equality. Finish the remaining verifier stages for host-clock 5418420c, then pre-PR review and native clock qualification.",
-  "external_running_checks": [],
+  "next_action": "Verify native CI artifacts for reviewed PR151, then merge after required checks. Finish full repository verification for e97d7fc3 in session80929, then review and publish in dependency order.",
+  "external_running_checks": [
+    {
+      "pull_request": 151,
+      "workflow_run": 34580591626,
+      "status": "native CI running"
+    }
+  ],
   "public_acceptance_work": {
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
     "branch": "codex/catalog-public-acceptance",

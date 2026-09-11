@@ -2150,12 +2150,15 @@ The product dependency files remain unchanged. Native access, UTC uncertainty, o
 ## Windows observer candidate and authority merge, 2026-09-11
 
 Starmap PR #150 merged as `852a548c` after fifteen successful checks.
-The merged tree exactly matches reviewed `e3943c97`. Both repositories have no open PRs.
+The merged tree exactly matches reviewed `e3943c97`. Both queues were empty at that merge checkpoint.
 
 Local host-clock candidate `5418420c` includes that main revision and the Windows observer.
 Its [proof](../../plans/proof/starport-production-catalog/csp4/windows-observer-2026-09-11/verification.json) records 215 race events per supported toolchain and eight Windows test cross-builds.
 Scoped lint, vet, ago, generated documentation, and the 1,489-file prose check pass.
-The remaining repository verifier stages run after a dependency inventory correction. Pre-PR review and native Windows execution remain open.
+
+All 41 repository verification stages now pass across the initial run and corrected remainder.
+Sol at xhigh and Opus at high report zero findings. The secret scan passes.
+[PR #151](https://github.com/agentstation/starmap/pull/151) contains exact reviewed `5418420c`, with native CI running before merge.
 
 The candidate requires explicit source bounds, checks the service and pipe process, and limits the RPC exchange.
 Tests cover cancellation before and after dispatch, fragmented replies, malformed limits, source-age bounds, and recovery from a blocked native call.
@@ -2164,7 +2167,7 @@ One native query can remain active after caller cancellation. Its slot prevents 
 The candidate adds go-msrpc and go-winio without changing existing module versions.
 Native tests will distinguish pipe interoperability from a source that meets the test profile.
 Neither result alone qualifies production UTC accuracy or nonadministrator service accounts.
-Host configuration, refresh scheduling, and the four mapped Starport cases remain incomplete.
+The later host configuration candidate below supplies refresh scheduling. Production qualification and the four mapped Starport cases remain incomplete.
 
 ### Host clock lifecycle candidate
 
@@ -2174,7 +2177,7 @@ Lint, vet, ago, generated documentation, and the 1,480-file prose check pass.
 
 The monitor keeps source queries outside admission reads. Failed observations clear permission time and remain visible in local status.
 Cancellation prevents late samples from restoring evidence. Successful cached reads pass a zero-allocation assertion.
-Canonical settings and Starmap/Starport host composition still require implementation.
+This monitor alone supplies no canonical settings or host composition.
 
 ### Managed runtime clock candidate
 
@@ -2184,4 +2187,18 @@ Runtime lint and vet, repository ago, generated documentation, and 1,482-file pr
 
 Failed startup cancels an owned monitor. A duplicate ownership attempt preserves the first runtime.
 An origin can use the managed clock for receipt issuance. Successful cached runtime reads allocate zero memory.
-The configuration parser and the CLI/Starport hosts do not yet select a managed clock.
+The later configuration candidate connects the Starmap CLI. Starport adoption remains open.
+
+### Canonical host clock configuration candidate
+
+Local commit `e97d7fc3` adds eight environment variables, CLI flags, and YAML keys for native permission clocks.
+The public schema marks each value as node-scoped and requiring restart. Catalog source changes preserve their independent precedence.
+Application composition validates a complete native profile and gives the runtime ownership of its monitor.
+
+The [settings proof](../../plans/proof/starport-production-catalog/csp4/clock-settings-2026-09-11/verification.json) records 35 focused race events per toolchain and one Windows-only skip.
+Four Windows cross-builds pass. Corrected settings packages pass 112 race events, and the fixture checks pass 39 events.
+Lint, vet, ago, generated documentation, 73 verifier regression tests, and the 1,490-file prose check pass.
+
+The broad initial run records 580 passes and ten failures from missing example entries and obsolete fixtures.
+The corrected focused runs pass. Full repository verification now runs at the committed candidate before review and publication.
+Production clock bounds, Starport composition, and the remaining CSP4 authority cases still need qualification.

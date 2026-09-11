@@ -1881,7 +1881,7 @@ A late observation cannot restore evidence after shutdown. A monitor starts at m
 
 Successful cached reads allocate zero memory. Status reports worker activity, current validity, completed attempts, and the last observation error.
 The [lifecycle proof](../../plans/proof/starport-production-catalog/csp4/clock-lifecycle-2026-09-11/verification.json) covers cancellation, expiry, recovery, and concurrent lifecycle calls.
-Application settings and host composition still require implementation. This monitor does not qualify native clock bounds.
+The monitor alone does not select application settings or qualify native clock bounds.
 
 Candidate `5f4ce61d` adds `runtime.WithPermissionClockMonitor` for explicit runtime ownership.
 Option resolution starts no clock work and rejects a managed monitor alongside either external clock callback.
@@ -1893,7 +1893,17 @@ An origin can supply the same monitor's `Read` method to `OriginConfig.Clock` fo
 
 `Runtime.PermissionClockStatus` returns local diagnostics without a new observation. Public hosts must redact its error details.
 The [runtime clock proof](../../plans/proof/starport-production-catalog/csp4/clock-runtime-2026-09-11/verification.json) covers ownership, cleanup, recovery, and receipt issuance.
-Canonical host settings, native profiles, and CLI/Starport composition still require implementation.
+
+Candidate `e97d7fc3` adds eight canonical host clock settings, a portable profile, and Starmap CLI composition.
+The source defaults to disabled. Native mode requires explicit cache age, refresh interval, counter drift, and positive counter uncertainty.
+Windows also requires synchronization source age, source drift, and additional source uncertainty.
+
+These settings have node scope and require restart. They keep independent precedence when the catalog source changes.
+The parser preserves partial values. Host composition validates the complete profile before runtime Open and starts no observation during construction.
+An explicit disabled source clears earlier host clock selections. Absent source settings preserve injected host defaults.
+
+The [clock settings proof](../../plans/proof/starport-production-catalog/csp4/clock-settings-2026-09-11/verification.json) records focused checks, fixture corrections, and the running full verifier.
+Configuration declares bounds but does not qualify them. Starport adoption and production time-service qualification remain open.
 
 `hostclock.Observe` now supplies explicit Linux and macOS kernel observations.
 `hostclock.Elapsed` reads a counter that includes system sleep without file or network I/O.
@@ -1923,7 +1933,7 @@ CI starts the existing service only on disposable runners. Application code star
 
 The library clock callback reads only cached evidence.
 Each sample's uncertainty must bound its returned time.
-The standalone composition does not yet select and refresh a qualified clock. It cannot yet qualify an internal production recipe.
+The standalone candidate now selects and refreshes a declared native profile. Operational qualification remains required for an internal production recipe.
 CSP4 must still qualify publisher receipts, replicas that read shared catalog state, and the required Starport acceptance cases.
 
 Starport now forwards `STARPORT_CATALOG_SOURCE_AUTHORITY_ID` and `STARPORT_CATALOG_SOURCE_POLICY_ID` to the connected runtime.

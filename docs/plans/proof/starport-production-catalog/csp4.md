@@ -3,19 +3,20 @@
 ## Current runtime integration
 
 PR #150 merged as `852a548c` with fifteen successful checks and exact reviewed-tree equality.
-Both repositories have no open PRs. Twenty-eight campaign PRs merged, and CSP4 remains active.
+Twenty-eight campaign PRs merged, and CSP4 remains active.
 
-Native clock `5418420c` remains clean while the remaining verifier stages run in session `44964`.
-Its [proof](csp4/windows-observer-2026-09-11/verification.json) preserves the initial dependency-inventory failure and scoped passing checks.
-The corrected inventory passes all thirteen ownership conditions and the verifier regression tests.
+Native clock `5418420c` is now [PR #151](https://github.com/agentstation/starmap/pull/151).
+Its [proof](csp4/windows-observer-2026-09-11/verification.json) records all 41 local verifier stages passing after the dependency inventory correction.
+Sol at xhigh and Opus at high report zero findings. The secret scan passes.
+Native workflow `34580591626` runs before merge. Starport has no open PRs.
 
-Clock lifecycle `94988d3a` adds explicit host refresh work in a separate clean worktree.
-Its [proof](csp4/clock-lifecycle-2026-09-11/verification.json) records 193 permission race events per toolchain and passing static checks.
-Settings, native profiles, host composition, and four Starport consumer checks remain open.
+Clock configuration `e97d7fc3` adds eight canonical host settings and passive native composition.
+Its [proof](csp4/clock-settings-2026-09-11/verification.json) records 35 focused race events per toolchain with one Windows-only skip.
+Corrected settings packages pass 112 events. Four Windows cross-builds, static checks, generated docs, and the 1,490-file prose check pass.
+Full repository verification runs in session `80929` before review and publication. Preserve that candidate during the run.
 
-Runtime integration `5f4ce61d` now owns explicit monitor startup and shutdown.
-Its [proof](csp4/clock-runtime-2026-09-11/verification.json) records six focused cases per toolchain and 65 related runtime cases.
-Static checks and the 1,482-file prose check pass. Host configuration and native profiles remain open.
+The [monitor proof](csp4/clock-lifecycle-2026-09-11/verification.json) and [runtime proof](csp4/clock-runtime-2026-09-11/verification.json) retain the earlier lifecycle checks.
+Production clock bounds, configured permission owners, shared-store followers, authority transitions, and four Starport consumer checks remain open.
 
 ## Earlier runtime integration checkpoints
 

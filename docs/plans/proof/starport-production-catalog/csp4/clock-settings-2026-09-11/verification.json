@@ -1,0 +1,516 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_host_configuration_full_verification_running",
+  "source_commit": "e97d7fc3e0e393c5d829e234b7a96a97845268f5",
+  "base": "5f4ce61dfd26e8a8890dc84423ef06e6b4151775",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle",
+  "branch": "codex/catalog-clock-lifecycle",
+  "publication": "Local committed candidate. Full repository verification runs before review and publication. Native parent PR151 has its own CI. No task completion credit.",
+  "contract": [
+    "Eight canonical clock environment variables, flags, and YAML keys preserve presence. They have node scope, require restart, and are independent of the catalog source group.",
+    "A portable profile owns numeric bounds without importing native adapters. Native monitor construction is passive and requires qualified host bounds. Windows requires three additional synchronization source bounds.",
+    "The public parser preserves partial configuration. Application composition validates the complete profile before runtime Open and binds a native monitor to runtime ownership.",
+    "An explicit disabled source clears earlier clock selections. An absent source preserves injected host defaults. Later explicit runtime options retain normal precedence.",
+    "Environment and Compose examples name all settings without inventing production error bounds. Shared schema, generated reference, CLI flags, and product verification mapping include the new settings.",
+    "Request permission checks continue to read cached clock evidence. The managed runtime path retains its zero-allocation assertion."
+  ],
+  "checks": {
+    "fail_before": "fail-before.log.gz reproduces the absent public clock settings and typed profile.",
+    "initial_compile_failure": "go1.26.6-focused.json.gz records a test fixture that used an options pointer where Runtime requires a value. The correction dereferences that pointer.",
+    "focused_go126": {
+      "pass": 35,
+      "fail": 0,
+      "skip": 1
+    },
+    "focused_go125": {
+      "pass": 35,
+      "fail": 0,
+      "skip": 1
+    },
+    "skip_reason": "Windows monitor factory requires native Windows. The macOS runs skip that one test.",
+    "integration_initial": {
+      "pass": 580,
+      "fail": 10,
+      "skip": 1,
+      "reason": "Missing deployment example names, an old 27-setting fixture, and seven YAML scalar fixtures that incorrectly used a temporary path for duration/integer settings."
+    },
+    "corrected_fixtures": {
+      "pass": 39,
+      "fail": 0,
+      "skip": 0
+    },
+    "corrected_settings_packages": {
+      "pass": 112,
+      "fail": 0,
+      "skip": 0
+    },
+    "source_precedence_minimum_toolchain": "PASS: Go 1.25.12 race test preserves independent clock precedence through source replacement.",
+    "windows_cross_builds": {
+      "passed": 4,
+      "toolchains": [
+        "go1.25.12",
+        "go1.26.6"
+      ],
+      "architectures": [
+        "amd64",
+        "arm64"
+      ],
+      "scope": "Compile internal/catalog/settings with native adapter and runtime dependencies. Native execution remains unverified."
+    },
+    "static": "Scoped lint and vet, repository ago, generated documentation, and diff checks pass.",
+    "prose": "PASS: 1490 files with zero diagnostics after fixing generated paragraph lengths, duration wording, and deployment example passive voice. All failed runs remain retained.",
+    "product_verifier": "PASS: 73 regression tests. The first unittest module invocation failed because it omitted the script import directory; direct script execution passes.",
+    "canonical_documents": "PASS: four changed canonical documents with zero prose diagnostics. Plan maintenance verifies the 248-word resume, links, evidence bytes, source hashes, and unchanged task contracts."
+  },
+  "limitations": [
+    "Full repository verification at this exact candidate is running. Pre-PR review and publication follow it.",
+    "Production UTC and counter bounds still require operational qualification. Cross-builds are not native execution evidence.",
+    "Starmap origin settings and shared-store followers, explicit authority transitions, Starport clock composition, and four mapped Starport checks remain open.",
+    "The published Starport dependency still lacks the new APIs. Do not publish Starport with a private workspace dependency."
+  ],
+  "running_checks": [
+    {
+      "session_id": 80929,
+      "command": "make verify",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle/.tmp/csp4-clock-settings/verify.log",
+      "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-clock-lifecycle/.tmp/csp4-clock-settings/verify-metadata.json"
+    }
+  ],
+  "source_files": [
+    {
+      "path": ".env.example",
+      "sha256": "5164f243d14bb8fe5904e5c70c7216f4d17580f78db3e8357770042df8d67cda"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "88847ca3ed30338db57908416ab6c65fa8b4b87834b365bd0d8e5075d91970dc"
+    },
+    {
+      "path": "docs/CATALOG_SETTINGS.md",
+      "sha256": "9a85aa027a287c8af0f4c21ac1e2526d978388aae771e53c7b7e441bec04df29"
+    },
+    {
+      "path": "docs/catalog-settings-schema.json",
+      "sha256": "a763919ee1b8e3cd191a58262cc1f33b917099d3e4a7f274f721475444f584c4"
+    },
+    {
+      "path": "internal/catalog/settings/clock_test.go",
+      "sha256": "3557a5ceaf954c2ad10da000991a36171057ad649a5e419abd42c7012da36bd9"
+    },
+    {
+      "path": "internal/catalog/settings/composition.go",
+      "sha256": "5ff540742f03386f8466f95f9d8a8d6e281cf95765d280985096ee30f73ea242"
+    },
+    {
+      "path": "internal/catalog/settings/reference_test.go",
+      "sha256": "22f054ba60744538522420d489354f61cea81cfe82227d7f093060bdb9f8e899"
+    },
+    {
+      "path": "internal/catalog/settings/settings.go",
+      "sha256": "3f48aa32ae54279eb064b918be6635eaa34d3fe01db8afd8326f772230ce9b84"
+    },
+    {
+      "path": "internal/catalog/settings/settings_test.go",
+      "sha256": "26e43e231b6a16bb6a97179018a8322356daf25c88e5574435ef4767878e5ee1"
+    },
+    {
+      "path": "internal/cli/app/catalog_file_test.go",
+      "sha256": "b4c88001a4b11d17384e2d95edfde5fa59f70fabfd74f07abf45fc6ae1fba79d"
+    },
+    {
+      "path": "pkg/catalogs/config/clock.go",
+      "sha256": "171b7953b63bf47d6c39abce6aa6c7a61dfc72dd42364af2df5f1822f0b7c0c3"
+    },
+    {
+      "path": "pkg/catalogs/config/clock_test.go",
+      "sha256": "0caf8f43ca995d6853ce2d53c5af5e887dbd7b51ce1b106b09fe31bc4c5787ac"
+    },
+    {
+      "path": "pkg/catalogs/config/config_test.go",
+      "sha256": "5340d85e045b3a171af06ffa16f47d486691d6d25e156a21c5b193b89f73ea82"
+    },
+    {
+      "path": "pkg/catalogs/config/descriptors.go",
+      "sha256": "de8c47d869d2f3d6b29ee570d03db56b04f196d88734e901592ef27366e6e51f"
+    },
+    {
+      "path": "pkg/catalogs/config/settings.go",
+      "sha256": "68023093ad8058dca01066e21236d53055cc3f879e0b3db072325b5a2765387b"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/README.md",
+      "sha256": "f338c52a410b8062dc247f63b37df4746016bc90e1a03034a6cc1251c99056f0"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/monitor.go",
+      "sha256": "48b3dbef5694d5896aa46669e7616bebccc60fd81ffc936a94a161b0eb5695a2"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/monitor_test.go",
+      "sha256": "21ddff91b7d07c7bbbf9b67a509514b9c3ef52a45ba880b16081e080b82dd969"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/profile/README.md",
+      "sha256": "9b0452d2e0a183172e050774a6af0507461ed9e47e83632c6f2f6e10f0230cda"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/profile/generate.go",
+      "sha256": "40cd80353739e4dac15cd871ce3914ea0c2e7129f3333e28975c6bc5ed44f8b0"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/profile/profile.go",
+      "sha256": "5d3c0c24d1710ab72858de723f46a60e45e8b4f587ee86163d18bc6aaad425b5"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/profile/profile_test.go",
+      "sha256": "01a375083dd531c3b5ff231811df6f406ddd443a0b61b36932850d8f071dce5e"
+    },
+    {
+      "path": "pkg/catalogs/permission/hostclock/windows_observer.go",
+      "sha256": "f2143216ed8807ebe950d6992aadd50f5c0e95cafa7f0b8ec9f447a1155086c0"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "3deb6caf35629f6614ea2eeaa634184b5ce0ccd9f5aea46eeb6985fb876edbac"
+    },
+    {
+      "path": "runtime/clock_monitor.go",
+      "sha256": "c16bb624c64c8cd7b48b260abe70395de2ee96464d6d597303458bf2dbd7d125"
+    },
+    {
+      "path": "runtime/clock_monitor_test.go",
+      "sha256": "0099426d3865dc8dbb9335878255a75f59bc4e9958b5d2aad4a0dfa251305d00"
+    },
+    {
+      "path": "scripts/catalog-product-checks.json",
+      "sha256": "4c412c4aa8209ef9c9e0496571c6338c6f802653600532443ab83cf31d56ac1e"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ago-metadata.json.gz",
+      "sha256": "08bffc03fccab5123109544dfef889d7e92d5e7e5484d3e647d9011d405598c9",
+      "decoded_sha256": "e700224ddd68b3c39551c879030d57a89eba070f2ebad82e1ba0adea00edf6d9"
+    },
+    {
+      "path": "ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "cross-builds.json.gz",
+      "sha256": "22767d9e60b5f00d8aa04d8faffabae07fac2540618cc064583e7cc3c8eca2dd",
+      "decoded_sha256": "8a8f16ea8b736ddc62e9a3603634df89acbd491b3b3821e79b13e6f115ba9335"
+    },
+    {
+      "path": "deployment-prose-corrected-metadata.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "deployment-prose-corrected.log.gz",
+      "sha256": "75ff6e73182d6a44d92131ffd93491d986eb722dab18880ecfbd061d7a83803a",
+      "decoded_sha256": "05da897dbd2bfe7429f42c8de939a74b2499c87a679e406d1876744414d7c245"
+    },
+    {
+      "path": "diff-metadata.json.gz",
+      "sha256": "028b61f6f160bee295c6fcf9a31f8aa6cab7061d3fe3adfd5a0d72922739f7ed",
+      "decoded_sha256": "d4ef77bf65b9407d17fbaea3d9fab5ef12ddc358258cd8eccd2a4d43edfd8022"
+    },
+    {
+      "path": "diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fail-before.log.gz",
+      "sha256": "4b0e15a5f66890c818be9aa0370342c7400925a8dba1821b2c16611e065b1f24",
+      "decoded_sha256": "7debf2896393141665eb570dd87c8eed01b2a1ab0b75d67059d2b811b06021c6"
+    },
+    {
+      "path": "final-ago-metadata.json.gz",
+      "sha256": "08bffc03fccab5123109544dfef889d7e92d5e7e5484d3e647d9011d405598c9",
+      "decoded_sha256": "e700224ddd68b3c39551c879030d57a89eba070f2ebad82e1ba0adea00edf6d9"
+    },
+    {
+      "path": "final-ago.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "final-diff-metadata.json.gz",
+      "sha256": "028b61f6f160bee295c6fcf9a31f8aa6cab7061d3fe3adfd5a0d72922739f7ed",
+      "decoded_sha256": "d4ef77bf65b9407d17fbaea3d9fab5ef12ddc358258cd8eccd2a4d43edfd8022"
+    },
+    {
+      "path": "final-diff.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-docs-hostclock-metadata.json.gz",
+      "sha256": "56d9e3bbed1ae48c73f239237a953f28ee65d43e6de5076a21e751d6702d2acc",
+      "decoded_sha256": "f07da3a17a8a835b343f35a211b33b412963014a7508faf0678d6cc583aa9626"
+    },
+    {
+      "path": "final-docs-hostclock.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-docs-profile-metadata.json.gz",
+      "sha256": "5b0e9b68dc88b8266d631ef93634047d665bfc204b3a16d34e42c33aaad11938",
+      "decoded_sha256": "24d756aebf1b014c90cb9c47d1944a38b6cb7474847b7ae7f11dca468dcdcd7f"
+    },
+    {
+      "path": "final-docs-profile.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-docs-runtime-metadata.json.gz",
+      "sha256": "271f56af239e92848a95ef10e02da94269987f1758efe5d84d3ae643abd69afa",
+      "decoded_sha256": "b1363801ac9d274bd15473441d9729c91f6841e61874942e403c73ddcb1de65a"
+    },
+    {
+      "path": "final-docs-runtime.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final-lint-metadata.json.gz",
+      "sha256": "7b6a80e06199e59d8ad65e9a7f1583d81689565c96d45498d621c43f126f6461",
+      "decoded_sha256": "da465705547fb379bf0ba03676ed1730c2b72f097b989ad7c8a5a14165bfbf81"
+    },
+    {
+      "path": "final-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "final-prose-metadata.json.gz",
+      "sha256": "4f60a8f87e1800d70c8c3b1a0cdb234f3ea417a4a2048a7d2d0e10821ab9a863",
+      "decoded_sha256": "5c551d97800ba3d0e516d2912d05f677784f0e5e3a44067e4a2c5e7cb3ebc8e5"
+    },
+    {
+      "path": "final-prose.log.gz",
+      "sha256": "c4359abc4ff728cee3e9e26e2bc923a8577dcc6a8e1194511442d68005a88869",
+      "decoded_sha256": "4035b809cdb04540571a62b1520b07a6eea2add65a79a7bf8381f9c86db8654c"
+    },
+    {
+      "path": "final-vet-metadata.json.gz",
+      "sha256": "894d3ae54b1d567d7f0bfd0fb61c6e3f75f5a6603d0b6997dc6994441315d236",
+      "decoded_sha256": "92d1097484a5efeaf7d0d5e76d87874bfa27daf5c62c3c4db57eb4446d1eb706"
+    },
+    {
+      "path": "final-vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fixtures-corrected-metadata.json.gz",
+      "sha256": "2f0ec7ec81c39107f1c03518047bceace8f0ff6ab58c21cd4051e14b8e1e5dd9",
+      "decoded_sha256": "743e6fcfeda0bedba19742bdc4dfe13509c402868af34af3c66f1d016574ec8f"
+    },
+    {
+      "path": "fixtures-corrected.json.gz",
+      "sha256": "7fdfacbd83535e14eec3a04bd9c2ada2106c58a14e3845c45d54acace7798945",
+      "decoded_sha256": "9dbf103e345d65718e216f491665ff188e3a14f66dd8861fe85c1f651e2b3914"
+    },
+    {
+      "path": "generate-0.log.gz",
+      "sha256": "de2f516bbe2e0a8753e3f68736fa0c96bd7619551a9e2a75fe1574b7adf51b01",
+      "decoded_sha256": "2b9de259a1b0d57873adc2814fdf090bbe6f1076553cec15937125361df42da8"
+    },
+    {
+      "path": "generate-1.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.25.12-focused-corrected-metadata.json.gz",
+      "sha256": "4ffd4e119d10d2a389f6ae4d6f5fa04d985ce23d2ff77970734fd21e101aec51",
+      "decoded_sha256": "d393a0d2de14bb771175a6a98f570e06fe2f6d11c2e2a4b827bac56b6a371bc7"
+    },
+    {
+      "path": "go1.25.12-focused-corrected.json.gz",
+      "sha256": "c092e21d00e1db21f586ffb3a3cb7c4faf587c489b1a50614902641a270ad1a7",
+      "decoded_sha256": "d83d1cf72493214ac63f84172048336ef75f07ae3f8ad7e59b9f5f4656e82b26"
+    },
+    {
+      "path": "go1.25.12-focused-corrected.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-focused-corrected-metadata.json.gz",
+      "sha256": "b129152aab65a8a96e9fbf4c3bef983346a160e4fbe12a800895ca6e146ab00c",
+      "decoded_sha256": "97051f6b5d15f3d5699ae6867f9514f7663609568699c8e4fdc47898e6f37c89"
+    },
+    {
+      "path": "go1.26.6-focused-corrected.json.gz",
+      "sha256": "e2c25c469a87da6bc9a3f22a0cabf3392197052ebf30b9f71c756525ee7f57e5",
+      "decoded_sha256": "612196f8c986a01a607ae330006ca87626672e8f5a97bb91d7b40b4c2a5ccaec"
+    },
+    {
+      "path": "go1.26.6-focused-corrected.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go1.26.6-focused-metadata.json.gz",
+      "sha256": "64462c04b86ff36ffdc5f9f0255d927154896eae57cdca5683a40eae0ab22dd0",
+      "decoded_sha256": "16671360536ebbbaa427542293f66163476d934bbf6aa256940dbb80fd808517"
+    },
+    {
+      "path": "go1.26.6-focused.json.gz",
+      "sha256": "9e4511fc4cf00f9f5d412998330f2b87bd430a67455d2f1d9bfd5e3174eb8135",
+      "decoded_sha256": "35a6d452ce7658388cde507ed1842c2369c7208ddf9f2c1686636e3fd67e5e81"
+    },
+    {
+      "path": "go1.26.6-focused.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "go125-source-precedence-metadata.json.gz",
+      "sha256": "b4c88396a951d474d5b53a766e0df9c5b201288b78ade9c147d919377cee2cb1",
+      "decoded_sha256": "c33b1fa76fde12c25ab07ff4229f53cd9c5efc62d476471e740fb766122da6c1"
+    },
+    {
+      "path": "go125-source-precedence.log.gz",
+      "sha256": "d9c45a9761494c7cc1b46bc3352249d6fccc48a8410a934e60ce26a848bf01ca",
+      "decoded_sha256": "f849fc9016416b3fa69c3626e6b19bbc57035f8580fb0f5f46c0ea2f7d62b449"
+    },
+    {
+      "path": "initial-settings.log.gz",
+      "sha256": "61743ea8e6ce8f054f4844fcd04026016ff521ca8f1a981c7ad5d6d758c4a500",
+      "decoded_sha256": "169bdb16e1cb6c4e3f8fc61e23c9da8703c4d6ae8c3dd0598914dc5af0022c9f"
+    },
+    {
+      "path": "integration-metadata.json.gz",
+      "sha256": "8a16ae3bdd1545a5f286631a6c1b127c36426e1352e8d587f3d58dbc29e9a023",
+      "decoded_sha256": "9f24ccfcc41d85f500de4f7f7cc2f577190165e28d3121dfd56e315a77de6e77"
+    },
+    {
+      "path": "integration.json.gz",
+      "sha256": "27c97ab8af180c3a65a8ec07f5a149b8a3f54eca384856ddd726b1cfabb10bdf",
+      "decoded_sha256": "de68f632f1412e91e66e940e8bffd6d9784786d82114c9c1f91e41e83fd2aa43"
+    },
+    {
+      "path": "integration.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lint-metadata.json.gz",
+      "sha256": "65c9bcd70e8365158a96ac94c97e1a71ef84f8bc1de22f06fd6f57505248f703",
+      "decoded_sha256": "541870935dd982fee65e03aff8f5f568471025765e1856eb57ef65614bc4eb56"
+    },
+    {
+      "path": "lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "product-verifier-regression-corrected-metadata.json.gz",
+      "sha256": "ad8df3515e82b973a79ad1ecd1a7ea6ed037f076bfb6189e85311a832f89f613",
+      "decoded_sha256": "d28de0f84004f854fd21c5c9eecca0a1352f6b13eb4e6734d3594a5776e1c899"
+    },
+    {
+      "path": "product-verifier-regression-corrected.log.gz",
+      "sha256": "24fa3cdb54eae49d9d776802f77bd77c62b06c95bccbd955facb1e4ad1a3e8c7",
+      "decoded_sha256": "11d751bb4bcd321e9a7520391c6883caa079fae18a99ae5875103728730b4a56"
+    },
+    {
+      "path": "product-verifier-regression-metadata.json.gz",
+      "sha256": "f0d13d34b6683cd43c37d92cb4727a90d54b8593178714b6ffc2fc87e1f32367",
+      "decoded_sha256": "43fc75996b1688176fa210959f98956f59dbdf4b9bcc0898c96f245c52bff649"
+    },
+    {
+      "path": "product-verifier-regression.log.gz",
+      "sha256": "d8c2c6e55bdbbaff566106436168c8f10d08d0dc817ef6fb1fb4381b45054722",
+      "decoded_sha256": "23ebe00345a76d504b4651f59ef6717167c72eb67a53e8206f69f0b419ef4947"
+    },
+    {
+      "path": "prose-corrected-metadata.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "prose-corrected.log.gz",
+      "sha256": "75ff6e73182d6a44d92131ffd93491d986eb722dab18880ecfbd061d7a83803a",
+      "decoded_sha256": "05da897dbd2bfe7429f42c8de939a74b2499c87a679e406d1876744414d7c245"
+    },
+    {
+      "path": "prose-metadata.json.gz",
+      "sha256": "4f60a8f87e1800d70c8c3b1a0cdb234f3ea417a4a2048a7d2d0e10821ab9a863",
+      "decoded_sha256": "5c551d97800ba3d0e516d2912d05f677784f0e5e3a44067e4a2c5e7cb3ebc8e5"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "d94d073a6289a2fec525cdb02784c4e0cab5361868da4572753dc61380579baf",
+      "decoded_sha256": "156deea14baa34b466e4e504103d9287d99e1b39a2267a9c21b9e6f15562391d"
+    },
+    {
+      "path": "reference-corrected-metadata.json.gz",
+      "sha256": "54fe8b2615c7264e148b4264b9c5d195ebacbfb7fe5e572d0a98b0cfbc72e7c6",
+      "decoded_sha256": "49f9e78d2257e80b8a4e63b72bff07bdb92c4a0129cf7c25b529caf0de53f903"
+    },
+    {
+      "path": "reference-corrected.log.gz",
+      "sha256": "bcee36affc60e960c53b6cfb1bd1a209be6f70ea73f42fb866869558a2fb8264",
+      "decoded_sha256": "44ef3669e24426cf079af7fcdcf1a1254ff36e3338d210a9f303b9e2ca89fdf5"
+    },
+    {
+      "path": "settings-corrected-metadata.json.gz",
+      "sha256": "5f795e00e468163246a1b6bc66b950abd8078628c371146eb5c99f1adbcc0637",
+      "decoded_sha256": "2a8f76b97e6710ea65b23f3d4660237577e442223eb0d37b2006585b76a98c2b"
+    },
+    {
+      "path": "settings-corrected.json.gz",
+      "sha256": "9c5a8f77cef6dad08d0cb03da10e88fb3e0ec2876d913db04aa9bf5670c82622",
+      "decoded_sha256": "af8d8071e90d99e2b6c221bc9120f689befcc48f43fa191bd129b1e099c31e9c"
+    },
+    {
+      "path": "vet-metadata.json.gz",
+      "sha256": "62f7996549f048b5a9e557e0fcd5b470a321a88ce67cf49980d77bede851a562",
+      "decoded_sha256": "46f3d50434ab1dde63a0ba50971c29931f3a4aacdb2b5381ef1943fe21aa17e2"
+    },
+    {
+      "path": "vet.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-amd64-go1.25.12.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-amd64-go1.26.6.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-arm64-go1.25.12.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-arm64-go1.26.6.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "canonical-prose-initial.log.gz",
+      "sha256": "3119092071d72ddd6483d9e0dccb3a6e154a81f650482ddbd88e6ce627553e62",
+      "decoded_sha256": "665d51784f4e73173e26ca23d364724fc04db667af08948fa9fb1049df865c64"
+    },
+    {
+      "path": "canonical-prose-corrected.log.gz",
+      "sha256": "301dd0c789b72326da93cd7850d349674fbd4024c0d74b6a562e5bb91fb8f0b7",
+      "decoded_sha256": "ee25d7828349c41f8e3447117bf1d7c0f75e3d4c94ae89db41b802ba506e64d7"
+    }
+  ]
+}

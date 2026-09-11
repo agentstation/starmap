@@ -177,14 +177,7 @@
     "existing_versions_changed": false,
     "selection_evidence": "Prior isolated prototype and shadow module graph are retained in windows-counter-2026-09-11. Native qualification remains required before production support."
   },
-  "running_checks": [
-    {
-      "session_id": 44964,
-      "command": "bash .tmp/csp4-host-clock/windows-observer/verify-remainder.sh",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder.log",
-      "metadata": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock/.tmp/csp4-host-clock/windows-observer/verify-remainder-metadata.json"
-    }
-  ],
+  "running_checks": [],
   "limitations": [
     "Native Windows pipe access, process identity, default-counter intervals, and UTC status fields have not executed yet.",
     "The test profile is not a qualified production clock profile. Native kernel/Windows observations alone do not certify UTC accuracy or suspend/resume behavior.",
@@ -592,10 +585,81 @@
       "path": "windows-observer-prose-final.log.gz",
       "sha256": "157483d6c7fb7e5a5d096a57319953f16d6b17439fee034bcccd709a9ee0a81a",
       "decoded_sha256": "6f0f013ea8c3e87abd59f75dfa25e734ab7cd9b272c82b8ae74ce491532fb02e"
+    },
+    {
+      "path": "verify-remainder-complete.log.gz",
+      "sha256": "c13b143c1189a54f7059877720fe528ae64a6a754709bd06992d0acb55c295b5",
+      "decoded_sha256": "62c5a7e23ce137a3d165acced22df11b3f9904c553b150178fbe3ef0b463ea9e"
+    },
+    {
+      "path": "verify-remainder-complete-metadata.json.gz",
+      "sha256": "c3bc463bcad8e72c8bb6850bb5d0e9aaeea1a374d44ff62ea1a9c3b22e96f5f6",
+      "decoded_sha256": "944776edd3f4bc6a9d23d38dfdfa42329cd7c51166ee42a6b003f09ac42696b8"
+    },
+    {
+      "path": "pre-pr-review-context.json.gz",
+      "sha256": "97b528c4926e280c77aae9aeb1026e9f105c7c503a62fbf98dbabbe29718a638",
+      "decoded_sha256": "1aaa15518cde5a8f56b473d77f87779b37df05227c60b6c84e8c14b42832d12b"
+    },
+    {
+      "path": "pre-pr-review.md.gz",
+      "sha256": "0a38c924665b08a13ed9a461d5652a807615221ec7ccbdb2f3f7e791dbc62c56",
+      "decoded_sha256": "605373203dcd7306d6b9cde3db25b6a008b524dd619fe9148c3348629aa3e5dd"
+    },
+    {
+      "path": "pre-pr-review.json.gz",
+      "sha256": "deea1519d3970ed7add806164d5650174cbeb89f88f0cc593ff54672aa8a1274",
+      "decoded_sha256": "388dde18a8f08ec57b0111e33d756678e153dc9c28f21137fb81404c315cc562"
+    },
+    {
+      "path": "pr151-published.json.gz",
+      "sha256": "0fd3fce92be295125bcdbeeb0a9f5fc96f63124ea7f6d8afe606f4fb8533be0f",
+      "decoded_sha256": "5a53735c1cea247b76b56b0dc408b4216675cd10cdba2056a09388c592a7cfa8"
+    },
+    {
+      "path": "starmap-pr151-queues.json.gz",
+      "sha256": "4dfa105e79521e14056d21e12cc1b05ac52b38634ff7b269d59938424110146c",
+      "decoded_sha256": "59e66f93fa36215022d69c1ac7e43df8b442e8f169eaf083083417fb618b76ea"
+    },
+    {
+      "path": "starport-pr151-queues.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "decoded_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
     }
   ],
   "inventory_correction": {
     "commit": "5418420cc676981a42ecc170b242a3ea674a343c",
     "change": "Record go-winio and go-msrpc in the direct-module inventory. CPO-V01 through CPO-V13 and verifier regression tests pass. No production or test source changed."
+  },
+  "final_repository_verification": {
+    "status": "PASS",
+    "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
+    "stages": 41,
+    "original_passed_stages": 5,
+    "remaining_passed_stages": 36,
+    "exit_code": 0,
+    "completed_at": "2026-09-11T08:35:29.779642+00:00",
+    "failed_original_stage": "Direct dependency inventory omitted the two new direct modules. Commit 5418420c corrects the inventory. Prior failure and correction evidence remain preserved."
+  },
+  "current_publication": "PR151 published at exact reviewed 5418420c. Native CI is running. Merge remains pending.",
+  "pre_pr_review": {
+    "status": "PASS",
+    "source_commit": "5418420cc676981a42ecc170b242a3ea674a343c",
+    "base": "852a548c4959e98af443f487922b9708fb594a91",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "findings": 0,
+    "confidence": 0.99,
+    "secret_scan": "PASS",
+    "output_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-host-clock-review-20260911-bmevrphn"
+  },
+  "pull_request": {
+    "number": 151,
+    "url": "https://github.com/agentstation/starmap/pull/151",
+    "head": "5418420cc676981a42ecc170b242a3ea674a343c",
+    "workflow_run": 34580591626,
+    "status": "native CI running"
   }
 }
