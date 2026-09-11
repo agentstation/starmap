@@ -21,7 +21,8 @@ Both Windows status calls now return RPC access denied. Authentication and calle
 
 Local `437dc13c` adds Windows SSPI authentication with packet privacy and native privacy tests.
 The [authentication proof](csp4/windows-authentication-2026-09-11/verification.json) records 194 portable race events per toolchain and eight Windows cross-builds.
-Static checks, documentation checks, and the 1,495-file prose check pass. Review session `45483` runs before publication and mandatory native execution.
+Static checks, documentation checks, and the 1,495-file prose check pass. Sol and Opus report zero findings, and the secret scan passes.
+PR #151 contains `437dc13c`. Workflow `34588801426` runs before merge.
 
 Clock configuration `e97d7fc3` adds eight canonical host settings and passive native composition.
 Its [proof](csp4/clock-settings-2026-09-11/verification.json) records 35 focused race events per toolchain with one Windows-only skip.

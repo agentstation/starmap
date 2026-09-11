@@ -4,14 +4,14 @@ Updated 2026-09-11 UTC. Starmap has one open PR, [#151](https://github.com/agent
 The [queue evidence](queue-status-2026-09-11.json) records its owner, reviewed source, checks, and next action.
 The [previous capture](queue-before-pr151.json.gz) preserves the empty queues after the PR #150 merge.
 
-PR #151 contains reviewed correction `0dfa9a90`. All 41 local verifier stages pass at the preceding candidate.
+PR #151 contains reviewed `437dc13c`, which adds Windows SSPI authentication with packet privacy.
 Sol at xhigh and Opus at high report zero findings. The secret scan passes.
+Local checks pass 194 permission race events per toolchain, eight Windows cross-builds, static checks, and complete documentation checks.
 
-All four Linux/macOS native jobs pass. Both Windows jobs fail the native counter API lookup and local time-service pipe tests.
-Correction `0dfa9a90` passes local checks and both reviews. Native workflow `34583505814` passes both counter tests and all Linux/macOS jobs.
-Both Windows status calls return access denied. Resolve that failure before merge.
+Workflow `34588801426` runs native checks at this source. The preceding source passes Linux/macOS and both Windows counter tests.
+Both preceding Windows status calls return access denied. The authenticated query must pass on both Windows architectures before merge.
 
-Clock configuration `e97d7fc3` runs full repository verification in a separate clean worktree.
+Clock configuration `e97d7fc3` passes all 41 repository verifier stages in its separate worktree. It still needs the qualified parent and final review.
 Starport `95354f0` retains configured authority pins and request permission checks. Four consumer cases remain incomplete.
 No open PR is stale or superseded. Twenty-eight campaign PRs merged, nine tasks are complete, and CSP4 remains active.
 

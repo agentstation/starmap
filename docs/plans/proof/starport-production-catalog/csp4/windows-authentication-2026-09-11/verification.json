@@ -1,6 +1,6 @@
 {
   "task": "CSP4",
-  "status": "LOCAL_PASS_REVIEW_AND_NATIVE_REQUIRED",
+  "status": "REVIEW_PASS_NATIVE_CI_RUNNING",
   "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
   "base": "0dfa9a907446f7ca8d10c4f13172889e4a08f093",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
@@ -496,6 +496,18 @@
       ],
       "exit_code": 0,
       "log": ".tmp/csp4-origin-runtime/windows-auth-prose-corrected.log"
+    },
+    "pre_pr_review": {
+      "result": "PASS",
+      "reviewers": [
+        "Sol xhigh",
+        "Opus high"
+      ],
+      "findings": 0,
+      "confidence": 0.94,
+      "secret_scan": "PASS",
+      "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
+      "review_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-windows-auth-review-20260911-4xsor_cp"
     }
   },
   "research": {
@@ -507,13 +519,13 @@
   "limitations": [
     "No claim that authentication alone resolves native access denial. CI also records a local w32tm query and privilege diagnostics.",
     "Service-account privileges and deployment clock bounds still require qualification.",
-    "Pre-PR review is running. No push, native pass, merge, or task completion credit applies to this local candidate."
+    "Pre-PR review passes and the reviewed branch is published. Native CI remains required. No merge or task completion credit applies."
   ],
   "running_checks": [
     {
-      "session_id": 45483,
-      "command": "autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
-      "result_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-windows-auth-review-20260911-4xsor_cp"
+      "workflow_run": 34588801426,
+      "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
+      "status": "Native Windows runtime tests and other repository checks running."
     }
   ],
   "source_files": [
@@ -752,6 +764,24 @@
       "path": "canonical-windows-auth-prose-corrected.json.gz",
       "sha256": "483e9dc779651eeb220204d467e4e9a588d7397a99f9ec25c0753c311b903820",
       "decoded_sha256": "5d40fe87772b0b0f7598ab017c5e5f69d24acf5d69639f890516febd76892e95"
+    },
+    {
+      "path": "review.json.gz",
+      "sha256": "c8d5c1b54199b1eda2ea7285f972ebc5b6bd1eda8d81e3f288aa3b492ee41846",
+      "decoded_sha256": "d096eb3a8357d21f0c4cbe594fa26f075e5083755102ec7061fec0370989fa05"
+    },
+    {
+      "path": "review.md.gz",
+      "sha256": "5f416cbfe8b786952ec93b09c7953c3e74ff85d9233fb440db39256626aec502",
+      "decoded_sha256": "73ef1f3505d34e01f253af047de2dfbc9d236203d88a5086ce22f7a01a6b8d6c"
     }
-  ]
+  ],
+  "publication": {
+    "pull_request": "https://github.com/agentstation/starmap/pull/151",
+    "head": "437dc13c92b38367f0534900a83884e67bfaebd1",
+    "base": "852a548c4959e98af443f487922b9708fb594a91",
+    "workflow_run": 34588801426,
+    "workflow_url": "https://github.com/agentstation/starmap/actions/runs/34588801426",
+    "status": "Open, ready, native checks running. No auto-merge enabled."
+  }
 }

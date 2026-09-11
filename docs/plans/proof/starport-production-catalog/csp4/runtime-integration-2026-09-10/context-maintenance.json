@@ -6,26 +6,26 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 107,
-  "new_evidence_artifacts": 788,
+  "local_links": 106,
+  "new_evidence_artifacts": 790,
   "new_commit_source_files": 210,
-  "resume_words": 329,
+  "resume_words": 327,
   "current_source": "437dc13c92b38367f0534900a83884e67bfaebd1",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
   "clean_source": true,
   "running_implementation_commands": [
     {
-      "session_id": 45483,
-      "command": "autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high",
-      "result_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-windows-auth-review-20260911-4xsor_cp"
+      "workflow_run": 34588801426,
+      "source_commit": "437dc13c92b38367f0534900a83884e67bfaebd1",
+      "status": "Native Windows runtime tests and other repository checks running."
     }
   ],
-  "next_action": "Complete review45483 at 437dc13c, publish PR151 correction, and require native Windows and all checks before merge. All 41 local clock-settings stages passed at e97d7fc3. Integrate qualified parent changes before final dependent review/publication.",
+  "next_action": "Require native Windows and all checks in workflow34588801426 at reviewed and published 437dc13c before merging PR151. All 41 local clock-settings stages passed at e97d7fc3. Integrate qualified parent changes before final dependent review/publication.",
   "external_running_checks": [
     {
       "pull_request": 151,
-      "workflow_run": 34583505814,
-      "status": "Both Windows counter tests pass; both status calls fail with access denied at 0dfa9a90"
+      "workflow_run": 34588801426,
+      "status": "Native checks run at reviewed 437dc13c; no merge credit applies"
     }
   ],
   "public_acceptance_work": {

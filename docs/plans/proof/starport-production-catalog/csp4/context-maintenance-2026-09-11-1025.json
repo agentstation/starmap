@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "source_plan_before_bytes": 104806,
+  "source_plan_after_bytes": 103895,
+  "moved_entries": 3,
+  "retained_entries": 8,
+  "moved_sha256": "7fa55b16386c9e5727e1c31a9969da59e555d8d3e19f17141d197a7d1caf284a",
+  "rebased_sha256": "bb6a1f002b0924d073bbc4a655bb1b50f368eb5b36109c1c08a45cfca62d24db",
+  "history": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-11-1025.html",
+  "procedure": "Rows retain exact content except relative links rebased to the proof root. Maintenance checks protect task criteria, invariants, goal, and ledger.",
+  "budget_exception": "The plan retains all 38 required task contracts. Current resume and active proof links provide the bounded read path."
+}
