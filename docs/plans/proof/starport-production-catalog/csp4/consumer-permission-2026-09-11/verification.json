@@ -172,6 +172,66 @@
       "sha256": "15f41429557c7646d8d53ab093158d0f122c2f7208f7fe775970caecbccca6f3",
       "decoded_sha256": "edebd5b69c8cd6541f05bb633c255b36d76668e6562f6a4c7ba5b1daea40f980",
       "decoded_bytes": 580
+    },
+    {
+      "path": "delivery-runtime-go126.jsonl.gz",
+      "sha256": "06a6ae474e38f35e2ec55d7c073070858c3ac5a1dcc22bebb50f1241182f4f7a",
+      "decoded_sha256": "94764348d59d5fabe47f5212fd666cd51abbae6a44629e26bc61e8a3c6fb046b",
+      "decoded_bytes": 1545441
+    },
+    {
+      "path": "delivery-docs-check.log.gz",
+      "sha256": "59cc1f7664ebb0f018e65853ad1d08606cc112faab040a3f962ee5572a42459c",
+      "decoded_sha256": "80317ed38760b09bb3126add9cba0326632b61396a7cc5cc0d258303723151cd",
+      "decoded_bytes": 1548
+    },
+    {
+      "path": "delivery-release-check.log.gz",
+      "sha256": "0ab2afab4792c67394c2f7d0e2f7fde3d9eb0a4e9f6f2e4ddb23aff14b0e0e25",
+      "decoded_sha256": "7f02f50f455dc3262aa036da1042040e918fabf60f14615b1543c605f78efb6f",
+      "decoded_bytes": 737
+    },
+    {
+      "path": "delivery-prose.log.gz",
+      "sha256": "0222f8761a4aaf048fd33c877d7946e7ad68e2f24300452501807ff403e4410b",
+      "decoded_sha256": "90cebe62f5d020b2772b4d08c7aa68294bb4af2eb81d99db092f99c1c570848f",
+      "decoded_bytes": 572
+    },
+    {
+      "path": "pre-pr-review.json.gz",
+      "sha256": "2dcd91103f505c295a95a3b6b2a00ef2232ec9c3b4ffd43d2e9e8bca99715a7b",
+      "decoded_sha256": "442297900b9dc107c0057de9a280501ff8283051a84a0ed37ba5d27201755ea1",
+      "decoded_bytes": 247
+    },
+    {
+      "path": "pre-pr-review.txt.gz",
+      "sha256": "3c1794d1d6d6a672481f5b41587c36a18cbfb2f77172e8a8c8449accf8ae9be5",
+      "decoded_sha256": "952048a5cbc3ee7730859f7157c14da6708ca6483b00dd731f2471188c163638",
+      "decoded_bytes": 221
+    },
+    {
+      "path": "pre-pr-review.log.gz",
+      "sha256": "5c4ff522bbb158742dfdf8c27c6d197f28fbbed5608e4d89e9f4891c5db28292",
+      "decoded_sha256": "c0a69921e0a2f2fac941ffd3b52f1b86d2d750b6fcc48733cb0491ea038389d6",
+      "decoded_bytes": 786
+    },
+    {
+      "path": "csp4-native-green-canonical-prose.log.gz",
+      "sha256": "40e28b65d15dae8427a6ab2f5a073aeb6e612549cdb836b2db97a7c2dd41bd94",
+      "decoded_sha256": "b01f35994afa5dbc05c565e6aed4b56c36a63ac87bc81aba7d7777a758e42a36",
+      "decoded_bytes": 968
+    },
+    {
+      "path": "csp4-native-reviewed-canonical-prose.log.gz",
+      "sha256": "3ac79cca401f81141e381c321e385a5139dc815fef6a89167a3d60a0df7ec14c",
+      "decoded_sha256": "24b15e9bcb90b1658af01c4941d5f64aeb9c0cc408d08ca8f2083765e37703fe",
+      "decoded_bytes": 558
+    },
+    {
+      "path": "canonical-closeout-prose.log.gz",
+      "sha256": "3ac79cca401f81141e381c321e385a5139dc815fef6a89167a3d60a0df7ec14c",
+      "decoded_sha256": "24b15e9bcb90b1658af01c4941d5f64aeb9c0cc408d08ca8f2083765e37703fe",
+      "decoded_bytes": 558
     }
   ],
   "checks": [
@@ -295,12 +355,63 @@
     ],
     "consumer_and_clock_source_unchanged": true
   },
-  "running_checks": [
-    {
-      "session_id": 37028,
-      "source_commit": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
-      "log": ".tmp/csp4-consumer-delivery/runtime-go126.jsonl"
-    }
-  ]
+  "running_checks": [],
+  "complete_runtime_verification": {
+    "source_commit": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact",
+    "test_events": {
+      "pass": 938,
+      "fail": 0,
+      "skip": 0
+    },
+    "packages": [
+      {
+        "package": "github.com/agentstation/starmap/remote",
+        "status": "pass",
+        "elapsed": 16.249
+      },
+      {
+        "package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+        "status": "pass",
+        "elapsed": 1.319
+      },
+      {
+        "package": "github.com/agentstation/starmap/runtime",
+        "status": "pass",
+        "elapsed": 1236.597
+      }
+    ],
+    "artifact": "delivery-runtime-go126.jsonl.gz"
+  },
+  "integrated_static_checks": {
+    "source_commit": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
+    "documentation": "complete docs-check PASS",
+    "release": "1 configuration validated",
+    "prose": "1457 files, 0 diagnostics"
+  },
+  "pre_pr_review": {
+    "source_commit": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
+    "base": "3273743274661a1f37402d124189980ad7f93060",
+    "exit_code": 0,
+    "reviewers": [
+      "codex:gpt-5.6-sol:high",
+      "claude:opus:high"
+    ],
+    "verdict": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=high: 0 finding(s).",
+      "overall_confidence": 0.97
+    },
+    "secret_scan": "clean, 3.0 seconds",
+    "bundle_bytes": 78038,
+    "review_passes": 1
+  },
+  "canonical_prose": {
+    "status": "PASS",
+    "files": 1304,
+    "diagnostics": 0,
+    "retained_failure": "Scratch git-status output and a seven-sentence resume paragraph failed first. Exact status bytes were compressed, and the paragraph was split.",
+    "latest_artifact": "canonical-closeout-prose.log.gz"
+  }
 }

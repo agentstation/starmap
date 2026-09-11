@@ -5,29 +5,27 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 122,
-  "new_evidence_artifacts": 215,
+  "local_links": 124,
+  "new_evidence_artifacts": 266,
   "new_commit_source_files": 67,
-  "resume_words": 326,
+  "resume_words": 369,
   "current_source": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission",
   "clean_source": true,
-  "running_implementation_commands": [
+  "running_implementation_commands": [],
+  "next_action": "Wait for Verification Gate, then verify the automatic merge of PR149 for provider documentation and public-catalog acceptance. Continue native clock qualification and the remaining CSP4 scope.",
+  "external_running_checks": [
     {
-      "session_id": 37028,
-      "source": "20b1ee4186bd2fbc647209f280ad10ddefd7bb36",
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS=-p=2 GOMAXPROCS=4 go test -race -count=1 -timeout=30m -json ./runtime ./remote ./pkg/catalogs/artifact"
-    },
-    {
-      "session_id": 88653,
-      "source": "7641eaea2b98f9ffbefb2807f67253919227b234",
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock",
-      "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make verify",
-      "log": ".tmp/csp4-clock-delivery/make-verify.log"
+      "repository": "agentstation/starmap",
+      "pr": 149,
+      "source": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+      "run_id": 34555379753,
+      "job_id": 103126928480,
+      "name": "Verification Gate",
+      "status": "IN_PROGRESS",
+      "automatic_squash_merge_enabled": true
     }
   ],
-  "next_action": "Verify final CI and merge PR149 for provider documentation and public-catalog acceptance. Continue native clock qualification and the remaining CSP4 scope.",
   "public_acceptance_work": {
     "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-public-acceptance",
     "branch": "codex/catalog-public-acceptance",

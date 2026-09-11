@@ -1,5 +1,20 @@
 # Current pull request queue
 
+Updated 2026-09-11 UTC. Starmap has one open PR, #149. Starport has no open PRs.
+The [current queue evidence](queue-status-2026-09-11.json) records its head, base, owner, and next action.
+
+PR #149 names reviewed `0a143a94` on base `32737432`. All six native jobs pass.
+Sol and Opus report zero findings. There are no unresolved review threads.
+Automatic squash merge waits for Verification Gate. The catalog plan executor owns the merge and its proof update.
+
+Local consumer source `20b1ee41` passes 938 runtime, remote, and artifact race events. Both required reviewers report zero findings.
+No source branch is stale or superseded. No additional PR qualifies for closure.
+Twenty-six campaign PRs merged. Nine tasks are complete, and CSP4 remains active.
+
+## Historical queue snapshots
+
+The sections below preserve earlier captures and superseded next actions. Use the current queue evidence above for execution.
+
 Six PRs remain open after eight approved merges. All retain distinct work or required ancestry.
 Starmap #127 remains closed because #128 preserves its dependency changes.
 No additional PR qualifies for closure in this review.

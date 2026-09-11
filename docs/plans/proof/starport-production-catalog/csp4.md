@@ -34,7 +34,7 @@ The explicit fixture setup resolves the binary refusal without a review bypass. 
 The earlier complete forty-stage run remains bound to its source commit.
 
 [PR #149](https://github.com/agentstation/starmap/pull/149) delivers the public checks and complete provider-documentation repair.
-The original Sol/Opus review passes with zero findings at `079c390b`. Integrated-base review passes with zero findings. Final native CI and merge remain open.
+The original Sol/Opus review passes with zero findings at `079c390b`. Integrated-base review passes with zero findings. All six native jobs pass. Verification Gate and the actual merge remain open.
 These local checks do not qualify the released pair or complete CSP4.
 
 The first PR #149 native run fails both public signature tests on both Windows architectures.
@@ -49,10 +49,14 @@ Sol and Opus review passes again against the new base. The remote PR names `0a14
 
 This separate Homebrew merge adds no campaign credit.
 
+Native PR #149 artifacts record 10,212 passing test events and zero failures. Two ordinary Linux skips pass in separate privileged checks.
+There are no unresolved review threads. Automatic squash merge waits for Verification Gate on reviewed `0a143a94`.
+
 Consumer source `20b1ee41` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-consumer-permission`, branch `codex/catalog-consumer-permission`.
 The [consumer permission proof](csp4/consumer-permission-2026-09-11/verification.json) records 307 scoped race events per supported toolchain.
 The complete catalog suite passes 1,253 events at `3d023778`. Main integration changes only the README and release configuration.
-Full runtime, remote, and artifact race verification runs in session `37028`.
+Full runtime, remote, and artifact race verification passes 938 events across three packages at `20b1ee41`.
+Required Sol and Opus review passes with zero findings at `20b1ee41`.
 
 `AllowsCatalogAttempt` checks the caller's accepted authority head against current permission state. Runtime readiness alone cannot authorize a withdrawn consumer catalog.
 Equal permission revisions permit continued use during route preparation. Contradictory known heads, unknown clocks, expiry, and foreign authority identities refuse.
@@ -68,7 +72,10 @@ An isolated workspace compiles catalog, app, and router packages against Starmap
 The release verifier passes sixteen checks with the published pseudo-version. The separate architecture V01 gate still requires a stable release.
 No module pin or release gate changed.
 
-Complete clock-parent verification runs in session `88653` at `7641eaea`. Its log is `.tmp/csp4-clock-delivery/make-verify.log` in the clock worktree.
+Clock-parent verification at `7641eaea` passes 82 ordinary packages, 82 race packages, and fifteen coverage thresholds.
+The full command stops at prose checks on five copied research files. Compression preserves their exact bytes.
+Corrected prose and the six remaining stages pass. All forty stages have evidence across these runs.
+The original full command exits 2. Native clock qualification remains open.
 
 CSP4 remains in progress. Four A07 subcases now pass locally. Four Starport consumer subcases remain UNVERIFIED.
 

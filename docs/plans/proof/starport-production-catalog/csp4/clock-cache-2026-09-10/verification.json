@@ -285,6 +285,60 @@
       "path": "canonical-prose-final.log.gz",
       "sha256": "e1415a421656d5fd5c71f3eec7f94ab4bceea43e5d09791d62cf612154a696e5",
       "decoded_sha256": "783a9dc37e512fabcab684b3863e98ae16379d143cd1c33735a545e28778554a"
+    },
+    {
+      "path": "delivery-make-verify.log.gz",
+      "sha256": "56fefea625a28b082617fb560c2e129092fdf65787e844c9caed34c95b62fd1a",
+      "decoded_sha256": "96abff0db3b629289884079189e13f7411e358466112fcf448dcd3cc89c8d29d",
+      "decoded_bytes": 58135
+    },
+    {
+      "path": "delivery-research-preservation.json.gz",
+      "sha256": "786b0dd54cdfde3a0a5ada9bd4d33269ae6b4e07123a4f9417f80b2ebb61a009",
+      "decoded_sha256": "7dbc6ecc97926fff1a1600d231e40480997a4db42ee8196c9ad48d8d6daaf082",
+      "decoded_bytes": 1888
+    },
+    {
+      "path": "delivery-verify-remainder.sh.gz",
+      "sha256": "5d9d5ffcd6793eb0eda08867762ad4a859b94afc95f0522f21e5cfac581bcbfc",
+      "decoded_sha256": "b3f65a40a42f190f15da2cd8797e7093bccb58ad69b4b3f3048f2a4938d4f96f",
+      "decoded_bytes": 3488
+    },
+    {
+      "path": "delivery-verify-remainder.log.gz",
+      "sha256": "24ac8512e4346b86a2de3187a6a3a9d4d42073543602a6773b2f762520c02ef6",
+      "decoded_sha256": "f5e1a51596315234ffaae6e3f3591bae25e70740162e0a209596bc9477336c50",
+      "decoded_bytes": 39951
+    },
+    {
+      "path": "research-msrpc-go-mod.txt.gz.gz",
+      "sha256": "463ee14d899adaefde4fee0274041819568cced399a7ed92a7e2756f46cf0353",
+      "decoded_sha256": "27aacaaf58e7e84f1ba41e892d9b9182d049f46406ae6b7300973fbee344f502",
+      "decoded_bytes": 474
+    },
+    {
+      "path": "research-msrpc-transport-settings.txt.gz.gz",
+      "sha256": "1264529ccef3d730a36093b63c8283f597f781fa24caa1f7c7901b856470c695",
+      "decoded_sha256": "e6be7f31e763a0fd05fb57d5377db2d00531ca6215a0b794853b68c63d48634f",
+      "decoded_bytes": 2019
+    },
+    {
+      "path": "research-msrpc-options.txt.gz.gz",
+      "sha256": "b3c390974d186e2805a0d17e93888a83525885653010b9456a0683d6027d9a30",
+      "decoded_sha256": "3d7c1e2daaccf72eb3b46df41e7d42e88610028c136ccab42c5868b96df64aa9",
+      "decoded_bytes": 4096
+    },
+    {
+      "path": "research-msrpc-transport.txt.gz.gz",
+      "sha256": "752c9aaf716b1767a6d4e6ed2aaf96fc8e10182289a44f3f3da49819d7076878",
+      "decoded_sha256": "283d8172f5d465eb69617625553a7c25b65cf81b523aae49598e36efe4c368b1",
+      "decoded_bytes": 4478
+    },
+    {
+      "path": "research-msrpc-transport-conn.txt.gz.gz",
+      "sha256": "2af1c816256ce442582bab3067f4c113fa9aac4c55ca82af0d85e2709903aaef",
+      "decoded_sha256": "ac6c509181d2a71446c850055d496212f88e02ff2d4a099ce67a75f6b392aee1",
+      "decoded_bytes": 2471
     }
   ],
   "retained_failures": [
@@ -313,5 +367,19 @@
     "parent": "7239f4b76ee4d079479ae1703ac6e0ac55683925",
     "main": "21e7356b621773fd1808bed5e7a83df7a0683ce7",
     "tested_tree_unchanged": true
+  },
+  "complete_repository_verification": {
+    "source_commit": "7641eaea2b98f9ffbefb2807f67253919227b234",
+    "command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 make verify",
+    "original_result": "exit 2 at technical-writing-check",
+    "ordinary_packages": 82,
+    "race_packages": 82,
+    "coverage_thresholds_passed": 15,
+    "failure": "Five copied MSRPC research text files in the ignored scratch directory triggered 141 prose diagnostics.",
+    "repair": "Preserve the exact research bytes as gzip archives. No product source, prose policy, or test expectation changed.",
+    "remainder_command": "GOTOOLCHAIN=go1.26.6 GOFLAGS= GOMAXPROCS=4 bash .tmp/csp4-clock-delivery/verify-remainder.sh",
+    "remainder_result": "PASS: corrected prose and the six subsequent verifier stages",
+    "stage_evidence": "All 40 stages have passing evidence across the original and corrected remainder runs. The original full command did not pass.",
+    "scope": "Clock-parent implementation at 7641eaea. This does not qualify a native adapter or later consumer API source."
   }
 }

@@ -626,6 +626,198 @@
       "sha256": "51e6254940b9134e17e443a5d5502e7c2e169214923bd4668f00974fda6e880c",
       "decoded_sha256": "6909537b959a0cb4c7eedf8da24b9c1fe1c9d8a5a517d803dfa7968e032d8df4",
       "decoded_bytes": 558
+    },
+    {
+      "path": "main-native-run.json.gz",
+      "sha256": "3867618619ad502ec3277d4adec89d079872703bfffaf55d2dec54bde7207e7c",
+      "decoded_sha256": "501b7ec1543b7e374b561dbd2ed360be8c849a2cb858a2798812fc6f91543c2a",
+      "decoded_bytes": 25473
+    },
+    {
+      "path": "pr149-native-green.json.gz",
+      "sha256": "41d5936de725936bdc5a893954441a25335e0817fd1cd88c7b4acae908e3cbce",
+      "decoded_sha256": "12d56e4aec34adb4a3cdce1d1b280dca85ffb8bbba2ba40fbfcfae543078b7da",
+      "decoded_bytes": 4666
+    },
+    {
+      "path": "review-threads.json.gz",
+      "sha256": "aa276f107b60cc4a60ffe237b9d19ff9eafb04fec02535e076d61a4dc8556246",
+      "decoded_sha256": "93113f16dac25bfbf65448f6692ecfb41fee5a4f9912354a28ca260e19a19925",
+      "decoded_bytes": 232
+    },
+    {
+      "path": "verification-job-status.json.gz",
+      "sha256": "07453487db9d4420200f0d8f6d4d3666eee14d4a8771aa0b0c3d162dfc657b02",
+      "decoded_sha256": "308139a059b939593a47bfe4fe557a96dfff6e549b8e2da6c59d6bcc4455a2b9",
+      "decoded_bytes": 2412
+    },
+    {
+      "path": "queue-starmap.json.gz",
+      "sha256": "c6f69d0d0271ba4001576a595d4ccd46857ab6a69b0f0dcda681e9bf5dd7088b",
+      "decoded_sha256": "904903c19f3c9bebe8270c9f2a696bf380f6caa5404425592c07efbdd9818b4c",
+      "decoded_bytes": 265
+    },
+    {
+      "path": "queue-starport.json.gz",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "decoded_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "decoded_bytes": 3
+    },
+    {
+      "path": "main-native/native-runtime-macos-15/git-acquisition.jsonl.gz",
+      "sha256": "3d2e4a170dcf0f587fea89ba9fb59f7347b9859236c1b14ea82b6e1e98e24bab",
+      "decoded_sha256": "55ca49ce4a67512a13241133d202933819e241b6c6d4c5d83d146e42fed4bf56",
+      "decoded_bytes": 10512
+    },
+    {
+      "path": "main-native/native-runtime-macos-15/publisher-ingestion.jsonl.gz",
+      "sha256": "790f6ea90f40b312c96eee981cf0b323c317072e90850a6ee05c6fac4af7c717",
+      "decoded_sha256": "037d6f6ca08085c1e7fa824ed287a1671ad3ddb143429a36227a61e7d9795067",
+      "decoded_bytes": 5283
+    },
+    {
+      "path": "main-native/native-runtime-macos-15/tests.jsonl.gz",
+      "sha256": "18a525165b61f6ba120a09403d681b851599939b9cba454b86fd30cce2089259",
+      "decoded_sha256": "ace9c02df3453f6ac4b07dc1622d8c131963377f1f1f58ec970bf19207fa2c58",
+      "decoded_bytes": 2759918
+    },
+    {
+      "path": "main-native/native-runtime-macos-15/toolchain.txt.gz",
+      "sha256": "91bf1bc081e7e3ce45e31dcda41c61d7bceba4500c3e29f08091921d8b36d503",
+      "decoded_sha256": "bb9ee77d7c8e557aec36ec13ca7f0ca64de09f9fc157d40f8365df51cab84e05",
+      "decoded_bytes": 62
+    },
+    {
+      "path": "main-native/native-runtime-macos-15-intel/git-acquisition.jsonl.gz",
+      "sha256": "bf0b225341504a96d186e23e35f4a8716bf1f39366ddd0bf97f455575bb1c7d0",
+      "decoded_sha256": "0ad721888d0c8b02cf37c263e47de57ce5d833e6d63a7344018d2a927c87b760",
+      "decoded_bytes": 10502
+    },
+    {
+      "path": "main-native/native-runtime-macos-15-intel/publisher-ingestion.jsonl.gz",
+      "sha256": "0ccc419f82a1941b8367827d8e320d9ab8ff8633fbc247d87a92882fa8ea110a",
+      "decoded_sha256": "24715f7f0ec9020235fff23e8e714f31e1d202c5cc9ef3444f5c4bdbb87b9dd6",
+      "decoded_bytes": 5279
+    },
+    {
+      "path": "main-native/native-runtime-macos-15-intel/tests.jsonl.gz",
+      "sha256": "4a32be6ef957a7b2c942cccd4dcb77e93d6807f9bdad8a63d3ce9c70f66587ae",
+      "decoded_sha256": "8aed44804b948d8a510204a0f16c9c381cc37e27ca5189fec5836c2fb28a6ab3",
+      "decoded_bytes": 2759876
+    },
+    {
+      "path": "main-native/native-runtime-macos-15-intel/toolchain.txt.gz",
+      "sha256": "b22bba7c23901f6e62d40e00a687cb11b67f874e8f1eb38950508613c1ec3a3e",
+      "decoded_sha256": "4f28d3dae1dfe8e165768127320fb8c738f3d76140c64c0f211e0b5518eec3fe",
+      "decoded_bytes": 62
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04/git-acquisition.jsonl.gz",
+      "sha256": "db13dc370bee6d42fcf5df1fe606a723938faa69b8ab5452a1f445a36b474738",
+      "decoded_sha256": "c3b7602bf156e0e40eb551150f9b546a56df55aeaa651f3b5542c91ba172d8f9",
+      "decoded_bytes": 10511
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04/publisher-ingestion.jsonl.gz",
+      "sha256": "008b96dae7d49551fdb8fb867bec3c556ab64e9018fa8dc6c02233c2b8459daf",
+      "decoded_sha256": "3ad6838cf16240340b8fe5fb1786ded800867e0bf49e9c99a32cc953e4ce89f3",
+      "decoded_bytes": 5346
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04/service-owner.txt.gz",
+      "sha256": "825c13cfc13aa13ddc2e2b8abeaea95f1be714a7cf1e6f3e27b86f51bbff8396",
+      "decoded_sha256": "71e95cf3ba8f4ffce1f898b57a40a545879340c4a92fe4c330c9edbf8829d95e",
+      "decoded_bytes": 323
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04/tests.jsonl.gz",
+      "sha256": "de6d6e4eb389434be3db3348da6598ca65962d1ec54244fbbf47b5018c7cc477",
+      "decoded_sha256": "f9a29ddc7f5edded7be322380d80318401bebbd406c86019fcf582e1f7808268",
+      "decoded_bytes": 2739607
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04/toolchain.txt.gz",
+      "sha256": "97c8f6a514e3d291741b25f3e224fa25507745c57e2961dfd24420fa137db786",
+      "decoded_sha256": "da4d53167df8bd5077848a5cf1cc2b0a5e71b0bb53b9475454e6c43a1b6a1057",
+      "decoded_bytes": 59
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04-arm/git-acquisition.jsonl.gz",
+      "sha256": "4fad01abfa54eaf8d264b5a2f978a305e386319c183c1015beb84a9e30fe0de4",
+      "decoded_sha256": "c3195474a7cb603b304f0ab5363be02adcce1563f8174d33929be21a5c91c215",
+      "decoded_bytes": 10513
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "9e4fbea45a81ffa04cf96965bc011ddada7fd188100cc567645bb159d834da1b",
+      "decoded_sha256": "2e17234e84def6f15e2c129a7e14288c41950cf7a5602bf3c52e59b746729add",
+      "decoded_bytes": 5351
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04-arm/service-owner.txt.gz",
+      "sha256": "f4d13eba019a347ac818c324f9e5f07df7c63bb7188d353fc1d33ed43c5f560a",
+      "decoded_sha256": "edde73a7cbae0506b521f86b06bc8daf10ba8ffeb6a15c93a9f553061c193c68",
+      "decoded_bytes": 323
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04-arm/tests.jsonl.gz",
+      "sha256": "64667bc86f960f4a1dd5edff195e4b0e29a39ef6c5c82d1b83263c4e1c350318",
+      "decoded_sha256": "5915e61a515ad1219369207889633e692f45cd2e3232263c756ffddc792231e4",
+      "decoded_bytes": 2738400
+    },
+    {
+      "path": "main-native/native-runtime-ubuntu-24.04-arm/toolchain.txt.gz",
+      "sha256": "59ba740afe0603603fc8b15251fce83f6388ae1f5cd2956c469b8382db8f881d",
+      "decoded_sha256": "d626501f02ef63f1b2e1a71b9139471df8b5019d9660cc0670be28cfcddaf1ca",
+      "decoded_bytes": 59
+    },
+    {
+      "path": "main-native/native-runtime-windows-11-arm/git-acquisition.jsonl.gz",
+      "sha256": "8b840a1a390689147c93b8616c70fd8edb1c11fbf36e8ea279076a76c4e37e8d",
+      "decoded_sha256": "4ee1655f463fbb523b2c5d83d518d356b692648e37b505c43744bdbd24839e78",
+      "decoded_bytes": 10601
+    },
+    {
+      "path": "main-native/native-runtime-windows-11-arm/publisher-ingestion.jsonl.gz",
+      "sha256": "134304da4a29be6fe1143551a280032fd91db96c88abc01f724b96d2b9762187",
+      "decoded_sha256": "eb72a818e5f1cea6af22d282217ebf7986e52dad030130a2d7f4310abbbe8977",
+      "decoded_bytes": 5316
+    },
+    {
+      "path": "main-native/native-runtime-windows-11-arm/tests.jsonl.gz",
+      "sha256": "48b5c74bd0cb031eb67791bfe62e2d1052198a30f7b4e0ad411e6ee34c76edf6",
+      "decoded_sha256": "90027e72f3856efc9c6627aa2a354cee4880d3732acb07184d8b9dc0c948b72b",
+      "decoded_bytes": 2513043
+    },
+    {
+      "path": "main-native/native-runtime-windows-11-arm/toolchain.txt.gz",
+      "sha256": "f64b7c23895affa50548c53401bac51a4958e227db8d592c796c3cd493e387eb",
+      "decoded_sha256": "3c29148d3cb3f9e77c69741baab010bfe82151125f667c25723ba18570505a33",
+      "decoded_bytes": 65
+    },
+    {
+      "path": "main-native/native-runtime-windows-2025/git-acquisition.jsonl.gz",
+      "sha256": "c87ff90b67768047d19324b137023c23bb631c062d669e35b4c1b26aab5d402e",
+      "decoded_sha256": "34e9ee289fb1f174050be9945045d8690e581f07e1ea1e985e56e92ddd9b0158",
+      "decoded_bytes": 10593
+    },
+    {
+      "path": "main-native/native-runtime-windows-2025/publisher-ingestion.jsonl.gz",
+      "sha256": "ae9386d15ce51cc809f06382a6e1d3a71613ab08c26ab4e56a71fd774e07eac8",
+      "decoded_sha256": "96005f95970fd9423ee56ae0bcbd10f5f6bb8d85c9b88c47d3a13b7598f548cf",
+      "decoded_bytes": 5310
+    },
+    {
+      "path": "main-native/native-runtime-windows-2025/tests.jsonl.gz",
+      "sha256": "a40a3db576d065836b22af911465ca6e18818b44cd1d66859919d19bbd516d06",
+      "decoded_sha256": "ca9634ad13e7b6685ac82d165329e422141ca1d57b3468a127eb85eba7cde307",
+      "decoded_bytes": 2505624
+    },
+    {
+      "path": "main-native/native-runtime-windows-2025/toolchain.txt.gz",
+      "sha256": "5311b34228391669a92c01c14f8b7b28b9073ce25cb74010eddc8c2961ebf8dd",
+      "decoded_sha256": "9b7d2817082583a835c46b2e14d0613c4002696e8c090973f0aee69d18cebcad",
+      "decoded_bytes": 65
     }
   ],
   "checks": [
@@ -843,7 +1035,7 @@
     ]
   },
   "pending_gates": [
-    "Final native CI and merge."
+    "Verification Gate and actual merge."
   ],
   "previous_source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
   "handler_correction": {
@@ -1046,9 +1238,10 @@
     "url": "https://github.com/agentstation/starmap/pull/149",
     "head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
     "base": "3273743274661a1f37402d124189980ad7f93060",
-    "status": "OPEN; reviewed main integration pushed; final native CI pending",
+    "status": "OPEN; all six native jobs pass; automatic squash merge waits for Verification Gate",
     "merge": null,
-    "native_run": 34555379753
+    "native_run": 34555379753,
+    "auto_merge_authorized_head": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7"
   },
   "checkout_correction": {
     "source_commit": "f29ec2a4b7269eb0eac1620a14bda406beb0b7fe",
@@ -1136,5 +1329,74 @@
       "bundle_bytes": 81264,
       "review_passes": 1
     }
+  },
+  "native_qualification": {
+    "source_commit": "0a143a942fc1ace0de69e91f1dfa78c7c1d0e0b7",
+    "run": 34555379753,
+    "six_native_jobs": "PASS",
+    "test_events": {
+      "pass": 10212,
+      "fail": 0,
+      "skip": 2
+    },
+    "platforms": [
+      {
+        "runner": "macos-15",
+        "test_events": {
+          "pass": 1739,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": 15
+      },
+      {
+        "runner": "macos-15-intel",
+        "test_events": {
+          "pass": 1739,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": 15
+      },
+      {
+        "runner": "ubuntu-24.04",
+        "test_events": {
+          "pass": 1683,
+          "fail": 0,
+          "skip": 1
+        },
+        "packages": 15
+      },
+      {
+        "runner": "ubuntu-24.04-arm",
+        "test_events": {
+          "pass": 1683,
+          "fail": 0,
+          "skip": 1
+        },
+        "packages": 15
+      },
+      {
+        "runner": "windows-11-arm",
+        "test_events": {
+          "pass": 1684,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": 16
+      },
+      {
+        "runner": "windows-2025",
+        "test_events": {
+          "pass": 1684,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": 16
+      }
+    ],
+    "ordinary_skips": "Two Linux service-owner tests skip without privilege. Each passes in its separate privileged service-owner.txt capture.",
+    "review_threads": "0 unresolved, complete first page",
+    "scope": "Public fixture and provider-documentation delivery. No native clock or consumer API credit."
   }
 }
