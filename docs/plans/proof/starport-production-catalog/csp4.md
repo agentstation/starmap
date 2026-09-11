@@ -36,8 +36,10 @@ The [integrated task proof](csp4/integrated-task-2026-09-11/verification.json) r
 All eight selected subcases pass with 54 race events and no skips. These checks use the temporary module workspace.
 The report leaves 49 primary cases unverified because this invocation selects only CSP4. It completes A07 within that selection.
 
-The broad runtime race suite runs in session `50784`, with output at `.tmp/csp4-integrated-task/task-race.jsonl`.
-Full repository verification remains live in session `8874`. Neither unfinished command supplies completion credit.
+The full task race command passes 986 events at `d1bb47e1` with `GOWORK=off` and `Go 1.26.6`.
+Runtime contributes 901 events, remote 45, and artifact 40. No event fails or skips.
+Both explicit CSP4 commands now pass. Full repository verification remains live in session `8874`.
+Required review and implementation merges remain open.
 
 ### Remaining native and origin delivery
 

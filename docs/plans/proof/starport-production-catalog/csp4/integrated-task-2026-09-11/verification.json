@@ -1,6 +1,6 @@
 {
   "task": "CSP4",
-  "status": "INTEGRATED_COMPONENT_GATE_PASS_BROAD_VERIFICATION_RUNNING",
+  "status": "BOTH_CSP4_COMMANDS_PASS_REPOSITORY_VERIFICATION_RUNNING",
   "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
   "branch": "codex/catalog-origin-settings",
@@ -433,11 +433,8 @@
       "initial_diagnostics": 1,
       "correction": "Split overlong paragraphs in csp4.md without changing their facts. The final full check passes.",
       "final_command_log": "integrated-task-prose-corrected.log.gz"
-    }
-  },
-  "running_checks": [
-    {
-      "session_id": 50784,
+    },
+    "task_race": {
       "command": [
         "go",
         "test",
@@ -451,8 +448,47 @@
         "./pkg/catalogs/artifact"
       ],
       "source_commit": "d1bb47e14b092e9f8c671064ff4ddccb91215649",
-      "GOWORK": "off"
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "go1.26.6",
+      "started_at": "2026-09-11T15:11:43.076072+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-09-11T15:39:14.130333+00:00",
+      "test_events": {
+        "pass": 986,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": {
+        "github.com/agentstation/starmap/pkg/catalogs/artifact": {
+          "pass": 40,
+          "fail": 0,
+          "skip": 0
+        },
+        "github.com/agentstation/starmap/remote": {
+          "pass": 45,
+          "fail": 0,
+          "skip": 0
+        },
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 901,
+          "fail": 0,
+          "skip": 0
+        }
+      }
     },
+    "canonical_prose_after_task_race": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0,
+      "files": 1331,
+      "diagnostics": 0,
+      "command_log": "task-race-prose.log.gz"
+    }
+  },
+  "running_checks": [
     {
       "session_id": 8874,
       "command": [
@@ -473,7 +509,7 @@
     "This is the current integrated component gate, not all 50 primary cases or released-pair qualification.",
     "The report marks 49 primary cases unverified because only the eight CSP4 subcases were selected. A07 is the only complete primary case in this invocation.",
     "Starport uses an untracked Go workspace. Its published dependency update, final delivery gates, review, native CI, and merge remain open.",
-    "The broad task race suite and repository verifier remain live. Their incomplete output supplies no completion credit."
+    "The repository verifier remains live. Its incomplete output supplies no completion credit."
   ],
   "artifacts": [
     {
@@ -495,11 +531,6 @@
       "path": "task-gate.stderr.gz",
       "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
       "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "task-race.json.gz",
-      "sha256": "96383da675fdae3f6c4f6a0601a7c679158045e4e8978cc7270ea36258ab3db1",
-      "decoded_sha256": "a32e042417b500ada732adc583b55e02c780239bda7e6f265d58254f799e096a"
     },
     {
       "path": "starport-clock-canonical-prose.log.gz",
@@ -540,6 +571,26 @@
       "path": "integrated-task-prose-corrected.json.gz",
       "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
       "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "task-race.json.gz",
+      "sha256": "b5f6ef030bc837b2a306ba33a69716c41c20c7338f03c7baf02f6d8d593dee77",
+      "decoded_sha256": "a4a5fb58331c57f53a46dcbfde0c9be6d77d61f1147b9c58092832115059efd0"
+    },
+    {
+      "path": "task-race.jsonl.gz",
+      "sha256": "0b2b573be792d7e8c4edf09d6862a2ebfd13af6e685a374faff7048239a723c9",
+      "decoded_sha256": "08f24381c646f859c935d9f7210071558695dd3a1b0f58e2ae8387a4e0af00ec"
+    },
+    {
+      "path": "task-race-prose.json.gz",
+      "sha256": "6991c33c40655d69793f45cafccf0cd77f1f419bca1423ed1e96f675d83781fd",
+      "decoded_sha256": "e21a3faff5ee972804606f561a709f752982fd4027864bd491b20abd7dc42522"
+    },
+    {
+      "path": "task-race-prose.log.gz",
+      "sha256": "10f9df74ca3528d6e129cd3f5eb3d79892cb3b93c75f11727da6a70a777934f5",
+      "decoded_sha256": "d3f85ed30602e15744763f60ac2785bc6b76c26c1044a1b8256be5533fff1752"
     }
   ]
 }
