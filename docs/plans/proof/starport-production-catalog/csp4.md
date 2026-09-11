@@ -129,6 +129,13 @@ Thirty-eight Valkey service cases and the separate overhead benchmark skip. Full
 Raw HTTP and the Python, TypeScript, and Go SDK checks pass. The console build retains its route-test exclusion and chunk-size warnings.
 The clock proof preserves all six commands and their outputs. Published dependency qualification remains open.
 
+Both catalog contract verifiers pass against the same prepared pair. They record twelve ownership conditions and nineteen catalog-driven provider conditions.
+The clock proof preserves their commands, environment, and outputs. Final checks must use the published dependency.
+
+After combined runtime review and publication, pin that commit in Starport. Run Starport final checks during Starmap CI.
+Merge Starmap with a merge commit to preserve the pinned revision, then merge Starport.
+The clock proof records a successful module lookup for an unmerged reviewed commit. That native-only revision does not supply the complete Starport integration.
+
 The new prose passes with zero diagnostics. The full operator guide retains its 48 unrelated baseline diagnostics.
 Required review, delivery gates, native Starport CI, and merge remain open.
 The [previous current record](csp4/integration-history-before-starport-clock-2026-09-11.md) preserves earlier state.

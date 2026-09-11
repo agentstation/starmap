@@ -575,6 +575,26 @@
       "path": "delivery-sdk-smoke.log.gz",
       "sha256": "bb54cb72c34144550ed1ecccfc8945135e6b3bc2a52b71ce4d110fef47fb29f0",
       "decoded_sha256": "c2b09a26af9dba3ca8daf9d08370ff5dfcdcfdd5f4c9f9099c66c42c2e8ed585"
+    },
+    {
+      "path": "delivery-catalog-contracts.json.gz",
+      "sha256": "a2f55cef801aff85c3274675896641efe6b739872d26d0f0a5d21ede200cbda2",
+      "decoded_sha256": "fbe937b1b14b9da80cb93dd49cdc2493e4a2ed616e4ab07840d563936f31486c"
+    },
+    {
+      "path": "delivery-verify-starmap-ownership.sh.log.gz",
+      "sha256": "cac58828c90bd4cd35ddd46ae076a72f1ca8dbb56fd79c94e584283ea907849e",
+      "decoded_sha256": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed"
+    },
+    {
+      "path": "delivery-verify-catalog-driven-providers.sh.log.gz",
+      "sha256": "622beb4f11d3ebd11a20b7a12a7b6658f30bd20db8d9cf07e35c32d2bf693d57",
+      "decoded_sha256": "e9d35a605013f2031a4ea6a6a34e8463fc5423692c137b7f98a01a8caa823f19"
+    },
+    {
+      "path": "delivery-published-revision-probe.json.gz",
+      "sha256": "2cc77116ddedf9bee8d25a4e6d687133e787074f29cece10914d357e61a8b0b0",
+      "decoded_sha256": "cbbaef550a78aeb9b5bbf492af29f46d28859276a3c10ef550df993269116dff"
     }
   ],
   "delivery_guard_followup": {
@@ -627,5 +647,52 @@
     ],
     "build_warnings": "The unchanged console emits route-test exclusion and chunk-size warnings. The build log retains them.",
     "limitation": "The local module workspace selects the prepared Starmap source. Published dependency qualification, the remaining delivery commands, required review, native CI, and merge remain open."
+  },
+  "catalog_contract_followup": {
+    "source_commit": "9669b61de0d7632ac680a0186591e7efe3bc8c78",
+    "starmap_source_commit": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
+    "environment_overrides": {
+      "GOWORK": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp4-starport-clock/go.work",
+      "GOTOOLCHAIN": "go1.26.6",
+      "CATALOG_DRIVEN_STARMAP_ROOT": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings",
+      "STARMAP_OWNERSHIP_STARMAP_ROOT": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
+    },
+    "condition_summaries": [
+      {
+        "command": [
+          "bash",
+          "scripts/verify-starmap-ownership.sh"
+        ],
+        "passed": 12,
+        "failed": 0
+      },
+      {
+        "command": [
+          "bash",
+          "scripts/verify-catalog-driven-providers.sh"
+        ],
+        "passed": 19,
+        "failed": 0
+      }
+    ],
+    "artifact": "delivery-catalog-contracts.json.gz",
+    "limitation": "Cross-product ownership and catalog-driven contracts against the prepared source pair. Published dependency qualification remains open."
+  },
+  "remaining_delivery_order": {
+    "status": "planned",
+    "publication_probe_artifact": "delivery-published-revision-probe.json.gz",
+    "probe_target_limitation": "The native-only commit proves module lookup before merge. Starport must instead pin the reviewed combined runtime after its publication.",
+    "repository_capabilities_observed": {
+      "isPrivate": false,
+      "mergeCommitAllowed": true
+    },
+    "sequence": [
+      "Complete native PR 151 and combined runtime verification.",
+      "Review and publish the combined Starmap runtime.",
+      "Resolve and pin that exact published runtime commit in Starport. Run final Starport checks and review while Starmap CI runs.",
+      "Merge the combined Starmap PR with a merge commit after its required checks pass. This retains the reviewed, pinned module commit in main history.",
+      "Merge the dependent Starport PR after its required checks pass and Starmap has merged."
+    ],
+    "limitation": "Neither publication nor merge is claimed complete. Native PR 151 retains its already enabled squash auto-merge."
   }
 }
