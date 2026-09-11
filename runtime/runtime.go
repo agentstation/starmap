@@ -115,6 +115,7 @@ type Runtime struct {
 	effective          starmap.CatalogState
 	report             statusState
 	permissions        authorityPermissions
+	originFollowed     bool
 	permissionRuns     runGroup
 	permissionIO       sync.Mutex
 	authorityObservers authorityObservationGroup

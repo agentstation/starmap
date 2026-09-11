@@ -28,6 +28,9 @@ func (r *Runtime) preparePublication(ctx context.Context, state starmap.CatalogS
 	if origin == nil {
 		return prepared, nil
 	}
+	if err := r.validateOriginTakeover(ctx); err != nil {
+		return preparedPublication{}, err
+	}
 	if source != nil && source.Manifest != nil && source.Manifest.AuthorityHead != (catalogs.CatalogAuthorityHead{}) {
 		return preparedPublication{}, originError("an upstream authority must retain its original identity")
 	}
@@ -87,7 +90,10 @@ func (origin *authorityOrigin) validateCurrent(current catalogs.Generation) erro
 	if _, err := catalogs.DecodeCatalogGeneration(current); err != nil {
 		return err
 	}
-	head := current.Manifest.AuthorityHead
+	return origin.validateHead(current.Manifest.AuthorityHead)
+}
+
+func (origin *authorityOrigin) validateHead(head catalogs.CatalogAuthorityHead) error {
 	if head.AuthorityID != origin.config.AuthorityID || head.PolicyID != origin.config.PolicyID || !head.SupportsPermissions() {
 		return originError("stored authority does not match the configured identity and supported permission schema")
 	}
@@ -170,6 +176,7 @@ func (r *Runtime) selectOriginFollowerStartup(ctx context.Context) error {
 	}
 	r.mu.Lock()
 	r.effective = r.client.CurrentCatalogState()
+	r.originFollowed = true
 	r.mu.Unlock()
 	return nil
 }
