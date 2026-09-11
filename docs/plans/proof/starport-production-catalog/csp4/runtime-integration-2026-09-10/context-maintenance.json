@@ -5,11 +5,11 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 114,
-  "new_evidence_artifacts": 1748,
+  "local_links": 113,
+  "new_evidence_artifacts": 1762,
   "new_commit_source_files": 325,
-  "resume_words": 322,
-  "next_action": "Both corrected-source reviews pass. Starport ba9b0d8e is published in PR 373 and runs native workflow 34638778802. Starmap PR 152 awaits its final verification job. Merge Starmap first while preserving the pinned revision, then merge Starport after its checks pass.",
+  "resume_words": 347,
+  "next_action": "All ten Starport CI checks pass at ba9b0d8e. Starmap PR 152 awaits its final verification job. Merge Starmap first while preserving the pinned revision, then merge Starport. Read-only observer session 42989 waits on the exact runs.",
   "current_source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
   "starmap_integration_source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
@@ -18,11 +18,6 @@
       "pull_request": 152,
       "workflow_run": 34632707283,
       "source": "33118919dc18e1f824ea618502f23b756e50813a"
-    },
-    {
-      "pull_request": 373,
-      "workflow_run": 34638778802,
-      "source": "ba9b0d8e880ef6538774b735343c5315b17c1b9d"
     }
   ]
 }

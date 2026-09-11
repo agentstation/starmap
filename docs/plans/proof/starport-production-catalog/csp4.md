@@ -70,7 +70,12 @@ The corrected pair passes eight CSP4 subcases with 56 race events and no failure
 Two new events cover unavailable and pending startup responses. The corrected suite retains every earlier task test.
 
 Sol and Opus report zero findings against immutable base `5e437a2b`. The secret scan passes.
-PR #373 now names `ba9b0d8e` and runs corrected native workflow `34638778802`.
+PR #373 now names `ba9b0d8e`. Its corrected workflow `34638778802` passes all ten CI checks.
+
+Linux, macOS, and Windows tests record 9,161 passing events and 121 explicit skips. All startup and directory regressions pass.
+The skipped events cover optional Valkey and benchmark checks, Windows symlink privileges, Unix file modes, and unsupported Windows Badger read-only inspection.
+The mapped CSP4 gate passes without skips. Native logs and delivery-job logs remain in the consumer proof.
+
 Starmap PR #152 has six passing native jobs and awaits its final repository gate. Both implementation merges remain required.
 
 ### Consumer checks and published dependency

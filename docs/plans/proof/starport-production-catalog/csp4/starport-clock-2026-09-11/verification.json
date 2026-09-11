@@ -1495,6 +1495,76 @@
       "path": "windows-state-workflow.json.gz",
       "sha256": "5544f0844564edfb0861d5b45aaf10aabacb3a87fe9f39e3647d0501bd418ec7",
       "decoded_sha256": "a21dd56c5dbd741a7a0bd505cf3a1511af1c4f59f66f7e07286ceb208749bbc3"
+    },
+    {
+      "path": "native-corrected-linux-skip-details.json.gz",
+      "sha256": "8968dc2943e868edde8dbd304599f108cca9169ab7b8332c2267c1dfbd4c5863",
+      "decoded_sha256": "f829b2678ec3fbcaa5051a28fd1f1ac88e3ea4671daaf68fe9a8216ebb1c1918"
+    },
+    {
+      "path": "native-corrected-linux-summary.json.gz",
+      "sha256": "e24d1bdd6df306fc2668d53ef4ff3687b8f8f3e3c9f9ee30a8566265a299473b",
+      "decoded_sha256": "074b1a625ea5627f90bd12f850ee53b998a913b99f9feac9d8a5780851776aca"
+    },
+    {
+      "path": "native-corrected-linux-tests.log.gz",
+      "sha256": "6216632edbc1441a738d1fc82a0c8f61347d8382327f2aa198f1b155b3ef8c37",
+      "decoded_sha256": "44085cc352f10acb7d42c6a95defcbaa7a9d8c82829c67c6e315e3bc9e5b7cab"
+    },
+    {
+      "path": "native-corrected-macos-summary.json.gz",
+      "sha256": "d2ef58e82d2e6e711c0ef6fc572d15f6e8b060eca019acbf6e1ffb25f9e67649",
+      "decoded_sha256": "095bae532e70e2aaf73f0bdf630a675b023be34c246d176ecde6d391e61b9531"
+    },
+    {
+      "path": "native-corrected-macos-tests.log.gz",
+      "sha256": "e485af0089053a2884900e1fdf1375118d638f71495629ab661f51cee8498607",
+      "decoded_sha256": "f289eebef54427b41122ad55646dba128cd732223c1e909320eea3153b252220"
+    },
+    {
+      "path": "native-corrected-summary.json.gz",
+      "sha256": "49620b3012fa6bfaf9cf156b7b93cd438dabefa8cfff739ea8fa2153f2ecac93",
+      "decoded_sha256": "7361380eee696f66b648ad9f5d1049d0693aa4a600fb4ce744f803c7ecbfddb3"
+    },
+    {
+      "path": "native-corrected-windows-skip-details.json.gz",
+      "sha256": "f98549d51f5728e6a9e516e89356b020a65a29712574de7437c09b1030bfa47b",
+      "decoded_sha256": "f4fa5268d844a8d1e5605442cf16c7a255e55a901f9fdc5f0617368f36f1a393"
+    },
+    {
+      "path": "native-corrected-windows-summary.json.gz",
+      "sha256": "3fc68dcfbe45e08bc74e3fdbf743f358caf916102121096a24acdbd8d756b9ff",
+      "decoded_sha256": "9dd77e00748ab8efc54bf7b15c365437747a3da259f4e1452c333e0c70c5fe82"
+    },
+    {
+      "path": "native-corrected-windows-tests.log.gz",
+      "sha256": "5c95a2333f672ffa71824489904f56aff706690bb3bf1227c39b4c940babe86b",
+      "decoded_sha256": "414e53f1aaac6124bfedfaf7045b8cfcd43d79162325a4668adca8eb2c85e318"
+    },
+    {
+      "path": "native-corrected-completed-workflow.json.gz",
+      "sha256": "bbe7ea948a009bbdfc8ca4485d8b7f71c8f67072628962aca0c4996b70db8825",
+      "decoded_sha256": "fa1aeee0fec6024bd3a60b65cdbb64c09364b3d24b6aa10169050d7369834870"
+    },
+    {
+      "path": "native-corrected-verified-pull-request.json.gz",
+      "sha256": "6ae61ec60fee37d373e51da0671b6784fdfba2e919ada3102030f31b9bf63cb7",
+      "decoded_sha256": "bb63bf1a7ba4a2676856063a498b25321d06f081d27fd6422fb9596391662a46"
+    },
+    {
+      "path": "native-corrected-release-contract.log.gz",
+      "sha256": "88129c14c737b50a23e8586db69acf83c3dd1ef6c18afb6de900388fce3eb4ef",
+      "decoded_sha256": "3d0e1547d10dc0b98eb04ce66d55f6ef21d11d60feb4724ef9146bfe2f34103d"
+    },
+    {
+      "path": "native-corrected-release-snapshot.log.gz",
+      "sha256": "abefb6457bf070278b9a9cc50a69353bf6eaea051a630484f199b2d85e22f9fa",
+      "decoded_sha256": "3bb687cf95c00c6144a69cae6c144e20fe25b1eed9566ee8c2a217bd1a34ee03"
+    },
+    {
+      "path": "native-corrected-build.log.gz",
+      "sha256": "c3c9a0eea882655f53114b570d7cc2f5d945a21e447157ad5385502117a03c85",
+      "decoded_sha256": "d1a76d847ce542f0ac2a1eff55832cf2789aa40ba6f43fefb45714b9cd85a27b"
     }
   ],
   "delivery_guard_followup": {
@@ -1580,7 +1650,7 @@
   },
   "remaining_delivery_order": [
     "Complete Starmap PR 152 verification and preserve pinned runtime ancestry through its merge.",
-    "Complete corrected Starport PR 373 CI and merge after Starmap.",
+    "Merge Starport PR 373 after Starmap. All ten Starport CI checks pass at ba9b0d8e.",
     "Record both merges and close CSP4 only when all task criteria pass."
   ],
   "published_dependency_followup": {
@@ -2731,12 +2801,12 @@
   },
   "windows_state_correction": {
     "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
-    "status": "reviewed_published_pending_native_ci",
+    "status": "reviewed_published_ci_pass_dependency_merge_pending",
     "cause": "Starport development and the authority test fixture precreated the Starmap runtime directory using os.MkdirAll. On the Windows runner that directory belongs to Administrators rather than the process account, so the native owner check correctly rejects it.",
     "correction": "Let Starmap create its own state directory with its native creation policy. Preserve refusal of unsafe preexisting directories.",
     "dirty_files": [],
     "fail_before": "TestDevLetsStarmapCreateCatalogState fails on macOS before the product correction. Native Windows CI captures ten top-level development and authority failures.",
-    "remaining": "Native CI and both implementation merges. No owner decision remains.",
+    "remaining": "Starmap PR 152 still runs its final Verification Gate. Merge it first while preserving runtime 6419ea85, then merge fully qualified Starport PR 373.",
     "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
     "focused_verification": {
       "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
@@ -2905,6 +2975,48 @@
       "workflow_snapshot": "windows-state-workflow.json.gz",
       "dependency": "Merge Starmap PR 152 first while preserving pinned runtime 6419ea856cf5.",
       "workflow_created_at": "2026-09-11T19:25:43Z"
+    },
+    "native_tests": {
+      "workflow_run": 34638778802,
+      "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "platforms": {
+        "linux": {
+          "pass": 3055,
+          "fail": 0,
+          "skip": 39
+        },
+        "macos": {
+          "pass": 3055,
+          "fail": 0,
+          "skip": 39
+        },
+        "windows": {
+          "pass": 3051,
+          "fail": 0,
+          "skip": 43
+        }
+      },
+      "interpretation": "All three native test jobs pass. Ordinary suites skip optional Valkey and benchmark cases. Windows also skips two symlink rotation cases that require elevated Windows privileges, POSIX mode checks, and unsupported Badger read-only inspection. The CSP4 mapped gate separately passes with no skips. Full fleet and final performance qualification remain outside this component result.",
+      "total": {
+        "pass": 9161,
+        "fail": 0,
+        "skip": 121
+      },
+      "skip_categories": {
+        "optional_valkey": 114,
+        "optional_gateway_overhead_benchmark": 3,
+        "windows_symlink_privilege": 2,
+        "windows_posix_file_mode": 1,
+        "windows_badger_read_only_unsupported": 1
+      }
+    },
+    "native_ci": {
+      "workflow_run": 34638778802,
+      "conclusion": "success",
+      "required_checks": 10,
+      "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "workflow_evidence": "native-corrected-completed-workflow.json.gz",
+      "pull_request_evidence": "native-corrected-verified-pull-request.json.gz"
     }
   }
 }
