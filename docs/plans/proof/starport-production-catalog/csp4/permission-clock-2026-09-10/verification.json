@@ -85,6 +85,20 @@
           "Elapsed": 14.644
         }
       ]
+    },
+    {
+      "artifact": "pinned-authority-go126.jsonl.gz",
+      "toolchain": "go1.26.6 (explicit GOTOOLCHAIN)",
+      "test_events": {
+        "pass": 51
+      },
+      "package_outcomes": [
+        {
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 14.158
+        }
+      ]
     }
   ],
   "static_checks": {
@@ -226,6 +240,11 @@
       "path": "canonical-native-prose-retry.log.gz",
       "sha256": "d360434d6ea2a7de68d9fcd14302b266179cfc151af5d91e7f082d1ca9c3a0eb",
       "decoded_sha256": "76d3801264bac929afda9bebfd13d00cb000f61512c8ecaa90ad87117bf2aa2c"
+    },
+    {
+      "path": "pinned-authority-go126.jsonl.gz",
+      "sha256": "6494ace4736c79a95b9a5576425580c628682cf65f6865dff668490245cd9050",
+      "decoded_sha256": "82a309ca379e085352714abf33f4b8a52f6d6db740a673824a71a1d363d71204"
     }
   ],
   "running_commands": [
@@ -242,5 +261,14 @@
     "diagnostics": 0,
     "artifact": "canonical-native-prose-retry.log.gz",
     "retained_failure": "canonical-native-prose.log.gz"
+  },
+  "toolchain_correction": {
+    "observed_at": "2026-09-10T23:48:00Z",
+    "default_host": "go1.27.0",
+    "running_race_process": {
+      "pid": 2707,
+      "executable": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go"
+    },
+    "interpretation": "Earlier commands without explicit GOTOOLCHAIN do not establish Go 1.26.6 qualification. Their historical artifact filenames remain unchanged. The new explicitly pinned run establishes 51 passing authority/status events on Go 1.26.6. The ongoing full verifier uses the host Go 1.27.0 process for its race suite."
   }
 }

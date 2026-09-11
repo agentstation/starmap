@@ -36,3 +36,27 @@ A candidate adapter can cache a qualified UTC sample and age its uncertainty aga
 Admission would read that cached sample and a cheap elapsed-time counter, without a time-service request.
 This approach still needs a measured error-growth bound, a finite validity interval, native bindings, and failure tests before selection.
 The implementation must reject stale evidence and unknown validity. It must not treat an ordinary wall-clock timestamp as qualification.
+
+
+## Native binding measurements
+
+The [cache proof](clock-cache-2026-09-10/verification.json) retains the probe source and two explicitly pinned, read-only macOS runs.
+Each run uses `CGO_ENABLED=0`. No clock or time-service setting changed.
+
+| Toolchain | Typed `purego` call | Direct `purego` call | `unix.ClockGettime` |
+| --- | --- | --- | --- |
+| Go 1.26.6 | 177 ns, 2 allocations | 67 ns, 0 allocations | 36 ns, 0 allocations |
+| Go 1.25.12 | 264 ns, 2 allocations | 80 ns, 0 allocations | 44 ns, 0 allocations |
+
+These isolated measurements compare bindings on one macOS arm64 host. They do not measure Starport request overhead.
+The existing `unix.ClockGettime` binding is the current candidate for macOS elapsed-time reads.
+Production selection still requires native qualification and supported error bounds.
+
+Apple's implementation maps `CLOCK_MONOTONIC_RAW` to `mach_continuous_time`.
+The kernel also grows maximum time error with elapsed seconds and reports unsynchronized or faulty state.
+[Apple clock implementation](https://github.com/apple-oss-distributions/Libc/blob/71bbe350ab79eef58113991d817ccc6165061a64/gen/clock_gettime.c),
+[Apple NTP implementation](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/kern_ntptime.c)
+
+The Windows RPC status contract remains a candidate observation source.
+The current design selects no DLL binding or RPC adapter. Complete Windows clock qualification remains open.
+The cross-platform cache does not resolve that native requirement.

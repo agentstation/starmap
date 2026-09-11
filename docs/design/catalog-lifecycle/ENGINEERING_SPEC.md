@@ -1850,6 +1850,21 @@ The callback must read cached qualification evidence and support concurrent call
 The legacy uncertainty callback remains available when it qualifies the time from `WithClock`.
 Selecting both clock contracts causes a configuration error before runtime construction.
 
+`permission.NewClockCache` now separates explicit time observations from cached permission checks.
+Its constructor starts no observation.
+
+The host supplies qualified source and elapsed-counter functions and selects their error bounds.
+The cache serializes each observation through `Refresh(ctx)` and applies a finite deadline.
+The `Read()` method advances one immutable UTC sample with a counter that includes system sleep.
+
+The cache includes query delay, counter error, and bounded rate drift in its uncertainty.
+Its actual-age upper bound cannot exceed the selected maximum age, which cannot exceed five minutes.
+An uncertainty above 30 seconds refuses the sample. Expiry and unsafe counter evidence clear the cache.
+Concurrent invalidation prevents an unfinished observation from restoring prior evidence.
+
+A new process starts without qualified evidence.
+This library contract does not select native adapters or their operational error bounds.
+
 The library clock callback reads only cached evidence.
 Each sample's uncertainty must bound its returned time.
 The current standalone composition has no clock qualification adapter. It therefore cannot yet qualify an internal production recipe.

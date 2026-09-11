@@ -1,0 +1,311 @@
+{
+  "task": "CSP4",
+  "status": "PASS_scoped_clock_cache_checks",
+  "acceptance": "All eight CSP4 checks remain UNVERIFIED. No task completion credit.",
+  "source_commit": "d5ef510b020aeec260c2e108d80f962ba4ae5858",
+  "base": "0d1920927164a3a64216d692912587256511fb26",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock",
+  "branch": "codex/catalog-native-clock",
+  "publication": "Local only. No PR, pre-PR review, or native adapter qualification.",
+  "contract": [
+    "ClockCache construction starts no observation. Explicit Refresh calls serialize with context cancellation and an observation deadline.",
+    "Read consumes one immutable cached UTC sample and a caller-qualified counter that includes system sleep.",
+    "Uncertainty accounts for source error, query delay, both counter errors, and rate drift rounded upward. The actual-age upper bound determines expiry.",
+    "Invalidation and unsafe reads fence observations already in progress. Expired evidence cannot revive after a counter reset.",
+    "Canceled callers before observation preserve prior evidence. Failed observations clear it.",
+    "Native sources, error bounds, host scheduling, and native failure signals still require qualification."
+  ],
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./pkg/catalogs/permission",
+      "artifact": "final-go126.jsonl.gz",
+      "test_events": {
+        "pass": 127
+      },
+      "new_clock_cache_events": 37,
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T18:49:05.727445-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "Elapsed": 1.6320000000000001
+        }
+      ]
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -timeout 5m -json ./pkg/catalogs/permission",
+      "artifact": "final-go125.jsonl.gz",
+      "test_events": {
+        "pass": 127
+      },
+      "new_clock_cache_events": 37,
+      "package_outcomes": [
+        {
+          "Time": "2026-09-10T18:49:07.986209-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "Elapsed": 1.663
+        }
+      ]
+    }
+  ],
+  "static_checks": {
+    "lint": "PASS, zero issues",
+    "ago": "PASS, no findings, stale ignores, or errors",
+    "docs": "PASS, complete documentation check",
+    "prose": "PASS, 1454 files, zero diagnostics"
+  },
+  "benchmark": {
+    "artifact": "benchmark-complete.log.gz",
+    "scope": "ClockCache.Read with a deterministic counter only. Excludes native calls, real issuer I/O, and gateway overhead.",
+    "command": "GOTOOLCHAIN=go1.26.6 go test -run '^$' -bench '^BenchmarkClockCacheRead$' -benchmem -count=3 ./pkg/catalogs/permission"
+  },
+  "native_observations": {
+    "scope": "Read-only Darwin binding probes. No native adapter or production clock qualification. No host clock setting changed.",
+    "os_version": "15.7.2",
+    "source_artifact": "darwin_probe.go.gz",
+    "command": "CGO_ENABLED=0 GOTOOLCHAIN=<go1.26.6 or go1.25.12> go run .tmp/csp4-permission-clock/darwin_probe.go",
+    "results": [
+      {
+        "after": "2026-09-10T23:43:36.521195Z",
+        "arch": "arm64",
+        "before": "2026-09-10T23:43:36.521193Z",
+        "go": "go1.26.6",
+        "ntp_structure_bytes": 48,
+        "os": "darwin",
+        "qualification": "read-only binding observation, not production clock qualification",
+        "registered_call": {
+          "allocs_per_op": 2,
+          "bytes_per_op": 32,
+          "iterations": 6717378,
+          "ns_per_op": 177
+        },
+        "sample": {
+          "Seconds": 1789083816,
+          "Nanoseconds": 521194716,
+          "MaxError": 355899,
+          "EstError": 500000,
+          "TAI": 0,
+          "State": 0,
+          "Padding": 0
+        },
+        "status": 0,
+        "syscall_n": {
+          "allocs_per_op": 0,
+          "bytes_per_op": 0,
+          "iterations": 17772621,
+          "ns_per_op": 67
+        },
+        "timebase": {
+          "Numerator": 125,
+          "Denominator": 3
+        },
+        "timebase_status": 0,
+        "unix_clock_gettime": {
+          "allocs_per_op": 0,
+          "bytes_per_op": 0,
+          "iterations": 33101164,
+          "ns_per_op": 36
+        }
+      },
+      {
+        "after": "2026-09-10T23:49:51.739732Z",
+        "arch": "arm64",
+        "before": "2026-09-10T23:49:51.739729Z",
+        "go": "go1.25.12",
+        "ntp_structure_bytes": 48,
+        "os": "darwin",
+        "qualification": "read-only binding observation, not production clock qualification",
+        "registered_call": {
+          "allocs_per_op": 2,
+          "bytes_per_op": 32,
+          "iterations": 4911073,
+          "ns_per_op": 264
+        },
+        "sample": {
+          "Seconds": 1789084191,
+          "Nanoseconds": 739731517,
+          "MaxError": 543399,
+          "EstError": 500000,
+          "TAI": 0,
+          "State": 0,
+          "Padding": 0
+        },
+        "status": 0,
+        "syscall_n": {
+          "allocs_per_op": 0,
+          "bytes_per_op": 0,
+          "iterations": 14974378,
+          "ns_per_op": 80
+        },
+        "timebase": {
+          "Numerator": 125,
+          "Denominator": 3
+        },
+        "timebase_status": 0,
+        "unix_clock_gettime": {
+          "allocs_per_op": 0,
+          "bytes_per_op": 0,
+          "iterations": 26838306,
+          "ns_per_op": 44
+        }
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "d78164221702902ebc5c605b3d511c28554cbc75e42f59177e3b8a3fa21e077e"
+    },
+    {
+      "path": "pkg/catalogs/permission/README.md",
+      "sha256": "ab440ac4e269af6b610f93875f2c09bf044efdca8a2be95b6c78732925c2758e"
+    },
+    {
+      "path": "pkg/catalogs/permission/clock_cache.go",
+      "sha256": "e3c9b9b28b55e9ee20ea990ebc707c470d13490acb09ddd4cfa6828c46608c2b"
+    },
+    {
+      "path": "pkg/catalogs/permission/clock_cache_test.go",
+      "sha256": "b4e826a9e5ae08a4f579ba375009b18c0ee683eecd37fa51449d502b2f08d95f"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "red.jsonl.gz",
+      "sha256": "03c6fd9e1da136d0264b210cad0636c8c141deabd3be0e27de9236148ef6a8e1",
+      "decoded_sha256": "9af60c0e5687cf9b6de8015fe4204c8060d8f28b89dc2ae71560e6a86e5f99be"
+    },
+    {
+      "path": "green-initial.jsonl.gz",
+      "sha256": "4354539aeb0a70b466bb0fe9093d3d01ddc871ec542ad096495af7717f8f8b47",
+      "decoded_sha256": "aa6b02a1fe406c82d5b8210c68b9d9a9ec4fe75bdfff85cad71f952de0478ef8"
+    },
+    {
+      "path": "permission-go126.jsonl.gz",
+      "sha256": "c44fd17bfb22236a97b5706ea2ce8e2cc9c7c780fc6d8dc10640a457d00ad83c",
+      "decoded_sha256": "3650c6c0e620478709c1f1fd60ad710f6f3157a5b4be8a39aef3379957739e6d"
+    },
+    {
+      "path": "permission-go125.jsonl.gz",
+      "sha256": "5b8cee357179745fc9f6b73ef80f4f7214e9988961cfc727e12196fd22094513",
+      "decoded_sha256": "9469dd450bac5d50e06010805810cdff8cfda3c88a42d647981323e768f44a13"
+    },
+    {
+      "path": "permission-final-go126.jsonl.gz",
+      "sha256": "8a5110529a1e63113d71c76d62b95a0a40f75a315f214a8c0f6dbbe36a629c00",
+      "decoded_sha256": "160f3151672a9b5fec18457990bf3d7d601b08b1aaaaed7d1376a8f91dc6b061"
+    },
+    {
+      "path": "permission-complete-go126.jsonl.gz",
+      "sha256": "f913371919207258b8eae445f2920975a4c6adf2df381343ee8ec9314ad5d3cf",
+      "decoded_sha256": "2c34edb559d40c96053c0538768e1e885592d8c61f3410d9788189c378fc3a30"
+    },
+    {
+      "path": "permission-complete-go125.jsonl.gz",
+      "sha256": "040ca3fa13c2f5913b3069a56e2d2e809a1c8f41ff9f3c45219ec1091f173809",
+      "decoded_sha256": "95390b7a7efef22cb991f100c95a9ae4bc8402b83cd5d44925a840d7beb51560"
+    },
+    {
+      "path": "final-go126.jsonl.gz",
+      "sha256": "fed25e8d93db8c432c07f1ca1c5abe31aacd40990f4b14a3289da006baeb7ade",
+      "decoded_sha256": "836b552b3057166e416534a94f9142ef49014e9d1cc3e97741bc84ffcacefe28"
+    },
+    {
+      "path": "final-go125.jsonl.gz",
+      "sha256": "1c95298c214bbff12f00449ccf5dae150716ef0c29263776d4d60d0e4bdb2673",
+      "decoded_sha256": "48cc1ee77cb6493e2aed26694ac8695d5ecb6934dc35f5417fee730328e2d87d"
+    },
+    {
+      "path": "benchmark.log.gz",
+      "sha256": "4dc48f557cfca605ac0be8d573fa9dc2885ae3d8d9fafe8853e8041455ca7dfe",
+      "decoded_sha256": "d22209308950096ff3b4112f9cce2f20373a01bc7717e23c5d595b456bafe61b"
+    },
+    {
+      "path": "benchmark-complete.log.gz",
+      "sha256": "5246715bba53a028c873d162600c8113eb9a4a48053c7fed6b6e2ffe862db8c5",
+      "decoded_sha256": "4bef5f9900852b79dbfe6c405fc29eab4c39d52b09c72776bfc66a94d1cc8859"
+    },
+    {
+      "path": "lint-complete.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "ago-complete.json.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "docs-complete.log.gz",
+      "sha256": "dcbbea6ad26b1ee868f3ad7af67e9dc71f5a90a233cc6c08e457fe6b97cf7938",
+      "decoded_sha256": "97294678331cadef168cde8bc162946da00f5268ddf1049820a32e39e3fad3a7"
+    },
+    {
+      "path": "prose.log.gz",
+      "sha256": "2c98e6be0ce42ea3eaf0e5fb4712109a51b9b336918c7cd87348f9b83310ea04",
+      "decoded_sha256": "89b0303ebb1c786f9c93debc10ecabdf7f15dae24631749f843b7c235145855c"
+    },
+    {
+      "path": "prose-retry.log.gz",
+      "sha256": "28e8c10c070cf8fb05de09fba2d70763b085b8c77269d80843dc7036a1f7c6a7",
+      "decoded_sha256": "67342ef592e563c7f288607338cfb2ddd4b11e9879f7c0d26fee571a7a235e56"
+    },
+    {
+      "path": "prose-complete.log.gz",
+      "sha256": "28e8c10c070cf8fb05de09fba2d70763b085b8c77269d80843dc7036a1f7c6a7",
+      "decoded_sha256": "67342ef592e563c7f288607338cfb2ddd4b11e9879f7c0d26fee571a7a235e56"
+    },
+    {
+      "path": "darwin_probe.go.gz",
+      "sha256": "bb00416540da7fe0ba7a9a0c3ba328669beb87e9219d0563235be16f1e8bd3d4",
+      "decoded_sha256": "ba1eb64f8f4071ab196991aca7f9aa0dfb6a74da341f54f7a0b2764e65260ddf"
+    },
+    {
+      "path": "darwin-binding-unix-go126.json.gz",
+      "sha256": "ddea55657e403f1261026f006712e83307d69e8e79a1b28e210edb1c749809e2",
+      "decoded_sha256": "83e2522408c9e559937c97e8c3996bd1331d87342f688d8bbc63f001a34e7d9d"
+    },
+    {
+      "path": "darwin-binding-unix-go125.json.gz",
+      "sha256": "cd23385bad8d1640604e9a2d6861b8fd8d5dbeae623d3d6c5a6398761d8ad6ed",
+      "decoded_sha256": "3fd5387a16624266e91e67fcd706754fc4ef6c0551211e80550944b3d7518154"
+    },
+    {
+      "path": "canonical-prose.log.gz",
+      "sha256": "1d4d10bd9eb7d0da50777dbf3f6fd37fcc9ca6fe4a8409d1ac076030c029c7e3",
+      "decoded_sha256": "99e105907e4104f397bfb03527d57e38bb1c24bcff318a445266004ca86f4418"
+    },
+    {
+      "path": "canonical-prose-retry.log.gz",
+      "sha256": "8d284a61cf330afae45277a1ce0eb5dc7a2d09e8b361e8d3cc62a8dc687591cb",
+      "decoded_sha256": "52754cff43d9f0ec1d5e87794ec1e51c171660d1a1a66941ee9043e724177708"
+    },
+    {
+      "path": "canonical-prose-final.log.gz",
+      "sha256": "e1415a421656d5fd5c71f3eec7f94ab4bceea43e5d09791d62cf612154a696e5",
+      "decoded_sha256": "783a9dc37e512fabcab684b3863e98ae16379d143cd1c33735a545e28778554a"
+    }
+  ],
+  "retained_failures": [
+    "The initial clock-cache tests fail to compile before the API exists.",
+    "Two prose diagnostics precede the accepted comment repair."
+  ],
+  "running_commands": [],
+  "remaining": [
+    "Native adapters and operational clock qualification",
+    "Full repository verification of the final native delivery",
+    "Required pre-PR review, publication, native CI, and merge",
+    "Canonical origin server composition, followers, authority transitions, and Starport consumers"
+  ],
+  "canonical_prose": {
+    "status": "PASS",
+    "files": 1297,
+    "diagnostics": 0,
+    "artifact": "canonical-prose-final.log.gz",
+    "retained_failures": [
+      "canonical-prose.log.gz",
+      "canonical-prose-retry.log.gz"
+    ]
+  }
+}

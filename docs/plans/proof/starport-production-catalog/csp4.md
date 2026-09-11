@@ -4,11 +4,17 @@
 
 CSP4 remains in progress. All eight assigned acceptance subcases remain UNVERIFIED.
 
-The active source is clean local `0d1920927164a3a64216d692912587256511fb26` in `/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock`.
-The branch is `codex/catalog-permission-clock`. Its [clock proof](csp4/permission-clock-2026-09-10/verification.json) records eleven focused and 51 authority/status race checks.
-Admission, relay, and permission status now use one complete time and uncertainty sample. The callback still requires native qualification.
+The active worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock`, branch `codex/catalog-native-clock`, at clean `d5ef510b020aeec260c2e108d80f962ba4ae5858`.
+Its [cache proof](csp4/clock-cache-2026-09-10/verification.json) records 127 permission tests per supported toolchain, including 37 new cache cases.
+The cache bounds query delay, counter error, rate drift, age, and concurrent invalidation. No production clock adapter qualifies yet.
 
-Full repository verification runs in session `13328`. No owner decision remains.
+The clean parent remains in `/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock`, branch `codex/catalog-permission-clock`.
+Its [clock proof](csp4/permission-clock-2026-09-10/verification.json) retains the complete-sample tests.
+Admission, relay, and permission status use one complete time and uncertainty sample.
+
+Full parent repository verification runs in session `13328` with host Go 1.27.0 for its race suite.
+The explicitly pinned Go 1.26.6 and Go 1.25.12 authority/status runs each pass 51 events.
+Earlier unpinned artifact names do not establish Go 1.26.6 qualification. The proof preserves that correction. No owner decision remains.
 
 Parent `717ba914` remains clean in `/Users/jack/src/github.com/agentstation/starmap-catalog-authority-issuer`.
 [PR #148](https://github.com/agentstation/starmap/pull/148) publishes that delivery. It includes actual PR #146 merge `faa9cc8b`.

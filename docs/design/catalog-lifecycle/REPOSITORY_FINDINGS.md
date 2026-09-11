@@ -1920,3 +1920,27 @@ The [clock proof](../../plans/proof/starport-production-catalog/csp4/permission-
 Concurrent unsafe samples remain denied. Admission retains zero allocations, and clock failure preserves diagnostic metadata.
 Static checks and the 1,452-file prose check pass. Full repository verification is active.
 This API does not qualify native clock evidence or complete CSP4. The parent origin PR #148 still awaits CI and merge.
+
+
+## Bounded clock cache: 2026-09-10
+
+Local `d5ef510b020aeec260c2e108d80f962ba4ae5858` adds `permission.NewClockCache`.
+The cache separates explicit observations from permission reads and accounts for query delay, counter error, rate drift, and expiry.
+Invalidation also prevents an unfinished observation from restoring evidence. The host still qualifies native sources and counters.
+
+The [cache proof](../../plans/proof/starport-production-catalog/csp4/clock-cache-2026-09-10/verification.json) records 127 permission test events per supported toolchain.
+
+The checks explicitly select Go 1.25.12 and Go 1.26.6.
+
+The 37 new cases include concurrency, invalidation, cancellation, suspend, uncertainty rounding, and issuer refusal after expiry.
+Static checks, complete documentation, and the 1,454-file prose check pass. The isolated benchmark excludes native calls and gateway overhead.
+
+Read-only macOS probes measure the existing `unix.ClockGettime` binding at 36–44 ns, with zero measured allocations.
+The typed `purego` binding measures two allocations per call. These observations do not qualify production clock accuracy or supported platform coverage.
+The [native survey](../../plans/proof/starport-production-catalog/csp4/native-clock-survey-2026-09-10.md) owns adapter research.
+
+The current host defaults to Go 1.27.0. The parent full verifier uses that toolchain for its running race suite.
+Earlier unpinned artifact names do not establish Go 1.26.6 qualification.
+An explicit Go 1.26.6 rerun at `0d192092` passes all 51 authority/status events.
+The [parent proof](../../plans/proof/starport-production-catalog/csp4/permission-clock-2026-09-10/verification.json) records that correction.
+All eight CSP4 acceptance checks remain UNVERIFIED.

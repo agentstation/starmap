@@ -5,18 +5,21 @@
   "done": 9,
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 117,
-  "new_evidence_artifacts": 45,
-  "new_commit_source_files": 28,
-  "resume_words": 279,
-  "current_source": "0d1920927164a3a64216d692912587256511fb26",
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock",
+  "local_links": 119,
+  "new_evidence_artifacts": 69,
+  "new_commit_source_files": 32,
+  "resume_words": 301,
+  "current_source": "d5ef510b020aeec260c2e108d80f962ba4ae5858",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-native-clock",
   "clean_source": true,
   "running_implementation_commands": [
     {
       "session_id": 13328,
       "command": "make verify",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock/.tmp/csp4-permission-clock/make-verify.log"
+      "source": "0d1920927164a3a64216d692912587256511fb26",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-permission-clock",
+      "log": ".tmp/csp4-permission-clock/make-verify.log",
+      "race_toolchain": "go1.27.0"
     }
   ],
   "next_action": "Wait for Verification Gate and confirm the automatic merge of PR #148. Finish full verification of the clock change, then native clock qualification and the remaining CSP4 scope."
