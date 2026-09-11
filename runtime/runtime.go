@@ -143,6 +143,7 @@ type Runtime struct {
 // Open returns a connected runtime. It serves the verified embedded catalog
 // before the first upstream reply, so Catalog and State never wait for the
 // network. Open starts the source and acquisition schedules and returns.
+// An authoritative stored catalog requires origin configuration or require_authority.
 func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if ctx == nil {
 		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
@@ -194,6 +195,9 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	}
 	client, err := starmap.NewContext(ctx, config.acquisitionPolicyClientOptions()...)
 	if err != nil {
+		return nil, err
+	}
+	if err := config.validateStoredAuthoritySelection(client.CurrentCatalogState().AuthorityHead); err != nil {
 		return nil, err
 	}
 	if err := repairWorkspaceForStartup(ctx, client); err != nil {

@@ -44,6 +44,18 @@ func (r *Runtime) requiresAuthority() bool {
 	return r != nil && r.config.source.StartupPolicy == StartupRequireAuthority
 }
 
+// validateStoredAuthoritySelection prevents omitted settings from removing stored authority.
+// It runs before workspace recovery, input publication, or background work.
+func (r options) validateStoredAuthoritySelection(head catalogs.CatalogAuthorityHead) error {
+	if head == (catalogs.CatalogAuthorityHead{}) || r.origin != nil || r.source.StartupPolicy == StartupRequireAuthority {
+		return nil
+	}
+	return &errors.ConfigError{
+		Component: "catalog authority",
+		Message:   "stored catalog requires origin configuration or the require_authority startup policy",
+	}
+}
+
 // AllowsNewAttempt checks current catalog permission using memory only.
 // Call it for every new attempt, including retries and cached response delivery.
 // It does not replace model, destination, account, or budget authorization.
