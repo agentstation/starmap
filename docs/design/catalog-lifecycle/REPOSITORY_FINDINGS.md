@@ -2415,3 +2415,18 @@ All recorded checks are terminal. The passing focused checks do not replace full
 
 Complete pin recovery, generation retention, owned-stage recovery, history compaction, and ambiguous filesystem publication remain open.
 Task acceptance, repository checks, review, native CI, and merge remain required. CSP4 stays complete.
+
+## Filesystem durability and pin restart checkpoint: 2026-09-11
+
+Starmap `de8b5abe` corrects two publication boundaries.
+The filesystem could expose its new pointer with an ordinary I/O error and skip synchronization on an identical retry.
+A pending pin could then reach readiness after restart while the store still reported unconfirmed durability.
+
+The [durability proof](../../plans/proof/starport-production-catalog/csp5/filesystem-durability-2026-09-11/verification.json) preserves both original regressions.
+The store now reports a typed publication error and confirms durability on retry.
+Pending-pin startup confirms its original commit before readiness. Accepted startup reasserts the same receipt without a new operation or acceptance time.
+The tests also refuse incompatible pending configuration and unrelated catalog heads.
+
+Go 1.26.6 checks pass 236 storage/private-file/error events, 37 pin events, and 31 consumer events without failures or skips.
+The filesystem test injects a synchronization failure after real publication. It does not qualify physical power-loss behavior or native platforms.
+Owned-stage recovery, generation retention, history compaction, and full CSP5 qualification remain open.

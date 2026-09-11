@@ -539,8 +539,13 @@ The [Linux ownership fixture](../../plans/proof/starport-production-catalog/csp2
 
 It includes supplementary-group updates without capabilities. This component evidence does not qualify other platforms or managed-service configurations.
 These store checks do not add filesystem access to the active in-memory catalog lookup path.
-CSP5 must classify errors after current-pointer publication, including a failed directory flush after rename.
-The pointer can already be visible when that flush fails. An arbitrary I/O error does not prove rollback.
+
+Checkpoint `de8b5abe` classifies failed synchronization after current-pointer publication through `*errors.PublicationError`.
+The [durability proof](../../plans/proof/starport-production-catalog/csp5/filesystem-durability-2026-09-11/verification.json) records first publication, replacement, reopen, and idempotent retry.
+The pointer can already be visible when its directory flush fails. An arbitrary I/O error does not prove rollback.
+An identical retry confirms directory durability without replacing the pointer or generation identity.
+
+These operations occur during explicit publication and recovery. Active catalog lookups remain in memory.
 
 #### Windows ancestor access
 
@@ -1224,7 +1229,9 @@ The private `catalog-runtime/generation-pin.json` file stores the latest operati
 It has a 32 KiB limit and records preparation, acceptance, or release. The selected configuration authority still owns the pin setting.
 
 An origin rollback publishes older content under a new authority sequence. Identical retries preserve that sequence.
-`Runtime.PinAcceptance` reads acceptance from memory. Complete pin recovery, retained-state recovery, and full task qualification remain open.
+`Runtime.PinAcceptance` reads acceptance from memory. Checkpoint `de8b5abe` requires a pending pin to confirm its recorded commit before readiness.
+Restart reasserts the same receipt without changing its operation ID or acceptance time.
+An unresolved selection cannot change configuration or replace an unrelated head. Generation retention and full task qualification remain open.
 
 Existing `SOURCE_POLL_INTERVAL=0` stops periodic polling, but watcher events can
 still wake the source worker. Startup policy can also require a source read.

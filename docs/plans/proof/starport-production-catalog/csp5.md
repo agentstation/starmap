@@ -7,6 +7,7 @@ Checkpoint `eeeba376` holds the local controls. Checkpoint `48a9a6e5` adds casca
 Checkpoint `52c84e28` corrects source-close timeout ownership. Checkpoint `b3cf9b68` rechecks queued publication guards.
 
 Checkpoint `32951a7b` adds configured pins and consistent unpin startup. Checkpoint `39922ecf` adds durable pin acceptance and origin rollback issuance.
+Checkpoint `de8b5abe` adds explicit durability outcomes and pending-pin confirmation.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -162,17 +163,49 @@ It recorded 969 passing events and no individual test failure before the timeout
 The timeout stack identifies Go 1.27.0. Final focused commands explicitly select Go 1.26.6 and `GOWORK=off`.
 Passing isolated checks do not replace the required full command. All recorded checks are terminal.
 
+## Filesystem durability and pin recovery
+
+The [durability proof](csp5/filesystem-durability-2026-09-11/verification.json) binds checkpoint `de8b5abe` to its commands, snapshots, and results.
+`TestFilesystemCommitAmbiguousFlushOutcome` originally found three defects during first publication and replacement.
+The pointer became visible with an ordinary I/O error. An identical retry skipped the failed flush and reported success without confirmation.
+
+Private-file publication now returns `*errors.PublicationError` after publication if synchronization fails.
+The filesystem store identifies the current generation in that error. The wrapped cause remains available through `errors.Is`.
+Failure before publication preserves the prior pointer and does not claim a published outcome.
+An identical retry verifies retained content and synchronizes the generation directory, its parent, and the current directory.
+The retry preserves pointer identity and rejects different content under the same generation ID.
+
+The pending-pin regression exposed readiness after restart while the store still reported unconfirmed durability.
+Startup now retries the recorded commit before acceptance. It preserves the selected generation and operation ID.
+An accepted restart reasserts the same receipt to confirm its persistence. The operation ID and acceptance time remain unchanged.
+Additional tests refuse clearing or replacing a pending pin and refuse an unrelated head after preparation or acceptance.
+
+The complete storage, private-file, and error packages pass 236 race events: 92, 60, and 84 respectively.
+The final pin check passes 37 events. Activation, rollback, and authority-publication consumers pass 31 events.
+None of these checks fail or skip. The ago and vet checks pass.
+
+The first prose check found two complex-tense comments. Its corrected run passes 1,533 files with no diagnostics.
+Generated Go documentation now includes the pin, acceptance, and publication-error APIs.
+
+All commands select Go 1.26.6 and `GOWORK=off`. Each result retains its tested source snapshot.
+Later changes to tested storage logic are comments and generated documentation only.
+
+The filesystem tests inject a synchronization failure after real link or rename publication.
+They verify visible bytes, reopen, continued refusal, successful retry, and retained prior content.
+Physical power-loss and native platform qualification remain separate. All recorded checks are terminal.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Continue complete pin recovery under the task contract.
+Implement bounded owned-stage recovery and generation retention under the task contract.
+Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
 
-Complete pin and rollback behavior without bypassing permission withdrawal.
-Complete owned-stage recovery, bounded history compaction, and ambiguous publication recovery.
+Keep pin and rollback behavior subject to permission withdrawal during remaining changes.
+Complete owned-stage recovery and bounded history compaction.
 Preserve original receipts, omitted offerings, active writers, unknown files, and required generations.
 Full task checks, repository verification, review, native CI, and merges remain open.

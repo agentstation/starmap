@@ -1,0 +1,1581 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "de8b5abe1750d73171f016d4baa9766247f81cb8",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "internal/privatefiles/publication_test.go",
+      "sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "internal/privatefiles/records.go",
+      "sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "pkg/catalogs/storage/README.md",
+      "sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "pkg/catalogs/storage/filesystem.go",
+      "sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "pkg/catalogs/storage/filesystem_durability.go",
+      "sha256": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae"
+    },
+    {
+      "path": "pkg/catalogs/storage/filesystem_durability_test.go",
+      "sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "pkg/errors/README.md",
+      "sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "pkg/errors/publication.go",
+      "sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "runtime/generation_pin.go",
+      "sha256": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d"
+    },
+    {
+      "path": "runtime/generation_pin_receipt_test.go",
+      "sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    }
+  ],
+  "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+  "verified_at": "2026-09-11T22:50:07.039621+00:00",
+  "source_binding": "Each command selects Go 1.26.6 and GOWORK=off. Source snapshots preserve the failing, corrected, and final checks. Later changes to tested storage logic are comments and generated documentation only.",
+  "qualification": "Local filesystem publication and pin recovery work. All twelve mapped CSP5 subcases remain unverified. No PR or merge credit.",
+  "named_acceptance_test": "TestFilesystemCommitAmbiguousFlushOutcome",
+  "checks": {
+    "filesystem-flush-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "4m",
+        "-run",
+        "^TestFilesystemCommitAmbiguousFlushOutcome$",
+        "-json",
+        "./pkg/catalogs/storage"
+      ],
+      "started_at": "2026-09-11T22:37:38.724876+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "internal/privatefiles/records.go": "43a8b7e10330c0830f6296d657cda5ba2f9557b74eae88c6d3172ddf2e1f3cea",
+        "pkg/catalogs/storage/filesystem.go": "7c69cff0d5d6afe91cfa9f0094307d00805f2ec780afde1183429fd3057c982a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "b647de784a0116db2ceafde2a428fcaf89824619da337c812e5f062bf2a47c86",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T22:37:41.160846+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 3
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "fail": 3
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "result": "fail"
+        }
+      ]
+    },
+    "filesystem-flush-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "4m",
+        "-run",
+        "^TestFilesystemCommitAmbiguousFlushOutcome$",
+        "-json",
+        "./pkg/catalogs/storage"
+      ],
+      "started_at": "2026-09-11T22:39:15.919025+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "internal/privatefiles/records.go": "0a2aacb04578cabeac54fc0c03849e61e138d406ea58a421802536a1ad598d7d",
+        "pkg/catalogs/storage/filesystem.go": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "b647de784a0116db2ceafde2a428fcaf89824619da337c812e5f062bf2a47c86",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:39:18.589546+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 3
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 3
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "result": "pass"
+        }
+      ]
+    },
+    "filesystem-flush-contracts": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-json",
+        "./pkg/catalogs/storage",
+        "./internal/privatefiles",
+        "./pkg/errors"
+      ],
+      "started_at": "2026-09-11T22:40:55.973559+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/filesystem.go": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:41:01.905769+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 236
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/errors": {
+          "pass": 84
+        },
+        "github.com/agentstation/starmap/pkg/catalogs/storage": {
+          "pass": 92
+        },
+        "github.com/agentstation/starmap/internal/privatefiles": {
+          "pass": 60
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/errors",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/privatefiles",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "result": "pass"
+        }
+      ]
+    },
+    "filesystem-flush-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T22:40:57.092059+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/filesystem.go": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:40:59.439200+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "pin-durability-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "4m",
+        "-run",
+        "^TestGenerationPinRetriesUnconfirmedStorePublication$",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T22:42:43.472482+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/filesystem.go": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/generation_pin_receipt_test.go": "47736964f2040bb349320cc1926e91e4819c7392d1fd6f646ec48b3fc306af5f"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T22:42:59.014839+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "pin-durability-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-run",
+        "^(TestGenerationPin.*|TestOriginGenerationPin.*)$",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T22:43:19.119915+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/filesystem.go": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/generation_pin.go": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28",
+        "runtime/generation_pin_receipt_test.go": "47736964f2040bb349320cc1926e91e4819c7392d1fd6f646ec48b3fc306af5f"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:43:47.655769+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 32
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 32
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "pin-durability-contracts": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-run",
+        "^(TestGenerationPin.*|TestOriginGenerationPin.*)$",
+        "-json",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T22:45:16.553981+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f",
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/filesystem.go": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/generation_pin.go": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28",
+        "runtime/generation_pin_receipt_test.go": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:45:46.364745+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 37
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 37
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "filesystem-flush-final-vet": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "vet",
+        "./pkg/catalogs/storage",
+        "./internal/privatefiles",
+        "./pkg/errors",
+        "./runtime"
+      ],
+      "started_at": "2026-09-11T22:45:37.088384+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f",
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/README.md": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15",
+        "pkg/catalogs/storage/filesystem.go": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/README.md": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/README.md": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99",
+        "runtime/generation_pin.go": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28",
+        "runtime/generation_pin_receipt_test.go": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:45:38.614926+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "filesystem-flush-final-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T22:45:38.649075+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f",
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/README.md": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15",
+        "pkg/catalogs/storage/filesystem.go": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/README.md": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/README.md": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99",
+        "runtime/generation_pin.go": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28",
+        "runtime/generation_pin_receipt_test.go": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:45:40.348180+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "filesystem-flush-writing": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T22:45:56.937378+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f",
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/README.md": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15",
+        "pkg/catalogs/storage/filesystem.go": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4",
+        "pkg/catalogs/storage/filesystem_durability.go": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/README.md": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/README.md": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99",
+        "runtime/generation_pin.go": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28",
+        "runtime/generation_pin_receipt_test.go": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-11T22:46:45.187237+00:00",
+      "status": "failed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "filesystem-flush-writing-corrected": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T22:47:17.871398+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f",
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/README.md": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15",
+        "pkg/catalogs/storage/filesystem.go": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4",
+        "pkg/catalogs/storage/filesystem_durability.go": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/README.md": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/README.md": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99",
+        "runtime/generation_pin.go": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d",
+        "runtime/generation_pin_receipt_test.go": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:48:06.265452+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "filesystem-flush-consumers": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-run",
+        "^(TestRollback.*|TestActivate.*|TestCatalogStore.*|TestPublisher.*|TestOrigin.*Publication.*)$",
+        "-json",
+        ".",
+        "./pkg/catalogs/permission"
+      ],
+      "started_at": "2026-09-11T22:47:19.026100+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f",
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/README.md": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15",
+        "pkg/catalogs/storage/filesystem.go": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4",
+        "pkg/catalogs/storage/filesystem_durability.go": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/README.md": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/README.md": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99",
+        "runtime/generation_pin.go": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d",
+        "runtime/generation_pin_receipt_test.go": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:47:33.279618+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 31
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/catalogs/permission": {
+          "pass": 23
+        },
+        "github.com/agentstation/starmap": {
+          "pass": 8
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap",
+          "result": "pass"
+        }
+      ]
+    },
+    "filesystem-flush-complete-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T22:49:31.355172+00:00",
+      "base_commit": "39922ecf04d4cc221958c530c3d3c68ecc5170ed",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f",
+        "internal/privatefiles/publication_test.go": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb",
+        "internal/privatefiles/records.go": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb",
+        "pkg/catalogs/storage/README.md": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15",
+        "pkg/catalogs/storage/filesystem.go": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4",
+        "pkg/catalogs/storage/filesystem_durability.go": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae",
+        "pkg/catalogs/storage/filesystem_durability_test.go": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d",
+        "pkg/errors/README.md": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21",
+        "pkg/errors/publication.go": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236",
+        "runtime/README.md": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99",
+        "runtime/generation_pin.go": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d",
+        "runtime/generation_pin_receipt_test.go": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T22:49:32.882764+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    }
+  },
+  "limits": [
+    "The filesystem test injects a directory synchronization error after real pointer publication. It does not prove physical power-loss recovery.",
+    "The runtime test simulates repeated uncertainty through the store contract. Separate storage and private-file tests exercise real filesystem publication.",
+    "The earlier full runtime/storage command at 32951a7b timed out. It remains failed in the previous proof and does not qualify this source.",
+    "Owned-stage collection, bounded generation retention, acquisition-history compaction, and full task qualification remain open.",
+    "Full repository checks, pre-PR review, native CI, and merges remain required. Starport remains on its merged CSP4 module."
+  ],
+  "artifacts": [
+    {
+      "path": "filesystem-flush-red/changes.patch.gz",
+      "sha256": "85c430842d82717bd424405ce32e445edcb132ebe6f15204f1344a317600fb26",
+      "decoded_sha256": "e23e58263ec4b401c69385c458cf369f5047c084fb96312f824f2e82c06a7dc3"
+    },
+    {
+      "path": "filesystem-flush-red/source/internal/privatefiles/records.go.gz",
+      "sha256": "2f81f026944b8032ca9f2fa12887d7da5df1c124ee5a4c084a328a298d17951d",
+      "decoded_sha256": "43a8b7e10330c0830f6296d657cda5ba2f9557b74eae88c6d3172ddf2e1f3cea"
+    },
+    {
+      "path": "filesystem-flush-red/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "a527af6bac46a4e67a8f6286214f929de09516467504cc09d45c6861caa03eda",
+      "decoded_sha256": "7c69cff0d5d6afe91cfa9f0094307d00805f2ec780afde1183429fd3057c982a"
+    },
+    {
+      "path": "filesystem-flush-red/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "01084e9e58a136238d28f61e39b50c6632f4180311bd2f46cdba87061a1dcc86",
+      "decoded_sha256": "b647de784a0116db2ceafde2a428fcaf89824619da337c812e5f062bf2a47c86"
+    },
+    {
+      "path": "filesystem-flush-red/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-red/stdout.log.gz",
+      "sha256": "39a52299e05bfbfe8eef268aecf82e41542b5681d6e244c1d0d94ba6d78e1df9",
+      "decoded_sha256": "9be69b5be6fb49687a8fa6a06cefc289f953980a7243d9608a1bf06961662a5f"
+    },
+    {
+      "path": "filesystem-flush-red/verification.json.gz",
+      "sha256": "aabda38eddc8047ef51b4b85dd9398d1746eda3f71ae1d14d7fe61592079df5e",
+      "decoded_sha256": "7eec2b25d2a77204e9c3caec36387e1bd08e3f5fff15872ab303302218a3e908"
+    },
+    {
+      "path": "filesystem-flush-green/changes.patch.gz",
+      "sha256": "41e37100e4108e6f29292f41c5a019a97d23a6004f046842150a61dddaf84d03",
+      "decoded_sha256": "18ec5c9edf6fc568038544a9b2dc3035594625e3b0b2ec84fbbdbb65a509b95b"
+    },
+    {
+      "path": "filesystem-flush-green/source/internal/privatefiles/records.go.gz",
+      "sha256": "c0db3ea3ae881a2b858f421709f59432c7e59291c33a80dbcf468f8ba3b788db",
+      "decoded_sha256": "0a2aacb04578cabeac54fc0c03849e61e138d406ea58a421802536a1ad598d7d"
+    },
+    {
+      "path": "filesystem-flush-green/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "1bd9e549fd134dce99c2c9c55203199ffb7e4fc66b4998eafae25bb29ae4fccb",
+      "decoded_sha256": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a"
+    },
+    {
+      "path": "filesystem-flush-green/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "filesystem-flush-green/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "01084e9e58a136238d28f61e39b50c6632f4180311bd2f46cdba87061a1dcc86",
+      "decoded_sha256": "b647de784a0116db2ceafde2a428fcaf89824619da337c812e5f062bf2a47c86"
+    },
+    {
+      "path": "filesystem-flush-green/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-green/stdout.log.gz",
+      "sha256": "5297733c8b3acf6de7ce4e9626fe10b075cbe66a7238c3594bb8ca7e8c2cc15e",
+      "decoded_sha256": "c08b7003ad6df30d83f2c4cb23a4a51f356ef1daef5c1d3547f7b9b96c5251a1"
+    },
+    {
+      "path": "filesystem-flush-green/verification.json.gz",
+      "sha256": "c1d219ceaaf2917a0dea5254262e37bd3e69c495a7b11a68f7d8bebc001b13e6",
+      "decoded_sha256": "afc546f8c4ef53c10250a2911ff51986e801b0bc17399bcb007213963c9103d2"
+    },
+    {
+      "path": "filesystem-flush-contracts/changes.patch.gz",
+      "sha256": "73a08b62d18ec1abc881f9f30ad3d255aa03a3df61ca8ec2446d2b3f041887c1",
+      "decoded_sha256": "dd6ec815b7da70700465ea0ea95646b75cd139ae8fb33e002bb325e5feefe59f"
+    },
+    {
+      "path": "filesystem-flush-contracts/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-contracts/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-contracts/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "1bd9e549fd134dce99c2c9c55203199ffb7e4fc66b4998eafae25bb29ae4fccb",
+      "decoded_sha256": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a"
+    },
+    {
+      "path": "filesystem-flush-contracts/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "filesystem-flush-contracts/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-contracts/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-contracts/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-contracts/stdout.log.gz",
+      "sha256": "aec0e034fcaffdad475833e3d1812df294d54f5d605534101835160b394d1026",
+      "decoded_sha256": "13a1d40cfd90bb416e85fc736554088dc2877d95d725f57246fac45807116699"
+    },
+    {
+      "path": "filesystem-flush-contracts/verification.json.gz",
+      "sha256": "d331792840b89148986e3818b85083e2de371152a6eaab488a81d66b7a047549",
+      "decoded_sha256": "6c86a246e8d70b27736a13b387294a92535c9e294e754dbcae235f59e9f65b5c"
+    },
+    {
+      "path": "filesystem-flush-ago/changes.patch.gz",
+      "sha256": "73a08b62d18ec1abc881f9f30ad3d255aa03a3df61ca8ec2446d2b3f041887c1",
+      "decoded_sha256": "dd6ec815b7da70700465ea0ea95646b75cd139ae8fb33e002bb325e5feefe59f"
+    },
+    {
+      "path": "filesystem-flush-ago/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-ago/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-ago/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "1bd9e549fd134dce99c2c9c55203199ffb7e4fc66b4998eafae25bb29ae4fccb",
+      "decoded_sha256": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a"
+    },
+    {
+      "path": "filesystem-flush-ago/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "filesystem-flush-ago/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-ago/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "filesystem-flush-ago/verification.json.gz",
+      "sha256": "3bf7410dd8cfb0fe4d098bd9386cc37f3c9a41d16bc5f370f37e8d587ed95641",
+      "decoded_sha256": "c0f275939732451b5673cacf6123d68b45d74f03f542b691263b90837362a495"
+    },
+    {
+      "path": "pin-durability-red/changes.patch.gz",
+      "sha256": "e20743b083e71860db294fda7a4930380d2b941747c55067b945bf0a1a9d523b",
+      "decoded_sha256": "b4ca966977a103e45ab8924c7b85fbac423b6f93fe858eabd4dfe7e5081850ce"
+    },
+    {
+      "path": "pin-durability-red/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "pin-durability-red/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "pin-durability-red/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "1bd9e549fd134dce99c2c9c55203199ffb7e4fc66b4998eafae25bb29ae4fccb",
+      "decoded_sha256": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a"
+    },
+    {
+      "path": "pin-durability-red/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "pin-durability-red/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "pin-durability-red/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "pin-durability-red/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "5f6165b1c0fae36464cd1e31dd4eb3d05697e90a5591227d7e732f004aef7909",
+      "decoded_sha256": "47736964f2040bb349320cc1926e91e4819c7392d1fd6f646ec48b3fc306af5f"
+    },
+    {
+      "path": "pin-durability-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-durability-red/stdout.log.gz",
+      "sha256": "5c997c30ed121861f19da6ce4169fa7d6a2c00281f384a3e32605c12e666c20b",
+      "decoded_sha256": "08a1009d4e98c5106f4a99a23f8c178624c691f890c5a0208fdce016f8d4f1bf"
+    },
+    {
+      "path": "pin-durability-red/verification.json.gz",
+      "sha256": "9d2e5334445a8ebe8d7d31cd1acdc1279f73d31831dc5112dfb6fed8fc19be1f",
+      "decoded_sha256": "2e677502c0332f0d094fe926efef29313198afe650c68d6f507d5ddeda795357"
+    },
+    {
+      "path": "pin-durability-green/changes.patch.gz",
+      "sha256": "b73e4b8723b8592e0eb54380a2b85b4bf0ffc58474bd1864979d41f25ffc5ed1",
+      "decoded_sha256": "ad65696794bceec14c81c070af2e65faf141b42f7c02f2e34d059a9fa7a4948e"
+    },
+    {
+      "path": "pin-durability-green/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "pin-durability-green/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "pin-durability-green/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "1bd9e549fd134dce99c2c9c55203199ffb7e4fc66b4998eafae25bb29ae4fccb",
+      "decoded_sha256": "19f11e0ea56c47ac8ace223b4bcc6c7020544832d00791b1b2135617c57c613a"
+    },
+    {
+      "path": "pin-durability-green/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "pin-durability-green/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "pin-durability-green/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "pin-durability-green/source/runtime/generation_pin.go.gz",
+      "sha256": "04ad54ce14d83d31f8473ac57cdac861440511e196117ba027e82364d9af473c",
+      "decoded_sha256": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28"
+    },
+    {
+      "path": "pin-durability-green/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "5f6165b1c0fae36464cd1e31dd4eb3d05697e90a5591227d7e732f004aef7909",
+      "decoded_sha256": "47736964f2040bb349320cc1926e91e4819c7392d1fd6f646ec48b3fc306af5f"
+    },
+    {
+      "path": "pin-durability-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-durability-green/stdout.log.gz",
+      "sha256": "cf034d19fbb42ccca0a8a55094e34ac5b1ba76f91d3d575cd7e28ff4f22a5f72",
+      "decoded_sha256": "3b7ec5856fc3fd75b847eed6636d026ae2884dd41cb2353ba4d7a84c557214b7"
+    },
+    {
+      "path": "pin-durability-green/verification.json.gz",
+      "sha256": "17b95f6bbe02fbca2a4961504f0bc7e46a8bc4aec6aa6f460f60bbf191ef49ad",
+      "decoded_sha256": "ef7254a74393202c769fb5e1b9a224eda0e985d6dfcb7786b0e3c1ea9aa429b6"
+    },
+    {
+      "path": "pin-durability-contracts/changes.patch.gz",
+      "sha256": "56f5c0c419707886031560f2cd5ea6b17357f00b23abbbfa0f373bbdcc3887d2",
+      "decoded_sha256": "889891c4f2769c4dbdd1809c1f77cb20c34cb8e1f3356cb11bb9e7d687814547"
+    },
+    {
+      "path": "pin-durability-contracts/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "pin-durability-contracts/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "pin-durability-contracts/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "pin-durability-contracts/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "pin-durability-contracts/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "pin-durability-contracts/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "pin-durability-contracts/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "pin-durability-contracts/source/runtime/generation_pin.go.gz",
+      "sha256": "04ad54ce14d83d31f8473ac57cdac861440511e196117ba027e82364d9af473c",
+      "decoded_sha256": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28"
+    },
+    {
+      "path": "pin-durability-contracts/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "pin-durability-contracts/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pin-durability-contracts/stdout.log.gz",
+      "sha256": "82d9d1cab42dfe389fa820566976e412741badefc897d07ec17e4e358e5fd879",
+      "decoded_sha256": "3d1bdc2653824c98ac643e65a8bb93ba127a153116e8544c61db2b3469d1c189"
+    },
+    {
+      "path": "pin-durability-contracts/verification.json.gz",
+      "sha256": "80ff72aa37621900c2017189692bc3aec6cfa60cd4b730bd1cd6ea7ff3f53e5f",
+      "decoded_sha256": "462b81057be3162c21a4721f073654a54f3aafe3da1fdf4884617bbb44686c75"
+    },
+    {
+      "path": "filesystem-flush-final-vet/changes.patch.gz",
+      "sha256": "c4cd826178059b5d788b34f9a8d767a195f2760f05360916bb13ad612238420b",
+      "decoded_sha256": "76db99faa3a7aa0634e6b3b0ed03f1ed36838975f4289f629c3064452b8b84d0"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "cc33233ac9cc60838627c1c4ba9b64279b54e92c1913d7c5613a7739aa55cff4",
+      "decoded_sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/pkg/errors/README.md.gz",
+      "sha256": "3fa21c1e566e56612230718f7bb2cfcaa43a00d7390893733fd833d41c57d798",
+      "decoded_sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/runtime/README.md.gz",
+      "sha256": "2e2c7124d43f48c9f267fae7431983d88d22ea4be62fd91e6dfb6ce1073132b7",
+      "decoded_sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/runtime/generation_pin.go.gz",
+      "sha256": "04ad54ce14d83d31f8473ac57cdac861440511e196117ba027e82364d9af473c",
+      "decoded_sha256": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28"
+    },
+    {
+      "path": "filesystem-flush-final-vet/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "filesystem-flush-final-vet/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-final-vet/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-final-vet/verification.json.gz",
+      "sha256": "ad20382b9c583e6f1af171c7fa117a3826f6448acde346a553dd52df41fff32b",
+      "decoded_sha256": "0a0fe78cf12a9dd422c439cf3f9988076059640572e2d59db1e98211566b7d85"
+    },
+    {
+      "path": "filesystem-flush-final-ago/changes.patch.gz",
+      "sha256": "c4cd826178059b5d788b34f9a8d767a195f2760f05360916bb13ad612238420b",
+      "decoded_sha256": "76db99faa3a7aa0634e6b3b0ed03f1ed36838975f4289f629c3064452b8b84d0"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "cc33233ac9cc60838627c1c4ba9b64279b54e92c1913d7c5613a7739aa55cff4",
+      "decoded_sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/pkg/errors/README.md.gz",
+      "sha256": "3fa21c1e566e56612230718f7bb2cfcaa43a00d7390893733fd833d41c57d798",
+      "decoded_sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/runtime/README.md.gz",
+      "sha256": "2e2c7124d43f48c9f267fae7431983d88d22ea4be62fd91e6dfb6ce1073132b7",
+      "decoded_sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/runtime/generation_pin.go.gz",
+      "sha256": "04ad54ce14d83d31f8473ac57cdac861440511e196117ba027e82364d9af473c",
+      "decoded_sha256": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28"
+    },
+    {
+      "path": "filesystem-flush-final-ago/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "filesystem-flush-final-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-final-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "filesystem-flush-final-ago/verification.json.gz",
+      "sha256": "6fe3ec64e8f5dbec3ef153be54750867c0a15ecc9087ba9d0d9eb69abe90635d",
+      "decoded_sha256": "563a00c00396f6f224c693a54f8a88bd56cf1d6508164beb79ad88fac43d360e"
+    },
+    {
+      "path": "filesystem-flush-writing/changes.patch.gz",
+      "sha256": "c4cd826178059b5d788b34f9a8d767a195f2760f05360916bb13ad612238420b",
+      "decoded_sha256": "76db99faa3a7aa0634e6b3b0ed03f1ed36838975f4289f629c3064452b8b84d0"
+    },
+    {
+      "path": "filesystem-flush-writing/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "filesystem-flush-writing/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-writing/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-writing/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "cc33233ac9cc60838627c1c4ba9b64279b54e92c1913d7c5613a7739aa55cff4",
+      "decoded_sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "filesystem-flush-writing/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "filesystem-flush-writing/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "e6d79120ac2127de56c487b457be11292bbfadf71262583713765766c7f86b1a",
+      "decoded_sha256": "a7d094072b103ef580b1bdad5b7a774a89ae28cab2efbd149bd8d367e665487a"
+    },
+    {
+      "path": "filesystem-flush-writing/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-writing/source/pkg/errors/README.md.gz",
+      "sha256": "3fa21c1e566e56612230718f7bb2cfcaa43a00d7390893733fd833d41c57d798",
+      "decoded_sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "filesystem-flush-writing/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-writing/source/runtime/README.md.gz",
+      "sha256": "2e2c7124d43f48c9f267fae7431983d88d22ea4be62fd91e6dfb6ce1073132b7",
+      "decoded_sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "filesystem-flush-writing/source/runtime/generation_pin.go.gz",
+      "sha256": "04ad54ce14d83d31f8473ac57cdac861440511e196117ba027e82364d9af473c",
+      "decoded_sha256": "ca44670adfe3833bb37998fcb20fd615e686310cbc9947a8dd00f94323b25f28"
+    },
+    {
+      "path": "filesystem-flush-writing/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "filesystem-flush-writing/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "filesystem-flush-writing/stdout.log.gz",
+      "sha256": "8e1201692eb2f3d77e55ff885d36b624cb3b830486633e49df1f05e63d95974a",
+      "decoded_sha256": "f284ff6a96f4a30c9e0d0c689657808e2265b79092bf2b70da5152f53219e79e"
+    },
+    {
+      "path": "filesystem-flush-writing/verification.json.gz",
+      "sha256": "4d405ae2b32236c69637049738bab2ad79ec267b726a103200ebceed4bff5d50",
+      "decoded_sha256": "596eb1db8e55268be170887a44bd3d1adbfd52d81ccbd06c50dcec81dcfb56f2"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/changes.patch.gz",
+      "sha256": "6bea2fba016bcae472f069b3f5280e6859e23de22950c6c298d31e54e0719970",
+      "decoded_sha256": "fb201360b3ad6ef6f577d86621e24856484b7fce44f8b554232fae120b808f3a"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "cc33233ac9cc60838627c1c4ba9b64279b54e92c1913d7c5613a7739aa55cff4",
+      "decoded_sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "b2fa2afc7895081e65bc6f7f6e82c470650d4fdcb72e8cf7affe24df8661fff0",
+      "decoded_sha256": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/pkg/errors/README.md.gz",
+      "sha256": "3fa21c1e566e56612230718f7bb2cfcaa43a00d7390893733fd833d41c57d798",
+      "decoded_sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/runtime/README.md.gz",
+      "sha256": "2e2c7124d43f48c9f267fae7431983d88d22ea4be62fd91e6dfb6ce1073132b7",
+      "decoded_sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/runtime/generation_pin.go.gz",
+      "sha256": "352d26ed68079d7cb680201b788408183d83f8e5be67f6f7c38e0acca1f08222",
+      "decoded_sha256": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/stdout.log.gz",
+      "sha256": "10fb4aae40ba3182925948b5949934c515d916e03e1598807d6ea4f468ec6cdd",
+      "decoded_sha256": "8d40b6aa05036f4080acab367d5d262dc2e5be4599ac49fae44230800f2a7f1b"
+    },
+    {
+      "path": "filesystem-flush-writing-corrected/verification.json.gz",
+      "sha256": "1d62ba05298a8de6eaf1e5ceaa934ab5f2b21d3a00d0c02abb9e98c7e32951b9",
+      "decoded_sha256": "fcb21625476af338354ecdd8a42c824dbef05e497d0160832df4dad6f0eef85c"
+    },
+    {
+      "path": "filesystem-flush-consumers/changes.patch.gz",
+      "sha256": "6bea2fba016bcae472f069b3f5280e6859e23de22950c6c298d31e54e0719970",
+      "decoded_sha256": "fb201360b3ad6ef6f577d86621e24856484b7fce44f8b554232fae120b808f3a"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "cc33233ac9cc60838627c1c4ba9b64279b54e92c1913d7c5613a7739aa55cff4",
+      "decoded_sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "b2fa2afc7895081e65bc6f7f6e82c470650d4fdcb72e8cf7affe24df8661fff0",
+      "decoded_sha256": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/pkg/errors/README.md.gz",
+      "sha256": "3fa21c1e566e56612230718f7bb2cfcaa43a00d7390893733fd833d41c57d798",
+      "decoded_sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/runtime/README.md.gz",
+      "sha256": "2e2c7124d43f48c9f267fae7431983d88d22ea4be62fd91e6dfb6ce1073132b7",
+      "decoded_sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/runtime/generation_pin.go.gz",
+      "sha256": "352d26ed68079d7cb680201b788408183d83f8e5be67f6f7c38e0acca1f08222",
+      "decoded_sha256": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d"
+    },
+    {
+      "path": "filesystem-flush-consumers/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "filesystem-flush-consumers/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-consumers/stdout.log.gz",
+      "sha256": "e0dace20bf5ef3bd113cda95d4788e2915b0a647a40767bd297cb4db3d02ca37",
+      "decoded_sha256": "78275cc21bdeb83d561438f3fd44012cc99c5fd230595955844e8d18652bdfa2"
+    },
+    {
+      "path": "filesystem-flush-consumers/verification.json.gz",
+      "sha256": "165334ab1f44ecf124e3df1207e2342e829ada20255f25e19eb669a8b9e9ccd5",
+      "decoded_sha256": "21358e203aedddc1d75cd91659f57552c064af5ea1e6fcd7e2dbb23ff00a3b2c"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/changes.patch.gz",
+      "sha256": "6bea2fba016bcae472f069b3f5280e6859e23de22950c6c298d31e54e0719970",
+      "decoded_sha256": "fb201360b3ad6ef6f577d86621e24856484b7fce44f8b554232fae120b808f3a"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "cc33233ac9cc60838627c1c4ba9b64279b54e92c1913d7c5613a7739aa55cff4",
+      "decoded_sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "b2fa2afc7895081e65bc6f7f6e82c470650d4fdcb72e8cf7affe24df8661fff0",
+      "decoded_sha256": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/pkg/errors/README.md.gz",
+      "sha256": "3fa21c1e566e56612230718f7bb2cfcaa43a00d7390893733fd833d41c57d798",
+      "decoded_sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/runtime/README.md.gz",
+      "sha256": "2e2c7124d43f48c9f267fae7431983d88d22ea4be62fd91e6dfb6ce1073132b7",
+      "decoded_sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/runtime/generation_pin.go.gz",
+      "sha256": "352d26ed68079d7cb680201b788408183d83f8e5be67f6f7c38e0acca1f08222",
+      "decoded_sha256": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "filesystem-flush-complete-ago/verification.json.gz",
+      "sha256": "b450dcdb40f2c7cc7ffec35ddb92aa106f761d367b7a0f96c0dae4cceaccf480",
+      "decoded_sha256": "9005c378676b3e956dbff963475725241a8ad2552c3b69fee2fd80cb4ecb17a6"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "422f9e048b1b2cc182cf13eb57cfca1cfc91fc6c8f2e86dfefdcbcfbb81723a7",
+      "decoded_sha256": "5a38b03129f6202359928e6e9d1e01234d452cc3ad72e9ac0a6772ef1c97984f"
+    },
+    {
+      "path": "committed-source/internal/privatefiles/publication_test.go.gz",
+      "sha256": "27c74de33338d3cb70da539031e4ca973bb2303fc59f058b8e6c3bcd3d64cee1",
+      "decoded_sha256": "eb6a244f036c99273fc08eafbe28e8898b453fc4bd93ad3f3d21cff2c9410abb"
+    },
+    {
+      "path": "committed-source/internal/privatefiles/records.go.gz",
+      "sha256": "7e18f3d4add8d7e77670dc76cea9621c0c9d4e7d332a3d964e836679a4c99d9c",
+      "decoded_sha256": "ac33aae95cc96d225a5fb97c73344f6a1d05c65db05c4b725e328b990289eeeb"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "cc33233ac9cc60838627c1c4ba9b64279b54e92c1913d7c5613a7739aa55cff4",
+      "decoded_sha256": "971fd659f446b98fc3a1ed98e7358ee5c7d0bac069b7dfae7ddf2a7a648cce15"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/filesystem.go.gz",
+      "sha256": "d346f82fc5bd0ac5136914c754e0a3d51ddc788c04b07769f78a179fdae107ff",
+      "decoded_sha256": "84d491c7738528f5c2d6c17be7cb799977d631800eff106c3ec7be705e737ef4"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/filesystem_durability.go.gz",
+      "sha256": "b2fa2afc7895081e65bc6f7f6e82c470650d4fdcb72e8cf7affe24df8661fff0",
+      "decoded_sha256": "68523f7664ca2c2128051c32dc73dc31149f5500d8fff44d12ca160d6746adae"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/filesystem_durability_test.go.gz",
+      "sha256": "dca370faac0d09ffe9b58b4a30b550bb89cb2b67c98e365a066362e8969a9069",
+      "decoded_sha256": "54d871ffb4134aca5a9f6c4270960bf6c4fd640b73433a5becc55aa19ec75b7d"
+    },
+    {
+      "path": "committed-source/pkg/errors/README.md.gz",
+      "sha256": "3fa21c1e566e56612230718f7bb2cfcaa43a00d7390893733fd833d41c57d798",
+      "decoded_sha256": "b30a4ad7c26c63928651e0ec017174c0b32267d705fd014e7f83f768351e5f21"
+    },
+    {
+      "path": "committed-source/pkg/errors/publication.go.gz",
+      "sha256": "d1fd52e47f8ad1133330caa4a884a33e83736b0cfc9240b89c695c3c44f65ed8",
+      "decoded_sha256": "effe0186d5a13954eaeda1a55a2064ea6e2dbf2e41dea2493524e4263e6d5236"
+    },
+    {
+      "path": "committed-source/runtime/README.md.gz",
+      "sha256": "2e2c7124d43f48c9f267fae7431983d88d22ea4be62fd91e6dfb6ce1073132b7",
+      "decoded_sha256": "149d1297fdc54af72b674b651a849dec7c4a35015bc12a329fc2e453b3293a99"
+    },
+    {
+      "path": "committed-source/runtime/generation_pin.go.gz",
+      "sha256": "352d26ed68079d7cb680201b788408183d83f8e5be67f6f7c38e0acca1f08222",
+      "decoded_sha256": "936bf6bc7bbef4e5c35ff1590148bf1ec2f74d16a70ffb1b80096d33487d412d"
+    },
+    {
+      "path": "committed-source/runtime/generation_pin_receipt_test.go.gz",
+      "sha256": "f64bb90e0ab35deba8b68953741268aafd1db31dc6523e9641aa67aeb934ed99",
+      "decoded_sha256": "fde6ba48fede5fc18bd9f9c35f9dbe60b30dc9f69de016bf09b69c30eae0a2fc"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "2415e8001408bc90459de2d556517be612784d3331dfbae371b794def3111fb1",
+      "decoded_sha256": "b71832e2e3ecf1df2402240a1347b697903ff36b52803c0fad2899b2856d94ee"
+    },
+    {
+      "path": "canonical-writing-failed.log.gz",
+      "sha256": "07a121dfb0fa8b3c8c8586285fb606a80130cd460b0dac52f0f5c8a13aca73ad",
+      "decoded_sha256": "c06b073d00e6a673a86ffa44b710e133ff668eed3f378c2cc7bce199176e29f6"
+    },
+    {
+      "path": "canonical-writing-failed-source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "9d4bb8abba5842c5c20c9cbb456de1d16589b83be9355273eff1b7b8ea112853",
+      "decoded_sha256": "e489519dac863f539942b6a9828958d7f1ff22a07ab2beba7379e66de781f58d"
+    },
+    {
+      "path": "canonical-writing-failed-source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "d1073709c1ec7aad912df87c2ae1eb9ff69e3837ee577342a181bee7843389d8",
+      "decoded_sha256": "f02f0361cfa7e455f39451ee16bb81afdc363e011544f22d73abe3f0a4ddee69"
+    },
+    {
+      "path": "canonical-writing-failed-source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "b41c80191e1b33403aa78a40442a534173652a41c4f8597e9ac6b82ce535fc1b",
+      "decoded_sha256": "a6db59644fde152a618b7781b794d0b3d043d4bd43bc578cc2ffbd95fdbcb43e"
+    },
+    {
+      "path": "canonical-writing-corrected.log.gz",
+      "sha256": "8408329a91abdbefad15df397e10e30ae116535be11f2e725f677d304ae2949f",
+      "decoded_sha256": "756e56ba690994f732630cdf85c8ea6ef18e597bd244f72c78ab5b44c9500361"
+    }
+  ],
+  "canonical_writing": {
+    "initial": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 2,
+      "diagnostics": 4,
+      "files": 1358,
+      "cause": "Three paragraph-length diagnostics and one sentence-length diagnostic. Failed source and output remain in the proof."
+    },
+    "corrected": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "exit_code": 0,
+      "files": 1358,
+      "diagnostics": 0
+    }
+  },
+  "final_snapshot_checks": {
+    "source_files": 12,
+    "matching_checks": [
+      "filesystem-flush-consumers",
+      "filesystem-flush-writing-corrected",
+      "filesystem-flush-complete-ago"
+    ],
+    "all_committed_hashes_match": true
+  }
+}
