@@ -1217,7 +1217,14 @@ Checkpoint `32951a7b` adds `STARMAP_CATALOG_GENERATION_PIN` and `WithGenerationP
 The [pin proof](../../plans/proof/starport-production-catalog/csp5/generation-pins-2026-09-11/verification.json) records 86 passing focused race events and separate configuration checks.
 The selected configuration authority owns the pin. Runtime replacement applies a changed value or an explicit empty unpin.
 Selection precedes startup rebuilds, and independent permission observation continues.
-Durable acceptance records, origin rollback issuance, complete pin recovery, and retained-state recovery remain open.
+
+Checkpoint `39922ecf` adds durable acceptance and origin rollback issuance.
+The [acceptance proof](../../plans/proof/starport-production-catalog/csp5/pin-receipts-2026-09-11/verification.json) records failure recovery and repeated startup.
+The private `catalog-runtime/generation-pin.json` file stores the latest operation beneath the selected runtime state directory.
+It has a 32 KiB limit and records preparation, acceptance, or release. The selected configuration authority still owns the pin setting.
+
+An origin rollback publishes older content under a new authority sequence. Identical retries preserve that sequence.
+`Runtime.PinAcceptance` reads acceptance from memory. Complete pin recovery, retained-state recovery, and full task qualification remain open.
 
 Existing `SOURCE_POLL_INTERVAL=0` stops periodic polling, but watcher events can
 still wake the source worker. Startup policy can also require a source read.

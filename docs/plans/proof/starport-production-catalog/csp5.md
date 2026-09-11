@@ -6,7 +6,8 @@ Its worktree is `/Users/jack/src/github.com/agentstation/starmap-catalog-update-
 Checkpoint `eeeba376` holds the local controls. Checkpoint `48a9a6e5` adds cascade lifecycle handling.
 Checkpoint `52c84e28` corrects source-close timeout ownership. Checkpoint `b3cf9b68` rechecks queued publication guards.
 
-Checkpoint `32951a7b` adds configured pins and consistent unpin startup. No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
+Checkpoint `32951a7b` adds configured pins and consistent unpin startup. Checkpoint `39922ecf` adds durable pin acceptance and origin rollback issuance.
+No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
 
@@ -121,11 +122,45 @@ ago and vet pass. The prose check passes before that test-only sample correction
 Full runtime/storage session `36556` starts from clean `32951a7b`.
 Its command is `env STARMAP_PUBLIC_FIXTURE_REQUIRED=1 go test -race -count=1 -timeout 30m -json ./runtime ./pkg/catalogs/storage`.
 The preparation command downloaded and verified the immutable public fixture before this run.
-The proof preserves a running snapshot. Read `.tmp/csp5-update-controls/generation-pin-runtime-storage/verification.json` for its final status.
+The original proof preserves a running snapshot. The latest acceptance proof records the terminal timeout after 969 passing events.
+That command does not pass and does not cover the later acceptance changes.
 
-This checkpoint does not record a durable rollback acceptance event or qualify complete pin recovery.
-An origin can pin its current authority generation. An origin rollback still requires implementation that issues a new authority revision.
-Authority-binding receipts, generation retention, and full task acceptance remain open.
+Checkpoint `32951a7b` has no durable acceptance record and cannot roll an origin back to older content.
+The acceptance work below replaces those limits. Complete pin recovery, generation retention, and full task acceptance remain open.
+
+## Durable pin acceptance
+
+The [acceptance proof](csp5/pin-receipts-2026-09-11/verification.json) binds checkpoint `39922ecf` to its commands, snapshots, and terminal results.
+The original regressions show a missing acceptance file and refusal to restore an older origin generation.
+
+The runtime stores its latest operation in `catalog-runtime/generation-pin.json` beneath the selected runtime state directory.
+The private file has a 32 KiB limit. It records prepared, accepted, or released state and the source or authority binding.
+Its receipt identifies the selected generation, accepted generation, predecessor, payload checksum, authority head, operation ID, and local times.
+The selected configuration authority still owns the pin setting. This file owns recovery evidence only.
+
+The runtime writes preparation before catalog publication and acceptance before readiness.
+A rejected commit, lost reply, or failed acceptance write can resume the same operation after restart.
+An accepted restart preserves the operation and file bytes. A changed source binding, malformed record, or unrelated catalog head prevents readiness.
+A pending operation requires its original configured selection before configuration can change. Complete operator recovery guidance remains with CSP18.
+
+Clearing an accepted pin records release after startup restores its retained inputs. A later pin creates a new operation.
+
+An origin restores the selected payload under a new authority sequence. It preserves the current sequence on an identical retry.
+The test covers restart and a fresh runtime directory against the same memory catalog store.
+Clearing the origin pin restores retained inputs under the next sequence. This test does not qualify a production fleet.
+
+`Runtime.PinAcceptance` reads the accepted receipt from memory and reports whether it has durable storage.
+This file keeps the latest operation. Deployment audit history and the operator UI remain separate plan work.
+
+The final Go 1.26.6 command passes 47 race events without failures or skips.
+It covers ordinary and origin pins, failure recovery, authority binding, receipt schema, permission withdrawal, unpin, and directory ownership.
+Separate isolation passes 52 events from the unfinished source, migration, status, and recovery tests.
+The ago check reports no findings, stale ignores, or incomplete errors. Vet passes. The prose check passes 1,529 files with no diagnostics.
+
+The earlier full runtime/storage command at `32951a7b` failed at its 30-minute limit.
+It recorded 969 passing events and no individual test failure before the timeout. Storage completed, but runtime did not.
+The timeout stack identifies Go 1.27.0. Final focused commands explicitly select Go 1.26.6 and `GOWORK=off`.
+Passing isolated checks do not replace the required full command. All recorded checks are terminal.
 
 ## Remaining work
 
@@ -133,9 +168,9 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Resume current-source session `36556` before starting another broad runtime run.
-Do not replace an observation timeout with a new test process.
-Continue acceptance records, origin rollback publication, and complete pin recovery under the task contract.
+Continue complete pin recovery under the task contract.
+Use Go 1.26.6 explicitly for the remaining checks.
+Full current-source runtime/storage verification must pass before task completion.
 
 Complete pin and rollback behavior without bypassing permission withdrawal.
 Complete owned-stage recovery, bounded history compaction, and ambiguous publication recovery.

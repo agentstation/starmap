@@ -2385,7 +2385,7 @@ The [shutdown proof](../../plans/proof/starport-production-catalog/csp5/source-s
 Runtime cleanup retains the directory after its caller receives a timeout. Failed startup preserves its error and releases ownership only after cleanup.
 Standalone `Source.Close` remains bounded. Starport needs this coordinated lifecycle through CSP8.
 
-The broad runtime check remains active at earlier source `48a9a6e5`. It cannot qualify the timeout correction.
+The earlier broad runtime check at `48a9a6e5` completed with 989 passes and two missing-fixture skips. It cannot qualify the timeout correction.
 Pins and retained-state recovery also remain open.
 
 ## Configured generation selection checkpoint: 2026-09-11
@@ -2399,5 +2399,19 @@ The selected configuration authority owns `CATALOG_GENERATION_PIN`. No separate 
 The runtime selects a verified retained artifact before startup rebuilds. Clearing the pin restores consistent runtime and client state from retained inputs.
 Pinned metadata survives permission withdrawal, but new inference attempts remain blocked. Pins cannot approve a different internal authority.
 
-The current source has no durable rollback acceptance record. An origin rollback still needs a new authority revision.
+Checkpoint `32951a7b` has no durable rollback acceptance record. The later acceptance work below adds origin rollback under a new authority revision.
 The complete CSP5 contract, full runtime/storage run, repository verification, review, native CI, and merge remain open.
+
+## Durable pin acceptance checkpoint: 2026-09-11
+
+Starmap `39922ecf` records the latest pin operation in the private `catalog-runtime/generation-pin.json` file.
+The selected configuration authority still owns the pin setting. The file records recovery state and has a 32 KiB limit.
+The runtime recovers failed publication with the same operation ID. An origin restores older content under a new authority sequence.
+
+The [acceptance proof](../../plans/proof/starport-production-catalog/csp5/pin-receipts-2026-09-11/verification.json) preserves both original failures and source snapshots.
+Go 1.26.6 checks pass 47 focused race events and 52 isolated events without failures or skips.
+The earlier full runtime/storage command failed at 30 minutes after 969 passing events. Its stack identifies Go 1.27.0.
+All recorded checks are terminal. The passing focused checks do not replace full verification.
+
+Complete pin recovery, generation retention, owned-stage recovery, history compaction, and ambiguous filesystem publication remain open.
+Task acceptance, repository checks, review, native CI, and merge remain required. CSP4 stays complete.
