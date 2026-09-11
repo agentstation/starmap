@@ -1170,6 +1170,121 @@
       "path": "final-review.json.gz",
       "sha256": "8039044a63882745383bd2a1d2332a33465e012e7db1fcf287741baa20ea371d",
       "decoded_sha256": "477ed62e9a4ce3ef9c1e6b10f476bcb86ac7f6b8cd36decc7f80765418af9c5d"
+    },
+    {
+      "path": "startup-fix-macos-tests.log.gz",
+      "sha256": "86fa7053b892ec4d7d0ef7c3b59f42d680602ef947e95b3cd8f2cafe5f4a6ab2",
+      "decoded_sha256": "c5154de59673d52ee1cecb4fd3873c699a70a65b13383dc03517d45a5d237c5b"
+    },
+    {
+      "path": "startup-fix-linux-tests.log.gz",
+      "sha256": "922c5389d32ebfc56618796cc325f4558a8b802ac1e9a3a85f379ccdd481f93e",
+      "decoded_sha256": "6567e710c30020ffc352bba78a87d84953b165cee435d5b557cc0f0262e461b1"
+    },
+    {
+      "path": "startup-fix-release-contract.log.gz",
+      "sha256": "74d19316c97e2ab170545b950197c9af750d6893926bfb9d4462c107664f1240",
+      "decoded_sha256": "24f6e34771128029e17b6de4511f430a81185977ef76cd8820272984b2aee679"
+    },
+    {
+      "path": "startup-fix-reproduce.json.gz",
+      "sha256": "0d06fd26581508d21553d4701f5ab025e568263ab8c10eca6821a0e8670a23de",
+      "decoded_sha256": "3f24390f14c175e392c55c9dd8a239ae2586054208574bc31e4e9ff0d577bfcd"
+    },
+    {
+      "path": "startup-fix-reproduce.jsonl.gz",
+      "sha256": "b40c0637e2e7c0813b65d8022105e02ecf9878be329398a5d09afdc140877556",
+      "decoded_sha256": "b71c0109ba8732d9206f492b7593f847cad14181f7a3fe63b0ddfd0173ca968e"
+    },
+    {
+      "path": "startup-fix-reproduce.stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "startup-fix-focused-checks.json.gz",
+      "sha256": "80e14425e29d9a0520e68d71bd30a573903d2501c0d1df6e0e32384308a93511",
+      "decoded_sha256": "9cb4d0160414875871e4aad37bb50dea0a8d60d03470eed37ec4ae1aa10ca491"
+    },
+    {
+      "path": "startup-fix-focused-1.log.gz",
+      "sha256": "5ade9dc581692c74f0357d7e21160d4f93569df374ee6ad04cb21b9fb18062f9",
+      "decoded_sha256": "9797cff4e45fccae45e9494e0de21af1a5e3cc8ea9db137bad07d9d787966af5"
+    },
+    {
+      "path": "startup-fix-focused-2.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "startup-fix-focused-3.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "startup-fix-focused-4.log.gz",
+      "sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf",
+      "decoded_sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66"
+    },
+    {
+      "path": "windows-state-ci.log.gz",
+      "sha256": "dcd45ed7b5cdd6bdb755ef62dfb686fe9a64a086d82cce60b9f3dd73cf9b465e",
+      "decoded_sha256": "d675b30acb2b11ddad60171aa9128017e50be2fc9998a766cbe2cf44e2ecb276"
+    },
+    {
+      "path": "first-consumer-ci-workflow.json.gz",
+      "sha256": "6b446af5fd63102e79eaa46cf0cea0db1d7eaa449782021134a05b2c25129bce",
+      "decoded_sha256": "7bd5fcb2cfd63cd3167115b27883968f23e9cb215c6ef89220fe7769317d7c73"
+    },
+    {
+      "path": "startup-test-interrupted-roster.json.gz",
+      "sha256": "7847717188d4d8cefe2f20c13168a98989cfe976dea05250a85b7e7aab3db2ea",
+      "decoded_sha256": "686490a7996db6617ed29822187af33dbb6647c6d140a6db4bf7299a622cd2fa"
+    },
+    {
+      "path": "startup-test-interrupted-task.json.gz",
+      "sha256": "fd4eea03ed170f04de7ee72c77193063fd160e6a7982609f83a209f29ec531c1",
+      "decoded_sha256": "4050a4fe5a204ffe60b6de746935e11f28e664c003793b11a9db0dc5489fd8d4"
+    },
+    {
+      "path": "windows-state-fail-before.json.gz",
+      "sha256": "8a19c677ea9712136316cd38cd37815a628722e47cba267ca2fe58bf1fc4161c",
+      "decoded_sha256": "dc1c8b7e9d6d33d3fdfe6c5b1c3f2cb2cdf79a17fead5d74b9c65d3e03197c5b"
+    },
+    {
+      "path": "windows-state-fail-before.jsonl.gz",
+      "sha256": "3c62860437f49aa05c8f9f71565ca268b1107aec6184e1b4b77fed3e590a8e27",
+      "decoded_sha256": "b5ab357e0244617d60a2bb7cabbec400e99887b868606112ea9d5ee9532422c5"
+    },
+    {
+      "path": "windows-state-focused-checks.json.gz",
+      "sha256": "c1d9bb2d40bd2bb06787400206ba98c04dd37d4321bdcc3c84886926d92333d2",
+      "decoded_sha256": "841797147b9095765a94e6971ce98b44710cb5ec98725beea3acc5867f0ab765"
+    },
+    {
+      "path": "windows-state-focused-1.log.gz",
+      "sha256": "d51e8829ede99930ced0b136dcc1939a446082419ad48fa9dfcc8fb4efa42f87",
+      "decoded_sha256": "01cf96905595fe840f7e0bc6b73459c4cb28ab97449353d7da914ff6ad5ab681"
+    },
+    {
+      "path": "windows-state-focused-2.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows-state-focused-3.log.gz",
+      "sha256": "7e80dc165f41acd08bc4c06bbf2ce4ec0af5986a5a85f90a5345291f3293acda",
+      "decoded_sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20"
+    },
+    {
+      "path": "windows-state-focused-4.log.gz",
+      "sha256": "3e5a3a5587280c7fc5bdc0668ff25682464961974f7fe51ffc3f7b9ea36fb2c8",
+      "decoded_sha256": "8877f83809a8671f02d1a9a2794a04841c2ee4e950007d2f3c71cfb86d9f121a"
+    },
+    {
+      "path": "windows-state-prose-corrected.log.gz",
+      "sha256": "1fda3721f27f3354bb4691213700707aa4f6ece1f7734bc342955470423e858b",
+      "decoded_sha256": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618"
     }
   ],
   "delivery_guard_followup": {
@@ -2315,5 +2430,229 @@
     ],
     "title": "Enforce catalog authority across Starport request admission",
     "url": "https://github.com/agentstation/starport/pull/373"
+  },
+  "startup_diagnostics_correction": {
+    "source_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
+    "remote_source_commit": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+    "failed_checks": [
+      "Test (macos-latest)",
+      "Test (ubuntu-latest)",
+      "Release Contract"
+    ],
+    "cause": "The test asserted zero upstream calls after connected runtime startup, racing the intentional background permission poll. Passive library construction is a separate contract.",
+    "before": {
+      "repetitions": 100,
+      "pass": 99,
+      "fail": 1
+    },
+    "after": {
+      "base_commit": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d",
+      "source_file": "internal/app/catalog_authority_test.go",
+      "source_sha256": "793e332c16114b2f1d59b91dd0658351dd80cae0e8e935f77f4326f3c9e8b0b4",
+      "status": "passed",
+      "started_at": "2026-09-11T19:00:18.639998+00:00",
+      "checks": [
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-run",
+            "^TestConfiguredAuthorityColdStartupKeepsDiagnostics$",
+            "-count=100",
+            "-timeout",
+            "5m",
+            "-json",
+            "./internal/app"
+          ],
+          "started_at": "2026-09-11T19:00:18.640383+00:00",
+          "status": "passed",
+          "log": ".tmp/csp4-starport-startup-test/focused-1.log",
+          "exit_code": 0,
+          "finished_at": "2026-09-11T19:00:59.576644+00:00"
+        },
+        {
+          "command": [
+            "go",
+            "vet",
+            "./internal/app"
+          ],
+          "started_at": "2026-09-11T19:00:59.576987+00:00",
+          "status": "passed",
+          "log": ".tmp/csp4-starport-startup-test/focused-2.log",
+          "exit_code": 0,
+          "finished_at": "2026-09-11T19:01:00.462642+00:00"
+        },
+        {
+          "command": [
+            "make",
+            "lint"
+          ],
+          "started_at": "2026-09-11T19:01:00.462965+00:00",
+          "status": "passed",
+          "log": ".tmp/csp4-starport-startup-test/focused-3.log",
+          "exit_code": 0,
+          "finished_at": "2026-09-11T19:01:03.337596+00:00"
+        },
+        {
+          "command": [
+            "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+            "lint",
+            "internal/app/catalog_authority_test.go",
+            "--format",
+            "text"
+          ],
+          "started_at": "2026-09-11T19:01:03.337905+00:00",
+          "status": "passed",
+          "log": ".tmp/csp4-starport-startup-test/focused-4.log",
+          "exit_code": 0,
+          "finished_at": "2026-09-11T19:01:03.451886+00:00"
+        }
+      ],
+      "finished_at": "2026-09-11T19:01:03.452214+00:00",
+      "committed_source": "dd84756131156c5a8a1281480e33ee84c0214815",
+      "test_events": {
+        "pass": 300
+      }
+    },
+    "production_code_changed": false,
+    "remaining": "Complete repository and task checks, then review and update existing PR 373.",
+    "running_checks": [],
+    "interrupted_followup": "Stopped repository and task runs with observed exit 130 after Windows CI revealed an additional directory-ownership defect. The repository run passed 27 commands before interruption."
+  },
+  "windows_state_correction": {
+    "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
+    "status": "committed_pending_verification",
+    "cause": "Starport development and the authority test fixture precreated the Starmap runtime directory using os.MkdirAll. On the Windows runner that directory belongs to Administrators rather than the process account, so the native owner check correctly rejects it.",
+    "correction": "Let Starmap create its own state directory with its native creation policy. Preserve refusal of unsafe preexisting directories.",
+    "dirty_files": [],
+    "fail_before": "TestDevLetsStarmapCreateCatalogState fails on macOS before the product correction. Native Windows CI captures ten top-level development and authority failures.",
+    "remaining": "Focused checks, commit, full repository and task verification, required review, PR update, and native CI.",
+    "source_commit": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+    "focused_verification": {
+      "base_commit": "dd84756131156c5a8a1281480e33ee84c0214815",
+      "source_files": [
+        {
+          "path": "internal/app/development.go",
+          "sha256": "04044613dc9af2c648387c0389bb945b4e62d4fd953e4226208117315c4fa9a9"
+        },
+        {
+          "path": "internal/app/development_catalog_test.go",
+          "sha256": "350ddfda199554bf9d7ff3aaa63431b29e3d87a792f1b4dd0154b32ed0d869ca"
+        },
+        {
+          "path": "internal/catalog/authority_acceptance_test.go",
+          "sha256": "1598c5d979b44f038ca236869239d220f06fee8beefe9bfaef3e2f0588d3c891"
+        }
+      ],
+      "status": "passed",
+      "started_at": "2026-09-11T19:08:07.596348+00:00",
+      "checks": [
+        {
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=10",
+            "-run",
+            "^(TestDev|TestAuthorityCatalogExcludesEmbeddedMembership|TestAuthorityColdStartupRefusesWithoutAcceptedOwner|TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner|TestAuthorityFutureSchemaPermissionEnvelope)",
+            "-timeout",
+            "5m",
+            "-json",
+            "./internal/app",
+            "./internal/catalog"
+          ],
+          "started_at": "2026-09-11T19:08:07.596697+00:00",
+          "status": "passed",
+          "log": ".tmp/csp4-starport-windows-state/focused-1.log",
+          "exit_code": 0,
+          "finished_at": "2026-09-11T19:09:24.776354+00:00"
+        },
+        {
+          "command": [
+            "go",
+            "vet",
+            "./internal/app",
+            "./internal/catalog"
+          ],
+          "started_at": "2026-09-11T19:09:24.776813+00:00",
+          "status": "passed",
+          "log": ".tmp/csp4-starport-windows-state/focused-2.log",
+          "exit_code": 0,
+          "finished_at": "2026-09-11T19:09:25.680251+00:00"
+        },
+        {
+          "command": [
+            "make",
+            "lint"
+          ],
+          "started_at": "2026-09-11T19:09:25.680628+00:00",
+          "status": "passed",
+          "log": ".tmp/csp4-starport-windows-state/focused-3.log",
+          "exit_code": 0,
+          "finished_at": "2026-09-11T19:09:29.628260+00:00"
+        },
+        {
+          "command": [
+            "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+            "lint",
+            "internal/app/development.go",
+            "internal/app/development_catalog_test.go",
+            "internal/catalog/authority_acceptance_test.go",
+            "--format",
+            "text"
+          ],
+          "started_at": "2026-09-11T19:09:29.628649+00:00",
+          "status": "failed",
+          "log": ".tmp/csp4-starport-windows-state/focused-4.log",
+          "exit_code": 1,
+          "finished_at": "2026-09-11T19:09:29.787081+00:00"
+        }
+      ],
+      "prose_correction": {
+        "command": [
+          "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing",
+          "lint",
+          "internal/app/development.go",
+          "internal/app/development_catalog_test.go",
+          "internal/catalog/authority_acceptance_test.go",
+          "--format",
+          "text"
+        ],
+        "exit_code": 0,
+        "reason": "Eight diagnostics came from three preexisting comment blocks in development.go. The correction changes only those comments after the passing code checks."
+      },
+      "final_source_files": [
+        {
+          "path": "internal/app/development.go",
+          "sha256": "e6260171e358154bc42a52ca3c2cbc157b9805df67b87f6acb5fcdedb9200040"
+        },
+        {
+          "path": "internal/app/development_catalog_test.go",
+          "sha256": "350ddfda199554bf9d7ff3aaa63431b29e3d87a792f1b4dd0154b32ed0d869ca"
+        },
+        {
+          "path": "internal/catalog/authority_acceptance_test.go",
+          "sha256": "1598c5d979b44f038ca236869239d220f06fee8beefe9bfaef3e2f0588d3c891"
+        }
+      ],
+      "committed_source": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "test_events": {
+        "pass": 180,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "running_checks": [
+      {
+        "session_id": 12552,
+        "metadata": ".tmp/csp4-starport-windows-state/verification.json"
+      },
+      {
+        "session_id": 11148,
+        "metadata": ".tmp/csp4-integrated-task/windows-state-pair-task-gate.meta.json",
+        "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
+      }
+    ]
   }
 }

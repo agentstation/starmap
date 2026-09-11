@@ -53,6 +53,19 @@ All 33 final repository commands pass with the public module. The final pair pas
 Both Starport reviewers report zero findings, and the secret scan passes. PR #373 runs native CI in workflow `34635569656`.
 Starport CI and both remaining implementation merges stay open.
 
+CI found a timing-dependent startup assertion at `2a0246a7`. The macOS, Linux, and release-contract jobs report the same failure.
+The test expected zero upstream calls after the connected runtime started its background permission poll.
+A local 100-run race reproduction records 99 passes and one failure.
+
+Correction `dd847561` tests unavailable and pending authority responses. Both cases retain diagnostics and deny inference without waiting for the response.
+The correction passes 100 repetitions with 300 test events and no failures or skips. Vet, lint, and the changed-file prose check pass.
+The production code remains unchanged in `dd847561`.
+
+Windows CI also rejects development and authority fixtures that precreate Starmap state directories under the Administrators owner.
+Commit `ba9b0d8e` lets the real Starmap constructor create those directories with its native access rules.
+`TestDevLetsStarmapCreateCatalogState` fails before the product correction. Ten repeated development and authority checks pass 180 events afterward.
+Vet, lint, and corrected prose checks pass. Repository checks, the task gate, review, PR update, and native Windows qualification remain required.
+
 ### Consumer checks and published dependency
 
 Starport `80f8064e` adds four authority acceptance cases. Its [proof](csp4/consumer-acceptance-2026-09-11/verification.json) records 45 passing race events across five repetitions.

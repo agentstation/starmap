@@ -6,10 +6,10 @@
   "in_progress": "CSP4",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 117,
-  "new_evidence_artifacts": 1677,
+  "new_evidence_artifacts": 1700,
   "new_commit_source_files": 325,
-  "resume_words": 272,
-  "next_action": "Starport 2a0246a7 includes main 5e437a2b and passes all 33 repository commands. The final task gate passes eight subcases and 54 race events. Both Starport reviewers pass with zero findings. PR 373 runs workflow 34635569656. Starmap PR 152 has six passing native jobs and automatic merge enabled for its final verification job. Merge Starmap before Starport. No owner decision remains.",
+  "resume_words": 350,
+  "next_action": "Starport ba9b0d8e fixes Windows state-directory precreation and includes the startup-test correction. Focused tests pass 180 events, plus 300 startup events at the preceding commit. Complete repository session 12552 and task session 11148, then run the prepared windows-state review and update PR 373. Starmap PR 152 remains in its final verification job. Preserve the pinned runtime revision through its merge, then merge Starport.",
   "current_source": "2b4aa1fe4f3cb43b2972918bc7bacfcf4a435268",
   "starmap_integration_source": "6419ea856cf5c49cd3884a3ddd3000f57df5abfa",
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-host-clock",
@@ -20,9 +20,17 @@
       "source": "33118919dc18e1f824ea618502f23b756e50813a"
     },
     {
-      "pull_request": 373,
-      "workflow_run": 34635569656,
-      "source": "2a0246a72ce6fa14a33cbcd0dc850f6970dfbf9d"
+      "session_id": 12552,
+      "source": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "metadata": ".tmp/csp4-starport-windows-state/verification.json",
+      "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer"
+    },
+    {
+      "session_id": 11148,
+      "source": "33118919dc18e1f824ea618502f23b756e50813a",
+      "consumer": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "metadata": ".tmp/csp4-integrated-task/windows-state-pair-task-gate.meta.json",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-origin-settings"
     }
   ]
 }
