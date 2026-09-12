@@ -1,0 +1,2760 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "64f905db77b469f925af3092990e3b1d8e113437",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0"
+    },
+    {
+      "path": "internal/catalog/workspace/projector.go",
+      "sha256": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71"
+    },
+    {
+      "path": "internal/catalog/workspace/record_read.go",
+      "sha256": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6"
+    },
+    {
+      "path": "internal/catalog/workspace/record_write.go",
+      "sha256": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9"
+    },
+    {
+      "path": "internal/catalog/workspace/record_write_test.go",
+      "sha256": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee"
+    },
+    {
+      "path": "internal/catalog/workspace/replacement.go",
+      "sha256": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b"
+    },
+    {
+      "path": "internal/catalog/workspace/replacement_finish.go",
+      "sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae"
+    },
+    {
+      "path": "internal/catalog/workspace/replacement_record.go",
+      "sha256": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+    }
+  ],
+  "deleted_source_files": [],
+  "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+  "verified_at": "2026-09-12T03:17:47.280135+00:00",
+  "source_binding": "Each command retains its source hashes, snapshots, patch, output, and exit code. All five final checks match the committed Go source. The prose check also matches the committed document. The full race check precedes the documentation addition. The reader failure uses a preserved Go overlay that restores only readProjectionMarker from the base commit. Both overlay inputs remain in the raw support artifacts.",
+  "qualification": "Local workspace marker and replacement-journal temporary ownership, bounded record reads, publication guards, and CLI compatibility. All twelve mapped CSP5 subcases remain unverified. No PR or merge credit.",
+  "final_checks": [
+    "workspace-records-full-race",
+    "workspace-records-ago",
+    "workspace-records-prose",
+    "workspace-records-linux-compile",
+    "workspace-records-windows-compile"
+  ],
+  "checks": {
+    "workspace-records-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T02:52:11.186175+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0",
+        "internal/catalog/workspace/projector.go": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71",
+        "internal/catalog/workspace/record_read.go": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6",
+        "internal/catalog/workspace/record_write.go": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9",
+        "internal/catalog/workspace/record_write_test.go": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee",
+        "internal/catalog/workspace/replacement.go": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b",
+        "internal/catalog/workspace/replacement_finish.go": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae",
+        "internal/catalog/workspace/replacement_record.go": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T02:52:13.691779+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    },
+    "workspace-records-boundary-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-json",
+        "./internal/catalog/workspace",
+        "-run",
+        "^(TestWorkspaceRecord|TestProjectionMarkerReadRejectsOversize)"
+      ],
+      "started_at": "2026-09-12T02:50:12.491196+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "internal/catalog/workspace/projector.go": "d50eafe6d3a321c5152ba22a10def6a350ff997f6056b2f09087d1c3b1274618",
+        "internal/catalog/workspace/record_write.go": "e4c0b1fce69ffaf3e9a08aca11fa66e4ee50ac4bc912a4c75f941bd18662b29d",
+        "internal/catalog/workspace/record_write_test.go": "0ed596c544b299cc3ef5457c6c22477795a2000d82e2f7565d25c79f36b81b4c",
+        "internal/catalog/workspace/replacement.go": "7d35aa9e89e976f5ebc1c3d2d2b52695e8331944de731608fd5c3940b3e4c696",
+        "internal/catalog/workspace/replacement_finish.go": "e81ad43b8cedc3c05ecd699646358607889d9deea8fc640c2afcff75de00fd99",
+        "internal/catalog/workspace/replacement_record.go": "0ae2c6f555e3feefc2f7a8937c000aa379f661e96533ce7e91167f9ac6348852"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T02:50:18.651529+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 26
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/changed-access",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/changed-access",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.31
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/changed-access",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles",
+          "Action": "pass",
+          "Elapsed": 3.7
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/candidate",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/destination",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/cancellation",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/partial-write",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/short-write",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationAndExactLimit/journal",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationAndExactLimit/marker",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationAndExactLimit",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionMarkerReadRejectsOversize",
+          "Action": "pass",
+          "Elapsed": 0.01
+        }
+      ]
+    },
+    "workspace-records-full-race": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "12m",
+        "-json",
+        "./internal/catalog/workspace",
+        "./internal/cli/commands/migrate"
+      ],
+      "started_at": "2026-09-12T02:51:13.534548+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "internal/catalog/workspace/projector.go": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71",
+        "internal/catalog/workspace/record_read.go": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6",
+        "internal/catalog/workspace/record_write.go": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9",
+        "internal/catalog/workspace/record_write_test.go": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee",
+        "internal/catalog/workspace/replacement.go": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b",
+        "internal/catalog/workspace/replacement_finish.go": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae",
+        "internal/catalog/workspace/replacement_record.go": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T02:51:53.458133+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 215
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesUnboundAccessMetadata/version",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesUnboundAccessMetadata/access_digest",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesUnboundAccessMetadata",
+          "Action": "pass",
+          "Elapsed": 0.59
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReplacementPreservesNativeACLs",
+          "Action": "pass",
+          "Elapsed": 0.37
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceNewFilesInheritNativeACLs",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessSurvivesInterruptedReplacement/journal_saved",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessSurvivesInterruptedReplacement/backup_moved",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessSurvivesInterruptedReplacement/candidate_installed",
+          "Action": "pass",
+          "Elapsed": 0.36
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessSurvivesInterruptedReplacement/marker_saved",
+          "Action": "pass",
+          "Elapsed": 0.36
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/migrate",
+          "Test": "TestCatalogCommandRunsExplicitMigration",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/migrate",
+          "Test": "TestCatalogCommandReturnsMigrationError",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessSurvivesInterruptedReplacement/backup_entry_removed",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessSurvivesInterruptedReplacement/backup_removed",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessSurvivesInterruptedReplacement",
+          "Action": "pass",
+          "Elapsed": 2.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReplacementPreservesAccessPolicy/atomic",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReplacementPreservesAccessPolicy/journal",
+          "Action": "pass",
+          "Elapsed": 0.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReplacementPreservesAccessPolicy",
+          "Action": "pass",
+          "Elapsed": 0.62
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRenderRemainsInsidePrivateStaging",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceAccessFailurePreservesOriginal",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceACLBufferRefusesMalformedNativeMetadata/short",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceACLBufferRefusesMalformedNativeMetadata/total",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceACLBufferRefusesMalformedNativeMetadata/offset",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceACLBufferRefusesMalformedNativeMetadata/length",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceACLBufferRefusesMalformedNativeMetadata/magic",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceACLBufferRefusesMalformedNativeMetadata/count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceACLBufferRefusesMalformedNativeMetadata",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestTreeSnapshotDetectsNativeACLChange/.",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestTreeSnapshotDetectsNativeACLChange/note.txt",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestTreeSnapshotDetectsNativeACLChange",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryPreservesACLChangedBackup",
+          "Action": "pass",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReplacementRefusesLateModeChanges/atomic",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReplacementRefusesLateModeChanges/journal",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReplacementRefusesLateModeChanges",
+          "Action": "pass",
+          "Elapsed": 0.52
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestTreeSnapshotDetectsSpecialModeChange",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestAssemblyRejectsReplacementFileOwnership",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestCanonicalHumanWorkspaceIsSeparateFromEveryDefaultMachineRoot",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestMigrateLegacyLayoutRetainsAuthorityRecord",
+          "Action": "pass",
+          "Elapsed": 0.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestMigrateLegacyLayoutRejectsConflictingAuthorityRecord",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestMigrateLegacyLayoutPreservesLegacyAuthorityWithoutRecord",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyStoreLockCancellationPreservesStore",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyStoreLockDoesNotRecreateMissingLock",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesProjectedOperatorChanges/unknown-file",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesProjectedOperatorChanges/changed-file",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesProjectedOperatorChanges/replacement-file",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesProjectedOperatorChanges/replacement-root",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesProjectedOperatorChanges",
+          "Action": "pass",
+          "Elapsed": 0.76
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackCancellationRestoresOwnedWorkspace",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackRetainsWriterLockIdentity",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyStoreMoveNeverReplacesDirectories/relocate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyStoreMoveNeverReplacesDirectories/restore",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyStoreMoveNeverReplacesDirectories",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesOperatorSidecars/projection-marker",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesOperatorSidecars/writer-lock",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesOperatorSidecars",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyRollbackPreservesReplacementStore",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyGenerationScanBatchesAndCancellation/complete",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyGenerationScanBatchesAndCancellation/cancel-after-1",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyGenerationScanBatchesAndCancellation/cancel-after-128",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyGenerationScanBatchesAndCancellation/cancel-after-129",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyGenerationScanBatchesAndCancellation/cancel-after-259",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyGenerationScanBatchesAndCancellation/invalid-retained-entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyGenerationScanBatchesAndCancellation",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyPreflightPreservesExcessEntries/root",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyPreflightPreservesExcessEntries/generation",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyPreflightPreservesExcessEntries",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyMigrationPreservesGenerationsAcrossBatches",
+          "Action": "pass",
+          "Elapsed": 6.5
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestLegacyPreflightRejectsOversizedRetainedManifestBeforeParsing",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceWritersAreExcludedAcrossProcessesWhileReadersRemainAvailable",
+          "Action": "pass",
+          "Elapsed": 2.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceWriterLockIsReleasedWhenProcessExits",
+          "Action": "pass",
+          "Elapsed": 0.45
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceWriterProcessHelper",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationCleanupPreservesOperatorChanges/unknown-child",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationCleanupPreservesOperatorChanges/changed-render",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationCleanupPreservesOperatorChanges/replaced-render-file",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationCleanupPreservesOperatorChanges/replaced-enclosure",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationCleanupPreservesOperatorChanges",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationOwnsPartialWrites/unchanged",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationOwnsPartialWrites/operator-edit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationOwnsPartialWrites",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestVerificationCleanupPreservesOperatorChanges",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestAssemblyBoundsChangedRenderedDirectory",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestPreparationLimitRefusesCreation",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectPreservesDirectoryCreatedAtPublication",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRefusesCancellationBeforePublication/first",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRefusesCancellationBeforePublication/replacement",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRefusesCancellationBeforePublication",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadRefusesActiveWriterProcess",
+          "Action": "pass",
+          "Elapsed": 1.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReaderProcessBlocksWriterAndReleasesLockOnExit",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceReaderProcessHelper",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadRefusesPendingReplacement",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadPreservesPassiveFiles/absent_parent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadPreservesPassiveFiles/absent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadPreservesPassiveFiles/authored",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadPreservesPassiveFiles/existing_lock",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadPreservesPassiveFiles",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadExcludesWritersUntilCallbackReturns/success",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadExcludesWritersUntilCallbackReturns/callback_error",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadExcludesWritersUntilCallbackReturns",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadDetectsFirstWriterAfterItFinishes",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadDetectsFirstWriterWithoutDirectoryChange",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadDetectsExternalDirectoryReplacement",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadRefusesInvalidLockWithoutReading",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestReadCancellationAndCallbackValidation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestObserveInputRefusesActiveWriter/absent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestObserveInputRefusesActiveWriter/present",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestObserveInputRefusesActiveWriter",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/changed-access",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/changed-access",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/changed-access",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles",
+          "Action": "pass",
+          "Elapsed": 3.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/candidate",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/destination",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/cancellation",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/partial-write",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards/short-write",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationGuards",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationAndExactLimit/journal",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationAndExactLimit/marker",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordPublicationAndExactLimit",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionMarkerReadRejectsOversize",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesCopiedCandidateIdentity",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryValidatesMarkerBeforeMovingWorkspace",
+          "Action": "pass",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalCleanupPreservesChangedBackup",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesCorruptIntentWithoutChanges",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/unsupported_version",
+          "Action": "pass",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/different_workspace",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/candidate_traversal",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/backup_traversal",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/same_directory_identity",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges/inventory_digest",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryRefusesInvalidBindingsWithoutChanges",
+          "Action": "pass",
+          "Elapsed": 1.67
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalCancellationRetainsRecoveryState/backup_moved",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalCancellationRetainsRecoveryState/candidate_installed",
+          "Action": "pass",
+          "Elapsed": 0.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalCancellationRetainsRecoveryState",
+          "Action": "pass",
+          "Elapsed": 0.69
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversAfterProcessExit/journal_saved",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_moved",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversAfterProcessExit/candidate_installed",
+          "Action": "pass",
+          "Elapsed": 0.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversAfterProcessExit/marker_saved",
+          "Action": "pass",
+          "Elapsed": 0.36
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_entry_removed",
+          "Action": "pass",
+          "Elapsed": 0.36
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversAfterProcessExit/backup_removed",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 2.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementProcessHelper",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementPreservesOperatorFiles",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversEachPhase/journal_saved",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversEachPhase/backup_moved",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversEachPhase/candidate_installed",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversEachPhase/marker_saved",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversEachPhase/backup_entry_removed",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversEachPhase/backup_removed",
+          "Action": "pass",
+          "Elapsed": 0.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRecoversEachPhase",
+          "Action": "pass",
+          "Elapsed": 2.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalReplacementRefusesLateOperatorEdits",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestJournalRecoveryPreservesUnexpectedWorkspace",
+          "Action": "pass",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/candidate/unknown-file",
+          "Action": "pass",
+          "Elapsed": 0.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/candidate/changed-file",
+          "Action": "pass",
+          "Elapsed": 0.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/candidate/replaced-file",
+          "Action": "pass",
+          "Elapsed": 0.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/candidate/replaced-root",
+          "Action": "pass",
+          "Elapsed": 0.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/unknown-file",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/changed-file",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-file",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging/exchanged-backup/replaced-root",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionCleanupPreservesChangedStaging",
+          "Action": "pass",
+          "Elapsed": 2.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairPreservesInputChangedAfterRendering/missing",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairPreservesInputChangedAfterRendering/prior-projection",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairPreservesInputChangedAfterRendering",
+          "Action": "pass",
+          "Elapsed": 0.37
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairBuildsSingleCandidate/missing",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairBuildsSingleCandidate/prior-projection",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairBuildsSingleCandidate",
+          "Action": "pass",
+          "Elapsed": 0.41
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestTreeSnapshotBindsIdentityAndOperatorBytes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestTreeSnapshotEnforcesResourceBoundsAndCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateHumanLayoutAcceptsMissingAndProviderYAMLPaths",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRejectsWorkspaceSymlink",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRejectsSymlinkedWriterLock",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestEndpointProjectionDeterministicallyJoinsCanonicalModelToOfferings",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRejectsLegacyGenerationLayoutBeforeStaging",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestOlderBinaryRejectsNewerSchemaBeforeMigrationMutation",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestMigrateLegacyLayoutFailureRollsBackExactStore",
+          "Action": "pass",
+          "Elapsed": 0.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestEndpointProjectionIsStableAcrossWorkspaceRoundTrip",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestMigrateLegacyLayoutRollbackPreservesRecreatedLegacyPath",
+          "Action": "pass",
+          "Elapsed": 0.6
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateMachineSeparationResolvesSymlinkedAncestors",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestFirstProjectionRejectsWorkspaceCreatedAfterObservation",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRejectsCatalogThatDoesNotMatchCommittedPayload",
+          "Action": "pass",
+          "Elapsed": 0.85
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectSeparatesCatalogAndGeneratedEndpointDigests",
+          "Action": "pass",
+          "Elapsed": 0.85
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestEndpointProjectionEditBeforeProjectExpectedIsPreserved",
+          "Action": "pass",
+          "Elapsed": 1.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/same",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/workspace_contains_machine",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/machine_contains_workspace",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots/siblings",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateMachineSeparationRejectsOverlappingLifecycleRoots",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/generations",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/current",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry/.commit.lock",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestValidateHumanLayoutDetectsEveryLegacyGenerationEntry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectExpectedRejectsSemanticEditAfterInputLoad",
+          "Action": "pass",
+          "Elapsed": 1.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace",
+          "Action": "pass",
+          "Elapsed": 1.59
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestFirstProjectionFailureLeavesWorkspaceAbsent",
+          "Action": "pass",
+          "Elapsed": 1.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestMigrateLegacyLayoutRelocatesStoreAndProjectsCurrent",
+          "Action": "pass",
+          "Elapsed": 1.88
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectRejectsConcurrentSemanticEdit",
+          "Action": "pass",
+          "Elapsed": 1.9
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairDoesNotOverwriteDirtyWorkspace",
+          "Action": "pass",
+          "Elapsed": 1.93
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectAtomicallyReplacesValidatedWorkspace",
+          "Action": "pass",
+          "Elapsed": 1.99
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectFailureBeforePromotePreservesOldWorkspace",
+          "Action": "pass",
+          "Elapsed": 1.73
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestEndpointProjectionDriftIsDetectedWithoutOverwrite",
+          "Action": "pass",
+          "Elapsed": 2.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairStaleUnmodifiedProjection",
+          "Action": "pass",
+          "Elapsed": 1.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestRepairAcknowledgesSwapAfterMarkerFailure",
+          "Action": "pass",
+          "Elapsed": 1.57
+        }
+      ]
+    },
+    "workspace-records-linux-compile": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=linux",
+        "GOARCH=amd64",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-update-controls/workspace-records-linux.test",
+        "./internal/catalog/workspace"
+      ],
+      "started_at": "2026-09-12T02:52:11.186160+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0",
+        "internal/catalog/workspace/projector.go": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71",
+        "internal/catalog/workspace/record_read.go": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6",
+        "internal/catalog/workspace/record_write.go": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9",
+        "internal/catalog/workspace/record_write_test.go": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee",
+        "internal/catalog/workspace/replacement.go": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b",
+        "internal/catalog/workspace/replacement_finish.go": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae",
+        "internal/catalog/workspace/replacement_record.go": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T02:52:12.827016+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    },
+    "workspace-records-ownership-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-json",
+        "./internal/catalog/workspace",
+        "-run",
+        "^TestWorkspaceRecordCleanupPreservesOperatorFiles$"
+      ],
+      "started_at": "2026-09-12T02:46:38.664188+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "internal/catalog/workspace/projector.go": "d50eafe6d3a321c5152ba22a10def6a350ff997f6056b2f09087d1c3b1274618",
+        "internal/catalog/workspace/record_write.go": "2d243fb8c0b97883a859b2ee6a4fac91d6d461d4b57d1089da3dfca1c4047248",
+        "internal/catalog/workspace/record_write_test.go": "d201ef8255507edcc190c5ba60b94b03c765fb728e3c5003d46863f0e2a4e6c5",
+        "internal/catalog/workspace/replacement.go": "7d35aa9e89e976f5ebc1c3d2d2b52695e8331944de731608fd5c3940b3e4c696",
+        "internal/catalog/workspace/replacement_finish.go": "e81ad43b8cedc3c05ecd699646358607889d9deea8fc640c2afcff75de00fd99",
+        "internal/catalog/workspace/replacement_record.go": "0ae2c6f555e3feefc2f7a8937c000aa379f661e96533ce7e91167f9ac6348852"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T02:46:43.872450+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 13
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/changed-bytes",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-identical",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/recreated-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-after-partial-write",
+          "Action": "pass",
+          "Elapsed": 0.31
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles",
+          "Action": "pass",
+          "Elapsed": 2.93
+        }
+      ]
+    },
+    "workspace-records-ownership-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-json",
+        "./internal/catalog/workspace",
+        "-run",
+        "^TestWorkspaceRecordCleanupPreservesOperatorFiles$"
+      ],
+      "started_at": "2026-09-12T02:43:18.995227+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "internal/catalog/workspace/projector.go": "d541295a20a37b8c0464ffd111c9ececd08c4c2691381b515b8ac2ace742ea46",
+        "internal/catalog/workspace/record_write.go": "f549b896264ad5954c3968708a50d9ff0d1ee5acb475d41e90e4321c4981d0de",
+        "internal/catalog/workspace/record_write_test.go": "d201ef8255507edcc190c5ba60b94b03c765fb728e3c5003d46863f0e2a4e6c5",
+        "internal/catalog/workspace/replacement.go": "29dbad9c338574bd793a031e6d129d1831cd11dc4cbd7ed489bd8e4e991f6196",
+        "internal/catalog/workspace/replacement_finish.go": "72cfe9c016a9334921104c10441d5e27d209d283dcb2c9b62756004e36e7d933",
+        "internal/catalog/workspace/replacement_record.go": "04af5e965830e369de03c26aacaa72d1be1f2f80dd718925cb06bf59b2a6d0db"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T02:43:23.659551+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 13
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/changed-bytes",
+          "Action": "fail",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-identical",
+          "Action": "fail",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/recreated-after-publication",
+          "Action": "fail",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/projection/replaced-after-partial-write",
+          "Action": "fail",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/changed-bytes",
+          "Action": "fail",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-identical",
+          "Action": "fail",
+          "Elapsed": 0.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/recreated-after-publication",
+          "Action": "fail",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal/replaced-after-partial-write",
+          "Action": "fail",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/changed-bytes",
+          "Action": "fail",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-identical",
+          "Action": "fail",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/recreated-after-publication",
+          "Action": "fail",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles/journal-marker/replaced-after-partial-write",
+          "Action": "fail",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestWorkspaceRecordCleanupPreservesOperatorFiles",
+          "Action": "fail",
+          "Elapsed": 2.96
+        }
+      ]
+    },
+    "workspace-records-prose": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T02:52:11.186274+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0",
+        "internal/catalog/workspace/projector.go": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71",
+        "internal/catalog/workspace/record_read.go": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6",
+        "internal/catalog/workspace/record_write.go": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9",
+        "internal/catalog/workspace/record_write_test.go": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee",
+        "internal/catalog/workspace/replacement.go": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b",
+        "internal/catalog/workspace/replacement_finish.go": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae",
+        "internal/catalog/workspace/replacement_record.go": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T02:53:01.135485+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    },
+    "workspace-records-reader-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-overlay",
+        ".tmp/csp5-update-controls/marker-reader-overlay.json",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/workspace",
+        "-run",
+        "^TestProjectionMarkerReadRejectsOversize$"
+      ],
+      "started_at": "2026-09-12T02:49:30.320378+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "internal/catalog/workspace/projector.go": "d50eafe6d3a321c5152ba22a10def6a350ff997f6056b2f09087d1c3b1274618",
+        "internal/catalog/workspace/record_write.go": "e4c0b1fce69ffaf3e9a08aca11fa66e4ee50ac4bc912a4c75f941bd18662b29d",
+        "internal/catalog/workspace/record_write_test.go": "0ed596c544b299cc3ef5457c6c22477795a2000d82e2f7565d25c79f36b81b4c",
+        "internal/catalog/workspace/replacement.go": "7d35aa9e89e976f5ebc1c3d2d2b52695e8331944de731608fd5c3940b3e4c696",
+        "internal/catalog/workspace/replacement_finish.go": "e81ad43b8cedc3c05ecd699646358607889d9deea8fc640c2afcff75de00fd99",
+        "internal/catalog/workspace/replacement_record.go": "0ae2c6f555e3feefc2f7a8937c000aa379f661e96533ce7e91167f9ac6348852"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T02:49:32.197530+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Test": "TestProjectionMarkerReadRejectsOversize",
+          "Action": "fail",
+          "Elapsed": 0.23
+        }
+      ]
+    },
+    "workspace-records-windows-compile": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-update-controls/workspace-records-windows.test.exe",
+        "./internal/catalog/workspace"
+      ],
+      "started_at": "2026-09-12T02:52:11.186206+00:00",
+      "base_commit": "9d8b4b8b4507c59b54433673d92584c6a5eedfd3",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0",
+        "internal/catalog/workspace/projector.go": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71",
+        "internal/catalog/workspace/record_read.go": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6",
+        "internal/catalog/workspace/record_write.go": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9",
+        "internal/catalog/workspace/record_write_test.go": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee",
+        "internal/catalog/workspace/replacement.go": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b",
+        "internal/catalog/workspace/replacement_finish.go": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae",
+        "internal/catalog/workspace/replacement_record.go": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T02:52:12.869310+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    }
+  },
+  "limits": [
+    "The previous goal turn made progress at source 9d8b4b8b and canonical commit 9818e595. This turn continues CSP5 and leaves CSP4 done.",
+    "The original temporary writers remove operator files in twelve scenarios, with thirteen failed test events including the parent. The test-only hooks expose the existing write, publication, and cleanup boundaries without correcting the unsafe removal.",
+    "The ownership failures cover ordinary projection markers, replacement journals, and journaled projection markers. Each path loses changed bytes, identical-byte replacement files, paths recreated after publication, and replacements made after a partial write.",
+    "A separate Go overlay restores the original projection-marker reader. It accepts a valid JSON marker padded beyond the 4 MiB limit. The corrected bounded reader refuses it without changing its bytes.",
+    "workspaceRecordWriter owns temporary creation, bounded publication, and checked cleanup. It records native identity, access, and the actual written prefix, and keeps the file open until cleanup finishes. Unknown changes remain preserved.",
+    "Before publication, the writer rechecks its candidate, its destination snapshot, and cancellation. Journal publication cannot replace an existing destination. Marker publication replaces only the earlier destination state.",
+    "Cleanup uses a separate 30-second context after cancellation, checks identity, bytes, and access, and synchronizes its removal. Cleanup errors join the original failure. These records remain in memory.",
+    "Additional tests cover access changes, late candidate and destination changes, cancellation, owned partial cleanup, short writes, exact 4 MiB publication, oversize refusal, and journal collisions.",
+    "The shared bounded reader serves markers, journals, and endpoint projections with their existing caller-selected limits. It checks regular-file identity and stability and uses native non-following access where available.",
+    "All 213 workspace and two CLI command race test events pass without failures or skips. Final ago and prose checks pass. Linux and Windows test binaries compile; native execution and physical power-loss behavior remain unqualified.",
+    "The binary stores no new user setting or marker/journal format. Ordinary markers retain their explicit file mode. Journal writes retain their prior umask and inherited access behavior.",
+    "finishReplacementRecord still compares parsed journal content before removing the completion record. Persistent replacement recovery must bind completion cleanup to the accepted journal identity. It remains part of CSP5 and has no regression result in this checkpoint.",
+    "Persistent workspace preparation, replacement, and legacy relocation recovery, active-writer exclusion, retained-evidence and discovery staging, generation retention, history compaction, all twelve mapped subcases, complete verification, review, native CI, and merge remain open.",
+    "The first canonical prose check reports two long paragraphs, passive voice, and one nominalization. The corrected text preserves the same contract without policy changes. Both checks retain their original source and output. Plan maintenance preserves task criteria, invariants, scope, and the goal block."
+  ],
+  "artifacts": [
+    {
+      "path": "workspace-records-ago/changes.patch.gz",
+      "sha256": "02f7b4cf68a98795975ccb5008e79ba30434cf49b36d0be0e4e285fd2925453d",
+      "decoded_sha256": "dd2aa6be49df395e0a09417b949c523b5640ce569d40b62008bd7af73e415d85"
+    },
+    {
+      "path": "workspace-records-ago/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "9ed9502383f91484e430313b13c0ed174cd5e4c556b34090bdfed2a7ed323e33",
+      "decoded_sha256": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0"
+    },
+    {
+      "path": "workspace-records-ago/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "7700827342347aeae5590b005f6fd787984060f57d2253681086a4925bcc5903",
+      "decoded_sha256": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71"
+    },
+    {
+      "path": "workspace-records-ago/source/internal/catalog/workspace/record_read.go.gz",
+      "sha256": "9dc0e7bda092155e393d3a40d48b8674dc6564c31ccaa4bd3bc18c9a4e847a93",
+      "decoded_sha256": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6"
+    },
+    {
+      "path": "workspace-records-ago/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "b6e6c3a195b5a2f2f97b6a232c791e37c6733df04f12ad0a9677b54021e1f39d",
+      "decoded_sha256": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9"
+    },
+    {
+      "path": "workspace-records-ago/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "dd921562154ba1a2c5fb1fad6eea490e4f43c45b0820f11db6a982ce611890c9",
+      "decoded_sha256": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee"
+    },
+    {
+      "path": "workspace-records-ago/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "b573c1e93302463769a64137c4940702672d9a538ff2908a860810f01d25cbb2",
+      "decoded_sha256": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b"
+    },
+    {
+      "path": "workspace-records-ago/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "c3b490e4f3c644b41b018e78ebe48a2e50099c4783a8c2fcb2ecc2998d47a7c6",
+      "decoded_sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae"
+    },
+    {
+      "path": "workspace-records-ago/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "f34d16aa9b60ce8104414261d61328009d5cceca435088268aabbe39dd35ee45",
+      "decoded_sha256": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+    },
+    {
+      "path": "workspace-records-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "workspace-records-ago/verification.json.gz",
+      "sha256": "eeb6790186d8691e61d64ff1c9615c031663865361744e77a07de6502a54158b",
+      "decoded_sha256": "8adc004236142358860c8159a6a9810ba1ecf809c5bb772b77262f1ffe96b8ca"
+    },
+    {
+      "path": "workspace-records-boundary-green/changes.patch.gz",
+      "sha256": "6ece35cd7e5c55c4b1a6a68b33c95353f0eb58c80279e023c69850dffc4c0562",
+      "decoded_sha256": "a3fc6507ec685d0fce08bb9e2b94c18d7d2503269773d506122d9722e1d3713e"
+    },
+    {
+      "path": "workspace-records-boundary-green/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "81d5e7d13edfbf794035984c474c479804650cc9ae9a4d6335977414dbe614df",
+      "decoded_sha256": "d50eafe6d3a321c5152ba22a10def6a350ff997f6056b2f09087d1c3b1274618"
+    },
+    {
+      "path": "workspace-records-boundary-green/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "536400408b87933fe4033cb99ebf4427a34e054939c8256fdcaf072e3a303ef2",
+      "decoded_sha256": "e4c0b1fce69ffaf3e9a08aca11fa66e4ee50ac4bc912a4c75f941bd18662b29d"
+    },
+    {
+      "path": "workspace-records-boundary-green/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "872c4f3a2385152ce73a59aa19dedede2d2247d29837e4bf0f7f8db22cc6f219",
+      "decoded_sha256": "0ed596c544b299cc3ef5457c6c22477795a2000d82e2f7565d25c79f36b81b4c"
+    },
+    {
+      "path": "workspace-records-boundary-green/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "edacaf014411ebcaa88b318459beb286bf4989be3a69f35466f5b491bdd63815",
+      "decoded_sha256": "7d35aa9e89e976f5ebc1c3d2d2b52695e8331944de731608fd5c3940b3e4c696"
+    },
+    {
+      "path": "workspace-records-boundary-green/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "0a568c985d77f30ce1943c2576db3c9fb6b3e7460b4bef72fe208b1ca01403a9",
+      "decoded_sha256": "e81ad43b8cedc3c05ecd699646358607889d9deea8fc640c2afcff75de00fd99"
+    },
+    {
+      "path": "workspace-records-boundary-green/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "b3d102804550b22dc3004fe481ded3953e9f77bdd97536111fcc18a4a332c367",
+      "decoded_sha256": "0ae2c6f555e3feefc2f7a8937c000aa379f661e96533ce7e91167f9ac6348852"
+    },
+    {
+      "path": "workspace-records-boundary-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-boundary-green/stdout.log.gz",
+      "sha256": "f726991110436a1e9f645d612d0fde2f540b631fc03ccab225235f3718f71668",
+      "decoded_sha256": "8730ce821f541870e93e48f7bd69c25200118b89d91cfc2398371433f8fe7a35"
+    },
+    {
+      "path": "workspace-records-boundary-green/verification.json.gz",
+      "sha256": "3df94771a32afa0290ca54077df778eb1578a462fa0d6bf9da0d9c0c7d35c70f",
+      "decoded_sha256": "fc14560b7118b4407bd4749b9696bb45fd9e33e566cb1e60e86b75d0e18eec50"
+    },
+    {
+      "path": "workspace-records-full-race/changes.patch.gz",
+      "sha256": "00d2a945c590666772395022a3ff89a4f36e92136fdb0476543b8025265ffd1a",
+      "decoded_sha256": "5b603f1e64dbc6c06967c6961c646fa66d335781a384586a08be166e1cc45fa7"
+    },
+    {
+      "path": "workspace-records-full-race/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "7700827342347aeae5590b005f6fd787984060f57d2253681086a4925bcc5903",
+      "decoded_sha256": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71"
+    },
+    {
+      "path": "workspace-records-full-race/source/internal/catalog/workspace/record_read.go.gz",
+      "sha256": "9dc0e7bda092155e393d3a40d48b8674dc6564c31ccaa4bd3bc18c9a4e847a93",
+      "decoded_sha256": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6"
+    },
+    {
+      "path": "workspace-records-full-race/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "b6e6c3a195b5a2f2f97b6a232c791e37c6733df04f12ad0a9677b54021e1f39d",
+      "decoded_sha256": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9"
+    },
+    {
+      "path": "workspace-records-full-race/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "dd921562154ba1a2c5fb1fad6eea490e4f43c45b0820f11db6a982ce611890c9",
+      "decoded_sha256": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee"
+    },
+    {
+      "path": "workspace-records-full-race/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "b573c1e93302463769a64137c4940702672d9a538ff2908a860810f01d25cbb2",
+      "decoded_sha256": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b"
+    },
+    {
+      "path": "workspace-records-full-race/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "c3b490e4f3c644b41b018e78ebe48a2e50099c4783a8c2fcb2ecc2998d47a7c6",
+      "decoded_sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae"
+    },
+    {
+      "path": "workspace-records-full-race/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "f34d16aa9b60ce8104414261d61328009d5cceca435088268aabbe39dd35ee45",
+      "decoded_sha256": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+    },
+    {
+      "path": "workspace-records-full-race/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-full-race/stdout.log.gz",
+      "sha256": "e75c6ed9b32cdca0acd1979f3b57c011e59cc18b0f5225b3744ca6e334312b79",
+      "decoded_sha256": "2a466df664acaf457a7274e579d5b3db9b2d6bd5ec0b2cf77e9d49a1846c0c19"
+    },
+    {
+      "path": "workspace-records-full-race/verification.json.gz",
+      "sha256": "34516506e337bcb443b07fa9d5c9d1d8862d3cc33fe922a2e80359d228884f17",
+      "decoded_sha256": "578f695ef1ac8d0ef277ddf92377d79822b408a32c841c9c3800a7070999724b"
+    },
+    {
+      "path": "workspace-records-linux-compile/changes.patch.gz",
+      "sha256": "02f7b4cf68a98795975ccb5008e79ba30434cf49b36d0be0e4e285fd2925453d",
+      "decoded_sha256": "dd2aa6be49df395e0a09417b949c523b5640ce569d40b62008bd7af73e415d85"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "9ed9502383f91484e430313b13c0ed174cd5e4c556b34090bdfed2a7ed323e33",
+      "decoded_sha256": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "7700827342347aeae5590b005f6fd787984060f57d2253681086a4925bcc5903",
+      "decoded_sha256": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/internal/catalog/workspace/record_read.go.gz",
+      "sha256": "9dc0e7bda092155e393d3a40d48b8674dc6564c31ccaa4bd3bc18c9a4e847a93",
+      "decoded_sha256": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "b6e6c3a195b5a2f2f97b6a232c791e37c6733df04f12ad0a9677b54021e1f39d",
+      "decoded_sha256": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "dd921562154ba1a2c5fb1fad6eea490e4f43c45b0820f11db6a982ce611890c9",
+      "decoded_sha256": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "b573c1e93302463769a64137c4940702672d9a538ff2908a860810f01d25cbb2",
+      "decoded_sha256": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "c3b490e4f3c644b41b018e78ebe48a2e50099c4783a8c2fcb2ecc2998d47a7c6",
+      "decoded_sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae"
+    },
+    {
+      "path": "workspace-records-linux-compile/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "f34d16aa9b60ce8104414261d61328009d5cceca435088268aabbe39dd35ee45",
+      "decoded_sha256": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+    },
+    {
+      "path": "workspace-records-linux-compile/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-linux-compile/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-linux-compile/verification.json.gz",
+      "sha256": "90ef2a9b37dcc1ee5bc5d37251393837158108f1aeeea06c8029b43514b42dc7",
+      "decoded_sha256": "b07329ea3149a58b24a8e3ce9e5eb4e5219661fedd7fbb9fb4d1597cf865eb53"
+    },
+    {
+      "path": "workspace-records-ownership-green/changes.patch.gz",
+      "sha256": "6ece35cd7e5c55c4b1a6a68b33c95353f0eb58c80279e023c69850dffc4c0562",
+      "decoded_sha256": "a3fc6507ec685d0fce08bb9e2b94c18d7d2503269773d506122d9722e1d3713e"
+    },
+    {
+      "path": "workspace-records-ownership-green/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "81d5e7d13edfbf794035984c474c479804650cc9ae9a4d6335977414dbe614df",
+      "decoded_sha256": "d50eafe6d3a321c5152ba22a10def6a350ff997f6056b2f09087d1c3b1274618"
+    },
+    {
+      "path": "workspace-records-ownership-green/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "25b5f170991dcd1cb7a366d41b22cc2ccfcd7d16588201045525a7769dd85667",
+      "decoded_sha256": "2d243fb8c0b97883a859b2ee6a4fac91d6d461d4b57d1089da3dfca1c4047248"
+    },
+    {
+      "path": "workspace-records-ownership-green/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "79a1d21a66433308b13f6544473e9abbea15a89b5abde2684fe57edcc9c59d00",
+      "decoded_sha256": "d201ef8255507edcc190c5ba60b94b03c765fb728e3c5003d46863f0e2a4e6c5"
+    },
+    {
+      "path": "workspace-records-ownership-green/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "edacaf014411ebcaa88b318459beb286bf4989be3a69f35466f5b491bdd63815",
+      "decoded_sha256": "7d35aa9e89e976f5ebc1c3d2d2b52695e8331944de731608fd5c3940b3e4c696"
+    },
+    {
+      "path": "workspace-records-ownership-green/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "0a568c985d77f30ce1943c2576db3c9fb6b3e7460b4bef72fe208b1ca01403a9",
+      "decoded_sha256": "e81ad43b8cedc3c05ecd699646358607889d9deea8fc640c2afcff75de00fd99"
+    },
+    {
+      "path": "workspace-records-ownership-green/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "b3d102804550b22dc3004fe481ded3953e9f77bdd97536111fcc18a4a332c367",
+      "decoded_sha256": "0ae2c6f555e3feefc2f7a8937c000aa379f661e96533ce7e91167f9ac6348852"
+    },
+    {
+      "path": "workspace-records-ownership-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-ownership-green/stdout.log.gz",
+      "sha256": "d95c32dc8f694f10feaf9ef0941a56f4f4cbc6f608deadf2f2beb5a6c4841620",
+      "decoded_sha256": "94a142483a9a9b144ab804877492a901eae08886965d83f212aa741058cc448a"
+    },
+    {
+      "path": "workspace-records-ownership-green/verification.json.gz",
+      "sha256": "63d96c118bfe914496765dc8937c1875c834a17b291a5e85755c2433f3854662",
+      "decoded_sha256": "fedac256f98bc1678480274186248cd059169228ef7402254a394a4589522ae1"
+    },
+    {
+      "path": "workspace-records-ownership-red/changes.patch.gz",
+      "sha256": "667cf1ff3bd8d9f1f55a88fc4978a28977f5059c308c712629e7f2447abbc52d",
+      "decoded_sha256": "f4deb226992c489e56ec62ab3111feac82d1f3fd4952f5391ff60a301ae8b450"
+    },
+    {
+      "path": "workspace-records-ownership-red/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "63bc24bc058fd199cfa0d78ec6589631648ddef58069e265110c9618d39a1b67",
+      "decoded_sha256": "d541295a20a37b8c0464ffd111c9ececd08c4c2691381b515b8ac2ace742ea46"
+    },
+    {
+      "path": "workspace-records-ownership-red/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "1cdd65afdb4c7faac02b2e35ccd7b3878302d8c2a2ae3357c8c883b92954ac4c",
+      "decoded_sha256": "f549b896264ad5954c3968708a50d9ff0d1ee5acb475d41e90e4321c4981d0de"
+    },
+    {
+      "path": "workspace-records-ownership-red/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "79a1d21a66433308b13f6544473e9abbea15a89b5abde2684fe57edcc9c59d00",
+      "decoded_sha256": "d201ef8255507edcc190c5ba60b94b03c765fb728e3c5003d46863f0e2a4e6c5"
+    },
+    {
+      "path": "workspace-records-ownership-red/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "d6b6c9fe4bcd5177173fd1ee2b59dc47514314c1cd113396e7c7381a6b21a756",
+      "decoded_sha256": "29dbad9c338574bd793a031e6d129d1831cd11dc4cbd7ed489bd8e4e991f6196"
+    },
+    {
+      "path": "workspace-records-ownership-red/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "ce35d5e1c601447296ab6ca2135d87a4767bb68d5b906d083a7b0f0813dc0599",
+      "decoded_sha256": "72cfe9c016a9334921104c10441d5e27d209d283dcb2c9b62756004e36e7d933"
+    },
+    {
+      "path": "workspace-records-ownership-red/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "6f44cd95b371e59921ccb2d78c9a422ab5b70ec143a735d7ce8a9a80ea73d7ac",
+      "decoded_sha256": "04af5e965830e369de03c26aacaa72d1be1f2f80dd718925cb06bf59b2a6d0db"
+    },
+    {
+      "path": "workspace-records-ownership-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-ownership-red/stdout.log.gz",
+      "sha256": "250ecb75bd3083656cae59cd19110db57b897e97de608025cca5128f8697966b",
+      "decoded_sha256": "21e45b46e630e0155eae7841202ee5f5a8d1c645a6f218010bf290d79888e3d8"
+    },
+    {
+      "path": "workspace-records-ownership-red/verification.json.gz",
+      "sha256": "2ca73763d2d41d25c2406ba16110c8c2c5999be912f2abca04f03bd65cff6caf",
+      "decoded_sha256": "5368eaa68e70770613c9e9be96392389f93ea5415f5cc64871ff10193f620afc"
+    },
+    {
+      "path": "workspace-records-prose/changes.patch.gz",
+      "sha256": "02f7b4cf68a98795975ccb5008e79ba30434cf49b36d0be0e4e285fd2925453d",
+      "decoded_sha256": "dd2aa6be49df395e0a09417b949c523b5640ce569d40b62008bd7af73e415d85"
+    },
+    {
+      "path": "workspace-records-prose/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "9ed9502383f91484e430313b13c0ed174cd5e4c556b34090bdfed2a7ed323e33",
+      "decoded_sha256": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0"
+    },
+    {
+      "path": "workspace-records-prose/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "7700827342347aeae5590b005f6fd787984060f57d2253681086a4925bcc5903",
+      "decoded_sha256": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71"
+    },
+    {
+      "path": "workspace-records-prose/source/internal/catalog/workspace/record_read.go.gz",
+      "sha256": "9dc0e7bda092155e393d3a40d48b8674dc6564c31ccaa4bd3bc18c9a4e847a93",
+      "decoded_sha256": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6"
+    },
+    {
+      "path": "workspace-records-prose/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "b6e6c3a195b5a2f2f97b6a232c791e37c6733df04f12ad0a9677b54021e1f39d",
+      "decoded_sha256": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9"
+    },
+    {
+      "path": "workspace-records-prose/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "dd921562154ba1a2c5fb1fad6eea490e4f43c45b0820f11db6a982ce611890c9",
+      "decoded_sha256": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee"
+    },
+    {
+      "path": "workspace-records-prose/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "b573c1e93302463769a64137c4940702672d9a538ff2908a860810f01d25cbb2",
+      "decoded_sha256": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b"
+    },
+    {
+      "path": "workspace-records-prose/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "c3b490e4f3c644b41b018e78ebe48a2e50099c4783a8c2fcb2ecc2998d47a7c6",
+      "decoded_sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae"
+    },
+    {
+      "path": "workspace-records-prose/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "f34d16aa9b60ce8104414261d61328009d5cceca435088268aabbe39dd35ee45",
+      "decoded_sha256": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+    },
+    {
+      "path": "workspace-records-prose/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-prose/stdout.log.gz",
+      "sha256": "d017c86521ebabb8539adc8cedead38957e269bf2c2e32946a2a37e6573da6e8",
+      "decoded_sha256": "b97bda83887be426bc26a359511bc532131a2eef5be31bdc955a10050eda7894"
+    },
+    {
+      "path": "workspace-records-prose/verification.json.gz",
+      "sha256": "5b03fe19b6d53eb30249d5fd06490f9fa48262e1297acd73cd4a949c2a6be764",
+      "decoded_sha256": "333fd4b7d875297099d956ccf21d4ab8341b589c819fc1d895cd12fee1d2ff97"
+    },
+    {
+      "path": "workspace-records-reader-red/changes.patch.gz",
+      "sha256": "6ece35cd7e5c55c4b1a6a68b33c95353f0eb58c80279e023c69850dffc4c0562",
+      "decoded_sha256": "a3fc6507ec685d0fce08bb9e2b94c18d7d2503269773d506122d9722e1d3713e"
+    },
+    {
+      "path": "workspace-records-reader-red/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "81d5e7d13edfbf794035984c474c479804650cc9ae9a4d6335977414dbe614df",
+      "decoded_sha256": "d50eafe6d3a321c5152ba22a10def6a350ff997f6056b2f09087d1c3b1274618"
+    },
+    {
+      "path": "workspace-records-reader-red/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "536400408b87933fe4033cb99ebf4427a34e054939c8256fdcaf072e3a303ef2",
+      "decoded_sha256": "e4c0b1fce69ffaf3e9a08aca11fa66e4ee50ac4bc912a4c75f941bd18662b29d"
+    },
+    {
+      "path": "workspace-records-reader-red/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "872c4f3a2385152ce73a59aa19dedede2d2247d29837e4bf0f7f8db22cc6f219",
+      "decoded_sha256": "0ed596c544b299cc3ef5457c6c22477795a2000d82e2f7565d25c79f36b81b4c"
+    },
+    {
+      "path": "workspace-records-reader-red/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "edacaf014411ebcaa88b318459beb286bf4989be3a69f35466f5b491bdd63815",
+      "decoded_sha256": "7d35aa9e89e976f5ebc1c3d2d2b52695e8331944de731608fd5c3940b3e4c696"
+    },
+    {
+      "path": "workspace-records-reader-red/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "0a568c985d77f30ce1943c2576db3c9fb6b3e7460b4bef72fe208b1ca01403a9",
+      "decoded_sha256": "e81ad43b8cedc3c05ecd699646358607889d9deea8fc640c2afcff75de00fd99"
+    },
+    {
+      "path": "workspace-records-reader-red/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "b3d102804550b22dc3004fe481ded3953e9f77bdd97536111fcc18a4a332c367",
+      "decoded_sha256": "0ae2c6f555e3feefc2f7a8937c000aa379f661e96533ce7e91167f9ac6348852"
+    },
+    {
+      "path": "workspace-records-reader-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-reader-red/stdout.log.gz",
+      "sha256": "2634d9ffbb818bac5be9c609aff0901dbbb6617bf1c16d72dfe824241cfc04ac",
+      "decoded_sha256": "147aeab880502ab348ec60e09c015df2e6e044bd2cc06330fcc77a704d93f419"
+    },
+    {
+      "path": "workspace-records-reader-red/support/marker-reader-original.go.gz",
+      "sha256": "f4fe3539d36117552885d05674322b342dc214b7bf157de198fcdc200e5825c6",
+      "decoded_sha256": "2579d23cd3ec54fba1ad2fc6ce5334fe9f80038323a8c986b3802c982ab22563"
+    },
+    {
+      "path": "workspace-records-reader-red/support/marker-reader-overlay.json.gz",
+      "sha256": "f24ceab757d77d1dfa585ac9ec4b67b58eef9e415484a83220cf9447a563027a",
+      "decoded_sha256": "a5ef9d4a2817e033aa9df3ad1286c395feda3a155c6a9e6f169b6f1f50e190ee"
+    },
+    {
+      "path": "workspace-records-reader-red/verification.json.gz",
+      "sha256": "43f609f01b35b1a9d062310becfe994c624c5f31c599e99bfaed8d7ab991ca57",
+      "decoded_sha256": "c9cc0d4345be5719f9e271d3b5cdbd8af8c2497064f38609baa6e534e3a628fe"
+    },
+    {
+      "path": "workspace-records-windows-compile/changes.patch.gz",
+      "sha256": "02f7b4cf68a98795975ccb5008e79ba30434cf49b36d0be0e4e285fd2925453d",
+      "decoded_sha256": "dd2aa6be49df395e0a09417b949c523b5640ce569d40b62008bd7af73e415d85"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "9ed9502383f91484e430313b13c0ed174cd5e4c556b34090bdfed2a7ed323e33",
+      "decoded_sha256": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "7700827342347aeae5590b005f6fd787984060f57d2253681086a4925bcc5903",
+      "decoded_sha256": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/internal/catalog/workspace/record_read.go.gz",
+      "sha256": "9dc0e7bda092155e393d3a40d48b8674dc6564c31ccaa4bd3bc18c9a4e847a93",
+      "decoded_sha256": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "b6e6c3a195b5a2f2f97b6a232c791e37c6733df04f12ad0a9677b54021e1f39d",
+      "decoded_sha256": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "dd921562154ba1a2c5fb1fad6eea490e4f43c45b0820f11db6a982ce611890c9",
+      "decoded_sha256": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "b573c1e93302463769a64137c4940702672d9a538ff2908a860810f01d25cbb2",
+      "decoded_sha256": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "c3b490e4f3c644b41b018e78ebe48a2e50099c4783a8c2fcb2ecc2998d47a7c6",
+      "decoded_sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae"
+    },
+    {
+      "path": "workspace-records-windows-compile/source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "f34d16aa9b60ce8104414261d61328009d5cceca435088268aabbe39dd35ee45",
+      "decoded_sha256": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+    },
+    {
+      "path": "workspace-records-windows-compile/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-windows-compile/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-windows-compile/verification.json.gz",
+      "sha256": "5d803d1e7f49b8ad3f893ece0566116187ffa25d6cc11cfe3d55df7dfd58f7a9",
+      "decoded_sha256": "27711deed174a0d26872f96e52b79ea19e765588be698d7474381340b5a88866"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "9ed9502383f91484e430313b13c0ed174cd5e4c556b34090bdfed2a7ed323e33",
+      "decoded_sha256": "fc90d6829a38b4a091fb33c0516f93dcd4c2e5b018b79ee0b8253d8a9063fcc0"
+    },
+    {
+      "path": "committed-source/internal/catalog/workspace/projector.go.gz",
+      "sha256": "7700827342347aeae5590b005f6fd787984060f57d2253681086a4925bcc5903",
+      "decoded_sha256": "aff2a5983f66124605e7711719853eac0ecc692c116b8e88b6d5e164d7d50d71"
+    },
+    {
+      "path": "committed-source/internal/catalog/workspace/record_read.go.gz",
+      "sha256": "9dc0e7bda092155e393d3a40d48b8674dc6564c31ccaa4bd3bc18c9a4e847a93",
+      "decoded_sha256": "a251280ccaf824eac24062c34e29a16e727431d7c03d2f1db3b8634ba14cd5b6"
+    },
+    {
+      "path": "committed-source/internal/catalog/workspace/record_write.go.gz",
+      "sha256": "b6e6c3a195b5a2f2f97b6a232c791e37c6733df04f12ad0a9677b54021e1f39d",
+      "decoded_sha256": "b470a3d1a9cd7ada40a90f7bf4c20fb7d41991e4fde6be85eef2ad98edc969d9"
+    },
+    {
+      "path": "committed-source/internal/catalog/workspace/record_write_test.go.gz",
+      "sha256": "dd921562154ba1a2c5fb1fad6eea490e4f43c45b0820f11db6a982ce611890c9",
+      "decoded_sha256": "c0201bc5ec72703ffbdc29d5b043adca95535d937c5ba1c6835eebc546b140ee"
+    },
+    {
+      "path": "committed-source/internal/catalog/workspace/replacement.go.gz",
+      "sha256": "b573c1e93302463769a64137c4940702672d9a538ff2908a860810f01d25cbb2",
+      "decoded_sha256": "7f530f3ecd8a1c22912b43b76ca748d425d6bebcd4e7c58b880cc8a1647a7a9b"
+    },
+    {
+      "path": "committed-source/internal/catalog/workspace/replacement_finish.go.gz",
+      "sha256": "c3b490e4f3c644b41b018e78ebe48a2e50099c4783a8c2fcb2ecc2998d47a7c6",
+      "decoded_sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae"
+    },
+    {
+      "path": "committed-source/internal/catalog/workspace/replacement_record.go.gz",
+      "sha256": "f34d16aa9b60ce8104414261d61328009d5cceca435088268aabbe39dd35ee45",
+      "decoded_sha256": "55f0f77b5d37fd52effa2c430cb664e7425eb7c81518826714ce9f4e45eba99c"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "0bd1db80c92aa5a3db9a3d675008ba134951f0b75d2671e3c393ff46367dc77d",
+      "decoded_sha256": "a535cf748af24ba1224b398cd5387046ab383044784a3b5eb5fbcec92433c432"
+    },
+    {
+      "path": "workspace-records-canonical-prose/changes.patch.gz",
+      "sha256": "3c071fd4aeb98dd97b54b973ad77430883cdb2f373ebbf9dd26eaa9e508596c5",
+      "decoded_sha256": "6197e9667552c11fe3c3e5d762d2a3e2812082c89cfa3a4d644c1fe1cb6c0775"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "75eb4ba0d0a1683d6d2f0ac1a1e426f6562b0c9d8069f53ff7fa745cd9b309b5",
+      "decoded_sha256": "03eeee6c8ab5deaf5ebfd5fe9b88b2ca5a78b00ac2587b9fd6162657cdb0e54d"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "2fe67efd83070f2b53cfb266ae203d151b0415bfc1eb05a32c06a399b47d3739",
+      "decoded_sha256": "70fb12b3ca34ec0fe6ed142e998363df96adeb0d8576791a0e109ef813fd5164"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "73f7138bef0da74ed3958915aafce695cd227241926d90bebd4fb91b96f49623",
+      "decoded_sha256": "613a26b4cbb429b1785473d6694c7515da467632caee5711f1c2c1d25f02e93a"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json.gz",
+      "sha256": "cc3e3c69e046ba469da3dcaeabdbe4bec16f969278c0f6879983bd7da737b79d",
+      "decoded_sha256": "2f17b0dea70e37dcdff989f32d7545ac1ac0adc7586963f36a5c61f5be5a708c"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json.gz",
+      "sha256": "b67f33c7820a5314712605cfbc44143dca6ed95dd20b7927d5eb329cde7d5c46",
+      "decoded_sha256": "61a21b207030cbab873827f336aad9d9f5594a07ccadd979feaefcbac68971a2"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "0d5a6e09db50d20ba84782b00f29038994913e2fa25b543d196d268a428da91e",
+      "decoded_sha256": "e424bac4c2048340f62d869ec7d0e57bf6e2a6af479c25bf01011be5d1382058"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-workspace-records.html.gz",
+      "sha256": "829bdc4a805a7390d15378a3c6274365f3832bd7bc9df3250a0c3cf312415fa8",
+      "decoded_sha256": "47fedee2911773d1576bb2f1c76db38cd8ea6bfd59abc083b1f8baee2f1b8428"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/README.md.gz",
+      "sha256": "c5de386d9579204f2f0ed59c8e038321dc39b771312a4f815e27092735afd9f7",
+      "decoded_sha256": "bb314ef61fc97861d429559c1086676da58c9b654186ce9a425315f514fc1bce"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-status-2026-09-12.json.gz",
+      "sha256": "f2b297739464730be0977ac58f37e094b62ce0057d5c94ce87b7d1ccbeadf1db",
+      "decoded_sha256": "72cbacae3e9a333177ce971cf9dca9aa4060d774e99c9a67607f3d1b9859aec5"
+    },
+    {
+      "path": "workspace-records-canonical-prose/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "e6ae12e524bf9a8cab10a30789881fc93d0f262d5a4fb06c219e08bb58891fe0",
+      "decoded_sha256": "6150e35cfc496b64006ce888b35a7a4ee598c8721e82dc861bef8c07f3c4ca0f"
+    },
+    {
+      "path": "workspace-records-canonical-prose/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "workspace-records-canonical-prose/stdout.log.gz",
+      "sha256": "42ddbaee7dd28232bd66637b2615daac0fb9d876320051531445ab2452533fa4",
+      "decoded_sha256": "47dab0eccf7f4e90b1c4e65c3da6c1a54f2d6b05dcbb1119894ec0bbf5f5173d"
+    },
+    {
+      "path": "workspace-records-canonical-prose/verification.json.gz",
+      "sha256": "6b3960d5cb2e58f8fb2962a39e082f1cbfdaa896b91d9761f39479ac90c28e45",
+      "decoded_sha256": "7cfe688c6179d1d1da22770ec9e9b13e3117284627cdf4adeb0839802166b7db"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/changes.patch.gz",
+      "sha256": "c74b0fff8e7b09fd6fb15f54955770323d693f0c9f128258e85f1384b9ee0e71",
+      "decoded_sha256": "bb0dcdd36513ae3600bd655e93fc1c0d77ed424ebb60ca0ba843be6ed1f5a911"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "75eb4ba0d0a1683d6d2f0ac1a1e426f6562b0c9d8069f53ff7fa745cd9b309b5",
+      "decoded_sha256": "03eeee6c8ab5deaf5ebfd5fe9b88b2ca5a78b00ac2587b9fd6162657cdb0e54d"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "2fe67efd83070f2b53cfb266ae203d151b0415bfc1eb05a32c06a399b47d3739",
+      "decoded_sha256": "70fb12b3ca34ec0fe6ed142e998363df96adeb0d8576791a0e109ef813fd5164"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "73f7138bef0da74ed3958915aafce695cd227241926d90bebd4fb91b96f49623",
+      "decoded_sha256": "613a26b4cbb429b1785473d6694c7515da467632caee5711f1c2c1d25f02e93a"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json.gz",
+      "sha256": "cc3e3c69e046ba469da3dcaeabdbe4bec16f969278c0f6879983bd7da737b79d",
+      "decoded_sha256": "2f17b0dea70e37dcdff989f32d7545ac1ac0adc7586963f36a5c61f5be5a708c"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json.gz",
+      "sha256": "b67f33c7820a5314712605cfbc44143dca6ed95dd20b7927d5eb329cde7d5c46",
+      "decoded_sha256": "61a21b207030cbab873827f336aad9d9f5594a07ccadd979feaefcbac68971a2"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "4c32969e82be3d2caa3418a78f077eebf188c1e45024a37e09514c0cc4f1cbb8",
+      "decoded_sha256": "fdaaf624b62bd88bf6a84826312497d2018705e0632f95d411eb7065064aafe7"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-workspace-records.html.gz",
+      "sha256": "829bdc4a805a7390d15378a3c6274365f3832bd7bc9df3250a0c3cf312415fa8",
+      "decoded_sha256": "47fedee2911773d1576bb2f1c76db38cd8ea6bfd59abc083b1f8baee2f1b8428"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/README.md.gz",
+      "sha256": "9d4d7bd3b8e2ead9b204e8a7423b112003eb85b24f4d4ab71ada580cbd992901",
+      "decoded_sha256": "5a61ff100a600bf24398234f5492999ff64091093fbb74dcce52bd7d4b699349"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-status-2026-09-12.json.gz",
+      "sha256": "f2b297739464730be0977ac58f37e094b62ce0057d5c94ce87b7d1ccbeadf1db",
+      "decoded_sha256": "72cbacae3e9a333177ce971cf9dca9aa4060d774e99c9a67607f3d1b9859aec5"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "e6ae12e524bf9a8cab10a30789881fc93d0f262d5a4fb06c219e08bb58891fe0",
+      "decoded_sha256": "6150e35cfc496b64006ce888b35a7a4ee598c8721e82dc861bef8c07f3c4ca0f"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/stdout.log.gz",
+      "sha256": "06212518289a72f4573e4e7d70213ffd4cd316030ce47693ce87f68952205eff",
+      "decoded_sha256": "d3ed2127ea1aff577f93c38112045794587e6d5f7193bc4b53f3a1bdb33b07cd"
+    },
+    {
+      "path": "workspace-records-canonical-prose-final/verification.json.gz",
+      "sha256": "b90c04a9e6a5a64c3f6659447daa0c623e92dda9f8be3263dc291ebe185d416d",
+      "decoded_sha256": "ffca01f9fff4ca5f22d6f0b14b0282a2f2c7f8d8c5fa050ae80b20180f97b62b"
+    }
+  ],
+  "queue_evidence": "../../pr-audit-2026-09-08/current-queue/queue-status-2026-09-12.json",
+  "next_action_inspection": {
+    "source_commit": "64f905db77b469f925af3092990e3b1d8e113437",
+    "path": "internal/catalog/workspace/replacement_finish.go",
+    "sha256": "bf6e471107caae81dba50d5c26325d27f3a8d979c83b583bc81838a7b11b58ae",
+    "function": "finishReplacementRecord",
+    "finding": "Completion rereads and compares parsed JSON, then removes the journal path. It does not compare the accepted journal native identity. The next regression must replace that file with identical bytes after the backup is removed and require preservation."
+  },
+  "documentation_checks": {
+    "workspace-records-canonical-prose": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T03:21:08.800642+00:00",
+      "base_commit": "9818e595b2aac30c7629fdc98a9b4f3989878c82",
+      "source_files": {
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "03eeee6c8ab5deaf5ebfd5fe9b88b2ca5a78b00ac2587b9fd6162657cdb0e54d",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "70fb12b3ca34ec0fe6ed142e998363df96adeb0d8576791a0e109ef813fd5164",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "613a26b4cbb429b1785473d6694c7515da467632caee5711f1c2c1d25f02e93a",
+        "docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json": "2f17b0dea70e37dcdff989f32d7545ac1ac0adc7586963f36a5c61f5be5a708c",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "e424bac4c2048340f62d869ec7d0e57bf6e2a6af479c25bf01011be5d1382058",
+        "docs/plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json": "61a21b207030cbab873827f336aad9d9f5594a07ccadd979feaefcbac68971a2",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-workspace-records.html": "47fedee2911773d1576bb2f1c76db38cd8ea6bfd59abc083b1f8baee2f1b8428",
+        "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/README.md": "bb314ef61fc97861d429559c1086676da58c9b654186ce9a425315f514fc1bce",
+        "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-status-2026-09-12.json": "72cbacae3e9a333177ce971cf9dca9aa4060d774e99c9a67607f3d1b9859aec5",
+        "docs/plans/starport-production-catalog-plan.html": "6150e35cfc496b64006ce888b35a7a4ee598c8721e82dc861bef8c07f3c4ca0f"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T03:21:54.053843+00:00",
+      "status": "failed"
+    },
+    "workspace-records-canonical-prose-final": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T03:22:56.360705+00:00",
+      "base_commit": "9818e595b2aac30c7629fdc98a9b4f3989878c82",
+      "source_files": {
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "03eeee6c8ab5deaf5ebfd5fe9b88b2ca5a78b00ac2587b9fd6162657cdb0e54d",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "70fb12b3ca34ec0fe6ed142e998363df96adeb0d8576791a0e109ef813fd5164",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "613a26b4cbb429b1785473d6694c7515da467632caee5711f1c2c1d25f02e93a",
+        "docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json": "2f17b0dea70e37dcdff989f32d7545ac1ac0adc7586963f36a5c61f5be5a708c",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "fdaaf624b62bd88bf6a84826312497d2018705e0632f95d411eb7065064aafe7",
+        "docs/plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json": "61a21b207030cbab873827f336aad9d9f5594a07ccadd979feaefcbac68971a2",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-workspace-records.html": "47fedee2911773d1576bb2f1c76db38cd8ea6bfd59abc083b1f8baee2f1b8428",
+        "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/README.md": "5a61ff100a600bf24398234f5492999ff64091093fbb74dcce52bd7d4b699349",
+        "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-status-2026-09-12.json": "72cbacae3e9a333177ce971cf9dca9aa4060d774e99c9a67607f3d1b9859aec5",
+        "docs/plans/starport-production-catalog-plan.html": "6150e35cfc496b64006ce888b35a7a4ee598c8721e82dc861bef8c07f3c4ca0f"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T03:23:41.582977+00:00",
+      "status": "passed"
+    }
+  },
+  "documentation_source_files": [
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "03eeee6c8ab5deaf5ebfd5fe9b88b2ca5a78b00ac2587b9fd6162657cdb0e54d"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "70fb12b3ca34ec0fe6ed142e998363df96adeb0d8576791a0e109ef813fd5164"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "613a26b4cbb429b1785473d6694c7515da467632caee5711f1c2c1d25f02e93a"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp5.md",
+      "sha256": "fdaaf624b62bd88bf6a84826312497d2018705e0632f95d411eb7065064aafe7"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-workspace-records.html",
+      "sha256": "47fedee2911773d1576bb2f1c76db38cd8ea6bfd59abc083b1f8baee2f1b8428"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/README.md",
+      "sha256": "5a61ff100a600bf24398234f5492999ff64091093fbb74dcce52bd7d4b699349"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "6150e35cfc496b64006ce888b35a7a4ee598c8721e82dc861bef8c07f3c4ca0f"
+    }
+  ]
+}

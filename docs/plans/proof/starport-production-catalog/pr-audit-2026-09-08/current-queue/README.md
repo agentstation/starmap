@@ -1,5 +1,21 @@
 # Current pull request queue
 
+Updated 2026-09-12 UTC. Starmap and Starport have no open pull requests.
+The [queue evidence](queue-status-2026-09-12.json) records live lists, default-branch heads, and both active implementation worktrees.
+No PR requires merge, closure, review-thread resolution, or parent updates.
+
+CSP4 is complete. Thirty-one campaign PRs merged. Ten tasks passed their completion gates.
+
+Starmap `64f905db` is the current unpublished CSP5 checkpoint. Its working tree is clean.
+It still needs persistent recovery, retention, compaction, complete acceptance, required review, and native CI before merge.
+
+Starport remains on its merged CSP4 source. CSP8 will adopt the completed controls.
+
+## Superseded queue state: 2026-09-11
+
+The following capture predates the final CSP4 merges. It preserves the earlier native failures and next actions.
+Use the current queue evidence above for execution.
+
 Updated 2026-09-11 UTC. Starmap has one open PR, [#151](https://github.com/agentstation/starmap/pull/151). Starport has none.
 The [queue evidence](queue-status-2026-09-11.json) records current heads and remaining gates.
 

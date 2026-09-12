@@ -16,6 +16,7 @@ Commit `536791a0` checks candidate cleanup and reuses validated repair candidate
 Commit `a05ca541` records private preparation writes and bounds assembly reads.
 Commit `fcfda255` checks legacy rollback ownership and rejects replacement assembly files.
 Commit `9d8b4b8b` bounds filesystem records and legacy preflight.
+Commit `64f905db` preserves workspace record ownership and bounds marker reads.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -370,7 +371,8 @@ Native runtime and physical power-loss qualification remain open.
 
 Store identities and candidate inventories remain in memory. They do not establish recovery after process exit.
 At `fcfda255`, legacy preflight still used unbounded directory and manifest reads. The next section records their correction.
-Projection-marker temporary cleanup still removes an entry without a recorded ownership check.
+
+At `9d8b4b8b`, projection-marker temporary cleanup still lacked a recorded ownership check. The workspace record section below records its correction.
 CSP5 owns those paths, persistent recovery, active-writer exclusion, retention, compaction, and full qualification.
 
 ## Bounded legacy preflight and filesystem records
@@ -397,7 +399,32 @@ Final ago, prose, and Linux/Windows compilation checks pass. The initial prose f
 Native runtime and physical power-loss qualification remain open.
 
 These changes do not provide persistent workspace or legacy relocation recovery.
-Marker cleanup, active-writer exclusion for persistent stages, retention, compaction, and complete CSP5 qualification remain open.
+The next section records marker cleanup. Active-writer exclusion for persistent stages, retention, compaction, and complete CSP5 qualification remain open.
+
+## Workspace marker and journal ownership
+
+The [record proof](csp5/workspace-records-2026-09-12/verification.json) binds commit `64f905db` to the original failures and final checks.
+Twelve cleanup cases fail before the fix, producing thirteen failed events including their parent.
+They cover ordinary markers, replacement journals, and journaled markers. The injected hooks expose the existing write and publication boundaries.
+
+The original writers delete changed files, identical-byte replacements, recreated paths, and replacements made after partial writes.
+A separate Go overlay restores only the original marker reader. That reader accepts a valid marker larger than 4 MiB.
+The proof preserves both overlay inputs and the exact command sources.
+
+The shared record writer captures native identity, access, and the actual written bytes. It keeps the file open through cleanup.
+Before publication, it rechecks the candidate, destination snapshot, and cancellation. Journals cannot replace an existing destination.
+Cleanup preserves changed files and reports its errors with the original failure. Cancellation retains a separate 30-second cleanup context.
+
+All 213 workspace and two CLI command race events pass without skips. Tests also cover access changes and unchanged partial cleanup.
+Exact-size publication, oversized refusal, short writes, cancellation, destination conflicts, and journal collisions pass.
+Final ago, prose, and Linux/Windows compilation checks pass. Native runtime and physical power-loss qualification remain open.
+
+The records remain in memory. Persistent workspace and legacy relocation recovery remain incomplete.
+`finishReplacementRecord` still compares parsed journal content before removing the completion file.
+Persistent replacement recovery must bind that removal to the accepted journal identity. This remaining path has no regression result in this checkpoint.
+
+The [current PR queue](pr-audit-2026-09-08/current-queue/queue-status-2026-09-12.json) has no open PRs.
+CSP5 remains unpublished until its full contract and required review pass. Both implementation worktrees are clean.
 
 ## Remaining work
 
@@ -405,7 +432,7 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Check projection-marker temporary ownership. Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
+Bind replacement-journal completion cleanup to the accepted file identity. Complete persistent workspace, retained-evidence, and discovery recovery, then generation retention.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

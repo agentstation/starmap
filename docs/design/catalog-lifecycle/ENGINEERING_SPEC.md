@@ -2700,7 +2700,14 @@ Its writer rejects records that its reader cannot restore before creating genera
 The [preflight proof](../../plans/proof/starport-production-catalog/csp5/legacy-preflight-2026-09-12/verification.json) records 350 passing race test events.
 It verifies unknown-file preservation, cancellation, exact pointer limits, and all 129 generations after migration.
 These limits apply to the filesystem adapter. Other storage adapters retain their own contracts.
-Projection-marker temporary ownership and persistent relocation and workspace recovery remain incomplete.
+
+Commit `64f905db` gives marker and journal writers a shared temporary-file ownership contract.
+The writer checks native identity, access, written bytes, destination stability, and cancellation before publication. Journal publication cannot replace an existing destination.
+Cleanup preserves changed temporary files and includes cleanup errors with the original failure.
+
+Markers and journals share the existing 4 MiB journal limit, including trailing newlines. Partial writes retain their actual byte count for cleanup.
+The [record proof](../../plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json) records 215 passing race test events.
+Ownership remains in memory. Persistent recovery must also bind completed-journal removal to the accepted record identity.
 
 Starport must qualify its own composition under CSP8.
 

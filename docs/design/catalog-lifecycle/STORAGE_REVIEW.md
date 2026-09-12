@@ -534,7 +534,7 @@ The retained lock supports reuse without changing its identity. Operators must i
 The [rollback proof](../../plans/proof/starport-production-catalog/csp5/legacy-rollback-2026-09-12/verification.json) records local tests and qualification limits.
 
 The identity and inventory remain in memory. Durable relocation intent and recovery after process exit remain incomplete.
-The next section records bounded legacy preflight. CSP5 still must check projection-marker temporary ownership.
+The next sections record bounded preflight and projection-marker temporary ownership.
 The correction does not change catalog authority or the role of a shared storage service.
 
 ## Filesystem record and migration limits: 2026-09-12
@@ -550,4 +550,18 @@ The [preflight proof](../../plans/proof/starport-production-catalog/csp5/legacy-
 
 The proof records 350 passing race test events and the original failures. Linux and Windows checks compile test binaries only.
 Record limits do not provide recovery after process exit or qualify a new storage architecture.
-Marker ownership, persistent workspace and relocation recovery, generation retention, and history compaction remain CSP5 work.
+The next section records marker ownership. Persistent workspace and relocation recovery, generation retention, and history compaction remain CSP5 work.
+
+## Workspace marker and journal files: 2026-09-12
+
+Starmap `64f905db` gives temporary marker and journal files one ownership contract.
+The writer records native identity, access, and actual written bytes. It keeps the original file open until cleanup completes.
+Cleanup preserves operator changes and replacements. It removes unchanged partial writes and retains cleanup errors with the original operation error.
+
+Marker and journal records share the existing 4 MiB journal limit. The filesystem catalog store retains its separate payload, manifest, and pointer limits.
+Ordinary markers keep their explicit file mode. Journal writes keep their previous umask and inherited access behavior.
+No new storage service or configuration setting follows from this change.
+
+The [record proof](../../plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json) records 215 passing race test events.
+The ownership records remain in memory. Persistent workspace and legacy relocation recovery remain incomplete.
+Completed replacement-journal cleanup still needs accepted-file identity binding under CSP5.

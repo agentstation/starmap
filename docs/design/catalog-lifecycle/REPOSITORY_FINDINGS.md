@@ -2533,8 +2533,8 @@ Assembly now checks the identities and bytes recorded during file creation befor
 All 175 workspace and two CLI command race events pass. Final ago, prose, and Linux/Windows compilation checks pass.
 
 At `fcfda255`, source inspection found unbounded directory and manifest reads in legacy preflight. The next section records the correction.
-The projection-marker writer also removes its temporary path without checking recorded ownership.
-CSP5 owns the remaining marker defect and its regression tests. Persistent workspace and legacy relocation recovery remain open.
+At `9d8b4b8b`, the projection-marker writer still removed its temporary path without checking recorded ownership.
+The workspace record section below records the marker correction. Persistent workspace and legacy relocation recovery remain open.
 These local results do not add PR, merge, native-runtime, or released-pair credit.
 
 ## Bounded legacy preflight: 2026-09-12
@@ -2553,4 +2553,21 @@ Final ago, prose, and Linux/Windows compilation checks pass. No native execution
 
 The first migration test expected the wrong error field. Its corrected test still fails before the migration change.
 The proof retains both results. The initial prose failure also remains separate from the corrected passing check.
-Persistent recovery, marker ownership, retention, compaction, and complete CSP5 qualification remain open.
+The next section records marker ownership. Persistent recovery, retention, compaction, and complete CSP5 qualification remain open.
+
+## Workspace record ownership: 2026-09-12
+
+Starmap `64f905db` replaces unchecked temporary removal in three marker and journal writers.
+The [record proof](../../plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json) retains twelve unsafe cleanup cases and their passing corrections.
+A separate preserved overlay proves that the original marker reader accepts a valid record larger than 4 MiB.
+
+The shared writer records native identity, access, and actual written bytes. It checks both the candidate and the destination before publication.
+Changed files, identical-byte replacements, recreated paths, and partial-write replacements remain preserved.
+Cancellation removes unchanged temporary files through a separate cleanup context. Access changes also prevent cleanup.
+
+All 213 workspace and two CLI command race events pass without skips. ago, prose, and Linux/Windows compilation checks pass.
+The result does not qualify native execution or recovery after process exit. The runtime retains these temporary ownership records only in memory.
+
+Source inspection finds that `finishReplacementRecord` still removes a completion journal after comparing parsed content.
+CSP5 must bind that removal to the accepted file identity during persistent replacement recovery.
+This remaining path has no regression result in the current checkpoint. Full CSP5 acceptance, review, native CI, and merge remain open.

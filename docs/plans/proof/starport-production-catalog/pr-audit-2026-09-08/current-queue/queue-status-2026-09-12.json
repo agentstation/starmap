@@ -1,0 +1,173 @@
+{
+  "captured_at": "2026-09-12T03:18:37.527116+00:00",
+  "repositories": {
+    "starmap": {
+      "open_pull_requests": [],
+      "default_branch_head": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "review_threads_checks_and_parent_ancestry": "Not applicable: no open pull requests."
+    },
+    "starport": {
+      "open_pull_requests": [],
+      "default_branch_head": "cb6f03a26ff070172ab503aca11a0c5014040a19",
+      "review_threads_checks_and_parent_ancestry": "Not applicable: no open pull requests."
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "gh",
+        "pr",
+        "list",
+        "--repo",
+        "agentstation/starmap",
+        "--state",
+        "open",
+        "--limit",
+        "100",
+        "--json",
+        "number,title,headRefName,headRefOid,baseRefName,isDraft,updatedAt,url,statusCheckRollup,reviewDecision"
+      ],
+      "cwd": null,
+      "exit_code": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gh",
+        "api",
+        "repos/agentstation/starmap/commits/main",
+        "--jq",
+        ".sha"
+      ],
+      "cwd": null,
+      "exit_code": 0,
+      "stdout": "f9951ee6a3644986a3bb7a3b302649cce790068e\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gh",
+        "pr",
+        "list",
+        "--repo",
+        "agentstation/starport",
+        "--state",
+        "open",
+        "--limit",
+        "100",
+        "--json",
+        "number,title,headRefName,headRefOid,baseRefName,isDraft,updatedAt,url,statusCheckRollup,reviewDecision"
+      ],
+      "cwd": null,
+      "exit_code": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gh",
+        "api",
+        "repos/agentstation/starport/commits/main",
+        "--jq",
+        ".sha"
+      ],
+      "cwd": null,
+      "exit_code": 0,
+      "stdout": "cb6f03a26ff070172ab503aca11a0c5014040a19\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+      "exit_code": 0,
+      "stdout": "64f905db77b469f925af3092990e3b1d8e113437\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "f9951ee6a3644986a3bb7a3b302649cce790068e",
+        "HEAD"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/catalog-update-controls"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "exit_code": 0,
+      "stdout": "ba9b0d8e880ef6538774b735343c5315b17c1b9d\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "unpublished_work": [
+    {
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+      "head": "64f905db77b469f925af3092990e3b1d8e113437",
+      "working_tree": "clean",
+      "next_action": "Complete CSP5 recovery, retention, compaction, acceptance, and required review before publication.",
+      "published_task_branch": ""
+    },
+    {
+      "worktree": "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+      "head": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+      "working_tree": "clean",
+      "next_action": "No new Starport work. CSP8 owns adoption of the completed Starmap controls."
+    }
+  ],
+  "owner": "Catalog plan executor",
+  "campaign_merged_prs": 31,
+  "tasks_done": 10,
+  "task_in_progress": "CSP5",
+  "merge_credit_added": false,
+  "disposition": "No open PR requires merge, closure, or stale-head review. CSP4 is complete. The local CSP5 checkpoint still needs the full task contract and publication gates.",
+  "previous_capture": "queue-status-2026-09-11.json"
+}
