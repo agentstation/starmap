@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	directoryMode  fs.FileMode = 0o755
-	fileMode       fs.FileMode = 0o644
-	lockRetryDelay             = 10 * time.Millisecond
+	directoryMode           fs.FileMode = 0o755
+	fileMode                fs.FileMode = 0o644
+	lockRetryDelay                      = 10 * time.Millisecond
+	workspaceCleanupTimeout             = 30 * time.Second
 
 	replacementMaxEntries   = 10000
 	replacementMaxBytes     = 256 << 20

@@ -214,7 +214,6 @@ func (p projector) projectLocked(
 	if err := validateInputExpectation(target, input, expectation); err != nil {
 		return Receipt{}, err
 	}
-	journaled := input.exists && (journalWorkspaceReplacement || p.journalReplacement)
 	var original treeSnapshot
 	if input.exists {
 		original, err = snapshotTree(ctx, target)
@@ -222,14 +221,29 @@ func (p projector) projectLocked(
 			return Receipt{}, errors.WrapResource("inspect", "workspace replacement", target, err)
 		}
 	}
-	staged, stagedState, err := p.stageCatalog(ctx, target, catalog, identity, &original)
+	candidate, stagedState, err := p.stageCatalog(ctx, target, catalog, identity, &original)
 	if err != nil {
 		return Receipt{}, err
 	}
+	return p.publishCandidate(ctx, target, identity, input, candidate, stagedState)
+}
+
+func (p projector) publishCandidate(
+	ctx context.Context,
+	target string,
+	identity Identity,
+	input semanticState,
+	candidate stagedWorkspace,
+	stagedState semanticState,
+) (result Receipt, resultErr error) {
+	original := candidate.original
+	journaled := input.exists && (journalWorkspaceReplacement || p.journalReplacement)
+	staged := candidate.path
 	cleanupStaged := true
+	var exchanged treeSnapshot
 	defer func() {
 		if cleanupStaged {
-			_ = os.RemoveAll(staged)
+			resultErr = stderrors.Join(resultErr, candidate.cleanup(ctx, exchanged))
 		}
 	}()
 	if p.beforeInputCheck != nil {
@@ -286,6 +300,7 @@ func (p projector) projectLocked(
 		}
 		return receipt, nil
 	}
+	exchanged = original
 	if err := promoteDirectory(staged, target, input.exists); err != nil {
 		return Receipt{}, err
 	}
@@ -370,7 +385,7 @@ func Repair(ctx context.Context, path string, current *catalogs.Catalog, identit
 	return (projector{}).repair(ctx, path, current, identity)
 }
 
-func (p projector) repair(ctx context.Context, path string, current *catalogs.Catalog, identity Identity) (RepairResult, error) {
+func (p projector) repair(ctx context.Context, path string, current *catalogs.Catalog, identity Identity) (result RepairResult, resultErr error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -425,11 +440,16 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 		return RepairResult{}, markerErr
 	}
 
-	desiredPath, desired, err := p.stageCatalog(ctx, target, current, identity, nil)
+	candidate, desired, err := p.stageCatalog(ctx, target, current, identity, nil)
 	if err != nil {
 		return RepairResult{}, err
 	}
-	defer func() { _ = os.RemoveAll(desiredPath) }()
+	cleanupCandidate := true
+	defer func() {
+		if cleanupCandidate {
+			resultErr = stderrors.Join(resultErr, candidate.cleanup(ctx, treeSnapshot{}))
+		}
+	}()
 	if state.equal(desired) {
 		if err := writeProjectionMarker(target, projectionMarker{
 			Version: markerVersion, GenerationID: identity.GenerationID,
@@ -449,7 +469,8 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 		return RepairResult{Status: RepairStatusSkippedDirty, IssueCode: IssueDirty}, nil
 	}
 
-	if _, err := p.projectLocked(ctx, target, current, identity, InputExpectation{}); err != nil {
+	cleanupCandidate = false
+	if _, err := p.publishCandidate(ctx, target, identity, state, candidate, desired); err != nil {
 		return RepairResult{}, err
 	}
 	return RepairResult{Status: RepairStatusRepaired}, nil
@@ -555,14 +576,16 @@ func (p projector) stageCatalog(
 	catalog *catalogs.Catalog,
 	identity Identity,
 	expected *treeSnapshot,
-) (string, semanticState, error) {
+) (stagedWorkspace, semanticState, error) {
 	stage, err := prepareWorkspaceStage(target)
 	if err != nil {
-		return "", semanticState{}, errors.WrapResource("prepare", "workspace staging", target, err)
+		return stagedWorkspace{}, semanticState{}, errors.WrapResource("prepare", "workspace staging", target, err)
 	}
 	defer stage.close()
 	staged := stage.renderPath()
-	cleanup := func(err error) (string, semanticState, error) { return "", semanticState{}, err }
+	cleanup := func(err error) (stagedWorkspace, semanticState, error) {
+		return stagedWorkspace{}, semanticState{}, err
+	}
 	if err := stage.readSource(ctx, target, expected); err != nil {
 		return cleanup(err)
 	}
@@ -602,7 +625,7 @@ func (p projector) stageCatalog(
 	if err != nil {
 		return cleanup(errors.WrapResource("preserve access", "workspace staging", target, err))
 	}
-	return candidate, state, nil
+	return stagedWorkspace{path: candidate, tree: stage.published, original: stage.original}, state, nil
 }
 
 func validateStableProjection(

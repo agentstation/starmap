@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
+	stderrors "errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -22,6 +23,7 @@ type workspaceStage struct {
 	candidate string
 	source    *os.Root
 	original  treeSnapshot
+	published treeSnapshot
 }
 
 func prepareWorkspaceStage(target string) (*workspaceStage, error) {
@@ -143,10 +145,11 @@ func (s *workspaceStage) finish(ctx context.Context, target string, beforeRestor
 	if err := filepublish.DirectoryBetweenRootsNoReplace(s.private, "tree", s.parent, s.candidate); err != nil {
 		return "", err
 	}
+	s.published = actual
 	path := filepath.Join(s.parent.Name(), s.candidate)
 	if err := filepublish.SyncDirectory(s.parent); err != nil {
-		_ = os.RemoveAll(path)
-		return "", err
+		candidate := stagedWorkspace{path: path, tree: actual}
+		return "", stderrors.Join(err, candidate.cleanup(ctx, treeSnapshot{}))
 	}
 	return path, nil
 }

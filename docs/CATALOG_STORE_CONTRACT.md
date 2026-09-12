@@ -747,6 +747,7 @@ That record binds the stage, work directory, writer lock, file identity, mode, a
 Before removal, recovery verifies that the mutable partial bytes remain an exact prefix of the original source file.
 
 A missing record, changed identity, mode, or non-prefix content causes refusal. Recovery preserves both files.
+
 An interrupted partial removal can resume from its retained record. Records from unsupported versions remain preserved.
 
 Source inventory permits at most 40,000 entries, including empty directories and metadata.
@@ -754,3 +755,18 @@ The stage scan uses the exact allowed manifest layout as its entry limit. Both s
 Aggregate path names must fit within 4 MiB. The existing limit of 10,000 source files still applies.
 
 Initialization permits only its two metadata files and empty work directory. It reads at most four entries before refusing an oversized layout.
+
+### Workspace candidate cleanup
+
+Projection and repair retain the candidate's native directory and file identities in memory.
+Cleanup checks those identities, content digests, access metadata, and the complete remaining inventory before deletion.
+An unknown entry, changed file, replacement file, or replacement directory causes a conflict and preserves the tree.
+A same-content file replacement still has a different identity and remains preserved.
+
+After a native directory exchange, cleanup can remove only the recorded old workspace at the candidate path.
+Cancellation does not skip cleanup. Cleanup uses a separate 30-second limit and returns any failure with the original operation error.
+Cleanup cannot reverse an accepted catalog or remove the published workspace.
+
+Repair publishes its validated candidate without repeating the render and validation passes.
+These in-memory inventories do not provide recovery after process exit. Persistent staging recovery remains incomplete.
+
