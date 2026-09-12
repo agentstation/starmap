@@ -216,7 +216,7 @@ func TestProviderReviewHistorySelectsCurrentReceipt(t *testing.T) {
 
 func TestProviderReviewHistorySurvivesBaselineChangeAndCompaction(t *testing.T) {
 	history, _ := providerReviewHistory(t, 12, false)
-	compacted, err := compactRepeatedProviderHistory(t.Context(), history)
+	compacted, err := compactProviderHistory(t.Context(), history)
 	if err != nil {
 		t.Fatal(err)
 	}

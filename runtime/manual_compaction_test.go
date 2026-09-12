@@ -156,7 +156,7 @@ func TestRepeatedProviderCompactionPreservesReplayBoundaries(t *testing.T) {
 			if scenario == "canceled" {
 				cancel()
 			}
-			compacted, err := compactRepeatedProviderHistory(ctx, history)
+			compacted, err := compactProviderHistory(ctx, history)
 			if scenario == "canceled" {
 				if !errors.Is(err, context.Canceled) {
 					t.Fatalf("canceled compaction = %v", err)
@@ -269,7 +269,7 @@ func TestRepeatedProviderCompactionPreservesEffectiveCatalog(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			compacted, err := compactRepeatedProviderHistory(t.Context(), history)
+			compacted, err := compactProviderHistory(t.Context(), history)
 			if err != nil {
 				t.Fatal(err)
 			}
