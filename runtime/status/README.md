@@ -18,6 +18,7 @@ The package is a leaf. It reads no catalog source and opens no connection. A ser
   - [func \(f Freshness\) String\(\) string](<#Freshness.String>)
 - [type Health](<#Health>)
   - [func \(h Health\) String\(\) string](<#Health.String>)
+- [type RetentionStatus](<#RetentionStatus>)
 - [type SourceHop](<#SourceHop>)
 - [type SourceKind](<#SourceKind>)
   - [func SourceKinds\(\) \[\]SourceKind](<#SourceKinds>)
@@ -98,6 +99,36 @@ func (h Health) String() string
 ```
 
 String returns the wire value of the health state.
+
+<a name="RetentionStatus"></a>
+## type [RetentionStatus](<https://github.com/agentstation/starmap/blob/main/runtime/status/retention.go#L7-L28>)
+
+RetentionStatus reports the last runtime collection pass without reading storage. Counts and bytes exclude backend replication and filesystem overhead.
+
+```go
+type RetentionStatus struct {
+    Enabled              bool
+    Interval             time.Duration
+    MaxGenerations       int
+    MaxBytes             int64
+    ScanEntries          int
+    InputMaxBytes        int64
+    AttemptedAt          time.Time
+    SucceededAt          time.Time
+    Health               Health
+    Reason               string
+    GenerationCollection string
+    Generations          int
+    GenerationBytes      int64
+    ProtectedGenerations int
+    ProtectedBytes       int64
+    RemovedGenerations   int
+    ScannedInputs        int
+    InputBytes           int64
+    RemovedInputs        int
+    OverLimit            bool
+}
+```
 
 <a name="SourceHop"></a>
 ## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L108-L113>)
@@ -183,12 +214,15 @@ func (k SourceKind) Valid() bool
 Valid reports whether the kind is one of the accepted source names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L236>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L242>)
 
 Status is the operator\-facing state of one connected runtime. It keeps usability, freshness, fallback, direct source health, and upstream\-reported health as five independent values, so a warning on one never hides another.
 
 ```go
 type Status struct {
+    // Retention reports collection capability, bounded usage, and the last maintenance outcome.
+    Retention RetentionStatus
+
     // Usable reports whether the catalog can serve new work under the startup policy.
     // An internal authority also requires a retained, current permission receipt.
     Usable bool
@@ -207,6 +241,9 @@ type Status struct {
     EnforcedPermissionRevision string
     // PermissionValidUntil is the confirmed receipt's expiry before the runtime subtracts clock uncertainty.
     PermissionValidUntil time.Time
+
+    // GenerationPin is the retained generation selected by configuration.
+    GenerationPin string
 
     // GenerationID identifies the served catalog generation.
     GenerationID string

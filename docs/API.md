@@ -46,8 +46,10 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
   - [func NewContext\(ctx context.Context, opts ...Option\) \(\*Client, error\)](<#NewContext>)
   - [func \(c \*Client\) AcquireGeneration\(ctx context.Context, id string\) \(catalogs.Generation, func\(\) error, error\)](<#Client.AcquireGeneration>)
   - [func \(c \*Client\) Activate\(ctx context.Context, generation catalogs.Generation\) \(Publication, error\)](<#Client.Activate>)
+  - [func \(c \*Client\) CanCollectGenerations\(\) bool](<#Client.CanCollectGenerations>)
   - [func \(c \*Client\) CanLeaseGenerations\(\) bool](<#Client.CanLeaseGenerations>)
   - [func \(c \*Client\) Catalog\(\) \*catalogs.Catalog](<#Client.Catalog>)
+  - [func \(c \*Client\) CollectGenerations\(ctx context.Context, request storage.RetentionRequest\) \(storage.RetentionReport, error\)](<#Client.CollectGenerations>)
   - [func \(c \*Client\) CurrentAuthorityHead\(\) catalogs.CatalogAuthorityHead](<#Client.CurrentAuthorityHead>)
   - [func \(c \*Client\) CurrentCatalogState\(\) CatalogState](<#Client.CurrentCatalogState>)
   - [func \(c \*Client\) CurrentGeneration\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.CurrentGeneration>)
@@ -277,6 +279,15 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 
 Activate validates, durably commits, and atomically activates an immutable generation obtained by an explicit trusted distribution adapter.
 
+<a name="Client.CanCollectGenerations"></a>
+### func \(\*Client\) [CanCollectGenerations](<https://github.com/agentstation/starmap/blob/main/generation_collection.go#L13>)
+
+```go
+func (c *Client) CanCollectGenerations() bool
+```
+
+CanCollectGenerations reports whether the selected store supports coordinated collection. It reads no storage and starts no work.
+
 <a name="Client.CanLeaseGenerations"></a>
 ### func \(\*Client\) [CanLeaseGenerations](<https://github.com/agentstation/starmap/blob/main/generation_leases.go#L17>)
 
@@ -294,6 +305,15 @@ func (c *Client) Catalog() *catalogs.Catalog
 ```
 
 Catalog returns the current immutable canonical catalog. It returns nil when called on a nil Client. After New or NewContext succeeds, Catalog is non\-failing, non\-nil, O\(1\), allocation\-free, and safe to retain across goroutines.
+
+<a name="Client.CollectGenerations"></a>
+### func \(\*Client\) [CollectGenerations](<https://github.com/agentstation/starmap/blob/main/generation_collection.go#L29>)
+
+```go
+func (c *Client) CollectGenerations(ctx context.Context, request storage.RetentionRequest) (storage.RetentionReport, error)
+```
+
+CollectGenerations applies explicit retention without changing the served catalog. It serializes with client updates and protects served and stored embedded generations. The caller supplies other required IDs and the expected stored generation. Collection remains available when a publication guard prevents catalog changes.
 
 <a name="Client.CurrentAuthorityHead"></a>
 ### func \(\*Client\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/authority_head.go#L9>)
