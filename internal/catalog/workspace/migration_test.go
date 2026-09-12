@@ -331,6 +331,14 @@ func migrationTree(t *testing.T, root string) map[string]string {
 			contents[relative+"/"] = ""
 			return nil
 		}
+		info, err := entry.Info()
+		if err != nil {
+			return err
+		}
+		if info.Mode().IsRegular() && info.Size() == 0 {
+			contents[relative] = ""
+			return nil
+		}
 		data, err := os.ReadFile(path)
 		if err != nil {
 			return err

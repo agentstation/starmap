@@ -63,9 +63,14 @@ func readCheckedFile(root *os.Root, name string, limit int64, inspect func(*os.R
 	if !sameRecord(info, opened) {
 		return nil, changed(name)
 	}
-	data, err := io.ReadAll(io.LimitReader(file, limit+1))
-	if err != nil {
-		return nil, err
+	data := []byte{}
+	// Empty ownership files can hold mandatory Windows byte-range locks.
+	// The open handle and final metadata checks establish their empty contents.
+	if opened.Size() != 0 {
+		data, err = io.ReadAll(io.LimitReader(file, limit+1))
+		if err != nil {
+			return nil, err
+		}
 	}
 	if int64(len(data)) > limit {
 		return nil, oversized(name, limit)

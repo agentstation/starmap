@@ -485,7 +485,11 @@ func TestFilesystemRetentionSerializesOrdinaryReads(t *testing.T) {
 	}
 	result := make(chan error, 1)
 	go func() { _, err := store.Collect(t.Context(), retentionRequest()); result <- err }()
-	<-entered
+	select {
+	case <-entered:
+	case err := <-result:
+		t.Fatalf("collector returned before retirement: %v", err)
+	}
 	ctx, cancel := context.WithTimeout(t.Context(), 50*time.Millisecond)
 	defer cancel()
 	if _, err := reader.Current(ctx); !stderrors.Is(err, context.DeadlineExceeded) {
