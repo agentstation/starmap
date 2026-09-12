@@ -28,7 +28,7 @@ func (c exitAfterDiscoveryStage) Err() error {
 
 func TestGitHubDiscoveryRecoversRecordPublicationAfterProcessExit(t *testing.T) {
 	if directory := os.Getenv("STARMAP_TEST_DISCOVERY_RECORD_EXIT"); directory != "" {
-		store, err := newStateStore(Config{StateDirectory: directory, Repository: testRepository, Channel: "catalog"})
+		store, err := newStateStore(t.Context(), Config{StateDirectory: directory, Repository: testRepository, Channel: "catalog"})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -43,7 +43,7 @@ func TestGitHubDiscoveryRecoversRecordPublicationAfterProcessExit(t *testing.T) 
 	}
 	directory := t.TempDir()
 	config := Config{StateDirectory: directory, Repository: testRepository, Channel: "catalog"}
-	store, err := newStateStore(config)
+	store, err := newStateStore(t.Context(), config)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -61,7 +61,7 @@ func TestGitHubDiscoveryRecoversRecordPublicationAfterProcessExit(t *testing.T) 
 	if command.ProcessState == nil || command.ProcessState.ExitCode() != 88 {
 		t.Fatalf("child exit: %v %s", err, output)
 	}
-	reopened, err := newStateStore(config)
+	reopened, err := newStateStore(t.Context(), config)
 	if err != nil {
 		t.Fatal(err)
 	}

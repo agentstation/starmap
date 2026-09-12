@@ -66,7 +66,10 @@ type stateStore struct {
 // newStateStore resolves the state file of one configuration. The file name
 // is a digest of the repository and the channel. A custom deployment therefore
 // writes neither its host nor its URL into a path.
-func newStateStore(config Config) (*stateStore, error) {
+func newStateStore(ctx context.Context, config Config) (*stateStore, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	if err := policy.Require("github-discovery", policy.OwnerOnly); err != nil {
 		return nil, err
 	}
@@ -75,7 +78,7 @@ func newStateStore(config Config) (*stateStore, error) {
 	if err != nil {
 		return nil, errors.WrapIO("open private discovery directory", directory, err)
 	}
-	if err := dir.RecoverPublications(context.Background()); err != nil {
+	if err := dir.RecoverPublications(ctx); err != nil {
 		return nil, errors.WrapIO("recover private discovery records", directory, err)
 	}
 	key := sha256.Sum256([]byte(config.Repository + "\x00" + config.Channel))

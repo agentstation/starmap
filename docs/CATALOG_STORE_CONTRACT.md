@@ -979,6 +979,9 @@ Recovery runs under the runtime directory owner and each record writer lock. Pas
 The file manifest reports private receipt directories and temporary records without exposing their contents or adopting unrelated operator files.
 
 GitHub source construction recovers its local discovery records without contacting the network.
+The runtime supplies its caller context through `github.NewContext`. The existing `github.New` wrapper uses a background context.
+Cancellation before construction creates no state. Cancellation during recovery preserves unfinished records for a later attempt.
+
 Each verified refresh compares the previously read state bytes under the shared writer lock before publishing the next state.
 An absent state and an empty file remain distinct comparison inputs. A conflicting refresh returns a retryable conflict and preserves the newer record.
 Retry reads the current replay floor, ETag, and accepted release reference before checking the channel again.

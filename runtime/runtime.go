@@ -238,7 +238,7 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 
 	// Source selection is terminal. A configured custom source never falls
 	// back to the public channel, so a selection failure fails Open.
-	runtime.source, err = runtime.selectSource()
+	runtime.source, err = runtime.selectSource(ctx)
 	if err != nil {
 		return nil, err
 	}
