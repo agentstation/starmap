@@ -744,6 +744,16 @@
       "path": "blobs/a58d84d6d9b6a7b4668bfa7a3d1f914d14db4109210366090a7dc69becf9b102.gz",
       "sha256": "1cc85a9cb941f67407f9c4da24d3df47c9eb1514be623df1571de126a387e0da",
       "decoded_sha256": "a58d84d6d9b6a7b4668bfa7a3d1f914d14db4109210366090a7dc69becf9b102"
+    },
+    {
+      "path": "blobs/b0f1e1c50c075227455c011acec2d3525fd3e5386a72b76b4c08426abc30e7bb.gz",
+      "sha256": "7417b582f879631cae649ecf3b40f385dab6a5e9172c245f4fb9e2ce675e55f4",
+      "decoded_sha256": "b0f1e1c50c075227455c011acec2d3525fd3e5386a72b76b4c08426abc30e7bb"
+    },
+    {
+      "path": "blobs/30c250536f2ffd31f08709d400092dc028697131eac5e970f816e3f23ac35d1f.gz",
+      "sha256": "926488329f4090a2f62c7a3ce5f2c672970a5f8524e526e7c80e36f7e95a3254",
+      "decoded_sha256": "30c250536f2ffd31f08709d400092dc028697131eac5e970f816e3f23ac35d1f"
     }
   ],
   "checks": {
@@ -28230,6 +28240,35 @@
           "Elapsed": 4.15
         }
       ]
+    },
+    "qualification-final-task-064eb02c0-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "--task",
+        "CSP5"
+      ],
+      "started_at": "2026-09-12T15:26:58.987296+00:00",
+      "base_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+      "source_files": {},
+      "exit_code": 0,
+      "finished_at": "2026-09-12T15:33:11.268444+00:00",
+      "name": "qualification-final-task-064eb02c0-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/b0f1e1c50c075227455c011acec2d3525fd3e5386a72b76b4c08426abc30e7bb.gz",
+        "verification.json": "blobs/30c250536f2ffd31f08709d400092dc028697131eac5e970f816e3f23ac35d1f.gz"
+      },
+      "test_events": {},
+      "test_results": []
     }
   },
   "source_files": [
@@ -28594,8 +28633,8 @@
     "Historical profile bytes are total allocations, not resident memory or request overhead.",
     "The eight test changes add only t.Parallel. Test cases, assertions, and deadlines remain unchanged."
   ],
-  "previous_goal_turn": "PROGRESS: applied and tested runtime snapshot protection, preserved the full-suite timeout, and updated the plan.",
-  "observed_at": "2026-09-12T15:18:56.236405+00:00",
+  "previous_goal_turn": "VERIFIED_WAIT: confirmed repository session 61969 and task session 5833 live, prepared the PR description, and passed the review dry-run. The dry-run is not a code review.",
+  "observed_at": "2026-09-12T15:35:27.959783+00:00",
   "prior_source_commits": [
     "8683287dfcd5fc17268d501e70f9b6753aea1c67",
     "082a760a283eb323adb0209c6a150efd8b96da21"
@@ -28668,6 +28707,74 @@
       "A22": "UNVERIFIED",
       "A23": "UNVERIFIED"
     },
-    "limit": "A22 and A23 still require Starport consumer qualification. The summary counts 49 unverified primary cases as failed; they are not 49 failed tests."
+    "limit": "A22 and A23 still require Starport consumer qualification. The summary counts 49 unverified primary cases as failed; they are not 49 failed tests.",
+    "source_commit": "082a760a283eb323adb0209c6a150efd8b96da21"
+  },
+  "latest_task_verification": {
+    "status": "PASS",
+    "source_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+    "check": "qualification-final-task-064eb02c0-20260912",
+    "selected_subcases": 12,
+    "qualification": "component checks only",
+    "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+    "registry_sha256": "072a450c2adcdd5e7cb7ce67383d660ae58c06dbafc7979e65cfe048c6d88684",
+    "subcases": {
+      "A19.verified_rollback": {
+        "status": "PASS",
+        "evidence_scope": "product"
+      },
+      "A19.pin_restart": {
+        "status": "PASS",
+        "evidence_scope": "product"
+      },
+      "A19.poll_cannot_unpin": {
+        "status": "PASS",
+        "evidence_scope": "product"
+      },
+      "A19.permission_withdrawal_not_bypassed": {
+        "status": "PASS",
+        "evidence_scope": "product"
+      },
+      "A22.startup_poll_stream_manual": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      },
+      "A22.lazy_secret_resolution": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      },
+      "A22.local_import_allowed": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      },
+      "A22.inference_separate_egress": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      },
+      "A23.manual_source_with_acquisition": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      },
+      "A23.pin_blocks_all_activation": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      },
+      "A23.explicit_refresh": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      },
+      "A23.restart_watcher_guards": {
+        "status": "PASS",
+        "evidence_scope": "producer_component"
+      }
+    },
+    "parent_cases": {
+      "A19": "PASS",
+      "A22": "UNVERIFIED",
+      "A23": "UNVERIFIED"
+    },
+    "evidence_basis": "The retained task command exits zero only when every selected named behavior check passes without skips. The committed verifier defines this gate.",
+    "test_event_counts": "UNAVAILABLE: text output does not retain child test events. No exact event count is claimed for this invocation.",
+    "limit": "A22 and A23 retain their Starport consumer requirements. Shared/object collection, complete repository verification, review, native CI, and merge remain open."
   }
 }

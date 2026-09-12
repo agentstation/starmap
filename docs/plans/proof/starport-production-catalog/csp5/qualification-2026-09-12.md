@@ -103,6 +103,20 @@ Individual operation deadlines remain unchanged.
 Full repository verification continues on the exact source now committed as `064eb02c0`.
 The runner captures its starting worktree bytes, which match that commit.
 
+## Current task gate
+
+The CSP5 task command passes on `064eb02c0` with all twelve selected subcases.
+A19 passes its four product checks. A22 and A23 pass eight producer checks and retain their Starport consumer requirements.
+The command ran from 15:26:58 to 15:33:11 UTC on 2026-09-12 and exited zero.
+
+Its text output preserves the task result but omits child test events. This invocation receives no exact test-event count.
+The verification record retains the earlier detailed task evidence under its original source commit.
+
+Full repository verification remains live in session `61969`.
+The workspace package passes in about 346 seconds, including the corrected migration path.
+Review preflight passes its input, secret-scan, and engine checks. The actual code review remains open.
+The prepared PR description identifies the local delivery and the remaining shared collection contract.
+
 ## Delivery sequence
 
 Deliver verified local update controls and retention through the required repository checks, pre-PR review, native CI, and merge.
