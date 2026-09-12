@@ -830,3 +830,15 @@ These selections overlap. Policy, lint, dependency gates, and source prose pass.
 
 Object generation retirement and automatic runtime collection remain incomplete. Native platform qualification remains open for this checkpoint.
 This change does not alter Badger, Valkey, Redis, SQLite, PostgreSQL, or MySQL roles.
+
+## Checked private record removal: 2026-09-12
+
+Local Starmap commit `98961b9f` adds checked removal for private input records.
+Changed content, active publication, unsafe selections, and replaced directories cause refusal.
+Directory synchronization errors preserve the visible-removal result, and retry can complete without recreating bytes.
+
+Runtime reachability selection remains incomplete. Object-store coordination remains an open owner question.
+This primitive does not change Badger, Valkey, Redis, SQLite, PostgreSQL, or MySQL roles.
+
+The [removal proof](../../plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json) records 116 passing private-file race events on each Go toolchain.
+Policy, package lint, and source prose pass. Runtime collection and full CSP5 qualification remain open.

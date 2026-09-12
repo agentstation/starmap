@@ -2831,3 +2831,15 @@ It also preserves the first implementation's configured-read bypass and its corr
 Both final pin selections pass 62 race events. Both recovery selections pass 240 events. These counts overlap and repeat across toolchains.
 Lint repairs preserve migration and checkpoint behavior. Policy, lint, dependency gates, and prose pass.
 Object retirement, runtime collection, history retirement, and full CSP5 qualification remain open.
+
+## Checked private record removal: 2026-09-12
+
+Classification: missing local collection capability under CSP5.
+Local Starmap commit `98961b9f` adds checked removal that shares ownership with private record publication.
+The original test fails because that operation is absent. Automatic runtime deletion remains incomplete.
+
+The object-catalog coordination question remains pending. The documented fleet recipe assigns coordination to shared KV and immutable bytes to S3.
+No accepted architecture or scope changed. Local collection work proceeds independently.
+
+The [removal proof](../../plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json) records 116 passing private-file race events on each Go toolchain.
+Policy, package lint, and source prose pass. Runtime collection and full CSP5 qualification remain open.

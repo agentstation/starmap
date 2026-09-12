@@ -1,0 +1,4302 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+  "source_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255"
+    },
+    {
+      "path": "internal/privatefiles/record_removal.go",
+      "sha256": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220"
+    },
+    {
+      "path": "internal/privatefiles/record_removal_test.go",
+      "sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    }
+  ],
+  "verified_at": "2026-09-12T10:24:08.820956+00:00",
+  "final_checks": [
+    "record-removal-final-20260912",
+    "record-removal-minimum-final-20260912",
+    "record-removal-lint-final-20260912",
+    "record-removal-policy-final-20260912",
+    "record-removal-prose-20260912"
+  ],
+  "checks": {
+    "record-removal-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:23:02.078433+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:23:10.894696+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 116
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/owner_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/maximum_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/empty_ACL",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/no_ACL_marker",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/absent_security",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/deny",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/zero_rights",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/inherited_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/short_header",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/truncated_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/negative_offset",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/header_overlap",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/oversized_payload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_magic",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/extra_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_entry_count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/unsupported_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_read,readattr,readextattr,readsecurity,search",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_deny_delete",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/user:jack_allow_add_file,add_subdirectory,delete_child",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_delete_child",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_writesecurity",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file,directory_inherit,only_inherit",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRechecksAncestorAccess",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/create",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/replace",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/if-absent",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/canceled-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRefusalKeepsPreviousRecord",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/absent",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/same",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/changed",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/created",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/removed",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty_requires_presence",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/nil_requires_absence",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish",
+          "Action": "pass",
+          "Elapsed": 0.81
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/prepared",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/published",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-prepared",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-published",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-header",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-empty",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-partial",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-unowned",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-incomplete",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 0.89
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-access",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/destination-bytes",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-bytes",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/metadata-identity",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords",
+          "Action": "pass",
+          "Elapsed": 0.8
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationExcludesActiveWriter",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationAndAmbiguousFlush",
+          "Action": "pass",
+          "Elapsed": 0.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryBoundsAndUnknownFiles",
+          "Action": "pass",
+          "Elapsed": 0.76
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-empty",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-partial",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-whitespace",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-missing",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/unknown-metadata",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/canceled",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges",
+          "Action": "pass",
+          "Elapsed": 1.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalRefusesActivePublisher",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalReportsVisibleOutcome",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/empty",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/nil_expectation",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/canceled",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/parent_traversal",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/metadata",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/directory",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/symlink",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/replaced_parent",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection",
+          "Action": "pass",
+          "Elapsed": 0.85
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalPreservesChangedContent",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryRefusesPathReplacement",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/absent",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/existing",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesModifiedStage",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/concurrent",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/existing",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles",
+          "Action": "pass",
+          "Elapsed": 0.02
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Action": "pass",
+          "Elapsed": 7.914
+        }
+      ]
+    },
+    "record-removal-focused-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestPrivateRecordRemoval",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:20:44.683358+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "5e4601819faa050939c93d516b4fad4844a3d3400c0b7529b0de82c1d6741d72",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:20:47.398553+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 12
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalRefusesActivePublisher",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalReportsVisibleOutcome",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/empty",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/nil_expectation",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/canceled",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/parent_traversal",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/metadata",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/directory",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/symlink",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/replaced_parent",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection",
+          "Action": "pass",
+          "Elapsed": 0.64
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalPreservesChangedContent",
+          "Action": "pass",
+          "Elapsed": 0.1
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Action": "pass",
+          "Elapsed": 2.151
+        }
+      ]
+    },
+    "record-removal-lint-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:21:14.007930+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:21:14.615192+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "record-removal-lint-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:23:02.114474+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:23:02.759581+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "record-removal-minimum-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:21:13.994443+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:21:23.491426+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 116
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/owner_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/maximum_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/empty_ACL",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/no_ACL_marker",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/absent_security",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/deny",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/zero_rights",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/inherited_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/short_header",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/truncated_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/negative_offset",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/header_overlap",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/oversized_payload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_magic",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/extra_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_entry_count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/unsupported_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_read,readattr,readextattr,readsecurity,search",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_deny_delete",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/user:jack_allow_add_file,add_subdirectory,delete_child",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_delete_child",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_writesecurity",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file,directory_inherit,only_inherit",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRechecksAncestorAccess",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/create",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/replace",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/if-absent",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/canceled-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRefusalKeepsPreviousRecord",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/absent",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/same",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/changed",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/created",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/removed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty_requires_presence",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/nil_requires_absence",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish",
+          "Action": "pass",
+          "Elapsed": 0.88
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/prepared",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/published",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-prepared",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-published",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-header",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-empty",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-partial",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-unowned",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-incomplete",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 0.95
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-access",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/destination-bytes",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-bytes",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/metadata-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords",
+          "Action": "pass",
+          "Elapsed": 0.85
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationExcludesActiveWriter",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationAndAmbiguousFlush",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryBoundsAndUnknownFiles",
+          "Action": "pass",
+          "Elapsed": 0.87
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-empty",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-partial",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-whitespace",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-missing",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/unknown-metadata",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/canceled",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges",
+          "Action": "pass",
+          "Elapsed": 1.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalRefusesActivePublisher",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalReportsVisibleOutcome",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/empty",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/nil_expectation",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/canceled",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/parent_traversal",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/metadata",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/directory",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/symlink",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/replaced_parent",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection",
+          "Action": "pass",
+          "Elapsed": 0.94
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalPreservesChangedContent",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryRefusesPathReplacement",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/absent",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/existing",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesModifiedStage",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/concurrent",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/existing",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles",
+          "Action": "pass",
+          "Elapsed": 0.02
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Action": "pass",
+          "Elapsed": 8.425
+        }
+      ]
+    },
+    "record-removal-minimum-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:23:02.102356+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:23:10.639122+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 116
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/owner_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/maximum_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/empty_ACL",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/no_ACL_marker",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/absent_security",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/deny",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/zero_rights",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/inherited_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/short_header",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/truncated_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/negative_offset",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/header_overlap",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/oversized_payload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_magic",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/extra_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_entry_count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/unsupported_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_read,readattr,readextattr,readsecurity,search",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_deny_delete",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/user:jack_allow_add_file,add_subdirectory,delete_child",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_delete_child",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_writesecurity",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file,directory_inherit,only_inherit",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRechecksAncestorAccess",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/create",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/replace",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/if-absent",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/canceled-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRefusalKeepsPreviousRecord",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/absent",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/same",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/changed",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/created",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/removed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty_requires_presence",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/nil_requires_absence",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish",
+          "Action": "pass",
+          "Elapsed": 0.95
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/prepared",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/published",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-prepared",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-published",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-header",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-empty",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-partial",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-unowned",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-incomplete",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 0.85
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-access",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/destination-bytes",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-bytes",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/metadata-identity",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords",
+          "Action": "pass",
+          "Elapsed": 0.8
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationExcludesActiveWriter",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationAndAmbiguousFlush",
+          "Action": "pass",
+          "Elapsed": 0.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryBoundsAndUnknownFiles",
+          "Action": "pass",
+          "Elapsed": 0.71
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-empty",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-partial",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-whitespace",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-missing",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/unknown-metadata",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/canceled",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges",
+          "Action": "pass",
+          "Elapsed": 1.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalRefusesActivePublisher",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalReportsVisibleOutcome",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/empty",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/nil_expectation",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/canceled",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/parent_traversal",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/metadata",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/directory",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/symlink",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/replaced_parent",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection",
+          "Action": "pass",
+          "Elapsed": 0.81
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalPreservesChangedContent",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryRefusesPathReplacement",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/absent",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/existing",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesModifiedStage",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/concurrent",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/existing",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles",
+          "Action": "pass",
+          "Elapsed": 0.03
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Action": "pass",
+          "Elapsed": 7.797
+        }
+      ]
+    },
+    "record-removal-policy-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T10:21:14.001389+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:21:15.936400+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "record-removal-policy-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T10:23:02.140749+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:23:04.128893+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "record-removal-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:22:36.952356+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:23:29.956673+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "record-removal-qualified-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:21:13.989549+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal.go": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9",
+        "internal/privatefiles/record_removal_test.go": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:21:23.124856+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 116
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/owner_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/maximum_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/empty_ACL",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/no_ACL_marker",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/absent_security",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/deny",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/zero_rights",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/inherited_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/short_header",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/truncated_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/negative_offset",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/header_overlap",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/oversized_payload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_magic",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/extra_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_entry_count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/unsupported_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_read,readattr,readextattr,readsecurity,search",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_deny_delete",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/user:jack_allow_add_file,add_subdirectory,delete_child",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_delete_child",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_writesecurity",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file,directory_inherit,only_inherit",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRechecksAncestorAccess",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/create",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/replace",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/if-absent",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/canceled-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRefusalKeepsPreviousRecord",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/absent",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/same",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/changed",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/created",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/removed",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty_requires_presence",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/nil_requires_absence",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish",
+          "Action": "pass",
+          "Elapsed": 0.97
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/prepared",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/published",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-prepared",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-published",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-header",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-empty",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-partial",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-unowned",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-incomplete",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 0.96
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-access",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/destination-bytes",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-bytes",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/metadata-identity",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords",
+          "Action": "pass",
+          "Elapsed": 0.77
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationExcludesActiveWriter",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationAndAmbiguousFlush",
+          "Action": "pass",
+          "Elapsed": 0.39
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryBoundsAndUnknownFiles",
+          "Action": "pass",
+          "Elapsed": 0.83
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-empty",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-partial",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-whitespace",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-missing",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/unknown-metadata",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/canceled",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges",
+          "Action": "pass",
+          "Elapsed": 1.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalRefusesActivePublisher",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalReportsVisibleOutcome",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/empty",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/nil_expectation",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/canceled",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/parent_traversal",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/metadata",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/directory",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/symlink",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection/replaced_parent",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalValidatesSelection",
+          "Action": "pass",
+          "Elapsed": 1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalPreservesChangedContent",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryRefusesPathReplacement",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/absent",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/existing",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesModifiedStage",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/concurrent",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/existing",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles",
+          "Action": "pass",
+          "Elapsed": 0.05
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Action": "pass",
+          "Elapsed": 8.486
+        }
+      ]
+    },
+    "record-removal-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-run",
+        "TestPrivateRecordRemovalPreservesChangedContent",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T10:19:53.573759+00:00",
+      "base_commit": "0359013960d701812fff337a42c50c101829b0af",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/privatefiles/record_removal_test.go": "1d547178dc45898a32e7f36b997efaf77725909a70ae2b17c0e557c54e293fb7",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T10:19:54.518994+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRemovalPreservesChangedContent",
+          "Action": "fail",
+          "Elapsed": 0
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Action": "fail",
+          "Elapsed": 0.21
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "record-removal-final-20260912/changes.patch.gz",
+      "sha256": "4f94e08391f642f0eab8205f2f906615ec06a1b5488f53a883d6ade7e704c696",
+      "decoded_sha256": "410f14c289ff353b21041f2088f0c466e48e1529615d736cdcca47711834c536"
+    },
+    {
+      "path": "record-removal-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e24848726bca8f80bbc2031ff96201b69751088d23e9c0a0081e0e9928408691",
+      "decoded_sha256": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255"
+    },
+    {
+      "path": "record-removal-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-final-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "fdcb84473b3de4f6c69dc4a8600ec03ac872eb44c2b34b76aa5840fd7e3bb39b",
+      "decoded_sha256": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220"
+    },
+    {
+      "path": "record-removal-final-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-final-20260912/stdout.log.gz",
+      "sha256": "93b3a27a8036dab48880443ccb951f2d8a8f556afeea70d74bdb127d268b87ec",
+      "decoded_sha256": "014b3dab6e27cb2280353fb4c685de88febddf67c04aa67da0c46f2b1ffef3ba"
+    },
+    {
+      "path": "record-removal-final-20260912/verification.json.gz",
+      "sha256": "4ea5958b4804ca765949574d1bf4032ac2c12cd50b55a94cf3a552cdcf9a4b08",
+      "decoded_sha256": "8217aab0a0822b0e285c754fe70990b8a92cac996b657480d00d0d64292c2b26"
+    },
+    {
+      "path": "record-removal-focused-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "record-removal-focused-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-focused-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-focused-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-focused-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-focused-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "22cc9687ac838e3ef306c424eb7a3cf610bc46bfd61fd429bb133562a79e0ac4",
+      "decoded_sha256": "5e4601819faa050939c93d516b4fad4844a3d3400c0b7529b0de82c1d6741d72"
+    },
+    {
+      "path": "record-removal-focused-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-focused-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-focused-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-focused-20260912/stdout.log.gz",
+      "sha256": "b7e3a77c507b04dfb9c4c47480461108a8b3880403ad9e8545da83dd52d5ff88",
+      "decoded_sha256": "31e8fd96cd6015c3da883f5824c078753a087be4b0bfccf67e5cc79182aa0469"
+    },
+    {
+      "path": "record-removal-focused-20260912/verification.json.gz",
+      "sha256": "7c4c78541dd61baa6d2231e3dba92679023da32aea85b69b6e89499ff62a9c27",
+      "decoded_sha256": "5b44f76d7b729cf4cd2cdafb30f9959aea5a29f942cb1bb7c848c313eff23e2c"
+    },
+    {
+      "path": "record-removal-lint-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "record-removal-lint-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-lint-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-lint-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-lint-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-lint-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "001be78b68fde342c112e81e1d0e9e04e6f2377cd4609177844abe9925fcef6e",
+      "decoded_sha256": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9"
+    },
+    {
+      "path": "record-removal-lint-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-lint-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-lint-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-lint-20260912/stdout.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "record-removal-lint-20260912/verification.json.gz",
+      "sha256": "6d2105eb875f2d45838431fd7dd34ca4e84c73a35f572aa9eefda109e61ba500",
+      "decoded_sha256": "d274e97f88ad2f624d2cae51f8e564f54535ddd92cce97d1c050bb6efb9a83fc"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/changes.patch.gz",
+      "sha256": "4f94e08391f642f0eab8205f2f906615ec06a1b5488f53a883d6ade7e704c696",
+      "decoded_sha256": "410f14c289ff353b21041f2088f0c466e48e1529615d736cdcca47711834c536"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e24848726bca8f80bbc2031ff96201b69751088d23e9c0a0081e0e9928408691",
+      "decoded_sha256": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "fdcb84473b3de4f6c69dc4a8600ec03ac872eb44c2b34b76aa5840fd7e3bb39b",
+      "decoded_sha256": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/stdout.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "record-removal-lint-final-20260912/verification.json.gz",
+      "sha256": "1b7550627590a50503b7776148c9a5a6d846efa8f354974319067e8ec264f035",
+      "decoded_sha256": "ec9a951e746f62f87048b40549a691463a9005784a27ab45f02e017290206de4"
+    },
+    {
+      "path": "record-removal-minimum-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "record-removal-minimum-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-minimum-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-minimum-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-minimum-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-minimum-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "001be78b68fde342c112e81e1d0e9e04e6f2377cd4609177844abe9925fcef6e",
+      "decoded_sha256": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9"
+    },
+    {
+      "path": "record-removal-minimum-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-minimum-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-minimum-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-minimum-20260912/stdout.log.gz",
+      "sha256": "e5c968117c520ea35701c9803383922ddf86f160a14b9a359e103bf22f1f2aae",
+      "decoded_sha256": "45806d57c2a7a91e7e84521778bcff6f93f66a0109e31c2dbcbef8b6c166d5cc"
+    },
+    {
+      "path": "record-removal-minimum-20260912/verification.json.gz",
+      "sha256": "e9ba5bf87edb52ecf3553cbe5b72d0ad914df8986697dae380ad494db073e460",
+      "decoded_sha256": "04f569c47c9a4c649285f909834956e8cea9bfec26300b383b6fedb3c7a76df5"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/changes.patch.gz",
+      "sha256": "4f94e08391f642f0eab8205f2f906615ec06a1b5488f53a883d6ade7e704c696",
+      "decoded_sha256": "410f14c289ff353b21041f2088f0c466e48e1529615d736cdcca47711834c536"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e24848726bca8f80bbc2031ff96201b69751088d23e9c0a0081e0e9928408691",
+      "decoded_sha256": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "fdcb84473b3de4f6c69dc4a8600ec03ac872eb44c2b34b76aa5840fd7e3bb39b",
+      "decoded_sha256": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/stdout.log.gz",
+      "sha256": "39f96eaddac2e1cfec362a1f39667df73b46abd49bd2c576460cc0cc2d258610",
+      "decoded_sha256": "3851d98300e23c5d55ef0f4c01c572141897afa8c02ffee5955a13a22b444900"
+    },
+    {
+      "path": "record-removal-minimum-final-20260912/verification.json.gz",
+      "sha256": "5112ef34805921c7fc915227b5ba39b959f086dbd32d178fa55e95e4eaa050d2",
+      "decoded_sha256": "165a08908308975bc18ac3fa8858652cef09190c7b6cf9889acfcf0cd99006b1"
+    },
+    {
+      "path": "record-removal-policy-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "record-removal-policy-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-policy-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-policy-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-policy-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-policy-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "001be78b68fde342c112e81e1d0e9e04e6f2377cd4609177844abe9925fcef6e",
+      "decoded_sha256": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9"
+    },
+    {
+      "path": "record-removal-policy-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-policy-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-policy-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-policy-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "record-removal-policy-20260912/verification.json.gz",
+      "sha256": "c3309839159d77f404050acd43555242462ac06d51709527a5dd68f50a1397f6",
+      "decoded_sha256": "90b64448c11ddc1763226f002867cb46c4ad5db09357e539ddba3c05e7091a37"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/changes.patch.gz",
+      "sha256": "4f94e08391f642f0eab8205f2f906615ec06a1b5488f53a883d6ade7e704c696",
+      "decoded_sha256": "410f14c289ff353b21041f2088f0c466e48e1529615d736cdcca47711834c536"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e24848726bca8f80bbc2031ff96201b69751088d23e9c0a0081e0e9928408691",
+      "decoded_sha256": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "fdcb84473b3de4f6c69dc4a8600ec03ac872eb44c2b34b76aa5840fd7e3bb39b",
+      "decoded_sha256": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "record-removal-policy-final-20260912/verification.json.gz",
+      "sha256": "09bc20ccde39136ecd9e2f823638bc25a82d0a3846c15e5cd8dbb8a62c61b6a1",
+      "decoded_sha256": "89cebbf8d0ea6549e21a2a7621d6394465dc1088d3a980106862777ce21407f4"
+    },
+    {
+      "path": "record-removal-prose-20260912/changes.patch.gz",
+      "sha256": "4f94e08391f642f0eab8205f2f906615ec06a1b5488f53a883d6ade7e704c696",
+      "decoded_sha256": "410f14c289ff353b21041f2088f0c466e48e1529615d736cdcca47711834c536"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e24848726bca8f80bbc2031ff96201b69751088d23e9c0a0081e0e9928408691",
+      "decoded_sha256": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "001be78b68fde342c112e81e1d0e9e04e6f2377cd4609177844abe9925fcef6e",
+      "decoded_sha256": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-prose-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-prose-20260912/stdout.log.gz",
+      "sha256": "cfc44d574a470d5071ad78ad833205fa8a2fb344502c69eef885e6529acfa05c",
+      "decoded_sha256": "c2bb107a0a85306792b869556cd1f32a3da54f909c36f756e982d19bd79dac32"
+    },
+    {
+      "path": "record-removal-prose-20260912/verification.json.gz",
+      "sha256": "409f96c005db148381f1c6aebb3bc51613f3a2e7a066649e700c9ae96365f793",
+      "decoded_sha256": "06987e958b6b48f59d102a0c78012ca56995fcc1d61370dd4896043192420338"
+    },
+    {
+      "path": "record-removal-qualified-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "record-removal-qualified-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-qualified-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-qualified-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-qualified-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-qualified-20260912/source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "001be78b68fde342c112e81e1d0e9e04e6f2377cd4609177844abe9925fcef6e",
+      "decoded_sha256": "2d5ff0674a05fbe1ab86ed2917b455c7ba40af7ff665da3cd5618c1655e5e6c9"
+    },
+    {
+      "path": "record-removal-qualified-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "record-removal-qualified-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-qualified-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-qualified-20260912/stdout.log.gz",
+      "sha256": "648f1dceaf48f4d51bc1b57fe8b426db3802431f91b98f529663a0d0fc132eaf",
+      "decoded_sha256": "617325332db572fb99feeb2f082d97b62d88376ddb2fff7156a90ba5456e0499"
+    },
+    {
+      "path": "record-removal-qualified-20260912/verification.json.gz",
+      "sha256": "e439ab60d76404a86f53dd497d62a1432336a3699c93fe02eaaac4e8eeeca9a8",
+      "decoded_sha256": "c6f24d011be0cd8bf079807046f38d4d989a3c8680221bac4a5bb8c7bfccaeaf"
+    },
+    {
+      "path": "record-removal-red-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "record-removal-red-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-red-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-red-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "record-removal-red-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "record-removal-red-20260912/source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "f06bd77d7751ca94e3200d81b14030b58512d4b5854b8ed079ab3d61e2b8a7c0",
+      "decoded_sha256": "1d547178dc45898a32e7f36b997efaf77725909a70ae2b17c0e557c54e293fb7"
+    },
+    {
+      "path": "record-removal-red-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "record-removal-red-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-red-20260912/stdout.log.gz",
+      "sha256": "d2bef2d043b16c32be0d2399ba3ae90acb29eaf166de7810aabe597e4dfb1482",
+      "decoded_sha256": "748fc3eaa02f00617dc19dc7b14f02f1ea2df3244ea2a7879f5cfebf4ca4927e"
+    },
+    {
+      "path": "record-removal-red-20260912/verification.json.gz",
+      "sha256": "3a04c9c8270d104278d550d19b8bd24f35ae2210bea5e4a885f67a40602a4076",
+      "decoded_sha256": "209ec4609f04744796247524787381734feffb070a80e9edc10e2bfa5ba0a6d2"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e24848726bca8f80bbc2031ff96201b69751088d23e9c0a0081e0e9928408691",
+      "decoded_sha256": "ab52433e35abd027827c2852bec1f362ea3255f137fcfad79a6ca0c910dd3255"
+    },
+    {
+      "path": "committed-source/internal/privatefiles/record_removal.go.gz",
+      "sha256": "fdcb84473b3de4f6c69dc4a8600ec03ac872eb44c2b34b76aa5840fd7e3bb39b",
+      "decoded_sha256": "2c6451a7220fe975f6ff18cb9dde442c4f849b3415811015cc6d8b6adec39220"
+    },
+    {
+      "path": "committed-source/internal/privatefiles/record_removal_test.go.gz",
+      "sha256": "eccb2b50127dceca9419169e99e4709abd57ae67379bad76d218f2a11e4c9e05",
+      "decoded_sha256": "7f1d03d6f080f767dc49dc48a3eb62a48def11a0b4cb5faa2673ab0a92b19d8d"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "f7606c3f359f5623632f7ca60743cf672306d406279a7be0f16e0ee4393e46e8",
+      "decoded_sha256": "45707c8ff6e11f16f3406ff8e2b788ba67be44ecb493c08ccb8a878a7adfd2b4"
+    },
+    {
+      "path": "concurrent-tooling/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "concurrent-tooling/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "concurrent-tooling/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "concurrent-tooling/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "concurrent-tooling/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "concurrent-tooling/changes.patch.gz",
+      "sha256": "ee0c008c0d8984beed38090478b201c93ab24b76c11247273b2b93035646b900",
+      "decoded_sha256": "506e8dbb6dff7a7aa5008d82de32cdc232cdf6e273267c5dbfdfed4c5c8d3d82"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/changes.patch.gz",
+      "sha256": "67756578d0d48b86efa07cf1f1fca1a5306f4f6951fe6b09d0228059d5c63d28",
+      "decoded_sha256": "6d4193a9e6ae6b94519ad545e9d957b81b38dd4c2add3be29c73208261c73c87"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "babf62f9a63b6a49cf58ff8e8f4e29544aaee70e169ef344098c32500f825b68",
+      "decoded_sha256": "b894908d9580ef0a9040c761524a6dbe9ec3ccd507d0b4e8e96e6c88e44c0a21"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "f401a36db369ee09ca9b966876143120555a513a92fd22b1236a7ea2e6554b70",
+      "decoded_sha256": "5e28a8c386d408fd5a0e35a46374e0f78e87177bb31d5a596e8e287747fdca05"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "441de7a00b9b21b7d6cfe9324685c9819e10a7e3596c5ebd608ddb232d6e3729",
+      "decoded_sha256": "4d8f67a25e8e2640866ccfcadfb0aeb8a1d1da9b22f0dc591e26330219f7fd6d"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json.gz",
+      "sha256": "09d432f6577d2e1c3e7fc64d7f187c3471f67036eb7f23b4895311ed5ab42e5c",
+      "decoded_sha256": "f1ed384cc2dc0d375b32b63b8b6f9358f05fcd7cbec58c90a6525acfb7591678"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json.gz",
+      "sha256": "19c884cd836c14f96e42d05f947b56a498d265e3581a7e19688d325363e2ef9c",
+      "decoded_sha256": "56fe92f4be83fe3f7484c5d5eab2de33307febac68ef296e27eb00feb1f4827a"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "41a5bcbd8598388c7e6231e6f900f4e6e3a13315e88f9be616ed4e7da86e6c0a",
+      "decoded_sha256": "10f5717c3060e1a67aa8e514243a884e3defee52dc6ac7847dce60d0a5a5e0c5"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-record-removal.html.gz",
+      "sha256": "66e08bd857afd86bfc97d0b773bcb4d37516608eb99df26eaad5cfc8bfe9a26e",
+      "decoded_sha256": "3fba29a536d8ec1f6c5d805b9bf5d66843ed202b8a91571d13c36d18cac8a055"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "33216409479ecf78fe532608ab19c78d029a4b767b3ed3bd8b6bbac492135184",
+      "decoded_sha256": "ace292da94dca002ac217365171a8aeefd2638177c7064d237055becf7d67604"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/stdout.log.gz",
+      "sha256": "60f8c7248645b5509c280b99267dc075189684bacae5063288c98ea56f5a1786",
+      "decoded_sha256": "47e6fed505c5f39c3f29561d0f320588376c821488c6488edd4ed9ca8132c41a"
+    },
+    {
+      "path": "record-removal-canonical-prose-20260912/verification.json.gz",
+      "sha256": "c7846597c91b6cc24bc285af169ba56849ad1b4db710be141f7e1caa6c273483",
+      "decoded_sha256": "d2e8e520e6fa5d10d7a360a4e4a7b217137feb30f0da3d911da3b5c0e71b6682"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/changes.patch.gz",
+      "sha256": "581189ce301e63b4a95c9e7a332760ffff3898c7b4c5cde285b495056e15c8cf",
+      "decoded_sha256": "d12d3152705b9443fa611697aed07c008b48e6fe74e2a1c93e84e8a7d7c3d7e3"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "babf62f9a63b6a49cf58ff8e8f4e29544aaee70e169ef344098c32500f825b68",
+      "decoded_sha256": "b894908d9580ef0a9040c761524a6dbe9ec3ccd507d0b4e8e96e6c88e44c0a21"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "f401a36db369ee09ca9b966876143120555a513a92fd22b1236a7ea2e6554b70",
+      "decoded_sha256": "5e28a8c386d408fd5a0e35a46374e0f78e87177bb31d5a596e8e287747fdca05"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "441de7a00b9b21b7d6cfe9324685c9819e10a7e3596c5ebd608ddb232d6e3729",
+      "decoded_sha256": "4d8f67a25e8e2640866ccfcadfb0aeb8a1d1da9b22f0dc591e26330219f7fd6d"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json.gz",
+      "sha256": "09d432f6577d2e1c3e7fc64d7f187c3471f67036eb7f23b4895311ed5ab42e5c",
+      "decoded_sha256": "f1ed384cc2dc0d375b32b63b8b6f9358f05fcd7cbec58c90a6525acfb7591678"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json.gz",
+      "sha256": "c6f7efb8bad185210f66a06d23535c2bf1646834e9d8e85f8e8e4e353cee0eb9",
+      "decoded_sha256": "fc12d4de3ba3697c95afdc23935ed1861286086be85b185e50ca1b32feeee38b"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "81b45c1248d6838a0354379b49fdb48bbb7a08b97ab80b0334680b7fdab17ac7",
+      "decoded_sha256": "c8cb9556b5ba24611cc54cc94103c949bacd626e7e5737cada40a4ee5d5360b2"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-record-removal.html.gz",
+      "sha256": "66e08bd857afd86bfc97d0b773bcb4d37516608eb99df26eaad5cfc8bfe9a26e",
+      "decoded_sha256": "3fba29a536d8ec1f6c5d805b9bf5d66843ed202b8a91571d13c36d18cac8a055"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "7fa97f075fddaf1bda646e2933da7c1718c1730122f8b19f9bf658102c43e7ae",
+      "decoded_sha256": "f8661c368e105d7073b7487e61e5e5e5d1b1fa95be871a1493254c31bee804fb"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/stdout.log.gz",
+      "sha256": "62ab4d3df3a237151eefc4bbc924cb81a294fe588324ef60468661bcb7f64fab",
+      "decoded_sha256": "f8e159534866656f1a489922dc7c4d1011eba2ae9f3a1a083b2b0707c837e193"
+    },
+    {
+      "path": "record-removal-canonical-prose-final-20260912/verification.json.gz",
+      "sha256": "f44f05d0069f0a1d9037d7937ef9904640fc39a7bce4b3a7cd28a08a0d757939",
+      "decoded_sha256": "c4e08d53fde89d50f31ecab121424099f239d3ffceb745745f9381de4401abe6"
+    }
+  ],
+  "final_test_events": {
+    "per_toolchain": 116,
+    "toolchains": [
+      "go1.26.6",
+      "go1.25.12"
+    ]
+  },
+  "source_binding": "The final package race suites, lint, and policy checks bind all three committed files. The prose snapshot precedes two code-only guards on an absent-file retry. Documentation bytes and all source comments remain identical.",
+  "limits": [
+    "The original capability test fails because private records have no checked removal operation under publication ownership. No existing automatic deletion defect is claimed.",
+    "CompareAndRemoveFileContext shares PublishFileContext native ownership. It checks expected content, private metadata, native file identity and access, and directory ownership before unlink. Legacy uncoordinated writers are not a supported collection participant.",
+    "The twelve focused race events cover changed content, matching removal, absent retry, active publisher refusal, visible removal with failed directory synchronization, reopen retry, empty content, nil expectation, cancellation, path traversal, reserved metadata, directory, symlink, and replaced-parent refusal. Counts include parent events.",
+    "The complete private-file package passes 116 race events on each Go toolchain without failures or skips. These toolchain runs repeat the same cases and are not 232 distinct tests.",
+    "A reported visible removal cannot be reversed by a later synchronization error. A retry of an absent record verifies its directory ownership and synchronizes the directory. No process-exit or power-loss qualification follows from injected synchronization failure.",
+    "Runtime reachability selection is not implemented by this primitive. The runtime must trace accepted history and pending publications while excluding input writers before selecting removal candidates.",
+    "The new operation does not enable automatic cleanup or collect generation objects. Object-store coordination, runtime collection, history retirement, twelve mapped subcases, full verification, required review, native CI, and merge remain open.",
+    "Native Windows and Linux execution remain unverified for this checkpoint. The local macOS symlink test passed without a skip.",
+    "The owner question about shared object-catalog coordination versus an S3-only coordination protocol is pending. No answer is inferred and no accepted architecture or CSP5 scope changed. Local filesystem work continues independently.",
+    "Five concurrent tooling edits remain outside the source commit. Final task qualification must use its final committed module graph.",
+    "The final canonical prose check passes. Source snapshots separate the concurrent tooling edits from six owned documentation files. Task criteria, scope, invariants, and the goal remain unchanged."
+  ],
+  "unrelated_worktree_changes": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    }
+  ],
+  "tested_module_inputs": [
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+      "evidence": "record-removal-final-20260912/source/go.mod.gz"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+      "evidence": "record-removal-final-20260912/source/go.sum.gz"
+    }
+  ],
+  "next_implementation": {
+    "owner": "Runtime input reachability and collection",
+    "source_files": [
+      "runtime/publication_retention.go",
+      "runtime/publication_inputs.go",
+      "runtime/publication_journal.go",
+      "runtime/manual_history.go",
+      "runtime/layers.go",
+      "runtime/refresh.go",
+      "internal/privatefiles/record_removal.go"
+    ],
+    "existing_boundaries": [
+      "publishInputsWithRemovals holds publicationMu and providerRetentionMu across staging, catalog acceptance, and retained-input completion.",
+      "inputChanges.stage records source, provider, manual-history, and removal references. Accepted manual history retains batch and observation references in publication-inputs.",
+      "loadInputPublication distinguishes prepared or committed pending inputs from an idle marker. Collection must preserve its exact references.",
+      "runGroup in runtime/refresh.go joins cancellation and shutdown. The existing execute method applies update policy and refresh ownership, so collection must not inherit forbidden catalog acquisition as a side effect.",
+      "CompareAndRemoveFileContext checks one record only. Its native writer lock does not protect the runtime reference graph. The runtime owns that protection."
+    ],
+    "still_required": [
+      "bounded reference traversal and directory scan",
+      "strict classification of owned input records",
+      "preservation of unknown, changed, referenced, and actively written files",
+      "explicit collection outcome and recovery after partial removal",
+      "runtime cancellation and shutdown integration",
+      "automatic collection and operator limits under the full task contract"
+    ]
+  },
+  "documentation_checks": {
+    "record-removal-canonical-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:25:20.370855+00:00",
+      "base_commit": "58cacff44a7eb37452979c5be15a397d8c2f1409",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "b894908d9580ef0a9040c761524a6dbe9ec3ccd507d0b4e8e96e6c88e44c0a21",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "5e28a8c386d408fd5a0e35a46374e0f78e87177bb31d5a596e8e287747fdca05",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "4d8f67a25e8e2640866ccfcadfb0aeb8a1d1da9b22f0dc591e26330219f7fd6d",
+        "docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json": "f1ed384cc2dc0d375b32b63b8b6f9358f05fcd7cbec58c90a6525acfb7591678",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "10f5717c3060e1a67aa8e514243a884e3defee52dc6ac7847dce60d0a5a5e0c5",
+        "docs/plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json": "56fe92f4be83fe3f7484c5d5eab2de33307febac68ef296e27eb00feb1f4827a",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-record-removal.html": "3fba29a536d8ec1f6c5d805b9bf5d66843ed202b8a91571d13c36d18cac8a055",
+        "docs/plans/starport-production-catalog-plan.html": "ace292da94dca002ac217365171a8aeefd2638177c7064d237055becf7d67604",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T10:26:09.216509+00:00",
+      "status": "failed"
+    },
+    "record-removal-canonical-prose-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:27:00.816373+00:00",
+      "base_commit": "58cacff44a7eb37452979c5be15a397d8c2f1409",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "b894908d9580ef0a9040c761524a6dbe9ec3ccd507d0b4e8e96e6c88e44c0a21",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "5e28a8c386d408fd5a0e35a46374e0f78e87177bb31d5a596e8e287747fdca05",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "4d8f67a25e8e2640866ccfcadfb0aeb8a1d1da9b22f0dc591e26330219f7fd6d",
+        "docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json": "f1ed384cc2dc0d375b32b63b8b6f9358f05fcd7cbec58c90a6525acfb7591678",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "c8cb9556b5ba24611cc54cc94103c949bacd626e7e5737cada40a4ee5d5360b2",
+        "docs/plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json": "fc12d4de3ba3697c95afdc23935ed1861286086be85b185e50ca1b32feeee38b",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-record-removal.html": "3fba29a536d8ec1f6c5d805b9bf5d66843ed202b8a91571d13c36d18cac8a055",
+        "docs/plans/starport-production-catalog-plan.html": "f8661c368e105d7073b7487e61e5e5e5d1b1fa95be871a1493254c31bee804fb",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:27:50.599432+00:00",
+      "status": "passed"
+    }
+  },
+  "documentation_source_files": [
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "b894908d9580ef0a9040c761524a6dbe9ec3ccd507d0b4e8e96e6c88e44c0a21"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "5e28a8c386d408fd5a0e35a46374e0f78e87177bb31d5a596e8e287747fdca05"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "4d8f67a25e8e2640866ccfcadfb0aeb8a1d1da9b22f0dc591e26330219f7fd6d"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp5.md",
+      "sha256": "c8cb9556b5ba24611cc54cc94103c949bacd626e7e5737cada40a4ee5d5360b2"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-record-removal.html",
+      "sha256": "3fba29a536d8ec1f6c5d805b9bf5d66843ed202b8a91571d13c36d18cac8a055"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "f8661c368e105d7073b7487e61e5e5e5d1b1fa95be871a1493254c31bee804fb"
+    }
+  ]
+}

@@ -3445,3 +3445,14 @@ The client preserves configured store reads. The authority publisher forwards a 
 Failed startup releases protection. Shutdown releases it after owned work stops. Collectors must separately retain configured pins after shutdown.
 The [pin proof](../../plans/proof/starport-production-catalog/csp5/pin-retention-2026-09-12/verification.json) records 62 passing pin events and 240 passing recovery events on each Go toolchain.
 These selections overlap. Object retirement, runtime collection, history retirement, and full CSP5 qualification remain open.
+
+## Checked private record removal: 2026-09-12
+
+Local Starmap commit `98961b9f` adds checked private record removal under native publication ownership.
+A directory synchronization failure after unlink reports visible removal. Retry verifies directory ownership and synchronizes an absent record.
+
+The runtime collector must trace accepted history and pending publications before selecting removal candidates.
+It must exclude input writers and preserve unknown and changed files. The removal primitive does not establish reachability.
+
+The [removal proof](../../plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json) records 116 passing private-file race events on each Go toolchain.
+Policy, package lint, and source prose pass. Runtime collection and full CSP5 qualification remain open.

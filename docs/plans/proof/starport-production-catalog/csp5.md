@@ -949,3 +949,31 @@ Five concurrent tooling edits remain outside the source commit. Final task quali
 The complete runtime suite still needs final source qualification and its public fixture.
 Object generation retirement, automatic runtime collection, observation-file collection, distinct-inventory retirement, twelve mapped subcases, review, native CI, and merge remain open.
 CSP5 remains unpublished until its complete contract passes.
+
+## Checked private record removal: 2026-09-12
+
+Local commit `98961b9f` adds removal under the native private-record publication lock.
+The [record removal proof](csp5/record-removal-2026-09-12/verification.json) binds three committed files to eleven checks.
+The initial capability test fails before the operation exists. It does not identify an existing automatic deletion defect.
+
+Both complete private-file package runs pass 116 race events, including parents, without failures or skips.
+The Go 1.26.6 and 1.25.12 runs repeat the same cases. The focused selection passes twelve events.
+Checks cover changed content, active publishers, unsafe selections, replaced directories, cancellation, empty records, and removal retries.
+
+Expected bytes and checked file metadata constrain removal. The operation shares ownership with `PublishFileContext` and excludes its concurrent publishers.
+A failed directory synchronization after unlink reports visible removal through `PublicationError`.
+An absent-file retry verifies directory ownership and synchronizes the directory without recreating data.
+
+Policy, package lint, and prose pass. The prose snapshot precedes two code-only guards on absent-file retries.
+Documentation bytes and source comments remain identical. Native Windows and Linux execution remain unverified for this checkpoint.
+
+The runtime must trace accepted manual history and pending publication references before selecting unreachable inputs.
+It must exclude input writers and preserve unknown or changed files. Automatic cleanup remains incomplete.
+
+The current enterprise recipe assigns coordination to shared KV and immutable bytes to object storage.
+The optional Starmap object catalog adapter remains a separate library extension.
+The owner question asks whether object retention should require shared coordination or also support an S3-only coordination and crash-recovery protocol.
+The question remains unresolved. The accepted architecture and scope remain unchanged. Local collection work continues independently.
+
+Five concurrent tooling edits remain outside the source commit. Final task qualification must use its final committed module graph.
+Object coordination, runtime collection, history retirement, twelve mapped subcases, full verification, required review, native CI, and merge remain open.
