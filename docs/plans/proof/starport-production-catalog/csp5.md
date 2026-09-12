@@ -886,3 +886,32 @@ Keep pin and rollback behavior subject to permission withdrawal during remaining
 Complete owned-stage recovery and bounded history compaction.
 Preserve original receipts, omitted offerings, active writers, unknown files, and required generations.
 Full task checks, repository verification, review, native CI, and merges remain open.
+
+## Object inventory and conditional deletion: 2026-09-12
+
+Local commit `8f76544d` adds `ObjectCollectionBackend` to the memory reference backend and the S3 adapter.
+The [backend proof](csp5/object-collection-2026-09-12/verification.json) binds all ten committed files to twelve checks.
+The original capability tests fail three cases before either backend implements the new interface.
+
+Both final storage race suites pass 223 test events, including parents, without failures or skips.
+The Go 1.26.6 and 1.25.12 runs repeat the same cases. Package lint, goago, and source prose pass.
+The proof preserves one integer-conversion diagnostic and three prose diagnostics from earlier runs.
+
+Inventory requires a nonempty namespace and permits one through 1,000 entries per page.
+Memory tests cover empty stores, page boundaries, complete traversal, independent results, cancellation, and concurrent replacement.
+Conditional deletion preserves a replacement when the supplied validator is stale.
+
+S3 tests use the pinned SDK and local HTTP servers. They verify URL decoding, continuation tokens, conditional headers, error classification, and rejection before network access.
+Malformed metadata, oversized XML, duplicate keys, missing validators, and inconsistent page counts cannot produce a usable partial page.
+The adapter limits inventory responses to 8 MiB. It sends one exact quoted ETag for deletion without an unconditional fallback.
+
+The new operations do not implement object generation collection. Pages do not form a snapshot, and validators can repeat when bytes repeat.
+Coordinated retirement must protect publication, required generations, and active readers before deleting objects.
+Bucket versioning can retain historical versions after current-object deletion. Current inventory size does not measure total bucket storage.
+
+Live S3 service compatibility and native Windows or Linux execution remain unverified for these operations.
+The HTTP tests establish the adapter wire contract. They do not qualify a hosted service.
+Five concurrent tooling edits remain outside the source commit. Final task qualification must use its final committed module graph.
+
+Object generation collection, runtime protection, observation-file collection, distinct-inventory retirement, twelve mapped subcases, full verification, required review, native CI, and merge remain open.
+CSP5 remains unpublished until its complete contract passes.

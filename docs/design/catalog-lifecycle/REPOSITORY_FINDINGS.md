@@ -2810,3 +2810,13 @@ Follow-up commit `b10721b8` makes empty filesystem collection succeed and normal
 A nonempty expected head conflicts with an absent store.
 The [empty-store proof](../../plans/proof/starport-production-catalog/csp5/filesystem-empty-store-2026-09-12/verification.json) records 257 passing race test events on each Go toolchain.
 It preserves the original four failing subcases, their failing parent, and the direct probe. Existing qualification limits remain unchanged.
+
+## Object collection backend operations: 2026-09-12
+
+Classification: in-scope storage capability work under CSP5.
+Local Starmap commit `8f76544d` closes the missing inventory and conditional-deletion primitives in memory and S3 backends.
+The [backend proof](../../plans/proof/starport-production-catalog/csp5/object-collection-2026-09-12/verification.json) preserves three original capability failures.
+It records 223 passing storage race events on each Go toolchain, plus passing lint, policy, and prose checks.
+
+The object catalog store still lacks coordinated generation collection. Backend primitives alone cannot establish that contract.
+Live S3 compatibility and native platform execution remain unverified for the new operations. Runtime adoption and full CSP5 qualification remain open.
