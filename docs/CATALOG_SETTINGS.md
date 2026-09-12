@@ -1067,3 +1067,135 @@ Adds qualified Windows source error. Supply a positive duration, at most thirty 
 | Applicability | `native permission clock on Windows` |
 | Change class | `restart` |
 | Compatibility | `supported`, schema 1 |
+
+<a id="catalog-retention-enabled"></a>
+
+## catalog_retention_enabled
+
+Enables automatic retention maintenance. Offline mode and generation pins still permit local cleanup.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_RETENTION_ENABLED` |
+| CLI flag | `--catalog-retention-enabled value` |
+| YAML key | `catalog_retention_enabled` |
+| Semantic ID | `catalog.retention.enabled` |
+| Grammar | `boolean` |
+| Default | `true` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-retention-interval"></a>
+
+## catalog_retention_interval
+
+Sets the positive automatic collection interval. Disable scheduling with catalog_retention_enabled.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_RETENTION_INTERVAL` |
+| CLI flag | `--catalog-retention-interval value` |
+| YAML key | `catalog_retention_interval` |
+| Semantic ID | `catalog.retention.interval` |
+| Grammar | `duration` |
+| Default | `1h0m0s` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-retention-max-generations"></a>
+
+## catalog_retention_max_generations
+
+Sets the retained generation count target. Required generations can exceed this limit.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_RETENTION_MAX_GENERATIONS` |
+| CLI flag | `--catalog-retention-max-generations value` |
+| YAML key | `catalog_retention_max_generations` |
+| Semantic ID | `catalog.retention.max.generations` |
+| Grammar | `integer` |
+| Default | `32` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-retention-max-bytes"></a>
+
+## catalog_retention_max_bytes
+
+Sets the retained generation byte target. Required generations can exceed this limit.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_RETENTION_MAX_BYTES` |
+| CLI flag | `--catalog-retention-max-bytes value` |
+| YAML key | `catalog_retention_max_bytes` |
+| Semantic ID | `catalog.retention.max.bytes` |
+| Grammar | `integer` |
+| Default | `536870912` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-retention-scan-entries"></a>
+
+## catalog_retention_scan_entries
+
+Bounds one collection scan to at most 100000 entries. An incomplete scan refuses deletion.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_RETENTION_SCAN_ENTRIES` |
+| CLI flag | `--catalog-retention-scan-entries value` |
+| YAML key | `catalog_retention_scan_entries` |
+| Semantic ID | `catalog.retention.scan.entries` |
+| Grammar | `integer` |
+| Default | `4096` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |
+
+<a id="catalog-retention-input-max-bytes"></a>
+
+## catalog_retention_input_max_bytes
+
+Bounds raw retained input bytes captured during one scan. It excludes decoder and filesystem overhead.
+
+| Property | Value |
+|---|---|
+| Environment | `STARMAP_CATALOG_RETENTION_INPUT_MAX_BYTES` |
+| CLI flag | `--catalog-retention-input-max-bytes value` |
+| YAML key | `catalog_retention_input_max_bytes` |
+| Semantic ID | `catalog.retention.input.max.bytes` |
+| Grammar | `integer` |
+| Default | `268435456` |
+| Explicit empty | false |
+| Explicit zero | false |
+| Sensitive | false |
+| Scope | `deployment` |
+| Applicability | `all` |
+| Change class | `runtime-replacement` |
+| Compatibility | `supported`, schema 1 |

@@ -35,6 +35,9 @@ type SourceRead = source.Read
 // Status is the operator-facing state of one connected runtime.
 type Status = status.Status
 
+// RetentionStatus is the last observed catalog collection outcome.
+type RetentionStatus = status.RetentionStatus
+
 // SourceHop is one sanitized entry in an upstream source chain.
 type SourceHop = status.SourceHop
 

@@ -66,6 +66,11 @@ func (r *Runtime) collectRetainedInputs(ctx context.Context, request InputCollec
 	defer r.publicationMu.Unlock()
 	r.providerRetentionMu.Lock()
 	defer r.providerRetentionMu.Unlock()
+	return r.collectRetainedInputsLocked(ctx, request)
+}
+
+// collectRetainedInputsLocked requires publication and provider retention ownership.
+func (r *Runtime) collectRetainedInputsLocked(ctx context.Context, request InputCollectionRequest) (InputCollectionReport, error) {
 	if err := ctx.Err(); err != nil {
 		return InputCollectionReport{}, err
 	}

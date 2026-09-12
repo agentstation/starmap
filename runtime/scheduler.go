@@ -28,6 +28,8 @@ type scheduler struct {
 	acquisitionOffset time.Duration
 	acceptedPhase     time.Duration
 	acceptedOffset    time.Duration
+	retentionPhase    time.Duration
+	retentionOffset   time.Duration
 }
 
 // initializeSchedule derives the instance identity and the stable phases.
@@ -82,7 +84,14 @@ func (r *Runtime) initializeSchedule() error {
 			return err
 		}
 	}
-	return nil
+	retentionIdentity := sourceIdentity
+	retentionIdentity.Controller = "retention"
+	r.schedule.retentionPhase, err = fleet.StablePhase(retentionIdentity, r.config.retention.Interval)
+	if err != nil {
+		return err
+	}
+	r.schedule.retentionOffset, err = fleet.StartupOffset(retentionIdentity, r.config.startupSpread)
+	return err
 }
 
 // instanceIdentity binds the seed to the recorded owner. Listen addresses do not define identity.
@@ -128,6 +137,7 @@ func (r *Runtime) sourceChanges() <-chan struct{} {
 // runtime without an acquirer runs source refresh only.
 func (r *Runtime) startSchedules() {
 	r.startPermissionSchedule()
+	r.startRetentionSchedule()
 	if r.config.generationPin != "" {
 		return
 	}

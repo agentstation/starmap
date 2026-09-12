@@ -12,7 +12,14 @@ import (
 )
 
 func TestManualHistoryRetiresSupersededDistinctInventoriesBeforeByteLimit(t *testing.T) {
-	const retainedCount = 52
+	t.Parallel()
+	t.Run("ordinary", func(t *testing.T) { testManualHistoryRetirementAtCapacity(t, false) })
+	t.Run("reset", func(t *testing.T) { testManualHistoryRetirementAtCapacity(t, true) })
+}
+
+func testManualHistoryRetirementAtCapacity(t *testing.T, reset bool) {
+	t.Helper()
+	const retainedCount = 47
 	at := time.Date(2026, 9, 12, 0, 0, 0, 0, time.UTC)
 	padding := strings.Repeat("x", 1<<20)
 	baseline := starmap.CatalogState{GenerationID: "distinct-baseline", Catalog: manualProviderObservation(t, 100, at).Catalog, GeneratedAt: at.Add(-time.Minute)}
@@ -29,13 +36,23 @@ func TestManualHistoryRetiresSupersededDistinctInventoriesBeforeByteLimit(t *tes
 		}
 		history = &manualBatch{parent: history, observations: prepared}
 	}
+	if _, err := selectManualObservations(t.Context(), history.parent, history.observations, nil); err != nil {
+		t.Fatalf("starting history already exceeds capacity: %v", err)
+	}
 	latest := distinctRetentionObservation(t, retainedCount, padding, at.Add(retainedCount*time.Minute))
 	input, err := prepareManualObservations(t.Context(), []sources.Observation{latest})
 	if err != nil {
 		t.Fatal(err)
 	}
+	if _, err := selectManualObservations(t.Context(), history, input, nil); err != manualHistoryCapacity {
+		t.Fatalf("incoming observation did not reach capacity: %v", err)
+	}
+	var resets []ObservationReset
+	if reset {
+		resets = []ObservationReset{{ProviderID: "provider"}}
+	}
 	layers := layerSet{manual: history, embedded: baseline}
-	selected, err := layers.prepareManualInputs(t.Context(), input, nil, nil)
+	selected, err := layers.prepareManualInputs(t.Context(), input, nil, resets)
 	if err != nil || len(selected) != 1 {
 		t.Fatalf("superseded distinct inventories blocked acquisition: selected=%d error=%v", len(selected), err)
 	}
@@ -47,7 +64,10 @@ func TestManualHistoryRetiresSupersededDistinctInventoriesBeforeByteLimit(t *tes
 		t.Fatal(err)
 	}
 	provider, err := before.Catalog.Provider("provider")
-	if err != nil || provider.Models["omitted"] == nil || provider.Models["model"].Name != fmt.Sprintf("Model %d", retainedCount) {
+	if err != nil {
+		t.Fatal(err)
+	}
+	if (provider.Models["omitted"] != nil) == reset || provider.Models["model"].Name != fmt.Sprintf("Model %d", retainedCount) {
 		t.Fatalf("retirement lost a current or omitted offering: %v", err)
 	}
 	store, err := newLayerStore(privateRuntimeDirectory(t))

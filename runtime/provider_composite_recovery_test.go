@@ -14,6 +14,7 @@ import (
 )
 
 func TestProviderCompositeRecoveryPreservesContributions(t *testing.T) {
+	t.Parallel()
 	for _, scenario := range []struct {
 		name, prior, current, field string
 		path                        []string

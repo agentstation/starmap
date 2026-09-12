@@ -1048,6 +1048,162 @@
       "introduced": 1,
       "compatibility": "supported",
       "anchor": "catalog-permission-clock-windows-source-uncertainty"
+    },
+    {
+      "description": "Enables automatic retention maintenance. Offline mode and generation pins still permit local cleanup.",
+      "id": "catalog.retention.enabled",
+      "name": "STARMAP_CATALOG_RETENTION_ENABLED",
+      "key": "catalog_retention_enabled",
+      "flag": "catalog-retention-enabled",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_ENABLED"
+      ],
+      "type": "boolean",
+      "unit": "",
+      "default": "true",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-enabled"
+    },
+    {
+      "description": "Sets the positive automatic collection interval. Disable scheduling with catalog_retention_enabled.",
+      "id": "catalog.retention.interval",
+      "name": "STARMAP_CATALOG_RETENTION_INTERVAL",
+      "key": "catalog_retention_interval",
+      "flag": "catalog-retention-interval",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_INTERVAL"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "1h0m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-interval"
+    },
+    {
+      "description": "Sets the retained generation count target. Required generations can exceed this limit.",
+      "id": "catalog.retention.max.generations",
+      "name": "STARMAP_CATALOG_RETENTION_MAX_GENERATIONS",
+      "key": "catalog_retention_max_generations",
+      "flag": "catalog-retention-max-generations",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_MAX_GENERATIONS"
+      ],
+      "type": "integer",
+      "unit": "generations",
+      "default": "32",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-max-generations"
+    },
+    {
+      "description": "Sets the retained generation byte target. Required generations can exceed this limit.",
+      "id": "catalog.retention.max.bytes",
+      "name": "STARMAP_CATALOG_RETENTION_MAX_BYTES",
+      "key": "catalog_retention_max_bytes",
+      "flag": "catalog-retention-max-bytes",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_MAX_BYTES"
+      ],
+      "type": "integer",
+      "unit": "bytes",
+      "default": "536870912",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-max-bytes"
+    },
+    {
+      "description": "Bounds one collection scan to at most 100000 entries. An incomplete scan refuses deletion.",
+      "id": "catalog.retention.scan.entries",
+      "name": "STARMAP_CATALOG_RETENTION_SCAN_ENTRIES",
+      "key": "catalog_retention_scan_entries",
+      "flag": "catalog-retention-scan-entries",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_SCAN_ENTRIES"
+      ],
+      "type": "integer",
+      "unit": "entries",
+      "default": "4096",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-scan-entries"
+    },
+    {
+      "description": "Bounds raw retained input bytes captured during one scan. It excludes decoder and filesystem overhead.",
+      "id": "catalog.retention.input.max.bytes",
+      "name": "STARMAP_CATALOG_RETENTION_INPUT_MAX_BYTES",
+      "key": "catalog_retention_input_max_bytes",
+      "flag": "catalog-retention-input-max-bytes",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_INPUT_MAX_BYTES"
+      ],
+      "type": "integer",
+      "unit": "bytes",
+      "default": "268435456",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-input-max-bytes"
     }
   ]
 }

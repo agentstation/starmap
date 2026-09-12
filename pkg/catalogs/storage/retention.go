@@ -23,7 +23,26 @@ const (
 type RetainingStore interface {
 	Store
 	GenerationLeaser
+	GenerationCollector
+}
+
+// GenerationCollector removes unprotected generations under a bounded retention request.
+type GenerationCollector interface {
 	Collect(context.Context, RetentionRequest) (RetentionReport, error)
+}
+
+// GenerationCollectionProvider forwards a wrapper's optional guarded collection capability.
+type GenerationCollectionProvider interface {
+	GenerationCollector() (GenerationCollector, bool)
+}
+
+// GenerationCollectorFor resolves direct collection or a wrapper's explicit forwarding.
+func GenerationCollectorFor(store Store) (GenerationCollector, bool) {
+	if provider, ok := store.(GenerationCollectionProvider); ok {
+		return provider.GenerationCollector()
+	}
+	collector, ok := store.(GenerationCollector)
+	return collector, ok
 }
 
 // GenerationLeaser protects stored generation bytes until the caller releases them.

@@ -48,6 +48,7 @@ type options struct {
 	acquisitionSources *acquisitionSourcePolicy
 	modelsDevGitCommit *string
 	freshness          FreshnessPolicy
+	retention          RetentionPolicy
 
 	// freshnessExplicit records that a caller supplied a freshness policy. An
 	// explicit policy wins, so the source maximum age derives no threshold.
@@ -103,6 +104,7 @@ func defaults() *options {
 		acquisition:         DefaultAcquisitionPolicy(),
 		updatePolicy:        DefaultUpdatePolicy(),
 		freshness:           DefaultFreshnessPolicy(),
+		retention:           DefaultRetentionPolicy(),
 		startupSpread:       fleet.DefaultStartupSpread,
 		transferIdleTimeout: DefaultTransferIdleTimeout,
 		transferMaxDuration: DefaultTransferMaxDuration,
@@ -141,6 +143,9 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if err := r.retention.Validate(); err != nil {
+		return err
+	}
 	if err := r.updatePolicy.Validate(); err != nil {
 		return err
 	}

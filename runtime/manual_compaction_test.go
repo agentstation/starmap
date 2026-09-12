@@ -189,6 +189,7 @@ func TestRepeatedProviderCompactionPreservesReplayBoundaries(t *testing.T) {
 }
 
 func TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit(t *testing.T) {
+	t.Parallel()
 	at := time.Date(2026, 9, 12, 0, 0, 0, 0, time.UTC)
 	original := manualProviderObservation(t, 200, at)
 	builder, err := catalogs.NewBuilderFrom(original.Catalog)

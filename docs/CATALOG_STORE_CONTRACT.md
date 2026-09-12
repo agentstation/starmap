@@ -1048,7 +1048,7 @@ Unsupported custom values and cyclic provenance cause construction to fail.
 ### Generation retention
 
 `RetainingStore` adds explicit collection and generation read leases to the catalog store contract.
-`Memory` and `Filesystem` implement this contract. Object storage and runtime adoption remain incomplete.
+`Memory` and `Filesystem` implement this contract. Object collection and shared coordination remain incomplete.
 Existing catalog store implementations remain compatible. This interface does not enable automatic collection.
 
 Each collection request names the expected current generation, required generations, and positive generation and byte limits.
@@ -1211,4 +1211,37 @@ Durable acquisition history and previously committed generations remain unchange
 
 This selection also preserves review evidence when a replacement baseline no longer defines a formerly known model.
 Repeated-inventory compaction must produce the same current review set as complete replay under that baseline.
-CSP5 must still retire distinct inventories, automate collection, and complete full qualification.
+CSP5 retains its full qualification requirement.
+
+### Automatic runtime collection
+
+The connected runtime schedules collection independently of source refresh and acquisition.
+Manual source mode, offline mode, and generation pins still permit local cleanup.
+The first pass follows the configured startup spread. Later passes follow a stable hourly phase by default.
+Shutdown cancels the worker and waits for cleanup to finish before releasing directory ownership.
+
+The default targets are 32 generations and 512 MiB of manifest and payload bytes.
+Required generations remain available when they exceed either target. Readiness then reports `required_content_exceeds_limit` with `over_limit: true`.
+This diagnostic does not make an otherwise usable catalog unavailable.
+
+Each scan permits 4,096 entries by default. The input snapshot permits 256 MiB of raw retained records.
+These scan limits bound maintenance work, rather than total disk usage. Decoder memory and filesystem overhead remain additional costs.
+An incomplete scan refuses deletion within that collector. Unknown input files remain available for operator inspection.
+
+Collection shares runtime publication ownership. A pending publication blocks the automatic pass before deletion.
+The client collector also serializes with explicit client updates and protects its served catalog and stored embedded baseline.
+The runtime supplies its configured generation pin as a required ID. Hosts must preserve that setting across restarts.
+Explicit collection callers supply other required generation IDs through `RetentionRequest.RequiredGenerationIDs`.
+
+The six `catalog_retention_*` settings use the canonical environment, CLI, and YAML configuration paths.
+See the [settings reference](CATALOG_SETTINGS.md#catalog-retention-enabled) for their defaults and validation rules.
+Set `catalog_retention_enabled: false` to disable automatic maintenance. Explicit client and input collection remain available.
+Numeric limits require positive values even when operators disable scheduling.
+
+The readiness response exposes retention settings, capability, timestamps, byte counts, protected content, and removal counts under `runtime.retention`.
+These diagnostics read runtime memory. They do not scan storage or query a source.
+
+Automatic generation collection currently requires a supported local catalog store without a shared lease configuration.
+A configured shared lease reports `shared_coordination_required`. A store without collection support reports `unsupported`.
+These cases preserve catalog generations while still permitting checked local input cleanup.
+Shared and object collection require their remaining coordination work before CSP5 can complete.

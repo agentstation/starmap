@@ -116,6 +116,9 @@ type SourceHop struct {
 // usability, freshness, fallback, direct source health, and upstream-reported
 // health as five independent values, so a warning on one never hides another.
 type Status struct {
+	// Retention reports collection capability, bounded usage, and the last maintenance outcome.
+	Retention RetentionStatus
+
 	// Usable reports whether the catalog can serve new work under the startup policy.
 	// An internal authority also requires a retained, current permission receipt.
 	Usable bool

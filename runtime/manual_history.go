@@ -365,7 +365,7 @@ func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObserv
 		return nil, err
 	}
 	history := l.manual
-	if err == manualHistoryCapacity && len(resets) == 0 {
+	if err == manualHistoryCapacity {
 		history, err = compactProviderHistory(ctx, history)
 		if err != nil {
 			return nil, err

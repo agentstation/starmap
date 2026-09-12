@@ -13,6 +13,7 @@ import (
 )
 
 func TestProviderOptionalRecordRecoveryPreservesPresence(t *testing.T) {
+	t.Parallel()
 	for _, scenario := range []struct {
 		record catalogs.ModelRecord
 		field  string

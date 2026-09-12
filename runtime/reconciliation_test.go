@@ -75,6 +75,7 @@ func TestRetainedProviderFactsUseCanonicalAuthorityAndReceipts(t *testing.T) {
 }
 
 func TestRuntimePublicationRetainsEachProviderReceiptAcrossRestart(t *testing.T) {
+	t.Parallel()
 	for _, scoped := range []bool{false, true} {
 		t.Run(map[bool]string{false: "legacy", true: "bound"}[scoped], func(t *testing.T) {
 			at := time.Date(2026, 9, 7, 0, 0, 0, 0, time.UTC)

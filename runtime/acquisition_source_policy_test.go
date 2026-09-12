@@ -16,6 +16,7 @@ import (
 )
 
 func TestAcquisitionSourceSelectionRebuildsRetainedEvidence(t *testing.T) {
+	t.Parallel()
 	store := storage.NewMemory()
 	base := []Option{WithStateDirectory(privateRuntimeDirectory(t)), WithCatalogSource("embedded"), WithClientOptions(starmap.WithCatalogStore(store))}
 	selected := []sources.ID{sources.LocalCatalogID, sources.ProvidersID}

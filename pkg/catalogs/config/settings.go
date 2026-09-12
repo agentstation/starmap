@@ -212,7 +212,7 @@ type Config struct {
 // table returns every canonical setting in its documented order. The order is
 // stable, so a report and a test read one sequence.
 func table() []setting {
-	return append([]setting{
+	return append(append([]setting{
 		{name: AuthorityOrigin, flag: "catalog-authority-origin", capture: captureAuthorityOrigin},
 		{
 			name: Source, flag: "catalog-source", capture: captureSourceKind,
@@ -336,7 +336,7 @@ func table() []setting {
 			capture: captureSchedulerIdentity,
 			apply:   stringOption(runtime.WithSchedulerIdentity),
 		},
-	}, clockSettings()...)
+	}, clockSettings()...), retentionSettings()...)
 }
 
 // Names returns every canonical catalog setting name in documented order.

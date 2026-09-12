@@ -185,6 +185,8 @@ func describe(entry setting) Descriptor {
 		PermissionClockWindowsMaxSourceAge, PermissionClockWindowsMaxSourceDriftPPM,
 		PermissionClockWindowsSourceUncertainty:
 		describeClock(&d)
+	case RetentionEnabled, RetentionInterval, RetentionMaxGenerations, RetentionMaxBytes, RetentionScanEntries, RetentionInputMaxBytes:
+		describeRetention(&d)
 	}
 	if d.Scope == NodeScope {
 		d.Mutability = "restart"
