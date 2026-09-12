@@ -3389,3 +3389,19 @@ The import/restart profiles estimate 6,092,786,599 allocated bytes before the ch
 These sampled totals are cumulative allocation, not resident memory or Starport request overhead.
 
 Distinct-inventory retirement, collection, full task verification, required review, native CI, and merge remain open.
+
+## Explicit memory retention: 2026-09-12
+
+Local Starmap commit `78102bca` implements the following changes.
+
+The optional `RetainingStore` contract adds `AcquireGeneration` and `Collect` without changing the existing `Store` interface.
+Memory implements the contract. Callers supply required generation IDs and coordinate those requirements with collection.
+The current generation and active read leases remain protected. Count and byte limits cannot remove required content.
+
+Dry runs preserve content and report projected usage. Missing requirements, stale heads, cancellation, and incomplete scans refuse deletion.
+
+The [retention proof](../../plans/proof/starport-production-catalog/csp5/memory-retention-2026-09-12/verification.json) records 112 passing storage race test events on each Go toolchain.
+These macOS runs repeat the same cases on Go 1.26.6 and 1.25.12. Policy, package lint, and prose pass.
+The proof preserves the original failures and exact tested source inputs.
+
+Persistent generation collection, observation-file collection, distinct-inventory retirement, full task verification, required review, native CI, and merge remain open.

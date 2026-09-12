@@ -1,0 +1,2695 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+  "source_commit": "78102bca08babaf0616ee7861296bd57dd71c1c9",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "4d18485927e9e99ef05e00bd640cc11f0237315970063e26e4210080c57c4ccb"
+    },
+    {
+      "path": "pkg/catalogs/storage/README.md",
+      "sha256": "179ba6a2cde4dc01424ef03447555977fc340397016aca4d828da05b242091de"
+    },
+    {
+      "path": "pkg/catalogs/storage/memory.go",
+      "sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "pkg/catalogs/storage/retention.go",
+      "sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "pkg/catalogs/storage/retention_memory.go",
+      "sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "pkg/catalogs/storage/retention_selection.go",
+      "sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "pkg/catalogs/storage/retention_test.go",
+      "sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    }
+  ],
+  "verified_at": "2026-09-12T08:50:25.524233+00:00",
+  "final_checks": [
+    "memory-retention-package-20260912",
+    "memory-retention-minimum-20260912",
+    "memory-retention-policy-20260912",
+    "memory-retention-lint-20260912",
+    "memory-retention-prose-final-20260912"
+  ],
+  "checks": {
+    "memory-retention-focused-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./pkg/catalogs/storage",
+        "-run",
+        "^TestMemoryRetention"
+      ],
+      "started_at": "2026-09-12T08:43:07.485742+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/memory.go": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_memory.go": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0",
+        "pkg/catalogs/storage/retention_selection.go": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03",
+        "pkg/catalogs/storage/retention_test.go": "518b4b9bd0ab1bf4be14e7d3a2333f80e74ca6e52cde20ebb9a994ce49b01f19",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T08:43:09.462998+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 8
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionProtectsCurrentRequiredAndLeasedGenerations",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/stale",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/missing-required",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/scan-limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/invalid-count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/invalid-bytes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/canceled",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "pass",
+          "Elapsed": 1.225
+        }
+      ]
+    },
+    "memory-retention-lint-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./pkg/catalogs/storage"
+      ],
+      "started_at": "2026-09-12T08:46:06.324928+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/memory.go": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_memory.go": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0",
+        "pkg/catalogs/storage/retention_selection.go": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03",
+        "pkg/catalogs/storage/retention_test.go": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T08:46:47.479538+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "memory-retention-minimum-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./pkg/catalogs/storage"
+      ],
+      "started_at": "2026-09-12T08:46:06.327465+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/memory.go": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_memory.go": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0",
+        "pkg/catalogs/storage/retention_selection.go": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03",
+        "pkg/catalogs/storage/retention_test.go": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T08:46:15.019886+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 112
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationIndependentOfManifestAndPayload/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationIndependentOfManifestAndPayload/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationIndependentOfManifestAndPayload",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataRepairRequiresExplicitCommit/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataRepairRequiresExplicitCommit/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataRepairRequiresExplicitCommit",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataConflictPreservesRecordAndCurrent/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataConflictPreservesRecordAndCurrent/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataConflictPreservesRecordAndCurrent",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/filesystem/mismatched",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/filesystem/oversized",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/filesystem/malformed",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/object/mismatched",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/object/oversized",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/object/malformed",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataWriteFailurePreservesSelectedHead",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/empty",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/null",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/duplicate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/unknown",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/wrong_case",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/trailing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/oversized",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemAuthorityObservationSeesAnotherWriter",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRequiresCurrentReadCapability",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationSeesAnotherWriter",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration/object",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemAuthorityHeadSurvivesFailedPublicationAndReopen",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance/object",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesNativeACLGrants/root",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesNativeACLGrants/payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesNativeACLGrants",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCreatesPrivateState",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/root",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/generations",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/generation",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/manifest.json",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/catalog.json",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/current",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/.commit.lock",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/ancestor",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers",
+          "Action": "pass",
+          "Elapsed": 0.54
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRechecksAccessBeforeCurrentPromotion",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCommitAmbiguousFlushOutcome/initial",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCommitAmbiguousFlushOutcome/replacement",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCommitAmbiguousFlushOutcome",
+          "Action": "pass",
+          "Elapsed": 0.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemFailureBeforePublicationDoesNotClaimAcceptance",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize/current",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize/manifest.json",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize/catalog.json",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate/pointer",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate/payload",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate/manifest",
+          "Action": "pass",
+          "Elapsed": 0.49
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate",
+          "Action": "pass",
+          "Elapsed": 0.51
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemPointerLimitRoundTripAndRefusalPreservesCurrent",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage/contents",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage/extra-file",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage/directory",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCancellationBeforePublication/generation",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCancellationBeforePublication/current",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCancellationBeforePublication",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesReplacedRootAtPromotion",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAtomicFilesystemCommitFailurePreservesCurrent",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreReopensCurrentGeneration",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedGeneration",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectCatalogStoreUploadPromotionRollbackFaults",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectCatalogStoreRejectsCorruptStoredPayload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestSeamConformanceObjectStoreAcceptsAlternateBackend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectCatalogStoreReopensCurrentGeneration",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionProtectsCurrentRequiredAndLeasedGenerations",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionCountsBytesAndBreaksAgeTiesByID",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionReadLeasesHaveIndependentLifetimes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionSerializesWithPublication",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/stale",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/missing-required",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/scan-limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/invalid-count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/invalid-bytes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/canceled",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "pass",
+          "Elapsed": 5.929
+        }
+      ]
+    },
+    "memory-retention-package-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./pkg/catalogs/storage"
+      ],
+      "started_at": "2026-09-12T08:44:02.416998+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/memory.go": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_memory.go": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0",
+        "pkg/catalogs/storage/retention_selection.go": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03",
+        "pkg/catalogs/storage/retention_test.go": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T08:44:08.198400+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 112
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationIndependentOfManifestAndPayload/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationIndependentOfManifestAndPayload/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationIndependentOfManifestAndPayload",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataRepairRequiresExplicitCommit/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataRepairRequiresExplicitCommit/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataRepairRequiresExplicitCommit",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataConflictPreservesRecordAndCurrent/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataConflictPreservesRecordAndCurrent/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataConflictPreservesRecordAndCurrent",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/filesystem/mismatched",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/filesystem/oversized",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/filesystem/malformed",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/object/mismatched",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/object/oversized",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata/object/malformed",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsInvalidMetadata",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityMetadataWriteFailurePreservesSelectedHead",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/duplicate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/unknown",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/wrong_case",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/trailing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/oversized",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/empty",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers/null",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRejectsAmbiguousPointers",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreCurrentAuthorityObservation",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemAuthorityObservationSeesAnotherWriter",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationRequiresCurrentReadCapability",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAuthorityObservationRejectsCanceledReads",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectAuthorityObservationSeesAnotherWriter",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration/object",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoresCommitAuthorityWithGeneration",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemAuthorityHeadSurvivesFailedPublicationAndReopen",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConcurrentSameBaseCAS",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance/object",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformance",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/object",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/memory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear/filesystem",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestCatalogStoreConformanceStaleRecordsDoNotReappear",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesNativeACLGrants/root",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesNativeACLGrants/payload",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesNativeACLGrants",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCreatesPrivateState",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/root",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/generations",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/generation",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/manifest.json",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/catalog.json",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/current",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/.commit.lock",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers/ancestor",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesUnsafeAccessAndRecovers",
+          "Action": "pass",
+          "Elapsed": 0.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRechecksAccessBeforeCurrentPromotion",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCommitAmbiguousFlushOutcome/initial",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCommitAmbiguousFlushOutcome/replacement",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCommitAmbiguousFlushOutcome",
+          "Action": "pass",
+          "Elapsed": 0.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemFailureBeforePublicationDoesNotClaimAcceptance",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize/current",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize/manifest.json",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize/catalog.json",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRecordReadsRejectOversize",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate/pointer",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate/payload",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate/manifest",
+          "Action": "pass",
+          "Elapsed": 0.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemRejectsUnreadableCandidate",
+          "Action": "pass",
+          "Elapsed": 0.45
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemPointerLimitRoundTripAndRefusalPreservesCurrent",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage/contents",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage/extra-file",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage/directory",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStorePreservesChangedStage",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCancellationBeforePublication/generation",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCancellationBeforePublication/current",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreCancellationBeforePublication",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRefusesReplacedRootAtPromotion",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestAtomicFilesystemCommitFailurePreservesCurrent",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreReopensCurrentGeneration",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreKeepsAndCleansMachineStagingUnderRoot",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/root",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/generations",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/.commit.lock",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries/current",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedMachineEntries",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestFilesystemCatalogStoreRejectsSymlinkedGeneration",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectCatalogStoreUploadPromotionRollbackFaults",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectCatalogStoreRejectsCorruptStoredPayload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestSeamConformanceObjectStoreAcceptsAlternateBackend",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestObjectCatalogStoreReopensCurrentGeneration",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionProtectsCurrentRequiredAndLeasedGenerations",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionCountsBytesAndBreaksAgeTiesByID",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionReadLeasesHaveIndependentLifetimes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionSerializesWithPublication",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/stale",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/missing-required",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/scan-limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/invalid-count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/invalid-bytes",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests/canceled",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "pass",
+          "Elapsed": 5.039
+        }
+      ]
+    },
+    "memory-retention-policy-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T08:44:03.571347+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/memory.go": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_memory.go": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0",
+        "pkg/catalogs/storage/retention_selection.go": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03",
+        "pkg/catalogs/storage/retention_test.go": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T08:44:05.664941+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "memory-retention-prose-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T08:46:31.511971+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "39334f4d0d79c6d58de5f147d34ed9ada3d53f6378c59d855a98b9930088e551",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/README.md": "179ba6a2cde4dc01424ef03447555977fc340397016aca4d828da05b242091de",
+        "pkg/catalogs/storage/memory.go": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_memory.go": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0",
+        "pkg/catalogs/storage/retention_selection.go": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03",
+        "pkg/catalogs/storage/retention_test.go": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T08:46:33.782166+00:00",
+      "status": "failed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "memory-retention-prose-final-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T08:47:38.164874+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "4d18485927e9e99ef05e00bd640cc11f0237315970063e26e4210080c57c4ccb",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/README.md": "179ba6a2cde4dc01424ef03447555977fc340397016aca4d828da05b242091de",
+        "pkg/catalogs/storage/memory.go": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_memory.go": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0",
+        "pkg/catalogs/storage/retention_selection.go": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03",
+        "pkg/catalogs/storage/retention_test.go": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T08:48:29.726609+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "memory-retention-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "./pkg/catalogs/storage",
+        "-run",
+        "^TestMemoryRetention"
+      ],
+      "started_at": "2026-09-12T08:41:34.756323+00:00",
+      "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "pkg/catalogs/storage/retention.go": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9",
+        "pkg/catalogs/storage/retention_test.go": "518b4b9bd0ab1bf4be14e7d3a2333f80e74ca6e52cde20ebb9a994ce49b01f19",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T08:41:36.174175+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 2
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionProtectsCurrentRequiredAndLeasedGenerations",
+          "Action": "fail",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Test": "TestMemoryRetentionRefusesStaleMissingAndIncompleteRequests",
+          "Action": "fail",
+          "Elapsed": 0
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "fail",
+          "Elapsed": 0.22
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "memory-retention-focused-20260912/changes.patch.gz",
+      "sha256": "3f5379c67b2f04c2304982aaa43fb302b8a353c7b2b2485bc04298bfddd6b8fa",
+      "decoded_sha256": "ce1e935fb1489bd68ee8294a7527f000af8af7c002b05e394b047ce90314becc"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "5f29504aa60beeb0c0e889ceb94ec34507e4d23cdee224c7d8227b5a9d4a9e66",
+      "decoded_sha256": "518b4b9bd0ab1bf4be14e7d3a2333f80e74ca6e52cde20ebb9a994ce49b01f19"
+    },
+    {
+      "path": "memory-retention-focused-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-focused-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-focused-20260912/stdout.log.gz",
+      "sha256": "ee1d04ddbc38da619a3922ec77b5ddf93c695795cdbc5bf501296c320217e757",
+      "decoded_sha256": "d8994a20ffe53895b16985f6f3526efd7d430a6eab149a804e132b4ae360bfe9"
+    },
+    {
+      "path": "memory-retention-focused-20260912/verification.json.gz",
+      "sha256": "85d51460ff1cf205c6dd3b2ce2d408f682f7629f50773d996d7e4934e890365a",
+      "decoded_sha256": "51fe652c437247f364fa4bee7d5af5b53a288d6e97a5bed3aae4975329f669a5"
+    },
+    {
+      "path": "memory-retention-lint-20260912/changes.patch.gz",
+      "sha256": "52599461256768c63025a220bcac18f21abc9eb1a724cac3f04802005c66011f",
+      "decoded_sha256": "617ecea50b3f36163598fe3b1e538e40028ec3de87fc1d9b8aa5a671ca84777d"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "3115b604adf013c6b1669a59c05ac7be601bd899af6b17fcc0c656a1117fa09d",
+      "decoded_sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    },
+    {
+      "path": "memory-retention-lint-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-lint-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-lint-20260912/stdout.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "memory-retention-lint-20260912/verification.json.gz",
+      "sha256": "ff118e4c43162f42e74ec816371c291c5833b8ac33798b391b9c08dc8abb512d",
+      "decoded_sha256": "959df1925c991f61452520a829d5b1abb69a82cb1e43b08d8e4d43ae2da561e0"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/changes.patch.gz",
+      "sha256": "52599461256768c63025a220bcac18f21abc9eb1a724cac3f04802005c66011f",
+      "decoded_sha256": "617ecea50b3f36163598fe3b1e538e40028ec3de87fc1d9b8aa5a671ca84777d"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "3115b604adf013c6b1669a59c05ac7be601bd899af6b17fcc0c656a1117fa09d",
+      "decoded_sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/stdout.log.gz",
+      "sha256": "863a9385c54ccca31cda8100075cd341b5104fcdbce972c943be0bf18dd40d5d",
+      "decoded_sha256": "fbd4b4fe9b742824adf81c06a944600c3440742b5d5eaa8c379697c40fa94bb4"
+    },
+    {
+      "path": "memory-retention-minimum-20260912/verification.json.gz",
+      "sha256": "372a8a31c1dcd6c2d00ad4bd5ee11ac87e21e3345bfa86edaee43f47d6c8fcea",
+      "decoded_sha256": "f8ffdce16266c10cfd9f1ac9147f7031378eb5e1deaaf1cabe6aa53ad1267f30"
+    },
+    {
+      "path": "memory-retention-package-20260912/changes.patch.gz",
+      "sha256": "3f5379c67b2f04c2304982aaa43fb302b8a353c7b2b2485bc04298bfddd6b8fa",
+      "decoded_sha256": "ce1e935fb1489bd68ee8294a7527f000af8af7c002b05e394b047ce90314becc"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "3115b604adf013c6b1669a59c05ac7be601bd899af6b17fcc0c656a1117fa09d",
+      "decoded_sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    },
+    {
+      "path": "memory-retention-package-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-package-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-package-20260912/stdout.log.gz",
+      "sha256": "813f46f85c7e65eb342a079334c4c7ca1505f01c66f773a73c24e3170b191404",
+      "decoded_sha256": "b81cec568a075271643052d766760046ed1990f2776fd5c7c3e281c83ce620a6"
+    },
+    {
+      "path": "memory-retention-package-20260912/verification.json.gz",
+      "sha256": "72852e32dd301ff30529fac1549e65b736c2ac1db80632ad5de394408bf0f78d",
+      "decoded_sha256": "200cb1226c97d13407b6f65568c5220f944b939c8a23a58603306a90eb083fea"
+    },
+    {
+      "path": "memory-retention-policy-20260912/changes.patch.gz",
+      "sha256": "3f5379c67b2f04c2304982aaa43fb302b8a353c7b2b2485bc04298bfddd6b8fa",
+      "decoded_sha256": "ce1e935fb1489bd68ee8294a7527f000af8af7c002b05e394b047ce90314becc"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "3115b604adf013c6b1669a59c05ac7be601bd899af6b17fcc0c656a1117fa09d",
+      "decoded_sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    },
+    {
+      "path": "memory-retention-policy-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-policy-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-policy-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "memory-retention-policy-20260912/verification.json.gz",
+      "sha256": "8943518cac13c34adc72c72f8accb21df63054c15b1dda1e1112f3cb81285388",
+      "decoded_sha256": "a1e9df129e2d3b3084cdb5c42bb6d1af8a972d12b525f6fd9e3c062f2548f366"
+    },
+    {
+      "path": "memory-retention-prose-20260912/changes.patch.gz",
+      "sha256": "acd15520e3c8c6d5f114179d0985c2311ee607a6716086125e100d45ccabac77",
+      "decoded_sha256": "a260f51f4931e3e484e27b95528ed8a61842ef75c1628fb1721bdd8fcd7b0bb4"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "918776af9a58d43a8f47dfbdc07e3cae2d37f7462b9b02d8a5e9de12cacb6edc",
+      "decoded_sha256": "39334f4d0d79c6d58de5f147d34ed9ada3d53f6378c59d855a98b9930088e551"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "73d51a909adc66c75d3a4b4396936f0cb76dbccc507d9ad814ae601b6d93a8a6",
+      "decoded_sha256": "179ba6a2cde4dc01424ef03447555977fc340397016aca4d828da05b242091de"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "3115b604adf013c6b1669a59c05ac7be601bd899af6b17fcc0c656a1117fa09d",
+      "decoded_sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    },
+    {
+      "path": "memory-retention-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "memory-retention-prose-20260912/stdout.log.gz",
+      "sha256": "1431a1a205d99023d051d0fef109bb7bb030e7937ba9dbb72be99c47c93231cc",
+      "decoded_sha256": "1010910354c0d5244cbfef330779366870bd8261c3ab14b2f101040f8378903e"
+    },
+    {
+      "path": "memory-retention-prose-20260912/verification.json.gz",
+      "sha256": "a19903d371f5a487517be11cb48dc9610d1f67d9b78c57770ac1924d0206a52d",
+      "decoded_sha256": "0cfd29d4d86c990377f022c84534c95abdfec9b73813a5de3a7c07f7d698c17c"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/changes.patch.gz",
+      "sha256": "efbf85e18e836b7155268ba700c30a651548884f57dda52dee89730862013651",
+      "decoded_sha256": "f97eda6688c6d785f314b67aeb5fd93a46cf499995324c8745bc57493cd5222f"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e1bf74d663473d6ea7bcaa50482e6338d2ec8272d56029f2a47a4c3b28497914",
+      "decoded_sha256": "4d18485927e9e99ef05e00bd640cc11f0237315970063e26e4210080c57c4ccb"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "73d51a909adc66c75d3a4b4396936f0cb76dbccc507d9ad814ae601b6d93a8a6",
+      "decoded_sha256": "179ba6a2cde4dc01424ef03447555977fc340397016aca4d828da05b242091de"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "3115b604adf013c6b1669a59c05ac7be601bd899af6b17fcc0c656a1117fa09d",
+      "decoded_sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/stdout.log.gz",
+      "sha256": "ac318182fe94fc0914f1e5ae147bc5341ba75662e02f9e482545bb7cb333217a",
+      "decoded_sha256": "202a3c0b3f49d98b8eee1060b55dd115c88b15a1b83520f0cd001ba657fbcf15"
+    },
+    {
+      "path": "memory-retention-prose-final-20260912/verification.json.gz",
+      "sha256": "1d703d46e5e14beed594b339da933ea5be372264756deaf82ff0f7c32fe3ee62",
+      "decoded_sha256": "1897119db65eb0a43ca595d86f2e59ecbcea9acca66e3ff088899d5d9413e442"
+    },
+    {
+      "path": "memory-retention-red-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "memory-retention-red-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-red-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-red-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "memory-retention-red-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "memory-retention-red-20260912/source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "memory-retention-red-20260912/source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "5f29504aa60beeb0c0e889ceb94ec34507e4d23cdee224c7d8227b5a9d4a9e66",
+      "decoded_sha256": "518b4b9bd0ab1bf4be14e7d3a2333f80e74ca6e52cde20ebb9a994ce49b01f19"
+    },
+    {
+      "path": "memory-retention-red-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "memory-retention-red-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-red-20260912/stdout.log.gz",
+      "sha256": "404ed1197628128744fc0859a87c877b309c4f6948400fbd20936b365f8224f8",
+      "decoded_sha256": "da8a89e45c7929358665a030cc13f69c31399b70851aacb97bdfda4996ad6ee3"
+    },
+    {
+      "path": "memory-retention-red-20260912/verification.json.gz",
+      "sha256": "a3b0cf6ed2a556f0284a8232bd973d0a3ce798df4c6721e0c756e40a03e1ca13",
+      "decoded_sha256": "623fffabf7f836dd2cda0ed9de51c7461bbb37a3e9c772981a7b6cdb52d4f7b0"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "e1bf74d663473d6ea7bcaa50482e6338d2ec8272d56029f2a47a4c3b28497914",
+      "decoded_sha256": "4d18485927e9e99ef05e00bd640cc11f0237315970063e26e4210080c57c4ccb"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/README.md.gz",
+      "sha256": "73d51a909adc66c75d3a4b4396936f0cb76dbccc507d9ad814ae601b6d93a8a6",
+      "decoded_sha256": "179ba6a2cde4dc01424ef03447555977fc340397016aca4d828da05b242091de"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/memory.go.gz",
+      "sha256": "8c537cd65cf03f73d8f2e671fbcb80ff31871a05ebf3dc200e198b38d764b362",
+      "decoded_sha256": "538069753cff63c4deb43db1ef1a730c0fe4f3c369ece176a2a850e59d37e151"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/retention.go.gz",
+      "sha256": "3a268b6c3b511ca6dffb4f9f248e04c9a5bf7415609aabdbd23612d4abd6e831",
+      "decoded_sha256": "44b0e21777158ed5161367c1e2ed0c0de723e0678c56afc59db7ab68a0ba70c9"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/retention_memory.go.gz",
+      "sha256": "edff978fa9483b61ec0751e72e905ba6121c09e633b0aa305804d5c1ef37726a",
+      "decoded_sha256": "5e4bdcc100522f6ab21ce42551610d45e366d83e10df3e83a9d72949b44a3ca0"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/retention_selection.go.gz",
+      "sha256": "ea2fc8e60b8366c34af970efcfe6983cd2ef6cd67d3f158ab29b5bc98f3e4632",
+      "decoded_sha256": "bc86776d63f392f911e6f6ff4631f8cb03cedcee38817da1309c3d906c22bc03"
+    },
+    {
+      "path": "committed-source/pkg/catalogs/storage/retention_test.go.gz",
+      "sha256": "3115b604adf013c6b1669a59c05ac7be601bd899af6b17fcc0c656a1117fa09d",
+      "decoded_sha256": "874d5b1b2973af3371f9fef9227727334b80c8d7b266969d02950f47cac329fe"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "50e7666ad72e2ff1db227a041753b58b5d44b39806fa6b6f7fa47e180d8bc3b5",
+      "decoded_sha256": "2d3747cfc5117a20c1c5be03a095eb176a37035c7a0b83230bdd53698fe36f8c"
+    },
+    {
+      "path": "concurrent-tooling/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "concurrent-tooling/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "concurrent-tooling/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "concurrent-tooling/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "concurrent-tooling/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "concurrent-tooling/changes.patch.gz",
+      "sha256": "ee0c008c0d8984beed38090478b201c93ab24b76c11247273b2b93035646b900",
+      "decoded_sha256": "506e8dbb6dff7a7aa5008d82de32cdc232cdf6e273267c5dbfdfed4c5c8d3d82"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/changes.patch.gz",
+      "sha256": "1518bbaeda3eae2aa5c2bb395f9983ca0ed25a373313bace87b8d611a6369c5d",
+      "decoded_sha256": "2b5242dbca36f30556a4d87dd31ed478fe3d08e93dc6f09c3fcd085826f0602e"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "75c001ef6d65c42a28b3b8a9f268a98ff8a56dd67a31a4b057f550bf3c93b202",
+      "decoded_sha256": "338e11a6ee493f95dfdc5d09c8829540d74d10f91d3d87b57e7af5a99e436ec8"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "b674aebdd3947eed4e64f332a8d4920460ac34e425f80a7e551f0c5c0ece4b81",
+      "decoded_sha256": "8b686084d2966122eaea619d40256f12de5395a6264d4c6ab1e928c1ffd905f9"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "8eb53caaa4c826268046e9ff2632631a96c68337993c81dd018ca8be4e265edd",
+      "decoded_sha256": "ffb672222a31bbede3a3719add97c9e7c85fa42657cb4fff523ed5cfaea969f0"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "b999258a0c1b2c4eb791f47f7b25325869624a800ee6f9b26ea7a94f125edd0a",
+      "decoded_sha256": "d9e510d302803317891c8bf08055f7cbbe3c9b3cf3be80ed2d4dc8a4d31d7fa2"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-memory-retention.html.gz",
+      "sha256": "6d797e953fa5ee1ae15dcbf43b35d066b05ee25a535d15591f70eacfc49c2919",
+      "decoded_sha256": "dd307ce9f55eab47b5ab983c184a019ae0b45a3ebd7e0351ed3b07c252a34a2b"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "12378519998f0356573df92b3245140ee539dbc91f02d72a5c359fabb6e34004",
+      "decoded_sha256": "155e72d2c9acf9015417cb3df5e4c14bb45e2fd336d9b98320135cb6af8e6c4b"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/stdout.log.gz",
+      "sha256": "82f7e14b5324b1f65e019cc26938ccd932af9f91d6326413539529d5e45372d2",
+      "decoded_sha256": "aa484057c9e125fc26fab02f683da89f47e8a409b9951017fae09f2854f5563c"
+    },
+    {
+      "path": "memory-retention-canonical-prose-20260912/verification.json.gz",
+      "sha256": "a83a69d0a0f254230b9443b777d0d75cb06b5baffef1701778ff06ee9977ff5e",
+      "decoded_sha256": "376862ce58ece4247b57627654f88eb8be8b3e5d323f71cf442a4ad6e08a3913"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/changes.patch.gz",
+      "sha256": "bdd4123e11322bc86a412b41c5f1ee58f5b23561f06ca53646115f1c082c1c1d",
+      "decoded_sha256": "fdda3cab5c2dfc1c7a9b2f9a03fd0c7cd3119f03f866e2f02b8fa1b8b77d3950"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "08197179de6cc5297c87fe4a80fc6cea732d407a9ac605b56539643e742ad51a",
+      "decoded_sha256": "c7af5d2d56735ed5e2bfdadd08a3c561cd55d271fb3ed38f5aca5d37433d57a5"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "b674aebdd3947eed4e64f332a8d4920460ac34e425f80a7e551f0c5c0ece4b81",
+      "decoded_sha256": "8b686084d2966122eaea619d40256f12de5395a6264d4c6ab1e928c1ffd905f9"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "26e18e1a3ce70258d39baaa3ba88a8bce22d2871e9e1fcf5464ecabd6e1ec85a",
+      "decoded_sha256": "fd0dd1b7ded80aeafaa51062994697fac06097e27568305a60259f5b40bf4f31"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json.gz",
+      "sha256": "a1f0dd9cae9ca6a95591b8f9425e17d1b1dd162dc58c0b078a27ae0263a855fa",
+      "decoded_sha256": "283c8e567089bdcc2f2ac1d455648f3960919beb0b18f2f8cec569112c26bb95"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "22cac8ca460d5ad3eb5b7140f517f62178803f49f62c402ea49b9b25df1a1e65",
+      "decoded_sha256": "2ed58b218d7e0e33118eeebe34cd18731eebc8d418ff3f21b879c3dae175c775"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-memory-retention.html.gz",
+      "sha256": "6d797e953fa5ee1ae15dcbf43b35d066b05ee25a535d15591f70eacfc49c2919",
+      "decoded_sha256": "dd307ce9f55eab47b5ab983c184a019ae0b45a3ebd7e0351ed3b07c252a34a2b"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "32f9a0420f0c0ab2bc735aecfbdf7cdbc1519d71519277de4f10228fecb5801f",
+      "decoded_sha256": "fd6793bb948e5722209e198d0f1b10e7019d1bd40fdd41a7bb0720f0f1fcdc39"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/stdout.log.gz",
+      "sha256": "177f33f8bd9e55b722bea4fc05c58c6d48906c1213df14ea264114e42e5581d1",
+      "decoded_sha256": "7b39e8f63672b2fa522d5fd9ae724b3dd4e85e66d9e0e81f6103b67fe1cad528"
+    },
+    {
+      "path": "memory-retention-canonical-prose-final-20260912/verification.json.gz",
+      "sha256": "3ab38155ff0185bfb4e2cccfdd64b264f168e71273cf8d18065d02d385e189e5",
+      "decoded_sha256": "245a9af37b323b047cc647f4072be612dbab4db42057729c4ad050376964a6e7"
+    }
+  ],
+  "final_test_events": {
+    "per_toolchain": 112,
+    "toolchains": [
+      "go1.26.6",
+      "go1.25.12"
+    ]
+  },
+  "source_binding": "Both complete storage race suites, policy, and package lint bind all five committed Go files. The final prose check binds the generated storage README and store contract.",
+  "running_check": {
+    "status": "RUNNING",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-csp5-verification-c8ec797a",
+    "session_id": 56591,
+    "source_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+    "raw_output_directory": "/Users/jack/src/github.com/agentstation/starmap-csp5-verification-c8ec797a/.tmp/csp5-update-controls/runtime-required-c8ec797a-20260912",
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.26.6",
+      "GOWORK=off",
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-timeout",
+      "30m",
+      "./runtime",
+      "./pkg/catalogs/storage"
+    ]
+  },
+  "limits": [
+    "The two original regression tests failed because Memory did not implement collection and generation read leases. The new interface declarations already existed during that failure. This proves the absent capability, not a prior incorrect deletion.",
+    "RetainingStore adds optional AcquireGeneration and Collect methods without changing Store. Memory implements the role. Filesystem, object storage, shared application adapters, and runtime adoption remain incomplete.",
+    "Each request supplies positive generation and byte limits and the expected current generation. Every required ID must exist. Current, caller-required generations, and active leases survive collection, including when their bytes or count exceed the limit.",
+    "The default scan limit is 4096 entries. An explicit pass permits at most 100000 entries. Incomplete scans, missing requirements, invalid limits, cancellation, and stale current produce refusal before deletion.",
+    "Oldest generated content leaves first, with generation ID as the deterministic equal-time tie break. This is generation time, not activation order. Byte totals count manifest and payload bytes, not filesystem overhead, journals, or replication.",
+    "Dry runs preserve all content and report candidates and projected usage. Normal reports identify applied removals. OverLimit reports protected content that exceeds capacity.",
+    "Read leases return independent payload and manifest bytes. Release is idempotent, remains usable after context cancellation, and cannot end another caller lease. Collection serializes with publication under the memory store lock.",
+    "Both complete storage suites pass 112 test events, including parents, without failures or skips. The suites repeat the same cases on two Go toolchains. They do not supply 224 distinct cases.",
+    "Package lint and goago pass. The first prose check reached the glossary candidate threshold for two repeated terms. Revised wording preserves meaning without changing glossary policy. The final source prose check passes.",
+    "These macOS results do not qualify native Windows or Linux behavior. The new role does not enable automatic collection or prove persistent recovery.",
+    "The separately running required suite uses clean c8ec797a and excludes this retention change. Preserve its terminal result before removing the temporary checkout. It gives no complete CSP5 acceptance credit.",
+    "Persistent generation collection, observation-file collection, distinct-inventory retirement, twelve mapped task subcases, complete verification, review, native CI, and merge remain open. CSP5 remains unpublished until its full contract passes.",
+    "Five concurrent tooling edits remain outside this commit. Final task qualification must use the committed module graph.",
+    "The final canonical prose check passes. Source snapshots separate the concurrent tooling edits from six owned documentation files. Task criteria, scope, invariants, and the goal remain unchanged.",
+    "The first canonical prose check found two long paragraphs and two long sentences. Paragraph breaks and sentence splits preserve all facts. The failed check and its source snapshots remain in this proof."
+  ],
+  "unrelated_worktree_changes": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    }
+  ],
+  "tested_module_inputs": [
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+      "evidence": "memory-retention-package-20260912/source/go.mod.gz"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+      "evidence": "memory-retention-package-20260912/source/go.sum.gz"
+    }
+  ],
+  "documentation_checks": {
+    "memory-retention-canonical-prose-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T08:53:57.814204+00:00",
+      "base_commit": "22cd3a72aa5c8fd80fedf6a3c5472ad6266d680c",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "338e11a6ee493f95dfdc5d09c8829540d74d10f91d3d87b57e7af5a99e436ec8",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "8b686084d2966122eaea619d40256f12de5395a6264d4c6ab1e928c1ffd905f9",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "ffb672222a31bbede3a3719add97c9e7c85fa42657cb4fff523ed5cfaea969f0",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "d9e510d302803317891c8bf08055f7cbbe3c9b3cf3be80ed2d4dc8a4d31d7fa2",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-memory-retention.html": "dd307ce9f55eab47b5ab983c184a019ae0b45a3ebd7e0351ed3b07c252a34a2b",
+        "docs/plans/starport-production-catalog-plan.html": "155e72d2c9acf9015417cb3df5e4c14bb45e2fd336d9b98320135cb6af8e6c4b",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T08:54:46.116168+00:00",
+      "status": "failed"
+    },
+    "memory-retention-canonical-prose-final-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T08:55:03.334398+00:00",
+      "base_commit": "22cd3a72aa5c8fd80fedf6a3c5472ad6266d680c",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "c7af5d2d56735ed5e2bfdadd08a3c561cd55d271fb3ed38f5aca5d37433d57a5",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "8b686084d2966122eaea619d40256f12de5395a6264d4c6ab1e928c1ffd905f9",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "fd0dd1b7ded80aeafaa51062994697fac06097e27568305a60259f5b40bf4f31",
+        "docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json": "283c8e567089bdcc2f2ac1d455648f3960919beb0b18f2f8cec569112c26bb95",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "2ed58b218d7e0e33118eeebe34cd18731eebc8d418ff3f21b879c3dae175c775",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-memory-retention.html": "dd307ce9f55eab47b5ab983c184a019ae0b45a3ebd7e0351ed3b07c252a34a2b",
+        "docs/plans/starport-production-catalog-plan.html": "fd6793bb948e5722209e198d0f1b10e7019d1bd40fdd41a7bb0720f0f1fcdc39",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T08:55:51.313091+00:00",
+      "status": "passed"
+    }
+  },
+  "documentation_source_files": [
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "c7af5d2d56735ed5e2bfdadd08a3c561cd55d271fb3ed38f5aca5d37433d57a5"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "8b686084d2966122eaea619d40256f12de5395a6264d4c6ab1e928c1ffd905f9"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "fd0dd1b7ded80aeafaa51062994697fac06097e27568305a60259f5b40bf4f31"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp5.md",
+      "sha256": "2ed58b218d7e0e33118eeebe34cd18731eebc8d418ff3f21b879c3dae175c775"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-memory-retention.html",
+      "sha256": "dd307ce9f55eab47b5ab983c184a019ae0b45a3ebd7e0351ed3b07c252a34a2b"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "fd6793bb948e5722209e198d0f1b10e7019d1bd40fdd41a7bb0720f0f1fcdc39"
+    }
+  ]
+}

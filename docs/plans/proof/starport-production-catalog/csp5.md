@@ -782,6 +782,36 @@ The command runs the complete runtime and catalog-store race suites with the com
 No completion or task acceptance credit applies while the command runs.
 Preserve the terminal output before removing the temporary checkout. Continue independent compaction and collection work.
 
+## Explicit memory retention: 2026-09-12
+
+Local commit `78102bca` adds `RetainingStore` with optional `AcquireGeneration` and `Collect` methods.
+The existing `Store` interface remains unchanged. Memory implements the new contract. No automatic collection starts.
+
+The [retention proof](csp5/memory-retention-2026-09-12/verification.json) records 112 passing storage race test events on each toolchain. The runs use Go 1.26.6 and 1.25.12.
+Both suites contain the same cases, including parent events. Neither suite reports failures or skips.
+Policy, package lint, and final prose checks pass.
+The proof preserves two original capability failures and the first prose diagnostic without changing the glossary policy.
+
+Each collection request requires positive count and byte limits and the expected current generation.
+Current content, caller-required generations, and active read leases survive collection, even if they exceed the limits.
+Every required generation must exist. Stale heads, missing requirements, canceled requests, and incomplete scans stop collection before deletion.
+The default scan limit is 4,096 entries. Each explicit pass permits at most 100,000 entries.
+
+Collection removes the oldest unprotected content first, using generation time and then ID for equal times.
+Byte totals count encoded manifests and payloads. They exclude filesystem overhead, journals, and replication.
+Dry runs preserve content and report projected capacity. The report identifies protected content that exceeds capacity.
+
+Read leases return independent generation data. Repeated release calls cannot end another caller lease.
+Release remains available after context cancellation. Memory serializes collection with publication under its existing lock.
+Tests exercise independent leases, simultaneous releases, concurrent publication, count and byte limits, and refusal without deletion.
+
+These macOS checks qualify the memory implementation only. Persistent adapters and runtime adoption remain open.
+The separate clean `c8ec797a` runtime suite excludes this change. It retains its own command and source record above.
+Five concurrent tooling edits remain outside the commit. Final task qualification must use the committed module graph.
+
+Persistent generation collection, observation-file collection, distinct-inventory retirement, twelve mapped subcases, full verification, review, native CI, and merge remain open.
+CSP5 remains unpublished until its complete contract passes.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
@@ -791,7 +821,7 @@ The focused results above do not complete those full subcases.
 The integration race suite ended with its known fixture failure and an aggregate runtime timeout. Preserve its terminal evidence under the history proof.
 Commit `91b4fbc6` now propagates caller cancellation through GitHub construction.
 
-Safely retire superseded distinct inventories. Then collect generations and observation files.
+Implement persistent generation collection and observation-file collection. Safely retire superseded distinct inventories.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
