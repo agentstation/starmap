@@ -34,6 +34,7 @@ type Filesystem struct {
 	beforeCurrentPromotion    func() error
 	beforeGenerationPromotion func(string) error
 	syncCurrentDirectory      func(*os.Root) error
+	beforeRetentionStep       func(string, string) error
 }
 
 // NewFilesystem configures a filesystem catalog store without accessing or creating its root.
@@ -67,6 +68,11 @@ func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error) {
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+	unlock, err := s.lockFilesystemRead(ctx)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	defer unlock()
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return catalogs.Generation{}, err
 	}
@@ -84,6 +90,11 @@ func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, e
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+	unlock, err := s.lockFilesystemRead(ctx)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	defer unlock()
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return catalogs.Generation{}, err
 	}

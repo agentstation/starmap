@@ -1048,7 +1048,7 @@ Unsupported custom values and cyclic provenance cause construction to fail.
 ### Generation retention
 
 `RetainingStore` adds explicit collection and generation read leases to the catalog store contract.
-`Memory` implements this contract. Filesystem and object stores still require adapters, recovery checks, and runtime integration.
+`Memory` and `Filesystem` implement this contract. Object storage and runtime adoption remain incomplete.
 Existing catalog store implementations remain compatible. This interface does not enable automatic collection.
 
 Each collection request names the expected current generation, required generations, and positive generation and byte limits.
@@ -1072,3 +1072,32 @@ A normal pass reports the generations it removed and the resulting usage.
 The lease protects stored content until release, even after current changes or the acquisition context ends.
 Each successful caller must release its lease. Repeated release cannot end another caller's lease.
 Ordinary `Get` returns independent bytes without retaining the stored generation after the call completes.
+
+### Filesystem retention and read leases
+
+Filesystem collection holds the existing `.commit.lock` while it scans, selects generations, and completes retirement.
+Ordinary generation and authority reads use independent shared handles for that lock. They cannot observe a partially removed generation.
+Each explicit generation lease holds a separate shared `.read.lock` inside that generation directory.
+
+Multiple callers own independent handles. Publication can proceed while a generation lease remains active.
+An ended process releases its native locks. No lease expiry clock controls deletion.
+
+A collection scan includes generation entries and retention metadata. Unknown names or contents stop collection and remain preserved.
+Dry runs do not create generation lease files. Pending retirement or record recovery requires a normal collection pass.
+
+Capacity reports count encoded manifests and payloads. They exclude lock files, journals, and other filesystem overhead.
+A failed pass reports only the deletions that completed before the error.
+
+Before retirement, the collector records native identities, access policy, file metadata, and content digests in a `.retirement-<token>.json` journal.
+The generation directory moves atomically to `.retired-<token>` before any file deletion. Each completed removal synchronizes directory metadata.
+Journal publication uses the existing recoverable private-record writer under `generations/.record-publications`.
+Collection recovers that writer before it processes retirement journals.
+
+Recovery removes only remaining files that match the journal. Changed entries and unknown files preserve the retired directory and journal.
+An interruption before the directory move leaves the original generation available. Recovery cancels that preparation and makes a new retention decision.
+
+This permits a new reader or pin to protect the generation before the next pass.
+An interruption after the move resumes checked cleanup. A changed writer lock or parent directory prevents that cleanup.
+
+This API does not enable automatic collection. Runtime owners still must supply every baseline, candidate, and rollback requirement before adopting collection.
+Native platform qualification, object storage, and observation-file collection remain part of CSP5.

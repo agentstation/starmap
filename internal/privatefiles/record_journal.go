@@ -126,8 +126,8 @@ func (j *publicationJournal) append(w *publicationWriter, event publicationEvent
 	j.contents = expected
 	j.receipt = receipt
 	if event.Record != nil {
-		copy := *event.Record
-		j.state = &copy
+		copied := *event.Record
+		j.state = &copied
 	}
 	return nil
 }
@@ -157,22 +157,9 @@ func (w *publicationWriter) readJournal(name string) (*publicationJournal, error
 	}
 	journal := &publicationJournal{name: name, receipt: receipt}
 	for index, line := range lines {
-		var event publicationEvent
-		decoder := json.NewDecoder(bytes.NewReader(line))
-		decoder.DisallowUnknownFields()
-		if err := decoder.Decode(&event); err != nil {
-			return nil, errors.NewParseError("json", "private publication receipt", "cannot decode the receipt", err)
-		}
-		if err := decoder.Decode(&struct{}{}); err != io.EOF {
-			return nil, changed(name)
-		}
-
-		canonical, err := json.Marshal(event)
+		event, err := decodePublicationEvent(name, line)
 		if err != nil {
 			return nil, err
-		}
-		if !bytes.Equal(canonical, line) {
-			return nil, changed(name)
 		}
 		if index == 0 {
 			if event.Header == nil || event.Record != nil {
@@ -195,16 +182,44 @@ func (w *publicationWriter) readJournal(name string) (*publicationJournal, error
 			journal.state = event.Record
 		}
 	}
-	h := journal.header
-	if h.Version != publicationJournalVersion || h.Parent != w.parent || h.Metadata != w.meta || h.Owner != w.owner || h.Journal != receipt.Entry {
-		return nil, changed(name)
-	}
-	if childName(h.Destination) != nil || childName(h.Prefix) != nil || childName(h.Stage) != nil || h.Stage != h.Prefix+nonce || h.Stage == h.Destination || h.Destination == publicationDirectory {
-		return nil, changed(name)
+	if err := journal.validateHeader(w, nonce, receipt.Entry); err != nil {
+		return nil, err
 	}
 	return journal, nil
 }
 
 func validPublicationRecord(record publicationRecord) bool {
 	return record.Entry.Identity != "" && len(record.Entry.Access) == 64 && record.Size >= 0 && record.Size <= publicationRecordMaxBytes && len(record.Digest) == 64
+}
+
+func decodePublicationEvent(name string, line []byte) (publicationEvent, error) {
+	var event publicationEvent
+	decoder := json.NewDecoder(bytes.NewReader(line))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&event); err != nil {
+		return publicationEvent{}, errors.NewParseError("json", "private publication receipt", "cannot decode the receipt", err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		return publicationEvent{}, changed(name)
+	}
+
+	canonical, err := json.Marshal(event)
+	if err != nil {
+		return publicationEvent{}, err
+	}
+	if !bytes.Equal(canonical, line) {
+		return publicationEvent{}, changed(name)
+	}
+	return event, nil
+}
+
+func (j *publicationJournal) validateHeader(w *publicationWriter, nonce string, entry publicationEntry) error {
+	h := j.header
+	if h.Version != publicationJournalVersion || h.Parent != w.parent || h.Metadata != w.meta || h.Owner != w.owner || h.Journal != entry {
+		return changed(j.name)
+	}
+	if childName(h.Destination) != nil || childName(h.Prefix) != nil || childName(h.Stage) != nil || h.Stage != h.Prefix+nonce || h.Stage == h.Destination || h.Destination == publicationDirectory {
+		return changed(j.name)
+	}
+	return nil
 }

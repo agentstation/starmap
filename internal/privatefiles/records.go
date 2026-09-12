@@ -166,19 +166,8 @@ func (d *Directory) writeFileContext(ctx context.Context, name string, data []by
 			return err
 		}
 	}
-	staged, err := recordInfo(root, stage)
-	if err != nil {
+	if err := checkStagedRecord(root, stage, written, ownedDigest); err != nil {
 		return err
-	}
-	if !sameRecord(written, staged) {
-		return changed(stage)
-	}
-	stagedData, err := ReadFile(root, stage, written.Size())
-	if err != nil {
-		return err
-	}
-	if sha256.Sum256(stagedData) != ownedDigest {
-		return changed(stage)
 	}
 	after, err := optionalRecordInfo(root, name)
 	if err != nil {
@@ -299,4 +288,22 @@ func removeUnchangedRecord(root *os.Root, name string, original fs.FileInfo, dig
 	if err == nil && sha256.Sum256(data) == digest {
 		_ = root.Remove(name)
 	}
+}
+
+func checkStagedRecord(root *os.Root, stage string, written fs.FileInfo, ownedDigest [sha256.Size]byte) error {
+	staged, err := recordInfo(root, stage)
+	if err != nil {
+		return err
+	}
+	if !sameRecord(written, staged) {
+		return changed(stage)
+	}
+	stagedData, err := ReadFile(root, stage, written.Size())
+	if err != nil {
+		return err
+	}
+	if sha256.Sum256(stagedData) != ownedDigest {
+		return changed(stage)
+	}
+	return nil
 }
