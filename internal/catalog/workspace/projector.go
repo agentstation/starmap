@@ -196,7 +196,8 @@ func (p projector) project(
 		return Receipt{}, err
 	}
 	defer release()
-	return p.projectLocked(ctx, target, catalog, identity, expectation)
+	receipt, _, err := p.projectLocked(ctx, target, catalog, identity, expectation)
+	return receipt, err
 }
 
 func (p projector) projectLocked(
@@ -205,29 +206,33 @@ func (p projector) projectLocked(
 	catalog *catalogs.Catalog,
 	identity Identity,
 	expectation InputExpectation,
-) (Receipt, error) {
+) (Receipt, treeSnapshot, error) {
 	if _, err := recoverReplacement(ctx, target); err != nil {
-		return Receipt{}, errors.WrapResource("recover", "workspace replacement", target, err)
+		return Receipt{}, treeSnapshot{}, errors.WrapResource("recover", "workspace replacement", target, err)
 	}
 	input, err := readSemanticState(target)
 	if err != nil {
-		return Receipt{}, err
+		return Receipt{}, treeSnapshot{}, err
 	}
 	if err := validateInputExpectation(target, input, expectation); err != nil {
-		return Receipt{}, err
+		return Receipt{}, treeSnapshot{}, err
 	}
 	var original treeSnapshot
 	if input.exists {
 		original, err = snapshotTree(ctx, target)
 		if err != nil {
-			return Receipt{}, errors.WrapResource("inspect", "workspace replacement", target, err)
+			return Receipt{}, treeSnapshot{}, errors.WrapResource("inspect", "workspace replacement", target, err)
 		}
 	}
 	candidate, stagedState, err := p.stageCatalog(ctx, target, catalog, identity, &original)
 	if err != nil {
-		return Receipt{}, err
+		return Receipt{}, treeSnapshot{}, err
 	}
-	return p.publishCandidate(ctx, target, identity, input, candidate, stagedState)
+	receipt, err := p.publishCandidate(ctx, target, identity, input, candidate, stagedState)
+	if receipt.GenerationID == "" {
+		return receipt, treeSnapshot{}, err
+	}
+	return receipt, candidate.tree, err
 }
 
 func (p projector) publishCandidate(

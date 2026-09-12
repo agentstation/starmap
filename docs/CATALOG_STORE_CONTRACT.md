@@ -781,4 +781,21 @@ Verification uses the same writer and checked cleanup. Unexpected entries and ch
 The enclosure stays private. Candidate assembly retains the selected workspace access policy and synchronizes the completed candidate before publication.
 The writer checks resource limits before creating another entry. Assembly reads only the expected number of children, in bounded batches.
 
+Before publication, assembly compares the finished tree with the identities and bytes recorded during writes.
+It refuses a replacement file even when the file contains identical bytes.
+
 Ownership records remain in process memory. Persistent recovery after process exit still requires a separate journal.
+
+### Legacy migration rollback
+
+Legacy layout migration records the original store's native directory identity before relocation.
+It holds both parent directories open and checks that identity before moving or restoring the store.
+Neither move replaces an existing destination, including an empty directory.
+
+Rollback checks the projected workspace against the candidate's recorded file identities, bytes, and access metadata.
+A matching semantic catalog checksum alone does not authorize removal. Unknown or changed files and replacement directories remain preserved.
+Rollback uses a separate 30-second context after caller cancellation and returns conflicts with the original operation error.
+
+Rollback does not delete projection-marker paths. It preserves the stable writer-lock file after releasing the lock.
+Operators must inspect an invalid marker or an unexpected blocking directory before removal.
+The recorded store identity and candidate inventory remain in memory. They do not establish migration recovery after process exit.

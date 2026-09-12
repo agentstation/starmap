@@ -32,6 +32,7 @@ type LegacyLayoutMigrationResult struct {
 
 type legacyLayoutMigrator struct {
 	afterMove func() error
+	projector projector
 }
 
 // MigrateLegacyLayout explicitly relocates the pre-plan filesystem generation
@@ -79,6 +80,10 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, err
 	}
 	defer releaseStore()
+	originalStore, err := captureLegacyStoreIdentity(legacy)
+	if err != nil {
+		return LegacyLayoutMigrationResult{}, errors.WrapIO("inspect", legacy, err)
+	}
 
 	generation, catalog, retained, err := inspectLegacyStore(ctx, legacy)
 	if err != nil {
@@ -92,32 +97,25 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, err
 	}
 
-	writerPath := writerLockPath(legacy)
-	_, writerStatErr := os.Lstat(writerPath)
-	writerLockExisted := writerStatErr == nil
-	if writerStatErr != nil && !stderrors.Is(writerStatErr, fs.ErrNotExist) {
-		return LegacyLayoutMigrationResult{}, errors.WrapIO("inspect", writerPath, writerStatErr)
-	}
 	releaseWriter, err := acquireWriterLock(legacy)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
-	succeeded := false
-	defer func() {
-		releaseWriter()
-		if !succeeded && !writerLockExisted {
-			_ = os.Remove(writerPath)
-		}
-	}()
+	defer releaseWriter()
 
 	if err := os.MkdirAll(filepath.Dir(state), directoryMode); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("create", filepath.Dir(state), err)
 	}
-	if err := os.Rename(legacy, state); err != nil {
+	move, err := prepareLegacyStoreMove(legacy, state, originalStore)
+	if err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
+	defer move.close()
+	if err := move.relocate(); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("relocate", legacy, err)
 	}
-	rollback := func(cause error, projectedChecksum string) (LegacyLayoutMigrationResult, error) {
-		if rollbackErr := rollbackLegacyMove(legacy, state, projectedChecksum); rollbackErr != nil {
+	rollback := func(cause error, projected treeSnapshot) (LegacyLayoutMigrationResult, error) {
+		if rollbackErr := move.rollback(ctx, projected); rollbackErr != nil {
 			return LegacyLayoutMigrationResult{}, errors.WrapResource(
 				"rollback",
 				"legacy catalog layout migration",
@@ -127,22 +125,22 @@ func (m legacyLayoutMigrator) migrate(
 		}
 		return LegacyLayoutMigrationResult{}, cause
 	}
-	if err := syncMigrationParents(legacy, state); err != nil {
-		return rollback(errors.WrapIO("sync", state, err), "")
+	if err := move.sync(); err != nil {
+		return rollback(errors.WrapIO("sync", state, err), treeSnapshot{})
 	}
 	if m.afterMove != nil {
 		if err := m.afterMove(); err != nil {
-			return rollback(err, "")
+			return rollback(err, treeSnapshot{})
 		}
 	}
 
 	relocated, err := storage.NewFilesystem(state)
 	if err != nil {
-		return rollback(err, "")
+		return rollback(err, treeSnapshot{})
 	}
 	relocatedCurrent, err := relocated.Current(ctx)
 	if err != nil {
-		return rollback(errors.WrapResource("verify", "relocated catalog generation", "current", err), "")
+		return rollback(errors.WrapResource("verify", "relocated catalog generation", "current", err), treeSnapshot{})
 	}
 	if !sameMigrationGeneration(generation, relocatedCurrent) {
 		return rollback(&errors.ConflictError{
@@ -150,10 +148,10 @@ func (m legacyLayoutMigrator) migrate(
 			Expected: generation.Manifest.GenerationID,
 			Actual:   relocatedCurrent.Manifest.GenerationID,
 			Message:  "relocated current generation changed during migration",
-		}, "")
+		}, treeSnapshot{})
 	}
 
-	receipt, err := (projector{}).projectLocked(
+	receipt, projected, err := m.projector.projectLocked(
 		ctx,
 		legacy,
 		catalog,
@@ -161,9 +159,8 @@ func (m legacyLayoutMigrator) migrate(
 		InputExpectation{Path: legacy, Exists: false},
 	)
 	if err != nil {
-		return rollback(err, receipt.WorkspaceChecksum)
+		return rollback(err, projected)
 	}
-	succeeded = true
 	return LegacyLayoutMigrationResult{
 		WorkspacePath:     legacy,
 		StatePath:         state,
@@ -381,67 +378,4 @@ func sameMigrationGeneration(left, right catalogs.Generation) bool {
 		rightErr == nil &&
 		bytes.Equal(leftManifest, rightManifest) &&
 		bytes.Equal(left.Payload, right.Payload)
-}
-
-func rollbackLegacyMove(legacy, state, projectedChecksum string) error {
-	info, err := os.Lstat(legacy)
-	switch {
-	case stderrors.Is(err, fs.ErrNotExist):
-		// Nothing became visible at the vacated path.
-	case err != nil:
-		return errors.WrapIO("inspect", legacy, err)
-	default:
-		if info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
-			return unexpectedMigrationRollbackPath(legacy)
-		}
-		if projectedChecksum == "" {
-			return unexpectedMigrationRollbackPath(legacy)
-		}
-		if err := ValidateHumanLayout(legacy, ""); err != nil {
-			return errors.WrapResource("validate", "migration rollback workspace", legacy, err)
-		}
-		visible, err := readSemanticState(legacy)
-		if err != nil {
-			return errors.WrapResource("validate", "migration rollback workspace", legacy, err)
-		}
-		if !visible.exists || visible.checksum != projectedChecksum {
-			return &errors.ConflictError{
-				Resource: "catalog migration rollback workspace",
-				Expected: projectedChecksum,
-				Actual:   visible.describe(),
-				Message:  "vacated catalog path changed after relocation; relocated state was preserved",
-			}
-		}
-		if err := os.RemoveAll(legacy); err != nil {
-			return errors.WrapIO("remove", legacy, err)
-		}
-	}
-	if err := os.Remove(projectionMarkerPath(legacy)); err != nil && !stderrors.Is(err, fs.ErrNotExist) {
-		return errors.WrapIO("remove", projectionMarkerPath(legacy), err)
-	}
-	if err := os.Rename(state, legacy); err != nil {
-		return errors.WrapIO("restore", legacy, err)
-	}
-	return syncMigrationParents(legacy, state)
-}
-
-func unexpectedMigrationRollbackPath(path string) error {
-	return &errors.ConflictError{
-		Resource: "catalog migration rollback workspace",
-		Actual:   path,
-		Message:  "vacated catalog path was recreated after relocation; relocated state was preserved",
-	}
-}
-
-func syncMigrationParents(first, second string) error {
-	parents := []string{filepath.Dir(first)}
-	if other := filepath.Dir(second); other != parents[0] {
-		parents = append(parents, other)
-	}
-	for _, parent := range parents {
-		if err := syncDirectory(parent); err != nil {
-			return err
-		}
-	}
-	return nil
 }

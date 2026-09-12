@@ -128,9 +128,16 @@ func (s *workspaceStage) finish(ctx context.Context, target string, beforeRestor
 	if err := a.directory("."); err != nil {
 		return "", err
 	}
+	owned, err := s.trees["tree"].snapshot()
+	if err != nil {
+		return "", err
+	}
 	actual, err := snapshotTree(ctx, filepath.Join(s.private.Name(), "tree"))
 	if err != nil {
 		return "", err
+	}
+	if !sameTree(actual, owned) || !maps.Equal(actual.identities, owned.identities) {
+		return "", replacementConflict(target, "assembled workspace ownership changed before publication")
 	}
 	if len(actual.Entries) != len(rendered.Entries) {
 		return "", replacementConflict(target, "staged workspace entries changed")

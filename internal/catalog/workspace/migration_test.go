@@ -114,10 +114,11 @@ func TestMigrateLegacyLayoutFailureRollsBackExactStore(t *testing.T) {
 	if _, err := os.Lstat(state); !stderrors.Is(err, fs.ErrNotExist) {
 		t.Fatalf("migration target survived rollback: %v", err)
 	}
-	for _, path := range []string{projectionMarkerPath(legacy), writerLockPath(legacy)} {
-		if _, err := os.Lstat(path); !stderrors.Is(err, fs.ErrNotExist) {
-			t.Fatalf("migration artifact %q survived rollback: %v", path, err)
-		}
+	if _, err := os.Lstat(projectionMarkerPath(legacy)); !stderrors.Is(err, fs.ErrNotExist) {
+		t.Fatalf("rollback created a projection marker: %v", err)
+	}
+	if info, err := os.Lstat(writerLockPath(legacy)); err != nil || !info.Mode().IsRegular() {
+		t.Fatalf("rollback did not retain the stable writer lock: %v", err)
 	}
 }
 
@@ -148,8 +149,8 @@ func TestMigrateLegacyLayoutProjectionFailureRollsBackOwnedWorkspace(t *testing.
 	if _, err := os.Lstat(state); !stderrors.Is(err, fs.ErrNotExist) {
 		t.Fatalf("migration target survived projection rollback: %v", err)
 	}
-	if _, err := os.Lstat(markerPath); !stderrors.Is(err, fs.ErrNotExist) {
-		t.Fatalf("blocking marker survived projection rollback: %v", err)
+	if info, err := os.Lstat(markerPath); err != nil || !info.IsDir() {
+		t.Fatalf("rollback removed the unowned blocking directory: %v", err)
 	}
 }
 
