@@ -592,6 +592,37 @@
       },
       "test_events": {},
       "test_results": []
+    },
+    "qualification-review-dry-run-1a7ae757b-20260912": {
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--profile",
+        "cross-lab",
+        "--thinking",
+        "codex=xhigh",
+        "--dry-run"
+      ],
+      "started_at": "2026-09-12T20:18:40.774816+00:00",
+      "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {},
+      "exit_code": 0,
+      "finished_at": "2026-09-12T20:18:43.834663+00:00",
+      "name": "qualification-review-dry-run-1a7ae757b-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "scope": "Review preflight only. No actual review or attestation; the required pre-PR gate remains open.",
+      "archived_files": {
+        "changes.patch": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/d929c591a71898944b6b02f49d68fa48fbc5f560bdd1ad2ae1e68bbdbaa07948.gz",
+        "verification.json": "blobs/07c81bd4c63dfc220a406fcb4a280a8485d9607fe14cee5434b05080693b8430.gz"
+      },
+      "test_events": {},
+      "test_results": []
     }
   },
   "running_checks": [
@@ -616,7 +647,7 @@
       "session_id": 7815
     }
   ],
-  "observed_at": "2026-09-12T20:14:40.855484+00:00",
+  "observed_at": "2026-09-12T20:51:55.783272+00:00",
   "cache_observation": {
     "artifact": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
     "testlog_bytes": 2270280301,
@@ -1614,6 +1645,67 @@
     "stderr_snapshot_artifact": "blobs/d109e91943d491d356602c84d55ae8f7b5b983feed62dc36f8b5f6629b59fc58.gz",
     "limit": "The ordinary output reports packages, not exact individual test or skip counts. The complete race suite and later repository gates remain unverified."
   },
+  "retry_race_milestone": {
+    "status": "PARTIAL",
+    "observed_at": "2026-09-12T20:51:43.461368+00:00",
+    "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+    "session_id": 7815,
+    "session_state": "RUNNING confirmed by write_stdin immediately before this snapshot",
+    "race_passing_packages": 43,
+    "passing_package_results": [
+      "ok  \tgithub.com/agentstation/starmap\t718.557s",
+      "ok  \tgithub.com/agentstation/starmap/acquisition\t215.553s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-bootstrap-manifest\t84.205s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-catalog-release\t61.199s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-embedded-budget\t19.057s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-modelsdev-promote\t4.470s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-openapi-presence\t1.260s",
+      "ok  \tgithub.com/agentstation/starmap/internal/architecture\t1.267s",
+      "ok  \tgithub.com/agentstation/starmap/internal/attestation\t1.396s",
+      "ok  \tgithub.com/agentstation/starmap/internal/auth\t1.693s",
+      "ok  \tgithub.com/agentstation/starmap/internal/bootstrap\t179.773s",
+      "ok  \tgithub.com/agentstation/starmap/internal/bootstrap/budget\t35.692s",
+      "ok  \tgithub.com/agentstation/starmap/internal/bootstrap/manifest\t1.200s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/pipeline\t12.635s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/query\t1.207s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/reconciler\t8.809s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/settings\t48.757s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/workspace\t350.497s",
+      "ok  \tgithub.com/agentstation/starmap/internal/ciworkflow\t1.384s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/app\t350.617s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/config\t1.343s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/deps\t10.565s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/embed\t1.253s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/migrate\t1.453s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/models\t1.333s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/providers\t1.524s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/serve\t1.478s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/update\t1.488s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/validate\t1.337s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/convert\t1.177s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/embed\t1.183s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/hints\t1.312s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/table\t1.385s",
+      "ok  \tgithub.com/agentstation/starmap/internal/deploymentdocs\t1.185s",
+      "ok  \tgithub.com/agentstation/starmap/internal/embedded\t8.965s",
+      "ok  \tgithub.com/agentstation/starmap/internal/filepublish\t1.225s",
+      "ok  \tgithub.com/agentstation/starmap/internal/fleet\t1.224s",
+      "ok  \tgithub.com/agentstation/starmap/internal/privatefiles\t6.348s",
+      "ok  \tgithub.com/agentstation/starmap/internal/providers/anthropic\t8.276s",
+      "ok  \tgithub.com/agentstation/starmap/internal/providers/clients\t1.480s",
+      "ok  \tgithub.com/agentstation/starmap/internal/providers/google\t1.319s",
+      "ok  \tgithub.com/agentstation/starmap/internal/providers/openai\t8.375s",
+      "ok  \tgithub.com/agentstation/starmap/internal/runtimeacl/windows\t1.187s"
+    ],
+    "failure_lines": [],
+    "cli_app_result": "ok  \tgithub.com/agentstation/starmap/internal/cli/app\t350.617s",
+    "limit": "This snapshot proves completed package results only. It does not qualify the complete race suite or later repository gates.",
+    "artifacts": {
+      "race-cli-milestone.json": "blobs/671e8e8cb5cf7d25f2b41f506920e8841d1ba7615ecefca9f17dec24938011e1.gz",
+      "race-cli-milestone.stdout.log": "blobs/d55a5f637f59921bfbccbcd4c7e6699a5dcdac83095d0574bc6eb693e7a13c4a.gz",
+      "race-cli-milestone.stderr.log": "blobs/d109e91943d491d356602c84d55ae8f7b5b983feed62dc36f8b5f6629b59fc58.gz"
+    }
+  },
   "artifacts": [
     {
       "path": "blobs/5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b.gz",
@@ -1721,6 +1813,16 @@
       "decoded_sha256": "25179a1a67eb01f585c4b13cf67ab6edbae7bb28ae1dd4ee1750a11285ec33c1"
     },
     {
+      "path": "blobs/d929c591a71898944b6b02f49d68fa48fbc5f560bdd1ad2ae1e68bbdbaa07948.gz",
+      "sha256": "5ee916194cd95f45d4e1b2395e2f8e53f614e0ff339b52995d31ea009184a234",
+      "decoded_sha256": "d929c591a71898944b6b02f49d68fa48fbc5f560bdd1ad2ae1e68bbdbaa07948"
+    },
+    {
+      "path": "blobs/07c81bd4c63dfc220a406fcb4a280a8485d9607fe14cee5434b05080693b8430.gz",
+      "sha256": "926d8e67d1d279d7b576821259b579c3ee7c5d50aceed2f2e3f16c443d270aff",
+      "decoded_sha256": "07c81bd4c63dfc220a406fcb4a280a8485d9607fe14cee5434b05080693b8430"
+    },
+    {
       "path": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
       "sha256": "869cd2b6add55acc0b2aa50a5eea2480377bb46fdc1182dd967ec3cfc625715e",
       "decoded_sha256": "0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce"
@@ -1774,6 +1876,16 @@
       "path": "blobs/d109e91943d491d356602c84d55ae8f7b5b983feed62dc36f8b5f6629b59fc58.gz",
       "sha256": "622904449926d0b877fa6ee180e148ce3289f9d4805a7690a030717244d310ac",
       "decoded_sha256": "d109e91943d491d356602c84d55ae8f7b5b983feed62dc36f8b5f6629b59fc58"
+    },
+    {
+      "path": "blobs/671e8e8cb5cf7d25f2b41f506920e8841d1ba7615ecefca9f17dec24938011e1.gz",
+      "sha256": "91beb4c49b95cc4c940f6ae6e12a586c2acc442df4e071c5c338fca7d8bb41e2",
+      "decoded_sha256": "671e8e8cb5cf7d25f2b41f506920e8841d1ba7615ecefca9f17dec24938011e1"
+    },
+    {
+      "path": "blobs/d55a5f637f59921bfbccbcd4c7e6699a5dcdac83095d0574bc6eb693e7a13c4a.gz",
+      "sha256": "8660ef28042c160e9d861bbf89c3ee024e5aeb757eaba9bb0d0bbd30dbf1e448",
+      "decoded_sha256": "d55a5f637f59921bfbccbcd4c7e6699a5dcdac83095d0574bc6eb693e7a13c4a"
     }
   ]
 }

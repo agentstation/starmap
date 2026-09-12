@@ -58,9 +58,15 @@ The retry passes twelve phases, including all 85 ordinary package results withou
 Its ordinary runtime package passes in 516.644 seconds. The complete race suite remains active in session `7815`.
 The verification record preserves the completed phase output. Later gates remain unverified.
 
+At 20:51:43 UTC, the retry reports 43 passing race packages and no failure lines.
+The CLI application package passes in 350.617 seconds. The earlier disk-capacity failure affected this package.
+The proof archives the output snapshot. The complete race suite remains active.
+
 The task check on unchanged Go source `5160414e4` passes all twelve selected subcases, including 42 race events across 21 commands.
 Eight subcases retain Starport consumer requirements.
 
 Required review, native CI, and merge remain pending.
+A review preflight passes for both configured reviewers on source `1a7ae757b`.
+This dry run checks review readiness. It provides no review verdict or attestation.
 Shared/object collection and the coordinator decision remain part of the full CSP5 contract.
 A full-suite speed comparison requires terminal evidence.
