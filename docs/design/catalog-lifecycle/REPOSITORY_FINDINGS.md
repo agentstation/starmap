@@ -2532,7 +2532,25 @@ Review also found that assembly could adopt a replacement file containing identi
 Assembly now checks the identities and bytes recorded during file creation before publication.
 All 175 workspace and two CLI command race events pass. Final ago, prose, and Linux/Windows compilation checks pass.
 
-Source inspection finds unbounded directory and manifest reads in legacy preflight.
+At `fcfda255`, source inspection found unbounded directory and manifest reads in legacy preflight. The next section records the correction.
 The projection-marker writer also removes its temporary path without checking recorded ownership.
-CSP5 owns those remaining defects and their regression tests. Persistent workspace and legacy relocation recovery remain open.
+CSP5 owns the remaining marker defect and its regression tests. Persistent workspace and legacy relocation recovery remain open.
 These local results do not add PR, merge, native-runtime, or released-pair credit.
+
+## Bounded legacy preflight: 2026-09-12
+
+Starmap `9d8b4b8b` bounds fixed-layout reads and scans retained generations in batches of 128.
+Every retained generation still requires validation. Cancellation stops the scan before another batch or generation.
+The [preflight proof](../../plans/proof/starport-production-catalog/csp5/legacy-preflight-2026-09-12/verification.json) preserves the oversized-record and retained-manifest failures.
+
+Review found that the filesystem reader previously used each file's own size as its read limit.
+The reader now enforces 32 MiB payloads, 64 MiB manifests, and 16 KiB pointers and authority records.
+Commit rejects unreadable records before creating generation state or changing current. The pointer limit includes its newline.
+
+All 350 workspace, storage, private-file, and CLI command race events pass without skips.
+Tests preserve unknown entries and every generation in a 129-generation migration. Exact pointer-limit restore and retry also pass.
+Final ago, prose, and Linux/Windows compilation checks pass. No native execution, PR, merge, or released-pair credit follows from this checkpoint.
+
+The first migration test expected the wrong error field. Its corrected test still fails before the migration change.
+The proof retains both results. The initial prose failure also remains separate from the corrected passing check.
+Persistent recovery, marker ownership, retention, compaction, and complete CSP5 qualification remain open.

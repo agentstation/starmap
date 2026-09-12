@@ -534,5 +534,20 @@ The retained lock supports reuse without changing its identity. Operators must i
 The [rollback proof](../../plans/proof/starport-production-catalog/csp5/legacy-rollback-2026-09-12/verification.json) records local tests and qualification limits.
 
 The identity and inventory remain in memory. Durable relocation intent and recovery after process exit remain incomplete.
-CSP5 still must bound legacy preflight reads and check projection-marker temporary ownership.
+The next section records bounded legacy preflight. CSP5 still must check projection-marker temporary ownership.
 The correction does not change catalog authority or the role of a shared storage service.
+
+## Filesystem record and migration limits: 2026-09-12
+
+Starmap `9d8b4b8b` enforces 32 MiB payloads, 64 MiB manifests, and 16 KiB current pointers and authority records.
+The current pointer limit includes its newline. Oversized candidates fail before generation-state creation or pointer replacement.
+These limits apply to the filesystem adapter and do not configure Badger, Valkey, Redis, or SQL adapters.
+
+Legacy preflight reads at most four entries from each fixed-layout directory. It scans retained generations in batches of 128 and checks cancellation between visits.
+Preflight validates every retained generation.
+If preflight finds an unknown entry, it stops without changing source files or creating the destination parent.
+The [preflight proof](../../plans/proof/starport-production-catalog/csp5/legacy-preflight-2026-09-12/verification.json) verifies that migration preserves all 129 generations.
+
+The proof records 350 passing race test events and the original failures. Linux and Windows checks compile test binaries only.
+Record limits do not provide recovery after process exit or qualify a new storage architecture.
+Marker ownership, persistent workspace and relocation recovery, generation retention, and history compaction remain CSP5 work.

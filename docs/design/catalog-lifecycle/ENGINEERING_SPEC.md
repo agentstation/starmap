@@ -2691,7 +2691,16 @@ Both store moves check the original native identity and refuse an existing desti
 
 Assembly also checks the finished tree against identities and bytes recorded during creation. It refuses a replacement file with identical bytes.
 The [rollback proof](../../plans/proof/starport-production-catalog/csp5/legacy-rollback-2026-09-12/verification.json) records 177 passing workspace and CLI command race events.
-Legacy preflight reads and projection-marker temporary cleanup still need bounds and ownership checks. Persistent relocation and workspace recovery remain incomplete.
+
+Commit `9d8b4b8b` bounds fixed-layout preflight reads to four entries and retained-generation scans to 128-entry batches.
+Cancellation checks precede each batch and generation. Preflight validates every retained generation without imposing a retention cap.
+The filesystem adapter enforces 32 MiB payloads, 64 MiB manifests, and 16 KiB current pointers and authority records.
+Its writer rejects records that its reader cannot restore before creating generation state or changing current.
+
+The [preflight proof](../../plans/proof/starport-production-catalog/csp5/legacy-preflight-2026-09-12/verification.json) records 350 passing race test events.
+It verifies unknown-file preservation, cancellation, exact pointer limits, and all 129 generations after migration.
+These limits apply to the filesystem adapter. Other storage adapters retain their own contracts.
+Projection-marker temporary ownership and persistent relocation and workspace recovery remain incomplete.
 
 Starport must qualify its own composition under CSP8.
 

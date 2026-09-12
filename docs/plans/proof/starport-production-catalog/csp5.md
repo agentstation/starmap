@@ -15,6 +15,7 @@ Commit `536791a0` checks candidate cleanup and reuses validated repair candidate
 
 Commit `a05ca541` records private preparation writes and bounds assembly reads.
 Commit `fcfda255` checks legacy rollback ownership and rejects replacement assembly files.
+Commit `9d8b4b8b` bounds filesystem records and legacy preflight.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -368,8 +369,35 @@ Final ago, prose, and Linux/Windows compilation checks pass. The proof retains a
 Native runtime and physical power-loss qualification remain open.
 
 Store identities and candidate inventories remain in memory. They do not establish recovery after process exit.
-Legacy preflight still uses unbounded directory and manifest reads. Projection-marker temporary cleanup still removes an entry without a recorded ownership check.
+At `fcfda255`, legacy preflight still used unbounded directory and manifest reads. The next section records their correction.
+Projection-marker temporary cleanup still removes an entry without a recorded ownership check.
 CSP5 owns those paths, persistent recovery, active-writer exclusion, retention, compaction, and full qualification.
+
+## Bounded legacy preflight and filesystem records
+
+The [preflight proof](csp5/legacy-preflight-2026-09-12/verification.json) binds commit `9d8b4b8b` to its exact sources and command results.
+The original filesystem tests fail in six reader and writer scenarios, producing eight failure events including parents.
+Oversized records previously entered memory or became stored generations. The corrected reader refuses their size before reading the file.
+
+Filesystem payloads have a 32 MiB limit. Manifests have a 64 MiB limit, and current pointers and authority records have a 16 KiB limit.
+The pointer limit includes its newline. Commit rejects oversized payloads, manifests, and pointers before creating generation state or changing current.
+These limits do not configure other adapters.
+
+The first migration test used the wrong expected error field. Its corrected test still shows that an oversized retained manifest reaches JSON parsing.
+The passing correction rejects its size before parsing and preserves current, the retained record, and the absent destination parent.
+The proof retains both failed attempts and their original source.
+
+Fixed-layout reads inspect at most four entries. Retained generation scans use 128-entry batches and check cancellation before each batch and generation.
+They validate every retained generation and preserve the complete count. Tests scan 259 entries and stop at cancellation or a failed generation.
+A full migration preserves all 129 generations across a batch boundary and reads every unchanged generation afterward.
+
+All 187 workspace, 101 storage, 60 private-file, and two CLI command race events pass without skips.
+The CLI cases use their existing adapter fixture. Workspace and storage tests use real filesystem state.
+Final ago, prose, and Linux/Windows compilation checks pass. The initial prose failure and its correction remain in the proof.
+Native runtime and physical power-loss qualification remain open.
+
+These changes do not provide persistent workspace or legacy relocation recovery.
+Marker cleanup, active-writer exclusion for persistent stages, retention, compaction, and complete CSP5 qualification remain open.
 
 ## Remaining work
 
@@ -377,7 +405,7 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Bound legacy preflight reads and check projection-marker temporary ownership. Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
+Check projection-marker temporary ownership. Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
