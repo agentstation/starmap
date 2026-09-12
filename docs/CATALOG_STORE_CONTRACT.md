@@ -991,3 +991,18 @@ The check applies only to declared runtime and discovery paths. Unrelated direct
 
 Recover in the original directory before retrying migration. Inspection preserves the source files and does not create recovery metadata.
 Migration can copy inactive writer metadata after recovery. A new publication binds its new native identities.
+
+### Repeated provider inventories
+
+Before a new acquisition exceeds the retained history limit, the runtime compacts histories that contain only provider observations and no resets.
+Compaction removes intermediate successful inventories only when their payload bytes and complete binding declarations match the first and latest successful inventories.
+The first inventory preserves original model change times. The latest inventory preserves current source evidence.
+It also retains distinct inventories, partial results, and equal-time evidence.
+
+It combines retained provider observations into one replay batch without changing the original payloads or receipts.
+An omitted offering therefore keeps the original inventory that contains it.
+
+The publication transaction installs the compacted history only after catalog acceptance. Failure preserves the accepted history.
+Incoming resets, existing resets, and metadata histories keep their replay boundaries. They still require further compaction support under CSP5.
+If necessary evidence still exceeds a history limit, publication returns a conflict and preserves the accepted catalog.
+Compaction does not delete immutable observation files or catalog generations. Their collection requires the separate retention contract.

@@ -19,6 +19,8 @@ const (
 	maxManualHistoryBatches = 4096
 )
 
+var manualHistoryCapacity = invalidInputPublication("manual history requires compaction before another batch")
+
 // manualBatch is an immutable accepted-input node. Parents precede their children.
 type manualBatch struct {
 	reference    string
@@ -169,7 +171,7 @@ func selectManualObservations(ctx context.Context, history *manualBatch, input [
 		selected = append(selected, observation)
 	}
 	if len(selected) != 0 && (batches >= maxManualHistoryBatches || bytesRetained > maxLayerBytes) {
-		return nil, invalidInputPublication("manual history requires compaction before another batch")
+		return nil, manualHistoryCapacity
 	}
 	return selected, nil
 }
@@ -297,7 +299,20 @@ func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObserv
 	if err != nil {
 		return nil, err
 	}
-	return selectManualObservations(ctx, l.manual, input, resets)
+	selected, err := selectManualObservations(ctx, l.manual, input, resets)
+	if err != manualHistoryCapacity || len(resets) != 0 {
+		return selected, err
+	}
+	compacted, err := compactRepeatedProviderHistory(ctx, l.manual)
+	if err != nil {
+		return nil, err
+	}
+	selected, err = selectManualObservations(ctx, compacted, input, resets)
+	if err != nil {
+		return nil, err
+	}
+	l.manual = compacted
+	return selected, nil
 }
 
 func supportedManualHistoryVersion(version int) bool {
