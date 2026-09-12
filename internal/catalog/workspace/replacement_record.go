@@ -2,7 +2,7 @@ package workspace
 
 import (
 	"bytes"
-	"crypto/rand"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/filepublish"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -133,7 +132,7 @@ func invalidReplacement(field string) error {
 	return &errors.ValidationError{Field: "workspace_replacement." + field, Message: "invalid replacement journal"}
 }
 
-func writeReplacementRecord(root *os.Root, record replacementRecord) (bool, error) {
+func writeReplacementRecord(ctx context.Context, root *os.Root, record replacementRecord, hooks workspaceRecordWriter) (bool, error) {
 	if err := record.validate(record.Target); err != nil {
 		return false, err
 	}
@@ -146,69 +145,14 @@ func writeReplacementRecord(root *os.Root, record replacementRecord) (bool, erro
 	}
 	data = append(data, '\n')
 	name := filepath.Base(replacementJournalPath(record.Target))
-	temporary := "." + name + "." + rand.Text()
-	if err := writeReplacementBytes(root, temporary, data); err != nil {
-		return false, err
-	}
-	defer func() { _ = root.Remove(temporary) }()
-	if err := root.Link(temporary, name); err != nil {
-		return false, err
-	}
-	return true, filepublish.SyncDirectory(root)
-}
-
-func writeReplacementBytes(root *os.Root, name string, data []byte) error {
-	file, err := root.OpenFile(name, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fileMode)
-	if err != nil {
-		return err
-	}
-	defer func() { _ = file.Close() }()
-	complete := false
-	defer func() {
-		if !complete {
-			_ = root.Remove(name)
-		}
-	}()
-	if _, err := file.Write(data); err != nil {
-		return err
-	}
-	if err := file.Sync(); err != nil {
-		return err
-	}
-	if err := file.Close(); err != nil {
-		return err
-	}
-	complete = true
-	return nil
+	return hooks.publish(ctx, root, name, data, recordPublication{})
 }
 
 func readReplacementRecord(root *os.Root, target string) (replacementRecord, error) {
 	name := filepath.Base(replacementJournalPath(target))
-	info, err := root.Lstat(name)
+	data, err := readWorkspaceRecordBytes(root, name, replacementJournalMax)
 	if err != nil {
 		return replacementRecord{}, err
-	}
-	if !info.Mode().IsRegular() || info.Size() > replacementJournalMax {
-		return replacementRecord{}, invalidReplacement("file")
-	}
-	file, err := root.Open(name)
-	if err != nil {
-		return replacementRecord{}, err
-	}
-	defer func() { _ = file.Close() }()
-	opened, err := file.Stat()
-	if err != nil {
-		return replacementRecord{}, err
-	}
-	if !os.SameFile(info, opened) {
-		return replacementRecord{}, invalidReplacement("identity")
-	}
-	data, err := io.ReadAll(io.LimitReader(file, replacementJournalMax+1))
-	if err != nil {
-		return replacementRecord{}, err
-	}
-	if len(data) > replacementJournalMax {
-		return replacementRecord{}, replacementLimit("journal")
 	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()

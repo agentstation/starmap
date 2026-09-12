@@ -131,6 +131,7 @@ type RepairResult struct {
 }
 
 type projector struct {
+	recordWrites            workspaceRecordWriter
 	beforeInputCheck        func() error
 	beforePromote           func() error
 	beforeMarker            func() error
@@ -322,7 +323,7 @@ func (p projector) publishCandidate(
 			return receipt, err
 		}
 	}
-	if err := writeProjectionMarker(target, projectionMarker{
+	if err := p.recordWrites.writeProjectionMarker(ctx, target, projectionMarker{
 		Version:           markerVersion,
 		GenerationID:      identity.GenerationID,
 		PayloadChecksum:   identity.PayloadChecksum,
@@ -458,7 +459,7 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 		}
 	}()
 	if state.equal(desired) {
-		if err := writeProjectionMarker(target, projectionMarker{
+		if err := p.recordWrites.writeProjectionMarker(ctx, target, projectionMarker{
 			Version: markerVersion, GenerationID: identity.GenerationID,
 			PayloadChecksum: identity.PayloadChecksum, WorkspaceChecksum: state.checksum,
 			EndpointChecksum: state.endpointChecksum,
@@ -798,7 +799,12 @@ func projectionMarkerPath(target string) string {
 
 func readProjectionMarker(target string) (projectionMarker, error) {
 	path := projectionMarkerPath(target)
-	data, err := os.ReadFile(path) //nolint:gosec // path is derived from the configured workspace.
+	root, err := os.OpenRoot(filepath.Dir(path))
+	if err != nil {
+		return projectionMarker{}, err
+	}
+	defer func() { _ = root.Close() }()
+	data, err := readWorkspaceRecordBytes(root, filepath.Base(path), replacementJournalMax)
 	if err != nil {
 		return projectionMarker{}, err
 	}
@@ -821,41 +827,20 @@ func readProjectionMarker(target string) (projectionMarker, error) {
 	return marker, nil
 }
 
-func writeProjectionMarker(target string, marker projectionMarker) error {
+func (hooks workspaceRecordWriter) writeProjectionMarker(ctx context.Context, target string, marker projectionMarker) error {
 	data, err := json.Marshal(marker)
 	if err != nil {
 		return errors.WrapResource("encode", "workspace projection marker", marker.GenerationID, err)
 	}
 	data = append(data, '\n')
 	path := projectionMarkerPath(target)
-	temp, err := os.CreateTemp(filepath.Dir(path), "."+filepath.Base(path)+".")
+	root, err := os.OpenRoot(filepath.Dir(path))
 	if err != nil {
-		return errors.WrapIO("create", path, err)
+		return err
 	}
-	tempPath := temp.Name()
-	defer func() { _ = os.Remove(tempPath) }()
-	if err := temp.Chmod(fileMode); err != nil {
-		_ = temp.Close()
-		return errors.WrapIO("chmod", tempPath, err)
-	}
-	if _, err := temp.Write(data); err != nil {
-		_ = temp.Close()
-		return errors.WrapIO("write", tempPath, err)
-	}
-	if err := temp.Sync(); err != nil {
-		_ = temp.Close()
-		return errors.WrapIO("sync", tempPath, err)
-	}
-	if err := temp.Close(); err != nil {
-		return errors.WrapIO("close", tempPath, err)
-	}
-	if err := os.Rename(tempPath, path); err != nil {
-		return errors.WrapIO("promote", path, err)
-	}
-	if err := syncDirectory(filepath.Dir(path)); err != nil {
-		return errors.WrapIO("sync", filepath.Dir(path), err)
-	}
-	return nil
+	defer func() { _ = root.Close() }()
+	_, err = hooks.publish(ctx, root, filepath.Base(path), data, recordPublication{replace: true, normalizeMode: true})
+	return err
 }
 
 func syncDirectory(path string) error {

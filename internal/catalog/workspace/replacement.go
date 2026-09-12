@@ -22,6 +22,7 @@ const (
 )
 
 type replacementHooks struct {
+	recordWrites workspaceRecordWriter
 	after        func(replacementPhase) error
 	beforeMarker func() error
 }
@@ -64,11 +65,11 @@ func (p projector) replaceWithJournal(
 		}
 		return false, false, replacementConflict(target, "backup destination already exists")
 	}
-	owned, err = writeReplacementRecord(root, record)
+	owned, err = writeReplacementRecord(ctx, root, record, p.recordWrites)
 	if err != nil {
 		return owned, false, err
 	}
-	hooks := replacementHooks{after: p.afterReplacementPhase, beforeMarker: p.beforeMarker}
+	hooks := replacementHooks{after: p.afterReplacementPhase, beforeMarker: p.beforeMarker, recordWrites: p.recordWrites}
 	if err := hooks.reached(replacementJournalSaved); err != nil {
 		return true, false, err
 	}

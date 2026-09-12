@@ -3,9 +3,7 @@ package workspace
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
 	"encoding/json"
-	"io"
 	"os"
 	"path/filepath"
 
@@ -25,7 +23,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 	}
 	data = append(data, '\n')
 	markerName := filepath.Base(projectionMarkerPath(record.Target))
-	current, err := readReplacementBytes(root, markerName, replacementJournalMax)
+	current, err := readWorkspaceRecordBytes(root, markerName, replacementJournalMax)
 	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
@@ -42,15 +40,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 				return err
 			}
 		}
-		temporary := "." + markerName + "." + rand.Text()
-		if err := writeReplacementBytes(root, temporary, data); err != nil {
-			return err
-		}
-		defer func() { _ = root.Remove(temporary) }()
-		if err := root.Rename(temporary, markerName); err != nil {
-			return err
-		}
-		if err := filepublish.SyncDirectory(root); err != nil {
+		if _, err := hooks.recordWrites.publish(ctx, root, markerName, data, recordPublication{replace: true}); err != nil {
 			return err
 		}
 	}
@@ -105,7 +95,7 @@ func validateReplacementCatalog(ctx context.Context, root *os.Root, name string,
 	if catalogs.DescribeCatalogPayload(payload).Checksum != record.Marker.WorkspaceChecksum {
 		return replacementConflict(record.Target, "installed catalog does not match its receipt")
 	}
-	endpoints, err := readReplacementBytes(child, endpointProjectionFilename, replacementMaxBytes)
+	endpoints, err := readWorkspaceRecordBytes(child, endpointProjectionFilename, replacementMaxBytes)
 	if err != nil {
 		return err
 	}
@@ -124,36 +114,6 @@ func validateReplacementCatalog(ctx context.Context, root *os.Root, name string,
 		return replacementConflict(record.Target, "endpoint identity does not match the journal")
 	}
 	return ctx.Err()
-}
-
-func readReplacementBytes(root *os.Root, name string, limit int64) ([]byte, error) {
-	info, err := root.Lstat(name)
-	if err != nil {
-		return nil, err
-	}
-	if !info.Mode().IsRegular() || info.Size() > limit {
-		return nil, invalidReplacement("file")
-	}
-	file, err := root.Open(name)
-	if err != nil {
-		return nil, err
-	}
-	defer func() { _ = file.Close() }()
-	opened, err := file.Stat()
-	if err != nil {
-		return nil, err
-	}
-	if !os.SameFile(info, opened) {
-		return nil, replacementConflict(name, "file changed before the read")
-	}
-	data, err := io.ReadAll(io.LimitReader(file, limit+1))
-	if err != nil {
-		return nil, err
-	}
-	if int64(len(data)) > limit {
-		return nil, replacementLimit("file")
-	}
-	return data, nil
 }
 
 func finishReplacementRecord(root *os.Root, record replacementRecord) error {

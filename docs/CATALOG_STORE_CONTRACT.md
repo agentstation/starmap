@@ -811,3 +811,19 @@ Rollback uses a separate 30-second context after caller cancellation and returns
 Rollback does not delete projection-marker paths. It preserves the stable writer-lock file after releasing the lock.
 Operators must inspect an invalid marker or an unexpected blocking directory before removal.
 The recorded store identity and candidate inventory remain in memory. They do not establish migration recovery after process exit.
+
+### Workspace marker and journal records
+
+Projection markers and replacement journals share a bounded record writer. Both record formats use the existing 4 MiB journal limit, including the trailing newline.
+This limit differs from the filesystem catalog store's manifest and pointer limits.
+
+The writer records each temporary file's native identity, access metadata, and written bytes. It retains the open file until cleanup completes.
+Before publication, it checks both the temporary record and the destination snapshot. A journal cannot replace an existing destination.
+Marker replacement requires the destination to match its earlier snapshot.
+
+Cleanup removes only unchanged temporary files that match the recorded identity, access, and bytes.
+It preserves operator changes, replacement files, and paths recreated after publication. Partial writes record their actual byte count before cleanup.
+Cancellation uses a separate 30-second cleanup context. The operation returns cleanup errors with the original failure.
+
+Ordinary projection markers retain their explicit file mode. Journal writes retain the process umask and inherited access behavior.
+These ownership records remain in memory. Persistent workspace preparation, replacement, and legacy relocation recovery still require qualification.
