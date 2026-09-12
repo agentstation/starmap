@@ -55,6 +55,13 @@ func (s *layerStore) loadInputPublication() (*inputPublication, error) {
 	if err != nil || raw == nil {
 		return nil, err
 	}
+	return parseInputPublication(raw)
+}
+
+func parseInputPublication(raw []byte) (*inputPublication, error) {
+	if raw == nil {
+		return nil, nil
+	}
 	var record inputPublication
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.DisallowUnknownFields()
@@ -132,10 +139,14 @@ func (s *layerStore) stageInput(ctx context.Context, value any) (string, error) 
 	return name, nil
 }
 
-func (s *layerStore) readInput(directory *privatefiles.Directory, name string, value any) error {
+func validInputReference(name string) bool {
 	stem, ok := strings.CutSuffix(name, ".json")
 	digest, err := hex.DecodeString(stem)
-	if !ok || err != nil || len(digest) != sha256.Size || hex.EncodeToString(digest) != stem {
+	return ok && err == nil && len(digest) == sha256.Size && hex.EncodeToString(digest) == stem
+}
+
+func (s *layerStore) readInput(directory *privatefiles.Directory, name string, value any) error {
+	if !validInputReference(name) {
 		return invalidInputPublication("invalid input reference")
 	}
 	raw, err := readLayerFile(directory, name)
@@ -146,7 +157,7 @@ func (s *layerStore) readInput(directory *privatefiles.Directory, name string, v
 		return invalidInputPublication("referenced input is missing")
 	}
 	actual := sha256.Sum256(raw)
-	if !bytes.Equal(actual[:], digest) {
+	if name != hex.EncodeToString(actual[:])+".json" {
 		return invalidInputPublication("referenced input digest does not match")
 	}
 	if err := decodeInputRecord(raw, value); err != nil {
@@ -167,6 +178,14 @@ func decodeInputRecord(raw []byte, value any) error {
 	return nil
 }
 
+func validateSourceInput(source *sourceLayer) error {
+	if source.GenerationID == "" || source.Identity == "" || source.Checksum != catalogs.DescribeCatalogPayload(source.Payload).Checksum {
+		return invalidInputPublication("source identity or digest does not match")
+	}
+	_, err := source.decodeCatalog()
+	return err
+}
+
 // publicationInputs validates every input before replay can replace a retained file.
 func (s *layerStore) publicationInputs(record inputPublication) (*sourceLayer, []ProviderLayer, error) {
 	directory, err := s.directory.ExistingChild(inputPublicationDirectory)
@@ -179,10 +198,7 @@ func (s *layerStore) publicationInputs(record inputPublication) (*sourceLayer, [
 		if err := s.readInput(directory, record.Source, source); err != nil {
 			return nil, nil, err
 		}
-		if source.GenerationID == "" || source.Identity == "" || source.Checksum != catalogs.DescribeCatalogPayload(source.Payload).Checksum {
-			return nil, nil, invalidInputPublication("source identity or digest does not match")
-		}
-		if _, err := source.decodeCatalog(); err != nil {
+		if err := validateSourceInput(source); err != nil {
 			return nil, nil, err
 		}
 	}

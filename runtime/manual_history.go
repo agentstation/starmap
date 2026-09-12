@@ -199,10 +199,10 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 	if err := s.readInput(directory, reference, &record); err != nil {
 		return nil, "", err
 	}
+	if err := validateManualBatchShape(record); err != nil {
+		return nil, "", err
+	}
 	if record.Checkpoint != nil {
-		if record.Version != manualHistoryVersion || record.Parent != "" || len(record.Observations) != 0 || len(record.Resets) != 0 {
-			return nil, "", invalidInputPublication("checkpoint requires an exclusive version 4 record")
-		}
 		batch, err := restoreManualCheckpoint(ctx, record.Checkpoint)
 		if err != nil {
 			return nil, "", err
@@ -213,16 +213,6 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 		}
 		batch.reference = reference
 		return batch, "", nil
-	}
-	if !supportedManualHistoryVersion(record.Version) || len(record.Observations) == 0 || (record.Version == manualHistoryLegacyVersion && len(record.Resets) > 0) {
-		return nil, "", invalidInputPublication("invalid manual observation batch")
-	}
-	if record.Version == manualHistoryProviderVersion {
-		for _, reset := range record.Resets {
-			if reset.SourceID != "" {
-				return nil, "", invalidInputPublication("metadata resets require manual history version 3")
-			}
-		}
 	}
 	resets, err := prepareObservationResets(record.Resets)
 	if err != nil {
@@ -237,15 +227,10 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 		return nil, "", invalidInputPublication("manual history exceeds the retained byte bound")
 	}
 	batch := &manualBatch{reference: reference, resets: resets}
-	seen := make(map[string]bool, len(record.Observations))
 	for _, reference := range record.Observations {
 		if err := ctx.Err(); err != nil {
 			return nil, "", err
 		}
-		if seen[reference] {
-			return nil, "", invalidInputPublication("manual batch contains duplicate observations")
-		}
-		seen[reference] = true
 		var observation manualObservation
 		if err := s.readInput(directory, reference, &observation); err != nil {
 			return nil, "", err
@@ -267,6 +252,41 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 		return nil, "", err
 	}
 	return batch, record.Parent, nil
+}
+
+// validateManualBatchShape validates a record without requiring its referenced files.
+// Unreachable batches can remain after collection removes some of their inputs.
+func validateManualBatchShape(record manualBatchRecord) error {
+	if record.Checkpoint != nil {
+		if record.Version != manualHistoryVersion || record.Parent != "" || len(record.Observations) != 0 || len(record.Resets) != 0 {
+			return invalidInputPublication("checkpoint requires an exclusive version 4 record")
+		}
+		return nil
+	}
+	if !supportedManualHistoryVersion(record.Version) || len(record.Observations) == 0 || (record.Version == manualHistoryLegacyVersion && len(record.Resets) > 0) {
+		return invalidInputPublication("invalid manual observation batch")
+	}
+	if record.Parent != "" && !validInputReference(record.Parent) {
+		return invalidInputPublication("invalid input reference")
+	}
+	if record.Version == manualHistoryProviderVersion {
+		for _, reset := range record.Resets {
+			if reset.SourceID != "" {
+				return invalidInputPublication("metadata resets require manual history version 3")
+			}
+		}
+	}
+	seen := make(map[string]bool, len(record.Observations))
+	for _, reference := range record.Observations {
+		if !validInputReference(reference) {
+			return invalidInputPublication("invalid input reference")
+		}
+		if seen[reference] {
+			return invalidInputPublication("manual batch contains duplicate observations")
+		}
+		seen[reference] = true
+	}
+	return nil
 }
 
 func manualBatches(history *manualBatch) []*manualBatch {

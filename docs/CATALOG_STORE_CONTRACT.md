@@ -1166,6 +1166,33 @@ A successful result distinguishes a newly removed file from an already absent fi
 A directory synchronization failure after deletion reports the visible removal through `PublicationError`.
 Retry after reopen synchronizes the directory without recreating the file.
 
-The runtime collector must identify unreachable input records before calling this operation.
-It must hold publication ownership while tracing accepted history and pending publication references.
-This primitive does not establish reachability or enable automatic collection. Object-store coordination remains separate work.
+The runtime collector identifies unreachable input records before calling this operation.
+It holds publication ownership while tracing accepted history and pending publication references.
+The removal primitive does not establish reachability or enable automatic collection. Object-store coordination remains separate work.
+
+### Runtime input collection
+
+`Runtime.CollectRetainedInputs` collects immutable files under `catalog-runtime/publication-inputs` in the configured local state directory.
+It preserves the current manual history, its ancestors and observations, and every input referenced by a pending publication.
+Checkpoint records carry their original payloads and receipts internally. Collection preserves those records without retaining obsolete external copies.
+The collector uses exact stored references, including legacy filenames whose bytes differ from current encoding.
+
+`InputCollectionRequest.MaxEntries` bounds directory entries, including unknown files and publication metadata.
+It must be positive and cannot exceed `storage.MaxRetentionScanEntries`.
+`MaxBytes` bounds captured raw records, including the manual head and publication journal.
+This byte limit excludes temporary decoder allocations and repeated filesystem validation work.
+`DryRun` validates references and reports candidates without removing files.
+
+Missing or invalid required references cause refusal before deletion. A changed accepted head also causes refusal unless a pending publication explains it.
+Unknown names, unsupported schemas, unsafe files, and content mismatches remain available for inspection.
+The collector can remove an unreachable batch with valid structure even when its referenced inputs are already absent.
+This rule permits retry after a partial cleanup. Required history still passes the complete receipt and reference checks.
+
+Collection joins runtime operation ownership, cancellation, and shutdown. It serializes with catalog publication and retained provider writes.
+It works in offline and pinned modes without acquiring a shared lease or reading a catalog source.
+The serving catalog stays unchanged in memory. Collection adds no filesystem work to catalog queries.
+
+The report separates protected inputs, preserved entries, deletion candidates, and visible removals.
+An error after deletion retains the partial removal report, including unconfirmed directory synchronization.
+
+This API explicitly cleans local inputs. Automatic invocation, retention configuration, and complete catalog generation collection remain part of CSP5.

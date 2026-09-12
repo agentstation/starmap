@@ -80,6 +80,8 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(p FreshnessPolicy\) Validate\(\) error](<#FreshnessPolicy.Validate>)
 - [type GenerationPinAcceptance](<#GenerationPinAcceptance>)
 - [type Health](<#Health>)
+- [type InputCollectionReport](<#InputCollectionReport>)
+- [type InputCollectionRequest](<#InputCollectionRequest>)
 - [type Lease](<#Lease>)
 - [type LeaseStore](<#LeaseStore>)
 - [type NetworkMode](<#NetworkMode>)
@@ -156,6 +158,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) Catalog\(\) \*catalogs.Catalog](<#Runtime.Catalog>)
   - [func \(r \*Runtime\) Client\(\) \*starmap.Client](<#Runtime.Client>)
   - [func \(r \*Runtime\) Close\(\) error](<#Runtime.Close>)
+  - [func \(r \*Runtime\) CollectRetainedInputs\(ctx context.Context, request InputCollectionRequest\) \(report InputCollectionReport, resultErr error\)](<#Runtime.CollectRetainedInputs>)
   - [func \(r \*Runtime\) CompleteDirectoryMigration\(ctx context.Context, request DirectoryMigrationRequest\) \(DirectoryMigrationPublication, error\)](<#Runtime.CompleteDirectoryMigration>)
   - [func \(r \*Runtime\) ModelsDevGitCommit\(\) \(string, bool\)](<#Runtime.ModelsDevGitCommit>)
   - [func \(r \*Runtime\) ObservationInputs\(ctx context.Context\) \(ObservationInputs, error\)](<#Runtime.ObservationInputs>)
@@ -752,6 +755,35 @@ Health is the operator\-facing state of one runtime component.
 
 ```go
 type Health = status.Health
+```
+
+<a name="InputCollectionReport"></a>
+## type [InputCollectionReport](<https://github.com/agentstation/starmap/blob/main/runtime/input_collection.go#L23-L30>)
+
+InputCollectionReport separates protected references from unrecognized files and removable inputs. Scanned includes one possible entry beyond MaxEntries to detect overflow. SnapshotBytes counts captured raw records, excluding decoder and filesystem verification work. Removed includes visible deletions when later directory synchronization fails.
+
+```go
+type InputCollectionReport struct {
+    Scanned       int
+    SnapshotBytes int64
+    Protected     []string
+    Preserved     []string
+    Candidates    []string
+    Removed       []string
+}
+```
+
+<a name="InputCollectionRequest"></a>
+## type [InputCollectionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/input_collection.go#L13-L17>)
+
+InputCollectionRequest bounds one explicit scan of retained input files. MaxEntries includes unknown directory entries. MaxBytes bounds raw snapshot bytes. DryRun validates references and reports candidates without deleting files.
+
+```go
+type InputCollectionRequest struct {
+    MaxEntries int
+    MaxBytes   int64
+    DryRun     bool
+}
 ```
 
 <a name="Lease"></a>
@@ -1553,6 +1585,15 @@ func (r *Runtime) Close() error
 ```
 
 Close stops runtime\-owned work and releases the lease. It is idempotent and joins within five seconds. A run that does not stop in time leaves a typed timeout error. Directory ownership remains held until work and lease release finish.
+
+<a name="Runtime.CollectRetainedInputs"></a>
+### func \(\*Runtime\) [CollectRetainedInputs](<https://github.com/agentstation/starmap/blob/main/runtime/input_collection.go#L36>)
+
+```go
+func (r *Runtime) CollectRetainedInputs(ctx context.Context, request InputCollectionRequest) (report InputCollectionReport, resultErr error)
+```
+
+CollectRetainedInputs removes validated immutable inputs outside retained history and pending publications. It cleans unused local inputs even when acquisition is offline or a generation pin prevents updates. Limits must be positive. MaxEntries cannot exceed storage.MaxRetentionScanEntries. A failed preflight removes nothing. Later failures return the partial removal report.
 
 <a name="Runtime.CompleteDirectoryMigration"></a>
 ### func \(\*Runtime\) [CompleteDirectoryMigration](<https://github.com/agentstation/starmap/blob/main/runtime/migration_complete.go#L14>)
