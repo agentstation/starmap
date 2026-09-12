@@ -14,7 +14,7 @@ func TestDiscoveryStateRequiresPrivateAccess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := store.save(State{Repository: config.Repository, Channel: config.Channel, Sequence: 7}); err != nil {
+	if err := store.saveSnapshot(t.Context(), State{Repository: config.Repository, Channel: config.Channel, Sequence: 7}, nil); err != nil {
 		t.Fatal(err)
 	}
 	for _, path := range []string{filepath.Dir(store.path), store.path} {

@@ -956,7 +956,7 @@ These checks do not qualify native execution, other stage recovery, retention, h
 
 `privatefiles.Directory.PublishFileContext` records staging ownership before destination publication.
 Its explicit recovery method uses the same writer lock. Ordinary private-file reads and writes retain their existing behavior.
-Runtime evidence and GitHub discovery adoption remain incomplete under CSP5.
+Runtime evidence and GitHub discovery use this publication API.
 
 Each record directory uses a private `.record-publications` child with a stable `.owner.lock` and one bounded JSONL receipt per pending publication.
 Receipts bind both directories, the writer, the journal, and the temporary file to native identities and access snapshots.
@@ -971,3 +971,20 @@ Recovery scans at most 4,096 metadata entries in batches of 128. Each journal pe
 Each record permits at most 64 MiB. Exceeding a limit stops recovery without inferring ownership.
 A visible publication with an unconfirmed flush or cleanup returns `PublicationError`.
 Native Linux and Windows execution remains subject to the CSP5 qualification gate.
+
+### Runtime and discovery records
+
+Runtime startup recovers source, provider, binding, publication-input, and pin records before loading retained layers.
+Recovery runs under the runtime directory owner and each record writer lock. Passive file inspection does not start recovery.
+The file manifest reports private receipt directories and temporary records without exposing their contents or adopting unrelated operator files.
+
+GitHub source construction recovers its local discovery records without contacting the network.
+Each verified refresh compares the previously read state bytes under the shared writer lock before publishing the next state.
+An absent state and an empty file remain distinct comparison inputs. A conflicting refresh returns a retryable conflict and preserves the newer record.
+Retry reads the current replay floor, ETag, and accepted release reference before checking the channel again.
+
+Runtime migration refuses pending private record receipts during source inspection. Copying those receipts would invalidate their native file identities.
+The check applies only to declared runtime and discovery paths. Unrelated directories with the same metadata name remain operator-owned migration input.
+
+Recover in the original directory before retrying migration. Inspection preserves the source files and does not create recovery metadata.
+Migration can copy inactive writer metadata after recovery. A new publication binds its new native identities.

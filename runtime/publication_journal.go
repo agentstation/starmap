@@ -126,7 +126,7 @@ func (s *layerStore) stageInput(ctx context.Context, value any) (string, error) 
 		}
 		return name, nil
 	}
-	if err := directory.WriteFileContext(ctx, name, raw, ".input-"); err != nil {
+	if err := directory.PublishFileContext(ctx, name, raw, ".input-"); err != nil {
 		return "", err
 	}
 	return name, nil

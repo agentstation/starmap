@@ -338,7 +338,7 @@ func (s *layerStore) writeContext(ctx context.Context, directory *privatefiles.D
 			},
 		}
 	}
-	if err := directory.WriteFileContext(ctx, path, encoded, ".layer-"); err != nil {
+	if err := directory.PublishFileContext(ctx, path, encoded, ".layer-"); err != nil {
 		return errors.WrapIO("write private evidence", path, err)
 	}
 	return nil

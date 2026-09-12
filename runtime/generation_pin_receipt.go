@@ -179,7 +179,7 @@ func (s *layerStore) savePinRecord(ctx context.Context, record generationPinReco
 	if len(encoded) > maxGenerationPinRecordBytes {
 		return pinRecordConflict("the acceptance exceeds its storage limit")
 	}
-	return s.directory.WriteFileContext(ctx, generationPinRecordFile, encoded, ".layer-")
+	return s.directory.PublishFileContext(ctx, generationPinRecordFile, encoded, ".layer-")
 }
 
 func (r *Runtime) finishPinRelease(ctx context.Context) error {

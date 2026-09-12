@@ -136,3 +136,24 @@ func (w *publicationWriter) cleanJournal(ctx context.Context, journal *publicati
 	}
 	return filepublish.SyncDirectory(w.records)
 }
+
+// CheckNoPendingPublications inspects existing receipts without deleting files or creating metadata.
+// Migration must recover pending publications before recording a source inventory.
+func (d *Directory) CheckNoPendingPublications(ctx context.Context) error {
+	writer, err := d.acquirePublicationWriter(ctx, false)
+	if err != nil {
+		return err
+	}
+	if writer == nil {
+		return nil
+	}
+	defer writer.close()
+	names, err := writer.journalNames(ctx)
+	if err != nil {
+		return err
+	}
+	if len(names) > 0 {
+		return &errors.ConflictError{Resource: "private record publication", Message: "recover pending record publications before migration"}
+	}
+	return nil
+}

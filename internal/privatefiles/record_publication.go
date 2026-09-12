@@ -17,7 +17,24 @@ func (d *Directory) PublishFileContext(ctx context.Context, name string, data []
 	return d.publishFileContext(ctx, name, data, prefix, nil)
 }
 
-func (d *Directory) publishFileContext(ctx context.Context, name string, data []byte, prefix string, syncDirectory func(*os.Root) error) (resultErr error) {
+// CompareAndPublishFileContext requires the previously read bytes to remain current.
+// A nil previous value requires an absent destination. An empty non-nil value requires an empty file.
+func (d *Directory) CompareAndPublishFileContext(ctx context.Context, name string, previous, data []byte, prefix string) error {
+	expected := publicationExpectation{present: previous != nil, size: int64(len(previous)), digest: publicationDigest(previous)}
+	return d.publishRecordContext(ctx, name, data, prefix, nil, &expected)
+}
+
+type publicationExpectation struct {
+	present bool
+	size    int64
+	digest  string
+}
+
+func (d *Directory) publishFileContext(ctx context.Context, name string, data []byte, prefix string, syncDirectory func(*os.Root) error) error {
+	return d.publishRecordContext(ctx, name, data, prefix, syncDirectory, nil)
+}
+
+func (d *Directory) publishRecordContext(ctx context.Context, name string, data []byte, prefix string, syncDirectory func(*os.Root) error, expected *publicationExpectation) (resultErr error) {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -48,6 +65,11 @@ func (d *Directory) publishFileContext(ctx context.Context, name string, data []
 	}
 	if err == nil {
 		before = &record
+	}
+	if expected != nil {
+		if expected.present != (before != nil) || (before != nil && (before.Size != expected.size || before.Digest != expected.digest)) {
+			return changed(name)
+		}
 	}
 	journal, err := writer.newJournal(name, prefix)
 	if err != nil {

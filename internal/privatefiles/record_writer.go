@@ -12,8 +12,10 @@ import (
 )
 
 const (
-	publicationDirectory = ".record-publications"
-	publicationLock      = ".owner.lock"
+	// PublicationDirectoryName identifies the reserved metadata child for private record publication.
+	PublicationDirectoryName = ".record-publications"
+	publicationDirectory     = PublicationDirectoryName
+	publicationLock          = ".owner.lock"
 )
 
 type publicationWriter struct {

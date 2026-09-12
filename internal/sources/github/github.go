@@ -203,7 +203,7 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	state, err := s.state.load()
+	state, previous, err := s.state.loadSnapshot()
 	if err != nil {
 		return Release{}, err
 	}
@@ -240,7 +240,7 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 	}
 
 	now := s.config.Now().UTC()
-	if err := s.state.save(State{
+	if err := s.state.saveSnapshot(ctx, State{
 		Repository:  s.config.Repository,
 		Channel:     s.config.Channel,
 		ChannelETag: answer.etag(),
@@ -252,7 +252,7 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 			VerifiedAt:    now,
 		},
 		UpdatedAt: now,
-	}); err != nil {
+	}, previous); err != nil {
 		return Release{}, err
 	}
 	return release, nil

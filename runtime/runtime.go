@@ -247,6 +247,9 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := runtime.store.recoverRecordPublications(ctx); err != nil {
+		return nil, err
+	}
 	if err := runtime.store.recoverInputPublication(ctx, client.CurrentCatalogState()); err != nil {
 		return nil, err
 	}
