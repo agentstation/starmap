@@ -616,7 +616,7 @@
       "session_id": 7815
     }
   ],
-  "observed_at": "2026-09-12T19:40:25.242847+00:00",
+  "observed_at": "2026-09-12T20:14:40.855484+00:00",
   "cache_observation": {
     "artifact": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
     "testlog_bytes": 2270280301,
@@ -1588,6 +1588,32 @@
     "stderr_snapshot_artifact": "blobs/d9807c70e53657c403e74b8f3530556c1c2711f9cb21de5e3164a044c0469f9e.gz",
     "limit": "The ordinary output reports packages, not exact individual test or skip counts. The complete race suite and later repository gates remain unverified."
   },
+  "retry_phase_progress": {
+    "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+    "status": "PARTIAL",
+    "completed_phases": 12,
+    "commands": [
+      "go test ./... -timeout=30m -p=1 -count=1",
+      "make test-pure-go",
+      "make test-file-sizes",
+      "./scripts/verify-package-layout.sh",
+      "./scripts/test-package-layout-verifier.sh",
+      "./scripts/verify-catalog-package-ownership.sh",
+      "./scripts/test-catalog-package-ownership-verifier.sh",
+      "./scripts/verify-catalog-dependency-direction.sh",
+      "./scripts/test-catalog-dependency-direction-verifier.sh",
+      "bash ./scripts/verify-canonical-alias-history.sh",
+      "python3 ./scripts/test_catalog_product_verify.py",
+      "python3 ./scripts/test_prepare_public_catalog_fixture.py"
+    ],
+    "ordinary_passing_packages": 85,
+    "ordinary_cached_packages": 0,
+    "packages_without_tests": 22,
+    "runtime_result": "ok  \tgithub.com/agentstation/starmap/runtime\t516.644s",
+    "stdout_artifact": "blobs/937598cbd895fe4609530ff224425d97b769ed7345c46af484632400c3bd20b9.gz",
+    "stderr_snapshot_artifact": "blobs/d109e91943d491d356602c84d55ae8f7b5b983feed62dc36f8b5f6629b59fc58.gz",
+    "limit": "The ordinary output reports packages, not exact individual test or skip counts. The complete race suite and later repository gates remain unverified."
+  },
   "artifacts": [
     {
       "path": "blobs/5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b.gz",
@@ -1738,6 +1764,16 @@
       "path": "blobs/fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc.gz",
       "sha256": "5c1d3a8fd00fd09ba7aef17fa331291c6e19b93d62b7821542bc8bdbb8f74020",
       "decoded_sha256": "fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc"
+    },
+    {
+      "path": "blobs/937598cbd895fe4609530ff224425d97b769ed7345c46af484632400c3bd20b9.gz",
+      "sha256": "be79c03399979cfc87b302989895c9e9b19bc95d376a6807fe3941f13a2bf7cc",
+      "decoded_sha256": "937598cbd895fe4609530ff224425d97b769ed7345c46af484632400c3bd20b9"
+    },
+    {
+      "path": "blobs/d109e91943d491d356602c84d55ae8f7b5b983feed62dc36f8b5f6629b59fc58.gz",
+      "sha256": "622904449926d0b877fa6ee180e148ce3289f9d4805a7690a030717244d310ac",
+      "decoded_sha256": "d109e91943d491d356602c84d55ae8f7b5b983feed62dc36f8b5f6629b59fc58"
     }
   ]
 }

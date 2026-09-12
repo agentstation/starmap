@@ -54,6 +54,10 @@ Full qualification restarted in session `7815` on unchanged commit `1a7ae757b`.
 The worktree is `starmap-catalog-update-controls-qualification`, on branch `codex/catalog-update-controls-qualification`.
 The retry uses the same complete verification command, test selection, and time limits.
 
+The retry passes twelve phases, including all 85 ordinary package results without test-cache reuse and 22 packages without tests.
+Its ordinary runtime package passes in 516.644 seconds. The complete race suite remains active in session `7815`.
+The verification record preserves the completed phase output. Later gates remain unverified.
+
 The task check on unchanged Go source `5160414e4` passes all twelve selected subcases, including 42 race events across 21 commands.
 Eight subcases retain Starport consumer requirements.
 
