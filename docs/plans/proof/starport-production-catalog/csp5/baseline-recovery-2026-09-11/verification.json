@@ -1,0 +1,2379 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c"
+    },
+    {
+      "path": "internal/bootstrap/export.go",
+      "sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "internal/bootstrap/export_cleanup_test.go",
+      "sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "internal/bootstrap/export_identity_other.go",
+      "sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "internal/bootstrap/export_identity_posix.go",
+      "sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "internal/bootstrap/export_identity_windows.go",
+      "sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "internal/bootstrap/export_journal.go",
+      "sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "internal/bootstrap/export_recovery.go",
+      "sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "internal/bootstrap/export_recovery_lock.go",
+      "sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "internal/bootstrap/export_recovery_test.go",
+      "sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "internal/bootstrap/export_stage.go",
+      "sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "internal/bootstrap/export_test.go",
+      "sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "internal/cli/app/file_manifest.go",
+      "sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "internal/cli/app/file_policy.go",
+      "sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "internal/cli/app/file_policy_runtime_posix_test.go",
+      "sha256": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2"
+    },
+    {
+      "path": "pkg/productpaths/policy/access.go",
+      "sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    }
+  ],
+  "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+  "verified_at": "2026-09-11T23:57:53.938145+00:00",
+  "source_binding": "Each command selects Go 1.26.6 and GOWORK=off. Every command retains its exact dirty source snapshot. Final baseline and path checks precede only a separately tested POSIX policy case and a documentation paragraph split. Final ago, prose, and Linux compilation bind all 16 committed files.",
+  "qualification": "Local baseline-stage recovery only. All twelve mapped CSP5 subcases remain unverified. No PR or merge credit.",
+  "checks": {
+    "baseline-stage-recovery-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/bootstrap",
+        "-run",
+        "^(TestBaselineExportRecoversAfterProcessInterruption|TestBaselineRecoveryPreservesUnrecordedStage)$"
+      ],
+      "started_at": "2026-09-11T23:25:52.609712+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "internal/bootstrap/export_test.go": "ffcd3bc4042db74961eb4e1a86f482b30858436bed13eb743e8e0ea8da47b100"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T23:26:50.623133+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 4,
+        "pass": 2
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "fail": 4,
+          "pass": 2
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "result": "fail"
+        }
+      ]
+    },
+    "baseline-stage-recovery-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/bootstrap",
+        "-run",
+        "^(TestBaselineExportRecoversAfterProcessInterruption|TestBaselineRecoveryPreservesUnrecordedStage)$"
+      ],
+      "started_at": "2026-09-11T23:32:23.262451+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "internal/bootstrap/export.go": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e",
+        "internal/bootstrap/export_recovery.go": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248",
+        "internal/bootstrap/export_recovery_lock.go": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "ffcd3bc4042db74961eb4e1a86f482b30858436bed13eb743e8e0ea8da47b100",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:33:23.308618+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 6
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 6
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "result": "pass"
+        }
+      ]
+    },
+    "baseline-stage-recovery-contracts": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-json",
+        "./internal/bootstrap",
+        "-run",
+        "^(TestBaseline.*|TestConcurrentBaseline.*)$"
+      ],
+      "started_at": "2026-09-11T23:36:58.390886+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "internal/bootstrap/export.go": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e",
+        "internal/bootstrap/export_recovery.go": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248",
+        "internal/bootstrap/export_recovery_lock.go": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e",
+        "internal/bootstrap/export_recovery_test.go": "b2e9b50252ac21278f979c09b032e97207352c767a44f9a077ac1fd3cc2516e5",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:38:49.896937+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 45
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 45
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "result": "pass"
+        }
+      ]
+    },
+    "baseline-lock-replacement-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/bootstrap",
+        "-run",
+        "^TestBaselineRecoveryPreservesStagesAfterLockReplacement$"
+      ],
+      "started_at": "2026-09-11T23:38:42.553668+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "internal/bootstrap/export.go": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e",
+        "internal/bootstrap/export_recovery.go": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248",
+        "internal/bootstrap/export_recovery_lock.go": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-11T23:38:55.379403+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "result": "fail"
+        }
+      ]
+    },
+    "baseline-stage-recovery-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T23:39:07.418595+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "internal/bootstrap/export.go": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e",
+        "internal/bootstrap/export_recovery.go": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248",
+        "internal/bootstrap/export_recovery_lock.go": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:39:09.191275+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "baseline-lock-replacement-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/bootstrap",
+        "-run",
+        "^TestBaselineRecoveryPreservesStagesAfterLockReplacement$"
+      ],
+      "started_at": "2026-09-11T23:39:58.177151+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "internal/bootstrap/export.go": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:40:11.582719+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "result": "pass"
+        }
+      ]
+    },
+    "baseline-recovery-final-contracts": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-json",
+        "./internal/bootstrap",
+        "-run",
+        "^(TestBaseline.*|TestConcurrentBaseline.*)$"
+      ],
+      "started_at": "2026-09-11T23:45:16.313459+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:47:08.561577+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 46
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 46
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "result": "pass"
+        }
+      ]
+    },
+    "baseline-recovery-final-paths": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/cli/app",
+        "./pkg/productpaths/...",
+        "-run",
+        "^(TestFileManifestCoversColdStartupAndPublication|TestConfigPathsCommandIsPassiveAndReportsOrigins|TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures|TestFileRole.*|TestAccess.*|TestConfiguration.*)$"
+      ],
+      "started_at": "2026-09-11T23:45:16.317669+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:45:46.297510+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 30
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/pkg/productpaths/policy": {
+          "pass": 7
+        },
+        "github.com/agentstation/starmap/pkg/productpaths": {
+          "pass": 7
+        },
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 16
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/productpaths",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "pass"
+        }
+      ]
+    },
+    "baseline-recovery-final-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T23:45:16.326289+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:45:18.494988+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "baseline-recovery-writing": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T23:45:16.334253+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-11T23:46:06.251317+00:00",
+      "status": "failed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "baseline-recovery-windows-build": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-baseline-recovery/native-builds/bootstrap-windows-amd64.test.exe",
+        "./internal/bootstrap"
+      ],
+      "started_at": "2026-09-11T23:45:53.934253+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:45:55.731240+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "baseline-recovery-consumers": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "bash",
+        "scripts/verify-consumer-deps.sh"
+      ],
+      "started_at": "2026-09-11T23:45:53.934306+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:46:14.394336+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "baseline-recovery-policy": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/cli/app",
+        "-run",
+        "^TestFileRolePolicyMatchesRuntimeEnforcement$"
+      ],
+      "started_at": "2026-09-11T23:48:27.185965+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "internal/cli/app/file_policy_runtime_posix_test.go": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:48:43.673814+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 7
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/cli/app": {
+          "pass": 7
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "pass"
+        }
+      ]
+    },
+    "baseline-recovery-writing-corrected": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-11T23:49:55.349337+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "internal/cli/app/file_policy_runtime_posix_test.go": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:50:45.780443+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "baseline-recovery-linux-build": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=linux",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-baseline-recovery/native-builds/bootstrap-linux-amd64.test",
+        "./internal/bootstrap"
+      ],
+      "started_at": "2026-09-11T23:49:55.356347+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "internal/cli/app/file_policy_runtime_posix_test.go": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:49:59.959126+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "baseline-recovery-complete-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-11T23:49:55.367668+00:00",
+      "base_commit": "ceef5480724ce006ef84f648c928bc663c4f2766",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c",
+        "internal/bootstrap/export.go": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781",
+        "internal/bootstrap/export_cleanup_test.go": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b",
+        "internal/bootstrap/export_identity_other.go": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9",
+        "internal/bootstrap/export_identity_posix.go": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251",
+        "internal/bootstrap/export_identity_windows.go": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a",
+        "internal/bootstrap/export_journal.go": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b",
+        "internal/bootstrap/export_recovery.go": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5",
+        "internal/bootstrap/export_recovery_lock.go": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920",
+        "internal/bootstrap/export_recovery_test.go": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3",
+        "internal/bootstrap/export_stage.go": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1",
+        "internal/bootstrap/export_test.go": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242",
+        "internal/cli/app/file_manifest.go": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823",
+        "internal/cli/app/file_policy.go": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb",
+        "internal/cli/app/file_policy_runtime_posix_test.go": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2",
+        "pkg/productpaths/policy/access.go": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-11T23:49:57.930427+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    }
+  },
+  "limits": [
+    "Real child-process interruption, filesystem locks, journals, native identities, publication, and recovery exercise the baseline owner contract. No published baseline is collected.",
+    "The original crash-recovery regression and lock-replacement regression fail before their respective fixes. The original prose check fails and the corrected check passes 1541 files with zero diagnostics.",
+    "Final local race checks pass 46 baseline events, 30 path and policy events, and 7 later policy events. These runs overlap and do not count as 83 distinct cases.",
+    "Windows AMD64 and Linux AMD64 compilation pass. Compilation does not qualify native runtime, ACL, crash durability, or power-loss behavior.",
+    "Recovery scans at most 4096 combined baseline and metadata entries. Its 64 MiB snapshot budget does not bound repeated validation reads or restrict valid catalog size. Changed, unrecognized, and oversized stages remain preserved.",
+    "The read-only, pinned, store-only, server-embed, remote-subscriber, and server-storage consumer checks pass. Reported closures are 37/37, 38/38, 255/260, 238/240, and 349/350 respectively where a numeric guard applies.",
+    "Recovery for other staging roles, generation retention, acquisition-history compaction, full repository checks, mapped task checks, review, native CI, and merge remain required."
+  ],
+  "artifacts": [
+    {
+      "path": "baseline-stage-recovery-red/changes.patch.gz",
+      "sha256": "435a5789ad34b1741f1137fd55d84bf2f2f1fd11636afb12e5ab672247741dda",
+      "decoded_sha256": "b0acb4ef72e50c08a5656d6d3ea134269176f6f1646439391979c51e430da8de"
+    },
+    {
+      "path": "baseline-stage-recovery-red/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "9f3da325dfae3e40d8ace7a905ca13ef7025d8a319d745980cee0a00052a3e8c",
+      "decoded_sha256": "ffcd3bc4042db74961eb4e1a86f482b30858436bed13eb743e8e0ea8da47b100"
+    },
+    {
+      "path": "baseline-stage-recovery-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-stage-recovery-red/stdout.log.gz",
+      "sha256": "4864a6d2b6e6d131a3bcec42a7cde83858717f2c1e5ba727493e482358fd90a0",
+      "decoded_sha256": "9937d8c9adebb576536565122a778088619df32b94ff7558948d90c4686da830"
+    },
+    {
+      "path": "baseline-stage-recovery-red/verification.json.gz",
+      "sha256": "fecd41bc957cf876947a09a17ec3c3b19ff10ba2b3e811253929e272466718a5",
+      "decoded_sha256": "197c5226cacbc72f8f526e4c84c11a94e9cff38f1ea7a7bd17a52496976474b3"
+    },
+    {
+      "path": "baseline-stage-recovery-green/changes.patch.gz",
+      "sha256": "6d515d9d4957c02b1077cad79fbed5e9a780fbf13c7e8c332683167dffaf9b09",
+      "decoded_sha256": "262aadba388a56b0f26cce5e02a6929fadd1e773dc140f456d2f52fe69d4d155"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export.go.gz",
+      "sha256": "2f542661356f0ba102d4e424e762d33be0e8742893bb26839098fb70de6c58a0",
+      "decoded_sha256": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "22cf11df2ed2ea32d3f5f3a81b2109b3a1b852ab65c19da629b82ba91f4606ab",
+      "decoded_sha256": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "b1dc5a060787805a8482b552d71a359ae436ddfed97484c789d1e00d0d3faeee",
+      "decoded_sha256": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "34394877f9777e8d6b93bb4752a04227f62ccb3966d190208a681f0d3c2013f6",
+      "decoded_sha256": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "9f3da325dfae3e40d8ace7a905ca13ef7025d8a319d745980cee0a00052a3e8c",
+      "decoded_sha256": "ffcd3bc4042db74961eb4e1a86f482b30858436bed13eb743e8e0ea8da47b100"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-stage-recovery-green/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-stage-recovery-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-stage-recovery-green/stdout.log.gz",
+      "sha256": "3128bd290907bf262779ea499943da46cfa7fc7985be026c314133fa67ed0e9b",
+      "decoded_sha256": "a16f6feb33c5c583e4bdb6ad54044f405b9353ed41cac56c5a9c9fa0a9a6b4ef"
+    },
+    {
+      "path": "baseline-stage-recovery-green/verification.json.gz",
+      "sha256": "05df858282733139f4e52938f395e5587ba3a140df221c73bad42f858635108c",
+      "decoded_sha256": "93b9b219b078af3fb7e4b41fee690db6460d486d9d6bb25687d5467289b96663"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/changes.patch.gz",
+      "sha256": "7381dbbf99d235d39565225058b144c1907ea28597e7d62b926afe4923d29890",
+      "decoded_sha256": "6290799a5b6a6c479ce8839f3617e5e74ee92f7284dd9efddc2777c396ac2154"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export.go.gz",
+      "sha256": "2f542661356f0ba102d4e424e762d33be0e8742893bb26839098fb70de6c58a0",
+      "decoded_sha256": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "22cf11df2ed2ea32d3f5f3a81b2109b3a1b852ab65c19da629b82ba91f4606ab",
+      "decoded_sha256": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "b1dc5a060787805a8482b552d71a359ae436ddfed97484c789d1e00d0d3faeee",
+      "decoded_sha256": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "34394877f9777e8d6b93bb4752a04227f62ccb3966d190208a681f0d3c2013f6",
+      "decoded_sha256": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "82eb75967606ebc4b1fccd78bc42b4299c4602671d909c9da6d0cfc08b3d94bb",
+      "decoded_sha256": "b2e9b50252ac21278f979c09b032e97207352c767a44f9a077ac1fd3cc2516e5"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/stdout.log.gz",
+      "sha256": "5f5517ffd2f7ad38231c263477b45e0daaf575082a611f0ff66294dad1043c52",
+      "decoded_sha256": "f201586d87550d2b9c6db95b6a0d249e4439f0dc19f141e1dca042b4ca596cb3"
+    },
+    {
+      "path": "baseline-stage-recovery-contracts/verification.json.gz",
+      "sha256": "cea0de658e2cfa00523bb8e91a205f23f55996ef2c34cf4cfa02d3392caf4312",
+      "decoded_sha256": "3f555cf390e0baa447367a49321df9a15540f5b67379827e644e32cb5c9c8c94"
+    },
+    {
+      "path": "baseline-lock-replacement-red/changes.patch.gz",
+      "sha256": "7381dbbf99d235d39565225058b144c1907ea28597e7d62b926afe4923d29890",
+      "decoded_sha256": "6290799a5b6a6c479ce8839f3617e5e74ee92f7284dd9efddc2777c396ac2154"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export.go.gz",
+      "sha256": "2f542661356f0ba102d4e424e762d33be0e8742893bb26839098fb70de6c58a0",
+      "decoded_sha256": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "22cf11df2ed2ea32d3f5f3a81b2109b3a1b852ab65c19da629b82ba91f4606ab",
+      "decoded_sha256": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "b1dc5a060787805a8482b552d71a359ae436ddfed97484c789d1e00d0d3faeee",
+      "decoded_sha256": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "34394877f9777e8d6b93bb4752a04227f62ccb3966d190208a681f0d3c2013f6",
+      "decoded_sha256": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-lock-replacement-red/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-lock-replacement-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-lock-replacement-red/stdout.log.gz",
+      "sha256": "1914cd348196f27521b45f460f6f037c0f5706406d5c41c33f36ddcc776cc43b",
+      "decoded_sha256": "7415335c0e7cedcf34055689010ea2a65f662039f75b8a68350e68061f2c5523"
+    },
+    {
+      "path": "baseline-lock-replacement-red/verification.json.gz",
+      "sha256": "4916923a8db96510ff00db77c01c075d7b53e3a20328f9fbbe1f3333ba064ce7",
+      "decoded_sha256": "bcaa848c6c379a71dcdc8ceaa07cca2dbfd40f6c970a075dcfbd65cd4bb27b2f"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/changes.patch.gz",
+      "sha256": "7381dbbf99d235d39565225058b144c1907ea28597e7d62b926afe4923d29890",
+      "decoded_sha256": "6290799a5b6a6c479ce8839f3617e5e74ee92f7284dd9efddc2777c396ac2154"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export.go.gz",
+      "sha256": "2f542661356f0ba102d4e424e762d33be0e8742893bb26839098fb70de6c58a0",
+      "decoded_sha256": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "22cf11df2ed2ea32d3f5f3a81b2109b3a1b852ab65c19da629b82ba91f4606ab",
+      "decoded_sha256": "037e282e51b9f7188a8ff0a5e71f0a445545e4beaa39527c17677bce5fe8199e"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "b1dc5a060787805a8482b552d71a359ae436ddfed97484c789d1e00d0d3faeee",
+      "decoded_sha256": "d1e48f922f124093e26e68010d68d8fe7c21bc6f595bd503bfc1e160df948248"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "34394877f9777e8d6b93bb4752a04227f62ccb3966d190208a681f0d3c2013f6",
+      "decoded_sha256": "5a7bcea4b99c35dbf263645879997bd9966cf2c2f607ace72a150a88cc0b920e"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "baseline-stage-recovery-ago/verification.json.gz",
+      "sha256": "abefc88c29816fe2096df2b23f64e507be0b26dd0a80d2ffb032f88650235341",
+      "decoded_sha256": "b1476e4c4e9adce4d69aecd9de1324ef01c14386527ef4b0d657757a46bc6755"
+    },
+    {
+      "path": "baseline-lock-replacement-green/changes.patch.gz",
+      "sha256": "7381dbbf99d235d39565225058b144c1907ea28597e7d62b926afe4923d29890",
+      "decoded_sha256": "6290799a5b6a6c479ce8839f3617e5e74ee92f7284dd9efddc2777c396ac2154"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export.go.gz",
+      "sha256": "2f542661356f0ba102d4e424e762d33be0e8742893bb26839098fb70de6c58a0",
+      "decoded_sha256": "563db25fc2391a1e2628a0199b2aa682d21c5aa7f817dda412158b4e3c7cc2db"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-lock-replacement-green/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-lock-replacement-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-lock-replacement-green/stdout.log.gz",
+      "sha256": "0b0c1e3d763c8cf1b285a87d0c323e60cab885c1a6eeecaed2cf67277337a305",
+      "decoded_sha256": "bd8fce4e02c787ce9f2ac98e041a1b0f08905b9f4c798b9ced695e58390aee54"
+    },
+    {
+      "path": "baseline-lock-replacement-green/verification.json.gz",
+      "sha256": "288eeb74f19e4ef9019c57b2e7192218f7b95d3f11ad582cb38f5c188ff51317",
+      "decoded_sha256": "bbcc0f30de02a13a135bf77d806aeb49dea045933d72bffc1460b3638d53e4e2"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/changes.patch.gz",
+      "sha256": "6943bf8b106925b53ea0e022751be43f876d86dc6759eeb93d4fb408c5293d60",
+      "decoded_sha256": "b71e02ab4ba1a8888e2eff33578d08a80943e0ad535d0dcde7f81c7bc595e20e"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "0f882a11501ccb559bc384f74f36a4e6a2f1cc58ae2f1c5976afde83a9e4b3c9",
+      "decoded_sha256": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/stdout.log.gz",
+      "sha256": "d97d5023f641a6b86cefd42a5ab3413c6f144818a867f6317a23f68d67444293",
+      "decoded_sha256": "b3ddf3d20b5047e9c00bdf9f1f5079a25989e8a208fc50dc1798df0c2c3b3a3e"
+    },
+    {
+      "path": "baseline-recovery-final-contracts/verification.json.gz",
+      "sha256": "a22b427dcf5d34524df91941f0e0776d93452b58c1086c629e4bd8989587f5dc",
+      "decoded_sha256": "5d2a7f794122d41450a1a82a980fa9a22359d59d9f91089297a0c2e61ebee906"
+    },
+    {
+      "path": "baseline-recovery-final-paths/changes.patch.gz",
+      "sha256": "6943bf8b106925b53ea0e022751be43f876d86dc6759eeb93d4fb408c5293d60",
+      "decoded_sha256": "b71e02ab4ba1a8888e2eff33578d08a80943e0ad535d0dcde7f81c7bc595e20e"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "0f882a11501ccb559bc384f74f36a4e6a2f1cc58ae2f1c5976afde83a9e4b3c9",
+      "decoded_sha256": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-final-paths/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-final-paths/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-final-paths/stdout.log.gz",
+      "sha256": "9cf529fc828b0504e8cf407ae096d6e99b7d0f8d671c76090bfa036b2802a1a6",
+      "decoded_sha256": "15dfa6162a8da639cc9bc380059a5405d48fe2ca701217b63149229872a34fc4"
+    },
+    {
+      "path": "baseline-recovery-final-paths/verification.json.gz",
+      "sha256": "9d71b8c31344d31e78127d9e1cbba3e8f44bc06592451dccabe27619391358db",
+      "decoded_sha256": "68e82f43831852eb3e51a383a00cf5ff48d9c37e1a1dc8d47ffff0f539696d1c"
+    },
+    {
+      "path": "baseline-recovery-final-ago/changes.patch.gz",
+      "sha256": "6943bf8b106925b53ea0e022751be43f876d86dc6759eeb93d4fb408c5293d60",
+      "decoded_sha256": "b71e02ab4ba1a8888e2eff33578d08a80943e0ad535d0dcde7f81c7bc595e20e"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "0f882a11501ccb559bc384f74f36a4e6a2f1cc58ae2f1c5976afde83a9e4b3c9",
+      "decoded_sha256": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-final-ago/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-final-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-final-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "baseline-recovery-final-ago/verification.json.gz",
+      "sha256": "91d131b1c932ece3a0afaf3810c03e9cbeb89b0d0fd740a3fd8a5f47356b8ec6",
+      "decoded_sha256": "253d0212ab11a7be8e19beb214626d00a8fd1475055bec0e32bb8f6c4dc381dd"
+    },
+    {
+      "path": "baseline-recovery-writing/changes.patch.gz",
+      "sha256": "6943bf8b106925b53ea0e022751be43f876d86dc6759eeb93d4fb408c5293d60",
+      "decoded_sha256": "b71e02ab4ba1a8888e2eff33578d08a80943e0ad535d0dcde7f81c7bc595e20e"
+    },
+    {
+      "path": "baseline-recovery-writing/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "0f882a11501ccb559bc384f74f36a4e6a2f1cc58ae2f1c5976afde83a9e4b3c9",
+      "decoded_sha256": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-writing/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-writing/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-writing/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "baseline-recovery-writing/stdout.log.gz",
+      "sha256": "41da5cfeea7025c9ae4cd08e48423b667ffb0cedb65b4ba4d87404568223baec",
+      "decoded_sha256": "5122c3cd61a3b211341b5f32729929069c96ee89f03df0b5ed72c1ec65534cca"
+    },
+    {
+      "path": "baseline-recovery-writing/verification.json.gz",
+      "sha256": "ca7c1bd77fd8dac462a27ce078b43190722bd3c2abfe1b8becce9a86b05fd2f1",
+      "decoded_sha256": "7c7cd081210218c6bcff8cc56fa7a172a6d33d7cb93c6826f7ff5aeaec42d59b"
+    },
+    {
+      "path": "baseline-recovery-windows-build/changes.patch.gz",
+      "sha256": "6943bf8b106925b53ea0e022751be43f876d86dc6759eeb93d4fb408c5293d60",
+      "decoded_sha256": "b71e02ab4ba1a8888e2eff33578d08a80943e0ad535d0dcde7f81c7bc595e20e"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "0f882a11501ccb559bc384f74f36a4e6a2f1cc58ae2f1c5976afde83a9e4b3c9",
+      "decoded_sha256": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-windows-build/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-windows-build/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-windows-build/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-windows-build/verification.json.gz",
+      "sha256": "c2ddeb5edd1b26d275a16cbc695286bb82dc21909928b8b3b528c44f1ef8dd9c",
+      "decoded_sha256": "3b97b78a6fedc929d19209ee25d62b9cb476b56546419281deb98913d400aa6c"
+    },
+    {
+      "path": "baseline-recovery-consumers/changes.patch.gz",
+      "sha256": "6943bf8b106925b53ea0e022751be43f876d86dc6759eeb93d4fb408c5293d60",
+      "decoded_sha256": "b71e02ab4ba1a8888e2eff33578d08a80943e0ad535d0dcde7f81c7bc595e20e"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "0f882a11501ccb559bc384f74f36a4e6a2f1cc58ae2f1c5976afde83a9e4b3c9",
+      "decoded_sha256": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-consumers/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-consumers/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-consumers/stdout.log.gz",
+      "sha256": "017f35d3fc1eb8257db0592147e37caa6aae491a462b21993473a7edfbe5ad4d",
+      "decoded_sha256": "8350bb49705c8574e58444dd59c4a45d1080ee61fc55753576e205f4647f5624"
+    },
+    {
+      "path": "baseline-recovery-consumers/verification.json.gz",
+      "sha256": "0b1d74c978f3d6f78db7b2c9b47a7ad013505fb74ef1136c3d87514f97c99e7e",
+      "decoded_sha256": "542f8cd0de0b121487acf94c4fb7df0816a0120561990964123f4934d94249dc"
+    },
+    {
+      "path": "baseline-recovery-policy/changes.patch.gz",
+      "sha256": "2aae0c8c613760aecc52acdb7686219fa5dc53245235a3b3c21ca2e22ef177ea",
+      "decoded_sha256": "33aa9981f848b8eb9df47f65127dce5774fa44c46a75db12732a743fe445b6c1"
+    },
+    {
+      "path": "baseline-recovery-policy/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "0f882a11501ccb559bc384f74f36a4e6a2f1cc58ae2f1c5976afde83a9e4b3c9",
+      "decoded_sha256": "ccde6b78631e1ce67cddea77e67bac294d5265cc8dd45334e933549e61c9cf46"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-policy/source/internal/cli/app/file_policy_runtime_posix_test.go.gz",
+      "sha256": "b148eeb95b182cdfb31af2fc4171ba3e676762aeb8e0553d8427a8cb48a5cb41",
+      "decoded_sha256": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2"
+    },
+    {
+      "path": "baseline-recovery-policy/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-policy/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-policy/stdout.log.gz",
+      "sha256": "bd4a67a1ad060d684aa1c1d5fd0a5477465796cd77a520d87f7486567f4d0c60",
+      "decoded_sha256": "b94807abe9afadba31e9f4a7754ab9cba12f9514a16aeb2306bf0d5e26ae1811"
+    },
+    {
+      "path": "baseline-recovery-policy/verification.json.gz",
+      "sha256": "8b429ac0279886f511d5adcfe8241ff74b669f7c67c153e9833e947d85fafa90",
+      "decoded_sha256": "e8f1e09f28666662e10ecce41f813ac35e1c91e86553b7ac1b51e2fc5f70c0df"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/changes.patch.gz",
+      "sha256": "6e94558aab2ef12e2fc8d54afc8de85f034cd00c967949e74df937782e5ea52b",
+      "decoded_sha256": "fea29396e45f3da9e4c1ca8f570d3e9adef8ab28262cb52ea9458cd2a57b5304"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "bea5efcc98ddf57ea47c79b9c2085dd5ab2d1637da8895165f0e439943dd7152",
+      "decoded_sha256": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/internal/cli/app/file_policy_runtime_posix_test.go.gz",
+      "sha256": "b148eeb95b182cdfb31af2fc4171ba3e676762aeb8e0553d8427a8cb48a5cb41",
+      "decoded_sha256": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/stdout.log.gz",
+      "sha256": "09906eb58f92b9732d1797ff79e7b96842dd9e5502b6d8e1e115658d3b99f0dd",
+      "decoded_sha256": "2e1f33b616267cc8793f6ee05470309a80ffe787d81757c6f5bc205cffec0a77"
+    },
+    {
+      "path": "baseline-recovery-writing-corrected/verification.json.gz",
+      "sha256": "49d08bc07162a888ec98ad2a8454f7428950bff9a790cae3683f664d0d8a1657",
+      "decoded_sha256": "1d4ebf84c6dc27d95efea8ac5a44a88424a1b6dccbace573886e9f34d3997ecc"
+    },
+    {
+      "path": "baseline-recovery-linux-build/changes.patch.gz",
+      "sha256": "6e94558aab2ef12e2fc8d54afc8de85f034cd00c967949e74df937782e5ea52b",
+      "decoded_sha256": "fea29396e45f3da9e4c1ca8f570d3e9adef8ab28262cb52ea9458cd2a57b5304"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "bea5efcc98ddf57ea47c79b9c2085dd5ab2d1637da8895165f0e439943dd7152",
+      "decoded_sha256": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/internal/cli/app/file_policy_runtime_posix_test.go.gz",
+      "sha256": "b148eeb95b182cdfb31af2fc4171ba3e676762aeb8e0553d8427a8cb48a5cb41",
+      "decoded_sha256": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2"
+    },
+    {
+      "path": "baseline-recovery-linux-build/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-linux-build/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-linux-build/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-linux-build/verification.json.gz",
+      "sha256": "ccf86aab6791c916a0817360b12f7207caf557a20c085a6e4d32710fb68cb42b",
+      "decoded_sha256": "2d752802165a28d424eef9e1be96cfc931120d0a5404a822805d314c32e2a6b1"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/changes.patch.gz",
+      "sha256": "6e94558aab2ef12e2fc8d54afc8de85f034cd00c967949e74df937782e5ea52b",
+      "decoded_sha256": "fea29396e45f3da9e4c1ca8f570d3e9adef8ab28262cb52ea9458cd2a57b5304"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "bea5efcc98ddf57ea47c79b9c2085dd5ab2d1637da8895165f0e439943dd7152",
+      "decoded_sha256": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/internal/cli/app/file_policy_runtime_posix_test.go.gz",
+      "sha256": "b148eeb95b182cdfb31af2fc4171ba3e676762aeb8e0553d8427a8cb48a5cb41",
+      "decoded_sha256": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "baseline-recovery-complete-ago/verification.json.gz",
+      "sha256": "4712e1017e6b5aa7e6ab53349947faeec2e37abbbfc2af93b31f912b8dcd54fc",
+      "decoded_sha256": "4e37696543e0717662037c464c0e6424734b8429181cb5bf781efccb696169b8"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "bea5efcc98ddf57ea47c79b9c2085dd5ab2d1637da8895165f0e439943dd7152",
+      "decoded_sha256": "b161dc8287baa69f20884ea69b411c8ffc86775b4cbf4c2f3921d2b8f2ea2f8c"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export.go.gz",
+      "sha256": "ff49d78b70a506e5355c9f3db2cc77eb2029f94722be1cb266c9dd8d6139a4ff",
+      "decoded_sha256": "9b6a49327096507bec0163f7ca578f1f246230c0520ed0756a3d477843b5e781"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_cleanup_test.go.gz",
+      "sha256": "2b25641bec1a0bd95169202cbc8ff236efa4b86ed149f9582da41af2c672dff6",
+      "decoded_sha256": "8be17b1190c0ae111332fcdb8c6927e247ae486a66f117cda75a533e58ad4a5b"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_identity_other.go.gz",
+      "sha256": "0d4b02a89ec9bd8b1d3aa5358e7947cdbae45ef25763ef095b3de9cc218e5f89",
+      "decoded_sha256": "0839db6bf44d07d56755ad0c1d76afd3db4ae01ba069bbd35dae08bd18d6eaf9"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_identity_posix.go.gz",
+      "sha256": "b6f06f28df7ee007b8ad99daef528aca82fd8c277b22f4a6f1b8efce472a096f",
+      "decoded_sha256": "0a338262079c8a82968931a38a534048d2caed669ef2747ce79061edd9f82251"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_identity_windows.go.gz",
+      "sha256": "762acf83bba7b5e9d9a8e9bfd0b04aad1a1ce4096524ad3823756e7df9ebbd37",
+      "decoded_sha256": "4102f00e4658dec939d785137c0a381b597598510da37acd2ae0d41e27ffc86a"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "29b956c7933414bd0499b0be1d210f0f1f4a1f46cb4e25ef1c102b79928a6af3",
+      "decoded_sha256": "c5af607d2629955ef8ee6e15566850cededa269c86c5370c2dc5e1d18db7dc2b"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_recovery.go.gz",
+      "sha256": "41900924d005379a982f494e7177baa62e2da5c016b4501b76477fdf0769e362",
+      "decoded_sha256": "9c637702fd47b00a4c3627642eec3d1f1c64850ae9f0a103c957bdb20e0d83b5"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_recovery_lock.go.gz",
+      "sha256": "f80d8ad3cd55357a1d43af67fc7411846f260ae490e8edec09558df8fd467e71",
+      "decoded_sha256": "4bfe7f2da54f87f9af2503a52126533a64c711dfa8ac78af70c482d94bfed920"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_recovery_test.go.gz",
+      "sha256": "1b012c761b2a73b4d5f2ae3ba8c0f21e723fdca65b5f35eddc82fad2e81600ee",
+      "decoded_sha256": "2830b429076e08433f3762763961078f5f60635d9e5cb2fea9d76c63ad487da3"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_stage.go.gz",
+      "sha256": "ae4c53aa1517c8b9b397f07301ad390b62597e3529e70d7c62005da5e8f7d012",
+      "decoded_sha256": "aa271eeb9038a8a6951e3d7d85a4a9386eb2c14e05e2d38af0560750eb9b34a1"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_test.go.gz",
+      "sha256": "ed9d2bb7d794027fb898dab98c56c9a1d259f32429446f4d6de0ba5902832c40",
+      "decoded_sha256": "c1601f272ef74fdc815fe54d4b35e3f3da9c4c6856f81dfcafd599d9972ea242"
+    },
+    {
+      "path": "committed-source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "c94625b8c60e2415cd7827a9463fd46f7b1825447290e3296bf609193fd59e71",
+      "decoded_sha256": "9cc18155d90b401c36ac57d75ee26e39514e6a98e80186c32ea4bcb7e88af823"
+    },
+    {
+      "path": "committed-source/internal/cli/app/file_policy.go.gz",
+      "sha256": "d6e7887a70c7f19a913c515cfb87dce5e17218035f20d6928d5265abf2f12022",
+      "decoded_sha256": "9401acda02a8e3924167e00c226c123309d00be215893c76c9513b67f2740fcb"
+    },
+    {
+      "path": "committed-source/internal/cli/app/file_policy_runtime_posix_test.go.gz",
+      "sha256": "b148eeb95b182cdfb31af2fc4171ba3e676762aeb8e0553d8427a8cb48a5cb41",
+      "decoded_sha256": "03aa46c9f1113c50c225ed207e91e8d25a9457d90e4eecaccab7cef3de989eb2"
+    },
+    {
+      "path": "committed-source/pkg/productpaths/policy/access.go.gz",
+      "sha256": "234cead0798a0ed3e3a10cc39fefeabed09d7fc92ae48032e7712edda1166450",
+      "decoded_sha256": "6fc6fdeb624f5f6f7fae85733929db05b2b2e632c7130a76a85562acb1e35f05"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "2a1b08757a6c21e0db21f0a91199a21d491a49605282926f9a30a6da99f4c88a",
+      "decoded_sha256": "30f935928ef633f94d803e4a591cf8f99bd81aa3a001d897a5f742b1feff6473"
+    },
+    {
+      "path": "canonical-writing-failed.log.gz",
+      "sha256": "22f91f3b8de22db10af8f8f2de3e63bca10f62783f8321564f8afc7e52c40941",
+      "decoded_sha256": "46da3e63a37d838d4bfd94bd4ea55058d328479168ef76e5d8e63c9e4b879ee5"
+    },
+    {
+      "path": "canonical-writing-failed-source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "03ecc092e8cec602a16660af77bf511318de47b7c908aba16370b28765621fa8",
+      "decoded_sha256": "213e1d936751c82cd5845251932a14005883c5fc98c9db6be1fffd8453648aac"
+    },
+    {
+      "path": "canonical-writing-failed-source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "f26a4f6f96feb2d21ce6c4caea2efeac26acac3f126d88cecd39ff9efba0d4e2",
+      "decoded_sha256": "5d0c72d213b35c4bf37517d17201920407f75c4202b8ed7ee9f186aead5fb78a"
+    },
+    {
+      "path": "canonical-writing-failed-source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "3514188b95f06eb09a89ad247102384e26656053c2617f4cd9b98f0e9092267b",
+      "decoded_sha256": "0ffad510da47cb43a7c2a2202a9955486f7c510532c6d8f96bd30779591c4ea8"
+    },
+    {
+      "path": "canonical-writing-corrected.log.gz",
+      "sha256": "d7073cf025c89d8fbd959c91bce42fa0b5882a6cd428c9308e517b6ccd491dc1",
+      "decoded_sha256": "9a4c164283f0dcc91876a7904d878d3beb45f31800211a97cf76042a6d616446"
+    }
+  ],
+  "canonical_writing_failed": {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 2,
+    "files": 1364,
+    "diagnostics": 7,
+    "reason": "Four paragraph-length errors and three nominalization errors. Exact failed sources and output are retained."
+  },
+  "canonical_writing": {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 0,
+    "files": 1364,
+    "diagnostics": 0,
+    "correction": "Split four paragraphs and used direct verbs for three actions. No product source changed."
+  }
+}

@@ -332,6 +332,7 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Starmap configuration | `<config>/config.yaml` | Explicit setup or operator input. Preserve settings and secret access. |
 | Starport configuration | `<config>/config.env` | Persistent setup and local edits. Shared mode retains bootstrap values only as authority. |
 | Application baseline | `<data>/catalog/baseline/<generation-id-hash>/{manifest.json,catalog.json}` | Persistent startup creates an inspectable export. Preserve identity, or reproduce from the exact installed binary. |
+| Baseline recovery | `<data>/catalog/baseline/.starmap-baseline/{.owner.lock,<operation-id>.json}` | Owner-only writer lock and versioned recovery records. Keep the lock for the directory lifetime. Remove only verified operation records after recovery. Preserve unknown or changed entries. |
 | Human catalog workspace | `<data>/catalog/workspace/` | Optional explicit authoring. Preserve operator content. |
 | Workspace preparation | `<workspace-parent>/.<workspace-name>.preparing-<id>/` | Private enclosure for rendering and access restoration. Descendants retain workspace policies. Preserve interrupted preparation until ownership checks permit cleanup. |
 | Workspace replacement journal | `<workspace-parent>/.<workspace-name>.starmap-replacement.json` | Windows replacement intent. Preserve with its candidate and backup until verified recovery completes. |
@@ -662,7 +663,7 @@ Cleanup repeats these checks and removes only unchanged files created by that ex
 
 An added entry, changed file, or replaced directory causes a typed conflict. Cleanup preserves the original operation error as well.
 After successful publication, cleanup must ignore the former staging name, even if another process reuses it.
-Staging directories from earlier processes remain untouched because the current operation cannot prove their ownership.
+Stages without verified persistent ownership remain untouched. Section 9.1 defines the baseline recovery journal and its limits.
 These checks do not provide an atomic multi-file transaction against arbitrary external editors.
 
 CSP5 owns abandoned-stage recovery and collection under its existing staged-write step.
@@ -2578,6 +2579,24 @@ New authority or scope metadata requires an explicit schema contract. Older
 consumers must reject unsupported mandatory authority semantics rather than
 silently ignoring them. Release tests must include overlapping binary versions
 and incompatible artifact schemas.
+
+#### Interrupted baseline export
+
+Local commit `55c8bc19` adds recovery before baseline reuse or publication.
+The [baseline recovery proof](../../plans/proof/starport-production-catalog/csp5/baseline-recovery-2026-09-11/verification.json) records its process-interruption tests and qualification limits.
+The private `.starmap-baseline` directory retains one writer lock and a journal for each unfinished operation.
+Journals bind that lock, native stage and file identities, metadata, and content digests.
+
+Recovery holds the writer lock while it verifies and removes unchanged owned stages.
+A durable cleanup phase permits restart after partial file removal. An already published baseline retains its files.
+A replaced lock, unknown journal, changed entry, or unrecorded stage remains preserved.
+`ExportResult.Recovery` reports recovered operations and preserved relative paths. File inspection declares the metadata owner-only.
+
+The scan permits 4,096 combined baseline and metadata entries. An oversized scan stops before stage deletion.
+A 64 MiB snapshot budget limits declared file content per pass. Repeated stability checks can reread those bytes.
+
+This budget does not restrict valid catalog size. Oversized stages remain preserved.
+Published generation retention and recovery for other staging roles remain separate CSP5 work.
 
 #### Optional YAML workspace replacement
 

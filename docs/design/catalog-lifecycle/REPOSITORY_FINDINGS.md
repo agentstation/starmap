@@ -2442,3 +2442,20 @@ The ago and prose checks pass. The engineering path table now includes the pin r
 
 Both regression runs record optional workspace repair timeouts after durable catalog activation. This correction does not qualify workspace projection.
 Baseline export still lacks persistent staging ownership. Recovery, retention, compaction, full verification, and merge remain CSP5 work.
+
+## Baseline stage recovery: 2026-09-11
+
+Starmap `55c8bc19` adds persistent ownership records for unfinished baseline exports.
+The [recovery proof](../../plans/proof/starport-production-catalog/csp5/baseline-recovery-2026-09-11/verification.json) preserves the original process-interruption and replaced-lock failures.
+Both corrected regressions pass. Journals bind private writer locks, native identities, metadata, and exact file digests.
+
+Recovery preserves active writers, changed or unknown content, and every published baseline.
+The scan permits 4,096 combined directory entries and 64 MiB of declared snapshot content per pass.
+Repeated verification can reread bytes. Unrecognized records and oversized stages remain preserved.
+The file inventory declares the private metadata directory and retained writer lock.
+
+Final checks pass 46 baseline, 30 path, and 7 later policy race events without failures or skips.
+These checks overlap. Consumer dependency, ago, and corrected prose checks pass.
+Linux AMD64 and Windows AMD64 cross-compilation pass. Native runtime and power-loss behavior remain unqualified for this change.
+
+Other staging roles, published generation retention, history compaction, full task checks, review, native CI, and merge remain CSP5 work.

@@ -8,6 +8,8 @@ Checkpoint `52c84e28` corrects source-close timeout ownership. Checkpoint `b3cf9
 
 Checkpoint `32951a7b` adds configured pins and consistent unpin startup. Checkpoint `39922ecf` adds durable pin acceptance and origin rollback issuance.
 Checkpoint `de8b5abe` adds explicit durability outcomes and pending-pin confirmation.
+
+Commit `ceef5480` corrects the retained record inventory. Commit `55c8bc19` adds baseline stage recovery.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -216,13 +218,39 @@ Both regression runs record optional YAML workspace repair timeouts after durabl
 The inventory correction does not change or qualify workspace projection. Full CSP5 verification remains required.
 Baseline export still has process-local cleanup only. Recovery must verify persistent ownership before it removes stages from exited writers.
 
+## Baseline stage recovery
+
+The [recovery proof](csp5/baseline-recovery-2026-09-11/verification.json) binds commit `55c8bc19` to sixteen command records and their source snapshots.
+The original process-interruption regression fails before journal recovery. A second regression fails when recovery deletes a stage after an actor replaces the retained writer lock.
+Both corrected regressions pass.
+
+Baseline export now retains `.starmap-baseline/.owner.lock` and private versioned operation journals beside its published generations.
+Each journal binds the lock identity, stage identity, expected file identities, metadata, and content digests.
+One writer lock excludes active exporters during recovery. Recovery preserves the stage if another actor replaces the lock.
+
+Recovery resumes a verified partial cleanup after process interruption. It never deletes a published baseline.
+Unknown journals, changed entries, unrecorded stages, and oversized content remain in place and appear in `ExportResult.Recovery.PreservedPaths`.
+The scan limit is 4,096 combined baseline and metadata entries. The content limit is 64 MiB of declared snapshot bytes per pass.
+
+Repeated stability checks can reread content. The snapshot limit does not impose a catalog size limit or a strict physical I/O budget.
+
+Final local race checks pass 46 baseline events, 30 path events, and 7 later policy events without failures or skips.
+These runs overlap and do not establish 83 distinct cases. Consumer dependency checks and the ago check pass.
+The corrected prose check passes 1,541 files with no diagnostics. The original paragraph-length failure remains in the proof.
+
+Linux AMD64 and Windows AMD64 compilation pass. Native runtime, ACL, filesystem durability, and power-loss qualification remain separate.
+
+The baseline and path checks precede one separately tested POSIX policy case and a documentation paragraph split.
+Final ago, prose, and Linux compilation checks cover all sixteen committed files. All recorded checks are terminal.
+Other staging roles, published generation retention, history compaction, and full CSP5 qualification remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Implement bounded owned-stage recovery and generation retention under the task contract.
+Complete recovery for other staged records and generation retention under the task contract.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
