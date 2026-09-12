@@ -358,12 +358,13 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Starmap administration identities | `<state>/admin/identities.json` | Standalone server initialization and recovery. Starport retains its token and identity repositories. |
 | Local administration operations | `<state>/admin/{audit/events.ndjson,operations/<operation-id-hash>.json}` | Standalone Starmap and local Starport config operations. Shared Starport config uses transactional SQL audit and receipts. |
 | Migration journal | `<state>/migrations/<operation-id-hash>/{manifest.json,journal.ndjson}` | Preserve intent, old and new paths, checksums, and completion state until recovery closes the operation. |
+| Migration initialization | `<migration-journal>/stage-initialization.json` | Owner-only record, limited to 16 KiB. Bind the manifest, parent, writer lock, and `.migration-build-<id>` stage. Resume only matching ownership. Preserve conflicts. |
 | Runtime migration stage | `<target-parent>/.migration-<manifest-sha256>/` | Keep a private copy beside its final target for verification and later publication. |
 | Pending migration marker | `<stage-or-target>/.migration-pending.json` | Bind the directory to its immutable manifest. Keep the marker through rename and refuse startup until activation. |
 | Runtime migration receipt | `<target-runtime>/.migration-receipt.json` | Bind a published target to the immutable migration manifest. Retain it through later catalog refreshes. |
 | Runtime completion record | `<target-runtime>/.migration-completed.json` | Bind completed selection to the migration manifest after the final journal event. Retain it while legacy-root acknowledgement is required. |
 | Runtime retirement record | `<source-runtime>/.migration-retired.json` | Refuse startup from a migrated source. Keep older binaries stopped because they do not honor this record. |
-| Partial migration copies | `<migration-stage>/.migration-work/<target-path-sha256>.partial` | Resume only operation-owned scratch files. Preserve conflicting published files and unknown entries. |
+| Partial migration copies | `<migration-stage>/.migration-work/<target-path-sha256>.partial` and sibling `.partial.json` | The immutable ownership record is limited to 16 KiB. Verify native identities, mode, and exact source-prefix bytes before removal. Preserve unrecorded or conflicting files. |
 | Optional managed trust | `<config>/trust/<name>.pem` | Explicit operator import. Existing external trust paths remain operator-owned. Compiled trust remains in the binary. |
 | Optional file logs | `<state>/logs/<product>.log` | Created only when file logging is selected without a leaf override. Rotation and retention follow the declared recipe. |
 | Usage export | Explicit file or HTTP destination | No default file. External collector durability is a separate contract. |
@@ -649,6 +650,26 @@ A staged runtime must not start before publication. Its pending marker must caus
 Copying files must not alter the configured roots or expose an incomplete final target.
 Retries must verify existing staged files against the immutable inventory before they reuse those files.
 Only operation-owned partial copies may restart. Conflicting complete files and unknown entries require explicit recovery.
+
+Local commit `9e875a35` adds persistent ownership for initialization and partial copies.
+The [migration recovery proof](../../plans/proof/starport-production-catalog/csp5/migration-recovery-2026-09-12/verification.json) records process exits, writer conflicts, changed content, replaced identities, and scan limits.
+Initialization resumes its recorded stage. It never recursively removes a staging name, including a reused name after publication.
+The record binds the manifest digest, parent, journal lock, and native stage identity.
+
+A failed directory reopen returns its filesystem error. Deferred cleanup retains the original handle and preserves a moved stage.
+
+Each mutable partial copy has an immutable ownership record.
+That record binds the source entry, stage, work directory, lock, file identity, and mode.
+Recovery requires partial bytes to remain an exact prefix of the checked source file.
+It can resume after file removal while the ownership record remains. Unknown records and conflicting files remain preserved.
+
+Source inventory permits 40,000 entries, including metadata and empty directories. The existing file limit remains 10,000.
+The stage entry limit derives from its allowed manifest layout. Both scans read at most 128 entries per batch.
+Aggregate path names cannot exceed 4 MiB.
+
+Initialization permits two metadata files and an empty work directory. Its bounded read refuses a fourth entry before it writes missing files.
+Unrecorded stages and interrupted atomic owner-record scratch remain preserved for explicit recovery.
+Native identity changes after a storage move or restore require explicit recovery. Cross-compilation does not qualify native runtime or physical power-loss behavior.
 
 Publication validates retained catalog layers before it renames the stage without replacement.
 

@@ -1,0 +1,3103 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "source_commit": "9e875a351f1937626ee0220b979d48b05b6a137c",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "51c6f5908a9a8d8fc21dee58a30a0b50033d45e12d362b9808b89abfbba80b36"
+    },
+    {
+      "path": "internal/bootstrap/export_journal.go",
+      "sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "internal/cli/app/file_manifest.go",
+      "sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "internal/filepublish/identity_other.go",
+      "sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "internal/filepublish/identity_posix.go",
+      "sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "internal/filepublish/identity_windows.go",
+      "sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "runtime/migration_copy.go",
+      "sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "runtime/migration_initialization.go",
+      "sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "runtime/migration_partial.go",
+      "sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "runtime/migration_scan.go",
+      "sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "runtime/migration_source.go",
+      "sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "runtime/migration_stage.go",
+      "sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "runtime/migration_stage_test.go",
+      "sha256": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+    },
+    {
+      "path": "runtime/migration_verify.go",
+      "sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    }
+  ],
+  "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+  "verified_at": "2026-09-12T00:41:00.489342+00:00",
+  "source_binding": "Each command selects Go 1.26.6 and GOWORK=off. Every command retains its exact dirty source snapshot and patch. Final migration and ago checks bind the final Go source. The final prose and platform compilation checks precede only a test assertion correction. Their production Go source is unchanged. Baseline and consumer checks precede the migration-directory flush and reopen correction, which do not change those dependency contracts.",
+  "qualification": "Local migration initialization, partial ownership, and scan bounds. All twelve mapped CSP5 subcases remain unverified. No PR or merge credit.",
+  "checks": {
+    "migration-partial-ownership-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^TestMigrationRecoveryPreservesChangedPartial$"
+      ],
+      "started_at": "2026-09-12T00:07:27.178988+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "runtime/migration_stage_test.go": "f32d661fdd1d5adef8eaba01da07eb7a97762a0c5de7032886936b734876b3ed"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T00:07:33.094770+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 4
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 4
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "migration-partial-ownership-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^TestMigrationRecoveryPreservesChangedPartial$"
+      ],
+      "started_at": "2026-09-12T00:09:58.817858+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "b5b9234444f3572fa5ba9f00a872d3ddeb76a43383c49dee055a7cb0798a14c2",
+        "runtime/migration_partial.go": "f95f2ad9e77f28848fb999d004819df5330bb331a4a5ea685994465deac01075",
+        "runtime/migration_stage.go": "c0f35bacd2152df266e2b64fbf6ac565f61e77b800e70207d8665ce71ca13615",
+        "runtime/migration_stage_test.go": "f32d661fdd1d5adef8eaba01da07eb7a97762a0c5de7032886936b734876b3ed",
+        "runtime/migration_verify.go": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:10:05.342413+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 4
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 4
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-partial-contracts": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^(TestStageDirectoryMigration.*|TestMigrationRecoveryPreservesChangedPartial|TestMigrationDirectoryPublicationNeverReplaces|TestPendingMigrationRefusesBeforeRuntimeInitialization)$"
+      ],
+      "started_at": "2026-09-12T00:11:21.227096+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_partial.go": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966",
+        "runtime/migration_stage.go": "c0f35bacd2152df266e2b64fbf6ac565f61e77b800e70207d8665ce71ca13615",
+        "runtime/migration_stage_test.go": "a7baaf2b8428b5bb1095a8116bae8011a6f57acd55a63c2ba11c4d474bd79c96",
+        "runtime/migration_verify.go": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:11:28.368274+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 27
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 27
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-initialization-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^(TestMigrationInitializationPreservesUnknownFiles|TestStageDirectoryMigrationRecoversProcessExit/initialization.*)$"
+      ],
+      "started_at": "2026-09-12T00:13:27.968370+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_partial.go": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966",
+        "runtime/migration_stage.go": "8e2b5806c77cbdca9c5b17c9f0a859cd897444418d1215f36236f38bb6bbf16d",
+        "runtime/migration_stage_test.go": "c8af8df156f74aec156829f85f36cbf3c5fa535c2dd9bee864a4516801853540",
+        "runtime/migration_verify.go": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T00:13:32.524633+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "migration-initialization-process-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^TestStageDirectoryMigrationRecoversProcessExit$/^initialization-"
+      ],
+      "started_at": "2026-09-12T00:13:59.604057+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_partial.go": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966",
+        "runtime/migration_stage.go": "8e2b5806c77cbdca9c5b17c9f0a859cd897444418d1215f36236f38bb6bbf16d",
+        "runtime/migration_stage_test.go": "c8af8df156f74aec156829f85f36cbf3c5fa535c2dd9bee864a4516801853540",
+        "runtime/migration_verify.go": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T00:14:01.591770+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 5
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 5
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "migration-initialization-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^(TestMigrationInitializationPreservesUnknownFiles|TestStageDirectoryMigrationRecoversProcessExit)$"
+      ],
+      "started_at": "2026-09-12T00:16:34.211994+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "6cdee2ea7487308fb437ac5e84802fcd84d429e2fcf9bd3fb0bb12529fae3b6a",
+        "runtime/migration_partial.go": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "c8af8df156f74aec156829f85f36cbf3c5fa535c2dd9bee864a4516801853540",
+        "runtime/migration_verify.go": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:16:41.666447+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 12
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 12
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-source-scan-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^TestMigrationSourceScanBoundsEmptyDirectories$"
+      ],
+      "started_at": "2026-09-12T00:18:20.867727+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "6cdee2ea7487308fb437ac5e84802fcd84d429e2fcf9bd3fb0bb12529fae3b6a",
+        "runtime/migration_partial.go": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "3f62827dab9d8f7ccea378c11f7e3f3124f0dfa52ebb06d30c788df9ae452d60",
+        "runtime/migration_verify.go": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T00:18:32.745008+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "migration-recovery-contracts": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^(TestStageDirectoryMigration.*|TestMigrationRecoveryPreservesChangedPartial|TestMigrationInitializationPreservesUnknownFiles|TestMigrationSourceScanBoundsEmptyDirectories|TestMigrationDirectoryPublicationNeverReplaces|TestPendingMigrationRefusesBeforeRuntimeInitialization)$"
+      ],
+      "started_at": "2026-09-12T00:20:04.572260+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "8c1d64070ef3f5dd3152178736418b200fcca3c285f243190b43c06e09e33a8e",
+        "runtime/migration_partial.go": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "7b686197baa62c14b000aaf149738bc1960b7fc0ec30c002465ef5a591c458f7",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:20:18.395848+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 34
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 34
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-recovery-final": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "15m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^Test.*Migration.*$"
+      ],
+      "started_at": "2026-09-12T00:22:16.592613+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:23:18.736211+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 148
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 148
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-baseline-identity": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-json",
+        "./internal/bootstrap",
+        "./internal/filepublish",
+        "-run",
+        "^(TestBaselineRecoveryPreservesStagesAfterLockReplacement|TestBaselineExportRecoversAfterProcessInterruption|TestDirectory.*|Test.*Publish.*)$"
+      ],
+      "started_at": "2026-09-12T00:22:52.895243+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:24:12.117086+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 32
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/internal/filepublish": {
+          "pass": 23
+        },
+        "github.com/agentstation/starmap/internal/bootstrap": {
+          "pass": 9
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/filepublish",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/bootstrap",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-recovery-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T00:22:52.902361+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:22:59.954619+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-recovery-writing": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T00:22:52.895316+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T00:23:48.983497+00:00",
+      "status": "failed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-recovery-consumers": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "bash",
+        "scripts/verify-consumer-deps.sh"
+      ],
+      "started_at": "2026-09-12T00:22:52.896105+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:23:20.329503+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-recovery-windows-build": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-migration-recovery/native-builds/runtime-windows-amd64.test.exe",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T00:22:52.895275+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:23:03.950834+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-recovery-linux-build": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=linux",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-migration-recovery/native-builds/runtime-linux-amd64.test",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T00:22:52.895366+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:23:07.791561+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-recovery-durable-final": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "15m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^Test.*Migration.*$"
+      ],
+      "started_at": "2026-09-12T00:24:18.897005+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:25:06.527020+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 148
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 148
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-recovery-durable-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T00:24:20.032154+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:24:21.743653+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-recovery-writing-corrected": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T00:25:28.501340+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "9ff163eba5fe4a1b4f3aedbe62a4e7c7feaf7f1fa95ac37fc75967c9986ad1dd",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T00:26:16.404711+00:00",
+      "status": "failed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-recovery-writing-final": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T00:27:03.795556+00:00",
+      "base_commit": "55c8bc19ae60a3927f9dedde7ca1e258c2abd7e0",
+      "source_files": {
+        "docs/CATALOG_STORE_CONTRACT.md": "51c6f5908a9a8d8fc21dee58a30a0b50033d45e12d362b9808b89abfbba80b36",
+        "internal/bootstrap/export_journal.go": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426",
+        "internal/cli/app/file_manifest.go": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037",
+        "internal/filepublish/identity_other.go": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a",
+        "internal/filepublish/identity_posix.go": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2",
+        "internal/filepublish/identity_windows.go": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3",
+        "runtime/migration_copy.go": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f",
+        "runtime/migration_initialization.go": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1",
+        "runtime/migration_partial.go": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f",
+        "runtime/migration_scan.go": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd",
+        "runtime/migration_source.go": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c",
+        "runtime/migration_stage.go": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c",
+        "runtime/migration_stage_test.go": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16",
+        "runtime/migration_verify.go": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:27:50.372230+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-reopen-red": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^TestMigrationInitializationPreservesMovedStage$"
+      ],
+      "started_at": "2026-09-12T00:34:42.820521+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "01452b837188273544f070a187b34f71d45d821ccedee44e6e5bedc254fe41b8",
+        "runtime/migration_stage_test.go": "3c68e61254cfa05a0f95d41b994b1ab799bb730fde65dc7bf5107843cb0300a8"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T00:34:47.943998+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "migration-reopen-final": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "15m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^Test.*Migration.*$"
+      ],
+      "started_at": "2026-09-12T00:35:51.120472+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T00:36:30.056321+00:00",
+      "status": "failed",
+      "test_events": {
+        "pass": 149,
+        "fail": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 149,
+          "fail": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "fail"
+        }
+      ]
+    },
+    "migration-reopen-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T00:35:52.261076+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:35:54.820110+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-reopen-writing": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T00:35:52.266161+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:36:42.423344+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-reopen-windows-build": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=windows",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-migration-recovery/native-builds/runtime-windows-amd64.test.exe",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T00:35:52.276621+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:35:56.410665+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-reopen-linux-build": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOOS=linux",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "go",
+        "test",
+        "-c",
+        "-o",
+        ".tmp/csp5-migration-recovery/native-builds/runtime-linux-amd64.test",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T00:35:52.271773+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:35:56.526066+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    },
+    "migration-reopen-green": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^TestMigrationInitializationPreservesMovedStage$"
+      ],
+      "started_at": "2026-09-12T00:37:44.552065+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:37:50.783593+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 1
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 1
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-complete-final": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "15m",
+        "-json",
+        "./runtime",
+        "-run",
+        "^Test.*Migration.*$"
+      ],
+      "started_at": "2026-09-12T00:38:09.975286+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:38:44.370008+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 150
+      },
+      "package_test_events": {
+        "github.com/agentstation/starmap/runtime": {
+          "pass": 150
+        }
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "result": "pass"
+        }
+      ]
+    },
+    "migration-complete-ago": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T00:38:11.134850+00:00",
+      "base_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+      "source_files": {
+        "runtime/migration_initialization.go": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27",
+        "runtime/migration_stage_test.go": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T00:38:12.681533+00:00",
+      "status": "passed",
+      "test_events": {},
+      "package_test_events": {},
+      "package_results": []
+    }
+  },
+  "limits": [
+    "The previous goal turn made progress through source commit 55c8bc19 and plan commit 96449c8a. This change continues CSP5 without changing its acceptance criteria.",
+    "The original partial-copy regression deletes changed bytes, replacement files, and unrecorded files. Corrected recovery requires an immutable ownership record and validates the mutable bytes as an exact source prefix.",
+    "The original initializer removes unknown operator content on error and leaves stages after four tested process exits. Recorded initialization now resumes the original stage without recursive deletion.",
+    "The original source scan accepts 40001 empty directories. Source inventory now permits 40000 total entries and 4 MiB of path names. Stage scans derive their entry limit from the allowed manifest layout. Reads use at most 128 entries per batch.",
+    "Final migration checks pass 150 race events without failures or skips. Baseline and publication checks pass 32 race events. The command records retain exact names and overlapping earlier runs.",
+    "Consumer checks pass with unchanged guards: read-only 37/37, pinned 38/38, server-embed 255/260, remote 238/240, and server-storage 349/350. Store-only behavior and forbidden-family checks also pass.",
+    "The native identity implementation moves from baseline export into internal/filepublish. Its identity encoding stays unchanged. Workspace journal identity encodings remain separate.",
+    "Stages before a durable ownership record and unrecognized atomic owner-record scratch remain preserved for explicit recovery. A native identity mismatch after a storage move or restore requires explicit recovery.",
+    "Final Windows AMD64 and Linux AMD64 compilation includes the directory flush and reopen fix. Only a test assertion correction follows. Native ACL, platform crash, filesystem durability, and physical power-loss qualification remain open for this change.",
+    "The source prose check first reports two paragraph errors and then one. The final correction must pass 1544 files with zero diagnostics.",
+    "Workspace preparation and exchange cleanup, retained-evidence and discovery staging, published generation retention, history compaction, full CSP5 checks, review, native CI, and merge remain required."
+  ],
+  "reopen_correction": "The moved-stage regression first panics in deferred nil-handle cleanup. The corrected initializer keeps its original handle separate from the reopened handle. The first broad rerun then exposes an assertion that uses os.IsNotExist on a joined error. The test now uses errors.Is and verifies preserved stage content and an absent target.",
+  "artifacts": [
+    {
+      "path": "migration-partial-ownership-red/changes.patch.gz",
+      "sha256": "5033b09371073f4b4bddbf83e819c76eeb28f880f337ccb43a398aac417bc45e",
+      "decoded_sha256": "a229adbca3a1054337cbb7ccf64c271e1c99d0fe8c8709b112bed7cdacff8788"
+    },
+    {
+      "path": "migration-partial-ownership-red/source/runtime/migration_stage_test.go.gz",
+      "sha256": "f76028ed831b03010e06adc0afca8ecd01762b00a9d470bacc8c410fdb85a62b",
+      "decoded_sha256": "f32d661fdd1d5adef8eaba01da07eb7a97762a0c5de7032886936b734876b3ed"
+    },
+    {
+      "path": "migration-partial-ownership-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-partial-ownership-red/stdout.log.gz",
+      "sha256": "7db74751d75a9bab653fe7b33fcbb7e9c644f47acec0a109c23734680584fa16",
+      "decoded_sha256": "52b971555b638f5a5d47af5e2064c4f1bf4c1bc2f22c6fb1b4ccdf6a7a3dda33"
+    },
+    {
+      "path": "migration-partial-ownership-red/verification.json.gz",
+      "sha256": "2b47f769a20ca8707f5af21610cd9cae664f895fb2038d977d62b0ebf93ffc25",
+      "decoded_sha256": "432fd9e37f72530738c395466a0f198ffd620def57c2bd0e2058f23a0ccecbe5"
+    },
+    {
+      "path": "migration-partial-ownership-green/changes.patch.gz",
+      "sha256": "2b8e48822087a40dd8c590bad3ca5095e283889a362cdd5a0da3db12678c81b5",
+      "decoded_sha256": "2dbb6441ec79d769fc39386440a1a33fc906ae41069334c37cb989a751968e71"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/runtime/migration_copy.go.gz",
+      "sha256": "108ebd9efd622212af80e46dec335504f4924d72f08eb52f6ac2913a779082db",
+      "decoded_sha256": "b5b9234444f3572fa5ba9f00a872d3ddeb76a43383c49dee055a7cb0798a14c2"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/runtime/migration_partial.go.gz",
+      "sha256": "02b66a93fdc1a83e8e5d023ea89001ff3e5dccf033b41b9c4942def0a67b2855",
+      "decoded_sha256": "f95f2ad9e77f28848fb999d004819df5330bb331a4a5ea685994465deac01075"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/runtime/migration_stage.go.gz",
+      "sha256": "be74715fb490086e10d176915ba447f6e40855ccfdb80eccddc8af67eb8222b7",
+      "decoded_sha256": "c0f35bacd2152df266e2b64fbf6ac565f61e77b800e70207d8665ce71ca13615"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/runtime/migration_stage_test.go.gz",
+      "sha256": "f76028ed831b03010e06adc0afca8ecd01762b00a9d470bacc8c410fdb85a62b",
+      "decoded_sha256": "f32d661fdd1d5adef8eaba01da07eb7a97762a0c5de7032886936b734876b3ed"
+    },
+    {
+      "path": "migration-partial-ownership-green/source/runtime/migration_verify.go.gz",
+      "sha256": "07d5d3ef5027d0066e4739cf7ca791df5f783fcb8d9cff0298d14e58d032bfb7",
+      "decoded_sha256": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+    },
+    {
+      "path": "migration-partial-ownership-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-partial-ownership-green/stdout.log.gz",
+      "sha256": "d38076c3b11233217f4e5147c470a93ffa8aa85522112bee817811932c5b14a6",
+      "decoded_sha256": "916c46220848e0d1eb67e10f5e52cf6e1ab1613d68b0e031d5fd4e5dabb85510"
+    },
+    {
+      "path": "migration-partial-ownership-green/verification.json.gz",
+      "sha256": "abdb4cc8533d637892db239b1f4fc388dd994124aa1ad3d46a3fd28c80117632",
+      "decoded_sha256": "b0498383849a82f3153cf2fc622b722b0791317cbe3e0b050309085eb01846ed"
+    },
+    {
+      "path": "migration-partial-contracts/changes.patch.gz",
+      "sha256": "a13f01195547e946849904ff5152354bc8f8f9df85958fcfa5f79f73be721c11",
+      "decoded_sha256": "9fc6c2a71b26194e163e396d32520f70bced0d9ef73fe57b7686de1aa451cfd4"
+    },
+    {
+      "path": "migration-partial-contracts/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-partial-contracts/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-partial-contracts/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-partial-contracts/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-partial-contracts/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-partial-contracts/source/runtime/migration_partial.go.gz",
+      "sha256": "e2d41cc0c7668d65ff544563d17dc76d42ac5fa52abd5ed9ff64c70253a5002f",
+      "decoded_sha256": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966"
+    },
+    {
+      "path": "migration-partial-contracts/source/runtime/migration_stage.go.gz",
+      "sha256": "be74715fb490086e10d176915ba447f6e40855ccfdb80eccddc8af67eb8222b7",
+      "decoded_sha256": "c0f35bacd2152df266e2b64fbf6ac565f61e77b800e70207d8665ce71ca13615"
+    },
+    {
+      "path": "migration-partial-contracts/source/runtime/migration_stage_test.go.gz",
+      "sha256": "30929faba39a8aae09eabe550d65f5321e86e46c31c23b000462abcb8768abad",
+      "decoded_sha256": "a7baaf2b8428b5bb1095a8116bae8011a6f57acd55a63c2ba11c4d474bd79c96"
+    },
+    {
+      "path": "migration-partial-contracts/source/runtime/migration_verify.go.gz",
+      "sha256": "07d5d3ef5027d0066e4739cf7ca791df5f783fcb8d9cff0298d14e58d032bfb7",
+      "decoded_sha256": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+    },
+    {
+      "path": "migration-partial-contracts/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-partial-contracts/stdout.log.gz",
+      "sha256": "a047d354c84c51bfb82560f78d92cb4d143baf4f208f335d952ef1ebede1c53e",
+      "decoded_sha256": "8225d282185fdcf3c0e2802bf9f1804d1f49fe7a2720db494101b86f4c63972b"
+    },
+    {
+      "path": "migration-partial-contracts/verification.json.gz",
+      "sha256": "429f49b0d5c1dee95a1b86871db485e7d13c3f6a6a76fc2d4e58911a8f84f7fb",
+      "decoded_sha256": "cf8a03cc2508d63e27953592a9d580f948c0da55806a9fbe5bcfd44685d78fab"
+    },
+    {
+      "path": "migration-initialization-red/changes.patch.gz",
+      "sha256": "063e7a4e363377cea499d4542354697e027d75ef1daa35857783fd4262ca05c6",
+      "decoded_sha256": "621da46fc8e4ca7ea3fbd7d2858981e4a1ad8135c0f0dce1568c7d2f591c0f6b"
+    },
+    {
+      "path": "migration-initialization-red/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-initialization-red/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-initialization-red/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-initialization-red/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-initialization-red/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-initialization-red/source/runtime/migration_partial.go.gz",
+      "sha256": "e2d41cc0c7668d65ff544563d17dc76d42ac5fa52abd5ed9ff64c70253a5002f",
+      "decoded_sha256": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966"
+    },
+    {
+      "path": "migration-initialization-red/source/runtime/migration_stage.go.gz",
+      "sha256": "9ce8d3d3dada2d7df27f592eb6c1d4c1563663d2544efbf2f5742635c9e6b291",
+      "decoded_sha256": "8e2b5806c77cbdca9c5b17c9f0a859cd897444418d1215f36236f38bb6bbf16d"
+    },
+    {
+      "path": "migration-initialization-red/source/runtime/migration_stage_test.go.gz",
+      "sha256": "5d764b99c3efef3d53e49a459ec41e53a0de005b16b1434361d1ae3dc0e1d56b",
+      "decoded_sha256": "c8af8df156f74aec156829f85f36cbf3c5fa535c2dd9bee864a4516801853540"
+    },
+    {
+      "path": "migration-initialization-red/source/runtime/migration_verify.go.gz",
+      "sha256": "07d5d3ef5027d0066e4739cf7ca791df5f783fcb8d9cff0298d14e58d032bfb7",
+      "decoded_sha256": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+    },
+    {
+      "path": "migration-initialization-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-initialization-red/stdout.log.gz",
+      "sha256": "18590bacda2644eb6a07253db00c7c9b517abfcb2da7c0e35d7c0e38263689fb",
+      "decoded_sha256": "f4f5479f0d1c5cffe47ee9c95ea7ad9aaa21e7675ff70b391807223be2a94dff"
+    },
+    {
+      "path": "migration-initialization-red/verification.json.gz",
+      "sha256": "f2ad929d09d77d4d3f4688171cf3dff6a7693b534ef679700bef6c7d3915da95",
+      "decoded_sha256": "ff7918168c9761036cf9b04bb7d533e7394dadb36a34f4f9d116627a0a22308b"
+    },
+    {
+      "path": "migration-initialization-process-red/changes.patch.gz",
+      "sha256": "063e7a4e363377cea499d4542354697e027d75ef1daa35857783fd4262ca05c6",
+      "decoded_sha256": "621da46fc8e4ca7ea3fbd7d2858981e4a1ad8135c0f0dce1568c7d2f591c0f6b"
+    },
+    {
+      "path": "migration-initialization-process-red/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-initialization-process-red/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-initialization-process-red/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-initialization-process-red/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-initialization-process-red/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-initialization-process-red/source/runtime/migration_partial.go.gz",
+      "sha256": "e2d41cc0c7668d65ff544563d17dc76d42ac5fa52abd5ed9ff64c70253a5002f",
+      "decoded_sha256": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966"
+    },
+    {
+      "path": "migration-initialization-process-red/source/runtime/migration_stage.go.gz",
+      "sha256": "9ce8d3d3dada2d7df27f592eb6c1d4c1563663d2544efbf2f5742635c9e6b291",
+      "decoded_sha256": "8e2b5806c77cbdca9c5b17c9f0a859cd897444418d1215f36236f38bb6bbf16d"
+    },
+    {
+      "path": "migration-initialization-process-red/source/runtime/migration_stage_test.go.gz",
+      "sha256": "5d764b99c3efef3d53e49a459ec41e53a0de005b16b1434361d1ae3dc0e1d56b",
+      "decoded_sha256": "c8af8df156f74aec156829f85f36cbf3c5fa535c2dd9bee864a4516801853540"
+    },
+    {
+      "path": "migration-initialization-process-red/source/runtime/migration_verify.go.gz",
+      "sha256": "07d5d3ef5027d0066e4739cf7ca791df5f783fcb8d9cff0298d14e58d032bfb7",
+      "decoded_sha256": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+    },
+    {
+      "path": "migration-initialization-process-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-initialization-process-red/stdout.log.gz",
+      "sha256": "9a084350a4c8dddc756d2211ee13fcf4e4bcf28e141d6a7a8ccd59491832ee3f",
+      "decoded_sha256": "e3cf344dd08f525a3c50b2df52b6f772427c639a8e4425e157d6f625084a5884"
+    },
+    {
+      "path": "migration-initialization-process-red/verification.json.gz",
+      "sha256": "8ea8f88e4b5a03e47f0aa608ad88d9d04f430640320fdea0d9ac4a7584fd3d78",
+      "decoded_sha256": "816915ec19d520a10e827b62f4f30e8a194c60b5bcc8f48d8575a5c6847b55bb"
+    },
+    {
+      "path": "migration-initialization-green/changes.patch.gz",
+      "sha256": "4e927cc72e2d8ffb23785058cc1a2fd0fd7f12bd8111244ba2b728da7796d909",
+      "decoded_sha256": "bac9c59662e755a6627cec18412983345370adcf5b98a02074d8bd65d0cb84fd"
+    },
+    {
+      "path": "migration-initialization-green/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-initialization-green/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-initialization-green/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-initialization-green/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-initialization-green/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-initialization-green/source/runtime/migration_initialization.go.gz",
+      "sha256": "6fed3021163d8c0b6cf14d22611447e03954f90362d4a7946d69e634b604d278",
+      "decoded_sha256": "6cdee2ea7487308fb437ac5e84802fcd84d429e2fcf9bd3fb0bb12529fae3b6a"
+    },
+    {
+      "path": "migration-initialization-green/source/runtime/migration_partial.go.gz",
+      "sha256": "e2d41cc0c7668d65ff544563d17dc76d42ac5fa52abd5ed9ff64c70253a5002f",
+      "decoded_sha256": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966"
+    },
+    {
+      "path": "migration-initialization-green/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-initialization-green/source/runtime/migration_stage_test.go.gz",
+      "sha256": "5d764b99c3efef3d53e49a459ec41e53a0de005b16b1434361d1ae3dc0e1d56b",
+      "decoded_sha256": "c8af8df156f74aec156829f85f36cbf3c5fa535c2dd9bee864a4516801853540"
+    },
+    {
+      "path": "migration-initialization-green/source/runtime/migration_verify.go.gz",
+      "sha256": "07d5d3ef5027d0066e4739cf7ca791df5f783fcb8d9cff0298d14e58d032bfb7",
+      "decoded_sha256": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+    },
+    {
+      "path": "migration-initialization-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-initialization-green/stdout.log.gz",
+      "sha256": "9904325b170a624a0c7c8a860bc2f1c400bfc85d69a0ec5734ef76d1e6f773c8",
+      "decoded_sha256": "60b844f358924e4accfaf0c3c6a0c0d9dd89ba0886dac06897f666b225c949ed"
+    },
+    {
+      "path": "migration-initialization-green/verification.json.gz",
+      "sha256": "40c5de1f97575435af285e3d839eb4e135243c572a65e774425592555f5f55da",
+      "decoded_sha256": "40fe0e342b16cb6bf76dea356dd0e05d9b8a02b8b959712b4ed11898e1021ed7"
+    },
+    {
+      "path": "migration-source-scan-red/changes.patch.gz",
+      "sha256": "aea1762ade5123e93bdcaf00b86eb3fac7e2b822eb40ee710307d8b0a07b9948",
+      "decoded_sha256": "ec0c29a6733e445ce271489b4abe4702da24e02e6e5f4ba97898393dd12d1911"
+    },
+    {
+      "path": "migration-source-scan-red/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-source-scan-red/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-source-scan-red/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-source-scan-red/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-source-scan-red/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-source-scan-red/source/runtime/migration_initialization.go.gz",
+      "sha256": "6fed3021163d8c0b6cf14d22611447e03954f90362d4a7946d69e634b604d278",
+      "decoded_sha256": "6cdee2ea7487308fb437ac5e84802fcd84d429e2fcf9bd3fb0bb12529fae3b6a"
+    },
+    {
+      "path": "migration-source-scan-red/source/runtime/migration_partial.go.gz",
+      "sha256": "e2d41cc0c7668d65ff544563d17dc76d42ac5fa52abd5ed9ff64c70253a5002f",
+      "decoded_sha256": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966"
+    },
+    {
+      "path": "migration-source-scan-red/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-source-scan-red/source/runtime/migration_stage_test.go.gz",
+      "sha256": "a75f25bd31d2278ca812f819e099d06c774311dcb5dc7045de7f53f9c4ae07d7",
+      "decoded_sha256": "3f62827dab9d8f7ccea378c11f7e3f3124f0dfa52ebb06d30c788df9ae452d60"
+    },
+    {
+      "path": "migration-source-scan-red/source/runtime/migration_verify.go.gz",
+      "sha256": "07d5d3ef5027d0066e4739cf7ca791df5f783fcb8d9cff0298d14e58d032bfb7",
+      "decoded_sha256": "132e30c80e2fc8333419140b72578f55912c76fa186b368e0ab9ca4505bfdd65"
+    },
+    {
+      "path": "migration-source-scan-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-source-scan-red/stdout.log.gz",
+      "sha256": "39ef96462092b404182219cff426a59c70bb25585f77c32414b0fbe6ae49cdc6",
+      "decoded_sha256": "de5f3d056a0de332a44581a5c0b48c4f23a11f956c73dbfe463a16086d1aaeb9"
+    },
+    {
+      "path": "migration-source-scan-red/verification.json.gz",
+      "sha256": "3ff33190873ba4afd9bb907299623310599e46208d1e6e788cb1a9a6c77cc1bf",
+      "decoded_sha256": "5e583d4d977542e051caee40f4169e58b407a1aee5c2490b9389c5f90586948d"
+    },
+    {
+      "path": "migration-recovery-contracts/changes.patch.gz",
+      "sha256": "2a5c67c1bc9b86e8297d01b2c2ac7a35093eae22e75807cb152f10e6c8aca48e",
+      "decoded_sha256": "c3f30fe54f5320fcaed412ee78e292121e1013e8567cd7602f632e1737adf78b"
+    },
+    {
+      "path": "migration-recovery-contracts/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-contracts/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-contracts/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-contracts/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-contracts/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_initialization.go.gz",
+      "sha256": "ab7dbc10d77b38807152f380751d8095200bb687156ac775994488df7d59933c",
+      "decoded_sha256": "8c1d64070ef3f5dd3152178736418b200fcca3c285f243190b43c06e09e33a8e"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_partial.go.gz",
+      "sha256": "e2d41cc0c7668d65ff544563d17dc76d42ac5fa52abd5ed9ff64c70253a5002f",
+      "decoded_sha256": "adfbcaf39357799abb9f162cccfbb3a9191930e3f1dfe852984bb978b743a966"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_stage_test.go.gz",
+      "sha256": "809b51150b0e531f1143a0282aed7edabff4f37b836ed64fc3bf695675d7ec60",
+      "decoded_sha256": "7b686197baa62c14b000aaf149738bc1960b7fc0ec30c002465ef5a591c458f7"
+    },
+    {
+      "path": "migration-recovery-contracts/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-contracts/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-contracts/stdout.log.gz",
+      "sha256": "eec8062126af5a4f49e696ae4a377c187465b2bd415d3262c0c59867e69dad7d",
+      "decoded_sha256": "87a89f075a31f31c0c1df860b1074b54b95e63bf29aa8e3cd3aa3dd8545675b4"
+    },
+    {
+      "path": "migration-recovery-contracts/verification.json.gz",
+      "sha256": "6e5fa10ac7d450df129af83b4a38a142dc6f4749283d9edc01a24c1deffe8cae",
+      "decoded_sha256": "0d4696b46b265e9b81b3faaf47e9626922de20d5b57dba58b6369f4262195da7"
+    },
+    {
+      "path": "migration-recovery-final/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-final/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-final/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-final/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-final/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-final/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-final/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_initialization.go.gz",
+      "sha256": "9c202b2e12bd10aa2d5c0dd8a9bccf4dc4383233d21a18b218c8e8f2518603fc",
+      "decoded_sha256": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-final/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-final/stdout.log.gz",
+      "sha256": "8bdbdfe9820b219333ba315daa0602e46356022c1c2deac989717da0f81924da",
+      "decoded_sha256": "15ebc2312407be3a0304d0b13d7e648f937cc8aab0e9b2746a2c7189e6176e5f"
+    },
+    {
+      "path": "migration-recovery-final/verification.json.gz",
+      "sha256": "740cddbde6138c936e8edbe9b8f9f0789de0a455ea1322023c5bb2e724bd504f",
+      "decoded_sha256": "c94b214bd62d6074f1cf987be79cd90f4edd2602e6204e57b975cb107e8b477d"
+    },
+    {
+      "path": "migration-baseline-identity/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-baseline-identity/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-baseline-identity/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-baseline-identity/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-baseline-identity/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-baseline-identity/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-baseline-identity/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_initialization.go.gz",
+      "sha256": "9c202b2e12bd10aa2d5c0dd8a9bccf4dc4383233d21a18b218c8e8f2518603fc",
+      "decoded_sha256": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-baseline-identity/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-baseline-identity/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-baseline-identity/stdout.log.gz",
+      "sha256": "5a0acaf6854888b7b56caca8c63ce53eb29c6693529dc757846aab2a99182cad",
+      "decoded_sha256": "002b8513f734fb83fe8cd3cdcef100cbb37e0d568a1786cfae80175f7ca8741a"
+    },
+    {
+      "path": "migration-baseline-identity/verification.json.gz",
+      "sha256": "c86e0d5920d0dd9ef262248c5a6078046349f76e167ac09f5edc5f7b8c70daf9",
+      "decoded_sha256": "b68e0bfb88d522a965e36d17fd5e9270ecdd31ed495183dae2500e0fa662b13b"
+    },
+    {
+      "path": "migration-recovery-ago/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-ago/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-ago/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-ago/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-ago/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-ago/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-ago/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_initialization.go.gz",
+      "sha256": "9c202b2e12bd10aa2d5c0dd8a9bccf4dc4383233d21a18b218c8e8f2518603fc",
+      "decoded_sha256": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-ago/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "migration-recovery-ago/verification.json.gz",
+      "sha256": "e17b2a837bf5e693395adab3f2d3fe21a559b9b22dcebb985fc9a762a759cf3e",
+      "decoded_sha256": "6102f838af7c7d99f6e3bfa842061338a4bbee3f086d4b1575c34cb65f049df5"
+    },
+    {
+      "path": "migration-recovery-writing/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-writing/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-writing/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-writing/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-writing/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-writing/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-writing/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_initialization.go.gz",
+      "sha256": "9c202b2e12bd10aa2d5c0dd8a9bccf4dc4383233d21a18b218c8e8f2518603fc",
+      "decoded_sha256": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-writing/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-writing/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "migration-recovery-writing/stdout.log.gz",
+      "sha256": "26e155c543901180a09714feaddb7f08ff55f46f50fe728c35daaeb2338cf169",
+      "decoded_sha256": "a5c05d698436f4f934efebd4bb52f738468a4b1f674bb0549c4644a7ecd20898"
+    },
+    {
+      "path": "migration-recovery-writing/verification.json.gz",
+      "sha256": "7ee220b60f8a9f34c2ce0c97ed5d833beaee823791eb75470953036869a5ae1e",
+      "decoded_sha256": "fba58786d0f3ef6f690cb99271b003713b167ab70ba147bd91a682f836b5cc57"
+    },
+    {
+      "path": "migration-recovery-consumers/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-consumers/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-consumers/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-consumers/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-consumers/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-consumers/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-consumers/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_initialization.go.gz",
+      "sha256": "9c202b2e12bd10aa2d5c0dd8a9bccf4dc4383233d21a18b218c8e8f2518603fc",
+      "decoded_sha256": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-consumers/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-consumers/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-consumers/stdout.log.gz",
+      "sha256": "dde3275edeec05024a2f386534d338553329ade01af155cb3e11c38e0c47f873",
+      "decoded_sha256": "5983693f38cc49bcaee79f210b93132abb47010135e4f550603933d037687a8f"
+    },
+    {
+      "path": "migration-recovery-consumers/verification.json.gz",
+      "sha256": "8a58c5059c7ae3abbd219009aee5f2fbe243835822756895bbc8b573c6e6ee6a",
+      "decoded_sha256": "b94821e2d236ddec88f85ce0e49ec1d5fa081c1eeb60e1ed6b09ea80528f059a"
+    },
+    {
+      "path": "migration-recovery-windows-build/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_initialization.go.gz",
+      "sha256": "9c202b2e12bd10aa2d5c0dd8a9bccf4dc4383233d21a18b218c8e8f2518603fc",
+      "decoded_sha256": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-windows-build/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-windows-build/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-windows-build/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-windows-build/verification.json.gz",
+      "sha256": "c46211f5349c9cfd3ae88c083303347795dbc53beaf5418cf75d2a7466dc962b",
+      "decoded_sha256": "5c7a9092c8403401fbd16c3f5902d7b455f877070326ee8d058df6d73c9479ab"
+    },
+    {
+      "path": "migration-recovery-linux-build/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_initialization.go.gz",
+      "sha256": "9c202b2e12bd10aa2d5c0dd8a9bccf4dc4383233d21a18b218c8e8f2518603fc",
+      "decoded_sha256": "18724d35f328128ccbc3e17eff33327b4f45132e92740de131275a8c6fe67a68"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-linux-build/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-linux-build/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-linux-build/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-linux-build/verification.json.gz",
+      "sha256": "31121ee64ea2e2cf31afbabc1e4aa9643d2c52421a5cc353c01f450e037f7725",
+      "decoded_sha256": "6a621f4805318ca3c997b4a3f1bf6e23fb54455141db2aa1adffefebb274f82c"
+    },
+    {
+      "path": "migration-recovery-durable-final/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_initialization.go.gz",
+      "sha256": "6ffff2b8128bd6465846656830013a9a16a8310cd90087ba614a42a6a368d0e6",
+      "decoded_sha256": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-durable-final/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-durable-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-durable-final/stdout.log.gz",
+      "sha256": "f01f90c983d121cff964ce621f0545c95a2d80af3df0278058884e0a9c50fb6b",
+      "decoded_sha256": "97036100c201de87b53c85900ecdb5578a0633179b375ee7a6178104854e8cdd"
+    },
+    {
+      "path": "migration-recovery-durable-final/verification.json.gz",
+      "sha256": "f4351d5efa13319f78093dc07f71bb18d5943678e1afec550538d708e3079e95",
+      "decoded_sha256": "0c35e3560e3ecc64f243568d22ad3f54f4e62f84a1383ab2dc8f5f8ae7ba47e9"
+    },
+    {
+      "path": "migration-recovery-durable-ago/changes.patch.gz",
+      "sha256": "4577e5bbbc57607e6c985e1c99520d57194845b1f0f65e72dda86afd116a036b",
+      "decoded_sha256": "55cd34e197fb77240fc934b62efbd51e274be547d123695993715f132146ea7a"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "89c2ed277a42dd001583aea034edc46ec09d6b4689112156db438c4fe966d0a1",
+      "decoded_sha256": "0c6c2716ae038bf8e7ca2c2cb9841228f58b8ebd9a633732b3c5eb60ed59a04d"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_initialization.go.gz",
+      "sha256": "6ffff2b8128bd6465846656830013a9a16a8310cd90087ba614a42a6a368d0e6",
+      "decoded_sha256": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-durable-ago/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-durable-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-durable-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "migration-recovery-durable-ago/verification.json.gz",
+      "sha256": "637ac118fe796d78249bc945ed0da120d9b06613b1e4d8d958b3d8fe9555ed8b",
+      "decoded_sha256": "0c18338660e02f1e928c4cfeac89721689c9e6889e730fa578cbb13ea05bc374"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/changes.patch.gz",
+      "sha256": "91daad7b981153a698f1c53348ecd17cc45b7ae56caedeabf1c3bc63f27cd64c",
+      "decoded_sha256": "13a002c0095147412f0d6234da2ff88a25a2d61d4f37f91a73e10a2779a669c6"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "1a17d319f1e02b378aff487be7e5843168cfa3963062ff0433d965116d36566c",
+      "decoded_sha256": "9ff163eba5fe4a1b4f3aedbe62a4e7c7feaf7f1fa95ac37fc75967c9986ad1dd"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_initialization.go.gz",
+      "sha256": "6ffff2b8128bd6465846656830013a9a16a8310cd90087ba614a42a6a368d0e6",
+      "decoded_sha256": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/stdout.log.gz",
+      "sha256": "ca9324aead810a8fae91384d3b344bf4022deca1d5a2a955c67e851115db4733",
+      "decoded_sha256": "3cd802fd497921d9873263367de3f862180b8efeffb2f158ef289af156897f0e"
+    },
+    {
+      "path": "migration-recovery-writing-corrected/verification.json.gz",
+      "sha256": "4e638c50e9442af96eeafe8558b0e5a02aee2a2a9ab05813b5fd57dd3c804386",
+      "decoded_sha256": "21c4c16be073e767cb8ddccf600d0b42b886234a083a5522c6c44b320e8b256e"
+    },
+    {
+      "path": "migration-recovery-writing-final/changes.patch.gz",
+      "sha256": "324f10b69fce81aebcdcde53292c42b47d078695d85293c62318ec6e474e4f4f",
+      "decoded_sha256": "92b760fd180fba66fedabf530cf0305ca29e911fb04f897b65ef1c386aebb8f4"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "179999dff8079816e82d3a808ce97ab577b4ffc22dca4c343b0e6b160c0882fd",
+      "decoded_sha256": "51c6f5908a9a8d8fc21dee58a30a0b50033d45e12d362b9808b89abfbba80b36"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_initialization.go.gz",
+      "sha256": "6ffff2b8128bd6465846656830013a9a16a8310cd90087ba614a42a6a368d0e6",
+      "decoded_sha256": "3c6a5d1a20036d3977c07cf74d49667b7f6baabd84f5722fdc6cf0c8fa6738e1"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_stage_test.go.gz",
+      "sha256": "d40343443be458598ce072f0f67711dbaf4fb84ff2b415ccbcddb6960b7eac8a",
+      "decoded_sha256": "468982f43c99c7b0a75d74cb85debeaedc5fcb7a25f5987c54d7d336e803db16"
+    },
+    {
+      "path": "migration-recovery-writing-final/source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "migration-recovery-writing-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-recovery-writing-final/stdout.log.gz",
+      "sha256": "b1f35d51167d49c72bf5bc862e9abf2a00d31524e633a12552b720fbae6b4917",
+      "decoded_sha256": "cbf9fb720dcf54705522044a39095170da734e78a37d1f6980311bfca25f189b"
+    },
+    {
+      "path": "migration-recovery-writing-final/verification.json.gz",
+      "sha256": "855a16281414798095617dfeac75e101d329274a6184b0fe1c63d39a1ea09ad5",
+      "decoded_sha256": "bc614ef928deaeb092c75fb2713d3737997f7571a4f2e3046b4a5a731aa79160"
+    },
+    {
+      "path": "migration-reopen-red/changes.patch.gz",
+      "sha256": "ef574a0edd3dfdc0703d8dbec2b6b0a5117dfc252625712e7efd2472ff256dba",
+      "decoded_sha256": "1538b8d4087a23ea2e5f08bc90ab060094850301b0b8fd66f0dbc0f2b0eb6c25"
+    },
+    {
+      "path": "migration-reopen-red/source/runtime/migration_initialization.go.gz",
+      "sha256": "9fec4fc7da928aeabac894f401281359de890858c719c71304b1d8460a5c475f",
+      "decoded_sha256": "01452b837188273544f070a187b34f71d45d821ccedee44e6e5bedc254fe41b8"
+    },
+    {
+      "path": "migration-reopen-red/source/runtime/migration_stage_test.go.gz",
+      "sha256": "99b4b3f1f0f9a076c032947ef3df31053ff1e4abce912bc93108fa8b5b119fba",
+      "decoded_sha256": "3c68e61254cfa05a0f95d41b994b1ab799bb730fde65dc7bf5107843cb0300a8"
+    },
+    {
+      "path": "migration-reopen-red/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-red/stdout.log.gz",
+      "sha256": "a125baf7afea9c7568742c800c957741422b0d48b4064265cd3f7d6ed85eaa41",
+      "decoded_sha256": "6401bb6f37a83063d076ebd9b95f9a86b799e43fb15dd0e5491bf922a9a93f30"
+    },
+    {
+      "path": "migration-reopen-red/verification.json.gz",
+      "sha256": "293a2f76ae82ef6042a73ff17fcc6982c88b9363053b86a93eff882813ffef8d",
+      "decoded_sha256": "8cc2180df0529734c0d8349e30ee1ba4c4e9471f4d8c661c3b66506f39bc2884"
+    },
+    {
+      "path": "migration-reopen-final/changes.patch.gz",
+      "sha256": "408e7910a154b317ababb2ad0253ccc89aef79eac2385b537d9a202f0f734405",
+      "decoded_sha256": "2295684045548040e0c1695568e7160cc72b726ebe6142e66dac62458ce1271b"
+    },
+    {
+      "path": "migration-reopen-final/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-reopen-final/source/runtime/migration_stage_test.go.gz",
+      "sha256": "e709706d18fd4f1d59aa123c74f3b65546f4aeaece95437e524806f3037fd0c3",
+      "decoded_sha256": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+    },
+    {
+      "path": "migration-reopen-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-final/stdout.log.gz",
+      "sha256": "aece5bd7744981fa8c67ab38cc6e0f4ac16f9efc7d63194a7a150d04c56d1b70",
+      "decoded_sha256": "be09cb108ea825fbf0b2354afabc8b30904b4a0c6fd72ede848a3a1d05645aea"
+    },
+    {
+      "path": "migration-reopen-final/verification.json.gz",
+      "sha256": "d18ca1691cba6348ed9921c96c48122d4e6a0403f092c03f7d2f048df72bf868",
+      "decoded_sha256": "b6c5636ef071e106fe0af9a89e059bcb9a0bacac07f6dc5fe11bfa64a92a73f7"
+    },
+    {
+      "path": "migration-reopen-ago/changes.patch.gz",
+      "sha256": "408e7910a154b317ababb2ad0253ccc89aef79eac2385b537d9a202f0f734405",
+      "decoded_sha256": "2295684045548040e0c1695568e7160cc72b726ebe6142e66dac62458ce1271b"
+    },
+    {
+      "path": "migration-reopen-ago/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-reopen-ago/source/runtime/migration_stage_test.go.gz",
+      "sha256": "e709706d18fd4f1d59aa123c74f3b65546f4aeaece95437e524806f3037fd0c3",
+      "decoded_sha256": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+    },
+    {
+      "path": "migration-reopen-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "migration-reopen-ago/verification.json.gz",
+      "sha256": "998c8106f992474aff41653495a69baec20ad366667e89dffef6b134ced7f728",
+      "decoded_sha256": "62de59bce1ccbaff2495ee88be35df9a19d28e8b2f2e648f460714c38a96f173"
+    },
+    {
+      "path": "migration-reopen-writing/changes.patch.gz",
+      "sha256": "408e7910a154b317ababb2ad0253ccc89aef79eac2385b537d9a202f0f734405",
+      "decoded_sha256": "2295684045548040e0c1695568e7160cc72b726ebe6142e66dac62458ce1271b"
+    },
+    {
+      "path": "migration-reopen-writing/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-reopen-writing/source/runtime/migration_stage_test.go.gz",
+      "sha256": "e709706d18fd4f1d59aa123c74f3b65546f4aeaece95437e524806f3037fd0c3",
+      "decoded_sha256": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+    },
+    {
+      "path": "migration-reopen-writing/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-writing/stdout.log.gz",
+      "sha256": "b1f35d51167d49c72bf5bc862e9abf2a00d31524e633a12552b720fbae6b4917",
+      "decoded_sha256": "cbf9fb720dcf54705522044a39095170da734e78a37d1f6980311bfca25f189b"
+    },
+    {
+      "path": "migration-reopen-writing/verification.json.gz",
+      "sha256": "9be0cee2675045b151bb68c3686366c7ff93367706d897db81e6cb9ba664c59f",
+      "decoded_sha256": "af499416f9e4276586e9cb007c601b3b24d67965cf5fbd0222340be27816f333"
+    },
+    {
+      "path": "migration-reopen-windows-build/changes.patch.gz",
+      "sha256": "408e7910a154b317ababb2ad0253ccc89aef79eac2385b537d9a202f0f734405",
+      "decoded_sha256": "2295684045548040e0c1695568e7160cc72b726ebe6142e66dac62458ce1271b"
+    },
+    {
+      "path": "migration-reopen-windows-build/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-reopen-windows-build/source/runtime/migration_stage_test.go.gz",
+      "sha256": "e709706d18fd4f1d59aa123c74f3b65546f4aeaece95437e524806f3037fd0c3",
+      "decoded_sha256": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+    },
+    {
+      "path": "migration-reopen-windows-build/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-windows-build/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-windows-build/verification.json.gz",
+      "sha256": "9c310b88b332e647fd590d5359e6dac433cb320368fafe19b88863a0720bd171",
+      "decoded_sha256": "6784dd93140f8177e0297d80c79759e2dd1d5d75843a51abf04b146abd0cf80a"
+    },
+    {
+      "path": "migration-reopen-linux-build/changes.patch.gz",
+      "sha256": "408e7910a154b317ababb2ad0253ccc89aef79eac2385b537d9a202f0f734405",
+      "decoded_sha256": "2295684045548040e0c1695568e7160cc72b726ebe6142e66dac62458ce1271b"
+    },
+    {
+      "path": "migration-reopen-linux-build/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-reopen-linux-build/source/runtime/migration_stage_test.go.gz",
+      "sha256": "e709706d18fd4f1d59aa123c74f3b65546f4aeaece95437e524806f3037fd0c3",
+      "decoded_sha256": "4e3e7c735b45f509d805b90d3c25334257e7f608713ae1b97b88e78cdd85bfd6"
+    },
+    {
+      "path": "migration-reopen-linux-build/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-linux-build/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-linux-build/verification.json.gz",
+      "sha256": "be126be03eee77122ed9059e61ab10dfba0aabe0b4f8d14dd411d497bfa0a773",
+      "decoded_sha256": "d779ebb788896bd50ebda9f02a3571932cf036309a08a66df838f462651c2be9"
+    },
+    {
+      "path": "migration-reopen-green/changes.patch.gz",
+      "sha256": "b0242ed166a9361567148f6d9373987c38046f4533db18030f5b45763e639732",
+      "decoded_sha256": "1a7e48a4c7526e5adfad59636ad2231dbb6dbc81b30db7b07ca9a95466212c80"
+    },
+    {
+      "path": "migration-reopen-green/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-reopen-green/source/runtime/migration_stage_test.go.gz",
+      "sha256": "cf22bb0e7617eda9b74ffc85ecdb8e18b4ce9412f0e62e4a0f710a79ee7925bd",
+      "decoded_sha256": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+    },
+    {
+      "path": "migration-reopen-green/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-reopen-green/stdout.log.gz",
+      "sha256": "3cf548edd0562415748eb8cab1662f6c434947d572e3ad11947000f6466d2c9b",
+      "decoded_sha256": "bda551003e317a91a100529e08d1b402159188aa5bb54b45c491f03d419cec68"
+    },
+    {
+      "path": "migration-reopen-green/verification.json.gz",
+      "sha256": "ea263ac6bdec7d6e25157f78a2b85698ca75671732f1c017ba99e046bdaf3fa8",
+      "decoded_sha256": "acccd26a1b85a41521e51265b5d7286a2df63aa86555d8a7f3f551a4e0da3c26"
+    },
+    {
+      "path": "migration-complete-final/changes.patch.gz",
+      "sha256": "b0242ed166a9361567148f6d9373987c38046f4533db18030f5b45763e639732",
+      "decoded_sha256": "1a7e48a4c7526e5adfad59636ad2231dbb6dbc81b30db7b07ca9a95466212c80"
+    },
+    {
+      "path": "migration-complete-final/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-complete-final/source/runtime/migration_stage_test.go.gz",
+      "sha256": "cf22bb0e7617eda9b74ffc85ecdb8e18b4ce9412f0e62e4a0f710a79ee7925bd",
+      "decoded_sha256": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+    },
+    {
+      "path": "migration-complete-final/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-complete-final/stdout.log.gz",
+      "sha256": "ec92669bc5a16533e49fa4b68e1f491c453421e85667c0551ef1e7a1db7bca24",
+      "decoded_sha256": "672e138e8ee5d461b5bdb0de2a676c77937e812f867abeac773543d141f677f6"
+    },
+    {
+      "path": "migration-complete-final/verification.json.gz",
+      "sha256": "432b2447d27494c69329ec28484627a2c32bc6bab8e3cd5ca5e0562eedb118d1",
+      "decoded_sha256": "d500d6e6fcc6e8f12a2f85d2226f4b7ac25f88227e72e72b518f6ffd2c94ad39"
+    },
+    {
+      "path": "migration-complete-ago/changes.patch.gz",
+      "sha256": "b0242ed166a9361567148f6d9373987c38046f4533db18030f5b45763e639732",
+      "decoded_sha256": "1a7e48a4c7526e5adfad59636ad2231dbb6dbc81b30db7b07ca9a95466212c80"
+    },
+    {
+      "path": "migration-complete-ago/source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "migration-complete-ago/source/runtime/migration_stage_test.go.gz",
+      "sha256": "cf22bb0e7617eda9b74ffc85ecdb8e18b4ce9412f0e62e4a0f710a79ee7925bd",
+      "decoded_sha256": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+    },
+    {
+      "path": "migration-complete-ago/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "migration-complete-ago/stdout.log.gz",
+      "sha256": "905b50ebb66dc28cecf0d5d7681aabcd8b20af21ce5f8834692f1c6c68590281",
+      "decoded_sha256": "b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5"
+    },
+    {
+      "path": "migration-complete-ago/verification.json.gz",
+      "sha256": "4c240c7abb38a398750086ebf7d7fa2cd12d29a86cd601cbabdb4db619e4b9c1",
+      "decoded_sha256": "83205a21140767cdc92ba67fd663b3a6ce07855d44bee9d0400ee4b3b9602148"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "179999dff8079816e82d3a808ce97ab577b4ffc22dca4c343b0e6b160c0882fd",
+      "decoded_sha256": "51c6f5908a9a8d8fc21dee58a30a0b50033d45e12d362b9808b89abfbba80b36"
+    },
+    {
+      "path": "committed-source/internal/bootstrap/export_journal.go.gz",
+      "sha256": "c97bc3940d1d06fae1406f034a36b9e64f54dc3f80be7f85ea34b17a49da8fe7",
+      "decoded_sha256": "de2467cf29d850444d68b7902005deab13e29cb1b4b90f9a7cee81ff89ed6426"
+    },
+    {
+      "path": "committed-source/internal/cli/app/file_manifest.go.gz",
+      "sha256": "2a9e93b96f587df6fd76d28208d02f10de138be9b9e394d646e105f34992d5ed",
+      "decoded_sha256": "05e65a7413c669987527b2a67c3e03840afdb48b67bbab8ed3b85b490af6f037"
+    },
+    {
+      "path": "committed-source/internal/filepublish/identity_other.go.gz",
+      "sha256": "02e97d7431e7af8daab4616313a836bec63214bd8a689ca5bb9b86748c9f2f33",
+      "decoded_sha256": "3b72f2e5a201bfd318f88eda3944b3cf4ce984314f4243aa0c80e269c51bd13a"
+    },
+    {
+      "path": "committed-source/internal/filepublish/identity_posix.go.gz",
+      "sha256": "85409f798d64157edee62b9dd836b4ec6351f4e917d0f77826866186839751a3",
+      "decoded_sha256": "fa50f7a49dad00170fc295f402ddcde8d4265c1e8cf95e465fccced856f2bbd2"
+    },
+    {
+      "path": "committed-source/internal/filepublish/identity_windows.go.gz",
+      "sha256": "0d580c22d4b3b85dca6c6e4c78f21a37b1172c9bdbc2732f907039a6afbf58f9",
+      "decoded_sha256": "d4de9d99d62801fbff58b95593d3be250787d57818ab32e56a798e5063af9dc3"
+    },
+    {
+      "path": "committed-source/runtime/migration_copy.go.gz",
+      "sha256": "4c795986e1a2b0cce5997bb5a4f77a554809aa09e323c9d382691c53fe5becf7",
+      "decoded_sha256": "eee8edf3acf0817b5e49f3fa1791dfa031dd8a21eaad9813b2942b9be23dc85f"
+    },
+    {
+      "path": "committed-source/runtime/migration_initialization.go.gz",
+      "sha256": "8f61ab0bdacbffeb7870a549a2a971aad937bd39d153b89b894de8d793a8e1cb",
+      "decoded_sha256": "df12819829a7ab4c6bfb2151773477560bc3c8208c0d7c0264c676f8b9437a27"
+    },
+    {
+      "path": "committed-source/runtime/migration_partial.go.gz",
+      "sha256": "eea3fde293e2e1ca68eefd51784844e43157b59f026131a643b061afa8538819",
+      "decoded_sha256": "37e3b098ea137bc5da8dd29df0a3c8b64ba7d1e4001e4f8e37d49bef0becb91f"
+    },
+    {
+      "path": "committed-source/runtime/migration_scan.go.gz",
+      "sha256": "3d382e6e76f1a315ff22c11c60ef1a20a5aacdf72091249076763358e2b54438",
+      "decoded_sha256": "26a1de8629f698d5cc38f9b78829a9731feac1ad3ae59d01a186faa035c19fcd"
+    },
+    {
+      "path": "committed-source/runtime/migration_source.go.gz",
+      "sha256": "6185753a4e0d1a1d77a90b89ffb11d41400a34a84c8253808d03d178e3c64a9a",
+      "decoded_sha256": "a7c13c4f97c9175d686dae971e6bbfeea599dc04e63d90735551824e1bb8648c"
+    },
+    {
+      "path": "committed-source/runtime/migration_stage.go.gz",
+      "sha256": "17305485d0e7077283fb2a442e637cbfa50522c9dffa0fd025a7a7ad4d488cfe",
+      "decoded_sha256": "3ffe48daf5201374424a6bc9263757688ce8ca254ecd541aadc218636779982c"
+    },
+    {
+      "path": "committed-source/runtime/migration_stage_test.go.gz",
+      "sha256": "cf22bb0e7617eda9b74ffc85ecdb8e18b4ce9412f0e62e4a0f710a79ee7925bd",
+      "decoded_sha256": "8900b959edd0dac06705f5c220e7b27821e81983136006dbdec1816e84bf7b3b"
+    },
+    {
+      "path": "committed-source/runtime/migration_verify.go.gz",
+      "sha256": "d3c4916087279642db468181264a6b80c299466def5410d46cadbc934fdfa8e5",
+      "decoded_sha256": "59c1bfa1545702df8001a4ecce23a6e902d2f59486898c61a2badcc2ce7867a3"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "9904be53f7c5a278d3655293297cb6480185e785baace3a43514d8c8c47d3c1c",
+      "decoded_sha256": "8ed16ef6b250969b687f77e85172e21ca275a63111c6b7d390ce13375a423db5"
+    },
+    {
+      "path": "canonical-writing-failed.log.gz",
+      "sha256": "c919e74630a81c21d2df5b10dbcca36bf657d5c7aa325d5b7e05dc97d92b952e",
+      "decoded_sha256": "7818f1542481ad072ce28cfe4fd69930310baa32ad7a16a94fb4e07447a52ae8"
+    },
+    {
+      "path": "canonical-writing-failed-source/csp5.md.gz",
+      "sha256": "b64cb9b09606b8f53fd1d6036b088b5d7b75f9249635e41c50f08caf843d3642",
+      "decoded_sha256": "7185ec59bb3e94fdb8067d88fecc27927c86afd01a531ff21f979063cde2f209"
+    },
+    {
+      "path": "canonical-writing-intermediate.log.gz",
+      "sha256": "0994d670262d0898a511f8c8bb2eff155a184901e9f43157c7bffb1ed1dcd422",
+      "decoded_sha256": "be574735c09b5c399ed75289603491210f48b478086927a1171dc045632059a3"
+    },
+    {
+      "path": "canonical-writing-final.log.gz",
+      "sha256": "0994d670262d0898a511f8c8bb2eff155a184901e9f43157c7bffb1ed1dcd422",
+      "decoded_sha256": "be574735c09b5c399ed75289603491210f48b478086927a1171dc045632059a3"
+    }
+  ],
+  "canonical_writing_failed": {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 2,
+    "files": 1367,
+    "diagnostics": 1,
+    "reason": "One paragraph had eight sentences. The exact failed source and log are retained."
+  },
+  "next_recovery_gap": {
+    "source_commit": "68e986145fdf2dcfbfaf1f73b565fba6b5e1834a",
+    "paths": {
+      "internal/catalog/workspace/stage_access.go": [
+        92,
+        148
+      ],
+      "internal/catalog/workspace/projector.go": [
+        232,
+        432,
+        632
+      ]
+    },
+    "finding": "Workspace preparation, candidate, and verification cleanup still use recursive removal. CSP5 must replace it with verified ownership and bounded recovery."
+  },
+  "canonical_writing": {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "exit_code": 0,
+    "files": 1367,
+    "diagnostics": 0,
+    "correction": "Split the eight-sentence paragraph. The final text also records the reopen regression, final source, and workspace recovery locations."
+  }
+}

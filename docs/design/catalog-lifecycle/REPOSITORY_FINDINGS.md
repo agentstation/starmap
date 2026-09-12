@@ -2459,3 +2459,30 @@ These checks overlap. Consumer dependency, ago, and corrected prose checks pass.
 Linux AMD64 and Windows AMD64 cross-compilation pass. Native runtime and power-loss behavior remain unqualified for this change.
 
 Other staging roles, published generation retention, history compaction, full task checks, review, native CI, and merge remain CSP5 work.
+
+## Migration recovery: 2026-09-12
+
+Starmap `9e875a35` fixes migration initialization, partial ownership, scan bounds, and failed directory reopen.
+Initialization recursively deleted unknown operator files and left stages after process exit.
+Partial-copy recovery removed files without proving ownership. Source scanning did not bound empty directories.
+The [migration proof](../../plans/proof/starport-production-catalog/csp5/migration-recovery-2026-09-12/verification.json) preserves each original failure and its exact source.
+
+Initialization now resumes a stage bound to its manifest, parent, journal lock, and native identity.
+Partial recovery requires a retained ownership record and exact source-prefix bytes. Changed identities, unsupported records, and unknown content remain preserved.
+Source scans permit 40,000 entries and 4 MiB of path names. Stage scans derive their entry limit from the allowed manifest layout.
+
+Final checks pass 150 migration and 32 baseline/publication race events without failures or skips.
+Consumer, ago, and final prose checks pass. Final Linux and Windows compilation includes the directory flush and reopen correction.
+Only a test assertion correction follows those builds. Native runtime and power-loss qualification remain open.
+
+Unrecorded stages and interrupted atomic owner-record scratch require explicit recovery.
+Workspace, evidence, and discovery staging, generation retention, history compaction, full task checks, review, native CI, and merge remain CSP5 work.
+
+At `68e98614`, workspace preparation and projection still use recursive cleanup.
+`internal/catalog/workspace/stage_access.go` removes preparation and candidate trees.
+`internal/catalog/workspace/projector.go` removes candidate, desired, and verification trees.
+CSP5 must add verified ownership before those paths can satisfy its cleanup contract.
+
+The moved-stage regression exposed deferred cleanup through a nil handle after a failed directory reopen.
+The initializer now returns the filesystem error and preserves the moved stage.
+The corrected regression inspects joined errors through `errors.Is`. All 150 final migration race events pass.

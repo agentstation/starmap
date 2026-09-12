@@ -10,6 +10,7 @@ Checkpoint `32951a7b` adds configured pins and consistent unpin startup. Checkpo
 Checkpoint `de8b5abe` adds explicit durability outcomes and pending-pin confirmation.
 
 Commit `ceef5480` corrects the retained record inventory. Commit `55c8bc19` adds baseline stage recovery.
+Commit `9e875a35` adds migration initialization, partial ownership, scan limits, and the reopen correction.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -244,13 +245,53 @@ The baseline and path checks precede one separately tested POSIX policy case and
 Final ago, prose, and Linux compilation checks cover all sixteen committed files. All recorded checks are terminal.
 Other staging roles, published generation retention, history compaction, and full CSP5 qualification remain open.
 
+## Migration stage recovery
+
+The [migration proof](csp5/migration-recovery-2026-09-12/verification.json) binds commit `9e875a35` to twenty-eight command records and their source snapshots.
+The original partial-copy regression deletes changed bytes, replacement files, and unrecorded files during restart.
+The original initializer deletes unknown operator content on error. Four process-exit cases leave earlier initialization stages behind.
+The source scan also accepts 40,001 empty directories despite its separate file limit.
+
+Initialization now retains a private `stage-initialization.json` record in the operation journal.
+It binds the manifest, parent and stage identities, and journal lock. Restart resumes that same stage.
+Unknown entries, changed intent, replaced directories, and replaced locks cause refusal without recursive deletion.
+Publication preserves any later use of the old staging name.
+
+Each `.partial` file has an immutable sibling `.partial.json` ownership record, limited to 16 KiB.
+The record binds native stage, work-directory, lock, and file identities, plus mode and the source entry.
+Recovery checks the mutable partial bytes against the exact source prefix before removal.
+A crash after partial removal retains enough evidence to finish record cleanup. Missing or unsupported records cause preservation and refusal.
+
+Source inventory permits 40,000 entries, including empty directories and metadata.
+The stage scan derives its entry limit from the allowed manifest layout. Both scanners use batches of at most 128 entries.
+Aggregate path names cannot exceed 4 MiB. Initialization permits only two metadata files and an empty work directory.
+
+Final migration checks pass 150 race events without failures or skips. Baseline and publication checks pass 32 race events.
+The native identity code moves into `internal/filepublish` with unchanged identity encodings. Workspace encodings remain separate.
+Consumer dependency checks and the final ago check pass. The final source prose check passes 1,544 files with zero diagnostics.
+
+Two earlier prose runs report paragraph errors. The proof preserves both failures and their source snapshots.
+
+Final Linux AMD64 and Windows AMD64 compilation includes the directory flush and reopen correction.
+Only a test assertion correction follows those builds. The final migration and ago commands cover that correction.
+Native platform behavior and physical power-loss recovery remain unqualified for this change. All recorded checks are terminal.
+
+The moved-stage regression also exposed deferred cleanup through a nil handle after a failed directory reopen.
+The initializer now keeps the original and reopened handles separate. A moved stage causes a filesystem error and remains preserved.
+The first broad rerun returned that expected error but failed an assertion that did not inspect joined errors.
+The corrected assertion uses `errors.Is`. Its focused check and the full migration group pass.
+
+Unrecorded stages and interrupted atomic owner-record scratch remain preserved for explicit recovery.
+Workspace preparation and exchange cleanup, retained evidence, discovery staging, generation retention, history compaction, and full CSP5 qualification remain open.
+`internal/catalog/workspace/stage_access.go` and `projector.go` still use recursive cleanup. CSP5 must replace that cleanup with verified ownership.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Complete recovery for other staged records and generation retention under the task contract.
+Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
