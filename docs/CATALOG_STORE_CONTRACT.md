@@ -951,3 +951,23 @@ Cleanup verifies alias contents and access after releasing the store lock. Unkno
 A completed operation removes its journal. Repeating that completed migration then reports the existing destination.
 A crash after journal removal can leave an unrecorded empty enclosure, which requires explicit recovery.
 These checks do not qualify native execution, other stage recovery, retention, history compaction, or full CSP5 acceptance.
+
+## Private record publication recovery
+
+`privatefiles.Directory.PublishFileContext` records staging ownership before destination publication.
+Its explicit recovery method uses the same writer lock. Ordinary private-file reads and writes retain their existing behavior.
+Runtime evidence and GitHub discovery adoption remain incomplete under CSP5.
+
+Each record directory uses a private `.record-publications` child with a stable `.owner.lock` and one bounded JSONL receipt per pending publication.
+Receipts bind both directories, the writer, the journal, and the temporary file to native identities and access snapshots.
+Temporary-file receipts also bind mode, modification time, size, and content digest.
+Publication checks the destination against its original receipt before replacing it.
+
+Recovery removes a temporary file only when its complete ownership receipt still matches.
+It never removes the accepted destination. A hard-linked accepted destination survives removal of its temporary name.
+Changed files, incomplete receipts, and unknown files remain preserved. Unknown files do not establish ownership through their names.
+
+Recovery scans at most 4,096 metadata entries in batches of 128. Each journal permits three events within 65,536 bytes.
+Each record permits at most 64 MiB. Exceeding a limit stops recovery without inferring ownership.
+A visible publication with an unconfirmed flush or cleanup returns `PublicationError`.
+Native Linux and Windows execution remains subject to the CSP5 qualification gate.
