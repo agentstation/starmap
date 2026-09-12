@@ -2882,3 +2882,16 @@ Package lint also required a descriptor helper. All 39 descriptor records retain
 
 The [component controls proof](../../plans/proof/starport-production-catalog/csp5/component-controls-2026-09-12/verification.json) records 42 passing task race events and 78 passing verifier tests.
 Policy, package lint, and source prose pass. Complete CSP5 implementation and qualification remain open.
+
+## Provider history retirement: 2026-09-12
+
+Classification: an in-scope CSP5 retention correction.
+The distinct-inventory capacity regression fails before the repair. A later multi-account test shows a 00:13 model timestamp changing to 00:14 after retirement.
+The original repeated-inventory policy also fails through an isolated overlay. First and latest reports alone do not preserve cross-account change times.
+
+Local Starmap commit `292fe261` retains the reports that establish those transitions.
+The final selection passes 152 race events on each supported Go toolchain. Initial fixture and compilation failures remain separate from product evidence.
+Incoming-reset capacity, automatic collection, and complete CSP5 qualification remain open.
+
+The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
+Full CSP5 verification, review, native CI, and merge remain open.

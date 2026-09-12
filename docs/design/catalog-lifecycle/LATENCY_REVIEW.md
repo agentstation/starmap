@@ -320,3 +320,12 @@ These operations run during workspace preparation, outside inference requests.
 The [preparation proof](../../plans/proof/starport-production-catalog/csp5/workspace-preparation-2026-09-12/verification.json) records a passing application integration run with race instrumentation.
 It does not contain a controlled performance comparison. The earlier profile comparison remains bound to its original commits.
 Production startup and inference latency still require their planned qualification.
+
+## Provider history retirement: 2026-09-12
+
+Local Starmap commit `292fe261` changes acquisition-history compaction before catalog publication.
+The operation belongs to catalog maintenance. It does not add storage reads to inference requests.
+The replay and capacity tests do not measure request overhead or establish a production latency result.
+
+The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
+Full CSP5 verification, review, native CI, and merge remain open.

@@ -879,3 +879,16 @@ Automatic collection, complete retention integration, and object-store coordinat
 
 The [component controls proof](../../plans/proof/starport-production-catalog/csp5/component-controls-2026-09-12/verification.json) records 42 passing task race events and 78 passing verifier tests.
 Policy, package lint, and source prose pass. Complete CSP5 implementation and qualification remain open.
+
+## Provider history retirement: 2026-09-12
+
+Local Starmap commit `292fe261` retires superseded provider reports without rewriting their original payloads or receipts.
+It preserves replay for omitted offerings, changed baselines, and different account selections.
+Earlier input files remain until checked input collection removes unreachable records. Accepted generations and configured pins need their existing retention protection.
+
+This correction does not change the roles of local files, Badger, Valkey, Redis, SQLite, PostgreSQL, or MySQL.
+Incoming-reset capacity, automatic maintenance, retention settings, diagnostics, and object coordination remain open.
+Required original context can still exceed the history byte limit. The runtime preserves accepted state when capacity prevents publication.
+
+The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
+Full CSP5 verification, review, native CI, and merge remain open.

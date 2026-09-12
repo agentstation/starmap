@@ -1074,3 +1074,39 @@ Distinct-inventory retirement, automatic collection, complete generation collect
 Repository verification, required review, native CI, and merge remain required. The object coordination question remains pending.
 
 Five concurrent tooling edits remain separate. Final qualification must use the final committed module graph.
+
+## Provider history retirement: 2026-09-12
+
+Local commit `292fe261` replaces separate repeated-inventory and distinct-inventory passes with one compactor.
+The [retirement proof](csp5/provider-retirement-2026-09-12/verification.json) binds eight source files to final checks.
+The capacity regression fails before retirement. The first repair passes that test but fails multi-account replay.
+
+Two accounts can establish a model change between reports from one account.
+The first retirement rule changes the final update timestamp from 00:13 to 00:14 in the tested sequence.
+An isolated overlay confirms the same defect in the earlier committed repeated-inventory rule.
+The overlay preserves its behavior and changes only its private function name for the new fixture.
+
+The unified rule retains original reports needed for replacement values and their last change times.
+It preserves the first final-value report after another account last reports a different value.
+The original aggregate payloads, receipts, bindings, and observation times remain intact.
+Canonical links, prices, unions, deep fields, explicit presence, and unknown fields remain in replay context.
+Reset batches and metadata retain publication order. Provider replay uses the shared priority comparator.
+
+The final selection passes 152 race events on Go 1.26.6 and 152 on Go 1.25.12, without skips.
+Counts include parent events. The selections cover the same tests.
+Tests cover both history limits, restart, omitted offerings, account subsets, source selection, baseline replacement, partial replies, resets, and conflicting reports.
+Eight deterministic seeds each exercise all seven nonempty subsets of three accounts.
+Package lint, Go policy, and source prose pass.
+
+The proof also preserves the initial missing-publisher fixture and a receipt-type compilation error.
+Neither proves a product failure. Every source check retains its tested file hashes and separate tooling graph.
+The latest passing component-control command still belongs to `2af77d76`. It cannot qualify the changed runtime.
+
+Incoming reset requests still use checkpoints when history reaches capacity.
+Finish retirement on that path before full CSP5 qualification. Required context can still exceed the byte limit.
+Automatic collection, retention settings, diagnostics, required generation protection, and object coordination remain open.
+Complete broad verification, repository checks, review, native CI, and merge afterward.
+
+CSP5 accumulated thirty-nine local implementation commits before this correction and still has no PR.
+That delivery structure delayed completion. Keep remaining work within the original contract and group final verification after implementation.
+The owner question about object coordination remains pending. Local work continues independently.

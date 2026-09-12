@@ -3496,3 +3496,16 @@ The inference transport check covers the Starmap caller boundary. CSP8 owns Star
 
 The [component controls proof](../../plans/proof/starport-production-catalog/csp5/component-controls-2026-09-12/verification.json) records 42 passing task race events and 78 passing verifier tests.
 Policy, package lint, and source prose pass. Complete CSP5 implementation and qualification remain open.
+
+## Provider history retirement: 2026-09-12
+
+Local Starmap commit `292fe261` uses one provider history compactor when an ordinary update reaches capacity.
+It retains original payloads and receipts needed for current fields, omitted offerings, and later source or account selection.
+Cross-account reports preserve the final model change time. Canonical links, prices, unions, deep fields, and unknown data remain in replay context.
+
+Reset batches and metadata retain their order. Provider observations follow the shared replay priority.
+The compactor does not delete predecessor files or generations. Input and generation collection retain their separate ownership requirements.
+Incoming reset requests still use the checkpoint path at capacity. Retirement on that path remains required.
+
+The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
+Full CSP5 verification, review, native CI, and merge remain open.
