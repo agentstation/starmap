@@ -89,7 +89,9 @@ if [ "${STARMAP_VERIFY_COVERAGE_ONLY:-}" = "1" ]; then
 	exit 0
 fi
 
-run go test ./...
+# Use the same package resource bounds for ordinary and race-enabled suites.
+# Large catalog fixtures must not compete across packages for memory.
+run go test ./... -timeout=30m -p=1
 run make test-pure-go
 run make test-file-sizes
 run ./scripts/verify-package-layout.sh

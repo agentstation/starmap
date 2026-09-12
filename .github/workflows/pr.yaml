@@ -94,7 +94,7 @@ jobs:
       - name: Test minimum supported Go version
         env:
           GOTOOLCHAIN: local
-        run: go test ./...
+        run: go test ./... -timeout=30m -p=1
 
       - name: Test minimum supported external consumer
         env:
@@ -175,7 +175,7 @@ jobs:
   native-runtime:
     name: Runtime ${{ matrix.runner }}
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -263,7 +263,7 @@ jobs:
             native_packages+=(./internal/test/windowstoken)
           fi
           # The complete runtime suite uses the repository verification limit.
-          go test -json -count=1 -timeout=20m "${native_packages[@]}" > native-evidence/tests.jsonl
+          go test -json -count=1 -timeout=30m -p=1 "${native_packages[@]}" > native-evidence/tests.jsonl
       - name: Test real Git acquisition and mandatory tools
         shell: bash
         run: |

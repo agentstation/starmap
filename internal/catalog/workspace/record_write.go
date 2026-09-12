@@ -120,33 +120,8 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 	if err := file.Sync(); err != nil {
 		return workspaceRecordState{}, err
 	}
-	if h.beforePublish != nil {
-		if err := h.beforePublish(filepath.Join(root.Name(), temporary)); err != nil {
-			return workspaceRecordState{}, err
-		}
-	}
-	if err := owned.check(ctx, root); err != nil {
+	if err := h.checkRecordPublication(ctx, root, name, temporary, owned, before, stage); err != nil {
 		return workspaceRecordState{}, err
-	}
-	if stage != nil {
-		if err := stage.checkChildren(ctx); err != nil {
-			return workspaceRecordState{}, err
-		}
-	}
-	current, err := optionalWorkspaceRecord(ctx, root, name)
-	if err != nil {
-		return workspaceRecordState{}, err
-	}
-	if current != before {
-		return workspaceRecordState{}, replacementConflict(name, "record destination changed during publication")
-	}
-	if err := ctx.Err(); err != nil {
-		return workspaceRecordState{}, err
-	}
-	if h.checkWriter != nil {
-		if err := h.checkWriter(); err != nil {
-			return workspaceRecordState{}, err
-		}
 	}
 	if options.replace {
 		err = root.Rename(temporary, name)
@@ -227,4 +202,36 @@ func (s workspaceRecordState) cleanup(ctx context.Context, root *os.Root) error 
 		return err
 	}
 	return filepublish.SyncDirectory(root)
+}
+
+func (h workspaceRecordWriter) checkRecordPublication(ctx context.Context, root *os.Root, name, temporary string, owned, before workspaceRecordState, stage *workspaceStage) error {
+	if h.beforePublish != nil {
+		if err := h.beforePublish(filepath.Join(root.Name(), temporary)); err != nil {
+			return err
+		}
+	}
+	if err := owned.check(ctx, root); err != nil {
+		return err
+	}
+	if stage != nil {
+		if err := stage.checkChildren(ctx); err != nil {
+			return err
+		}
+	}
+	current, err := optionalWorkspaceRecord(ctx, root, name)
+	if err != nil {
+		return err
+	}
+	if current != before {
+		return replacementConflict(name, "record destination changed during publication")
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if h.checkWriter != nil {
+		if err := h.checkWriter(); err != nil {
+			return err
+		}
+	}
+	return nil
 }

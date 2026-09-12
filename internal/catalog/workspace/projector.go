@@ -262,25 +262,8 @@ func (p projector) publishCandidate(
 			resultErr = candidate.cleanup(ctx, treeSnapshot{})
 		}
 	}()
-	if p.beforeInputCheck != nil {
-		if err := p.beforeInputCheck(); err != nil {
-			return Receipt{}, err
-		}
-	}
-	if err := ctx.Err(); err != nil {
+	if err := p.checkCandidateInput(ctx, target, input); err != nil {
 		return Receipt{}, err
-	}
-	current, err := readSemanticState(target)
-	if err != nil {
-		return Receipt{}, err
-	}
-	if !input.equal(current) {
-		return Receipt{}, &errors.ConflictError{
-			Resource: "catalog workspace projection",
-			Expected: input.describe(),
-			Actual:   current.describe(),
-			Message:  "workspace changed while the committed generation was being staged",
-		}
 	}
 	if p.relocation != nil {
 		if err := p.relocation.recordRelocationWorkspace(ctx, candidate.tree); err != nil {
@@ -467,11 +450,7 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	}
 	marker, markerErr := readProjectionMarker(target)
 	if markerErr == nil {
-		if state.exists &&
-			marker.GenerationID == identity.GenerationID &&
-			marker.PayloadChecksum == identity.PayloadChecksum &&
-			marker.WorkspaceChecksum == state.checksum &&
-			marker.EndpointChecksum == state.endpointChecksum {
+		if marker.matchesCatalog(identity, state) {
 			if recovered {
 				return RepairResult{Status: RepairStatusRepaired}, nil
 			}
@@ -890,4 +869,34 @@ func syncDirectory(path string) error {
 	}
 	defer func() { _ = directory.Close() }()
 	return filepublish.SyncDirectory(directory)
+}
+
+func (p projector) checkCandidateInput(ctx context.Context, target string, input semanticState) error {
+	if p.beforeInputCheck != nil {
+		if err := p.beforeInputCheck(); err != nil {
+			return err
+		}
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	current, err := readSemanticState(target)
+	if err != nil {
+		return err
+	}
+	if !input.equal(current) {
+		return &errors.ConflictError{
+			Resource: "catalog workspace projection",
+			Expected: input.describe(),
+			Actual:   current.describe(),
+			Message:  "workspace changed while the committed generation was being staged",
+		}
+	}
+	return nil
+}
+
+func (marker projectionMarker) matchesCatalog(identity Identity, state semanticState) bool {
+	return state.exists && marker.GenerationID == identity.GenerationID &&
+		marker.PayloadChecksum == identity.PayloadChecksum && marker.WorkspaceChecksum == state.checksum &&
+		marker.EndpointChecksum == state.endpointChecksum
 }

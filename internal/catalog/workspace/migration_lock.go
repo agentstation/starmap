@@ -18,14 +18,6 @@ type legacyStoreLease struct {
 	closed  bool
 }
 
-func acquireLegacyStoreLock(ctx context.Context, legacy string) (func(), error) {
-	lease, err := acquireLegacyStoreLease(ctx, legacy)
-	if err != nil {
-		return nil, err
-	}
-	return lease.close, nil
-}
-
 func acquireLegacyStoreLease(ctx context.Context, legacy string) (*legacyStoreLease, error) {
 	original := filepath.Join(legacy, ".commit.lock")
 	before, err := readTargetInfo(original)
@@ -86,6 +78,9 @@ func (l *legacyStoreLease) close() {
 }
 
 func (l *legacyStoreLease) check(store string) error {
+	if l == nil || l.closed || l.lock == nil || !l.lock.Locked() {
+		return migrationLockConflict(store)
+	}
 	opened, err := l.lock.Stat()
 	if err != nil {
 		return err

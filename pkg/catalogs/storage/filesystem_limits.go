@@ -12,6 +12,9 @@ import (
 // It matches the catalog distribution envelope limit.
 const MaxFilesystemManifestBytes = 64 << 20
 
+// MaxFilesystemPayloadBytes bounds a stored payload before reading or publication.
+const MaxFilesystemPayloadBytes = resourcepolicy.MaxPayloadBytes
+
 func filesystemRecordLimit(name string) (int64, error) {
 	switch name {
 	case currentFilename, authorityFilename:
@@ -19,7 +22,7 @@ func filesystemRecordLimit(name string) (int64, error) {
 	case manifestFilename:
 		return MaxFilesystemManifestBytes, nil
 	case payloadFilename:
-		return resourcepolicy.MaxPayloadBytes, nil
+		return MaxFilesystemPayloadBytes, nil
 	default:
 		return 0, &errors.ValidationError{Field: "catalog_store.record", Value: name, Message: "is not a generation-store record"}
 	}

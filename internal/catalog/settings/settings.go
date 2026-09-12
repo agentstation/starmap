@@ -20,6 +20,12 @@ const (
 	SourceToken                             = catalogconfig.SourceToken
 	SourceRefreshMode                       = catalogconfig.SourceRefreshMode
 	GenerationPin                           = catalogconfig.GenerationPin
+	RetentionEnabled                        = catalogconfig.RetentionEnabled
+	RetentionInterval                       = catalogconfig.RetentionInterval
+	RetentionMaxGenerations                 = catalogconfig.RetentionMaxGenerations
+	RetentionMaxBytes                       = catalogconfig.RetentionMaxBytes
+	RetentionScanEntries                    = catalogconfig.RetentionScanEntries
+	RetentionInputMaxBytes                  = catalogconfig.RetentionInputMaxBytes
 	NetworkMode                             = catalogconfig.NetworkMode
 	SourcePollInterval                      = catalogconfig.SourcePollInterval
 	SourceStartupPolicy                     = catalogconfig.SourceStartupPolicy

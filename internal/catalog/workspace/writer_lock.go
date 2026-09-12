@@ -16,14 +16,6 @@ type workspaceWriter struct {
 	identity string
 }
 
-func acquireWriterLock(target string) (func(), error) {
-	writer, err := acquireWorkspaceWriter(target)
-	if err != nil {
-		return nil, err
-	}
-	return writer.close, nil
-}
-
 func acquireWorkspaceWriter(target string) (_ *workspaceWriter, resultErr error) {
 	if err := requireWorkspaceAccess(); err != nil {
 		return nil, err

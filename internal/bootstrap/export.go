@@ -119,32 +119,7 @@ func exportBaseline(ctx context.Context, directory string, checkpoint func(strin
 	if err := check("created"); err != nil {
 		return result, err
 	}
-	manifest, err := json.MarshalIndent(generation.Manifest, "", "  ")
-	if err != nil {
-		return result, err
-	}
-	if err := staging.write(baselineManifestName, append(manifest, '\n')); err != nil {
-		return result, err
-	}
-	if err := staging.journal.save(ctx, staging, baselineJournalWriting); err != nil {
-		return result, err
-	}
-	if err := check("manifest-written"); err != nil {
-		return result, err
-	}
-	if err := staging.write(baselinePayloadName, generation.Payload); err != nil {
-		return result, err
-	}
-	if err := staging.journal.save(ctx, staging, baselineJournalWriting); err != nil {
-		return result, err
-	}
-	if err := check("payload-written"); err != nil {
-		return result, err
-	}
-	if err := staging.validate(); err != nil {
-		return result, err
-	}
-	if err := syncBaselineDirectory(staging.root); err != nil {
+	if err := staging.writeGeneration(ctx, generation, check); err != nil {
 		return result, err
 	}
 	if err := ctx.Err(); err != nil {
@@ -249,4 +224,36 @@ func readBaselineFile(root *os.Root, name string, size int) ([]byte, error) {
 		return nil, &errors.ConflictError{Resource: "embedded baseline export", Message: "file size changed during verification"}
 	}
 	return data, nil
+}
+
+func (staging *baselineStage) writeGeneration(ctx context.Context, generation catalogs.Generation, check func(string) error) error {
+	manifest, err := json.MarshalIndent(generation.Manifest, "", "  ")
+	if err != nil {
+		return err
+	}
+	if err := staging.write(baselineManifestName, append(manifest, '\n')); err != nil {
+		return err
+	}
+	if err := staging.journal.save(ctx, staging, baselineJournalWriting); err != nil {
+		return err
+	}
+	if err := check("manifest-written"); err != nil {
+		return err
+	}
+	if err := staging.write(baselinePayloadName, generation.Payload); err != nil {
+		return err
+	}
+	if err := staging.journal.save(ctx, staging, baselineJournalWriting); err != nil {
+		return err
+	}
+	if err := check("payload-written"); err != nil {
+		return err
+	}
+	if err := staging.validate(); err != nil {
+		return err
+	}
+	if err := syncBaselineDirectory(staging.root); err != nil {
+		return err
+	}
+	return nil
 }

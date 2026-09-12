@@ -32,6 +32,13 @@ services:
       # - STARMAP_CATALOG_SOURCE_REFRESH_MODE=automatic
       # - STARMAP_CATALOG_NETWORK_MODE=configured
       # - STARMAP_CATALOG_GENERATION_PIN=
+      # Retention preserves required generations even when they exceed these targets.
+      # - STARMAP_CATALOG_RETENTION_ENABLED=true
+      # - STARMAP_CATALOG_RETENTION_INTERVAL=1h
+      # - STARMAP_CATALOG_RETENTION_MAX_GENERATIONS=32
+      # - STARMAP_CATALOG_RETENTION_MAX_BYTES=536870912
+      # - STARMAP_CATALOG_RETENTION_SCAN_ENTRIES=4096
+      # - STARMAP_CATALOG_RETENTION_INPUT_MAX_BYTES=268435456
       # - STARMAP_CATALOG_SOURCE_STARTUP_POLICY=prefer_source
       # Internal authority requires both identities and qualified host clock evidence.
       # - STARMAP_CATALOG_SOURCE_AUTHORITY_ID=enterprise

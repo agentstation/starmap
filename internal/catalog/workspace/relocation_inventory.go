@@ -158,7 +158,7 @@ func (s *workspaceStage) checkRelocationStore(ctx context.Context, store string,
 	if count != r.record.Retained {
 		return replacementConflict(store, "relocation retained generation count changed")
 	}
-	generation, _, retained, err := inspectLegacyStore(ctx, store)
+	generation, _, retained, err := inspectLegacyStore(ctx, store, lease)
 	if err != nil {
 		return err
 	}

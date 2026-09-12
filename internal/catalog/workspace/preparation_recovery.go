@@ -15,10 +15,6 @@ import (
 	"github.com/agentstation/starmap/internal/privatefiles"
 )
 
-func recoverPreparations(ctx context.Context, target string, writer *workspaceWriter) error {
-	return recoverPreparationsExcept(ctx, target, writer, nil)
-}
-
 func recoverPreparationsExcept(ctx context.Context, target string, writer *workspaceWriter, retained *workspaceStage) error {
 	if err := writer.check(); err != nil {
 		return err
@@ -175,88 +171,16 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 			return invalidReplacement("preparation_event_suffix")
 		}
 		if i == 0 {
-			h := event.Header
-			if h == nil || event.Handoff != nil || event.Record != nil || event.hasRelocation() || event.Tree != "" || event.Entry != nil || event.Identity != "" || h.Version < 1 || h.Version > preparationJournalVersion ||
-				h.Target != target || h.Stage != stage.name || h.LockIdentity == "" || h.JournalIdentity != identity ||
-				!replacementChildName(h.Stage) || !strings.HasPrefix(h.Stage, "."+filepath.Base(target)+".preparing-") || len(h.Enclosure.Entries) != 1 {
-				return invalidReplacement("preparation_header")
-			}
-			if h.LockIdentity != lock {
-				return writerConflict(target)
-			}
-			if err := h.Enclosure.validate(); err != nil {
-				return err
-			}
-			if err := validateReplacementIdentities(h.Enclosure, h.Identities); err != nil {
-				return err
-			}
-			stage.enclosure = h.Enclosure
-			stage.enclosure.identities = h.Identities
-			version = h.Version
-			continue
-		}
-		if stage.handoff != nil {
-			return invalidReplacement("preparation_handoff_suffix")
-		}
-		if event.hasRelocation() {
-			if version < 4 || event.Header != nil || event.Handoff != nil || event.Record != nil || event.Tree != "" || event.Entry != nil || event.Identity != "" || len(stage.trees) != 0 || stage.record != nil {
-				return invalidReplacement("relocation_event")
-			}
-			if err := stage.acceptRelocation(event, target); err != nil {
+			var err error
+			version, err = stage.acceptPreparationHeader(event, target, lock, identity)
+			if err != nil {
 				return err
 			}
 			continue
 		}
-		if stage.relocation != nil {
-			return invalidReplacement("relocation_suffix")
+		if err := stage.acceptPreparationEvent(event, target, version); err != nil {
+			return err
 		}
-		if event.Record != nil {
-			if version < 3 || event.Header != nil || event.Handoff != nil || event.Entry != nil || event.Tree != "" || event.Identity != "" || len(stage.trees) != 0 {
-				return invalidReplacement("preparation_record")
-			}
-			if err := event.Record.validate(stage, target); err != nil {
-				return err
-			}
-			stage.record = event.Record
-			continue
-		}
-		if stage.record != nil {
-			return invalidReplacement("preparation_record_suffix")
-		}
-		if event.Handoff != nil {
-			if version < 2 || event.Header != nil || event.Entry != nil || event.Tree != "" || event.Identity != "" {
-				return invalidReplacement("preparation_handoff")
-			}
-			if err := event.Handoff.bind(stage, target); err != nil {
-				return err
-			}
-			stage.handoff = event.Handoff
-			continue
-		}
-		if event.Header != nil || event.Entry == nil || event.Identity == "" || len(event.Identity) > replacementIdentityMax ||
-			!replacementChildName(event.Tree) || !(event.Tree == "render" || event.Tree == "tree" || strings.HasPrefix(event.Tree, ".render.verify-")) {
-			return invalidReplacement("preparation_entry")
-		}
-		tree := stage.trees[event.Tree]
-		if tree == nil {
-			if len(stage.trees) >= preparationTreeMax || event.Entry.Path != "." || !event.Entry.Directory {
-				return invalidReplacement("preparation_tree")
-			}
-			tree = &preparationTree{entries: make(map[string]treeEntry), identities: make(map[string]string)}
-			stage.trees[event.Tree] = tree
-		}
-		entry := *event.Entry
-		if old, exists := tree.entries[entry.Path]; exists {
-			if tree.identities[entry.Path] != event.Identity || old.Directory != entry.Directory {
-				return invalidReplacement("preparation_entry_identity")
-			}
-		} else {
-			if err := tree.allowEntry(entry.Path); err != nil {
-				return err
-			}
-			tree.nameBytes += len(entry.Path)
-		}
-		tree.entries[entry.Path], tree.identities[entry.Path] = entry, event.Identity
 	}
 	for _, tree := range stage.trees {
 		snapshot, err := tree.snapshot()

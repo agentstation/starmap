@@ -75,42 +75,7 @@ func (s *workspaceStage) acceptRelocation(e preparationEvent, target string) err
 		return invalidReplacement("relocation_event")
 	}
 	if e.Relocation != nil {
-		if s.relocation != nil {
-			return invalidReplacement("relocation_header")
-		}
-		r := *e.Relocation
-		if !filepath.IsAbs(r.State) || filepath.Clean(r.State) != r.State || !replacementDigest(r.Current) || r.Retained <= 0 || r.Retained >= preparationEventMax {
-			return invalidReplacement("relocation_header")
-		}
-		if err := ValidateMachineSeparation(target, r.State, "catalog state"); err != nil {
-			return err
-		}
-		for _, id := range []string{r.OriginalParent, r.StateParent} {
-			if id == "" || len(id) > replacementIdentityMax {
-				return invalidReplacement("relocation_parent")
-			}
-		}
-		if err := r.Root.bind(); err != nil {
-			return err
-		}
-		entries := r.Root.Tree.Entries
-		if len(entries) != 4 || entries[1].Path != ".commit.lock" || entries[1].Directory || entries[2].Path != "current" || entries[2].Directory || entries[3].Path != "generations" || !entries[3].Directory {
-			return invalidReplacement("relocation_root")
-		}
-		if r.Alias != nil {
-			f := r.Alias
-			prefix := "." + filepath.Base(target) + ".starmap-migration-lock-"
-			if !replacementChildName(f.Entry.Path) || !strings.HasPrefix(f.Entry.Path, prefix) || len(f.Entry.Path) == len(prefix) || f.Identity != r.Root.Identities[".commit.lock"] {
-				return invalidReplacement("relocation_alias")
-			}
-			expected := entries[1]
-			expected.Path = f.Entry.Path
-			if expected != f.Entry {
-				return invalidReplacement("relocation_alias")
-			}
-		}
-		s.relocation = &relocationInventory{record: r, generations: make(map[string]treeSnapshot)}
-		return nil
+		return s.acceptRelocationHeader(e.Relocation, target)
 	}
 	r := s.relocation
 	if r == nil {
@@ -209,4 +174,43 @@ func relocationRoot(ctx context.Context, path string) (treeSnapshot, error) {
 		tree.entries[name] = entry
 	}
 	return tree.snapshot()
+}
+
+func (s *workspaceStage) acceptRelocationHeader(header *relocationRecord, target string) error {
+	if s.relocation != nil {
+		return invalidReplacement("relocation_header")
+	}
+	r := *header
+	if !filepath.IsAbs(r.State) || filepath.Clean(r.State) != r.State || !replacementDigest(r.Current) || r.Retained <= 0 || r.Retained >= preparationEventMax {
+		return invalidReplacement("relocation_header")
+	}
+	if err := ValidateMachineSeparation(target, r.State, "catalog state"); err != nil {
+		return err
+	}
+	for _, id := range []string{r.OriginalParent, r.StateParent} {
+		if id == "" || len(id) > replacementIdentityMax {
+			return invalidReplacement("relocation_parent")
+		}
+	}
+	if err := r.Root.bind(); err != nil {
+		return err
+	}
+	entries := r.Root.Tree.Entries
+	if len(entries) != 4 || entries[1].Path != ".commit.lock" || entries[1].Directory || entries[2].Path != "current" || entries[2].Directory || entries[3].Path != "generations" || !entries[3].Directory {
+		return invalidReplacement("relocation_root")
+	}
+	if r.Alias != nil {
+		f := r.Alias
+		prefix := "." + filepath.Base(target) + ".starmap-migration-lock-"
+		if !replacementChildName(f.Entry.Path) || !strings.HasPrefix(f.Entry.Path, prefix) || len(f.Entry.Path) == len(prefix) || f.Identity != r.Root.Identities[".commit.lock"] {
+			return invalidReplacement("relocation_alias")
+		}
+		expected := entries[1]
+		expected.Path = f.Entry.Path
+		if expected != f.Entry {
+			return invalidReplacement("relocation_alias")
+		}
+	}
+	s.relocation = &relocationInventory{record: r, generations: make(map[string]treeSnapshot)}
+	return nil
 }
