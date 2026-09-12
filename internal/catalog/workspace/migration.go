@@ -197,7 +197,7 @@ func requireLegacyStoreShape(path string) error {
 			Field: "legacy_catalog_path", Value: path, Message: "must be a real directory",
 		}
 	}
-	entries, err := os.ReadDir(path)
+	entries, err := readLegacyLayoutEntries(path)
 	if err != nil {
 		return errors.WrapIO("read", path, err)
 	}
@@ -264,75 +264,81 @@ func inspectLegacyStore(
 		return catalogs.Generation{}, nil, 0, err
 	}
 
-	entries, err := os.ReadDir(filepath.Join(path, "generations"))
+	retained, err := scanLegacyGenerations(ctx, filepath.Join(path, "generations"), func(entry fs.DirEntry) error {
+		return inspectLegacyGeneration(ctx, path, store, entry)
+	})
 	if err != nil {
-		return catalogs.Generation{}, nil, 0, errors.WrapIO(
-			"read", filepath.Join(path, "generations"), err,
-		)
+		return catalogs.Generation{}, nil, 0, err
 	}
-	if len(entries) == 0 {
+	if retained == 0 {
 		return catalogs.Generation{}, nil, 0, &errors.ValidationError{
 			Field: "legacy_catalog_layout.generations", Message: "must not be empty",
 		}
 	}
-	for _, entry := range entries {
-		if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() {
-			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
-				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
-				Message: "must be a real directory",
-			}
-		}
-		dir := filepath.Join(path, "generations", entry.Name())
-		children, err := os.ReadDir(dir)
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, errors.WrapIO("read", dir, err)
-		}
-		hasAuthorityRecord := len(children) == 3 && children[0].Name() == legacyAuthorityRecordName
-		catalogChildren := children
-		if hasAuthorityRecord {
-			catalogChildren = children[1:]
-		}
-		if len(catalogChildren) != 2 ||
-			catalogChildren[0].Name() != "catalog.json" ||
-			catalogChildren[1].Name() != "manifest.json" {
-			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
-				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
-				Message: "must contain catalog.json, manifest.json, and only an optional authority.json record",
-			}
-		}
-		manifestData, err := os.ReadFile(filepath.Join(dir, "manifest.json")) //nolint:gosec
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, errors.WrapIO(
-				"read", filepath.Join(dir, "manifest.json"), err,
-			)
-		}
-		manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, err
-		}
-		digest := sha256.Sum256([]byte(manifest.GenerationID))
-		if entry.Name() != hex.EncodeToString(digest[:]) {
-			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
-				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
-				Message: "directory does not match the generation identity",
-			}
-		}
-		generation, err := store.Get(ctx, manifest.GenerationID)
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, errors.WrapResource(
-				"validate", "retained catalog generation", manifest.GenerationID, err,
-			)
-		}
-		if hasAuthorityRecord {
-			if err := validateLegacyAuthorityRecord(dir, generation); err != nil {
-				return catalogs.Generation{}, nil, 0, err
-			}
-		}
-		if _, err := validateMigrationGeneration(generation); err != nil {
-			return catalogs.Generation{}, nil, 0, err
+	return current, catalog, retained, nil
+}
+
+func inspectLegacyGeneration(ctx context.Context, path string, store *storage.Filesystem, entry fs.DirEntry) error {
+	if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() {
+		return &errors.ValidationError{
+			Field: "legacy_catalog_layout.generation", Value: entry.Name(),
+			Message: "must be a real directory",
 		}
 	}
-	return current, catalog, len(entries), nil
+	dir := filepath.Join(path, "generations", entry.Name())
+	children, err := readLegacyLayoutEntries(dir)
+	if err != nil {
+		return errors.WrapIO("read", dir, err)
+	}
+	hasAuthorityRecord := len(children) == 3 && children[0].Name() == legacyAuthorityRecordName
+	catalogChildren := children
+	if hasAuthorityRecord {
+		catalogChildren = children[1:]
+	}
+	if len(catalogChildren) != 2 ||
+		catalogChildren[0].Name() != "catalog.json" ||
+		catalogChildren[1].Name() != "manifest.json" {
+		return &errors.ValidationError{
+			Field: "legacy_catalog_layout.generation", Value: entry.Name(),
+			Message: "must contain catalog.json, manifest.json, and only an optional authority.json record",
+		}
+	}
+	directory, err := privatefiles.ExistingDirectory(dir)
+	if err != nil {
+		return err
+	}
+	manifestData, err := directory.ReadFile("manifest.json", storage.MaxFilesystemManifestBytes)
+	if err != nil {
+		return errors.WrapIO(
+			"read", filepath.Join(dir, "manifest.json"), err,
+		)
+	}
+	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
+	if err != nil {
+		return err
+	}
+	digest := sha256.Sum256([]byte(manifest.GenerationID))
+	if entry.Name() != hex.EncodeToString(digest[:]) {
+		return &errors.ValidationError{
+			Field: "legacy_catalog_layout.generation", Value: entry.Name(),
+			Message: "directory does not match the generation identity",
+		}
+	}
+	generation, err := store.Get(ctx, manifest.GenerationID)
+	if err != nil {
+		return errors.WrapResource(
+			"validate", "retained catalog generation", manifest.GenerationID, err,
+		)
+	}
+	if hasAuthorityRecord {
+		if err := validateLegacyAuthorityRecord(dir, generation); err != nil {
+			return err
+		}
+	}
+	if _, err := validateMigrationGeneration(generation); err != nil {
+		return err
+	}
+	return nil
 }
 
 func validateLegacyAuthorityRecord(path string, generation catalogs.Generation) error {

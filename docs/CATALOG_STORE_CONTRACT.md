@@ -40,6 +40,11 @@ The complete serialized runtime layer remains limited to 64 MiB, including base6
 Manual history retains its separate 64 MiB cumulative limit. The embedded bootstrap review budgets remain independent of the canonical payload limit.
 A backend can impose a narrower limit. Its publication path must reject a generation that its configured reader cannot restore.
 
+Filesystem reads enforce 32 MiB for catalog payloads, 64 MiB for manifests, and 16 KiB for current pointers and authority records.
+The current pointer limit includes its trailing newline. Oversized records cause a typed validation error before file bytes enter memory.
+Filesystem commits reject oversized payloads, manifests, and pointers before creating generation state or changing current.
+These filesystem limits do not configure other storage adapters.
+
 D26 records the 32 MiB engineering default. A recorded generation contains 23,683,266 bytes, which the prior writer accepted but the 16 MiB decoder rejected.
 The owner preference remains pending. Publication and native qualification still require their existing gates.
 
@@ -787,6 +792,13 @@ It refuses a replacement file even when the file contains identical bytes.
 Ownership records remain in process memory. Persistent recovery after process exit still requires a separate journal.
 
 ### Legacy migration rollback
+
+Preflight reads at most four entries from each fixed-layout directory. The layout permits at most three entries.
+A fourth entry makes the layout invalid.
+Retained generation scans use batches of 128 entries, with cancellation checks before each batch and generation.
+
+Preflight validates every retained generation and reports the complete count. It does not discard history to meet a directory-read limit.
+Manifest reads use the filesystem adapter's 64 MiB limit before parsing. Preflight failures preserve existing files and do not create the destination parent.
 
 Legacy layout migration records the original store's native directory identity before relocation.
 It holds both parent directories open and checks that identity before moving or restoring the store.

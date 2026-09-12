@@ -94,7 +94,8 @@ func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, e
 // PublicationError identifies a visible current pointer with unconfirmed durability.
 // An identical retry confirms directory durability without replacing the pointer.
 func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error {
-	if err := validateCandidate(ctx, generation); err != nil {
+	manifest, err := prepareFilesystemManifest(ctx, generation)
+	if err != nil {
 		return err
 	}
 	if err := validateFilesystemLayout(s.root); err != nil {
@@ -167,7 +168,7 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 	}
 
 	if existingErr != nil {
-		if err := s.writeGeneration(ctx, candidate); err != nil {
+		if err := s.writeGeneration(ctx, candidate, manifest); err != nil {
 			return err
 		}
 	}
@@ -247,6 +248,9 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Ge
 			Value:   manifest.GenerationID,
 			Message: "does not match requested generation",
 		}
+	}
+	if err := validateFilesystemRecordSize(payloadFilename, manifest.Payload.SizeBytes); err != nil {
+		return catalogs.Generation{}, err
 	}
 	payloadPath := filepath.Join(dir, payloadFilename)
 	if err := validateFilesystemEntry(payloadPath, false); err != nil {
