@@ -28,7 +28,11 @@ func cleanupWorkspaceTree(ctx context.Context, target string, expected ...treeSn
 		return err
 	}
 	defer func() { _ = parent.Close() }()
-	name := filepath.Base(target)
+	return cleanupWorkspaceTreeAt(ctx, parent, filepath.Base(target), expected...)
+}
+
+func cleanupWorkspaceTreeAt(ctx context.Context, parent *os.Root, name string, expected ...treeSnapshot) error {
+	target := filepath.Join(parent.Name(), name)
 	actual, err := optionalTree(ctx, parent, name)
 	if err != nil || actual.ID == "" {
 		return err

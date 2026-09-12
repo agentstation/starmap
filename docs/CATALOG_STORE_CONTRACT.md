@@ -770,3 +770,15 @@ Cleanup cannot reverse an accepted catalog or remove the published workspace.
 Repair publishes its validated candidate without repeating the render and validation passes.
 These in-memory inventories do not provide recovery after process exit. Persistent staging recovery remains incomplete.
 
+### Workspace preparation writes
+
+`Builder.WriteYAML` emits catalog records and logo sidecars through a callback without filesystem access.
+Workspace preparation owns those writes and records each created entry's native identity, access metadata, and exact written bytes.
+It copies operator files after generating managed catalog records. It does not remove and rebuild copied model directories.
+Partial writes remain identifiable when serialization, copying, or cancellation interrupts preparation.
+
+Verification uses the same writer and checked cleanup. Unexpected entries and changed files remain preserved.
+The enclosure stays private. Candidate assembly retains the selected workspace access policy and synchronizes the completed candidate before publication.
+The writer checks resource limits before creating another entry. Assembly reads only the expected number of children, in bounded batches.
+
+Ownership records remain in process memory. Persistent recovery after process exit still requires a separate journal.

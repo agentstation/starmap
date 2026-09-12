@@ -5,6 +5,7 @@ package workspace
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"encoding/json"
 	stderrors "errors"
 	"io"
@@ -130,13 +131,14 @@ type RepairResult struct {
 }
 
 type projector struct {
-	beforeInputCheck      func() error
-	beforePromote         func() error
-	beforeMarker          func() error
-	journalReplacement    bool
-	afterReplacementPhase func(replacementPhase) error
-	afterStageRender      func(string) error
-	beforeAccessRestore   func(string) error
+	beforeInputCheck        func() error
+	beforePromote           func() error
+	beforeMarker            func() error
+	journalReplacement      bool
+	afterReplacementPhase   func(replacementPhase) error
+	afterStageRender        func(string) error
+	afterVerificationRender func(string) error
+	beforeAccessRestore     func(string) error
 }
 
 // Project stages, validates, syncs, and publishes one workspace.
@@ -576,12 +578,20 @@ func (p projector) stageCatalog(
 	catalog *catalogs.Catalog,
 	identity Identity,
 	expected *treeSnapshot,
-) (stagedWorkspace, semanticState, error) {
-	stage, err := prepareWorkspaceStage(target)
+) (result stagedWorkspace, state semanticState, resultErr error) {
+	stage, err := prepareWorkspaceStage(ctx, target)
 	if err != nil {
 		return stagedWorkspace{}, semanticState{}, errors.WrapResource("prepare", "workspace staging", target, err)
 	}
-	defer stage.close()
+	defer func() {
+		if err := stage.close(ctx); err != nil {
+			resultErr = stderrors.Join(resultErr, err)
+			if result.path != "" {
+				resultErr = stderrors.Join(resultErr, result.cleanup(ctx, treeSnapshot{}))
+				result = stagedWorkspace{}
+			}
+		}
+	}()
 	staged := stage.renderPath()
 	cleanup := func(err error) (stagedWorkspace, semanticState, error) {
 		return stagedWorkspace{}, semanticState{}, err
@@ -589,31 +599,17 @@ func (p projector) stageCatalog(
 	if err := stage.readSource(ctx, target, expected); err != nil {
 		return cleanup(err)
 	}
+	if err := renderPreparation(ctx, stage.trees["render"], catalog, identity); err != nil {
+		return cleanup(err)
+	}
 	if err := stage.copySource(ctx); err != nil {
 		return cleanup(err)
 	}
-	operatorBackup := filepath.Join(stage.private.Name(), "operator")
-	if err := preserveOperatorFiles(ctx, staged, operatorBackup); err != nil {
-		return cleanup(err)
-	}
-	builder, err := catalogs.NewBuilderFrom(catalog)
-	if err != nil {
-		return cleanup(errors.WrapResource("build", "workspace projection", target, err))
-	}
-	if err := builder.SaveTo(staged); err != nil {
-		return cleanup(errors.WrapIO("stage", staged, err))
-	}
-	if err := restoreOperatorFiles(operatorBackup, staged); err != nil {
-		return cleanup(err)
-	}
-	if _, err := writeEndpointProjection(staged, catalog, identity); err != nil {
-		return cleanup(errors.WrapResource("stage", "endpoint projection", target, err))
-	}
-	state, err := readSemanticState(staged)
+	state, err = readSemanticState(staged)
 	if err != nil {
 		return cleanup(err)
 	}
-	if err := validateStableProjection(staged, state, catalog, identity); err != nil {
+	if err := stage.validateStableProjection(ctx, staged, state, catalog, identity, p.afterVerificationRender); err != nil {
 		return cleanup(err)
 	}
 	if p.afterStageRender != nil {
@@ -628,11 +624,13 @@ func (p projector) stageCatalog(
 	return stagedWorkspace{path: candidate, tree: stage.published, original: stage.original}, state, nil
 }
 
-func validateStableProjection(
+func (s *workspaceStage) validateStableProjection(
+	ctx context.Context,
 	staged string,
 	state semanticState,
 	source *catalogs.Catalog,
 	identity Identity,
+	afterRender func(string) error,
 ) error {
 	builder, err := catalogs.NewFromPath(staged)
 	if err != nil {
@@ -648,23 +646,19 @@ func validateStableProjection(
 	if err := validateProjectionCoverage(source, catalog); err != nil {
 		return err
 	}
-	verification, err := os.MkdirTemp(filepath.Dir(staged), "."+filepath.Base(staged)+".verify-")
+	name := ".render.verify-" + rand.Text()
+	tree, err := s.createTree(ctx, name)
 	if err != nil {
-		return errors.WrapIO("create", filepath.Dir(staged), err)
+		return err
 	}
-	defer func() { _ = os.RemoveAll(verification) }()
-	if err := os.Chmod(verification, directoryMode); err != nil {
-		return errors.WrapIO("chmod", verification, err)
+	verification := filepath.Join(s.private.Name(), name)
+	if err := renderPreparation(ctx, tree, catalog, identity); err != nil {
+		return err
 	}
-	verificationBuilder, err := catalogs.NewBuilderFrom(catalog)
-	if err != nil {
-		return errors.WrapResource("build", "workspace verification", staged, err)
-	}
-	if err := verificationBuilder.SaveTo(verification); err != nil {
-		return errors.WrapIO("verify", verification, err)
-	}
-	if _, err := writeEndpointProjection(verification, catalog, identity); err != nil {
-		return errors.WrapResource("verify", "endpoint projection", staged, err)
+	if afterRender != nil {
+		if err := afterRender(verification); err != nil {
+			return err
+		}
 	}
 	verified, err := readSemanticState(verification)
 	if err != nil {
@@ -684,7 +678,7 @@ func validateStableProjection(
 			Message: "endpoint projection is not byte-stable across repeated save/load cycles",
 		}
 	}
-	return nil
+	return s.removeTree(ctx, name)
 }
 
 func validateProjectionCoverage(source, projected *catalogs.Catalog) error {
