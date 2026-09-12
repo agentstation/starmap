@@ -50,7 +50,7 @@ check_coverage() {
 	profile="$TMPDIR/$(printf '%s' "$pkg" | tr '/.' '__').out"
 
 	printf '\n==> coverage %s >= %s%%\n' "$pkg" "$min"
-	output="$(go test -covermode=atomic -coverprofile="$profile" "$pkg" 2>&1)"
+	output="$(go test -count=1 -covermode=atomic -coverprofile="$profile" "$pkg" 2>&1)"
 	printf '%s\n' "$output"
 	coverage="$(printf '%s\n' "$output" | awk '/coverage:/ { for (i = 1; i <= NF; i++) if ($i ~ /%$/) { gsub("%", "", $i); print $i; exit } }')"
 
@@ -91,7 +91,8 @@ fi
 
 # Use the same package resource bounds for ordinary and race-enabled suites.
 # Large catalog fixtures must not compete across packages for memory.
-run go test ./... -timeout=30m -p=1
+# Disable the Go test cache and its filesystem access log.
+run go test ./... -timeout=30m -p=1 -count=1
 run make test-pure-go
 run make test-file-sizes
 run ./scripts/verify-package-layout.sh
@@ -106,7 +107,7 @@ run python3 ./scripts/test_prepare_public_catalog_fixture.py
 # Run race-test packages serially because catalog workspaces consume substantial memory.
 # The complete runtime suite exceeds twenty minutes on the hosted Linux runner.
 # Individual test deadlines still apply.
-run env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1
+run env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1 -count=1
 run go vet ./...
 run ./scripts/verify-catalog-performance.sh
 run ./scripts/verify-container-smoke.sh
