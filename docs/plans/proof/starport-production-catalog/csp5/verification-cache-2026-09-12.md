@@ -54,13 +54,20 @@ Full qualification restarted in session `7815` on unchanged commit `1a7ae757b`.
 The worktree is `starmap-catalog-update-controls-qualification`, on branch `codex/catalog-update-controls-qualification`.
 The retry uses the same complete verification command, test selection, and time limits.
 
-The retry passes twelve phases, including all 85 ordinary package results without test-cache reuse and 22 packages without tests.
-Its ordinary runtime package passes in 516.644 seconds. The complete race suite remains active in session `7815`.
-The verification record preserves the completed phase output. Later gates remain unverified.
+Before the race suite, the retry passed twelve phases, including all 85 ordinary package results without test-cache reuse.
+It also reports 22 packages without tests. Its ordinary runtime package passes in 516.644 seconds.
 
 At 20:51:43 UTC, the retry reports 43 passing race packages and no failure lines.
 The CLI application package passes in 350.617 seconds. The earlier disk-capacity failure affected this package.
-The proof archives the output snapshot. The complete race suite remains active.
+The proof archives this intermediate output snapshot.
+
+Full repository verification passed with exit status 0 at 21:31:39 UTC on September 12.
+All 41 phases pass on unchanged source `1a7ae757b`. Both ordinary and race suites report 85 passing packages and 22 packages without tests.
+The full runtime race package passes in 1,551.575 seconds within the unchanged 30-minute limit.
+
+Vet, the performance gate, container smoke, lint, policy checks, and all fifteen critical coverage gates pass.
+Generated documentation, whitespace, and CLI smoke checks pass. The prose check passes 1,672 files with zero diagnostics.
+The verification record archives the complete output, commands, coverage values, and terminal result. Earlier failed and interrupted runs remain preserved.
 
 The task check on unchanged Go source `5160414e4` passes all twelve selected subcases, including 42 race events across 21 commands.
 Eight subcases retain Starport consumer requirements.
@@ -68,5 +75,8 @@ Eight subcases retain Starport consumer requirements.
 Required review, native CI, and merge remain pending.
 A review preflight passes for both configured reviewers on source `1a7ae757b`.
 This dry run checks review readiness. It provides no review verdict or attestation.
+
+The actual required review runs in session `90137` after complete verification.
+Its profile selects Sol at xhigh effort and Opus at high effort. No review verdict is available yet.
 Shared/object collection and the coordinator decision remain part of the full CSP5 contract.
 A full-suite speed comparison requires terminal evidence.
