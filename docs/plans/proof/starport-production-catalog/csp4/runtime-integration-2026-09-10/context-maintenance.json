@@ -6,10 +6,10 @@
   "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 116,
-  "new_evidence_artifacts": 11839,
+  "new_evidence_artifacts": 11843,
   "new_commit_source_files": 832,
-  "resume_words": 281,
-  "next_action": "Poll corrected repository session 58714 on 5160414e4. Task session 9470 passed all twelve selected subcases. Original session 42639 remains active with its known author-formatting failure. Complete required checks, review, native CI, and local delivery. Shared/object collection and the pending coordinator choice remain required for CSP5 completion.",
+  "resume_words": 279,
+  "next_action": "Poll corrected repository session 58714 on 5160414e4. Task session 9470 passed all twelve selected subcases. Original session 42639 ended with exit status two after author serialization failed and runtime tests timed out. Complete required checks, review, native CI, and local delivery. Shared/object collection and the pending coordinator choice remain required for CSP5 completion.",
   "current_source": "5160414e4d113343cebb11397cb7d79e565e76be",
   "starmap_integration_source": null,
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
@@ -34,27 +34,6 @@
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
       "status": "RUNNING",
       "session_id": 58714
-    },
-    {
-      "command": [
-        "env",
-        "GOTOOLCHAIN=go1.26.6",
-        "GOWORK=off",
-        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
-        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
-        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-        "make",
-        "verify"
-      ],
-      "started_at": "2026-09-12T15:51:47.752929+00:00",
-      "base_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
-      "source_files": {},
-      "name": "qualification-inventory-repository-624d993a8-20260912",
-      "session_id": 42639,
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-      "status": "RUNNING_WITH_KNOWN_FAILURE",
-      "known_failed_test": "TestWriteYAMLRoundTripWithoutFilesystemWrites"
     }
   ],
   "current_source_binding_kind": "commit",

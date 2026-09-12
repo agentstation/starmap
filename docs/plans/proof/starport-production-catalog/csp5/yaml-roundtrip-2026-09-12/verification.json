@@ -17397,16 +17397,22 @@
       }
     }
   },
-  "observed_at": "2026-09-12T17:56:58.963668+00:00",
+  "observed_at": "2026-09-12T18:04:20.149400+00:00",
   "prior_repository_failure": {
     "session_id": 42639,
-    "status": "RUNNING_WITH_KNOWN_FAILURE",
+    "status": "FAIL",
     "source_commit": "58a06d7b11e71a2d1c8088c5700a1d985fa8e61e",
     "starting_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
     "failed_test": "TestWriteYAMLRoundTripWithoutFilesystemWrites",
     "failure": "emitted and saved bytes differ: authors.yaml",
-    "stdout_snapshot_artifact": "blobs/bfc6066c54aba36fb8e8ceba27f61ad5fab30302c58bec6af52dac11bf8ecc81.gz",
-    "limit": "The original run remains active. It cannot qualify the corrected source or count as a complete repository pass."
+    "stdout_snapshot_artifact": "blobs/6c515bfdc7c52ae945b2194082d7d8a3a0e4ae3e31e1d76be3d0ef9b0a04fd34.gz",
+    "limit": "The original run failed author serialization and exhausted the runtime package timeout. It provides no complete repository qualification credit.",
+    "exit_code": 2,
+    "finished_at": "2026-09-12T18:02:38.370574+00:00",
+    "stderr_artifact": "blobs/4e6266fca2443a160ae676dd3b433a8217d29f251b938f38b7607a86cfc1cf04.gz",
+    "terminal_record_artifact": "blobs/8e5b04d46beeef77db48eaf90797feaf5b676b85166b07be0f2115b0cd16d314.gz",
+    "runtime_timeout_artifact": "blobs/3274b2da3bbc90c270fae9f315d2ee8c93c29fe73dbbacbf7e0937522f0d57b1.gz",
+    "runtime_timeout_seconds": 1800.573
   },
   "limits": [
     "CSP5 remains incomplete. Corrected repository qualification, required review, native CI, merge, and shared/object collection remain required.",
@@ -17528,6 +17534,26 @@
       "path": "blobs/1ea112f7edf13c9efb58377a75ed8cfb36b904f8b374d1ef31ca178dd916f325.gz",
       "sha256": "6f99454a0712fa0207c23b4f5a78311545e577ef1ec9e00cc5646c973d487a88",
       "decoded_sha256": "1ea112f7edf13c9efb58377a75ed8cfb36b904f8b374d1ef31ca178dd916f325"
+    },
+    {
+      "path": "blobs/6c515bfdc7c52ae945b2194082d7d8a3a0e4ae3e31e1d76be3d0ef9b0a04fd34.gz",
+      "sha256": "515e1303702c89858fa798a64e01e662d98b561a471e451871ea051f4ce8042d",
+      "decoded_sha256": "6c515bfdc7c52ae945b2194082d7d8a3a0e4ae3e31e1d76be3d0ef9b0a04fd34"
+    },
+    {
+      "path": "blobs/4e6266fca2443a160ae676dd3b433a8217d29f251b938f38b7607a86cfc1cf04.gz",
+      "sha256": "4b6a36ffb31e71f316972252a3b8e5e0b1dc42c3ed8ceead3ccd4bd09091b615",
+      "decoded_sha256": "4e6266fca2443a160ae676dd3b433a8217d29f251b938f38b7607a86cfc1cf04"
+    },
+    {
+      "path": "blobs/8e5b04d46beeef77db48eaf90797feaf5b676b85166b07be0f2115b0cd16d314.gz",
+      "sha256": "c149911114535dda74081e72a503956178f21f78d6e482ffaf409a12e4783c7b",
+      "decoded_sha256": "8e5b04d46beeef77db48eaf90797feaf5b676b85166b07be0f2115b0cd16d314"
+    },
+    {
+      "path": "blobs/3274b2da3bbc90c270fae9f315d2ee8c93c29fe73dbbacbf7e0937522f0d57b1.gz",
+      "sha256": "12a21e273b4fda3ce5542fc040c6b23216154ca5b8d9f5b0b9b1b6469db32ab9",
+      "decoded_sha256": "3274b2da3bbc90c270fae9f315d2ee8c93c29fe73dbbacbf7e0937522f0d57b1"
     }
   ],
   "running_checks": [
@@ -17550,27 +17576,6 @@
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
       "status": "RUNNING",
       "session_id": 58714
-    },
-    {
-      "command": [
-        "env",
-        "GOTOOLCHAIN=go1.26.6",
-        "GOWORK=off",
-        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
-        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
-        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-        "make",
-        "verify"
-      ],
-      "started_at": "2026-09-12T15:51:47.752929+00:00",
-      "base_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
-      "source_files": {},
-      "name": "qualification-inventory-repository-624d993a8-20260912",
-      "session_id": 42639,
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-      "status": "RUNNING_WITH_KNOWN_FAILURE",
-      "known_failed_test": "TestWriteYAMLRoundTripWithoutFilesystemWrites"
     }
   ]
 }
