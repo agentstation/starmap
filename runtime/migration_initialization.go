@@ -130,15 +130,18 @@ func (m *directoryMigration) initializeStage(ctx context.Context, parent *os.Roo
 		return err
 	}
 	// Recheck content after the last checkpoint before publishing the bound stage.
-	root, err = parent.OpenRoot(stage)
+	if err := migrationReached(checkpoint, "initialization-verify", filepath.Join(parent.Name(), stage)); err != nil {
+		return err
+	}
+	checked, err := parent.OpenRoot(stage)
 	if err != nil {
 		return err
 	}
-	if err := verifyMigrationInitialization(ctx, root, encoded, owner, true); err != nil {
-		_ = root.Close()
+	if err := verifyMigrationInitialization(ctx, checked, encoded, owner, true); err != nil {
+		_ = checked.Close()
 		return err
 	}
-	if err := root.Close(); err != nil {
+	if err := checked.Close(); err != nil {
 		return err
 	}
 	if err := ctx.Err(); err != nil {

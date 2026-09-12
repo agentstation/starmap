@@ -145,7 +145,7 @@ func TestMigrationDirectoryPublicationNeverReplaces(t *testing.T) {
 
 func TestStageDirectoryMigrationRecoversProcessExit(t *testing.T) {
 	t.Parallel()
-	for _, stop := range []string{"initialization-created", "initialization-intent", "initialization-owner", "initialization-publish", "initialization-published", "stage-ready", "copy-chunk", "file-published", "partial-removed", "copied", "verified"} {
+	for _, stop := range []string{"initialization-created", "initialization-intent", "initialization-owner", "initialization-publish", "initialization-verify", "initialization-published", "stage-ready", "copy-chunk", "file-published", "partial-removed", "copied", "verified"} {
 		t.Run(stop, func(t *testing.T) {
 			t.Parallel()
 			request := directoryMigrationRequestFixture(t)
@@ -568,5 +568,27 @@ func TestMigrationInitializationExcludesActiveWriter(t *testing.T) {
 	}
 	if err := <-done; err != nil {
 		t.Fatal("original writer did not complete", err)
+	}
+}
+
+func TestMigrationInitializationPreservesMovedStage(t *testing.T) {
+	t.Parallel()
+	request := directoryMigrationRequestFixture(t)
+	var retained string
+	_, err := stageDirectoryMigration(t.Context(), request, func(event, path string) error {
+		if event == "initialization-verify" {
+			retained = path + "-retained"
+			return os.Rename(path, retained)
+		}
+		return nil
+	})
+	if !stderrors.Is(err, os.ErrNotExist) {
+		t.Fatalf("moved initialization stage = %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(retained, migrationPendingName)); err != nil {
+		t.Fatal("initialization did not preserve the moved stage", err)
+	}
+	if _, err := os.Stat(request.TargetDirectory); !os.IsNotExist(err) {
+		t.Fatal("failed initialization published the target", err)
 	}
 }
