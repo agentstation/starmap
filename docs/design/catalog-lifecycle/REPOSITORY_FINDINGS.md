@@ -2652,3 +2652,21 @@ Final policy, prose, and compilation checks pass. Native Linux and Windows execu
 A concurrent goago migration remains outside this catalog commit. Its additional policy check passes, and the proof preserves both tooling states.
 
 Unknown enclosures after journal removal remain preserved. Temporary records, legacy relocation, other staging, retention, compaction, and full CSP5 qualification remain open.
+
+## Temporary publication record recovery: 2026-09-12
+
+Starmap `2a4454fd` adds durable ownership for temporary projection markers and replacement journals.
+Version 3 preparation receipts bind each temporary file's destination, basename, native identity, contents, size, and access metadata.
+The publisher records empty files and returned partial or complete writes. It checks the original receipt before publication.
+
+Recovery removes only the recorded temporary name when its identity, contents, and access still match.
+It preserves unknown files, changed state, and incomplete receipts. A missing temporary file permits journal cleanup to resume.
+Cleanup does not select the published destination. Older preparation and candidate journals retain their original contracts.
+
+The [temporary-record proof](../../plans/proof/starport-production-catalog/csp5/record-journal-2026-09-12/verification.json) preserves four original crash failures.
+The expanded tests cover twelve process-exit scenarios, changed ownership, malformed receipts, interrupted cleanup, and version compatibility.
+The focused race run passes 80 events. The full suite passes 347 race test events without failures or skips.
+
+Policy, prose, and Linux/Windows compilation checks pass. Native execution remains subject to the required platform checks.
+The proof archives the concurrent goago module inputs, which remain outside the catalog commit.
+Legacy relocation, other staging, retention, compaction, and full CSP5 qualification remain open.

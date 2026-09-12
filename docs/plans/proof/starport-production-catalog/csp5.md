@@ -548,13 +548,40 @@ The additional goago check passes under the migrated tooling. Full task qualific
 Incomplete or unrecorded ownership remains preserved, including empty enclosures after journal removal.
 Temporary records, legacy relocation, other staging, retention, compaction, full task checks, review, native CI, and merge remain open.
 
+## Durable temporary publication records
+
+The [temporary-record proof](csp5/record-journal-2026-09-12/verification.json) binds commit `2a4454fd` to crash failures and final checks.
+The original regression leaves temporary files after four crash scenarios. Five failing events include their parent, while two scenarios already pass.
+The scenarios cover prepared projection markers, prepared replacement journals, published replacement hard links, and prepared replacement markers.
+
+Version 3 preparation journals record each temporary file's destination, basename, identity, contents, size, and access metadata.
+The basename binds to the preparation directory's unique suffix. Record stages contain no catalog trees or candidate handoff.
+The publisher records empty files and returned partial or complete writes before publication.
+It verifies the original journal receipt before replacing or linking the destination.
+
+Recovery removes only temporary files that match their receipts. Changed files, unknown entries, and incomplete ownership remain preserved.
+A missing temporary name permits cleanup after rename or interrupted removal. Cleanup never selects the published destination.
+Projection, journaled replacement, replacement recovery, and legacy projection supply their checked workspace writer.
+Versions 1 and 2 remain readable within their original contracts.
+
+Twelve process-exit scenarios cover empty, partial, prepared, and published records across all three publication flows.
+Additional tests cover changed ownership, malformed receipts, interrupted cleanup, equivalent-JSON journal edits, and older candidate journals.
+The focused race run passes 80 events, including existing active-writer, scan-limit, and cancellation contracts.
+The final full suite passes 347 race test events without failures or skips.
+
+Go policy, source prose, and Linux/Windows compilation checks pass. Compilation does not qualify native execution.
+These checks use the observed concurrent goago module migration. Its five files remain outside the catalog commit, and the proof archives their inputs.
+Final task qualification must use the final committed module graph.
+
+Legacy relocation, evidence and discovery staging, retention, compaction, twelve mapped subcases, full verification, review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Implement durable temporary-record recovery. Preserve unknown enclosures after journal removal. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
+Complete durable legacy relocation recovery. Preserve unknown enclosures after journal removal. Then complete retained-evidence and discovery recovery, followed by generation retention.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
