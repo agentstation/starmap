@@ -717,8 +717,9 @@ Keep the writer lock for the lifetime of the baseline directory. Preserve journa
 
 ## Provider reset retention
 
-`Runtime.UpdateObservations` accepts optional `ProviderObservationReset` scopes.
-Each scope names a canonical provider and, for scoped acquisition, a binding identity and revision.
+`Runtime.UpdateObservations` accepts optional `ObservationReset` scopes.
+Provider scopes name a provider and, for scoped acquisition, a binding identity and revision.
+Metadata scopes select a models.dev source and optionally one original provider identity.
 Empty binding fields select legacy unscoped observations. Each scope requires complete successful replacement evidence.
 Failed preparation, cancellation, or rejected publication preserves the accepted reset history.
 
@@ -728,14 +729,16 @@ Earlier scheduled provider files enter a separate history batch before the first
 
 Replay selects records within original observations. It preserves the baseline, unrelated providers, peer binding scopes, and original receipts.
 Unchanged projected fields from a cleared observation cannot restore its provider facts. Actual operator edits keep local field authority.
-General source resets and complete projection membership rules remain separate work.
+Replay also preserves exclusions for metadata resets and their original provider aliases.
 
-Manual heads and batches now use version 2. Readers still accept version 1 records without resets.
-Version 1 batches cannot contain reset scopes. New head versions cause older readers to refuse the history.
+Manual heads and batches use version 4. Readers also accept versions 1, 2, and 3.
+Version 1 batches cannot contain resets. Version 2 batches permit provider resets, and version 3 also permits metadata resets.
+Version 4 adds history checkpoints. New head versions cause older readers to refuse the history.
 Recovery validates reset scopes and matching replacement receipts before applying any retained inputs.
 
-The component limits a history to 4,096 batches and 64 MiB of encoded observations and reset scopes.
-One reset request permits at most 4,096 scopes. Production compaction, native format qualification, and CLI/HTTP integration remain open.
+A history permits at most 4,096 linked records and 64 MiB of retained encoded data.
+A checkpoint occupies one linked record and retains at most 65,536 ordered observation references.
+One reset request permits at most 4,096 scopes. Complete compaction and native format qualification remain open under CSP5.
 
 ## Interrupted runtime migration
 
@@ -1003,6 +1006,23 @@ It combines retained provider observations into one replay batch without changin
 An omitted offering therefore keeps the original inventory that contains it.
 
 The publication transaction installs the compacted history only after catalog acceptance. Failure preserves the accepted history.
-Incoming resets, existing resets, and metadata histories keep their replay boundaries. They still require further compaction support under CSP5.
+Other histories use bounded checkpoints that share payload bytes and preserve original replay boundaries.
 If necessary evidence still exceeds a history limit, publication returns a conflict and preserves the accepted catalog.
 Compaction does not delete immutable observation files or catalog generations. Their collection requires the separate retention contract.
+
+### History checkpoints
+
+When another acquisition would exceed a linked-record or byte limit, the runtime can replace the proposed history with one version 4 checkpoint.
+The checkpoint stores each distinct payload once. Separate tables retain original receipts and the ordered observations and reset scopes of every batch.
+Sharing payload bytes does not replace source identities, split aggregate receipts, or discard reset exclusions.
+Preview and publication use the same history preparation. Only an accepted catalog transaction installs the checkpoint as the retained head.
+
+A checkpoint has no parent and cannot contain ordinary batch fields. Later ordinary batches can reference it as their parent.
+Recovery validates payloads, receipts, reference indices, reset scopes, and replacement evidence before applying retained inputs.
+Duplicate or unused table entries, invalid indices, and incompatible record versions cause refusal.
+The 64 MiB encoded limit and 65,536-reference limit bound each checkpoint. History loading also accounts for later linked records.
+
+A checkpoint preserves the original payloads needed for replay against a replacement baseline or changed source configuration.
+It does not collect its predecessor files or catalog generations. Collection must preserve accepted references, pending publication, pins, and active readers.
+If distinct required data cannot fit within the limits, publication preserves the accepted head and returns a conflict.
+The runtime still needs to reduce superseded distinct inventories. Full CSP5 qualification remains open.

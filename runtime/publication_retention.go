@@ -88,9 +88,6 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 	if manualRequested && len(manual) == 0 && source == nil && len(selected) == 0 {
 		return r.State(), nil
 	}
-	if len(manual) != 0 {
-		candidate.manual = &manualBatch{parent: candidate.manual, observations: manual, resets: resets}
-	}
 	state, err := candidate.build(ctx, candidate.embedded)
 	if err != nil {
 		return starmap.CatalogState{}, err

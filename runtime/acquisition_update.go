@@ -117,6 +117,5 @@ func (r *Runtime) PreviewAcquisition(ctx context.Context, prepare func(context.C
 	if len(observations) == 0 {
 		return inputs.Current, nil
 	}
-	candidate.manual = &manualBatch{parent: candidate.manual, observations: observations, resets: resets}
 	return candidate.build(ctx, candidate.embedded)
 }

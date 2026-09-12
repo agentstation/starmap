@@ -63,10 +63,9 @@ func TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit(t *tes
 	baseline := starmap.CatalogState{GenerationID: "baseline", Catalog: manualProviderObservation(t, 100, at).Catalog, GeneratedAt: at.Add(-time.Minute)}
 	layers := layerSet{manual: history, embedded: baseline}
 	selected, err := layers.prepareManualInputs(t.Context(), input, nil, nil)
-	if err != nil {
+	if err != nil || len(selected) != 1 {
 		t.Fatalf("repeated inventories blocked the next acquisition: %v", err)
 	}
-	layers.manual = &manualBatch{parent: layers.manual, observations: selected}
 	if count := len(manualBatches(layers.manual)); count >= maxManualHistoryBatches {
 		t.Fatalf("compaction retained %d batches", count)
 	}
@@ -235,7 +234,7 @@ func TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit(t *test
 	if err != nil || len(selected) != 1 {
 		t.Fatalf("repeated payload bytes blocked acquisition: %v", err)
 	}
-	if len(manualBatches(layers.manual)) != 1 || len(layers.manual.observations) != 2 {
+	if len(manualBatches(layers.manual)) != 2 || len(layers.manual.parent.observations) != 2 {
 		t.Fatal("compaction retained redundant payload copies")
 	}
 	if len(manualBatches(history)) <= 1 {
