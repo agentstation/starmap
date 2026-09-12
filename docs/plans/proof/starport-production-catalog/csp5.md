@@ -742,6 +742,38 @@ Five concurrent tooling edits remain outside this commit. Final task qualificati
 Checkpoints do not retire distinct superseded inventories or collect predecessor files and catalog generations.
 CSP5 retains those requirements, twelve mapped subcases, full verification, review, native CI, and merge.
 
+## Catalog serialization and immutable provenance: 2026-09-12
+
+Local commit `c8ec797a` caches validated immutable payloads and removes repeated normalization for built-in JSON values.
+The [runtime cost proof](csp5/runtime-cost-2026-09-12/verification.json) records 2,120 passing race test events across four packages, with no failures or skips.
+The separate final import/restart profile passes. Policy and prose checks pass.
+
+Each catalog retains at most one validated payload within the existing 32 MiB bound.
+Warm encoding returns one caller-owned byte slice. Mutable builders encode their current state.
+Tests cover simultaneous first encodings, returned-byte mutation, schema preservation, exact numeric values, unsupported data, and cycles.
+
+Cache review exposed shared nested provenance values. Immutable construction now snapshots those values and rejection records.
+Reads return independent nested values. The private construction builder supplies independent entry slices, which avoid two redundant table copies.
+
+Producer changes and caller changes cannot alter published provenance or make it disagree with the cached payload.
+Mutable builder provenance retains its prior mutation semantics. These checks prove the immutable catalog boundary.
+
+The first snapshot change exposed inconsistent typed YAML and restored JSON comparisons for reasoning and verbosity records.
+The focused semantic test also reproduced metadata and pricing differences. Canonical comparison now uses JSON and retains field-scoped YAML aliases.
+Control-record tests preserve original receipts and enforce refusal after both JSON payload and YAML workspace reloads.
+The proof retains every failed allocation, ownership, receipt, and prose check with its exact source.
+
+The import/restart profiles estimate 6,092,786,599 allocated bytes before the change and 5,066,953,937 bytes afterward.
+These sampled totals measure cumulative allocation during one test. They do not measure resident memory, production request allocations, or Starport latency.
+Intermediate profiles remain separate from the final source. Some runs overlapped unrelated checks, so their wall times do not establish a speed guarantee.
+
+The minimum-toolchain selection passes 49 events before the final private table-copy removal.
+Full native and minimum-toolchain qualification remains open. Five concurrent tooling changes remain outside this commit.
+Final task qualification must use the committed module graph.
+
+Distinct-inventory retirement, generation and observation-file collection, twelve mapped subcases, full verification, review, native CI, and merge remain open.
+The older required runtime suite remains failed historical evidence. CSP5 remains unpublished until its complete contract passes.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.

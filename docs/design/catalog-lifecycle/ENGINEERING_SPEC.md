@@ -3373,3 +3373,19 @@ Policy, prose, and Linux/Windows compilation pass. Native execution and full tas
 Checkpoints do not retire distinct superseded inventories or collect predecessor files and catalog generations.
 Required distinct data can still exceed capacity, which preserves the accepted catalog and returns a conflict.
 CSP5 retains safe compaction, collection, and its complete acceptance contract.
+
+## Catalog serialization and immutable provenance: 2026-09-12
+
+Local Starmap commit `c8ec797a` implements the following changes.
+
+Immutable catalogs cache one validated encoded payload within the existing 32 MiB limit. Warm encoding returns one caller-owned byte slice.
+Construction snapshots nested provenance and rejection records. Read methods return independent values, so published facts cannot diverge from cached bytes.
+Typed and restored evidence use canonical JSON comparison with existing field-scoped YAML aliases.
+Original control-record receipts and policy refusal survive both payload and workspace reloads.
+
+The [runtime cost proof](../../plans/proof/starport-production-catalog/csp5/runtime-cost-2026-09-12/verification.json) records 2,120 passing race test events across four packages.
+Policy and prose checks pass. The proof preserves the original failures and all intermediate source snapshots.
+The import/restart profiles estimate 6,092,786,599 allocated bytes before the change and 5,066,953,937 bytes afterward.
+These sampled totals are cumulative allocation, not resident memory or Starport request overhead.
+
+Distinct-inventory retirement, collection, full task verification, required review, native CI, and merge remain open.
