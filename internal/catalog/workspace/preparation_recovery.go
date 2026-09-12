@@ -158,7 +158,7 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 		}
 		if i == 0 {
 			h := event.Header
-			if h == nil || event.Handoff != nil || event.Tree != "" || event.Entry != nil || event.Identity != "" || (h.Version != 1 && h.Version != preparationJournalVersion) ||
+			if h == nil || event.Handoff != nil || event.Record != nil || event.Tree != "" || event.Entry != nil || event.Identity != "" || h.Version < 1 || h.Version > preparationJournalVersion ||
 				h.Target != target || h.Stage != stage.name || h.LockIdentity != lock || h.JournalIdentity != identity ||
 				!replacementChildName(h.Stage) || !strings.HasPrefix(h.Stage, "."+filepath.Base(target)+".preparing-") || len(h.Enclosure.Entries) != 1 {
 				return invalidReplacement("preparation_header")
@@ -177,8 +177,21 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 		if stage.handoff != nil {
 			return invalidReplacement("preparation_handoff_suffix")
 		}
+		if event.Record != nil {
+			if version < 3 || event.Header != nil || event.Handoff != nil || event.Entry != nil || event.Tree != "" || event.Identity != "" || len(stage.trees) != 0 {
+				return invalidReplacement("preparation_record")
+			}
+			if err := event.Record.validate(stage, target); err != nil {
+				return err
+			}
+			stage.record = event.Record
+			continue
+		}
+		if stage.record != nil {
+			return invalidReplacement("preparation_record_suffix")
+		}
 		if event.Handoff != nil {
-			if version != preparationJournalVersion || event.Header != nil || event.Entry != nil || event.Tree != "" || event.Identity != "" {
+			if version < 2 || event.Header != nil || event.Entry != nil || event.Tree != "" || event.Identity != "" {
 				return invalidReplacement("preparation_handoff")
 			}
 			if err := event.Handoff.bind(stage, target); err != nil {

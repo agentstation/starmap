@@ -9,14 +9,17 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/agentstation/starmap/internal/filepublish"
 )
 
 type workspaceRecordWriter struct {
+	writer        *workspaceWriter
 	checkWriter   func() error
 	beforePublish func(string) error
 	afterPublish  func(string) error
+	afterRecord   func(string) error
 	writeBytes    func(*os.File, []byte) (int, error)
 }
 
@@ -54,7 +57,18 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 	if !options.replace && before.identity != "" {
 		return workspaceRecordState{}, replacementConflict(name, "record destination already exists")
 	}
-	temporary := "." + name + "." + rand.Text()
+	stage, err := h.prepareRecord(ctx, root, name)
+	if err != nil {
+		return workspaceRecordState{}, err
+	}
+	if stage != nil {
+		defer func() { resultErr = stderrors.Join(resultErr, stage.close(ctx)) }()
+	}
+	suffix := rand.Text()
+	if stage != nil {
+		suffix = strings.TrimPrefix(stage.name, "."+filepath.Base(h.writer.target)+".preparing-")
+	}
+	temporary := "." + name + "." + suffix
 	file, err := createStagedFile(root, temporary)
 	if err != nil {
 		return workspaceRecordState{}, err
@@ -67,7 +81,10 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 	defer func() {
 		cleanupCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), workspaceCleanupTimeout)
 		defer cancel()
-		resultErr = stderrors.Join(resultErr, owned.cleanup(cleanupCtx, root), file.Close())
+		if stage == nil {
+			resultErr = stderrors.Join(resultErr, owned.cleanup(cleanupCtx, root))
+		}
+		resultErr = stderrors.Join(resultErr, file.Close())
 	}()
 	if options.normalizeMode {
 		if err := file.Chmod(fileMode); err != nil {
@@ -79,12 +96,18 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 		}
 		owned = normalized
 	}
+	if err := h.persistRecord(ctx, stage, root, name, file, owned); err != nil {
+		return workspaceRecordState{}, err
+	}
 	n, err := h.write(file, data)
 	if n < 0 || n > len(data) {
 		return workspaceRecordState{}, invalidReplacement("record_write_count")
 	}
 	digest := sha256.Sum256(data[:n])
 	owned.entry.Size, owned.entry.SHA256 = int64(n), hex.EncodeToString(digest[:])
+	if recordErr := h.persistRecord(ctx, stage, root, name, file, owned); recordErr != nil {
+		return workspaceRecordState{}, stderrors.Join(err, recordErr)
+	}
 	if err != nil {
 		return workspaceRecordState{}, err
 	}
@@ -104,6 +127,11 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 	}
 	if err := owned.check(ctx, root); err != nil {
 		return workspaceRecordState{}, err
+	}
+	if stage != nil {
+		if err := stage.checkChildren(ctx); err != nil {
+			return workspaceRecordState{}, err
+		}
 	}
 	current, err := optionalWorkspaceRecord(ctx, root, name)
 	if err != nil {

@@ -84,6 +84,9 @@ func (s *workspaceStage) retire(ctx context.Context, retainJournal bool) error {
 	} else if err := s.cleanupCandidate(cleanup); err != nil {
 		return err
 	}
+	if err := s.cleanupRecord(cleanup); err != nil {
+		return err
+	}
 	names := make([]string, 0, len(s.trees))
 	for name := range s.trees {
 		names = append(names, name)

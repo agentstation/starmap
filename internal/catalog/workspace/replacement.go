@@ -118,7 +118,7 @@ func recoverReplacement(ctx context.Context, target string, writer *workspaceWri
 	if err != nil {
 		return false, err
 	}
-	_, err = advanceReplacement(ctx, root, record, replacementHooks{writer: writer, recordWrites: workspaceRecordWriter{checkWriter: writer.check}})
+	_, err = advanceReplacement(ctx, root, record, replacementHooks{writer: writer, recordWrites: workspaceRecordWriter{writer: writer, checkWriter: writer.check}})
 	return true, err
 }
 

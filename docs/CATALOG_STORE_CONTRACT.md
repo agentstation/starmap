@@ -883,7 +883,7 @@ Each tree retains the existing 10,000-entry, 256 MiB content, and 1 MiB path-nam
 The parent scan stops at 4,096 entries before cleanup starts. These records contain no provider credentials.
 
 Version 1 records cover entries inside private preparation. Version 2 also records the candidate handoff described below.
-Temporary publication records and legacy relocation still require durable recovery and qualification.
+Version 3 also owns temporary publication records, as described below. Legacy relocation still requires durable recovery and qualification.
 Native Linux and Windows execution remains subject to the task's verification gate.
 
 
@@ -905,4 +905,24 @@ Version 1 journals remain readable for private preparation recovery and cannot a
 
 A process exit before a complete ownership receipt preserves uncertain state.
 A crash after journal removal can leave an unrecorded empty enclosure, which remains preserved.
-Temporary publication records, legacy relocation, other stages, retention, compaction, and full task qualification remain open.
+Legacy relocation, other stages, retention, compaction, and full task qualification remain open.
+
+### Durable temporary publication records
+
+Version 3 preparation journals can own one temporary projection marker or replacement journal.
+Each receipt binds the destination, temporary basename, native identity, content digest, byte count, and access metadata.
+The temporary basename includes the preparation directory's unique suffix. Receipts cannot select the destination or an unrelated file for cleanup.
+Record stages contain no catalog trees or candidate handoff.
+
+The publisher records the empty file and each completed write, including a returned partial write.
+File contents and the parent directory flush before the receipt. The publisher verifies the unchanged receipt before replacing or linking the destination.
+An interrupted write without a complete receipt remains uncertain and requires explicit recovery.
+
+Recovery checks the retained journal, enclosure, and writer identities before removing a temporary file.
+The file must match the recorded identity, contents, and access settings. Changed files and unknown entries remain preserved with an error.
+A missing temporary file permits journal cleanup to finish after an interrupted rename or removal.
+Unlinking a recorded temporary name does not remove its published destination.
+
+Projection, journaled replacement, replacement recovery, and legacy projection use the same record owner.
+Versions 1 and 2 remain readable within their original preparation and candidate contracts. They cannot authorize temporary-record cleanup.
+The existing journal-size and parent-scan limits apply. Full task and native platform qualification remain required.

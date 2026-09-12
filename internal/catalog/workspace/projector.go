@@ -200,6 +200,7 @@ func (p projector) project(
 	defer writer.close()
 	p.writer = writer
 	p.recordWrites.checkWriter = writer.check
+	p.recordWrites.writer = writer
 	receipt, _, err := p.projectLocked(ctx, target, catalog, identity, expectation)
 	return receipt, err
 }
@@ -443,6 +444,7 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	defer writer.close()
 	p.writer = writer
 	p.recordWrites.checkWriter = writer.check
+	p.recordWrites.writer = writer
 	recovered, err := recoverWorkspace(ctx, target, p.writer)
 	if err != nil {
 		return RepairResult{}, err

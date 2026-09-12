@@ -27,9 +27,43 @@ type workspaceStage struct {
 	trees     map[string]*preparationTree
 	journal   *preparationJournal
 	handoff   *preparationHandoff
+	record    *preparationRecord
 }
 
 func prepareWorkspaceStage(ctx context.Context, target string, writer *workspaceWriter) (result *workspaceStage, resultErr error) {
+	s, err := prepareWorkspaceEnclosure(ctx, target, writer)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		if resultErr != nil {
+			resultErr = stderrors.Join(resultErr, s.close(ctx))
+		}
+	}()
+	if _, err := s.createTree(ctx, "render"); err != nil {
+		return nil, err
+	}
+	// The empty candidate inherits the selected parent before entering private staging.
+	if err := s.parent.Mkdir(s.candidate, directoryMode); err != nil {
+		return nil, err
+	}
+	empty, err := snapshotTreeAt(ctx, s.parent, s.candidate)
+	if err != nil {
+		return nil, err
+	}
+	if len(empty.Entries) != 1 {
+		return nil, replacementConflict(s.candidate, "new candidate is not empty")
+	}
+	if err := filepublish.DirectoryBetweenRootsNoReplace(s.parent, s.candidate, s.private, "tree"); err != nil {
+		return nil, stderrors.Join(err, cleanupWorkspaceTreeAt(ctx, s.parent, s.candidate, empty))
+	}
+	if _, err := s.trackTree("tree"); err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+func prepareWorkspaceEnclosure(ctx context.Context, target string, writer *workspaceWriter) (result *workspaceStage, resultErr error) {
 	if err := writer.check(); err != nil {
 		return nil, err
 	}
@@ -88,26 +122,6 @@ func prepareWorkspaceStage(ctx context.Context, target string, writer *workspace
 	}
 	s.journal, err = newPreparationJournal(s, writer)
 	if err != nil {
-		return nil, err
-	}
-	if _, err := s.createTree(ctx, "render"); err != nil {
-		return nil, err
-	}
-	// The empty candidate inherits the selected parent before entering private staging.
-	if err := parent.Mkdir(s.candidate, directoryMode); err != nil {
-		return nil, err
-	}
-	empty, err := snapshotTreeAt(ctx, parent, s.candidate)
-	if err != nil {
-		return nil, err
-	}
-	if len(empty.Entries) != 1 {
-		return nil, replacementConflict(s.candidate, "new candidate is not empty")
-	}
-	if err := filepublish.DirectoryBetweenRootsNoReplace(parent, s.candidate, s.private, "tree"); err != nil {
-		return nil, stderrors.Join(err, cleanupWorkspaceTreeAt(ctx, parent, s.candidate, empty))
-	}
-	if _, err := s.trackTree("tree"); err != nil {
 		return nil, err
 	}
 	complete = true

@@ -275,7 +275,7 @@ func TestPreparationRecoveryReadsVersionOne(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	data = bytes.Replace(data, []byte(`"version":2`), []byte(`"version":1`), 1)
+	data = bytes.Replace(data, []byte(fmt.Sprintf(`"version":%d`, preparationJournalVersion)), []byte(`"version":1`), 1)
 	if err := os.WriteFile(path, data, fileMode); err != nil {
 		t.Fatal(err)
 	}

@@ -3,6 +3,7 @@ package workspace
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -172,7 +173,7 @@ func TestCandidateRecoveryRejectsInvalidHandoff(t *testing.T) {
 				lines = append(lines, lines[len(lines)-1])
 			}
 			if change == "version-downgrade" {
-				lines[0] = bytes.Replace(lines[0], []byte(`"version":2`), []byte(`"version":1`), 1)
+				lines[0] = bytes.Replace(lines[0], []byte(fmt.Sprintf(`"version":%d`, preparationJournalVersion)), []byte(`"version":1`), 1)
 			}
 			data = append(bytes.Join(lines, []byte{'\n'}), '\n')
 			if err := os.WriteFile(path, data, fileMode); err != nil {
