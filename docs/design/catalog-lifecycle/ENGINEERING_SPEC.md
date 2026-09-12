@@ -2724,6 +2724,14 @@ The [child identity proof](../../plans/proof/starport-production-catalog/csp5/ba
 Cleanup also verifies the backup root's path binding before each child removal. Version 1 and 2 journals return `workspace_replacement.version` without changing workspace state.
 Preserve those journals and their workspace, candidate, and backup for explicit recovery. Matching content and access cannot prove missing child ownership.
 
+Commit `092bf7ce` binds workspace publication and replacement recovery to a checked writer lease.
+The lease compares the existing lock path, held file, and current path. Directory moves, record publication, cleanup, and completion recheck that lease.
+Version 3 journals require `lock_identity`. A missing or mismatched writer identity preserves the journal and its recovery state.
+
+The [writer identity proof](../../plans/proof/starport-production-catalog/csp5/workspace-writer-2026-09-12/verification.json) records 257 passing race test events.
+The writer retains its lock handle through the operation and leaves the stable lock file after release.
+The baseline exporter provides the durable owner-record pattern. Workspace preparation must bind its future journal to this checked writer identity.
+
 Preparation and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.
 
 Starport must qualify its own composition under CSP8.

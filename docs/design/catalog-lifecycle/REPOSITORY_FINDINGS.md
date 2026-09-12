@@ -2599,3 +2599,18 @@ They also refuse invalid identity inventories before workspace changes. Each map
 All 245 workspace and migration CLI race test events pass without skips. Process-exit recovery passes at six replacement phases.
 ago, prose, and Linux/Windows compilation checks pass. Native execution and full CSP5 qualification remain open.
 Preparation ownership still lives in memory. Persistent preparation and relocation recovery remain the next work, with retention and compaction.
+
+## Workspace writer binding: 2026-09-12
+
+The [writer identity proof](../../plans/proof/starport-production-catalog/csp5/workspace-writer-2026-09-12/verification.json) records a prerequisite for persistent preparation recovery.
+Both native-directory and journal publication previously continued after another process acquired a replacement writer lock.
+Starmap `092bf7ce` now retains a checked lock handle, path binding, and native identity through workspace operations.
+
+Publication, directory moves, backup cleanup, and journal completion recheck the held writer. Version 3 journals also require `lock_identity`.
+Recovery preserves records when the current lock differs. Tests replace the lock at all six journal phases and verify that no later changes occur.
+
+All 257 workspace and migration CLI race test events pass without skips. ago and the final prose check pass.
+Linux and Windows test binaries compile. Windows can refuse to rename the open lock. Its conditional test path remains unqualified until native CI.
+
+Preparation ownership remains in memory. The next step must bind a durable preparation journal to the checked writer identity.
+Legacy relocation recovery, other staging, retention, compaction, full CSP5 acceptance, review, and merge remain open.

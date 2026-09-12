@@ -20,6 +20,7 @@ Commit `64f905db` preserves workspace record ownership and bounds marker reads.
 
 Commit `e2cbbc6b` binds journal completion to accepted file state.
 Commit `e7bfdf67` persists replacement child identities and preserves legacy journals.
+Commit `092bf7ce` binds publication and recovery to the held writer.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -470,13 +471,35 @@ Final ago, prose, and Linux/Windows compilation checks pass. Native runtime qual
 Journal acceptance receipts remain in memory. Child ownership now persists in version 3 journals.
 Preparation and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full task qualification.
 
+## Workspace writer identity
+
+The [writer identity proof](csp5/workspace-writer-2026-09-12/verification.json) binds commit `092bf7ce` to original failures and final checks.
+Both native-directory and journal publication previously continued after another writer acquired a replacement lock file.
+Two failing scenarios and their parent produce three failed events. Preparation recovery also needs this writer identity check.
+
+Writers now retain a checked handle and native identity through projection, repair, and legacy layout migration.
+The lease checks the existing path, locked file, and current path. Failed attempts close their handles, and release preserves the stable lock file.
+Directory moves, record publication, journal phases, backup cleanup, and journal completion recheck the held writer before further changes.
+
+Version 3 replacement journals require `lock_identity` as well as child identities. Recovery preserves records whose writer identity is absent or does not match.
+Direct protocol tests hold a real writer lease. Tests also verify exclusive ownership and stable identity across lease release.
+Windows tests allow a native permission refusal to rename the open lock and then require normal completion. That branch still requires native CI.
+
+All 255 workspace and two migration CLI race test events pass without skips. The focused boundary run passes 18 events.
+The earlier 17-event run includes process-exit recovery at six replacement phases.
+Final ago, prose, and Linux/Windows compilation checks pass. The first source prose check failed on one nominalization, with both versions preserved.
+
+The baseline exporter supplies the stable-lock recovery pattern. Workspace preparation still has no durable ownership journal.
+Connect that journal to the checked writer identity before qualifying preparation recovery.
+Other persistent recovery, retention, compaction, full task checks, review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Add persistent preparation and candidate recovery with active-writer exclusion. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
+Bind a durable preparation journal to the checked writer identity. Add preparation and candidate recovery with active-writer exclusion. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

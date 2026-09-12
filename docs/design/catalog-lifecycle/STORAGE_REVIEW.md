@@ -587,3 +587,13 @@ The existing 4 MiB journal limit covers the new identity maps. This change adds 
 
 The [child identity proof](../../plans/proof/starport-production-catalog/csp5/backup-children-2026-09-12/verification.json) records 245 passing race test events.
 Persistent preparation and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.
+
+## Stable workspace writer identity: 2026-09-12
+
+Starmap `092bf7ce` retains a checked writer handle and native identity through workspace publication and recovery.
+Version 3 replacement journals record `lock_identity`. Recovery preserves a journal when its writer identity is absent or differs from the current held lock.
+Directory moves, marker and journal publication, backup cleanup, and completion recheck the writer lease.
+
+The [writer identity proof](../../plans/proof/starport-production-catalog/csp5/workspace-writer-2026-09-12/verification.json) records 257 passing race test events.
+Release preserves the stable lock file. No file location or storage service changes.
+Preparation still needs a durable journal, with bounded scans and active-writer exclusion. Other recovery, retention, compaction, and full qualification remain open.
