@@ -842,3 +842,15 @@ This primitive does not change Badger, Valkey, Redis, SQLite, PostgreSQL, or MyS
 
 The [removal proof](../../plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json) records 116 passing private-file race events on each Go toolchain.
 Policy, package lint, and source prose pass. Runtime collection and full CSP5 qualification remain open.
+
+## Runtime input collection: 2026-09-12
+
+Local Starmap commit `bbd01f43` adds explicit cleanup of local immutable runtime inputs.
+It preserves accepted manual history and pending publication records under runtime publication ownership.
+Unknown names, unsupported records, unsafe files, and digest mismatches remain available for inspection.
+
+This operation changes neither the serving catalog nor the roles of Badger, Valkey, Redis, SQLite, PostgreSQL, and MySQL.
+Automatic invocation, retention configuration, complete generation collection, and object-store coordination remain open.
+
+The [collection proof](../../plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json) records 42 passing race events on each Go toolchain.
+Policy, package lint, and source prose pass. Full CSP5 qualification remains open.

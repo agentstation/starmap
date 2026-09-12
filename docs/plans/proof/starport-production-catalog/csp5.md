@@ -977,3 +977,26 @@ The question remains unresolved. The accepted architecture and scope remain unch
 
 Five concurrent tooling edits remain outside the source commit. Final task qualification must use its final committed module graph.
 Object coordination, runtime collection, history retirement, twelve mapped subcases, full verification, required review, native CI, and merge remain open.
+
+## Runtime input collection: 2026-09-12
+
+Local commit `bbd01f43` adds an API that collects unreachable immutable runtime inputs.
+The [input collection proof](csp5/input-collection-2026-09-12/verification.json) binds eight committed files to the recorded checks.
+The initial capability test fails before the API exists. The evidence also preserves corrected test-fixture compilation and six prose diagnostics.
+
+Each final Go 1.26.6 and Go 1.25.12 selection passes 42 race events, including parent tests, without failures or skips.
+The selections repeat the same cases. They cover new collection behavior and existing manual-history and checkpoint recovery contracts.
+Policy, package lint, and corrected source prose pass. Generated runtime links use the correct repository path.
+
+Collection protects accepted history and pending source, provider, manual, and removal references.
+It preserves checkpoint payloads and original legacy filenames. Missing or invalid required references stop deletion.
+Unknown files and unsupported records remain available for inspection. Unreachable structured batches remain collectible after partial input removal.
+
+Entry and raw-byte limits bound each scan. Decoder allocations and repeated private-file checks remain outside the raw-byte count.
+Collection joins runtime cancellation and shutdown. Publication ownership excludes cooperative runtime writers.
+Offline and pinned operation preserves the serving catalog without source reads or shared lease acquisition.
+
+Automatic invocation, retention settings and capacity diagnostics, generation collection, and distinct-inventory retirement remain open.
+The object coordination question remains pending. The accepted architecture and scope remain unchanged.
+Twelve mapped subcases, full verification, required review, native CI, and merge remain required.
+Five concurrent tooling edits remain separate. Final task qualification must use its final committed module graph.

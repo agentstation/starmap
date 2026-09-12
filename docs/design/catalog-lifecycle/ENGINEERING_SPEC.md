@@ -3456,3 +3456,16 @@ It must exclude input writers and preserve unknown and changed files. The remova
 
 The [removal proof](../../plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json) records 116 passing private-file race events on each Go toolchain.
 Policy, package lint, and source prose pass. Runtime collection and full CSP5 qualification remain open.
+
+## Runtime input collection: 2026-09-12
+
+Local Starmap commit `bbd01f43` adds explicit runtime input collection under publication ownership.
+The collector traces accepted history and pending publications before deleting unreachable records.
+It preserves original filenames, checkpoint payloads, and required observations. Missing or invalid required references cause refusal before deletion.
+
+Entry and raw-byte limits bound each scan. Offline and pinned modes permit local collection without source reads or shared lease acquisition.
+Cancellation and shutdown retain runtime directory ownership until the operation stops.
+Automatic invocation, retention settings, capacity diagnostics, and complete generation collection remain required CSP5 work.
+
+The [collection proof](../../plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json) records 42 passing race events on each Go toolchain.
+Policy, package lint, and source prose pass. Full CSP5 qualification remains open.

@@ -2843,3 +2843,15 @@ No accepted architecture or scope changed. Local collection work proceeds indepe
 
 The [removal proof](../../plans/proof/starport-production-catalog/csp5/record-removal-2026-09-12/verification.json) records 116 passing private-file race events on each Go toolchain.
 Policy, package lint, and source prose pass. Runtime collection and full CSP5 qualification remain open.
+
+## Runtime input collection: 2026-09-12
+
+Classification: local runtime input collection capability added under CSP5.
+Local Starmap commit `bbd01f43` collects validated unreachable inputs while preserving accepted and pending references.
+The original test fails because this operation is absent. The final checks cover legacy bytes, checkpoints, limits, partial cleanup, and shutdown.
+
+The object coordination question remains pending. No accepted architecture or scope changed.
+Distinct-inventory retirement and automatic collection remain open.
+
+The [collection proof](../../plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json) records 42 passing race events on each Go toolchain.
+Policy, package lint, and source prose pass. Full CSP5 qualification remains open.

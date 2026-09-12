@@ -1,0 +1,2922 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+  "source_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "5ce259755610a303826cb03f34417efe4c2c6d0e58c29fee13e97cffe0b4a8b7"
+    },
+    {
+      "path": "runtime/input_collection.go",
+      "sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "runtime/input_collection_references.go",
+      "sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "runtime/input_collection_snapshot.go",
+      "sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "runtime/input_collection_test.go",
+      "sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "runtime/manual_history.go",
+      "sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "runtime/publication_journal.go",
+      "sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    }
+  ],
+  "verified_at": "2026-09-12T10:46:59.815423+00:00",
+  "final_checks": [
+    "input-collection-final-20260912",
+    "input-collection-minimum-20260912",
+    "input-collection-lint-final-20260912",
+    "input-collection-policy-final-20260912",
+    "input-collection-prose-corrected-20260912"
+  ],
+  "checks": {
+    "input-collection-contract-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "TestRuntimeInputCollection",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:37:55.507023+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/input_collection.go": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5",
+        "runtime/input_collection_references.go": "f95006acd049dbb23ef0ea8705ee9ec5476ab0d6c2bc78c90c4f17b497f1cffd",
+        "runtime/input_collection_snapshot.go": "987331cfa79a3a79dca2d75ec1fc71988798130f97568970b1deb96349c84f93",
+        "runtime/input_collection_test.go": "1c0a484fa91fa5f7e87513501271d581569ec41b2f7c3c0aed0c6b2455cbafab",
+        "runtime/publication_journal.go": "3bba88cf240be51892d6826d9ac7a5157d605db0e13c6f909155d3ce2eb8b363",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T10:37:56.177358+00:00",
+      "status": "failed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "fail",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "input-collection-contract-fixed-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "TestRuntimeInputCollection",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:38:11.325204+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/input_collection.go": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5",
+        "runtime/input_collection_references.go": "f95006acd049dbb23ef0ea8705ee9ec5476ab0d6c2bc78c90c4f17b497f1cffd",
+        "runtime/input_collection_snapshot.go": "987331cfa79a3a79dca2d75ec1fc71988798130f97568970b1deb96349c84f93",
+        "runtime/input_collection_test.go": "14e126575310839050b4457e3ae090d8f70161f2f6de8a63ddc0deb8af577cad",
+        "runtime/publication_journal.go": "3bba88cf240be51892d6826d9ac7a5157d605db0e13c6f909155d3ce2eb8b363",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:38:28.712880+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 13
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesPendingAndUnknown",
+          "Action": "pass",
+          "Elapsed": 9.75
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_head",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_history",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/wrong_history_kind",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_publication",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_accepted_head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/entry_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/byte_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight",
+          "Action": "pass",
+          "Elapsed": 0.52
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesLegacyBytes",
+          "Action": "pass",
+          "Elapsed": 0.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionWorksOfflineWithPin",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionCancellationAndClose",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesAcceptedHistory",
+          "Action": "pass",
+          "Elapsed": 0.39
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 13.001
+        }
+      ]
+    },
+    "input-collection-expanded-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "TestRuntimeInputCollection|TestManualHistory|TestManualCheckpoint|TestInputPublication",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:40:05.912530+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/input_collection.go": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4",
+        "runtime/manual_history.go": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:42:25.153046+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 42
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesPendingAndUnknown",
+          "Action": "pass",
+          "Elapsed": 10.24
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_head",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_history",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/wrong_history_kind",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_publication",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_accepted_head",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/entry_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/byte_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight",
+          "Action": "pass",
+          "Elapsed": 0.52
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesLegacyBytes",
+          "Action": "pass",
+          "Elapsed": 0.39
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionWorksOfflineWithPin",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionCancellationAndClose",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesCheckpointAndRetriesPartialRemoval",
+          "Action": "pass",
+          "Elapsed": 0.56
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionWaitsForPublication",
+          "Action": "pass",
+          "Elapsed": 19.88
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesAcceptedHistory",
+          "Action": "pass",
+          "Elapsed": 0.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/retired",
+          "Action": "pass",
+          "Elapsed": 0.87
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/new-revision",
+          "Action": "pass",
+          "Elapsed": 0.9
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/changed-selectors",
+          "Action": "pass",
+          "Elapsed": 0.88
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart",
+          "Action": "pass",
+          "Elapsed": 2.65
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRetainsResetHistoryAtBatchLimit",
+          "Action": "pass",
+          "Elapsed": 16.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointPreservesMixedReplay",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/payload-index",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/observation-index",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-observation",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-observation",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/forged-receipt",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unmatched-reset",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/reference-limit",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/mixed-record",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/old-version",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/canceled",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords",
+          "Action": "pass",
+          "Elapsed": 1.31
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointSharesPayloadsAtByteLimit",
+          "Action": "pass",
+          "Elapsed": 35.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/accepted",
+          "Action": "pass",
+          "Elapsed": 0.44
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/invalid-before-inputs",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary",
+          "Action": "pass",
+          "Elapsed": 0.67
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit",
+          "Action": "pass",
+          "Elapsed": 9.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit",
+          "Action": "pass",
+          "Elapsed": 33.54
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRetainsPriorProviderFactsAfterScheduledOmission",
+          "Action": "pass",
+          "Elapsed": 1.86
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead",
+          "Action": "pass",
+          "Elapsed": 0.38
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 134.895
+        }
+      ]
+    },
+    "input-collection-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "TestRuntimeInputCollection|TestManualHistory|TestManualCheckpoint|TestInputPublication",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:43:09.801025+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/README.md": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2",
+        "runtime/input_collection.go": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb",
+        "runtime/manual_history.go": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:45:30.425519+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 42
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesPendingAndUnknown",
+          "Action": "pass",
+          "Elapsed": 10.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_head",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_history",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/wrong_history_kind",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_publication",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_accepted_head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/entry_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/byte_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight",
+          "Action": "pass",
+          "Elapsed": 0.55
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesLegacyBytes",
+          "Action": "pass",
+          "Elapsed": 0.5
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionWorksOfflineWithPin",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionCancellationAndClose",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesCheckpointAndRetriesPartialRemoval",
+          "Action": "pass",
+          "Elapsed": 0.77
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionWaitsForPublication",
+          "Action": "pass",
+          "Elapsed": 20.36
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesAcceptedHistory",
+          "Action": "pass",
+          "Elapsed": 0.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/retired",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/new-revision",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/changed-selectors",
+          "Action": "pass",
+          "Elapsed": 0.99
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart",
+          "Action": "pass",
+          "Elapsed": 2.67
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRetainsResetHistoryAtBatchLimit",
+          "Action": "pass",
+          "Elapsed": 15.92
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointPreservesMixedReplay",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/payload-index",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/observation-index",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-observation",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-payload",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-observation",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-payload",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/forged-receipt",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unmatched-reset",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/reference-limit",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/mixed-record",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/old-version",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/canceled",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords",
+          "Action": "pass",
+          "Elapsed": 1.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointSharesPayloadsAtByteLimit",
+          "Action": "pass",
+          "Elapsed": 35.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/accepted",
+          "Action": "pass",
+          "Elapsed": 0.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/invalid-before-inputs",
+          "Action": "pass",
+          "Elapsed": 0.24
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary",
+          "Action": "pass",
+          "Elapsed": 0.67
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit",
+          "Action": "pass",
+          "Elapsed": 9.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit",
+          "Action": "pass",
+          "Elapsed": 33.33
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRetainsPriorProviderFactsAfterScheduledOmission",
+          "Action": "pass",
+          "Elapsed": 1.78
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead",
+          "Action": "pass",
+          "Elapsed": 0.37
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 135.239
+        }
+      ]
+    },
+    "input-collection-first-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestRuntimeInputCollectionPreservesAcceptedHistory",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:36:20.355298+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/input_collection.go": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5",
+        "runtime/input_collection_references.go": "a9ddaaca409df39dce57ceb0efc0b7514546fded32dc17d14dcbc3f4cb592125",
+        "runtime/input_collection_snapshot.go": "987331cfa79a3a79dca2d75ec1fc71988798130f97568970b1deb96349c84f93",
+        "runtime/input_collection_test.go": "1e4183cafbf05b767be292a7f35da381c1bc92d29494bb78281d93eb777c07e9",
+        "runtime/publication_journal.go": "9e60bb3e3ad0fc66ed9eb0c13b7e9c69da625acd6c445bde16813d259af3f9e1",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:36:35.341362+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 1
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesAcceptedHistory",
+          "Action": "pass",
+          "Elapsed": 9.14
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 10.713
+        }
+      ]
+    },
+    "input-collection-lint-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./runtime/..."
+      ],
+      "started_at": "2026-09-12T10:40:15.374914+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/input_collection.go": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4",
+        "runtime/manual_history.go": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:40:17.535437+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "input-collection-lint-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./runtime/..."
+      ],
+      "started_at": "2026-09-12T10:43:09.808101+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/README.md": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2",
+        "runtime/input_collection.go": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb",
+        "runtime/manual_history.go": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:43:11.994081+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "input-collection-minimum-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "TestRuntimeInputCollection|TestManualHistory|TestManualCheckpoint|TestInputPublication",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:43:09.816969+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/README.md": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2",
+        "runtime/input_collection.go": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb",
+        "runtime/manual_history.go": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:45:33.921643+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 42
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesPendingAndUnknown",
+          "Action": "pass",
+          "Elapsed": 10.56
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_head",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_history",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/wrong_history_kind",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/future_publication",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/missing_accepted_head",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/entry_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight/byte_limit",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionRefusesUnsafePreflight",
+          "Action": "pass",
+          "Elapsed": 0.64
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesLegacyBytes",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionWorksOfflineWithPin",
+          "Action": "pass",
+          "Elapsed": 0.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionCancellationAndClose",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesCheckpointAndRetriesPartialRemoval",
+          "Action": "pass",
+          "Elapsed": 0.7
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionWaitsForPublication",
+          "Action": "pass",
+          "Elapsed": 20.75
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesAcceptedHistory",
+          "Action": "pass",
+          "Elapsed": 0.45
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/retired",
+          "Action": "pass",
+          "Elapsed": 0.91
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/new-revision",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/changed-selectors",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart",
+          "Action": "pass",
+          "Elapsed": 2.59
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRetainsResetHistoryAtBatchLimit",
+          "Action": "pass",
+          "Elapsed": 16.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointPreservesMixedReplay",
+          "Action": "pass",
+          "Elapsed": 0.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/payload-index",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/observation-index",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-observation",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-payload",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-observation",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-payload",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/forged-receipt",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unmatched-reset",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/reference-limit",
+          "Action": "pass",
+          "Elapsed": 0.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/mixed-record",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/old-version",
+          "Action": "pass",
+          "Elapsed": 0.35
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/canceled",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords",
+          "Action": "pass",
+          "Elapsed": 2.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointSharesPayloadsAtByteLimit",
+          "Action": "pass",
+          "Elapsed": 35.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/accepted",
+          "Action": "pass",
+          "Elapsed": 0.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/invalid-before-inputs",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary",
+          "Action": "pass",
+          "Elapsed": 0.66
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit",
+          "Action": "pass",
+          "Elapsed": 9.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit",
+          "Action": "pass",
+          "Elapsed": 33.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRetainsPriorProviderFactsAfterScheduledOmission",
+          "Action": "pass",
+          "Elapsed": 1.88
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead",
+          "Action": "pass",
+          "Elapsed": 0.4
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 137.112
+        }
+      ]
+    },
+    "input-collection-policy-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T10:40:15.367840+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/input_collection.go": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4",
+        "runtime/manual_history.go": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:40:17.483584+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "input-collection-policy-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T10:43:09.837972+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/README.md": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2",
+        "runtime/input_collection.go": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb",
+        "runtime/manual_history.go": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:43:12.468218+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "input-collection-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:40:55.884938+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "147810584f531a9c7a933109dcf39ebcb2c50fe0f6404fad5f6fa96250f0276c",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/README.md": "a532fe61f127b85f943401be92b25d2abf3e2f93fbde60b6ad4ab6ae329fd84e",
+        "runtime/input_collection.go": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4",
+        "runtime/manual_history.go": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T10:41:48.574014+00:00",
+      "status": "failed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "input-collection-prose-corrected-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:44:35.976478+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/README.md": "5ce259755610a303826cb03f34417efe4c2c6d0e58c29fee13e97cffe0b4a8b7",
+        "runtime/input_collection.go": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb",
+        "runtime/manual_history.go": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:45:28.293905+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "input-collection-prose-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:43:09.827430+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/README.md": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2",
+        "runtime/input_collection.go": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0",
+        "runtime/input_collection_references.go": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50",
+        "runtime/input_collection_snapshot.go": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d",
+        "runtime/input_collection_test.go": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb",
+        "runtime/manual_history.go": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891",
+        "runtime/publication_journal.go": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:44:04.091522+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "input-collection-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestRuntimeInputCollectionPreservesAcceptedHistory",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:31:51.064772+00:00",
+      "base_commit": "98961b9f61ba88af2fb89fe4b09aeaf6b623bc1f",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/input_collection.go": "ed050824a08b92d9e86ec40066ba083178c63f1cf78721a6233578e47da63bb5",
+        "runtime/input_collection_test.go": "1e4183cafbf05b767be292a7f35da381c1bc92d29494bb78281d93eb777c07e9",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T10:32:06.378422+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeInputCollectionPreservesAcceptedHistory",
+          "Action": "fail",
+          "Elapsed": 8.84
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "fail",
+          "Elapsed": 9.395
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "input-collection-contract-20260912/changes.patch.gz",
+      "sha256": "2d9455059b721e37f9e4421d43310e00cde9d7904c89311c1ac0a46a7b423ad7",
+      "decoded_sha256": "6e22ed84fe14824b46f98af736300cc629ba7fa7710829d5d90d28c35955fa6a"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "4a8e0277a2bf39948b08a6a4ac2a6bc08e875ab7a6484105e3f80ad50b3f82e1",
+      "decoded_sha256": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "05ba1e46eb0c4003236a124ad6c07d51b3c9da7033538ee93cc8f23ff2517814",
+      "decoded_sha256": "f95006acd049dbb23ef0ea8705ee9ec5476ab0d6c2bc78c90c4f17b497f1cffd"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "08ce2b67da258f72ea9a6f9b9252547378eb6b3d346bc6822a9e43481ddcaaf6",
+      "decoded_sha256": "987331cfa79a3a79dca2d75ec1fc71988798130f97568970b1deb96349c84f93"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "bdbf9bcc8c7b224afdb015bed022ceebd31eae4148fbcf65363b4e0e5955daf0",
+      "decoded_sha256": "1c0a484fa91fa5f7e87513501271d581569ec41b2f7c3c0aed0c6b2455cbafab"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "082e07a3c29afc03ff4608ee2939a071138e3c309d05837a1d2d80ec002aacb7",
+      "decoded_sha256": "3bba88cf240be51892d6826d9ac7a5157d605db0e13c6f909155d3ce2eb8b363"
+    },
+    {
+      "path": "input-collection-contract-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-contract-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-contract-20260912/stdout.log.gz",
+      "sha256": "d7174e9ae6460b797f418e22cc6c34d8d536135228cf37231b7e6660b8a40b42",
+      "decoded_sha256": "d665bbb078e133fa3b57d7fccaf0ebc36e7cf8ec44c34080547083878d7dd6c6"
+    },
+    {
+      "path": "input-collection-contract-20260912/verification.json.gz",
+      "sha256": "a5465932091d0ed1e9006369c48feac352843815c7bdf9f511be6afb720589f8",
+      "decoded_sha256": "23b58ef023001e17b0e1d9b4b2e2955d7d473bff90c545b75c2ef52cf8ff38a0"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/changes.patch.gz",
+      "sha256": "2d9455059b721e37f9e4421d43310e00cde9d7904c89311c1ac0a46a7b423ad7",
+      "decoded_sha256": "6e22ed84fe14824b46f98af736300cc629ba7fa7710829d5d90d28c35955fa6a"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "4a8e0277a2bf39948b08a6a4ac2a6bc08e875ab7a6484105e3f80ad50b3f82e1",
+      "decoded_sha256": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "05ba1e46eb0c4003236a124ad6c07d51b3c9da7033538ee93cc8f23ff2517814",
+      "decoded_sha256": "f95006acd049dbb23ef0ea8705ee9ec5476ab0d6c2bc78c90c4f17b497f1cffd"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "08ce2b67da258f72ea9a6f9b9252547378eb6b3d346bc6822a9e43481ddcaaf6",
+      "decoded_sha256": "987331cfa79a3a79dca2d75ec1fc71988798130f97568970b1deb96349c84f93"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "764a3a6cafc2fc88698098a8c0d6810111cd20c12af3d5834256702a847426ad",
+      "decoded_sha256": "14e126575310839050b4457e3ae090d8f70161f2f6de8a63ddc0deb8af577cad"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "082e07a3c29afc03ff4608ee2939a071138e3c309d05837a1d2d80ec002aacb7",
+      "decoded_sha256": "3bba88cf240be51892d6826d9ac7a5157d605db0e13c6f909155d3ce2eb8b363"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/stdout.log.gz",
+      "sha256": "cecfc1d2d878b12dec298c706fe96e116fd0db8ea475dda1ebd0004a13adea03",
+      "decoded_sha256": "d53ec62f1da7ade55eedd8f3ea81f2ab9b0c278e29731aaf35e755f06fb98b8f"
+    },
+    {
+      "path": "input-collection-contract-fixed-20260912/verification.json.gz",
+      "sha256": "8eb0068993f19812d4c2ce42ac2bb89200d16078c464755b3d0d9e11b85b534d",
+      "decoded_sha256": "da705d07d241fbadd7d9baf03782e09014943058d6e180d60431335c6272614c"
+    },
+    {
+      "path": "input-collection-expanded-20260912/changes.patch.gz",
+      "sha256": "f5e06170167e9bd1a9ba07df36cfe2a62a16763e920a6a27fbe08b9dd30867ed",
+      "decoded_sha256": "a650c148ee7567da4c4ff254898ab3c03a5d9280b03b9a705473d04a0f614829"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "4a8e0277a2bf39948b08a6a4ac2a6bc08e875ab7a6484105e3f80ad50b3f82e1",
+      "decoded_sha256": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "15d066b6d55aafbd11b395f9bbd6e27354a84dff3407ddc4db6a8178689bebb1",
+      "decoded_sha256": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "aa1ab9c0ccf31f78c91bad0683a7bb3818cfdf352caf7861cef6e856a55d3d46",
+      "decoded_sha256": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-expanded-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-expanded-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-expanded-20260912/stdout.log.gz",
+      "sha256": "5c24ae5eeae02c854c50b801e37e062af6d67adba03d1245f1beb64d7221f108",
+      "decoded_sha256": "b5293b8b16432353d71f7d47da0ecbf68fd5ab67b079d2f74e38ec12b1209819"
+    },
+    {
+      "path": "input-collection-expanded-20260912/verification.json.gz",
+      "sha256": "7bebb44723487c890a7efdb6c58b6ba72a51d0e2bfec6d988a55ba204129a535",
+      "decoded_sha256": "604a8c55015ef7a3d4778046e1954745577fb67a4508f8c86ce3f9e5e618570f"
+    },
+    {
+      "path": "input-collection-final-20260912/changes.patch.gz",
+      "sha256": "674a932ec61ef7e7bae6249cc0046401768ff9f300c64ebd6dc7566d6880377e",
+      "decoded_sha256": "ac826351ba6f31fa83895c035847174e0c51cc3831319f8f59a35a8fa78523ce"
+    },
+    {
+      "path": "input-collection-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "da6b9b173958fe2c8ac4956391587897d2672130875826d4a8272ebd58008437",
+      "decoded_sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "input-collection-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-final-20260912/source/runtime/README.md.gz",
+      "sha256": "161e12496a3ed9574fe7e536f510bb492d2dbd3ade4aa5ed42be3cc4417909ba",
+      "decoded_sha256": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2"
+    },
+    {
+      "path": "input-collection-final-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "9f60e0108a6f8131544ee9339267a775907b2440d20c35f7426cdb006dc972c9",
+      "decoded_sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "input-collection-final-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-final-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-final-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "397f4bfd18f78a51a5814b715193abce89924226f9afda2b70f19f57621f6950",
+      "decoded_sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "input-collection-final-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "9b8c698be334268c591c2c029763f78c1c3f79b64852c76dff06343ef8a129b8",
+      "decoded_sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "input-collection-final-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-final-20260912/stdout.log.gz",
+      "sha256": "c46a1feece46b33cbfd36a0e5ebd6c46ec1fb100cc5f5c13d7936dda7cbb1811",
+      "decoded_sha256": "567cb921be4bf06030ae02d6a2cec019acb6b684f92758afcbbd9e6bb69d741d"
+    },
+    {
+      "path": "input-collection-final-20260912/verification.json.gz",
+      "sha256": "bb7ec44d5d41226dc968906bb6750d14dfb9fb6e54b9b0c8dd21eaa3efcc4196",
+      "decoded_sha256": "25503b95a8a350c936fb5658b24a816b03eb3000da4088857e2b847b0176d2b0"
+    },
+    {
+      "path": "input-collection-first-20260912/changes.patch.gz",
+      "sha256": "0e228f2c3025df7c975dfcce15ce78283b4fa2641c98b12eafbff30fe8b3e620",
+      "decoded_sha256": "aa3681ffc46ffb10e883e5c5681c5b295618b7255f634b168b0d665cccf02c74"
+    },
+    {
+      "path": "input-collection-first-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-first-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-first-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-first-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-first-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "4a8e0277a2bf39948b08a6a4ac2a6bc08e875ab7a6484105e3f80ad50b3f82e1",
+      "decoded_sha256": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5"
+    },
+    {
+      "path": "input-collection-first-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "daceeb5b54a06b48e35b8e7cc20e9235fddd4f004dec6259c056cf06bd2bbf59",
+      "decoded_sha256": "a9ddaaca409df39dce57ceb0efc0b7514546fded32dc17d14dcbc3f4cb592125"
+    },
+    {
+      "path": "input-collection-first-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "08ce2b67da258f72ea9a6f9b9252547378eb6b3d346bc6822a9e43481ddcaaf6",
+      "decoded_sha256": "987331cfa79a3a79dca2d75ec1fc71988798130f97568970b1deb96349c84f93"
+    },
+    {
+      "path": "input-collection-first-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "51e7531dce25da638850588cc9140f1b3037c4220006747f0aeeea3551f0c3e0",
+      "decoded_sha256": "1e4183cafbf05b767be292a7f35da381c1bc92d29494bb78281d93eb777c07e9"
+    },
+    {
+      "path": "input-collection-first-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "f02b83ab02cc1fa5d40dcf25d97bc9abf6262f5ab5dfc7cad0b5c4c95d96bccc",
+      "decoded_sha256": "9e60bb3e3ad0fc66ed9eb0c13b7e9c69da625acd6c445bde16813d259af3f9e1"
+    },
+    {
+      "path": "input-collection-first-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-first-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-first-20260912/stdout.log.gz",
+      "sha256": "0c9bfcf3a51bdb9c7d64479c8a0ca5bd0c40d034525a87c5c563c2b59e94a911",
+      "decoded_sha256": "8f4a662ed682ee08e3b5a8607e58e61f7f42e1568308353482176605aa69287b"
+    },
+    {
+      "path": "input-collection-first-20260912/verification.json.gz",
+      "sha256": "34dcf82f3621b09e62e469a4c19778af96668438994d923884fd1226ae05df2e",
+      "decoded_sha256": "3fd3b969cbf168a0fd9a05d3e1ee170be2c18c7805d3e7f0805220b906a180a0"
+    },
+    {
+      "path": "input-collection-lint-20260912/changes.patch.gz",
+      "sha256": "f5e06170167e9bd1a9ba07df36cfe2a62a16763e920a6a27fbe08b9dd30867ed",
+      "decoded_sha256": "a650c148ee7567da4c4ff254898ab3c03a5d9280b03b9a705473d04a0f614829"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "4a8e0277a2bf39948b08a6a4ac2a6bc08e875ab7a6484105e3f80ad50b3f82e1",
+      "decoded_sha256": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "15d066b6d55aafbd11b395f9bbd6e27354a84dff3407ddc4db6a8178689bebb1",
+      "decoded_sha256": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "aa1ab9c0ccf31f78c91bad0683a7bb3818cfdf352caf7861cef6e856a55d3d46",
+      "decoded_sha256": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-lint-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-lint-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-lint-20260912/stdout.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "input-collection-lint-20260912/verification.json.gz",
+      "sha256": "8a409f03f32492070ea3efaa41ff9ab1173c8b6d4d7c6b61789dd5a23ed676c2",
+      "decoded_sha256": "357c42ab599e91ad9a98b5da071f6c2e58cbcbd6c7531bb0b2f2dc380dadf58e"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/changes.patch.gz",
+      "sha256": "674a932ec61ef7e7bae6249cc0046401768ff9f300c64ebd6dc7566d6880377e",
+      "decoded_sha256": "ac826351ba6f31fa83895c035847174e0c51cc3831319f8f59a35a8fa78523ce"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "da6b9b173958fe2c8ac4956391587897d2672130875826d4a8272ebd58008437",
+      "decoded_sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/runtime/README.md.gz",
+      "sha256": "161e12496a3ed9574fe7e536f510bb492d2dbd3ade4aa5ed42be3cc4417909ba",
+      "decoded_sha256": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "9f60e0108a6f8131544ee9339267a775907b2440d20c35f7426cdb006dc972c9",
+      "decoded_sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "397f4bfd18f78a51a5814b715193abce89924226f9afda2b70f19f57621f6950",
+      "decoded_sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "9b8c698be334268c591c2c029763f78c1c3f79b64852c76dff06343ef8a129b8",
+      "decoded_sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/stdout.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "input-collection-lint-final-20260912/verification.json.gz",
+      "sha256": "3500855f1c9758c8d01ebc524ebc50ac77d7922235f64f66ff0d8de611b38c22",
+      "decoded_sha256": "c452421cbf85eb13020905457964d823d234ff319de1d2cc69403fd4015c45df"
+    },
+    {
+      "path": "input-collection-minimum-20260912/changes.patch.gz",
+      "sha256": "674a932ec61ef7e7bae6249cc0046401768ff9f300c64ebd6dc7566d6880377e",
+      "decoded_sha256": "ac826351ba6f31fa83895c035847174e0c51cc3831319f8f59a35a8fa78523ce"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "da6b9b173958fe2c8ac4956391587897d2672130875826d4a8272ebd58008437",
+      "decoded_sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/runtime/README.md.gz",
+      "sha256": "161e12496a3ed9574fe7e536f510bb492d2dbd3ade4aa5ed42be3cc4417909ba",
+      "decoded_sha256": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "9f60e0108a6f8131544ee9339267a775907b2440d20c35f7426cdb006dc972c9",
+      "decoded_sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "397f4bfd18f78a51a5814b715193abce89924226f9afda2b70f19f57621f6950",
+      "decoded_sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "9b8c698be334268c591c2c029763f78c1c3f79b64852c76dff06343ef8a129b8",
+      "decoded_sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-minimum-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-minimum-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-minimum-20260912/stdout.log.gz",
+      "sha256": "a4c0cd8ebf7e1c56a2442a255eaed4f28ea328f1548abe1511e86b08c6b65f96",
+      "decoded_sha256": "25c712c215049997dcd3d04b72c6aa933a28f7af6d5ccad708334e49628915dc"
+    },
+    {
+      "path": "input-collection-minimum-20260912/verification.json.gz",
+      "sha256": "3470e4e81e9977eb82aced54361e694dd6e175337cad0aba9f187cdf1af4b2ed",
+      "decoded_sha256": "d01cf4df7a9b8e239a7fc9b92ffbae8c691f61b7929cbf5c7495608812eb5fee"
+    },
+    {
+      "path": "input-collection-policy-20260912/changes.patch.gz",
+      "sha256": "f5e06170167e9bd1a9ba07df36cfe2a62a16763e920a6a27fbe08b9dd30867ed",
+      "decoded_sha256": "a650c148ee7567da4c4ff254898ab3c03a5d9280b03b9a705473d04a0f614829"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "4a8e0277a2bf39948b08a6a4ac2a6bc08e875ab7a6484105e3f80ad50b3f82e1",
+      "decoded_sha256": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "15d066b6d55aafbd11b395f9bbd6e27354a84dff3407ddc4db6a8178689bebb1",
+      "decoded_sha256": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "aa1ab9c0ccf31f78c91bad0683a7bb3818cfdf352caf7861cef6e856a55d3d46",
+      "decoded_sha256": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-policy-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-policy-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-policy-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "input-collection-policy-20260912/verification.json.gz",
+      "sha256": "f3d50bacd7546ca96e00813feb7aa57b596d7e5db0ce0c6ed62061861a0eebd1",
+      "decoded_sha256": "5de9c2831d45b771d80be879d44ee09dd0faebb981b62b4b9601d647b3006199"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/changes.patch.gz",
+      "sha256": "674a932ec61ef7e7bae6249cc0046401768ff9f300c64ebd6dc7566d6880377e",
+      "decoded_sha256": "ac826351ba6f31fa83895c035847174e0c51cc3831319f8f59a35a8fa78523ce"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "da6b9b173958fe2c8ac4956391587897d2672130875826d4a8272ebd58008437",
+      "decoded_sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/runtime/README.md.gz",
+      "sha256": "161e12496a3ed9574fe7e536f510bb492d2dbd3ade4aa5ed42be3cc4417909ba",
+      "decoded_sha256": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "9f60e0108a6f8131544ee9339267a775907b2440d20c35f7426cdb006dc972c9",
+      "decoded_sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "397f4bfd18f78a51a5814b715193abce89924226f9afda2b70f19f57621f6950",
+      "decoded_sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "9b8c698be334268c591c2c029763f78c1c3f79b64852c76dff06343ef8a129b8",
+      "decoded_sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "input-collection-policy-final-20260912/verification.json.gz",
+      "sha256": "fe99da46a9923b69b55a6ce053ac0d5f580c6aeeca8d32b54b6cef77ca6a0a85",
+      "decoded_sha256": "f4ed7df0fce97463e26965bb4f5a139efafa13b3de61d00c5992111ccd54d841"
+    },
+    {
+      "path": "input-collection-prose-20260912/changes.patch.gz",
+      "sha256": "690612d527087cdcddd823995b423e2b51ccd5d676026d30dee83b05c4dcfffa",
+      "decoded_sha256": "df85325e5ba1ba9e973eab54896e24173c6a2f514cd363352b65e834c7318902"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "f1864e98d522db72db38a21a0ab2eedf06fa7833b24cb3f02a857cb2aaa12e89",
+      "decoded_sha256": "147810584f531a9c7a933109dcf39ebcb2c50fe0f6404fad5f6fa96250f0276c"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/runtime/README.md.gz",
+      "sha256": "8fc05a94c4c390bf31b6b8320d813e8d5cf8c488e1300d876b277ad3a89be65d",
+      "decoded_sha256": "a532fe61f127b85f943401be92b25d2abf3e2f93fbde60b6ad4ab6ae329fd84e"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "4a8e0277a2bf39948b08a6a4ac2a6bc08e875ab7a6484105e3f80ad50b3f82e1",
+      "decoded_sha256": "6634c2feaf0a40f188c1305ee9194b9a56ebe2c27ce32975a1523ae2dab885b5"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "15d066b6d55aafbd11b395f9bbd6e27354a84dff3407ddc4db6a8178689bebb1",
+      "decoded_sha256": "300672c77f1396ed5b0880d8728918fc4b409c9d730b4d2bc91a0a5b405543d4"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "aa1ab9c0ccf31f78c91bad0683a7bb3818cfdf352caf7861cef6e856a55d3d46",
+      "decoded_sha256": "1778151f202dd31103e74fa870c8775fd0211b802e401c87b578c2d1efc191d3"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "input-collection-prose-20260912/stdout.log.gz",
+      "sha256": "e77b76e13c07461e0129c0524e912edba3b801855d961565bb533f7a4edcd38a",
+      "decoded_sha256": "b198f697438af67bbd444d9d21a3cd9b2531f29805e8053ca1e919fb85e198f0"
+    },
+    {
+      "path": "input-collection-prose-20260912/verification.json.gz",
+      "sha256": "0106a651824f65872a585572d64c3297c218ef810ab986d31b565f969130acaf",
+      "decoded_sha256": "c7136b695ac6cea4c9dee5aee2834988fd26770789cd4994f5ee0be48a485798"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/changes.patch.gz",
+      "sha256": "4b4acc5ab769c7df579d8d180952a1ff486c7ba79d38c96fb5c307c54b12d66d",
+      "decoded_sha256": "c696195182193abcee8ba4a7385f1568ec39af918e4b2cb6754a63b875ee418d"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "da6b9b173958fe2c8ac4956391587897d2672130875826d4a8272ebd58008437",
+      "decoded_sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/runtime/README.md.gz",
+      "sha256": "8a639c88c51a2c3f711369c6e9976feafdeeb383cb4fdbf87a75fecf22c3df80",
+      "decoded_sha256": "5ce259755610a303826cb03f34417efe4c2c6d0e58c29fee13e97cffe0b4a8b7"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "9f60e0108a6f8131544ee9339267a775907b2440d20c35f7426cdb006dc972c9",
+      "decoded_sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "397f4bfd18f78a51a5814b715193abce89924226f9afda2b70f19f57621f6950",
+      "decoded_sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "9b8c698be334268c591c2c029763f78c1c3f79b64852c76dff06343ef8a129b8",
+      "decoded_sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/stdout.log.gz",
+      "sha256": "bfdd1742136f028c56f7d578486bc4dd53b91e708c941f94cff2aac1180c92ab",
+      "decoded_sha256": "de7af54daacfa35bc6eb46c7957f84562ad2ebb5042d7de52f8c7d4d2a869ae2"
+    },
+    {
+      "path": "input-collection-prose-corrected-20260912/verification.json.gz",
+      "sha256": "c33d5c66a853643b671ff8936f21b9707bb2886fcffadee48e2985ace1b00586",
+      "decoded_sha256": "cab9ea9d549c7e5b76297eae02113f51afb6af69c07b3608b86b9a2547b0f668"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/changes.patch.gz",
+      "sha256": "674a932ec61ef7e7bae6249cc0046401768ff9f300c64ebd6dc7566d6880377e",
+      "decoded_sha256": "ac826351ba6f31fa83895c035847174e0c51cc3831319f8f59a35a8fa78523ce"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "da6b9b173958fe2c8ac4956391587897d2672130875826d4a8272ebd58008437",
+      "decoded_sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/runtime/README.md.gz",
+      "sha256": "161e12496a3ed9574fe7e536f510bb492d2dbd3ade4aa5ed42be3cc4417909ba",
+      "decoded_sha256": "add1f18a8c4c02b0ea1b2179915c6760f71e7670d877761ab15031c07cde67b2"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "9f60e0108a6f8131544ee9339267a775907b2440d20c35f7426cdb006dc972c9",
+      "decoded_sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "397f4bfd18f78a51a5814b715193abce89924226f9afda2b70f19f57621f6950",
+      "decoded_sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/runtime/manual_history.go.gz",
+      "sha256": "9b8c698be334268c591c2c029763f78c1c3f79b64852c76dff06343ef8a129b8",
+      "decoded_sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/stdout.log.gz",
+      "sha256": "bfdd1742136f028c56f7d578486bc4dd53b91e708c941f94cff2aac1180c92ab",
+      "decoded_sha256": "de7af54daacfa35bc6eb46c7957f84562ad2ebb5042d7de52f8c7d4d2a869ae2"
+    },
+    {
+      "path": "input-collection-prose-final-20260912/verification.json.gz",
+      "sha256": "42272741017af1eb91f5e4d839a1c74787dcd5bcd2b08c8a9f38074e90ed24bf",
+      "decoded_sha256": "306b10fb06155e9b87af45de3a0e5e51616f6df427ceeb3251b466382e021662"
+    },
+    {
+      "path": "input-collection-red-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "input-collection-red-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-red-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-red-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "input-collection-red-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "input-collection-red-20260912/source/runtime/input_collection.go.gz",
+      "sha256": "abfadf3c0a4a53f8c9302888aa2708b11350ce53cbfc80af0f85995f07285e70",
+      "decoded_sha256": "ed050824a08b92d9e86ec40066ba083178c63f1cf78721a6233578e47da63bb5"
+    },
+    {
+      "path": "input-collection-red-20260912/source/runtime/input_collection_test.go.gz",
+      "sha256": "51e7531dce25da638850588cc9140f1b3037c4220006747f0aeeea3551f0c3e0",
+      "decoded_sha256": "1e4183cafbf05b767be292a7f35da381c1bc92d29494bb78281d93eb777c07e9"
+    },
+    {
+      "path": "input-collection-red-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "input-collection-red-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-red-20260912/stdout.log.gz",
+      "sha256": "45c795bf3871c3e426298087d299455ad6cdef5ccf2c394addbb80b730bd7ffa",
+      "decoded_sha256": "5008e437882fb448ed0af63503bdf4619cbf6196823c1fe202d0997f348d23e1"
+    },
+    {
+      "path": "input-collection-red-20260912/verification.json.gz",
+      "sha256": "0a6d851b4b97a98c002a9a72f2a0fba0db651d95fc189d7d0a09ea434e215254",
+      "decoded_sha256": "57b273c922ee9be4a9057659ef992b81c08ca2cbcd55d1054e00a2bfc49ce6ac"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "da6b9b173958fe2c8ac4956391587897d2672130875826d4a8272ebd58008437",
+      "decoded_sha256": "cb899bbcb3ce510bda5c7514732f87e12e359fa3952afe3aabf8057d9eb48c7d"
+    },
+    {
+      "path": "committed-source/runtime/README.md.gz",
+      "sha256": "8a639c88c51a2c3f711369c6e9976feafdeeb383cb4fdbf87a75fecf22c3df80",
+      "decoded_sha256": "5ce259755610a303826cb03f34417efe4c2c6d0e58c29fee13e97cffe0b4a8b7"
+    },
+    {
+      "path": "committed-source/runtime/input_collection.go.gz",
+      "sha256": "9f60e0108a6f8131544ee9339267a775907b2440d20c35f7426cdb006dc972c9",
+      "decoded_sha256": "c8dce49c5efa6d603b4133e4fb537540fc45f4596b8086b0be30bae263920db0"
+    },
+    {
+      "path": "committed-source/runtime/input_collection_references.go.gz",
+      "sha256": "1508c9192e7440f8d8f449c95797a758f6002f67fc34f77134ac64b953d1c5ba",
+      "decoded_sha256": "679ef7ec4c148d7c92d50f7296974d03d52fc3ca99f2ab82c10259c8d7201f50"
+    },
+    {
+      "path": "committed-source/runtime/input_collection_snapshot.go.gz",
+      "sha256": "6c858de0a595c35d911571cf045233b787cd5936360484ffaf80b16444ee8f96",
+      "decoded_sha256": "4ff648dd16018a04847565dd422a0846368a233b434cc789fe0a365f789d5f0d"
+    },
+    {
+      "path": "committed-source/runtime/input_collection_test.go.gz",
+      "sha256": "397f4bfd18f78a51a5814b715193abce89924226f9afda2b70f19f57621f6950",
+      "decoded_sha256": "8dbbdb21a9c1750a436e273c7dd97b70fcbc2cc3e5478047e5c39e9f5e3847cb"
+    },
+    {
+      "path": "committed-source/runtime/manual_history.go.gz",
+      "sha256": "9b8c698be334268c591c2c029763f78c1c3f79b64852c76dff06343ef8a129b8",
+      "decoded_sha256": "356c9d823d912a78c42f3c9ebdec3c79e4f98d441a141a3768d2e66a314ee891"
+    },
+    {
+      "path": "committed-source/runtime/publication_journal.go.gz",
+      "sha256": "0f10865a005b41e0611e4e4162bb6e101ae9a743d74b905ae120d6a4f283edbb",
+      "decoded_sha256": "bc9a9332b4a2989c3bf7875d682a1994a749a19874487b0fbe7154b4495bf142"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "d0f737572736b5682f405403fa072464f5b7ceac41b53dd2aede8411e4a87d95",
+      "decoded_sha256": "50e323d574ea1e3c5c1b038eb5ae1a91a62e6e6a6bac3ace036df972be76b044"
+    },
+    {
+      "path": "concurrent-tooling/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "concurrent-tooling/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "concurrent-tooling/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "concurrent-tooling/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "concurrent-tooling/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "concurrent-tooling/changes.patch.gz",
+      "sha256": "ee0c008c0d8984beed38090478b201c93ab24b76c11247273b2b93035646b900",
+      "decoded_sha256": "506e8dbb6dff7a7aa5008d82de32cdc232cdf6e273267c5dbfdfed4c5c8d3d82"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/changes.patch.gz",
+      "sha256": "275574371f9ef46649545cd34c2ba844c3052da55b7723eec75e4648845dd1c7",
+      "decoded_sha256": "ce7f668c7b6276fe13256e933e8b16fa566d31792115e6be4e77f04d7ed8f42d"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "c980c1995b6b57dd6140ce1c85dd21d5cdf62fbafff2a07e7426b9a7461f4d60",
+      "decoded_sha256": "b6359f14c5ea75c18bd9c459608d29c98436138892ffddaa79ba8e824db472cf"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "da12b4076a016e1c7ea659b7942b62cfd980c60d612631add2bd6b43ea7fcffd",
+      "decoded_sha256": "605180d8ec379246d19dd3d0568b9f8cce3b16d3aa0f56d30013b4012443db75"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "ef20fb89bd6372d541bbbaf266fdeab54761e0067c0ef59a46c95bec320e124a",
+      "decoded_sha256": "9e7c3e70142210de5a38aed14b939554dd5ef9d93fa13bf9d1acc5a99ca20843"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json.gz",
+      "sha256": "6295b5971d5fd9e2e8dc0dac7d1ab1e4f7e852c7c9d5b93b4ebd59eff1031138",
+      "decoded_sha256": "b593ae6b1e4571051fef2a768672d9cfd66c61ca90c53892ab56a32ef739a28c"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "c4a916d1cb74f01c8351f9637cce37b7a1fe984d6e6ebcc0a432dbb17eb647cd",
+      "decoded_sha256": "dd8710a8e8037b34db2dcd68dc0e634b8da79398f51aa8d42d5a03008f7948a1"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-input-collection.html.gz",
+      "sha256": "af420b8b6f2ce48085281f32a95c187e69501c8444b2778cd79197a0691529ea",
+      "decoded_sha256": "d8aaf775589e2012040245743b248bc837f8aa518a9c36441763635ee0b8cee7"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "f76e2f4b35e003d900389404685881cbd627240987ede3b6365b8fdb32775975",
+      "decoded_sha256": "c175df615401169d75d22dc32997a009191c0a696afd1e4c4fbda0924854552d"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/stdout.log.gz",
+      "sha256": "2335f580893b508c28874c7eed7226fa94f597bd4025e9d68495f7c3a7cfca26",
+      "decoded_sha256": "6d2886c84780353db0bfd148670e381544bf127f1330cf71b43038ac1e4816d5"
+    },
+    {
+      "path": "input-collection-canonical-prose-20260912/verification.json.gz",
+      "sha256": "688cec1d8c3a4f5e429c0b5453747108d0365a7dd53eccc931de60c547d5adbc",
+      "decoded_sha256": "340b370649dde9f4686230985c1ddb76b5ac38711df54e43a597ad0567881c21"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/changes.patch.gz",
+      "sha256": "a6403db41763638e713c358d60348d6ffd90eda10f8dbad088ed244c2f16abef",
+      "decoded_sha256": "70b43d67dadd9339d9a819375bdf69cbed01813713a87a73d920d52d4871669c"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "c980c1995b6b57dd6140ce1c85dd21d5cdf62fbafff2a07e7426b9a7461f4d60",
+      "decoded_sha256": "b6359f14c5ea75c18bd9c459608d29c98436138892ffddaa79ba8e824db472cf"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "da12b4076a016e1c7ea659b7942b62cfd980c60d612631add2bd6b43ea7fcffd",
+      "decoded_sha256": "605180d8ec379246d19dd3d0568b9f8cce3b16d3aa0f56d30013b4012443db75"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "ef20fb89bd6372d541bbbaf266fdeab54761e0067c0ef59a46c95bec320e124a",
+      "decoded_sha256": "9e7c3e70142210de5a38aed14b939554dd5ef9d93fa13bf9d1acc5a99ca20843"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json.gz",
+      "sha256": "9bb2d5597bed8c1b0c7c15c56169808bcf4cd250056339e83bb7ec1f8836b3ed",
+      "decoded_sha256": "7cf2bc336170c9b44e4a9ff763a55342ade497dba42acffc4ca89639af28bcfd"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json.gz",
+      "sha256": "6295b5971d5fd9e2e8dc0dac7d1ab1e4f7e852c7c9d5b93b4ebd59eff1031138",
+      "decoded_sha256": "b593ae6b1e4571051fef2a768672d9cfd66c61ca90c53892ab56a32ef739a28c"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "9df4b2ec00f7ae1237dbb650c6d2aea0fc842639c0eb417e210d0ed0e6a761c2",
+      "decoded_sha256": "84791ec689f475254945e6f75dc9dc0f0736f97c4c0470cdc9666189edd9bf9f"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-input-collection.html.gz",
+      "sha256": "af420b8b6f2ce48085281f32a95c187e69501c8444b2778cd79197a0691529ea",
+      "decoded_sha256": "d8aaf775589e2012040245743b248bc837f8aa518a9c36441763635ee0b8cee7"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "1a56ae7c267838abed5af44083e260d2e94edd21031f3f4b673dbb728e25051d",
+      "decoded_sha256": "0c611efe0f26e2f3687a209177d65d91e438ee5cbfe0a939a2a7c56f4b076e82"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/stdout.log.gz",
+      "sha256": "8107612c5b6c242715270e33d7f4fa6f9b05db597b1cda511af3809a4fb10fd7",
+      "decoded_sha256": "af663a1b240d14184757e730bf35573804f23cd2ec3d83b4bc2002c564b61992"
+    },
+    {
+      "path": "input-collection-canonical-prose-final-20260912/verification.json.gz",
+      "sha256": "d5e384e68896affb537b8c729c771634ab01d6826104dead40bfe89e5f8c63c6",
+      "decoded_sha256": "3bb7e82eb5caa5f3adaab6ed07267d11591bd399c0c3849350b6ce9707771391"
+    }
+  ],
+  "previous_goal_turn": "No progress: the preceding turn answered a CSP4 status question. This continuation revalidated CSP5 source and completed local collection work.",
+  "final_test_events": {
+    "per_toolchain": 42,
+    "toolchains": [
+      "go1.26.6",
+      "go1.25.12"
+    ]
+  },
+  "source_binding": "Final race, lint, and policy checks bind all six committed Go files. The corrected prose check binds all eight files. A prior documentation generation doubled the runtime URL segment. Regeneration from the package directory fixed links without changing Go source.",
+  "limits": [
+    "The original capability test fails before CollectRetainedInputs exists. The proof also preserves a test-fixture build failure and six prose diagnostics.",
+    "Explicit collection traces accepted manual history, checkpoint ancestors, original observation filenames, and pending source, provider, manual, and removal references before selecting unreachable records.",
+    "Normal retained readers validate required histories and receipts. Missing or invalid roots refuse deletion. An accepted in-memory history can differ from the retained head only when a pending publication names it.",
+    "Collection snapshots raw records under explicit entry and byte bounds. Entry scans include unknown entries and at most one overflow probe. Byte counts include the manual head and publication journal, excluding decoder allocations and repeated filesystem verification work.",
+    "Unknown names, unsupported records, unsafe files, and digest mismatches remain preserved. An unreachable batch with valid structure does not require its old referenced files to exist, so partial cleanup remains retryable.",
+    "Runtime operation ownership joins cancellation and shutdown. Publication and provider-retention locks exclude cooperative runtime writers. Private record removal checks expected bytes and native publication ownership. Arbitrary legacy uncoordinated file writers are not a supported participant.",
+    "The collection API performs local maintenance in offline and pinned modes without shared lease acquisition or source/provider reads. It preserves the serving catalog and original pinned state.",
+    "The final selection passes 42 race test events per toolchain without failures or skips. Counts include parent tests. Toolchain runs repeat the same cases. The suite covers collection, existing history compaction, checkpoint validation and recovery, and retained history capacity.",
+    "The private-record removal proof owns native writer exclusion, file replacement, and injected directory synchronization failure tests. Runtime code preserves its partial removal result. No power-loss or native Windows/Linux execution qualification is claimed here.",
+    "Automatic invocation, retention configuration and diagnostics, complete generation collection, superseded distinct-inventory retirement, twelve mapped subcases, full verification, required review, native CI, and merge remain open. CSP5 remains unpublished until its full contract passes.",
+    "The object-catalog coordination question remains pending. No answer, architecture change, or scope reduction is assumed. The enterprise recipe continues to assign coordination to shared KV and immutable bytes to object storage.",
+    "Five concurrent tooling edits remain outside the source commit. Final task qualification must use its final committed module graph.",
+    "The final canonical prose check passes. Source snapshots separate the concurrent tooling edits from six owned documentation files. Task criteria, scope, invariants, and the goal remain unchanged."
+  ],
+  "unrelated_worktree_changes": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    }
+  ],
+  "tested_module_inputs": [
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+      "evidence": "input-collection-final-20260912/source/go.mod.gz"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+      "evidence": "input-collection-final-20260912/source/go.sum.gz"
+    }
+  ],
+  "documentation_checks": {
+    "input-collection-canonical-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:47:09.099357+00:00",
+      "base_commit": "d839d4a9fb034f37e4f154f5ef3c0d33b1f36b8d",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "b6359f14c5ea75c18bd9c459608d29c98436138892ffddaa79ba8e824db472cf",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "605180d8ec379246d19dd3d0568b9f8cce3b16d3aa0f56d30013b4012443db75",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "9e7c3e70142210de5a38aed14b939554dd5ef9d93fa13bf9d1acc5a99ca20843",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "dd8710a8e8037b34db2dcd68dc0e634b8da79398f51aa8d42d5a03008f7948a1",
+        "docs/plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json": "b593ae6b1e4571051fef2a768672d9cfd66c61ca90c53892ab56a32ef739a28c",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-input-collection.html": "d8aaf775589e2012040245743b248bc837f8aa518a9c36441763635ee0b8cee7",
+        "docs/plans/starport-production-catalog-plan.html": "c175df615401169d75d22dc32997a009191c0a696afd1e4c4fbda0924854552d",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T10:47:58.386418+00:00",
+      "status": "failed"
+    },
+    "input-collection-canonical-prose-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:48:39.501330+00:00",
+      "base_commit": "d839d4a9fb034f37e4f154f5ef3c0d33b1f36b8d",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "b6359f14c5ea75c18bd9c459608d29c98436138892ffddaa79ba8e824db472cf",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "605180d8ec379246d19dd3d0568b9f8cce3b16d3aa0f56d30013b4012443db75",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "9e7c3e70142210de5a38aed14b939554dd5ef9d93fa13bf9d1acc5a99ca20843",
+        "docs/plans/proof/starport-production-catalog/csp4/runtime-integration-2026-09-10/context-maintenance.json": "7cf2bc336170c9b44e4a9ff763a55342ade497dba42acffc4ca89639af28bcfd",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "84791ec689f475254945e6f75dc9dc0f0736f97c4c0470cdc9666189edd9bf9f",
+        "docs/plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json": "b593ae6b1e4571051fef2a768672d9cfd66c61ca90c53892ab56a32ef739a28c",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-input-collection.html": "d8aaf775589e2012040245743b248bc837f8aa518a9c36441763635ee0b8cee7",
+        "docs/plans/starport-production-catalog-plan.html": "0c611efe0f26e2f3687a209177d65d91e438ee5cbfe0a939a2a7c56f4b076e82",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:49:29.044502+00:00",
+      "status": "passed"
+    }
+  },
+  "documentation_source_files": [
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "b6359f14c5ea75c18bd9c459608d29c98436138892ffddaa79ba8e824db472cf"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "605180d8ec379246d19dd3d0568b9f8cce3b16d3aa0f56d30013b4012443db75"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "9e7c3e70142210de5a38aed14b939554dd5ef9d93fa13bf9d1acc5a99ca20843"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp5.md",
+      "sha256": "84791ec689f475254945e6f75dc9dc0f0736f97c4c0470cdc9666189edd9bf9f"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-input-collection.html",
+      "sha256": "d8aaf775589e2012040245743b248bc837f8aa518a9c36441763635ee0b8cee7"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "0c611efe0f26e2f3687a209177d65d91e438ee5cbfe0a939a2a7c56f4b076e82"
+    }
+  ]
+}
