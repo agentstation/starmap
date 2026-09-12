@@ -382,8 +382,8 @@ Workspace replacement must preserve declared access restrictions and operator ed
 Starmap now shares role declarations and POSIX classification through `pkg/productpaths/policy`.
 Adapters refuse an incompatible declaration before file access. Starport adoption remains a CSP8 obligation.
 
-Workspace replacement journals now use version 2 with content, mode, ownership, and native ACL bindings.
-Recovery refuses older journals and missing access digests without changing their files.
+Workspace replacement journals now use version 3 with native child identities, content, mode, ownership, and native ACL bindings.
+Recovery preserves version 1 and 2 journals for explicit recovery because they lack required ownership evidence. It also refuses missing identity or access bindings.
 Atomic replacement also checks the original access-bound tree before publication.
 
 Private staging restores workspace access before candidate publication.
@@ -2711,12 +2711,20 @@ Ownership remains in memory.
 
 Commit `e2cbbc6b` binds journal completion to the accepted file's native identity, exact bytes, and access metadata.
 Publication returns the original staged identity. Recovery binds decoded content and file state through one bounded read.
-Cancellation preserves the journal for later recovery. Version 2 remains the current journal format.
+Cancellation preserves the journal for later recovery. That checkpoint retained version 2.
 
 The [journal identity proof](../../plans/proof/starport-production-catalog/csp5/journal-identity-2026-09-12/verification.json) records 226 passing race test events.
-A separate failing probe shows recovery deleting an identical replacement backup child.
-CSP5 must persist and validate child identities and define compatibility for existing version 2 journals.
-Matching content and access metadata cannot establish a replacement child's ownership.
+Its separate probe showed that recovery deleted an identical replacement backup child. Commit `e7bfdf67` corrects that failure with version 3 journals.
+
+Version 3 records `old_identities` and `new_identities`. Each map must cover exactly its corresponding inventory paths, including the root.
+Each identity must be nonempty and at most 128 bytes. The existing 4 MiB journal limit covers both maps.
+Recovery compares identities, content, and access before moving live or candidate trees and before deleting backup children.
+
+The [child identity proof](../../plans/proof/starport-production-catalog/csp5/backup-children-2026-09-12/verification.json) records 245 passing race test events.
+Cleanup also verifies the backup root's path binding before each child removal. Version 1 and 2 journals return `workspace_replacement.version` without changing workspace state.
+Preserve those journals and their workspace, candidate, and backup for explicit recovery. Matching content and access cannot prove missing child ownership.
+
+Preparation and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.
 
 Starport must qualify its own composition under CSP8.
 

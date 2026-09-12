@@ -574,4 +574,16 @@ Changed journals remain preserved. Cancellation permits a later recovery attempt
 
 The [journal identity proof](../../plans/proof/starport-production-catalog/csp5/journal-identity-2026-09-12/verification.json) records 226 passing race test events.
 Receipts remain in memory. A separate failing probe shows that backup cleanup deletes an identical replacement child.
-Persisted child identities and version 2 compatibility remain CSP5 work, with other persistent recovery, retention, and compaction requirements.
+The next section records persisted child identities and version 2 compatibility. Other persistent recovery, retention, and compaction requirements remain open.
+
+## Version 3 replacement journals: 2026-09-12
+
+Starmap `e7bfdf67` persists native identities for every old and new inventory entry.
+Recovery checks these identities before moving live or candidate trees and before removing backup children.
+Identical replacements remain preserved. Cleanup also checks the backup root's path binding before each child removal.
+
+Version 1 and 2 journals lack required ownership evidence. Recovery preserves the journal, workspace, candidate, and backup for explicit recovery.
+The existing 4 MiB journal limit covers the new identity maps. This change adds no storage service or configuration setting.
+
+The [child identity proof](../../plans/proof/starport-production-catalog/csp5/backup-children-2026-09-12/verification.json) records 245 passing race test events.
+Persistent preparation and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.

@@ -2583,5 +2583,19 @@ All 226 workspace and migration CLI race test events pass. ago, prose, and Linux
 
 A separate Go overlay proves that backup recovery still deletes an identical replacement child.
 The version 2 journal records the backup root identity and child content and access metadata. It does not persist native child identities.
-CSP5 must resolve this ownership defect and existing-journal compatibility before qualifying persistent recovery.
+The next section records its correction and existing-journal compatibility.
 The passing completion tests do not resolve this separate failure or qualify native execution, full CSP5 acceptance, or a merge.
+
+## Persisted replacement child ownership: 2026-09-12
+
+Starmap `e7bfdf67` persists native child identities in version 3 replacement journals.
+The [child identity proof](../../plans/proof/starport-production-catalog/csp5/backup-children-2026-09-12/verification.json) preserves original file and directory deletion failures.
+The old recovery also accepted version 2 journals without child identities. The new reader preserves version 1 and 2 journals for explicit recovery.
+
+Recovery compares persisted identities before moving live or candidate trees and deleting backup children.
+Cleanup checks the root path binding before each child removal. Tests preserve identical replacements and a file replaced during cleanup.
+They also refuse invalid identity inventories before workspace changes. Each map must cover its exact inventory, within the existing journal limit.
+
+All 245 workspace and migration CLI race test events pass without skips. Process-exit recovery passes at six replacement phases.
+ago, prose, and Linux/Windows compilation checks pass. Native execution and full CSP5 qualification remain open.
+Preparation ownership still lives in memory. Persistent preparation and relocation recovery remain the next work, with retention and compaction.

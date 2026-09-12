@@ -19,6 +19,7 @@ Commit `9d8b4b8b` bounds filesystem records and legacy preflight.
 Commit `64f905db` preserves workspace record ownership and bounds marker reads.
 
 Commit `e2cbbc6b` binds journal completion to accepted file state.
+Commit `e7bfdf67` persists replacement child identities and preserves legacy journals.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -442,10 +443,32 @@ All 224 workspace and two migration CLI race test events pass without failures o
 The focused boundary run passes 27 events, including process exits at six replacement phases.
 Final ago, prose, and Linux/Windows compilation checks pass. Native execution remains unverified.
 
-The receipt remains in memory. The journal format stays at version 2.
+At `e2cbbc6b`, receipts remained in memory. That checkpoint used version 2 journals.
+
 A separate preserved Go overlay proves another defect: recovery deletes an identical replacement backup child.
 Version 2 persists root identity and child content and access metadata. It omits native child identities.
-This failing probe receives no completion credit. CSP5 must define persisted child ownership and compatibility for existing journals before destructive recovery.
+The next section records persisted child ownership and legacy-journal compatibility. The original failing probe remains preserved.
+
+## Persisted replacement child identities
+
+The [child identity proof](csp5/backup-children-2026-09-12/verification.json) binds commit `e7bfdf67` to original failures and final checks.
+In the red run, recovery deletes identical replacement files and directories. It also accepts a version 2 journal without child identities.
+Five failed events include two parent tests. The existing version 1 refusal passes in that same run.
+
+Version 3 persists native identities for every old and new inventory entry. Both maps must cover exactly their inventory paths and match the root identity.
+Each identity remains bounded to 128 bytes. Both maps remain within the existing 4 MiB journal limit.
+Recovery checks identities, content, and access before moving live or candidate trees.
+
+Backup cleanup checks persisted child identities before cleanup and before each removal. It also verifies the backup root's path binding.
+Tests preserve a file replaced during cleanup and reject incomplete, extra, empty, oversized, and root-mismatched identity records.
+Version 1 and 2 journals remain unchanged with a `workspace_replacement.version` error. Their workspace, candidate, and backup remain preserved for explicit recovery.
+
+All 243 workspace and two migration CLI race test events pass without skips. The final boundary run passes 19 events.
+The earlier 20-event run also passes process-exit recovery at all six replacement phases.
+Final ago, prose, and Linux/Windows compilation checks pass. Native runtime qualification remains open.
+
+Journal acceptance receipts remain in memory. Child ownership now persists in version 3 journals.
+Preparation and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full task qualification.
 
 ## Remaining work
 
@@ -453,7 +476,7 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Persist backup child identities and define compatibility for existing version 2 journals. Complete persistent workspace, retained-evidence, and discovery recovery, then generation retention.
+Add persistent preparation and candidate recovery with active-writer exclusion. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
