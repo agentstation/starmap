@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	filepolicy "github.com/agentstation/starmap/pkg/productpaths/policy"
@@ -120,6 +121,84 @@ func TestFileInspectionCoversRetainedRemovalAndPin(t *testing.T) {
 			}
 			if inspector.runtime != nil || inspector.starmap != nil || inspector.credentialResolver != nil {
 				t.Error("inspection initialized application state")
+			}
+		})
+	}
+}
+
+func TestFileInspectionPreservesCatalogRetirementRecords(t *testing.T) {
+	for _, selected := range []bool{false, true} {
+		t.Run(map[bool]string{false: "canonical store", true: "selected store"}[selected], func(t *testing.T) {
+			clearCatalogEnvironment(t)
+			home := t.TempDir()
+			t.Setenv("STARMAP_HOME", home)
+			if selected {
+				t.Setenv("STARMAP_CATALOG_STORE_PATH", filepath.Join(home, "selected-store"))
+			}
+			a := NewForCommand("test", "test", "test", "test")
+			paths, err := a.ResolvedPaths()
+			if err != nil {
+				t.Fatal(err)
+			}
+			known := []string{
+				"generations/example/.read.lock", "generations/example/authority.json", "generations/example/.authority-pending",
+				"generations/.retirement-pending.json", "generations/.retirement-write-pending",
+				"generations/.record-publications/.owner.lock", "generations/.record-publications/pending.jsonl",
+				"generations/.retired-pending/manifest.json", "generations/.retired-pending/catalog.json",
+				"generations/.retired-pending/authority.json", "generations/.retired-pending/.read.lock",
+			}
+			unknown := []string{
+				"generations/example/operator-notes.txt", "generations/.record-publications/operator-notes.txt",
+				"generations/.retired-pending/operator-notes.txt",
+			}
+			contents := []byte("private catalog retirement fixture contents")
+			before := map[string][]byte{}
+			for _, group := range [][]string{known, unknown} {
+				for _, relative := range group {
+					path := filepath.Join(paths.CatalogStore.Path, filepath.FromSlash(relative))
+					directory, err := privatefiles.NewDirectory(filepath.Dir(path))
+					if err != nil {
+						t.Fatal(err)
+					}
+					if err := directory.WriteFile(filepath.Base(path), contents, ".fixture-"); err != nil {
+						t.Fatal(err)
+					}
+					before[path] = contents
+				}
+			}
+			report, err := a.InspectFiles(t.Context(), 10000)
+			if err != nil || !report.Inspection.Complete {
+				t.Fatalf("inspection did not complete: %v", err)
+			}
+			for _, relative := range known {
+				path := filepath.Join(paths.CatalogStore.Path, filepath.FromSlash(relative))
+				found := false
+				for _, item := range report.Inspection.Observations {
+					if item.Path == path {
+						found = item.ID == "catalog-store" && item.State == "present" && item.Kind == "file" && item.AccessPolicy == filepolicy.OwnerOnly
+					}
+				}
+				if !found || !manifestCoversFile(t, report, path) {
+					t.Errorf("inspection omits private catalog retention file: %s", relative)
+				}
+			}
+			for _, relative := range unknown {
+				if manifestCoversFile(t, report, filepath.Join(paths.CatalogStore.Path, filepath.FromSlash(relative))) {
+					t.Errorf("manifest adopts unknown catalog contents: %s", relative)
+				}
+			}
+			for path, data := range before {
+				after, err := os.ReadFile(path)
+				if err != nil || !bytes.Equal(data, after) {
+					t.Errorf("inspection changed %s: %v", path, err)
+				}
+			}
+			encoded, err := json.Marshal(report)
+			if err != nil || bytes.Contains(encoded, contents) {
+				t.Errorf("inspection exposed catalog retention contents: %v", err)
+			}
+			if a.runtime != nil || a.starmap != nil || a.credentialResolver != nil {
+				t.Fatal("inspection initialized application state")
 			}
 		})
 	}

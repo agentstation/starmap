@@ -33,7 +33,10 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	}
 	add("baseline", paths.Baselines, "tree", "available", "Persistent application startup.", "Preserve or reproduce from the same binary.", "*/manifest.json", "*/catalog.json", ".baseline-*/**")
 	add("baseline-recovery", child(paths.Baselines, ".starmap-baseline"), "tree", "available", "Baseline export and interrupted-stage recovery.", "Preserve journals and the writer lock until verified recovery completes.", ".owner.lock", "*.json", ".record-*")
-	add("catalog-store", paths.CatalogStore, "tree", "available", "Accepted catalog publication.", "Preserve generations and the current pointer through a consistent backup.", "current", ".commit.lock", "generations/*/manifest.json", "generations/*/catalog.json", "generations/.candidate-*/**", ".current-*")
+	add("catalog-store", paths.CatalogStore, "tree", "available", "Catalog publication, generation pins, and retention.", "Preserve the current pointer, generations, read locks, and retirement records through coordinated recovery and consistent backups.",
+		"current", ".commit.lock", "generations/*/manifest.json", "generations/*/catalog.json", "generations/*/authority.json", "generations/*/.authority-*", "generations/*/.read.lock",
+		"generations/.retirement-*.json", "generations/.retirement-write-*", "generations/.record-publications/.owner.lock", "generations/.record-publications/*.jsonl",
+		"generations/.candidate-*/**", ".current-*")
 	for _, item := range []struct{ id, name, creation, recovery string }{
 		{"runtime-owner", "owner.json", "Persistent runtime initialization.", "Preserve the product, deployment, and instance binding."},
 		{"runtime-lock", ".owner.lock", "Runtime directory ownership.", "A lock file alone does not prove active ownership."},
