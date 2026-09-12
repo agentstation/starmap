@@ -292,3 +292,20 @@ No product optimization is complete from these measurements alone.
 [sp-latency]: https://github.com/agentstation/starport/blob/042eb97851496ecdd1ef20bfa44fe3d84b86b2d8/internal/router/latency_shared.go#L52
 [sp-controller]: https://github.com/agentstation/starport/blob/042eb97851496ecdd1ef20bfa44fe3d84b86b2d8/internal/server/controllers/chat.go#L41
 [sp-performance]: https://github.com/agentstation/starport/blob/042eb97851496ecdd1ef20bfa44fe3d84b86b2d8/docs/PERFORMANCE.md
+
+## Workspace repair observation: 2026-09-12
+
+Starmap `536791a0` removes a duplicate render and validation pass during optional YAML workspace repair.
+The [workspace proof](../../plans/proof/starport-production-catalog/csp5/workspace-cleanup-2026-09-12/verification.json) retains CPU profiles, allocation profiles, source snapshots, and command results.
+Each version runs the canonical-runtime application test once on the local macOS host with Go 1.26.6 and race instrumentation.
+Both runs pass. Neither reproduces the earlier optional-workspace timeout.
+
+| Observation | Before candidate reuse | After candidate reuse |
+|---|---:|---:|
+| Test elapsed time | 117.50 seconds | 74.64 seconds |
+| Sampled cumulative allocation space, MB reported by pprof | 18,970.27 | 11,169.65 |
+
+Allocation totals measure cumulative allocation space, not peak resident memory.
+These single-run observations do not qualify production startup, inference latency, or released-pair performance.
+The named workspace tests show that repair builds one candidate and preserves operator edits.
+Startup still encodes, decodes, and validates YAML. Requirements for production startup and inference latency remain unchanged.

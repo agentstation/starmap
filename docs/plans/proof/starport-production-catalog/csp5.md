@@ -11,6 +11,7 @@ Checkpoint `de8b5abe` adds explicit durability outcomes and pending-pin confirma
 
 Commit `ceef5480` corrects the retained record inventory. Commit `55c8bc19` adds baseline stage recovery.
 Commit `9e875a35` adds migration initialization, partial ownership, scan limits, and the reopen correction.
+Commit `536791a0` checks candidate cleanup and reuses validated repair candidates.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -284,6 +285,36 @@ The corrected assertion uses `errors.Is`. Its focused check and the full migrati
 Unrecorded stages and interrupted atomic owner-record scratch remain preserved for explicit recovery.
 Workspace preparation and exchange cleanup, retained evidence, discovery staging, generation retention, history compaction, and full CSP5 qualification remain open.
 `internal/catalog/workspace/stage_access.go` and `projector.go` still use recursive cleanup. CSP5 must replace that cleanup with verified ownership.
+
+## Workspace candidate cleanup and repair reuse
+
+The [workspace proof](csp5/workspace-cleanup-2026-09-12/verification.json) binds commit `536791a0` to its command records and source snapshots.
+Eight original cases delete operator content before promotion or after native exchange.
+They cover unknown files, changed files, same-content replacement files, and replacement roots.
+Both original repair cases also build two candidates for one repair.
+
+Candidate cleanup now checks bounded inventories, native identities, content digests, and access metadata before deletion.
+It preserves conflicts and returns the cleanup error with the original operation error.
+Cancellation starts a separate 30-second cleanup limit. Native exchange permits cleanup of the recorded old tree at the candidate path.
+The visible publication receipt survives cleanup failure.
+
+Repair now publishes its validated candidate without a second render and validation pass.
+All 149 workspace race events pass without failures or skips.
+Final ago, prose, and Linux/Windows compilation checks pass. Compilation does not qualify native runtime behavior.
+
+The canonical-runtime application test passes before and after candidate reuse.
+Its elapsed time falls from 117.50 to 74.64 seconds. Sampled cumulative allocation space falls from 18,970.27 to 11,169.65 MB as reported by pprof.
+Each version has one local run with race instrumentation and profiling. The earlier optional-workspace timeout does not recur in either run.
+
+Allocation totals are not peak resident memory. These observations do not qualify production startup, inference latency, or the released product pair.
+
+The proof preserves one intermediate compile failure and both prose failures.
+The first prose failure identifies an eight-sentence paragraph. The second scans a generated native sample with a text suffix.
+That unchanged machine output now uses a log suffix. The corrected document restores migration paragraph ownership before the new workspace section.
+
+The identity map remains in memory and does not change the existing replacement-journal encoding.
+Private preparation and verification cleanup still use recursive deletion. Assembly still has an unbounded directory read.
+Persistent stage recovery, retained evidence, discovery staging, generation retention, history compaction, and full CSP5 qualification remain open.
 
 ## Remaining work
 

@@ -2486,3 +2486,21 @@ CSP5 must add verified ownership before those paths can satisfy its cleanup cont
 The moved-stage regression exposed deferred cleanup through a nil handle after a failed directory reopen.
 The initializer now returns the filesystem error and preserves the moved stage.
 The corrected regression inspects joined errors through `errors.Is`. All 150 final migration race events pass.
+
+## Workspace cleanup and repair: 2026-09-12
+
+Starmap `536791a0` replaces recursive removal of completed candidates with checked cleanup.
+The [workspace proof](../../plans/proof/starport-production-catalog/csp5/workspace-cleanup-2026-09-12/verification.json) preserves eight original cases that delete operator content.
+Cleanup now verifies native identities, content, access, and remaining entries. A same-content replacement file remains preserved because its identity differs.
+The visible publication receipt survives a cleanup conflict.
+
+Repair also rendered and validated two candidates for one operation. It now publishes the first validated candidate.
+All 149 workspace race events pass without failures or skips. Final ago, prose, and Linux/Windows compilation checks pass.
+Native runtime qualification remains open. No CSP5 PR or merge credit applies.
+
+The canonical-runtime profile passes before and after this change, taking 117.50 and 74.64 seconds respectively.
+Each version has one local run with race instrumentation. The earlier timeout does not recur.
+The [latency review](LATENCY_REVIEW.md#workspace-repair-observation-2026-09-12) records allocation totals and qualification limits.
+
+Private preparation and verification-tree cleanup still use recursive deletion. Assembly still uses an unbounded directory read.
+Persistent workspace recovery, retained evidence, discovery staging, generation retention, and compaction remain required under CSP5.

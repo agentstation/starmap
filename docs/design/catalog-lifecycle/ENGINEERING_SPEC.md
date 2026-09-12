@@ -2668,6 +2668,17 @@ Interrupted cleanup may resume with a verified subset of the old inventory. Reco
 The native suite includes an editor directory handle without delete sharing.
 The [merged CSP2 qualification](../../plans/proof/starport-production-catalog/csp2/merged-qualification-2026-09-09/verification.json) passes its required Windows interruption and access tests.
 Power-loss durability remains unqualified. CSP5 owns abandoned-stage cleanup and errors after publication.
+
+Local commit `536791a0` replaces recursive cleanup of completed workspace candidates with checked removal.
+It retains native file identities in memory and verifies content, access, and the remaining inventory before deletion.
+Conflicting entries remain preserved. Cleanup has a separate 30-second limit after cancellation and returns its error with the operation error.
+Native exchange permits removal only of the recorded old tree at the candidate path.
+
+Repair now publishes one validated candidate without repeating its render and validation passes.
+The [workspace proof](../../plans/proof/starport-production-catalog/csp5/workspace-cleanup-2026-09-12/verification.json) records 149 passing workspace race events and local application profiles.
+The identity map does not change replacement-journal JSON or digest encodings.
+Private preparation cleanup, verification cleanup, and persistent stage recovery remain incomplete.
+
 Starport must qualify its own composition under CSP8.
 
 ### 9.2 Inference credential destinations

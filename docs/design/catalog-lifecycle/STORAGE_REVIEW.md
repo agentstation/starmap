@@ -500,3 +500,13 @@ The new findings above require their own regression or platform evidence before 
 [sm-compose]: https://github.com/agentstation/starmap/blob/4780dfea9f7e002ea6eaaa82aa8f52ed0d4cc225/docker-compose.yml#L66
 
 [sp-credential-references]: https://github.com/agentstation/starport/blob/042eb97851496ecdd1ef20bfa44fe3d84b86b2d8/internal/credentials/reference.go#L15
+
+## Workspace candidate ownership: 2026-09-12
+
+Starmap `536791a0` retains native directory and file identities for completed workspace candidates in process memory.
+Cleanup verifies those identities, contents, and access before deletion. Conflicting entries remain preserved.
+This state controls temporary local filesystem cleanup. It does not change catalog authority or any shared-storage role.
+
+The identity map does not survive process exit. Persistent workspace staging records and recovery remain CSP5 work.
+The existing replacement-journal encoding remains unchanged.
+The [workspace proof](../../plans/proof/starport-production-catalog/csp5/workspace-cleanup-2026-09-12/verification.json) records local behavior tests and compilation limits.
