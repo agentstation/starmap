@@ -34,13 +34,25 @@ The superseded run completed twelve phases, including 85 passing ordinary packag
 No ordinary package result used the test cache. A deliberate stop ended the subsequent race phase with exit status 143 for this correction.
 Its terminal logs, stop reason, and completed phase results remain archived. This run does not count as complete repository verification.
 
-Full verification runs in session `2580` on commit `1a7ae757b`.
-The worktree is `starmap-catalog-update-controls-qualification`, on branch `codex/catalog-update-controls-qualification`.
-
-Twelve repository phases pass on this commit. All 85 ordinary package results pass without cached results, alongside 22 packages without tests.
-The ordinary runtime package passes in 447.139 seconds.
+Repository session `2580` ended with exit status 2 at 19:34:17 UTC on September 12.
+Twelve phases passed before the race suite. All 85 ordinary package results passed without cached results, alongside 22 packages without tests.
+The ordinary runtime package passed in 447.139 seconds.
 These package results do not expose exact individual test or skip counts.
-The complete race suite remains active. Later repository gates remain unverified.
+
+The race suite exhausted local disk capacity. Its output contains 29 passing package results, 50 failing package results, and 122 failed test lines.
+Those test lines include parent and nested subcase failures. They are not a count of independent tests.
+
+The logs contain 113 disk-capacity errors in stdout and 49 in stderr.
+The first disk-write errors precede the first CLI assertion failure. Later packages could not compile because temporary writes failed.
+The resource record preserves the original output and counts. Remaining race packages and later repository gates remain unverified.
+
+The Go build cache occupied 64,529,824 KiB. `go clean -cache` completed with exit status 0 and restored about 63 GiB of available disk capacity.
+This cleanup removed regenerable build and test cache entries. It preserved source, module downloads, worktrees, and proof logs.
+The cleanup record retains the command, exit status, and disk observations.
+
+Full qualification restarted in session `7815` on unchanged commit `1a7ae757b`.
+The worktree is `starmap-catalog-update-controls-qualification`, on branch `codex/catalog-update-controls-qualification`.
+The retry uses the same complete verification command, test selection, and time limits.
 
 The task check on unchanged Go source `5160414e4` passes all twelve selected subcases, including 42 race events across 21 commands.
 Eight subcases retain Starport consumer requirements.

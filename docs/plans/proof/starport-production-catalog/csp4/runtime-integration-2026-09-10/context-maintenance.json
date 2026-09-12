@@ -5,11 +5,11 @@
   "done": 10,
   "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 112,
-  "new_evidence_artifacts": 11875,
+  "local_links": 111,
+  "new_evidence_artifacts": 11879,
   "new_commit_source_files": 834,
-  "resume_words": 238,
-  "next_action": "Poll the complete race suite in session 2580 on 1a7ae757b. Twelve repository phases and 85 uncached ordinary package results pass. Existing test coverage and time limits remain unchanged. Complete verification, required review, native CI, and local delivery. Shared/object collection and the pending coordinator decision remain required for CSP5 completion.",
+  "resume_words": 236,
+  "next_action": "Poll repository session 7815 on unchanged 1a7ae757b after build-cache cleanup restored about 63 GiB. Session 2580 ended with a disk-capacity failure after twelve passing phases. Complete verification, required review, native CI, and local delivery. Shared/object collection and the pending coordinator decision remain required for CSP5 completion.",
   "current_source": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
   "starmap_integration_source": null,
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
@@ -27,13 +27,13 @@
         "make",
         "verify"
       ],
-      "started_at": "2026-09-12T18:32:12.882669+00:00",
+      "started_at": "2026-09-12T19:39:40.142412+00:00",
       "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
       "source_files": {},
-      "name": "qualification-fresh-repository-1a7ae757b-20260912",
+      "name": "qualification-capacity-repository-1a7ae757b-20260912",
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
       "status": "RUNNING",
-      "session_id": 2580
+      "session_id": 7815
     }
   ],
   "current_source_binding_kind": "commit",

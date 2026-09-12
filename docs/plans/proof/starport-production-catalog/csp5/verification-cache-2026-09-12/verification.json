@@ -561,6 +561,37 @@
       },
       "test_events": {},
       "test_results": []
+    },
+    "qualification-fresh-repository-1a7ae757b-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "make",
+        "verify"
+      ],
+      "started_at": "2026-09-12T18:32:12.882669+00:00",
+      "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {},
+      "exit_code": 2,
+      "finished_at": "2026-09-12T19:34:17.285741+00:00",
+      "name": "qualification-fresh-repository-1a7ae757b-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "FAIL",
+      "archived_files": {
+        "cache-cleanup.json": "blobs/37bffaaf0d3760bddeaf9d3324187747eb201736fa29d07e348ff36e9fca5001.gz",
+        "changes.patch": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "resource-failure.json": "blobs/b5303ef2e614d43073f8a7686ea668d16dc851a31d92a02341c76bd54b1e0afe.gz",
+        "stderr.log": "blobs/d9807c70e53657c403e74b8f3530556c1c2711f9cb21de5e3164a044c0469f9e.gz",
+        "stdout.log": "blobs/724a4b9da5744641f5f88323bcc857a24c58ba2e659b45982310b0b086f70332.gz",
+        "verification.json": "blobs/25179a1a67eb01f585c4b13cf67ab6edbae7bb28ae1dd4ee1750a11285ec33c1.gz"
+      },
+      "test_events": {},
+      "test_results": []
     }
   },
   "running_checks": [
@@ -576,16 +607,16 @@
         "make",
         "verify"
       ],
-      "started_at": "2026-09-12T18:32:12.882669+00:00",
+      "started_at": "2026-09-12T19:39:40.142412+00:00",
       "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
       "source_files": {},
-      "name": "qualification-fresh-repository-1a7ae757b-20260912",
+      "name": "qualification-capacity-repository-1a7ae757b-20260912",
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
       "status": "RUNNING",
-      "session_id": 2580
+      "session_id": 7815
     }
   ],
-  "observed_at": "2026-09-12T19:03:15.423321+00:00",
+  "observed_at": "2026-09-12T19:40:25.242847+00:00",
   "cache_observation": {
     "artifact": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
     "testlog_bytes": 2270280301,
@@ -631,11 +662,906 @@
     ]
   },
   "limits": [
-    "The current full repository run is incomplete. Required review, native CI, and merge remain pending.",
+    "The first uncached repository run failed when the local disk filled during the race suite. Required review, native CI, and merge remain pending.",
     "All twelve selected CSP5 subcases passed on 5160414e4. Only verification command flags and their comment changed afterward. Eight subcases retain Starport consumer requirements.",
     "Shared/object generation collection and the pending coordinator decision remain required for complete CSP5 delivery.",
     "No full-suite speed improvement is claimed before terminal comparison evidence. The probe establishes disabled test-cache logging."
   ],
+  "repository_resource_failure": {
+    "observed_at": "2026-09-12T19:36:13.515829+00:00",
+    "classification": "FAIL: local disk capacity exhausted during the complete race suite; later gates did not run",
+    "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+    "race_passing_packages": [
+      "ok  \tgithub.com/agentstation/starmap\t698.433s",
+      "ok  \tgithub.com/agentstation/starmap/acquisition\t214.246s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-bootstrap-manifest\t84.201s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-catalog-release\t61.420s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-embedded-budget\t18.903s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-modelsdev-promote\t4.435s",
+      "ok  \tgithub.com/agentstation/starmap/cmd/starmap-openapi-presence\t1.269s",
+      "ok  \tgithub.com/agentstation/starmap/internal/architecture\t1.252s",
+      "ok  \tgithub.com/agentstation/starmap/internal/attestation\t1.370s",
+      "ok  \tgithub.com/agentstation/starmap/internal/auth\t1.677s",
+      "ok  \tgithub.com/agentstation/starmap/internal/bootstrap\t182.476s",
+      "ok  \tgithub.com/agentstation/starmap/internal/bootstrap/budget\t36.348s",
+      "ok  \tgithub.com/agentstation/starmap/internal/bootstrap/manifest\t1.232s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/pipeline\t12.610s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/query\t1.197s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/reconciler\t8.807s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/settings\t48.963s",
+      "ok  \tgithub.com/agentstation/starmap/internal/catalog/workspace\t381.415s",
+      "ok  \tgithub.com/agentstation/starmap/internal/ciworkflow\t1.288s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/config\t1.394s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/commands/embed\t1.281s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/convert\t1.180s",
+      "ok  \tgithub.com/agentstation/starmap/internal/cli/embed\t1.165s",
+      "ok  \tgithub.com/agentstation/starmap/pkg/productpaths\t1.200s",
+      "ok  \tgithub.com/agentstation/starmap/pkg/productpaths/policy\t1.162s",
+      "ok  \tgithub.com/agentstation/starmap/pkg/provenance\t1.218s",
+      "ok  \tgithub.com/agentstation/starmap/pkg/sources\t1.252s",
+      "ok  \tgithub.com/agentstation/starmap/pkg/sources/payload\t1.297s",
+      "ok  \tgithub.com/agentstation/starmap/pkg/sync\t1.209s"
+    ],
+    "race_failing_packages": [
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/app\t154.527s",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/deps [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/migrate [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/models [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/providers [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/serve [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/update [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/commands/validate [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/hints [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/cli/table [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/deploymentdocs [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/embedded [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/filepublish [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/fleet [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/privatefiles [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/providers/anthropic [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/providers/clients [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/providers/google [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/providers/openai [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/runtimeacl/windows [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/cache [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/handlers [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/middleware [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/openrouter [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/operations [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/params [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/response [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/server/sse [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/sources/embedded [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/sources/github [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/sources/local [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/sources/modelsdev [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/sources/providers [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/test/gitfixture [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/test/logging [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/test/providerfixture [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/internal/transport [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/artifact [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/authority [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/config [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/evidence [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/permission [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/permission/hostclock [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/remote [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/pkg/logging [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/remote\t13.135s",
+      "FAIL\tgithub.com/agentstation/starmap/runtime [build failed]",
+      "FAIL\tgithub.com/agentstation/starmap/server [build failed]"
+    ],
+    "race_failed_test_lines": [
+      "--- FAIL: TestGitCLIRefreshIngestsProviderAndNonProviderEvidence (13.79s)",
+      "--- FAIL: TestConnectedRefreshIngestsProviderAndNonProviderEvidence (5.68s)",
+      "--- FAIL: TestGitScheduledRefreshIngestsProviderAndNonProviderEvidence (9.68s)",
+      "--- FAIL: TestGitConfiguredSourceSelectionSkipsMetadataInApplication (0.00s)",
+      "    --- FAIL: TestGitConfiguredSourceSelectionSkipsMetadataInApplication/false (0.00s)",
+      "    --- FAIL: TestGitConfiguredSourceSelectionSkipsMetadataInApplication/true (0.00s)",
+      "--- FAIL: TestPeriodicRefreshIngestsProviderAndNonProviderEvidence (0.00s)",
+      "--- FAIL: TestGitPeriodicRefreshIngestsProviderAndNonProviderEvidence (0.00s)",
+      "--- FAIL: TestApplicationRestartRevokesMetadataSource (0.00s)",
+      "    --- FAIL: TestApplicationRestartRevokesMetadataSource/models_dev_http (0.00s)",
+      "    --- FAIL: TestApplicationRestartRevokesMetadataSource/models_dev_git (0.00s)",
+      "--- FAIL: TestExplicitConfigFileLoadsAfterFlagParsing (0.00s)",
+      "--- FAIL: TestExplicitConfigFileMustExistAndParse (0.00s)",
+      "--- FAIL: TestConfigurationRejectsPublicDarwinACL (0.00s)",
+      "--- FAIL: TestServiceConfigurationDarwinGrants (0.00s)",
+      "--- FAIL: TestConfigurationPrivateAccessBeforeParsing (0.00s)",
+      "--- FAIL: TestDotenvAccessFailurePreservesEnvironment (0.00s)",
+      "--- FAIL: TestConfigurationSymlinkChecksSelectedTarget (0.00s)",
+      "--- FAIL: TestConfigurationReadByteLimitAndMissingFile (0.00s)",
+      "--- FAIL: TestConfigFileUsesOnlyCanonicalLocation (0.00s)",
+      "--- FAIL: TestConfigParsesCredentialSourceReferences (0.00s)",
+      "--- FAIL: TestServiceConfigurationDoesNotLoadIncidentalDotenv (0.00s)",
+      "--- FAIL: TestExplicitDotenvPrecedenceAndConflictDiagnostics (0.00s)",
+      "--- FAIL: TestCommandFlagsOverrideInvalidEnvironmentSettings (0.00s)",
+      "--- FAIL: TestCommandDotenvSourceReplacementPreservesAuthority (0.00s)",
+      "    --- FAIL: TestCommandDotenvSourceReplacementPreservesAuthority/false (0.00s)",
+      "    --- FAIL: TestCommandDotenvSourceReplacementPreservesAuthority/true (0.00s)",
+      "--- FAIL: TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues (0.00s)",
+      "    --- FAIL: TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues/nul (0.00s)",
+      "    --- FAIL: TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues/duplicate (0.00s)",
+      "    --- FAIL: TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues/syntax (0.00s)",
+      "--- FAIL: TestConfigPathsInspectionReportsFilesWithoutInitialization (0.00s)",
+      "--- FAIL: TestFileInspectionReportsActiveOwnerAndLiteralWorkspace (0.00s)",
+      "--- FAIL: TestFileInspectionPreservesPrivateRecordStaging (0.00s)",
+      "--- FAIL: TestFileInspectionCoversRetainedRemovalAndPin (0.00s)",
+      "    --- FAIL: TestFileInspectionCoversRetainedRemovalAndPin/canonical_runtime (0.00s)",
+      "    --- FAIL: TestFileInspectionCoversRetainedRemovalAndPin/selected_runtime (0.00s)",
+      "--- FAIL: TestFileInspectionPreservesCatalogRetirementRecords (0.00s)",
+      "    --- FAIL: TestFileInspectionPreservesCatalogRetirementRecords/canonical_store (0.00s)",
+      "    --- FAIL: TestFileInspectionPreservesCatalogRetirementRecords/selected_store (0.00s)",
+      "--- FAIL: TestConfigPathsCommandIsPassiveAndReportsOrigins (0.00s)",
+      "--- FAIL: TestFileManifestCoversColdStartupAndPublication (0.00s)",
+      "--- FAIL: TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures (0.00s)",
+      "--- FAIL: TestFileManifestCoversWorkspaceRecoveryArtifacts (0.00s)",
+      "--- FAIL: TestFileManifestPreservesLeafAnchorsWithoutCredentialValues (0.00s)",
+      "--- FAIL: TestFileRolePolicyMatchesRuntimeEnforcement (0.00s)",
+      "    --- FAIL: TestFileRolePolicyMatchesRuntimeEnforcement/configuration (0.00s)",
+      "    --- FAIL: TestFileRolePolicyMatchesRuntimeEnforcement/dotenv (0.00s)",
+      "    --- FAIL: TestFileRolePolicyMatchesRuntimeEnforcement/catalog-store (0.00s)",
+      "    --- FAIL: TestFileRolePolicyMatchesRuntimeEnforcement/runtime-lock (0.00s)",
+      "    --- FAIL: TestFileRolePolicyMatchesRuntimeEnforcement/workspace (0.00s)",
+      "    --- FAIL: TestFileRolePolicyMatchesRuntimeEnforcement/baseline-recovery (0.00s)",
+      "--- FAIL: TestPrivateInputRefusesIncompatibleRoleBeforeFilesystemAccess (0.00s)",
+      "--- FAIL: TestFileInspectionReportsCatalogStorePrivateConflicts (0.00s)",
+      "    --- FAIL: TestFileInspectionReportsCatalogStorePrivateConflicts/. (0.00s)",
+      "    --- FAIL: TestFileInspectionReportsCatalogStorePrivateConflicts/current (0.00s)",
+      "    --- FAIL: TestFileInspectionReportsCatalogStorePrivateConflicts/generations/example/catalog.json (0.00s)",
+      "--- FAIL: TestFileManifestReportsAccessAndRetentionPolicies (0.00s)",
+      "--- FAIL: TestConfigPathsReportsPoliciesAcrossFormats (0.00s)",
+      "    --- FAIL: TestConfigPathsReportsPoliciesAcrossFormats/json (0.00s)",
+      "    --- FAIL: TestConfigPathsReportsPoliciesAcrossFormats/yaml (0.00s)",
+      "    --- FAIL: TestConfigPathsReportsPoliciesAcrossFormats/wide (0.00s)",
+      "--- FAIL: TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles (0.00s)",
+      "--- FAIL: TestMigrationFilePolicyNamesExistingFlags (0.00s)",
+      "--- FAIL: TestDefaultRuntimeRootAcceptsCompletedLegacyMigration (0.00s)",
+      "--- FAIL: TestDefaultRuntimeRootRefusesUnprovenLegacyMigration (0.00s)",
+      "    --- FAIL: TestDefaultRuntimeRootRefusesUnprovenLegacyMigration/published-only (0.00s)",
+      "    --- FAIL: TestDefaultRuntimeRootRefusesUnprovenLegacyMigration/changed-source (0.00s)",
+      "    --- FAIL: TestDefaultRuntimeRootRefusesUnprovenLegacyMigration/wrong-identity (0.00s)",
+      "    --- FAIL: TestDefaultRuntimeRootRefusesUnprovenLegacyMigration/another-root (0.00s)",
+      "--- FAIL: TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion (0.00s)",
+      "--- FAIL: TestRuntimeMigrationCommandRejectsInvalidInputBeforeWrites (0.00s)",
+      "--- FAIL: TestRuntimeMigrationUsesCanonicalJournalAndOwner (0.00s)",
+      "--- FAIL: TestRuntimeMigrationCompletionRefusesChangedConfigurationBeforeStartup (0.00s)",
+      "--- FAIL: TestSchedulerIdentityConfigurationPrecedence (0.00s)",
+      "--- FAIL: TestApplicationSelectsPublishedMigrationThroughConfiguration (0.00s)",
+      "--- FAIL: TestProductHomeAndLeafOverridesUseOneAnchor (0.00s)",
+      "--- FAIL: TestPrimaryFileCannotRelocateItsConfigurationRoot (0.00s)",
+      "--- FAIL: TestMalformedOptionalPrimaryConfigurationFails (0.00s)",
+      "--- FAIL: TestGoPathOptionsBypassAmbientConfiguration (0.00s)",
+      "--- FAIL: TestImplicitNewRootsRefuseLegacyStateWithoutWriting (0.00s)",
+      "--- FAIL: TestCommandPathFlagsAndDotenvKeepOrigins (0.00s)",
+      "--- FAIL: TestFrozenConfigurationRootDoesNotResolveAgain (0.00s)",
+      "--- FAIL: TestGoPathOptionsRejectUnknownNamesWithoutValues (0.00s)",
+      "--- FAIL: TestApplicationBindsConfiguredRuntimeOwner (0.00s)",
+      "--- FAIL: TestSourceDirectoryReportUsesConfiguredCacheRoot (0.00s)",
+      "--- FAIL: TestSeparateApplicationInstancesRetainDistinctSeeds (0.00s)",
+      "--- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites (0.00s)",
+      "    --- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites/STARMAP_HOME (0.00s)",
+      "    --- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites/STARMAP_CONFIG_DIR (0.00s)",
+      "    --- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites/STARMAP_DATA_DIR (0.00s)",
+      "    --- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites/STARMAP_STATE_ROOT (0.00s)",
+      "    --- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites/STARMAP_CACHE_DIR (0.00s)",
+      "    --- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites/STARMAP_CATALOG_STORE_PATH (0.00s)",
+      "    --- FAIL: TestApplicationRefusesEmptyRequiredPathsBeforeWrites/STARMAP_STATE_DIR (0.00s)",
+      "--- FAIL: TestApplicationUsesExplicitDeploymentRootsWithoutHome (0.00s)",
+      "--- FAIL: TestRelativeRuntimeRefusesUnknownLegacyAnchorBeforeWrites (0.00s)",
+      "--- FAIL: TestRelativePrimaryFileRefusesAmbiguousSelection (0.00s)",
+      "--- FAIL: TestRelativeLeafSelectionRequiresExplicitIntent (0.00s)",
+      "    --- FAIL: TestRelativeLeafSelectionRequiresExplicitIntent/runtime (0.00s)",
+      "    --- FAIL: TestRelativeLeafSelectionRequiresExplicitIntent/workspace (0.00s)",
+      "    --- FAIL: TestRelativeLeafSelectionRequiresExplicitIntent/legacy-workspace (0.00s)",
+      "--- FAIL: TestRelativePrimaryIntentPrecedesFileSelection (0.00s)",
+      "--- FAIL: TestRelativePathDeclarationPrecedenceAndValidation (0.00s)",
+      "--- FAIL: TestRelativeUpdatePathsRefuseBeforeCatalogAccess (0.00s)",
+      "    --- FAIL: TestRelativeUpdatePathsRefuseBeforeCatalogAccess/catalog-path (0.00s)",
+      "    --- FAIL: TestRelativeUpdatePathsRefuseBeforeCatalogAccess/sources-dir (0.00s)",
+      "    --- FAIL: TestRelativeUpdatePathsRefuseBeforeCatalogAccess/environment-sources (0.00s)",
+      "--- FAIL: TestAbsoluteRuntimeSelectionPreservesExistingIdentity (0.00s)",
+      "--- FAIL: TestOperationPathsRetainSelectedAnchor (0.00s)",
+      "--- FAIL: TestDotenvDeclaresRelativePrimarySelection (0.00s)",
+      "--- FAIL: TestRelativeFileSourceRefusesBeforeBaselineWrites (0.00s)",
+      "--- FAIL: TestFileSourceReadsReportedAnchorAcrossWorkingDirectories (0.00s)",
+      "--- FAIL: TestRuntimeACLRefusalPrecedesBaselineExport (0.00s)",
+      "--- FAIL: TestRuntimePermissionRefusalPrecedesBaselineExport (0.00s)",
+      "--- FAIL: TestServiceConfigurationExplicitSelection (0.00s)",
+      "--- FAIL: TestServiceConfigurationSelectionAndPrivateBoundaries (0.00s)",
+      "--- FAIL: TestServiceConfigurationFlagPrecedenceAndTargetChecks (0.00s)",
+      "--- FAIL: TestServiceConfigurationMigrationRereadPreservesPolicyAndDigest (0.00s)",
+      "--- FAIL: TestManualRuntimeRefreshNeverOpensStream (9.22s)",
+      "--- FAIL: TestOwnedSourceCloseTimeoutKeepsDirectoryOwned (0.01s)",
+      "--- FAIL: TestRestartServesDurableGenerationDuringRemoteRecovery (0.00s)"
+    ],
+    "space_errors": {
+      "stdout.log": [
+        {
+          "line": 404,
+          "text": "{\"level\":\"warn\",\"error\":\"IO error during write of authored model acme/known: write /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitCLIRefreshIngestsProviderAndNonProviderEvidence60808374/003/.workspace.preparing-CRI3QMJ4L5GTDLIAZ57QBPAMJ2/.preparation.jsonl: no space left on device\\nwrite /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitCLIRefreshIngestsProviderAndNonProviderEvidence60808374/003/.workspace.preparing-CRI3QMJ4L5GTDLIAZ57QBPAMJ2/.preparation.jsonl: no space left on device\",\"generation_id\":\"sources-d8b791cae43cf6afe5872351ad02aa270b2e5054aad858e8696095da5c1b9f23\",\"catalog_path\":\"/private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitCLIRefreshIngestsProviderAndNonProviderEvidence60808374/003/workspace\",\"time\":\"2026-09-12T14:32:06-05:00\",\"message\":\"Catalog generation committed; YAML workspace projection is pending repair\"}"
+        },
+        {
+          "line": 408,
+          "text": "{\"level\":\"warn\",\"error\":\"failed to initialize models.dev: IO error during create of parent directory: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitCLIRefreshIngestsProviderAndNonProviderEvidence60808374/001/cache: no space left on device\",\"source\":\"models_dev_git\",\"time\":\"2026-09-12T14:32:06-05:00\",\"message\":\"Source observation had errors\"}"
+        },
+        {
+          "line": 409,
+          "text": "{\"level\":\"warn\",\"error\":\"failed to observe source models_dev_git: failed to initialize models.dev: IO error during create of parent directory: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitCLIRefreshIngestsProviderAndNonProviderEvidence60808374/001/cache: no space left on device\",\"time\":\"2026-09-12T14:32:06-05:00\",\"message\":\"Continuing with degraded source observations and last-known-good data\"}"
+        },
+        {
+          "line": 544,
+          "text": "{\"level\":\"warn\",\"run_id\":\"source-run-100d68fd-419f-4baf-b80e-2bebb165d61c\",\"error\":\"failed to initialize models.dev HTTP: IO error during write of api.json: write /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConnectedRefreshIngestsProviderAndNonProviderEvidence2012382702/001/cache/models.dev/.starmap-cache-534411427: no space left on device\",\"source\":\"models_dev_http\",\"time\":\"2026-09-12T14:32:34-05:00\",\"message\":\"Source observation had errors\"}"
+        },
+        {
+          "line": 545,
+          "text": "{\"level\":\"warn\",\"error\":\"failed to observe source models_dev_http: failed to initialize models.dev HTTP: IO error during write of api.json: write /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConnectedRefreshIngestsProviderAndNonProviderEvidence2012382702/001/cache/models.dev/.starmap-cache-534411427: no space left on device\",\"time\":\"2026-09-12T14:32:34-05:00\",\"message\":\"Continuing with degraded source observations and last-known-good data\"}"
+        },
+        {
+          "line": 738,
+          "text": "{\"level\":\"warn\",\"error\":\"failed to preserve access workspace staging /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitScheduledRefreshIngestsProviderAndNonProviderEvidence1823673603/003/workspace: openat providers.yaml: no space left on device\",\"generation_id\":\"sources-82734a29776a7236b1c9c159fadf790e42576bfe2e002e87169eb2faca2f00ba\",\"workspace\":\"/private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitScheduledRefreshIngestsProviderAndNonProviderEvidence1823673603/003/workspace\",\"time\":\"2026-09-12T14:33:22-05:00\",\"message\":\"Durable catalog is active; YAML workspace repair remains pending\"}"
+        },
+        {
+          "line": 745,
+          "text": "    catalog_scheduled_sources_test.go:321: failed to read catalog source file: openat INHTKPIERTIXPLQAC5LOTEQMVU.jsonl: no space left on device"
+        },
+        {
+          "line": 748,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitConfiguredSourceSelectionSkipsMetadataInApplicationfalse1860010971: no space left on device"
+        },
+        {
+          "line": 750,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitConfiguredSourceSelectionSkipsMetadataInApplicationtrue2875469486: no space left on device"
+        },
+        {
+          "line": 752,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestPeriodicRefreshIngestsProviderAndNonProviderEvidence1418761299: no space left on device"
+        },
+        {
+          "line": 754,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGitPeriodicRefreshIngestsProviderAndNonProviderEvidence1870973829: no space left on device"
+        },
+        {
+          "line": 757,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRestartRevokesMetadataSourcemodels_dev_http4283816144: no space left on device"
+        },
+        {
+          "line": 759,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRestartRevokesMetadataSourcemodels_dev_git1971846878: no space left on device"
+        },
+        {
+          "line": 761,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestExplicitConfigFileLoadsAfterFlagParsing704160076: no space left on device"
+        },
+        {
+          "line": 763,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestExplicitConfigFileMustExistAndParse2515618740: no space left on device"
+        },
+        {
+          "line": 765,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigurationRejectsPublicDarwinACL3270077702: no space left on device"
+        },
+        {
+          "line": 767,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestServiceConfigurationDarwinGrants2248690862: no space left on device"
+        },
+        {
+          "line": 769,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigurationPrivateAccessBeforeParsing3817009252: no space left on device"
+        },
+        {
+          "line": 771,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestDotenvAccessFailurePreservesEnvironment2422411578: no space left on device"
+        },
+        {
+          "line": 773,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigurationSymlinkChecksSelectedTarget1218874527: no space left on device"
+        },
+        {
+          "line": 775,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigurationReadByteLimitAndMissingFile1140399076: no space left on device"
+        },
+        {
+          "line": 777,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigFileUsesOnlyCanonicalLocation3020038740: no space left on device"
+        },
+        {
+          "line": 779,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigParsesCredentialSourceReferences103225009: no space left on device"
+        },
+        {
+          "line": 781,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestServiceConfigurationDoesNotLoadIncidentalDotenv714696056: no space left on device"
+        },
+        {
+          "line": 783,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestExplicitDotenvPrecedenceAndConflictDiagnostics4016280350: no space left on device"
+        },
+        {
+          "line": 785,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestCommandFlagsOverrideInvalidEnvironmentSettings2626985969: no space left on device"
+        },
+        {
+          "line": 788,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestCommandDotenvSourceReplacementPreservesAuthorityfalse1149505131: no space left on device"
+        },
+        {
+          "line": 790,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestCommandDotenvSourceReplacementPreservesAuthoritytrue40049237: no space left on device"
+        },
+        {
+          "line": 793,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues389822233: no space left on device"
+        },
+        {
+          "line": 795,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues2729876721: no space left on device"
+        },
+        {
+          "line": 797,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestExplicitDotenvFailureDoesNotMutateEnvironmentOrExposeValues3788152986: no space left on device"
+        },
+        {
+          "line": 799,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigPathsInspectionReportsFilesWithoutInitialization2431836104: no space left on device"
+        },
+        {
+          "line": 801,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionReportsActiveOwnerAndLiteralWorkspace1929272869: no space left on device"
+        },
+        {
+          "line": 803,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionPreservesPrivateRecordStaging2316160261: no space left on device"
+        },
+        {
+          "line": 806,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionCoversRetainedRemovalAndPincanonical_runtime139205410: no space left on device"
+        },
+        {
+          "line": 808,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionCoversRetainedRemovalAndPinselected_runtime909377759: no space left on device"
+        },
+        {
+          "line": 811,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionPreservesCatalogRetirementRecordscanonical_st3824154455: no space left on device"
+        },
+        {
+          "line": 813,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionPreservesCatalogRetirementRecordsselected_sto309102416: no space left on device"
+        },
+        {
+          "line": 815,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigPathsCommandIsPassiveAndReportsOrigins3225691850: no space left on device"
+        },
+        {
+          "line": 817,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileManifestCoversColdStartupAndPublication2720475704: no space left on device"
+        },
+        {
+          "line": 819,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures2532704684: no space left on device"
+        },
+        {
+          "line": 821,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileManifestCoversWorkspaceRecoveryArtifacts1193745854: no space left on device"
+        },
+        {
+          "line": 823,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileManifestPreservesLeafAnchorsWithoutCredentialValues3982562547: no space left on device"
+        },
+        {
+          "line": 826,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileRolePolicyMatchesRuntimeEnforcementconfiguration1247986881: no space left on device"
+        },
+        {
+          "line": 828,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileRolePolicyMatchesRuntimeEnforcementdotenv3174372350: no space left on device"
+        },
+        {
+          "line": 830,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileRolePolicyMatchesRuntimeEnforcementcatalog-store799494286: no space left on device"
+        },
+        {
+          "line": 832,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileRolePolicyMatchesRuntimeEnforcementruntime-lock544260365: no space left on device"
+        },
+        {
+          "line": 834,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileRolePolicyMatchesRuntimeEnforcementworkspace4144922276: no space left on device"
+        },
+        {
+          "line": 836,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileRolePolicyMatchesRuntimeEnforcementbaseline-recovery2914321769: no space left on device"
+        },
+        {
+          "line": 838,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestPrivateInputRefusesIncompatibleRoleBeforeFilesystemAccess1524330620: no space left on device"
+        },
+        {
+          "line": 841,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionReportsCatalogStorePrivateConflicts.3785731010: no space left on device"
+        },
+        {
+          "line": 843,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionReportsCatalogStorePrivateConflictscurrent495112389: no space left on device"
+        },
+        {
+          "line": 845,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileInspectionReportsCatalogStorePrivateConflictsgeneration2845571493: no space left on device"
+        },
+        {
+          "line": 847,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileManifestReportsAccessAndRetentionPolicies2418303904: no space left on device"
+        },
+        {
+          "line": 850,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigPathsReportsPoliciesAcrossFormatsjson545909411: no space left on device"
+        },
+        {
+          "line": 852,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigPathsReportsPoliciesAcrossFormatsyaml1728546946: no space left on device"
+        },
+        {
+          "line": 854,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestConfigPathsReportsPoliciesAcrossFormatswide4203466803: no space left on device"
+        },
+        {
+          "line": 856,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFilePoliciesCoverExternalInputsAndRejectUnknownRoles2242185546: no space left on device"
+        },
+        {
+          "line": 858,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestMigrationFilePolicyNamesExistingFlags376310807: no space left on device"
+        },
+        {
+          "line": 860,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestDefaultRuntimeRootAcceptsCompletedLegacyMigration1788324922: no space left on device"
+        },
+        {
+          "line": 863,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestDefaultRuntimeRootRefusesUnprovenLegacyMigrationpublished-o2393230666: no space left on device"
+        },
+        {
+          "line": 865,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestDefaultRuntimeRootRefusesUnprovenLegacyMigrationchanged-sou2410730378: no space left on device"
+        },
+        {
+          "line": 867,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestDefaultRuntimeRootRefusesUnprovenLegacyMigrationwrong-ident1024084215: no space left on device"
+        },
+        {
+          "line": 869,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestDefaultRuntimeRootRefusesUnprovenLegacyMigrationanother-roo578813033: no space left on device"
+        },
+        {
+          "line": 874,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRuntimeMigrationCommandPersistsSelectionBeforeCompletion1790276884: no space left on device"
+        },
+        {
+          "line": 876,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRuntimeMigrationCommandRejectsInvalidInputBeforeWrites563936190: no space left on device"
+        },
+        {
+          "line": 878,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRuntimeMigrationUsesCanonicalJournalAndOwner2903119978: no space left on device"
+        },
+        {
+          "line": 880,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRuntimeMigrationCompletionRefusesChangedConfigurationBeforeS254037144: no space left on device"
+        },
+        {
+          "line": 882,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestSchedulerIdentityConfigurationPrecedence1155424199: no space left on device"
+        },
+        {
+          "line": 884,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationSelectsPublishedMigrationThroughConfiguration544189464: no space left on device"
+        },
+        {
+          "line": 886,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestProductHomeAndLeafOverridesUseOneAnchor2900273065: no space left on device"
+        },
+        {
+          "line": 888,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestPrimaryFileCannotRelocateItsConfigurationRoot2528146478: no space left on device"
+        },
+        {
+          "line": 890,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestMalformedOptionalPrimaryConfigurationFails1948270228: no space left on device"
+        },
+        {
+          "line": 892,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGoPathOptionsBypassAmbientConfiguration328418558: no space left on device"
+        },
+        {
+          "line": 894,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestImplicitNewRootsRefuseLegacyStateWithoutWriting2302788725: no space left on device"
+        },
+        {
+          "line": 896,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestCommandPathFlagsAndDotenvKeepOrigins1322642180: no space left on device"
+        },
+        {
+          "line": 898,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFrozenConfigurationRootDoesNotResolveAgain2801358868: no space left on device"
+        },
+        {
+          "line": 900,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestGoPathOptionsRejectUnknownNamesWithoutValues66655776: no space left on device"
+        },
+        {
+          "line": 902,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationBindsConfiguredRuntimeOwner2937017136: no space left on device"
+        },
+        {
+          "line": 904,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestSourceDirectoryReportUsesConfiguredCacheRoot2081008775: no space left on device"
+        },
+        {
+          "line": 906,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestSeparateApplicationInstancesRetainDistinctSeeds2641159732: no space left on device"
+        },
+        {
+          "line": 909,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRefusesEmptyRequiredPathsBeforeWritesSTARMAP_HOM555709774: no space left on device"
+        },
+        {
+          "line": 911,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRefusesEmptyRequiredPathsBeforeWritesSTARMAP_CON996154130: no space left on device"
+        },
+        {
+          "line": 913,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRefusesEmptyRequiredPathsBeforeWritesSTARMAP_DAT4175959140: no space left on device"
+        },
+        {
+          "line": 915,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRefusesEmptyRequiredPathsBeforeWritesSTARMAP_STA2974864581: no space left on device"
+        },
+        {
+          "line": 917,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRefusesEmptyRequiredPathsBeforeWritesSTARMAP_CAC2320273282: no space left on device"
+        },
+        {
+          "line": 919,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRefusesEmptyRequiredPathsBeforeWritesSTARMAP_CAT3408860060: no space left on device"
+        },
+        {
+          "line": 921,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationRefusesEmptyRequiredPathsBeforeWritesSTARMAP_STA4214432540: no space left on device"
+        },
+        {
+          "line": 923,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestApplicationUsesExplicitDeploymentRootsWithoutHome681679803: no space left on device"
+        },
+        {
+          "line": 925,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeRuntimeRefusesUnknownLegacyAnchorBeforeWrites1205541625: no space left on device"
+        },
+        {
+          "line": 927,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativePrimaryFileRefusesAmbiguousSelection4072154709: no space left on device"
+        },
+        {
+          "line": 930,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeLeafSelectionRequiresExplicitIntentruntime2647400711: no space left on device"
+        },
+        {
+          "line": 932,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeLeafSelectionRequiresExplicitIntentworkspace1863286690: no space left on device"
+        },
+        {
+          "line": 934,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeLeafSelectionRequiresExplicitIntentlegacy-workspace390941635: no space left on device"
+        },
+        {
+          "line": 936,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativePrimaryIntentPrecedesFileSelection839159102: no space left on device"
+        },
+        {
+          "line": 938,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativePathDeclarationPrecedenceAndValidation2211931000: no space left on device"
+        },
+        {
+          "line": 941,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeUpdatePathsRefuseBeforeCatalogAccesscatalog-path2355742246: no space left on device"
+        },
+        {
+          "line": 943,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeUpdatePathsRefuseBeforeCatalogAccesssources-dir2191597878: no space left on device"
+        },
+        {
+          "line": 945,
+          "text": "        testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeUpdatePathsRefuseBeforeCatalogAccessenvironment-sou4133568955: no space left on device"
+        },
+        {
+          "line": 947,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestAbsoluteRuntimeSelectionPreservesExistingIdentity1208881652: no space left on device"
+        },
+        {
+          "line": 949,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestOperationPathsRetainSelectedAnchor226608991: no space left on device"
+        },
+        {
+          "line": 951,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestDotenvDeclaresRelativePrimarySelection4057481403: no space left on device"
+        },
+        {
+          "line": 953,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRelativeFileSourceRefusesBeforeBaselineWrites3323186116: no space left on device"
+        },
+        {
+          "line": 955,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestFileSourceReadsReportedAnchorAcrossWorkingDirectories2278391194: no space left on device"
+        },
+        {
+          "line": 957,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRuntimeACLRefusalPrecedesBaselineExport2756222037: no space left on device"
+        },
+        {
+          "line": 959,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRuntimePermissionRefusalPrecedesBaselineExport3177579151: no space left on device"
+        },
+        {
+          "line": 961,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestServiceConfigurationExplicitSelection1064326037: no space left on device"
+        },
+        {
+          "line": 963,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestServiceConfigurationSelectionAndPrivateBoundaries124920432: no space left on device"
+        },
+        {
+          "line": 965,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestServiceConfigurationFlagPrecedenceAndTargetChecks2032594632: no space left on device"
+        },
+        {
+          "line": 967,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestServiceConfigurationMigrationRereadPreservesPolicyAndDigest1875141471: no space left on device"
+        },
+        {
+          "line": 1044,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestManualRuntimeRefreshNeverOpensStream1570416919: no space left on device"
+        },
+        {
+          "line": 1046,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestOwnedSourceCloseTimeoutKeepsDirectoryOwned4045510024: no space left on device"
+        },
+        {
+          "line": 1048,
+          "text": "    testing.go:1426: TempDir: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/TestRestartServesDurableGenerationDuringRemoteRecovery1161883060: no space left on device"
+        }
+      ],
+      "stderr.log": [
+        {
+          "line": 98,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 100,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 102,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 104,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 106,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 108,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 110,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 112,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 114,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 116,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 118,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 120,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: mapping output file failed: no space left on device"
+        },
+        {
+          "line": 122,
+          "text": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/pkg/tool/darwin_arm64/link: cannot create $WORK/b1117/fleet.test: open $WORK/b1117/fleet.test: no space left on device"
+        },
+        {
+          "line": 123,
+          "text": "github.com/agentstation/starmap/internal/privatefiles: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1118/: no space left on device"
+        },
+        {
+          "line": 124,
+          "text": "github.com/agentstation/starmap/internal/test/providerfixture: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1121/: no space left on device"
+        },
+        {
+          "line": 125,
+          "text": "github.com/agentstation/starmap/internal/providers/clients: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1126/: no space left on device"
+        },
+        {
+          "line": 127,
+          "text": "compile: writing output: write $WORK/b1128/_pkg_.a: no space left on device"
+        },
+        {
+          "line": 128,
+          "text": "github.com/stretchr/testify/assert/yaml: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1132/: no space left on device"
+        },
+        {
+          "line": 129,
+          "text": "github.com/stretchr/testify/internal/difflib: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1133/: no space left on device"
+        },
+        {
+          "line": 130,
+          "text": "github.com/stretchr/testify/internal/spew: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1134/: no space left on device"
+        },
+        {
+          "line": 131,
+          "text": "github.com/agentstation/starmap/internal/runtimeacl/windows: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1141/: no space left on device"
+        },
+        {
+          "line": 132,
+          "text": "github.com/agentstation/starmap/internal/server: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1142/: no space left on device"
+        },
+        {
+          "line": 133,
+          "text": "github.com/agentstation/starmap/internal/server/cache: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1144/: no space left on device"
+        },
+        {
+          "line": 134,
+          "text": "github.com/agentstation/starmap/internal/server/handlers: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1146/: no space left on device"
+        },
+        {
+          "line": 135,
+          "text": "github.com/agentstation/starmap/internal/server/middleware: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1148/: no space left on device"
+        },
+        {
+          "line": 137,
+          "text": "can't create $WORK/b1150/_pkg_.a: open $WORK/b1150/_pkg_.a: no space left on device"
+        },
+        {
+          "line": 138,
+          "text": "github.com/agentstation/starmap/internal/server/operations: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1152/: no space left on device"
+        },
+        {
+          "line": 139,
+          "text": "github.com/agentstation/starmap/internal/server/params: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1154/: no space left on device"
+        },
+        {
+          "line": 140,
+          "text": "github.com/agentstation/starmap/internal/server/response: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1156/: no space left on device"
+        },
+        {
+          "line": 141,
+          "text": "github.com/agentstation/starmap/internal/server/sse: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1158/: no space left on device"
+        },
+        {
+          "line": 142,
+          "text": "github.com/agentstation/starmap/internal/sources/embedded: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1160/: no space left on device"
+        },
+        {
+          "line": 143,
+          "text": "github.com/agentstation/starmap/internal/sources/github: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1162/: no space left on device"
+        },
+        {
+          "line": 144,
+          "text": "github.com/agentstation/starmap/internal/sources/local: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1164/: no space left on device"
+        },
+        {
+          "line": 145,
+          "text": "github.com/agentstation/starmap/internal/test/logging: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1167/: no space left on device"
+        },
+        {
+          "line": 146,
+          "text": "github.com/agentstation/starmap/internal/test/gitfixture: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1174/: no space left on device"
+        },
+        {
+          "line": 147,
+          "text": "github.com/agentstation/starmap/internal/test/providerfixture: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1177/: no space left on device"
+        },
+        {
+          "line": 148,
+          "text": "github.com/agentstation/starmap/internal/transport: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1178/: no space left on device"
+        },
+        {
+          "line": 149,
+          "text": "github.com/google/go-cmp/cmp/cmpopts: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1181/: no space left on device"
+        },
+        {
+          "line": 150,
+          "text": "testing/iotest: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1183/: no space left on device"
+        },
+        {
+          "line": 151,
+          "text": "github.com/agentstation/starmap/pkg/catalogs/artifact: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1186/: no space left on device"
+        },
+        {
+          "line": 152,
+          "text": "github.com/agentstation/starmap/pkg/catalogs/authority_test: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1189/: no space left on device"
+        },
+        {
+          "line": 153,
+          "text": "github.com/agentstation/starmap/pkg/catalogs/config: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1190/: no space left on device"
+        },
+        {
+          "line": 154,
+          "text": "github.com/agentstation/starmap/pkg/catalogs/evidence: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1193/: no space left on device"
+        },
+        {
+          "line": 155,
+          "text": "github.com/agentstation/starmap/pkg/catalogs/permission: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1196/: no space left on device"
+        },
+        {
+          "line": 156,
+          "text": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1198/: no space left on device"
+        },
+        {
+          "line": 157,
+          "text": "github.com/oiweiwei/go-msrpc/dcerpc/errors: mkdir /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1204/: no space left on device"
+        },
+        {
+          "line": 158,
+          "text": "github.com/agentstation/starmap/runtime.test: open /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1353/importcfg.link: no space left on device"
+        },
+        {
+          "line": 159,
+          "text": "github.com/agentstation/starmap/runtime: open /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1352/vet.cfg: no space left on device"
+        },
+        {
+          "line": 160,
+          "text": "github.com/agentstation/starmap/server: open /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.dqOxBQ/go-build563010218/b1356/importcfg: no space left on device"
+        }
+      ]
+    },
+    "disk_after_cleanup": "Filesystem   1024-blocks      Used Available Capacity  iused    ifree %iused  Mounted on\n/dev/disk3s5   971350180 874860020   4946088   100% 12626930 49460880   20%   /System/Volumes/Data\n",
+    "limits": [
+      "The failed suite does not qualify the remaining race packages or later gates. CLI acquisition assertions must pass on retry after capacity is restored. No source changes are justified by this resource failure."
+    ],
+    "artifact": "blobs/b5303ef2e614d43073f8a7686ea668d16dc851a31d92a02341c76bd54b1e0afe.gz"
+  },
+  "build_cache_cleanup": {
+    "observed_at": "2026-09-12T19:37:06.453288+00:00",
+    "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+    "go_cache_path": "/Users/jack/Library/Caches/go-build",
+    "go_cache_du_observation": "62G /Users/jack/Library/Caches/go-build",
+    "observation_kind": "Transcription of completed du output from session 16717",
+    "disk_before_cleanup": "Filesystem   1024-blocks      Used Available Capacity  iused    ifree %iused  Mounted on\n/dev/disk3s5   971350180 876947868   2858240   100% 12655618 28582400   31%   /System/Volumes/Data\n",
+    "cleanup_scope": "Regenerable Go build and test cache through go clean -cache. Source, module cache, worktrees, and retained proof logs remain untouched.",
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.26.6",
+      "GOCACHE=/Users/jack/Library/Caches/go-build",
+      "go",
+      "clean",
+      "-cache"
+    ],
+    "session_id": 24377,
+    "exit_code": 0,
+    "finished_at_observed": "2026-09-12T19:39:39.974519+00:00",
+    "completion_evidence": "write_stdin reported exit_code 0 for session 24377",
+    "go_cache_before_kib": 64529824,
+    "disk_after_cleanup": "Filesystem   1024-blocks      Used Available Capacity  iused     ifree %iused  Mounted on\n/dev/disk3s5   971350180 813481556  66324552    93% 12397832 663245520    2%   /System/Volumes/Data\n",
+    "artifact": "blobs/37bffaaf0d3760bddeaf9d3324187747eb201736fa29d07e348ff36e9fca5001.gz"
+  },
   "repository_phase_progress": {
     "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
     "status": "PARTIAL",
@@ -659,7 +1585,7 @@
     "packages_without_tests": 22,
     "runtime_result": "ok  \tgithub.com/agentstation/starmap/runtime\t447.139s",
     "stdout_artifact": "blobs/fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc.gz",
-    "stderr_snapshot_artifact": "blobs/2ab62144d46212a75478690b378b1839e259a952acdc786e0387c3cfc40dad8d.gz",
+    "stderr_snapshot_artifact": "blobs/d9807c70e53657c403e74b8f3530556c1c2711f9cb21de5e3164a044c0469f9e.gz",
     "limit": "The ordinary output reports packages, not exact individual test or skip counts. The complete race suite and later repository gates remain unverified."
   },
   "artifacts": [
@@ -744,6 +1670,31 @@
       "decoded_sha256": "57f03c83057d49c3caa2e593f2399d2e92021c825dc255ae5f56cac596b7c98a"
     },
     {
+      "path": "blobs/37bffaaf0d3760bddeaf9d3324187747eb201736fa29d07e348ff36e9fca5001.gz",
+      "sha256": "ab4e3af9fa3e9c8f0594678ec02faeb3c2da448b73e3235038820a701f4d803f",
+      "decoded_sha256": "37bffaaf0d3760bddeaf9d3324187747eb201736fa29d07e348ff36e9fca5001"
+    },
+    {
+      "path": "blobs/b5303ef2e614d43073f8a7686ea668d16dc851a31d92a02341c76bd54b1e0afe.gz",
+      "sha256": "54012d509f188deff4fab6b0a3ea7b17c31fc559c5fe0604a17c1d8e06c55244",
+      "decoded_sha256": "b5303ef2e614d43073f8a7686ea668d16dc851a31d92a02341c76bd54b1e0afe"
+    },
+    {
+      "path": "blobs/d9807c70e53657c403e74b8f3530556c1c2711f9cb21de5e3164a044c0469f9e.gz",
+      "sha256": "f7bd975feed79c3404fcc5dcd0969fa141fc857c8b1da6a16ccf440a1044cbac",
+      "decoded_sha256": "d9807c70e53657c403e74b8f3530556c1c2711f9cb21de5e3164a044c0469f9e"
+    },
+    {
+      "path": "blobs/724a4b9da5744641f5f88323bcc857a24c58ba2e659b45982310b0b086f70332.gz",
+      "sha256": "32f3e8ceca15ea4ff37af263c8efa81905c90d80a27acfc1bfc7d127e82c6b52",
+      "decoded_sha256": "724a4b9da5744641f5f88323bcc857a24c58ba2e659b45982310b0b086f70332"
+    },
+    {
+      "path": "blobs/25179a1a67eb01f585c4b13cf67ab6edbae7bb28ae1dd4ee1750a11285ec33c1.gz",
+      "sha256": "ceab80150dcf4b0a3b36130ee71cc93fb970056ceacd51203780eb261b74d4b4",
+      "decoded_sha256": "25179a1a67eb01f585c4b13cf67ab6edbae7bb28ae1dd4ee1750a11285ec33c1"
+    },
+    {
       "path": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
       "sha256": "869cd2b6add55acc0b2aa50a5eea2480377bb46fdc1182dd967ec3cfc625715e",
       "decoded_sha256": "0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce"
@@ -787,11 +1738,6 @@
       "path": "blobs/fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc.gz",
       "sha256": "5c1d3a8fd00fd09ba7aef17fa331291c6e19b93d62b7821542bc8bdbb8f74020",
       "decoded_sha256": "fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc"
-    },
-    {
-      "path": "blobs/2ab62144d46212a75478690b378b1839e259a952acdc786e0387c3cfc40dad8d.gz",
-      "sha256": "0b711713dc447ca014b6fd139673b9c594780aadafa7fa76d9fcb2b2f0743f5f",
-      "decoded_sha256": "2ab62144d46212a75478690b378b1839e259a952acdc786e0387c3cfc40dad8d"
     }
   ]
 }
