@@ -669,3 +669,19 @@ Native execution remains subject to the required platform checks. The proof arch
 A completed migration removes its journal. Repeating that completed command reports the existing destination.
 Unrecorded enclosures and incomplete receipts remain preserved for explicit recovery.
 Evidence and discovery staging, retention, compaction, and full CSP5 qualification remain open.
+
+## Private record recovery API: 2026-09-12
+
+Starmap `9f82730e` adds an opt-in private record publication and recovery API.
+The writer records native identity, access, mode, timestamp, size, and digest before publication.
+A private `.record-publications` directory holds its stable writer lock and bounded JSONL receipts.
+Recovery excludes active writers, preserves changed or unrecognized files, and never deletes accepted destinations.
+
+The [private record proof](../../plans/proof/starport-production-catalog/csp5/private-record-recovery-2026-09-12/verification.json) preserves the original process-exit failure.
+Nine process-exit scenarios and separate ownership, cancellation, scan-limit, flush, and retry checks cover the new API.
+All 502 final race test events pass without failures or skips. Policy, prose, dependency, and Linux/Windows compilation checks pass.
+Native Linux and Windows execution remains unverified. The proof archives concurrent tooling inputs outside the catalog commit.
+
+Runtime evidence and GitHub discovery still use the ordinary writer. Their adoption remains required under CSP5.
+Integration must preserve passive inspection, migration receipts, canonical file reporting, and replay floors across source instances.
+Generation retention, history compaction, and full task qualification also remain open.

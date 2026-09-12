@@ -603,13 +603,41 @@ A completed migration removes its journal, and a repeated completed command repo
 Crashes with incomplete ownership or an unrecorded empty enclosure require explicit recovery.
 Evidence and discovery staging, retention, compaction, twelve mapped subcases, full verification, review, native CI, and merge remain open.
 
+## Private record publication recovery
+
+The [private record proof](csp5/private-record-recovery-2026-09-12/verification.json) binds commit `9f82730e` to its checks and source snapshots.
+The fail-before API bridge called the existing writer and did not recover temporary files.
+Its prepared process-exit scenario retained an abandoned file. Two failing events include that scenario and its parent.
+
+The new opt-in API records native identities, access snapshots, mode, modification time, size, and content digest.
+A private `.record-publications` directory holds its stable `.owner.lock` and pending JSONL receipts.
+The writer validates the original destination and ownership receipt before publication. Recovery excludes active writers and never removes the accepted destination.
+
+Nine process-exit scenarios cover complete headers, empty files, partial writes, incomplete ownership, and publication to new or existing destinations.
+Other tests cover changed files, receipts, metadata directories, writer locks, cancellation, scan limits, ambiguous flush, and retry.
+Unknown files and incomplete receipts remain preserved. All 502 final race test events pass without failures or skips.
+
+Recovery scans at most 4,096 metadata entries in batches of 128. Each receipt permits three events within 65,536 bytes.
+Each record permits at most 64 MiB. Linux and Windows compilation passes but does not qualify native execution.
+Consumer dependencies stay within their existing limits. Go policy and final prose checks pass.
+Two earlier prose failures remain in the proof, with corrections for a glossary threshold and one passive sentence.
+
+The ordinary writer and its runtime and discovery callers remain unchanged. Product adoption is still required.
+Integrate recovery before retained-state startup, with the publication-input and generation-pin paths included.
+Update the canonical file manifest and prove provider binding directories retain their intended record inventory.
+Migration must preserve receipt identity and passive inspection. Pending receipts cannot become valid recovery evidence through a copied native file identity.
+
+`Source.mu` serializes one GitHub source instance. Before adopting the writer, verify concurrent source instances cannot lower the retained replay floor.
+The new per-write lock alone does not prove that domain contract. Preserve conditional-request and accepted-release state when adding its publication guard.
+Generation retention, history compaction, twelve mapped subcases, full verification, required review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Complete retained-evidence and GitHub discovery stage recovery. Preserve unknown enclosures after journal removal. Then complete generation retention and acquisition history compaction.
+Integrate private record recovery with retained evidence and GitHub discovery. Preserve migration receipts, passive reads, and replay floors. Then complete generation retention and acquisition history compaction.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
