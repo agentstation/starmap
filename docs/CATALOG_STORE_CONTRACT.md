@@ -1044,3 +1044,31 @@ This cache reduces catalog serialization work. It does not establish Starport in
 Catalog construction also snapshots nested provenance values and rejection records. Source structs use the generic JSON shape that restored evidence already uses.
 Provenance reads return independent nested values. Caller changes cannot alter published catalog facts or make those facts disagree with cached payload bytes.
 Unsupported custom values and cyclic provenance cause construction to fail.
+
+### Generation retention
+
+`RetainingStore` adds explicit collection and generation read leases to the catalog store contract.
+`Memory` implements this contract. Filesystem and object stores still require adapters, recovery checks, and runtime integration.
+Existing catalog store implementations remain compatible. This interface does not enable automatic collection.
+
+Each collection request names the expected current generation, required generations, and positive generation and byte limits.
+Baseline, candidate, and rollback owners supply their required IDs. Every required generation must exist.
+The store also protects its current generation and every active read lease.
+Callers must coordinate changes to their required IDs with collection.
+
+Collection removes the oldest generated content first. Generation IDs break equal-time ties.
+Protected generations remain available even when they exceed the requested limits. The report then sets `OverLimit`.
+This policy uses generation timestamps, not activation order.
+
+The default scan permits 4,096 entries. An explicit scan can permit up to 100,000 entries.
+Invalid limits, stale current state, missing requirements, and incomplete scans preserve all generations.
+Memory collection coordinates reads, leases, and publication under one lock.
+
+Reports count manifest and payload bytes. They exclude filesystem overhead, journals, and backend replication.
+A dry run returns candidates and projected usage without deletion. Actual usage remains unchanged in its `After` field.
+A normal pass reports the generations it removed and the resulting usage.
+
+`AcquireGeneration` returns independent generation bytes and an idempotent release function.
+The lease protects stored content until release, even after current changes or the acquisition context ends.
+Each successful caller must release its lease. Repeated release cannot end another caller's lease.
+Ordinary `Get` returns independent bytes without retaining the stored generation after the call completes.
