@@ -24,6 +24,7 @@ type replacementRecord struct {
 	Old       treeSnapshot     `json:"old"`
 	New       treeSnapshot     `json:"new"`
 	Marker    projectionMarker `json:"marker"`
+	journal   workspaceRecordState
 }
 
 func replacementJournalPath(target string) string {
@@ -132,7 +133,7 @@ func invalidReplacement(field string) error {
 	return &errors.ValidationError{Field: "workspace_replacement." + field, Message: "invalid replacement journal"}
 }
 
-func writeReplacementRecord(ctx context.Context, root *os.Root, record replacementRecord, hooks workspaceRecordWriter) (bool, error) {
+func writeReplacementRecord(ctx context.Context, root *os.Root, record *replacementRecord, hooks workspaceRecordWriter) (bool, error) {
 	if err := record.validate(record.Target); err != nil {
 		return false, err
 	}
@@ -145,12 +146,13 @@ func writeReplacementRecord(ctx context.Context, root *os.Root, record replaceme
 	}
 	data = append(data, '\n')
 	name := filepath.Base(replacementJournalPath(record.Target))
-	return hooks.publish(ctx, root, name, data, recordPublication{})
+	record.journal, err = hooks.publish(ctx, root, name, data, recordPublication{})
+	return record.journal.identity != "", err
 }
 
 func readReplacementRecord(root *os.Root, target string) (replacementRecord, error) {
 	name := filepath.Base(replacementJournalPath(target))
-	data, err := readWorkspaceRecordBytes(root, name, replacementJournalMax)
+	data, state, err := readWorkspaceRecord(root, name, replacementJournalMax)
 	if err != nil {
 		return replacementRecord{}, err
 	}
@@ -163,5 +165,6 @@ func readReplacementRecord(root *os.Root, target string) (replacementRecord, err
 	if decoder.Decode(&struct{}{}) != io.EOF {
 		return replacementRecord{}, invalidReplacement("trailing_data")
 	}
+	record.journal = state
 	return record, record.validate(target)
 }

@@ -65,7 +65,7 @@ func (p projector) replaceWithJournal(
 		}
 		return false, false, replacementConflict(target, "backup destination already exists")
 	}
-	owned, err = writeReplacementRecord(ctx, root, record, p.recordWrites)
+	owned, err = writeReplacementRecord(ctx, root, &record, p.recordWrites)
 	if err != nil {
 		return owned, false, err
 	}
@@ -129,7 +129,7 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 		}
 	}
 	if sameTree(live, record.Old) && backup.ID == "" && candidate.ID == "" {
-		return false, finishReplacementRecord(root, record)
+		return false, finishReplacementRecord(ctx, root, record)
 	}
 	if live.ID == "" && sameTree(backup, record.Old) && candidate.ID == "" {
 		if err := moveReplacementDirectory(root, record.Backup, target); err != nil {
@@ -138,7 +138,7 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 		if err := filepublish.SyncDirectory(root); err != nil {
 			return false, err
 		}
-		return false, finishReplacementRecord(root, record)
+		return false, finishReplacementRecord(ctx, root, record)
 	}
 	if sameTree(live, record.Old) && backup.ID == "" && sameTree(candidate, record.New) {
 		backup, err = preserveReplacementBackup(ctx, root, record, hooks)

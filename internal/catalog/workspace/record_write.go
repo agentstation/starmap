@@ -36,32 +36,32 @@ func (h workspaceRecordWriter) write(file *os.File, data []byte) (int, error) {
 	return file.Write(data)
 }
 
-func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name string, data []byte, options recordPublication) (published bool, resultErr error) {
+func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name string, data []byte, options recordPublication) (published workspaceRecordState, resultErr error) {
 	if err := ctx.Err(); err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	if !replacementChildName(name) {
-		return false, invalidReplacement("record_name")
+		return workspaceRecordState{}, invalidReplacement("record_name")
 	}
 	if len(data) > replacementJournalMax {
-		return false, replacementLimit("record_bytes")
+		return workspaceRecordState{}, replacementLimit("record_bytes")
 	}
 	before, err := optionalWorkspaceRecord(ctx, root, name)
 	if err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	if !options.replace && before.identity != "" {
-		return false, replacementConflict(name, "record destination already exists")
+		return workspaceRecordState{}, replacementConflict(name, "record destination already exists")
 	}
 	temporary := "." + name + "." + rand.Text()
 	file, err := createStagedFile(root, temporary)
 	if err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	owned, err := newWorkspaceRecordState(temporary, file)
 	if err != nil {
 		_ = file.Close()
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	defer func() {
 		cleanupCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), workspaceCleanupTimeout)
@@ -70,49 +70,49 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 	}()
 	if options.normalizeMode {
 		if err := file.Chmod(fileMode); err != nil {
-			return false, err
+			return workspaceRecordState{}, err
 		}
 		normalized, err := newWorkspaceRecordState(temporary, file)
 		if err != nil {
-			return false, err
+			return workspaceRecordState{}, err
 		}
 		owned = normalized
 	}
 	n, err := h.write(file, data)
 	if n < 0 || n > len(data) {
-		return false, invalidReplacement("record_write_count")
+		return workspaceRecordState{}, invalidReplacement("record_write_count")
 	}
 	digest := sha256.Sum256(data[:n])
 	owned.entry.Size, owned.entry.SHA256 = int64(n), hex.EncodeToString(digest[:])
 	if err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	if n != len(data) {
-		return false, io.ErrShortWrite
+		return workspaceRecordState{}, io.ErrShortWrite
 	}
 	if err := ctx.Err(); err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	if err := file.Sync(); err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	if h.beforePublish != nil {
 		if err := h.beforePublish(filepath.Join(root.Name(), temporary)); err != nil {
-			return false, err
+			return workspaceRecordState{}, err
 		}
 	}
 	if err := owned.check(ctx, root); err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	current, err := optionalWorkspaceRecord(ctx, root, name)
 	if err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	if current != before {
-		return false, replacementConflict(name, "record destination changed during publication")
+		return workspaceRecordState{}, replacementConflict(name, "record destination changed during publication")
 	}
 	if err := ctx.Err(); err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
 	if options.replace {
 		err = root.Rename(temporary, name)
@@ -120,14 +120,16 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 		err = root.Link(temporary, name)
 	}
 	if err != nil {
-		return false, err
+		return workspaceRecordState{}, err
 	}
+	published = owned
+	published.entry.Path = name
 	if h.afterPublish != nil {
 		if err := h.afterPublish(filepath.Join(root.Name(), temporary)); err != nil {
-			return true, err
+			return published, err
 		}
 	}
-	return true, filepublish.SyncDirectory(root)
+	return published, filepublish.SyncDirectory(root)
 }
 
 func newWorkspaceRecordState(name string, file *os.File) (workspaceRecordState, error) {

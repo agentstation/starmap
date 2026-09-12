@@ -152,7 +152,7 @@ func TestWorkspaceRecordPublicationGuards(t *testing.T) {
 				}
 			}
 			published, err := hooks.publish(ctx, root, destination, []byte("new marker content"), recordPublication{replace: true})
-			if err == nil || published || stage == "" {
+			if err == nil || published.identity != "" || stage == "" {
 				t.Fatalf("guard did not stop publication: visible=%v, stage=%q, error=%v", published, stage, err)
 			}
 			if change == "cancellation" && !stderrors.Is(err, context.Canceled) {
@@ -190,25 +190,25 @@ func TestWorkspaceRecordPublicationAndExactLimit(t *testing.T) {
 			data := bytes.Repeat([]byte("x"), replacementJournalMax)
 			options := recordPublication{replace: replace}
 			published, err := (workspaceRecordWriter{}).publish(t.Context(), root, "record.json", data, options)
-			if !published || err != nil {
+			if published.identity == "" || err != nil {
 				t.Fatalf("publish at the record limit: visible=%v, error=%v", published, err)
 			}
 			assertWorkspaceRecordBytes(t, filepath.Join(path, "record.json"), data)
 			published, err = (workspaceRecordWriter{}).publish(t.Context(), root, "record.json", []byte("replacement"), options)
 			if replace {
-				if !published || err != nil {
+				if published.identity == "" || err != nil {
 					t.Fatalf("replace marker: visible=%v, error=%v", published, err)
 				}
 				data = []byte("replacement")
 			} else {
 				var conflict *errors.ConflictError
-				if published || !stderrors.As(err, &conflict) {
+				if published.identity != "" || !stderrors.As(err, &conflict) {
 					t.Fatalf("journal collision: visible=%v, error=%v", published, err)
 				}
 			}
 			published, err = (workspaceRecordWriter{}).publish(t.Context(), root, "too-large.json", make([]byte, replacementJournalMax+1), options)
 			var validation *errors.ValidationError
-			if published || !stderrors.As(err, &validation) {
+			if published.identity != "" || !stderrors.As(err, &validation) {
 				t.Fatalf("oversized publication: visible=%v, error=%v", published, err)
 			}
 			entries, err := os.ReadDir(path)

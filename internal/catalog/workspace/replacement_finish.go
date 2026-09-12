@@ -53,7 +53,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 	if err := hooks.reached(replacementBackupRemoved); err != nil {
 		return err
 	}
-	return finishReplacementRecord(root, record)
+	return finishReplacementRecord(ctx, root, record)
 }
 
 func validateReplacementCatalog(ctx context.Context, root *os.Root, name string, record replacementRecord) error {
@@ -116,7 +116,10 @@ func validateReplacementCatalog(ctx context.Context, root *os.Root, name string,
 	return ctx.Err()
 }
 
-func finishReplacementRecord(root *os.Root, record replacementRecord) error {
+func finishReplacementRecord(ctx context.Context, root *os.Root, record replacementRecord) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	current, err := readReplacementRecord(root, record.Target)
 	if err != nil {
 		return err
@@ -129,8 +132,11 @@ func finishReplacementRecord(root *os.Root, record replacementRecord) error {
 	if err != nil {
 		return err
 	}
-	if !bytes.Equal(want, actual) {
+	if record.journal.identity == "" || current.journal != record.journal || !bytes.Equal(want, actual) {
 		return replacementConflict(record.Target, "journal changed before completion")
+	}
+	if err := ctx.Err(); err != nil {
+		return err
 	}
 	if err := root.Remove(filepath.Base(replacementJournalPath(record.Target))); err != nil {
 		return err

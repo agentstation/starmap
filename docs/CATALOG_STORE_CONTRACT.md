@@ -827,3 +827,11 @@ Cancellation uses a separate 30-second cleanup context. The operation returns cl
 
 Ordinary projection markers retain their explicit file mode. Journal writes retain the process umask and inherited access behavior.
 These ownership records remain in memory. Persistent workspace preparation, replacement, and legacy relocation recovery still require qualification.
+
+Replacement completion checks the accepted journal's native file identity, exact bytes, and access metadata before removal.
+Publication returns the original staged file state. Recovery binds decoded journal content to the same bounded file read that supplies its identity and access metadata.
+An identical replacement file, a JSON whitespace edit, or an access change prevents removal during that operation.
+
+Cancellation preserves the journal for a later recovery attempt. Recovery validates the journal again and captures a new receipt for that attempt.
+These receipts remain in memory and do not change the version 2 journal format.
+They do not prove persistent ownership of each backup child or recover abandoned preparation stages.
