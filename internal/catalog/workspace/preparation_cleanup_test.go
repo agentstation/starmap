@@ -76,7 +76,7 @@ func TestPreparationOwnsPartialWrites(t *testing.T) {
 		}
 		t.Run(name, func(t *testing.T) {
 			target := filepath.Join(t.TempDir(), "workspace")
-			stage, err := prepareWorkspaceStage(t.Context(), target)
+			stage, err := prepareWorkspaceStage(t.Context(), target, preparationTestWriter(t, target))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -167,7 +167,7 @@ func TestAssemblyBoundsChangedRenderedDirectory(t *testing.T) {
 
 func TestPreparationLimitRefusesCreation(t *testing.T) {
 	target := filepath.Join(t.TempDir(), "workspace")
-	stage, err := prepareWorkspaceStage(t.Context(), target)
+	stage, err := prepareWorkspaceStage(t.Context(), target, preparationTestWriter(t, target))
 	if err != nil {
 		t.Fatal(err)
 	}

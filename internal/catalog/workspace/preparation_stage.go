@@ -30,6 +30,12 @@ func (s *workspaceStage) trackTree(name string) (*preparationTree, error) {
 	}
 	tree.syncWrites = name == "tree"
 	s.trees[name] = tree
+	if s.journal != nil {
+		tree.record = func(entry treeEntry, identity string) error { return s.journal.record(name, entry, identity) }
+		if err := tree.record(tree.entries["."], tree.identities["."]); err != nil {
+			return nil, err
+		}
+	}
 	return tree, nil
 }
 
@@ -46,7 +52,7 @@ func (s *workspaceStage) removeTree(ctx context.Context, name string) error {
 			return err
 		}
 	}
-	if err := cleanupWorkspaceTreeAt(ctx, s.private, name, expected); err != nil {
+	if err := cleanupWorkspaceTreeAtChecked(ctx, s.private, name, s.checkWriter, expected); err != nil {
 		return err
 	}
 	delete(s.trees, name)
@@ -55,6 +61,9 @@ func (s *workspaceStage) removeTree(ctx context.Context, name string) error {
 
 func (s *workspaceStage) close(ctx context.Context) error {
 	defer func() {
+		if s.journal != nil {
+			_ = s.journal.file.Close()
+		}
 		if s.source != nil {
 			_ = s.source.Close()
 		}
@@ -86,11 +95,27 @@ func (s *workspaceStage) close(ctx context.Context) error {
 			return err
 		}
 	}
+	if s.journal != nil {
+		if err := s.journal.remove(cleanup); err != nil {
+			return err
+		}
+	}
 	if err := s.private.Close(); err != nil {
 		return err
 	}
 	s.private = nil
-	return cleanupWorkspaceTreeAt(cleanup, s.parent, s.name, s.enclosure)
+	var check func() error
+	if s.journal != nil {
+		check = s.journal.writer.check
+	}
+	return cleanupWorkspaceTreeAtChecked(cleanup, s.parent, s.name, check, s.enclosure)
+}
+
+func (s *workspaceStage) checkWriter() error {
+	if s.journal != nil {
+		return s.journal.check()
+	}
+	return nil
 }
 
 func (s *workspaceStage) checkChildren(ctx context.Context) error {
@@ -100,16 +125,32 @@ func (s *workspaceStage) checkChildren(ctx context.Context) error {
 	if err := verifyCleanupRoot(s.parent, s.name, s.private, s.enclosure.ID); err != nil {
 		return err
 	}
+	scanner := treeScanner{ctx: ctx, root: s.private}
+	entry, err := scanner.entry(".")
+	if err != nil {
+		return err
+	}
+	if entry != s.enclosure.Entries[0] {
+		return replacementConflict(s.name, "preparation directory access changed")
+	}
+	if s.journal != nil {
+		if err := s.journal.unchanged(ctx); err != nil {
+			return err
+		}
+	}
 	file, err := s.private.Open(".")
 	if err != nil {
 		return err
 	}
 	defer func() { _ = file.Close() }()
-	entries, err := file.ReadDir(len(s.trees) + 1)
+	entries, err := file.ReadDir(len(s.trees) + 2)
 	if err != nil && !stderrors.Is(err, io.EOF) {
 		return err
 	}
 	for _, entry := range entries {
+		if entry.Name() == preparationJournalName && s.journal != nil {
+			continue
+		}
 		tree := s.trees[entry.Name()]
 		if tree == nil || !entry.IsDir() {
 			return replacementConflict(filepath.Join(s.private.Name(), entry.Name()), "preparation contains an unrecognized entry")

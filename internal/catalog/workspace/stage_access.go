@@ -25,9 +25,16 @@ type workspaceStage struct {
 	published treeSnapshot
 	enclosure treeSnapshot
 	trees     map[string]*preparationTree
+	journal   *preparationJournal
 }
 
-func prepareWorkspaceStage(ctx context.Context, target string) (result *workspaceStage, resultErr error) {
+func prepareWorkspaceStage(ctx context.Context, target string, writer *workspaceWriter) (result *workspaceStage, resultErr error) {
+	if err := writer.check(); err != nil {
+		return nil, err
+	}
+	if writer.target != target {
+		return nil, writerConflict(target)
+	}
 	if err := policy.Require("workspace-preparing", policy.OwnerOnly); err != nil {
 		return nil, err
 	}
@@ -75,6 +82,10 @@ func prepareWorkspaceStage(ctx context.Context, target string) (result *workspac
 		return nil, err
 	}
 	s.enclosure, err = container.snapshot()
+	if err != nil {
+		return nil, err
+	}
+	s.journal, err = newPreparationJournal(s, writer)
 	if err != nil {
 		return nil, err
 	}

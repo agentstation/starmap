@@ -23,6 +23,7 @@ type preparationTree struct {
 	bytes      int64
 	nameBytes  int
 	syncWrites bool
+	record     func(treeEntry, string) error
 }
 
 func trackPreparationTree(root *os.Root) (*preparationTree, error) {
@@ -88,7 +89,7 @@ func (t *preparationTree) created(name string, file *os.File) error {
 	}
 	t.entries[name], t.identities[name] = entry, id
 	t.nameBytes += len(name)
-	return nil
+	return t.persist(name, file)
 }
 
 func (t *preparationTree) check(ctx context.Context, name string) error {
@@ -153,7 +154,19 @@ func (t *preparationTree) rememberAccess(name string, file *os.File) error {
 	entry.Mode = uint32(info.Mode() & workspaceAccessMode)
 	entry.AccessSHA256 = access
 	t.entries[name] = entry
-	return nil
+	return t.persist(name, file)
+}
+
+func (t *preparationTree) persist(name string, file *os.File) error {
+	if t.record == nil {
+		return nil
+	}
+	if !t.entries[name].Directory {
+		if err := file.Sync(); err != nil {
+			return err
+		}
+	}
+	return t.record(t.entries[name], t.identities[name])
 }
 
 func (t *preparationTree) writeFile(ctx context.Context, name string, data []byte) error {
@@ -188,6 +201,9 @@ func (t *preparationTree) writeFrom(ctx context.Context, name string, input io.R
 	entry.Size, entry.SHA256 = writer.bytes, hex.EncodeToString(writer.hash.Sum(nil))
 	t.entries[name] = entry
 	t.bytes += writer.bytes
+	if err := t.persist(name, output); err != nil {
+		return stderrors.Join(writeErr, err)
+	}
 	if writeErr != nil {
 		return writeErr
 	}

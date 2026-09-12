@@ -834,7 +834,7 @@ An identical replacement file, a JSON whitespace edit, or an access change preve
 
 Cancellation preserves the journal for a later recovery attempt. Recovery validates the journal again and captures a new receipt for that attempt.
 Journal acceptance receipts remain in memory. Version 3 journals persist separate child identity maps.
-Recovery for abandoned preparation and legacy relocation stages remains incomplete.
+The preparation journal below supports recovery inside private staging. Candidate handoff and legacy relocation recovery remain incomplete.
 
 ### Persisted replacement child identities
 
@@ -862,4 +862,26 @@ A missing writer identity or a replacement lock prevents recovery and preserves 
 
 Journal phases and backup cleanup recheck the held lock before further changes. The lease check refuses a writer after its lock path changes.
 Windows can also refuse to rename an open lock file. Native qualification must verify that platform behavior.
-These writer checks support later preparation recovery. Preparation ownership itself remains in memory until its durable protocol is complete.
+These writer checks also bind the preparation journal described below.
+
+
+### Durable preparation records
+
+Each private workspace preparation directory contains `.preparation.jsonl`.
+Its first record binds the target path, enclosure identity, journal identity, and stable writer-lock identity.
+Later records contain entry identities, actual written bytes, content digests, and access metadata for render, verification, and assembly trees.
+Records append without rewriting the preceding inventory. File contents flush before their receipts, and each appended receipt flushes before preparation continues.
+
+Projection and repair recover recorded preparation trees under the workspace writer lock.
+Cleanup accepts only remaining entries whose identities, bytes, and access settings match their recorded values.
+It checks the writer and journal before each removal. Missing entries permit recovery to resume after an interrupted cleanup.
+Unknown files, changed entries, malformed records, and replaced journals remain preserved with an error.
+A process exit before its receipt completes leaves uncertain state for explicit recovery.
+
+Recovery limits each journal to 32 MiB and 120,000 events, with at most four preparation trees.
+Each tree retains the existing 10,000-entry, 256 MiB content, and 1 MiB path-name limits.
+The parent scan stops at 4,096 entries before cleanup starts. These records contain no provider credentials.
+
+This protocol covers entries inside the private preparation directory.
+Candidate handoff, temporary publication records, and legacy relocation still require durable recovery and qualification.
+Native Linux and Windows execution remains subject to the task's verification gate.

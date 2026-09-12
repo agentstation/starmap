@@ -32,6 +32,10 @@ func cleanupWorkspaceTree(ctx context.Context, target string, expected ...treeSn
 }
 
 func cleanupWorkspaceTreeAt(ctx context.Context, parent *os.Root, name string, expected ...treeSnapshot) error {
+	return cleanupWorkspaceTreeAtChecked(ctx, parent, name, nil, expected...)
+}
+
+func cleanupWorkspaceTreeAtChecked(ctx context.Context, parent *os.Root, name string, check func() error, expected ...treeSnapshot) error {
 	target := filepath.Join(parent.Name(), name)
 	actual, err := optionalTree(ctx, parent, name)
 	if err != nil || actual.ID == "" {
@@ -80,6 +84,11 @@ func cleanupWorkspaceTreeAt(ctx context.Context, parent *os.Root, name string, e
 		if err := verifyCleanupRoot(parent, name, root, owned.ID); err != nil {
 			return err
 		}
+		if check != nil {
+			if err := check(); err != nil {
+				return err
+			}
+		}
 		if err := root.Remove(filepath.FromSlash(entry.Path)); err != nil {
 			return err
 		}
@@ -93,6 +102,11 @@ func cleanupWorkspaceTreeAt(ctx context.Context, parent *os.Root, name string, e
 	}
 	if empty.ID != owned.ID || len(empty.Entries) != 1 || empty.Entries[0] != owned.Entries[0] {
 		return replacementConflict(target, "staging is not the verified empty directory")
+	}
+	if check != nil {
+		if err := check(); err != nil {
+			return err
+		}
 	}
 	if err := parent.Remove(name); err != nil {
 		return err

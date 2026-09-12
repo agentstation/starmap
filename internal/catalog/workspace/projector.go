@@ -214,6 +214,9 @@ func (p projector) projectLocked(
 	if _, err := recoverReplacement(ctx, target, p.writer); err != nil {
 		return Receipt{}, treeSnapshot{}, errors.WrapResource("recover", "workspace replacement", target, err)
 	}
+	if err := recoverPreparations(ctx, target, p.writer); err != nil {
+		return Receipt{}, treeSnapshot{}, errors.WrapResource("recover", "workspace preparation", target, err)
+	}
 	input, err := readSemanticState(target)
 	if err != nil {
 		return Receipt{}, treeSnapshot{}, err
@@ -439,6 +442,9 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	if err != nil {
 		return RepairResult{}, errors.WrapResource("recover", "workspace replacement", target, err)
 	}
+	if err := recoverPreparations(ctx, target, p.writer); err != nil {
+		return RepairResult{}, errors.WrapResource("recover", "workspace preparation", target, err)
+	}
 	state, err := readSemanticState(target)
 	if err != nil {
 		return RepairResult{}, err
@@ -596,7 +602,7 @@ func (p projector) stageCatalog(
 	identity Identity,
 	expected *treeSnapshot,
 ) (result stagedWorkspace, state semanticState, resultErr error) {
-	stage, err := prepareWorkspaceStage(ctx, target)
+	stage, err := prepareWorkspaceStage(ctx, target, p.writer)
 	if err != nil {
 		return stagedWorkspace{}, semanticState{}, errors.WrapResource("prepare", "workspace staging", target, err)
 	}
