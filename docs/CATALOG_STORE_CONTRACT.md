@@ -1196,3 +1196,19 @@ The report separates protected inputs, preserved entries, deletion candidates, a
 An error after deletion retains the partial removal report, including unconfirmed directory synchronization.
 
 This API explicitly cleans local inputs. Automatic invocation, retention configuration, and complete catalog generation collection remain part of CSP5.
+
+### Current provider review evidence
+
+Manual replay retains one current unresolved-model review per provider, binding revision, opaque model ID, and review code.
+Different accounts and binding revisions keep separate entries. An omitted offering keeps its last review until replacement evidence or an authorized operation changes it.
+Direct provider evidence outranks stale fallback. A later direct observation can replace the review for a record it reports, including during a partial reply.
+Metadata-source reviews retain their existing selection rules.
+
+Each selected provider review must match its original observation ID, revision, and evidence checksum.
+The selected review keeps that original receipt. Superseded duplicate reviews no longer keep obsolete receipts in the effective generation.
+Other current fields, membership records, and unresolved offerings can still require those receipts.
+Durable acquisition history and previously committed generations remain unchanged.
+
+This selection also preserves review evidence when a replacement baseline no longer defines a formerly known model.
+Repeated-inventory compaction must produce the same current review set as complete replay under that baseline.
+CSP5 must still retire distinct inventories, automate collection, and complete full qualification.
