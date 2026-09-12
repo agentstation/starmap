@@ -1104,3 +1104,30 @@ An interruption after the move resumes checked cleanup. A changed writer lock or
 
 This API does not enable automatic collection. Runtime owners still must supply every baseline, candidate, and rollback requirement before adopting collection.
 Native platform qualification, object storage, and observation-file collection remain part of CSP5.
+
+### Object inventory and conditional deletion
+
+`ObjectCollectionBackend` adds bounded inventory pages and conditional current-object deletion.
+The reference memory backend and S3 adapter implement these operations. The minimum `ObjectBackend` interface remains unchanged.
+These operations do not implement generation collection or protect pins and readers. The collector must coordinate publication before using them.
+
+Each list request requires a nonempty prefix. Its page limit permits 1 through 1,000 entries.
+
+Returned entries contain the object key, conditional validator, and current byte size.
+Pass a nonempty continuation cursor unchanged with the same prefix. Pages do not form a snapshot across requests.
+Concurrent mutations can change later pages. A collector cannot infer safe deletion from an inventory alone.
+
+The S3 adapter uses `ListObjectsV2` with URL encoding and no delimiter. It bounds each response body to 8 MiB.
+It rejects incomplete pagination metadata, mismatched namespaces, duplicate keys, invalid sizes, and missing validators.
+Malformed or excessive responses return an error without a partial page.
+
+S3 deletion sends one exact quoted ETag through `DeleteObject` with `If-Match`.
+Wildcard and multiple validators fail before network access. Conditional conflicts, missing objects, and service failures retain their error classifications.
+The adapter does not retry an unsupported condition as an unconditional deletion.
+
+Validators can repeat when object bytes repeat. They do not replace a publication fence or a generation retirement protocol.
+Bucket versioning can retain historical versions after current-object deletion. Inventory byte totals therefore do not measure total bucket storage.
+The adapter does not bypass retention rules or permanently remove historical versions.
+See the AWS [listing contract](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html) and [deletion contract](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObject.html).
+
+Object generation collection, runtime integration, and live service qualification remain incomplete.

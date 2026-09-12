@@ -34,8 +34,10 @@ Package storage provides durable generation\-oriented catalog storage.
   - [func \(s \*Memory\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Memory.Get>)
 - [type MemoryObjectBackend](<#MemoryObjectBackend>)
   - [func NewMemoryObjectBackend\(\) \*MemoryObjectBackend](<#NewMemoryObjectBackend>)
+  - [func \(b \*MemoryObjectBackend\) Delete\(ctx context.Context, key, version string\) error](<#MemoryObjectBackend.Delete>)
   - [func \(b \*MemoryObjectBackend\) Get\(ctx context.Context, key string\) \(ObjectValue, error\)](<#MemoryObjectBackend.Get>)
   - [func \(b \*MemoryObjectBackend\) GetCurrent\(ctx context.Context, key string\) \(ObjectValue, error\)](<#MemoryObjectBackend.GetCurrent>)
+  - [func \(b \*MemoryObjectBackend\) List\(ctx context.Context, request ObjectListRequest\) \(ObjectPage, error\)](<#MemoryObjectBackend.List>)
   - [func \(b \*MemoryObjectBackend\) Put\(ctx context.Context, key string, data \[\]byte, condition ObjectPutCondition\) \(ObjectValue, error\)](<#MemoryObjectBackend.Put>)
 - [type Object](<#Object>)
   - [func NewObject\(backend ObjectBackend, prefix string\) \(\*Object, error\)](<#NewObject>)
@@ -44,6 +46,11 @@ Package storage provides durable generation\-oriented catalog storage.
   - [func \(s \*Object\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Object.CurrentAuthorityHead>)
   - [func \(s \*Object\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Object.Get>)
 - [type ObjectBackend](<#ObjectBackend>)
+- [type ObjectCollectionBackend](<#ObjectCollectionBackend>)
+- [type ObjectEntry](<#ObjectEntry>)
+- [type ObjectListRequest](<#ObjectListRequest>)
+  - [func \(r ObjectListRequest\) Validate\(\) error](<#ObjectListRequest.Validate>)
+- [type ObjectPage](<#ObjectPage>)
 - [type ObjectPutCondition](<#ObjectPutCondition>)
 - [type ObjectValue](<#ObjectValue>)
 - [type RetainingStore](<#RetainingStore>)
@@ -70,6 +77,12 @@ const (
 
 ```go
 const MaxFilesystemManifestBytes = 64 << 20
+```
+
+<a name="MaxObjectListEntries"></a>MaxObjectListEntries bounds one object inventory page.
+
+```go
+const MaxObjectListEntries = 1000
 ```
 
 <a name="AuthorityHeadReader"></a>
@@ -271,6 +284,15 @@ func NewMemoryObjectBackend() *MemoryObjectBackend
 
 NewMemoryObjectBackend creates an empty reference object backend.
 
+<a name="MemoryObjectBackend.Delete"></a>
+### func \(\*MemoryObjectBackend\) [Delete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection_memory.go#L59>)
+
+```go
+func (b *MemoryObjectBackend) Delete(ctx context.Context, key, version string) error
+```
+
+Delete removes an object only when its current validator matches version.
+
 <a name="MemoryObjectBackend.Get"></a>
 ### func \(\*MemoryObjectBackend\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L55>)
 
@@ -288,6 +310,15 @@ func (b *MemoryObjectBackend) GetCurrent(ctx context.Context, key string) (Objec
 ```
 
 GetCurrent returns the object selected under the same lock as conditional writes.
+
+<a name="MemoryObjectBackend.List"></a>
+### func \(\*MemoryObjectBackend\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection_memory.go#L12>)
+
+```go
+func (b *MemoryObjectBackend) List(ctx context.Context, request ObjectListRequest) (ObjectPage, error)
+```
+
+List returns one ordered page of current objects beneath the requested prefix.
 
 <a name="MemoryObjectBackend.Put"></a>
 ### func \(\*MemoryObjectBackend\) [Put](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L70>)
@@ -365,6 +396,68 @@ Version must be a non\-empty opaque token that identifies the exact returned obj
 type ObjectBackend interface {
     Get(context.Context, string) (ObjectValue, error)
     Put(context.Context, string, []byte, ObjectPutCondition) (ObjectValue, error)
+}
+```
+
+<a name="ObjectCollectionBackend"></a>
+## type [ObjectCollectionBackend](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L55-L59>)
+
+ObjectCollectionBackend adds inventory and conditional deletion to ObjectBackend. Pages need not form a snapshot across calls. The caller must coordinate publication and retention before deleting an object. These operations alone do not protect generations, pins, or readers.
+
+Delete requires an exact nonempty validator. A missing object can return success, a typed not\-found error, or a conditional conflict. Versioned backends can retain historical versions after current\-object deletion.
+
+```go
+type ObjectCollectionBackend interface {
+    ObjectBackend
+    List(context.Context, ObjectListRequest) (ObjectPage, error)
+    Delete(context.Context, string, string) error
+}
+```
+
+<a name="ObjectEntry"></a>
+## type [ObjectEntry](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L34-L38>)
+
+ObjectEntry describes one current object without reading its payload. Version is its conditional validator, not a monotonic fencing token.
+
+```go
+type ObjectEntry struct {
+    Key     string
+    Version string
+    Size    int64
+}
+```
+
+<a name="ObjectListRequest"></a>
+## type [ObjectListRequest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L15-L19>)
+
+ObjectListRequest selects one bounded page beneath a nonempty prefix. Cursor is opaque. Reuse a returned cursor with the same prefix.
+
+```go
+type ObjectListRequest struct {
+    Prefix string
+    Cursor string
+    Limit  int
+}
+```
+
+<a name="ObjectListRequest.Validate"></a>
+### func \(ObjectListRequest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L22>)
+
+```go
+func (r ObjectListRequest) Validate() error
+```
+
+Validate rejects unbounded inventories and empty namespaces.
+
+<a name="ObjectPage"></a>
+## type [ObjectPage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L42-L45>)
+
+ObjectPage contains at most the requested number of objects. A nonempty Next cursor requires another page.
+
+```go
+type ObjectPage struct {
+    Objects []ObjectEntry
+    Next    string
 }
 ```
 
