@@ -510,3 +510,15 @@ This state controls temporary local filesystem cleanup. It does not change catal
 The identity map does not survive process exit. Persistent workspace staging records and recovery remain CSP5 work.
 The existing replacement-journal encoding remains unchanged.
 The [workspace proof](../../plans/proof/starport-production-catalog/csp5/workspace-cleanup-2026-09-12/verification.json) records local behavior tests and compilation limits.
+
+## Private preparation ownership: 2026-09-12
+
+Starmap `a05ca541` records temporary workspace entries when it creates them.
+It records native identities, access metadata, and actual written bytes, including partial writes.
+Cleanup removes unchanged owned entries and preserves unknown or changed content. Verification uses the same storage boundary.
+The writer rejects a full inventory before creating another file. Assembly bounds its directory reads.
+
+These records stay in process memory. They do not select a new storage service or change catalog authority.
+Persistent workspace recovery and active-writer exclusion remain CSP5 work.
+Legacy migration rollback also needs recorded ownership before directory removal. Catalog semantic equality does not cover operator notes.
+The [preparation proof](../../plans/proof/starport-production-catalog/csp5/workspace-preparation-2026-09-12/verification.json) owns the current local evidence and qualification limits.

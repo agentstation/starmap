@@ -12,6 +12,8 @@ Checkpoint `de8b5abe` adds explicit durability outcomes and pending-pin confirma
 Commit `ceef5480` corrects the retained record inventory. Commit `55c8bc19` adds baseline stage recovery.
 Commit `9e875a35` adds migration initialization, partial ownership, scan limits, and the reopen correction.
 Commit `536791a0` checks candidate cleanup and reuses validated repair candidates.
+
+Commit `a05ca541` records private preparation writes and bounds assembly reads.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -284,7 +286,7 @@ The corrected assertion uses `errors.Is`. Its focused check and the full migrati
 
 Unrecorded stages and interrupted atomic owner-record scratch remain preserved for explicit recovery.
 Workspace preparation and exchange cleanup, retained evidence, discovery staging, generation retention, history compaction, and full CSP5 qualification remain open.
-`internal/catalog/workspace/stage_access.go` and `projector.go` still use recursive cleanup. CSP5 must replace that cleanup with verified ownership.
+At that checkpoint, private workspace preparation and verification still use recursive cleanup. The preparation section below records the later correction.
 
 ## Workspace candidate cleanup and repair reuse
 
@@ -313,8 +315,34 @@ The first prose failure identifies an eight-sentence paragraph. The second scans
 That unchanged machine output now uses a log suffix. The corrected document restores migration paragraph ownership before the new workspace section.
 
 The identity map remains in memory and does not change the existing replacement-journal encoding.
-Private preparation and verification cleanup still use recursive deletion. Assembly still has an unbounded directory read.
+At `536791a0`, private preparation and verification cleanup still use recursive deletion. Assembly still has an unbounded directory read.
 Persistent stage recovery, retained evidence, discovery staging, generation retention, history compaction, and full CSP5 qualification remain open.
+
+## Workspace preparation ownership
+
+The [preparation proof](csp5/workspace-preparation-2026-09-12/verification.json) binds commit `a05ca541` to fourteen command records and their exact sources.
+Four original cases delete operator files from preparation directories. They cover unknown children, changed render files, replacement files, and replacement enclosures.
+A separate boundary case creates an unrecorded file before rejecting the path-name limit. Both failures now have passing regression tests.
+The proof also retains one intermediate build failure from an unused import.
+
+`Builder.WriteYAML` emits the existing catalog records and logo sidecars through a callback without filesystem access.
+Workspace preparation owns file creation and records native identity, access metadata, and actual written bytes.
+Partial writes remain identifiable after a write error or cancellation. Unknown or changed entries remain preserved during cleanup.
+Verification uses the same writer and checked cleanup. Operator files copy after generated records, without deleting copied model directories.
+
+The writer checks resource limits before creating another entry. Assembly uses bounded directory reads and indexes expected child counts once.
+Temporary render and verification files do not require a flush per file. The publishable candidate still flushes its files and directories.
+`SaveTo` retains its existing authoring behavior.
+
+All 160 workspace and 1,264 catalog race events pass without failures or skips.
+The canonical-runtime application integration test passes, with two test events including its parent.
+Final ago, prose, consumer-dependency, and Linux/Windows compilation checks pass.
+The serializer test also reloads emitted bytes and verifies that the callback serializer creates no filesystem entries.
+Compilation does not qualify native Windows or Linux runtime behavior. The application result does not establish a production latency claim.
+
+Ownership records remain in process memory. Persistent preparation and replacement recovery, including active-writer exclusion, remain open.
+Source inspection also found a separate gap in `rollbackLegacyMove`: its semantic checksum excludes operator notes before recursive deletion.
+CSP5 must bind rollback cleanup to recorded file ownership and add a regression test. This finding has no failure-test result yet.
 
 ## Remaining work
 
@@ -322,7 +350,7 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
+Fix legacy migration rollback ownership. Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

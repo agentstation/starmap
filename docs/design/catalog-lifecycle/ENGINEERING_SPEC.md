@@ -2677,7 +2677,14 @@ Native exchange permits removal only of the recorded old tree at the candidate p
 Repair now publishes one validated candidate without repeating its render and validation passes.
 The [workspace proof](../../plans/proof/starport-production-catalog/csp5/workspace-cleanup-2026-09-12/verification.json) records 149 passing workspace race events and local application profiles.
 The identity map does not change replacement-journal JSON or digest encodings.
-Private preparation cleanup, verification cleanup, and persistent stage recovery remain incomplete.
+
+Commit `a05ca541` extends checked cleanup to private preparation and verification trees.
+`Builder.WriteYAML` emits records without filesystem access. The workspace writer records each created entry and its actual written bytes, including partial writes.
+It preserves unknown entries and changed files. Assembly uses bounded directory reads with indexed expected child counts.
+The [preparation proof](../../plans/proof/starport-production-catalog/csp5/workspace-preparation-2026-09-12/verification.json) records 1,424 passing workspace and catalog race events.
+
+These ownership records remain in memory. Persistent workspace recovery and active-writer exclusion remain incomplete.
+Legacy migration rollback also requires recorded ownership before deletion. A matching semantic catalog checksum does not prove that operator files remain unchanged.
 
 Starport must qualify its own composition under CSP8.
 

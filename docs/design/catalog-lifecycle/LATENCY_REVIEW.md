@@ -309,3 +309,14 @@ Allocation totals measure cumulative allocation space, not peak resident memory.
 These single-run observations do not qualify production startup, inference latency, or released-pair performance.
 The named workspace tests show that repair builds one candidate and preserves operator edits.
 Startup still encodes, decodes, and validates YAML. Requirements for production startup and inference latency remain unchanged.
+
+## Workspace preparation check: 2026-09-12
+
+Starmap `a05ca541` indexes expected directory child counts once for bounded candidate assembly.
+The assembler no longer scans the complete entry map for each directory.
+Temporary render and verification writes do not flush each file. The publishable candidate still flushes files and directories before publication.
+These operations run during workspace preparation, outside inference requests.
+
+The [preparation proof](../../plans/proof/starport-production-catalog/csp5/workspace-preparation-2026-09-12/verification.json) records a passing application integration run with race instrumentation.
+It does not contain a controlled performance comparison. The earlier profile comparison remains bound to its original commits.
+Production startup and inference latency still require their planned qualification.

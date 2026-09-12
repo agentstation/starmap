@@ -2502,5 +2502,21 @@ The canonical-runtime profile passes before and after this change, taking 117.50
 Each version has one local run with race instrumentation. The earlier timeout does not recur.
 The [latency review](LATENCY_REVIEW.md#workspace-repair-observation-2026-09-12) records allocation totals and qualification limits.
 
-Private preparation and verification-tree cleanup still use recursive deletion. Assembly still uses an unbounded directory read.
+At `536791a0`, private preparation and verification-tree cleanup still use recursive deletion. Assembly still uses an unbounded directory read.
 Persistent workspace recovery, retained evidence, discovery staging, generation retention, and compaction remain required under CSP5.
+
+## Workspace preparation and legacy rollback: 2026-09-12
+
+Starmap `a05ca541` records created preparation entries and actual written bytes before checked cleanup.
+The [preparation proof](../../plans/proof/starport-production-catalog/csp5/workspace-preparation-2026-09-12/verification.json) preserves the original data-loss and path-name-limit failures.
+Unknown children, changed files, replacement entries, and verification edits remain preserved.
+Assembly now uses bounded directory reads and an index of expected child counts.
+All 1,424 workspace and catalog race events pass. Application integration, dependency, policy, prose, and compilation checks pass.
+
+Source inspection identifies another CSP5 defect in `internal/catalog/workspace/migration.go:rollbackLegacyMove`.
+It compares semantic catalog content before recursively removing the projected workspace.
+Unrecognized operator notes do not change that checksum. The checksum therefore does not establish ownership of everything that deletion can remove.
+CSP5 owns the correction and its regression test. The separate path still needs a failure test.
+
+Private preparation ownership remains in memory. Persistent recovery, active-writer exclusion, retention, compaction, and full qualification remain open.
+No CSP5 PR or merge credit applies.
