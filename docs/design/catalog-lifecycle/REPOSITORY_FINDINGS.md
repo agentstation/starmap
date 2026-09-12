@@ -2790,3 +2790,23 @@ These macOS runs repeat the same cases on Go 1.26.6 and 1.25.12. Policy, package
 The proof preserves the original failures and exact tested source inputs.
 
 Persistent generation collection, observation-file collection, distinct-inventory retirement, full task verification, required review, native CI, and merge remain open.
+
+## Recoverable filesystem retention: 2026-09-12
+
+Local Starmap commit `199cdaaf` implements the following changes.
+
+Classification: in-scope persistent retention under CSP5.
+The initial tests reproduce the absent filesystem retention capability.
+The implementation adds native read leases, bounded scans, checked directory retirement, and recoverable cleanup.
+The existing private-record publisher owns retirement journal staging. Smaller publication functions clear the repository lint diagnostics without changing their contracts.
+
+The [retention proof](../../plans/proof/starport-production-catalog/csp5/filesystem-retention-2026-09-12/verification.json) records 250 passing race test events on each Go toolchain.
+These macOS runs repeat the same storage and private-file cases on Go 1.26.6 and 1.25.12.
+Policy, package lint, and prose pass. Linux and Windows test binaries compile. Native platform execution remains unverified for this change.
+
+Object storage, runtime adoption, observation-file collection, history retirement, full task verification, required review, native CI, and merge remain open.
+
+Follow-up commit `b10721b8` makes empty filesystem collection succeed and normalizes missing generation and requirement errors.
+A nonempty expected head conflicts with an absent store.
+The [empty-store proof](../../plans/proof/starport-production-catalog/csp5/filesystem-empty-store-2026-09-12/verification.json) records 257 passing race test events on each Go toolchain.
+It preserves the original four failing subcases, their failing parent, and the direct probe. Existing qualification limits remain unchanged.

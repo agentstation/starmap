@@ -776,11 +776,14 @@ The older required runtime suite remains failed historical evidence. CSP5 remain
 
 ## Required runtime suite: 2026-09-12
 
-The [running suite record](csp5/runtime-required-c8ec797a-2026-09-12.json) binds session `56591` to clean detached source `c8ec797a`.
-Its checkout is `/Users/jack/src/github.com/agentstation/starmap-csp5-verification-c8ec797a`.
-The command runs the complete runtime and catalog-store race suites with the committed module graph and the required 30-minute timeout.
-No completion or task acceptance credit applies while the command runs.
-Preserve the terminal output before removing the temporary checkout. Continue independent compaction and collection work.
+The [completed suite record](csp5/runtime-required-c8ec797a-2026-09-12.json) binds the required runtime and storage command to clean source `c8ec797a`.
+The command passed within its 30-minute timeout, using the committed module graph.
+It records 1,111 passing test events and two skips. Both skipped public-catalog tests lacked the generated public catalog fixture.
+The exact skipped output and terminal command output remain archived. The temporary checkout no longer exists.
+
+This result predates memory and filesystem retention. It does not qualify the final CSP5 source or the twelve mapped subcases.
+Prepare the public catalog fixture before the final runtime suite with `python3 scripts/prepare_public_catalog_fixture.py`.
+The prior failed suite remains historical evidence under the repeated-history proof.
 
 ## Explicit memory retention: 2026-09-12
 
@@ -812,6 +815,59 @@ Five concurrent tooling edits remain outside the commit. Final task qualificatio
 Persistent generation collection, observation-file collection, distinct-inventory retirement, twelve mapped subcases, full verification, review, native CI, and merge remain open.
 CSP5 remains unpublished until its complete contract passes.
 
+## Recoverable filesystem retention: 2026-09-12
+
+Local commit `199cdaaf` adds native generation leases and recoverable filesystem collection.
+The [retention proof](csp5/filesystem-retention-2026-09-12/verification.json) records 250 passing storage and private-file race test events on each Go toolchain.
+The runs use Go 1.26.6 and 1.25.12. They repeat the same cases and include parent events.
+
+Neither suite reports failures or skips. Policy, package lint, and source prose pass.
+Linux and Windows test binaries compile. These checks do not qualify native filesystem behavior on those platforms.
+
+The existing publication lock coordinates collection, publishers, ordinary generation reads, and authority-head reads across processes.
+Each explicit reader owns an independent native generation lock. Its idempotent release survives context cancellation.
+Current content, caller-required IDs, and active read leases remain protected, including when they exceed capacity.
+Dry scans do not create generation lease files. Pending record recovery or retirement requires a normal pass.
+
+A bounded scan validates generation identities, payload digests, optional authority bytes, and recognized records.
+Unknown names, changed content, missing requirements, stale heads, and incomplete scans cause refusal.
+Before retirement, a journal records native identities, access policy, file metadata, and content digests.
+The directory then moves atomically before any file deletion. Checked cleanup synchronizes directory metadata and removes its journal last.
+
+Recovery cancels preparations that never moved the directory. A new reader or pin can protect that generation before a fresh decision.
+Recovery resumes partial deletion only for remaining records that match their receipts.
+Unknown files, changed records, and replaced parent or writer identities preserve the retired directory and journal.
+Retirement journals use the existing private-record publisher and its owned staging recovery.
+
+Tests cover four process-exit points, another process reader, independent leases, ordinary reads, concurrent publication, later pin requirements, malformed journals, and changed files.
+The original tests prove that filesystem retention was absent. They do not prove a prior deletion defect.
+
+The first lint check also found existing private-publication complexity and naming diagnostics.
+Smaller functions preserve journal decoding, stage writes, and publication outcomes. A platform file owns the Linux and Windows ACL bound.
+Final lint and policy checks pass without suppressions or policy changes. The proof retains the intermediate receiver-name diagnostic.
+
+Capacity totals count encoded manifests and payloads. They exclude journals, lock files, and filesystem overhead.
+No automatic collection starts. Object storage, runtime adoption, observation-file collection, and distinct-inventory retirement remain open.
+
+Five concurrent tooling edits remain outside this commit. Final qualification must use the committed module graph.
+CSP5 retains all twelve mapped subcases, full verification, required review, native CI, and merge.
+
+## Empty filesystem stores: 2026-09-12
+
+Follow-up commit `b10721b8` corrects retention before the first catalog publication.
+The [empty-store proof](csp5/filesystem-empty-store-2026-09-12/verification.json) retains the direct probe and failing regression matrix.
+The probe returned raw filesystem absence for missing acquisition and collection against an existing empty directory.
+Four subcases and their parent failed. Two empty-store subcases already passed.
+
+Missing generation leases and required IDs now return the catalog not-found error.
+A nonempty expected head conflicts with an absent store. Collection succeeds with zero usage for empty filesystem stores.
+The six-case matrix covers these boundaries, including an existing empty generations directory.
+
+Both complete storage and private-file suites pass 257 test events, including parents, without failures or skips.
+The Go 1.26.6 and 1.25.12 runs repeat the same cases. Policy, package lint, and source prose pass.
+Linux and Windows test binaries compile. Native platform qualification remains open.
+The retirement format, native lease protocol, and publication synchronization remain unchanged.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
@@ -821,7 +877,7 @@ The focused results above do not complete those full subcases.
 The integration race suite ended with its known fixture failure and an aggregate runtime timeout. Preserve its terminal evidence under the history proof.
 Commit `91b4fbc6` now propagates caller cancellation through GitHub construction.
 
-Implement persistent generation collection and observation-file collection. Safely retire superseded distinct inventories.
+Implement object-storage retention and runtime adoption. Collect observation files and safely retire superseded distinct inventories.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

@@ -1,6 +1,6 @@
 {
   "task": "CSP5",
-  "status": "RUNNING",
+  "status": "PASS",
   "source_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-csp5-verification-c8ec797a",
   "session_id": 56591,
@@ -31,9 +31,10 @@
     }
   ],
   "limits": [
-    "This command uses a clean detached checkout and its committed module graph.",
-    "A running command gives no acceptance credit. Preserve its terminal output before removing the temporary checkout.",
-    "This suite tests the cache checkpoint. Later compaction or collection changes require the applicable checks again."
+    "The required command passed against clean c8ec797a and its committed module graph.",
+    "The suite records 1111 passing test events and two skips because the public catalog fixture was absent. The exact skipped output remains attached.",
+    "This result predates memory and filesystem retention. Final task qualification must include those changes and all twelve mapped subcases.",
+    "Prepare the public catalog fixture before the final runtime suite. The skipped public-catalog tests have no fresh acceptance evidence from this run."
   ],
   "plan_prose_check": {
     "command": [
@@ -126,5 +127,97 @@
   "last_verified_live": {
     "session_id": 56591,
     "observation": "The session returned running. The storage package passed. Runtime remained active with 176 total passing test events and no failures or skips at inspection."
-  }
+  },
+  "exit_code": 0,
+  "finished_at": "2026-09-12T09:01:21.224734+00:00",
+  "command_result": {
+    "command": [
+      "env",
+      "GOTOOLCHAIN=go1.26.6",
+      "GOWORK=off",
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-timeout",
+      "30m",
+      "./runtime",
+      "./pkg/catalogs/storage"
+    ],
+    "started_at": "2026-09-12T08:35:43.387902+00:00",
+    "base_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+    "source_files": {},
+    "exit_code": 0,
+    "finished_at": "2026-09-12T09:01:21.224734+00:00"
+  },
+  "test_events": {
+    "pass": 1111,
+    "skip": 2
+  },
+  "skipped_tests": [
+    {
+      "package": "github.com/agentstation/starmap/runtime",
+      "test": "TestPublicCatalogActivatesWithoutProviderCredentials",
+      "output": "=== RUN   TestPublicCatalogActivatesWithoutProviderCredentials\n    public_catalog_fixture_test.go:42: public catalog fixture is absent; run python3 scripts/prepare_public_catalog_fixture.py before testing\n--- SKIP: TestPublicCatalogActivatesWithoutProviderCredentials (0.00s)\n"
+    },
+    {
+      "package": "github.com/agentstation/starmap/runtime",
+      "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState",
+      "output": "=== RUN   TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState\n    public_catalog_fixture_test.go:42: public catalog fixture is absent; run python3 scripts/prepare_public_catalog_fixture.py before testing\n--- SKIP: TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState (0.00s)\n"
+    }
+  ],
+  "packages": [
+    {
+      "Time": "2026-09-12T03:35:56.853252-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+      "Elapsed": 4.773
+    },
+    {
+      "Time": "2026-09-12T04:01:20.362828-05:00",
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Elapsed": 1528.294
+    }
+  ],
+  "command_artifacts": [
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/command/prior-running-record.json.gz",
+      "sha256": "fbe2469ef28031a7b402277e2c9d07a7dacec0319e129f6e5f4f13df3af94d61",
+      "decoded_sha256": "0c2dfaa50bdfa600c761ed68c46abea2ac42b049ad37f4309ce3b534c22b6f12"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/command/verification.json.gz",
+      "sha256": "04d1c28231492803835e022f8f34fa13ad0e6a94a9a97b30fa4b59615d4158e1",
+      "decoded_sha256": "55ddd201b3368de7eb14cebe3a351d0501b5966c097595ca0cd2b5f62b3c7b20"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/command/stdout.log.gz",
+      "sha256": "f68b5bb59b4b208c8379b1bc5e998a5a841b5536a292c9d04c71bb595204fe93",
+      "decoded_sha256": "6e1a24afaf0e3e6c960d67b4ae3f79411f3c87abd72a13b69567262a2d76a88e"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/command/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/command/changes.patch.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/command/go.mod.gz",
+      "sha256": "45e1e1cb7f84e0cf4d6dfeafd821e3a261f697216c885c30b228e271affb356b",
+      "decoded_sha256": "7306762e1cba1767c7a4f2758e77f23f9e6ee1262e579587ecdfcfa931e87508"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/command/go.sum.gz",
+      "sha256": "ff0e24c4e7a55c08cba4655cc623b33a6605ab0f6f4e2c7e7d0b47ab42e1b6c3",
+      "decoded_sha256": "c250f40d5efcff10df08b824d63da9b6079f100cde2ff1e7014236b58b67c886"
+    }
+  ],
+  "temporary_checkout_removed": true,
+  "checkout_removed_at": "2026-09-12T09:14:14.506391+00:00"
 }
