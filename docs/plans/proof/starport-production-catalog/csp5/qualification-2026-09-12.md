@@ -1,7 +1,7 @@
 # CSP5 committed candidate qualification
 
 Commit `8683287dfcd5fc17268d501e70f9b6753aea1c67` consolidates automatic local retention and its configuration, diagnostics, and regression corrections.
-The [verification record](qualification-2026-09-12/verification.json) binds 40 changed files through follow-up `082a760a283eb323adb0209c6a150efd8b96da21` and all recorded commands.
+The [verification record](qualification-2026-09-12/verification.json) binds 61 changed files through follow-up `064eb02c0e6443abfa277d47bffac7bc76cc3992` and all recorded commands.
 The qualification worktree is clean and uses the committed Go module graph.
 The earlier worktree still contains five unrelated tooling edits. Those edits remain outside this commit.
 
@@ -41,7 +41,7 @@ The initial runtime and repository runs stopped after this defect reproduced.
 Their records retain terminal interruption status and provide no complete qualification credit.
 The task verifier passes all twelve mapped subcases on the corrected commit, with 42 passing race events across 21 Go invocations.
 
-The replacement repository check fails on that commit. The required runtime race suite continues.
+The replacement repository check fails on that commit. The required runtime/storage race suite passes 1,357 test events in about 27 minutes.
 The verification record identifies each live session. Running checks receive no acceptance credit.
 
 The public catalog fixture passes cache verification at 411,974 bytes.
@@ -68,10 +68,48 @@ The migration stack and source identify nested lock acquisition.
 The focused race check also reaches its 30-second deadline at the same nested lock.
 This defect requires a code correction. A longer timeout does not resolve it.
 
-The branch contains 42 local commits beyond the merged CSP4 baseline and has no CSP5 PR.
+At that checkpoint, the branch contained 42 local commits beyond the merged CSP4 baseline and had no CSP5 PR.
 The twelve mapped component results do not qualify these integration failures or shared collection.
 Finish the identified failures and required shared contract before review, native CI, and merge.
 Avoid further isolated feature checkpoints that do not advance those delivery gates.
+
+## Committed integration corrections
+
+Commit `064eb02c0e6443abfa277d47bffac7bc76cc3992` corrects migration reads, configuration coverage, and the binding-record assertion across 21 files.
+Legacy inspection requires the held publication lease and validates its identity before and after reads.
+Bounded private reads preserve manifest, payload digest, schema, directory-name, and authority-record checks.
+The initial read, relocated-store check, and recovery inspection use this path.
+
+The first correction still encountered a nested reader after relocation. Its two-minute failure remains in the record.
+The final correction passes 75 selected race events, including the original migration, CLI restart, settings, and acquisition failures.
+The extra binding entry is the reserved `.record-publications` directory.
+The corrected assertion requires two regular JSON records and rejects unexpected entries.
+All six retention settings now have Compose examples, application aliases, and sample values.
+
+Recovery validation now has separate functions for journal headers, record events, relocation events, publication guards, and backup transitions.
+Four test-only operations moved into a test file.
+The final baseline and replacement checks pass 97 race events on each supported toolchain.
+These selections overlap earlier checks. Repository lint, policy, prose, and Windows compilation pass.
+Native execution remains required before delivery.
+
+Two broader package runs reached their ten-minute limit, after 616 and 529 passing events.
+Neither run reports an assertion failure. Their incomplete results remain failures in the verification record.
+The interrupted endpoint-drift test passes separately on Go 1.25.12.
+The second interrupted completion test has a separate recorded check.
+
+Ordinary, race, and native suites now use the same thirty-minute package bound and run packages sequentially.
+The native job has sixty minutes for setup and its complete test sequence.
+Individual operation deadlines remain unchanged.
+Full repository verification continues on the exact source now committed as `064eb02c0`.
+The runner captures its starting worktree bytes, which match that commit.
+
+## Delivery sequence
+
+Deliver verified local update controls and retention through the required repository checks, pre-PR review, native CI, and merge.
+Shared/object collection remains required for CSP5 completion.
+The first delivery does not close CSP5 or claim that shared collection works.
+The pending coordinator decision selects that remaining implementation.
+This sequence preserves the task acceptance criteria and the full production scope.
 
 ## Remaining delivery work
 
