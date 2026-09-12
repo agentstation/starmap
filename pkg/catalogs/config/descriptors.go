@@ -89,7 +89,9 @@ func describe(entry setting) Descriptor {
 		Scope: DeploymentScope, Applicability: []string{"all"}, Mutability: "runtime-replacement",
 		Introduced: SchemaVersion, Compatibility: "supported", Anchor: entry.flag}
 	source := runtime.DefaultSourcePolicy()
-	acquisition := runtime.DefaultAcquisitionPolicy()
+	if describeUpdateControl(&d) {
+		return d
+	}
 	switch entry.name {
 	case AuthorityOrigin:
 		d.Description = "Selects one complete authority origin declaration. Disabling issuance preserves the store's authority and requires an explicit transition before ordinary startup."
@@ -122,21 +124,6 @@ func describe(entry setting) Descriptor {
 		if entry.name == SourceToken {
 			d.Applicability = []string{"public", "github"}
 		}
-	case SourceRefreshMode:
-		d.Description = "Selects automatic source refresh or explicit manual reads. Manual mode suppresses startup reads, polling, and source watchers."
-		d.Default = string(runtime.SourceRefreshAutomatic)
-		d.AllowedValues = []string{string(runtime.SourceRefreshAutomatic), string(runtime.SourceRefreshManual)}
-	case GenerationPin:
-		d.Description = "Selects a retained generation and blocks catalog changes. Permission observation continues. An empty value clears the pin."
-		d.AllowEmpty = true
-		d.DefaultMeaning = "no generation pin"
-	case NetworkMode:
-		d.Description = "Controls catalog network acquisition. Offline mode preserves local imports and does not change inference or selected storage access."
-		d.Default = string(runtime.NetworkConfigured)
-		d.AllowedValues = []string{string(runtime.NetworkConfigured), string(runtime.NetworkOffline)}
-	case SourcePollInterval:
-		d.Description = "Sets the period between automatic catalog checks. Zero disables periodic catalog checks."
-		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", source.PollInterval.String(), true
 	case SourceStartupPolicy:
 		d.Description = "Selects catalog availability before the first upstream reply."
 		d.Default = string(source.StartupPolicy)
@@ -156,9 +143,6 @@ func describe(entry setting) Descriptor {
 	case SourceAliases:
 		d.Description = "Names other identities of this runtime for source cycle detection."
 		d.Type, d.AllowEmpty, d.Scope = ListValue, true, NodeScope
-	case AcquisitionEnabled:
-		d.Description = "Enables automatic acquisition from configured provider and metadata sources."
-		d.Type, d.Default = BooleanValue, strconv.FormatBool(acquisition.Enabled)
 	case AcquisitionSources:
 		d.AllowedValues = []string{string(sources.ProvidersID), string(sources.LocalCatalogID), string(sources.ModelsDevHTTPID), string(sources.ModelsDevGitID)}
 		d.Description = "Selects permitted local acquisition inputs. An empty list excludes every acquisition source."
@@ -168,9 +152,6 @@ func describe(entry setting) Descriptor {
 		d.Description = "Pins models.dev Git acquisition to one exact hexadecimal commit. An empty value clears the pin."
 		d.AllowEmpty, d.Mutability = true, "restart"
 		d.DefaultMeaning = "omission keeps the collector pin. Git acquisition requires an exact commit"
-	case AcquisitionInterval:
-		d.Description = "Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on."
-		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", acquisition.Interval.String(), true
 	case ProviderBindings:
 		d.Description = "Selects the complete active provider binding set. An empty array permits no local provider acquisition."
 		d.Type, d.Mutability = ProviderBindingsValue, "restart"
@@ -279,4 +260,35 @@ func validateNames(values map[string]string) error {
 		}
 	}
 	return nil
+}
+
+func describeUpdateControl(d *Descriptor) bool {
+	source := runtime.DefaultSourcePolicy()
+	acquisition := runtime.DefaultAcquisitionPolicy()
+	switch d.Name {
+	case SourceRefreshMode:
+		d.Description = "Selects automatic source refresh or explicit manual reads. Manual mode suppresses startup reads, polling, and source watchers."
+		d.Default = string(runtime.SourceRefreshAutomatic)
+		d.AllowedValues = []string{string(runtime.SourceRefreshAutomatic), string(runtime.SourceRefreshManual)}
+	case GenerationPin:
+		d.Description = "Selects a retained generation and blocks catalog changes. Permission observation continues. An empty value clears the pin."
+		d.AllowEmpty = true
+		d.DefaultMeaning = "no generation pin"
+	case NetworkMode:
+		d.Description = "Controls catalog network acquisition. Offline mode preserves local imports and does not change inference or selected storage access."
+		d.Default = string(runtime.NetworkConfigured)
+		d.AllowedValues = []string{string(runtime.NetworkConfigured), string(runtime.NetworkOffline)}
+	case SourcePollInterval:
+		d.Description = "Sets the period between automatic catalog checks. Zero disables periodic catalog checks."
+		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", source.PollInterval.String(), true
+	case AcquisitionEnabled:
+		d.Description = "Enables automatic acquisition from configured provider and metadata sources."
+		d.Type, d.Default = BooleanValue, strconv.FormatBool(acquisition.Enabled)
+	case AcquisitionInterval:
+		d.Description = "Sets the acquisition period. Zero permits one startup pass when automatic acquisition is on."
+		d.Type, d.Unit, d.Default, d.AllowZero = DurationValue, "duration", acquisition.Interval.String(), true
+	default:
+		return false
+	}
+	return true
 }
