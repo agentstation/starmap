@@ -655,10 +655,8 @@
       },
       "test_events": {},
       "test_results": []
-    }
-  },
-  "running_checks": [
-    {
+    },
+    "qualification-pre-pr-review-1a7ae757b-20260912": {
       "command": [
         "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
         "--gate",
@@ -677,13 +675,23 @@
       "started_at": "2026-09-12T21:32:11.675778+00:00",
       "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
       "source_files": {},
+      "exit_code": 0,
+      "finished_at": "2026-09-12T21:57:28.493039+00:00",
       "name": "qualification-pre-pr-review-1a7ae757b-20260912",
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-      "status": "RUNNING",
-      "session_id": 90137
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stderr.log": "blobs/db73900dee72debfc7d5db4cdf75e27159df4c8953d17e3cfaa94c06d824ee17.gz",
+        "stdout.log": "blobs/c8dadcaf0c82b65d91cd6d43334264fea81b85fdc11dcb4cbcdec0544f55c65a.gz",
+        "verification.json": "blobs/b6ea66d53cfa7def922071390eff12e7be4b258216a981350591ec670ea86734.gz"
+      },
+      "test_events": {},
+      "test_results": []
     }
-  ],
-  "observed_at": "2026-09-12T21:33:29.873555+00:00",
+  },
+  "running_checks": [],
+  "observed_at": "2026-09-12T22:02:38.557463+00:00",
   "cache_observation": {
     "artifact": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
     "testlog_bytes": 2270280301,
@@ -729,7 +737,7 @@
     ]
   },
   "limits": [
-    "The first uncached repository run failed when the local disk filled during the race suite. Required review, native CI, and merge remain pending.",
+    "The first uncached repository run failed when the local disk filled during the race suite. Required review passes. Native CI and merge remain pending.",
     "All twelve selected CSP5 subcases passed on 5160414e4. Only verification command flags and their comment changed afterward. Eight subcases retain Starport consumer requirements.",
     "Shared/object generation collection and the pending coordinator decision remain required for complete CSP5 delivery.",
     "No full-suite speed improvement is claimed before terminal comparison evidence. The probe establishes disabled test-cache logging."
@@ -1817,13 +1825,209 @@
     "prose_results": [
       "PASS: 1672 file(s), 0 diagnostic(s)"
     ],
-    "limit": "Local repository qualification only. Required independent review, native CI, merge, and remaining shared/object work are not complete."
+    "limit": "Local repository qualification only. Native CI, merge, and remaining shared/object work are not complete."
   },
   "review_output_location": {
     "output_directory": "/tmp/csp5-pre-pr-1a7ae757b-l38_nwa1",
     "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
     "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
     "artifact": "blobs/45c9e5c1b7b9fcc5a5dd21e5e3d05795d89d31d462f6494369760bd90e8fa8bc.gz"
+  },
+  "required_review": {
+    "status": "PASS",
+    "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+    "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "session_id": 90137,
+    "finished_at": "2026-09-12T21:57:28.493039+00:00",
+    "gate": "pre-pr",
+    "profile": "cross-lab",
+    "threshold": "P0",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:claude-opus-5:high"
+    ],
+    "sections": 6,
+    "secret_scan": "PASS",
+    "report": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Chunked review complete. chunk 1/6: 0 finding(s), chunk 2/6: 0 finding(s), chunk 3/6: 0 finding(s), chunk 4/6: 0 finding(s), chunk 5/6: 0 finding(s), chunk 6/6: 0 finding(s).",
+      "overall_confidence": 0.98
+    },
+    "artifacts": {
+      "review.json": "blobs/c6e4310e14be99ba96bb2051a28a720ecdd8c1c8e1739c64edd91bb066786133.gz",
+      "review.txt": "blobs/7ff454ed013c7a7377eddf073083923d6dcb39d44dd072bd84e82bf6dc09f0ec.gz"
+    },
+    "limit": "Independent review uses the configured P0 threshold. Native CI and merge remain required."
+  },
+  "publication": {
+    "pull_request": {
+      "baseRefName": "main",
+      "headRefName": "codex/catalog-update-controls-qualification",
+      "headRefOid": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "isDraft": true,
+      "mergeStateStatus": "BLOCKED",
+      "number": 154,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721467328/job/103628037944",
+          "name": "Analyze (actions)",
+          "startedAt": "2026-09-12T21:59:14Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040080",
+          "name": "Constructor Network Passivity",
+          "startedAt": "2026-09-12T21:59:15Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721467328/job/103628037904",
+          "name": "Analyze (go)",
+          "startedAt": "2026-09-12T21:59:14Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721467328/job/103628038028",
+          "name": "Analyze (python)",
+          "startedAt": "2026-09-12T21:59:14Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040110",
+          "name": "Offline Server Persistence",
+          "startedAt": "2026-09-12T21:59:15Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040141",
+          "name": "Verification Gate",
+          "startedAt": "2026-09-12T21:59:15Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040145",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-12T21:59:15Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-12T21:59:25Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040216",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-12T21:59:15Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040260",
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-12T21:59:15Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040157",
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-12T21:59:15Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040171",
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-12T21:59:16Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040240",
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-12T21:59:17Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040456",
+          "name": "Runtime macos-15-intel",
+          "startedAt": "2026-09-12T21:59:16Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34721468698/job/103628040196",
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-12T21:59:21Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        }
+      ],
+      "title": "Enforce catalog update controls and retain local state",
+      "url": "https://github.com/agentstation/starmap/pull/154"
+    },
+    "workflows": [
+      {
+        "conclusion": "",
+        "createdAt": "2026-09-12T21:59:12Z",
+        "databaseId": 34721468698,
+        "headSha": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+        "status": "in_progress",
+        "url": "https://github.com/agentstation/starmap/actions/runs/34721468698",
+        "workflowName": "Pull Request"
+      }
+    ],
+    "scope": "Initial publication snapshot. Native and other required checks are not yet complete. No merge is recorded.",
+    "capture_scope": "Initial post-publication tool snapshot on 2026-09-12 UTC; no exact capture timestamp was recorded.",
+    "artifact": "blobs/61181fb8348e4591d28a559de3d6d48e7047318b634033b3cc26a765371ac80c.gz"
   },
   "artifacts": [
     {
@@ -1972,6 +2176,21 @@
       "decoded_sha256": "07c81bd4c63dfc220a406fcb4a280a8485d9607fe14cee5434b05080693b8430"
     },
     {
+      "path": "blobs/db73900dee72debfc7d5db4cdf75e27159df4c8953d17e3cfaa94c06d824ee17.gz",
+      "sha256": "de96a718a4a460004715813fd35b02d578abc4fe545f9e29bc522ee86dd425f7",
+      "decoded_sha256": "db73900dee72debfc7d5db4cdf75e27159df4c8953d17e3cfaa94c06d824ee17"
+    },
+    {
+      "path": "blobs/c8dadcaf0c82b65d91cd6d43334264fea81b85fdc11dcb4cbcdec0544f55c65a.gz",
+      "sha256": "e5d0e480985e05acc4a49313f63f148a8733ecf7e5ff73f538efcad6b994e29d",
+      "decoded_sha256": "c8dadcaf0c82b65d91cd6d43334264fea81b85fdc11dcb4cbcdec0544f55c65a"
+    },
+    {
+      "path": "blobs/b6ea66d53cfa7def922071390eff12e7be4b258216a981350591ec670ea86734.gz",
+      "sha256": "10bef6da45e1b2af8b6ee11a2282f5b231305c074a2c8814d2d90cc6734ada0d",
+      "decoded_sha256": "b6ea66d53cfa7def922071390eff12e7be4b258216a981350591ec670ea86734"
+    },
+    {
       "path": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
       "sha256": "869cd2b6add55acc0b2aa50a5eea2480377bb46fdc1182dd967ec3cfc625715e",
       "decoded_sha256": "0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce"
@@ -2025,6 +2244,21 @@
       "path": "blobs/45c9e5c1b7b9fcc5a5dd21e5e3d05795d89d31d462f6494369760bd90e8fa8bc.gz",
       "sha256": "24c5cfd0478e739b77317e65fcbec7d3dde1f89afe38b06ead6ee0c0a05e538d",
       "decoded_sha256": "45c9e5c1b7b9fcc5a5dd21e5e3d05795d89d31d462f6494369760bd90e8fa8bc"
+    },
+    {
+      "path": "blobs/c6e4310e14be99ba96bb2051a28a720ecdd8c1c8e1739c64edd91bb066786133.gz",
+      "sha256": "cae1a7170d1c00d303adf0cd81eb0661a905dc2e26edef3035d838c2b95529a5",
+      "decoded_sha256": "c6e4310e14be99ba96bb2051a28a720ecdd8c1c8e1739c64edd91bb066786133"
+    },
+    {
+      "path": "blobs/7ff454ed013c7a7377eddf073083923d6dcb39d44dd072bd84e82bf6dc09f0ec.gz",
+      "sha256": "27a78d6ed08e8c307d9126728f21582cee8e2574887178a5bfb3993f64f4877c",
+      "decoded_sha256": "7ff454ed013c7a7377eddf073083923d6dcb39d44dd072bd84e82bf6dc09f0ec"
+    },
+    {
+      "path": "blobs/61181fb8348e4591d28a559de3d6d48e7047318b634033b3cc26a765371ac80c.gz",
+      "sha256": "5546a0ba5aa5e2d862c792d5f814e23d692bfa57e55cfcad840dda4f26c19b7c",
+      "decoded_sha256": "61181fb8348e4591d28a559de3d6d48e7047318b634033b3cc26a765371ac80c"
     }
   ]
 }

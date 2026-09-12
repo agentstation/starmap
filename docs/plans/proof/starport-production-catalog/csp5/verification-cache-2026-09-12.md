@@ -72,11 +72,16 @@ The verification record archives the complete output, commands, coverage values,
 The task check on unchanged Go source `5160414e4` passes all twelve selected subcases, including 42 race events across 21 commands.
 Eight subcases retain Starport consumer requirements.
 
-Required review, native CI, and merge remain pending.
 A review preflight passes for both configured reviewers on source `1a7ae757b`.
 This dry run checks review readiness. It provides no review verdict or attestation.
 
-The actual required review runs in session `90137` after complete verification.
-Its profile selects Sol at xhigh effort and Opus at high effort. No review verdict is available yet.
+The actual required review passed with exit status 0 at 21:57:28 UTC after complete verification.
+Sol at xhigh effort and Opus at high effort reviewed all six sections.
+The combined report contains no findings at the configured P0 threshold. Secret scanning passes.
+The verification record archives the report, rendered result, commands, and complete review output.
+
+[Starmap PR #154](https://github.com/agentstation/starmap/pull/154) publishes the reviewed source as a draft.
+The [PR workflow](https://github.com/agentstation/starmap/actions/runs/34721468698) started all six native platform jobs.
+Its initial snapshot records those jobs as running. Native qualification and merge remain pending.
 Shared/object collection and the coordinator decision remain part of the full CSP5 contract.
 A full-suite speed comparison requires terminal evidence.

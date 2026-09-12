@@ -5,41 +5,23 @@
   "done": 10,
   "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 108,
-  "new_evidence_artifacts": 11889,
+  "local_links": 107,
+  "new_evidence_artifacts": 11895,
   "new_commit_source_files": 834,
-  "resume_words": 239,
-  "next_action": "Finish required review session 90137 on unchanged 1a7ae757b. Full repository verification passes 41 phases with 85 ordinary and 85 race packages. Assess findings, publish the PR, complete native CI, and merge the local delivery. Shared/object collection and the pending coordinator decision remain required for CSP5 completion.",
+  "resume_words": 235,
+  "next_action": "Complete native CI for Starmap PR #154 on unchanged 1a7ae757b, then merge the reviewed local delivery. Full repository verification passes 41 phases and required review passes six sections at P0. Shared/object collection and the pending coordinator decision remain required for CSP5 completion.",
   "current_source": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
   "starmap_integration_source": null,
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-  "external_running_checks": [],
-  "local_running_checks": [
+  "external_running_checks": [
     {
-      "command": [
-        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
-        "--gate",
-        "pre-pr",
-        "--mode",
-        "auto",
-        "--profile",
-        "cross-lab",
-        "--thinking",
-        "codex=xhigh",
-        "--json-output",
-        "/tmp/csp5-pre-pr-1a7ae757b-l38_nwa1/review.json",
-        "--output",
-        "/tmp/csp5-pre-pr-1a7ae757b-l38_nwa1/review.txt"
-      ],
-      "started_at": "2026-09-12T21:32:11.675778+00:00",
-      "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
-      "source_files": {},
-      "name": "qualification-pre-pr-review-1a7ae757b-20260912",
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-      "status": "RUNNING",
-      "session_id": 90137
+      "workflow_run": 34721468698,
+      "head_sha": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "status": "in_progress",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34721468698"
     }
   ],
+  "local_running_checks": [],
   "current_source_binding_kind": "commit",
   "uncommitted_source_files": 0
 }
