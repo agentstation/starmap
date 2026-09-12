@@ -1,5 +1,9 @@
 # CSP5 committed candidate qualification
 
+The later race run found nondeterministic author comments.
+The [author YAML correction](yaml-roundtrip-2026-09-12.md) records the failure and corrected source `5160414e4`.
+Original session `42639` remains active with that known failure. Its earlier passing phases remain valid under their recorded source bindings.
+
 Commit `8683287dfcd5fc17268d501e70f9b6753aea1c67` consolidates automatic local retention and its configuration, diagnostics, and regression corrections.
 The [verification record](qualification-2026-09-12/verification.json) binds 71 changed files through follow-up `58a06d7b11e71a2d1c8088c5700a1d985fa8e61e` and all recorded commands.
 The qualification worktree is clean and uses the committed Go module graph.
