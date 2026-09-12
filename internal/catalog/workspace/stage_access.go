@@ -16,18 +16,19 @@ import (
 )
 
 type workspaceStage struct {
-	parent    *os.Root
-	private   *os.Root
-	name      string
-	candidate string
-	source    *os.Root
-	original  treeSnapshot
-	published treeSnapshot
-	enclosure treeSnapshot
-	trees     map[string]*preparationTree
-	journal   *preparationJournal
-	handoff   *preparationHandoff
-	record    *preparationRecord
+	parent     *os.Root
+	private    *os.Root
+	name       string
+	candidate  string
+	source     *os.Root
+	original   treeSnapshot
+	published  treeSnapshot
+	enclosure  treeSnapshot
+	trees      map[string]*preparationTree
+	journal    *preparationJournal
+	handoff    *preparationHandoff
+	record     *preparationRecord
+	relocation *relocationInventory
 }
 
 func prepareWorkspaceStage(ctx context.Context, target string, writer *workspaceWriter) (result *workspaceStage, resultErr error) {

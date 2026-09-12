@@ -133,6 +133,8 @@ type RepairResult struct {
 type projector struct {
 	writer                  *workspaceWriter
 	recordWrites            workspaceRecordWriter
+	relocation              *workspaceStage
+	relocationLease         *legacyStoreLease
 	beforeInputCheck        func() error
 	beforePromote           func() error
 	beforeMarker            func() error
@@ -212,7 +214,7 @@ func (p projector) projectLocked(
 	identity Identity,
 	expectation InputExpectation,
 ) (Receipt, treeSnapshot, error) {
-	if _, err := recoverWorkspace(ctx, target, p.writer); err != nil {
+	if _, err := recoverWorkspaceExcept(ctx, target, p.writer, p.relocation); err != nil {
 		return Receipt{}, treeSnapshot{}, err
 	}
 	input, err := readSemanticState(target)
@@ -280,6 +282,11 @@ func (p projector) publishCandidate(
 			Message:  "workspace changed while the committed generation was being staged",
 		}
 	}
+	if p.relocation != nil {
+		if err := p.relocation.recordRelocationWorkspace(ctx, candidate.tree); err != nil {
+			return Receipt{}, err
+		}
+	}
 	if p.beforePromote != nil {
 		if err := p.beforePromote(); err != nil {
 			return Receipt{}, err
@@ -290,6 +297,11 @@ func (p projector) publishCandidate(
 	}
 	if err := p.writer.check(); err != nil {
 		return Receipt{}, err
+	}
+	if p.relocation != nil {
+		if err := p.relocation.checkRelocationStore(ctx, p.relocation.relocation.record.State, p.relocationLease); err != nil {
+			return Receipt{}, err
+		}
 	}
 	marker := projectionMarker{
 		Version: markerVersion, GenerationID: identity.GenerationID,

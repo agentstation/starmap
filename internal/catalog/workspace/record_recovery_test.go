@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	stderrors "errors"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -203,7 +204,7 @@ func TestWorkspaceRecordRecoveryRejectsInvalidReceipt(t *testing.T) {
 			case "hash":
 				event.Record.Entry.SHA256 = "invalid"
 			case "version":
-				lines[0] = bytes.Replace(lines[0], []byte(`"version":3`), []byte(`"version":2`), 1)
+				lines[0] = bytes.Replace(lines[0], []byte(fmt.Sprintf(`"version":%d`, preparationJournalVersion)), []byte(`"version":2`), 1)
 			case "mixed-tree":
 				event.Tree = "render"
 			}
@@ -283,7 +284,7 @@ func TestCandidateRecoveryReadsVersionTwo(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	data = bytes.Replace(data, []byte(`"version":3`), []byte(`"version":2`), 1)
+	data = bytes.Replace(data, []byte(fmt.Sprintf(`"version":%d`, preparationJournalVersion)), []byte(`"version":2`), 1)
 	if err := os.WriteFile(path, data, 0o600); err != nil {
 		t.Fatal(err)
 	}

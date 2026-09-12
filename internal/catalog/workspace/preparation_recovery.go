@@ -16,49 +16,26 @@ import (
 )
 
 func recoverPreparations(ctx context.Context, target string, writer *workspaceWriter) error {
+	return recoverPreparationsExcept(ctx, target, writer, nil)
+}
+
+func recoverPreparationsExcept(ctx context.Context, target string, writer *workspaceWriter, retained *workspaceStage) error {
 	if err := writer.check(); err != nil {
 		return err
 	}
 	if writer.target != target {
 		return writerConflict(target)
 	}
-	parent, err := os.OpenRoot(filepath.Dir(target))
+	names, err := preparationNames(ctx, target)
 	if err != nil {
 		return err
 	}
-	defer func() { _ = parent.Close() }()
-	file, err := parent.Open(".")
-	if err != nil {
-		return err
-	}
-	defer func() { _ = file.Close() }()
-	var names []string
-	seen := 0
-	for {
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-		entries, err := file.ReadDir(replacementReadBatch)
-		seen += len(entries)
-		if seen > preparationScanMax {
-			return replacementLimit("preparation_scan")
-		}
-		for _, entry := range entries {
-			if strings.HasPrefix(entry.Name(), "."+filepath.Base(target)+".preparing-") {
-				names = append(names, entry.Name())
-			}
-		}
-		if stderrors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			return err
-		}
-	}
-	slices.Sort(names)
 	for _, name := range names {
-		if err := ctx.Err(); err != nil {
-			return err
+		if retained != nil && name == retained.name {
+			if err := retained.journal.unchanged(ctx); err != nil {
+				return err
+			}
+			continue
 		}
 		stage, err := readPreparation(ctx, target, name, writer)
 		if err != nil {
@@ -69,6 +46,47 @@ func recoverPreparations(ctx context.Context, target string, writer *workspaceWr
 		}
 	}
 	return nil
+}
+
+func preparationNames(ctx context.Context, target string) ([]string, error) {
+	parent, err := os.OpenRoot(filepath.Dir(target))
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	defer func() { _ = parent.Close() }()
+	file, err := parent.Open(".")
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = file.Close() }()
+	var names []string
+	seen := 0
+	for {
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
+		entries, err := file.ReadDir(replacementReadBatch)
+		seen += len(entries)
+		if seen > preparationScanMax {
+			return nil, replacementLimit("preparation_scan")
+		}
+		for _, entry := range entries {
+			if strings.HasPrefix(entry.Name(), "."+filepath.Base(target)+".preparing-") {
+				names = append(names, entry.Name())
+			}
+		}
+		if stderrors.Is(err, io.EOF) {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+	}
+	slices.Sort(names)
+	return names, nil
 }
 
 func readPreparation(ctx context.Context, target, name string, writer *workspaceWriter) (_ *workspaceStage, resultErr error) {
@@ -158,10 +176,13 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 		}
 		if i == 0 {
 			h := event.Header
-			if h == nil || event.Handoff != nil || event.Record != nil || event.Tree != "" || event.Entry != nil || event.Identity != "" || h.Version < 1 || h.Version > preparationJournalVersion ||
-				h.Target != target || h.Stage != stage.name || h.LockIdentity != lock || h.JournalIdentity != identity ||
+			if h == nil || event.Handoff != nil || event.Record != nil || event.hasRelocation() || event.Tree != "" || event.Entry != nil || event.Identity != "" || h.Version < 1 || h.Version > preparationJournalVersion ||
+				h.Target != target || h.Stage != stage.name || h.LockIdentity == "" || h.JournalIdentity != identity ||
 				!replacementChildName(h.Stage) || !strings.HasPrefix(h.Stage, "."+filepath.Base(target)+".preparing-") || len(h.Enclosure.Entries) != 1 {
 				return invalidReplacement("preparation_header")
+			}
+			if h.LockIdentity != lock {
+				return writerConflict(target)
 			}
 			if err := h.Enclosure.validate(); err != nil {
 				return err
@@ -176,6 +197,18 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 		}
 		if stage.handoff != nil {
 			return invalidReplacement("preparation_handoff_suffix")
+		}
+		if event.hasRelocation() {
+			if version < 4 || event.Header != nil || event.Handoff != nil || event.Record != nil || event.Tree != "" || event.Entry != nil || event.Identity != "" || len(stage.trees) != 0 || stage.record != nil {
+				return invalidReplacement("relocation_event")
+			}
+			if err := stage.acceptRelocation(event, target); err != nil {
+				return err
+			}
+			continue
+		}
+		if stage.relocation != nil {
+			return invalidReplacement("relocation_suffix")
 		}
 		if event.Record != nil {
 			if version < 3 || event.Header != nil || event.Handoff != nil || event.Entry != nil || event.Tree != "" || event.Identity != "" || len(stage.trees) != 0 {

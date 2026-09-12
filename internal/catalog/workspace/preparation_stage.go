@@ -69,6 +69,9 @@ func (s *workspaceStage) detach(ctx context.Context) error {
 
 func (s *workspaceStage) retire(ctx context.Context, retainJournal bool) error {
 	defer s.releaseHandles()
+	if s.relocation != nil {
+		return replacementConflict(s.name, "legacy relocation requires migration recovery")
+	}
 	if s.enclosure.ID == "" {
 		return replacementConflict(s.name, "preparation ownership is incomplete; preserve the directory")
 	}

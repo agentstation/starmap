@@ -17,6 +17,7 @@ type legacyStoreMove struct {
 	originalName   string
 	stateName      string
 	store          string
+	check          func(string) error
 }
 
 func captureLegacyStoreIdentity(legacy string) (string, error) {
@@ -94,6 +95,9 @@ func (m *legacyStoreMove) checkStore(parent *os.Root, name string) error {
 			Message: "store identity changed during migration",
 		}
 	}
+	if m.check != nil {
+		return m.check(filepath.Join(parent.Name(), name))
+	}
 	return nil
 }
 
@@ -118,7 +122,7 @@ func (m *legacyStoreMove) rollback(ctx context.Context, projected treeSnapshot) 
 		if !stderrors.Is(err, fs.ErrNotExist) {
 			return err
 		}
-	} else if err := cleanupWorkspaceTreeAt(cleanup, m.originalParent, m.originalName, projected); err != nil {
+	} else if err := cleanupWorkspaceTreeAtChecked(cleanup, m.originalParent, m.originalName, func() error { return m.checkStore(m.stateParent, m.stateName) }, projected); err != nil {
 		return err
 	}
 	if err := cleanup.Err(); err != nil {

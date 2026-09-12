@@ -31,13 +31,15 @@ type LegacyLayoutMigrationResult struct {
 }
 
 type legacyLayoutMigrator struct {
-	afterMove func() error
-	projector projector
+	beforeMove      func() error
+	afterMove       func() error
+	afterProjection func() error
+	projector       projector
 }
 
-// MigrateLegacyLayout explicitly relocates the pre-plan filesystem generation
-// store and projects its current generation back to the vacated human catalog workspace
-// path. Validation and both advisory locks complete before the first rename.
+// MigrateLegacyLayout moves the legacy catalog store and projects its current catalog into the vacated human catalog workspace.
+// A retry recovers a recorded relocation only when retained files and filesystem identities still match.
+// Validation and both advisory locks precede relocation.
 func MigrateLegacyLayout(
 	ctx context.Context,
 	legacyPath string,
@@ -68,6 +70,9 @@ func (m legacyLayoutMigrator) migrate(
 	if err := ValidateMachineSeparation(legacy, state, "catalog state"); err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
+	if err := recoverLegacyRelocation(ctx, legacy, state); err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
 	if err := requireAbsentMigrationTarget(state); err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
@@ -75,11 +80,11 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, err
 	}
 
-	releaseStore, err := acquireLegacyStoreLock(ctx, legacy)
+	lease, err := acquireLegacyStoreLease(ctx, legacy)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
-	defer releaseStore()
+	defer lease.close()
 	originalStore, err := captureLegacyStoreIdentity(legacy)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("inspect", legacy, err)
@@ -114,11 +119,36 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, err
 	}
 	defer move.close()
+	stage, err := prepareRelocation(ctx, legacy, state, generation, retained, writer, lease, nil)
+	if err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
+	defer stage.releaseHandles()
+	if stage.relocation.record.Root.Tree.ID != originalStore {
+		return LegacyLayoutMigrationResult{}, replacementConflict(legacy, "legacy store identity changed before relocation")
+	}
+	m.projector.relocation = stage
+	m.projector.relocationLease = lease
+	move.check = func(store string) error { return stage.checkRelocationLease(context.WithoutCancel(ctx), store, lease) }
+	if m.beforeMove != nil {
+		if err := m.beforeMove(); err != nil {
+			return LegacyLayoutMigrationResult{}, err
+		}
+	}
 	if err := move.relocate(); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("relocate", legacy, err)
 	}
 	rollback := func(cause error, projected treeSnapshot) (LegacyLayoutMigrationResult, error) {
-		if rollbackErr := move.rollback(ctx, projected); rollbackErr != nil {
+		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), workspaceCleanupTimeout)
+		defer cancel()
+		rollbackErr := stage.checkRelocationStore(cleanup, state, lease)
+		if rollbackErr == nil {
+			rollbackErr = move.rollback(cleanup, projected)
+		}
+		if rollbackErr == nil {
+			rollbackErr = stage.finishRelocation(cleanup, lease)
+		}
+		if rollbackErr != nil {
 			return LegacyLayoutMigrationResult{}, errors.WrapResource(
 				"rollback",
 				"legacy catalog layout migration",
@@ -163,6 +193,17 @@ func (m legacyLayoutMigrator) migrate(
 	)
 	if err != nil {
 		return rollback(err, projected)
+	}
+	if m.afterProjection != nil {
+		if err := m.afterProjection(); err != nil {
+			return rollback(err, projected)
+		}
+	}
+	if err := stage.checkRelocationStore(ctx, state, lease); err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
+	if err := stage.finishRelocation(ctx, lease); err != nil {
+		return LegacyLayoutMigrationResult{}, err
 	}
 	return LegacyLayoutMigrationResult{
 		WorkspacePath:     legacy,

@@ -883,7 +883,7 @@ Each tree retains the existing 10,000-entry, 256 MiB content, and 1 MiB path-nam
 The parent scan stops at 4,096 entries before cleanup starts. These records contain no provider credentials.
 
 Version 1 records cover entries inside private preparation. Version 2 also records the candidate handoff described below.
-Version 3 also owns temporary publication records, as described below. Legacy relocation still requires durable recovery and qualification.
+Version 3 also owns temporary publication records, as described below. Version 4 adds the legacy relocation records described below.
 Native Linux and Windows execution remains subject to the task's verification gate.
 
 
@@ -905,7 +905,7 @@ Version 1 journals remain readable for private preparation recovery and cannot a
 
 A process exit before a complete ownership receipt preserves uncertain state.
 A crash after journal removal can leave an unrecorded empty enclosure, which remains preserved.
-Legacy relocation, other stages, retention, compaction, and full task qualification remain open.
+Other stages, retention, compaction, and full task qualification remain open.
 
 ### Durable temporary publication records
 
@@ -926,3 +926,28 @@ Unlinking a recorded temporary name does not remove its published destination.
 Projection, journaled replacement, replacement recovery, and legacy projection use the same record owner.
 Versions 1 and 2 remain readable within their original preparation and candidate contracts. They cannot authorize temporary-record cleanup.
 The existing journal-size and parent-scan limits apply. Full task and native platform qualification remain required.
+
+
+### Durable legacy relocation records
+
+Version 4 preparation journals record a legacy relocation before moving the catalog store.
+The record binds both parent directories, the store root, current pointer, commit lock, and every retained generation.
+Receipts bind content digests, native identities, access metadata, and the optional Windows lock alias.
+Generation scans use batches of 128 entries. The existing journal and tree limits apply before relocation.
+
+The workspace inventory flushes before workspace publication. Ordinary projection and repair refuse a pending relocation.
+
+Retrying the same explicit migration checks the retained journal and both advisory locks.
+Recovery verifies every recorded generation and any remaining projected workspace entries before restoration.
+It removes only owned workspace entries, restores the store without replacing a destination, and retries migration.
+Candidate and temporary-record recovery exclude the retained relocation journal until restoration finishes.
+Recovery also accepts an already restored store and an incomplete cleanup of the recorded workspace.
+
+Changed files, replaced directories, unknown entries, incomplete receipts, and conflicting destinations remain preserved with an error.
+The original journal receipt also guards workspace publication within the running migration.
+Windows recovery reuses its recorded hard-link alias. It recreates a missing alias only for the same recorded commit-lock identity.
+Cleanup verifies alias contents and access after releasing the store lock. Unknown or changed aliases remain preserved.
+
+A completed operation removes its journal. Repeating that completed migration then reports the existing destination.
+A crash after journal removal can leave an unrecorded empty enclosure, which requires explicit recovery.
+These checks do not qualify native execution, other stage recovery, retention, history compaction, or full CSP5 acceptance.
