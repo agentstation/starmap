@@ -2730,9 +2730,9 @@ Version 3 journals require `lock_identity`. A missing or mismatched writer ident
 
 The [writer identity proof](../../plans/proof/starport-production-catalog/csp5/workspace-writer-2026-09-12/verification.json) records 257 passing race test events.
 The writer retains its lock handle through the operation and leaves the stable lock file after release.
-The baseline exporter provides the durable owner-record pattern. Workspace preparation must bind its future journal to this checked writer identity.
+The baseline exporter provides the durable owner-record pattern. The preparation journal now binds its records to this checked writer identity.
 
-Preparation and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.
+Candidate handoff and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.
 
 Starport must qualify its own composition under CSP8.
 
@@ -3233,3 +3233,19 @@ Starport PR #373 merged as `cb6f03a2` after all ten CI checks passed.
 The [completion proof](../../plans/proof/starport-production-catalog/csp4/merged-qualification-2026-09-11/verification.json) confirms both merged trees equal their reviewed source.
 The final pair records 56 mapped race events with no failures or skips. CSP4 is complete.
 Full released-pair, fleet, and production latency qualification remain separate plan work.
+
+## Private preparation recovery: 2026-09-12
+
+Starmap `873a53c5` persists private workspace preparation records in `.preparation.jsonl`.
+Records bind the target, enclosure, journal identity, writer-lock identity, and each entry's identity, contents, and access settings.
+Projection and repair recover unchanged entries under the checked writer lease. Unknown files, changed entries, and invalid journals remain preserved.
+
+The [preparation recovery proof](../../plans/proof/starport-production-catalog/csp5/preparation-journal-2026-09-12/verification.json) records 278 passing race test events.
+Process-exit tests cover initialized staging, partial writes, and completed render.
+Other tests cover active writers, changed files, replaced journals and locks, malformed records, cancellation, partial cleanup, and bounded scans.
+
+Journals have a 32 MiB limit, a 120,000-event limit, and at most four trees. The parent scan stops at 4,096 entries before cleanup.
+Linux and Windows test binaries compile. Native execution remains unqualified until the required platform checks pass.
+
+Candidate handoff, temporary records, legacy relocation, other staging, retention, compaction, and full CSP5 qualification remain open.
+A process exit without a complete receipt preserves uncertain state, including an empty enclosure after journal removal.

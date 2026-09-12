@@ -493,13 +493,36 @@ The baseline exporter supplies the stable-lock recovery pattern. Workspace prepa
 Connect that journal to the checked writer identity before qualifying preparation recovery.
 Other persistent recovery, retention, compaction, full task checks, review, native CI, and merge remain open.
 
+## Durable private preparation recovery
+
+The [preparation recovery proof](csp5/preparation-journal-2026-09-12/verification.json) binds commit `873a53c5` to the original process-exit failure and final checks.
+Repair previously left the abandoned preparation directory after the child process exited during rendering.
+The final race suite passes 278 test events without failures or skips.
+
+Private `.preparation.jsonl` records bind the target, enclosure, journal identity, and stable writer-lock identity.
+Append records persist entry identities, contents, and access settings without rewriting preceding inventories.
+Projection and repair recover recorded preparation trees while holding the checked workspace writer.
+Cleanup verifies ownership, excludes active writers, and preserves unknown files or changed entries.
+
+Process-exit tests cover initialized staging, partial writes, and completed render.
+Other checks cover changed bytes and identities, unknown files, invalid journals, replaced locks, cancellation, partial cleanup, and scan limits.
+Journals have a 32 MiB limit, a 120,000-event limit, and at most four recorded trees.
+The parent scan stops at 4,096 entries before cleanup starts. Each tree retains its existing inventory limits.
+
+Final ago and prose checks pass. The first prose check reaches the glossary candidate threshold for CI, and the final text uses verification gate.
+Linux and Windows test binaries compile. Those compilation checks do not qualify native execution.
+
+The journal covers entries inside private preparation only. Candidate handoff still needs durable ownership through publication and cleanup.
+A crash after journal removal can leave an unrecorded empty enclosure, which remains preserved.
+Other staging, retention, compaction, task acceptance, review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Bind a durable preparation journal to the checked writer identity. Add preparation and candidate recovery with active-writer exclusion. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
+Complete durable candidate handoff and temporary-record recovery. Preserve unknown enclosures after journal removal. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

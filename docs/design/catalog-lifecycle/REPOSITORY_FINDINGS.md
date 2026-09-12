@@ -2614,3 +2614,19 @@ Linux and Windows test binaries compile. Windows can refuse to rename the open l
 
 Preparation ownership remains in memory. The next step must bind a durable preparation journal to the checked writer identity.
 Legacy relocation recovery, other staging, retention, compaction, full CSP5 acceptance, review, and merge remain open.
+
+## Private preparation recovery: 2026-09-12
+
+Starmap `873a53c5` persists private workspace preparation records in `.preparation.jsonl`.
+Records bind the target, enclosure, journal identity, writer-lock identity, and each entry's identity, contents, and access settings.
+Projection and repair recover unchanged entries under the checked writer lease. Unknown files, changed entries, and invalid journals remain preserved.
+
+The [preparation recovery proof](../../plans/proof/starport-production-catalog/csp5/preparation-journal-2026-09-12/verification.json) records 278 passing race test events.
+Process-exit tests cover initialized staging, partial writes, and completed render.
+Other tests cover active writers, changed files, replaced journals and locks, malformed records, cancellation, partial cleanup, and bounded scans.
+
+Journals have a 32 MiB limit, a 120,000-event limit, and at most four trees. The parent scan stops at 4,096 entries before cleanup.
+Linux and Windows test binaries compile. Native execution remains unqualified until the required platform checks pass.
+
+Candidate handoff, temporary records, legacy relocation, other staging, retention, compaction, and full CSP5 qualification remain open.
+A process exit without a complete receipt preserves uncertain state, including an empty enclosure after journal removal.
