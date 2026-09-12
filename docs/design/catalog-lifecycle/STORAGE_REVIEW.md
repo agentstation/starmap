@@ -854,3 +854,16 @@ Automatic invocation, retention configuration, complete generation collection, a
 
 The [collection proof](../../plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json) records 42 passing race events on each Go toolchain.
 Policy, package lint, and source prose pass. Full CSP5 qualification remains open.
+
+## Current provider review evidence: 2026-09-12
+
+Local Starmap commit `8f8951bf` removes superseded duplicate provider reviews from current generation evidence.
+Earlier source links remain required when current facts, membership, unresolved offerings, or incomplete replacements depend on them.
+Original observation history and previously committed generations remain unchanged.
+
+This selection reduces redundant generation evidence. It does not collect durable inputs or retire distinct inventories.
+The roles of local files, Badger, Valkey, Redis, SQLite, PostgreSQL, and MySQL remain unchanged.
+Automatic collection, complete generation retention, and object-store coordination remain open.
+
+The [review retention proof](../../plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json) records 74 passing race events on each Go toolchain.
+Policy, package lint, and source prose pass. Full CSP5 qualification remains open.

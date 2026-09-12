@@ -1,0 +1,3945 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+  "source_commit": "8f8951bf0e652a4b4e26cb20b591b76c1174dfc7",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e"
+    },
+    {
+      "path": "runtime/provider_evidence_selection.go",
+      "sha256": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c"
+    },
+    {
+      "path": "runtime/review_retention.go",
+      "sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "runtime/review_retention_test.go",
+      "sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    }
+  ],
+  "verified_at": "2026-09-12T11:07:26.880246+00:00",
+  "final_checks": [
+    "review-retention-final-20260912",
+    "review-retention-minimum-final-20260912",
+    "review-retention-lint-final-20260912",
+    "review-retention-policy-final-20260912",
+    "review-retention-prose-final-20260912"
+  ],
+  "checks": {
+    "review-retention-baseline-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestProviderReviewHistory",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:55:09.429665+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/review_retention_test.go": "37cedcd167d63e1483bc8b3d2ac85271f9f51c30fa2277424ff80d7a7476667a",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T10:55:14.513565+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 3,
+        "pass": 1
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "fail",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "fail",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "fail",
+          "Elapsed": 0.08
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "fail",
+          "Elapsed": 0.615
+        }
+      ]
+    },
+    "review-retention-behavior-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestProviderReviewHistory",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:54:40.215681+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/review_retention_test.go": "8a631acbb0c19246ccc2f3246b63f364f1b64abfda8ddfecd47aa97d3bb6521c",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T10:54:45.338920+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 1,
+        "pass": 3
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "fail",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "pass",
+          "Elapsed": 0.08
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "fail",
+          "Elapsed": 0.615
+        }
+      ]
+    },
+    "review-retention-boundaries-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestProviderReview|TestProviderEvidenceSelection",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:57:33.045703+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/manual_reconciliation.go": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0",
+        "runtime/review_retention.go": "82858afe31c5c0a9701e79bad4fb967dafc8865855e775554028dc3ec02071b1",
+        "runtime/review_retention_test.go": "fab2e4ac718fde1d234ecdd3f95b61e64bcdc6320e222a8530c3da176d8c8cef",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:57:39.179254+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 18
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/review",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/partial",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/same-time",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/older",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionHonorsCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionKeepsAccountRevisionsAndOmissions",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/partial-direct",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/stale-fallback",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/missing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "pass",
+          "Elapsed": 0.08
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 1.7109999999999999
+        }
+      ]
+    },
+    "review-retention-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "Test.*(Manual|ProviderReview|ProviderEvidenceSelection)",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T11:01:54.849676+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/provider_evidence_selection.go": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:04:06.829561+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 74
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/retired",
+          "Action": "pass",
+          "Elapsed": 9.97
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/new-revision",
+          "Action": "pass",
+          "Elapsed": 0.99
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/changed-selectors",
+          "Action": "pass",
+          "Elapsed": 0.94
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart",
+          "Action": "pass",
+          "Elapsed": 11.9
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRetainsResetHistoryAtBatchLimit",
+          "Action": "pass",
+          "Elapsed": 16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointPreservesMixedReplay",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/payload-index",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/observation-index",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-observation",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-observation",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/forged-receipt",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unmatched-reset",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/reference-limit",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/mixed-record",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/old-version",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/canceled",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords",
+          "Action": "pass",
+          "Elapsed": 1.29
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointSharesPayloadsAtByteLimit",
+          "Action": "pass",
+          "Elapsed": 35.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/accepted",
+          "Action": "pass",
+          "Elapsed": 0.5
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/invalid-before-inputs",
+          "Action": "pass",
+          "Elapsed": 0.25
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary",
+          "Action": "pass",
+          "Elapsed": 0.75
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit",
+          "Action": "pass",
+          "Elapsed": 9.3
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit",
+          "Action": "pass",
+          "Elapsed": 33.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualConcurrentCallsRetainEveryDistinctBatch",
+          "Action": "pass",
+          "Elapsed": 4.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/empty",
+          "Action": "pass",
+          "Elapsed": 0.47
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/duplicate",
+          "Action": "pass",
+          "Elapsed": 0.48
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/invalid-receipt",
+          "Action": "pass",
+          "Elapsed": 0.5
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/canceled",
+          "Action": "pass",
+          "Elapsed": 0.48
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/closed",
+          "Action": "pass",
+          "Elapsed": 0.48
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs",
+          "Action": "pass",
+          "Elapsed": 2.41
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/later-fallback",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/equal-time-conflict",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualAggregateProviderReceiptSurvivesRestart",
+          "Action": "pass",
+          "Elapsed": 1.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-older",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-newer",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRetainsPriorProviderFactsAfterScheduledOmission",
+          "Action": "pass",
+          "Elapsed": 2.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRecoveryValidatesParentBeforeApplyingProviderInputs",
+          "Action": "pass",
+          "Elapsed": 0.53
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/manual-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/current-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-removals",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-removals",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-manual",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-manual",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead",
+          "Action": "pass",
+          "Elapsed": 0.37
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart",
+          "Action": "pass",
+          "Elapsed": 1.48
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRejectedManualPublicationCannotChangeRetainedHistory",
+          "Action": "pass",
+          "Elapsed": 0.83
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRetentionRecoversLostCatalogCommitReply",
+          "Action": "pass",
+          "Elapsed": 0.98
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSingleBatchRetainsSeparateReviewedInputs",
+          "Action": "pass",
+          "Elapsed": 1.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSourceProviderLimitSurvivesPublicationAndRestart",
+          "Action": "pass",
+          "Elapsed": 0.96
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/review",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/partial",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/same-time",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/older",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionHonorsCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionKeepsAccountRevisionsAndOmissions",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/partial-direct",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/stale-fallback",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/missing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRunByANonOwnerReturnsAConflict",
+          "Action": "pass",
+          "Elapsed": 0.46
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 126.479
+        }
+      ]
+    },
+    "review-retention-focused-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestProviderReviewHistory",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:56:06.497831+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/manual_reconciliation.go": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0",
+        "runtime/review_retention.go": "82858afe31c5c0a9701e79bad4fb967dafc8865855e775554028dc3ec02071b1",
+        "runtime/review_retention_test.go": "37cedcd167d63e1483bc8b3d2ac85271f9f51c30fa2277424ff80d7a7476667a",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:56:12.721092+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 4
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "pass",
+          "Elapsed": 0.08
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 1.677
+        }
+      ]
+    },
+    "review-retention-lint-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./runtime/..."
+      ],
+      "started_at": "2026-09-12T10:59:31.479527+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/manual_reconciliation.go": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T10:59:33.538695+00:00",
+      "status": "failed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "review-retention-lint-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./runtime/..."
+      ],
+      "started_at": "2026-09-12T11:01:54.874902+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/provider_evidence_selection.go": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:01:57.071661+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "review-retention-minimum-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "Test.*(Manual|ProviderReview|ProviderEvidenceSelection)",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:59:31.465946+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/manual_reconciliation.go": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:01:40.514811+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 74
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/retired",
+          "Action": "pass",
+          "Elapsed": 9.9
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/new-revision",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/changed-selectors",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart",
+          "Action": "pass",
+          "Elapsed": 11.58
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRetainsResetHistoryAtBatchLimit",
+          "Action": "pass",
+          "Elapsed": 16.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointPreservesMixedReplay",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/payload-index",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/observation-index",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-observation",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-observation",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-payload",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/forged-receipt",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unmatched-reset",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/reference-limit",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/mixed-record",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/old-version",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/canceled",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords",
+          "Action": "pass",
+          "Elapsed": 1.46
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointSharesPayloadsAtByteLimit",
+          "Action": "pass",
+          "Elapsed": 34.93
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/accepted",
+          "Action": "pass",
+          "Elapsed": 0.44
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/invalid-before-inputs",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary",
+          "Action": "pass",
+          "Elapsed": 0.68
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit",
+          "Action": "pass",
+          "Elapsed": 9.39
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit",
+          "Action": "pass",
+          "Elapsed": 33.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualConcurrentCallsRetainEveryDistinctBatch",
+          "Action": "pass",
+          "Elapsed": 3.88
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/empty",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/duplicate",
+          "Action": "pass",
+          "Elapsed": 0.41
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/invalid-receipt",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/canceled",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/closed",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs",
+          "Action": "pass",
+          "Elapsed": 2.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/later-fallback",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/equal-time-conflict",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualAggregateProviderReceiptSurvivesRestart",
+          "Action": "pass",
+          "Elapsed": 0.86
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-older",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-newer",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRetainsPriorProviderFactsAfterScheduledOmission",
+          "Action": "pass",
+          "Elapsed": 1.87
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRecoveryValidatesParentBeforeApplyingProviderInputs",
+          "Action": "pass",
+          "Elapsed": 0.52
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/manual-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/current-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-removals",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-removals",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-manual",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-manual",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead",
+          "Action": "pass",
+          "Elapsed": 0.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart",
+          "Action": "pass",
+          "Elapsed": 1.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRejectedManualPublicationCannotChangeRetainedHistory",
+          "Action": "pass",
+          "Elapsed": 0.73
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRetentionRecoversLostCatalogCommitReply",
+          "Action": "pass",
+          "Elapsed": 0.87
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSingleBatchRetainsSeparateReviewedInputs",
+          "Action": "pass",
+          "Elapsed": 0.9
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSourceProviderLimitSurvivesPublicationAndRestart",
+          "Action": "pass",
+          "Elapsed": 0.9
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/review",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/partial",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/same-time",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/older",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionHonorsCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionKeepsAccountRevisionsAndOmissions",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/partial-direct",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/stale-fallback",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/missing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRunByANonOwnerReturnsAConflict",
+          "Action": "pass",
+          "Elapsed": 0.41
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 124.014
+        }
+      ]
+    },
+    "review-retention-minimum-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "Test.*(Manual|ProviderReview|ProviderEvidenceSelection)",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T11:01:54.854430+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/provider_evidence_selection.go": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:04:06.715620+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 74
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/retired",
+          "Action": "pass",
+          "Elapsed": 10.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/new-revision",
+          "Action": "pass",
+          "Elapsed": 1.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/changed-selectors",
+          "Action": "pass",
+          "Elapsed": 0.99
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart",
+          "Action": "pass",
+          "Elapsed": 12.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRetainsResetHistoryAtBatchLimit",
+          "Action": "pass",
+          "Elapsed": 16.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointPreservesMixedReplay",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/payload-index",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/observation-index",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-observation",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-observation",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-payload",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/forged-receipt",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unmatched-reset",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/reference-limit",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/mixed-record",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/old-version",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/canceled",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords",
+          "Action": "pass",
+          "Elapsed": 1.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointSharesPayloadsAtByteLimit",
+          "Action": "pass",
+          "Elapsed": 35.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/accepted",
+          "Action": "pass",
+          "Elapsed": 0.48
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/invalid-before-inputs",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary",
+          "Action": "pass",
+          "Elapsed": 0.76
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit",
+          "Action": "pass",
+          "Elapsed": 9.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit",
+          "Action": "pass",
+          "Elapsed": 33.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualConcurrentCallsRetainEveryDistinctBatch",
+          "Action": "pass",
+          "Elapsed": 4.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/empty",
+          "Action": "pass",
+          "Elapsed": 0.47
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/duplicate",
+          "Action": "pass",
+          "Elapsed": 0.49
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/invalid-receipt",
+          "Action": "pass",
+          "Elapsed": 0.48
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/canceled",
+          "Action": "pass",
+          "Elapsed": 0.49
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/closed",
+          "Action": "pass",
+          "Elapsed": 0.45
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs",
+          "Action": "pass",
+          "Elapsed": 2.39
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/later-fallback",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/equal-time-conflict",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualAggregateProviderReceiptSurvivesRestart",
+          "Action": "pass",
+          "Elapsed": 1.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-older",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-newer",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRetainsPriorProviderFactsAfterScheduledOmission",
+          "Action": "pass",
+          "Elapsed": 2.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRecoveryValidatesParentBeforeApplyingProviderInputs",
+          "Action": "pass",
+          "Elapsed": 0.53
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-idle",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/manual-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/current-idle",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-removals",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-removals",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-manual",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-manual",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead",
+          "Action": "pass",
+          "Elapsed": 0.39
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart",
+          "Action": "pass",
+          "Elapsed": 1.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRejectedManualPublicationCannotChangeRetainedHistory",
+          "Action": "pass",
+          "Elapsed": 0.83
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRetentionRecoversLostCatalogCommitReply",
+          "Action": "pass",
+          "Elapsed": 1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSingleBatchRetainsSeparateReviewedInputs",
+          "Action": "pass",
+          "Elapsed": 1.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSourceProviderLimitSurvivesPublicationAndRestart",
+          "Action": "pass",
+          "Elapsed": 1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/review",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/partial",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/same-time",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/older",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionHonorsCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionKeepsAccountRevisionsAndOmissions",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/partial-direct",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/stale-fallback",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/missing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRunByANonOwnerReturnsAConflict",
+          "Action": "pass",
+          "Elapsed": 0.46
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 126.489
+        }
+      ]
+    },
+    "review-retention-policy-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T10:59:31.471915+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/manual_reconciliation.go": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T10:59:33.889105+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "review-retention-policy-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T11:01:54.865201+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/provider_evidence_selection.go": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:01:57.453293+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "review-retention-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T10:59:31.489699+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/manual_reconciliation.go": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T11:00:25.124462+00:00",
+      "status": "failed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "review-retention-prose-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T11:01:54.887465+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/provider_evidence_selection.go": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:02:49.034982+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": []
+    },
+    "review-retention-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "TestProviderReviewHistory",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:54:18.693126+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/review_retention_test.go": "4bf893bb622c3ee0603c1f98df6b98940e5580a5aaba12d646fe946972b84be1",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T10:54:19.293089+00:00",
+      "status": "failed",
+      "test_events": {},
+      "test_results": [],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "fail",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "review-retention-runtime-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "-run",
+        "Test.*(Manual|ProviderReview|ProviderEvidenceSelection)",
+        "./runtime"
+      ],
+      "started_at": "2026-09-12T10:58:55.048843+00:00",
+      "base_commit": "bbd01f438aca6e39bd893ccc693e1c995fcdefad",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "runtime/manual_reconciliation.go": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0",
+        "runtime/review_retention.go": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66",
+        "runtime/review_retention_test.go": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:01:02.908576+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 74
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/retired",
+          "Action": "pass",
+          "Elapsed": 9.67
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/new-revision",
+          "Action": "pass",
+          "Elapsed": 0.88
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart/changed-selectors",
+          "Action": "pass",
+          "Elapsed": 0.87
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRechecksBindingsOnRestart",
+          "Action": "pass",
+          "Elapsed": 11.42
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRetainsResetHistoryAtBatchLimit",
+          "Action": "pass",
+          "Elapsed": 15.69
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointPreservesMixedReplay",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/payload-index",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/observation-index",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-observation",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/duplicate-payload",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-observation",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unused-payload",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/forged-receipt",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/unmatched-reset",
+          "Action": "pass",
+          "Elapsed": 0.09
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/reference-limit",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/mixed-record",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/old-version",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords/canceled",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRejectsInvalidRecords",
+          "Action": "pass",
+          "Elapsed": 1.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointSharesPayloadsAtByteLimit",
+          "Action": "pass",
+          "Elapsed": 36.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/accepted",
+          "Action": "pass",
+          "Elapsed": 0.5
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary/invalid-before-inputs",
+          "Action": "pass",
+          "Elapsed": 0.31
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualCheckpointRecoveryPreservesPublicationBoundary",
+          "Action": "pass",
+          "Elapsed": 0.82
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeBatchLimit",
+          "Action": "pass",
+          "Elapsed": 9.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryCompactsRepeatedProviderInventoriesBeforeByteLimit",
+          "Action": "pass",
+          "Elapsed": 33.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualConcurrentCallsRetainEveryDistinctBatch",
+          "Action": "pass",
+          "Elapsed": 3.86
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/empty",
+          "Action": "pass",
+          "Elapsed": 0.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/duplicate",
+          "Action": "pass",
+          "Elapsed": 0.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/invalid-receipt",
+          "Action": "pass",
+          "Elapsed": 0.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/canceled",
+          "Action": "pass",
+          "Elapsed": 0.39
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs/closed",
+          "Action": "pass",
+          "Elapsed": 0.39
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationRejectsInvalidAndCanceledInputs",
+          "Action": "pass",
+          "Elapsed": 1.93
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/later-fallback",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy/equal-time-conflict",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryUsesFallbackAndConflictPolicy",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualAggregateProviderReceiptSurvivesRestart",
+          "Action": "pass",
+          "Elapsed": 0.82
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-older",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime/scheduled-newer",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualProviderHistoryAndScheduledLayerUseObservationTime",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRetainsPriorProviderFactsAfterScheduledOmission",
+          "Action": "pass",
+          "Elapsed": 1.75
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRecoveryValidatesParentBeforeApplyingProviderInputs",
+          "Action": "pass",
+          "Elapsed": 0.44
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/manual-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/current-idle",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-removals",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-removals",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/legacy-manual",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility/idle-manual",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualPublicationJournalVersionCompatibility",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualHistoryRefusesNewBatchAtCapacityWithoutChangingHead",
+          "Action": "pass",
+          "Elapsed": 0.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart",
+          "Action": "pass",
+          "Elapsed": 1.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRejectedManualPublicationCannotChangeRetainedHistory",
+          "Action": "pass",
+          "Elapsed": 0.68
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRetentionRecoversLostCatalogCommitReply",
+          "Action": "pass",
+          "Elapsed": 0.81
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSingleBatchRetainsSeparateReviewedInputs",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualSourceProviderLimitSurvivesPublicationAndRestart",
+          "Action": "pass",
+          "Elapsed": 0.84
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/review",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/partial",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/same-time",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts/older",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionKeepsUnresolvedReceipts",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderEvidenceSelectionHonorsCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionKeepsAccountRevisionsAndOmissions",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/partial-direct",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata/stale-fallback",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionPreservesPriorityAndMetadata",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/missing",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/checksum",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation/revision",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewSelectionRejectsMismatchedEvidenceAndCancellation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySelectsCurrentReceipt",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/reviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction/unreviewed",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestProviderReviewHistorySurvivesBaselineChangeAndCompaction",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestManualRunByANonOwnerReturnsAConflict",
+          "Action": "pass",
+          "Elapsed": 0.39
+        }
+      ],
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 123.505
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "review-retention-baseline-red-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "c0d7d57002abbd4ce1def829d782ea0e626856dea403d72836a5557b1c57f9bb",
+      "decoded_sha256": "37cedcd167d63e1483bc8b3d2ac85271f9f51c30fa2277424ff80d7a7476667a"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/stdout.log.gz",
+      "sha256": "19a66e38789906959bde14ececb596ef9501467f0be2c771c392a24ed8e71f1d",
+      "decoded_sha256": "8f06e4dd11d360199ad43997b19205b477be0291b58227130222c2f4d6366b0a"
+    },
+    {
+      "path": "review-retention-baseline-red-20260912/verification.json.gz",
+      "sha256": "515b63dec99b3fcebb1c641c0ba9466d52d9d0ed3ef1bfe26126a5cbdab6466e",
+      "decoded_sha256": "d71996c755286e7b2f6495c7e729d9c7eaec7283a9730aca1a7a1333a220d4cf"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "bd4d565ec06a10870a15e91f412d798814b9aee20a807d02871983e82c98d630",
+      "decoded_sha256": "8a631acbb0c19246ccc2f3246b63f364f1b64abfda8ddfecd47aa97d3bb6521c"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/stdout.log.gz",
+      "sha256": "6affabab7823b7710fb589a7b1f85122ad6fbe540a969b8d867761a7d92c9b39",
+      "decoded_sha256": "233e07aa72875d88fc8363e75e1c2f195eca65aa0cbb5b6afeaeb2faf4b24a17"
+    },
+    {
+      "path": "review-retention-behavior-red-20260912/verification.json.gz",
+      "sha256": "34758329ac793b928740f1819dd23368e87502faa01c3311a8271f11a3a29ff3",
+      "decoded_sha256": "0715c157f3551efb84d693ef3a7841bd5d69f61c7cc96506f25fec62182c94fd"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/changes.patch.gz",
+      "sha256": "b465d35440a3d3471d10cdcbcfd9ce73d071bcad1f97ba3f23596d780153b820",
+      "decoded_sha256": "dad62b549bd30890634fad1abe212b5c9fd683c2c6eeeb877f72832ce563f6c5"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/runtime/manual_reconciliation.go.gz",
+      "sha256": "bcb8b50cc732327b731df89e140205d043c66422598d0458eb00630f2e80d418",
+      "decoded_sha256": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "a1c6cb215e8586c85a5a00333b4b83884c99e10dd48ed6b29184cb4f555ce3a1",
+      "decoded_sha256": "82858afe31c5c0a9701e79bad4fb967dafc8865855e775554028dc3ec02071b1"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "534bb8b353b51d3dc0e02d7c1262b35de2f304ccb04c8ac2b0bf81b80bec3df9",
+      "decoded_sha256": "fab2e4ac718fde1d234ecdd3f95b61e64bcdc6320e222a8530c3da176d8c8cef"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/stdout.log.gz",
+      "sha256": "2609466cd6320f6c9a03aca6406982d404404a28591d2333428bb0be1b2efc71",
+      "decoded_sha256": "febc9f1cc0c6f08d24f46ba9d53f1b9fc5a3b706fc301ee8eca206e2ad64e93e"
+    },
+    {
+      "path": "review-retention-boundaries-20260912/verification.json.gz",
+      "sha256": "445d9556ae9e2e526a2dd149a0e80cf9a7662df436735b28899d8fb01119d3fd",
+      "decoded_sha256": "b78c0b59067a604ba8469209b01d2b5038dca223bab16523d6d653ceaf121f5d"
+    },
+    {
+      "path": "review-retention-final-20260912/changes.patch.gz",
+      "sha256": "701149627ab60b180906d5c2daac3d4f4620c8aa23e672a752a72cacbe5de4ca",
+      "decoded_sha256": "b044e8a4b441833518a895c0451e235148c6c739077b63579dc4076f2aa2b349"
+    },
+    {
+      "path": "review-retention-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "6505e26faf462d8555c3a33cb7a827e7f0f8f90c6a363f1491b5ccec0501f298",
+      "decoded_sha256": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e"
+    },
+    {
+      "path": "review-retention-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-final-20260912/source/runtime/provider_evidence_selection.go.gz",
+      "sha256": "ec3aaba8cc05f3fecfd38a6d5ef6816fddb12f728f5d6a3c69de8d7b3acd47a7",
+      "decoded_sha256": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c"
+    },
+    {
+      "path": "review-retention-final-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-final-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-final-20260912/stdout.log.gz",
+      "sha256": "ddd518e2fc9b2e8091a369abe3c54174e9c5e285635695022bdfc1f22fafa3d1",
+      "decoded_sha256": "fa65b77d2d7b088aa446fa2fe101bed57232fa03d7ed4772c016784278b4d902"
+    },
+    {
+      "path": "review-retention-final-20260912/verification.json.gz",
+      "sha256": "334448c109f043db229217a6895d03d884954f8fc1aa30b3a2ec51fd22c10f24",
+      "decoded_sha256": "3a9b89b474665c3acafec043c25d6336c9f586c2d60ee02b6a4d005ad448116d"
+    },
+    {
+      "path": "review-retention-focused-20260912/changes.patch.gz",
+      "sha256": "b465d35440a3d3471d10cdcbcfd9ce73d071bcad1f97ba3f23596d780153b820",
+      "decoded_sha256": "dad62b549bd30890634fad1abe212b5c9fd683c2c6eeeb877f72832ce563f6c5"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/runtime/manual_reconciliation.go.gz",
+      "sha256": "bcb8b50cc732327b731df89e140205d043c66422598d0458eb00630f2e80d418",
+      "decoded_sha256": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "a1c6cb215e8586c85a5a00333b4b83884c99e10dd48ed6b29184cb4f555ce3a1",
+      "decoded_sha256": "82858afe31c5c0a9701e79bad4fb967dafc8865855e775554028dc3ec02071b1"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "c0d7d57002abbd4ce1def829d782ea0e626856dea403d72836a5557b1c57f9bb",
+      "decoded_sha256": "37cedcd167d63e1483bc8b3d2ac85271f9f51c30fa2277424ff80d7a7476667a"
+    },
+    {
+      "path": "review-retention-focused-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-focused-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-focused-20260912/stdout.log.gz",
+      "sha256": "29782a89a65a9ab83b98691624b5641a5fa3c81c8ab41704e25894cceb53b514",
+      "decoded_sha256": "46e6a4ff5c9bd3cbb72b9c07f09995380ab6984300876088cd618546e1726d59"
+    },
+    {
+      "path": "review-retention-focused-20260912/verification.json.gz",
+      "sha256": "7e44f7826bef0b68fca1f25a34e80a12c5634f0a772173e6158ee72ad156b2b3",
+      "decoded_sha256": "710eef34d06d3ab609d1f88dd681f625842fe22a0b3dc7d44d01edac6b963154"
+    },
+    {
+      "path": "review-retention-lint-20260912/changes.patch.gz",
+      "sha256": "3a62a97f5afa69f27c587f4806bdd3cca467647aefaa9096fb635b09ce9ed80f",
+      "decoded_sha256": "803c910f238e4a527d16ee92f59b893fdc4c30cda37f37cfb38cae00542ccbd9"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "430ac44404d68d1b77fce274d11c15f2252f31d079b67b50d18a6c22ca3b602d",
+      "decoded_sha256": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/runtime/manual_reconciliation.go.gz",
+      "sha256": "bcb8b50cc732327b731df89e140205d043c66422598d0458eb00630f2e80d418",
+      "decoded_sha256": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-lint-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-lint-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-lint-20260912/stdout.log.gz",
+      "sha256": "2ad817100f77394440e3dfe5b2cc86a560bc808c30ea451a4eba7f40e895b176",
+      "decoded_sha256": "267c629a358f4e4b77723632cde9028429886e6f09a2564bb963ed1636eaf589"
+    },
+    {
+      "path": "review-retention-lint-20260912/verification.json.gz",
+      "sha256": "87becd53d7aa3df0bfa4fd06e1044292420161cb8a97588dbd525c9baea4d485",
+      "decoded_sha256": "9a912dd9898c4ffb50b6ba52eaa84d1e906d721f059821bfba6566fc896b6761"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/changes.patch.gz",
+      "sha256": "701149627ab60b180906d5c2daac3d4f4620c8aa23e672a752a72cacbe5de4ca",
+      "decoded_sha256": "b044e8a4b441833518a895c0451e235148c6c739077b63579dc4076f2aa2b349"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "6505e26faf462d8555c3a33cb7a827e7f0f8f90c6a363f1491b5ccec0501f298",
+      "decoded_sha256": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/runtime/provider_evidence_selection.go.gz",
+      "sha256": "ec3aaba8cc05f3fecfd38a6d5ef6816fddb12f728f5d6a3c69de8d7b3acd47a7",
+      "decoded_sha256": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/stdout.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "review-retention-lint-final-20260912/verification.json.gz",
+      "sha256": "57dcd74bb972c208b37b63071b45cd79b0f72450dbeb13da0ccebd3ad995f987",
+      "decoded_sha256": "838785168a9f64000a22645845dcd6f3c4e6f27dc58b7f1b97c444d7878280ee"
+    },
+    {
+      "path": "review-retention-minimum-20260912/changes.patch.gz",
+      "sha256": "3a62a97f5afa69f27c587f4806bdd3cca467647aefaa9096fb635b09ce9ed80f",
+      "decoded_sha256": "803c910f238e4a527d16ee92f59b893fdc4c30cda37f37cfb38cae00542ccbd9"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "430ac44404d68d1b77fce274d11c15f2252f31d079b67b50d18a6c22ca3b602d",
+      "decoded_sha256": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/runtime/manual_reconciliation.go.gz",
+      "sha256": "bcb8b50cc732327b731df89e140205d043c66422598d0458eb00630f2e80d418",
+      "decoded_sha256": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-minimum-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-minimum-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-minimum-20260912/stdout.log.gz",
+      "sha256": "3d21a4ca36467aeeb8f8e27b94cace1ed66e643193e362f7e0d7424dbbcd8c96",
+      "decoded_sha256": "a155b5b4fd8d322a91a7790f0c190f5ca2ed19215c2b328aa7d462b635f1e199"
+    },
+    {
+      "path": "review-retention-minimum-20260912/verification.json.gz",
+      "sha256": "a6055b8e695fd268ee14f453dd683c84280095339feb88b7407fbee81d2dc537",
+      "decoded_sha256": "5e2dcb30a32f0bd79578f192ca7e3ebf1785e57af7af1ccdb4ddd0c8ff3bd10a"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/changes.patch.gz",
+      "sha256": "701149627ab60b180906d5c2daac3d4f4620c8aa23e672a752a72cacbe5de4ca",
+      "decoded_sha256": "b044e8a4b441833518a895c0451e235148c6c739077b63579dc4076f2aa2b349"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "6505e26faf462d8555c3a33cb7a827e7f0f8f90c6a363f1491b5ccec0501f298",
+      "decoded_sha256": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/runtime/provider_evidence_selection.go.gz",
+      "sha256": "ec3aaba8cc05f3fecfd38a6d5ef6816fddb12f728f5d6a3c69de8d7b3acd47a7",
+      "decoded_sha256": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/stdout.log.gz",
+      "sha256": "3b3dcc965580a5eb21d3433015b77c588cf94c1d8577ef2b6381a51a73df7582",
+      "decoded_sha256": "5908cafe69c08602f0fe25bbe146bcb385baf86b1a17a52cc45d73da01414f41"
+    },
+    {
+      "path": "review-retention-minimum-final-20260912/verification.json.gz",
+      "sha256": "6635e6e18f5048228e0f9ae3a63153f4ed73af07214f71c38118ab8e71dee314",
+      "decoded_sha256": "b25fcb05abe9c1d42a5868c69640c9172bfae55f836728f6933a6795db1a61d2"
+    },
+    {
+      "path": "review-retention-policy-20260912/changes.patch.gz",
+      "sha256": "3a62a97f5afa69f27c587f4806bdd3cca467647aefaa9096fb635b09ce9ed80f",
+      "decoded_sha256": "803c910f238e4a527d16ee92f59b893fdc4c30cda37f37cfb38cae00542ccbd9"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "430ac44404d68d1b77fce274d11c15f2252f31d079b67b50d18a6c22ca3b602d",
+      "decoded_sha256": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/runtime/manual_reconciliation.go.gz",
+      "sha256": "bcb8b50cc732327b731df89e140205d043c66422598d0458eb00630f2e80d418",
+      "decoded_sha256": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-policy-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-policy-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-policy-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "review-retention-policy-20260912/verification.json.gz",
+      "sha256": "cd84b29ebf4215e9e850510e883259080478f3268b1facba3dbfab0e1fb5bb18",
+      "decoded_sha256": "41e757404ef76465a14fe1c8f5b5ebc1d97cef2820fc14a72d3ee9cb3d07e898"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/changes.patch.gz",
+      "sha256": "701149627ab60b180906d5c2daac3d4f4620c8aa23e672a752a72cacbe5de4ca",
+      "decoded_sha256": "b044e8a4b441833518a895c0451e235148c6c739077b63579dc4076f2aa2b349"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "6505e26faf462d8555c3a33cb7a827e7f0f8f90c6a363f1491b5ccec0501f298",
+      "decoded_sha256": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/runtime/provider_evidence_selection.go.gz",
+      "sha256": "ec3aaba8cc05f3fecfd38a6d5ef6816fddb12f728f5d6a3c69de8d7b3acd47a7",
+      "decoded_sha256": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "review-retention-policy-final-20260912/verification.json.gz",
+      "sha256": "dee963c9f84cd7b15d2c7ed518fa049d04814e77649c71de6601cb4ee197573d",
+      "decoded_sha256": "b711897fd0f0634e7f576c963932504d273e238d13372b4345947d55aea4b858"
+    },
+    {
+      "path": "review-retention-prose-20260912/changes.patch.gz",
+      "sha256": "3a62a97f5afa69f27c587f4806bdd3cca467647aefaa9096fb635b09ce9ed80f",
+      "decoded_sha256": "803c910f238e4a527d16ee92f59b893fdc4c30cda37f37cfb38cae00542ccbd9"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "430ac44404d68d1b77fce274d11c15f2252f31d079b67b50d18a6c22ca3b602d",
+      "decoded_sha256": "7c0e4b3bdf9a57190fb337d7a57f01f6930ee751cd74ff6c765219d8be456fb9"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/runtime/manual_reconciliation.go.gz",
+      "sha256": "bcb8b50cc732327b731df89e140205d043c66422598d0458eb00630f2e80d418",
+      "decoded_sha256": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "review-retention-prose-20260912/stdout.log.gz",
+      "sha256": "ae783aaaf86db8731f067402cf4cab7f08d91d5ac7f97ca0fbb9cb1dc8fc5019",
+      "decoded_sha256": "97c93584d4d6a755dc224e0072843f75e9356222d84d1403cae5d514a28ecfa3"
+    },
+    {
+      "path": "review-retention-prose-20260912/verification.json.gz",
+      "sha256": "6b8dfd11061ca65096474f6aa21878a1691db6d298554c207957a79425e959cb",
+      "decoded_sha256": "f732b00e75aa764ebfb0914e27549f0a3a9b922a08902bc978b44ea493fa1c01"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/changes.patch.gz",
+      "sha256": "701149627ab60b180906d5c2daac3d4f4620c8aa23e672a752a72cacbe5de4ca",
+      "decoded_sha256": "b044e8a4b441833518a895c0451e235148c6c739077b63579dc4076f2aa2b349"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "6505e26faf462d8555c3a33cb7a827e7f0f8f90c6a363f1491b5ccec0501f298",
+      "decoded_sha256": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/runtime/provider_evidence_selection.go.gz",
+      "sha256": "ec3aaba8cc05f3fecfd38a6d5ef6816fddb12f728f5d6a3c69de8d7b3acd47a7",
+      "decoded_sha256": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/stdout.log.gz",
+      "sha256": "dd17502bc666d81ef1d46b4dd35879c705d99c8371aacfc5d6f594ddbf8d685a",
+      "decoded_sha256": "289a0083fb0aa76d5226d6ee589f9f92b9cd6c7907c2758229bca346b2c5f0b5"
+    },
+    {
+      "path": "review-retention-prose-final-20260912/verification.json.gz",
+      "sha256": "ffb824760352d13a6f8806ced4d71bd1dd88da5ee7b93d36ee20985dd066cc60",
+      "decoded_sha256": "97a016358cdcb40406f03915a794053e333dd5cdbd5804e76c0b91c8901cc7cc"
+    },
+    {
+      "path": "review-retention-red-20260912/changes.patch.gz",
+      "sha256": "43ed7ee86f59c1fcbc3922feafb3e03a364e61098b4f5f189e88bbafc6861226",
+      "decoded_sha256": "2b5dec86da4b85a7a4e93b85a83f5f7300ddfd246b930ba84661e6fd3f37d8a9"
+    },
+    {
+      "path": "review-retention-red-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-red-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-red-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-red-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-red-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "d9d9a24322e67e4c971e7d8706fe4d1846ef94d5aee0247401584407131f9547",
+      "decoded_sha256": "4bf893bb622c3ee0603c1f98df6b98940e5580a5aaba12d646fe946972b84be1"
+    },
+    {
+      "path": "review-retention-red-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-red-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-red-20260912/stdout.log.gz",
+      "sha256": "562e543f16706ec7a4f20dad11aefffcbdb89ba501d1daf706be370635741f6c",
+      "decoded_sha256": "5113392663e1b5b8eaf952f55b6605a266961f98f619e7b66a048d50bb8fb49a"
+    },
+    {
+      "path": "review-retention-red-20260912/verification.json.gz",
+      "sha256": "6830ac0b257166cff19bdb8cb309a92ee1d36dd05c53cff3116ecf71acf43e42",
+      "decoded_sha256": "8d8cb26a9896dd573991ca6d951d69cd64d658ee15fdb52f3e1a128fee195cbd"
+    },
+    {
+      "path": "review-retention-runtime-20260912/changes.patch.gz",
+      "sha256": "b465d35440a3d3471d10cdcbcfd9ce73d071bcad1f97ba3f23596d780153b820",
+      "decoded_sha256": "dad62b549bd30890634fad1abe212b5c9fd683c2c6eeeb877f72832ce563f6c5"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/runtime/manual_reconciliation.go.gz",
+      "sha256": "bcb8b50cc732327b731df89e140205d043c66422598d0458eb00630f2e80d418",
+      "decoded_sha256": "4834437e7ce359561322c812da2870b9ecb859b889eca3b35bc322794314f3c0"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "review-retention-runtime-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "review-retention-runtime-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-runtime-20260912/stdout.log.gz",
+      "sha256": "0dd2f579c0c11162c6db44f64d8f04ea40f0012c270f2031d1f3105bbef92b4b",
+      "decoded_sha256": "9078035611d5b5514858a110e94f052e9f91bc567f554fba17609e93c034fbc5"
+    },
+    {
+      "path": "review-retention-runtime-20260912/verification.json.gz",
+      "sha256": "176c8bb266d46622622de313d72a0dcd1283b296ee5049acb909c02fbfabb346",
+      "decoded_sha256": "d80d47819b5ab54a5732c5e53aa521cb4f7b87014b2c3295a85fa91086f15cd6"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "6505e26faf462d8555c3a33cb7a827e7f0f8f90c6a363f1491b5ccec0501f298",
+      "decoded_sha256": "bc944e0c4f16dbd3aeb52862cf85f064874d480732553c7af91c945871ef5d2e"
+    },
+    {
+      "path": "committed-source/runtime/provider_evidence_selection.go.gz",
+      "sha256": "ec3aaba8cc05f3fecfd38a6d5ef6816fddb12f728f5d6a3c69de8d7b3acd47a7",
+      "decoded_sha256": "481da90b777d42e9bdcd554fd1d46e4baf795db9d6d8715fc7f67864afc6b48c"
+    },
+    {
+      "path": "committed-source/runtime/review_retention.go.gz",
+      "sha256": "3b6a74058247bcfb2c902d641793d132dcf6477b0beea1bce7ba2a5839db3a74",
+      "decoded_sha256": "07d9363f25b965adc40de41b017d0a1f24b49c66c3610f7e375097965aeeed66"
+    },
+    {
+      "path": "committed-source/runtime/review_retention_test.go.gz",
+      "sha256": "540d9445d7f5aa5fdcbb408984cf46517bbab1cd4bb1a29228a612ebdf463a82",
+      "decoded_sha256": "53e7bca6938411ca2d18bb2b333aea30da94d0d071d0641c6a923383aaf57b7e"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "48a651a8a50b56df23d5b9e1ef7a60cf0f9ac00a0fea4576a1d212fc493991b2",
+      "decoded_sha256": "fa7ba982497bf8154dcd766c16a01460a567ab408b1177da4d99bf2bc4a639d0"
+    },
+    {
+      "path": "concurrent-tooling/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "concurrent-tooling/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "concurrent-tooling/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "concurrent-tooling/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "concurrent-tooling/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "concurrent-tooling/changes.patch.gz",
+      "sha256": "ee0c008c0d8984beed38090478b201c93ab24b76c11247273b2b93035646b900",
+      "decoded_sha256": "506e8dbb6dff7a7aa5008d82de32cdc232cdf6e273267c5dbfdfed4c5c8d3d82"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/changes.patch.gz",
+      "sha256": "2a1195ec7fa96c871420a2e7743fd857e77284a0283cfbfc66f74b3b13b0c26d",
+      "decoded_sha256": "52576bfa871190410230211ac04d6940a4d8504fadb460456c1a0efa7fedf2b2"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "64f5a2bf05dc4e2f841a66d5e9c8f6468a1c408a1927f485554de1ec396cfaee",
+      "decoded_sha256": "f27c4f2bc85163f408b9e7d2848a76766b4aa6f7cd1fcd657addd14e62fea540"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "4517375eaa6cf61cf6c666d24124a0523ef9201301c31fcecf4d42f75f9480dc",
+      "decoded_sha256": "8a1c8ead1450dfba2850c2224ae9bafb05a9ec1c32eed7c0af7277533e3b4487"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "9be5cc0aa58da7023ac2ec494914983834fee4541e48344de10d93002299ae7f",
+      "decoded_sha256": "0a6db5d8fe54f41a5c37a191fdd5eef52f5ee100a6705275a62d0ea73cb28e4b"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json.gz",
+      "sha256": "b4b9ba3d6d4e874d1dcd951964759b23544668c3626448d39c2593a489e0b416",
+      "decoded_sha256": "a47a84820a80fd39e3960dadc4a7533f3493153f8983f230a69efa5c075d606f"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "6ab6dace3e77e48d406cfb8a78dc9977df90ef0e991dd654d6ab0d746867e1db",
+      "decoded_sha256": "7f6c74599e44a5e34f67bef480f859547adb1f80ba531a8405f43c25536aad19"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-review-retention.html.gz",
+      "sha256": "4b8523332bcaff60770362b2e3cbabed4174a491e075630630003c3170191085",
+      "decoded_sha256": "f527960056e77334b72530f3d30925eafac8db8429bc0e46febcb913bc7a9426"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "8c755ed45845d7cc45dadbb667d9b95e718b74ae4de4f0fde204a35e8ba227b6",
+      "decoded_sha256": "8cf18b8309769ec09ed83b75e90ddeb833b35ee39ef8fc496b02bf67676f4085"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/stdout.log.gz",
+      "sha256": "467b1c5ff3698c2b467a693dbb2ccf1fed190aa5180b0b0e110a1d4a6f177c03",
+      "decoded_sha256": "c3d889e9e8ce5e2856d8c1990e6237599ebe071dcde7b88fe2033392662b6fa2"
+    },
+    {
+      "path": "review-retention-canonical-prose-20260912/verification.json.gz",
+      "sha256": "fdca51f0792c157358459588097f8786c80cd4afa1a7dbf7c56dd4529dbdbad2",
+      "decoded_sha256": "288d7139b773082b17b59624eea47b22c5bed871c5b2af27e5bd08e42d868a6b"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/changes.patch.gz",
+      "sha256": "27c26beaa2fce69f19de861daa7997e96d510421216fd11d682ae10c12593a6b",
+      "decoded_sha256": "6d84503d8cba973ee8b536f8e4615b36a12a4b304e0e68a9a56075a158c04756"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "54b1eb65053bd82c1e2ff82f01021344559dcf54793a6c31b4295d73c9e69ea4",
+      "decoded_sha256": "87e1a6f9770868f22c47205d61ecd193fc1e0d678d6f123b467d20e680a551e6"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "4517375eaa6cf61cf6c666d24124a0523ef9201301c31fcecf4d42f75f9480dc",
+      "decoded_sha256": "8a1c8ead1450dfba2850c2224ae9bafb05a9ec1c32eed7c0af7277533e3b4487"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "9be5cc0aa58da7023ac2ec494914983834fee4541e48344de10d93002299ae7f",
+      "decoded_sha256": "0a6db5d8fe54f41a5c37a191fdd5eef52f5ee100a6705275a62d0ea73cb28e4b"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json.gz",
+      "sha256": "b4b9ba3d6d4e874d1dcd951964759b23544668c3626448d39c2593a489e0b416",
+      "decoded_sha256": "a47a84820a80fd39e3960dadc4a7533f3493153f8983f230a69efa5c075d606f"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "d3283e4f3396b2d4080e7a19a02ea376698e5f4961d4afe40a36e62a3cd94de2",
+      "decoded_sha256": "3b5877cb4cb30f9710b6230935cf0e55104285b078b710228f9b38d3c9eedbff"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-review-retention.html.gz",
+      "sha256": "4b8523332bcaff60770362b2e3cbabed4174a491e075630630003c3170191085",
+      "decoded_sha256": "f527960056e77334b72530f3d30925eafac8db8429bc0e46febcb913bc7a9426"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "8c755ed45845d7cc45dadbb667d9b95e718b74ae4de4f0fde204a35e8ba227b6",
+      "decoded_sha256": "8cf18b8309769ec09ed83b75e90ddeb833b35ee39ef8fc496b02bf67676f4085"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/stdout.log.gz",
+      "sha256": "3b5251d1894321018f6d4842f3d7b4a680f929b561c434393daa777431cfbff4",
+      "decoded_sha256": "ad18dfb4d53c851ba436288c9009c9e84059433e4c9c35d1c3d8032d6b52135d"
+    },
+    {
+      "path": "review-retention-canonical-prose-final-20260912/verification.json.gz",
+      "sha256": "22ff08dcd998bab2f28878235da2df79249531e80dd8e898222c222d026a06eb",
+      "decoded_sha256": "9d2f755e4a46961dac56cbe88d0006a2366302c33b2cb3cdade9d8e711cf53af"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/changes.patch.gz",
+      "sha256": "4265ed2464549a63c06ada0ca97aa9d924b12fb1b91576258a02863592d6bc1e",
+      "decoded_sha256": "0acc9bdb676e723d93d9b8c4a035aeeeb5ea4ab4fc8f92622fee62acdd3f2336"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "54b1eb65053bd82c1e2ff82f01021344559dcf54793a6c31b4295d73c9e69ea4",
+      "decoded_sha256": "87e1a6f9770868f22c47205d61ecd193fc1e0d678d6f123b467d20e680a551e6"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "4517375eaa6cf61cf6c666d24124a0523ef9201301c31fcecf4d42f75f9480dc",
+      "decoded_sha256": "8a1c8ead1450dfba2850c2224ae9bafb05a9ec1c32eed7c0af7277533e3b4487"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "9be5cc0aa58da7023ac2ec494914983834fee4541e48344de10d93002299ae7f",
+      "decoded_sha256": "0a6db5d8fe54f41a5c37a191fdd5eef52f5ee100a6705275a62d0ea73cb28e4b"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/docs/plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json.gz",
+      "sha256": "b4b9ba3d6d4e874d1dcd951964759b23544668c3626448d39c2593a489e0b416",
+      "decoded_sha256": "a47a84820a80fd39e3960dadc4a7533f3493153f8983f230a69efa5c075d606f"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "349156fbe2a647c9d4083621bea592b15c4be69f7fa399cbedd07b42d7fc7f54",
+      "decoded_sha256": "2458e6fbd48eb762ba8f2ee33d7f57457f355052822ddbd0e3e600f858acf605"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-review-retention.html.gz",
+      "sha256": "4b8523332bcaff60770362b2e3cbabed4174a491e075630630003c3170191085",
+      "decoded_sha256": "f527960056e77334b72530f3d30925eafac8db8429bc0e46febcb913bc7a9426"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "8c755ed45845d7cc45dadbb667d9b95e718b74ae4de4f0fde204a35e8ba227b6",
+      "decoded_sha256": "8cf18b8309769ec09ed83b75e90ddeb833b35ee39ef8fc496b02bf67676f4085"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/stdout.log.gz",
+      "sha256": "ea97e84508df6c1e2492bdc839fc77dfa005c1aed11942ab56bb6d3ba3aeff7a",
+      "decoded_sha256": "19c7eff017b0c68598ff493c127438dd62d79c2fdc9b1d13d216b0e75a0fef3a"
+    },
+    {
+      "path": "review-retention-canonical-prose-verified-20260912/verification.json.gz",
+      "sha256": "616b1a388bb6626cbfe67a411271bf0ca51d6c2e68e7ba6639f0f2c756088e7a",
+      "decoded_sha256": "83f22f68fdcdb1d9dee5c1cac93ac135b99fe257384b004bc1916ce276791d60"
+    }
+  ],
+  "previous_goal_turn": "Progress: the preceding turn committed runtime input collection and its canonical evidence.",
+  "final_test_events": {
+    "per_toolchain": 74,
+    "toolchains": [
+      "go1.26.6",
+      "go1.25.12"
+    ]
+  },
+  "source_binding": "Final race suites, lint, policy, and prose bind the committed Go files. The final prose snapshot also binds the storage contract.",
+  "limits": [
+    "The first attempt failed to compile because the fixture used an unavailable catalog method. The next fixture used an empty provider baseline, so provider filtering prevented it from exercising quarantine. Both attempts remain archived and provide no behavioral defect proof.",
+    "The corrected baseline produces three failing test events and one passing event before the fix. Twelve distinct observations create twelve reviews for one offering. Repeated-inventory compaction creates two instead of twelve under a baseline that lacks its canonical definition. Payload checksums remain equal, but publication evidence differs.",
+    "Provider evidence selection now keeps one current review per provider, binding revision, opaque model ID, and review code. It applies the existing direct-versus-stale and observation-time ordering, with stable observation identity for ties.",
+    "Different accounts and revisions remain separate. Omission supplies no replacement review. Partial direct evidence can replace a review for its reported record. Metadata-source reviews keep their existing selection contract.",
+    "Each selected provider review must match its original observation ID, revision, and checksum. The selector does not mutate input reviews on failure and honors cancellation, including empty input.",
+    "Removing obsolete duplicate reviews permits existing source-evidence selection to retire their generation links when no current fact, membership scope, unresolved offering, or incomplete replacement still requires them. Durable observation history and older immutable generations remain unchanged.",
+    "The final selection passes 74 race test events on each Go toolchain without failures or skips. These repeated selections include parent events. They cover provider review boundaries and existing manual history, bindings, compaction, checkpoint recovery, acquisition policy, and evidence selection cases.",
+    "The initial integration exceeded the existing cyclomatic complexity limit in manual replay. The final integration places review selection in the provider-evidence stage that already owns retained generation links. Policy limits remain unchanged. The initial prose diagnostic is also preserved.",
+    "This repair closes a prerequisite for distinct-inventory retirement. It does not implement that retirement, automatic collection, complete generation collection, or the twelve mapped CSP5 subcases.",
+    "Full task verification, required review, native CI, and merge remain open. CSP5 remains unpublished until its complete contract passes. This change adds no wire fields or platform-specific filesystem behavior.",
+    "The object-catalog coordination question remains pending. The accepted architecture and scope remain unchanged. The enterprise recipe continues to assign coordination to shared KV and immutable bytes to object storage.",
+    "Five concurrent tooling edits remain outside the source commit. Final task qualification must use its final committed module graph.",
+    "The final canonical prose check passes. Source snapshots separate the concurrent tooling edits from six owned documentation files. Task criteria, scope, invariants, and the goal remain unchanged."
+  ],
+  "unrelated_worktree_changes": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    }
+  ],
+  "tested_module_inputs": [
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+      "evidence": "review-retention-final-20260912/source/go.mod.gz"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+      "evidence": "review-retention-final-20260912/source/go.sum.gz"
+    }
+  ],
+  "documentation_checks": {
+    "review-retention-canonical-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T11:08:21.201368+00:00",
+      "base_commit": "09e49914bceb78c23b6865028f549b275c133b22",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "f27c4f2bc85163f408b9e7d2848a76766b4aa6f7cd1fcd657addd14e62fea540",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "8a1c8ead1450dfba2850c2224ae9bafb05a9ec1c32eed7c0af7277533e3b4487",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "0a6db5d8fe54f41a5c37a191fdd5eef52f5ee100a6705275a62d0ea73cb28e4b",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "7f6c74599e44a5e34f67bef480f859547adb1f80ba531a8405f43c25536aad19",
+        "docs/plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json": "a47a84820a80fd39e3960dadc4a7533f3493153f8983f230a69efa5c075d606f",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-review-retention.html": "f527960056e77334b72530f3d30925eafac8db8429bc0e46febcb913bc7a9426",
+        "docs/plans/starport-production-catalog-plan.html": "8cf18b8309769ec09ed83b75e90ddeb833b35ee39ef8fc496b02bf67676f4085",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T11:09:10.954487+00:00",
+      "status": "failed"
+    },
+    "review-retention-canonical-prose-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T11:09:21.888649+00:00",
+      "base_commit": "09e49914bceb78c23b6865028f549b275c133b22",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "87e1a6f9770868f22c47205d61ecd193fc1e0d678d6f123b467d20e680a551e6",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "8a1c8ead1450dfba2850c2224ae9bafb05a9ec1c32eed7c0af7277533e3b4487",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "0a6db5d8fe54f41a5c37a191fdd5eef52f5ee100a6705275a62d0ea73cb28e4b",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "3b5877cb4cb30f9710b6230935cf0e55104285b078b710228f9b38d3c9eedbff",
+        "docs/plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json": "a47a84820a80fd39e3960dadc4a7533f3493153f8983f230a69efa5c075d606f",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-review-retention.html": "f527960056e77334b72530f3d30925eafac8db8429bc0e46febcb913bc7a9426",
+        "docs/plans/starport-production-catalog-plan.html": "8cf18b8309769ec09ed83b75e90ddeb833b35ee39ef8fc496b02bf67676f4085",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T11:10:11.840818+00:00",
+      "status": "failed"
+    },
+    "review-retention-canonical-prose-verified-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T11:10:28.111592+00:00",
+      "base_commit": "09e49914bceb78c23b6865028f549b275c133b22",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "87e1a6f9770868f22c47205d61ecd193fc1e0d678d6f123b467d20e680a551e6",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "8a1c8ead1450dfba2850c2224ae9bafb05a9ec1c32eed7c0af7277533e3b4487",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "0a6db5d8fe54f41a5c37a191fdd5eef52f5ee100a6705275a62d0ea73cb28e4b",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "2458e6fbd48eb762ba8f2ee33d7f57457f355052822ddbd0e3e600f858acf605",
+        "docs/plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json": "a47a84820a80fd39e3960dadc4a7533f3493153f8983f230a69efa5c075d606f",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-review-retention.html": "f527960056e77334b72530f3d30925eafac8db8429bc0e46febcb913bc7a9426",
+        "docs/plans/starport-production-catalog-plan.html": "8cf18b8309769ec09ed83b75e90ddeb833b35ee39ef8fc496b02bf67676f4085",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T11:11:18.045390+00:00",
+      "status": "passed"
+    }
+  },
+  "documentation_source_files": [
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "87e1a6f9770868f22c47205d61ecd193fc1e0d678d6f123b467d20e680a551e6"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "8a1c8ead1450dfba2850c2224ae9bafb05a9ec1c32eed7c0af7277533e3b4487"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "0a6db5d8fe54f41a5c37a191fdd5eef52f5ee100a6705275a62d0ea73cb28e4b"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp5.md",
+      "sha256": "2458e6fbd48eb762ba8f2ee33d7f57457f355052822ddbd0e3e600f858acf605"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-review-retention.html",
+      "sha256": "f527960056e77334b72530f3d30925eafac8db8429bc0e46febcb913bc7a9426"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "8cf18b8309769ec09ed83b75e90ddeb833b35ee39ef8fc496b02bf67676f4085"
+    }
+  ]
+}

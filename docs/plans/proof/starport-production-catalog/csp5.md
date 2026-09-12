@@ -1000,3 +1000,35 @@ Automatic invocation, retention settings and capacity diagnostics, generation co
 The object coordination question remains pending. The accepted architecture and scope remain unchanged.
 Twelve mapped subcases, full verification, required review, native CI, and merge remain required.
 Five concurrent tooling edits remain separate. Final task qualification must use its final committed module graph.
+
+## Current provider review evidence: 2026-09-12
+
+Local commit `8f8951bf` selects one current provider review per provider, binding revision, opaque model ID, and review code.
+The [review retention proof](csp5/review-retention-2026-09-12/verification.json) binds four committed files to the recorded checks.
+Twelve distinct observations previously created twelve reviews for one unresolved offering.
+Repeated-history compaction also changed review evidence when a replacement baseline lacked the canonical model definition.
+The payload checksum stayed equal, but full and compacted replay produced twelve and two review entries.
+
+The valid baseline records three failing events and one passing event before the fix.
+Two earlier fixture attempts did not exercise the defect. Their compilation and provider-filtering failures remain archived.
+
+The final Go 1.26.6 and Go 1.25.12 selections each pass 74 race events, including parent tests, without failures or skips.
+The selections repeat the same cases. Policy, package lint, and source prose pass.
+The proof retains the initial complexity diagnostic and corrected prose diagnostic.
+
+Current reviews preserve original observation IDs, revisions, and checksums.
+Independent account revisions retain separate reviews. Omission keeps the previous review. A later reported record can replace its own review.
+Direct evidence outranks stale fallback. Metadata-source reviews retain their existing selection rules.
+
+Cancellation and invalid receipt references cause refusal without changing input reviews.
+
+Existing provider-evidence selection can discard superseded generation links after duplicate reviews no longer require them.
+Current field provenance, membership, unresolved offerings, and incomplete replacements can still require earlier receipts.
+Durable observation history and previously committed generations remain unchanged.
+The final integration uses the provider-evidence stage, which already owns retained generation links.
+
+Classification: an in-scope compaction prerequisite under CSP5. Task criteria, scope, accepted architecture, and the goal remain unchanged.
+Distinct-inventory retirement, automatic collection, complete generation collection, and twelve mapped subcases remain open.
+The object coordination question remains pending. Full verification, required review, native CI, and merge remain required.
+
+Five concurrent tooling edits remain separate. Final task qualification must use its final committed module graph.

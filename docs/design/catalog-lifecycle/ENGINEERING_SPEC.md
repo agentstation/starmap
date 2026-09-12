@@ -3469,3 +3469,17 @@ Automatic invocation, retention settings, capacity diagnostics, and complete gen
 
 The [collection proof](../../plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json) records 42 passing race events on each Go toolchain.
 Policy, package lint, and source prose pass. Full CSP5 qualification remains open.
+
+## Current provider review evidence: 2026-09-12
+
+Local Starmap commit `8f8951bf` selects current provider review evidence during manual replay.
+Each review remains bound to its original observation ID, revision, and checksum.
+Provider, binding revision, opaque model ID, and review code define independent review identities.
+Omission supplies no replacement. Direct evidence outranks stale fallback. Metadata-source reviews keep their existing selection rules.
+
+Repeated-history compaction must preserve the current review set when a replacement baseline lacks a previously known canonical model.
+This selection changes current generation evidence. Durable observations and older generations remain unchanged.
+Distinct-inventory retirement, automatic collection, and complete generation collection remain required CSP5 work.
+
+The [review retention proof](../../plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json) records 74 passing race events on each Go toolchain.
+Policy, package lint, and source prose pass. Full CSP5 qualification remains open.

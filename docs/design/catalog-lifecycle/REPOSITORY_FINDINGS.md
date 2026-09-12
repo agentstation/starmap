@@ -2855,3 +2855,17 @@ Distinct-inventory retirement and automatic collection remain open.
 
 The [collection proof](../../plans/proof/starport-production-catalog/csp5/input-collection-2026-09-12/verification.json) records 42 passing race events on each Go toolchain.
 Policy, package lint, and source prose pass. Full CSP5 qualification remains open.
+
+## Current provider review evidence: 2026-09-12
+
+Classification: an in-scope compaction prerequisite under CSP5.
+Twelve observations previously created twelve reviews for one unresolved offering.
+Repeated-history compaction reduced that set to two after baseline replacement, changing generation evidence despite equal payload checksums.
+Local Starmap commit `8f8951bf` retains one current review per offering and binding revision, using original receipts.
+
+The valid baseline records three failing test events and one passing event before the fix.
+Two earlier fixture attempts remain archived as inconclusive. They do not prove the behavioral defect.
+Task criteria, scope, accepted architecture, and the goal remain unchanged.
+
+The [review retention proof](../../plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json) records 74 passing race events on each Go toolchain.
+Policy, package lint, and source prose pass. Full CSP5 qualification remains open.
