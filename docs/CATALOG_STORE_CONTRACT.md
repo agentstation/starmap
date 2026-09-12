@@ -1026,3 +1026,21 @@ A checkpoint preserves the original payloads needed for replay against a replace
 It does not collect its predecessor files or catalog generations. Collection must preserve accepted references, pending publication, pins, and active readers.
 If distinct required data cannot fit within the limits, publication preserves the accepted head and returns a conflict.
 The runtime still needs to reduce superseded distinct inventories. Full CSP5 qualification remains open.
+
+### Immutable payload cache
+
+Each immutable catalog retains its validated encoded payload after the first successful encoding.
+The cache belongs to that catalog and expires with it. Its data uses the existing 32 MiB payload limit.
+Mutable builders always encode their current records.
+
+Every encoding call returns bytes that belong to the caller. Warm calls allocate one output byte slice.
+Concurrent readers share the immutable cached bytes through an atomic pointer. Calls use the initialization lock until the first encoding completes.
+Failed encoding leaves the cache empty. Payload validation, schema selection, and canonical bytes retain their existing contracts.
+
+Provenance serialization avoids repeated decoding for built-in scalars and generic JSON containers.
+Custom marshalers and source structs still pass through canonical normalization. Unsupported values and cycles still fail during encoding.
+This cache reduces catalog serialization work. It does not establish Starport inference latency or complete runtime-suite qualification.
+
+Catalog construction also snapshots nested provenance values and rejection records. Source structs use the generic JSON shape that restored evidence already uses.
+Provenance reads return independent nested values. Caller changes cannot alter published catalog facts or make those facts disagree with cached payload bytes.
+Unsupported custom values and cyclic provenance cause construction to fail.
