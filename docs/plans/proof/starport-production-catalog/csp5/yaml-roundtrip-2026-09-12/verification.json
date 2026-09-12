@@ -17395,9 +17395,44 @@
         "whole_product_unverified_cases": 49,
         "qualification": "component checks only"
       }
+    },
+    "qualification-yaml-repository-5160414e4-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
+        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
+        "make",
+        "verify"
+      ],
+      "started_at": "2026-09-12T17:45:08.246639+00:00",
+      "base_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+      "source_files": {},
+      "exit_code": 143,
+      "finished_at": "2026-09-12T18:32:14.024256+00:00",
+      "completion_time_kind": "orchestrator observation after write_stdin reported exit 143",
+      "status": "CANCELLED",
+      "terminated_by_orchestrator": true,
+      "termination_reason": "Superseded by committed verification commands that disable the observed multi-gigabyte Go test-cache filesystem log. The complete ordinary suite and twelve repository phases passed. Restart all gates with the same test coverage and time limits.",
+      "name": "qualification-yaml-repository-5160414e4-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
+      "archived_files": {
+        "changes.patch": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "completed-phases.json": "blobs/47a57b4fe2782f751f082a626d7ee9442ec2f32adf735c63d675fd0f586b7b47.gz",
+        "completed-phases.stdout.log": "blobs/9ed082b44ed8265309712e180002821637b506371c9c8e999c3fbe34e0203f3e.gz",
+        "stderr.log": "blobs/0c4cc337830e14f467a89d90b1551472c65a34ba504ae2f3f56ce98d56455154.gz",
+        "stdout.log": "blobs/258942185e9954e924e66cb7eadc39afef98a4bba4ee32bb6fd94842855e6adc.gz",
+        "termination-request.json": "blobs/f0ea1bd4ceb5e5b2a890ef7c2f2d775d8536d6bb563c5d132bb7673693839308.gz",
+        "verification.json": "blobs/7720c781879f84bb6cd44567ee5d13baf084f354d436013934d2dff5243ac3e6.gz"
+      },
+      "test_events": {},
+      "test_results": []
     }
   },
-  "observed_at": "2026-09-12T18:04:20.149400+00:00",
+  "observed_at": "2026-09-12T18:33:38.775324+00:00",
   "prior_repository_failure": {
     "session_id": 42639,
     "status": "FAIL",
@@ -17554,28 +17589,37 @@
       "path": "blobs/3274b2da3bbc90c270fae9f315d2ee8c93c29fe73dbbacbf7e0937522f0d57b1.gz",
       "sha256": "12a21e273b4fda3ce5542fc040c6b23216154ca5b8d9f5b0b9b1b6469db32ab9",
       "decoded_sha256": "3274b2da3bbc90c270fae9f315d2ee8c93c29fe73dbbacbf7e0937522f0d57b1"
+    },
+    {
+      "path": "blobs/47a57b4fe2782f751f082a626d7ee9442ec2f32adf735c63d675fd0f586b7b47.gz",
+      "sha256": "84a308689008053063be2d781c71516a13f82b7ea193e31e42a12164da991469",
+      "decoded_sha256": "47a57b4fe2782f751f082a626d7ee9442ec2f32adf735c63d675fd0f586b7b47"
+    },
+    {
+      "path": "blobs/9ed082b44ed8265309712e180002821637b506371c9c8e999c3fbe34e0203f3e.gz",
+      "sha256": "e36d97e2afdf2c21a1507bb4954ed1d408d595203ffa6c24ddc2b127d7ead8a3",
+      "decoded_sha256": "9ed082b44ed8265309712e180002821637b506371c9c8e999c3fbe34e0203f3e"
+    },
+    {
+      "path": "blobs/0c4cc337830e14f467a89d90b1551472c65a34ba504ae2f3f56ce98d56455154.gz",
+      "sha256": "bdcbb9f54a5d197630d7ec752a812d7908f337154b70daba2df5e898ec4af9d9",
+      "decoded_sha256": "0c4cc337830e14f467a89d90b1551472c65a34ba504ae2f3f56ce98d56455154"
+    },
+    {
+      "path": "blobs/258942185e9954e924e66cb7eadc39afef98a4bba4ee32bb6fd94842855e6adc.gz",
+      "sha256": "606eba4501d30f330947bf65d1eff7676b9b33a654b8d3282b0d688e7bc43264",
+      "decoded_sha256": "258942185e9954e924e66cb7eadc39afef98a4bba4ee32bb6fd94842855e6adc"
+    },
+    {
+      "path": "blobs/f0ea1bd4ceb5e5b2a890ef7c2f2d775d8536d6bb563c5d132bb7673693839308.gz",
+      "sha256": "d82d5237439763be99ce5bdf263f5603d15d4fed623cb1597c4347b3100c7032",
+      "decoded_sha256": "f0ea1bd4ceb5e5b2a890ef7c2f2d775d8536d6bb563c5d132bb7673693839308"
+    },
+    {
+      "path": "blobs/7720c781879f84bb6cd44567ee5d13baf084f354d436013934d2dff5243ac3e6.gz",
+      "sha256": "bcd963052c973d16afdb509b1e5229aafc560c74a2030699d7827f0d9e65965d",
+      "decoded_sha256": "7720c781879f84bb6cd44567ee5d13baf084f354d436013934d2dff5243ac3e6"
     }
   ],
-  "running_checks": [
-    {
-      "command": [
-        "env",
-        "GOTOOLCHAIN=go1.26.6",
-        "GOWORK=off",
-        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
-        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
-        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
-        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
-        "make",
-        "verify"
-      ],
-      "started_at": "2026-09-12T17:45:08.246639+00:00",
-      "base_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
-      "source_files": {},
-      "name": "qualification-yaml-repository-5160414e4-20260912",
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-roundtrip",
-      "status": "RUNNING",
-      "session_id": 58714
-    }
-  ]
+  "running_checks": []
 }

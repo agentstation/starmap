@@ -51,7 +51,8 @@ This snapshot does not establish a deadlock or prove that resource contention ca
 The verification record preserves its terminal logs, command, and timeout analysis.
 That run cannot qualify the corrected commit.
 
-Corrected repository session `58714` runs from the isolated worktree on commit `5160414e4`.
-Task session `9470` completed successfully on that commit.
-Complete repository verification before required review and publication.
+Corrected repository session `58714` completed twelve phases, including 85 passing ordinary packages.
+It was then interrupted for the [verification cache correction](verification-cache-2026-09-12.md), with exit status 143.
+Task session `9470` completed successfully on `5160414e4`.
+Current repository verification continues from the linked correction before required review and publication.
 Native CI and merge remain required. Shared/object collection remains part of the full CSP5 contract.

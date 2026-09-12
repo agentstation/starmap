@@ -1,0 +1,761 @@
+{
+  "status": "PARTIAL",
+  "source_binding_kind": "commit",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+  "branch": "codex/catalog-update-controls-qualification",
+  "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+  "base_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+  "go_source_unchanged_from": "5160414e4d113343cebb11397cb7d79e565e76be",
+  "source_files": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b",
+      "artifact": "blobs/5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b.gz"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "eb95755a834e89c9e61ee80ecf1b25c538a1eaf87f3a2b6b41022a4d42f9f298",
+      "artifact": "blobs/eb95755a834e89c9e61ee80ecf1b25c538a1eaf87f3a2b6b41022a4d42f9f298.gz"
+    }
+  ],
+  "checks": {
+    "verification-cache-probe-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GODEBUG=gocachetest=1",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=5m",
+        "-run",
+        "^TestWriteYAMLRoundTripWithoutFilesystemWrites$",
+        "./pkg/catalogs"
+      ],
+      "started_at": "2026-09-12T18:27:51.598236+00:00",
+      "base_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+      "source_files": {
+        ".github/workflows/pr.yaml": "55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e",
+        "scripts/verify.sh": "1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T18:27:55.950695+00:00",
+      "name": "verification-cache-probe-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/3eb3b1f813ab2bcdaea14af072af4bc2b6f3ba75be993241eac60a2ac70b1887.gz",
+        "source/.github/workflows/pr.yaml.gz": "blobs/55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e.gz",
+        "source/scripts/verify.sh.gz": "blobs/1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91.gz",
+        "stderr.log": "blobs/04241e24698a35011a4ced4cf9ba75b1e0739e5f51191ebd5a86f0865cef7e49.gz",
+        "stdout.log": "blobs/cd86966139238a7bb02267c4db6d6e399fbeeeeebd3dd9bfe1cc0146f7eab733.gz",
+        "verification.json": "blobs/20c9ab1d9e772d2deb4559c43e0783fc9be947d0e2402a4613fc39b34d805c53.gz"
+      },
+      "test_events": {
+        "pass": 1
+      },
+      "test_results": [
+        {
+          "Time": "2026-09-12T13:27:54.924179-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs",
+          "Test": "TestWriteYAMLRoundTripWithoutFilesystemWrites",
+          "Elapsed": 0.02
+        }
+      ]
+    },
+    "verification-cache-workflow-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=2m",
+        "./internal/ciworkflow"
+      ],
+      "started_at": "2026-09-12T18:27:51.598217+00:00",
+      "base_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+      "source_files": {
+        ".github/workflows/pr.yaml": "55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e",
+        "scripts/verify.sh": "1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T18:27:52.128697+00:00",
+      "name": "verification-cache-workflow-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "FAIL",
+      "archived_files": {
+        "changes.patch": "blobs/3eb3b1f813ab2bcdaea14af072af4bc2b6f3ba75be993241eac60a2ac70b1887.gz",
+        "source/.github/workflows/pr.yaml.gz": "blobs/55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e.gz",
+        "source/scripts/verify.sh.gz": "blobs/1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/a40faf125a520372037edf306cca19e3d99e39f22606fa9592f16f348da07008.gz",
+        "verification.json": "blobs/93f92930346cc01490f3ee232908dcb25f6f66cbcaab976408d0d0b741bc55a0.gz"
+      },
+      "test_events": {
+        "pass": 26,
+        "fail": 2
+      },
+      "test_results": [
+        {
+          "Time": "2026-09-12T13:27:52.046639-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestCatalogGenerationWorkflowSharesAcquisitionAndStagingStore",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.046784-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.047282-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestActiveWorkflowsUseReviewedCurrentActions",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.048174-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGitAcquisitionQualificationRequiresNativeTools",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.048306-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.048399-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPullRequestWorkflowIsTheOnlyActivePRWorkflow",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.048578-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestMakeVerifyUsesCanonicalVerificationScript",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.060337-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:27:52.069203-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:27:52.080298-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:27:52.090673-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:27:52.102626-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:27:52.109128-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:27:52.109141-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits",
+          "Elapsed": 0.06
+        },
+        {
+          "Time": "2026-09-12T13:27:52.109339-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestExternalReadOnlyConsumerUsesCanonicalCatalogDX",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.109588-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.109861-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestExternalStoreConsumerUsesCallerOwnedAdapter",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.110227-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPinnedArtifactConsumerIsOfflineAndDependencyBounded",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.110322-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestExternalServerStorageMatrixStaysOptional",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.110579-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPureGoAndRaceVerificationHaveSeparateCgoModes",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.110794-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.110984-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestLocalBuildVersionIgnoresCatalogGenerationTags",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.111068-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestOpenAPICheckPinsSelfContainedGenerator",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.111417-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReleaseWorkflowPinsToolchainPublisherAndVerification",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.111535-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.111723-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReleaseBinaryVerificationPinsPortableTargetMatrix",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.11179-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestWorkspaceIgnoresHostedWorkflowCheckouts",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:27:52.113457-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestCatalogGenerationWorkflowNestsTimeoutLimits",
+          "Elapsed": 0
+        }
+      ]
+    },
+    "verification-cache-workflow-final-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout=2m",
+        "./internal/ciworkflow"
+      ],
+      "started_at": "2026-09-12T18:29:52.667834+00:00",
+      "base_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+      "source_files": {
+        ".github/workflows/pr.yaml": "5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b",
+        "scripts/verify.sh": "eb95755a834e89c9e61ee80ecf1b25c538a1eaf87f3a2b6b41022a4d42f9f298"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T18:29:54.609839+00:00",
+      "name": "verification-cache-workflow-final-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/a10ec7a664f588d9773010e14144523e430f954513dcf8312f6907b33542c552.gz",
+        "source/.github/workflows/pr.yaml.gz": "blobs/5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b.gz",
+        "source/scripts/verify.sh.gz": "blobs/eb95755a834e89c9e61ee80ecf1b25c538a1eaf87f3a2b6b41022a4d42f9f298.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/9ce2bcacd8372cb2855f2ff77723a59d73a19076ceb0ad7c5f62fbf572f05d4d.gz",
+        "verification.json": "blobs/085d36c2d689fcfc4dcb6a81ded9b9de2b12407d3d7d954f3617a00dc0013c2e.gz"
+      },
+      "test_events": {
+        "pass": 28
+      },
+      "test_results": [
+        {
+          "Time": "2026-09-12T13:29:53.507713-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestCatalogGenerationWorkflowSharesAcquisitionAndStagingStore",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.50791-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.509374-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestActiveWorkflowsUseReviewedCurrentActions",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.516274-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGitAcquisitionQualificationRequiresNativeTools",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.517249-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.517471-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPullRequestWorkflowIsTheOnlyActivePRWorkflow",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.520082-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestMakeVerifyUsesCanonicalVerificationScript",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.53236-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.541917-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.553284-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.564394-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.575559-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.583374-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded",
+          "Elapsed": 0.01
+        },
+        {
+          "Time": "2026-09-12T13:29:53.583449-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGoFileSizeVerificationEnforcesReviewAndHardLimits",
+          "Elapsed": 0.06
+        },
+        {
+          "Time": "2026-09-12T13:29:53.583722-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestExternalReadOnlyConsumerUsesCanonicalCatalogDX",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.583953-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.584385-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestExternalStoreConsumerUsesCallerOwnedAdapter",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.584624-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPinnedArtifactConsumerIsOfflineAndDependencyBounded",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.584781-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestExternalServerStorageMatrixStaysOptional",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.585115-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestPureGoAndRaceVerificationHaveSeparateCgoModes",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.585516-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.585829-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestLocalBuildVersionIgnoresCatalogGenerationTags",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.585987-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestOpenAPICheckPinsSelfContainedGenerator",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.586836-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReleaseWorkflowPinsToolchainPublisherAndVerification",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.587012-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.587277-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestReleaseBinaryVerificationPinsPortableTargetMatrix",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.587458-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestWorkspaceIgnoresHostedWorkflowCheckouts",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-12T13:29:53.598443-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Test": "TestCatalogGenerationWorkflowNestsTimeoutLimits",
+          "Elapsed": 0.01
+        }
+      ]
+    },
+    "verification-cache-prose-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T18:27:51.602531+00:00",
+      "base_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+      "source_files": {
+        ".github/workflows/pr.yaml": "55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e",
+        "scripts/verify.sh": "1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T18:28:43.928352+00:00",
+      "name": "verification-cache-prose-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/3eb3b1f813ab2bcdaea14af072af4bc2b6f3ba75be993241eac60a2ac70b1887.gz",
+        "source/.github/workflows/pr.yaml.gz": "blobs/55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e.gz",
+        "source/scripts/verify.sh.gz": "blobs/1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/9e117f238140920b02088b283cbb8c4e1ee59138fb776df9852d6fc13a28dee6.gz",
+        "verification.json": "blobs/57f03c83057d49c3caa2e593f2399d2e92021c825dc255ae5f56cac596b7c98a.gz"
+      },
+      "test_events": {},
+      "test_results": []
+    }
+  },
+  "running_checks": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "make",
+        "verify"
+      ],
+      "started_at": "2026-09-12T18:32:12.882669+00:00",
+      "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {},
+      "name": "qualification-fresh-repository-1a7ae757b-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "RUNNING",
+      "session_id": 2580
+    }
+  ],
+  "observed_at": "2026-09-12T18:33:38.918133+00:00",
+  "cache_observation": {
+    "artifact": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
+    "testlog_bytes": 2270280301,
+    "scope": "Historical task-tool observations. No inference benchmark or causal attribution for the prior race timeout."
+  },
+  "cache_probe": {
+    "disabled": true,
+    "diagnostic": "caching disabled for test argument: -test.count=1",
+    "check": "verification-cache-probe-20260912"
+  },
+  "superseded_run": {
+    "status": "CANCELLED",
+    "session_id": 58714,
+    "exit_code": 143,
+    "source_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+    "completed_phases": {
+      "source_commit": "5160414e4d113343cebb11397cb7d79e565e76be",
+      "completed_phases": 12,
+      "ordinary_suite": {
+        "passing_packages": 85,
+        "cached_packages": 0,
+        "no_test_files": 22
+      },
+      "scope": "Completed phase evidence only. The all-package race phase was interrupted for the verified cache-bookkeeping correction."
+    },
+    "artifacts": {
+      "stdout.log": "blobs/258942185e9954e924e66cb7eadc39afef98a4bba4ee32bb6fd94842855e6adc.gz",
+      "stderr.log": "blobs/0c4cc337830e14f467a89d90b1551472c65a34ba504ae2f3f56ce98d56455154.gz",
+      "verification.json": "blobs/7720c781879f84bb6cd44567ee5d13baf084f354d436013934d2dff5243ac3e6.gz",
+      "termination-request.json": "blobs/f0ea1bd4ceb5e5b2a890ef7c2f2d775d8536d6bb563c5d132bb7673693839308.gz",
+      "completed-phases.stdout.log": "blobs/9ed082b44ed8265309712e180002821637b506371c9c8e999c3fbe34e0203f3e.gz",
+      "completed-phases.json": "blobs/47a57b4fe2782f751f082a626d7ee9442ec2f32adf735c63d675fd0f586b7b47.gz"
+    }
+  },
+  "go_toolchain_source": {
+    "path": "/Users/jack/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/src/cmd/go/internal/test/test.go",
+    "artifact": "blobs/3dfaccd644f4ac97129b3112834018216eba50fd8359d831b103633656e2314c.gz",
+    "sha256": "3dfaccd644f4ac97129b3112834018216eba50fd8359d831b103633656e2314c",
+    "relevant_lines": [
+      1583,
+      1838,
+      1867
+    ]
+  },
+  "limits": [
+    "The current full repository run is incomplete. Required review, native CI, and merge remain pending.",
+    "All twelve selected CSP5 subcases passed on 5160414e4. Only verification command flags and their comment changed afterward. Eight subcases retain Starport consumer requirements.",
+    "Shared/object generation collection and the pending coordinator decision remain required for complete CSP5 delivery.",
+    "No full-suite speed improvement is claimed before terminal comparison evidence. The probe establishes disabled test-cache logging."
+  ],
+  "artifacts": [
+    {
+      "path": "blobs/5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b.gz",
+      "sha256": "8fa3b89d407dc5b643a004e0e1b0aa9a462d548140d8a52d6837acd5e3b437da",
+      "decoded_sha256": "5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b"
+    },
+    {
+      "path": "blobs/eb95755a834e89c9e61ee80ecf1b25c538a1eaf87f3a2b6b41022a4d42f9f298.gz",
+      "sha256": "c310121664a20f6380271439d99bb00d3b6cd1ef6187da687399da89260e5388",
+      "decoded_sha256": "eb95755a834e89c9e61ee80ecf1b25c538a1eaf87f3a2b6b41022a4d42f9f298"
+    },
+    {
+      "path": "blobs/3eb3b1f813ab2bcdaea14af072af4bc2b6f3ba75be993241eac60a2ac70b1887.gz",
+      "sha256": "e49a85dd19b30c7e041665329b8c846c4ef75228dc856a0c662e115648ce915f",
+      "decoded_sha256": "3eb3b1f813ab2bcdaea14af072af4bc2b6f3ba75be993241eac60a2ac70b1887"
+    },
+    {
+      "path": "blobs/55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e.gz",
+      "sha256": "c646a28d329ca7ee9cd26bf37da3ddc33513615a51414b66220386774d61698b",
+      "decoded_sha256": "55e3fba6bbe82238025bbed2fc4dbb679dc90f41935f9f7368b47105366ec69e"
+    },
+    {
+      "path": "blobs/1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91.gz",
+      "sha256": "d8a0ea037f341ea537224943eda5327fa7ca2b6fb6bd6b5d095a5d1ee1f174de",
+      "decoded_sha256": "1eed2290cd49ec1670ad3425d65fc0c741d3a49856abeb5be477260696f03e91"
+    },
+    {
+      "path": "blobs/04241e24698a35011a4ced4cf9ba75b1e0739e5f51191ebd5a86f0865cef7e49.gz",
+      "sha256": "ae64565f618871f1d1c87e6ca63b73b728c9b5f2cf95fa060ed1a6b181f91ca5",
+      "decoded_sha256": "04241e24698a35011a4ced4cf9ba75b1e0739e5f51191ebd5a86f0865cef7e49"
+    },
+    {
+      "path": "blobs/cd86966139238a7bb02267c4db6d6e399fbeeeeebd3dd9bfe1cc0146f7eab733.gz",
+      "sha256": "88bc94d0b41e59ecdebd9e57c9cd7d942b8f5634e196632232a6f026f4a64a3f",
+      "decoded_sha256": "cd86966139238a7bb02267c4db6d6e399fbeeeeebd3dd9bfe1cc0146f7eab733"
+    },
+    {
+      "path": "blobs/20c9ab1d9e772d2deb4559c43e0783fc9be947d0e2402a4613fc39b34d805c53.gz",
+      "sha256": "dd2ba0933dbf6afda9b0ea6affa7e631b7b781714466f2d48f1b463fafffae2d",
+      "decoded_sha256": "20c9ab1d9e772d2deb4559c43e0783fc9be947d0e2402a4613fc39b34d805c53"
+    },
+    {
+      "path": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "blobs/a40faf125a520372037edf306cca19e3d99e39f22606fa9592f16f348da07008.gz",
+      "sha256": "b5353a529cd8c20d9431f842682b510ce172b90cccbe06b444bb4c7d4f5cc2da",
+      "decoded_sha256": "a40faf125a520372037edf306cca19e3d99e39f22606fa9592f16f348da07008"
+    },
+    {
+      "path": "blobs/93f92930346cc01490f3ee232908dcb25f6f66cbcaab976408d0d0b741bc55a0.gz",
+      "sha256": "ecbd43f2fdadb69d6be3f8904e79d893991afb29c63de157eec55bf5b4721b4e",
+      "decoded_sha256": "93f92930346cc01490f3ee232908dcb25f6f66cbcaab976408d0d0b741bc55a0"
+    },
+    {
+      "path": "blobs/a10ec7a664f588d9773010e14144523e430f954513dcf8312f6907b33542c552.gz",
+      "sha256": "6ab2ec01c8283b9ffd72b5de537c67c8275e1168c64572f98ceb006054842564",
+      "decoded_sha256": "a10ec7a664f588d9773010e14144523e430f954513dcf8312f6907b33542c552"
+    },
+    {
+      "path": "blobs/9ce2bcacd8372cb2855f2ff77723a59d73a19076ceb0ad7c5f62fbf572f05d4d.gz",
+      "sha256": "fa5956a277a1090d95a6cb6c223cfcc56d2bcf7e9d002830a349d5a3c8961feb",
+      "decoded_sha256": "9ce2bcacd8372cb2855f2ff77723a59d73a19076ceb0ad7c5f62fbf572f05d4d"
+    },
+    {
+      "path": "blobs/085d36c2d689fcfc4dcb6a81ded9b9de2b12407d3d7d954f3617a00dc0013c2e.gz",
+      "sha256": "34b2e6646ffc4f4556861413c4ebf3be513bcfe9795917efef8ffd37f0cd98e0",
+      "decoded_sha256": "085d36c2d689fcfc4dcb6a81ded9b9de2b12407d3d7d954f3617a00dc0013c2e"
+    },
+    {
+      "path": "blobs/9e117f238140920b02088b283cbb8c4e1ee59138fb776df9852d6fc13a28dee6.gz",
+      "sha256": "81fa5228fe2f771d4ce45534911a7a9bf3427c9b4ddbd485307e5d0579cc8cdd",
+      "decoded_sha256": "9e117f238140920b02088b283cbb8c4e1ee59138fb776df9852d6fc13a28dee6"
+    },
+    {
+      "path": "blobs/57f03c83057d49c3caa2e593f2399d2e92021c825dc255ae5f56cac596b7c98a.gz",
+      "sha256": "3473c2f2701b4131f4935025f0760d14411d925f2221fe799233dfe981c585c6",
+      "decoded_sha256": "57f03c83057d49c3caa2e593f2399d2e92021c825dc255ae5f56cac596b7c98a"
+    },
+    {
+      "path": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
+      "sha256": "869cd2b6add55acc0b2aa50a5eea2480377bb46fdc1182dd967ec3cfc625715e",
+      "decoded_sha256": "0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce"
+    },
+    {
+      "path": "blobs/258942185e9954e924e66cb7eadc39afef98a4bba4ee32bb6fd94842855e6adc.gz",
+      "sha256": "606eba4501d30f330947bf65d1eff7676b9b33a654b8d3282b0d688e7bc43264",
+      "decoded_sha256": "258942185e9954e924e66cb7eadc39afef98a4bba4ee32bb6fd94842855e6adc"
+    },
+    {
+      "path": "blobs/0c4cc337830e14f467a89d90b1551472c65a34ba504ae2f3f56ce98d56455154.gz",
+      "sha256": "bdcbb9f54a5d197630d7ec752a812d7908f337154b70daba2df5e898ec4af9d9",
+      "decoded_sha256": "0c4cc337830e14f467a89d90b1551472c65a34ba504ae2f3f56ce98d56455154"
+    },
+    {
+      "path": "blobs/7720c781879f84bb6cd44567ee5d13baf084f354d436013934d2dff5243ac3e6.gz",
+      "sha256": "bcd963052c973d16afdb509b1e5229aafc560c74a2030699d7827f0d9e65965d",
+      "decoded_sha256": "7720c781879f84bb6cd44567ee5d13baf084f354d436013934d2dff5243ac3e6"
+    },
+    {
+      "path": "blobs/f0ea1bd4ceb5e5b2a890ef7c2f2d775d8536d6bb563c5d132bb7673693839308.gz",
+      "sha256": "d82d5237439763be99ce5bdf263f5603d15d4fed623cb1597c4347b3100c7032",
+      "decoded_sha256": "f0ea1bd4ceb5e5b2a890ef7c2f2d775d8536d6bb563c5d132bb7673693839308"
+    },
+    {
+      "path": "blobs/9ed082b44ed8265309712e180002821637b506371c9c8e999c3fbe34e0203f3e.gz",
+      "sha256": "e36d97e2afdf2c21a1507bb4954ed1d408d595203ffa6c24ddc2b127d7ead8a3",
+      "decoded_sha256": "9ed082b44ed8265309712e180002821637b506371c9c8e999c3fbe34e0203f3e"
+    },
+    {
+      "path": "blobs/47a57b4fe2782f751f082a626d7ee9442ec2f32adf735c63d675fd0f586b7b47.gz",
+      "sha256": "84a308689008053063be2d781c71516a13f82b7ea193e31e42a12164da991469",
+      "decoded_sha256": "47a57b4fe2782f751f082a626d7ee9442ec2f32adf735c63d675fd0f586b7b47"
+    },
+    {
+      "path": "blobs/3dfaccd644f4ac97129b3112834018216eba50fd8359d831b103633656e2314c.gz",
+      "sha256": "ac00eddc7c31d03e4d2495216c3a5387e8248813c2c16aa72874f11deb996c27",
+      "decoded_sha256": "3dfaccd644f4ac97129b3112834018216eba50fd8359d831b103633656e2314c"
+    }
+  ]
+}
