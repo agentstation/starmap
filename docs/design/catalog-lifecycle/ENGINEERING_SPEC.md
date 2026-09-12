@@ -3483,3 +3483,16 @@ Distinct-inventory retirement, automatic collection, and complete generation col
 
 The [review retention proof](../../plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json) records 74 passing race events on each Go toolchain.
 Policy, package lint, and source prose pass. Full CSP5 qualification remains open.
+
+## Configured controls and qualification scope: 2026-09-12
+
+Local Starmap commit `2af77d76` qualifies the twelve mapped CSP5 component subcases.
+The tests exercise configured controls through startup, timers, watcher events, explicit calls, and two runtime openings.
+Manual source mode preserves automatic provider acquisition. Offline and pinned modes preserve the selected generation.
+
+Eight A22 and A23 checks apply only to the producer task. They cannot qualify Starport or a release.
+CSP8 and qualification commands still require consumer evidence. Missing consumer bindings remain unverified.
+The inference transport check covers the Starmap caller boundary. CSP8 owns Starport routing and authentication evidence.
+
+The [component controls proof](../../plans/proof/starport-production-catalog/csp5/component-controls-2026-09-12/verification.json) records 42 passing task race events and 78 passing verifier tests.
+Policy, package lint, and source prose pass. Complete CSP5 implementation and qualification remain open.

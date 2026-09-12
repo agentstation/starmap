@@ -1032,3 +1032,45 @@ Distinct-inventory retirement, automatic collection, complete generation collect
 The object coordination question remains pending. Full verification, required review, native CI, and merge remain required.
 
 Five concurrent tooling edits remain separate. Final task qualification must use its final committed module graph.
+
+## Configured controls and qualification scope: 2026-09-12
+
+Local commit `2af77d76` adds background-control tests and connects all twelve mapped CSP5 component subcases.
+The [component controls proof](csp5/component-controls-2026-09-12/verification.json) binds seven committed files to final checks.
+The initial task invocation reports twelve unregistered subcases and runs no behavior tests.
+
+The final task command passes all twelve selected subcases through 21 Go commands covering 17 distinct commands.
+It records 42 passing race events, including parent events and repeated tests, without skips.
+The Go 1.25.12 selection passes 47 events, including descriptor subcases. Its cases overlap the task selection.
+All 78 repository verifier tests pass. Policy, package lint, and source prose pass.
+
+Virtual-time tests exercise configured startup work, periodic acquisition, source polling, queued watcher events, explicit calls, and two runtime openings.
+Automatic mode provides a positive control. Manual source mode keeps independent provider acquisition active.
+Offline mode blocks catalog work. A pin prevents source and provider work from changing the selected generation.
+Existing tests cover verified rollback, retained acceptance, invalid artifacts, permission withdrawal, local import, and lazy acquisition credentials.
+
+The caller-transport test uses one HTTP client for catalog and inference endpoints.
+Offline catalog mode refuses catalog acquisition while the separate caller request receives its inference response.
+This test proves the Starmap library boundary. It does not prove Starport authentication, routing, configuration adoption, or provider credential behavior.
+CSP8 retains those consumer obligations.
+
+Eight A22 and A23 checks are available only through the ordinary CSP5 task command.
+CSP8, direct case checks, and qualification commands require their consumer bindings. Missing consumer evidence remains unverified.
+Producer passes cannot complete the A22 and A23 parent cases. All fifty primary cases and their required subcases remain in the roster.
+
+Five verifier boundary tests produce six failure events before the scope repair.
+A trial global registration could count producer evidence as consumer evidence. Its passing run remains historical and provides no final qualification.
+Descriptor code changed during that trial. The final task invocation runs again after both corrections.
+
+Two initial tests also expected the wrong offline error type. Corrected tests require the existing typed configuration error and component.
+
+Package lint found descriptor complexity at 33 against a limit of 30.
+Update-control descriptions now have one helper. All 39 serialized descriptors retain identical bytes.
+The repository-owned verifier test command imports the new boundary tests. The existing verification commands and policy remain unchanged.
+
+Classification: required CSP5 behavior qualification and its producer-consumer evidence boundary.
+Task criteria, accepted architecture, scope, and the whole-plan goal remain unchanged.
+Distinct-inventory retirement, automatic collection, complete generation collection, and broad current-source runtime and storage tests remain open.
+Repository verification, required review, native CI, and merge remain required. The object coordination question remains pending.
+
+Five concurrent tooling edits remain separate. Final qualification must use the final committed module graph.

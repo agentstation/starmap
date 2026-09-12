@@ -867,3 +867,15 @@ Automatic collection, complete generation retention, and object-store coordinati
 
 The [review retention proof](../../plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json) records 74 passing race events on each Go toolchain.
 Policy, package lint, and source prose pass. Full CSP5 qualification remains open.
+
+## Configured controls and qualification scope: 2026-09-12
+
+Local Starmap commit `2af77d76` verifies that configured pins preserve selected catalogs through polling and restart.
+Existing checks also cover verified rollback, retained acceptance records, local imports, and permission withdrawal.
+CSP5 must still integrate generation collection and retire distinct inventories.
+
+The roles of local files, Badger, Valkey, Redis, SQLite, PostgreSQL, and MySQL remain unchanged.
+Automatic collection, complete retention integration, and object-store coordination remain open.
+
+The [component controls proof](../../plans/proof/starport-production-catalog/csp5/component-controls-2026-09-12/verification.json) records 42 passing task race events and 78 passing verifier tests.
+Policy, package lint, and source prose pass. Complete CSP5 implementation and qualification remain open.

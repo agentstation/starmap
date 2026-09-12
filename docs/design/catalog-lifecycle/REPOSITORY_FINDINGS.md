@@ -2869,3 +2869,16 @@ Task criteria, scope, accepted architecture, and the goal remain unchanged.
 
 The [review retention proof](../../plans/proof/starport-production-catalog/csp5/review-retention-2026-09-12/verification.json) records 74 passing race events on each Go toolchain.
 Policy, package lint, and source prose pass. Full CSP5 qualification remains open.
+
+## Configured controls and qualification scope: 2026-09-12
+
+Classification: required CSP5 verification and evidence scope.
+The first task invocation finds twelve unregistered subcases. Local Starmap commit `2af77d76` connects audited runtime checks and new background-control tests.
+A trial registration exposed a qualification boundary: producer tests could complete consumer cases.
+
+The final verifier confines eight producer bindings to CSP5. Five new boundary tests fail before that repair and pass afterward.
+The final task command passes twelve component subcases. A22 and A23 remain unverified for consumer qualification.
+Package lint also required a descriptor helper. All 39 descriptor records retain identical output.
+
+The [component controls proof](../../plans/proof/starport-production-catalog/csp5/component-controls-2026-09-12/verification.json) records 42 passing task race events and 78 passing verifier tests.
+Policy, package lint, and source prose pass. Complete CSP5 implementation and qualification remain open.
