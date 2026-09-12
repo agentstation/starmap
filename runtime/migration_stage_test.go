@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -143,7 +145,7 @@ func TestMigrationDirectoryPublicationNeverReplaces(t *testing.T) {
 
 func TestStageDirectoryMigrationRecoversProcessExit(t *testing.T) {
 	t.Parallel()
-	for _, stop := range []string{"stage-ready", "copy-chunk", "file-published", "copied", "verified"} {
+	for _, stop := range []string{"initialization-created", "initialization-intent", "initialization-owner", "initialization-publish", "initialization-published", "stage-ready", "copy-chunk", "file-published", "partial-removed", "copied", "verified"} {
 		t.Run(stop, func(t *testing.T) {
 			t.Parallel()
 			request := directoryMigrationRequestFixture(t)
@@ -184,6 +186,15 @@ func TestStageDirectoryMigrationRecoversProcessExit(t *testing.T) {
 			}
 			if _, err := os.Stat(request.TargetDirectory); !os.IsNotExist(err) {
 				t.Fatal("process recovery published the target")
+			}
+			entries, err := os.ReadDir(filepath.Dir(request.TargetDirectory))
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, entry := range entries {
+				if strings.HasPrefix(entry.Name(), ".migration-build-") {
+					t.Error("recovery left its initialized stage behind", entry.Name())
+				}
 			}
 		})
 	}
@@ -241,9 +252,11 @@ func TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	var partialPath string
 	_, stageErr := stageDirectoryMigration(t.Context(), request, func(event, directory string) error {
 		if event == "stage-ready" {
-			return os.Link(sourcePath, filepath.Join(directory, filepath.FromSlash(migrationPartialName("catalog-runtime/layers.json"))))
+			partialPath = filepath.Join(directory, filepath.FromSlash(migrationPartialName("catalog-runtime/layers.json")))
+			return os.Link(sourcePath, partialPath)
 		}
 		return nil
 	})
@@ -251,8 +264,12 @@ func TestStageDirectoryMigrationDoesNotTruncatePartialLinkTarget(t *testing.T) {
 	if err != nil || !bytes.Equal(before, after) {
 		t.Fatal("scratch-file recovery changed its external hard-link target")
 	}
-	if stageErr != nil {
-		t.Fatal(stageErr)
+	if stageErr == nil {
+		t.Fatal("migration accepted an unrecorded partial link")
+	}
+	retained, err := os.ReadFile(partialPath)
+	if err != nil || !bytes.Equal(before, retained) {
+		t.Fatal("migration removed the unrecorded partial link")
 	}
 }
 
@@ -298,5 +315,258 @@ func TestStageDirectoryMigrationRefusesChangedState(t *testing.T) {
 				t.Fatal("refusal changed the evidence")
 			}
 		})
+	}
+}
+
+func TestMigrationRecoveryPreservesChangedPartial(t *testing.T) {
+	t.Parallel()
+	for _, change := range []string{"content", "replacement", "unrecorded", "lock", "record"} {
+		t.Run(change, func(t *testing.T) {
+			t.Parallel()
+			request := directoryMigrationRequestFixture(t)
+			var directory string
+			interrupted := stderrors.New("interrupt partial copy")
+			_, err := stageDirectoryMigration(t.Context(), request, func(event, path string) error {
+				if event == "stage-ready" {
+					directory = path
+				}
+				if event == "copy-chunk" && path == "catalog-runtime/layers.json" {
+					return interrupted
+				}
+				return nil
+			})
+			if !stderrors.Is(err, interrupted) {
+				t.Fatalf("partial copy interruption = %v", err)
+			}
+			partial := filepath.Join(directory, filepath.FromSlash(migrationPartialName("catalog-runtime/layers.json")))
+			before, err := os.ReadFile(partial)
+			if err != nil {
+				t.Fatal(err)
+			}
+			switch change {
+			case "content":
+				before = []byte("operator content must survive")
+				if err := os.WriteFile(partial, before, ownerRecordMode); err != nil {
+					t.Fatal(err)
+				}
+			case "replacement":
+				if err := os.Rename(partial, partial+".original"); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(partial, before, ownerRecordMode); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.Remove(partial + ".original"); err != nil {
+					t.Fatal(err)
+				}
+			case "lock":
+				lock := filepath.Join(directory, directoryLockName)
+				if err := os.Rename(lock, filepath.Join(filepath.Dir(directory), "retained-stage-lock")); err != nil {
+					t.Fatal(err)
+				}
+			case "record":
+				data, err := os.ReadFile(partial + ".json")
+				if err != nil {
+					t.Fatal(err)
+				}
+				var record map[string]any
+				if err := json.Unmarshal(data, &record); err != nil {
+					t.Fatal(err)
+				}
+				record["version"] = 999
+				data, err = json.Marshal(record)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(partial+".json", data, ownerRecordMode); err != nil {
+					t.Fatal(err)
+				}
+			case "unrecorded":
+				if err := os.Remove(partial + ".json"); err != nil && !os.IsNotExist(err) {
+					t.Fatal(err)
+				}
+			}
+			identity, err := os.Stat(partial)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := StageDirectoryMigration(t.Context(), request); err == nil {
+				t.Error("recovery accepted changed or unrecorded partial content")
+			}
+			after, readErr := os.ReadFile(partial)
+			current, statErr := os.Stat(partial)
+			if readErr != nil || statErr != nil || !bytes.Equal(before, after) || !os.SameFile(identity, current) {
+				t.Errorf("recovery changed preserved partial: read=%v stat=%v", readErr, statErr)
+			}
+		})
+	}
+}
+
+func TestMigrationInitializationPreservesUnknownFiles(t *testing.T) {
+	t.Parallel()
+	request := directoryMigrationRequestFixture(t)
+	var evidence string
+	interrupted := stderrors.New("interrupt initialization")
+	_, err := stageDirectoryMigration(t.Context(), request, func(event, directory string) error {
+		if event != "initialization-created" {
+			return nil
+		}
+		evidence = filepath.Join(directory, "operator-evidence")
+		if err := os.WriteFile(evidence, []byte("preserve operator data"), ownerRecordMode); err != nil {
+			return err
+		}
+		return interrupted
+	})
+	if !stderrors.Is(err, interrupted) {
+		t.Fatalf("initialization interruption = %v", err)
+	}
+	for attempt := range 2 {
+		if attempt == 1 {
+			if _, err := StageDirectoryMigration(t.Context(), request); err == nil {
+				t.Error("initialization accepted unknown stage content")
+			}
+		}
+		data, err := os.ReadFile(evidence)
+		if err != nil || string(data) != "preserve operator data" {
+			t.Fatalf("initialization removed operator evidence: %v", err)
+		}
+	}
+}
+
+func TestMigrationSourceScanBoundsEmptyDirectories(t *testing.T) {
+	request := directoryMigrationRequestFixture(t)
+	for index := range 40001 {
+		if err := os.Mkdir(filepath.Join(request.SourceDirectory, "empty-"+strconv.Itoa(index)), runtimeDirectoryMode); err != nil {
+			t.Fatal(err)
+		}
+	}
+	_, err := PrepareDirectoryMigration(t.Context(), request)
+	var validation *errors.ValidationError
+	if !stderrors.As(err, &validation) || validation.Field != "migration.scan_entries" {
+		t.Fatalf("migration scan refusal = %v", err)
+	}
+}
+
+func TestMigrationInitializationPreservesChangedOwnership(t *testing.T) {
+	t.Parallel()
+	for _, change := range []string{"directory", "journal-lock", "intent"} {
+		t.Run(change, func(t *testing.T) {
+			t.Parallel()
+			request := directoryMigrationRequestFixture(t)
+			prepared, err := PrepareDirectoryMigration(t.Context(), request)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var directory string
+			interrupted := stderrors.New("interrupt initialized stage")
+			_, err = stageDirectoryMigration(t.Context(), request, func(event, path string) error {
+				if event == "initialization-intent" {
+					directory = path
+					return interrupted
+				}
+				return nil
+			})
+			if !stderrors.Is(err, interrupted) {
+				t.Fatalf("initialization interruption = %v", err)
+			}
+			switch change {
+			case "directory":
+				if err := os.Rename(directory, directory+"-original"); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.Mkdir(directory, runtimeDirectoryMode); err != nil {
+					t.Fatal(err)
+				}
+			case "journal-lock":
+				lock := filepath.Join(prepared.JournalDirectory, directoryLockName)
+				if err := os.Rename(lock, filepath.Join(filepath.Dir(directory), "retained-journal-lock")); err != nil {
+					t.Fatal(err)
+				}
+			case "intent":
+				if err := os.WriteFile(filepath.Join(directory, migrationPendingName), []byte("preserve changed intent"), ownerRecordMode); err != nil {
+					t.Fatal(err)
+				}
+			}
+			before, err := os.Stat(directory)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := StageDirectoryMigration(t.Context(), request); err == nil {
+				t.Error("initialization accepted changed ownership")
+			}
+			after, err := os.Stat(directory)
+			if err != nil || !os.SameFile(before, after) {
+				t.Fatal("initialization changed the preserved directory", err)
+			}
+			if change == "intent" {
+				data, err := os.ReadFile(filepath.Join(directory, migrationPendingName))
+				if err != nil || string(data) != "preserve changed intent" {
+					t.Fatal("initialization changed preserved intent", err)
+				}
+			}
+		})
+	}
+}
+
+func TestMigrationInitializationPreservesReusedStageName(t *testing.T) {
+	t.Parallel()
+	request := directoryMigrationRequestFixture(t)
+	var original string
+	result, err := stageDirectoryMigration(t.Context(), request, func(event, path string) error {
+		if event == "initialization-created" {
+			original = path
+		}
+		if event == "initialization-published" {
+			if err := os.Mkdir(original, runtimeDirectoryMode); err != nil {
+				return err
+			}
+			return os.WriteFile(filepath.Join(original, "operator-content"), []byte("preserve reused path"), ownerRecordMode)
+		}
+		return nil
+	})
+	if err != nil || result.Phase != "verified" {
+		t.Fatalf("stage publication = %+v, %v", result, err)
+	}
+	data, err := os.ReadFile(filepath.Join(original, "operator-content"))
+	if err != nil || string(data) != "preserve reused path" {
+		t.Fatal("publication changed a reused stage path", err)
+	}
+}
+
+func TestMigrationInitializationExcludesActiveWriter(t *testing.T) {
+	t.Parallel()
+	request := directoryMigrationRequestFixture(t)
+	started := make(chan struct{})
+	release := make(chan struct{})
+	done := make(chan error, 1)
+	go func() {
+		_, err := stageDirectoryMigration(t.Context(), request, func(event, _ string) error {
+			if event == "initialization-created" {
+				close(started)
+				select {
+				case <-release:
+				case <-t.Context().Done():
+					return t.Context().Err()
+				}
+			}
+			return nil
+		})
+		done <- err
+	}()
+	select {
+	case <-started:
+	case err := <-done:
+		t.Fatal("writer did not reach initialization", err)
+	case <-t.Context().Done():
+		t.Fatal(t.Context().Err())
+	}
+	_, err := StageDirectoryMigration(t.Context(), request)
+	close(release)
+	var conflict *errors.ConflictError
+	if !stderrors.As(err, &conflict) {
+		t.Error("second writer did not receive a conflict", err)
+	}
+	if err := <-done; err != nil {
+		t.Fatal("original writer did not complete", err)
 	}
 }

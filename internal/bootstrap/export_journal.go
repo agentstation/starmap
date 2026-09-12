@@ -225,7 +225,7 @@ func baselineEntryIdentity(root *os.Root, name string, expected os.FileInfo) (st
 	if err != nil || !os.SameFile(before, opened) {
 		return "", stderrors.Join(stageConflict(name), err)
 	}
-	return baselineFileIdentity(file)
+	return filepublish.Identity(file)
 }
 
 func sameBaselineMetadata(before, after os.FileInfo) bool {

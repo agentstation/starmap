@@ -51,7 +51,7 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	add("source-http", paths.SourceCache, "tree", "available", "Explicit models.dev HTTP acquisition.", "Rebuild through permitted source access. Accepted evidence lives elsewhere.", "api.json", "api.json.metadata.json", ".starmap-cache-*")
 	add("source-checkout", paths.SourceCheckout, "tree", "available", "Explicit pinned models.dev Git acquisition.", "Preserve operator-selected content. Rebuild managed input only through permitted acquisition.", "**")
 	addWorkspaceFiles(&report, paths)
-	add("migration-journal", child(paths.Roots[productpaths.State], "migrations"), "tree", "available", "An explicit runtime migration, unless its journal root is overridden.", "Preserve until the deployment recovery procedure permits removal.", "*/manifest.json", "*/journal.ndjson", "*/journal.partial-*", "*/.owner.lock", "*/.owner-*")
+	add("migration-journal", child(paths.Roots[productpaths.State], "migrations"), "tree", "available", "An explicit runtime migration, unless its journal root is overridden.", "Preserve until the deployment recovery procedure permits removal.", "*/manifest.json", "*/stage-initialization.json", "*/journal.ndjson", "*/journal.partial-*", "*/.owner.lock", "*/.owner-*")
 	for _, item := range []struct {
 		id       string
 		root     productpaths.Root

@@ -731,3 +731,26 @@ Recovery validates reset scopes and matching replacement receipts before applyin
 
 The component limits a history to 4,096 batches and 64 MiB of encoded observations and reset scopes.
 One reset request permits at most 4,096 scopes. Production compaction, native format qualification, and CLI/HTTP integration remain open.
+
+## Interrupted runtime migration
+
+Runtime migration keeps `stage-initialization.json` in its operation journal while it prepares a private stage.
+The record binds the manifest digest, parent and stage identities, and the journal writer lock.
+Restart verifies those bindings and resumes the same `.migration-build-<id>` directory.
+Unknown entries, changed intent, replacement directories, and replaced locks cause refusal without recursive cleanup.
+
+A published stage keeps its files. Recovery removes its initialization record after directory synchronization.
+Stages without a valid ownership record remain preserved for explicit recovery.
+
+Each `.migration-work/<target-path-sha256>.partial` file has an immutable sibling `.partial.json` ownership record, limited to 16 KiB.
+That record binds the stage, work directory, writer lock, file identity, mode, and source manifest entry.
+Before removal, recovery verifies that the mutable partial bytes remain an exact prefix of the original source file.
+
+A missing record, changed identity, mode, or non-prefix content causes refusal. Recovery preserves both files.
+An interrupted partial removal can resume from its retained record. Records from unsupported versions remain preserved.
+
+Source inventory permits at most 40,000 entries, including empty directories and metadata.
+The stage scan uses the exact allowed manifest layout as its entry limit. Both scans read at most 128 directory entries per batch.
+Aggregate path names must fit within 4 MiB. The existing limit of 10,000 source files still applies.
+
+Initialization permits only its two metadata files and empty work directory. It reads at most four entries before refusing an oversized layout.

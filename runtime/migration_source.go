@@ -58,7 +58,7 @@ func verifyMigrationSourceIdentity(root *os.Root, identity string) (string, erro
 
 func inspectMigrationFiles(ctx context.Context, root *os.Root) ([]directoryMigrationFile, error) {
 	var files []directoryMigrationFile
-	err := fs.WalkDir(root.FS(), ".", func(path string, entry fs.DirEntry, walkErr error) error {
+	err := walkMigrationTree(ctx, root, migrationSourceMaxEntries, func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
 		}
