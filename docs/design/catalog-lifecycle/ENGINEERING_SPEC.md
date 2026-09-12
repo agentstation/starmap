@@ -3343,3 +3343,18 @@ The legacy constructor retains its background context. Runtime cleanup releases 
 
 The [cancellation proof](../../plans/proof/starport-production-catalog/csp5/discovery-context-2026-09-12/verification.json) records 153 passing race test events and five original failures.
 Policy, prose, dependency, and Linux/Windows compilation checks pass. Native execution and full CSP5 qualification remain open.
+
+## Repeated provider history: 2026-09-12
+
+Local Starmap commit `cdcf4fff` compacts repeated provider inventories before a new acquisition exceeds the retained history limit.
+It retains the first and latest successful observations for each identical payload and complete binding declaration.
+Those original receipts preserve model change times and current evidence. Distinct inventories preserve omitted offerings.
+Partial observations and equal-time evidence also remain intact.
+
+The [history proof](../../plans/proof/starport-production-catalog/csp5/repeated-history-2026-09-12/verification.json) records 57 passing race test events, including both capacity limits and reload.
+It preserves the original capacity failure, fixture errors, and a corrected timestamp defect. Policy, prose, and Linux/Windows compilation checks pass.
+The earlier broad suite ended with a known fixture failure and runtime timeout. Full task qualification remains open.
+
+Metadata histories and reset operations retain their existing boundaries and still require compaction support.
+Immutable observation files and catalog generations remain subject to the separate collection contract.
+CSP5 retains these requirements and its complete acceptance scope.

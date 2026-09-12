@@ -5,26 +5,14 @@
   "done": 10,
   "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 116,
-  "new_evidence_artifacts": 7843,
-  "new_commit_source_files": 619,
-  "resume_words": 285,
-  "next_action": "Poll session 51528 for the corrected runtime integration race suite, then retain required generations and compact acquisition history. All twelve mapped subcases remain unverified.",
-  "current_source": "91b4fbc6ae7d570fffc24b6e3a7826654669c3b9",
+  "local_links": 115,
+  "new_evidence_artifacts": 8061,
+  "new_commit_source_files": 623,
+  "resume_words": 306,
+  "next_action": "Complete compaction for metadata, resets, and differing provider inventories, then required generation and observation-file collection. Resolve the aggregate runtime timeout before full qualification. All twelve mapped subcases remain unverified. All recorded checks are terminal.",
+  "current_source": "cdcf4fff6378a6c590e78f647e0a471906cc5b24",
   "starmap_integration_source": null,
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
   "external_running_checks": [],
-  "local_running_checks": [
-    {
-      "session_id": 51528,
-      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
-      "record": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls/.tmp/csp5-update-controls/record-integration-full-final-20260912/verification.json",
-      "tested_source_commit": "d0009a1816faf590c4ea523ed9da0f15a67e33bc",
-      "status": "running",
-      "known_failures": [
-        "TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart"
-      ],
-      "note": "Continue polling the existing process for the remaining results. The compiled source predates this constructor change and the separately verified fixture correction."
-    }
-  ]
+  "local_running_checks": []
 }

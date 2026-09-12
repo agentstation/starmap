@@ -686,15 +686,46 @@ The earlier broad suite tests `d0009a18` and retains its privacy-fixture failure
 Its running process remains separate from this cancellation proof. Its terminal result cannot qualify the newer source or count as a passing gate.
 Generation retention, history compaction, twelve mapped subcases, full qualification, review, native CI, and merge remain open.
 
+## Repeated provider history compaction
+
+The [history proof](csp5/repeated-history-2026-09-12/verification.json) binds commit `cdcf4fff` to four files and 57 passing race test events.
+Before another acquisition exceeds a history limit, the runtime compacts histories that contain only provider observations without resets.
+It groups original observations with identical payloads and complete binding declarations.
+The first and latest successful inventories remain. Intermediate copies no longer consume retained history capacity.
+
+Distinct inventories preserve omitted offerings. Partial observations and equal-time evidence keep their original receipts.
+Compaction preserves accepted history until catalog publication succeeds. The compacted history survives stage, save, load, and catalog rebuild without an identity change.
+It does not collect immutable observation files or catalog generations.
+
+The first fixture did not compile because Model has no Copy method. The corrected fixture reproduced capacity refusal at 4,096 batches.
+The expanded boundary fixture omitted a required issue subject. Correcting that fixture preserved receipt validation.
+A separate equivalence test reproduced a timestamp defect when compaction retained only the latest inventory.
+The final algorithm also retains the first inventory, preserving the original model change time.
+
+The final selected suite passes 57 events, with no failures or skips. It covers the batch and byte limits with valid observations.
+Other cases cover original receipts, omitted models, account scopes, partial evidence, equal times, cancellation, metadata boundaries, resets, and reload.
+Policy, prose, and Linux/Windows compilation checks pass. Native execution remains subject to the required platform checks.
+
+The earlier integration suite finished at 07:24 UTC against `d0009a18`. It recorded 1,151 passing test events and the known privacy-fixture failure.
+The runtime package reached its aggregate 30-minute timeout. The other four packages passed.
+The current selected suite passes both the corrected privacy fixture and the test active at timeout.
+This result does not establish that the full runtime suite meets its required deadline.
+
+Metadata histories, existing resets, incoming reset operations, and other differing provider inventories retain their current boundaries.
+Their compaction remains required before CSP5 can finish. Collection must preserve accepted references, pending publication, baselines, pins, and active readers.
+Full verification, twelve mapped subcases, required review, native CI, and merge remain open.
+Concurrent tooling inputs remain archived separately. Full qualification must use the final committed module graph.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Finish the active integration race suite and bind its terminal result to the committed source.
+The integration race suite ended with its known fixture failure and an aggregate runtime timeout. Preserve its terminal evidence under the history proof.
 Commit `91b4fbc6` now propagates caller cancellation through GitHub construction.
-Then complete generation retention and acquisition history compaction.
+
+Complete compaction for metadata, resets, and differing provider inventories. Then complete generation and observation-file collection.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
