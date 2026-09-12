@@ -36,6 +36,12 @@ Its terminal logs, stop reason, and completed phase results remain archived. Thi
 
 Full verification runs in session `2580` on commit `1a7ae757b`.
 The worktree is `starmap-catalog-update-controls-qualification`, on branch `codex/catalog-update-controls-qualification`.
+
+Twelve repository phases pass on this commit. All 85 ordinary package results pass without cached results, alongside 22 packages without tests.
+The ordinary runtime package passes in 447.139 seconds.
+These package results do not expose exact individual test or skip counts.
+The complete race suite remains active. Later repository gates remain unverified.
+
 The task check on unchanged Go source `5160414e4` passes all twelve selected subcases, including 42 race events across 21 commands.
 Eight subcases retain Starport consumer requirements.
 

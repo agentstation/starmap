@@ -585,7 +585,7 @@
       "session_id": 2580
     }
   ],
-  "observed_at": "2026-09-12T18:33:38.918133+00:00",
+  "observed_at": "2026-09-12T19:03:15.423321+00:00",
   "cache_observation": {
     "artifact": "blobs/0b4012ca415b2093d7581dc2aea68319a0c61ef901dee88c88fb2b70b44c6dce.gz",
     "testlog_bytes": 2270280301,
@@ -636,6 +636,32 @@
     "Shared/object generation collection and the pending coordinator decision remain required for complete CSP5 delivery.",
     "No full-suite speed improvement is claimed before terminal comparison evidence. The probe establishes disabled test-cache logging."
   ],
+  "repository_phase_progress": {
+    "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+    "status": "PARTIAL",
+    "completed_phases": 12,
+    "commands": [
+      "go test ./... -timeout=30m -p=1 -count=1",
+      "make test-pure-go",
+      "make test-file-sizes",
+      "./scripts/verify-package-layout.sh",
+      "./scripts/test-package-layout-verifier.sh",
+      "./scripts/verify-catalog-package-ownership.sh",
+      "./scripts/test-catalog-package-ownership-verifier.sh",
+      "./scripts/verify-catalog-dependency-direction.sh",
+      "./scripts/test-catalog-dependency-direction-verifier.sh",
+      "bash ./scripts/verify-canonical-alias-history.sh",
+      "python3 ./scripts/test_catalog_product_verify.py",
+      "python3 ./scripts/test_prepare_public_catalog_fixture.py"
+    ],
+    "ordinary_passing_packages": 85,
+    "ordinary_cached_packages": 0,
+    "packages_without_tests": 22,
+    "runtime_result": "ok  \tgithub.com/agentstation/starmap/runtime\t447.139s",
+    "stdout_artifact": "blobs/fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc.gz",
+    "stderr_snapshot_artifact": "blobs/2ab62144d46212a75478690b378b1839e259a952acdc786e0387c3cfc40dad8d.gz",
+    "limit": "The ordinary output reports packages, not exact individual test or skip counts. The complete race suite and later repository gates remain unverified."
+  },
   "artifacts": [
     {
       "path": "blobs/5dc799220f9154e2523c82ab90faebe32de5247fa53b6d57eb0e6b2776a94c7b.gz",
@@ -756,6 +782,16 @@
       "path": "blobs/3dfaccd644f4ac97129b3112834018216eba50fd8359d831b103633656e2314c.gz",
       "sha256": "ac00eddc7c31d03e4d2495216c3a5387e8248813c2c16aa72874f11deb996c27",
       "decoded_sha256": "3dfaccd644f4ac97129b3112834018216eba50fd8359d831b103633656e2314c"
+    },
+    {
+      "path": "blobs/fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc.gz",
+      "sha256": "5c1d3a8fd00fd09ba7aef17fa331291c6e19b93d62b7821542bc8bdbb8f74020",
+      "decoded_sha256": "fb018bb575688347b24ff943d9595f21873c31d6342a7140dd373d9983d2f6fc"
+    },
+    {
+      "path": "blobs/2ab62144d46212a75478690b378b1839e259a952acdc786e0387c3cfc40dad8d.gz",
+      "sha256": "0b711713dc447ca014b6fd139673b9c594780aadafa7fa76d9fcb2b2f0743f5f",
+      "decoded_sha256": "2ab62144d46212a75478690b378b1839e259a952acdc786e0387c3cfc40dad8d"
     }
   ]
 }
