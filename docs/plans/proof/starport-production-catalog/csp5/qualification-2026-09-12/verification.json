@@ -2,7 +2,7 @@
   "task": "CSP5",
   "status": "PARTIAL",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-  "source_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
+  "source_commit": "58a06d7b11e71a2d1c8088c5700a1d985fa8e61e",
   "source_binding_kind": "commit",
   "artifacts": [
     {
@@ -839,6 +839,91 @@
       "path": "blobs/fee187816e353e8810982a843993ae83f40bc21742d090f9c0ea54fcbe15401f.gz",
       "sha256": "4af08998bef97e02dd879987b0a09b09d44f63f7b1bb5b74290364c33cd9dd60",
       "decoded_sha256": "fee187816e353e8810982a843993ae83f40bc21742d090f9c0ea54fcbe15401f"
+    },
+    {
+      "path": "blobs/1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296.gz",
+      "sha256": "0c578ad12bf0afd822d8849404359fd6dc8d049a01a06efe32c94d7f94c946ff",
+      "decoded_sha256": "1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296"
+    },
+    {
+      "path": "blobs/c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8.gz",
+      "sha256": "8d70838161275a581be3cf2e3585371fc36462eef88f5ae29b304335c222f52e",
+      "decoded_sha256": "c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8"
+    },
+    {
+      "path": "blobs/5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9.gz",
+      "sha256": "29528b1cd879bf1629daa4f0e6bc1653ab5f1280586f1c7c45f29ee854d3a151",
+      "decoded_sha256": "5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9"
+    },
+    {
+      "path": "blobs/22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70.gz",
+      "sha256": "2bc4e50730d8c35edaaf5198e6669eb5b842514340d6424a2310d54f87fea2c8",
+      "decoded_sha256": "22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70"
+    },
+    {
+      "path": "blobs/21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356.gz",
+      "sha256": "c416d44f565f3e30fd4b5beb09feb72b342612af578ae06fb5fa568b02ec95d6",
+      "decoded_sha256": "21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356"
+    },
+    {
+      "path": "blobs/9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30.gz",
+      "sha256": "95cf7ddcf1489b264f74b1ed7c4e01de677d7942f80a53cd1a0a009028fcbda6",
+      "decoded_sha256": "9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30"
+    },
+    {
+      "path": "blobs/cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889.gz",
+      "sha256": "141a7a28396aa747c5fbaa868e0aa28374453b8817a2ba9ca6010d78cc26b534",
+      "decoded_sha256": "cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889"
+    },
+    {
+      "path": "blobs/0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d.gz",
+      "sha256": "7dc61f86dad1fb989058d513033d586ae4105880d5d379ae8c0c8e2cd8b010ef",
+      "decoded_sha256": "0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d"
+    },
+    {
+      "path": "blobs/fb136084f062b5ddcb6016db045d211b1005b8897b07f122f46c8c28a78348b4.gz",
+      "sha256": "144f49d87c585817a53b3a7e0f67da36994527a9eb7ad733bcbf1c4a3e7fbea2",
+      "decoded_sha256": "fb136084f062b5ddcb6016db045d211b1005b8897b07f122f46c8c28a78348b4"
+    },
+    {
+      "path": "blobs/92425a0e56d38cc6e120a00458e81dda1571c84f44a0d76973a7e39a72a61c7b.gz",
+      "sha256": "8bf276a51ca20291bfd99f44698adead26c08ab9d3055cc8f3588cfa956325ba",
+      "decoded_sha256": "92425a0e56d38cc6e120a00458e81dda1571c84f44a0d76973a7e39a72a61c7b"
+    },
+    {
+      "path": "blobs/bbf6ccaa0162d91294943780c10f94f8a8781a839c375712f80b36fff0084392.gz",
+      "sha256": "65f79a15f4f41962e83e96baad61761f98d9f4d2dcfa35bb3f0bde66e203e6d2",
+      "decoded_sha256": "bbf6ccaa0162d91294943780c10f94f8a8781a839c375712f80b36fff0084392"
+    },
+    {
+      "path": "blobs/8ca701c9fb81573743bdc85850271df85ae34c7d50b147e3bd7efadfea600a87.gz",
+      "sha256": "5802e6f8795f0b141c6b96cf8537df9413a20f623b90761ed1a835a8fcfa2a74",
+      "decoded_sha256": "8ca701c9fb81573743bdc85850271df85ae34c7d50b147e3bd7efadfea600a87"
+    },
+    {
+      "path": "blobs/050d3203b55df8a730bdf41a28930e98d80df488f03d8ba7f1679c0df37d5724.gz",
+      "sha256": "a4c52e1bbbae5c5ad66db8e19e9fa1f3732a4f357f5c01dad6da944cf3c81ac6",
+      "decoded_sha256": "050d3203b55df8a730bdf41a28930e98d80df488f03d8ba7f1679c0df37d5724"
+    },
+    {
+      "path": "blobs/d909504bd232792c7fbaf0a1a82d76418bbe99081deb31e83dc4226f8157ea26.gz",
+      "sha256": "55c7a47cd892ec349a7f33eb81d63423e365bccb82c5fff5c0b7169dcd900712",
+      "decoded_sha256": "d909504bd232792c7fbaf0a1a82d76418bbe99081deb31e83dc4226f8157ea26"
+    },
+    {
+      "path": "blobs/fec74ff8c860412c9577d13180fbf27d6bf88bb35700f73fbd74dbf2a5bf691e.gz",
+      "sha256": "4d290c51eb63527b3c24bf8977a3e25ff79d493ab98b7ba1145ad7689f224c03",
+      "decoded_sha256": "fec74ff8c860412c9577d13180fbf27d6bf88bb35700f73fbd74dbf2a5bf691e"
+    },
+    {
+      "path": "blobs/4ab3f42ec4774dc80e7a82cebdf4889f6031e20dcd27c3b184ad6b8f8e0814f0.gz",
+      "sha256": "e28691f0961ec2affcb2b2428ece908e38d51d4c5ad401a0b26d956ccdbefe58",
+      "decoded_sha256": "4ab3f42ec4774dc80e7a82cebdf4889f6031e20dcd27c3b184ad6b8f8e0814f0"
+    },
+    {
+      "path": "blobs/d902b16ed304107759e53c20b2c85f3cc4437fab465a3329f975843c721a5314.gz",
+      "sha256": "b5fbda0c955e9065fae842979d99ff0903db4e4a2d071f9e76d85f445fb0db89",
+      "decoded_sha256": "d902b16ed304107759e53c20b2c85f3cc4437fab465a3329f975843c721a5314"
     }
   ],
   "checks": {
@@ -28724,6 +28809,115 @@
       },
       "test_events": {},
       "test_results": []
+    },
+    "qualification-generated-docs-check-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "docs-check"
+      ],
+      "started_at": "2026-09-12T16:21:49.591317+00:00",
+      "base_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
+      "source_files": {
+        "docs/API.md": "1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296",
+        "pkg/catalogs/README.md": "c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8",
+        "pkg/catalogs/permission/README.md": "5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9",
+        "pkg/catalogs/storage/README.md": "22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70",
+        "remote/README.md": "21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356",
+        "runtime/README.md": "9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30",
+        "runtime/source/README.md": "cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889",
+        "runtime/status/README.md": "0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T16:21:53.338335+00:00",
+      "name": "qualification-generated-docs-check-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/fb136084f062b5ddcb6016db045d211b1005b8897b07f122f46c8c28a78348b4.gz",
+        "source/docs/API.md.gz": "blobs/1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296.gz",
+        "source/pkg/catalogs/README.md.gz": "blobs/c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8.gz",
+        "source/pkg/catalogs/permission/README.md.gz": "blobs/5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9.gz",
+        "source/pkg/catalogs/storage/README.md.gz": "blobs/22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70.gz",
+        "source/remote/README.md.gz": "blobs/21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356.gz",
+        "source/runtime/README.md.gz": "blobs/9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30.gz",
+        "source/runtime/source/README.md.gz": "blobs/cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889.gz",
+        "source/runtime/status/README.md.gz": "blobs/0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d.gz",
+        "stderr.log": "blobs/92425a0e56d38cc6e120a00458e81dda1571c84f44a0d76973a7e39a72a61c7b.gz",
+        "stdout.log": "blobs/bbf6ccaa0162d91294943780c10f94f8a8781a839c375712f80b36fff0084392.gz",
+        "verification.json": "blobs/8ca701c9fb81573743bdc85850271df85ae34c7d50b147e3bd7efadfea600a87.gz"
+      },
+      "test_events": {},
+      "test_results": []
+    },
+    "qualification-generated-godoc-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "godoc"
+      ],
+      "started_at": "2026-09-12T16:20:18.679120+00:00",
+      "base_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
+      "source_files": {},
+      "exit_code": 0,
+      "finished_at": "2026-09-12T16:21:27.245091+00:00",
+      "name": "qualification-generated-godoc-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stderr.log": "blobs/050d3203b55df8a730bdf41a28930e98d80df488f03d8ba7f1679c0df37d5724.gz",
+        "stdout.log": "blobs/d909504bd232792c7fbaf0a1a82d76418bbe99081deb31e83dc4226f8157ea26.gz",
+        "verification.json": "blobs/fec74ff8c860412c9577d13180fbf27d6bf88bb35700f73fbd74dbf2a5bf691e.gz"
+      },
+      "test_events": {},
+      "test_results": []
+    },
+    "qualification-generated-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T16:21:49.590333+00:00",
+      "base_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
+      "source_files": {
+        "docs/API.md": "1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296",
+        "pkg/catalogs/README.md": "c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8",
+        "pkg/catalogs/permission/README.md": "5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9",
+        "pkg/catalogs/storage/README.md": "22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70",
+        "remote/README.md": "21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356",
+        "runtime/README.md": "9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30",
+        "runtime/source/README.md": "cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889",
+        "runtime/status/README.md": "0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T16:22:42.086474+00:00",
+      "name": "qualification-generated-prose-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/fb136084f062b5ddcb6016db045d211b1005b8897b07f122f46c8c28a78348b4.gz",
+        "source/docs/API.md.gz": "blobs/1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296.gz",
+        "source/pkg/catalogs/README.md.gz": "blobs/c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8.gz",
+        "source/pkg/catalogs/permission/README.md.gz": "blobs/5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9.gz",
+        "source/pkg/catalogs/storage/README.md.gz": "blobs/22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70.gz",
+        "source/remote/README.md.gz": "blobs/21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356.gz",
+        "source/runtime/README.md.gz": "blobs/9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30.gz",
+        "source/runtime/source/README.md.gz": "blobs/cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889.gz",
+        "source/runtime/status/README.md.gz": "blobs/0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/4ab3f42ec4774dc80e7a82cebdf4889f6031e20dcd27c3b184ad6b8f8e0814f0.gz",
+        "verification.json": "blobs/d902b16ed304107759e53c20b2c85f3cc4437fab465a3329f975843c721a5314.gz"
+      },
+      "test_events": {},
+      "test_results": []
     }
   },
   "source_files": [
@@ -28746,6 +28940,11 @@
       "path": "docker-compose.yml",
       "sha256": "fc8bc54f5328a00c89d883461e3a692cc9ecd04c5455d656f521c838d3538180",
       "artifact": "blobs/fc8bc54f5328a00c89d883461e3a692cc9ecd04c5455d656f521c838d3538180.gz"
+    },
+    {
+      "path": "docs/API.md",
+      "sha256": "1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296",
+      "artifact": "blobs/1d499a02ce219e381c5c1c1cab2d54908d9e130abadcb42554eec85cc23e1296.gz"
     },
     {
       "path": "docs/CATALOG_SETTINGS.md",
@@ -28873,6 +29072,11 @@
       "artifact": "blobs/6a36039f9e6a62f84efb6b961e85de9de359f10f35052f5ed1855610f0d35276.gz"
     },
     {
+      "path": "pkg/catalogs/README.md",
+      "sha256": "c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8",
+      "artifact": "blobs/c0dc85e4af33a53ecf58e758a482b2ec854fe6117c4d5bd043133150bf6d94a8.gz"
+    },
+    {
       "path": "pkg/catalogs/config/config_test.go",
       "sha256": "cd0dc04be5f5923154eb31c1f45c3fb95d38873b269cf9072bbb2de3387596f8",
       "artifact": "blobs/cd0dc04be5f5923154eb31c1f45c3fb95d38873b269cf9072bbb2de3387596f8.gz"
@@ -28898,6 +29102,11 @@
       "artifact": "blobs/640d5bf6ad86210dbb74559c8e6bd7063036306de9d4e85e2bc573409b3a2bc1.gz"
     },
     {
+      "path": "pkg/catalogs/permission/README.md",
+      "sha256": "5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9",
+      "artifact": "blobs/5a141e3589a5f40458bad7d3b817db78fd39fed6c59fd35526ce3a0f880c9af9.gz"
+    },
+    {
       "path": "pkg/catalogs/permission/generation_collection.go",
       "sha256": "81391cb1caab8c24ea8f4f5ec9734f15799ad39666bd169cae7d402e2c0855c2",
       "artifact": "blobs/81391cb1caab8c24ea8f4f5ec9734f15799ad39666bd169cae7d402e2c0855c2.gz"
@@ -28918,6 +29127,11 @@
       "artifact": "blobs/f4fb7f49d5f38e334757bdf2d6b094370e34a3e5ffc8b229d730a79b0f35a675.gz"
     },
     {
+      "path": "pkg/catalogs/storage/README.md",
+      "sha256": "22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70",
+      "artifact": "blobs/22f9e81e2cd15ae31864eaeb985fcd3a7f20e739f0d0e99a541e4d8263d15b70.gz"
+    },
+    {
       "path": "pkg/catalogs/storage/filesystem_limits.go",
       "sha256": "399284c2ece52b1744b83c95188e8e84d675b7a2b3990ca5328708a1faad412d",
       "artifact": "blobs/399284c2ece52b1744b83c95188e8e84d675b7a2b3990ca5328708a1faad412d.gz"
@@ -28926,6 +29140,16 @@
       "path": "pkg/catalogs/storage/retention.go",
       "sha256": "5924d627169bd5fbfde7969d4180273904eddad7a86d4b844a717ffc97e31c40",
       "artifact": "blobs/5924d627169bd5fbfde7969d4180273904eddad7a86d4b844a717ffc97e31c40.gz"
+    },
+    {
+      "path": "remote/README.md",
+      "sha256": "21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356",
+      "artifact": "blobs/21a54b19a259664af322deb33c9743ff1e0983e45734ae2f6738c5398d19c356.gz"
+    },
+    {
+      "path": "runtime/README.md",
+      "sha256": "9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30",
+      "artifact": "blobs/9ae8bb5dea6cd5e1c07907eef23a3ef9a3d4883574ef8739247ba05312eb1d30.gz"
     },
     {
       "path": "runtime/accepted_sources_test.go",
@@ -29018,9 +29242,19 @@
       "artifact": "blobs/1c94dfc83fcee52483a0d39e99c0c57ad46fa7eb72c8f73e583cbe6880a33b88.gz"
     },
     {
+      "path": "runtime/source/README.md",
+      "sha256": "cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889",
+      "artifact": "blobs/cb9ff589cb99ced7286fac084db8a2e4b532efbb44105d5fd3f20a304ea5e889.gz"
+    },
+    {
       "path": "runtime/status.go",
       "sha256": "38a86ddf283d0ddb46bef04ad1ed21abdc86c0c56ce2cdd52ac87e4c2482cee7",
       "artifact": "blobs/38a86ddf283d0ddb46bef04ad1ed21abdc86c0c56ce2cdd52ac87e4c2482cee7.gz"
+    },
+    {
+      "path": "runtime/status/README.md",
+      "sha256": "0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d",
+      "artifact": "blobs/0116a074b6ba7dca51137bf6f638fdd538665c0782d1e1365e70964e320a0a0d.gz"
     },
     {
       "path": "runtime/status/retention.go",
@@ -29076,12 +29310,13 @@
     "Historical profile bytes are total allocations, not resident memory or request overhead.",
     "The eight test changes add only t.Parallel. Test cases, assertions, and deadlines remain unchanged."
   ],
-  "previous_goal_turn": "PROGRESS: qualified all twelve CSP5 task subcases on 064eb02c0 and committed the plan and evidence as b5c2c4fd7.",
-  "observed_at": "2026-09-12T15:53:02.726694+00:00",
+  "previous_goal_turn": "PROGRESS: corrected catalog file inspection on 624d993a8 and committed generated API references on 58a06d7b1. Documentation and prose checks pass. Full repository session 42639 remains live.",
+  "observed_at": "2026-09-12T16:23:46.259643+00:00",
   "prior_source_commits": [
     "8683287dfcd5fc17268d501e70f9b6753aea1c67",
     "082a760a283eb323adb0209c6a150efd8b96da21",
-    "064eb02c0e6443abfa277d47bffac7bc76cc3992"
+    "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+    "624d993a8eb091473b956affca721b4cb4e8cf1f"
   ],
   "base_commit": "292fe26194c9c571637fdd5fdca056b2fdec8e28",
   "permission_overlay_files": {
@@ -29220,5 +29455,21 @@
     "evidence_basis": "The retained task command exits zero only when every selected named behavior check passes without skips. The committed verifier defines this gate.",
     "test_event_counts": "UNAVAILABLE: text output does not retain child test events. No exact event count is claimed for this invocation.",
     "limit": "A22 and A23 retain their Starport consumer requirements. Shared/object collection, complete repository verification, review, native CI, and merge remain open."
+  },
+  "documentation_transition": {
+    "running_check": "qualification-inventory-repository-624d993a8-20260912",
+    "from_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
+    "to_commit": "58a06d7b11e71a2d1c8088c5700a1d985fa8e61e",
+    "changed_files": [
+      "docs/API.md",
+      "pkg/catalogs/README.md",
+      "pkg/catalogs/permission/README.md",
+      "pkg/catalogs/storage/README.md",
+      "remote/README.md",
+      "runtime/README.md",
+      "runtime/source/README.md",
+      "runtime/status/README.md"
+    ],
+    "reason": "Generated API references were stale. Only Markdown files outside all Go embed patterns changed. Go source, module files, fixtures, and verification scripts are identical. Separate documentation and prose checks pass with exact committed file hashes."
   }
 }

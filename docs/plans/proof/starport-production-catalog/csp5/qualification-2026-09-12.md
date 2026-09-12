@@ -1,7 +1,7 @@
 # CSP5 committed candidate qualification
 
 Commit `8683287dfcd5fc17268d501e70f9b6753aea1c67` consolidates automatic local retention and its configuration, diagnostics, and regression corrections.
-The [verification record](qualification-2026-09-12/verification.json) binds 63 changed files through follow-up `624d993a8eb091473b956affca721b4cb4e8cf1f` and all recorded commands.
+The [verification record](qualification-2026-09-12/verification.json) binds 71 changed files through follow-up `58a06d7b11e71a2d1c8088c5700a1d985fa8e61e` and all recorded commands.
 The qualification worktree is clean and uses the committed Go module graph.
 The earlier worktree still contains five unrelated tooling edits. Those edits remain outside this commit.
 
@@ -132,6 +132,20 @@ The corrected Go 1.26.6 run passes six race events, including both original pin-
 The focused Go 1.25.12 run passes three race events. These selections overlap.
 Package lint, repository policy, and source prose pass.
 Full repository verification now runs on committed source `624d993a8` in session `42639`.
+
+## Generated API references
+
+The storage documentation check found stale public API declarations before the full repository run reached its documentation gate.
+Commit `58a06d7b1` regenerates eight API reference files with `make godoc`.
+It includes retention policy, collection capabilities, manual source reads, status fields, and corrected source links.
+`make docs-check` passes. `make technical-writing-check` passes 1,671 files with zero diagnostics.
+
+Session `42639` started on `624d993a8` and remains live during this documentation correction.
+Its ordinary workspace and CLI packages pass, including the earlier file-inspection failure.
+The correction changes only Markdown files outside all Go embed patterns.
+Go source, module files, fixtures, and verification scripts remain identical to the run's starting commit.
+The separate documentation checks retain hashes of all eight generated files, which match the committed bytes.
+This correction does not require restarting the package tests.
 
 ## Delivery sequence
 
