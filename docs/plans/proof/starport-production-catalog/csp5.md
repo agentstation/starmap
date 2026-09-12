@@ -915,3 +915,37 @@ Five concurrent tooling edits remain outside the source commit. Final task quali
 
 Object generation collection, runtime protection, observation-file collection, distinct-inventory retirement, twelve mapped subcases, full verification, required review, native CI, and merge remain open.
 CSP5 remains unpublished until its complete contract passes.
+
+## Runtime pin retention: 2026-09-12
+
+Local commit `03590139` protects the original generation that a running pin selects.
+The [pin retention proof](csp5/pin-retention-2026-09-12/verification.json) binds seventeen committed files to twenty-two checks.
+The original regression loses that selection when an authority origin republishes its payload under a new generation ID.
+
+The root client exposes an optional generation lease. The authority publisher forwards a private read-only value without exposing its publication store.
+The client preserves configured store reads and verifies their manifest and payload against the protected artifact.
+Embedded fallback also preserves configured read checks.
+
+A first implementation bypassed a wrapper's read method. Broader tests then accepted invalid identity, payload, and schema cases.
+Both toolchains recorded those three subcase failures and their parent. The corrected implementation passes the original tests without weakening their fixtures.
+
+Both final pin suites pass 62 race test events. Both recovery selections pass 240 events.
+These counts include parent tests and overlap. The Go 1.26.6 and 1.25.12 runs repeat the same cases.
+No selected test fails or skips. The final pin suites also cover a later startup failure after protection starts.
+
+Tests cover independent memory and filesystem results, missing embedded storage, cancellation, invalid artifacts, combined read and release errors, and unsupported stores.
+Runtime shutdown keeps the lease until owned work stops. Failed startup releases it, including after a later writer-service error.
+Collectors still must retain configured pins and other persistent requirements after shutdown.
+
+The package linter found seven diagnostics in earlier CSP5 code.
+Repairs separate checkpoint decoding, migration preparation, partial-removal checks, and retained startup at their owning functions.
+Checkpoint indexes use checked conversion. File timestamp checks compare instants. Final lint passes without policy changes or suppressions.
+
+Policy, root dependency checks, catalog dependency checks, and source prose pass.
+The proof preserves the intermediate lint diagnostic and the seven-sentence paragraph diagnostic. A paragraph break resolves the prose failure.
+Generated API documentation reflects the new capability and current source locations.
+
+Five concurrent tooling edits remain outside the source commit. Final task qualification must use its final committed module graph.
+The complete runtime suite still needs final source qualification and its public fixture.
+Object generation retirement, automatic runtime collection, observation-file collection, distinct-inventory retirement, twelve mapped subcases, review, native CI, and merge remain open.
+CSP5 remains unpublished until its complete contract passes.

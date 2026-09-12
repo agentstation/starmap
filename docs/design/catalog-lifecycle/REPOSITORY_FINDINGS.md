@@ -2820,3 +2820,14 @@ It records 223 passing storage race events on each Go toolchain, plus passing li
 
 The object catalog store still lacks coordinated generation collection. Backend primitives alone cannot establish that contract.
 Live S3 compatibility and native platform execution remain unverified for the new operations. Runtime adoption and full CSP5 qualification remain open.
+
+## Runtime pin retention: 2026-09-12
+
+Classification: in-scope retention defect and read-policy regression under CSP5.
+Local Starmap commit `03590139` protects the original pin selection after origin publication changes the current generation ID.
+The [pin proof](../../plans/proof/starport-production-catalog/csp5/pin-retention-2026-09-12/verification.json) preserves the original collection failure.
+It also preserves the first implementation's configured-read bypass and its correction.
+
+Both final pin selections pass 62 race events. Both recovery selections pass 240 events. These counts overlap and repeat across toolchains.
+Lint repairs preserve migration and checkpoint behavior. Policy, lint, dependency gates, and prose pass.
+Object retirement, runtime collection, history retirement, and full CSP5 qualification remain open.

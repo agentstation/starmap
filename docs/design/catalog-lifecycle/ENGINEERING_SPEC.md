@@ -3435,3 +3435,13 @@ The minimum object storage interface remains unchanged.
 Generation retirement still requires coordinated publication and read protection. Inventory pages lack snapshot isolation, and validators can repeat.
 The [backend proof](../../plans/proof/starport-production-catalog/csp5/object-collection-2026-09-12/verification.json) records 223 passing storage race events on each Go toolchain.
 Package lint, policy, and source prose pass. Object generation collection, runtime adoption, and full CSP5 qualification remain open.
+
+## Runtime pin retention: 2026-09-12
+
+Local Starmap commit `03590139` holds a read lease on the original generation selected by a running pin.
+Origin publication can issue the same payload at a new generation ID while the original selection remains protected.
+The client preserves configured store reads. The authority publisher forwards a read-only capability.
+
+Failed startup releases protection. Shutdown releases it after owned work stops. Collectors must separately retain configured pins after shutdown.
+The [pin proof](../../plans/proof/starport-production-catalog/csp5/pin-retention-2026-09-12/verification.json) records 62 passing pin events and 240 passing recovery events on each Go toolchain.
+These selections overlap. Object retirement, runtime collection, history retirement, and full CSP5 qualification remain open.

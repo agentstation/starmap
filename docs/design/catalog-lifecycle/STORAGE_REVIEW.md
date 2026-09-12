@@ -817,3 +817,16 @@ Current-object sizes do not measure total storage in versioned buckets. Deployme
 
 These operations do not coordinate generation retirement or protect pins and readers. Object collection and runtime integration remain CSP5 work.
 Live service qualification remains unverified. This change does not alter Badger, Valkey, Redis, SQLite, PostgreSQL, or MySQL roles.
+
+## Runtime pin retention: 2026-09-12
+
+Local Starmap commit `03590139` adds optional generation read leases to the root client and the authority publisher.
+Memory and filesystem stores support the capability. A running pin retains its original selection until shutdown completes.
+Failed startup also releases protection. Configured store read checks remain effective.
+
+Collectors must retain configured pins and other persistent requirements after a runtime closes.
+The [pin proof](../../plans/proof/starport-production-catalog/csp5/pin-retention-2026-09-12/verification.json) records 62 passing pin events and 240 passing recovery events on each Go toolchain.
+These selections overlap. Policy, lint, dependency gates, and source prose pass.
+
+Object generation retirement and automatic runtime collection remain incomplete. Native platform qualification remains open for this checkpoint.
+This change does not alter Badger, Valkey, Redis, SQLite, PostgreSQL, or MySQL roles.
