@@ -716,6 +716,32 @@ Their compaction remains required before CSP5 can finish. Collection must preser
 Full verification, twelve mapped subcases, required review, native CI, and merge remain open.
 Concurrent tooling inputs remain archived separately. Full qualification must use the final committed module graph.
 
+## Bounded history checkpoints: 2026-09-12
+
+Local commit `964f1c36` adds version 4 checkpoints for metadata, provider, and mixed histories, including ordered reset operations.
+The [checkpoint proof](csp5/checkpoint-history-2026-09-12/verification.json) records 166 passing race test events across two disjoint selections.
+The original batch-limit test reproduced capacity refusal before implementation.
+An intermediate selection matched only the source-version tests. It supplies no checkpoint or provider-version coverage.
+The final selections include both version matrices, every checkpoint case, preview, pins, and observation updates.
+
+Checkpoints store distinct payloads once and retain original receipts, ordered batch references, and reset scopes.
+Recovery validates every reference and receipt before applying retained inputs. Invalid records preserve the accepted head and pending journal.
+Tests preserve catalog identity through mixed-source replay, replacement baselines, reset exclusions, reload, and a later append that reaccepts an original receipt.
+The publication recovery cases use durable journals in one process. They do not qualify process-crash recovery for the complete product.
+
+Each checkpoint permits 64 MiB of encoded data and 65,536 ordered observation references.
+The history permits at most 4,096 linked records between checkpoints. Later linked records also count toward the encoded byte limit.
+Original versions 1, 2, and 3 remain readable. Older readers reject version 4 heads.
+
+Required distinct data can still exceed capacity. That refusal preserves the accepted catalog.
+
+Final policy, prose, and Linux/Windows compilation checks pass. The proof preserves the original prose diagnostic and its correction.
+All race tests ran on macOS. Native platform execution and the required broad task suite remain open.
+Five concurrent tooling edits remain outside this commit. Final task qualification must use the committed module graph.
+
+Checkpoints do not retire distinct superseded inventories or collect predecessor files and catalog generations.
+CSP5 retains those requirements, twelve mapped subcases, full verification, review, native CI, and merge.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
@@ -725,7 +751,7 @@ The focused results above do not complete those full subcases.
 The integration race suite ended with its known fixture failure and an aggregate runtime timeout. Preserve its terminal evidence under the history proof.
 Commit `91b4fbc6` now propagates caller cancellation through GitHub construction.
 
-Complete compaction for metadata, resets, and differing provider inventories. Then complete generation and observation-file collection.
+Safely retire superseded distinct inventories. Then collect generations and observation files.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

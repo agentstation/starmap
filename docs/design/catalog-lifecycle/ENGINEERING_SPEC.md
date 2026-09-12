@@ -3358,3 +3358,18 @@ The earlier broad suite ended with a known fixture failure and runtime timeout. 
 Metadata histories and reset operations retain their existing boundaries and still require compaction support.
 Immutable observation files and catalog generations remain subject to the separate collection contract.
 CSP5 retains these requirements and its complete acceptance scope.
+
+## Bounded history checkpoints: 2026-09-12
+
+Local Starmap commit `964f1c36` adds version 4 checkpoints for metadata, provider, and mixed histories with ordered resets.
+Checkpoints share distinct payload bytes and retain original receipts, batch order, and reset scopes.
+Each checkpoint permits 64 MiB encoded data and 65,536 ordered observation references. Later linked records also count toward the history byte limit.
+Versions 1, 2, and 3 remain readable. Older readers reject version 4 heads.
+
+The [checkpoint proof](../../plans/proof/starport-production-catalog/csp5/checkpoint-history-2026-09-12/verification.json) records 166 passing race test events across two disjoint selections.
+Cases cover both history limits, mixed replay, replacement baselines, reset exclusions, later appends, invalid records, and publication recovery.
+Policy, prose, and Linux/Windows compilation pass. Native execution and full task qualification remain open.
+
+Checkpoints do not retire distinct superseded inventories or collect predecessor files and catalog generations.
+Required distinct data can still exceed capacity, which preserves the accepted catalog and returns a conflict.
+CSP5 retains safe compaction, collection, and its complete acceptance contract.
