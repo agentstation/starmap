@@ -2516,7 +2516,23 @@ All 1,424 workspace and catalog race events pass. Application integration, depen
 Source inspection identifies another CSP5 defect in `internal/catalog/workspace/migration.go:rollbackLegacyMove`.
 It compares semantic catalog content before recursively removing the projected workspace.
 Unrecognized operator notes do not change that checksum. The checksum therefore does not establish ownership of everything that deletion can remove.
-CSP5 owns the correction and its regression test. The separate path still needs a failure test.
+At `a05ca541`, the separate path still needed a failure test. The next section records that test and the correction.
 
 Private preparation ownership remains in memory. Persistent recovery, active-writer exclusion, retention, compaction, and full qualification remain open.
 No CSP5 PR or merge credit applies.
+
+## Legacy rollback ownership: 2026-09-12
+
+Starmap `fcfda255` preserves operator content during legacy layout rollback.
+The [rollback proof](../../plans/proof/starport-production-catalog/csp5/legacy-rollback-2026-09-12/verification.json) records seven original unsafe rollback cases and their passing corrections.
+Rollback now checks the published candidate inventory and original store identity. It preserves projection-marker paths and the stable writer-lock file.
+Both directory moves refuse an existing destination. Cancellation retains a separate cleanup context.
+
+Review also found that assembly could adopt a replacement file containing identical bytes. Its failure test proves that the earlier code publishes the replacement.
+Assembly now checks the identities and bytes recorded during file creation before publication.
+All 175 workspace and two CLI command race events pass. Final ago, prose, and Linux/Windows compilation checks pass.
+
+Source inspection finds unbounded directory and manifest reads in legacy preflight.
+The projection-marker writer also removes its temporary path without checking recorded ownership.
+CSP5 owns those remaining defects and their regression tests. Persistent workspace and legacy relocation recovery remain open.
+These local results do not add PR, merge, native-runtime, or released-pair credit.

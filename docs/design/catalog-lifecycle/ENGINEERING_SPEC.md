@@ -2684,7 +2684,14 @@ It preserves unknown entries and changed files. Assembly uses bounded directory 
 The [preparation proof](../../plans/proof/starport-production-catalog/csp5/workspace-preparation-2026-09-12/verification.json) records 1,424 passing workspace and catalog race events.
 
 These ownership records remain in memory. Persistent workspace recovery and active-writer exclusion remain incomplete.
-Legacy migration rollback also requires recorded ownership before deletion. A matching semantic catalog checksum does not prove that operator files remain unchanged.
+
+Commit `fcfda255` passes the recorded candidate inventory to legacy migration rollback.
+Rollback checks native identities, bytes, and access before removing projected entries. It preserves unknown or changed files and replacement directories.
+Both store moves check the original native identity and refuse an existing destination. Rollback preserves projection-marker paths and the stable writer-lock file.
+
+Assembly also checks the finished tree against identities and bytes recorded during creation. It refuses a replacement file with identical bytes.
+The [rollback proof](../../plans/proof/starport-production-catalog/csp5/legacy-rollback-2026-09-12/verification.json) records 177 passing workspace and CLI command race events.
+Legacy preflight reads and projection-marker temporary cleanup still need bounds and ownership checks. Persistent relocation and workspace recovery remain incomplete.
 
 Starport must qualify its own composition under CSP8.
 

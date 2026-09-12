@@ -14,6 +14,7 @@ Commit `9e875a35` adds migration initialization, partial ownership, scan limits,
 Commit `536791a0` checks candidate cleanup and reuses validated repair candidates.
 
 Commit `a05ca541` records private preparation writes and bounds assembly reads.
+Commit `fcfda255` checks legacy rollback ownership and rejects replacement assembly files.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -342,7 +343,33 @@ Compilation does not qualify native Windows or Linux runtime behavior. The appli
 
 Ownership records remain in process memory. Persistent preparation and replacement recovery, including active-writer exclusion, remain open.
 Source inspection also found a separate gap in `rollbackLegacyMove`: its semantic checksum excludes operator notes before recursive deletion.
-CSP5 must bind rollback cleanup to recorded file ownership and add a regression test. This finding has no failure-test result yet.
+At `a05ca541`, this finding had no failure-test result. The legacy rollback section below records the correction.
+
+## Legacy rollback and assembly ownership
+
+The [rollback proof](csp5/legacy-rollback-2026-09-12/verification.json) binds commit `fcfda255` to its exact sources and command results.
+Seven original rollback scenarios fail, producing nine test failure events including their parents.
+They cover unknown projected files, changed YAML comments, replacement files, replacement roots, operator sidecars, and a replaced relocated store.
+A separate assembly test also fails because assembly accepts a replacement file with identical bytes.
+
+Rollback now receives the candidate inventory captured before publication. It verifies native file identities, content, access, and remaining entries before removal.
+It preserves unknown or changed content and reports a conflict with the original failure.
+The store has a native directory identity captured before relocation. Both relocation and restoration use open parent directories and refuse an existing destination.
+
+Rollback leaves projection-marker paths and the stable writer-lock file in place.
+Two previous tests expected rollback to delete those unowned entries.
+The tests now verify that rollback preserves those entries and restores the exact store.
+Additional tests cover cancellation, lock identity and exclusion, and occupied move destinations.
+Assembly compares its finished tree with identities and bytes recorded during creation. Identical bytes do not establish ownership of a replacement file.
+
+All 175 workspace and two CLI command race events pass without failures or skips.
+The CLI cases use the existing adapter fixture. Workspace tests exercise real filesystem stores.
+Final ago, prose, and Linux/Windows compilation checks pass. The proof retains an initial eight-sentence paragraph failure and its corrected document.
+Native runtime and physical power-loss qualification remain open.
+
+Store identities and candidate inventories remain in memory. They do not establish recovery after process exit.
+Legacy preflight still uses unbounded directory and manifest reads. Projection-marker temporary cleanup still removes an entry without a recorded ownership check.
+CSP5 owns those paths, persistent recovery, active-writer exclusion, retention, compaction, and full qualification.
 
 ## Remaining work
 
@@ -350,7 +377,7 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Fix legacy migration rollback ownership. Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
+Bound legacy preflight reads and check projection-marker temporary ownership. Complete workspace, retained-evidence, and discovery recovery, then generation retention under the task contract.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

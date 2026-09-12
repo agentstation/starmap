@@ -520,5 +520,19 @@ The writer rejects a full inventory before creating another file. Assembly bound
 
 These records stay in process memory. They do not select a new storage service or change catalog authority.
 Persistent workspace recovery and active-writer exclusion remain CSP5 work.
-Legacy migration rollback also needs recorded ownership before directory removal. Catalog semantic equality does not cover operator notes.
+At `a05ca541`, legacy migration rollback still needed recorded ownership before directory removal. The next section records that correction.
 The [preparation proof](../../plans/proof/starport-production-catalog/csp5/workspace-preparation-2026-09-12/verification.json) owns the current local evidence and qualification limits.
+
+## Legacy relocation and rollback: 2026-09-12
+
+Starmap `fcfda255` records the original store's native directory identity before relocation.
+It checks that identity before each move and refuses existing destinations. Rollback removes only unchanged projected entries that match the recorded candidate inventory.
+Unknown files, changed bytes, replacement entries, and replacement stores remain preserved.
+
+Rollback preserves projection-marker paths and the stable writer-lock file. These files remain outside the restored machine store.
+The retained lock supports reuse without changing its identity. Operators must inspect a blocking marker path before removing it.
+The [rollback proof](../../plans/proof/starport-production-catalog/csp5/legacy-rollback-2026-09-12/verification.json) records local tests and qualification limits.
+
+The identity and inventory remain in memory. Durable relocation intent and recovery after process exit remain incomplete.
+CSP5 still must bound legacy preflight reads and check projection-marker temporary ownership.
+The correction does not change catalog authority or the role of a shared storage service.
