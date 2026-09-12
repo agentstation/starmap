@@ -14,6 +14,7 @@ import (
 )
 
 type workspaceRecordWriter struct {
+	checkWriter   func() error
 	beforePublish func(string) error
 	afterPublish  func(string) error
 	writeBytes    func(*os.File, []byte) (int, error)
@@ -113,6 +114,11 @@ func (h workspaceRecordWriter) publish(ctx context.Context, root *os.Root, name 
 	}
 	if err := ctx.Err(); err != nil {
 		return workspaceRecordState{}, err
+	}
+	if h.checkWriter != nil {
+		if err := h.checkWriter(); err != nil {
+			return workspaceRecordState{}, err
+		}
 	}
 	if options.replace {
 		err = root.Rename(temporary, name)

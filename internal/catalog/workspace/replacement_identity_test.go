@@ -79,7 +79,12 @@ func TestReplacementCompletionPreservesChangedJournal(t *testing.T) {
 					if err != nil {
 						t.Fatal(err)
 					}
-					_, err = advanceReplacement(t.Context(), root, record, replacementHooks{after: changeJournal})
+					writer, err := acquireWorkspaceWriter(target)
+					if err != nil {
+						t.Fatal(err)
+					}
+					defer writer.close()
+					_, err = advanceReplacement(t.Context(), root, record, replacementHooks{writer: writer, after: changeJournal})
 					assertReadConflict(t, err)
 				} else {
 					_, err := p.project(t.Context(), target, catalog, identity, InputExpectation{})
@@ -123,7 +128,13 @@ func TestReplacementCompletionRequiresAcceptedJournal(t *testing.T) {
 			} else {
 				f.record.journal = workspaceRecordState{}
 			}
-			err = finishReplacementRecord(ctx, root, f.record)
+			writer, err := acquireWorkspaceWriter(f.path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer writer.close()
+			err = finishReplacementRecord(ctx, root, f.record, writer)
+			writer.close()
 			if guard == "cancellation" {
 				if !stderrors.Is(err, context.Canceled) {
 					t.Fatalf("completion ignored cancellation: %v", err)

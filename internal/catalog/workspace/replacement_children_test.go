@@ -83,6 +83,7 @@ func TestJournalRecoveryPreservesLegacyIdentityJournals(t *testing.T) {
 			legacy["version"] = version
 			delete(legacy, "old_identities")
 			delete(legacy, "new_identities")
+			delete(legacy, "lock_identity")
 			encoded, err = json.Marshal(legacy)
 			if err != nil {
 				t.Fatal(err)
@@ -161,7 +162,12 @@ func TestJournalCleanupPreservesChildReplacedDuringRemoval(t *testing.T) {
 	}
 	defer func() { _ = root.Close() }()
 	var replaced os.FileInfo
-	_, err = advanceReplacement(t.Context(), root, f.record, replacementHooks{after: func(phase replacementPhase) error {
+	writer, err := acquireWorkspaceWriter(f.path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer writer.close()
+	_, err = advanceReplacement(t.Context(), root, f.record, replacementHooks{writer: writer, after: func(phase replacementPhase) error {
 		if phase == replacementEntryRemoved && replaced == nil {
 			replaceBackupChild(t, child, false)
 			var err error

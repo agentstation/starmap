@@ -17,6 +17,7 @@ import (
 )
 
 type replacementRecord struct {
+	LockIdentity  string            `json:"lock_identity"`
 	Version       int               `json:"version"`
 	Target        string            `json:"target"`
 	Candidate     string            `json:"candidate"`
@@ -58,6 +59,9 @@ func (r replacementRecord) validate(target string) error {
 		!replacementChildName(r.Candidate) || r.Backup != "."+base+".backup-"+suffix ||
 		!replacementChildName(r.Backup) || r.Old.ID == r.New.ID {
 		return invalidReplacement("record")
+	}
+	if r.LockIdentity == "" || len(r.LockIdentity) > replacementIdentityMax {
+		return invalidReplacement("writer_identity")
 	}
 	if err := r.Old.validate(); err != nil {
 		return err

@@ -49,6 +49,9 @@ func cleanupReplacementBackup(ctx context.Context, parent *os.Root, record repla
 		if err := verifyCleanupRoot(parent, record.Backup, root, record.Old.ID); err != nil {
 			return err
 		}
+		if err := hooks.writer.check(); err != nil {
+			return err
+		}
 		if err := root.Remove(filepath.FromSlash(entry.Path)); err != nil {
 			return err
 		}
@@ -77,6 +80,9 @@ func cleanupReplacementBackup(ctx context.Context, parent *os.Root, record repla
 	}
 	if current.ID != record.Old.ID || len(current.Entries) != 1 || current.Entries[0] != record.Old.Entries[0] {
 		return replacementConflict(record.Backup, "backup is not the verified empty directory")
+	}
+	if err := hooks.writer.check(); err != nil {
+		return err
 	}
 	if err := parent.Remove(record.Backup); err != nil {
 		return err

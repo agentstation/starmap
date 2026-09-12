@@ -23,6 +23,7 @@ const (
 )
 
 type replacementHooks struct {
+	writer       *workspaceWriter
 	recordWrites workspaceRecordWriter
 	after        func(replacementPhase) error
 	beforeMarker func() error
@@ -30,9 +31,11 @@ type replacementHooks struct {
 
 func (h replacementHooks) reached(phase replacementPhase) error {
 	if h.after != nil {
-		return h.after(phase)
+		if err := h.after(phase); err != nil {
+			return err
+		}
 	}
-	return nil
+	return h.writer.check()
 }
 
 func (p projector) replaceWithJournal(
@@ -56,7 +59,8 @@ func (p projector) replaceWithJournal(
 	}
 	prefix := "." + filepath.Base(target) + ".candidate-"
 	record := replacementRecord{
-		Version: replacementVersion, Target: target, Candidate: filepath.Base(staged),
+		LockIdentity: p.writer.identity,
+		Version:      replacementVersion, Target: target, Candidate: filepath.Base(staged),
 		Backup: "." + filepath.Base(target) + ".backup-" + strings.TrimPrefix(filepath.Base(staged), prefix),
 		Old:    old, New: candidate, Marker: marker,
 		OldIdentities: old.identities, NewIdentities: candidate.identities,
@@ -71,7 +75,7 @@ func (p projector) replaceWithJournal(
 	if err != nil {
 		return owned, false, err
 	}
-	hooks := replacementHooks{after: p.afterReplacementPhase, beforeMarker: p.beforeMarker, recordWrites: p.recordWrites}
+	hooks := replacementHooks{writer: p.writer, after: p.afterReplacementPhase, beforeMarker: p.beforeMarker, recordWrites: p.recordWrites}
 	if err := hooks.reached(replacementJournalSaved); err != nil {
 		return true, false, err
 	}
@@ -98,7 +102,7 @@ func optionalTree(ctx context.Context, root *os.Root, name string) (treeSnapshot
 	return tree, err
 }
 
-func recoverReplacement(ctx context.Context, target string) (bool, error) {
+func recoverReplacement(ctx context.Context, target string, writer *workspaceWriter) (bool, error) {
 	root, err := os.OpenRoot(filepath.Dir(target))
 	if err != nil {
 		return false, err
@@ -111,11 +115,17 @@ func recoverReplacement(ctx context.Context, target string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	_, err = advanceReplacement(ctx, root, record, replacementHooks{})
+	_, err = advanceReplacement(ctx, root, record, replacementHooks{writer: writer, recordWrites: workspaceRecordWriter{checkWriter: writer.check}})
 	return true, err
 }
 
 func advanceReplacement(ctx context.Context, root *os.Root, record replacementRecord, hooks replacementHooks) (bool, error) {
+	if err := hooks.writer.check(); err != nil {
+		return false, err
+	}
+	if hooks.writer.target != record.Target || hooks.writer.identity != record.LockIdentity {
+		return false, writerConflict(record.Target)
+	}
 	target := filepath.Base(record.Target)
 	live, err := optionalTree(ctx, root, target)
 	if err != nil {
@@ -135,16 +145,19 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 		}
 	}
 	if sameReplacementTree(live, record.Old) && backup.ID == "" && candidate.ID == "" {
-		return false, finishReplacementRecord(ctx, root, record)
+		return false, finishReplacementRecord(ctx, root, record, hooks.writer)
 	}
 	if live.ID == "" && sameReplacementTree(backup, record.Old) && candidate.ID == "" {
+		if err := hooks.writer.check(); err != nil {
+			return false, err
+		}
 		if err := moveReplacementDirectory(root, record.Backup, target); err != nil {
 			return false, err
 		}
 		if err := filepublish.SyncDirectory(root); err != nil {
 			return false, err
 		}
-		return false, finishReplacementRecord(ctx, root, record)
+		return false, finishReplacementRecord(ctx, root, record, hooks.writer)
 	}
 	if sameReplacementTree(live, record.Old) && backup.ID == "" && sameReplacementTree(candidate, record.New) {
 		backup, err = preserveReplacementBackup(ctx, root, record, hooks)
@@ -155,6 +168,9 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 	}
 	if live.ID == "" && sameReplacementTree(backup, record.Old) && sameReplacementTree(candidate, record.New) {
 		if err := ctx.Err(); err != nil {
+			return false, err
+		}
+		if err := hooks.writer.check(); err != nil {
 			return false, err
 		}
 		if err := moveReplacementDirectory(root, record.Candidate, target); err != nil {
@@ -182,6 +198,9 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 }
 
 func preserveReplacementBackup(ctx context.Context, root *os.Root, record replacementRecord, hooks replacementHooks) (treeSnapshot, error) {
+	if err := hooks.writer.check(); err != nil {
+		return treeSnapshot{}, err
+	}
 	if err := moveReplacementDirectory(root, filepath.Base(record.Target), record.Backup); err != nil {
 		return treeSnapshot{}, err
 	}

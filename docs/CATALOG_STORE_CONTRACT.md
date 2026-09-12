@@ -849,3 +849,17 @@ It also checks the backup root's path binding before each child removal. Identic
 Version 1 and 2 journals lack the required evidence. Recovery returns `workspace_replacement.version` without changing the journal, workspace, candidate, or backup.
 Preserve these files for explicit recovery. An upgrade cannot infer child ownership from matching content and access metadata.
 This restriction applies to pending legacy workspace replacements. Accepted inference catalog state remains separate from the optional workspace.
+
+### Workspace writer identity
+
+Workspace writers retain a checked lock handle and its native identity through projection, repair, or legacy layout migration.
+Acquisition compares the existing path, locked file, and current path before returning a writer lease.
+Failed acquisition closes its handle. Release closes the lease and preserves the stable lock file for later writers.
+
+Directory publication and marker or journal publication recheck that lease. Replacement recovery also checks it before directory moves and cleanup.
+Each version 3 replacement journal records `lock_identity`. Recovery requires that identity to match the current held writer lease.
+A missing writer identity or a replacement lock prevents recovery and preserves its journal state.
+
+Journal phases and backup cleanup recheck the held lock before further changes. The lease check refuses a writer after its lock path changes.
+Windows can also refuse to rename an open lock file. Native qualification must verify that platform behavior.
+These writer checks support later preparation recovery. Preparation ownership itself remains in memory until its durable protocol is complete.

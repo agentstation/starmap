@@ -97,11 +97,13 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, err
 	}
 
-	releaseWriter, err := acquireWriterLock(legacy)
+	writer, err := acquireWorkspaceWriter(legacy)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
-	defer releaseWriter()
+	defer writer.close()
+	m.projector.writer = writer
+	m.projector.recordWrites.checkWriter = writer.check
 
 	if err := os.MkdirAll(filepath.Dir(state), directoryMode); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("create", filepath.Dir(state), err)

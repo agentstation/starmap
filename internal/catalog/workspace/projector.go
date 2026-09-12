@@ -131,6 +131,7 @@ type RepairResult struct {
 }
 
 type projector struct {
+	writer                  *workspaceWriter
 	recordWrites            workspaceRecordWriter
 	beforeInputCheck        func() error
 	beforePromote           func() error
@@ -192,11 +193,13 @@ func (p projector) project(
 	if err := os.MkdirAll(filepath.Dir(target), directoryMode); err != nil {
 		return Receipt{}, errors.WrapIO("create", filepath.Dir(target), err)
 	}
-	release, err := acquireWriterLock(target)
+	writer, err := acquireWorkspaceWriter(target)
 	if err != nil {
 		return Receipt{}, err
 	}
-	defer release()
+	defer writer.close()
+	p.writer = writer
+	p.recordWrites.checkWriter = writer.check
 	receipt, _, err := p.projectLocked(ctx, target, catalog, identity, expectation)
 	return receipt, err
 }
@@ -208,7 +211,7 @@ func (p projector) projectLocked(
 	identity Identity,
 	expectation InputExpectation,
 ) (Receipt, treeSnapshot, error) {
-	if _, err := recoverReplacement(ctx, target); err != nil {
+	if _, err := recoverReplacement(ctx, target, p.writer); err != nil {
 		return Receipt{}, treeSnapshot{}, errors.WrapResource("recover", "workspace replacement", target, err)
 	}
 	input, err := readSemanticState(target)
@@ -282,6 +285,9 @@ func (p projector) publishCandidate(
 	if err := ctx.Err(); err != nil {
 		return Receipt{}, err
 	}
+	if err := p.writer.check(); err != nil {
+		return Receipt{}, err
+	}
 	marker := projectionMarker{
 		Version: markerVersion, GenerationID: identity.GenerationID,
 		PayloadChecksum: identity.PayloadChecksum, WorkspaceChecksum: stagedState.checksum,
@@ -307,6 +313,9 @@ func (p projector) publishCandidate(
 			return receipt, errors.WrapResource("replace", "catalog workspace", target, err)
 		}
 		return receipt, nil
+	}
+	if err := p.writer.check(); err != nil {
+		return Receipt{}, err
 	}
 	exchanged = original
 	if err := promoteDirectory(staged, target, input.exists); err != nil {
@@ -419,12 +428,14 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	if err := os.MkdirAll(filepath.Dir(target), directoryMode); err != nil {
 		return RepairResult{}, errors.WrapIO("create", filepath.Dir(target), err)
 	}
-	release, err := acquireWriterLock(target)
+	writer, err := acquireWorkspaceWriter(target)
 	if err != nil {
 		return RepairResult{}, err
 	}
-	defer release()
-	recovered, err := recoverReplacement(ctx, target)
+	defer writer.close()
+	p.writer = writer
+	p.recordWrites.checkWriter = writer.check
+	recovered, err := recoverReplacement(ctx, target, p.writer)
 	if err != nil {
 		return RepairResult{}, errors.WrapResource("recover", "workspace replacement", target, err)
 	}

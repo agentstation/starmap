@@ -53,7 +53,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 	if err := hooks.reached(replacementBackupRemoved); err != nil {
 		return err
 	}
-	return finishReplacementRecord(ctx, root, record)
+	return finishReplacementRecord(ctx, root, record, hooks.writer)
 }
 
 func validateReplacementCatalog(ctx context.Context, root *os.Root, name string, record replacementRecord) error {
@@ -116,7 +116,7 @@ func validateReplacementCatalog(ctx context.Context, root *os.Root, name string,
 	return ctx.Err()
 }
 
-func finishReplacementRecord(ctx context.Context, root *os.Root, record replacementRecord) error {
+func finishReplacementRecord(ctx context.Context, root *os.Root, record replacementRecord, writer *workspaceWriter) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -137,6 +137,12 @@ func finishReplacementRecord(ctx context.Context, root *os.Root, record replacem
 	}
 	if err := ctx.Err(); err != nil {
 		return err
+	}
+	if err := writer.check(); err != nil {
+		return err
+	}
+	if writer.identity != record.LockIdentity || writer.target != record.Target {
+		return writerConflict(record.Target)
 	}
 	if err := root.Remove(filepath.Base(replacementJournalPath(record.Target))); err != nil {
 		return err
