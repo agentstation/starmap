@@ -124,6 +124,24 @@ with the exact repository, signer workflow, and hosted-runner policy before and
 after public download. See GitHub's [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 and the [`gh attestation verify` contract](https://cli.github.com/manual/gh_attestation_verify).
 
+## Verify embedded promotion
+
+Verify the embedded input against the exact downloaded release assets:
+
+```bash
+go run ./cmd/starmap-catalog-release \
+  --verify-promotion-dir internal/embedded/catalog \
+  --promotion-release-dir /absolute/path/to/downloaded-assets
+```
+
+The command validates the archive and compares its catalog payload with the selected YAML input.
+It also checks generation identity, generation time, schema, semantic digest, payload descriptor, and the complete endpoint projection.
+Missing or different input causes refusal without a success report. An exact retry produces the same report.
+
+The publisher must separately verify artifact provenance and bind this checkout to the selected merged revision.
+This local command does not prove a GitHub merge or advance the channel.
+The scheduled workflow still requires checked promotion integration before it can establish that complete publication contract.
+
 ## Optional OCI mirror
 
 The scheduled catalog-generation workflow can also mirror the same
