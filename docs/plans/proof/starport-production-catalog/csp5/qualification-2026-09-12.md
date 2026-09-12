@@ -147,6 +147,16 @@ Go source, module files, fixtures, and verification scripts remain identical to 
 The separate documentation checks retain hashes of all eight generated files, which match the committed bytes.
 This correction does not require restarting the package tests.
 
+## Repository phase checkpoint
+
+The ordinary suite passes all 85 packages that contain tests. Forty-nine results use the Go test cache.
+Another 22 packages contain no test files. This output does not establish exact test-event or skip counts.
+The runtime package passes in 625 seconds. Workspace and CLI packages pass their earlier failing cases.
+
+Twelve repository phases now pass, including pure-Go execution, package ownership, dependency direction, alias history, and verifier regression checks.
+The verification record preserves the exact stdout prefix through the start of the all-package race suite.
+Session `42639` remains active in that race suite. Later gates and the complete repository command remain unverified.
+
 ## Delivery sequence
 
 Deliver verified local update controls and retention through the required repository checks, pre-PR review, native CI, and merge.
