@@ -217,7 +217,7 @@ func TestPreparationRecoveryRejectsInvalidJournal(t *testing.T) {
 			case "event-count":
 				data = append(data, bytes.Repeat([]byte{'\n'}, preparationEventMax)...)
 			case "version":
-				data = bytes.Replace(data, []byte(`"version":1`), []byte(`"version":0`), 1)
+				data = bytes.Replace(data, []byte(fmt.Sprintf(`"version":%d`, preparationJournalVersion)), []byte(`"version":0`), 1)
 			case "unknown-field":
 				data = bytes.Replace(data, []byte(`{"header":`), []byte(`{"unexpected":true,"header":`), 1)
 			case "unrecorded-write":
@@ -261,6 +261,25 @@ func TestPreparationRecoveryResumesPartialCleanup(t *testing.T) {
 	if err := stage.parent.Close(); err != nil {
 		t.Fatal(err)
 	}
+	if err := recoverPreparations(t.Context(), target, writer); err != nil {
+		t.Fatal(err)
+	}
+	assertNoProjectionStaging(t, target)
+}
+
+func TestPreparationRecoveryReadsVersionOne(t *testing.T) {
+	target := filepath.Join(t.TempDir(), "workspace")
+	stage := crashPreparation(t, target, "partial")
+	path := filepath.Join(stage, preparationJournalName)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data = bytes.Replace(data, []byte(`"version":2`), []byte(`"version":1`), 1)
+	if err := os.WriteFile(path, data, fileMode); err != nil {
+		t.Fatal(err)
+	}
+	writer := preparationTestWriter(t, target)
 	if err := recoverPreparations(t.Context(), target, writer); err != nil {
 		t.Fatal(err)
 	}

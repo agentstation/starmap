@@ -60,29 +60,28 @@ func (s *workspaceStage) removeTree(ctx context.Context, name string) error {
 }
 
 func (s *workspaceStage) close(ctx context.Context) error {
-	defer func() {
-		if s.journal != nil {
-			_ = s.journal.file.Close()
-		}
-		if s.source != nil {
-			_ = s.source.Close()
-		}
-		for _, tree := range s.trees {
-			if tree.root != nil {
-				_ = tree.root.Close()
-			}
-		}
-		if s.private != nil {
-			_ = s.private.Close()
-		}
-		_ = s.parent.Close()
-	}()
+	return s.retire(ctx, false)
+}
+
+func (s *workspaceStage) detach(ctx context.Context) error {
+	return s.retire(ctx, true)
+}
+
+func (s *workspaceStage) retire(ctx context.Context, retainJournal bool) error {
+	defer s.releaseHandles()
 	if s.enclosure.ID == "" {
 		return replacementConflict(s.name, "preparation ownership is incomplete; preserve the directory")
 	}
 	cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), workspaceCleanupTimeout)
 	defer cancel()
 	if err := s.checkChildren(cleanup); err != nil {
+		return err
+	}
+	if retainJournal {
+		if s.handoff == nil || s.trees["tree"] != nil {
+			return invalidReplacement("preparation_handoff")
+		}
+	} else if err := s.cleanupCandidate(cleanup); err != nil {
 		return err
 	}
 	names := make([]string, 0, len(s.trees))
@@ -94,6 +93,9 @@ func (s *workspaceStage) close(ctx context.Context) error {
 		if err := s.removeTree(cleanup, name); err != nil {
 			return err
 		}
+	}
+	if retainJournal {
+		return s.journal.unchanged(cleanup)
 	}
 	if s.journal != nil {
 		if err := s.journal.remove(cleanup); err != nil {
@@ -109,6 +111,24 @@ func (s *workspaceStage) close(ctx context.Context) error {
 		check = s.journal.writer.check
 	}
 	return cleanupWorkspaceTreeAtChecked(cleanup, s.parent, s.name, check, s.enclosure)
+}
+
+func (s *workspaceStage) releaseHandles() {
+	if s.journal != nil {
+		_ = s.journal.file.Close()
+	}
+	if s.source != nil {
+		_ = s.source.Close()
+	}
+	for _, tree := range s.trees {
+		if tree.root != nil {
+			_ = tree.root.Close()
+		}
+	}
+	if s.private != nil {
+		_ = s.private.Close()
+	}
+	_ = s.parent.Close()
 }
 
 func (s *workspaceStage) checkWriter() error {

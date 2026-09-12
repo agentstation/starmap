@@ -26,6 +26,7 @@ type workspaceStage struct {
 	enclosure treeSnapshot
 	trees     map[string]*preparationTree
 	journal   *preparationJournal
+	handoff   *preparationHandoff
 }
 
 func prepareWorkspaceStage(ctx context.Context, target string, writer *workspaceWriter) (result *workspaceStage, resultErr error) {
@@ -173,6 +174,12 @@ func (s *workspaceStage) finish(ctx context.Context, target string, beforeRestor
 		return "", err
 	}
 	s.trees["tree"].root = nil
+	if err := s.recordHandoff(actual); err != nil {
+		return "", err
+	}
+	if err := s.checkWriter(); err != nil {
+		return "", err
+	}
 	if err := filepublish.DirectoryBetweenRootsNoReplace(s.private, "tree", s.parent, s.candidate); err != nil {
 		return "", err
 	}
@@ -180,8 +187,7 @@ func (s *workspaceStage) finish(ctx context.Context, target string, beforeRestor
 	s.published = actual
 	path := filepath.Join(s.parent.Name(), s.candidate)
 	if err := filepublish.SyncDirectory(s.parent); err != nil {
-		candidate := stagedWorkspace{path: path, tree: actual}
-		return "", stderrors.Join(err, candidate.cleanup(ctx, treeSnapshot{}))
+		return "", err
 	}
 	return path, nil
 }

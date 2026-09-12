@@ -882,6 +882,27 @@ Recovery limits each journal to 32 MiB and 120,000 events, with at most four pre
 Each tree retains the existing 10,000-entry, 256 MiB content, and 1 MiB path-name limits.
 The parent scan stops at 4,096 entries before cleanup starts. These records contain no provider credentials.
 
-This protocol covers entries inside the private preparation directory.
-Candidate handoff, temporary publication records, and legacy relocation still require durable recovery and qualification.
+Version 1 records cover entries inside private preparation. Version 2 also records the candidate handoff described below.
+Temporary publication records and legacy relocation still require durable recovery and qualification.
 Native Linux and Windows execution remains subject to the task's verification gate.
+
+
+### Durable candidate handoff
+
+Version 2 preparation journals append a handoff record before exporting the assembled candidate.
+That record binds the candidate name to the preparation directory, its prepared inventory, and the original workspace inventory with native child identities.
+The journal remains after the render and verification trees close. Candidate cleanup accepts only entries that match the prepared tree or the exchanged original tree.
+Cleanup never selects the installed workspace path.
+
+Publication checks the original journal receipt and the complete candidate inventory before replacing the workspace.
+The replacement protocol also compares its candidate with that prepared inventory before recording ownership.
+Changed candidate bytes, child identities, or journal contents prevent publication. Cleanup preserves changed or unknown files.
+
+Replacement recovery runs before preparation recovery. A pending replacement journal prevents preparation cleanup from collecting its candidate.
+After replacement settles, preparation recovery can remove remaining owned candidate files and retire its journal.
+First installation, native directory exchange, and journaled replacement share this handoff contract.
+Version 1 journals remain readable for private preparation recovery and cannot authorize candidate cleanup.
+
+A process exit before a complete ownership receipt preserves uncertain state.
+A crash after journal removal can leave an unrecorded empty enclosure, which remains preserved.
+Temporary publication records, legacy relocation, other stages, retention, compaction, and full task qualification remain open.

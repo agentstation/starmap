@@ -14,11 +14,15 @@ type stagedWorkspace struct {
 	path     string
 	tree     treeSnapshot
 	original treeSnapshot
+	owner    *preparationOwner
 }
 
 func (s stagedWorkspace) cleanup(ctx context.Context, exchanged treeSnapshot) error {
 	cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), workspaceCleanupTimeout)
 	defer cancel()
+	if s.owner != nil {
+		return s.owner.cleanup(cleanup)
+	}
 	return cleanupWorkspaceTree(cleanup, s.path, s.tree, exchanged)
 }
 

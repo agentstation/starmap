@@ -39,7 +39,7 @@ func (h replacementHooks) reached(phase replacementPhase) error {
 }
 
 func (p projector) replaceWithJournal(
-	ctx context.Context, target, staged string, old treeSnapshot, marker projectionMarker,
+	ctx context.Context, target, staged string, old, prepared treeSnapshot, marker projectionMarker,
 ) (owned, visible bool, resultErr error) {
 	root, err := os.OpenRoot(filepath.Dir(target))
 	if err != nil {
@@ -56,6 +56,9 @@ func (p projector) replaceWithJournal(
 	candidate, err := snapshotTreeAt(ctx, root, filepath.Base(staged))
 	if err != nil {
 		return false, false, err
+	}
+	if !sameReplacementTree(candidate, prepared) {
+		return false, false, replacementConflict(staged, "candidate changed before replacement journal publication")
 	}
 	prefix := "." + filepath.Base(target) + ".candidate-"
 	record := replacementRecord{

@@ -16,7 +16,7 @@ import (
 
 const (
 	preparationJournalName    = ".preparation.jsonl"
-	preparationJournalVersion = 1
+	preparationJournalVersion = 2
 	preparationJournalMax     = 32 << 20
 	preparationEventMax       = 12 * replacementMaxEntries
 	preparationTreeMax        = 4
@@ -34,10 +34,11 @@ type preparationHeader struct {
 }
 
 type preparationEvent struct {
-	Header   *preparationHeader `json:"header,omitempty"`
-	Tree     string             `json:"tree,omitempty"`
-	Entry    *treeEntry         `json:"entry,omitempty"`
-	Identity string             `json:"identity,omitempty"`
+	Header   *preparationHeader  `json:"header,omitempty"`
+	Handoff  *preparationHandoff `json:"handoff,omitempty"`
+	Tree     string              `json:"tree,omitempty"`
+	Entry    *treeEntry          `json:"entry,omitempty"`
+	Identity string              `json:"identity,omitempty"`
 }
 
 type preparationJournal struct {

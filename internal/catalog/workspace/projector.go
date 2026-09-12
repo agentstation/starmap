@@ -211,11 +211,8 @@ func (p projector) projectLocked(
 	identity Identity,
 	expectation InputExpectation,
 ) (Receipt, treeSnapshot, error) {
-	if _, err := recoverReplacement(ctx, target, p.writer); err != nil {
-		return Receipt{}, treeSnapshot{}, errors.WrapResource("recover", "workspace replacement", target, err)
-	}
-	if err := recoverPreparations(ctx, target, p.writer); err != nil {
-		return Receipt{}, treeSnapshot{}, errors.WrapResource("recover", "workspace preparation", target, err)
+	if _, err := recoverWorkspace(ctx, target, p.writer); err != nil {
+		return Receipt{}, treeSnapshot{}, err
 	}
 	input, err := readSemanticState(target)
 	if err != nil {
@@ -258,6 +255,8 @@ func (p projector) publishCandidate(
 	defer func() {
 		if cleanupStaged {
 			resultErr = stderrors.Join(resultErr, candidate.cleanup(ctx, exchanged))
+		} else if resultErr == nil {
+			resultErr = candidate.cleanup(ctx, treeSnapshot{})
 		}
 	}()
 	if p.beforeInputCheck != nil {
@@ -306,7 +305,10 @@ func (p projector) publishCandidate(
 		}
 	}
 	if journaled {
-		owned, visible, err := p.replaceWithJournal(ctx, target, staged, original, marker)
+		if err := candidate.validatePublication(ctx); err != nil {
+			return Receipt{}, err
+		}
+		owned, visible, err := p.replaceWithJournal(ctx, target, staged, original, candidate.tree, marker)
 		cleanupStaged = !owned
 		var receipt Receipt
 		if visible {
@@ -318,6 +320,9 @@ func (p projector) publishCandidate(
 		return receipt, nil
 	}
 	if err := p.writer.check(); err != nil {
+		return Receipt{}, err
+	}
+	if err := candidate.validatePublication(ctx); err != nil {
 		return Receipt{}, err
 	}
 	exchanged = original
@@ -438,12 +443,9 @@ func (p projector) repair(ctx context.Context, path string, current *catalogs.Ca
 	defer writer.close()
 	p.writer = writer
 	p.recordWrites.checkWriter = writer.check
-	recovered, err := recoverReplacement(ctx, target, p.writer)
+	recovered, err := recoverWorkspace(ctx, target, p.writer)
 	if err != nil {
-		return RepairResult{}, errors.WrapResource("recover", "workspace replacement", target, err)
-	}
-	if err := recoverPreparations(ctx, target, p.writer); err != nil {
-		return RepairResult{}, errors.WrapResource("recover", "workspace preparation", target, err)
+		return RepairResult{}, err
 	}
 	state, err := readSemanticState(target)
 	if err != nil {
@@ -607,7 +609,13 @@ func (p projector) stageCatalog(
 		return stagedWorkspace{}, semanticState{}, errors.WrapResource("prepare", "workspace staging", target, err)
 	}
 	defer func() {
-		if err := stage.close(ctx); err != nil {
+		var err error
+		if result.path != "" {
+			err = stage.detach(ctx)
+		} else {
+			err = stage.close(ctx)
+		}
+		if err != nil {
 			resultErr = stderrors.Join(resultErr, err)
 			if result.path != "" {
 				resultErr = stderrors.Join(resultErr, result.cleanup(ctx, treeSnapshot{}))
@@ -644,7 +652,8 @@ func (p projector) stageCatalog(
 	if err != nil {
 		return cleanup(errors.WrapResource("preserve access", "workspace staging", target, err))
 	}
-	return stagedWorkspace{path: candidate, tree: stage.published, original: stage.original}, state, nil
+	owner := &preparationOwner{target: target, name: stage.name, writer: p.writer, journal: stage.journal.state}
+	return stagedWorkspace{path: candidate, tree: stage.published, original: stage.original, owner: owner}, state, nil
 }
 
 func (s *workspaceStage) validateStableProjection(

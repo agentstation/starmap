@@ -72,6 +72,12 @@ func recoverPreparations(ctx context.Context, target string, writer *workspaceWr
 }
 
 func readPreparation(ctx context.Context, target, name string, writer *workspaceWriter) (_ *workspaceStage, resultErr error) {
+	if err := writer.check(); err != nil {
+		return nil, err
+	}
+	if writer.target != target {
+		return nil, writerConflict(target)
+	}
 	parent, err := os.OpenRoot(filepath.Dir(target))
 	if err != nil {
 		return nil, err
@@ -136,6 +142,7 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 		return replacementLimit("preparation_events")
 	}
 	events := bytes.Split(data[:len(data)-1], []byte{'\n'})
+	version := 0
 	for i, line := range events {
 		if err := ctx.Err(); err != nil {
 			return err
@@ -151,7 +158,7 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 		}
 		if i == 0 {
 			h := event.Header
-			if h == nil || event.Tree != "" || event.Entry != nil || event.Identity != "" || h.Version != preparationJournalVersion ||
+			if h == nil || event.Handoff != nil || event.Tree != "" || event.Entry != nil || event.Identity != "" || (h.Version != 1 && h.Version != preparationJournalVersion) ||
 				h.Target != target || h.Stage != stage.name || h.LockIdentity != lock || h.JournalIdentity != identity ||
 				!replacementChildName(h.Stage) || !strings.HasPrefix(h.Stage, "."+filepath.Base(target)+".preparing-") || len(h.Enclosure.Entries) != 1 {
 				return invalidReplacement("preparation_header")
@@ -164,6 +171,20 @@ func decodePreparation(ctx context.Context, stage *workspaceStage, target, lock 
 			}
 			stage.enclosure = h.Enclosure
 			stage.enclosure.identities = h.Identities
+			version = h.Version
+			continue
+		}
+		if stage.handoff != nil {
+			return invalidReplacement("preparation_handoff_suffix")
+		}
+		if event.Handoff != nil {
+			if version != preparationJournalVersion || event.Header != nil || event.Entry != nil || event.Tree != "" || event.Identity != "" {
+				return invalidReplacement("preparation_handoff")
+			}
+			if err := event.Handoff.bind(stage, target); err != nil {
+				return err
+			}
+			stage.handoff = event.Handoff
 			continue
 		}
 		if event.Header != nil || event.Entry == nil || event.Identity == "" || len(event.Identity) > replacementIdentityMax ||
