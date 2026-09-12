@@ -5,14 +5,40 @@
   "done": 10,
   "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 117,
-  "new_evidence_artifacts": 11499,
-  "new_commit_source_files": 727,
-  "resume_words": 256,
-  "next_action": "Finish incoming-reset capacity handling, then integrate input and generation collection with settings and capacity diagnostics. Preserve configured pins after shutdown. Provider retirement passes 152 race events on each toolchain. Twelve mapped CSP5 subcases still need final-source qualification. The object coordination question remains pending. Prepare the public catalog fixture before full qualification. All recorded checks are terminal.",
-  "current_source": "292fe26194c9c571637fdd5fdca056b2fdec8e28",
+  "local_links": 115,
+  "new_evidence_artifacts": 11717,
+  "new_commit_source_files": 799,
+  "resume_words": 299,
+  "next_action": "Poll runtime session 73027. Repair the migration lock defect, missing configuration examples, and binding-record assertion from failed repository verification. The twelve mapped subcases pass. Finish shared collection after the pending owner choice, then qualification, review, native CI, and merge.",
+  "current_source": "082a760a283eb323adb0209c6a150efd8b96da21",
   "starmap_integration_source": null,
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
   "external_running_checks": [],
-  "local_running_checks": []
+  "local_running_checks": [
+    {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "30m",
+        "./runtime",
+        "./pkg/catalogs/storage"
+      ],
+      "started_at": "2026-09-12T14:28:01.443223+00:00",
+      "base_commit": "082a760a283eb323adb0209c6a150efd8b96da21",
+      "source_files": {},
+      "name": "qualified-required-runtime-082a760a2-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "RUNNING",
+      "session_id": 73027
+    }
+  ],
+  "current_source_binding_kind": "commit",
+  "uncommitted_source_files": 0
 }

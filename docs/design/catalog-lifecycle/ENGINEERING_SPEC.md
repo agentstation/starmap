@@ -2591,6 +2591,18 @@ Garbage collection must preserve the embedded baseline, current candidate,
 accepted head, rollback pins, and any generation with an active request lease.
 Operators need a retention limit and a storage-capacity diagnostic.
 
+Automatic maintenance defaults to an hourly interval, with 32 retained generations and 512 MiB of generation bytes as targets.
+Required content can exceed these targets. Each scan defaults to 4,096 entries and 256 MiB of raw input bytes.
+Scan bounds exclude decoder memory, filesystem overhead, and backend replication.
+
+The canonical `CATALOG_RETENTION_*` settings own these limits and scheduling control in deployment scope.
+Their suffixes are `ENABLED`, `INTERVAL`, `MAX_GENERATIONS`, `MAX_BYTES`, `SCAN_ENTRIES`, and `INPUT_MAX_BYTES`.
+Both products must preserve their shared semantics and configuration-authority rules.
+Readiness reports the last maintenance outcome without storage reads. A capacity warning does not revoke a usable catalog.
+
+The [current candidate proof](../../plans/proof/starport-production-catalog/csp5/qualification-2026-09-12.md) records local integration and pending full qualification.
+Shared and object coordination remain incomplete. Their scope decision remains pending.
+
 Filesystem publication must stage complete bytes, verify them, synchronize
 durable writes, and atomically switch the selected head. Recovery must remove
 or quarantine incomplete staging without selecting it. A failed catalog export

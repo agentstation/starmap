@@ -1,0 +1,86 @@
+# CSP5 committed candidate qualification
+
+Commit `8683287dfcd5fc17268d501e70f9b6753aea1c67` consolidates automatic local retention and its configuration, diagnostics, and regression corrections.
+The [verification record](qualification-2026-09-12/verification.json) binds 40 changed files through follow-up `082a760a283eb323adb0209c6a150efd8b96da21` and all recorded commands.
+The qualification worktree is clean and uses the committed Go module graph.
+The earlier worktree still contains five unrelated tooling edits. Those edits remain outside this commit.
+
+## Runtime test duration
+
+The earlier required suite exceeded 30 minutes after 1,069 passing test events.
+Its interrupted startup test passed separately on both supported toolchains.
+The [earlier result](automatic-retention-required-runtime-20260912.json) retains that failure and its source bindings.
+
+A race-enabled profile of the startup test recorded about 3.36 GiB of total allocations over 24.26 seconds.
+Opening runtimes and rebuilding retained catalogs account for substantial work.
+These values describe one test process. They do not measure resident memory or inference request overhead.
+Immutable catalogs already cache encoded payloads. The profile does not justify another payload cache.
+
+Eight slow recovery tests now call `t.Parallel`.
+Each test owns its stores, runtime directories, sources, and mutable fixture state.
+The change preserves every case, assertion, and deadline. It does not change production behavior.
+
+The shuffled race run passes 114 test events across those eight tests in about 190 seconds.
+Their individual elapsed times totaled about 557 seconds in the earlier sequential suite.
+These observations use separate runs and do not establish a production performance claim.
+Runtime lint and repository policy also pass before commit.
+
+## Committed-source checks
+
+The Go 1.25.12 check passes 115 race events for the parallel tests and the runtime snapshot regression on `8683287df`.
+Initial full qualification exposed an expired context in `TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease`.
+That test reused a one-second context after runtime shutdown and reconstruction.
+All three isolated repetitions failed when the follower received the expired context.
+
+Follow-up `082a760a2` gives each independent permission refresh its own one-second context.
+The test explicitly cancels the first context before opening the follower.
+Both supported toolchains pass three repetitions on the corrected source. Runtime lint and repository policy pass.
+Neither the test deadline nor production permission behavior changes.
+
+The initial runtime and repository runs stopped after this defect reproduced.
+Their records retain terminal interruption status and provide no complete qualification credit.
+The task verifier passes all twelve mapped subcases on the corrected commit, with 42 passing race events across 21 Go invocations.
+
+The replacement repository check fails on that commit. The required runtime race suite continues.
+The verification record identifies each live session. Running checks receive no acceptance credit.
+
+The public catalog fixture passes cache verification at 411,974 bytes.
+The qualification worktree uses the pinned `ago` tool from its committed module graph.
+The unrelated rename to `goago` remains in the earlier worktree.
+
+## Full repository failure
+
+`make verify` exits with status 2 during `go test ./...`.
+Three assertion failures and four package timeouts prevent qualification.
+Later repository gates did not run.
+
+| Package | Evidence | Required action |
+|---|---|---|
+| `acquisition` | `TestBoundAcquirerRuntimeRetainsIndependentScopesAfterFailureAndRestart` sees three binding-directory entries and expects two. | Identify each entry before changing the assertion or record behavior. |
+| `internal/catalog/settings` | Deployment coverage omits retention settings in `docker-compose.yml`. The sample map contains 39 entries for 45 canonical settings. | Add the six settings to the deployment example and sample coverage. |
+| `internal/catalog/workspace` | Legacy migration waits inside `Filesystem.Current` while it holds the exclusive publication lock. | Keep migration reads under the same checked lock ownership. |
+| `internal/cli/app` | Workspace migration waits on the same nested publication lock. | Verify the caller after the storage and migration correction. |
+| `runtime` | The aggregate package reaches its ten-minute default timeout during public-catalog tests. | Inspect terminal race-suite evidence before choosing a duration correction. |
+
+The migration stack and source identify nested lock acquisition.
+`legacyLayoutMigrator.migrate` takes the exclusive `.commit.lock` before `inspectLegacyStore` calls `Filesystem.Current`.
+`Filesystem.Current` now requests a separate shared handle for that same lock.
+The focused race check also reaches its 30-second deadline at the same nested lock.
+This defect requires a code correction. A longer timeout does not resolve it.
+
+The branch contains 42 local commits beyond the merged CSP4 baseline and has no CSP5 PR.
+The twelve mapped component results do not qualify these integration failures or shared collection.
+Finish the identified failures and required shared contract before review, native CI, and merge.
+Avoid further isolated feature checkpoints that do not advance those delivery gates.
+
+## Remaining delivery work
+
+Shared and object generation collection remain incomplete.
+The owner decision about mandatory shared coordination versus S3-only automatic cleanup remains pending.
+Safe cleanup must protect publishers, retained pins, and readers across instances.
+A refresh lease alone does not make separate object deletion and publication atomic.
+
+Required review, native CI, and merge remain open.
+A19 qualifies its four product subcases. A22 and A23 qualify eight producer subcases and still require Starport consumer qualification.
+The verifier does not qualify the other primary cases.
+CSP5 remains in progress. Existing merge authority persists.
