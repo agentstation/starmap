@@ -2732,7 +2732,7 @@ The [writer identity proof](../../plans/proof/starport-production-catalog/csp5/w
 The writer retains its lock handle through the operation and leaves the stable lock file after release.
 The baseline exporter provides the durable owner-record pattern. The preparation journal now binds its records to this checked writer identity.
 
-Candidate handoff and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.
+Temporary-record and legacy relocation recovery remain incomplete, with evidence and discovery staging, retention, compaction, and full CSP5 qualification.
 
 Starport must qualify its own composition under CSP8.
 
@@ -3249,3 +3249,25 @@ Linux and Windows test binaries compile. Native execution remains unqualified un
 
 Candidate handoff, temporary records, legacy relocation, other staging, retention, compaction, and full CSP5 qualification remain open.
 A process exit without a complete receipt preserves uncertain state, including an empty enclosure after journal removal.
+
+## Candidate handoff and recovery: 2026-09-12
+
+Starmap `042b261e` retains preparation journals through candidate publication and cleanup.
+Version 2 handoff records bind the candidate path, prepared inventory, original workspace inventory, and native child identities.
+Version 1 journals remain readable for private preparation cleanup only.
+
+Publication verifies the original journal receipt and complete candidate inventory before changing the workspace.
+The replacement protocol repeats the candidate check before recording its ownership.
+Changed bytes, identities, or journal receipts prevent publication. Recovery preserves changed files and never selects the live workspace for cleanup.
+
+Workspace recovery settles replacement journals before collecting preparation and candidate state.
+The [candidate recovery proof](../../plans/proof/starport-production-catalog/csp5/candidate-journal-2026-09-12/verification.json) records 314 passing race test events.
+Eight process-exit cases cover first installation, replacement, prepared and installed states, and four replacement-journal phases.
+Other checks cover invalid handoffs, partial cleanup, changed files, active writers, and version compatibility.
+
+The proof preserves the original test-method error, corrected crash failures, changed-ownership failures, and one recovery integration failure.
+Final policy, prose, and compilation checks pass. Native Linux and Windows execution remains subject to the required platform checks.
+
+A concurrent goago migration remains outside this catalog commit. Its additional policy check passes, and the proof preserves both tooling states.
+
+Unknown enclosures after journal removal remain preserved. Temporary records, legacy relocation, other staging, retention, compaction, and full CSP5 qualification remain open.

@@ -516,13 +516,45 @@ The journal covers entries inside private preparation only. Candidate handoff st
 A crash after journal removal can leave an unrecorded empty enclosure, which remains preserved.
 Other staging, retention, compaction, task acceptance, review, native CI, and merge remain open.
 
+## Durable candidate handoff
+
+The [candidate recovery proof](csp5/candidate-journal-2026-09-12/verification.json) binds commit `042b261e` to crash failures, publication failures, and final checks.
+The corrected fail-before test uses a Go overlay of `873a53c5`. Both prepared and exchanged candidates survive recovery in that implementation.
+The original test draft had one incorrect catalog expectation. Its source and results remain preserved with the corrected failure evidence.
+
+Version 2 preparation journals append a handoff record before exporting the assembled candidate.
+The record binds its name, prepared identity, and original workspace inventory with native child identities.
+Staging retains the journal after render cleanup. Collection accepts only remaining entries from the prepared or exchanged original inventory.
+It never selects the installed workspace path. Version 1 journals remain readable for private preparation cleanup only.
+
+Five of six changed-ownership publication scenarios initially failed. Their parent tests bring the failed-event count to eight, with one passing event.
+Publication now verifies the original journal receipt and complete prepared inventory before changing the workspace.
+The replacement protocol also checks its candidate against that prepared inventory before recording ownership.
+A later check verifies that a journal edit with equivalent JSON meaning prevents publication.
+
+Workspace recovery settles replacement journals before collecting preparation and candidate state.
+The first full race run exposed an old-tree recovery path that omitted preparation cleanup.
+The shared recovery entry point now handles both protocols. The test retains its exact-tree and completed-cleanup assertions.
+A focused follow-up passes ten events. The earlier boundary run passes 81 events, including changed-file and active-writer checks.
+
+The final suite passes 314 race test events without failures or skips.
+Eight process-exit cases cover first installation, replacement, prepared and installed candidates, and four replacement-journal phases.
+Other cases cover invalid handoffs, partial cleanup, version compatibility, changed candidate files, and changed exchanged backups.
+Go policy, source prose, and Linux/Windows compilation checks pass. Compilation does not qualify native execution.
+
+A concurrent migration changed five tooling files after the final race run started. Those edits remain outside this commit.
+The additional goago check passes under the migrated tooling. Full task qualification must use the final module graph.
+
+Incomplete or unrecorded ownership remains preserved, including empty enclosures after journal removal.
+Temporary records, legacy relocation, other staging, retention, compaction, full task checks, review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Complete durable candidate handoff and temporary-record recovery. Preserve unknown enclosures after journal removal. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
+Implement durable temporary-record recovery. Preserve unknown enclosures after journal removal. Complete legacy relocation, retained-evidence, and discovery recovery, then generation retention.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.
