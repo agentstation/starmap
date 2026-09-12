@@ -667,6 +667,25 @@ The active broad binary retains the original fixture failure. Its terminal resul
 
 Generation retention, history compaction, twelve mapped subcases, full task verification, review, native CI, and merge remain open.
 
+## Discovery construction cancellation
+
+The [cancellation proof](csp5/discovery-context-2026-09-12/verification.json) binds commit `91b4fbc6` to nine files.
+Runtime construction passes its caller context to `github.NewContext` and local record recovery.
+A nil or canceled context cannot create discovery state. Cancellation during recovery preserves accepted records and unfinished receipts.
+A later construction attempt completes recovery. Failed runtime construction releases ownership before retry.
+
+The legacy `github.New` constructor retains its background context and existing API.
+
+The original constructor ignored cancellation. Five failed test events reproduce that behavior, including parent events.
+The package race run passes 141 events. A separate runtime selection passes 12 events.
+These disjoint runs total 153 passing events, with no failures or skips. The earlier focused run overlaps and adds no event count.
+
+Policy, prose, dependency, and Linux/Windows compilation checks pass. Compilation does not qualify native execution.
+
+The earlier broad suite tests `d0009a18` and retains its privacy-fixture failure.
+Its running process remains separate from this cancellation proof. Its terminal result cannot qualify the newer source or count as a passing gate.
+Generation retention, history compaction, twelve mapped subcases, full qualification, review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
@@ -674,7 +693,7 @@ The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twel
 The focused results above do not complete those full subcases.
 
 Finish the active integration race suite and bind its terminal result to the committed source.
-Verify caller cancellation during GitHub construction. `newStateStore` currently supplies `context.Background()` to recovery instead of the runtime caller context.
+Commit `91b4fbc6` now propagates caller cancellation through GitHub construction.
 Then complete generation retention and acquisition history compaction.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.

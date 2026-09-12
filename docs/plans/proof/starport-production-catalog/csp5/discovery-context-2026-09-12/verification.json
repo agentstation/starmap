@@ -1,0 +1,2404 @@
+{
+  "task": "CSP5",
+  "status": "IN_PROGRESS",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+  "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+  "source_commit": "91b4fbc6ae7d570fffc24b6e3a7826654669c3b9",
+  "source_files": [
+    {
+      "path": "docs/CATALOG_STORE_CONTRACT.md",
+      "sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "internal/sources/github/construction_context_test.go",
+      "sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "internal/sources/github/github.go",
+      "sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "internal/sources/github/state.go",
+      "sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "internal/sources/github/state_privacy_posix_test.go",
+      "sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "internal/sources/github/state_recovery_test.go",
+      "sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "runtime/discovery_context_test.go",
+      "sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "runtime/runtime.go",
+      "sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "runtime/source.go",
+      "sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    }
+  ],
+  "verified_at": "2026-09-12T07:17:22.690714+00:00",
+  "final_checks": [
+    "discovery-context-packages-20260912",
+    "discovery-context-runtime-20260912",
+    "discovery-context-policy-20260912",
+    "discovery-context-prose-20260912",
+    "discovery-context-compile-20260912",
+    "discovery-context-consumers-20260912"
+  ],
+  "checks": {
+    "discovery-context-compile-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "GOARCH=amd64",
+        "CGO_ENABLED=0",
+        "python3",
+        "-c",
+        "import os,subprocess; results=[subprocess.run([\"go\",\"test\",\"-c\",\"-o\",\".tmp/csp5-update-controls/discovery-context-\"+platform+\"/\",\"./runtime\",\"./internal/sources/github\"],env=dict(os.environ,GOOS=platform)).returncode for platform in [\"linux\",\"windows\"]]; raise SystemExit(max(results))"
+      ],
+      "started_at": "2026-09-12T07:13:55.387849+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "internal/sources/github/github.go": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6",
+        "internal/sources/github/state.go": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217",
+        "internal/sources/github/state_privacy_posix_test.go": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd",
+        "internal/sources/github/state_recovery_test.go": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "runtime/runtime.go": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae",
+        "runtime/source.go": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:14:04.243277+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    },
+    "discovery-context-consumers-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "bash",
+        "scripts/verify-consumer-deps.sh"
+      ],
+      "started_at": "2026-09-12T07:13:55.371876+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "internal/sources/github/github.go": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6",
+        "internal/sources/github/state.go": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217",
+        "internal/sources/github/state_privacy_posix_test.go": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd",
+        "internal/sources/github/state_recovery_test.go": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "runtime/runtime.go": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae",
+        "runtime/source.go": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:14:01.556360+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    },
+    "discovery-context-focused-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./runtime",
+        "./internal/sources/github",
+        "-run",
+        "^(TestGitHubConstructionHonorsCancellation|TestRuntimeCancelsGitHubConstructionRecovery|TestGitHubDiscoveryRecoversRecordPublicationAfterProcessExit|TestGitHubSourceInstancesPreserveTheReplayFloor)$"
+      ],
+      "started_at": "2026-09-12T07:12:35.069453+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "internal/sources/github/github.go": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6",
+        "internal/sources/github/state.go": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217",
+        "internal/sources/github/state_privacy_posix_test.go": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd",
+        "internal/sources/github/state_recovery_test.go": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "runtime/runtime.go": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae",
+        "runtime/source.go": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:13:00.461750+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 7
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/nil_context",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/before_state_creation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/during_recovery",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceInstancesPreserveTheReplayFloor",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubDiscoveryRecoversRecordPublicationAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 0.32
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeCancelsGitHubConstructionRecovery",
+          "Action": "pass",
+          "Elapsed": 18.67
+        }
+      ]
+    },
+    "discovery-context-packages-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./internal/sources/github",
+        "./internal/privatefiles"
+      ],
+      "started_at": "2026-09-12T07:13:55.367356+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "internal/sources/github/github.go": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6",
+        "internal/sources/github/state.go": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217",
+        "internal/sources/github/state_privacy_posix_test.go": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd",
+        "internal/sources/github/state_recovery_test.go": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "runtime/runtime.go": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae",
+        "runtime/source.go": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:14:05.980090+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 141
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/owner_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/maximum_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/empty_ACL",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/no_ACL_marker",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/absent_security",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/deny",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/zero_rights",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/inherited_grant",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/short_header",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/truncated_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/negative_offset",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/header_overlap",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/oversized_payload",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_magic",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/extra_entries",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/wrong_entry_count",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser/unsupported_entry",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinACLParser",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_read,readattr,readextattr,readsecurity,search",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_deny_delete",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/user:jack_allow_add_file,add_subdirectory,delete_child",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_delete_child",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_writesecurity",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants/everyone_allow_add_file,directory_inherit,only_inherit",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestDarwinAncestorACLSeparatesReadAndMutationGrants",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwx------",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/-rwxr-xr-x",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts/trwxrwxrwx",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationPreservesTrustedAncestorLayouts",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationChecksSymlinkTargetAncestors",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateCreationRefusesReplacedChildBeforeDescent",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRechecksAncestorAccess",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/create",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/bind",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/read",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess/write",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseWritableAncestorsBeforeAccess",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/create",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/nil_context",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/before_state_creation",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/replace",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/if-absent",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes/canceled-after-publication",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationReportsDurabilityFailureAfterVisibleBytes",
+          "Action": "pass",
+          "Elapsed": 0.2
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRefusalKeepsPreviousRecord",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/absent",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/during_recovery",
+          "Action": "pass",
+          "Elapsed": 0.37
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation",
+          "Action": "pass",
+          "Elapsed": 0.37
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceInstancesPreserveTheReplayFloor",
+          "Action": "pass",
+          "Elapsed": 0.37
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/same",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestDiscoveryStateRequiresPrivateAccess",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestDiscoveryStateRefusesExposedExistingDirectory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestDiscoveryStateRefusesLinkedDirectory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/changed",
+          "Action": "pass",
+          "Elapsed": 0.15
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/created",
+          "Action": "pass",
+          "Elapsed": 0.23
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/removed",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/empty_requires_presence",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubDiscoveryRecoversRecordPublicationAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 0.49
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceDeclaresItsContract",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_semantic",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnattestedChannelDocuments",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReadsLegacyReleaseTags/legacy_payload",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReadsLegacyReleaseTags",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish/nil_requires_absence",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCompareAndPublish",
+          "Action": "pass",
+          "Elapsed": 1.34
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourcePolicyAcceptsPublishedCatalogProvenance",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnsignedEvidenceWithTheDefaultEngine",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_size",
+          "Action": "pass",
+          "Elapsed": 0.07
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_repository",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_channel",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnusableConfiguration/unusable_transfer_policy",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_trusted_root",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnusableConfiguration/no_state_directory",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnusableConfiguration/empty_signer_workflow",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord/recorded_checksum",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsAssetsThatMissTheChannelRecord",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/prepared",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsUnusableConfiguration",
+          "Action": "pass",
+          "Elapsed": 0.06
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceSkipsTheBodyWhenTheChannelIsUnchanged",
+          "Action": "pass",
+          "Elapsed": 0.42
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReportsTheSemanticCatalogDigest",
+          "Action": "pass",
+          "Elapsed": 0.46
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReportsRateLimitBudget/inside_the_budget",
+          "Action": "pass",
+          "Elapsed": 0.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceVerifiesTheChannelBranch",
+          "Action": "pass",
+          "Elapsed": 0.47
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReportsRateLimitBudget/at_the_warning_threshold",
+          "Action": "pass",
+          "Elapsed": 0.45
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsReplayedChannelDocuments",
+          "Action": "pass",
+          "Elapsed": 0.51
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceRejectsTrustNegativeReleases",
+          "Action": "pass",
+          "Elapsed": 0.52
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReportsRateLimitBudget/beyond_the_warning_threshold",
+          "Action": "pass",
+          "Elapsed": 0.45
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/published",
+          "Action": "pass",
+          "Elapsed": 0.22
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceReportsRateLimitBudget",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceResetsTheStateWhenTheChannelChanges",
+          "Action": "pass",
+          "Elapsed": 0.64
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubSourceAdvancesWithTheChannelSequence",
+          "Action": "pass",
+          "Elapsed": 0.67
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-prepared",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/new-published",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-header",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-empty",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-partial",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-unowned",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit/receipt-incomplete",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordRecoveryAfterProcessExit",
+          "Action": "pass",
+          "Elapsed": 1.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.26
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-access",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/destination-bytes",
+          "Action": "pass",
+          "Elapsed": 0.16
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-bytes",
+          "Action": "pass",
+          "Elapsed": 0.19
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.14
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords/metadata-identity",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesChangedRecords",
+          "Action": "pass",
+          "Elapsed": 1.4
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationExcludesActiveWriter",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationAndAmbiguousFlush",
+          "Action": "pass",
+          "Elapsed": 0.36
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryBoundsAndUnknownFiles",
+          "Action": "pass",
+          "Elapsed": 1.31
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-bytes",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-identity",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/stage-time",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-empty",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-partial",
+          "Action": "pass",
+          "Elapsed": 0.21
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-whitespace",
+          "Action": "pass",
+          "Elapsed": 0.13
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/journal-identity",
+          "Action": "pass",
+          "Elapsed": 0.17
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-missing",
+          "Action": "pass",
+          "Elapsed": 0.11
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/writer-identity",
+          "Action": "pass",
+          "Elapsed": 0.1
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/unknown-metadata",
+          "Action": "pass",
+          "Elapsed": 0.12
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges/canceled",
+          "Action": "pass",
+          "Elapsed": 0.08
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationRecoveryPreservesAbandonedChanges",
+          "Action": "pass",
+          "Elapsed": 1.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseExposedFilesWithoutRepair",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsRefuseLinksAndSpecialFiles",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordsPreserveOtherFilesAndBoundReads",
+          "Action": "pass",
+          "Elapsed": 0.04
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryRefusesPathReplacement",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryPassiveBindingAndChildCreation",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateDirectoryAbsenceIsNotAnAbsentRecord",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/destination",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles/staging",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesCompetingFiles",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/absent",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination/existing",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationCancellationPreservesDestination",
+          "Action": "pass",
+          "Elapsed": 0.03
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivatePublicationPreservesModifiedStage",
+          "Action": "pass",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/concurrent",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles/existing",
+          "Action": "pass",
+          "Elapsed": 0.02
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Test": "TestPrivateRecordCreatePreservesExistingAndConcurrentFiles",
+          "Action": "pass",
+          "Elapsed": 0.04
+        }
+      ]
+    },
+    "discovery-context-policy-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "goago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T07:13:13.597145+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "internal/sources/github/github.go": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6",
+        "internal/sources/github/state.go": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217",
+        "internal/sources/github/state_privacy_posix_test.go": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd",
+        "internal/sources/github/state_recovery_test.go": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "runtime/runtime.go": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae",
+        "runtime/source.go": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:13:15.534686+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    },
+    "discovery-context-prose-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T07:13:14.846256+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "internal/sources/github/github.go": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6",
+        "internal/sources/github/state.go": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217",
+        "internal/sources/github/state_privacy_posix_test.go": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd",
+        "internal/sources/github/state_recovery_test.go": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "runtime/runtime.go": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae",
+        "runtime/source.go": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:14:07.715521+00:00",
+      "status": "passed",
+      "test_events": {},
+      "test_results": []
+    },
+    "discovery-context-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./runtime",
+        "./internal/sources/github",
+        "-run",
+        "^(TestGitHubConstructionHonorsCancellation|TestRuntimeCancelsGitHubConstructionRecovery)$"
+      ],
+      "started_at": "2026-09-12T07:11:23.481305+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context.go": "b797d288c56cb02476c8a66c6decfd8f6ee7300bd7a4cff9f6b90c1c282e65cd",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T07:11:48.176405+00:00",
+      "status": "failed",
+      "test_events": {
+        "fail": 5
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/nil_context",
+          "Action": "fail",
+          "Elapsed": 0.01
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/before_state_creation",
+          "Action": "fail",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation/during_recovery",
+          "Action": "fail",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Test": "TestGitHubConstructionHonorsCancellation",
+          "Action": "fail",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeCancelsGitHubConstructionRecovery",
+          "Action": "fail",
+          "Elapsed": 18.61
+        }
+      ]
+    },
+    "discovery-context-runtime-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./runtime",
+        "-run",
+        "^(TestRuntimeCancelsGitHubConstructionRecovery|TestRuntimeSourceConfigurationIsPassiveAndOwned|TestSourceConfigurationPreservesUnknownCapabilities|TestSourceConfigurationRejectsAcquisitionClaims|TestFailedRuntimeOpenCancelsOwnedClock|TestSourceSelectionNames|TestRuntimeReadsReachNoExternalSystem)$"
+      ],
+      "started_at": "2026-09-12T07:13:55.378097+00:00",
+      "base_commit": "989310c7c780bfa64924902fb046a1916088dbfb",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/CATALOG_STORE_CONTRACT.md": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b",
+        "go.mod": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+        "go.sum": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+        "internal/sources/github/construction_context_test.go": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874",
+        "internal/sources/github/github.go": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6",
+        "internal/sources/github/state.go": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217",
+        "internal/sources/github/state_privacy_posix_test.go": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd",
+        "internal/sources/github/state_recovery_test.go": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba",
+        "runtime/discovery_context_test.go": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855",
+        "runtime/runtime.go": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae",
+        "runtime/source.go": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2",
+        "scripts/verify.sh": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:14:25.790879+00:00",
+      "status": "passed",
+      "test_events": {
+        "pass": 12
+      },
+      "test_results": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestFailedRuntimeOpenCancelsOwnedClock",
+          "Action": "pass",
+          "Elapsed": 17.55
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeCancelsGitHubConstructionRecovery",
+          "Action": "pass",
+          "Elapsed": 9.45
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeReadsReachNoExternalSystem",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestRuntimeSourceConfigurationIsPassiveAndOwned",
+          "Action": "pass",
+          "Elapsed": 0.05
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceConfigurationPreservesUnknownCapabilities",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceConfigurationRejectsAcquisitionClaims/attempted",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceConfigurationRejectsAcquisitionClaims/eligible",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceConfigurationRejectsAcquisitionClaims/provider",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceConfigurationRejectsAcquisitionClaims/duplicate",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceConfigurationRejectsAcquisitionClaims/unknown-source",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceConfigurationRejectsAcquisitionClaims",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Test": "TestSourceSelectionNames",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "discovery-context-compile-20260912/changes.patch.gz",
+      "sha256": "d5aa3e27a6e97f299398cf146532acaa5b2b46761560ae98724e0069978b94f6",
+      "decoded_sha256": "19ba4aa0faaeb9be60e78566639775ea6cb4e72619e91935a4cfaf128fe88ae1"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "4fef7b884d4583db8f3b3eb64db13d40b267329709df94d15c4e8a98fa7abd46",
+      "decoded_sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "discovery-context-compile-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-compile-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-compile-20260912/stdout.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-compile-20260912/verification.json.gz",
+      "sha256": "f838f1eed64c5c7aa7dbfa0fc1060f5cbe3277aab136ace2b2e6c5062f9d256d",
+      "decoded_sha256": "d695473aa2ee1c3736c042fa658e169ce1fe196aa3ad6285e3bcfcd6c2cca14f"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/changes.patch.gz",
+      "sha256": "d5aa3e27a6e97f299398cf146532acaa5b2b46761560ae98724e0069978b94f6",
+      "decoded_sha256": "19ba4aa0faaeb9be60e78566639775ea6cb4e72619e91935a4cfaf128fe88ae1"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "4fef7b884d4583db8f3b3eb64db13d40b267329709df94d15c4e8a98fa7abd46",
+      "decoded_sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/stdout.log.gz",
+      "sha256": "0984f613a43d3ae53a8519d12f3bb3c966eccd579baffbf78b1c13a0a475a6be",
+      "decoded_sha256": "e46e61e2068de345b95a16c88769303b2578aaca75a372459ec8768fb0c2c591"
+    },
+    {
+      "path": "discovery-context-consumers-20260912/verification.json.gz",
+      "sha256": "d9a343e995fa56a442dc36dd4702c8154b19ed8df5d1509e6d160f01d9ce9813",
+      "decoded_sha256": "c8d9e8f353eca5552114a0d7af12eb46a420ed7c33af9eb2ce981f4d67277169"
+    },
+    {
+      "path": "discovery-context-focused-20260912/changes.patch.gz",
+      "sha256": "08cd7498c00e2431e14fa4b8a4922230e82d12256a10e1748e5955b8b6372d6a",
+      "decoded_sha256": "dc12cde00eb1a1b06bf8c529a3618ca438530bb146c95ae07305a700d5b76c88"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "discovery-context-focused-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-focused-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-focused-20260912/stdout.log.gz",
+      "sha256": "87e13ee58b5845a6ed0b19a473d5ee79102726e8973727df991af5a36fae19f3",
+      "decoded_sha256": "7e4346a24925dee6439dd06b18525b8b533417e47382f23f5609d1ceaf36970c"
+    },
+    {
+      "path": "discovery-context-focused-20260912/verification.json.gz",
+      "sha256": "342e6c60bc3f6c71a8b2774ddab6be5b70a34dcb1ffef614eed1bdaea9d87435",
+      "decoded_sha256": "51217f3d0866a6ef01ce51ce6290bd8087d76fe85236b88d06c8b98e4b0812dd"
+    },
+    {
+      "path": "discovery-context-packages-20260912/changes.patch.gz",
+      "sha256": "d5aa3e27a6e97f299398cf146532acaa5b2b46761560ae98724e0069978b94f6",
+      "decoded_sha256": "19ba4aa0faaeb9be60e78566639775ea6cb4e72619e91935a4cfaf128fe88ae1"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "4fef7b884d4583db8f3b3eb64db13d40b267329709df94d15c4e8a98fa7abd46",
+      "decoded_sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "discovery-context-packages-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-packages-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-packages-20260912/stdout.log.gz",
+      "sha256": "c3b3551a7981ad6e120d90cbb83558c40d420be0f4efa366893d492d70a4c398",
+      "decoded_sha256": "0cecfd47d1f7a8903dde4c12d0a0b46d0c14403c370f91a8c36f1f06dbffc774"
+    },
+    {
+      "path": "discovery-context-packages-20260912/verification.json.gz",
+      "sha256": "88436222916ba0498a84b1eb3e2fbc4f730a99de2b5d2a562afe78bf5ee696b9",
+      "decoded_sha256": "23f28b575ecd39241b37c00b05dc2c964c877b27f893d416fa093a99e85c3ebd"
+    },
+    {
+      "path": "discovery-context-policy-20260912/changes.patch.gz",
+      "sha256": "d5aa3e27a6e97f299398cf146532acaa5b2b46761560ae98724e0069978b94f6",
+      "decoded_sha256": "19ba4aa0faaeb9be60e78566639775ea6cb4e72619e91935a4cfaf128fe88ae1"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "4fef7b884d4583db8f3b3eb64db13d40b267329709df94d15c4e8a98fa7abd46",
+      "decoded_sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "discovery-context-policy-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-policy-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-policy-20260912/stdout.log.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "discovery-context-policy-20260912/verification.json.gz",
+      "sha256": "67a198b7b447e3d9183c133869b01213364e9df5aaaeb099df0cc3ca6ba8fbe3",
+      "decoded_sha256": "326fe12985675fbd54fa25dc7db16177aa34e5f2c9777368eb29ae37d2745bcf"
+    },
+    {
+      "path": "discovery-context-prose-20260912/changes.patch.gz",
+      "sha256": "d5aa3e27a6e97f299398cf146532acaa5b2b46761560ae98724e0069978b94f6",
+      "decoded_sha256": "19ba4aa0faaeb9be60e78566639775ea6cb4e72619e91935a4cfaf128fe88ae1"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "4fef7b884d4583db8f3b3eb64db13d40b267329709df94d15c4e8a98fa7abd46",
+      "decoded_sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "discovery-context-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-prose-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-prose-20260912/stdout.log.gz",
+      "sha256": "054945edefc734d4d8e4ae2340c834722f74ebad4c0da61245d46237405defdc",
+      "decoded_sha256": "023b82896ef2acdae695f1193d16813f5243130077286fde82c7150cafc3154d"
+    },
+    {
+      "path": "discovery-context-prose-20260912/verification.json.gz",
+      "sha256": "ffb0e1cfed3e4f324366ab6401d4267f63ad5800b5de0155f4b1bd1d78b6b96d",
+      "decoded_sha256": "8479106ea63fc44a87f7a137fc4e427bca9832e99d448d1a3186118e9fa47e8c"
+    },
+    {
+      "path": "discovery-context-red-20260912/changes.patch.gz",
+      "sha256": "c50dcd7a77165ee67a82e649d81922746bee54ac9c0014a87673ae2083b6ad33",
+      "decoded_sha256": "4a370654d634b1405dcfbbe31c4da4b41e5d916be07710e4dc9492f37bfb06b3"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/internal/sources/github/construction_context.go.gz",
+      "sha256": "d41f90bbb718c8a474f594dcf15821a4dc59fd793aaf436906882da7076828a5",
+      "decoded_sha256": "b797d288c56cb02476c8a66c6decfd8f6ee7300bd7a4cff9f6b90c1c282e65cd"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-red-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-red-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-red-20260912/stdout.log.gz",
+      "sha256": "d24a4dc184bed8a1519558ac3a90f6cdada8c36094ad0e8504474268fac34def",
+      "decoded_sha256": "88dc821f6fd80c0996d8a17c8d43837fa27ccf430d7234b8f4e4b2fb658cf2c2"
+    },
+    {
+      "path": "discovery-context-red-20260912/verification.json.gz",
+      "sha256": "1901fc16689050d5d14df5a4ccf4b56b232ab7b5c8f144ec0d2e9c42c5ba54fd",
+      "decoded_sha256": "99f416b8c962995b964a6fea0483b33d53dcfc7b726c5d894b7f8090ecbdfb9b"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/changes.patch.gz",
+      "sha256": "d5aa3e27a6e97f299398cf146532acaa5b2b46761560ae98724e0069978b94f6",
+      "decoded_sha256": "19ba4aa0faaeb9be60e78566639775ea6cb4e72619e91935a4cfaf128fe88ae1"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "4fef7b884d4583db8f3b3eb64db13d40b267329709df94d15c4e8a98fa7abd46",
+      "decoded_sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/source/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/stdout.log.gz",
+      "sha256": "ba0a2cd3d96fbe5a374871bdf378f64eace84376d0a64ec342c1d08f28e93547",
+      "decoded_sha256": "587ed8bc9fff48a9d948c13a0500143f34d9a440a3b61d325c6f9e773a062d1e"
+    },
+    {
+      "path": "discovery-context-runtime-20260912/verification.json.gz",
+      "sha256": "cad5d7929bc76e9458ecc109043ddbed6c5be26de225ee643f8b63a968aae712",
+      "decoded_sha256": "974276b770e7256cd3c4badb9d71d1cfea24ba8d17d6a9ef9b8716ec09e2cebc"
+    },
+    {
+      "path": "committed-source/docs/CATALOG_STORE_CONTRACT.md.gz",
+      "sha256": "4fef7b884d4583db8f3b3eb64db13d40b267329709df94d15c4e8a98fa7abd46",
+      "decoded_sha256": "871e9fb21f66f5e1fdc3042ec3c879ccb3ab4590b308fd814f3b473f1b46a07b"
+    },
+    {
+      "path": "committed-source/internal/sources/github/construction_context_test.go.gz",
+      "sha256": "0d6aefc420b6de7753f067fce636c85395d3ea22d1b055ca617ca23163057026",
+      "decoded_sha256": "a9bb0dbab4e45793ab9585b65715fa3681666e2899da71934ac54d70aab6b874"
+    },
+    {
+      "path": "committed-source/internal/sources/github/github.go.gz",
+      "sha256": "efd09c349966c40eae487c6526511a814a56484e95d51460bddc3c6e247c6877",
+      "decoded_sha256": "687b046b60238360ecf6ed73681f2d913071039cdb6a1b05178ccef8970f3ac6"
+    },
+    {
+      "path": "committed-source/internal/sources/github/state.go.gz",
+      "sha256": "17942640619a070add51c8ccfd30bb32069f289d0a10edbf4cac08ecbddd1c4a",
+      "decoded_sha256": "fa93147ce28d4874f69169bda1d0582748249e9bac7276989f6f20a329e62217"
+    },
+    {
+      "path": "committed-source/internal/sources/github/state_privacy_posix_test.go.gz",
+      "sha256": "e12261712a0aee00cfe3ef379392337f7c4258516ac5496e6c47d8b534960be6",
+      "decoded_sha256": "63c907137b9620f9ec625f9b2fd501bc3ac4fdf4a79382ca39088540944d6bbd"
+    },
+    {
+      "path": "committed-source/internal/sources/github/state_recovery_test.go.gz",
+      "sha256": "3bc2b8a12fb6b365b6a821dba0949839f935df4bcf4e5deb49b111bafd1874b5",
+      "decoded_sha256": "0b82ac739b04c3d860b51d03cac50f17d626e8be7c3f2b9c394f260658d6e9ba"
+    },
+    {
+      "path": "committed-source/runtime/discovery_context_test.go.gz",
+      "sha256": "3a1d011f51ec5fc33443848110cbff6a0bc1fe461486b767e862e724bf549a59",
+      "decoded_sha256": "6a7c9094464b668c2ab26b4fa2a49ac8d7173db422e02f5bf46e7a3870a10855"
+    },
+    {
+      "path": "committed-source/runtime/runtime.go.gz",
+      "sha256": "a57afb9cd53622247f21b881732c3e5734118825e17ab92bb2a8da78eb035ddc",
+      "decoded_sha256": "20900eb2cb48412f3964b6db6c5ca3acb8d7574b87d228f2d36ebbb672c862ae"
+    },
+    {
+      "path": "committed-source/runtime/source.go.gz",
+      "sha256": "13ebe0c6fddb96d2709711dfcccaf95c09829000e89022e3e74c5c8518fa5204",
+      "decoded_sha256": "88319cf0acd529dea39406c7833cd6afa1efdd834152e2102b32fcbc0c1e7fe2"
+    },
+    {
+      "path": "committed-source/changes.patch.gz",
+      "sha256": "6c131c2ffd593d13e3121f5506af31111f497e216decc2b66ba9b0688663edd2",
+      "decoded_sha256": "68da8336e592347ddd167f5eee165c417d6b57db091b60da34b8450d88edaf32"
+    },
+    {
+      "path": "concurrent-tooling/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "concurrent-tooling/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "concurrent-tooling/go.mod.gz",
+      "sha256": "5480d63fe8d91108f50e7205e62d2d285f1202a5167dfb2c59fdddd93c714b0d",
+      "decoded_sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "concurrent-tooling/go.sum.gz",
+      "sha256": "84b482b80931d52e7b438112e2c60093ac7911bbb31ec6f09d748eacd1752ce8",
+      "decoded_sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "concurrent-tooling/scripts/verify.sh.gz",
+      "sha256": "50d16a7474a4e77fc9f4087eefbea2315cff7a2ba02799b6285d5d0bf2b7ab15",
+      "decoded_sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    },
+    {
+      "path": "concurrent-tooling/changes.patch.gz",
+      "sha256": "ee0c008c0d8984beed38090478b201c93ab24b76c11247273b2b93035646b900",
+      "decoded_sha256": "506e8dbb6dff7a7aa5008d82de32cdc232cdf6e273267c5dbfdfed4c5c8d3d82"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/changes.patch.gz",
+      "sha256": "c0e1c2bca83d16d3eb66a0c6e3952f6cacf4529e426c5ab64366fbabbda3a48a",
+      "decoded_sha256": "bd1d2cec06710469dbec81f04336383b809b9e1c3ddbc15c6eb21549b6a9aa9a"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "fb70904cb7704aee17bb3d2add5b28b353a4c1e44f42a9aaf146dfe2cc0f6350",
+      "decoded_sha256": "d43078e7daf187c79aec0f5ed48641d8939739cf4a9e51ff16958a7009966cb7"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "d06faf97c4fbb74e4cde1d7078c5ee5e917d4e805034a5de8d360de0f4f0a35f",
+      "decoded_sha256": "85917fca8a21ae04b5856aa87517307add4a04eb93e9055aa48bb05e88f8654e"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "00b466a361bed6b20a07d98594ccca60d510135ee58e279cb9df8e68e2ed9b2a",
+      "decoded_sha256": "d45cfdda4846d4cad13d644b6d2ec81e10382d39ccd56fca1ba583c4d5faf843"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "1aaf94a4938f6818292f73efc4b03d425c7f85518bdf3d139e52d179260ff9fa",
+      "decoded_sha256": "0c8b5913021439bdea21f4bb06657f71ab48934cdd627ebf381ab95b738feb34"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-discovery-context.html.gz",
+      "sha256": "0592a68b6ea456ab62c286822eb4727c5e20bd0fcae9f20a11aa0d9606701d07",
+      "decoded_sha256": "47d8e3c2df664e47ed806aee411ca84ab32dda80a5c2897624bda4f9ca93cbcf"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "579874d6c56988a56a33df668c7efda9fc8f46712bc207718b02f4fae34f62d5",
+      "decoded_sha256": "4bcd50b4112cc431bf963f7373da8661a0597ea98b0dde7c98ab49edcaa9cc9d"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/stderr.log.gz",
+      "sha256": "3d097a750534bc12fabfde5cdd422dd4c3d618781fe49591ecada1215147a14a",
+      "decoded_sha256": "fdb189e27e9b88807e9971683543a6f2ea94949b39f5880b7f6a814ce0ee0e1e"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/stdout.log.gz",
+      "sha256": "7b2cb1f12cdb289001dbc44a640957c14a94dff155858be1bb723a98f0537720",
+      "decoded_sha256": "0f56ea92aa68590c27d92c9f91366c02a696c243e94a33c5aa607ac8acdb91fc"
+    },
+    {
+      "path": "discovery-context-canonical-prose-20260912/verification.json.gz",
+      "sha256": "65fb51209922ba6e829aefa358d5b5d81a8b19a27af16d90629fd06155314c49",
+      "decoded_sha256": "d1cf432aef1fabd66e103f0245a3012eb301fa8503129b8df6fef7faf8f9f06f"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/changes.patch.gz",
+      "sha256": "ba4c7d1902feede44b1358a7e21f6355b2908ba0a67d7882474d10a3d6ba5fab",
+      "decoded_sha256": "87d686b2918881ab2aee28753e23d75e58cf15ef35105644cc89eeff41a08575"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md.gz",
+      "sha256": "fb70904cb7704aee17bb3d2add5b28b353a4c1e44f42a9aaf146dfe2cc0f6350",
+      "decoded_sha256": "d43078e7daf187c79aec0f5ed48641d8939739cf4a9e51ff16958a7009966cb7"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md.gz",
+      "sha256": "d06faf97c4fbb74e4cde1d7078c5ee5e917d4e805034a5de8d360de0f4f0a35f",
+      "decoded_sha256": "85917fca8a21ae04b5856aa87517307add4a04eb93e9055aa48bb05e88f8654e"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/docs/design/catalog-lifecycle/STORAGE_REVIEW.md.gz",
+      "sha256": "00b466a361bed6b20a07d98594ccca60d510135ee58e279cb9df8e68e2ed9b2a",
+      "decoded_sha256": "d45cfdda4846d4cad13d644b6d2ec81e10382d39ccd56fca1ba583c4d5faf843"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "543caae98ccfae4b04f9cbc7fcd66c49f11bae4c9d8e9fc08b6cc8ea5b27e0a6",
+      "decoded_sha256": "9e5e9386ea776c16cd821de70ddedd91e610256947e9a1181c374a62b800acae"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-discovery-context.html.gz",
+      "sha256": "0592a68b6ea456ab62c286822eb4727c5e20bd0fcae9f20a11aa0d9606701d07",
+      "decoded_sha256": "47d8e3c2df664e47ed806aee411ca84ab32dda80a5c2897624bda4f9ca93cbcf"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "2336c11c050e700797803c5b6540c73bddf79d05c63e24be78269c9a3bb8797c",
+      "decoded_sha256": "a157be416f4135a196d23d4551c4ad491f9b7a13d05f6a2d953f722947d5cffb"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/stdout.log.gz",
+      "sha256": "6af220abf93475b47b94e0338f4db403e3025e082fce03033af43b6db829a7a4",
+      "decoded_sha256": "89918d635187b5bc662365c3a4f958ca1192fe3df99d060db3dc5bd486eef2b3"
+    },
+    {
+      "path": "discovery-context-canonical-prose-final-20260912/verification.json.gz",
+      "sha256": "61b4d46996f8b8c898dccbab6d885984e51587af41868bbfd1a47490adf25ae7",
+      "decoded_sha256": "903adf4226e7c7d22edee9164661236f2fd464f204c4a4d52b75d120f354f9fa"
+    }
+  ],
+  "final_test_events": {
+    "pass": 153,
+    "fail": 0,
+    "skip": 0
+  },
+  "source_binding": "The final package and selected runtime checks cover disjoint packages and bind the committed Go source. Policy, prose, compilation, and consumer dependency checks bind the same source. Earlier broad integration testing continues against d0009a18, not this commit.",
+  "limits": [
+    "The fail-before API bridge forwarded NewContext to the existing New constructor without forwarding the context. Three source cases and one runtime case failed, with five failed events including the source parent.",
+    "NewContext rejects nil or canceled context before state creation. Runtime source selection passes the caller context into GitHub state construction and recovery. The existing New wrapper deliberately uses context.Background for callers without a context.",
+    "Tests trigger cancellation only after recovery acquires its real writer lock. Canceled recovery preserves all prior file bytes. A new construction attempt recovers the records and preserves the accepted replay floor, ETag, and release reference.",
+    "Final race checks pass 153 events across GitHub, privatefiles, and selected runtime tests. The initial focused result overlaps those checks and is not added to their total.",
+    "All race checks run on macOS. Linux and Windows AMD64 compilation does not qualify native execution. Native CI remains required before publication and merge.",
+    "Go policy, prose, and consumer dependency gates pass without changing their restrictions or limits.",
+    "An earlier full race suite remains active in session 51528 against production commit d0009a18. Its one observed privacy-fixture failure is corrected and separately verified at 989310c7. The running binary still contains that original failure and cannot qualify a passing gate.",
+    "Generation retention, history compaction, twelve mapped acceptance subcases, full verification, review, native CI, and merge remain open. CSP5 remains unpublished until its full contract passes.",
+    "The five observed tooling edits remain outside the catalog commit. Their exact bytes remain archived. Full task qualification must use the final committed module graph.",
+    "The final canonical prose check passes. Source snapshots separate the concurrent tooling edits from six owned documentation files. Task criteria, scope, invariants, and the goal remain unchanged."
+  ],
+  "unrelated_worktree_changes": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "f10135fbcd4851c9fa83b06151dc9b3c85cd4b6aa869e4b8b6174d9c4a1ff861"
+    }
+  ],
+  "tested_module_inputs": [
+    {
+      "path": "go.mod",
+      "sha256": "07a3b1159a4bbaa9bb213b6fb07669ac98474807215a9cdf48868446fe8baf2b",
+      "evidence": "discovery-context-packages-20260912/source/go.mod.gz"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "1ae7cde94be984ba33c8cd6d6fb33fc05c74d1d9275cbd3e537aaf67f21fe817",
+      "evidence": "discovery-context-packages-20260912/source/go.sum.gz"
+    }
+  ],
+  "running_check": {
+    "session_id": 51528,
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+    "record": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls/.tmp/csp5-update-controls/record-integration-full-final-20260912/verification.json",
+    "tested_source_commit": "d0009a1816faf590c4ea523ed9da0f15a67e33bc",
+    "status": "running",
+    "known_failures": [
+      "TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart"
+    ],
+    "note": "Continue polling the existing process for the remaining results. The compiled source predates this constructor change and the separately verified fixture correction."
+  },
+  "documentation_checks": {
+    "discovery-context-canonical-prose-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T07:21:19.328354+00:00",
+      "base_commit": "506db992f2332e1a3b9ef3c3ac68f8d07d504550",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "d43078e7daf187c79aec0f5ed48641d8939739cf4a9e51ff16958a7009966cb7",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "85917fca8a21ae04b5856aa87517307add4a04eb93e9055aa48bb05e88f8654e",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "d45cfdda4846d4cad13d644b6d2ec81e10382d39ccd56fca1ba583c4d5faf843",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "0c8b5913021439bdea21f4bb06657f71ab48934cdd627ebf381ab95b738feb34",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-discovery-context.html": "47d8e3c2df664e47ed806aee411ca84ab32dda80a5c2897624bda4f9ca93cbcf",
+        "docs/plans/starport-production-catalog-plan.html": "4bcd50b4112cc431bf963f7373da8661a0597ea98b0dde7c98ab49edcaa9cc9d",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T07:22:07.412175+00:00",
+      "status": "failed"
+    },
+    "discovery-context-canonical-prose-final-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T07:22:54.481005+00:00",
+      "base_commit": "506db992f2332e1a3b9ef3c3ac68f8d07d504550",
+      "source_files": {
+        "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+        "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+        "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md": "d43078e7daf187c79aec0f5ed48641d8939739cf4a9e51ff16958a7009966cb7",
+        "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md": "85917fca8a21ae04b5856aa87517307add4a04eb93e9055aa48bb05e88f8654e",
+        "docs/design/catalog-lifecycle/STORAGE_REVIEW.md": "d45cfdda4846d4cad13d644b6d2ec81e10382d39ccd56fca1ba583c4d5faf843",
+        "docs/plans/proof/starport-production-catalog/csp5.md": "9e5e9386ea776c16cd821de70ddedd91e610256947e9a1181c374a62b800acae",
+        "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-discovery-context.html": "47d8e3c2df664e47ed806aee411ca84ab32dda80a5c2897624bda4f9ca93cbcf",
+        "docs/plans/starport-production-catalog-plan.html": "a157be416f4135a196d23d4551c4ad491f9b7a13d05f6a2d953f722947d5cffb",
+        "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+        "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+        "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T07:23:42.058747+00:00",
+      "status": "passed"
+    }
+  },
+  "documentation_source_files": [
+    {
+      "path": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "sha256": "d43078e7daf187c79aec0f5ed48641d8939739cf4a9e51ff16958a7009966cb7"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "sha256": "85917fca8a21ae04b5856aa87517307add4a04eb93e9055aa48bb05e88f8654e"
+    },
+    {
+      "path": "docs/design/catalog-lifecycle/STORAGE_REVIEW.md",
+      "sha256": "d45cfdda4846d4cad13d644b6d2ec81e10382d39ccd56fca1ba583c4d5faf843"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/csp5.md",
+      "sha256": "9e5e9386ea776c16cd821de70ddedd91e610256947e9a1181c374a62b800acae"
+    },
+    {
+      "path": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-discovery-context.html",
+      "sha256": "47d8e3c2df664e47ed806aee411ca84ab32dda80a5c2897624bda4f9ca93cbcf"
+    },
+    {
+      "path": "docs/plans/starport-production-catalog-plan.html",
+      "sha256": "a157be416f4135a196d23d4551c4ad491f9b7a13d05f6a2d953f722947d5cffb"
+    }
+  ]
+}

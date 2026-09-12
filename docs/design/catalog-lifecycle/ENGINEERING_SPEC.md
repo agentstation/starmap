@@ -3334,3 +3334,12 @@ File inspection reports the private files without reading their contents into it
 
 The [integration proof](../../plans/proof/starport-production-catalog/csp5/record-integration-checkpoint-2026-09-12/verification.json) records focused passing tests and preserved failures.
 The corrected broad race suite remains active. Generation retention, history compaction, mapped acceptance, full verification, review, native CI, and merge remain open.
+
+## Discovery construction cancellation: 2026-09-12
+
+Local Starmap commit `91b4fbc6` passes the runtime caller context through GitHub construction and local record recovery.
+Cancellation before construction creates no discovery state. Cancellation during recovery preserves accepted records and unfinished receipts for a later retry.
+The legacy constructor retains its background context. Runtime cleanup releases ownership after failed construction.
+
+The [cancellation proof](../../plans/proof/starport-production-catalog/csp5/discovery-context-2026-09-12/verification.json) records 153 passing race test events and five original failures.
+Policy, prose, dependency, and Linux/Windows compilation checks pass. Native execution and full CSP5 qualification remain open.

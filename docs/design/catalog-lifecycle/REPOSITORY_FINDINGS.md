@@ -2721,3 +2721,12 @@ GitHub construction currently calls recovery with `context.Background()`. CSP5 m
 
 The broad suite found a privacy fixture that treated the new recovery directory as a file. Follow-up `989310c7` scans all nested files.
 It preserves the diagnostic-sentinel assertion. Its focused race test, policy check, and Linux/Windows compilation pass. The active broad binary still contains the original fixture.
+
+## Discovery construction cancellation: 2026-09-12
+
+Local Starmap commit `91b4fbc6` passes the runtime caller context through GitHub construction and local record recovery.
+Cancellation before construction creates no discovery state. Cancellation during recovery preserves accepted records and unfinished receipts for a later retry.
+The legacy constructor retains its background context. Runtime cleanup releases ownership after failed construction.
+
+The [cancellation proof](../../plans/proof/starport-production-catalog/csp5/discovery-context-2026-09-12/verification.json) records 153 passing race test events and five original failures.
+Policy, prose, dependency, and Linux/Windows compilation checks pass. Native execution and full CSP5 qualification remain open.
