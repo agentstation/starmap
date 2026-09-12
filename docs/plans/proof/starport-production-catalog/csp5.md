@@ -631,13 +631,51 @@ Migration must preserve receipt identity and passive inspection. Pending receipt
 The new per-write lock alone does not prove that domain contract. Preserve conditional-request and accepted-release state when adding its publication guard.
 Generation retention, history compaction, twelve mapped subcases, full verification, required review, native CI, and merge remain open.
 
+## Runtime and discovery record recovery
+
+The [integration proof](csp5/record-integration-checkpoint-2026-09-12/verification.json) binds implementation `d0009a18` and fixture fix `989310c7` to 22 source files and completed checks.
+Runtime startup recovers source, provider, binding, publication-input, and pin records before loading retained layers.
+GitHub construction recovers local discovery records without network acquisition.
+Verified channel updates compare the previously read state under the shared writer lock. A stale writer returns a conflict and preserves the newer replay floor.
+Retry uses current state and preserves the accepted release reference and ETag.
+
+Runtime migration refuses pending receipts because their native identities cannot survive a copy.
+Migration can copy inactive metadata after recovery in the original directory. Inspection preserves source bytes and creates no recovery metadata.
+Only declared runtime and discovery paths carry this check. Unrelated directories with the same metadata name remain operator-owned input.
+File inspection reports private stages, journals, and locks without exposing contents or claiming unrelated files.
+
+The initial runtime fixture omitted required runtime ownership. Its five crash cases proved no recovery defect.
+Its separate GitHub test reproduced replay-floor regression. The corrected fixture reproduced all five abandoned runtime stages, with seven failed events including its parent and GitHub.
+
+An old-source overlay reproduced migration accepting pending receipts. A separate corrected probe reproduced migration claiming an unrelated metadata directory.
+The first scope probe did not compile because it referenced the wrong preparation result field. Both fixture versions remain preserved.
+
+The expanded race run passes 19 test events. The final migration run passes five events, including three unrelated directory layouts.
+The file and retry run passes five events. The counts overlap. Do not sum them.
+
+Policy, dependency, final prose, and Linux/Windows compilation checks pass. Compilation does not qualify native execution.
+An earlier prose check found an eight-sentence paragraph. The final contract splits that paragraph without changing its meaning.
+
+The first broad run stopped after the separate migration scope defect reproduced. Its process interruption record and partial output remain preserved.
+The corrected broad run remains active in session `51528` against implementation `d0009a18`. It found one existing privacy fixture that read the new metadata directory as a file.
+
+The current resume state owns the command path and next action. No broad-suite or mapped-task acceptance credit follows from this partial result.
+Concurrent tooling edits remain outside the catalog commit, with their tested inputs archived. Full qualification must use the final committed module graph.
+
+Follow-up `989310c7` scans all nested files and keeps the diagnostic-sentinel assertion. Its focused race test, policy check, and Linux/Windows compilation pass.
+The active broad binary retains the original fixture failure. Its terminal result cannot count as a passing task gate.
+
+Generation retention, history compaction, twelve mapped subcases, full task verification, review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Integrate private record recovery with retained evidence and GitHub discovery. Preserve migration receipts, passive reads, and replay floors. Then complete generation retention and acquisition history compaction.
+Finish the active integration race suite and bind its terminal result to the committed source.
+Verify caller cancellation during GitHub construction. `newStateStore` currently supplies `context.Background()` to recovery instead of the runtime caller context.
+Then complete generation retention and acquisition history compaction.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

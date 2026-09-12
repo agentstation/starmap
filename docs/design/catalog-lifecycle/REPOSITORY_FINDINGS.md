@@ -2699,6 +2699,25 @@ Nine process-exit scenarios and separate ownership, cancellation, scan-limit, fl
 All 502 final race test events pass without failures or skips. Policy, prose, dependency, and Linux/Windows compilation checks pass.
 Native Linux and Windows execution remains unverified. The proof archives concurrent tooling inputs outside the catalog commit.
 
-Runtime evidence and GitHub discovery still use the ordinary writer. Their adoption remains required under CSP5.
+At that API checkpoint, runtime evidence and GitHub discovery still used the ordinary writer. The next section records their integration.
 Integration must preserve passive inspection, migration receipts, canonical file reporting, and replay floors across source instances.
 Generation retention, history compaction, and full task qualification also remain open.
+
+## Runtime record integration: 2026-09-12
+
+Local Starmap commit `d0009a18` corrects three reproduced integration failures under CSP5.
+Startup previously left abandoned runtime record stages. Concurrent GitHub source instances could replace a newer replay floor with an older result.
+Migration accepted receipts tied to native identities from the original directory. The first correction also claimed unrelated directories with the reserved metadata name.
+
+The final implementation recovers before retained-state startup and compares discovery state under the writer lock.
+Migration refuses pending receipts only at declared product paths. Three unrelated directory layouts retain their contents through migration staging.
+Passive file inspection reports the new private files and preserves their bytes.
+
+The [integration proof](../../plans/proof/starport-production-catalog/csp5/record-integration-checkpoint-2026-09-12/verification.json) preserves the fixture errors, corrected failures, and interrupted broad run.
+Expanded checks pass 19 events. Separate migration and file/retry checks each pass five events. The counts overlap.
+Policy, prose, dependency, and compilation checks pass. The corrected broad race suite remains active, and CSP5 remains incomplete.
+
+GitHub construction currently calls recovery with `context.Background()`. CSP5 must verify caller cancellation through that constructor before final qualification.
+
+The broad suite found a privacy fixture that treated the new recovery directory as a file. Follow-up `989310c7` scans all nested files.
+It preserves the diagnostic-sentinel assertion. Its focused race test, policy check, and Linux/Windows compilation pass. The active broad binary still contains the original fixture.

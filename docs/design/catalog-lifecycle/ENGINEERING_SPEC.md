@@ -3318,6 +3318,19 @@ Nine process-exit scenarios and separate ownership, cancellation, scan-limit, fl
 All 502 final race test events pass without failures or skips. Policy, prose, dependency, and Linux/Windows compilation checks pass.
 Native Linux and Windows execution remains unverified. The proof archives concurrent tooling inputs outside the catalog commit.
 
-Runtime evidence and GitHub discovery still use the ordinary writer. Their adoption remains required under CSP5.
+At that API checkpoint, runtime evidence and GitHub discovery still used the ordinary writer. The next section records their integration.
 Integration must preserve passive inspection, migration receipts, canonical file reporting, and replay floors across source instances.
 Generation retention, history compaction, and full task qualification also remain open.
+
+## Runtime record integration: 2026-09-12
+
+Local Starmap commit `d0009a18` connects durable private record publication to runtime evidence and GitHub discovery.
+Startup recovers records before reading retained layers. Discovery compares prior state bytes under the writer lock before advancing its replay floor.
+A conflicting refresh preserves the newer accepted state and returns a retryable conflict. Source construction recovers local records without network acquisition.
+
+Migration checks pending receipts only at declared runtime and discovery paths. A copied native identity cannot authorize recovery.
+Recover in the original directory before migration. Unrelated directories with the reserved metadata name remain ordinary migration input.
+File inspection reports the private files without reading their contents into its output or starting recovery.
+
+The [integration proof](../../plans/proof/starport-production-catalog/csp5/record-integration-checkpoint-2026-09-12/verification.json) records focused passing tests and preserved failures.
+The corrected broad race suite remains active. Generation retention, history compaction, mapped acceptance, full verification, review, native CI, and merge remain open.

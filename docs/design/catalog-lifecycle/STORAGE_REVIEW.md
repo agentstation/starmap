@@ -682,6 +682,27 @@ Nine process-exit scenarios and separate ownership, cancellation, scan-limit, fl
 All 502 final race test events pass without failures or skips. Policy, prose, dependency, and Linux/Windows compilation checks pass.
 Native Linux and Windows execution remains unverified. The proof archives concurrent tooling inputs outside the catalog commit.
 
-Runtime evidence and GitHub discovery still use the ordinary writer. Their adoption remains required under CSP5.
+At that API checkpoint, runtime evidence and GitHub discovery still used the ordinary writer. The next section records their integration.
 Integration must preserve passive inspection, migration receipts, canonical file reporting, and replay floors across source instances.
 Generation retention, history compaction, and full task qualification also remain open.
+
+## Runtime record integration: 2026-09-12
+
+Local Starmap commit `d0009a18` adds recovery metadata beside these retained records:
+
+| Record parent beneath the runtime root | Temporary record | Recovery metadata |
+| --- | --- | --- |
+| `catalog-runtime/` | `.layer-*` | `.record-publications/.owner.lock` and `*.jsonl` |
+| `catalog-runtime/providers/` | `.layer-*` | `.record-publications/.owner.lock` and `*.jsonl` |
+| `catalog-runtime/providers/bindings/` | `.layer-*` | `.record-publications/.owner.lock` and `*.jsonl` |
+| `catalog-runtime/publication-inputs/` | `.input-*` | `.record-publications/.owner.lock` and `*.jsonl` |
+| `github-catalog-source/` | `.state-*` | `.record-publications/.owner.lock` and `*.jsonl` |
+
+These files remain private process state. Recovery verifies their recorded identities and preserves accepted destinations, unknown files, and changed files.
+GitHub publication also compares the prior state bytes to preserve the replay floor across source instances.
+
+Migration refuses pending receipts in these declared locations. Recover them in the original directory before copying inactive metadata.
+Unrelated directories with the same metadata name remain ordinary migration input. Passive inspection neither recovers files nor exposes their contents.
+
+The [integration proof](../../plans/proof/starport-production-catalog/csp5/record-integration-checkpoint-2026-09-12/verification.json) records focused tests, compilation, and remaining limits.
+The corrected broad race suite remains active. This local integration does not qualify a new shared-storage architecture or complete CSP5.

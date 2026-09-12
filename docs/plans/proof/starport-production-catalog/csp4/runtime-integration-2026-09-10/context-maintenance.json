@@ -6,13 +6,26 @@
   "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 114,
-  "new_evidence_artifacts": 6990,
-  "new_commit_source_files": 588,
-  "resume_words": 255,
-  "next_action": "Integrate private record recovery into runtime evidence and GitHub discovery, then retain required generations and compact acquisition history. All twelve mapped subcases remain unverified. All recorded checks are terminal.",
-  "current_source": "9f82730ec2875010f030eb197f023e70c7665d60",
+  "new_evidence_artifacts": 7660,
+  "new_commit_source_files": 610,
+  "resume_words": 298,
+  "next_action": "Poll session 51528 for the corrected runtime integration race suite, then verify discovery constructor cancellation, retain required generations, and compact acquisition history. All twelve mapped subcases remain unverified.",
+  "current_source": "989310c7c780bfa64924902fb046a1916088dbfb",
   "starmap_integration_source": null,
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
   "external_running_checks": [],
-  "local_running_checks": []
+  "local_running_checks": [
+    {
+      "session_id": 51528,
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls",
+      "record": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls/.tmp/csp5-update-controls/record-integration-full-final-20260912/verification.json",
+      "status": "running",
+      "note": "The suite still runs its original binary. Its known inventory-fixture failure remains a failed result. The corrected focused test passes separately. Continue polling this handle to collect remaining results.",
+      "tested_source_commit": "d0009a1816faf590c4ea523ed9da0f15a67e33bc",
+      "known_failures": [
+        "TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart"
+      ],
+      "fixture_fix_commit": "989310c7c780bfa64924902fb046a1916088dbfb"
+    }
+  ]
 }
