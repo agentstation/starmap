@@ -575,13 +575,41 @@ Final task qualification must use the final committed module graph.
 
 Legacy relocation, evidence and discovery staging, retention, compaction, twelve mapped subcases, full verification, review, native CI, and merge remain open.
 
+## Durable legacy relocation recovery
+
+The [relocation proof](csp5/relocation-journal-2026-09-12/verification.json) binds commit `57bb6d17` to crash failures and final checks.
+The original retry failed after relocation, before workspace publication, and after workspace installation because the destination already existed.
+Four failing test events include those three scenarios and their parent.
+
+Version 4 preparation journals record both parent identities, the store metadata, every retained generation, and the optional Windows lock alias.
+The workspace inventory flushes before workspace publication. Explicit migration retry validates retained state and both advisory locks before restoring the store and retrying migration.
+Ordinary projection and repair refuse a pending relocation. Recovery preserves changed files, unknown entries, incomplete receipts, and conflicting destinations.
+
+Five process-exit scenarios cover inventory completion, relocation, candidate preparation, workspace installation, and completed projection.
+Separate tests simulate interrupted workspace cleanup and a restored store. Fourteen changed-state scenarios verify preservation.
+Other tests cover active workspace and commit writers, cancellation, parent-scan limits, lock aliases, older journals, and the original receipt before publication.
+The final full suite passes 384 race test events without failures or skips.
+
+The first integration attempt lacked a test import. A broader run exposed an incorrect error classification for a replaced store.
+The first full suite also exposed incorrect writer-conflict classification. A separate test reproduced open handles after setup cleanup failed.
+The final code restores the retryable conflict and closes those handles while preserving operator files. All original failures remain preserved.
+
+The first prose check found a seven-sentence paragraph, which the final text splits.
+Go policy, prose, and Linux/Windows compilation checks pass. Compilation does not qualify native execution.
+The proof archives concurrent tooling inputs outside the catalog commit. Full task qualification must use the final committed module graph.
+
+Recovery keeps the existing journal-size, tree-inventory, and parent-scan limits. Generation scans use batches of 128 entries.
+A completed migration removes its journal, and a repeated completed command reports the existing destination.
+Crashes with incomplete ownership or an unrecorded empty enclosure require explicit recovery.
+Evidence and discovery staging, retention, compaction, twelve mapped subcases, full verification, review, native CI, and merge remain open.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Complete durable legacy relocation recovery. Preserve unknown enclosures after journal removal. Then complete retained-evidence and discovery recovery, followed by generation retention.
+Complete retained-evidence and GitHub discovery stage recovery. Preserve unknown enclosures after journal removal. Then complete generation retention and acquisition history compaction.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

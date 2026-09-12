@@ -3289,3 +3289,19 @@ The focused race run passes 80 events. The full suite passes 347 race test event
 Policy, prose, and Linux/Windows compilation checks pass. Native execution remains subject to the required platform checks.
 The proof archives the concurrent goago module inputs, which remain outside the catalog commit.
 Legacy relocation, other staging, retention, compaction, and full CSP5 qualification remain open.
+
+## Legacy relocation recovery: 2026-09-12
+
+Starmap `57bb6d17` records legacy relocation before moving the catalog store.
+Version 4 preparation receipts bind both parents, store metadata, retained generations, workspace entries, and the optional Windows lock alias.
+Explicit migration retry checks those receipts and both advisory locks before restoring the store and retrying migration.
+Ordinary projection and repair refuse pending relocation. Changed files, unknown entries, and incomplete ownership remain preserved.
+
+The [relocation proof](../../plans/proof/starport-production-catalog/csp5/relocation-journal-2026-09-12/verification.json) preserves three original crash failures.
+Five process-exit scenarios and separate ownership, cancellation, writer, scan-limit, alias, and rollback checks cover recovery.
+The full suite passes 384 race test events without failures or skips. Go policy, prose, and Linux/Windows compilation checks pass.
+Native execution remains subject to the required platform checks. The proof archives the concurrent tooling inputs outside the catalog commit.
+
+A completed migration removes its journal. Repeating that completed command reports the existing destination.
+Unrecorded enclosures and incomplete receipts remain preserved for explicit recovery.
+Evidence and discovery staging, retention, compaction, and full CSP5 qualification remain open.
