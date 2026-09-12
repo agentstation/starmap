@@ -1,0 +1,130 @@
+{
+  "task": "CSP5",
+  "status": "RUNNING",
+  "source_commit": "c8ec797a3195564bc68455dbc97ff3b1199ff3bd",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-csp5-verification-c8ec797a",
+  "session_id": 56591,
+  "started_at": "2026-09-12T08:35:43.387902+00:00",
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.26.6",
+    "GOWORK=off",
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "-timeout",
+    "30m",
+    "./runtime",
+    "./pkg/catalogs/storage"
+  ],
+  "raw_output_directory": "/Users/jack/src/github.com/agentstation/starmap-csp5-verification-c8ec797a/.tmp/csp5-update-controls/runtime-required-c8ec797a-20260912",
+  "module_inputs": [
+    {
+      "path": "go.mod",
+      "sha256": "7306762e1cba1767c7a4f2758e77f23f9e6ee1262e579587ecdfcfa931e87508"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "c250f40d5efcff10df08b824d63da9b6079f100cde2ff1e7014236b58b67c886"
+    }
+  ],
+  "limits": [
+    "This command uses a clean detached checkout and its committed module graph.",
+    "A running command gives no acceptance credit. Preserve its terminal output before removing the temporary checkout.",
+    "This suite tests the cache checkpoint. Later compaction or collection changes require the applicable checks again."
+  ],
+  "plan_prose_check": {
+    "command": [
+      "make",
+      "technical-writing-check"
+    ],
+    "started_at": "2026-09-12T08:36:23.123498+00:00",
+    "base_commit": "b79a6c52cca6b2b926c2197eb6554f2dfd0ce369",
+    "source_files": {
+      "AGENTS.md": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d",
+      "Makefile": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164",
+      "docs/plans/proof/starport-production-catalog/csp5.md": "e3ea7dce6207e3c503053ca932f6a5f292d6944273a3388db38d4dacec6d2bca",
+      "docs/plans/proof/starport-production-catalog/csp5/runtime-required-c8ec797a-2026-09-12.json": "511e18d508e8c8cde3b3e80fd8953376ee1f0d7fc3e2b1431d37ea0240f63d96",
+      "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-runtime-suite.html": "04117bbcfcf4cc0c7886fd696be29930e8feab2fb2a4d62b9e75aac1f9ad07b5",
+      "docs/plans/starport-production-catalog-plan.html": "cb8d7b8a5f5457dcb8a2af356439ea5085a98317f9f17256f4742f7ab5e7bc55",
+      "go.mod": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f",
+      "go.sum": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df",
+      "scripts/verify.sh": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    "exit_code": 0,
+    "finished_at": "2026-09-12T08:37:11.346992+00:00"
+  },
+  "plan_prose_artifacts": [
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/changes.patch.gz",
+      "sha256": "50bb95db670e1d52081472c466e3a1d1a81a9669d703f230d7ae0f3f4310bece",
+      "decoded_sha256": "eaa6c41196762a13c010af86448e2b4b6b4006154baa57cf8f7d58f0b9ec848b"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/AGENTS.md.gz",
+      "sha256": "e75d74e9df7c9613c635c584e641b16d1e3ec13845c4f37e353f81b263b405af",
+      "decoded_sha256": "4bd3ceeaf6bed2c3f7026ad6e649866e742e738e5c5f09a9abdd478dce021e0d"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/Makefile.gz",
+      "sha256": "8e662ff56ebae39288ce96fab55c42f71ba24d4e0c5de5bd4e30aeb56ac19baa",
+      "decoded_sha256": "6ac2c09360c2a78789297eddce40fd75f1de62f918c95df078f3520c88af9164"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/docs/plans/proof/starport-production-catalog/csp5/runtime-required-c8ec797a-2026-09-12.json.gz",
+      "sha256": "4ddca5c88d89826edbf0bd50e7f3161337cef5a473470ec2166c50b6d72c7857",
+      "decoded_sha256": "511e18d508e8c8cde3b3e80fd8953376ee1f0d7fc3e2b1431d37ea0240f63d96"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/docs/plans/proof/starport-production-catalog/csp5.md.gz",
+      "sha256": "4a0e2cc03ff382bd8af241116904b5c565f509dcea2ef4be5334be9bbdc4d12b",
+      "decoded_sha256": "e3ea7dce6207e3c503053ca932f6a5f292d6944273a3388db38d4dacec6d2bca"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-runtime-suite.html.gz",
+      "sha256": "d57794aa6076b834947ec79c98078c20f36af8684d5a1ffd4c5faf49da30d467",
+      "decoded_sha256": "04117bbcfcf4cc0c7886fd696be29930e8feab2fb2a4d62b9e75aac1f9ad07b5"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/docs/plans/starport-production-catalog-plan.html.gz",
+      "sha256": "c27ff840a488b03034f32cbc3cc9926e53f86800ceb535743dc5e2d033da6804",
+      "decoded_sha256": "cb8d7b8a5f5457dcb8a2af356439ea5085a98317f9f17256f4742f7ab5e7bc55"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/go.mod.gz",
+      "sha256": "14980a377b1ea8749e1c27d5dbff699b499fb2bb56c05069c5eeb48aefe00e93",
+      "decoded_sha256": "d7003ca4f66a6cbc12e9a5e761bd7a26a5954314939460660e5e617494c8e64f"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/go.sum.gz",
+      "sha256": "64fc1464021f4031171039e19433ea3513d9f0f007cf5ae6905f26b120006a5d",
+      "decoded_sha256": "cd7050b221ea6f346857040d2833b4df716878d67a94498859cf6c4ced4aa8df"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/source/scripts/verify.sh.gz",
+      "sha256": "59a1a034652fa992e93897bc76f435ac7c549aeed4bdf3f9f13fdb87d5b29134",
+      "decoded_sha256": "f65ed889d86fdb9e056c6795085dca433639d8144ee8faf18ea9f1fd4e67668c"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/stdout.log.gz",
+      "sha256": "87fdb5c6228bf940bb47b474d740211686827763682ae2f0e64cb5fce58bbddd",
+      "decoded_sha256": "a0ba37f722c2fcd4bc550fe316aad4c47aa124ec05ccbdd4434d82e75903ace3"
+    },
+    {
+      "path": "runtime-required-c8ec797a-2026-09-12/verification.json.gz",
+      "sha256": "2de1b425c8e21f8aba7fc3267e2bb3211b96c5dc2b104259d0da5025747397f1",
+      "decoded_sha256": "1f6014f70b3e43d80bb75b7351cc0e61e2d68d6f16afba4c7f23b0732e3ae856"
+    }
+  ],
+  "last_verified_live": {
+    "session_id": 56591,
+    "observation": "The session returned running. The storage package passed. Runtime remained active with 176 total passing test events and no failures or skips at inspection."
+  }
+}

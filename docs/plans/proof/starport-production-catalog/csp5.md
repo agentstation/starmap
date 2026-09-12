@@ -774,6 +774,14 @@ Final task qualification must use the committed module graph.
 Distinct-inventory retirement, generation and observation-file collection, twelve mapped subcases, full verification, review, native CI, and merge remain open.
 The older required runtime suite remains failed historical evidence. CSP5 remains unpublished until its complete contract passes.
 
+## Required runtime suite: 2026-09-12
+
+The [running suite record](csp5/runtime-required-c8ec797a-2026-09-12.json) binds session `56591` to clean detached source `c8ec797a`.
+Its checkout is `/Users/jack/src/github.com/agentstation/starmap-csp5-verification-c8ec797a`.
+The command runs the complete runtime and catalog-store race suites with the committed module graph and the required 30-minute timeout.
+No completion or task acceptance credit applies while the command runs.
+Preserve the terminal output before removing the temporary checkout. Continue independent compaction and collection work.
+
 ## Remaining work
 
 The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns all acceptance requirements.
