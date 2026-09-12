@@ -32,7 +32,13 @@ func (s *Filesystem) Collect(ctx context.Context, request RetentionRequest) (Ret
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, err := os.Lstat(s.root); os.IsNotExist(err) && request.ExpectedGenerationID == "" && len(request.RequiredGenerationIDs) == 0 {
+	if _, err := os.Lstat(s.root); os.IsNotExist(err) {
+		if request.ExpectedGenerationID != "" {
+			return RetentionReport{}, casConflict(request.ExpectedGenerationID, "")
+		}
+		if len(request.RequiredGenerationIDs) != 0 {
+			return RetentionReport{}, generationNotFound(request.RequiredGenerationIDs[0])
+		}
 		return RetentionReport{}, nil
 	}
 	unlock, err := s.lockRetention(ctx)
@@ -57,6 +63,12 @@ func (s *Filesystem) Collect(ctx context.Context, request RetentionRequest) (Ret
 	}
 	directory, err := privatefiles.ExistingDirectory(filepath.Join(s.root, "generations"))
 	if err != nil {
+		if os.IsNotExist(err) {
+			if current == "" {
+				return RetentionReport{}, nil
+			}
+			return RetentionReport{}, generationNotFound(current)
+		}
 		return RetentionReport{}, err
 	}
 	parent, err := directory.Open()

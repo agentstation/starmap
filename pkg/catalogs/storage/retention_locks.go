@@ -25,6 +25,9 @@ func (s *Filesystem) AcquireGeneration(ctx context.Context, id string) (catalogs
 	defer s.mu.Unlock()
 	unlock, err := s.lockRetention(ctx)
 	if err != nil {
+		if os.IsNotExist(err) {
+			return catalogs.Generation{}, nil, generationNotFound(id)
+		}
 		return catalogs.Generation{}, nil, err
 	}
 	defer func() { _ = unlock() }()

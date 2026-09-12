@@ -499,3 +499,56 @@ func TestFilesystemRetentionSerializesOrdinaryReads(t *testing.T) {
 		t.Fatalf("read did not resume: %v", err)
 	}
 }
+
+func TestFilesystemRetentionEmptyStores(t *testing.T) {
+	for _, kind := range []string{"missing-acquisition", "absent-collection", "empty-collection", "empty-generations", "missing-required", "stale-head"} {
+		t.Run(kind, func(t *testing.T) {
+			parent := t.TempDir()
+			root := filepath.Join(parent, "store")
+			if kind == "empty-collection" || kind == "empty-generations" {
+				if err := privatefiles.CreateDirectory(root); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if kind == "empty-generations" {
+				if err := privatefiles.CreateDirectory(filepath.Join(root, "generations")); err != nil {
+					t.Fatal(err)
+				}
+			}
+			store, err := NewFilesystem(root)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if kind == "missing-acquisition" {
+				_, release, err := store.AcquireGeneration(t.Context(), "missing")
+				if !errors.IsNotFound(err) || release != nil {
+					t.Fatalf("missing generation error or lease: %v", err)
+				}
+				return
+			}
+			request := RetentionRequest{MaxGenerations: 1, MaxBytes: 1024}
+			if kind == "missing-required" {
+				request.RequiredGenerationIDs = []string{"missing"}
+			}
+			if kind == "stale-head" {
+				request.ExpectedGenerationID = "missing"
+			}
+			report, err := store.Collect(t.Context(), request)
+			switch kind {
+			case "missing-required":
+				if !errors.IsNotFound(err) {
+					t.Fatalf("missing requirement error: %v", err)
+				}
+			case "stale-head":
+				var conflict *errors.ConflictError
+				if !stderrors.As(err, &conflict) {
+					t.Fatalf("stale head error: %v", err)
+				}
+			default:
+				if err != nil || report.After != (RetentionUsage{}) || len(report.Removed) != 0 {
+					t.Fatalf("empty collection failed: %+v %v", report, err)
+				}
+			}
+		})
+	}
+}

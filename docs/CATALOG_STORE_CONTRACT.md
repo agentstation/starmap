@@ -1073,6 +1073,9 @@ The lease protects stored content until release, even after current changes or t
 Each successful caller must release its lease. Repeated release cannot end another caller's lease.
 Ordinary `Get` returns independent bytes without retaining the stored generation after the call completes.
 
+An empty filesystem store needs no collection. Missing generation leases and missing requirements return the catalog not-found error.
+A nonempty expected head conflicts with an absent store. These outcomes do not require a prior catalog publication.
+
 ### Filesystem retention and read leases
 
 Filesystem collection holds the existing `.commit.lock` while it scans, selects generations, and completes retirement.
