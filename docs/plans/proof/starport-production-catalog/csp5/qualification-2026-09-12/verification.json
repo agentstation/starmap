@@ -2,7 +2,7 @@
   "task": "CSP5",
   "status": "PARTIAL",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-  "source_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+  "source_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
   "source_binding_kind": "commit",
   "artifacts": [
     {
@@ -754,6 +754,91 @@
       "path": "blobs/30c250536f2ffd31f08709d400092dc028697131eac5e970f816e3f23ac35d1f.gz",
       "sha256": "926488329f4090a2f62c7a3ce5f2c672970a5f8524e526e7c80e36f7e95a3254",
       "decoded_sha256": "30c250536f2ffd31f08709d400092dc028697131eac5e970f816e3f23ac35d1f"
+    },
+    {
+      "path": "blobs/c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d.gz",
+      "sha256": "d17dfdb794ef5e3d24bf6a2379870266651ac8cdb7509b38f451e0a4dafd767a",
+      "decoded_sha256": "c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d"
+    },
+    {
+      "path": "blobs/84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c.gz",
+      "sha256": "9df6d3b24a91834ea7fd658f1385a770e51dd3278eeae0c357ead70d02f7726f",
+      "decoded_sha256": "84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c"
+    },
+    {
+      "path": "blobs/64914ceb36cb33e80f8db2ed0a09e5c29ed36a0cd4ebe0cf945df987adb53dfc.gz",
+      "sha256": "4d0ff071c50dcb1800954dec880adc26c1d8793458e6ce0a643f793a382859b6",
+      "decoded_sha256": "64914ceb36cb33e80f8db2ed0a09e5c29ed36a0cd4ebe0cf945df987adb53dfc"
+    },
+    {
+      "path": "blobs/652eaeae0bd40c483c8aef5a390470668db803081d7d86b88ebd6405ba92450a.gz",
+      "sha256": "b111b51efc5bf1d4b012ec4150d18381e4b3c6eb2e53c2107411bf1df2670671",
+      "decoded_sha256": "652eaeae0bd40c483c8aef5a390470668db803081d7d86b88ebd6405ba92450a"
+    },
+    {
+      "path": "blobs/c342f43b4ce08c96b6552b24fe62213cf6aee28383906403b65edd5224320863.gz",
+      "sha256": "2ba5b94b79cd9d0cbb763db839f86d701ef61bf0d30638bfe0cdd59dbad72633",
+      "decoded_sha256": "c342f43b4ce08c96b6552b24fe62213cf6aee28383906403b65edd5224320863"
+    },
+    {
+      "path": "blobs/78543c6e6fe300d70fbb85aed603bcef12cd3098c9a988bfcc57da12369b276a.gz",
+      "sha256": "d8d551f2cd5fcc3cd68c2705894ccde0b07530722e859d73e65c4b0c5df61829",
+      "decoded_sha256": "78543c6e6fe300d70fbb85aed603bcef12cd3098c9a988bfcc57da12369b276a"
+    },
+    {
+      "path": "blobs/1e4f379839390b91f21b1f980c410d7b48e586c96a1109e18fb1634386f9fe2e.gz",
+      "sha256": "71bfec0378ed0d772a476b8105cef2b410faa0b3860124c3b592df9834a4df84",
+      "decoded_sha256": "1e4f379839390b91f21b1f980c410d7b48e586c96a1109e18fb1634386f9fe2e"
+    },
+    {
+      "path": "blobs/c7d961be1cf4f10e514303513fc6c940dae86ba553e6c4eeb6976576484dae95.gz",
+      "sha256": "149dad28fd38413bae66623e94ad847ab7f988a828856d5ad4f92a971831582b",
+      "decoded_sha256": "c7d961be1cf4f10e514303513fc6c940dae86ba553e6c4eeb6976576484dae95"
+    },
+    {
+      "path": "blobs/6cf9f3f92301a5e14f8ac3a1ff765419f519e7504ec73d9e81a9729b60b8cf71.gz",
+      "sha256": "b38cd19dc11f768c1b14e6d1987a5efa2c5ecf7bd07ede216259c9b7091ceff8",
+      "decoded_sha256": "6cf9f3f92301a5e14f8ac3a1ff765419f519e7504ec73d9e81a9729b60b8cf71"
+    },
+    {
+      "path": "blobs/51eb240087b51a69344b6face621c8e1fe309478d09037c54f30219451ebaa1f.gz",
+      "sha256": "385796839e0b2dd6871c9c048a81cbcb7bb51996af64932a507361ae8f53a780",
+      "decoded_sha256": "51eb240087b51a69344b6face621c8e1fe309478d09037c54f30219451ebaa1f"
+    },
+    {
+      "path": "blobs/bdce3d77943a6086d28a31c24483be73da578ab33f0aefc499f13272e3361384.gz",
+      "sha256": "5f0db74c0186ae48d7f28c222cf05b74e92545a341d4f506d43e114edf15cbb0",
+      "decoded_sha256": "bdce3d77943a6086d28a31c24483be73da578ab33f0aefc499f13272e3361384"
+    },
+    {
+      "path": "blobs/10be838d704a453f098c300f26c58c1a5a6d008a4068116ca4984f1be199915d.gz",
+      "sha256": "e0c98b1d0a9080dd23d4322e9354f339c84e113454f4eb40951f7547ca108678",
+      "decoded_sha256": "10be838d704a453f098c300f26c58c1a5a6d008a4068116ca4984f1be199915d"
+    },
+    {
+      "path": "blobs/af11b7573a08bfa579c006836577078ea28fbd0a9bd493d320787e8ad42e571a.gz",
+      "sha256": "d8c3f9c665263575a741f59b3ae6b58d0ecefbdb02e29e07521e77183552d4e1",
+      "decoded_sha256": "af11b7573a08bfa579c006836577078ea28fbd0a9bd493d320787e8ad42e571a"
+    },
+    {
+      "path": "blobs/c4102bd689f73eea16adf2e4e46807b89854a1cc8dde7dbb599a22470a3f79a4.gz",
+      "sha256": "039907f2d94c3f034a3e6cb2f7f9c4266f33c0682945da005225256a5d9b31e2",
+      "decoded_sha256": "c4102bd689f73eea16adf2e4e46807b89854a1cc8dde7dbb599a22470a3f79a4"
+    },
+    {
+      "path": "blobs/e1def40d2a8c503f31ab2c27db4086ac797895f4cf315ca44d8c61ae94b09207.gz",
+      "sha256": "67dd85aeff53640c6280983276d6cb35a0d0c61e5115e2c776a5407c0ff91462",
+      "decoded_sha256": "e1def40d2a8c503f31ab2c27db4086ac797895f4cf315ca44d8c61ae94b09207"
+    },
+    {
+      "path": "blobs/d4023d560f555ff6af83acaf69ca2c9bebfb2e22c67994ada10fd49a1d0e5536.gz",
+      "sha256": "93afcf275d9656fffa8aec0f072a6caf6d791609fed5172ad4f9018556432c71",
+      "decoded_sha256": "d4023d560f555ff6af83acaf69ca2c9bebfb2e22c67994ada10fd49a1d0e5536"
+    },
+    {
+      "path": "blobs/fee187816e353e8810982a843993ae83f40bc21742d090f9c0ea54fcbe15401f.gz",
+      "sha256": "4af08998bef97e02dd879987b0a09b09d44f63f7b1bb5b74290364c33cd9dd60",
+      "decoded_sha256": "fee187816e353e8810982a843993ae83f40bc21742d090f9c0ea54fcbe15401f"
     }
   ],
   "checks": {
@@ -28269,6 +28354,376 @@
       },
       "test_events": {},
       "test_results": []
+    },
+    "qualification-catalog-inventory-lint-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "golangci-lint",
+        "run",
+        "./internal/cli/app/..."
+      ],
+      "started_at": "2026-09-12T15:48:01.617302+00:00",
+      "base_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d",
+        "internal/cli/app/file_manifest_retention_test.go": "84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T15:48:05.963323+00:00",
+      "name": "qualification-catalog-inventory-lint-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/64914ceb36cb33e80f8db2ed0a09e5c29ed36a0cd4ebe0cf945df987adb53dfc.gz",
+        "source/internal/cli/app/file_manifest.go.gz": "blobs/c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d.gz",
+        "source/internal/cli/app/file_manifest_retention_test.go.gz": "blobs/84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47.gz",
+        "verification.json": "blobs/652eaeae0bd40c483c8aef5a390470668db803081d7d86b88ebd6405ba92450a.gz"
+      },
+      "test_events": {},
+      "test_results": []
+    },
+    "qualification-catalog-inventory-main-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "8m",
+        "-run",
+        "^TestFileInspection(PreservesCatalogRetirementRecords|CoversRetainedRemovalAndPin)$",
+        "./internal/cli/app"
+      ],
+      "started_at": "2026-09-12T15:47:09.359912+00:00",
+      "base_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d",
+        "internal/cli/app/file_manifest_retention_test.go": "84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T15:49:55.513152+00:00",
+      "name": "qualification-catalog-inventory-main-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/64914ceb36cb33e80f8db2ed0a09e5c29ed36a0cd4ebe0cf945df987adb53dfc.gz",
+        "source/internal/cli/app/file_manifest.go.gz": "blobs/c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d.gz",
+        "source/internal/cli/app/file_manifest_retention_test.go.gz": "blobs/84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/c342f43b4ce08c96b6552b24fe62213cf6aee28383906403b65edd5224320863.gz",
+        "verification.json": "blobs/78543c6e6fe300d70fbb85aed603bcef12cd3098c9a988bfcc57da12369b276a.gz"
+      },
+      "test_events": {
+        "pass": 6
+      },
+      "test_results": [
+        {
+          "Time": "2026-09-12T10:48:39.934866-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionCoversRetainedRemovalAndPin/canonical_runtime",
+          "Elapsed": 85.7
+        },
+        {
+          "Time": "2026-09-12T10:49:54.023867-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionCoversRetainedRemovalAndPin/selected_runtime",
+          "Elapsed": 74.09
+        },
+        {
+          "Time": "2026-09-12T10:49:54.02403-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionCoversRetainedRemovalAndPin",
+          "Elapsed": 159.79
+        },
+        {
+          "Time": "2026-09-12T10:49:54.200105-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords/canonical_store",
+          "Elapsed": 0.18
+        },
+        {
+          "Time": "2026-09-12T10:49:54.37926-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords/selected_store",
+          "Elapsed": 0.18
+        },
+        {
+          "Time": "2026-09-12T10:49:54.379275-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords",
+          "Elapsed": 0.36
+        }
+      ]
+    },
+    "qualification-catalog-inventory-minimum-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.25.12",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "3m",
+        "-run",
+        "^TestFileInspectionPreservesCatalogRetirementRecords$",
+        "./internal/cli/app"
+      ],
+      "started_at": "2026-09-12T15:48:01.617329+00:00",
+      "base_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d",
+        "internal/cli/app/file_manifest_retention_test.go": "84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T15:48:12.724664+00:00",
+      "name": "qualification-catalog-inventory-minimum-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/64914ceb36cb33e80f8db2ed0a09e5c29ed36a0cd4ebe0cf945df987adb53dfc.gz",
+        "source/internal/cli/app/file_manifest.go.gz": "blobs/c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d.gz",
+        "source/internal/cli/app/file_manifest_retention_test.go.gz": "blobs/84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/1e4f379839390b91f21b1f980c410d7b48e586c96a1109e18fb1634386f9fe2e.gz",
+        "verification.json": "blobs/c7d961be1cf4f10e514303513fc6c940dae86ba553e6c4eeb6976576484dae95.gz"
+      },
+      "test_events": {
+        "pass": 3
+      },
+      "test_results": [
+        {
+          "Time": "2026-09-12T10:48:11.444438-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords/canonical_store",
+          "Elapsed": 0.17
+        },
+        {
+          "Time": "2026-09-12T10:48:11.612953-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords/selected_store",
+          "Elapsed": 0.17
+        },
+        {
+          "Time": "2026-09-12T10:48:11.612967-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords",
+          "Elapsed": 0.34
+        }
+      ]
+    },
+    "qualification-catalog-inventory-policy-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "started_at": "2026-09-12T15:48:01.617047+00:00",
+      "base_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d",
+        "internal/cli/app/file_manifest_retention_test.go": "84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T15:48:05.338483+00:00",
+      "name": "qualification-catalog-inventory-policy-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/64914ceb36cb33e80f8db2ed0a09e5c29ed36a0cd4ebe0cf945df987adb53dfc.gz",
+        "source/internal/cli/app/file_manifest.go.gz": "blobs/c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d.gz",
+        "source/internal/cli/app/file_manifest_retention_test.go.gz": "blobs/84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/b8fb7afa66aa7a93914ac258475dd0191be821803a8aea4439f5ba05022f5fa5.gz",
+        "verification.json": "blobs/6cf9f3f92301a5e14f8ac3a1ff765419f519e7504ec73d9e81a9729b60b8cf71.gz"
+      },
+      "test_events": {},
+      "test_results": []
+    },
+    "qualification-catalog-inventory-prose-20260912": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "started_at": "2026-09-12T15:48:01.617063+00:00",
+      "base_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+      "source_files": {
+        "internal/cli/app/file_manifest.go": "c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d",
+        "internal/cli/app/file_manifest_retention_test.go": "84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c"
+      },
+      "exit_code": 0,
+      "finished_at": "2026-09-12T15:48:55.128007+00:00",
+      "name": "qualification-catalog-inventory-prose-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "PASS",
+      "archived_files": {
+        "changes.patch": "blobs/64914ceb36cb33e80f8db2ed0a09e5c29ed36a0cd4ebe0cf945df987adb53dfc.gz",
+        "source/internal/cli/app/file_manifest.go.gz": "blobs/c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d.gz",
+        "source/internal/cli/app/file_manifest_retention_test.go.gz": "blobs/84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/51eb240087b51a69344b6face621c8e1fe309478d09037c54f30219451ebaa1f.gz",
+        "verification.json": "blobs/bdce3d77943a6086d28a31c24483be73da578ab33f0aefc499f13272e3361384.gz"
+      },
+      "test_events": {},
+      "test_results": []
+    },
+    "qualification-catalog-inventory-red-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "3m",
+        "-run",
+        "^TestFileInspectionPreservesCatalogRetirementRecords$",
+        "./internal/cli/app"
+      ],
+      "started_at": "2026-09-12T15:45:36.534625+00:00",
+      "base_commit": "064eb02c0e6443abfa277d47bffac7bc76cc3992",
+      "source_files": {
+        "internal/cli/app/file_manifest_retention_test.go": "af11b7573a08bfa579c006836577078ea28fbd0a9bd493d320787e8ad42e571a"
+      },
+      "exit_code": 1,
+      "finished_at": "2026-09-12T15:45:45.409602+00:00",
+      "name": "qualification-catalog-inventory-red-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "FAIL",
+      "archived_files": {
+        "changes.patch": "blobs/10be838d704a453f098c300f26c58c1a5a6d008a4068116ca4984f1be199915d.gz",
+        "source/internal/cli/app/file_manifest_retention_test.go.gz": "blobs/af11b7573a08bfa579c006836577078ea28fbd0a9bd493d320787e8ad42e571a.gz",
+        "stderr.log": "blobs/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+        "stdout.log": "blobs/c4102bd689f73eea16adf2e4e46807b89854a1cc8dde7dbb599a22470a3f79a4.gz",
+        "verification.json": "blobs/e1def40d2a8c503f31ab2c27db4086ac797895f4cf315ca44d8c61ae94b09207.gz"
+      },
+      "test_events": {
+        "fail": 3
+      },
+      "test_results": [
+        {
+          "Time": "2026-09-12T10:45:44.425883-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords/canonical_store",
+          "Elapsed": 0.32
+        },
+        {
+          "Time": "2026-09-12T10:45:44.757348-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords/selected_store",
+          "Elapsed": 0.33
+        },
+        {
+          "Time": "2026-09-12T10:45:44.757417-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Test": "TestFileInspectionPreservesCatalogRetirementRecords",
+          "Elapsed": 0.65
+        }
+      ]
+    },
+    "qualification-corrected-repository-20260912": {
+      "command": [
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "GOWORK=off",
+        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "make",
+        "verify"
+      ],
+      "started_at": "2026-09-12T15:11:55.260350+00:00",
+      "base_commit": "082a760a283eb323adb0209c6a150efd8b96da21",
+      "source_files": {
+        ".github/workflows/pr.yaml": "3ebe539cb371c5086825b2a11a42f9ecb65428331398f846b93d43eb807596ae",
+        "acquisition/binding_runtime_test.go": "c7c992a48dfd8e06da2e5f1199137b6a8611382bb9c60c0ff14f010d462d020a",
+        "docker-compose.yml": "fc8bc54f5328a00c89d883461e3a692cc9ecd04c5455d656f521c838d3538180",
+        "internal/bootstrap/export.go": "4154886282fdd551975b27d315ef421067adcfc62907cd255c24b10618b6fa66",
+        "internal/catalog/settings/settings.go": "f3cd1816054b84693049370f487c69bc7683a7dcc8a041acca39d21e458f038f",
+        "internal/catalog/settings/settings_test.go": "aeb635a65be564f9834fb538cf6244934d3b36a07ed346047641594350cf8788",
+        "internal/catalog/workspace/endpoint_projection.go": "cabce55a6f873f8f2a236567faa62167589f2263fecf2289be4058275017a3a8",
+        "internal/catalog/workspace/fixture_operations_test.go": "e26f824905c2820d7245fac67e651e4444bcde733a45781de47167c03985115a",
+        "internal/catalog/workspace/migration.go": "ab4023721398bee990a5ae7d945999243d64d55bf04614fcf8da31239b995844",
+        "internal/catalog/workspace/migration_lock.go": "74ac34390fcc702fb55be8a763a6256d5fb70972b4d475606885d2d6aa0cda4b",
+        "internal/catalog/workspace/migration_lock_test.go": "07901a04e5fef8931eadd625998e5136975fa5b6232db08b178316d3ba46134f",
+        "internal/catalog/workspace/preparation_decode.go": "081177d27a094c751e0af9f2b74f83093cad86f46fd90ea588dcf28e2a43a446",
+        "internal/catalog/workspace/preparation_recovery.go": "2aef9e7d6bad1d71b6d57adfd17af463bb2e524e43165bb8c4ae516695b94d4d",
+        "internal/catalog/workspace/projector.go": "50f3a840f74e3101237009061ed82360fc087d5a729378ecd523ec4cf4f1a8e5",
+        "internal/catalog/workspace/record_write.go": "47fc03ac027a4d4c97434ca0fa44be84fd9a518f9558f3b6b628b99044b43248",
+        "internal/catalog/workspace/relocation_inventory.go": "551e16bd0fae6145476c87c9514a73f7f419a5c04709227ebb1950b8099305f1",
+        "internal/catalog/workspace/relocation_record.go": "a833834b4c219f3fcded9e20870953449091080c5e49f518661563a1cf1812f5",
+        "internal/catalog/workspace/replacement.go": "b541edb745d3c4f9a26e8085b9df6d8ec3b148bde560e90766b844444f3c3bb5",
+        "internal/catalog/workspace/writer_lock.go": "4f8c970b3a866448d5088261ab438cc75bb2debf5e424ca6fe403607e9c93226",
+        "pkg/catalogs/storage/filesystem_limits.go": "399284c2ece52b1744b83c95188e8e84d675b7a2b3990ca5328708a1faad412d",
+        "scripts/verify.sh": "43baf190bd41c504eec0518b5fbb578c7d9536b91183bd05b3de14ab9611f5de"
+      },
+      "exit_code": 2,
+      "finished_at": "2026-09-12T15:50:27.208503+00:00",
+      "name": "qualification-corrected-repository-20260912",
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+      "status": "FAIL",
+      "archived_files": {
+        "changes.patch": "blobs/e12d1ff9abf0419c7fc7e153ea97c8d6971c2d1aebfd985f43f523c4f6ebc17e.gz",
+        "source/.github/workflows/pr.yaml.gz": "blobs/3ebe539cb371c5086825b2a11a42f9ecb65428331398f846b93d43eb807596ae.gz",
+        "source/acquisition/binding_runtime_test.go.gz": "blobs/c7c992a48dfd8e06da2e5f1199137b6a8611382bb9c60c0ff14f010d462d020a.gz",
+        "source/docker-compose.yml.gz": "blobs/fc8bc54f5328a00c89d883461e3a692cc9ecd04c5455d656f521c838d3538180.gz",
+        "source/internal/bootstrap/export.go.gz": "blobs/4154886282fdd551975b27d315ef421067adcfc62907cd255c24b10618b6fa66.gz",
+        "source/internal/catalog/settings/settings.go.gz": "blobs/f3cd1816054b84693049370f487c69bc7683a7dcc8a041acca39d21e458f038f.gz",
+        "source/internal/catalog/settings/settings_test.go.gz": "blobs/aeb635a65be564f9834fb538cf6244934d3b36a07ed346047641594350cf8788.gz",
+        "source/internal/catalog/workspace/endpoint_projection.go.gz": "blobs/cabce55a6f873f8f2a236567faa62167589f2263fecf2289be4058275017a3a8.gz",
+        "source/internal/catalog/workspace/fixture_operations_test.go.gz": "blobs/e26f824905c2820d7245fac67e651e4444bcde733a45781de47167c03985115a.gz",
+        "source/internal/catalog/workspace/migration.go.gz": "blobs/ab4023721398bee990a5ae7d945999243d64d55bf04614fcf8da31239b995844.gz",
+        "source/internal/catalog/workspace/migration_lock.go.gz": "blobs/74ac34390fcc702fb55be8a763a6256d5fb70972b4d475606885d2d6aa0cda4b.gz",
+        "source/internal/catalog/workspace/migration_lock_test.go.gz": "blobs/07901a04e5fef8931eadd625998e5136975fa5b6232db08b178316d3ba46134f.gz",
+        "source/internal/catalog/workspace/preparation_decode.go.gz": "blobs/081177d27a094c751e0af9f2b74f83093cad86f46fd90ea588dcf28e2a43a446.gz",
+        "source/internal/catalog/workspace/preparation_recovery.go.gz": "blobs/2aef9e7d6bad1d71b6d57adfd17af463bb2e524e43165bb8c4ae516695b94d4d.gz",
+        "source/internal/catalog/workspace/projector.go.gz": "blobs/50f3a840f74e3101237009061ed82360fc087d5a729378ecd523ec4cf4f1a8e5.gz",
+        "source/internal/catalog/workspace/record_write.go.gz": "blobs/47fc03ac027a4d4c97434ca0fa44be84fd9a518f9558f3b6b628b99044b43248.gz",
+        "source/internal/catalog/workspace/relocation_inventory.go.gz": "blobs/551e16bd0fae6145476c87c9514a73f7f419a5c04709227ebb1950b8099305f1.gz",
+        "source/internal/catalog/workspace/relocation_record.go.gz": "blobs/a833834b4c219f3fcded9e20870953449091080c5e49f518661563a1cf1812f5.gz",
+        "source/internal/catalog/workspace/replacement.go.gz": "blobs/b541edb745d3c4f9a26e8085b9df6d8ec3b148bde560e90766b844444f3c3bb5.gz",
+        "source/internal/catalog/workspace/writer_lock.go.gz": "blobs/4f8c970b3a866448d5088261ab438cc75bb2debf5e424ca6fe403607e9c93226.gz",
+        "source/pkg/catalogs/storage/filesystem_limits.go.gz": "blobs/399284c2ece52b1744b83c95188e8e84d675b7a2b3990ca5328708a1faad412d.gz",
+        "source/scripts/verify.sh.gz": "blobs/43baf190bd41c504eec0518b5fbb578c7d9536b91183bd05b3de14ab9611f5de.gz",
+        "stderr.log": "blobs/919cb9c8865d47f0018971b91014ceefd6790e82ce1f47fefbd8a4d1618fe45b.gz",
+        "stdout.log": "blobs/d4023d560f555ff6af83acaf69ca2c9bebfb2e22c67994ada10fd49a1d0e5536.gz",
+        "verification.json": "blobs/fee187816e353e8810982a843993ae83f40bc21742d090f9c0ea54fcbe15401f.gz"
+      },
+      "test_events": {},
+      "test_results": []
     }
   },
   "source_files": [
@@ -28396,6 +28851,16 @@
       "path": "internal/catalog/workspace/writer_lock.go",
       "sha256": "4f8c970b3a866448d5088261ab438cc75bb2debf5e424ca6fe403607e9c93226",
       "artifact": "blobs/4f8c970b3a866448d5088261ab438cc75bb2debf5e424ca6fe403607e9c93226.gz"
+    },
+    {
+      "path": "internal/cli/app/file_manifest.go",
+      "sha256": "c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d",
+      "artifact": "blobs/c1090e5330fe5bd9bb74a1ad1dab8f5de43f92bc82b85152bbc447b470a8969d.gz"
+    },
+    {
+      "path": "internal/cli/app/file_manifest_retention_test.go",
+      "sha256": "84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c",
+      "artifact": "blobs/84829ffffd092afdcc58255b64c29b74be60796854f11b74ccce78bd526e107c.gz"
     },
     {
       "path": "internal/server/handlers/health.go",
@@ -28596,35 +29061,13 @@
         "make",
         "verify"
       ],
-      "started_at": "2026-09-12T15:11:55.260350+00:00",
-      "base_commit": "082a760a283eb323adb0209c6a150efd8b96da21",
-      "source_files": {
-        ".github/workflows/pr.yaml": "3ebe539cb371c5086825b2a11a42f9ecb65428331398f846b93d43eb807596ae",
-        "acquisition/binding_runtime_test.go": "c7c992a48dfd8e06da2e5f1199137b6a8611382bb9c60c0ff14f010d462d020a",
-        "docker-compose.yml": "fc8bc54f5328a00c89d883461e3a692cc9ecd04c5455d656f521c838d3538180",
-        "internal/bootstrap/export.go": "4154886282fdd551975b27d315ef421067adcfc62907cd255c24b10618b6fa66",
-        "internal/catalog/settings/settings.go": "f3cd1816054b84693049370f487c69bc7683a7dcc8a041acca39d21e458f038f",
-        "internal/catalog/settings/settings_test.go": "aeb635a65be564f9834fb538cf6244934d3b36a07ed346047641594350cf8788",
-        "internal/catalog/workspace/endpoint_projection.go": "cabce55a6f873f8f2a236567faa62167589f2263fecf2289be4058275017a3a8",
-        "internal/catalog/workspace/fixture_operations_test.go": "e26f824905c2820d7245fac67e651e4444bcde733a45781de47167c03985115a",
-        "internal/catalog/workspace/migration.go": "ab4023721398bee990a5ae7d945999243d64d55bf04614fcf8da31239b995844",
-        "internal/catalog/workspace/migration_lock.go": "74ac34390fcc702fb55be8a763a6256d5fb70972b4d475606885d2d6aa0cda4b",
-        "internal/catalog/workspace/migration_lock_test.go": "07901a04e5fef8931eadd625998e5136975fa5b6232db08b178316d3ba46134f",
-        "internal/catalog/workspace/preparation_decode.go": "081177d27a094c751e0af9f2b74f83093cad86f46fd90ea588dcf28e2a43a446",
-        "internal/catalog/workspace/preparation_recovery.go": "2aef9e7d6bad1d71b6d57adfd17af463bb2e524e43165bb8c4ae516695b94d4d",
-        "internal/catalog/workspace/projector.go": "50f3a840f74e3101237009061ed82360fc087d5a729378ecd523ec4cf4f1a8e5",
-        "internal/catalog/workspace/record_write.go": "47fc03ac027a4d4c97434ca0fa44be84fd9a518f9558f3b6b628b99044b43248",
-        "internal/catalog/workspace/relocation_inventory.go": "551e16bd0fae6145476c87c9514a73f7f419a5c04709227ebb1950b8099305f1",
-        "internal/catalog/workspace/relocation_record.go": "a833834b4c219f3fcded9e20870953449091080c5e49f518661563a1cf1812f5",
-        "internal/catalog/workspace/replacement.go": "b541edb745d3c4f9a26e8085b9df6d8ec3b148bde560e90766b844444f3c3bb5",
-        "internal/catalog/workspace/writer_lock.go": "4f8c970b3a866448d5088261ab438cc75bb2debf5e424ca6fe403607e9c93226",
-        "pkg/catalogs/storage/filesystem_limits.go": "399284c2ece52b1744b83c95188e8e84d675b7a2b3990ca5328708a1faad412d",
-        "scripts/verify.sh": "43baf190bd41c504eec0518b5fbb578c7d9536b91183bd05b3de14ab9611f5de"
-      },
-      "name": "qualification-corrected-repository-20260912",
+      "started_at": "2026-09-12T15:51:47.752929+00:00",
+      "base_commit": "624d993a8eb091473b956affca721b4cb4e8cf1f",
+      "source_files": {},
+      "name": "qualification-inventory-repository-624d993a8-20260912",
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
       "status": "RUNNING",
-      "session_id": 61969
+      "session_id": 42639
     }
   ],
   "limits": [
@@ -28633,11 +29076,12 @@
     "Historical profile bytes are total allocations, not resident memory or request overhead.",
     "The eight test changes add only t.Parallel. Test cases, assertions, and deadlines remain unchanged."
   ],
-  "previous_goal_turn": "VERIFIED_WAIT: confirmed repository session 61969 and task session 5833 live, prepared the PR description, and passed the review dry-run. The dry-run is not a code review.",
-  "observed_at": "2026-09-12T15:35:27.959783+00:00",
+  "previous_goal_turn": "PROGRESS: qualified all twelve CSP5 task subcases on 064eb02c0 and committed the plan and evidence as b5c2c4fd7.",
+  "observed_at": "2026-09-12T15:53:02.726694+00:00",
   "prior_source_commits": [
     "8683287dfcd5fc17268d501e70f9b6753aea1c67",
-    "082a760a283eb323adb0209c6a150efd8b96da21"
+    "082a760a283eb323adb0209c6a150efd8b96da21",
+    "064eb02c0e6443abfa277d47bffac7bc76cc3992"
   ],
   "base_commit": "292fe26194c9c571637fdd5fdca056b2fdec8e28",
   "permission_overlay_files": {

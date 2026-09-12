@@ -1,7 +1,7 @@
 # CSP5 committed candidate qualification
 
 Commit `8683287dfcd5fc17268d501e70f9b6753aea1c67` consolidates automatic local retention and its configuration, diagnostics, and regression corrections.
-The [verification record](qualification-2026-09-12/verification.json) binds 61 changed files through follow-up `064eb02c0e6443abfa277d47bffac7bc76cc3992` and all recorded commands.
+The [verification record](qualification-2026-09-12/verification.json) binds 63 changed files through follow-up `624d993a8eb091473b956affca721b4cb4e8cf1f` and all recorded commands.
 The qualification worktree is clean and uses the committed Go module graph.
 The earlier worktree still contains five unrelated tooling edits. Those edits remain outside this commit.
 
@@ -100,8 +100,8 @@ The second interrupted completion test has a separate recorded check.
 Ordinary, race, and native suites now use the same thirty-minute package bound and run packages sequentially.
 The native job has sixty minutes for setup and its complete test sequence.
 Individual operation deadlines remain unchanged.
-Full repository verification continues on the exact source now committed as `064eb02c0`.
-The runner captures its starting worktree bytes, which match that commit.
+The repository runner captures its starting worktree bytes, which match commit `064eb02c0`.
+That run later failed on the file-inspection case described below.
 
 ## Current task gate
 
@@ -112,10 +112,26 @@ The command ran from 15:26:58 to 15:33:11 UTC on 2026-09-12 and exited zero.
 Its text output preserves the task result but omits child test events. This invocation receives no exact test-event count.
 The verification record retains the earlier detailed task evidence under its original source commit.
 
-Full repository verification remains live in session `61969`.
+Repository verification session `61969` finished with exit status 2.
 The workspace package passes in about 346 seconds, including the corrected migration path.
 Review preflight passes its input, secret-scan, and engine checks. The actual code review remains open.
 The prepared PR description identifies the local delivery and the remaining shared collection contract.
+
+## File-inspection integration correction
+
+Repository verification on `064eb02c0` reports one failing parent test in `internal/cli/app`.
+Both runtime-path cases omit the generation `.read.lock` from the file manifest.
+The runtime package passes in 594 seconds. Later repository gates did not run because ordinary package tests failed.
+
+Commit `624d993a8` adds catalog read locks, authority records, retirement journals, and their temporary records to file inspection.
+Inspection preserves private access classification and excludes unrelated files from the manifest.
+The focused regression also checks unchanged bytes, omitted file contents, and passive application state.
+Its initial run fails on the original manifest.
+
+The corrected Go 1.26.6 run passes six race events, including both original pin-and-removal cases.
+The focused Go 1.25.12 run passes three race events. These selections overlap.
+Package lint, repository policy, and source prose pass.
+Full repository verification now runs on committed source `624d993a8` in session `42639`.
 
 ## Delivery sequence
 
