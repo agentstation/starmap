@@ -1,0 +1,439 @@
+{
+  "status": "PARTIAL",
+  "source_binding_kind": "commit",
+  "source_commit": "3ae364518a24d19182934319715a8b93b487f309",
+  "base_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "branch": "codex/catalog-publication-promotion",
+  "observed_at": "2026-09-12T22:56:58.004247+00:00",
+  "source_files": [
+    {
+      "path": "cmd/starmap-catalog-release/main.go",
+      "sha256": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+      "artifact": "blobs/033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581.gz"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/promotion.go",
+      "sha256": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+      "artifact": "blobs/372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b.gz"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/promotion_test.go",
+      "sha256": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb",
+      "artifact": "blobs/96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb.gz"
+    },
+    {
+      "path": "docs/CATALOG_ARTIFACT_FORMAT.md",
+      "sha256": "63fb96c54b241420460b2db9d668cc4921d3b93aac38eff4c9852965cdbda080",
+      "artifact": "blobs/63fb96c54b241420460b2db9d668cc4921d3b93aac38eff4c9852965cdbda080.gz"
+    }
+  ],
+  "checks": {
+    "promotion-command-suite": {
+      "exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "20m",
+        "./cmd/starmap-catalog-release",
+        "-json"
+      ],
+      "artifact": "blobs/c9e4bf50e3440858b333e9723c76a29cc075bfdfb178f148fcf7c1f9f02bab28.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+      },
+      "started_at": "2026-09-12T22:47:13.199084+00:00",
+      "finished_at": "2026-09-12T22:48:51.433018+00:00",
+      "passed_test_events": 48,
+      "skipped_test_events": 0
+    },
+    "promotion-fail-before": {
+      "exit_code": 1,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommandVerifiesExactPromotion$",
+        "-json"
+      ],
+      "artifact": "blobs/02552419af8272e1d3625a44b4587be10ab87092243ef1b96f9a38067213df90.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {},
+      "started_at": "2026-09-12T22:42:39.662394+00:00",
+      "finished_at": "2026-09-12T22:43:00.322095+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-final-fail-before": {
+      "exit_code": 1,
+      "command": [
+        "go",
+        "test",
+        "-overlay",
+        ".tmp/csp6-promotion/parent-overlay.json",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommandVerifiesExactPromotion$",
+        "-json"
+      ],
+      "artifact": "blobs/1c1e2ce5ac55d2660d7e55e4d1c257dd1ad654d19f43c263cb2259b6ecdae41b.gz",
+      "source_commit": "3ae364518a24d19182934319715a8b93b487f309",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+      },
+      "started_at": "2026-09-12T22:51:19.097240+00:00",
+      "finished_at": "2026-09-12T22:51:24.895482+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-final-lint": {
+      "exit_code": 0,
+      "command": [
+        "golangci-lint",
+        "run",
+        "./cmd/starmap-catalog-release/..."
+      ],
+      "artifact": "blobs/cec8379985d1b72e8ad06b00afa61ca0034bcbce314e9971c4509fa04577d96d.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+      },
+      "started_at": "2026-09-12T22:49:53.455220+00:00",
+      "finished_at": "2026-09-12T22:49:54.112156+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-final-policy": {
+      "exit_code": 0,
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "artifact": "blobs/096691c79202866eb41b56907f9f90d5aedb6617568951c0282b3df56f3d640a.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+      },
+      "started_at": "2026-09-12T22:49:53.455223+00:00",
+      "finished_at": "2026-09-12T22:49:55.456366+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-focused-canonical": {
+      "exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommand(VerifiesExactPromotion|RejectsPromotionMismatch|RequiresPromotionPair)$",
+        "-json"
+      ],
+      "artifact": "blobs/90881d2589cbd3b1eec030ef781225fc5e3b90b72c89b86f1affb805494ef2d4.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+      },
+      "started_at": "2026-09-12T22:46:34.255830+00:00",
+      "finished_at": "2026-09-12T22:46:57.480667+00:00",
+      "passed_test_events": 13,
+      "skipped_test_events": 0
+    },
+    "promotion-focused-corrected": {
+      "exit_code": 1,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommand(VerifiesExactPromotion|RejectsPromotionMismatch|RequiresPromotionPair)$",
+        "-json"
+      ],
+      "artifact": "blobs/4e16fddf5cb4d2122bbdaa2dadec38ba8fce259f6d21a124b6f23db0cd8b7639.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "512983c4e5c59aafcf86145236ee0d5508ace6377d9aa765d69b7c3722e7d9a0"
+      },
+      "started_at": "2026-09-12T22:45:09.720508+00:00",
+      "finished_at": "2026-09-12T22:45:32.477398+00:00",
+      "passed_test_events": 12,
+      "skipped_test_events": 0
+    },
+    "promotion-focused": {
+      "exit_code": 1,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommand(VerifiesExactPromotion|RejectsPromotionMismatch|RequiresPromotionPair)$",
+        "-json"
+      ],
+      "artifact": "blobs/290977a497533ac1a590aedb109ae8733c41831b1ca336660d82950654798b7d.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "50e07bdbbebbb7754d4c6db4fd337948eeacd65c9f5cf29db6b1f46ee48e1b17",
+        "cmd/starmap-catalog-release/promotion_test.go": "512983c4e5c59aafcf86145236ee0d5508ace6377d9aa765d69b7c3722e7d9a0"
+      },
+      "started_at": "2026-09-12T22:44:31.306833+00:00",
+      "finished_at": "2026-09-12T22:44:32.740386+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-lint": {
+      "exit_code": 0,
+      "command": [
+        "golangci-lint",
+        "run",
+        "./cmd/starmap-catalog-release/..."
+      ],
+      "artifact": "blobs/07b94997454b042ce1115f3b0714ce6e6a85863a28e162cb582ac36807b93a3b.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "512983c4e5c59aafcf86145236ee0d5508ace6377d9aa765d69b7c3722e7d9a0"
+      },
+      "started_at": "2026-09-12T22:45:09.731458+00:00",
+      "finished_at": "2026-09-12T22:45:16.060749+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-minimum-go": {
+      "exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommand(VerifiesExactPromotion|RejectsPromotionMismatch|RequiresPromotionPair)$",
+        "-json"
+      ],
+      "artifact": "blobs/5e573b960eb5959232963711a3d139337a32a87ec671b00376435189dd041477.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+      },
+      "started_at": "2026-09-12T22:47:13.199089+00:00",
+      "finished_at": "2026-09-12T22:48:02.486419+00:00",
+      "passed_test_events": 13,
+      "skipped_test_events": 0
+    },
+    "promotion-policy-corrected": {
+      "exit_code": 0,
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "artifact": "blobs/813549ecde51519b38849b0a339b481abfbaf4292f82410e5bdfa0d211f81067.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "512983c4e5c59aafcf86145236ee0d5508ace6377d9aa765d69b7c3722e7d9a0"
+      },
+      "started_at": "2026-09-12T22:45:09.731731+00:00",
+      "finished_at": "2026-09-12T22:45:15.848901+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-policy": {
+      "exit_code": 2,
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "artifact": "blobs/4d7ded0ed034176733117c6d0ab8755a0587d48f8600e0f942514156d4222864.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "50e07bdbbebbb7754d4c6db4fd337948eeacd65c9f5cf29db6b1f46ee48e1b17",
+        "cmd/starmap-catalog-release/promotion_test.go": "512983c4e5c59aafcf86145236ee0d5508ace6377d9aa765d69b7c3722e7d9a0"
+      },
+      "started_at": "2026-09-12T22:44:31.308268+00:00",
+      "finished_at": "2026-09-12T22:44:36.191925+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    },
+    "promotion-prose": {
+      "exit_code": 0,
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "artifact": "blobs/69e92f03a8f05a682b03247fdbbf9705b0b9c0ec46c7ab997778a0a72c3a0abc.gz",
+      "source_commit": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+      "source_files": {
+        "cmd/starmap-catalog-release/main.go": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581",
+        "cmd/starmap-catalog-release/promotion.go": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b",
+        "cmd/starmap-catalog-release/promotion_test.go": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+      },
+      "started_at": "2026-09-12T22:47:35.321070+00:00",
+      "finished_at": "2026-09-12T22:48:32.281221+00:00",
+      "passed_test_events": 0,
+      "skipped_test_events": 0
+    }
+  },
+  "running_checks": [],
+  "limits": [
+    "Local promotion integrity only. Source admission, receipts, bot promotion, provenance, merged revision binding, and full A05 remain incomplete.",
+    "No CSP6 PR, required pre-PR review, native qualification, or merge exists."
+  ],
+  "parent_command_artifact": "blobs/9e9a499e0974e38bb8f80c5d6bdf2f553838e1d88cc567bbe8881169380de27c.gz",
+  "artifacts": [
+    {
+      "path": "blobs/033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581.gz",
+      "sha256": "bee1339ff2cb254ef5775c65ea567d5c7bf6824d2aeb0515a74c2319a43f65f7",
+      "decoded_sha256": "033a59bf4d6d234f022729980d93e2319e649c0080230814f21f60dbcdd39581"
+    },
+    {
+      "path": "blobs/372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b.gz",
+      "sha256": "78a93018a82f1e2085421b36acc911d826ee6cc6a3aca49f81554826816a7e60",
+      "decoded_sha256": "372870d4243e2c2b84f05bff336eabd0bf47030570b78138909c40955135fe5b"
+    },
+    {
+      "path": "blobs/96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb.gz",
+      "sha256": "063891d5f6d01416f078862477702f7cd1b2f0a8e1d875d77700cf028c3d84f1",
+      "decoded_sha256": "96e96af8e472056175584dcbe3a5508e213b6711191e98e7851a63705a774bdb"
+    },
+    {
+      "path": "blobs/63fb96c54b241420460b2db9d668cc4921d3b93aac38eff4c9852965cdbda080.gz",
+      "sha256": "51513ebbd645a037332bbef82a152904910e6fc0a99b4eb9adfa3ba16804aa5a",
+      "decoded_sha256": "63fb96c54b241420460b2db9d668cc4921d3b93aac38eff4c9852965cdbda080"
+    },
+    {
+      "path": "blobs/39ea5d769c6c9ec96257f00c8f754acb1590c798f0f1d43c16a3a4a7cc8ee125.gz",
+      "sha256": "635a71a2af891208d2e35cac0ab8688d8ee5ffefaf751494a013a28c9fa9d70c",
+      "decoded_sha256": "39ea5d769c6c9ec96257f00c8f754acb1590c798f0f1d43c16a3a4a7cc8ee125"
+    },
+    {
+      "path": "blobs/c9e4bf50e3440858b333e9723c76a29cc075bfdfb178f148fcf7c1f9f02bab28.gz",
+      "sha256": "f2a84d69f19334422c4acf5cd93c434997fa21fc8f57b7be8ee6980afeba9a5d",
+      "decoded_sha256": "c9e4bf50e3440858b333e9723c76a29cc075bfdfb178f148fcf7c1f9f02bab28"
+    },
+    {
+      "path": "blobs/02552419af8272e1d3625a44b4587be10ab87092243ef1b96f9a38067213df90.gz",
+      "sha256": "6cfe06478affc4c930e7842f65c1212002e2a57e5300c73ebf2a3167b117c54b",
+      "decoded_sha256": "02552419af8272e1d3625a44b4587be10ab87092243ef1b96f9a38067213df90"
+    },
+    {
+      "path": "blobs/1c1e2ce5ac55d2660d7e55e4d1c257dd1ad654d19f43c263cb2259b6ecdae41b.gz",
+      "sha256": "ee27ef9717efcf5132bcc437681445ae7b3867b7f37063dd500aece9566389b3",
+      "decoded_sha256": "1c1e2ce5ac55d2660d7e55e4d1c257dd1ad654d19f43c263cb2259b6ecdae41b"
+    },
+    {
+      "path": "blobs/cec8379985d1b72e8ad06b00afa61ca0034bcbce314e9971c4509fa04577d96d.gz",
+      "sha256": "0d2bc5b60204d265fd21a8c7729236ff3adb6d6a63629e9873c53a909428e8d2",
+      "decoded_sha256": "cec8379985d1b72e8ad06b00afa61ca0034bcbce314e9971c4509fa04577d96d"
+    },
+    {
+      "path": "blobs/096691c79202866eb41b56907f9f90d5aedb6617568951c0282b3df56f3d640a.gz",
+      "sha256": "36125795f52e4d612dbea4e858eeff2a77b67ac7a6e183dc7c5a84ff5616dd76",
+      "decoded_sha256": "096691c79202866eb41b56907f9f90d5aedb6617568951c0282b3df56f3d640a"
+    },
+    {
+      "path": "blobs/90881d2589cbd3b1eec030ef781225fc5e3b90b72c89b86f1affb805494ef2d4.gz",
+      "sha256": "37f4556f61081872c15689768c31dfe253b0ac7c4b0d0748355808fcfde65592",
+      "decoded_sha256": "90881d2589cbd3b1eec030ef781225fc5e3b90b72c89b86f1affb805494ef2d4"
+    },
+    {
+      "path": "blobs/4e16fddf5cb4d2122bbdaa2dadec38ba8fce259f6d21a124b6f23db0cd8b7639.gz",
+      "sha256": "5f52617ad2009aba228f985744a35a7bda4b45699809c41608dc8f815fe9dbbf",
+      "decoded_sha256": "4e16fddf5cb4d2122bbdaa2dadec38ba8fce259f6d21a124b6f23db0cd8b7639"
+    },
+    {
+      "path": "blobs/290977a497533ac1a590aedb109ae8733c41831b1ca336660d82950654798b7d.gz",
+      "sha256": "066035a0184cfde7a2104b79d1b5070bec2027a8d97bf094e03c7ab1e0521312",
+      "decoded_sha256": "290977a497533ac1a590aedb109ae8733c41831b1ca336660d82950654798b7d"
+    },
+    {
+      "path": "blobs/07b94997454b042ce1115f3b0714ce6e6a85863a28e162cb582ac36807b93a3b.gz",
+      "sha256": "20a3d1f0374e1cc4bd4df5d2706db6a76471a03f80d683e23d3ab0fda31b84fc",
+      "decoded_sha256": "07b94997454b042ce1115f3b0714ce6e6a85863a28e162cb582ac36807b93a3b"
+    },
+    {
+      "path": "blobs/5e573b960eb5959232963711a3d139337a32a87ec671b00376435189dd041477.gz",
+      "sha256": "91702a708160d0e8195699da16f1935adef2b81cb03e7b7d02a94ae0958f4fcb",
+      "decoded_sha256": "5e573b960eb5959232963711a3d139337a32a87ec671b00376435189dd041477"
+    },
+    {
+      "path": "blobs/813549ecde51519b38849b0a339b481abfbaf4292f82410e5bdfa0d211f81067.gz",
+      "sha256": "1fe3db89997d29be60d0b08eb73977d58212374700fb853f98eb5fb77bbf29d0",
+      "decoded_sha256": "813549ecde51519b38849b0a339b481abfbaf4292f82410e5bdfa0d211f81067"
+    },
+    {
+      "path": "blobs/4d7ded0ed034176733117c6d0ab8755a0587d48f8600e0f942514156d4222864.gz",
+      "sha256": "f066f8ec6d41aa2ed90bab1e8e44abf631e564b8a0d8b9b9b5769ec1a6ecc0b6",
+      "decoded_sha256": "4d7ded0ed034176733117c6d0ab8755a0587d48f8600e0f942514156d4222864"
+    },
+    {
+      "path": "blobs/69e92f03a8f05a682b03247fdbbf9705b0b9c0ec46c7ab997778a0a72c3a0abc.gz",
+      "sha256": "7e3eb130a69748db832c59581a7e89926552b60deaa8d378b264df8645f55ba2",
+      "decoded_sha256": "69e92f03a8f05a682b03247fdbbf9705b0b9c0ec46c7ab997778a0a72c3a0abc"
+    },
+    {
+      "path": "blobs/9e9a499e0974e38bb8f80c5d6bdf2f553838e1d88cc567bbe8881169380de27c.gz",
+      "sha256": "6c9ee2dfff00b51323806a5cdd6ee65f5eadef7414bad55f8ea20a47dbbd39d3",
+      "decoded_sha256": "9e9a499e0974e38bb8f80c5d6bdf2f553838e1d88cc567bbe8881169380de27c"
+    }
+  ]
+}

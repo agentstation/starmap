@@ -3,25 +3,36 @@
   "status": "PASS",
   "tasks": 38,
   "done": 10,
-  "in_progress": "CSP6",
+  "in_progress": "CSP5",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 106,
-  "new_evidence_artifacts": 11909,
-  "new_commit_source_files": 837,
-  "resume_words": 195,
-  "next_action": "Implement CSP6 exact published-generation verification, admission, receipts, and checked promotion. Merge reviewed CSP5 PR #154 after its live native CI and full verification pass. Shared collection remains blocked on the coordinator decision.",
-  "current_source": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
+  "local_links": 111,
+  "new_evidence_artifacts": 11967,
+  "new_commit_source_files": 853,
+  "resume_words": 230,
+  "next_action": "Complete required review 57502 for d15c6ef4c, update PR154, and qualify native CI before merge. Shared catalog cleanup and its coordinator decision remain required. CSP6 commit 3ae364518 awaits dependency qualification.",
+  "current_source": "d15c6ef4cbb21827007f6400a8996bed09967535",
   "starmap_integration_source": null,
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
   "external_running_checks": [
     {
       "workflow_run": 34721468698,
       "head_sha": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
       "status": "in_progress",
-      "url": "https://github.com/agentstation/starmap/actions/runs/34721468698"
+      "url": "https://github.com/agentstation/starmap/actions/runs/34721468698",
+      "remaining_jobs": [
+        "Verification Gate"
+      ],
+      "scope": "Historical parent source. The correction requires new native CI."
     }
   ],
-  "local_running_checks": [],
+  "local_running_checks": [
+    {
+      "name": "Required pre-PR review",
+      "session_id": 57502,
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-lock-checks/pre-pr-review.json"
+    }
+  ],
   "current_source_binding_kind": "commit",
   "uncommitted_source_files": 0
 }
