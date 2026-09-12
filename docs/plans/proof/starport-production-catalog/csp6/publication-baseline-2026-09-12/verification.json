@@ -1,0 +1,148 @@
+{
+  "status": "FAIL_BEFORE",
+  "scope": "Read-only CSP6 preparation while CSP5 remains active. This proves a missing default-branch promotion, not complete A05 qualification.",
+  "recorded_at": "2026-09-12T22:26:06.065469+00:00",
+  "comparison_observed_at": "2026-09-12T22:10:20.334201+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+  "source_binding_kind": "commit",
+  "source_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+  "source_files": [
+    {
+      "path": ".github/workflows/catalog-generation.yaml",
+      "sha256": "ff5234d00244dd9db88492132ae24b754944813550559559fa11b1d83882b65a",
+      "artifact": "blobs/ff5234d00244dd9db88492132ae24b754944813550559559fa11b1d83882b65a.gz"
+    },
+    {
+      "path": "scripts/generate-embedded-catalog.sh",
+      "sha256": "b93ec41ffe30803cbce7402268ad4df9c54e65ffa41b5f3cbd4bd03a00eb47ca",
+      "artifact": "blobs/b93ec41ffe30803cbce7402268ad4df9c54e65ffa41b5f3cbd4bd03a00eb47ca.gz"
+    },
+    {
+      "path": "internal/embedded/catalog/generation.json",
+      "sha256": "88ba370773f78dcc120c0e7fc495916a8e1e40278a7aeedb45cd250380e300ca",
+      "artifact": "blobs/88ba370773f78dcc120c0e7fc495916a8e1e40278a7aeedb45cd250380e300ca.gz"
+    }
+  ],
+  "checks": {
+    "channel_attestation": {
+      "status": "PASS",
+      "session_id": 53097,
+      "exit_code": 0,
+      "command": [
+        "gh",
+        "attestation",
+        "verify",
+        ".tmp/csp6-inspection-20260912/channel.json",
+        "--repo",
+        "agentstation/starmap",
+        "--signer-workflow",
+        "agentstation/starmap/.github/workflows/catalog-generation.yaml",
+        "--deny-self-hosted-runners",
+        "--format",
+        "json"
+      ],
+      "channel_sha256": "52f0d88b1a76c4f2e034fec791246ae7aab4ad4529c76391528266c12e9dcb36"
+    },
+    "completed_publication_matches_embedded_input": {
+      "status": "FAIL_BEFORE",
+      "expected": "A completed publication promotes its exact catalog into the default branch before it advances the channel.",
+      "actual": {
+        "main_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+        "channel_sequence": 26,
+        "channel_updated_at": "2026-09-12T18:28:25.27441267Z",
+        "published_catalog_digest": "sha256:a172a9c1c2d23bf6ac5fc0a51f1c49ba6f9056f901a1f457ea70f41175b7eaa6",
+        "embedded_catalog_digest": "sha256:0bbbff4c5fd3c8b376725a808b3132a67dcee99bdc8ed45d7f64af5d6581cf05",
+        "embedded_generated_at": "2026-09-10T06:38:28.505687Z"
+      }
+    }
+  },
+  "producer_run": {
+    "conclusion": "success",
+    "created_at": "2026-09-12T18:21:23Z",
+    "event": "schedule",
+    "head_sha": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "html_url": "https://github.com/agentstation/starmap/actions/runs/34710936558",
+    "id": 34710936558,
+    "path": ".github/workflows/catalog-generation.yaml",
+    "status": "completed",
+    "updated_at": "2026-09-12T18:28:47Z"
+  },
+  "captured_files": {
+    "channel-attestation-report.json": "blobs/600ee961343ad9ea6474fbe8c89959458183e6753c474c73a6711033c1619cc4.gz",
+    "channel-attestation-tool-output.txt": "blobs/2f113421148fa81c79f82e4f6c25616c9a499f8ff66e729266d5b5ec25c29a0a.gz",
+    "channel-comparison.json": "blobs/29fe8e5cbbffc7f11623e9d67708f5bc9bd340752d99cd650ac7625441db13e8.gz",
+    "channel.json": "blobs/52f0d88b1a76c4f2e034fec791246ae7aab4ad4529c76391528266c12e9dcb36.gz",
+    "main-ref.json": "blobs/b5c2b7e5669e227ba114ece76d61a1808f290340a11750f89a4aaef85362230a.gz",
+    "plan-prose-iteration.json": "blobs/ab066318795dffcc6573438309a4ab31b3d6c14593920339d96aa76a7d83c69c.gz",
+    "producer-run.json": "blobs/d2510fb4ede00687475d8163957fe4243d9ef414deaf93fca9f81712e60c4a3a.gz",
+    "prose-before-correction.md": "blobs/8fff9e1acbd22a03a6434113e30aa9d36237557016c3408abf9afbf1f0867c21.gz",
+    "prose-correction.json": "blobs/b40791a1e2c72668ad623e6139f37357ea928473fe55fc8b4bd66223e2a60f9b.gz"
+  },
+  "limitations": [
+    "No publisher, release, channel, bot, or branch write was performed.",
+    "Required-source admission, immutable receipts, failure recovery, and the controlled bot-PR case remain unverified.",
+    "CSP6 remains todo. CSP5 is the only in-progress task."
+  ],
+  "artifacts": [
+    {
+      "path": "blobs/ff5234d00244dd9db88492132ae24b754944813550559559fa11b1d83882b65a.gz",
+      "sha256": "7e513287d8d75ac8590da01f23e2348cd4e876a72854aa7f1df3dfa0c5fd57a2",
+      "decoded_sha256": "ff5234d00244dd9db88492132ae24b754944813550559559fa11b1d83882b65a"
+    },
+    {
+      "path": "blobs/b93ec41ffe30803cbce7402268ad4df9c54e65ffa41b5f3cbd4bd03a00eb47ca.gz",
+      "sha256": "0cf585fce85612591e2f5be6df713b7cd4f2248fa821f0e299f475fb379240c9",
+      "decoded_sha256": "b93ec41ffe30803cbce7402268ad4df9c54e65ffa41b5f3cbd4bd03a00eb47ca"
+    },
+    {
+      "path": "blobs/88ba370773f78dcc120c0e7fc495916a8e1e40278a7aeedb45cd250380e300ca.gz",
+      "sha256": "50e6fbe8ed147f3afdda5304cff76bdef39af795e06a0123748c5c68190cd478",
+      "decoded_sha256": "88ba370773f78dcc120c0e7fc495916a8e1e40278a7aeedb45cd250380e300ca"
+    },
+    {
+      "path": "blobs/600ee961343ad9ea6474fbe8c89959458183e6753c474c73a6711033c1619cc4.gz",
+      "sha256": "fbd53d537794b897a1b9c7f74188026802694f691319f1d81c4504b964ee646f",
+      "decoded_sha256": "600ee961343ad9ea6474fbe8c89959458183e6753c474c73a6711033c1619cc4"
+    },
+    {
+      "path": "blobs/2f113421148fa81c79f82e4f6c25616c9a499f8ff66e729266d5b5ec25c29a0a.gz",
+      "sha256": "84a3e2f1cad6e85919520f9479f695536c975c9457428b8669957737b651ae65",
+      "decoded_sha256": "2f113421148fa81c79f82e4f6c25616c9a499f8ff66e729266d5b5ec25c29a0a"
+    },
+    {
+      "path": "blobs/29fe8e5cbbffc7f11623e9d67708f5bc9bd340752d99cd650ac7625441db13e8.gz",
+      "sha256": "9b674ef67e53af49da2ff5c84fa031e6418dda48cbe8df7cfbfd7c37cb7a50e2",
+      "decoded_sha256": "29fe8e5cbbffc7f11623e9d67708f5bc9bd340752d99cd650ac7625441db13e8"
+    },
+    {
+      "path": "blobs/52f0d88b1a76c4f2e034fec791246ae7aab4ad4529c76391528266c12e9dcb36.gz",
+      "sha256": "f62fe3f6f8474e475ee467ced2c6bdbd99afcf6042b4ec542f425911aa4002b3",
+      "decoded_sha256": "52f0d88b1a76c4f2e034fec791246ae7aab4ad4529c76391528266c12e9dcb36"
+    },
+    {
+      "path": "blobs/b5c2b7e5669e227ba114ece76d61a1808f290340a11750f89a4aaef85362230a.gz",
+      "sha256": "ac825f448640a1e816174a4372b34a0e63f6d590edf7bf22b43aac082ed89267",
+      "decoded_sha256": "b5c2b7e5669e227ba114ece76d61a1808f290340a11750f89a4aaef85362230a"
+    },
+    {
+      "path": "blobs/ab066318795dffcc6573438309a4ab31b3d6c14593920339d96aa76a7d83c69c.gz",
+      "sha256": "7fe7ef231ef5a8c694dacab62e1b95d2e1f57052a1d7fca4f15095587200801d",
+      "decoded_sha256": "ab066318795dffcc6573438309a4ab31b3d6c14593920339d96aa76a7d83c69c"
+    },
+    {
+      "path": "blobs/d2510fb4ede00687475d8163957fe4243d9ef414deaf93fca9f81712e60c4a3a.gz",
+      "sha256": "0704f206cc788011d998f49846c2c2f54b02341e95b8c68ae8f20911cad5b285",
+      "decoded_sha256": "d2510fb4ede00687475d8163957fe4243d9ef414deaf93fca9f81712e60c4a3a"
+    },
+    {
+      "path": "blobs/8fff9e1acbd22a03a6434113e30aa9d36237557016c3408abf9afbf1f0867c21.gz",
+      "sha256": "10684a6661ea6ea4080547f2bea6728871dffdd4814fc646898c7603145f2165",
+      "decoded_sha256": "8fff9e1acbd22a03a6434113e30aa9d36237557016c3408abf9afbf1f0867c21"
+    },
+    {
+      "path": "blobs/b40791a1e2c72668ad623e6139f37357ea928473fe55fc8b4bd66223e2a60f9b.gz",
+      "sha256": "f61390c29c9516f0837fac0429aac53537becec3773b585d319868f9a2028f53",
+      "decoded_sha256": "b40791a1e2c72668ad623e6139f37357ea928473fe55fc8b4bd66223e2a60f9b"
+    }
+  ]
+}

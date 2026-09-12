@@ -83,5 +83,13 @@ The verification record archives the report, rendered result, commands, and comp
 [Starmap PR #154](https://github.com/agentstation/starmap/pull/154) publishes the reviewed source as a draft.
 The [PR workflow](https://github.com/agentstation/starmap/actions/runs/34721468698) started all six native platform jobs.
 Its initial snapshot records those jobs as running. Native qualification and merge remain pending.
+
+The 22:18:28 UTC snapshot records passing native jobs on Linux amd64, Linux arm64, and macOS arm64 systems.
+Windows amd64, Windows arm64, macOS Intel, and the full verification job remain active in that snapshot.
+The verification record preserves the complete job and PR check states. The remaining required checks must pass before merge.
+
+The 22:33:07 UTC snapshot records twelve passing PR checks. Both Linux jobs and both macOS jobs pass.
+Both Windows jobs and the full verification job remain active. No job reports a failure in that snapshot.
+
 Shared/object collection and the coordinator decision remain part of the full CSP5 contract.
 A full-suite speed comparison requires terminal evidence.
