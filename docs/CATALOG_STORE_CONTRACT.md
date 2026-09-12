@@ -1131,3 +1131,26 @@ The adapter does not bypass retention rules or permanently remove historical ver
 See the AWS [listing contract](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html) and [deletion contract](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObject.html).
 
 Object generation collection, runtime integration, and live service qualification remain incomplete.
+
+### Runtime pin read leases
+
+`GenerationLeaser` separates generation read leases from publication and collection.
+`GenerationLeaseProvider` lets a store wrapper forward that optional capability.
+The authority publisher forwards a read-only value. That value does not expose the underlying publication store.
+
+The root client exposes `CanLeaseGenerations` and `AcquireGeneration` for explicit reads.
+Capability inspection reads no storage. Successful acquisition returns independent bytes and an idempotent release function.
+Acquisition preserves the configured store's read checks and verifies that its result matches the protected generation.
+Failed reads or validation release protection and preserve both read and release errors.
+
+A missing stored embedded generation uses the verified compiled artifact without creating a storage record.
+That fallback also preserves configured read checks and rejects a different artifact.
+
+During pin startup, the runtime leases the original selected generation when the store supports leases.
+An authority origin can then publish the same payload under a new generation without making the original selection eligible for collection.
+Failed startup releases the lease. Shutdown releases it after runtime-owned work stops and includes release errors in its result.
+
+Memory and filesystem stores support these leases. Minimum store implementations retain their existing read behavior.
+This change does not enable object generation collection or automatic runtime collection.
+Collectors still must include configured pins and other persistent requirements in their retention requests, including after a runtime closes.
+Complete runtime collection and shared-store coordination remain open.

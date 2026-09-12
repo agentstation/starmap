@@ -169,26 +169,8 @@ func (s *directoryMigrationStage) removePartial(ctx context.Context, source *os.
 	}
 	info, err := work.Lstat(name)
 	if err == nil {
-		if !info.Mode().IsRegular() || uint32(info.Mode()) != record.Mode || info.Size() < 0 || info.Size() > expected.Size {
-			return invalidMigrationIntent("partial_metadata")
-		}
-		id, err := migrationEntryIdentity(work, name, info)
-		if err != nil || id != record.FileID {
-			return stderrors.Join(invalidMigrationIntent("partial_identity"), err)
-		}
-		if err := verifyMigrationPartialPrefix(ctx, source, work, name, expected, info); err != nil {
+		if err := s.verifyPartialRemoval(ctx, source, work, name, record, binding, info); err != nil {
 			return err
-		}
-		currentBinding, err := s.partialBinding(work)
-		if err != nil || currentBinding != binding {
-			return stderrors.Join(invalidMigrationIntent("partial_owner"), err)
-		}
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-		current, err := work.Lstat(name)
-		if err != nil || !sameMigrationPartial(info, current) {
-			return stderrors.Join(invalidMigrationIntent("partial_metadata"), err)
 		}
 		if err := verifyMigrationStageRecord(work, name+".json", encoded, recordInfo); err != nil {
 			return err
@@ -257,7 +239,7 @@ func verifyMigrationPartialPrefix(ctx context.Context, source, work *os.Root, na
 }
 
 func sameMigrationPartial(a, b os.FileInfo) bool {
-	return os.SameFile(a, b) && a.Mode() == b.Mode() && a.Size() == b.Size() && a.ModTime() == b.ModTime()
+	return os.SameFile(a, b) && a.Mode() == b.Mode() && a.Size() == b.Size() && a.ModTime().Equal(b.ModTime())
 }
 
 func verifyMigrationStageRecord(work *os.Root, name string, encoded []byte, info os.FileInfo) error {
@@ -268,6 +250,31 @@ func verifyMigrationStageRecord(work *os.Root, name string, encoded []byte, info
 	current, err := work.Lstat(name)
 	if err != nil || !sameMigrationPartial(current, info) {
 		return stderrors.Join(invalidMigrationIntent("stage_record"), err)
+	}
+	return nil
+}
+
+func (s *directoryMigrationStage) verifyPartialRemoval(ctx context.Context, source, work *os.Root, name string, record, binding migrationPartialRecord, info os.FileInfo) error {
+	if !info.Mode().IsRegular() || uint32(info.Mode()) != record.Mode || info.Size() < 0 || info.Size() > record.File.Size {
+		return invalidMigrationIntent("partial_metadata")
+	}
+	id, err := migrationEntryIdentity(work, name, info)
+	if err != nil || id != record.FileID {
+		return stderrors.Join(invalidMigrationIntent("partial_identity"), err)
+	}
+	if err := verifyMigrationPartialPrefix(ctx, source, work, name, record.File, info); err != nil {
+		return err
+	}
+	currentBinding, err := s.partialBinding(work)
+	if err != nil || currentBinding != binding {
+		return stderrors.Join(invalidMigrationIntent("partial_owner"), err)
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	current, err := work.Lstat(name)
+	if err != nil || !sameMigrationPartial(info, current) {
+		return stderrors.Join(invalidMigrationIntent("partial_metadata"), err)
 	}
 	return nil
 }

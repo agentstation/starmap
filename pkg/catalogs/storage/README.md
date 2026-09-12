@@ -24,6 +24,9 @@ Package storage provides durable generation\-oriented catalog storage.
   - [func \(s \*Filesystem\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Filesystem.CurrentAuthorityHead>)
   - [func \(s \*Filesystem\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Filesystem.Get>)
   - [func \(s \*Filesystem\) Root\(\) string](<#Filesystem.Root>)
+- [type GenerationLeaseProvider](<#GenerationLeaseProvider>)
+- [type GenerationLeaser](<#GenerationLeaser>)
+  - [func GenerationLeaserFor\(store Store\) \(GenerationLeaser, bool\)](<#GenerationLeaserFor>)
 - [type Memory](<#Memory>)
   - [func NewMemory\(\) \*Memory](<#NewMemory>)
   - [func \(s \*Memory\) AcquireGeneration\(ctx context.Context, id string\) \(catalogs.Generation, func\(\) error, error\)](<#Memory.AcquireGeneration>)
@@ -189,6 +192,37 @@ func (s *Filesystem) Root() string
 ```
 
 Root returns the configured filesystem root without creating it.
+
+<a name="GenerationLeaseProvider"></a>
+## type [GenerationLeaseProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L37-L39>)
+
+GenerationLeaseProvider forwards a wrapper's optional read\-lease capability. It exposes no publication or collection operation from the underlying store.
+
+```go
+type GenerationLeaseProvider interface {
+    GenerationLeaser() (GenerationLeaser, bool)
+}
+```
+
+<a name="GenerationLeaser"></a>
+## type [GenerationLeaser](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L31-L33>)
+
+GenerationLeaser protects stored generation bytes until the caller releases them. Each acquisition returns independent bytes and an idempotent release function.
+
+```go
+type GenerationLeaser interface {
+    AcquireGeneration(context.Context, string) (catalogs.Generation, func() error, error)
+}
+```
+
+<a name="GenerationLeaserFor"></a>
+### func [GenerationLeaserFor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L42>)
+
+```go
+func GenerationLeaserFor(store Store) (GenerationLeaser, bool)
+```
+
+GenerationLeaserFor resolves direct support or a wrapper's explicit forwarding.
 
 <a name="Memory"></a>
 ## type [Memory](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L11-L16>)
@@ -493,13 +527,13 @@ RetainingStore coordinates collection with publication and generation read lease
 ```go
 type RetainingStore interface {
     Store
-    AcquireGeneration(context.Context, string) (catalogs.Generation, func() error, error)
+    GenerationLeaser
     Collect(context.Context, RetentionRequest) (RetentionReport, error)
 }
 ```
 
 <a name="RetentionReport"></a>
-## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L54-L62>)
+## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L75-L83>)
 
 RetentionReport describes a complete collection decision and its applied changes. Candidates names generations in eviction order. Removed names actual deletions. Dry runs leave After equal to Before. Projected describes the proposed result. OverLimit means protected content alone exceeds at least one requested limit.
 
@@ -516,7 +550,7 @@ type RetentionReport struct {
 ```
 
 <a name="RetentionRequest"></a>
-## type [RetentionRequest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L34-L41>)
+## type [RetentionRequest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L55-L62>)
 
 RetentionRequest selects limits for one explicit collection pass. ExpectedGenerationID binds the request to current, including an empty store. RequiredGenerationIDs names baseline, candidate, and rollback generations. Every required ID must exist. The store also protects current and active leases. Callers must coordinate changes to their required IDs with collection.
 
@@ -532,7 +566,7 @@ type RetentionRequest struct {
 ```
 
 <a name="RetentionUsage"></a>
-## type [RetentionUsage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L45-L48>)
+## type [RetentionUsage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L66-L69>)
 
 RetentionUsage counts generations and their manifest plus payload bytes. Bytes exclude filesystem overhead, journal files, and backend replication.
 

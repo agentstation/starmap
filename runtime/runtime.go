@@ -104,6 +104,7 @@ type Runtime struct {
 	source       Source
 	pinnedSource *sourceLayer
 	pinRecord    *generationPinRecord
+	pinRelease   func() error
 
 	// providerRetentionMu serializes observation selection and durable provider writes.
 	providerRetentionMu sync.Mutex
@@ -243,29 +244,7 @@ func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 		return nil, err
 	}
 
-	runtime.store, err = newLayerStore(runtime.config.stateDirectory)
-	if err != nil {
-		return nil, err
-	}
-	if err := runtime.store.recoverRecordPublications(ctx); err != nil {
-		return nil, err
-	}
-	if err := runtime.store.recoverInputPublication(ctx, client.CurrentCatalogState()); err != nil {
-		return nil, err
-	}
-	if err := runtime.loadRetainedLayers(ctx); err != nil {
-		return nil, err
-	}
-	if err := runtime.initializePinRecord(); err != nil {
-		return nil, err
-	}
-	if err := runtime.initializeEffective(ctx); err != nil {
-		return nil, err
-	}
-	if err := runtime.initializeAuthority(); err != nil {
-		return nil, err
-	}
-	if err := runtime.initializeSchedule(); err != nil {
+	if err := runtime.initializeRetainedState(ctx); err != nil {
 		return nil, err
 	}
 	runtime.adoptSourceIdentity()
@@ -364,6 +343,9 @@ func (r *Runtime) Close() error {
 				err = stderrors.Join(err, r.sealAuthority(sealContext))
 			}
 			sealCancel()
+			if r.pinRelease != nil {
+				err = stderrors.Join(err, r.pinRelease())
+			}
 			if r.directory != nil {
 				err = stderrors.Join(err, r.directory.Close())
 			}

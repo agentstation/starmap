@@ -63,11 +63,19 @@ func checkpointManualHistory(ctx context.Context, history *manualBatch) (*manual
 				digest := sha256.Sum256(observation.Payload)
 				payload, exists := payloads[digest]
 				if !exists {
-					payload = uint32(len(checkpoint.Payloads))
+					var err error
+					payload, err = checkpointReferenceIndex(len(checkpoint.Payloads))
+					if err != nil {
+						return nil, err
+					}
 					payloads[digest] = payload
 					checkpoint.Payloads = append(checkpoint.Payloads, bytes.Clone(observation.Payload))
 				}
-				index = uint32(len(checkpoint.Observations))
+				var err error
+				index, err = checkpointReferenceIndex(len(checkpoint.Observations))
+				if err != nil {
+					return nil, err
+				}
 				observations[id], originals[id] = index, observation
 				checkpoint.Observations = append(checkpoint.Observations, manualCheckpointObservation{Payload: payload, Receipt: observation.Receipt.Clone()})
 			}
@@ -107,45 +115,9 @@ func restoreManualCheckpoint(ctx context.Context, checkpoint *manualCheckpoint) 
 	if len(raw) > maxLayerBytes {
 		return nil, manualHistoryCapacity
 	}
-	catalogsByPayload := make(map[uint32]*catalogs.Catalog)
-	payloadDigests := make(map[[sha256.Size]byte]bool)
-	for _, payload := range checkpoint.Payloads {
-		if err := ctx.Err(); err != nil {
-			return nil, err
-		}
-		digest := sha256.Sum256(payload)
-		if len(payload) == 0 || payloadDigests[digest] {
-			return nil, invalidInputPublication("checkpoint payloads must be nonempty and unique")
-		}
-		payloadDigests[digest] = true
-	}
-	observations := make([]manualObservation, len(checkpoint.Observations))
-	restored := make([]sources.Observation, len(checkpoint.Observations))
-	identities := make(map[string]bool)
-	for index, entry := range checkpoint.Observations {
-		if err := ctx.Err(); err != nil {
-			return nil, err
-		}
-		if uint64(entry.Payload) >= uint64(len(checkpoint.Payloads)) || identities[entry.Receipt.Link.ObservationID] {
-			return nil, invalidInputPublication("checkpoint observation has an invalid payload or repeated identity")
-		}
-		identities[entry.Receipt.Link.ObservationID] = true
-		catalog, exists := catalogsByPayload[entry.Payload]
-		if !exists {
-			catalog, err = catalogs.DecodeSourceObservationPayload(checkpoint.Payloads[entry.Payload])
-			if err != nil {
-				return nil, err
-			}
-			catalogsByPayload[entry.Payload] = catalog
-		}
-		restored[index], err = entry.Receipt.Restore(catalog)
-		if err != nil {
-			return nil, err
-		}
-		observations[index] = manualObservation{Payload: checkpoint.Payloads[entry.Payload], Receipt: entry.Receipt}
-	}
-	if len(catalogsByPayload) != len(checkpoint.Payloads) {
-		return nil, invalidInputPublication("checkpoint contains an unreferenced payload")
+	observations, restored, err := restoreCheckpointObservations(ctx, checkpoint)
+	if err != nil {
+		return nil, err
 	}
 	head := &manualBatch{checkpoint: checkpoint, checkpointBytes: len(raw)}
 	used := make(map[uint32]bool)
@@ -185,4 +157,57 @@ func restoreManualCheckpoint(ctx context.Context, checkpoint *manualCheckpoint) 
 		return nil, invalidInputPublication("checkpoint contains an unreferenced observation")
 	}
 	return head, nil
+}
+
+func checkpointReferenceIndex(count int) (uint32, error) {
+	if count < 0 || count >= maxManualCheckpointReferences {
+		return 0, invalidInputPublication("checkpoint exceeds the replay reference bound")
+	}
+	return uint32(count), nil
+}
+
+func restoreCheckpointObservations(ctx context.Context, checkpoint *manualCheckpoint) ([]manualObservation, []sources.Observation, error) {
+	catalogsByPayload := make(map[uint32]*catalogs.Catalog)
+	payloadDigests := make(map[[sha256.Size]byte]bool)
+	for _, payload := range checkpoint.Payloads {
+		if err := ctx.Err(); err != nil {
+			return nil, nil, err
+		}
+		digest := sha256.Sum256(payload)
+		if len(payload) == 0 || payloadDigests[digest] {
+			return nil, nil, invalidInputPublication("checkpoint payloads must be nonempty and unique")
+		}
+		payloadDigests[digest] = true
+	}
+	observations := make([]manualObservation, len(checkpoint.Observations))
+	restored := make([]sources.Observation, len(checkpoint.Observations))
+	identities := make(map[string]bool)
+	for index, entry := range checkpoint.Observations {
+		if err := ctx.Err(); err != nil {
+			return nil, nil, err
+		}
+		if uint64(entry.Payload) >= uint64(len(checkpoint.Payloads)) || identities[entry.Receipt.Link.ObservationID] {
+			return nil, nil, invalidInputPublication("checkpoint observation has an invalid payload or repeated identity")
+		}
+		identities[entry.Receipt.Link.ObservationID] = true
+		catalog, exists := catalogsByPayload[entry.Payload]
+		if !exists {
+			var err error
+			catalog, err = catalogs.DecodeSourceObservationPayload(checkpoint.Payloads[entry.Payload])
+			if err != nil {
+				return nil, nil, err
+			}
+			catalogsByPayload[entry.Payload] = catalog
+		}
+		var err error
+		restored[index], err = entry.Receipt.Restore(catalog)
+		if err != nil {
+			return nil, nil, err
+		}
+		observations[index] = manualObservation{Payload: checkpoint.Payloads[entry.Payload], Receipt: entry.Receipt}
+	}
+	if len(catalogsByPayload) != len(checkpoint.Payloads) {
+		return nil, nil, invalidInputPublication("checkpoint contains an unreferenced payload")
+	}
+	return observations, restored, nil
 }

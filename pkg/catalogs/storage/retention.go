@@ -22,8 +22,29 @@ const (
 // without retaining the stored generation after the call completes.
 type RetainingStore interface {
 	Store
-	AcquireGeneration(context.Context, string) (catalogs.Generation, func() error, error)
+	GenerationLeaser
 	Collect(context.Context, RetentionRequest) (RetentionReport, error)
+}
+
+// GenerationLeaser protects stored generation bytes until the caller releases them.
+// Each acquisition returns independent bytes and an idempotent release function.
+type GenerationLeaser interface {
+	AcquireGeneration(context.Context, string) (catalogs.Generation, func() error, error)
+}
+
+// GenerationLeaseProvider forwards a wrapper's optional read-lease capability.
+// It exposes no publication or collection operation from the underlying store.
+type GenerationLeaseProvider interface {
+	GenerationLeaser() (GenerationLeaser, bool)
+}
+
+// GenerationLeaserFor resolves direct support or a wrapper's explicit forwarding.
+func GenerationLeaserFor(store Store) (GenerationLeaser, bool) {
+	if provider, ok := store.(GenerationLeaseProvider); ok {
+		return provider.GenerationLeaser()
+	}
+	leaser, ok := store.(GenerationLeaser)
+	return leaser, ok
 }
 
 // RetentionRequest selects limits for one explicit collection pass.

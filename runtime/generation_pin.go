@@ -47,7 +47,13 @@ func (r *Runtime) validateGenerationMutation() error {
 // initializeGenerationPin reads only the selected store and validates the exact artifact.
 // Retained inputs remain available for an explicit unpin and cannot rebuild this selection.
 func (r *Runtime) initializeGenerationPin(ctx context.Context) error {
-	generation, err := r.client.Generation(ctx, r.config.generationPin)
+	var generation catalogs.Generation
+	var err error
+	if r.client.CanLeaseGenerations() {
+		generation, r.pinRelease, err = r.client.AcquireGeneration(ctx, r.config.generationPin)
+	} else {
+		generation, err = r.client.Generation(ctx, r.config.generationPin)
+	}
 	if err != nil {
 		return err
 	}

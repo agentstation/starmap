@@ -47,19 +47,7 @@ func (m *directoryMigration) initializeStage(ctx context.Context, parent *os.Roo
 	}
 	hasRecord := err == nil
 	if _, err := parent.Lstat(name); err == nil {
-		if hasRecord {
-			id, err := migrationEntryIdentity(parent, name, nil)
-			if err != nil || id != initial.record.RootID {
-				return stderrors.Join(invalidMigrationIntent("initialization_target"), err)
-			}
-		}
-		if err := syncMigrationDirectory(parent); err != nil {
-			return err
-		}
-		if hasRecord {
-			return m.finishInitialization(ctx, initial)
-		}
-		return nil
+		return m.finishExistingInitialization(ctx, parent, name, initial, hasRecord)
 	} else if !os.IsNotExist(err) {
 		return err
 	}
@@ -83,38 +71,8 @@ func (m *directoryMigration) initializeStage(ctx context.Context, parent *os.Roo
 	if err != nil || id != initial.record.RootID {
 		return stderrors.Join(invalidMigrationIntent("initialization_identity"), err)
 	}
-	if err := migrationReached(checkpoint, "initialization-created", filepath.Join(parent.Name(), stage)); err != nil {
-		return err
-	}
-	owner, err := encodeOwnerRecord(m.manifest.Owner, m.manifest.SourceIdentity)
+	owner, err := m.prepareMigrationInitialization(ctx, root, encoded, checkpoint, filepath.Join(parent.Name(), stage))
 	if err != nil {
-		return err
-	}
-	if err := verifyMigrationInitialization(ctx, root, encoded, owner, false); err != nil {
-		return err
-	}
-	for _, file := range []struct {
-		name, phase string
-		data        []byte
-	}{
-		{migrationPendingName, "initialization-intent", encoded},
-		{ownerRecordName, "initialization-owner", owner},
-	} {
-		if _, err := root.Lstat(file.name); os.IsNotExist(err) {
-			if err := writeOwnerFile(ctx, root, file.name, file.data); err != nil {
-				return err
-			}
-		} else if err != nil {
-			return err
-		}
-		if err := migrationReached(checkpoint, file.phase, filepath.Join(parent.Name(), stage)); err != nil {
-			return err
-		}
-	}
-	if err := createPrivateRuntimeChild(root, migrationWorkDirectory); err != nil && !os.IsExist(err) {
-		return err
-	}
-	if err := verifyMigrationInitialization(ctx, root, encoded, owner, true); err != nil {
 		return err
 	}
 	if err := syncMigrationDirectory(root); err != nil {
@@ -338,6 +296,60 @@ func verifyMigrationInitialization(ctx context.Context, root *os.Root, manifest,
 		if err != nil || !bytes.Equal(actual, expected) {
 			return stderrors.Join(invalidMigrationIntent("initialization_content"), err)
 		}
+	}
+	return nil
+}
+
+func (m *directoryMigration) prepareMigrationInitialization(ctx context.Context, root *os.Root, encoded []byte, checkpoint migrationCheckpoint, stagePath string) ([]byte, error) {
+	if err := migrationReached(checkpoint, "initialization-created", stagePath); err != nil {
+		return nil, err
+	}
+	owner, err := encodeOwnerRecord(m.manifest.Owner, m.manifest.SourceIdentity)
+	if err != nil {
+		return nil, err
+	}
+	if err := verifyMigrationInitialization(ctx, root, encoded, owner, false); err != nil {
+		return nil, err
+	}
+	for _, file := range []struct {
+		name, phase string
+		data        []byte
+	}{
+		{migrationPendingName, "initialization-intent", encoded},
+		{ownerRecordName, "initialization-owner", owner},
+	} {
+		if _, err := root.Lstat(file.name); os.IsNotExist(err) {
+			if err := writeOwnerFile(ctx, root, file.name, file.data); err != nil {
+				return nil, err
+			}
+		} else if err != nil {
+			return nil, err
+		}
+		if err := migrationReached(checkpoint, file.phase, stagePath); err != nil {
+			return nil, err
+		}
+	}
+	if err := createPrivateRuntimeChild(root, migrationWorkDirectory); err != nil && !os.IsExist(err) {
+		return nil, err
+	}
+	if err := verifyMigrationInitialization(ctx, root, encoded, owner, true); err != nil {
+		return nil, err
+	}
+	return owner, nil
+}
+
+func (m *directoryMigration) finishExistingInitialization(ctx context.Context, parent *os.Root, name string, initial migrationInitialization, hasRecord bool) error {
+	if hasRecord {
+		id, err := migrationEntryIdentity(parent, name, nil)
+		if err != nil || id != initial.record.RootID {
+			return stderrors.Join(invalidMigrationIntent("initialization_target"), err)
+		}
+	}
+	if err := syncMigrationDirectory(parent); err != nil {
+		return err
+	}
+	if hasRecord {
+		return m.finishInitialization(ctx, initial)
 	}
 	return nil
 }
