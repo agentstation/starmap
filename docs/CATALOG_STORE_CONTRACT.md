@@ -1154,3 +1154,18 @@ Memory and filesystem stores support these leases. Minimum store implementations
 This change does not enable object generation collection or automatic runtime collection.
 Collectors still must include configured pins and other persistent requirements in their retention requests, including after a runtime closes.
 Complete runtime collection and shared-store coordination remain open.
+
+
+### Checked removal of private input records
+
+Private record removal now shares the native writer lock used by `PublishFileContext`.
+It compares expected content and checks file identity, access, and directory ownership before deletion.
+Changed content, active publication, unsafe paths, and replaced directories cause refusal.
+
+A successful result distinguishes a newly removed file from an already absent file.
+A directory synchronization failure after deletion reports the visible removal through `PublicationError`.
+Retry after reopen synchronizes the directory without recreating the file.
+
+The runtime collector must identify unreachable input records before calling this operation.
+It must hold publication ownership while tracing accepted history and pending publication references.
+This primitive does not establish reachability or enable automatic collection. Object-store coordination remains separate work.
