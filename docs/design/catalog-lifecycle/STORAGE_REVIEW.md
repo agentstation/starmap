@@ -564,4 +564,14 @@ No new storage service or configuration setting follows from this change.
 
 The [record proof](../../plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json) records 215 passing race test events.
 The ownership records remain in memory. Persistent workspace and legacy relocation recovery remain incomplete.
-Completed replacement-journal cleanup still needs accepted-file identity binding under CSP5.
+The next section records accepted-file identity binding for completed replacement journals.
+
+## Accepted journal identity: 2026-09-12
+
+Starmap `e2cbbc6b` retains the accepted journal's native identity, exact bytes, and access metadata through completion.
+Initial publication uses its staged receipt. Recovery binds content and file state through one bounded read.
+Changed journals remain preserved. Cancellation permits a later recovery attempt without changing the journal format.
+
+The [journal identity proof](../../plans/proof/starport-production-catalog/csp5/journal-identity-2026-09-12/verification.json) records 226 passing race test events.
+Receipts remain in memory. A separate failing probe shows that backup cleanup deletes an identical replacement child.
+Persisted child identities and version 2 compatibility remain CSP5 work, with other persistent recovery, retention, and compaction requirements.

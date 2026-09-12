@@ -2707,7 +2707,16 @@ Cleanup preserves changed temporary files and includes cleanup errors with the o
 
 Markers and journals share the existing 4 MiB journal limit, including trailing newlines. Partial writes retain their actual byte count for cleanup.
 The [record proof](../../plans/proof/starport-production-catalog/csp5/workspace-records-2026-09-12/verification.json) records 215 passing race test events.
-Ownership remains in memory. Persistent recovery must also bind completed-journal removal to the accepted record identity.
+Ownership remains in memory.
+
+Commit `e2cbbc6b` binds journal completion to the accepted file's native identity, exact bytes, and access metadata.
+Publication returns the original staged identity. Recovery binds decoded content and file state through one bounded read.
+Cancellation preserves the journal for later recovery. Version 2 remains the current journal format.
+
+The [journal identity proof](../../plans/proof/starport-production-catalog/csp5/journal-identity-2026-09-12/verification.json) records 226 passing race test events.
+A separate failing probe shows recovery deleting an identical replacement backup child.
+CSP5 must persist and validate child identities and define compatibility for existing version 2 journals.
+Matching content and access metadata cannot establish a replacement child's ownership.
 
 Starport must qualify its own composition under CSP8.
 

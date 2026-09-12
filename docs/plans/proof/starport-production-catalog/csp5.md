@@ -17,6 +17,8 @@ Commit `a05ca541` records private preparation writes and bounds assembly reads.
 Commit `fcfda255` checks legacy rollback ownership and rejects replacement assembly files.
 Commit `9d8b4b8b` bounds filesystem records and legacy preflight.
 Commit `64f905db` preserves workspace record ownership and bounds marker reads.
+
+Commit `e2cbbc6b` binds journal completion to accepted file state.
 No checkpoint has a PR or merge. Starport remains on its merged CSP4 source.
 
 ## Current controls
@@ -420,11 +422,30 @@ Exact-size publication, oversized refusal, short writes, cancellation, destinati
 Final ago, prose, and Linux/Windows compilation checks pass. Native runtime and physical power-loss qualification remain open.
 
 The records remain in memory. Persistent workspace and legacy relocation recovery remain incomplete.
-`finishReplacementRecord` still compares parsed journal content before removing the completion file.
-Persistent replacement recovery must bind that removal to the accepted journal identity. This remaining path has no regression result in this checkpoint.
+At `64f905db`, `finishReplacementRecord` still compared parsed content before removing the completion file.
+The next section records its identity binding and regression results.
 
 The [current PR queue](pr-audit-2026-09-08/current-queue/queue-status-2026-09-12.json) has no open PRs.
 CSP5 remains unpublished until its full contract and required review pass. Both implementation worktrees are clean.
+
+## Accepted journal completion identity
+
+The [journal identity proof](csp5/journal-identity-2026-09-12/verification.json) binds commit `e2cbbc6b` to six original failures and their corrections.
+The cases cover initial replacement and recovery under identical file replacement, equivalent JSON edits, and changed access metadata.
+Seven failed events include the parent test. The original cleanup deleted each changed journal.
+
+Publication now returns the original staged file state. Recovery captures journal bytes, native identity, and access metadata from one bounded read.
+Completion compares that accepted state before removal. Cancellation retains the journal, and a later recovery attempt validates it again.
+Tests also require a receipt and preserve the original publication identity after a publication error.
+
+All 224 workspace and two migration CLI race test events pass without failures or skips.
+The focused boundary run passes 27 events, including process exits at six replacement phases.
+Final ago, prose, and Linux/Windows compilation checks pass. Native execution remains unverified.
+
+The receipt remains in memory. The journal format stays at version 2.
+A separate preserved Go overlay proves another defect: recovery deletes an identical replacement backup child.
+Version 2 persists root identity and child content and access metadata. It omits native child identities.
+This failing probe receives no completion credit. CSP5 must define persisted child ownership and compatibility for existing journals before destructive recovery.
 
 ## Remaining work
 
@@ -432,7 +453,7 @@ The [task contract](../../starport-production-catalog-plan.html#task-CSP5) owns 
 The [registry baseline](csp5/baseline-2026-09-11/verification.json) reports twelve unverified subcases because it contains no checks for them.
 The focused results above do not complete those full subcases.
 
-Bind replacement-journal completion cleanup to the accepted file identity. Complete persistent workspace, retained-evidence, and discovery recovery, then generation retention.
+Persist backup child identities and define compatibility for existing version 2 journals. Complete persistent workspace, retained-evidence, and discovery recovery, then generation retention.
 Preserve rollback pins and every other required generation.
 Use Go 1.26.6 explicitly for the remaining checks.
 Full current-source runtime/storage verification must pass before task completion.

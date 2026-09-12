@@ -2568,6 +2568,20 @@ Cancellation removes unchanged temporary files through a separate cleanup contex
 All 213 workspace and two CLI command race events pass without skips. ago, prose, and Linux/Windows compilation checks pass.
 The result does not qualify native execution or recovery after process exit. The runtime retains these temporary ownership records only in memory.
 
-Source inspection finds that `finishReplacementRecord` still removes a completion journal after comparing parsed content.
-CSP5 must bind that removal to the accepted file identity during persistent replacement recovery.
-This remaining path has no regression result in the current checkpoint. Full CSP5 acceptance, review, native CI, and merge remain open.
+At `64f905db`, `finishReplacementRecord` still removed a completion journal after comparing parsed content.
+The next section records its correction. Full CSP5 acceptance, review, native CI, and merge remain open.
+
+## Journal completion and backup identity: 2026-09-12
+
+Starmap `e2cbbc6b` binds completion cleanup to the journal accepted during publication or recovery.
+The [journal identity proof](../../plans/proof/starport-production-catalog/csp5/journal-identity-2026-09-12/verification.json) preserves six original failures and their corrections.
+Both paths previously deleted identical replacement files, JSON whitespace edits, and journals with changed access metadata.
+
+Publication returns the staged file state. Recovery reads exact bytes, native identity, and access metadata from one bounded file read.
+Completion requires that state before removal. Cancellation preserves the journal, and a later attempt validates it again.
+All 226 workspace and migration CLI race test events pass. ago, prose, and Linux/Windows compilation checks pass.
+
+A separate Go overlay proves that backup recovery still deletes an identical replacement child.
+The version 2 journal records the backup root identity and child content and access metadata. It does not persist native child identities.
+CSP5 must resolve this ownership defect and existing-journal compatibility before qualifying persistent recovery.
+The passing completion tests do not resolve this separate failure or qualify native execution, full CSP5 acceptance, or a merge.
