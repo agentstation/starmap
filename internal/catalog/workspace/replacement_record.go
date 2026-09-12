@@ -17,14 +17,16 @@ import (
 )
 
 type replacementRecord struct {
-	Version   int              `json:"version"`
-	Target    string           `json:"target"`
-	Candidate string           `json:"candidate"`
-	Backup    string           `json:"backup"`
-	Old       treeSnapshot     `json:"old"`
-	New       treeSnapshot     `json:"new"`
-	Marker    projectionMarker `json:"marker"`
-	journal   workspaceRecordState
+	Version       int               `json:"version"`
+	Target        string            `json:"target"`
+	Candidate     string            `json:"candidate"`
+	Backup        string            `json:"backup"`
+	Old           treeSnapshot      `json:"old"`
+	New           treeSnapshot      `json:"new"`
+	Marker        projectionMarker  `json:"marker"`
+	OldIdentities map[string]string `json:"old_identities"`
+	NewIdentities map[string]string `json:"new_identities"`
+	journal       workspaceRecordState
 }
 
 func replacementJournalPath(target string) string {
@@ -46,6 +48,9 @@ func (r replacementRecord) validate(target string) error {
 	if r.Version == 1 {
 		return &errors.ValidationError{Field: "workspace_replacement.version", Message: "journal predates access snapshots. Preserve the workspace, candidate, and backup for explicit recovery"}
 	}
+	if r.Version == 2 {
+		return &errors.ValidationError{Field: "workspace_replacement.version", Message: "journal predates child identity snapshots. Preserve the workspace, candidate, and backup for explicit recovery"}
+	}
 	base := filepath.Base(target)
 	prefix := "." + base + ".candidate-"
 	suffix := strings.TrimPrefix(r.Candidate, prefix)
@@ -60,10 +65,29 @@ func (r replacementRecord) validate(target string) error {
 	if err := r.New.validate(); err != nil {
 		return err
 	}
+	if err := validateReplacementIdentities(r.Old, r.OldIdentities); err != nil {
+		return err
+	}
+	if err := validateReplacementIdentities(r.New, r.NewIdentities); err != nil {
+		return err
+	}
 	if r.Marker.Version != markerVersion || strings.TrimSpace(r.Marker.GenerationID) == "" ||
 		!replacementCatalogDigest(r.Marker.PayloadChecksum) || !replacementCatalogDigest(r.Marker.WorkspaceChecksum) ||
 		!replacementCatalogDigest(r.Marker.EndpointChecksum) {
 		return invalidReplacement("marker")
+	}
+	return nil
+}
+
+func validateReplacementIdentities(tree treeSnapshot, identities map[string]string) error {
+	if len(identities) != len(tree.Entries) || identities["."] != tree.ID {
+		return invalidReplacement("identities")
+	}
+	for _, entry := range tree.Entries {
+		id := identities[entry.Path]
+		if id == "" || len(id) > replacementIdentityMax {
+			return invalidReplacement("identities")
+		}
 	}
 	return nil
 }
@@ -165,6 +189,10 @@ func readReplacementRecord(root *os.Root, target string) (replacementRecord, err
 	if decoder.Decode(&struct{}{}) != io.EOF {
 		return replacementRecord{}, invalidReplacement("trailing_data")
 	}
+	if err := record.validate(target); err != nil {
+		return replacementRecord{}, err
+	}
+	record.Old.identities, record.New.identities = record.OldIdentities, record.NewIdentities
 	record.journal = state
-	return record, record.validate(target)
+	return record, nil
 }

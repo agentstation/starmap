@@ -2,6 +2,7 @@ package workspace
 
 import (
 	"context"
+	"maps"
 	"os"
 	"path/filepath"
 	"strings"
@@ -46,7 +47,7 @@ func (p projector) replaceWithJournal(
 	if err != nil {
 		return false, false, err
 	}
-	if !sameTree(current, old) {
+	if !sameReplacementTree(current, old) {
 		return false, false, replacementConflict(target, "workspace files changed during staging")
 	}
 	candidate, err := snapshotTreeAt(ctx, root, filepath.Base(staged))
@@ -58,6 +59,7 @@ func (p projector) replaceWithJournal(
 		Version: replacementVersion, Target: target, Candidate: filepath.Base(staged),
 		Backup: "." + filepath.Base(target) + ".backup-" + strings.TrimPrefix(filepath.Base(staged), prefix),
 		Old:    old, New: candidate, Marker: marker,
+		OldIdentities: old.identities, NewIdentities: candidate.identities,
 	}
 	if _, err := root.Lstat(record.Backup); !os.IsNotExist(err) {
 		if err != nil {
@@ -79,6 +81,10 @@ func (p projector) replaceWithJournal(
 
 func sameTree(a, b treeSnapshot) bool {
 	return a.ID != "" && a.ID == b.ID && a.Digest == b.Digest
+}
+
+func sameReplacementTree(a, b treeSnapshot) bool {
+	return sameTree(a, b) && len(a.identities) != 0 && maps.Equal(a.identities, b.identities)
 }
 
 func optionalTree(ctx context.Context, root *os.Root, name string) (treeSnapshot, error) {
@@ -123,15 +129,15 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 	if err != nil {
 		return false, err
 	}
-	if sameTree(candidate, record.New) {
+	if sameReplacementTree(candidate, record.New) {
 		if err := validateReplacementCatalog(ctx, root, record.Candidate, record); err != nil {
 			return false, err
 		}
 	}
-	if sameTree(live, record.Old) && backup.ID == "" && candidate.ID == "" {
+	if sameReplacementTree(live, record.Old) && backup.ID == "" && candidate.ID == "" {
 		return false, finishReplacementRecord(ctx, root, record)
 	}
-	if live.ID == "" && sameTree(backup, record.Old) && candidate.ID == "" {
+	if live.ID == "" && sameReplacementTree(backup, record.Old) && candidate.ID == "" {
 		if err := moveReplacementDirectory(root, record.Backup, target); err != nil {
 			return false, err
 		}
@@ -140,14 +146,14 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 		}
 		return false, finishReplacementRecord(ctx, root, record)
 	}
-	if sameTree(live, record.Old) && backup.ID == "" && sameTree(candidate, record.New) {
+	if sameReplacementTree(live, record.Old) && backup.ID == "" && sameReplacementTree(candidate, record.New) {
 		backup, err = preserveReplacementBackup(ctx, root, record, hooks)
 		if err != nil {
 			return false, err
 		}
 		live = treeSnapshot{}
 	}
-	if live.ID == "" && sameTree(backup, record.Old) && sameTree(candidate, record.New) {
+	if live.ID == "" && sameReplacementTree(backup, record.Old) && sameReplacementTree(candidate, record.New) {
 		if err := ctx.Err(); err != nil {
 			return false, err
 		}
@@ -166,7 +172,7 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 		}
 		candidate = treeSnapshot{}
 	}
-	if !sameTree(live, record.New) || candidate.ID != "" {
+	if !sameReplacementTree(live, record.New) || candidate.ID != "" {
 		return false, replacementConflict(record.Target, "journal paths do not match the recorded directories and contents")
 	}
 	if err := finishInstalledReplacement(ctx, root, record, hooks); err != nil {

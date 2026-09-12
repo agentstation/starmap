@@ -32,7 +32,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 		if err != nil {
 			return err
 		}
-		if backup.ID != "" && !sameTree(backup, record.Old) {
+		if backup.ID != "" && !sameReplacementTree(backup, record.Old) {
 			return replacementConflict(record.Target, "backup changed before the projection receipt")
 		}
 		if hooks.beforeMarker != nil {

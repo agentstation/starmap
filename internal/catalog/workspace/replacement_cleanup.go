@@ -24,7 +24,7 @@ func cleanupReplacementBackup(ctx context.Context, parent *os.Root, record repla
 		expected[entry.Path] = entry
 	}
 	for _, entry := range backup.Entries {
-		if expected[entry.Path] != entry {
+		if expected[entry.Path] != entry || record.OldIdentities[entry.Path] != backup.identities[entry.Path] {
 			return replacementConflict(entry.Path, "backup contains changed or unrecognized files")
 		}
 	}
@@ -33,7 +33,7 @@ func cleanupReplacementBackup(ctx context.Context, parent *os.Root, record repla
 		return err
 	}
 	defer func() { _ = root.Close() }()
-	scanner := treeScanner{ctx: ctx, root: root}
+	scanner := treeScanner{ctx: ctx, root: root, identities: make(map[string]string)}
 	for i := len(backup.Entries) - 1; i > 0; i-- {
 		entry := backup.Entries[i]
 		current, err := scanner.entry(entry.Path)
@@ -43,8 +43,11 @@ func cleanupReplacementBackup(ctx context.Context, parent *os.Root, record repla
 		if err != nil {
 			return err
 		}
-		if current != entry {
+		if current != entry || scanner.identities[entry.Path] != record.OldIdentities[entry.Path] {
 			return replacementConflict(entry.Path, "backup changed during cleanup")
+		}
+		if err := verifyCleanupRoot(parent, record.Backup, root, record.Old.ID); err != nil {
+			return err
 		}
 		if err := root.Remove(filepath.FromSlash(entry.Path)); err != nil {
 			return err

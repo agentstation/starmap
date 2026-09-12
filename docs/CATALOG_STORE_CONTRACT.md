@@ -833,5 +833,19 @@ Publication returns the original staged file state. Recovery binds decoded journ
 An identical replacement file, a JSON whitespace edit, or an access change prevents removal during that operation.
 
 Cancellation preserves the journal for a later recovery attempt. Recovery validates the journal again and captures a new receipt for that attempt.
-These receipts remain in memory and do not change the version 2 journal format.
-They do not prove persistent ownership of each backup child or recover abandoned preparation stages.
+Journal acceptance receipts remain in memory. Version 3 journals persist separate child identity maps.
+Recovery for abandoned preparation and legacy relocation stages remains incomplete.
+
+### Persisted replacement child identities
+
+Version 3 replacement journals record native identities for every entry in both directory inventories.
+The `old_identities` and `new_identities` maps must cover exactly the corresponding inventory paths, including the root.
+Each identity must be nonempty and at most 128 bytes. Both maps remain subject to the existing 4 MiB journal limit.
+
+Recovery compares identities, content, and access before moving a live tree or candidate.
+Backup cleanup compares each remaining entry with the persisted inventory, then repeats the identity check before removal.
+It also checks the backup root's path binding before each child removal. Identical replacement files and directories remain preserved.
+
+Version 1 and 2 journals lack the required evidence. Recovery returns `workspace_replacement.version` without changing the journal, workspace, candidate, or backup.
+Preserve these files for explicit recovery. An upgrade cannot infer child ownership from matching content and access metadata.
+This restriction applies to pending legacy workspace replacements. Accepted inference catalog state remains separate from the optional workspace.
