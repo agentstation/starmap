@@ -3,34 +3,23 @@
   "status": "PASS",
   "tasks": 38,
   "done": 10,
-  "in_progress": "CSP5",
+  "in_progress": "CSP6",
   "task_acceptance_invariants_goal_unchanged": true,
-  "local_links": 111,
-  "new_evidence_artifacts": 11967,
-  "new_commit_source_files": 853,
-  "resume_words": 230,
-  "next_action": "Complete required review 57502 for d15c6ef4c, update PR154, and qualify native CI before merge. Shared catalog cleanup and its coordinator decision remain required. CSP6 commit 3ae364518 awaits dependency qualification.",
-  "current_source": "d15c6ef4cbb21827007f6400a8996bed09967535",
+  "local_links": 115,
+  "new_evidence_artifacts": 11990,
+  "new_commit_source_files": 859,
+  "resume_words": 274,
+  "next_action": "Continue CSP6 admission and immutable receipts at 0837ed09c while CSP5 required review retry 87440 runs. Resume PR154 publication after review success, then qualify native CI and merge. Shared cleanup and its coordinator decision remain required.",
+  "current_source": "0837ed09c8cb04a784d0489889feed176494b6de",
   "starmap_integration_source": null,
-  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
-  "external_running_checks": [
-    {
-      "workflow_run": 34721468698,
-      "head_sha": "1a7ae757bb68dcebfa94231a58440a67a62210d1",
-      "status": "in_progress",
-      "url": "https://github.com/agentstation/starmap/actions/runs/34721468698",
-      "remaining_jobs": [
-        "Verification Gate"
-      ],
-      "scope": "Historical parent source. The correction requires new native CI."
-    }
-  ],
+  "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "external_running_checks": [],
   "local_running_checks": [
     {
       "name": "Required pre-PR review",
-      "session_id": 57502,
+      "session_id": 87440,
       "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
-      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-lock-checks/pre-pr-review.json"
+      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-lock-checks/pre-pr-review-retry.json"
     }
   ],
   "current_source_binding_kind": "commit",

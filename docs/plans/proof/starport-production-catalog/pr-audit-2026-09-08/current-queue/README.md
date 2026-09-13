@@ -1,5 +1,24 @@
 # Current pull request queue
 
+Updated 2026-09-13 UTC. Starmap has two open PRs. Starport has none.
+The [current queue evidence](queue-status-2026-09-13.json) records exact heads, bases, checks, review threads, ancestry, and unpublished work.
+Neither PR can merge. Thirty-one campaign PRs merged, and ten tasks are complete.
+
+| PR | Owner | Disposition and next action |
+| --- | --- | --- |
+| [Starmap #154](https://github.com/agentstation/starmap/pull/154) | CSP5 executor | Keep. Review retry `87440` must qualify correction `d15c6ef4c` before push. Then run native CI and merge. |
+| [Starmap #153](https://github.com/agentstation/starmap/pull/153) | Go policy tooling change author | Keep. After PR #154 merges, integrate current main and rerun the gate. Preserve its independent worktree changes. |
+
+PR #153 reaches the runtime suite’s thirty-minute timeout. Its [failure log](pr153-verification-34674230446.log.gz) does not establish a policy violation.
+
+Shared catalog cleanup remains required after PR #154. Its coordinator question remains pending.
+CSP6 exact staging is local commit `0837ed09c`. Its publication follows CSP5 integration.
+The queue capture predates that local staging commit and retains its working-tree inventory.
+
+## Superseded queue state: 2026-09-12
+
+The following capture predates PRs #153 and #154. Use the current evidence above for execution.
+
 Updated 2026-09-12 UTC. Starmap and Starport have no open pull requests.
 The [queue evidence](queue-status-2026-09-12.json) records live lists, default-branch heads, and both active implementation worktrees.
 No PR requires merge, closure, review-thread resolution, or parent updates.

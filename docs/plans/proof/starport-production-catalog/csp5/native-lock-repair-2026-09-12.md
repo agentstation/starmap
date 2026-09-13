@@ -29,5 +29,9 @@ The verification record preserves the failure, cleanup receipt, and passing retr
 Eight task subcases retain Starport consumer requirements.
 The selected component report does not qualify the complete product.
 Compilation does not qualify Windows behavior.
-Required review runs in session `57502`. Native CI and merge remain open for this correction.
+
+Review session `57502` failed during its fifth section because the Codex engine exited with status 1.
+It supplied no final verdict. The captured error does not establish the underlying engine cause.
+Required retry `87440` uses the unchanged source, complete branch, and required cross-lab profile.
+Native CI and merge remain open for this correction.
 Shared catalog cleanup and its pending coordinator decision remain required for CSP5 completion.

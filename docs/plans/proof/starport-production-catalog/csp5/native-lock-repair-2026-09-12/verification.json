@@ -207,17 +207,43 @@
       "test_event_counts": {},
       "qualified_source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
       "binding": "All five tested source hashes equal the committed correction."
+    },
+    "pre-pr-review": {
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--profile",
+        "cross-lab",
+        "--thinking",
+        "codex=xhigh",
+        "--json-output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-lock-pre-pr-09fy69t2/review.json",
+        "--output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-lock-pre-pr-09fy69t2/review.txt"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-12T23:20:30.754029+00:00",
+      "finished_at": "2026-09-12T23:45:49.746195+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/c2e85c7a73c47ed2fd0f9b0b52819c29318d1d88160e890fa447eb83ea3e4549.gz",
+      "test_event_counts": {},
+      "qualified_source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "binding": "All five tested source hashes equal the committed correction."
     }
   },
   "running_checks": [
     {
       "name": "Required pre-PR review",
-      "session_id": 57502,
+      "session_id": 87440,
       "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
-      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-lock-checks/pre-pr-review.json"
+      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-lock-checks/pre-pr-review-retry.json"
     }
   ],
-  "observed_at": "2026-09-12T23:20:46.283323+00:00",
+  "observed_at": "2026-09-13T00:03:51.492632+00:00",
   "task_report": {
     "cases": [
       {
@@ -1003,9 +1029,18 @@
     "output_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-lock-pre-pr-09fy69t2",
     "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
     "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
-    "session_id": 57502
+    "session_id": 87440,
+    "failed_session_id": 57502,
+    "retry_result_path": ".tmp/csp5-update-controls/native-lock-checks/pre-pr-review-retry.json"
   },
   "scratch_cleanup_artifact": "blobs/7c7c715b9c09bc54d3ae2b190505ee8fb58431ba6d6f995e864fa755301ad1d1.gz",
+  "review_failure": {
+    "session_id": 57502,
+    "exit_code": 1,
+    "reason": "Codex engine exited with status 1 during review pass five of six. The helper supplied no final verdict or report. Its captured diagnostic is truncated.",
+    "retry_session_id": 87440,
+    "retry_scope": "Same source, complete branch, required cross-lab profile and threshold. Stream output enabled to preserve useful engine diagnostics."
+  },
   "limits": [
     "The native Windows failures on the parent commit remain the fail-before evidence.",
     "The previous 41-phase repository pass and required review bind the parent commit. New native and broad CI checks remain required before merge.",
@@ -1076,6 +1111,11 @@
       "path": "blobs/10441e7b484cf392ef7a017ec2dbb760f3e7688f75186fd91cff35d9f97c7540.gz",
       "sha256": "a615f1e7732f6e98398c0b2f5ec2d6a8e8535c173d53272d4d9060e8356e939e",
       "decoded_sha256": "10441e7b484cf392ef7a017ec2dbb760f3e7688f75186fd91cff35d9f97c7540"
+    },
+    {
+      "path": "blobs/c2e85c7a73c47ed2fd0f9b0b52819c29318d1d88160e890fa447eb83ea3e4549.gz",
+      "sha256": "957047b46ed8d3c6b6a96fc8083fb5cc63de3126d66cd2373d3cd8f69d8b64ec",
+      "decoded_sha256": "c2e85c7a73c47ed2fd0f9b0b52819c29318d1d88160e890fa447eb83ea3e4549"
     },
     {
       "path": "blobs/7c7c715b9c09bc54d3ae2b190505ee8fb58431ba6d6f995e864fa755301ad1d1.gz",

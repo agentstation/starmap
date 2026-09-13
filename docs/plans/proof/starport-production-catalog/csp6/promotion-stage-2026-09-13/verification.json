@@ -1,0 +1,500 @@
+{
+  "status": "PARTIAL",
+  "source_binding_kind": "commit",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "branch": "codex/catalog-publication-promotion",
+  "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+  "base_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+  "source_files": [
+    {
+      "path": "cmd/starmap-catalog-release/main.go",
+      "sha256": "596bfbdfaec0db03662c4ada26769011afcdec37313c6c092b66015f7797c0e4",
+      "artifact": "blobs/596bfbdfaec0db03662c4ada26769011afcdec37313c6c092b66015f7797c0e4.gz"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/promotion.go",
+      "sha256": "8d394b815465343408e9887e8ba69aad9be367ead11384d82926a040951c4948",
+      "artifact": "blobs/8d394b815465343408e9887e8ba69aad9be367ead11384d82926a040951c4948.gz"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/promotion_stage.go",
+      "sha256": "1a420529b9122e1ae75f8241e2f7bb667223b8da4c727e6b46704f7150b448ca",
+      "artifact": "blobs/1a420529b9122e1ae75f8241e2f7bb667223b8da4c727e6b46704f7150b448ca.gz"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/promotion_stage_test.go",
+      "sha256": "377975fd360e731f6a7435c2a0ac50c19cdf125041fc8011c438975d1522c09f",
+      "artifact": "blobs/377975fd360e731f6a7435c2a0ac50c19cdf125041fc8011c438975d1522c09f.gz"
+    },
+    {
+      "path": "cmd/starmap-catalog-release/promotion_test.go",
+      "sha256": "28880d86b5d3a1b89507819b273ee10ea44b3d9b0437e06f975b94d754337583",
+      "artifact": "blobs/28880d86b5d3a1b89507819b273ee10ea44b3d9b0437e06f975b94d754337583.gz"
+    },
+    {
+      "path": "docs/CATALOG_ARTIFACT_FORMAT.md",
+      "sha256": "5394bac2740e70ad9d6ca51f92eea504db85f04c9169af9cbc457f4250fa3451",
+      "artifact": "blobs/5394bac2740e70ad9d6ca51f92eea504db85f04c9169af9cbc457f4250fa3451.gz"
+    }
+  ],
+  "checks": {
+    "promotion-stage-fail-before": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommandStagesExactPromotion$",
+        "-json"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:30:29.855353+00:00",
+      "finished_at": "2026-09-12T23:30:37.046110+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/b4a7e437642ffd50f03c8e65709cd8a88f983fd9b506aa3fc26b6e1b43b1348f.gz",
+      "test_events": {
+        "fail": 1
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-final-lint": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./cmd/starmap-catalog-release/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-13T00:02:15.226184+00:00",
+      "finished_at": "2026-09-13T00:02:16.762432+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/46ce1d3146bd4410548bbe08a9b6115dd85e82e22ec8b519b4d35ba6eb0694e3.gz",
+      "test_events": {},
+      "source_hashes_match_final": true,
+      "scope": "final candidate"
+    },
+    "promotion-stage-final-minimum": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommand(StagesExactPromotion|PreservesRejectedPromotionStage|RequiresPromotionPair)$|^TestPromotionStageRetryConfirmsDirectorySync$",
+        "-json"
+      ],
+      "toolchain": "go1.25.12",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-13T00:02:15.251018+00:00",
+      "finished_at": "2026-09-13T00:02:31.477350+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/05f007e260a8e90aca2492b6a0716ea619858736a0fb8be0f2d3259233ead37f.gz",
+      "test_events": {
+        "pass": 7
+      },
+      "source_hashes_match_final": true,
+      "scope": "final candidate"
+    },
+    "promotion-stage-final-policy": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-13T00:02:15.219697+00:00",
+      "finished_at": "2026-09-13T00:02:18.095057+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/6a58516fb2160e5da7b10efe8c4854b8ac605e88820f8e8068e714dd79b66e81.gz",
+      "test_events": {},
+      "source_hashes_match_final": true,
+      "scope": "final candidate"
+    },
+    "promotion-stage-final-prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-13T00:02:15.242004+00:00",
+      "finished_at": "2026-09-13T00:03:08.735294+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/81dc945ea368c8c0096d6a783d933c0b93e3231cdbd70def3a285126de0b3d5e.gz",
+      "test_events": {},
+      "source_hashes_match_final": true,
+      "scope": "final candidate"
+    },
+    "promotion-stage-final-release-suite": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./cmd/starmap-catalog-release",
+        "-json"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-13T00:02:15.233188+00:00",
+      "finished_at": "2026-09-13T00:03:40.004798+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/bd9a8de5bc9f2dbdee786ed5dcadc05f5ad6bdd8a33ec50c1095044971fb68df.gz",
+      "test_events": {
+        "pass": 54
+      },
+      "source_hashes_match_final": true,
+      "scope": "final candidate"
+    },
+    "promotion-stage-focused": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommand(StagesExactPromotion|PreservesRejectedPromotionStage|RequiresPromotionPair)$",
+        "-json"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:33:04.836118+00:00",
+      "finished_at": "2026-09-12T23:33:16.651497+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/3590272e7fd45705e22b838f50079782c36857028bc89c8032968d1e96572b07.gz",
+      "test_events": {
+        "pass": 6
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-lint-final": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./cmd/starmap-catalog-release/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:34:36.437385+00:00",
+      "finished_at": "2026-09-12T23:34:37.880465+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/06b8c8bcfaa698bdbee0ff3389658ee478bcdc633933962405915570eaaa10a5.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-lint": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./cmd/starmap-catalog-release/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:33:04.828833+00:00",
+      "finished_at": "2026-09-12T23:33:06.583035+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/47bfd4a7c24300a8ad5e7a8b630462388108d98792faf4773a7bbfb08ed6e4c3.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-minimum": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestArtifactReleaseCommand(StagesExactPromotion|PreservesRejectedPromotionStage|RequiresPromotionPair)$",
+        "-json"
+      ],
+      "toolchain": "go1.25.12",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:34:36.428614+00:00",
+      "finished_at": "2026-09-12T23:34:51.540145+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/0bc9a29c8db2f284270520e64a39866e9a4dcd945d8d854f31739b8f2e6b3788.gz",
+      "test_events": {
+        "pass": 6
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-policy-final": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:34:36.447181+00:00",
+      "finished_at": "2026-09-12T23:34:39.285352+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/6f6f45213bf431743f3f51c278563f91eb7aaf5a60b40a1a09e99bcd4e1c48b7.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-policy": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:33:04.823349+00:00",
+      "finished_at": "2026-09-12T23:33:07.107315+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/73706350863f28a3ddf9aac783cf520cc08da71fa42253f8a8b92f8301d4ad3b.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:34:36.455740+00:00",
+      "finished_at": "2026-09-12T23:35:29.825567+00:00",
+      "exit_code": 2,
+      "artifact": "blobs/fb7d0e37eb10fd2b3583dcf958a8a51df776c9226ee2bfeab404dd51700bfcee.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-release-suite": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./cmd/starmap-catalog-release",
+        "-json"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:34:36.425797+00:00",
+      "finished_at": "2026-09-12T23:35:58.891345+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/9ae2578c8b466820c7dab9deaf4e4ad03b1114354354209d2b170ea16957847c.gz",
+      "test_events": {
+        "pass": 53
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-retry-fail-before": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestPromotionStageRetryConfirmsDirectorySync$",
+        "-json"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-12T23:36:55.606424+00:00",
+      "finished_at": "2026-09-12T23:37:01.281292+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/975d4b944535850e5e8e1443d1f749a7c7c51ef60c14fbcff91ec7e6787f5bed.gz",
+      "test_events": {
+        "fail": 1
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "promotion-stage-retry-fixed": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./cmd/starmap-catalog-release",
+        "-run",
+        "^TestPromotionStageRetryConfirmsDirectorySync$",
+        "-json"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "7326a1c544258088f48eefa7f1a8e9f7b987b507",
+      "started_at": "2026-09-13T00:01:41.756895+00:00",
+      "finished_at": "2026-09-13T00:01:49.698181+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/4433374ac4af5e90a85798397254a17ec5e955b9dc777f21dc11cf06166cdd6d.gz",
+      "test_events": {
+        "pass": 1
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    }
+  },
+  "running_checks": [],
+  "observed_at": "2026-09-13T00:05:25.374659+00:00",
+  "manual_review": {
+    "files": 6,
+    "result": "No remaining defect found in command dispatch, exact generation binding, no-replace publication, or ambiguous-flush retry. Required pre-PR review and native CI remain open."
+  },
+  "limits": [
+    "Local staging and verification only. No bot PR or channel advance exists for CSP6.",
+    "Publication admission, immutable source/run receipts, checked GitHub App promotion, merged revision binding, and failure-boundary A05 qualification remain required.",
+    "A transient owned staging directory can remain after process exit. CI scratch cleanup owns that directory. This command does not modify a live catalog workspace.",
+    "CSP5 correction d15c6ef4c is present through identical cherry-pick 7326a1c54. PR154 still requires successful review and native CI."
+  ],
+  "artifacts": [
+    {
+      "path": "blobs/596bfbdfaec0db03662c4ada26769011afcdec37313c6c092b66015f7797c0e4.gz",
+      "sha256": "af88c57207f584e90562d563829440f5dc033831a60648b71de3cb8d6c274330",
+      "decoded_sha256": "596bfbdfaec0db03662c4ada26769011afcdec37313c6c092b66015f7797c0e4"
+    },
+    {
+      "path": "blobs/8d394b815465343408e9887e8ba69aad9be367ead11384d82926a040951c4948.gz",
+      "sha256": "02ee8e3c464bcdb54eb8a9f40315f0a699c736fa18a4a282aa0ee2731f99e070",
+      "decoded_sha256": "8d394b815465343408e9887e8ba69aad9be367ead11384d82926a040951c4948"
+    },
+    {
+      "path": "blobs/1a420529b9122e1ae75f8241e2f7bb667223b8da4c727e6b46704f7150b448ca.gz",
+      "sha256": "be82f91a0b17b9b00db48b13145fa5644f253bf8e1f5e3556b12a7f3271a8da1",
+      "decoded_sha256": "1a420529b9122e1ae75f8241e2f7bb667223b8da4c727e6b46704f7150b448ca"
+    },
+    {
+      "path": "blobs/377975fd360e731f6a7435c2a0ac50c19cdf125041fc8011c438975d1522c09f.gz",
+      "sha256": "62f90c17b75f007efde6ccc101c59ed9c63e9829520b5c0549b80af96411b6d2",
+      "decoded_sha256": "377975fd360e731f6a7435c2a0ac50c19cdf125041fc8011c438975d1522c09f"
+    },
+    {
+      "path": "blobs/28880d86b5d3a1b89507819b273ee10ea44b3d9b0437e06f975b94d754337583.gz",
+      "sha256": "b089d96cb48717901be57be33b91ddac3262aade13c083b0d88396a033ccaedc",
+      "decoded_sha256": "28880d86b5d3a1b89507819b273ee10ea44b3d9b0437e06f975b94d754337583"
+    },
+    {
+      "path": "blobs/5394bac2740e70ad9d6ca51f92eea504db85f04c9169af9cbc457f4250fa3451.gz",
+      "sha256": "00ff14c0d149a49b0daa9d0869b208461ccabfae20579b5c23ee4c174ad4f491",
+      "decoded_sha256": "5394bac2740e70ad9d6ca51f92eea504db85f04c9169af9cbc457f4250fa3451"
+    },
+    {
+      "path": "blobs/b4a7e437642ffd50f03c8e65709cd8a88f983fd9b506aa3fc26b6e1b43b1348f.gz",
+      "sha256": "2af12de8c644f3529837962e4cf6e8f0ff932b4265dc93afde1e7668f429e6a7",
+      "decoded_sha256": "b4a7e437642ffd50f03c8e65709cd8a88f983fd9b506aa3fc26b6e1b43b1348f"
+    },
+    {
+      "path": "blobs/46ce1d3146bd4410548bbe08a9b6115dd85e82e22ec8b519b4d35ba6eb0694e3.gz",
+      "sha256": "910f2459b755ab3ecd1f18dd6b727bd07c5109404179e4be11cf01dfaf2f16dd",
+      "decoded_sha256": "46ce1d3146bd4410548bbe08a9b6115dd85e82e22ec8b519b4d35ba6eb0694e3"
+    },
+    {
+      "path": "blobs/05f007e260a8e90aca2492b6a0716ea619858736a0fb8be0f2d3259233ead37f.gz",
+      "sha256": "496e3cfd3a654acfc5445b0a03872a5b2ab9625ada33b221cac54de28a0cef5a",
+      "decoded_sha256": "05f007e260a8e90aca2492b6a0716ea619858736a0fb8be0f2d3259233ead37f"
+    },
+    {
+      "path": "blobs/6a58516fb2160e5da7b10efe8c4854b8ac605e88820f8e8068e714dd79b66e81.gz",
+      "sha256": "b54376912bd027ffc879f4c18bd426aa15fef58e44bf5e75b73bcb7b3e5cd4e0",
+      "decoded_sha256": "6a58516fb2160e5da7b10efe8c4854b8ac605e88820f8e8068e714dd79b66e81"
+    },
+    {
+      "path": "blobs/81dc945ea368c8c0096d6a783d933c0b93e3231cdbd70def3a285126de0b3d5e.gz",
+      "sha256": "09612341a1726defd9bc08cd64b7fccacff0f7f155a80ca80bb92610e000870d",
+      "decoded_sha256": "81dc945ea368c8c0096d6a783d933c0b93e3231cdbd70def3a285126de0b3d5e"
+    },
+    {
+      "path": "blobs/bd9a8de5bc9f2dbdee786ed5dcadc05f5ad6bdd8a33ec50c1095044971fb68df.gz",
+      "sha256": "25d8e2ab0eb46306b96fbcc09bca41ac03094aa80bfad98ef5dd51036212281c",
+      "decoded_sha256": "bd9a8de5bc9f2dbdee786ed5dcadc05f5ad6bdd8a33ec50c1095044971fb68df"
+    },
+    {
+      "path": "blobs/3590272e7fd45705e22b838f50079782c36857028bc89c8032968d1e96572b07.gz",
+      "sha256": "0d0854b4f4ad4b17860690fb4243c1c3db562c0b9500cf6c80067357faf95491",
+      "decoded_sha256": "3590272e7fd45705e22b838f50079782c36857028bc89c8032968d1e96572b07"
+    },
+    {
+      "path": "blobs/06b8c8bcfaa698bdbee0ff3389658ee478bcdc633933962405915570eaaa10a5.gz",
+      "sha256": "78c72dba5d95cb348ba45e99ac67dcee5118fee369b6de91c19416ae6acd649e",
+      "decoded_sha256": "06b8c8bcfaa698bdbee0ff3389658ee478bcdc633933962405915570eaaa10a5"
+    },
+    {
+      "path": "blobs/47bfd4a7c24300a8ad5e7a8b630462388108d98792faf4773a7bbfb08ed6e4c3.gz",
+      "sha256": "9e1e8957492177ef145baf1fe27cf7eab9f04fc54ea18df19c843b3c43262a0c",
+      "decoded_sha256": "47bfd4a7c24300a8ad5e7a8b630462388108d98792faf4773a7bbfb08ed6e4c3"
+    },
+    {
+      "path": "blobs/0bc9a29c8db2f284270520e64a39866e9a4dcd945d8d854f31739b8f2e6b3788.gz",
+      "sha256": "c8ee7f23fd1d0d8c3eb5d50dc9f102934fd8ebe0b6c86024388aa1d8c1050bac",
+      "decoded_sha256": "0bc9a29c8db2f284270520e64a39866e9a4dcd945d8d854f31739b8f2e6b3788"
+    },
+    {
+      "path": "blobs/6f6f45213bf431743f3f51c278563f91eb7aaf5a60b40a1a09e99bcd4e1c48b7.gz",
+      "sha256": "ef121e4c75ca50fcfa3318f395cf630d2b02f501fd5887cc04575563c970281b",
+      "decoded_sha256": "6f6f45213bf431743f3f51c278563f91eb7aaf5a60b40a1a09e99bcd4e1c48b7"
+    },
+    {
+      "path": "blobs/73706350863f28a3ddf9aac783cf520cc08da71fa42253f8a8b92f8301d4ad3b.gz",
+      "sha256": "02c4075a59a83b5bf960354f08c27425f1f9eb3fae89663caa1cfc2643e242f3",
+      "decoded_sha256": "73706350863f28a3ddf9aac783cf520cc08da71fa42253f8a8b92f8301d4ad3b"
+    },
+    {
+      "path": "blobs/fb7d0e37eb10fd2b3583dcf958a8a51df776c9226ee2bfeab404dd51700bfcee.gz",
+      "sha256": "3033eeb3c85e498f2092caeddc27e08e2de64f391c770804dde87b07b9f42dd0",
+      "decoded_sha256": "fb7d0e37eb10fd2b3583dcf958a8a51df776c9226ee2bfeab404dd51700bfcee"
+    },
+    {
+      "path": "blobs/9ae2578c8b466820c7dab9deaf4e4ad03b1114354354209d2b170ea16957847c.gz",
+      "sha256": "85b5c271ad16b3d8e877bc9416166df97423c096c6609b3bb792776a6199d2fe",
+      "decoded_sha256": "9ae2578c8b466820c7dab9deaf4e4ad03b1114354354209d2b170ea16957847c"
+    },
+    {
+      "path": "blobs/975d4b944535850e5e8e1443d1f749a7c7c51ef60c14fbcff91ec7e6787f5bed.gz",
+      "sha256": "dccd939517884d0e1fa2d69e12ff2892cabcc9715ab94f284a5fde45f954d865",
+      "decoded_sha256": "975d4b944535850e5e8e1443d1f749a7c7c51ef60c14fbcff91ec7e6787f5bed"
+    },
+    {
+      "path": "blobs/4433374ac4af5e90a85798397254a17ec5e955b9dc777f21dc11cf06166cdd6d.gz",
+      "sha256": "e4cf6857da58ef82fd082b17d625d21ef8de464bab7a072edd7735acb01aa486",
+      "decoded_sha256": "4433374ac4af5e90a85798397254a17ec5e955b9dc777f21dc11cf06166cdd6d"
+    }
+  ]
+}

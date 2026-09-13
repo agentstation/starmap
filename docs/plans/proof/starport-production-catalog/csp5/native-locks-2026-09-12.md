@@ -22,3 +22,9 @@ The correction must validate empty ownership files without reading a locked byte
 It must retain identity, access, size, change detection, and writer exclusion checks.
 The remaining assertions and storage timeout require separate confirmation after that correction.
 No test exclusion, timeout increase, or native acceptance claim follows from this diagnosis.
+
+## Terminal parent workflow
+
+The [terminal snapshot](native-locks-2026-09-12/terminal-workflow.json) records the completed run on the original parent source.
+The full verification gate passes. Both Windows jobs fail.
+The corrected commit still requires its own native and required CI checks.
