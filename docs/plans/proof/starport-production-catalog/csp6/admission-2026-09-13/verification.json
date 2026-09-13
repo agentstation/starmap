@@ -1,0 +1,378 @@
+{
+  "status": "PARTIAL",
+  "source_binding_kind": "commit",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "branch": "codex/catalog-publication-promotion",
+  "source_commit": "d15eb1291a508083b530ec110d97fac322fa2b3b",
+  "base_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+  "source_files": [
+    {
+      "path": "internal/catalog/publication/admission.go",
+      "sha256": "7362b832dcfdd9e4c1ba40b2f15d41331f9733cb9faa8723ace306e993acee59",
+      "artifact": "blobs/7362b832dcfdd9e4c1ba40b2f15d41331f9733cb9faa8723ace306e993acee59.gz"
+    },
+    {
+      "path": "internal/catalog/publication/admission_input.go",
+      "sha256": "3cdee003e36a4e5ea97c46faa2ab3c5c4c1b672037b207bd01eb135fcda469e2",
+      "artifact": "blobs/3cdee003e36a4e5ea97c46faa2ab3c5c4c1b672037b207bd01eb135fcda469e2.gz"
+    },
+    {
+      "path": "internal/catalog/publication/admission_test.go",
+      "sha256": "bbf76d1746bbab712a3e8461289781f496c5e06500fa640eca84582dc69249e7",
+      "artifact": "blobs/bbf76d1746bbab712a3e8461289781f496c5e06500fa640eca84582dc69249e7.gz"
+    }
+  ],
+  "checks": {
+    "admission-contract": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:25:46.558949+00:00",
+      "finished_at": "2026-09-13T00:25:48.774977+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/ea1a4579b93e4bc2b0e997420a9ea55a7a4e17716aed41f52064e0dbb2253d48.gz",
+      "test_events": {
+        "pass": 44
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "admission-fail-before": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:21:40.507790+00:00",
+      "finished_at": "2026-09-13T00:21:40.881559+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/59cdc7e4e03ef8ced44404697db70247410c52351fc7c1ece960ede2e242ec28.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "admission-final-contract": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:27:24.806970+00:00",
+      "finished_at": "2026-09-13T00:27:27.024497+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/d3d5ad5ce56103fcde29885a655451ea9cf5805fba82cc9022a18f3ba424af42.gz",
+      "test_events": {
+        "pass": 48
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "admission-final-lint": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./internal/catalog/publication/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:28:19.198129+00:00",
+      "finished_at": "2026-09-13T00:28:20.163873+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/f24c767035238d75dbb8b86dad1620e84d943f9b9a2146bf4ff7bf63e226fb23.gz",
+      "test_events": {},
+      "source_hashes_match_final": true,
+      "scope": "final component evidence"
+    },
+    "admission-final-minimum": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.25.12",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:28:19.177753+00:00",
+      "finished_at": "2026-09-13T00:28:21.739212+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/9352df00384f6130cb5bb765db11f369341df096a6d4aca78d3307a43f9cddd7.gz",
+      "test_events": {
+        "pass": 48
+      },
+      "source_hashes_match_final": true,
+      "scope": "final component evidence"
+    },
+    "admission-final-policy": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:28:19.184478+00:00",
+      "finished_at": "2026-09-13T00:28:21.363307+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/01c1e2cadb811abfea6adc6c4ee0d7031f151fd5be56414c80b7fbb92fe7d3ba.gz",
+      "test_events": {},
+      "source_hashes_match_final": true,
+      "scope": "final component evidence"
+    },
+    "admission-final-prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:28:19.189126+00:00",
+      "finished_at": "2026-09-13T00:29:11.810594+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/8e6dacad57c77fb8f26469f87fceb2c317d36433c7140eed6a54ffd73dbfbb14.gz",
+      "test_events": {},
+      "source_hashes_match_final": true,
+      "scope": "final component evidence"
+    },
+    "admission-final-race": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:28:19.172761+00:00",
+      "finished_at": "2026-09-13T00:28:20.863688+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/c8743da3811af873b009a98e93e25366fcb3d1f700b8e9520b64b82754fbd685.gz",
+      "test_events": {
+        "pass": 48
+      },
+      "source_hashes_match_final": true,
+      "scope": "final component evidence"
+    },
+    "admission-initial": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:23:46.169328+00:00",
+      "finished_at": "2026-09-13T00:23:46.520682+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/6a8b711d714cf64432d47e17175814ec48147b614476fce06883dfde1ab5019f.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "admission-lint": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./internal/catalog/publication/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:26:00.408375+00:00",
+      "finished_at": "2026-09-13T00:26:02.043450+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/7429604f306ea13a6f37109059cb7064b3421a1d3f0c6f42ab888fe83d64d3fa.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "admission-minimum": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.25.12",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:26:40.692616+00:00",
+      "finished_at": "2026-09-13T00:26:42.940092+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/83b83c0a538a9fedd36012fb89b8f299d0957146b7e5156c0f3fc049dec3af8a.gz",
+      "test_events": {
+        "pass": 44
+      },
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "admission-policy": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:26:00.414860+00:00",
+      "finished_at": "2026-09-13T00:26:02.401936+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/85479d972f93a9734df2f3b4b1493785b269b55c8c7dda150ffac760ebda1c7d.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    },
+    "admission-prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "0837ed09c8cb04a784d0489889feed176494b6de",
+      "started_at": "2026-09-13T00:26:40.692610+00:00",
+      "finished_at": "2026-09-13T00:27:33.048389+00:00",
+      "exit_code": 2,
+      "artifact": "blobs/6094aed4f3f8651637df54a4c92a5a7541f28a213e880d558167f124ea59fc20.gz",
+      "test_events": {},
+      "source_hashes_match_final": false,
+      "scope": "historical development evidence"
+    }
+  },
+  "running_checks": [],
+  "observed_at": "2026-09-13T00:31:05.828877+00:00",
+  "manual_review": {
+    "files": 3,
+    "result": "Reviewed policy validation, complete evidence selection, exact binding equality, timestamp bounds, owned metadata, and atomic refusal of all proposed input and removal operations. No remaining defect found."
+  },
+  "limits": [
+    "The admission component is not yet connected to the publication workflow. No A05 completion credit applies.",
+    "Immutable run receipts, artifact and channel bindings, trusted retained-evidence loading, actual policy configuration, checked bot promotion, and controlled failure-boundary qualification remain required.",
+    "No CSP6 PR, push, release, channel change, or merge occurred. CSP5 review and native CI remain separate gates."
+  ],
+  "artifacts": [
+    {
+      "path": "blobs/7362b832dcfdd9e4c1ba40b2f15d41331f9733cb9faa8723ace306e993acee59.gz",
+      "sha256": "6ca8bd50eb030312a2edcf0413f0cbdedf3bfac2760c5fd78b1c63ba44b6e33e",
+      "decoded_sha256": "7362b832dcfdd9e4c1ba40b2f15d41331f9733cb9faa8723ace306e993acee59"
+    },
+    {
+      "path": "blobs/3cdee003e36a4e5ea97c46faa2ab3c5c4c1b672037b207bd01eb135fcda469e2.gz",
+      "sha256": "a68ac8c0a192763632a63e4d03e3371ff1f505a5a3cd3dab76cf89b689685e47",
+      "decoded_sha256": "3cdee003e36a4e5ea97c46faa2ab3c5c4c1b672037b207bd01eb135fcda469e2"
+    },
+    {
+      "path": "blobs/bbf76d1746bbab712a3e8461289781f496c5e06500fa640eca84582dc69249e7.gz",
+      "sha256": "18d9bdcb356bcd215534f345162382a9d8bc80b276d9dea71988813593b704a0",
+      "decoded_sha256": "bbf76d1746bbab712a3e8461289781f496c5e06500fa640eca84582dc69249e7"
+    },
+    {
+      "path": "blobs/ea1a4579b93e4bc2b0e997420a9ea55a7a4e17716aed41f52064e0dbb2253d48.gz",
+      "sha256": "a4cdb706066484390147cea05ce0e90200387edb06cec34015ab9843a7fe8b04",
+      "decoded_sha256": "ea1a4579b93e4bc2b0e997420a9ea55a7a4e17716aed41f52064e0dbb2253d48"
+    },
+    {
+      "path": "blobs/59cdc7e4e03ef8ced44404697db70247410c52351fc7c1ece960ede2e242ec28.gz",
+      "sha256": "365ba8887f5523adba9598b8e72c2db05c8b211c7f20a45f21b49754e3dcdef5",
+      "decoded_sha256": "59cdc7e4e03ef8ced44404697db70247410c52351fc7c1ece960ede2e242ec28"
+    },
+    {
+      "path": "blobs/d3d5ad5ce56103fcde29885a655451ea9cf5805fba82cc9022a18f3ba424af42.gz",
+      "sha256": "8d6976c95f65a55f0219f513c7e8c3a14a2eb103936812b99ece74cd80b0b844",
+      "decoded_sha256": "d3d5ad5ce56103fcde29885a655451ea9cf5805fba82cc9022a18f3ba424af42"
+    },
+    {
+      "path": "blobs/f24c767035238d75dbb8b86dad1620e84d943f9b9a2146bf4ff7bf63e226fb23.gz",
+      "sha256": "6cf3ac8071344b28f5d3558b2859bac0c794a863fb0023e85f8fced597845cc1",
+      "decoded_sha256": "f24c767035238d75dbb8b86dad1620e84d943f9b9a2146bf4ff7bf63e226fb23"
+    },
+    {
+      "path": "blobs/9352df00384f6130cb5bb765db11f369341df096a6d4aca78d3307a43f9cddd7.gz",
+      "sha256": "8a9d4fa9e7d21ad7e8a5f19fd81370d6036198277d4b34a1c358e05f53e8c162",
+      "decoded_sha256": "9352df00384f6130cb5bb765db11f369341df096a6d4aca78d3307a43f9cddd7"
+    },
+    {
+      "path": "blobs/01c1e2cadb811abfea6adc6c4ee0d7031f151fd5be56414c80b7fbb92fe7d3ba.gz",
+      "sha256": "0d03be2936206fbe68c14f97ad00e00a4e46d30a37bbeb4e21b0898f1b76a357",
+      "decoded_sha256": "01c1e2cadb811abfea6adc6c4ee0d7031f151fd5be56414c80b7fbb92fe7d3ba"
+    },
+    {
+      "path": "blobs/8e6dacad57c77fb8f26469f87fceb2c317d36433c7140eed6a54ffd73dbfbb14.gz",
+      "sha256": "77fd50707d8a9d09358bf73edb51877ae3fa0c3ee4c2fb5b666cc2f6257a0872",
+      "decoded_sha256": "8e6dacad57c77fb8f26469f87fceb2c317d36433c7140eed6a54ffd73dbfbb14"
+    },
+    {
+      "path": "blobs/c8743da3811af873b009a98e93e25366fcb3d1f700b8e9520b64b82754fbd685.gz",
+      "sha256": "62c49ebb73ee60d0744fa84a87d7054ab06621e1f32aacf207acb10ca84be87c",
+      "decoded_sha256": "c8743da3811af873b009a98e93e25366fcb3d1f700b8e9520b64b82754fbd685"
+    },
+    {
+      "path": "blobs/6a8b711d714cf64432d47e17175814ec48147b614476fce06883dfde1ab5019f.gz",
+      "sha256": "3ba9c55bb4f58cbe60ccdb7beb538e6e04cb3b91a4ccaa91917d84e0a041d7d2",
+      "decoded_sha256": "6a8b711d714cf64432d47e17175814ec48147b614476fce06883dfde1ab5019f"
+    },
+    {
+      "path": "blobs/7429604f306ea13a6f37109059cb7064b3421a1d3f0c6f42ab888fe83d64d3fa.gz",
+      "sha256": "67c0219b31dd5ab86ef916b60f0c0b7adc74ec8cb9b39c425e8ded3c4978a43c",
+      "decoded_sha256": "7429604f306ea13a6f37109059cb7064b3421a1d3f0c6f42ab888fe83d64d3fa"
+    },
+    {
+      "path": "blobs/83b83c0a538a9fedd36012fb89b8f299d0957146b7e5156c0f3fc049dec3af8a.gz",
+      "sha256": "ed8c374f0696707f9b73a733b21f2978601a3622655ab9ded42a1ab0c935a772",
+      "decoded_sha256": "83b83c0a538a9fedd36012fb89b8f299d0957146b7e5156c0f3fc049dec3af8a"
+    },
+    {
+      "path": "blobs/85479d972f93a9734df2f3b4b1493785b269b55c8c7dda150ffac760ebda1c7d.gz",
+      "sha256": "ac56556492bfd8454d55a84301e5251e0b918f89650f8b1c16a61f5492d41c1a",
+      "decoded_sha256": "85479d972f93a9734df2f3b4b1493785b269b55c8c7dda150ffac760ebda1c7d"
+    },
+    {
+      "path": "blobs/6094aed4f3f8651637df54a4c92a5a7541f28a213e880d558167f124ea59fc20.gz",
+      "sha256": "30101338d5db71fe9a51d51d2c9d7aa25b91aee20de6e19742ff1721235d9ac8",
+      "decoded_sha256": "6094aed4f3f8651637df54a4c92a5a7541f28a213e880d558167f124ea59fc20"
+    }
+  ]
+}
