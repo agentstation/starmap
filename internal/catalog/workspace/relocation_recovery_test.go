@@ -455,7 +455,8 @@ func TestRelocationPreparationClosesHandlesAfterCleanupConflict(t *testing.T) {
 	if !stderrors.Is(err, fault) || stage != nil || captured == nil {
 		t.Fatalf("preparation failure: %v", err)
 	}
-	if _, err := captured.journal.file.Stat(); !stderrors.Is(err, os.ErrClosed) {
+	var probe [1]byte
+	if _, err := captured.journal.file.Read(probe[:]); !stderrors.Is(err, os.ErrClosed) {
 		t.Fatalf("journal handle retained: %v", err)
 	}
 	if _, err := captured.private.Stat("."); !stderrors.Is(err, os.ErrClosed) {

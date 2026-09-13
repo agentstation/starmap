@@ -200,12 +200,24 @@ func TestLegacyRollbackPreservesOperatorSidecars(t *testing.T) {
 				t.Fatal(err)
 			}
 			preserved := projectionMarkerPath(legacy)
+			want := "operator sidecar"
 			if sidecar == "writer-lock" {
 				preserved = writerLockPath(legacy)
+				want = "\x00" + want
 			}
 			fault := stderrors.New("stop after sidecar write")
 			_, err := (legacyLayoutMigrator{afterMove: func() error {
-				if err := os.WriteFile(preserved, []byte("operator sidecar"), fileMode); err != nil {
+				if sidecar == "writer-lock" {
+					// The Windows writer lock covers byte zero. Change the sidecar after that byte without truncation.
+					file, err := os.OpenFile(preserved, os.O_WRONLY, fileMode)
+					if err != nil {
+						return err
+					}
+					_, err = file.WriteAt([]byte("operator sidecar"), 1)
+					if err := stderrors.Join(err, file.Close()); err != nil {
+						return err
+					}
+				} else if err := os.WriteFile(preserved, []byte(want), fileMode); err != nil {
 					return err
 				}
 				return fault
@@ -214,7 +226,7 @@ func TestLegacyRollbackPreservesOperatorSidecars(t *testing.T) {
 				t.Fatalf("migration failure: %v", err)
 			}
 			data, readErr := os.ReadFile(preserved)
-			if readErr != nil || string(data) != "operator sidecar" {
+			if readErr != nil || string(data) != want {
 				t.Fatalf("rollback removed an operator sidecar: %q, %v", data, readErr)
 			}
 			current, err := migrationStore(t, legacy).Current(t.Context())
