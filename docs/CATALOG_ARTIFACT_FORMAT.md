@@ -124,6 +124,31 @@ with the exact repository, signer workflow, and hosted-runner policy before and
 after public download. See GitHub's [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 and the [`gh attestation verify` contract](https://cli.github.com/manual/gh_attestation_verify).
 
+## Publication receipts
+
+The artifact package defines a separate receipt for admitted source evidence.
+Producer and consumer workflow integration remains incomplete.
+
+`starmap-catalog-run.json` uses schema version 1 and canonical JSON.
+Each receipt binds a run ID, run interval, policy version, source policies, and exact catalog artifact identity.
+The artifact identity includes generation ID, semantic digest, payload digest, and archive digest.
+
+Source entries distinguish current attempts from fresh, retained, or absent evidence.
+Retained evidence preserves its original observation time and must remain within its declared age limit.
+Embedded or imported artifact evidence cannot establish fresh acquisition.
+Provider entries carry a digest of the complete acquisition binding instead of its private account or project selectors.
+
+`EncodePublicationReceipt` produces deterministic bytes after validation.
+`DecodePublicationReceipt` requires canonical encoding, including explicit zero and null fields.
+The format limits each receipt to 4 MiB and 4,096 source scopes.
+
+`VerifyPublicationReceipt` checks the selected receipt digest and exact artifact binding.
+Callers separately verify publisher provenance, artifact bytes, and branch promotion.
+
+Store each new receipt separately, including runs that reuse an unchanged semantic catalog.
+Keep historical catalog artifacts unchanged.
+Rejected admission and later publication failures retain their separate execution records.
+
 ## Stage exact promotion input
 
 After verifying release provenance, stage its exact generation in a new directory:

@@ -14,6 +14,7 @@ Package artifact defines the deterministic distribution format for immutable Sta
 
 - [Constants](<#constants>)
 - [func EncodeChannel\(document Channel\) \(\[\]byte, error\)](<#EncodeChannel>)
+- [func EncodePublicationReceipt\(receipt PublicationReceipt\) \(\[\]byte, error\)](<#EncodePublicationReceipt>)
 - [func IsReleaseTag\(tag string\) bool](<#IsReleaseTag>)
 - [func Open\(archive, attestation \[\]byte\) \(catalogs.Generation, error\)](<#Open>)
 - [func ReleaseTag\(catalogDigest string\) \(string, error\)](<#ReleaseTag>)
@@ -37,6 +38,14 @@ Package artifact defines the deterministic distribution format for immutable Sta
   - [func \(d Descriptor\) String\(\) string](<#Descriptor.String>)
 - [type DigestSet](<#DigestSet>)
 - [type FileDescriptor](<#FileDescriptor>)
+- [type PublicationArtifact](<#PublicationArtifact>)
+- [type PublicationBinding](<#PublicationBinding>)
+- [type PublicationReceipt](<#PublicationReceipt>)
+  - [func DecodePublicationReceipt\(data \[\]byte\) \(PublicationReceipt, error\)](<#DecodePublicationReceipt>)
+  - [func VerifyPublicationReceipt\(data \[\]byte, expectedChecksum string, expectedArtifact PublicationArtifact\) \(PublicationReceipt, error\)](<#VerifyPublicationReceipt>)
+  - [func \(r PublicationReceipt\) Validate\(\) error](<#PublicationReceipt.Validate>)
+- [type PublicationScopePolicy](<#PublicationScopePolicy>)
+- [type PublicationSourceReceipt](<#PublicationSourceReceipt>)
 - [type PublisherVerifier](<#PublisherVerifier>)
 - [type Release](<#Release>)
 - [type ReleaseAssets](<#ReleaseAssets>)
@@ -106,6 +115,19 @@ const (
 )
 ```
 
+<a name="PublicationReceiptSchemaVersion"></a>
+
+```go
+const (
+    // PublicationReceiptSchemaVersion identifies the admitted-source receipt format.
+    PublicationReceiptSchemaVersion uint64 = 1
+    // PublicationReceiptFilename names a receipt inside its separate immutable object.
+    PublicationReceiptFilename = "starmap-catalog-run.json"
+    // PublicationReceiptMediaType identifies the receipt's canonical JSON format.
+    PublicationReceiptMediaType = "application/vnd.agentstation.starmap.catalog-run.v1+json"
+)
+```
+
 <a name="ChecksumFilename"></a>
 
 ```go
@@ -123,6 +145,15 @@ func EncodeChannel(document Channel) ([]byte, error)
 ```
 
 EncodeChannel renders one channel document as canonical indented JSON. Equal documents always encode to equal bytes.
+
+<a name="EncodePublicationReceipt"></a>
+## func [EncodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L76>)
+
+```go
+func EncodePublicationReceipt(receipt PublicationReceipt) ([]byte, error)
+```
+
+EncodePublicationReceipt validates and returns deterministic receipt bytes.
 
 <a name="IsReleaseTag"></a>
 ## func [IsReleaseTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L84>)
@@ -396,6 +427,110 @@ type FileDescriptor struct {
     MediaType string `json:"media_type"`
     Checksum  string `json:"checksum"`
     SizeBytes int64  `json:"size_bytes"`
+}
+```
+
+<a name="PublicationArtifact"></a>
+## type [PublicationArtifact](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L26-L31>)
+
+PublicationArtifact binds the exact artifact and its immutable catalog content.
+
+```go
+type PublicationArtifact struct {
+    GenerationID    string `json:"generation_id"`
+    CatalogChecksum string `json:"catalog_checksum"`
+    PayloadChecksum string `json:"payload_checksum"`
+    ArchiveChecksum string `json:"archive_checksum"`
+}
+```
+
+<a name="PublicationBinding"></a>
+## type [PublicationBinding](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L35-L40>)
+
+PublicationBinding identifies an acquisition binding without its private selectors. Checksum binds the complete declared binding, including its credential profile identity.
+
+```go
+type PublicationBinding struct {
+    ID         string              `json:"id"`
+    Revision   string              `json:"revision"`
+    ProviderID catalogs.ProviderID `json:"provider_id"`
+    Checksum   string              `json:"checksum"`
+}
+```
+
+<a name="PublicationReceipt"></a>
+## type [PublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L64-L73>)
+
+PublicationReceipt records admitted evidence for one verified catalog artifact. Branch promotion and channel publication retain their separate transition records.
+
+```go
+type PublicationReceipt struct {
+    SchemaVersion    uint64                     `json:"schema_version"`
+    RunID            string                     `json:"run_id"`
+    StartedAt        time.Time                  `json:"started_at"`
+    CompletedAt      time.Time                  `json:"completed_at"`
+    PolicyVersion    string                     `json:"policy_version"`
+    Artifact         PublicationArtifact        `json:"artifact"`
+    FreshAcquisition bool                       `json:"fresh_acquisition"`
+    Sources          []PublicationSourceReceipt `json:"sources"`
+}
+```
+
+<a name="DecodePublicationReceipt"></a>
+### func [DecodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L93>)
+
+```go
+func DecodePublicationReceipt(data []byte) (PublicationReceipt, error)
+```
+
+DecodePublicationReceipt accepts only validated canonical receipt bytes. Canonical encoding rejects duplicate, omitted, unknown, and differently cased fields.
+
+<a name="VerifyPublicationReceipt"></a>
+### func [VerifyPublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L113>)
+
+```go
+func VerifyPublicationReceipt(data []byte, expectedChecksum string, expectedArtifact PublicationArtifact) (PublicationReceipt, error)
+```
+
+VerifyPublicationReceipt checks the receipt digest and exact artifact binding. The caller must separately verify publisher provenance and artifact bytes.
+
+<a name="PublicationReceipt.Validate"></a>
+### func \(PublicationReceipt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt_validation.go#L14>)
+
+```go
+func (r PublicationReceipt) Validate() error
+```
+
+Validate checks receipt identity, admission, times, and the declared artifact binding.
+
+<a name="PublicationScopePolicy"></a>
+## type [PublicationScopePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L43-L51>)
+
+PublicationScopePolicy records the admission policy for one exact source scope.
+
+```go
+type PublicationScopePolicy struct {
+    Source         evidence.SourceID   `json:"source"`
+    Binding        *PublicationBinding `json:"binding"`
+    Required       bool                `json:"required"`
+    Enabled        bool                `json:"enabled"`
+    AllowMissing   bool                `json:"allow_missing"`
+    MaxRetainedAge time.Duration       `json:"max_retained_age_ns"`
+    DisabledAction string              `json:"disabled_action"`
+}
+```
+
+<a name="PublicationSourceReceipt"></a>
+## type [PublicationSourceReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L55-L60>)
+
+PublicationSourceReceipt distinguishes a source attempt from its admitted evidence. Attempt and EvidenceKind use the publication admission outcome names.
+
+```go
+type PublicationSourceReceipt struct {
+    Policy       PublicationScopePolicy          `json:"policy"`
+    Attempt      string                          `json:"attempt"`
+    EvidenceKind string                          `json:"evidence_kind"`
+    Observation  *catalogs.SourceObservationLink `json:"observation"`
 }
 ```
 

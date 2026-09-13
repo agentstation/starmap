@@ -1,0 +1,135 @@
+package artifact
+
+import (
+	"strings"
+	"time"
+	"unicode"
+	"unicode/utf8"
+
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
+	"github.com/agentstation/starmap/pkg/errors"
+)
+
+// Validate checks receipt identity, admission, times, and the declared artifact binding.
+func (r PublicationReceipt) Validate() error {
+	if r.SchemaVersion != PublicationReceiptSchemaVersion {
+		return publicationReceiptError("schema_version", "is not supported")
+	}
+	if !publicationIdentifier(r.RunID, maxChannelIDBytes) || !publicationIdentifier(r.PolicyVersion, 256) {
+		return publicationReceiptError("identity", "requires bounded run and policy identifiers")
+	}
+	if !publicationTime(r.StartedAt) || !publicationTime(r.CompletedAt) || r.CompletedAt.Before(r.StartedAt) {
+		return publicationReceiptError("time", "requires ordered, nonzero UTC times")
+	}
+	if !publicationIdentifier(r.Artifact.GenerationID, maxChannelIDBytes) ||
+		!publicationChecksum(r.Artifact.CatalogChecksum) || !publicationChecksum(r.Artifact.PayloadChecksum) || !publicationChecksum(r.Artifact.ArchiveChecksum) {
+		return publicationReceiptError("artifact", "requires an exact generation identity and canonical SHA-256 checksums")
+	}
+	if len(r.Sources) == 0 || len(r.Sources) > maxPublicationScopes {
+		return publicationReceiptError("sources", "requires between one and 4096 declared scopes")
+	}
+	type scopeKey struct{ source, binding string }
+	seen := make(map[scopeKey]bool, len(r.Sources))
+	fresh := false
+	for _, source := range r.Sources {
+		if err := source.validate(r.StartedAt, r.CompletedAt); err != nil {
+			return err
+		}
+		key := scopeKey{source: string(source.Policy.Source)}
+		if source.Policy.Binding != nil {
+			key.binding = source.Policy.Binding.ID
+		}
+		if seen[key] {
+			return publicationReceiptError("sources", "cannot repeat a source and binding identity")
+		}
+		seen[key] = true
+		if source.EvidenceKind == "fresh" && source.Policy.Source != evidence.EmbeddedCatalogID && source.Policy.Source != evidence.ReleaseArtifactID {
+			fresh = true
+		}
+	}
+	if r.FreshAcquisition != fresh {
+		return publicationReceiptError("fresh_acquisition", "must agree with the admitted source observations")
+	}
+	return nil
+}
+
+func (p PublicationScopePolicy) validate() error {
+	if !p.Source.IsValid() || p.MaxRetainedAge < 0 || (p.Required && p.AllowMissing) {
+		return publicationReceiptError("source.policy", "requires a supported source and consistent evidence requirements")
+	}
+	if p.DisabledAction != "preserve" && p.DisabledAction != "remove" {
+		return publicationReceiptError("source.disabled_action", "requires an explicit preserve or remove policy")
+	}
+	if p.Source != evidence.ProvidersID {
+		if p.Binding != nil {
+			return publicationReceiptError("source.binding", "only provider sources can declare a binding")
+		}
+		return nil
+	}
+	if p.Binding == nil || !publicationIdentifier(p.Binding.ID, maxPublicationBindingID) ||
+		!publicationIdentifier(p.Binding.Revision, maxPublicationBindingID) ||
+		!publicationIdentifier(string(p.Binding.ProviderID), maxPublicationBindingID) || !publicationChecksum(p.Binding.Checksum) {
+		return publicationReceiptError("source.binding", "provider scopes require a complete binding identity and checksum")
+	}
+	return nil
+}
+
+func (s PublicationSourceReceipt) validate(startedAt, completedAt time.Time) error {
+	if err := s.Policy.validate(); err != nil {
+		return err
+	}
+	switch s.Attempt {
+	case "succeeded", "partial", "failed", "missing_credentials", "not_attempted", "disabled":
+	default:
+		return publicationReceiptError("source.attempt", "must name a supported source outcome")
+	}
+	if s.Policy.Enabled == (s.Attempt == "disabled") {
+		return publicationReceiptError("source.attempt", "must agree with the configured enabled state")
+	}
+	if s.EvidenceKind == "none" {
+		if s.Observation != nil || s.Attempt == "succeeded" || (s.Policy.Enabled && (s.Policy.Required || !s.Policy.AllowMissing)) {
+			return publicationReceiptError("source.observation", "cannot omit required or successful source evidence")
+		}
+		return nil
+	}
+	if s.Attempt == "disabled" || s.Observation == nil {
+		return publicationReceiptError("source.observation", "requires admitted evidence from an enabled scope")
+	}
+	observation := *s.Observation
+	if err := observation.Validate(); err != nil {
+		return publicationReceiptError("source.observation", "must contain a valid observation receipt")
+	}
+	if observation.Source != s.Policy.Source || observation.Completeness != evidence.ObservationCompletenessComplete || observation.Status != evidence.ObservationStatusSucceeded {
+		return publicationReceiptError("source.observation", "must contain complete successful evidence for the declared source")
+	}
+	switch s.EvidenceKind {
+	case "fresh":
+		if s.Attempt != "succeeded" || observation.ObservedAt.Before(startedAt) || observation.ObservedAt.After(completedAt) {
+			return publicationReceiptError("source.observed_at", "fresh evidence requires a successful observation within the run interval")
+		}
+	case "retained":
+		if s.Attempt == "succeeded" || observation.ObservedAt.After(startedAt) || s.Policy.MaxRetainedAge == 0 || completedAt.Sub(observation.ObservedAt) > s.Policy.MaxRetainedAge {
+			return publicationReceiptError("source.observed_at", "retained evidence must precede the run and remain within its age limit")
+		}
+	default:
+		return publicationReceiptError("source.evidence_kind", "must name fresh, retained, or absent evidence")
+	}
+	return nil
+}
+
+func publicationIdentifier(value string, limit int) bool {
+	return value != "" && len(value) <= limit && utf8.ValidString(value) && strings.TrimSpace(value) == value && !strings.ContainsFunc(value, unicode.IsControl)
+}
+
+func publicationTime(value time.Time) bool {
+	_, offset := value.Zone()
+	return !value.IsZero() && offset == 0
+}
+
+func publicationChecksum(value string) bool {
+	return strings.HasPrefix(value, ChecksumPrefix) && isDigestHex(strings.TrimPrefix(value, ChecksumPrefix))
+}
+
+func publicationReceiptError(field, message string) error {
+	return &errors.ValidationError{Field: "publication_receipt." + field, Message: message}
+}
