@@ -107,6 +107,10 @@ func TestArtifactReleaseCommandRejectsPromotionMismatch(t *testing.T) {
 func TestArtifactReleaseCommandRequiresPromotionPair(t *testing.T) {
 	catalogPath, releasePath, _ := promotionFixture(t)
 	for _, args := range [][]string{
+		{"--stage-promotion-dir", catalogPath},
+		{"--stage-promotion-dir", catalogPath, "--promotion-release-dir", releasePath, "--verify-promotion-dir", catalogPath},
+		{"--stage-promotion-dir", catalogPath, "--promotion-release-dir", releasePath, "--output-dir", t.TempDir()},
+		{"--stage-promotion-dir", catalogPath, "--promotion-release-dir", releasePath, "--generation-store", t.TempDir()},
 		{"--verify-promotion-dir", catalogPath},
 		{"--promotion-release-dir", releasePath},
 		{"--verify-dir", releasePath, "--promotion-release-dir", releasePath},

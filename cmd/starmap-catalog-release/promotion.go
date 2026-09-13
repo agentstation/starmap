@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
@@ -103,4 +104,13 @@ func verifyPromotionMetadata(path string, catalog *catalogs.Catalog, expected ca
 		}
 	}
 	return nil
+}
+
+func validatePromotionMode(mode, releasePath string) error {
+	if strings.TrimSpace(releasePath) == "" || mode == "verify-promotion-dir" || mode == "stage-promotion-dir" {
+		return nil
+	}
+	return &errors.ValidationError{
+		Field: "catalog_release.promotion_release_dir", Message: "requires verify-promotion-dir or stage-promotion-dir",
+	}
 }

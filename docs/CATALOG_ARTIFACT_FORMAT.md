@@ -124,6 +124,24 @@ with the exact repository, signer workflow, and hosted-runner policy before and
 after public download. See GitHub's [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 and the [`gh attestation verify` contract](https://cli.github.com/manual/gh_attestation_verify).
 
+## Stage exact promotion input
+
+After verifying release provenance, stage its exact generation in a new directory:
+
+```bash
+go run ./cmd/starmap-catalog-release \
+  --stage-promotion-dir /absolute/path/to/new-catalog \
+  --promotion-release-dir /absolute/path/to/downloaded-assets
+```
+
+The destination parent must exist. Staging preserves the original generation identity, time, payload, and endpoint projection.
+The command validates the complete result before publishing the new directory without replacement.
+
+The command accepts an existing destination only when it verifies an unchanged exact retry. Changed or unrelated contents cause refusal without replacement.
+A failed directory flush reports uncertain publication. Retry verifies any complete destination before returning success.
+
+This command stages local source files. Artifact provenance, checked branch promotion, and channel publication remain separate required steps.
+
 ## Verify embedded promotion
 
 Verify the embedded input against the exact downloaded release assets:

@@ -54,7 +54,8 @@ func run(args []string, output io.Writer) error {
 	outputDir := flags.String("output-dir", "dist/catalog-release", "immutable catalog release staging root")
 	verifyDir := flags.String("verify-dir", "", "verify an existing catalog release asset directory")
 	promotionDir := flags.String("verify-promotion-dir", "", "verify embedded catalog input against an exact published generation")
-	promotionReleaseDir := flags.String("promotion-release-dir", "", "verified release assets required by verify-promotion-dir")
+	stagePromotionDir := flags.String("stage-promotion-dir", "", "stage an exact published generation in a new catalog directory")
+	promotionReleaseDir := flags.String("promotion-release-dir", "", "verified release assets required by promotion verification or staging")
 	inspectDir := flags.String(
 		"inspect-dir",
 		"",
@@ -103,16 +104,15 @@ func run(args []string, output io.Writer) error {
 		"inspect-dir":          *inspectDir,
 		"verify-dir":           *verifyDir,
 		"verify-promotion-dir": *promotionDir,
+		"stage-promotion-dir":  *stagePromotionDir,
 		"channel-release-dir":  *channelReleaseDir,
 		"rollback-candidates":  *rollbackCandidates,
 	})
 	if err != nil {
 		return err
 	}
-	if strings.TrimSpace(*promotionReleaseDir) != "" && mode != "verify-promotion-dir" {
-		return &pkgerrors.ValidationError{
-			Field: "catalog_release.promotion_release_dir", Message: "requires verify-promotion-dir",
-		}
+	if err := validatePromotionMode(mode, *promotionReleaseDir); err != nil {
+		return err
 	}
 	if mode != "" && (outputDirExplicit || strings.TrimSpace(*generationStore) != "") {
 		return &pkgerrors.ValidationError{
@@ -122,6 +122,12 @@ func run(args []string, output io.Writer) error {
 		}
 	}
 	switch mode {
+	case "stage-promotion-dir":
+		report, err := stagePromotionDirectory(strings.TrimSpace(*stagePromotionDir), strings.TrimSpace(*promotionReleaseDir))
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(output).Encode(report)
 	case "verify-promotion-dir":
 		report, err := verifyPromotionDirectory(strings.TrimSpace(*promotionDir), strings.TrimSpace(*promotionReleaseDir))
 		if err != nil {
