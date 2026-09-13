@@ -30,6 +30,11 @@ type Collected struct {
 	observeErr error
 }
 
+// FailureSummaries identifies typed source failures without exposing diagnostic messages.
+func (c *Collected) FailureSummaries() []sources.SourceFailure {
+	return sourceFailureSummaries(c.SourceFailures)
+}
+
 // Collect observes configured sources without reconciliation or publication.
 // It retains source failures for admission and returns cancellation as an error.
 // Selection, paths, credentials, and dependency checks use the regular pipeline.

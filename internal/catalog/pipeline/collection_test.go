@@ -54,6 +54,10 @@ func TestCollectionStopsBeforeReconciliationAndPublication(t *testing.T) {
 			if failed != (len(collected.SourceFailures) > 0) {
 				t.Fatalf("source failure evidence=%v", collected.SourceFailures)
 			}
+			summaries := collected.FailureSummaries()
+			if failed != (len(summaries) > 0) || (failed && summaries[0].Source != sources.LocalCatalogID) {
+				t.Fatalf("source failure summaries=%v", summaries)
+			}
 			if failed && observation.Status == sources.ObservationStatusSucceeded {
 				t.Fatal("failed collection became successful evidence")
 			}
