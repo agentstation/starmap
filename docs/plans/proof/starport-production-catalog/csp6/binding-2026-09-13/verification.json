@@ -1,0 +1,284 @@
+{
+  "status": "PARTIAL",
+  "observed_at": "2026-09-13T03:23:55.918240+00:00",
+  "source_commit": "528b5890b107f0174a232e7b1638d41e7c0c4529",
+  "base_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "branch": "codex/catalog-publication-promotion",
+  "source_files": [
+    {
+      "path": "internal/catalog/publication/receipt_binding.go",
+      "sha256": "7a044a1e1054e12f74587634810f702e396b059da28010718f70a76a98fd27df",
+      "artifact": "blobs/7a044a1e1054e12f74587634810f702e396b059da28010718f70a76a98fd27df.gz"
+    },
+    {
+      "path": "internal/catalog/publication/receipt_binding_test.go",
+      "sha256": "db9f795bac74ec45e4c16a9bfec43955689d4ad01aa36102113a176fc46b78c3",
+      "artifact": "blobs/db9f795bac74ec45e4c16a9bfec43955689d4ad01aa36102113a176fc46b78c3.gz"
+    }
+  ],
+  "checks": {
+    "binding-contract-fail-before": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^TestReceiptBinding",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:16:55.544336+00:00",
+      "finished_at": "2026-09-13T03:16:56.157352+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/dc3aed416a9961f2d7b6819a2a161cdad944175587364f15ef74b58a1ae03b67.gz",
+      "test_event_counts": {
+        "fail_package": 1
+      },
+      "failed_tests": [],
+      "different_source_files": [
+        "internal/catalog/publication/receipt_binding.go",
+        "internal/catalog/publication/receipt_binding_test.go"
+      ],
+      "comment_only_files": []
+    },
+    "binding-docs": {
+      "command": [
+        "make",
+        "godoc"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:20:54.642570+00:00",
+      "finished_at": "2026-09-13T03:20:56.643285+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/f133017bea3b7d1e05f787d9151323d7b6a3238c17f55c9830ae420d55993773.gz",
+      "test_event_counts": {},
+      "failed_tests": [],
+      "different_source_files": [],
+      "comment_only_files": [
+        "internal/catalog/publication/receipt_binding.go"
+      ]
+    },
+    "binding-initial": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^TestReceiptBinding",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:17:48.210342+00:00",
+      "finished_at": "2026-09-13T03:17:51.927282+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/a9b3288ab135c8c1e32c5be39f11ce7f796a1b8b8cb1e9b6aa6d8e4241e692b4.gz",
+      "test_event_counts": {
+        "pass_test": 9,
+        "pass_package": 1
+      },
+      "failed_tests": [],
+      "different_source_files": [
+        "internal/catalog/publication/receipt_binding_test.go"
+      ],
+      "comment_only_files": [
+        "internal/catalog/publication/receipt_binding.go"
+      ]
+    },
+    "binding-lint": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./internal/catalog/publication/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:19:37.041804+00:00",
+      "finished_at": "2026-09-13T03:19:39.002186+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/835d4452bf49d37c704ea308880370b8b2faca52fc5bc69874511d41d14cd360.gz",
+      "test_event_counts": {},
+      "failed_tests": [],
+      "different_source_files": [],
+      "comment_only_files": [
+        "internal/catalog/publication/receipt_binding.go"
+      ]
+    },
+    "binding-minimum-race": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-run",
+        "^TestReceiptBinding",
+        "./internal/catalog/publication"
+      ],
+      "toolchain": "go1.25.12",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:19:37.041784+00:00",
+      "finished_at": "2026-09-13T03:19:41.948229+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/d8a0764d2f2e85527210bdd55db69c60f1fc1da22efb03cb84a13fa304a83dae.gz",
+      "test_event_counts": {
+        "pass_test": 15,
+        "pass_package": 1
+      },
+      "failed_tests": [],
+      "different_source_files": [],
+      "comment_only_files": [
+        "internal/catalog/publication/receipt_binding.go"
+      ]
+    },
+    "binding-owner-race": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-timeout",
+        "10m",
+        "./internal/catalog/publication",
+        "./pkg/catalogs/artifact"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:18:28.770675+00:00",
+      "finished_at": "2026-09-13T03:18:40.801484+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/02f9d2205fc6096777b1c423fa8034d599deebb693350f40d05a41c5fc0cc6d8.gz",
+      "test_event_counts": {
+        "pass_test": 171,
+        "pass_package": 2
+      },
+      "failed_tests": [],
+      "different_source_files": [],
+      "comment_only_files": [
+        "internal/catalog/publication/receipt_binding.go"
+      ]
+    },
+    "binding-policy": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:19:37.041784+00:00",
+      "finished_at": "2026-09-13T03:19:39.575209+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/ce1b30d266e8aae345f398853cb2e46239d14c66e0bbecbc3f6044593c778f79.gz",
+      "test_event_counts": {},
+      "failed_tests": [],
+      "different_source_files": [],
+      "comment_only_files": [
+        "internal/catalog/publication/receipt_binding.go"
+      ]
+    },
+    "binding-prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "22dea11c398928e592ead85dfb2a0b9fe8e9f780",
+      "started_at": "2026-09-13T03:22:10.422854+00:00",
+      "finished_at": "2026-09-13T03:23:02.448235+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/6533d4b265ec281d68c89ae4262a59e7ba7d3155a85bf83bf149a7612c755015.gz",
+      "test_event_counts": {},
+      "failed_tests": [],
+      "different_source_files": [],
+      "comment_only_files": []
+    }
+  },
+  "comment_only_change": {
+    "path": "internal/catalog/publication/receipt_binding.go",
+    "before_sha256": "adb5c524116155143053dfc28af130ea8cf0a6d9aade0bf09eb7be14da090aeb",
+    "after_sha256": "7a044a1e1054e12f74587634810f702e396b059da28010718f70a76a98fd27df",
+    "artifact": "blobs/aac00f0f6d5a1e43a48c9aa295f3ebf794099770ac6963e2fb8513e148d3d45b.gz"
+  },
+  "limits": [
+    "This component binds receipts to validated artifact contents. It does not reconstruct the catalog or authenticate publisher signatures.",
+    "The caller must supply the validated candidate semantic checksum and authenticated retained inputs.",
+    "Admitted reconciliation, receipt storage, public download verification, workflow integration, and controlled bot promotion remain required.",
+    "No CSP6 PR, merge, complete A05 result, or task completion credit applies."
+  ],
+  "artifacts": [
+    {
+      "path": "blobs/7a044a1e1054e12f74587634810f702e396b059da28010718f70a76a98fd27df.gz",
+      "sha256": "9472990475d1391522f713d21e92fa3f1dcc01f5a7634dc03c177ca2cc535f8d",
+      "decoded_sha256": "7a044a1e1054e12f74587634810f702e396b059da28010718f70a76a98fd27df"
+    },
+    {
+      "path": "blobs/db9f795bac74ec45e4c16a9bfec43955689d4ad01aa36102113a176fc46b78c3.gz",
+      "sha256": "f3106dba47909fc5bca5b575597716eb7a4e023dcf84c64038fb0e054849e003",
+      "decoded_sha256": "db9f795bac74ec45e4c16a9bfec43955689d4ad01aa36102113a176fc46b78c3"
+    },
+    {
+      "path": "blobs/aac00f0f6d5a1e43a48c9aa295f3ebf794099770ac6963e2fb8513e148d3d45b.gz",
+      "sha256": "0d86555420443952290d3283dd85bc2486b20399d0208a1f27a27632edc07fc6",
+      "decoded_sha256": "aac00f0f6d5a1e43a48c9aa295f3ebf794099770ac6963e2fb8513e148d3d45b"
+    },
+    {
+      "path": "blobs/dc3aed416a9961f2d7b6819a2a161cdad944175587364f15ef74b58a1ae03b67.gz",
+      "sha256": "2b80ffa7e6365e16829467e6e6b10ab94fc9a90a9fe95171173e2a24b2888b6f",
+      "decoded_sha256": "dc3aed416a9961f2d7b6819a2a161cdad944175587364f15ef74b58a1ae03b67"
+    },
+    {
+      "path": "blobs/f133017bea3b7d1e05f787d9151323d7b6a3238c17f55c9830ae420d55993773.gz",
+      "sha256": "7c20e60ae39bbe7299e3d5dfc4366b340fbf0e8dc56c06ab494f4ce7c710fde2",
+      "decoded_sha256": "f133017bea3b7d1e05f787d9151323d7b6a3238c17f55c9830ae420d55993773"
+    },
+    {
+      "path": "blobs/a9b3288ab135c8c1e32c5be39f11ce7f796a1b8b8cb1e9b6aa6d8e4241e692b4.gz",
+      "sha256": "99dd76696021894c53d5fa0bb57744e768cbea1bd6e926420b531d9ac1185e27",
+      "decoded_sha256": "a9b3288ab135c8c1e32c5be39f11ce7f796a1b8b8cb1e9b6aa6d8e4241e692b4"
+    },
+    {
+      "path": "blobs/835d4452bf49d37c704ea308880370b8b2faca52fc5bc69874511d41d14cd360.gz",
+      "sha256": "9e8a406140be5db6fd21cb758c235829802fb67570f62dc38c9fda40b0381655",
+      "decoded_sha256": "835d4452bf49d37c704ea308880370b8b2faca52fc5bc69874511d41d14cd360"
+    },
+    {
+      "path": "blobs/d8a0764d2f2e85527210bdd55db69c60f1fc1da22efb03cb84a13fa304a83dae.gz",
+      "sha256": "4b98b9b95eb2641cd97694a4f3db36a2fbd7e09926cc63ef75b9db6f79d92d40",
+      "decoded_sha256": "d8a0764d2f2e85527210bdd55db69c60f1fc1da22efb03cb84a13fa304a83dae"
+    },
+    {
+      "path": "blobs/02f9d2205fc6096777b1c423fa8034d599deebb693350f40d05a41c5fc0cc6d8.gz",
+      "sha256": "f74cf3a824772dc52517a8b6ce4da5d4304bbec73a0b64447fa9afe01a9f5438",
+      "decoded_sha256": "02f9d2205fc6096777b1c423fa8034d599deebb693350f40d05a41c5fc0cc6d8"
+    },
+    {
+      "path": "blobs/ce1b30d266e8aae345f398853cb2e46239d14c66e0bbecbc3f6044593c778f79.gz",
+      "sha256": "fdefccf008a8be6fe3a10ccbf8a2afa151f3a8d49b2b05fb761fd6c26234ecd3",
+      "decoded_sha256": "ce1b30d266e8aae345f398853cb2e46239d14c66e0bbecbc3f6044593c778f79"
+    },
+    {
+      "path": "blobs/6533d4b265ec281d68c89ae4262a59e7ba7d3155a85bf83bf149a7612c755015.gz",
+      "sha256": "05752342be5dd09a627d4d0c04b7709aeb19084a7bfbc1077877a0bd8782e964",
+      "decoded_sha256": "6533d4b265ec281d68c89ae4262a59e7ba7d3155a85bf83bf149a7612c755015"
+    }
+  ]
+}
