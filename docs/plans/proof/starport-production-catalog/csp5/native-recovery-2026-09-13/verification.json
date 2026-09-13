@@ -1,0 +1,1562 @@
+{
+  "status": "PARTIAL",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+  "branch": "codex/catalog-update-controls-qualification",
+  "source_binding_kind": "commit",
+  "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
+  "base_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+  "observed_at": "2026-09-13T01:52:46.549755+00:00",
+  "source_files": [
+    {
+      "path": ".github/workflows/pr.yaml",
+      "sha256": "003c49f4cc5c7203d1003ac83269b32ff6f71116d2223027e1804345326f0758",
+      "artifact": "blobs/003c49f4cc5c7203d1003ac83269b32ff6f71116d2223027e1804345326f0758.gz"
+    },
+    {
+      "path": "internal/catalog/workspace/preparation_cleanup_test.go",
+      "sha256": "910ea5201f9ba65fac67cbb6df3e84aaaf42476c0dbc28a25f43ed636257aca1",
+      "artifact": "blobs/910ea5201f9ba65fac67cbb6df3e84aaaf42476c0dbc28a25f43ed636257aca1.gz"
+    },
+    {
+      "path": "internal/catalog/workspace/record_read.go",
+      "sha256": "7bd1eda43ec24429598372181d9325c7ebc261e7450d4c41ce1e351df404dc38",
+      "artifact": "blobs/7bd1eda43ec24429598372181d9325c7ebc261e7450d4c41ce1e351df404dc38.gz"
+    },
+    {
+      "path": "internal/catalog/workspace/record_read_lock_test.go",
+      "sha256": "7d73cad6f367277a09d4abdd1e55307e83844186c2a64aa674d93ccb2edf41db",
+      "artifact": "blobs/7d73cad6f367277a09d4abdd1e55307e83844186c2a64aa674d93ccb2edf41db.gz"
+    },
+    {
+      "path": "internal/catalog/workspace/tree_snapshot.go",
+      "sha256": "129dd5456f437da330428c31c4e58ee77e3fc6e6dfdc48a0650ed7dec0475cd9",
+      "artifact": "blobs/129dd5456f437da330428c31c4e58ee77e3fc6e6dfdc48a0650ed7dec0475cd9.gz"
+    },
+    {
+      "path": "internal/catalog/workspace/writer_identity_test.go",
+      "sha256": "5e709fe7750170d5e1e6b3bb73d2eb02ea2ff96ce9d914a5ff1c7377a3189636",
+      "artifact": "blobs/5e709fe7750170d5e1e6b3bb73d2eb02ea2ff96ce9d914a5ff1c7377a3189636.gz"
+    },
+    {
+      "path": "internal/privatefiles/record_recovery_test.go",
+      "sha256": "67c16a363f3358a9d48edb653c63b35bdb44a248f8581ccfc0e543cefaf885a1",
+      "artifact": "blobs/67c16a363f3358a9d48edb653c63b35bdb44a248f8581ccfc0e543cefaf885a1.gz"
+    },
+    {
+      "path": "internal/test/filemutation/rename.go",
+      "sha256": "2c1b4cd3aa6544dfa935d7e7e070d1096ac93f0528be1dc6286218313c5a64ed",
+      "artifact": "blobs/2c1b4cd3aa6544dfa935d7e7e070d1096ac93f0528be1dc6286218313c5a64ed.gz"
+    },
+    {
+      "path": "internal/test/filemutation/rename_other.go",
+      "sha256": "6013177ffc787fc38559c9e8781c8109d2a8e0ac4400212dfeaf0845320178fc",
+      "artifact": "blobs/6013177ffc787fc38559c9e8781c8109d2a8e0ac4400212dfeaf0845320178fc.gz"
+    },
+    {
+      "path": "internal/test/filemutation/rename_windows.go",
+      "sha256": "e31f212e489f1c6778e3ed0436ec0502e9da6760aadab515136f8758c71c18cc",
+      "artifact": "blobs/e31f212e489f1c6778e3ed0436ec0502e9da6760aadab515136f8758c71c18cc.gz"
+    }
+  ],
+  "checks": {
+    "cli-migration": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "-json",
+        "./internal/cli/app",
+        "-run",
+        "^TestCatalogWorkspaceMigrationAndRestartPreserveExactGeneration$"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:37:04.046281+00:00",
+      "finished_at": "2026-09-13T01:37:30.856280+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/5755984a143579384b5908f3fd4c7105bee96bd92478e7934749e026eef94b60.gz",
+      "test_event_counts": {
+        "pass_test": 1,
+        "pass_package": 1
+      },
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "docs": {
+      "command": [
+        "devbox",
+        "run",
+        "--",
+        "env",
+        "GOTOOLCHAIN=go1.26.6",
+        "make",
+        "godoc"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:36:43.325505+00:00",
+      "finished_at": "2026-09-13T01:36:46.669117+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/04ea2f8d47400f7cdc7728f0731a0b515bd0a3d1947cabc5c851cbe9ffaae462.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "focused-race-final": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "-json",
+        "./internal/privatefiles",
+        "./internal/catalog/workspace",
+        "./internal/ciworkflow",
+        "-run",
+        "Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent)|Workflow"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:36:03.392878+00:00",
+      "finished_at": "2026-09-13T01:36:23.738389+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/640b85e8c4e7992cb07298834a4814f9a765a6ff741709bf160d667bd51ac192.gz",
+      "test_event_counts": {
+        "pass_test": 37,
+        "pass_package": 3
+      },
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "focused-race": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "-json",
+        "./internal/privatefiles",
+        "./internal/catalog/workspace",
+        "./internal/ciworkflow",
+        "-run",
+        "Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent)|Workflow"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:34:51.762840+00:00",
+      "finished_at": "2026-09-13T01:34:54.546495+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/95de155c72d77ea57bec423aa583bf993cd0809704c142789459d97a9f3f58d3.gz",
+      "test_event_counts": {
+        "fail_package": 1,
+        "pass_test": 19,
+        "pass_package": 2
+      },
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": [
+        "internal/catalog/workspace/record_read_lock_test.go"
+      ]
+    },
+    "lint-final": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./internal/privatefiles/...",
+        "./internal/catalog/workspace/...",
+        "./internal/test/filemutation/...",
+        "./internal/ciworkflow/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:38:02.563425+00:00",
+      "finished_at": "2026-09-13T01:38:03.494476+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/4cc1c7ea3b7b0e3129b3716bbf4fcf830b0b0806214d66dbb146901427c2927e.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "lint": {
+      "command": [
+        "golangci-lint",
+        "run",
+        "./internal/privatefiles/...",
+        "./internal/catalog/workspace/...",
+        "./internal/test/filemutation/...",
+        "./internal/ciworkflow/..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:35:11.316147+00:00",
+      "finished_at": "2026-09-13T01:35:12.755806+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/35a61fc84a2ea192bc453505fe4f7bb5fd8e02c05f75754747d75282b2dee1db.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": [
+        "internal/catalog/workspace/record_read_lock_test.go"
+      ]
+    },
+    "minimum-race": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=5m",
+        "-json",
+        "./internal/privatefiles",
+        "./internal/catalog/workspace",
+        "-run",
+        "^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent)$"
+      ],
+      "toolchain": "go1.25.12",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:36:43.324848+00:00",
+      "finished_at": "2026-09-13T01:37:28.200842+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/052e74746ca9b0edea225e89e97123e932782131f8a8d3cd01f5d5271c7bbda4.gz",
+      "test_event_counts": {
+        "pass_test": 29,
+        "pass_package": 2
+      },
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "owners-race-final": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=15m",
+        "-json",
+        "./internal/privatefiles",
+        "./internal/catalog/workspace",
+        "./internal/ciworkflow"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:37:04.046294+00:00",
+      "finished_at": "2026-09-13T01:43:46.697501+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/24d20713f02f2f71706aa5d1cfc32090408d54e4c1d39523c51007edf7f09f2f.gz",
+      "test_event_counts": {
+        "pass_test": 531,
+        "pass_package": 3
+      },
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "owners-race": {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=15m",
+        "-json",
+        "./internal/privatefiles",
+        "./internal/catalog/workspace",
+        "./internal/ciworkflow"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:35:31.162089+00:00",
+      "finished_at": "2026-09-13T01:35:37.979410+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/50edb55dff8d2705b58cdd48f2546d8f03e392ce016df8511ebdd688804e7025.gz",
+      "test_event_counts": {
+        "fail_package": 1,
+        "pass_test": 146,
+        "pass_package": 2
+      },
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": [
+        "internal/catalog/workspace/record_read_lock_test.go"
+      ]
+    },
+    "policy-final": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:38:00.094501+00:00",
+      "finished_at": "2026-09-13T01:38:02.523317+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/26ccadc1114776d3d3c824e465582434959c99eafebd57e269ef64d13c020d6c.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "policy": {
+      "command": [
+        "go",
+        "tool",
+        "ago",
+        "-stale-ignores",
+        "-format",
+        "json",
+        "./..."
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:35:11.316142+00:00",
+      "finished_at": "2026-09-13T01:35:13.575878+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/d5901f3bf326b0978093d6d4d0b27b0e75599ac7f8854b227f99b4584d6bf043.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": [
+        "internal/catalog/workspace/record_read_lock_test.go"
+      ]
+    },
+    "prose-final": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:39:44.862363+00:00",
+      "finished_at": "2026-09-13T01:40:37.871098+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/0be2e03c16960ccacb93bb41932bca148079005530625e1244cf8487ec0a500a.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [],
+      "different_source_files": []
+    },
+    "prose": {
+      "command": [
+        "make",
+        "technical-writing-check"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:38:00.094496+00:00",
+      "finished_at": "2026-09-13T01:38:53.255831+00:00",
+      "exit_code": 2,
+      "artifact": "blobs/95fb5210bfb888f7568c21c9d46c537927227bc7bd733cb314b2c51f22142f1e.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "task-contract-final": {
+      "command": [
+        "env",
+        "CSP_STARPORT_WORKTREE=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "CATALOG_DRIVEN_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "--task",
+        "CSP5",
+        "--json"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
+      "started_at": "2026-09-13T01:46:13.981588+00:00",
+      "finished_at": "2026-09-13T01:52:12.768544+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/52257cabf7252b971cca93429a759fcb43899ed05a99e3c5b38e13443a25cca6.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [],
+      "different_source_files": []
+    },
+    "task-contract": {
+      "command": [
+        "bash",
+        "scripts/verify-catalog-product.sh",
+        "--starport-root",
+        "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer",
+        "--task",
+        "CSP5"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:38:00.094501+00:00",
+      "finished_at": "2026-09-13T01:44:40.162022+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/c5305a3876743074cf4e50b03ea0c381542e2caaebd3835a93539552301912b8.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    },
+    "windows-compile": {
+      "command": [
+        "python3",
+        "-c",
+        "import os,pathlib,subprocess; root=pathlib.Path(\".tmp/csp5-update-controls/native-recovery-windows\"); root.mkdir(exist_ok=True); packages=[\"./internal/privatefiles\",\"./internal/catalog/workspace\",\"./internal/test/filemutation\",\"./internal/cli/app\"]; [(subprocess.run([\"go\",\"test\",\"-c\",\"-o\",str(root/(arch+\"-\"+p.replace(\"/\",\"_\")+\".test.exe\")),p],env=dict(os.environ,GOOS=\"windows\",GOARCH=arch,CGO_ENABLED=\"0\"),check=True)) for arch in [\"amd64\",\"arm64\"] for p in packages]; print(\"PASS: eight Windows package compilation checks\")"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T01:36:43.324847+00:00",
+      "finished_at": "2026-09-13T01:37:47.617146+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/bca062533b97566bcb2596b08cca0f81343e83380d67da923e345e93ceae8384.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [
+        "internal/test/filemutation/rename.go"
+      ],
+      "different_source_files": []
+    }
+  },
+  "running_checks": [
+    {
+      "name": "Required pre-PR review",
+      "session_id": 52394,
+      "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
+      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-recovery-checks/pre-pr-review.json"
+    }
+  ],
+  "comment_only_change": {
+    "path": "internal/test/filemutation/rename.go",
+    "before_sha256": "7bada30f93596d42d45ea7a6fef378f7e0354d34f4f0ed9aef4e7ea68c6a1684",
+    "after_sha256": "2c1b4cd3aa6544dfa935d7e7e070d1096ac93f0528be1dc6286218313c5a64ed",
+    "artifact": "blobs/1a0c685fe98b1c2697b631e1126c940df0d0777edf0b1756d7a5effaaa069865.gz"
+  },
+  "task_report": {
+    "cases": [
+      {
+        "id": "A01",
+        "condition": "CSP-V01",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A02",
+        "condition": "CSP-V02",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A03",
+        "condition": "CSP-V03",
+        "status": "UNVERIFIED",
+        "required_subcases": 16
+      },
+      {
+        "id": "A04",
+        "condition": "CSP-V04",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A05",
+        "condition": "CSP-V05",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A06",
+        "condition": "CSP-V06",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A07",
+        "condition": "CSP-V07",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A08",
+        "condition": "CSP-V08",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A09",
+        "condition": "CSP-V09",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A10",
+        "condition": "CSP-V10",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A11",
+        "condition": "CSP-V11",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A12",
+        "condition": "CSP-V12",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A13",
+        "condition": "CSP-V13",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A14",
+        "condition": "CSP-V14",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A15",
+        "condition": "CSP-V15",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A16",
+        "condition": "CSP-V16",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A17",
+        "condition": "CSP-V17",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A18",
+        "condition": "CSP-V18",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A19",
+        "condition": "CSP-V19",
+        "status": "PASS",
+        "required_subcases": 4
+      },
+      {
+        "id": "A20",
+        "condition": "CSP-V20",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A21",
+        "condition": "CSP-V21",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A22",
+        "condition": "CSP-V22",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A23",
+        "condition": "CSP-V23",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A24",
+        "condition": "CSP-V24",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A25",
+        "condition": "CSP-V25",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A26",
+        "condition": "CSP-V26",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A27",
+        "condition": "CSP-V27",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A28",
+        "condition": "CSP-V28",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A29",
+        "condition": "CSP-V29",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A30",
+        "condition": "CSP-V30",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A31",
+        "condition": "CSP-V31",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A32",
+        "condition": "CSP-V32",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A33",
+        "condition": "CSP-V33",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A34",
+        "condition": "CSP-V34",
+        "status": "UNVERIFIED",
+        "required_subcases": 6
+      },
+      {
+        "id": "A35",
+        "condition": "CSP-V35",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A36",
+        "condition": "CSP-V36",
+        "status": "UNVERIFIED",
+        "required_subcases": 2
+      },
+      {
+        "id": "A37",
+        "condition": "CSP-V37",
+        "status": "UNVERIFIED",
+        "required_subcases": 5
+      },
+      {
+        "id": "A38",
+        "condition": "CSP-V38",
+        "status": "UNVERIFIED",
+        "required_subcases": 4
+      },
+      {
+        "id": "A39",
+        "condition": "CSP-V39",
+        "status": "UNVERIFIED",
+        "required_subcases": 3
+      },
+      {
+        "id": "A40",
+        "condition": "CSP-V40",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A41",
+        "condition": "CSP-V41",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A42",
+        "condition": "CSP-V42",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A43",
+        "condition": "CSP-V43",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A44",
+        "condition": "CSP-V44",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A45",
+        "condition": "CSP-V45",
+        "status": "UNVERIFIED",
+        "required_subcases": 9
+      },
+      {
+        "id": "A46",
+        "condition": "CSP-V46",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      },
+      {
+        "id": "A47",
+        "condition": "CSP-V47",
+        "status": "UNVERIFIED",
+        "required_subcases": 22
+      },
+      {
+        "id": "A48",
+        "condition": "CSP-V48",
+        "status": "UNVERIFIED",
+        "required_subcases": 8
+      },
+      {
+        "id": "A49",
+        "condition": "CSP-V49",
+        "status": "UNVERIFIED",
+        "required_subcases": 7
+      },
+      {
+        "id": "A50",
+        "condition": "CSP-V50",
+        "status": "UNVERIFIED",
+        "required_subcases": 10
+      }
+    ],
+    "subcases": {
+      "A19.verified_rollback": {
+        "status": "PASS",
+        "checks": [
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:46:15.184166-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:46:15.681456-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\"}\n{\"Time\":\"2026-09-12T20:46:15.681502-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\",\"Output\":\"=== RUN   TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\\n\"}\n{\"Time\":\"2026-09-12T20:46:26.080885-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\",\"Output\":\"--- PASS: TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin (10.40s)\\n\"}\n{\"Time\":\"2026-09-12T20:46:26.080919-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\",\"Elapsed\":10.4}\n{\"Time\":\"2026-09-12T20:46:26.081264-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:46:27.123015-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t11.938s\\n\"}\n{\"Time\":\"2026-09-12T20:46:27.123077-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":11.939}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestGenerationPinRejectsInvalidRetainedArtifacts$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:46:28.188201-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:46:28.666369-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts\"}\n{\"Time\":\"2026-09-12T20:46:28.666433-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts\",\"Output\":\"=== RUN   TestGenerationPinRejectsInvalidRetainedArtifacts\\n\"}\n{\"Time\":\"2026-09-12T20:46:28.666443-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/missing\"}\n{\"Time\":\"2026-09-12T20:46:28.666453-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/missing\",\"Output\":\"=== RUN   TestGenerationPinRejectsInvalidRetainedArtifacts/missing\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.649758-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/missing\",\"Output\":\"--- PASS: TestGenerationPinRejectsInvalidRetainedArtifacts/missing (8.98s)\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.649775-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/missing\",\"Elapsed\":8.98}\n{\"Time\":\"2026-09-12T20:46:37.649835-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/identity\"}\n{\"Time\":\"2026-09-12T20:46:37.649846-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/identity\",\"Output\":\"=== RUN   TestGenerationPinRejectsInvalidRetainedArtifacts/identity\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.707353-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/identity\",\"Output\":\"--- PASS: TestGenerationPinRejectsInvalidRetainedArtifacts/identity (0.06s)\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.707368-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/identity\",\"Elapsed\":0.06}\n{\"Time\":\"2026-09-12T20:46:37.707379-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/payload\"}\n{\"Time\":\"2026-09-12T20:46:37.707381-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/payload\",\"Output\":\"=== RUN   TestGenerationPinRejectsInvalidRetainedArtifacts/payload\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.75898-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/payload\",\"Output\":\"--- PASS: TestGenerationPinRejectsInvalidRetainedArtifacts/payload (0.05s)\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.758996-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/payload\",\"Elapsed\":0.05}\n{\"Time\":\"2026-09-12T20:46:37.759022-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/schema\"}\n{\"Time\":\"2026-09-12T20:46:37.759023-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/schema\",\"Output\":\"=== RUN   TestGenerationPinRejectsInvalidRetainedArtifacts/schema\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.816159-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/schema\",\"Output\":\"--- PASS: TestGenerationPinRejectsInvalidRetainedArtifacts/schema (0.06s)\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.816175-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts/schema\",\"Elapsed\":0.06}\n{\"Time\":\"2026-09-12T20:46:37.81618-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts\",\"Output\":\"--- PASS: TestGenerationPinRejectsInvalidRetainedArtifacts (9.15s)\\n\"}\n{\"Time\":\"2026-09-12T20:46:37.816182-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRejectsInvalidRetainedArtifacts\",\"Elapsed\":9.15}\n{\"Time\":\"2026-09-12T20:46:37.816593-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:46:38.868403-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t10.680s\\n\"}\n{\"Time\":\"2026-09-12T20:46:38.868439-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":10.68}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestOriginGenerationPinPublishesPriorPayloadAtNewRevision$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:46:40.033053-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:46:40.517437-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOriginGenerationPinPublishesPriorPayloadAtNewRevision\"}\n{\"Time\":\"2026-09-12T20:46:40.517491-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOriginGenerationPinPublishesPriorPayloadAtNewRevision\",\"Output\":\"=== RUN   TestOriginGenerationPinPublishesPriorPayloadAtNewRevision\\n\"}\n{\"Time\":\"2026-09-12T20:47:00.594705-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOriginGenerationPinPublishesPriorPayloadAtNewRevision\",\"Output\":\"--- PASS: TestOriginGenerationPinPublishesPriorPayloadAtNewRevision (20.08s)\\n\"}\n{\"Time\":\"2026-09-12T20:47:00.594723-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOriginGenerationPinPublishesPriorPayloadAtNewRevision\",\"Elapsed\":20.08}\n{\"Time\":\"2026-09-12T20:47:00.595043-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:47:01.654674-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t21.621s\\n\"}\n{\"Time\":\"2026-09-12T20:47:01.654726-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":21.622}\n",
+            "stderr": ""
+          }
+        ],
+        "evidence_scope": "product"
+      },
+      "A19.pin_restart": {
+        "status": "PASS",
+        "checks": [
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:47:03.486553-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:47:03.985555-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\"}\n{\"Time\":\"2026-09-12T20:47:03.985602-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\",\"Output\":\"=== RUN   TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\\n\"}\n{\"Time\":\"2026-09-12T20:47:14.403767-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\",\"Output\":\"--- PASS: TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin (10.42s)\\n\"}\n{\"Time\":\"2026-09-12T20:47:14.403799-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin\",\"Elapsed\":10.42}\n{\"Time\":\"2026-09-12T20:47:14.404142-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:47:15.502508-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t12.016s\\n\"}\n{\"Time\":\"2026-09-12T20:47:15.502546-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":12.016}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestGenerationPinRecordsOneAcceptanceAcrossRestart$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:47:16.668247-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:47:17.162192-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRecordsOneAcceptanceAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:47:17.162274-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRecordsOneAcceptanceAcrossRestart\",\"Output\":\"=== RUN   TestGenerationPinRecordsOneAcceptanceAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:47:26.530392-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRecordsOneAcceptanceAcrossRestart\",\"Output\":\"--- PASS: TestGenerationPinRecordsOneAcceptanceAcrossRestart (9.37s)\\n\"}\n{\"Time\":\"2026-09-12T20:47:26.530426-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinRecordsOneAcceptanceAcrossRestart\",\"Elapsed\":9.37}\n{\"Time\":\"2026-09-12T20:47:26.530757-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:47:27.593851-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t10.925s\\n\"}\n{\"Time\":\"2026-09-12T20:47:27.593871-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":10.926}\n",
+            "stderr": ""
+          }
+        ],
+        "evidence_scope": "product"
+      },
+      "A19.poll_cannot_unpin": {
+        "status": "PASS",
+        "checks": [
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestAutomaticConfigurationRunsScheduledWorkAcrossRestart$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:47:28.746216-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:47:29.203842-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:47:29.203902-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\",\"Output\":\"=== RUN   TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:47:44.316532-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\",\"Output\":\"--- PASS: TestAutomaticConfigurationRunsScheduledWorkAcrossRestart (15.11s)\\n\"}\n{\"Time\":\"2026-09-12T20:47:44.316548-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\",\"Elapsed\":15.11}\n{\"Time\":\"2026-09-12T20:47:44.316575-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:47:45.363823-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t16.617s\\n\"}\n{\"Time\":\"2026-09-12T20:47:45.363876-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":16.618}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestPinnedConfigurationBlocksPollingAcrossRestart$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:47:46.706905-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:47:47.154769-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:47:47.154824-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\",\"Output\":\"=== RUN   TestPinnedConfigurationBlocksPollingAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:48:11.542647-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\",\"Output\":\"--- PASS: TestPinnedConfigurationBlocksPollingAcrossRestart (24.39s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:11.542668-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\",\"Elapsed\":24.39}\n{\"Time\":\"2026-09-12T20:48:11.542688-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:48:12.576998-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t25.870s\\n\"}\n{\"Time\":\"2026-09-12T20:48:12.577022-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":25.87}\n",
+            "stderr": ""
+          }
+        ],
+        "evidence_scope": "product"
+      },
+      "A19.permission_withdrawal_not_bypassed": {
+        "status": "PASS",
+        "checks": [
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestGenerationPinKeepsPermissionWithdrawalEffective$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:48:13.655735-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:48:14.127328-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinKeepsPermissionWithdrawalEffective\"}\n{\"Time\":\"2026-09-12T20:48:14.127373-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinKeepsPermissionWithdrawalEffective\",\"Output\":\"=== RUN   TestGenerationPinKeepsPermissionWithdrawalEffective\\n\"}\n{\"Time\":\"2026-09-12T20:48:24.686575-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinKeepsPermissionWithdrawalEffective\",\"Output\":\"--- PASS: TestGenerationPinKeepsPermissionWithdrawalEffective (10.56s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:24.686658-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinKeepsPermissionWithdrawalEffective\",\"Elapsed\":10.56}\n{\"Time\":\"2026-09-12T20:48:24.686885-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:48:25.755394-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t12.099s\\n\"}\n{\"Time\":\"2026-09-12T20:48:25.755427-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":12.1}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestGenerationPinBindsPermissionToSelectedArtifact$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:48:27.741906-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:48:28.232257-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBindsPermissionToSelectedArtifact\"}\n{\"Time\":\"2026-09-12T20:48:28.232324-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBindsPermissionToSelectedArtifact\",\"Output\":\"=== RUN   TestGenerationPinBindsPermissionToSelectedArtifact\\n\"}\n{\"Time\":\"2026-09-12T20:48:39.187043-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBindsPermissionToSelectedArtifact\",\"Output\":\"--- PASS: TestGenerationPinBindsPermissionToSelectedArtifact (10.95s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:39.187077-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBindsPermissionToSelectedArtifact\",\"Elapsed\":10.95}\n{\"Time\":\"2026-09-12T20:48:39.187389-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:48:40.241839-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t12.500s\\n\"}\n{\"Time\":\"2026-09-12T20:48:40.24187-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":12.5}\n",
+            "stderr": ""
+          }
+        ],
+        "evidence_scope": "product"
+      },
+      "A22.startup_poll_stream_manual": {
+        "status": "PASS",
+        "checks": [
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestOfflineConfigurationStopsExplicitCatalogNetwork$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:48:41.315575-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:48:41.769918-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork\"}\n{\"Time\":\"2026-09-12T20:48:41.770005-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork\",\"Output\":\"=== RUN   TestOfflineConfigurationStopsExplicitCatalogNetwork\\n\"}\n{\"Time\":\"2026-09-12T20:48:41.770038-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/source\"}\n{\"Time\":\"2026-09-12T20:48:41.770042-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/source\",\"Output\":\"=== RUN   TestOfflineConfigurationStopsExplicitCatalogNetwork/source\\n\"}\n{\"Time\":\"2026-09-12T20:48:50.93501-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/source\",\"Output\":\"--- PASS: TestOfflineConfigurationStopsExplicitCatalogNetwork/source (9.16s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:50.935034-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/source\",\"Elapsed\":9.16}\n{\"Time\":\"2026-09-12T20:48:50.935053-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/acquisition\"}\n{\"Time\":\"2026-09-12T20:48:50.935054-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/acquisition\",\"Output\":\"=== RUN   TestOfflineConfigurationStopsExplicitCatalogNetwork/acquisition\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.048981-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/acquisition\",\"Output\":\"--- PASS: TestOfflineConfigurationStopsExplicitCatalogNetwork/acquisition (0.11s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.049011-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/acquisition\",\"Elapsed\":0.11}\n{\"Time\":\"2026-09-12T20:48:51.04902-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/refresh\"}\n{\"Time\":\"2026-09-12T20:48:51.049022-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/refresh\",\"Output\":\"=== RUN   TestOfflineConfigurationStopsExplicitCatalogNetwork/refresh\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.122345-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/refresh\",\"Output\":\"--- PASS: TestOfflineConfigurationStopsExplicitCatalogNetwork/refresh (0.07s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.122362-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/refresh\",\"Elapsed\":0.07}\n{\"Time\":\"2026-09-12T20:48:51.12238-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/manual-update\"}\n{\"Time\":\"2026-09-12T20:48:51.122382-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/manual-update\",\"Output\":\"=== RUN   TestOfflineConfigurationStopsExplicitCatalogNetwork/manual-update\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.181257-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/manual-update\",\"Output\":\"--- PASS: TestOfflineConfigurationStopsExplicitCatalogNetwork/manual-update (0.06s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.181273-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/manual-update\",\"Elapsed\":0.06}\n{\"Time\":\"2026-09-12T20:48:51.181277-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/preview\"}\n{\"Time\":\"2026-09-12T20:48:51.181279-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/preview\",\"Output\":\"=== RUN   TestOfflineConfigurationStopsExplicitCatalogNetwork/preview\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.244786-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/preview\",\"Output\":\"--- PASS: TestOfflineConfigurationStopsExplicitCatalogNetwork/preview (0.06s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.244802-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/preview\",\"Elapsed\":0.06}\n{\"Time\":\"2026-09-12T20:48:51.244808-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/observations\"}\n{\"Time\":\"2026-09-12T20:48:51.244809-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/observations\",\"Output\":\"=== RUN   TestOfflineConfigurationStopsExplicitCatalogNetwork/observations\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.305689-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/observations\",\"Output\":\"--- PASS: TestOfflineConfigurationStopsExplicitCatalogNetwork/observations (0.06s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.305705-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork/observations\",\"Elapsed\":0.06}\n{\"Time\":\"2026-09-12T20:48:51.305713-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork\",\"Output\":\"--- PASS: TestOfflineConfigurationStopsExplicitCatalogNetwork (9.54s)\\n\"}\n{\"Time\":\"2026-09-12T20:48:51.305724-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationStopsExplicitCatalogNetwork\",\"Elapsed\":9.54}\n{\"Time\":\"2026-09-12T20:48:51.305775-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:48:52.374389-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t11.059s\\n\"}\n{\"Time\":\"2026-09-12T20:48:52.374427-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":11.059}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestOfflineConfigurationGuardsScheduledWorkAcrossRestart$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:48:53.34494-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:48:53.814176-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationGuardsScheduledWorkAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:48:53.814221-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationGuardsScheduledWorkAcrossRestart\",\"Output\":\"=== RUN   TestOfflineConfigurationGuardsScheduledWorkAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:49:09.08855-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationGuardsScheduledWorkAcrossRestart\",\"Output\":\"--- PASS: TestOfflineConfigurationGuardsScheduledWorkAcrossRestart (15.27s)\\n\"}\n{\"Time\":\"2026-09-12T20:49:09.088567-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineConfigurationGuardsScheduledWorkAcrossRestart\",\"Elapsed\":15.27}\n{\"Time\":\"2026-09-12T20:49:09.088601-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:49:10.140987-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t16.796s\\n\"}\n{\"Time\":\"2026-09-12T20:49:10.141013-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":16.796}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestAutomaticConfigurationRunsScheduledWorkAcrossRestart$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:49:11.435609-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:49:11.905705-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:49:11.905761-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\",\"Output\":\"=== RUN   TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:49:27.109398-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\",\"Output\":\"--- PASS: TestAutomaticConfigurationRunsScheduledWorkAcrossRestart (15.20s)\\n\"}\n{\"Time\":\"2026-09-12T20:49:27.109417-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestAutomaticConfigurationRunsScheduledWorkAcrossRestart\",\"Elapsed\":15.2}\n{\"Time\":\"2026-09-12T20:49:27.109445-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:49:28.161941-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t16.726s\\n\"}\n{\"Time\":\"2026-09-12T20:49:28.161982-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":16.726}\n",
+            "stderr": ""
+          }
+        ],
+        "evidence_scope": "producer_component"
+      },
+      "A22.lazy_secret_resolution": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestOfflineManualAcquisitionDoesNotResolveCredentials$",
+          "./acquisition"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-12T20:49:30.383871-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/acquisition\"}\n{\"Time\":\"2026-09-12T20:49:30.939554-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/acquisition\",\"Test\":\"TestOfflineManualAcquisitionDoesNotResolveCredentials\"}\n{\"Time\":\"2026-09-12T20:49:30.939617-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/acquisition\",\"Test\":\"TestOfflineManualAcquisitionDoesNotResolveCredentials\",\"Output\":\"=== RUN   TestOfflineManualAcquisitionDoesNotResolveCredentials\\n\"}\n{\"Time\":\"2026-09-12T20:49:39.997518-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/acquisition\",\"Test\":\"TestOfflineManualAcquisitionDoesNotResolveCredentials\",\"Output\":\"--- PASS: TestOfflineManualAcquisitionDoesNotResolveCredentials (9.06s)\\n\"}\n{\"Time\":\"2026-09-12T20:49:39.997544-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/acquisition\",\"Test\":\"TestOfflineManualAcquisitionDoesNotResolveCredentials\",\"Elapsed\":9.06}\n{\"Time\":\"2026-09-12T20:49:39.997608-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/acquisition\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:49:41.056724-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/acquisition\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/acquisition\\t10.673s\\n\"}\n{\"Time\":\"2026-09-12T20:49:41.056762-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/acquisition\",\"Elapsed\":10.673}\n",
+        "stderr": "",
+        "evidence_scope": "producer_component"
+      },
+      "A22.local_import_allowed": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestOfflineVerifiedLocalImportSurvivesRestart$",
+          "./runtime"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-12T20:49:42.316788-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:49:42.806107-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOfflineVerifiedLocalImportSurvivesRestart\"}\n{\"Time\":\"2026-09-12T20:49:42.806169-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOfflineVerifiedLocalImportSurvivesRestart\",\"Output\":\"=== RUN   TestOfflineVerifiedLocalImportSurvivesRestart\\n\"}\n{\"Time\":\"2026-09-12T20:49:52.170412-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOfflineVerifiedLocalImportSurvivesRestart\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":18,\\\"time\\\":\\\"2026-09-12T20:49:52-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:49:59.006643-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOfflineVerifiedLocalImportSurvivesRestart\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":18,\\\"time\\\":\\\"2026-09-12T20:49:59-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:50:12.764761-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOfflineVerifiedLocalImportSurvivesRestart\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":18,\\\"time\\\":\\\"2026-09-12T20:50:12-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:50:19.347229-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOfflineVerifiedLocalImportSurvivesRestart\",\"Output\":\"--- PASS: TestOfflineVerifiedLocalImportSurvivesRestart (36.54s)\\n\"}\n{\"Time\":\"2026-09-12T20:50:19.347249-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestOfflineVerifiedLocalImportSurvivesRestart\",\"Elapsed\":36.54}\n{\"Time\":\"2026-09-12T20:50:19.347255-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:50:20.400683-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t38.083s\\n\"}\n{\"Time\":\"2026-09-12T20:50:20.400735-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":38.084}\n",
+        "stderr": "",
+        "evidence_scope": "producer_component"
+      },
+      "A22.inference_separate_egress": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestOfflineCatalogLeavesCallerInferenceTransportAvailable$",
+          "./pkg/catalogs/config"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-12T20:50:22.374734-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:50:22.816943-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineCatalogLeavesCallerInferenceTransportAvailable\"}\n{\"Time\":\"2026-09-12T20:50:22.816999-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineCatalogLeavesCallerInferenceTransportAvailable\",\"Output\":\"=== RUN   TestOfflineCatalogLeavesCallerInferenceTransportAvailable\\n\"}\n{\"Time\":\"2026-09-12T20:50:31.928277-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineCatalogLeavesCallerInferenceTransportAvailable\",\"Output\":\"--- PASS: TestOfflineCatalogLeavesCallerInferenceTransportAvailable (9.11s)\\n\"}\n{\"Time\":\"2026-09-12T20:50:31.928312-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestOfflineCatalogLeavesCallerInferenceTransportAvailable\",\"Elapsed\":9.11}\n{\"Time\":\"2026-09-12T20:50:31.928332-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:50:32.959974-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t10.585s\\n\"}\n{\"Time\":\"2026-09-12T20:50:32.959998-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":10.585}\n",
+        "stderr": "",
+        "evidence_scope": "producer_component"
+      },
+      "A23.manual_source_with_acquisition": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestManualSourceConfigurationKeepsAcquisitionAcrossRestart$",
+          "./pkg/catalogs/config"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-12T20:50:34.095681-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:50:34.538414-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:50:34.538477-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\",\"Output\":\"=== RUN   TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:50:49.794109-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\",\"Output\":\"--- PASS: TestManualSourceConfigurationKeepsAcquisitionAcrossRestart (15.26s)\\n\"}\n{\"Time\":\"2026-09-12T20:50:49.794131-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\",\"Elapsed\":15.26}\n{\"Time\":\"2026-09-12T20:50:49.794165-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:50:50.836298-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t16.740s\\n\"}\n{\"Time\":\"2026-09-12T20:50:50.836343-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":16.741}\n",
+        "stderr": "",
+        "evidence_scope": "producer_component"
+      },
+      "A23.pin_blocks_all_activation": {
+        "status": "PASS",
+        "reason": "The named behavior test passed in this invocation.",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-count=1",
+          "-timeout",
+          "5m",
+          "-json",
+          "-run",
+          "^TestGenerationPinBlocksEveryCatalogMutation$",
+          "./runtime"
+        ],
+        "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+        "exit_code": 0,
+        "stdout": "{\"Time\":\"2026-09-12T20:50:53.090732-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:50:53.567002-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation\"}\n{\"Time\":\"2026-09-12T20:50:53.567047-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847355-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/source\"}\n{\"Time\":\"2026-09-12T20:51:02.847371-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/source\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/source\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847434-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/source\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/source (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847438-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/source\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.847454-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/refresh\"}\n{\"Time\":\"2026-09-12T20:51:02.847455-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/refresh\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/refresh\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847474-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/refresh\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/refresh (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847483-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/refresh\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.847493-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/sync\"}\n{\"Time\":\"2026-09-12T20:51:02.847495-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/sync\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/sync\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.84752-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/sync\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/sync (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847529-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/sync\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.847533-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/prepare\"}\n{\"Time\":\"2026-09-12T20:51:02.847535-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/prepare\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/prepare\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.84756-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/prepare\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/prepare (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847568-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/prepare\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.847577-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/preview\"}\n{\"Time\":\"2026-09-12T20:51:02.847579-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/preview\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/preview\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847604-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/preview\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/preview (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.847611-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/preview\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.847613-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/import\"}\n{\"Time\":\"2026-09-12T20:51:02.847615-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/import\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/import\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849113-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/import\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/import (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849127-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/import\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.849137-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/remove\"}\n{\"Time\":\"2026-09-12T20:51:02.849138-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/remove\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/remove\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849164-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/remove\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/remove (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849189-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/remove\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.849202-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/update\"}\n{\"Time\":\"2026-09-12T20:51:02.849205-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/update\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/update\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849245-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/update\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/update (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849258-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/update\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.84926-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/activate\"}\n{\"Time\":\"2026-09-12T20:51:02.849261-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/activate\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/activate\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849273-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/activate\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/activate (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.84928-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/activate\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.849289-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/reload\"}\n{\"Time\":\"2026-09-12T20:51:02.849291-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/reload\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/reload\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849348-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/reload\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/reload (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849356-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/reload\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.849363-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/rollback\"}\n{\"Time\":\"2026-09-12T20:51:02.849366-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/rollback\",\"Output\":\"=== RUN   TestGenerationPinBlocksEveryCatalogMutation/rollback\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849384-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/rollback\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation/rollback (0.00s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.849392-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation/rollback\",\"Elapsed\":0}\n{\"Time\":\"2026-09-12T20:51:02.850378-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation\",\"Output\":\"--- PASS: TestGenerationPinBlocksEveryCatalogMutation (9.28s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:02.850386-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestGenerationPinBlocksEveryCatalogMutation\",\"Elapsed\":9.28}\n{\"Time\":\"2026-09-12T20:51:02.850822-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:51:03.888991-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t10.798s\\n\"}\n{\"Time\":\"2026-09-12T20:51:03.889022-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":10.798}\n",
+        "stderr": "",
+        "evidence_scope": "producer_component"
+      },
+      "A23.explicit_refresh": {
+        "status": "PASS",
+        "checks": [
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestManualSourceConfigurationDoesNotSubscribe$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:51:04.968647-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:51:05.415544-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationDoesNotSubscribe\"}\n{\"Time\":\"2026-09-12T20:51:05.415631-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationDoesNotSubscribe\",\"Output\":\"=== RUN   TestManualSourceConfigurationDoesNotSubscribe\\n\"}\n{\"Time\":\"2026-09-12T20:51:14.555276-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationDoesNotSubscribe\",\"Output\":\"--- PASS: TestManualSourceConfigurationDoesNotSubscribe (9.14s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:14.555303-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationDoesNotSubscribe\",\"Elapsed\":9.14}\n{\"Time\":\"2026-09-12T20:51:14.555322-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:51:15.587459-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t10.619s\\n\"}\n{\"Time\":\"2026-09-12T20:51:15.58748-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":10.619}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestRuntimeRefreshMethodsChangeDistinctLayers$",
+              "./runtime"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:51:16.647056-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/runtime\"}\n{\"Time\":\"2026-09-12T20:51:17.117752-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\"}\n{\"Time\":\"2026-09-12T20:51:17.117827-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"=== RUN   TestRuntimeRefreshMethodsChangeDistinctLayers\\n\"}\n{\"Time\":\"2026-09-12T20:51:26.536353-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-12T20:51:26-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:51:26.536698-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"issue_code\\\":\\\"unresolved_model_reference\\\",\\\"provider_id\\\":\\\"acquired-provider\\\",\\\"provider_model_id\\\":\\\"acquired-model\\\",\\\"time\\\":\\\"2026-09-12T20:51:26-05:00\\\",\\\"message\\\":\\\"provider offering has no explicit canonical model reference and was quarantined\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:51:26.875342-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-12T20:51:26-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:51:26.875603-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"issue_code\\\":\\\"unresolved_model_reference\\\",\\\"provider_id\\\":\\\"acquired-provider\\\",\\\"provider_model_id\\\":\\\"acquired-model\\\",\\\"time\\\":\\\"2026-09-12T20:51:26-05:00\\\",\\\"message\\\":\\\"provider offering has no explicit canonical model reference and was quarantined\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:51:27.195227-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider_count\\\":1,\\\"time\\\":\\\"2026-09-12T20:51:27-05:00\\\",\\\"message\\\":\\\"Filtered providers by primary source\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:51:27.195536-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"issue_code\\\":\\\"unresolved_model_reference\\\",\\\"provider_id\\\":\\\"acquired-provider\\\",\\\"provider_model_id\\\":\\\"acquired-model\\\",\\\"time\\\":\\\"2026-09-12T20:51:27-05:00\\\",\\\"message\\\":\\\"provider offering has no explicit canonical model reference and was quarantined\\\"}\\n\"}\n{\"Time\":\"2026-09-12T20:51:27.198267-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Output\":\"--- PASS: TestRuntimeRefreshMethodsChangeDistinctLayers (10.08s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:27.198279-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Test\":\"TestRuntimeRefreshMethodsChangeDistinctLayers\",\"Elapsed\":10.08}\n{\"Time\":\"2026-09-12T20:51:27.198358-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:51:28.228486-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/runtime\\t11.581s\\n\"}\n{\"Time\":\"2026-09-12T20:51:28.228507-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/runtime\",\"Elapsed\":11.581}\n",
+            "stderr": ""
+          }
+        ],
+        "evidence_scope": "producer_component"
+      },
+      "A23.restart_watcher_guards": {
+        "status": "PASS",
+        "checks": [
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestManualSourceConfigurationKeepsAcquisitionAcrossRestart$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:51:29.289638-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:51:29.728561-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:51:29.728615-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\",\"Output\":\"=== RUN   TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:51:44.937384-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\",\"Output\":\"--- PASS: TestManualSourceConfigurationKeepsAcquisitionAcrossRestart (15.21s)\\n\"}\n{\"Time\":\"2026-09-12T20:51:44.937414-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestManualSourceConfigurationKeepsAcquisitionAcrossRestart\",\"Elapsed\":15.21}\n{\"Time\":\"2026-09-12T20:51:44.937431-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:51:46.001501-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t16.712s\\n\"}\n{\"Time\":\"2026-09-12T20:51:46.001552-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":16.712}\n",
+            "stderr": ""
+          },
+          {
+            "status": "PASS",
+            "reason": "The named behavior test passed in this invocation.",
+            "command": [
+              "go",
+              "test",
+              "-race",
+              "-count=1",
+              "-timeout",
+              "5m",
+              "-json",
+              "-run",
+              "^TestPinnedConfigurationBlocksPollingAcrossRestart$",
+              "./pkg/catalogs/config"
+            ],
+            "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification",
+            "exit_code": 0,
+            "stdout": "{\"Time\":\"2026-09-12T20:51:46.954981-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-12T20:51:47.416036-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\"}\n{\"Time\":\"2026-09-12T20:51:47.416109-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\",\"Output\":\"=== RUN   TestPinnedConfigurationBlocksPollingAcrossRestart\\n\"}\n{\"Time\":\"2026-09-12T20:52:11.631211-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\",\"Output\":\"--- PASS: TestPinnedConfigurationBlocksPollingAcrossRestart (24.22s)\\n\"}\n{\"Time\":\"2026-09-12T20:52:11.631233-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestPinnedConfigurationBlocksPollingAcrossRestart\",\"Elapsed\":24.22}\n{\"Time\":\"2026-09-12T20:52:11.631252-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-09-12T20:52:12.694641-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t25.739s\\n\"}\n{\"Time\":\"2026-09-12T20:52:12.694665-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":25.74}\n",
+            "stderr": ""
+          }
+        ],
+        "evidence_scope": "producer_component"
+      }
+    },
+    "selected_subcases": 12,
+    "summary": "Summary: 1 passed, 49 failed",
+    "unverified_cases": 49,
+    "gate_status": "PASS",
+    "qualification": "component checks only",
+    "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+    "registry_sha256": "072a450c2adcdd5e7cb7ce67383d660ae58c06dbafc7979e65cfe048c6d88684",
+    "backend_scope": "primary"
+  },
+  "review": {
+    "output_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-recovery-pre-pr-8dj8qvsf",
+    "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
+    "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "session_id": 52394
+  },
+  "limits": [
+    "Both native Windows jobs failed on the parent correction. This commit requires new native execution.",
+    "Required review and CI must pass before the existing PR can merge.",
+    "Shared catalog cleanup and the pending coordinator decision remain required for CSP5 completion.",
+    "No task completion credit applies."
+  ],
+  "artifacts": [
+    {
+      "path": "blobs/1a0c685fe98b1c2697b631e1126c940df0d0777edf0b1756d7a5effaaa069865.gz",
+      "sha256": "d231c97932c16fb74f169710d42601cd47c5030c729bc554b0f9a85901037b1e",
+      "decoded_sha256": "1a0c685fe98b1c2697b631e1126c940df0d0777edf0b1756d7a5effaaa069865"
+    },
+    {
+      "path": "blobs/003c49f4cc5c7203d1003ac83269b32ff6f71116d2223027e1804345326f0758.gz",
+      "sha256": "027aa64140fde1d20faa9c98327d09569e7fe17700e064894c6e0b4590cefa8c",
+      "decoded_sha256": "003c49f4cc5c7203d1003ac83269b32ff6f71116d2223027e1804345326f0758"
+    },
+    {
+      "path": "blobs/910ea5201f9ba65fac67cbb6df3e84aaaf42476c0dbc28a25f43ed636257aca1.gz",
+      "sha256": "62c6051eabee3c1d0d01231d9e431773aacb6c26f5790d73da3308d02a74b07e",
+      "decoded_sha256": "910ea5201f9ba65fac67cbb6df3e84aaaf42476c0dbc28a25f43ed636257aca1"
+    },
+    {
+      "path": "blobs/7bd1eda43ec24429598372181d9325c7ebc261e7450d4c41ce1e351df404dc38.gz",
+      "sha256": "b6c8813fee868f3f5edd7aeb53d1f87c824fb61f1d8c8ae3db3f46b3536b42f0",
+      "decoded_sha256": "7bd1eda43ec24429598372181d9325c7ebc261e7450d4c41ce1e351df404dc38"
+    },
+    {
+      "path": "blobs/7d73cad6f367277a09d4abdd1e55307e83844186c2a64aa674d93ccb2edf41db.gz",
+      "sha256": "add3ff21ac722954e8bef05dd05d0b9307b93ff5e07468858f9f794716921e6c",
+      "decoded_sha256": "7d73cad6f367277a09d4abdd1e55307e83844186c2a64aa674d93ccb2edf41db"
+    },
+    {
+      "path": "blobs/129dd5456f437da330428c31c4e58ee77e3fc6e6dfdc48a0650ed7dec0475cd9.gz",
+      "sha256": "a369f70666d740d7bb3117f3fcc453015cb1e2104b75594be80116b84ae70a93",
+      "decoded_sha256": "129dd5456f437da330428c31c4e58ee77e3fc6e6dfdc48a0650ed7dec0475cd9"
+    },
+    {
+      "path": "blobs/5e709fe7750170d5e1e6b3bb73d2eb02ea2ff96ce9d914a5ff1c7377a3189636.gz",
+      "sha256": "be242bee1777b29761c6a18507794d94bd5e1a9a923b034cff7f1b0c5d521a78",
+      "decoded_sha256": "5e709fe7750170d5e1e6b3bb73d2eb02ea2ff96ce9d914a5ff1c7377a3189636"
+    },
+    {
+      "path": "blobs/67c16a363f3358a9d48edb653c63b35bdb44a248f8581ccfc0e543cefaf885a1.gz",
+      "sha256": "65a6b161a5db6d12b37841f2711ff5f126c937d246762afb745c5f0732b3eb7b",
+      "decoded_sha256": "67c16a363f3358a9d48edb653c63b35bdb44a248f8581ccfc0e543cefaf885a1"
+    },
+    {
+      "path": "blobs/2c1b4cd3aa6544dfa935d7e7e070d1096ac93f0528be1dc6286218313c5a64ed.gz",
+      "sha256": "188ae7ef237c6323f4dc9c2a9726815f93d1a8f5ccef8561aeb5f86fd5cbd863",
+      "decoded_sha256": "2c1b4cd3aa6544dfa935d7e7e070d1096ac93f0528be1dc6286218313c5a64ed"
+    },
+    {
+      "path": "blobs/6013177ffc787fc38559c9e8781c8109d2a8e0ac4400212dfeaf0845320178fc.gz",
+      "sha256": "518c4477377d3ba9c7be6c38d08a368ac7c5fbf96cb04c1644328fb4e7d8c4ce",
+      "decoded_sha256": "6013177ffc787fc38559c9e8781c8109d2a8e0ac4400212dfeaf0845320178fc"
+    },
+    {
+      "path": "blobs/e31f212e489f1c6778e3ed0436ec0502e9da6760aadab515136f8758c71c18cc.gz",
+      "sha256": "b5e3b430a44553f7fc5470f8ca4a10ccaa2a7ff7869e068d59e133eaee73f906",
+      "decoded_sha256": "e31f212e489f1c6778e3ed0436ec0502e9da6760aadab515136f8758c71c18cc"
+    },
+    {
+      "path": "blobs/5755984a143579384b5908f3fd4c7105bee96bd92478e7934749e026eef94b60.gz",
+      "sha256": "9282d76b223bb119ab279733c8594b4d606b4eac8f694195f5753380d8483891",
+      "decoded_sha256": "5755984a143579384b5908f3fd4c7105bee96bd92478e7934749e026eef94b60"
+    },
+    {
+      "path": "blobs/04ea2f8d47400f7cdc7728f0731a0b515bd0a3d1947cabc5c851cbe9ffaae462.gz",
+      "sha256": "cf609751315dff56800adce3a81cc41cd376459f730de31d1e9e42b776abf571",
+      "decoded_sha256": "04ea2f8d47400f7cdc7728f0731a0b515bd0a3d1947cabc5c851cbe9ffaae462"
+    },
+    {
+      "path": "blobs/640b85e8c4e7992cb07298834a4814f9a765a6ff741709bf160d667bd51ac192.gz",
+      "sha256": "d6266cea5b727f6bc0585622953e7c702698d3271dce97943cad3983abf6c377",
+      "decoded_sha256": "640b85e8c4e7992cb07298834a4814f9a765a6ff741709bf160d667bd51ac192"
+    },
+    {
+      "path": "blobs/95de155c72d77ea57bec423aa583bf993cd0809704c142789459d97a9f3f58d3.gz",
+      "sha256": "ccb1cd8a02fd0bfeac18e1b52bd82c55ab0491ac70c343e3ce2ec171621f3434",
+      "decoded_sha256": "95de155c72d77ea57bec423aa583bf993cd0809704c142789459d97a9f3f58d3"
+    },
+    {
+      "path": "blobs/4cc1c7ea3b7b0e3129b3716bbf4fcf830b0b0806214d66dbb146901427c2927e.gz",
+      "sha256": "d3cccbeb98e2b4a5b01cc85b1834c3952fbdc212fcdf73bf216ba14223d8105d",
+      "decoded_sha256": "4cc1c7ea3b7b0e3129b3716bbf4fcf830b0b0806214d66dbb146901427c2927e"
+    },
+    {
+      "path": "blobs/35a61fc84a2ea192bc453505fe4f7bb5fd8e02c05f75754747d75282b2dee1db.gz",
+      "sha256": "487b3cee0181cd60d4efd1edbdd98e4b41846686dc6b7073d0c46246921277e2",
+      "decoded_sha256": "35a61fc84a2ea192bc453505fe4f7bb5fd8e02c05f75754747d75282b2dee1db"
+    },
+    {
+      "path": "blobs/052e74746ca9b0edea225e89e97123e932782131f8a8d3cd01f5d5271c7bbda4.gz",
+      "sha256": "4ed6a09cfefb25d5c08d86a6d8cb2da58436c0fdc46ae251e8755266579c96d8",
+      "decoded_sha256": "052e74746ca9b0edea225e89e97123e932782131f8a8d3cd01f5d5271c7bbda4"
+    },
+    {
+      "path": "blobs/24d20713f02f2f71706aa5d1cfc32090408d54e4c1d39523c51007edf7f09f2f.gz",
+      "sha256": "72a12831ade18fa155d44185befd89800541298296638dbacddb762534b6ec9e",
+      "decoded_sha256": "24d20713f02f2f71706aa5d1cfc32090408d54e4c1d39523c51007edf7f09f2f"
+    },
+    {
+      "path": "blobs/50edb55dff8d2705b58cdd48f2546d8f03e392ce016df8511ebdd688804e7025.gz",
+      "sha256": "ba055fb8ea118c11799fa75e069e3024b9cf096f6b7ce44bfc7fcc682f040216",
+      "decoded_sha256": "50edb55dff8d2705b58cdd48f2546d8f03e392ce016df8511ebdd688804e7025"
+    },
+    {
+      "path": "blobs/26ccadc1114776d3d3c824e465582434959c99eafebd57e269ef64d13c020d6c.gz",
+      "sha256": "7095eee0e355cc10f2664759af8a7909b4ae6f62cdf80f7c940bf43b9decd1ff",
+      "decoded_sha256": "26ccadc1114776d3d3c824e465582434959c99eafebd57e269ef64d13c020d6c"
+    },
+    {
+      "path": "blobs/d5901f3bf326b0978093d6d4d0b27b0e75599ac7f8854b227f99b4584d6bf043.gz",
+      "sha256": "89798bfcf98a42a9cfb78c9ae2fe5aecf926324f248081eef8421d8a86e106b3",
+      "decoded_sha256": "d5901f3bf326b0978093d6d4d0b27b0e75599ac7f8854b227f99b4584d6bf043"
+    },
+    {
+      "path": "blobs/0be2e03c16960ccacb93bb41932bca148079005530625e1244cf8487ec0a500a.gz",
+      "sha256": "ce074ea3adc2f9fb4ac4cffae5906e1c3a0c192c91a1295a11d997d829783752",
+      "decoded_sha256": "0be2e03c16960ccacb93bb41932bca148079005530625e1244cf8487ec0a500a"
+    },
+    {
+      "path": "blobs/95fb5210bfb888f7568c21c9d46c537927227bc7bd733cb314b2c51f22142f1e.gz",
+      "sha256": "694d8112e8569c75d2841e01d93eeca983479d1379783b9992519adaa16c3f4b",
+      "decoded_sha256": "95fb5210bfb888f7568c21c9d46c537927227bc7bd733cb314b2c51f22142f1e"
+    },
+    {
+      "path": "blobs/52257cabf7252b971cca93429a759fcb43899ed05a99e3c5b38e13443a25cca6.gz",
+      "sha256": "5bcc006f71e551c2e5a977804abfeb6331ca8419c396c435c9e2d1cefb503c6f",
+      "decoded_sha256": "52257cabf7252b971cca93429a759fcb43899ed05a99e3c5b38e13443a25cca6"
+    },
+    {
+      "path": "blobs/c5305a3876743074cf4e50b03ea0c381542e2caaebd3835a93539552301912b8.gz",
+      "sha256": "cab9e234af800161ea5f9ee0e470f0e073f290a81c9b001d9f6d59091aa75f45",
+      "decoded_sha256": "c5305a3876743074cf4e50b03ea0c381542e2caaebd3835a93539552301912b8"
+    },
+    {
+      "path": "blobs/bca062533b97566bcb2596b08cca0f81343e83380d67da923e345e93ceae8384.gz",
+      "sha256": "55fa61aecae6c2458ca528b3589b6c380c18377b37dc83c16bfcffc4b90d6e7c",
+      "decoded_sha256": "bca062533b97566bcb2596b08cca0f81343e83380d67da923e345e93ceae8384"
+    }
+  ]
+}
