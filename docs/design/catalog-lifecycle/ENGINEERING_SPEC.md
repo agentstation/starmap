@@ -2603,6 +2603,11 @@ Readiness reports the last maintenance outcome without storage reads. A capacity
 The [current candidate proof](../../plans/proof/starport-production-catalog/csp5/qualification-2026-09-12.md) records local integration and pending full qualification.
 Shared and object coordination remain incomplete. Their scope decision remains pending.
 
+Starport keeps catalog descriptors and payload chunks in its configured KV backend. Its 32-entry history index does not remove generation data.
+The [storage-boundary probe](../../plans/proof/starport-production-catalog/csp5/shared-storage-boundary-2026-09-13.md) records 33 descriptors and 33 chunks after 33 accepted generations.
+CSP8 must adopt catalog retention through that adapter, including both heads, readers, shared chunks, and pending writes.
+CSP5 retains Starmap object-store coordination. Starport uploaded-file storage has its own byte-retention contract.
+
 Filesystem publication must stage complete bytes, verify them, synchronize
 durable writes, and atomically switch the selected head. Recovery must remove
 or quarantine incomplete staging without selecting it. A failed catalog export

@@ -1,0 +1,108 @@
+{
+  "command": [
+    "env",
+    "GOTOOLCHAIN=go1.26.6",
+    "GOWORK=off",
+    "go",
+    "test",
+    "-overlay",
+    "/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer/.tmp/csp5-retention-probe/overlay.json",
+    "-race",
+    "-count=1",
+    "-timeout=5m",
+    "-json",
+    "-run",
+    "^TestCSP5GenerationHistoryDoesNotCollectStoredRecords$",
+    "./internal/catalog"
+  ],
+  "source_head": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+  "started_at": "2026-09-13T03:59:02.000068+00:00",
+  "probe_sha256": "c58788a119796867e2cfc2118d70ad66d6e3ab19919cdf92c39b83860f0df4a1",
+  "exit_code": 0,
+  "finished_at": "2026-09-13T03:59:18.091583+00:00",
+  "artifacts": [
+    {
+      "path": "retention_probe_test.go.gz",
+      "sha256": "f037791826d36226156732adc26b05f33c8c425c0ccb81900bb00df7b2f5803b",
+      "decoded_sha256": "c58788a119796867e2cfc2118d70ad66d6e3ab19919cdf92c39b83860f0df4a1"
+    },
+    {
+      "path": "overlay.json.gz",
+      "sha256": "ed21585968594d5a20bba297238342ca93fb14ec4098c6f157943b6dd9ad381d",
+      "decoded_sha256": "59cc2a4d66bcdca87def2f6bb07f6e13f5881d5f3108beee2120decdfdc89a3a"
+    },
+    {
+      "path": "stdout.jsonl.gz",
+      "sha256": "cc54ba67e9bd2b9c387bec812b8ca13cace3c1d9816593f7c66e3ef715693cbb",
+      "decoded_sha256": "3b364a3b23234c85d255e21d376e746a1befb62b89adcb94aa462fc80a31769b"
+    },
+    {
+      "path": "stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "source/go.mod.gz",
+      "sha256": "8b7fe13fe5c36c69d71cd9caa1ec8fe37a60a27c3a54740ae7c06aa7848131a6",
+      "decoded_sha256": "7f7cf35a81671c25038cd2c0a2883cb16001de79e68b37e8b6fb3ba6f696a035"
+    },
+    {
+      "path": "source/internal/catalog/generation_store.go.gz",
+      "sha256": "8d4a0069a0f7c3d669e7b5825aa5481d2c50bf004860ce09c6c8f120cd63ef94",
+      "decoded_sha256": "84e26d4befd145f48585d7f8a5ae90d7702be84ec6c881641391e88f49af1968"
+    },
+    {
+      "path": "source/internal/catalog/generation_payload.go.gz",
+      "sha256": "dba1fc721a8f3e15948e7ffebe3ea032dabac0318176d9884ad90eef52cc5be0",
+      "decoded_sha256": "4e034ab0b709a3e198bafaaad90b921b2d87898bb516c4bfdedd2299fdde5b6e"
+    },
+    {
+      "path": "source/internal/catalog/generation_index.go.gz",
+      "sha256": "1ddb5449b18d9c8276d5599698f542d25966956bf278088531fac5702a4d6056",
+      "decoded_sha256": "9ee27a656987c2ca35241828130038f4c93ef5f743e36166fcf1aaed2bc1a556"
+    },
+    {
+      "path": "source/internal/storage/interface.go.gz",
+      "sha256": "09cd493e0af2d409340c6f14e69b631c9d95677667b2fa3b4a87ff832416f4a3",
+      "decoded_sha256": "1524fca8cb53caf5e87eb99298604d5044770538dd4a194b12c50dac9a29a10a"
+    },
+    {
+      "path": "source/internal/storage/badger.go.gz",
+      "sha256": "00fc4b49de14e2c1b189d55e64696392e77ddcdfa129dcd6009d88d1f57db1ed",
+      "decoded_sha256": "d7d7d099276d208bd753259fb9170ed39317b5720295289f7f7871526ac8addb"
+    },
+    {
+      "path": "source/internal/app/app.go.gz",
+      "sha256": "04ce4f9de714bc61dda0115af2710a94454b5517de7159cefa81ab37908192de",
+      "decoded_sha256": "33e6cb29e122554f862c333f3fa5cd64ba57d368978a64d87918549eacd2dcfc"
+    }
+  ],
+  "source_files": {
+    "go.mod": "7f7cf35a81671c25038cd2c0a2883cb16001de79e68b37e8b6fb3ba6f696a035",
+    "internal/catalog/generation_store.go": "84e26d4befd145f48585d7f8a5ae90d7702be84ec6c881641391e88f49af1968",
+    "internal/catalog/generation_payload.go": "4e034ab0b709a3e198bafaaad90b921b2d87898bb516c4bfdedd2299fdde5b6e",
+    "internal/catalog/generation_index.go": "9ee27a656987c2ca35241828130038f4c93ef5f743e36166fcf1aaed2bc1a556",
+    "internal/storage/interface.go": "1524fca8cb53caf5e87eb99298604d5044770538dd4a194b12c50dac9a29a10a",
+    "internal/storage/badger.go": "d7d7d099276d208bd753259fb9170ed39317b5720295289f7f7871526ac8addb",
+    "internal/app/app.go": "33e6cb29e122554f862c333f3fa5cd64ba57d368978a64d87918549eacd2dcfc"
+  },
+  "observed": [
+    "csp5_retention_probe_test.go:38: history_entries=32 stored_generation_records=33 stored_chunks=33 oldest_generation_readable=true collector_method=false read_lease_method=false"
+  ],
+  "limits": [
+    "The probe uses actual in-memory Badger through the unchanged Starport GenerationStore.",
+    "Valkey execution, persistent Badger recovery, concurrency, and safe deletion remain unverified.",
+    "This diagnostic result supplies no product acceptance credit."
+  ],
+  "plan_validation": {
+    "links": 117,
+    "artifacts": 11,
+    "protected_sections": 5,
+    "ledger_history": "unchanged",
+    "resume_words": 251,
+    "rows": 38,
+    "prose_files": 1517,
+    "prose_diagnostics": 0,
+    "initial_link_probe": "Rejected the base element after incorrectly treating it as a hyperlink; the corrected probe resolves hyperlinks against that base."
+  }
+}

@@ -2895,3 +2895,15 @@ Incoming-reset capacity, automatic collection, and complete CSP5 qualification r
 
 The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
 Full CSP5 verification, review, native CI, and merge remain open.
+## Starport catalog retention boundary: 2026-09-13
+
+Classification: a verified consumer gap under CSP8, alongside CSP5 Starmap retention.
+The [storage probe](../../plans/proof/starport-production-catalog/csp5/shared-storage-boundary-2026-09-13.md) uses the unchanged Starport adapter with actual in-memory Badger.
+After 33 accepted generations, its history contains 32 entries while all 33 generation descriptors and 33 payload chunks remain stored.
+The oldest generation remains readable. The adapter exposes neither collection nor generation read leases.
+
+Starport stores these catalog records in KV. Its object-storage backend owns uploaded file bytes.
+Starmap's optional object catalog adapter has a separate collection boundary.
+CSP8 must protect accepted and candidate heads, readers, shared chunks, and pending writes during retention.
+The passing diagnostic supplies no acceptance credit. Valkey and concurrent deletion remain unverified.
+
