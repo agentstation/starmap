@@ -6,22 +6,22 @@
   "in_progress": "CSP6",
   "task_acceptance_invariants_goal_unchanged": true,
   "local_links": 116,
-  "new_evidence_artifacts": 12006,
+  "new_evidence_artifacts": 12009,
   "new_commit_source_files": 862,
-  "resume_words": 281,
-  "next_action": "Continue CSP6 immutable receipts and workflow integration at d15eb1291 while CSP5 required review retry 87440 runs. Resume PR154 publication after review success, then qualify native CI and merge. Shared cleanup and its coordinator decision remain required.",
+  "resume_words": 295,
+  "next_action": "Reconcile admitted inputs before publication. Continue CSP6 immutable receipts and workflow integration at d15eb1291 while CSP5 native workflow 34728327481 runs. Required review passed and PR154 publishes d15c6ef4c. Qualify native CI, then merge. Shared cleanup and its coordinator decision remain required.",
   "current_source": "d15eb1291a508083b530ec110d97fac322fa2b3b",
   "starmap_integration_source": null,
   "current_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
-  "external_running_checks": [],
-  "local_running_checks": [
+  "external_running_checks": [
     {
-      "name": "Required pre-PR review",
-      "session_id": 87440,
-      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
-      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-lock-checks/pre-pr-review-retry.json"
+      "workflow_run": 34728327481,
+      "head_sha": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "status": "in_progress",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34728327481"
     }
   ],
+  "local_running_checks": [],
   "current_source_binding_kind": "commit",
   "uncommitted_source_files": 0
 }

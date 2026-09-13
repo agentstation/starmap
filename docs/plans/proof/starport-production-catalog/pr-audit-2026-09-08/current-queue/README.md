@@ -1,19 +1,19 @@
 # Current pull request queue
 
 Updated 2026-09-13 UTC. Starmap has two open PRs. Starport has none.
-The [current queue evidence](queue-status-2026-09-13.json) records exact heads, bases, checks, review threads, ancestry, and unpublished work.
-Neither PR can merge. Thirty-one campaign PRs merged, and ten tasks are complete.
+The [current queue evidence](queue-status-2026-09-13-native.json) records exact heads, bases, checks, review threads, ancestry, and implementation worktrees.
+Neither PR can merge yet. Thirty-one campaign PRs merged, and ten tasks are complete.
 
 | PR | Owner | Disposition and next action |
 | --- | --- | --- |
-| [Starmap #154](https://github.com/agentstation/starmap/pull/154) | CSP5 executor | Keep. Review retry `87440` must qualify correction `d15c6ef4c` before push. Then run native CI and merge. |
+| [Starmap #154](https://github.com/agentstation/starmap/pull/154) | CSP5 executor | Keep. Review passed, and correction `d15c6ef4c` is published. Qualify workflow `34728327481`, then merge after all required and native gates pass. |
 | [Starmap #153](https://github.com/agentstation/starmap/pull/153) | Go policy tooling change author | Keep. After PR #154 merges, integrate current main and rerun the gate. Preserve its independent worktree changes. |
 
 PR #153 reaches the runtime suite’s thirty-minute timeout. Its [failure log](pr153-verification-34674230446.log.gz) does not establish a policy violation.
 
 Shared catalog cleanup remains required after PR #154. Its coordinator question remains pending.
-CSP6 exact staging is local commit `0837ed09c`. Its publication follows CSP5 integration.
-The queue capture predates that local staging commit and retains its working-tree inventory.
+CSP6 admission is local commit `d15eb1291`. Its workflow integration and publication remain open.
+The [previous capture](queue-status-2026-09-13.json) preserves the earlier review failure and unpublished correction.
 
 ## Superseded queue state: 2026-09-12
 

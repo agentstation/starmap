@@ -233,17 +233,37 @@
       "test_event_counts": {},
       "qualified_source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
       "binding": "All five tested source hashes equal the committed correction."
+    },
+    "pre-pr-review-retry": {
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--profile",
+        "cross-lab",
+        "--thinking",
+        "codex=xhigh",
+        "--stream-engine-output",
+        "--json-output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-lock-pre-pr-09fy69t2/review.json",
+        "--output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-lock-pre-pr-09fy69t2/review.txt"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "started_at": "2026-09-13T00:02:14.067197+00:00",
+      "finished_at": "2026-09-13T00:33:32.474834+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/dba60f087e772852cc8c54d049bfae5fe6af7fb8ed3e0a33ccf5859272d1d993.gz",
+      "test_event_counts": {},
+      "qualified_source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "binding": "All five tested source hashes equal the committed correction."
     }
   },
-  "running_checks": [
-    {
-      "name": "Required pre-PR review",
-      "session_id": 87440,
-      "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
-      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-lock-checks/pre-pr-review-retry.json"
-    }
-  ],
-  "observed_at": "2026-09-13T00:03:51.492632+00:00",
+  "running_checks": [],
+  "observed_at": "2026-09-13T00:37:46.133848+00:00",
   "task_report": {
     "cases": [
       {
@@ -1033,6 +1053,10 @@
     "failed_session_id": 57502,
     "retry_result_path": ".tmp/csp5-update-controls/native-lock-checks/pre-pr-review-retry.json"
   },
+  "review_artifacts": {
+    "review.json": "blobs/b8487f17851e3904368df7e7ade1674740f6d02f698923e019fa8102574ec084.gz",
+    "review.txt": "blobs/a717ed41ae60eac27606f9a9ef7606c05af8e703db10482262cf1f4abeae8dd3.gz"
+  },
   "scratch_cleanup_artifact": "blobs/7c7c715b9c09bc54d3ae2b190505ee8fb58431ba6d6f995e864fa755301ad1d1.gz",
   "review_failure": {
     "session_id": 57502,
@@ -1043,9 +1067,1449 @@
   },
   "limits": [
     "The native Windows failures on the parent commit remain the fail-before evidence.",
-    "The previous 41-phase repository pass and required review bind the parent commit. New native and broad CI checks remain required before merge.",
+    "Required review passed on the correction. Fresh native and broad CI run 34728327481 must pass before merge.",
     "Shared catalog cleanup and the pending coordinator decision remain required for CSP5 completion."
   ],
+  "review_success": {
+    "session_id": 87440,
+    "source_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
+    "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "profile": "cross-lab",
+    "reviewers": [
+      "gpt-5.6-sol xhigh",
+      "claude-opus-5 high"
+    ],
+    "threshold": "P0",
+    "sections": 6,
+    "findings": 0,
+    "verdict": "patch is correct",
+    "finished_at": "2026-09-13T00:33:32.474834+00:00"
+  },
+  "publication": {
+    "pull_request": {
+      "baseRefOid": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+      "headRefOid": "d15c6ef4cbb21827007f6400a8996bed09967535",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 154,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:35:44Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728326064/job/103646398303",
+          "name": "Analyze (actions)",
+          "startedAt": "2026-09-13T00:34:53Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:35:22Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400596",
+          "name": "Constructor Network Passivity",
+          "startedAt": "2026-09-13T00:34:53Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:36:41Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728326064/job/103646398338",
+          "name": "Analyze (go)",
+          "startedAt": "2026-09-13T00:34:52Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:36:04Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728326064/job/103646398236",
+          "name": "Analyze (python)",
+          "startedAt": "2026-09-13T00:34:53Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:36:14Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400692",
+          "name": "Offline Server Persistence",
+          "startedAt": "2026-09-13T00:34:54Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400690",
+          "name": "Verification Gate",
+          "startedAt": "2026-09-13T00:34:54Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:37:16Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400748",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-13T00:34:54Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:35:07Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400693",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-13T00:34:54Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400668",
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-13T00:34:54Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400791",
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-13T00:34:54Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400792",
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-13T00:34:54Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400746",
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-13T00:34:56Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400789",
+          "name": "Runtime macos-15-intel",
+          "startedAt": "2026-09-13T00:34:55Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400809",
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-13T00:35:03Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-13T00:35:39Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/103646486921",
+          "name": "CodeQL",
+          "startedAt": "2026-09-13T00:35:34Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "url": "https://github.com/agentstation/starmap/pull/154"
+    },
+    "workflows": [
+      {
+        "conclusion": "",
+        "databaseId": 34728327481,
+        "headSha": "d15c6ef4cbb21827007f6400a8996bed09967535",
+        "jobs": [
+          {
+            "completedAt": "2026-09-13T00:35:22Z",
+            "conclusion": "success",
+            "databaseId": 103646400596,
+            "name": "Constructor Network Passivity",
+            "startedAt": "2026-09-13T00:34:53Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:55Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:54Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:01Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:13Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:01Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:19Z",
+                "conclusion": "success",
+                "name": "Verify passive constructors and the socket control",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:13Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:20Z",
+                "conclusion": "success",
+                "name": "Retain constructor network evidence",
+                "number": 5,
+                "startedAt": "2026-09-13T00:35:19Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:20Z",
+                "conclusion": "success",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 9,
+                "startedAt": "2026-09-13T00:35:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:21Z",
+                "conclusion": "success",
+                "name": "Post Checkout",
+                "number": 10,
+                "startedAt": "2026-09-13T00:35:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:21Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 11,
+                "startedAt": "2026-09-13T00:35:21Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400596"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "databaseId": 103646400668,
+            "name": "Runtime windows-2025",
+            "startedAt": "2026-09-13T00:34:54Z",
+            "status": "in_progress",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:56Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:11Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:29Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:11Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:31Z",
+                "conclusion": "success",
+                "name": "Set up pinned Bun for Git acquisition fixtures",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:29Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:38Z",
+                "conclusion": "success",
+                "name": "Prepare verified public catalog fixture",
+                "number": 5,
+                "startedAt": "2026-09-13T00:35:31Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:41Z",
+                "conclusion": "success",
+                "name": "Prepare Windows time-service fixture",
+                "number": 6,
+                "startedAt": "2026-09-13T00:35:38Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:30Z",
+                "conclusion": "success",
+                "name": "Test Windows time-service access before the full suite",
+                "number": 7,
+                "startedAt": "2026-09-13T00:35:41Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:30Z",
+                "conclusion": "skipped",
+                "name": "Diagnose Windows time-service privilege after an access failure",
+                "number": 8,
+                "startedAt": "2026-09-13T00:36:30Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test native runtime, configuration, and paths",
+                "number": 9,
+                "startedAt": "2026-09-13T00:36:30Z",
+                "status": "in_progress"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test real Git acquisition and mandatory tools",
+                "number": 10,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test provider and metadata artifact publication",
+                "number": 11,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test administrator-owned Linux configuration",
+                "number": 12,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Retain native test evidence",
+                "number": 13,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up pinned Bun for Git acquisition fixtures",
+                "number": 24,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 25,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Checkout",
+                "number": 26,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400668"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "databaseId": 103646400690,
+            "name": "Verification Gate",
+            "startedAt": "2026-09-13T00:34:54Z",
+            "status": "in_progress",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:58Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:04Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:58Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:17Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:04Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:18Z",
+                "conclusion": "success",
+                "name": "Set up pinned Bun for Git acquisition fixtures",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:17Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:19Z",
+                "conclusion": "success",
+                "name": "Prepare verified public catalog fixture",
+                "number": 5,
+                "startedAt": "2026-09-13T00:35:18Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test minimum supported Go version",
+                "number": 6,
+                "startedAt": "2026-09-13T00:35:19Z",
+                "status": "in_progress"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test minimum supported external consumer",
+                "number": 7,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Set up release Go toolchain",
+                "number": 8,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Install pinned verification tools",
+                "number": 9,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Checkout pinned technical-writing skill",
+                "number": 10,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Run verification gate",
+                "number": 11,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up pinned Bun for Git acquisition fixtures",
+                "number": 20,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 21,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Checkout",
+                "number": 22,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400690"
+          },
+          {
+            "completedAt": "2026-09-13T00:36:14Z",
+            "conclusion": "success",
+            "databaseId": 103646400692,
+            "name": "Offline Server Persistence",
+            "startedAt": "2026-09-13T00:34:54Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:56Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:02Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:14Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:02Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:11Z",
+                "conclusion": "success",
+                "name": "Verify cold offline startup and restart",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:14Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:12Z",
+                "conclusion": "success",
+                "name": "Retain offline server evidence",
+                "number": 5,
+                "startedAt": "2026-09-13T00:36:11Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:12Z",
+                "conclusion": "success",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 9,
+                "startedAt": "2026-09-13T00:36:12Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:13Z",
+                "conclusion": "success",
+                "name": "Post Checkout",
+                "number": 10,
+                "startedAt": "2026-09-13T00:36:12Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:13Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 11,
+                "startedAt": "2026-09-13T00:36:13Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400692"
+          },
+          {
+            "completedAt": "2026-09-13T00:35:07Z",
+            "conclusion": "success",
+            "databaseId": 103646400693,
+            "name": "Action Pin Provenance",
+            "startedAt": "2026-09-13T00:34:54Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:56Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:02Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:05Z",
+                "conclusion": "success",
+                "name": "Verify action pins resolve to their advertised releases",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:02Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:05Z",
+                "conclusion": "success",
+                "name": "Post Checkout",
+                "number": 6,
+                "startedAt": "2026-09-13T00:35:05Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:05Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 7,
+                "startedAt": "2026-09-13T00:35:05Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400693"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "databaseId": 103646400746,
+            "name": "Runtime ubuntu-24.04-arm",
+            "startedAt": "2026-09-13T00:34:56Z",
+            "status": "in_progress",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:58Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:57Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:03Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:58Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:13Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:03Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "success",
+                "name": "Set up pinned Bun for Git acquisition fixtures",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:13Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "success",
+                "name": "Prepare verified public catalog fixture",
+                "number": 5,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "skipped",
+                "name": "Prepare Windows time-service fixture",
+                "number": 6,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "skipped",
+                "name": "Test Windows time-service access before the full suite",
+                "number": 7,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "skipped",
+                "name": "Diagnose Windows time-service privilege after an access failure",
+                "number": 8,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test native runtime, configuration, and paths",
+                "number": 9,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "in_progress"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test real Git acquisition and mandatory tools",
+                "number": 10,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test provider and metadata artifact publication",
+                "number": 11,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test administrator-owned Linux configuration",
+                "number": 12,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Retain native test evidence",
+                "number": 13,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up pinned Bun for Git acquisition fixtures",
+                "number": 24,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 25,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Checkout",
+                "number": 26,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400746"
+          },
+          {
+            "completedAt": "2026-09-13T00:37:16Z",
+            "conclusion": "success",
+            "databaseId": 103646400748,
+            "name": "Security & Reliability",
+            "startedAt": "2026-09-13T00:34:54Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:56Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:02Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:12Z",
+                "conclusion": "success",
+                "name": "Set up release Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:02Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:17Z",
+                "conclusion": "success",
+                "name": "Install pinned vulnerability scanner",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:12Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:40Z",
+                "conclusion": "success",
+                "name": "Scan reachable Go vulnerabilities",
+                "number": 5,
+                "startedAt": "2026-09-13T00:35:17Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:47Z",
+                "conclusion": "success",
+                "name": "Run bounded fuzz smoke",
+                "number": 6,
+                "startedAt": "2026-09-13T00:35:40Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:37:13Z",
+                "conclusion": "success",
+                "name": "Run migration and persistence fault fixtures",
+                "number": 7,
+                "startedAt": "2026-09-13T00:36:47Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:37:13Z",
+                "conclusion": "success",
+                "name": "Post Set up release Go toolchain",
+                "number": 13,
+                "startedAt": "2026-09-13T00:37:13Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:37:14Z",
+                "conclusion": "success",
+                "name": "Post Checkout",
+                "number": 14,
+                "startedAt": "2026-09-13T00:37:13Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:37:14Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "startedAt": "2026-09-13T00:37:14Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400748"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "databaseId": 103646400789,
+            "name": "Runtime macos-15-intel",
+            "startedAt": "2026-09-13T00:34:55Z",
+            "status": "in_progress",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:29Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:25Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:34:56Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:29Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:46Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:34:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:50Z",
+                "conclusion": "success",
+                "name": "Set up pinned Bun for Git acquisition fixtures",
+                "number": 4,
+                "startedAt": "2026-09-13T00:36:46Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:51Z",
+                "conclusion": "success",
+                "name": "Prepare verified public catalog fixture",
+                "number": 5,
+                "startedAt": "2026-09-13T00:36:50Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:51Z",
+                "conclusion": "skipped",
+                "name": "Prepare Windows time-service fixture",
+                "number": 6,
+                "startedAt": "2026-09-13T00:36:51Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:51Z",
+                "conclusion": "skipped",
+                "name": "Test Windows time-service access before the full suite",
+                "number": 7,
+                "startedAt": "2026-09-13T00:36:51Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:51Z",
+                "conclusion": "skipped",
+                "name": "Diagnose Windows time-service privilege after an access failure",
+                "number": 8,
+                "startedAt": "2026-09-13T00:36:51Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test native runtime, configuration, and paths",
+                "number": 9,
+                "startedAt": "2026-09-13T00:36:51Z",
+                "status": "in_progress"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test real Git acquisition and mandatory tools",
+                "number": 10,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test provider and metadata artifact publication",
+                "number": 11,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test administrator-owned Linux configuration",
+                "number": 12,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Retain native test evidence",
+                "number": 13,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up pinned Bun for Git acquisition fixtures",
+                "number": 24,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 25,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Checkout",
+                "number": 26,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400789"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "databaseId": 103646400791,
+            "name": "Runtime windows-11-arm",
+            "startedAt": "2026-09-13T00:34:54Z",
+            "status": "in_progress",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:57Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:22Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:57Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:12Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:22Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:15Z",
+                "conclusion": "success",
+                "name": "Set up pinned Bun for Git acquisition fixtures",
+                "number": 4,
+                "startedAt": "2026-09-13T00:36:12Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:19Z",
+                "conclusion": "success",
+                "name": "Prepare verified public catalog fixture",
+                "number": 5,
+                "startedAt": "2026-09-13T00:36:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:20Z",
+                "conclusion": "success",
+                "name": "Prepare Windows time-service fixture",
+                "number": 6,
+                "startedAt": "2026-09-13T00:36:19Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:59Z",
+                "conclusion": "success",
+                "name": "Test Windows time-service access before the full suite",
+                "number": 7,
+                "startedAt": "2026-09-13T00:36:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:36:59Z",
+                "conclusion": "skipped",
+                "name": "Diagnose Windows time-service privilege after an access failure",
+                "number": 8,
+                "startedAt": "2026-09-13T00:36:59Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test native runtime, configuration, and paths",
+                "number": 9,
+                "startedAt": "2026-09-13T00:36:59Z",
+                "status": "in_progress"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test real Git acquisition and mandatory tools",
+                "number": 10,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test provider and metadata artifact publication",
+                "number": 11,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test administrator-owned Linux configuration",
+                "number": 12,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Retain native test evidence",
+                "number": 13,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up pinned Bun for Git acquisition fixtures",
+                "number": 24,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 25,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Checkout",
+                "number": 26,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400791"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "databaseId": 103646400792,
+            "name": "Runtime ubuntu-24.04",
+            "startedAt": "2026-09-13T00:34:54Z",
+            "status": "in_progress",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:34:57Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:34:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:03Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:34:57Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:13Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:03Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "success",
+                "name": "Set up pinned Bun for Git acquisition fixtures",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:13Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "success",
+                "name": "Prepare verified public catalog fixture",
+                "number": 5,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "skipped",
+                "name": "Prepare Windows time-service fixture",
+                "number": 6,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "skipped",
+                "name": "Test Windows time-service access before the full suite",
+                "number": 7,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:15Z",
+                "conclusion": "skipped",
+                "name": "Diagnose Windows time-service privilege after an access failure",
+                "number": 8,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test native runtime, configuration, and paths",
+                "number": 9,
+                "startedAt": "2026-09-13T00:35:15Z",
+                "status": "in_progress"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test real Git acquisition and mandatory tools",
+                "number": 10,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test provider and metadata artifact publication",
+                "number": 11,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test administrator-owned Linux configuration",
+                "number": 12,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Retain native test evidence",
+                "number": 13,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up pinned Bun for Git acquisition fixtures",
+                "number": 24,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 25,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Checkout",
+                "number": 26,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400792"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "databaseId": 103646400809,
+            "name": "Runtime macos-15",
+            "startedAt": "2026-09-13T00:35:03Z",
+            "status": "in_progress",
+            "steps": [
+              {
+                "completedAt": "2026-09-13T00:35:08Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-09-13T00:35:05Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:17Z",
+                "conclusion": "success",
+                "name": "Checkout",
+                "number": 2,
+                "startedAt": "2026-09-13T00:35:08Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:45Z",
+                "conclusion": "success",
+                "name": "Set up minimum supported Go toolchain",
+                "number": 3,
+                "startedAt": "2026-09-13T00:35:17Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:46Z",
+                "conclusion": "success",
+                "name": "Set up pinned Bun for Git acquisition fixtures",
+                "number": 4,
+                "startedAt": "2026-09-13T00:35:45Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:47Z",
+                "conclusion": "success",
+                "name": "Prepare verified public catalog fixture",
+                "number": 5,
+                "startedAt": "2026-09-13T00:35:46Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:47Z",
+                "conclusion": "skipped",
+                "name": "Prepare Windows time-service fixture",
+                "number": 6,
+                "startedAt": "2026-09-13T00:35:47Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:47Z",
+                "conclusion": "skipped",
+                "name": "Test Windows time-service access before the full suite",
+                "number": 7,
+                "startedAt": "2026-09-13T00:35:47Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-09-13T00:35:47Z",
+                "conclusion": "skipped",
+                "name": "Diagnose Windows time-service privilege after an access failure",
+                "number": 8,
+                "startedAt": "2026-09-13T00:35:47Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test native runtime, configuration, and paths",
+                "number": 9,
+                "startedAt": "2026-09-13T00:35:47Z",
+                "status": "in_progress"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test real Git acquisition and mandatory tools",
+                "number": 10,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test provider and metadata artifact publication",
+                "number": 11,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Test administrator-owned Linux configuration",
+                "number": 12,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Retain native test evidence",
+                "number": 13,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up pinned Bun for Git acquisition fixtures",
+                "number": 24,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Set up minimum supported Go toolchain",
+                "number": 25,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              },
+              {
+                "completedAt": "0001-01-01T00:00:00Z",
+                "conclusion": "",
+                "name": "Post Checkout",
+                "number": 26,
+                "startedAt": "0001-01-01T00:00:00Z",
+                "status": "pending"
+              }
+            ],
+            "url": "https://github.com/agentstation/starmap/actions/runs/34728327481/job/103646400809"
+          }
+        ],
+        "status": "in_progress",
+        "url": "https://github.com/agentstation/starmap/actions/runs/34728327481"
+      }
+    ],
+    "push_completed": true,
+    "merged": false
+  },
   "artifacts": [
     {
       "path": "blobs/66d53dd026c86a0d8c5ea72a4f41b8960bf78df00def0ce68dbc8622888b7558.gz",
@@ -1116,6 +2580,21 @@
       "path": "blobs/c2e85c7a73c47ed2fd0f9b0b52819c29318d1d88160e890fa447eb83ea3e4549.gz",
       "sha256": "957047b46ed8d3c6b6a96fc8083fb5cc63de3126d66cd2373d3cd8f69d8b64ec",
       "decoded_sha256": "c2e85c7a73c47ed2fd0f9b0b52819c29318d1d88160e890fa447eb83ea3e4549"
+    },
+    {
+      "path": "blobs/dba60f087e772852cc8c54d049bfae5fe6af7fb8ed3e0a33ccf5859272d1d993.gz",
+      "sha256": "fd49249bce4cf8a5e67d8a22b9386514b6f86f61df44a51df5a81592d6f1735e",
+      "decoded_sha256": "dba60f087e772852cc8c54d049bfae5fe6af7fb8ed3e0a33ccf5859272d1d993"
+    },
+    {
+      "path": "blobs/b8487f17851e3904368df7e7ade1674740f6d02f698923e019fa8102574ec084.gz",
+      "sha256": "1908989f1fa7484310d1d175ce63b00850a2a6a49d8deb645b862c35cd20263c",
+      "decoded_sha256": "b8487f17851e3904368df7e7ade1674740f6d02f698923e019fa8102574ec084"
+    },
+    {
+      "path": "blobs/a717ed41ae60eac27606f9a9ef7606c05af8e703db10482262cf1f4abeae8dd3.gz",
+      "sha256": "2cfc7eda21a9bb2a50f37c750960c45e33ad6904a6b0495f9f9924fd632ef598",
+      "decoded_sha256": "a717ed41ae60eac27606f9a9ef7606c05af8e703db10482262cf1f4abeae8dd3"
     },
     {
       "path": "blobs/7c7c715b9c09bc54d3ae2b190505ee8fb58431ba6d6f995e864fa755301ad1d1.gz",

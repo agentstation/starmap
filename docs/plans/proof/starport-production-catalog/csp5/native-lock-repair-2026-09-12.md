@@ -32,6 +32,12 @@ Compilation does not qualify Windows behavior.
 
 Review session `57502` failed during its fifth section because the Codex engine exited with status 1.
 It supplied no final verdict. The captured error does not establish the underlying engine cause.
-Required retry `87440` uses the unchanged source, complete branch, and required cross-lab profile.
-Native CI and merge remain open for this correction.
+Required retry `87440` passed on unchanged source.
+
+Sol and Opus completed all six sections with zero findings at the configured P0 threshold.
+Secret scanning passed.
+
+[PR #154](https://github.com/agentstation/starmap/pull/154) now publishes the correction and is ready for review.
+[Native CI run 34728327481](https://github.com/agentstation/starmap/actions/runs/34728327481) qualifies that exact head.
+All required and native checks must pass before merge.
 Shared catalog cleanup and its pending coordinator decision remain required for CSP5 completion.

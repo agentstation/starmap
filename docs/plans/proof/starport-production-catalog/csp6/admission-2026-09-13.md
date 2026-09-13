@@ -22,6 +22,9 @@ The record preserves the initial missing-component failure, fixture compilation 
 Manual review covered exact scope matching, source completeness, expiry, input ownership, and refusal across multiple scopes.
 Manual review found no remaining component defect.
 
+The acquisition pipeline reconciles observed replies before it returns a prepared candidate.
+Workflow integration must reconcile the admitted inputs before publication.
+
 Immutable run receipts, trusted retained-input loading, workflow integration, and checked bot promotion remain required.
 No CSP6 PR or external publication occurred.
 Full A05 acceptance remains UNVERIFIED.
