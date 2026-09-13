@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/test/filemutation"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -21,6 +22,7 @@ func TestPreparationCleanupPreservesOperatorChanges(t *testing.T) {
 			fault := stderrors.New("stop after operator change")
 			var preserved string
 			var want []byte
+			nativeRefusal := false
 			_, err := (projector{afterStageRender: func(render string) error {
 				enclosure := filepath.Dir(render)
 				preserved = filepath.Join(render, "providers.yaml")
@@ -40,8 +42,9 @@ func TestPreparationCleanupPreservesOperatorChanges(t *testing.T) {
 						return err
 					}
 				case "replaced-enclosure":
-					if err := os.Rename(enclosure, enclosure+".moved"); err != nil {
-						return err
+					if !filemutation.Rename(t, enclosure, enclosure+".moved") {
+						nativeRefusal = true
+						return fault
 					}
 					if err := os.Mkdir(enclosure, directoryMode); err != nil {
 						return err
@@ -56,6 +59,13 @@ func TestPreparationCleanupPreservesOperatorChanges(t *testing.T) {
 			}}).project(t.Context(), path, catalog, identity, InputExpectation{})
 			if !stderrors.Is(err, fault) {
 				t.Fatalf("projection error: %v", err)
+			}
+			if nativeRefusal {
+				assertNoProjectionStaging(t, path)
+				if _, err := os.Lstat(path); !os.IsNotExist(err) {
+					t.Fatalf("canceled preparation published a workspace: %v", err)
+				}
+				return
 			}
 			data, err := os.ReadFile(preserved)
 			if err != nil || !bytes.Equal(data, want) {

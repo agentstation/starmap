@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/agentstation/starmap/internal/test/filemutation"
 	"github.com/agentstation/starmap/pkg/errors"
 	"os/exec"
 	"path/filepath"
@@ -154,6 +155,7 @@ func TestPrivatePublicationPreservesChangedRecords(t *testing.T) {
 				t.Fatal(err)
 			}
 			var stagePath string
+			nativeRefusal := false
 			directory.beforePublish = func(stage string) error {
 				stagePath = filepath.Join(path, stage)
 				target := stagePath
@@ -175,19 +177,26 @@ func TestPrivatePublicationPreservesChangedRecords(t *testing.T) {
 					target = filepath.Join(path, publicationDirectory, publicationLock)
 				}
 				if change == "metadata-identity" {
-					if err := os.Rename(filepath.Join(path, publicationDirectory), filepath.Join(path, "saved-metadata")); err != nil {
-						return err
+					if !filemutation.Rename(t, filepath.Join(path, publicationDirectory), filepath.Join(path, "saved-metadata")) {
+						nativeRefusal = true
+						return nil
 					}
 					return CreateDirectory(filepath.Join(path, publicationDirectory))
 				}
 				switch {
 				case strings.HasSuffix(change, "identity"):
-					raw, err := os.ReadFile(target)
+					parent, err := os.OpenRoot(filepath.Dir(target))
 					if err != nil {
 						return err
 					}
-					if err := os.Rename(target, target+".saved"); err != nil {
+					raw, err := ReadFile(parent, filepath.Base(target), publicationRecordMaxBytes)
+					_ = parent.Close()
+					if err != nil {
 						return err
+					}
+					if !filemutation.Rename(t, target, target+".saved") {
+						nativeRefusal = true
+						return nil
 					}
 					return os.WriteFile(target, raw, FileMode)
 				case change == "stage-access":
@@ -215,6 +224,19 @@ func TestPrivatePublicationPreservesChangedRecords(t *testing.T) {
 				}
 			}
 			err = directory.PublishFileContext(t.Context(), "source.json", []byte("candidate"), ".layer-")
+			if nativeRefusal {
+				if err != nil {
+					t.Fatal(err)
+				}
+				data, err := directory.ReadFile("source.json", publicationRecordMaxBytes)
+				if err != nil || string(data) != "candidate" {
+					t.Fatalf("prevented replacement stopped valid publication: %q, %v", data, err)
+				}
+				if _, err := os.Lstat(stagePath); !os.IsNotExist(err) {
+					t.Fatalf("completed publication retained staging: %v", err)
+				}
+				return
+			}
 			if err == nil {
 				t.Fatal("publication accepted changed ownership")
 			}

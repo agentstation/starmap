@@ -195,9 +195,13 @@ func (s *treeScanner) entry(name string) (treeEntry, error) {
 		return entry, s.checkEntryAccess(name, file, info, entry.AccessSHA256)
 	}
 	hash := sha256.New()
-	n, err := io.CopyN(hash, snapshotReader{ctx: s.ctx, file: file}, info.Size()+1)
-	if err != nil && !stderrors.Is(err, io.EOF) {
-		return treeEntry{}, err
+	var n int64
+	// Windows rejects reads within a held lock, including reads past an empty file.
+	if info.Size() != 0 {
+		n, err = io.CopyN(hash, snapshotReader{ctx: s.ctx, file: file}, info.Size()+1)
+		if err != nil && !stderrors.Is(err, io.EOF) {
+			return treeEntry{}, err
+		}
 	}
 	if n != info.Size() {
 		return treeEntry{}, replacementConflict(name, "file size changed during inspection")

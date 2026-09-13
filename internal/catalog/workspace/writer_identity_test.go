@@ -1,13 +1,12 @@
 package workspace
 
 import (
-	stderrors "errors"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"reflect"
-	"runtime"
 	"testing"
+
+	"github.com/agentstation/starmap/internal/test/filemutation"
 )
 
 func TestWorkspaceWriterReplacementStopsPublication(t *testing.T) {
@@ -24,12 +23,9 @@ func TestWorkspaceWriterReplacementStopsPublication(t *testing.T) {
 			nativeRefusal := false
 			p := projector{journalReplacement: journal, beforePromote: func() error {
 				path := writerLockPath(target)
-				if err := os.Rename(path, path+".original"); err != nil {
-					if runtime.GOOS == "windows" && stderrors.Is(err, fs.ErrPermission) {
-						nativeRefusal = true
-						return nil
-					}
-					return err
+				if !filemutation.Rename(t, path, path+".original") {
+					nativeRefusal = true
+					return nil
 				}
 				if err := os.WriteFile(path, nil, fileMode); err != nil {
 					return err
@@ -101,12 +97,9 @@ func TestWorkspaceWriterReplacementStopsJournalPhases(t *testing.T) {
 				}
 				reached = true
 				lock := writerLockPath(target)
-				if err := os.Rename(lock, lock+".original"); err != nil {
-					if runtime.GOOS == "windows" && stderrors.Is(err, fs.ErrPermission) {
-						nativeRefusal = true
-						return nil
-					}
-					return err
+				if !filemutation.Rename(t, lock, lock+".original") {
+					nativeRefusal = true
+					return nil
 				}
 				if err := os.WriteFile(lock, nil, fileMode); err != nil {
 					return err

@@ -245,6 +245,12 @@ jobs:
           STARMAP_WINDOWS_CLOCK_PRIVILEGE_PROBE: '1'
         run: |
           go test -json -count=1 -timeout=2m -run '^TestWindowsTimeServicePreparedPrivilege$' ./pkg/catalogs/permission/hostclock/internal/w32timerpc > native-evidence/windows-clock-privilege-probe.jsonl
+      - name: Test native filesystem recovery before the full suite
+        timeout-minutes: 10
+        shell: bash
+        run: |
+          mkdir -p native-evidence
+          go test -json -count=1 -timeout=5m -run '^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent)$' ./internal/privatefiles ./internal/catalog/workspace > native-evidence/filesystem-preflight.jsonl
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:

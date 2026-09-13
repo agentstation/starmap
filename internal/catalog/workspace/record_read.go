@@ -29,7 +29,7 @@ func readWorkspaceRecord(root *os.Root, name string, limit int64) ([]byte, works
 	if err != nil {
 		return nil, workspaceRecordState{}, err
 	}
-	if !os.SameFile(info, opened) {
+	if !os.SameFile(info, opened) || opened.Mode() != info.Mode() || opened.Size() != info.Size() || !opened.ModTime().Equal(info.ModTime()) {
 		return nil, workspaceRecordState{}, replacementConflict(name, "file changed before the read")
 	}
 	identity, err := entryIdentity(file)
@@ -40,9 +40,13 @@ func readWorkspaceRecord(root *os.Root, name string, limit int64) ([]byte, works
 	if err != nil {
 		return nil, workspaceRecordState{}, err
 	}
-	data, err := io.ReadAll(io.LimitReader(file, limit+1))
-	if err != nil {
-		return nil, workspaceRecordState{}, err
+	data := []byte{}
+	// Empty lock files need metadata validation without a Windows locked-region read.
+	if opened.Size() != 0 {
+		data, err = io.ReadAll(io.LimitReader(file, limit+1))
+		if err != nil {
+			return nil, workspaceRecordState{}, err
+		}
 	}
 	if int64(len(data)) > limit {
 		return nil, workspaceRecordState{}, replacementLimit("file")
@@ -51,7 +55,7 @@ func readWorkspaceRecord(root *os.Root, name string, limit int64) ([]byte, works
 	if err != nil {
 		return nil, workspaceRecordState{}, err
 	}
-	if !os.SameFile(opened, after) || !after.Mode().IsRegular() || after.Mode() != info.Mode() || after.Size() != int64(len(data)) || !after.ModTime().Equal(info.ModTime()) {
+	if !os.SameFile(opened, after) || !after.Mode().IsRegular() || after.Mode() != info.Mode() || after.Size() != info.Size() || after.Size() != int64(len(data)) || !after.ModTime().Equal(info.ModTime()) {
 		return nil, workspaceRecordState{}, replacementConflict(name, "file changed during the read")
 	}
 	currentAccess, err := entryAccessDigest(file)
