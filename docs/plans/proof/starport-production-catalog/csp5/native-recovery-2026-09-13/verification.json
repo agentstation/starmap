@@ -5,7 +5,7 @@
   "source_binding_kind": "commit",
   "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
   "base_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
-  "observed_at": "2026-09-13T02:21:38.285063+00:00",
+  "observed_at": "2026-09-13T02:48:42.281841+00:00",
   "source_files": [
     {
       "path": ".github/workflows/pr.yaml",
@@ -461,6 +461,45 @@
         "internal/catalog/workspace/record_read_lock_test.go"
       ]
     },
+    "pre-pr-review-retry": {
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--profile",
+        "cross-lab",
+        "--thinking",
+        "codex=xhigh",
+        "--stream-engine-output",
+        "--json-output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-recovery-review-retry-33j9utwk/review.json",
+        "--output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-recovery-review-retry-33j9utwk/review.txt"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
+      "started_at": "2026-09-13T02:16:10.251429+00:00",
+      "finished_at": "2026-09-13T02:41:17.255520+00:00",
+      "exit_code": 0,
+      "artifact": "blobs/7fb2c90b64e1fc79c0e286f7c701ada913f4793dc13611c0157a1d4d2be9f6dc.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [],
+      "different_source_files": []
+    },
     "pre-pr-review": {
       "command": [
         "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
@@ -654,14 +693,7 @@
       "different_source_files": []
     }
   },
-  "running_checks": [
-    {
-      "name": "Required pre-PR review retry",
-      "session_id": 97629,
-      "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
-      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-recovery-checks/pre-pr-review-retry.json"
-    }
-  ],
+  "running_checks": [],
   "comment_only_change": {
     "path": "internal/test/filemutation/rename.go",
     "before_sha256": "7bada30f93596d42d45ea7a6fef378f7e0354d34f4f0ed9aef4e7ea68c6a1684",
@@ -1460,11 +1492,13 @@
     "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
     "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
     "session_id": 97629,
-    "reason": "The first review ended after the Claude engine failed during section four. No final verdict was produced."
+    "reason": "The first review ended after the Claude engine failed during section four. No final verdict was produced.",
+    "review.json": "blobs/26886835876bc56385644da5331fe0bfad98657bbaa7c9295ca491670f225a01.gz",
+    "review.txt": "blobs/4a5b5faf916e95044a1318fd54fe4caacd308fc0b912fad6641f5c4895f61e8a.gz"
   },
   "limits": [
     "Both native Windows jobs failed on the parent correction. This commit requires new native execution.",
-    "Required review and CI must pass before the existing PR can merge.",
+    "Required review passed. Fresh native CI must pass before the existing PR can merge.",
     "Shared catalog cleanup and the pending coordinator decision remain required for CSP5 completion.",
     "No task completion credit applies."
   ],
@@ -1580,6 +1614,11 @@
       "decoded_sha256": "d5901f3bf326b0978093d6d4d0b27b0e75599ac7f8854b227f99b4584d6bf043"
     },
     {
+      "path": "blobs/7fb2c90b64e1fc79c0e286f7c701ada913f4793dc13611c0157a1d4d2be9f6dc.gz",
+      "sha256": "6a5b0d71ddd2363411a0d97ac69e85e8fc3a7ad322fbc15e390feceedce4ba2c",
+      "decoded_sha256": "7fb2c90b64e1fc79c0e286f7c701ada913f4793dc13611c0157a1d4d2be9f6dc"
+    },
+    {
       "path": "blobs/33f5cc3d7b2383a310aa932041da2747695c8064026106b029d27f1210411bf7.gz",
       "sha256": "89da2a0da52c54696ed6952a35815245bd1326d3b50ff9f93242e8b071565e1a",
       "decoded_sha256": "33f5cc3d7b2383a310aa932041da2747695c8064026106b029d27f1210411bf7"
@@ -1608,6 +1647,17 @@
       "path": "blobs/bca062533b97566bcb2596b08cca0f81343e83380d67da923e345e93ceae8384.gz",
       "sha256": "55fa61aecae6c2458ca528b3589b6c380c18377b37dc83c16bfcffc4b90d6e7c",
       "decoded_sha256": "bca062533b97566bcb2596b08cca0f81343e83380d67da923e345e93ceae8384"
+    },
+    {
+      "path": "blobs/26886835876bc56385644da5331fe0bfad98657bbaa7c9295ca491670f225a01.gz",
+      "sha256": "46dc7b8e85c25d97d41b2e3c5f4dbaf18ee5184d342634155c03638597156780",
+      "decoded_sha256": "26886835876bc56385644da5331fe0bfad98657bbaa7c9295ca491670f225a01"
+    },
+    {
+      "path": "blobs/4a5b5faf916e95044a1318fd54fe4caacd308fc0b912fad6641f5c4895f61e8a.gz",
+      "sha256": "42b47d6a859e11cdc46a0964ee0a45cbceabf135b85956b2b5bfef3354f54e96",
+      "decoded_sha256": "4a5b5faf916e95044a1318fd54fe4caacd308fc0b912fad6641f5c4895f61e8a"
     }
-  ]
+  ],
+  "publication_capture": "publication.json"
 }

@@ -35,9 +35,16 @@ The corrected callback passes. A later change affects one comment sentence only.
 
 Required review `52394` ended with status 1 after the Claude engine failed during section four.
 It produced no final verdict. The complete captured output remains in the verification record.
-Retry `97629` reviews the unchanged correction with the same profile and threshold.
+Retry `97629` passed all six sections on unchanged source at 02:41 UTC.
+Sol xhigh and Opus 5 high reported zero findings at the configured P0 threshold.
+The verification record retains both terminal runs and the final report.
 
-PR #154 still publishes the parent correction. Fresh native CI and merge remain required.
+[PR #154](https://github.com/agentstation/starmap/pull/154) now publishes correction `9e278107c`.
+[Workflow 34733931016](https://github.com/agentstation/starmap/actions/runs/34733931016) started on that commit at 02:48 UTC.
+The [publication capture](native-recovery-2026-09-13/publication.json) binds the PR and workflow to the reviewed source.
+
+Focused filesystem checks pass on all six native runners, including both Windows architectures.
+The complete native suites and verification gate remain active. Merge remains required.
 Shared catalog cleanup and its coordinator decision remain required for CSP5 completion.
 
 The coordinator question remains pending. No answer or scope reduction follows from that request.
