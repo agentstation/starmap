@@ -1,6 +1,7 @@
 package github
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -65,7 +66,10 @@ type stateStore struct {
 // newStateStore resolves the state file of one configuration. The file name
 // is a digest of the repository and the channel. A custom deployment therefore
 // writes neither its host nor its URL into a path.
-func newStateStore(config Config) (*stateStore, error) {
+func newStateStore(ctx context.Context, config Config) (*stateStore, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	if err := policy.Require("github-discovery", policy.OwnerOnly); err != nil {
 		return nil, err
 	}
@@ -73,6 +77,9 @@ func newStateStore(config Config) (*stateStore, error) {
 	dir, err := privatefiles.NewDirectory(directory)
 	if err != nil {
 		return nil, errors.WrapIO("open private discovery directory", directory, err)
+	}
+	if err := dir.RecoverPublications(ctx); err != nil {
+		return nil, errors.WrapIO("recover private discovery records", directory, err)
 	}
 	key := sha256.Sum256([]byte(config.Repository + "\x00" + config.Channel))
 	return &stateStore{
@@ -90,13 +97,23 @@ func newStateStore(config Config) (*stateStore, error) {
 // channel. A renamed channel therefore starts cold instead of rejecting its
 // first document as a replay.
 func (s *stateStore) load() (State, error) {
+	state, _, err := s.loadSnapshot()
+	return state, err
+}
+
+func (s *stateStore) loadSnapshot() (State, []byte, error) {
 	data, err := s.directory.ReadFile(filepath.Base(s.path), maxStateBytes)
 	if os.IsNotExist(err) {
-		return State{}, nil
+		return State{}, nil, nil
 	}
 	if err != nil {
-		return State{}, errors.WrapIO("read", s.path, err)
+		return State{}, nil, errors.WrapIO("read", s.path, err)
 	}
+	state, err := s.decode(data)
+	return state, data, err
+}
+
+func (s *stateStore) decode(data []byte) (State, error) {
 	if len(data) > maxStateBytes {
 		return State{}, sourceValidation("state", len(data), "exceeds the state document size limit")
 	}
@@ -104,30 +121,33 @@ func (s *stateStore) load() (State, error) {
 	if err := json.Unmarshal(data, &state); err != nil {
 		return State{}, errors.NewParseError("json", "catalog source state", "cannot decode the state", err)
 	}
-	if state.SchemaVersion != StateSchemaVersion {
-		// A state file from another schema carries no usable floor. Start
-		// cold rather than trust a document this build cannot read.
-		return State{}, nil
-	}
-	if state.Repository != s.repository || state.Channel != s.channel {
+	if state.SchemaVersion != StateSchemaVersion || state.Repository != s.repository || state.Channel != s.channel {
 		return State{}, nil
 	}
 	return state, nil
 }
 
-// save publishes one complete state record through a private temporary file.
-func (s *stateStore) save(state State) error {
-	state.SchemaVersion = StateSchemaVersion
-	data, err := json.MarshalIndent(state, "", "  ")
+// saveSnapshot publishes verified state only while its previously read bytes remain current.
+func (s *stateStore) saveSnapshot(ctx context.Context, state State, previous []byte) error {
+	data, err := encodeState(state)
 	if err != nil {
-		return errors.WrapResource("encode", "catalog source state", state.Channel, err)
+		return err
 	}
-	data = append(data, '\n')
-	if len(data) > maxStateBytes {
-		return sourceValidation("state", len(data), "exceeds the state document size limit")
-	}
-	if err := s.directory.WriteFile(filepath.Base(s.path), data, ".state-"); err != nil {
+	if err := s.directory.CompareAndPublishFileContext(ctx, filepath.Base(s.path), previous, data, ".state-"); err != nil {
 		return errors.WrapIO("write private discovery state", s.path, err)
 	}
 	return nil
+}
+
+func encodeState(state State) ([]byte, error) {
+	state.SchemaVersion = StateSchemaVersion
+	data, err := json.MarshalIndent(state, "", "  ")
+	if err != nil {
+		return nil, errors.WrapResource("encode", "catalog source state", state.Channel, err)
+	}
+	data = append(data, '\n')
+	if len(data) > maxStateBytes {
+		return nil, sourceValidation("state", len(data), "exceeds the state document size limit")
+	}
+	return data, nil
 }

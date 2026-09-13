@@ -11,6 +11,8 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+
+	"github.com/agentstation/starmap/internal/privatefiles"
 )
 
 func verifyMigrationSourceIdentity(root *os.Root, identity string) (string, error) {
@@ -58,7 +60,7 @@ func verifyMigrationSourceIdentity(root *os.Root, identity string) (string, erro
 
 func inspectMigrationFiles(ctx context.Context, root *os.Root) ([]directoryMigrationFile, error) {
 	var files []directoryMigrationFile
-	err := fs.WalkDir(root.FS(), ".", func(path string, entry fs.DirEntry, walkErr error) error {
+	err := walkMigrationTree(ctx, root, migrationSourceMaxEntries, func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
 		}
@@ -78,6 +80,14 @@ func inspectMigrationFiles(ctx context.Context, root *os.Root) ([]directoryMigra
 			return invalidMigrationIntent("files.source")
 		}
 		if entry.IsDir() {
+			if isRecordPublicationDirectory(path) {
+				parent := filepath.Join(root.Name(), filepath.Dir(filepath.FromSlash(path)))
+				directory, err := privatefiles.ExistingDirectory(parent)
+				if err != nil {
+					return err
+				}
+				return directory.CheckNoPendingPublications(ctx)
+			}
 			return nil
 		}
 		if !entry.Type().IsRegular() || len(files) >= migrationManifestMaxFiles {

@@ -10,6 +10,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -31,12 +32,15 @@ type LegacyLayoutMigrationResult struct {
 }
 
 type legacyLayoutMigrator struct {
-	afterMove func() error
+	beforeMove      func() error
+	afterMove       func() error
+	afterProjection func() error
+	projector       projector
 }
 
-// MigrateLegacyLayout explicitly relocates the pre-plan filesystem generation
-// store and projects its current generation back to the vacated human catalog workspace
-// path. Validation and both advisory locks complete before the first rename.
+// MigrateLegacyLayout moves the legacy catalog store and projects its current catalog into the vacated human catalog workspace.
+// A retry recovers a recorded relocation only when retained files and filesystem identities still match.
+// Validation and both advisory locks precede relocation.
 func MigrateLegacyLayout(
 	ctx context.Context,
 	legacyPath string,
@@ -56,31 +60,22 @@ func (m legacyLayoutMigrator) migrate(
 	if err := ctx.Err(); err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
-	legacy, err := resolveTarget(legacyPath)
+	legacy, state, err := prepareLegacyLayoutMigration(ctx, legacyPath, statePath)
 	if err != nil {
-		return LegacyLayoutMigrationResult{}, err
-	}
-	state, err := resolveTarget(statePath)
-	if err != nil {
-		return LegacyLayoutMigrationResult{}, err
-	}
-	if err := ValidateMachineSeparation(legacy, state, "catalog state"); err != nil {
-		return LegacyLayoutMigrationResult{}, err
-	}
-	if err := requireAbsentMigrationTarget(state); err != nil {
-		return LegacyLayoutMigrationResult{}, err
-	}
-	if err := requireLegacyStoreShape(legacy); err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
 
-	releaseStore, err := acquireLegacyStoreLock(ctx, legacy)
+	lease, err := acquireLegacyStoreLease(ctx, legacy)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
-	defer releaseStore()
+	defer lease.close()
+	originalStore, err := captureLegacyStoreIdentity(legacy)
+	if err != nil {
+		return LegacyLayoutMigrationResult{}, errors.WrapIO("inspect", legacy, err)
+	}
 
-	generation, catalog, retained, err := inspectLegacyStore(ctx, legacy)
+	generation, catalog, retained, err := inspectLegacyStore(ctx, legacy, lease)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
@@ -92,32 +87,53 @@ func (m legacyLayoutMigrator) migrate(
 		return LegacyLayoutMigrationResult{}, err
 	}
 
-	writerPath := writerLockPath(legacy)
-	_, writerStatErr := os.Lstat(writerPath)
-	writerLockExisted := writerStatErr == nil
-	if writerStatErr != nil && !stderrors.Is(writerStatErr, fs.ErrNotExist) {
-		return LegacyLayoutMigrationResult{}, errors.WrapIO("inspect", writerPath, writerStatErr)
-	}
-	releaseWriter, err := acquireWriterLock(legacy)
+	writer, err := acquireWorkspaceWriter(legacy)
 	if err != nil {
 		return LegacyLayoutMigrationResult{}, err
 	}
-	succeeded := false
-	defer func() {
-		releaseWriter()
-		if !succeeded && !writerLockExisted {
-			_ = os.Remove(writerPath)
-		}
-	}()
+	defer writer.close()
+	m.projector.writer = writer
+	m.projector.recordWrites.checkWriter = writer.check
+	m.projector.recordWrites.writer = writer
 
 	if err := os.MkdirAll(filepath.Dir(state), directoryMode); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("create", filepath.Dir(state), err)
 	}
-	if err := os.Rename(legacy, state); err != nil {
+	move, err := prepareLegacyStoreMove(legacy, state, originalStore)
+	if err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
+	defer move.close()
+	stage, err := prepareRelocation(ctx, legacy, state, generation, retained, writer, lease, nil)
+	if err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
+	defer stage.releaseHandles()
+	if stage.relocation.record.Root.Tree.ID != originalStore {
+		return LegacyLayoutMigrationResult{}, replacementConflict(legacy, "legacy store identity changed before relocation")
+	}
+	m.projector.relocation = stage
+	m.projector.relocationLease = lease
+	move.check = func(store string) error { return stage.checkRelocationLease(context.WithoutCancel(ctx), store, lease) }
+	if m.beforeMove != nil {
+		if err := m.beforeMove(); err != nil {
+			return LegacyLayoutMigrationResult{}, err
+		}
+	}
+	if err := move.relocate(); err != nil {
 		return LegacyLayoutMigrationResult{}, errors.WrapIO("relocate", legacy, err)
 	}
-	rollback := func(cause error, projectedChecksum string) (LegacyLayoutMigrationResult, error) {
-		if rollbackErr := rollbackLegacyMove(legacy, state, projectedChecksum); rollbackErr != nil {
+	rollback := func(cause error, projected treeSnapshot) (LegacyLayoutMigrationResult, error) {
+		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), workspaceCleanupTimeout)
+		defer cancel()
+		rollbackErr := stage.checkRelocationStore(cleanup, state, lease)
+		if rollbackErr == nil {
+			rollbackErr = move.rollback(cleanup, projected)
+		}
+		if rollbackErr == nil {
+			rollbackErr = stage.finishRelocation(cleanup, lease)
+		}
+		if rollbackErr != nil {
 			return LegacyLayoutMigrationResult{}, errors.WrapResource(
 				"rollback",
 				"legacy catalog layout migration",
@@ -127,22 +143,18 @@ func (m legacyLayoutMigrator) migrate(
 		}
 		return LegacyLayoutMigrationResult{}, cause
 	}
-	if err := syncMigrationParents(legacy, state); err != nil {
-		return rollback(errors.WrapIO("sync", state, err), "")
+	if err := move.sync(); err != nil {
+		return rollback(errors.WrapIO("sync", state, err), treeSnapshot{})
 	}
 	if m.afterMove != nil {
 		if err := m.afterMove(); err != nil {
-			return rollback(err, "")
+			return rollback(err, treeSnapshot{})
 		}
 	}
 
-	relocated, err := storage.NewFilesystem(state)
+	relocatedCurrent, _, _, err := inspectLegacyStore(ctx, state, lease)
 	if err != nil {
-		return rollback(err, "")
-	}
-	relocatedCurrent, err := relocated.Current(ctx)
-	if err != nil {
-		return rollback(errors.WrapResource("verify", "relocated catalog generation", "current", err), "")
+		return rollback(errors.WrapResource("verify", "relocated catalog generation", "current", err), treeSnapshot{})
 	}
 	if !sameMigrationGeneration(generation, relocatedCurrent) {
 		return rollback(&errors.ConflictError{
@@ -150,10 +162,10 @@ func (m legacyLayoutMigrator) migrate(
 			Expected: generation.Manifest.GenerationID,
 			Actual:   relocatedCurrent.Manifest.GenerationID,
 			Message:  "relocated current generation changed during migration",
-		}, "")
+		}, treeSnapshot{})
 	}
 
-	receipt, err := (projector{}).projectLocked(
+	receipt, projected, err := m.projector.projectLocked(
 		ctx,
 		legacy,
 		catalog,
@@ -161,9 +173,19 @@ func (m legacyLayoutMigrator) migrate(
 		InputExpectation{Path: legacy, Exists: false},
 	)
 	if err != nil {
-		return rollback(err, receipt.WorkspaceChecksum)
+		return rollback(err, projected)
 	}
-	succeeded = true
+	if m.afterProjection != nil {
+		if err := m.afterProjection(); err != nil {
+			return rollback(err, projected)
+		}
+	}
+	if err := stage.checkRelocationStore(ctx, state, lease); err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
+	if err := stage.finishRelocation(ctx, lease); err != nil {
+		return LegacyLayoutMigrationResult{}, err
+	}
 	return LegacyLayoutMigrationResult{
 		WorkspacePath:     legacy,
 		StatePath:         state,
@@ -200,7 +222,7 @@ func requireLegacyStoreShape(path string) error {
 			Field: "legacy_catalog_path", Value: path, Message: "must be a real directory",
 		}
 	}
-	entries, err := os.ReadDir(path)
+	entries, err := readLegacyLayoutEntries(path)
 	if err != nil {
 		return errors.WrapIO("read", path, err)
 	}
@@ -248,94 +270,130 @@ func requireLegacyStoreShape(path string) error {
 	return nil
 }
 
+// inspectLegacyStore reads the legacy layout while the caller holds its publication lease.
+// It validates each generation without requesting another handle for the same lock.
 func inspectLegacyStore(
 	ctx context.Context,
 	path string,
+	lease *legacyStoreLease,
 ) (catalogs.Generation, *catalogs.Catalog, int, error) {
-	store, err := storage.NewFilesystem(path)
+	if err := ctx.Err(); err != nil {
+		return catalogs.Generation{}, nil, 0, err
+	}
+	if err := lease.check(path); err != nil {
+		return catalogs.Generation{}, nil, 0, err
+	}
+	directory, err := privatefiles.ExistingDirectory(path)
 	if err != nil {
 		return catalogs.Generation{}, nil, 0, err
 	}
-	current, err := store.Current(ctx)
+	pointer, err := directory.ReadFile("current", catalogs.MaxCatalogAuthorityRecordBytes)
 	if err != nil {
-		return catalogs.Generation{}, nil, 0, errors.WrapResource(
-			"validate", "legacy catalog generation", "current", err,
-		)
+		return catalogs.Generation{}, nil, 0, errors.WrapIO("read", filepath.Join(path, "current"), err)
 	}
-	catalog, err := validateMigrationGeneration(current)
+	id := strings.TrimSpace(string(pointer))
+	if id == "" {
+		return catalogs.Generation{}, nil, 0, &errors.ValidationError{Field: "current", Message: "generation ID is empty"}
+	}
+	var current catalogs.Generation
+	var catalog *catalogs.Catalog
+	retained, err := scanLegacyGenerations(ctx, filepath.Join(path, "generations"), func(entry fs.DirEntry) error {
+		generation, err := inspectLegacyGeneration(ctx, path, entry)
+		if err != nil {
+			return err
+		}
+		decoded, err := validateMigrationGeneration(generation)
+		if err != nil {
+			return err
+		}
+		if generation.Manifest.GenerationID == id {
+			current, catalog = generation, decoded
+		}
+		return nil
+	})
 	if err != nil {
 		return catalogs.Generation{}, nil, 0, err
 	}
-
-	entries, err := os.ReadDir(filepath.Join(path, "generations"))
-	if err != nil {
-		return catalogs.Generation{}, nil, 0, errors.WrapIO(
-			"read", filepath.Join(path, "generations"), err,
-		)
-	}
-	if len(entries) == 0 {
+	if catalog == nil {
 		return catalogs.Generation{}, nil, 0, &errors.ValidationError{
-			Field: "legacy_catalog_layout.generations", Message: "must not be empty",
+			Field: "legacy_catalog_layout.generations", Value: id, Message: "current generation is absent",
 		}
 	}
-	for _, entry := range entries {
-		if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() {
-			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
-				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
-				Message: "must be a real directory",
-			}
-		}
-		dir := filepath.Join(path, "generations", entry.Name())
-		children, err := os.ReadDir(dir)
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, errors.WrapIO("read", dir, err)
-		}
-		hasAuthorityRecord := len(children) == 3 && children[0].Name() == legacyAuthorityRecordName
-		catalogChildren := children
-		if hasAuthorityRecord {
-			catalogChildren = children[1:]
-		}
-		if len(catalogChildren) != 2 ||
-			catalogChildren[0].Name() != "catalog.json" ||
-			catalogChildren[1].Name() != "manifest.json" {
-			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
-				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
-				Message: "must contain catalog.json, manifest.json, and only an optional authority.json record",
-			}
-		}
-		manifestData, err := os.ReadFile(filepath.Join(dir, "manifest.json")) //nolint:gosec
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, errors.WrapIO(
-				"read", filepath.Join(dir, "manifest.json"), err,
-			)
-		}
-		manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, err
-		}
-		digest := sha256.Sum256([]byte(manifest.GenerationID))
-		if entry.Name() != hex.EncodeToString(digest[:]) {
-			return catalogs.Generation{}, nil, 0, &errors.ValidationError{
-				Field: "legacy_catalog_layout.generation", Value: entry.Name(),
-				Message: "directory does not match the generation identity",
-			}
-		}
-		generation, err := store.Get(ctx, manifest.GenerationID)
-		if err != nil {
-			return catalogs.Generation{}, nil, 0, errors.WrapResource(
-				"validate", "retained catalog generation", manifest.GenerationID, err,
-			)
-		}
-		if hasAuthorityRecord {
-			if err := validateLegacyAuthorityRecord(dir, generation); err != nil {
-				return catalogs.Generation{}, nil, 0, err
-			}
-		}
-		if _, err := validateMigrationGeneration(generation); err != nil {
-			return catalogs.Generation{}, nil, 0, err
+	if err := lease.check(path); err != nil {
+		return catalogs.Generation{}, nil, 0, err
+	}
+	if err := ctx.Err(); err != nil {
+		return catalogs.Generation{}, nil, 0, err
+	}
+	return current, catalog, retained, nil
+}
+
+func inspectLegacyGeneration(ctx context.Context, path string, entry fs.DirEntry) (catalogs.Generation, error) {
+	if err := ctx.Err(); err != nil {
+		return catalogs.Generation{}, err
+	}
+	if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() {
+		return catalogs.Generation{}, &errors.ValidationError{
+			Field: "legacy_catalog_layout.generation", Value: entry.Name(),
+			Message: "must be a real directory",
 		}
 	}
-	return current, catalog, len(entries), nil
+	dir := filepath.Join(path, "generations", entry.Name())
+	children, err := readLegacyLayoutEntries(dir)
+	if err != nil {
+		return catalogs.Generation{}, errors.WrapIO("read", dir, err)
+	}
+	hasAuthorityRecord := len(children) == 3 && children[0].Name() == legacyAuthorityRecordName
+	catalogChildren := children
+	if hasAuthorityRecord {
+		catalogChildren = children[1:]
+	}
+	if len(catalogChildren) != 2 ||
+		catalogChildren[0].Name() != "catalog.json" ||
+		catalogChildren[1].Name() != "manifest.json" {
+		return catalogs.Generation{}, &errors.ValidationError{
+			Field: "legacy_catalog_layout.generation", Value: entry.Name(),
+			Message: "must contain catalog.json, manifest.json, and only an optional authority.json record",
+		}
+	}
+	directory, err := privatefiles.ExistingDirectory(dir)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	manifestData, err := directory.ReadFile("manifest.json", storage.MaxFilesystemManifestBytes)
+	if err != nil {
+		return catalogs.Generation{}, errors.WrapIO(
+			"read", filepath.Join(dir, "manifest.json"), err,
+		)
+	}
+	manifest, err := catalogs.ParseGenerationManifestJSON(manifestData)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	digest := sha256.Sum256([]byte(manifest.GenerationID))
+	if entry.Name() != hex.EncodeToString(digest[:]) {
+		return catalogs.Generation{}, &errors.ValidationError{
+			Field: "legacy_catalog_layout.generation", Value: entry.Name(),
+			Message: "directory does not match the generation identity",
+		}
+	}
+	if manifest.Payload.SizeBytes <= 0 || manifest.Payload.SizeBytes > storage.MaxFilesystemPayloadBytes {
+		return catalogs.Generation{}, &errors.ValidationError{Field: "payload.size_bytes", Message: "exceeds the filesystem reader limit"}
+	}
+	payload, err := directory.ReadFile("catalog.json", manifest.Payload.SizeBytes)
+	if err != nil {
+		return catalogs.Generation{}, errors.WrapIO("read", filepath.Join(dir, "catalog.json"), err)
+	}
+	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
+	if err := generation.Validate(); err != nil {
+		return catalogs.Generation{}, err
+	}
+	if hasAuthorityRecord {
+		if err := validateLegacyAuthorityRecord(dir, generation); err != nil {
+			return catalogs.Generation{}, err
+		}
+	}
+	return generation, nil
 }
 
 func validateLegacyAuthorityRecord(path string, generation catalogs.Generation) error {
@@ -383,65 +441,27 @@ func sameMigrationGeneration(left, right catalogs.Generation) bool {
 		bytes.Equal(left.Payload, right.Payload)
 }
 
-func rollbackLegacyMove(legacy, state, projectedChecksum string) error {
-	info, err := os.Lstat(legacy)
-	switch {
-	case stderrors.Is(err, fs.ErrNotExist):
-		// Nothing became visible at the vacated path.
-	case err != nil:
-		return errors.WrapIO("inspect", legacy, err)
-	default:
-		if info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
-			return unexpectedMigrationRollbackPath(legacy)
-		}
-		if projectedChecksum == "" {
-			return unexpectedMigrationRollbackPath(legacy)
-		}
-		if err := ValidateHumanLayout(legacy, ""); err != nil {
-			return errors.WrapResource("validate", "migration rollback workspace", legacy, err)
-		}
-		visible, err := readSemanticState(legacy)
-		if err != nil {
-			return errors.WrapResource("validate", "migration rollback workspace", legacy, err)
-		}
-		if !visible.exists || visible.checksum != projectedChecksum {
-			return &errors.ConflictError{
-				Resource: "catalog migration rollback workspace",
-				Expected: projectedChecksum,
-				Actual:   visible.describe(),
-				Message:  "vacated catalog path changed after relocation; relocated state was preserved",
-			}
-		}
-		if err := os.RemoveAll(legacy); err != nil {
-			return errors.WrapIO("remove", legacy, err)
-		}
+func prepareLegacyLayoutMigration(ctx context.Context, legacyPath, statePath string) (string, string, error) {
+	legacy, err := resolveTarget(legacyPath)
+	if err != nil {
+		return "", "", err
 	}
-	if err := os.Remove(projectionMarkerPath(legacy)); err != nil && !stderrors.Is(err, fs.ErrNotExist) {
-		return errors.WrapIO("remove", projectionMarkerPath(legacy), err)
+	state, err := resolveTarget(statePath)
+	if err != nil {
+		return "", "", err
 	}
-	if err := os.Rename(state, legacy); err != nil {
-		return errors.WrapIO("restore", legacy, err)
+	if err := ValidateMachineSeparation(legacy, state, "catalog state"); err != nil {
+		return "", "", err
 	}
-	return syncMigrationParents(legacy, state)
-}
+	if err := recoverLegacyRelocation(ctx, legacy, state); err != nil {
+		return "", "", err
+	}
+	if err := requireAbsentMigrationTarget(state); err != nil {
+		return "", "", err
+	}
+	if err := requireLegacyStoreShape(legacy); err != nil {
+		return "", "", err
+	}
 
-func unexpectedMigrationRollbackPath(path string) error {
-	return &errors.ConflictError{
-		Resource: "catalog migration rollback workspace",
-		Actual:   path,
-		Message:  "vacated catalog path was recreated after relocation; relocated state was preserved",
-	}
-}
-
-func syncMigrationParents(first, second string) error {
-	parents := []string{filepath.Dir(first)}
-	if other := filepath.Dir(second); other != parents[0] {
-		parents = append(parents, other)
-	}
-	for _, parent := range parents {
-		if err := syncDirectory(parent); err != nil {
-			return err
-		}
-	}
-	return nil
+	return legacy, state, nil
 }

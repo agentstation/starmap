@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	stderrors "errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -32,6 +33,8 @@ type Filesystem struct {
 	commitLock                *flock.Flock
 	beforeCurrentPromotion    func() error
 	beforeGenerationPromotion func(string) error
+	syncCurrentDirectory      func(*os.Root) error
+	beforeRetentionStep       func(string, string) error
 }
 
 // NewFilesystem configures a filesystem catalog store without accessing or creating its root.
@@ -65,6 +68,11 @@ func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error) {
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+	unlock, err := s.lockFilesystemRead(ctx)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	defer unlock()
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return catalogs.Generation{}, err
 	}
@@ -82,6 +90,11 @@ func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, e
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+	unlock, err := s.lockFilesystemRead(ctx)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	defer unlock()
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return catalogs.Generation{}, err
 	}
@@ -89,8 +102,11 @@ func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, e
 }
 
 // Commit writes an immutable generation before atomically replacing current.
+// PublicationError identifies a visible current pointer with unconfirmed durability.
+// An identical retry confirms directory durability without replacing the pointer.
 func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error {
-	if err := validateCandidate(ctx, generation); err != nil {
+	manifest, err := prepareFilesystemManifest(ctx, generation)
+	if err != nil {
 		return err
 	}
 	if err := validateFilesystemLayout(s.root); err != nil {
@@ -145,7 +161,10 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 			return err
 		}
 		if currentID == id {
-			return s.ensureAuthorityRecord(ctx, candidate)
+			if err := s.ensureAuthorityRecord(ctx, candidate); err != nil {
+				return &errors.PublicationError{Resource: "catalog current generation", ID: id, Err: err}
+			}
+			return s.confirmCurrentDurability(ctx, candidate, directory)
 		}
 	} else if !errors.IsNotFound(existingErr) {
 		return existingErr
@@ -160,12 +179,17 @@ func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation,
 	}
 
 	if existingErr != nil {
-		if err := s.writeGeneration(ctx, candidate); err != nil {
+		if err := s.writeGeneration(ctx, candidate, manifest); err != nil {
 			return err
 		}
 	}
 	if err := s.ensureAuthorityRecord(ctx, candidate); err != nil {
 		return err
+	}
+	if existingErr == nil {
+		if err := s.syncRetainedGeneration(ctx, candidate); err != nil {
+			return err
+		}
 	}
 	return s.writeCurrent(ctx, id, directory)
 }
@@ -236,6 +260,9 @@ func (s *Filesystem) readGeneration(ctx context.Context, id string) (catalogs.Ge
 			Message: "does not match requested generation",
 		}
 	}
+	if err := validateFilesystemRecordSize(payloadFilename, manifest.Payload.SizeBytes); err != nil {
+		return catalogs.Generation{}, err
+	}
 	payloadPath := filepath.Join(dir, payloadFilename)
 	if err := validateFilesystemEntry(payloadPath, false); err != nil {
 		return catalogs.Generation{}, err
@@ -263,7 +290,12 @@ func (s *Filesystem) writeCurrent(ctx context.Context, id string, directory *pri
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return err
 	}
-	return directory.WriteFileContext(ctx, currentFilename, []byte(id+"\n"), ".current-")
+	err := directory.WriteFileContextWithSync(ctx, currentFilename, []byte(id+"\n"), ".current-", s.syncCurrentDirectory)
+	var publication *errors.PublicationError
+	if stderrors.As(err, &publication) {
+		return &errors.PublicationError{Resource: "catalog current generation", ID: id, Err: err}
+	}
+	return err
 }
 
 func (s *Filesystem) generationDir(id string) string {

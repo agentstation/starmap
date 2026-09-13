@@ -20,6 +20,11 @@ func (s *Filesystem) CurrentAuthorityHead(ctx context.Context) (catalogs.Catalog
 	}
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+	unlock, err := s.lockFilesystemRead(ctx)
+	if err != nil {
+		return catalogs.CatalogAuthorityHead{}, err
+	}
+	defer unlock()
 	if err := validateFilesystemLayout(s.root); err != nil {
 		return catalogs.CatalogAuthorityHead{}, err
 	}

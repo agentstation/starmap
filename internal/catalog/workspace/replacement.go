@@ -2,6 +2,7 @@ package workspace
 
 import (
 	"context"
+	"maps"
 	"os"
 	"path/filepath"
 	"strings"
@@ -22,19 +23,23 @@ const (
 )
 
 type replacementHooks struct {
+	writer       *workspaceWriter
+	recordWrites workspaceRecordWriter
 	after        func(replacementPhase) error
 	beforeMarker func() error
 }
 
 func (h replacementHooks) reached(phase replacementPhase) error {
 	if h.after != nil {
-		return h.after(phase)
+		if err := h.after(phase); err != nil {
+			return err
+		}
 	}
-	return nil
+	return h.writer.check()
 }
 
 func (p projector) replaceWithJournal(
-	ctx context.Context, target, staged string, old treeSnapshot, marker projectionMarker,
+	ctx context.Context, target, staged string, old, prepared treeSnapshot, marker projectionMarker,
 ) (owned, visible bool, resultErr error) {
 	root, err := os.OpenRoot(filepath.Dir(target))
 	if err != nil {
@@ -45,18 +50,23 @@ func (p projector) replaceWithJournal(
 	if err != nil {
 		return false, false, err
 	}
-	if !sameTree(current, old) {
+	if !sameReplacementTree(current, old) {
 		return false, false, replacementConflict(target, "workspace files changed during staging")
 	}
 	candidate, err := snapshotTreeAt(ctx, root, filepath.Base(staged))
 	if err != nil {
 		return false, false, err
 	}
+	if !sameReplacementTree(candidate, prepared) {
+		return false, false, replacementConflict(staged, "candidate changed before replacement journal publication")
+	}
 	prefix := "." + filepath.Base(target) + ".candidate-"
 	record := replacementRecord{
-		Version: replacementVersion, Target: target, Candidate: filepath.Base(staged),
+		LockIdentity: p.writer.identity,
+		Version:      replacementVersion, Target: target, Candidate: filepath.Base(staged),
 		Backup: "." + filepath.Base(target) + ".backup-" + strings.TrimPrefix(filepath.Base(staged), prefix),
 		Old:    old, New: candidate, Marker: marker,
+		OldIdentities: old.identities, NewIdentities: candidate.identities,
 	}
 	if _, err := root.Lstat(record.Backup); !os.IsNotExist(err) {
 		if err != nil {
@@ -64,11 +74,11 @@ func (p projector) replaceWithJournal(
 		}
 		return false, false, replacementConflict(target, "backup destination already exists")
 	}
-	owned, err = writeReplacementRecord(root, record)
+	owned, err = writeReplacementRecord(ctx, root, &record, p.recordWrites)
 	if err != nil {
 		return owned, false, err
 	}
-	hooks := replacementHooks{after: p.afterReplacementPhase, beforeMarker: p.beforeMarker}
+	hooks := replacementHooks{writer: p.writer, after: p.afterReplacementPhase, beforeMarker: p.beforeMarker, recordWrites: p.recordWrites}
 	if err := hooks.reached(replacementJournalSaved); err != nil {
 		return true, false, err
 	}
@@ -78,6 +88,10 @@ func (p projector) replaceWithJournal(
 
 func sameTree(a, b treeSnapshot) bool {
 	return a.ID != "" && a.ID == b.ID && a.Digest == b.Digest
+}
+
+func sameReplacementTree(a, b treeSnapshot) bool {
+	return sameTree(a, b) && len(a.identities) != 0 && maps.Equal(a.identities, b.identities)
 }
 
 func optionalTree(ctx context.Context, root *os.Root, name string) (treeSnapshot, error) {
@@ -91,7 +105,7 @@ func optionalTree(ctx context.Context, root *os.Root, name string) (treeSnapshot
 	return tree, err
 }
 
-func recoverReplacement(ctx context.Context, target string) (bool, error) {
+func recoverReplacement(ctx context.Context, target string, writer *workspaceWriter) (bool, error) {
 	root, err := os.OpenRoot(filepath.Dir(target))
 	if err != nil {
 		return false, err
@@ -104,11 +118,17 @@ func recoverReplacement(ctx context.Context, target string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	_, err = advanceReplacement(ctx, root, record, replacementHooks{})
+	_, err = advanceReplacement(ctx, root, record, replacementHooks{writer: writer, recordWrites: workspaceRecordWriter{writer: writer, checkWriter: writer.check}})
 	return true, err
 }
 
 func advanceReplacement(ctx context.Context, root *os.Root, record replacementRecord, hooks replacementHooks) (bool, error) {
+	if err := hooks.writer.check(); err != nil {
+		return false, err
+	}
+	if hooks.writer.target != record.Target || hooks.writer.identity != record.LockIdentity {
+		return false, writerConflict(record.Target)
+	}
 	target := filepath.Base(record.Target)
 	live, err := optionalTree(ctx, root, target)
 	if err != nil {
@@ -122,50 +142,33 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 	if err != nil {
 		return false, err
 	}
-	if sameTree(candidate, record.New) {
+	if sameReplacementTree(candidate, record.New) {
 		if err := validateReplacementCatalog(ctx, root, record.Candidate, record); err != nil {
 			return false, err
 		}
 	}
-	if sameTree(live, record.Old) && backup.ID == "" && candidate.ID == "" {
-		return false, finishReplacementRecord(root, record)
+	if sameReplacementTree(live, record.Old) && backup.ID == "" && candidate.ID == "" {
+		return false, finishReplacementRecord(ctx, root, record, hooks.writer)
 	}
-	if live.ID == "" && sameTree(backup, record.Old) && candidate.ID == "" {
-		if err := moveReplacementDirectory(root, record.Backup, target); err != nil {
-			return false, err
-		}
-		if err := filepublish.SyncDirectory(root); err != nil {
-			return false, err
-		}
-		return false, finishReplacementRecord(root, record)
+	if live.ID == "" && sameReplacementTree(backup, record.Old) && candidate.ID == "" {
+		return false, restoreReplacementBackup(ctx, root, record, hooks.writer)
 	}
-	if sameTree(live, record.Old) && backup.ID == "" && sameTree(candidate, record.New) {
+	if sameReplacementTree(live, record.Old) && backup.ID == "" && sameReplacementTree(candidate, record.New) {
 		backup, err = preserveReplacementBackup(ctx, root, record, hooks)
 		if err != nil {
 			return false, err
 		}
 		live = treeSnapshot{}
 	}
-	if live.ID == "" && sameTree(backup, record.Old) && sameTree(candidate, record.New) {
-		if err := ctx.Err(); err != nil {
-			return false, err
-		}
-		if err := moveReplacementDirectory(root, record.Candidate, target); err != nil {
-			return false, err
-		}
-		if err := hooks.reached(replacementInstalled); err != nil {
-			return true, err
-		}
-		if err := filepublish.SyncDirectory(root); err != nil {
-			return true, err
-		}
-		live, err = snapshotTreeAt(ctx, root, target)
+	if live.ID == "" && sameReplacementTree(backup, record.Old) && sameReplacementTree(candidate, record.New) {
+		var visible bool
+		live, visible, err = installReplacementCandidate(ctx, root, record, hooks)
 		if err != nil {
-			return true, err
+			return visible, err
 		}
 		candidate = treeSnapshot{}
 	}
-	if !sameTree(live, record.New) || candidate.ID != "" {
+	if !sameReplacementTree(live, record.New) || candidate.ID != "" {
 		return false, replacementConflict(record.Target, "journal paths do not match the recorded directories and contents")
 	}
 	if err := finishInstalledReplacement(ctx, root, record, hooks); err != nil {
@@ -175,6 +178,9 @@ func advanceReplacement(ctx context.Context, root *os.Root, record replacementRe
 }
 
 func preserveReplacementBackup(ctx context.Context, root *os.Root, record replacementRecord, hooks replacementHooks) (treeSnapshot, error) {
+	if err := hooks.writer.check(); err != nil {
+		return treeSnapshot{}, err
+	}
 	if err := moveReplacementDirectory(root, filepath.Base(record.Target), record.Backup); err != nil {
 		return treeSnapshot{}, err
 	}
@@ -195,4 +201,40 @@ func moveReplacementDirectory(root *os.Root, source, target string) error {
 		return errors.WrapIO("rename", target, err)
 	}
 	return nil
+}
+
+func restoreReplacementBackup(ctx context.Context, root *os.Root, record replacementRecord, writer *workspaceWriter) error {
+	if err := writer.check(); err != nil {
+		return err
+	}
+	if err := moveReplacementDirectory(root, record.Backup, filepath.Base(record.Target)); err != nil {
+		return err
+	}
+	if err := filepublish.SyncDirectory(root); err != nil {
+		return err
+	}
+	return finishReplacementRecord(ctx, root, record, writer)
+}
+
+func installReplacementCandidate(ctx context.Context, root *os.Root, record replacementRecord, hooks replacementHooks) (treeSnapshot, bool, error) {
+	if err := ctx.Err(); err != nil {
+		return treeSnapshot{}, false, err
+	}
+	if err := hooks.writer.check(); err != nil {
+		return treeSnapshot{}, false, err
+	}
+	if err := moveReplacementDirectory(root, record.Candidate, filepath.Base(record.Target)); err != nil {
+		return treeSnapshot{}, false, err
+	}
+	if err := hooks.reached(replacementInstalled); err != nil {
+		return treeSnapshot{}, true, err
+	}
+	if err := filepublish.SyncDirectory(root); err != nil {
+		return treeSnapshot{}, true, err
+	}
+	live, err := snapshotTreeAt(ctx, root, filepath.Base(record.Target))
+	if err != nil {
+		return treeSnapshot{}, true, err
+	}
+	return live, true, nil
 }

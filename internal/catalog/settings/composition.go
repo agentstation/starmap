@@ -67,12 +67,14 @@ func (c Composition) Options() ([]runtime.Option, error) {
 		return nil, err
 	}
 	source := c.Source
+	var owned runtime.OwnedSource
 	if source == nil && c.Config.SourceKind == runtime.SourceStarmap {
 		built, err := c.cascadeSource()
 		if err != nil {
 			return nil, err
 		}
 		source = built
+		owned = built
 	}
 	options := make([]runtime.Option, 0, len(c.Base)+len(c.Config.Options())+len(c.Extra)+3)
 	options = append(options, c.Base...)
@@ -96,7 +98,9 @@ func (c Composition) Options() ([]runtime.Option, error) {
 			}))
 		}
 	}
-	if source != nil {
+	if owned != nil {
+		options = append(options, runtime.WithOwnedSource(owned))
+	} else if source != nil {
 		options = append(options, runtime.WithSource(source))
 	}
 	if c.Acquirer != nil {
@@ -116,7 +120,7 @@ func (c Composition) Options() ([]runtime.Option, error) {
 // The subscriber keeps its verified generations in memory. The runtime retains
 // the accepted generation in its own state directory, so a restart serves the
 // last upstream catalog without a second durable copy here.
-func (c Composition) cascadeSource() (runtime.Source, error) {
+func (c Composition) cascadeSource() (*remote.Source, error) {
 	subscriber, err := cascadeSubscriber(c.Config)
 	if err != nil {
 		return nil, err

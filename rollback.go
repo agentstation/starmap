@@ -54,6 +54,9 @@ func (c *Client) Rollback(ctx context.Context, generationID string) (*RollbackRe
 		return nil, err
 	}
 	defer release()
+	if err := c.authorizePublication(ctx); err != nil {
+		return nil, err
+	}
 
 	target, err := c.Generation(ctx, generationID)
 	if err != nil {

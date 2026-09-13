@@ -19,7 +19,10 @@ const maxSourceFileBytes = 64 << 20
 // selectSource builds the configured upstream source. The choice is terminal.
 // A deployment that names a source other than the public channel never falls
 // back to public GitHub. A misconfiguration fails instead of sending traffic.
-func (r *Runtime) selectSource() (Source, error) {
+func (r *Runtime) selectSource(ctx context.Context) (Source, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	if r.config.customSource != nil {
 		return r.config.customSource, nil
 	}
@@ -27,7 +30,7 @@ func (r *Runtime) selectSource() (Source, error) {
 	case SourceEmbedded:
 		return embeddedSource{}, nil
 	case SourcePublic, SourceGitHub:
-		return r.newGitHubSource()
+		return r.newGitHubSource(ctx)
 	case SourceFile:
 		return newFileSource(r.config.source)
 	case SourceStarmap:
@@ -48,7 +51,7 @@ func (r *Runtime) selectSource() (Source, error) {
 // newGitHubSource builds the attested GitHub channel source. It maps the
 // configured transfer bounds onto the source transport and shares the runtime
 // state directory, so discovery state survives a restart.
-func (r *Runtime) newGitHubSource() (Source, error) {
+func (r *Runtime) newGitHubSource(ctx context.Context) (Source, error) {
 	if r.config.stateDirectory == "" {
 		return nil, &errors.ConfigError{
 			Component: "catalog source",
@@ -71,7 +74,7 @@ func (r *Runtime) newGitHubSource() (Source, error) {
 	if url := r.config.source.URL; url != "" {
 		opts = append(opts, github.WithAPIBaseURL(url))
 	}
-	source, err := github.New(opts...)
+	source, err := github.NewContext(ctx, opts...)
 	if err != nil {
 		return nil, err
 	}

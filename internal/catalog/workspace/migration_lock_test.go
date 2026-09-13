@@ -65,3 +65,41 @@ func TestLegacyStoreLockDoesNotRecreateMissingLock(t *testing.T) {
 		t.Fatalf("missing store changed: %v, %v", entries, err)
 	}
 }
+
+func TestLegacyInspectionRequiresHeldPublicationLease(t *testing.T) {
+	legacy := filepath.Join(t.TempDir(), "legacy")
+	store := migrationStore(t, legacy)
+	generation := migrationGeneration(t, "inspection", "model", "Model")
+	if err := store.Commit(t.Context(), generation, ""); err != nil {
+		t.Fatal(err)
+	}
+	lease, err := acquireLegacyStoreLease(t.Context(), legacy)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer lease.close()
+	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
+	defer cancel()
+	got, _, count, err := inspectLegacyStore(ctx, legacy, lease)
+	if err != nil || count != 1 || !sameMigrationGeneration(got, generation) {
+		t.Fatalf("inspection under publication lease: count=%d, error=%v", count, err)
+	}
+	contender := flock.New(filepath.Join(legacy, ".commit.lock"), flock.SetFlag(os.O_RDWR))
+	defer func() { _ = contender.Close() }()
+	if locked, err := contender.TryLock(); err != nil || locked {
+		t.Fatalf("inspection released its publication lease: %v, %v", locked, err)
+	}
+	if _, _, _, err := inspectLegacyStore(ctx, t.TempDir(), lease); err == nil {
+		t.Fatal("inspection accepted a lease for another store")
+	}
+	if _, _, _, err := inspectLegacyStore(ctx, legacy, nil); err == nil {
+		t.Fatal("inspection accepted no publication lease")
+	}
+	lease.close()
+	if _, _, _, err := inspectLegacyStore(ctx, legacy, lease); err == nil {
+		t.Fatal("inspection accepted a closed publication lease")
+	}
+	if locked, err := contender.TryLock(); err != nil || !locked {
+		t.Fatalf("closing the publication lease did not release the writer: %v, %v", locked, err)
+	}
+}

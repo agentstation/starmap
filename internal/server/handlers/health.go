@@ -72,6 +72,7 @@ func (h *Handlers) HandleReady(w http.ResponseWriter, _ *http.Request) {
 func runtimeReadiness(status status.Status) map[string]any {
 	return map[string]any{
 		"usable":                       status.Usable,
+		"retention":                    retentionReadiness(status.Retention),
 		"catalog_available":            status.CatalogAvailable,
 		"authority_required":           status.AuthorityRequired,
 		"authority_ready":              status.AuthorityReady,
@@ -98,5 +99,20 @@ func runtimeReadiness(status status.Status) map[string]any {
 		"fallback":                     status.Fallback,
 		"fallback_reason":              status.FallbackReason,
 		"lease":                        status.Lease,
+	}
+}
+
+// retentionReadiness exposes bounded maintenance diagnostics without storage reads or raw errors.
+func retentionReadiness(retention status.RetentionStatus) map[string]any {
+	return map[string]any{
+		"enabled": retention.Enabled, "interval_seconds": int64(retention.Interval / time.Second),
+		"max_generations": retention.MaxGenerations, "max_bytes": retention.MaxBytes,
+		"scan_entries": retention.ScanEntries, "input_max_bytes": retention.InputMaxBytes,
+		"attempted_at": retention.AttemptedAt, "succeeded_at": retention.SucceededAt,
+		"health": string(retention.Health), "reason": retention.Reason, "generation_collection": retention.GenerationCollection,
+		"generations": retention.Generations, "generation_bytes": retention.GenerationBytes,
+		"protected_generations": retention.ProtectedGenerations, "protected_bytes": retention.ProtectedBytes,
+		"removed_generations": retention.RemovedGenerations, "scanned_inputs": retention.ScannedInputs,
+		"input_bytes": retention.InputBytes, "removed_inputs": retention.RemovedInputs, "over_limit": retention.OverLimit,
 	}
 }

@@ -34,17 +34,21 @@ const (
 // options holds every setting that belongs to the connected runtime, plus the
 // offline client options that Open forwards to the client under it.
 type options struct {
-	origin       *authorityOrigin
-	originStore  storage.Store
-	source       SourcePolicy
-	sourceToken  string
-	sourceAPIKey string
+	origin        *authorityOrigin
+	originStore   storage.Store
+	source        SourcePolicy
+	sourceToken   string
+	sourceAPIKey  string
+	updatePolicy  UpdatePolicy
+	generationPin string
+	pinCapability *generationPinCapability
 
 	acquisition        AcquisitionPolicy
 	providerBindings   *providerBindingPolicy
 	acquisitionSources *acquisitionSourcePolicy
 	modelsDevGitCommit *string
 	freshness          FreshnessPolicy
+	retention          RetentionPolicy
 
 	// freshnessExplicit records that a caller supplied a freshness policy. An
 	// explicit policy wins, so the source maximum age derives no threshold.
@@ -65,6 +69,7 @@ type options struct {
 	listenAddress     string
 
 	customSource        Source
+	ownedSource         OwnedSource
 	acquirer            Acquirer
 	sourceAcquirer      SourceAcquirer
 	sourceConfiguration []sources.SourceActivity
@@ -97,7 +102,9 @@ func defaults() *options {
 		directoryOwner:      DirectoryOwner{Product: "starmap", Deployment: "local", Instance: "default"},
 		source:              DefaultSourcePolicy(),
 		acquisition:         DefaultAcquisitionPolicy(),
+		updatePolicy:        DefaultUpdatePolicy(),
 		freshness:           DefaultFreshnessPolicy(),
+		retention:           DefaultRetentionPolicy(),
 		startupSpread:       fleet.DefaultStartupSpread,
 		transferIdleTimeout: DefaultTransferIdleTimeout,
 		transferMaxDuration: DefaultTransferMaxDuration,
@@ -120,6 +127,9 @@ func (r options) transferPolicy() remote.TransferPolicy {
 // resolve derives every setting that another setting implies. Open calls it
 // once, after it applies the options and before it validates them.
 func (r *options) resolve() {
+	if r.generationPin != "" {
+		r.pinCapability = &generationPinCapability{owned: true}
+	}
 	if r.source.StartupPolicy == StartupRequireAuthority || r.origin != nil {
 		r.publicationCapability = &authorityPublicationCapability{owned: true}
 	}
@@ -133,6 +143,12 @@ func (r *options) resolve() {
 
 // validate checks every runtime setting before Open starts any work.
 func (r options) validate() error {
+	if err := r.retention.Validate(); err != nil {
+		return err
+	}
+	if err := r.updatePolicy.Validate(); err != nil {
+		return err
+	}
 	if r.permissionClockMonitor != nil && (r.permissionClockReading != nil || r.permissionClockUncertainty != nil) {
 		return &errors.ValidationError{Field: "permission_clock", Message: "select either a managed monitor or an external clock callback"}
 	}
@@ -357,6 +373,7 @@ func WithSource(source Source) Option {
 			return &errors.ValidationError{Field: "source", Message: "is required"}
 		}
 		r.customSource = source
+		r.ownedSource = nil
 		return nil
 	}
 }

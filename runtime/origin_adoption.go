@@ -15,6 +15,9 @@ const originAcceptedPollInterval = 30 * time.Second
 // initializeOriginReplica selects shared accepted state before lease acquisition.
 // The caller holds r.mu during startup, before the runtime serves callers.
 func (r *Runtime) initializeOriginReplica(ctx context.Context, current, baseline starmap.CatalogState) (bool, error) {
+	if r.releasesAcceptedPin(current.GenerationID) {
+		return false, nil
+	}
 	if r.config.origin == nil || r.config.leaseStore == nil || current.AuthorityHead == (catalogs.CatalogAuthorityHead{}) {
 		return false, nil
 	}

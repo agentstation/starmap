@@ -63,9 +63,14 @@ func readCheckedFile(root *os.Root, name string, limit int64, inspect func(*os.R
 	if !sameRecord(info, opened) {
 		return nil, changed(name)
 	}
-	data, err := io.ReadAll(io.LimitReader(file, limit+1))
-	if err != nil {
-		return nil, err
+	data := []byte{}
+	// Empty ownership files can hold mandatory Windows byte-range locks.
+	// The open handle and final metadata checks establish their empty contents.
+	if opened.Size() != 0 {
+		data, err = io.ReadAll(io.LimitReader(file, limit+1))
+		if err != nil {
+			return nil, err
+		}
 	}
 	if int64(len(data)) > limit {
 		return nil, oversized(name, limit)
@@ -87,18 +92,25 @@ func (d *Directory) WriteFile(name string, data []byte, prefix string) error {
 }
 
 // WriteFileContext checks cancellation before access and immediately before destination publication.
-// The caller serializes writers. A canceled publication preserves the previous destination.
+// The caller serializes writers. Cancellation before publication preserves the previous destination.
+// PublicationError identifies a visible record with unconfirmed durability.
 func (d *Directory) WriteFileContext(ctx context.Context, name string, data []byte, prefix string) error {
-	return d.writeFileContext(ctx, name, data, prefix, true)
+	return d.WriteFileContextWithSync(ctx, name, data, prefix, nil)
+}
+
+// WriteFileContextWithSync uses the supplied directory synchronizer after publication.
+// A nil synchronizer selects the native filesystem operation. The caller serializes writers.
+func (d *Directory) WriteFileContextWithSync(ctx context.Context, name string, data []byte, prefix string, syncDirectory func(*os.Root) error) error {
+	return d.writeFileContext(ctx, name, data, prefix, true, syncDirectory)
 }
 
 // WriteFileIfAbsentContext publishes private bytes only when no destination exists.
 // The write preserves a competing destination, including one created during publication.
 func (d *Directory) WriteFileIfAbsentContext(ctx context.Context, name string, data []byte, prefix string) error {
-	return d.writeFileContext(ctx, name, data, prefix, false)
+	return d.writeFileContext(ctx, name, data, prefix, false, nil)
 }
 
-func (d *Directory) writeFileContext(ctx context.Context, name string, data []byte, prefix string, replace bool) (resultErr error) {
+func (d *Directory) writeFileContext(ctx context.Context, name string, data []byte, prefix string, replace bool, syncDirectory func(*os.Root) error) (resultErr error) {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -132,10 +144,14 @@ func (d *Directory) writeFileContext(ctx context.Context, name string, data []by
 	}
 	owned := created
 	ownedDigest := sha256.Sum256(nil)
+	published := false
 	defer func() {
 		removeUnchangedRecord(root, stage, owned, ownedDigest)
 		if err := file.Close(); err != nil && resultErr == nil {
 			resultErr = err
+			if published {
+				resultErr = &errors.PublicationError{Resource: "private file", ID: name, Err: err}
+			}
 		}
 	}()
 	if _, err := file.Write(data); err != nil {
@@ -155,19 +171,8 @@ func (d *Directory) writeFileContext(ctx context.Context, name string, data []by
 			return err
 		}
 	}
-	staged, err := recordInfo(root, stage)
-	if err != nil {
+	if err := checkStagedRecord(root, stage, written, ownedDigest); err != nil {
 		return err
-	}
-	if !sameRecord(written, staged) {
-		return changed(stage)
-	}
-	stagedData, err := ReadFile(root, stage, written.Size())
-	if err != nil {
-		return err
-	}
-	if sha256.Sum256(stagedData) != ownedDigest {
-		return changed(stage)
 	}
 	after, err := optionalRecordInfo(root, name)
 	if err != nil {
@@ -192,7 +197,14 @@ func (d *Directory) writeFileContext(ctx context.Context, name string, data []by
 	} else if err := root.Rename(stage, name); err != nil {
 		return err
 	}
-	return filepublish.SyncDirectory(root)
+	published = true
+	if syncDirectory == nil {
+		syncDirectory = filepublish.SyncDirectory
+	}
+	if err := syncDirectory(root); err != nil {
+		return &errors.PublicationError{Resource: "private file", ID: name, Err: err}
+	}
+	return nil
 }
 
 // ReadDir lists the bound directory without following another directory at its original path.
@@ -281,4 +293,22 @@ func removeUnchangedRecord(root *os.Root, name string, original fs.FileInfo, dig
 	if err == nil && sha256.Sum256(data) == digest {
 		_ = root.Remove(name)
 	}
+}
+
+func checkStagedRecord(root *os.Root, stage string, written fs.FileInfo, ownedDigest [sha256.Size]byte) error {
+	staged, err := recordInfo(root, stage)
+	if err != nil {
+		return err
+	}
+	if !sameRecord(written, staged) {
+		return changed(stage)
+	}
+	stagedData, err := ReadFile(root, stage, written.Size())
+	if err != nil {
+		return err
+	}
+	if sha256.Sum256(stagedData) != ownedDigest {
+		return changed(stage)
+	}
+	return nil
 }

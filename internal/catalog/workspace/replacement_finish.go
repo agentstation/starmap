@@ -3,9 +3,7 @@ package workspace
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
 	"encoding/json"
-	"io"
 	"os"
 	"path/filepath"
 
@@ -25,7 +23,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 	}
 	data = append(data, '\n')
 	markerName := filepath.Base(projectionMarkerPath(record.Target))
-	current, err := readReplacementBytes(root, markerName, replacementJournalMax)
+	current, err := readWorkspaceRecordBytes(root, markerName, replacementJournalMax)
 	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
@@ -34,7 +32,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 		if err != nil {
 			return err
 		}
-		if backup.ID != "" && !sameTree(backup, record.Old) {
+		if backup.ID != "" && !sameReplacementTree(backup, record.Old) {
 			return replacementConflict(record.Target, "backup changed before the projection receipt")
 		}
 		if hooks.beforeMarker != nil {
@@ -42,15 +40,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 				return err
 			}
 		}
-		temporary := "." + markerName + "." + rand.Text()
-		if err := writeReplacementBytes(root, temporary, data); err != nil {
-			return err
-		}
-		defer func() { _ = root.Remove(temporary) }()
-		if err := root.Rename(temporary, markerName); err != nil {
-			return err
-		}
-		if err := filepublish.SyncDirectory(root); err != nil {
+		if _, err := hooks.recordWrites.publish(ctx, root, markerName, data, recordPublication{replace: true}); err != nil {
 			return err
 		}
 	}
@@ -63,7 +53,7 @@ func finishInstalledReplacement(ctx context.Context, root *os.Root, record repla
 	if err := hooks.reached(replacementBackupRemoved); err != nil {
 		return err
 	}
-	return finishReplacementRecord(root, record)
+	return finishReplacementRecord(ctx, root, record, hooks.writer)
 }
 
 func validateReplacementCatalog(ctx context.Context, root *os.Root, name string, record replacementRecord) error {
@@ -105,7 +95,7 @@ func validateReplacementCatalog(ctx context.Context, root *os.Root, name string,
 	if catalogs.DescribeCatalogPayload(payload).Checksum != record.Marker.WorkspaceChecksum {
 		return replacementConflict(record.Target, "installed catalog does not match its receipt")
 	}
-	endpoints, err := readReplacementBytes(child, endpointProjectionFilename, replacementMaxBytes)
+	endpoints, err := readWorkspaceRecordBytes(child, endpointProjectionFilename, replacementMaxBytes)
 	if err != nil {
 		return err
 	}
@@ -126,37 +116,10 @@ func validateReplacementCatalog(ctx context.Context, root *os.Root, name string,
 	return ctx.Err()
 }
 
-func readReplacementBytes(root *os.Root, name string, limit int64) ([]byte, error) {
-	info, err := root.Lstat(name)
-	if err != nil {
-		return nil, err
+func finishReplacementRecord(ctx context.Context, root *os.Root, record replacementRecord, writer *workspaceWriter) error {
+	if err := ctx.Err(); err != nil {
+		return err
 	}
-	if !info.Mode().IsRegular() || info.Size() > limit {
-		return nil, invalidReplacement("file")
-	}
-	file, err := root.Open(name)
-	if err != nil {
-		return nil, err
-	}
-	defer func() { _ = file.Close() }()
-	opened, err := file.Stat()
-	if err != nil {
-		return nil, err
-	}
-	if !os.SameFile(info, opened) {
-		return nil, replacementConflict(name, "file changed before the read")
-	}
-	data, err := io.ReadAll(io.LimitReader(file, limit+1))
-	if err != nil {
-		return nil, err
-	}
-	if int64(len(data)) > limit {
-		return nil, replacementLimit("file")
-	}
-	return data, nil
-}
-
-func finishReplacementRecord(root *os.Root, record replacementRecord) error {
 	current, err := readReplacementRecord(root, record.Target)
 	if err != nil {
 		return err
@@ -169,8 +132,17 @@ func finishReplacementRecord(root *os.Root, record replacementRecord) error {
 	if err != nil {
 		return err
 	}
-	if !bytes.Equal(want, actual) {
+	if record.journal.identity == "" || current.journal != record.journal || !bytes.Equal(want, actual) {
 		return replacementConflict(record.Target, "journal changed before completion")
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if err := writer.check(); err != nil {
+		return err
+	}
+	if writer.identity != record.LockIdentity || writer.target != record.Target {
+		return writerConflict(record.Target)
 	}
 	if err := root.Remove(filepath.Base(replacementJournalPath(record.Target))); err != nil {
 		return err

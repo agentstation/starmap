@@ -40,6 +40,11 @@ The complete serialized runtime layer remains limited to 64 MiB, including base6
 Manual history retains its separate 64 MiB cumulative limit. The embedded bootstrap review budgets remain independent of the canonical payload limit.
 A backend can impose a narrower limit. Its publication path must reject a generation that its configured reader cannot restore.
 
+Filesystem reads enforce 32 MiB for catalog payloads, 64 MiB for manifests, and 16 KiB for current pointers and authority records.
+The current pointer limit includes its trailing newline. Oversized records cause a typed validation error before file bytes enter memory.
+Filesystem commits reject oversized payloads, manifests, and pointers before creating generation state or changing current.
+These filesystem limits do not configure other storage adapters.
+
 D26 records the 32 MiB engineering default. A recorded generation contains 23,683,266 bytes, which the prior writer accepted but the 16 MiB decoder rejected.
 The owner preference remains pending. Publication and native qualification still require their existing gates.
 
@@ -101,6 +106,23 @@ write is not a valid implementation.
 
 An identical retry after an ambiguous successful response returns success even
 though the original expected ID no longer equals current.
+
+### Filesystem publication failures
+
+The filesystem store can publish the current pointer before its final directory flush fails.
+It returns `*errors.PublicationError` with resource `catalog current generation` and the selected generation ID.
+The wrapped error preserves the filesystem cause. The selected bytes remain readable, but the failed operation does not confirm durability.
+An error alone cannot prove that the previous generation remains current.
+
+Retry the same generation, complete content, and original expected ID.
+The filesystem store verifies that retained content matches the candidate.
+It synchronizes the generation directory, its parent, and the current directory before reporting success.
+The retry preserves the current pointer and generation identity. A continuing flush failure returns another publication error.
+Different content under the same ID returns a conflict.
+
+Private-file publication uses the same error type with resource `private file` and the file name.
+That record can be generation metadata. Its publication does not imply selection as the current catalog.
+These durability operations run during explicit publication and recovery. Catalog lookups continue to use the active in-memory state.
 
 ## Independent current authority observations
 
@@ -673,10 +695,31 @@ The excluded provider no longer returns through the baseline. This check does no
 Explicit local inputs still need source evidence when the runtime reconstructs a generation. A previously merged head cannot substitute for that evidence.
 
 
+## Interrupted baseline export
+
+Application startup recovers interrupted baseline exports before it creates or verifies the installed baseline.
+The private `<baseline>/.starmap-baseline/` directory holds `.owner.lock` and one `<operation-id>.json` journal per unfinished export.
+The published baseline directory still contains only `manifest.json` and `catalog.json`.
+
+Export and recovery hold the same filesystem lock. Journals bind the original lock, stage, and file identities.
+Recovery verifies file modes, modification times, and content digests before deleting a recorded stage.
+A durable cleanup phase permits recovery after partial deletion. Recovery never deletes a published baseline.
+
+A replaced lock cannot adopt earlier journals. Changed, unrecorded, or unsupported recovery files remain in place.
+
+The scan refuses more than 4,096 combined entries in the baseline and recovery directories before deleting any stage.
+Retained content snapshots have a 64 MiB aggregate verification budget. Stability checks can reread those bytes.
+Stages beyond that budget remain in place. These recovery limits do not limit catalog generation size.
+The exporter reports completed recovery operations and relative paths that need separate ownership review.
+
+Use `starmap config paths --inspect` to locate recovery files and their owner-only access policy.
+Keep the writer lock for the lifetime of the baseline directory. Preserve journals with their stages until verified recovery completes.
+
 ## Provider reset retention
 
-`Runtime.UpdateObservations` accepts optional `ProviderObservationReset` scopes.
-Each scope names a canonical provider and, for scoped acquisition, a binding identity and revision.
+`Runtime.UpdateObservations` accepts optional `ObservationReset` scopes.
+Provider scopes name a provider and, for scoped acquisition, a binding identity and revision.
+Metadata scopes select a models.dev source and optionally one original provider identity.
 Empty binding fields select legacy unscoped observations. Each scope requires complete successful replacement evidence.
 Failed preparation, cancellation, or rejected publication preserves the accepted reset history.
 
@@ -686,11 +729,519 @@ Earlier scheduled provider files enter a separate history batch before the first
 
 Replay selects records within original observations. It preserves the baseline, unrelated providers, peer binding scopes, and original receipts.
 Unchanged projected fields from a cleared observation cannot restore its provider facts. Actual operator edits keep local field authority.
-General source resets and complete projection membership rules remain separate work.
+Replay also preserves exclusions for metadata resets and their original provider aliases.
 
-Manual heads and batches now use version 2. Readers still accept version 1 records without resets.
-Version 1 batches cannot contain reset scopes. New head versions cause older readers to refuse the history.
+Manual heads and batches use version 4. Readers also accept versions 1, 2, and 3.
+Version 1 batches cannot contain resets. Version 2 batches permit provider resets, and version 3 also permits metadata resets.
+Version 4 adds history checkpoints. New head versions cause older readers to refuse the history.
 Recovery validates reset scopes and matching replacement receipts before applying any retained inputs.
 
-The component limits a history to 4,096 batches and 64 MiB of encoded observations and reset scopes.
-One reset request permits at most 4,096 scopes. Production compaction, native format qualification, and CLI/HTTP integration remain open.
+A history permits at most 4,096 linked records and 64 MiB of retained encoded data.
+A checkpoint occupies one linked record and retains at most 65,536 ordered observation references.
+One reset request permits at most 4,096 scopes. Complete compaction and native format qualification remain open under CSP5.
+
+## Interrupted runtime migration
+
+Runtime migration keeps `stage-initialization.json` in its operation journal while it prepares a private stage.
+The record binds the manifest digest, parent and stage identities, and the journal writer lock.
+Restart verifies those bindings and resumes the same `.migration-build-<id>` directory.
+Unknown entries, changed intent, replacement directories, and replaced locks cause refusal without recursive cleanup.
+
+A published stage keeps its files. Recovery removes its initialization record after directory synchronization.
+Stages without a valid ownership record remain preserved for explicit recovery.
+
+Each `.migration-work/<target-path-sha256>.partial` file has an immutable sibling `.partial.json` ownership record, limited to 16 KiB.
+That record binds the stage, work directory, writer lock, file identity, mode, and source manifest entry.
+Before removal, recovery verifies that the mutable partial bytes remain an exact prefix of the original source file.
+
+A missing record, changed identity, mode, or non-prefix content causes refusal. Recovery preserves both files.
+
+An interrupted partial removal can resume from its retained record. Records from unsupported versions remain preserved.
+
+Source inventory permits at most 40,000 entries, including empty directories and metadata.
+The stage scan uses the exact allowed manifest layout as its entry limit. Both scans read at most 128 directory entries per batch.
+Aggregate path names must fit within 4 MiB. The existing limit of 10,000 source files still applies.
+
+Initialization permits only its two metadata files and empty work directory. It reads at most four entries before refusing an oversized layout.
+
+### Workspace candidate cleanup
+
+Projection and repair retain the candidate's native directory and file identities in memory.
+Cleanup checks those identities, content digests, access metadata, and the complete remaining inventory before deletion.
+An unknown entry, changed file, replacement file, or replacement directory causes a conflict and preserves the tree.
+A same-content file replacement still has a different identity and remains preserved.
+
+After a native directory exchange, cleanup can remove only the recorded old workspace at the candidate path.
+Cancellation does not skip cleanup. Cleanup uses a separate 30-second limit and returns any failure with the original operation error.
+Cleanup cannot reverse an accepted catalog or remove the published workspace.
+
+Repair publishes its validated candidate without repeating the render and validation passes.
+These in-memory inventories do not provide recovery after process exit. Persistent staging recovery remains incomplete.
+
+### Workspace preparation writes
+
+`Builder.WriteYAML` emits catalog records and logo sidecars through a callback without filesystem access.
+Workspace preparation owns those writes and records each created entry's native identity, access metadata, and exact written bytes.
+It copies operator files after generating managed catalog records. It does not remove and rebuild copied model directories.
+Partial writes remain identifiable when serialization, copying, or cancellation interrupts preparation.
+
+Verification uses the same writer and checked cleanup. Unexpected entries and changed files remain preserved.
+The enclosure stays private. Candidate assembly retains the selected workspace access policy and synchronizes the completed candidate before publication.
+The writer checks resource limits before creating another entry. Assembly reads only the expected number of children, in bounded batches.
+
+Before publication, assembly compares the finished tree with the identities and bytes recorded during writes.
+It refuses a replacement file even when the file contains identical bytes.
+
+Ownership records remain in process memory. Persistent recovery after process exit still requires a separate journal.
+
+### Legacy migration rollback
+
+Preflight reads at most four entries from each fixed-layout directory. The layout permits at most three entries.
+A fourth entry makes the layout invalid.
+Retained generation scans use batches of 128 entries, with cancellation checks before each batch and generation.
+
+Preflight validates every retained generation and reports the complete count. It does not discard history to meet a directory-read limit.
+Manifest reads use the filesystem adapter's 64 MiB limit before parsing. Preflight failures preserve existing files and do not create the destination parent.
+
+Legacy layout migration records the original store's native directory identity before relocation.
+It holds both parent directories open and checks that identity before moving or restoring the store.
+Neither move replaces an existing destination, including an empty directory.
+
+Rollback checks the projected workspace against the candidate's recorded file identities, bytes, and access metadata.
+A matching semantic catalog checksum alone does not authorize removal. Unknown or changed files and replacement directories remain preserved.
+Rollback uses a separate 30-second context after caller cancellation and returns conflicts with the original operation error.
+
+Rollback does not delete projection-marker paths. It preserves the stable writer-lock file after releasing the lock.
+Operators must inspect an invalid marker or an unexpected blocking directory before removal.
+The recorded store identity and candidate inventory remain in memory. They do not establish migration recovery after process exit.
+
+### Workspace marker and journal records
+
+Projection markers and replacement journals share a bounded record writer. Both record formats use the existing 4 MiB journal limit, including the trailing newline.
+This limit differs from the filesystem catalog store's manifest and pointer limits.
+
+The writer records each temporary file's native identity, access metadata, and written bytes. It retains the open file until cleanup completes.
+Before publication, it checks both the temporary record and the destination snapshot. A journal cannot replace an existing destination.
+Marker replacement requires the destination to match its earlier snapshot.
+
+Cleanup removes only unchanged temporary files that match the recorded identity, access, and bytes.
+It preserves operator changes, replacement files, and paths recreated after publication. Partial writes record their actual byte count before cleanup.
+Cancellation uses a separate 30-second cleanup context. The operation returns cleanup errors with the original failure.
+
+Ordinary projection markers retain their explicit file mode. Journal writes retain the process umask and inherited access behavior.
+These ownership records remain in memory. Persistent workspace preparation, replacement, and legacy relocation recovery still require qualification.
+
+Replacement completion checks the accepted journal's native file identity, exact bytes, and access metadata before removal.
+Publication returns the original staged file state. Recovery binds decoded journal content to the same bounded file read that supplies its identity and access metadata.
+An identical replacement file, a JSON whitespace edit, or an access change prevents removal during that operation.
+
+Cancellation preserves the journal for a later recovery attempt. Recovery validates the journal again and captures a new receipt for that attempt.
+Journal acceptance receipts remain in memory. Version 3 journals persist separate child identity maps.
+The preparation journal below supports recovery inside private staging. Candidate handoff and legacy relocation recovery remain incomplete.
+
+### Persisted replacement child identities
+
+Version 3 replacement journals record native identities for every entry in both directory inventories.
+The `old_identities` and `new_identities` maps must cover exactly the corresponding inventory paths, including the root.
+Each identity must be nonempty and at most 128 bytes. Both maps remain subject to the existing 4 MiB journal limit.
+
+Recovery compares identities, content, and access before moving a live tree or candidate.
+Backup cleanup compares each remaining entry with the persisted inventory, then repeats the identity check before removal.
+It also checks the backup root's path binding before each child removal. Identical replacement files and directories remain preserved.
+
+Version 1 and 2 journals lack the required evidence. Recovery returns `workspace_replacement.version` without changing the journal, workspace, candidate, or backup.
+Preserve these files for explicit recovery. An upgrade cannot infer child ownership from matching content and access metadata.
+This restriction applies to pending legacy workspace replacements. Accepted inference catalog state remains separate from the optional workspace.
+
+### Workspace writer identity
+
+Workspace writers retain a checked lock handle and its native identity through projection, repair, or legacy layout migration.
+Acquisition compares the existing path, locked file, and current path before returning a writer lease.
+Failed acquisition closes its handle. Release closes the lease and preserves the stable lock file for later writers.
+
+Directory publication and marker or journal publication recheck that lease. Replacement recovery also checks it before directory moves and cleanup.
+Each version 3 replacement journal records `lock_identity`. Recovery requires that identity to match the current held writer lease.
+A missing writer identity or a replacement lock prevents recovery and preserves its journal state.
+
+Journal phases and backup cleanup recheck the held lock before further changes. The lease check refuses a writer after its lock path changes.
+Windows can also refuse to rename an open lock file. Native qualification must verify that platform behavior.
+These writer checks also bind the preparation journal described below.
+
+
+### Durable preparation records
+
+Each private workspace preparation directory contains `.preparation.jsonl`.
+Its first record binds the target path, enclosure identity, journal identity, and stable writer-lock identity.
+Later records contain entry identities, actual written bytes, content digests, and access metadata for render, verification, and assembly trees.
+Records append without rewriting the preceding inventory. File contents flush before their receipts, and each appended receipt flushes before preparation continues.
+
+Projection and repair recover recorded preparation trees under the workspace writer lock.
+Cleanup accepts only remaining entries whose identities, bytes, and access settings match their recorded values.
+It checks the writer and journal before each removal. Missing entries permit recovery to resume after an interrupted cleanup.
+Unknown files, changed entries, malformed records, and replaced journals remain preserved with an error.
+A process exit before its receipt completes leaves uncertain state for explicit recovery.
+
+Recovery limits each journal to 32 MiB and 120,000 events, with at most four preparation trees.
+Each tree retains the existing 10,000-entry, 256 MiB content, and 1 MiB path-name limits.
+The parent scan stops at 4,096 entries before cleanup starts. These records contain no provider credentials.
+
+Version 1 records cover entries inside private preparation. Version 2 also records the candidate handoff described below.
+Version 3 also owns temporary publication records, as described below. Version 4 adds the legacy relocation records described below.
+Native Linux and Windows execution remains subject to the task's verification gate.
+
+
+### Durable candidate handoff
+
+Version 2 preparation journals append a handoff record before exporting the assembled candidate.
+That record binds the candidate name to the preparation directory, its prepared inventory, and the original workspace inventory with native child identities.
+The journal remains after the render and verification trees close. Candidate cleanup accepts only entries that match the prepared tree or the exchanged original tree.
+Cleanup never selects the installed workspace path.
+
+Publication checks the original journal receipt and the complete candidate inventory before replacing the workspace.
+The replacement protocol also compares its candidate with that prepared inventory before recording ownership.
+Changed candidate bytes, child identities, or journal contents prevent publication. Cleanup preserves changed or unknown files.
+
+Replacement recovery runs before preparation recovery. A pending replacement journal prevents preparation cleanup from collecting its candidate.
+After replacement settles, preparation recovery can remove remaining owned candidate files and retire its journal.
+First installation, native directory exchange, and journaled replacement share this handoff contract.
+Version 1 journals remain readable for private preparation recovery and cannot authorize candidate cleanup.
+
+A process exit before a complete ownership receipt preserves uncertain state.
+A crash after journal removal can leave an unrecorded empty enclosure, which remains preserved.
+Other stages, retention, compaction, and full task qualification remain open.
+
+### Durable temporary publication records
+
+Version 3 preparation journals can own one temporary projection marker or replacement journal.
+Each receipt binds the destination, temporary basename, native identity, content digest, byte count, and access metadata.
+The temporary basename includes the preparation directory's unique suffix. Receipts cannot select the destination or an unrelated file for cleanup.
+Record stages contain no catalog trees or candidate handoff.
+
+The publisher records the empty file and each completed write, including a returned partial write.
+File contents and the parent directory flush before the receipt. The publisher verifies the unchanged receipt before replacing or linking the destination.
+An interrupted write without a complete receipt remains uncertain and requires explicit recovery.
+
+Recovery checks the retained journal, enclosure, and writer identities before removing a temporary file.
+The file must match the recorded identity, contents, and access settings. Changed files and unknown entries remain preserved with an error.
+A missing temporary file permits journal cleanup to finish after an interrupted rename or removal.
+Unlinking a recorded temporary name does not remove its published destination.
+
+Projection, journaled replacement, replacement recovery, and legacy projection use the same record owner.
+Versions 1 and 2 remain readable within their original preparation and candidate contracts. They cannot authorize temporary-record cleanup.
+The existing journal-size and parent-scan limits apply. Full task and native platform qualification remain required.
+
+
+### Durable legacy relocation records
+
+Version 4 preparation journals record a legacy relocation before moving the catalog store.
+The record binds both parent directories, the store root, current pointer, commit lock, and every retained generation.
+Receipts bind content digests, native identities, access metadata, and the optional Windows lock alias.
+Generation scans use batches of 128 entries. The existing journal and tree limits apply before relocation.
+
+The workspace inventory flushes before workspace publication. Ordinary projection and repair refuse a pending relocation.
+
+Retrying the same explicit migration checks the retained journal and both advisory locks.
+Recovery verifies every recorded generation and any remaining projected workspace entries before restoration.
+It removes only owned workspace entries, restores the store without replacing a destination, and retries migration.
+Candidate and temporary-record recovery exclude the retained relocation journal until restoration finishes.
+Recovery also accepts an already restored store and an incomplete cleanup of the recorded workspace.
+
+Changed files, replaced directories, unknown entries, incomplete receipts, and conflicting destinations remain preserved with an error.
+The original journal receipt also guards workspace publication within the running migration.
+Windows recovery reuses its recorded hard-link alias. It recreates a missing alias only for the same recorded commit-lock identity.
+Cleanup verifies alias contents and access after releasing the store lock. Unknown or changed aliases remain preserved.
+
+A completed operation removes its journal. Repeating that completed migration then reports the existing destination.
+A crash after journal removal can leave an unrecorded empty enclosure, which requires explicit recovery.
+These checks do not qualify native execution, other stage recovery, retention, history compaction, or full CSP5 acceptance.
+
+## Private record publication recovery
+
+`privatefiles.Directory.PublishFileContext` records staging ownership before destination publication.
+Its explicit recovery method uses the same writer lock. Ordinary private-file reads and writes retain their existing behavior.
+Runtime evidence and GitHub discovery use this publication API.
+
+Each record directory uses a private `.record-publications` child with a stable `.owner.lock` and one bounded JSONL receipt per pending publication.
+Receipts bind both directories, the writer, the journal, and the temporary file to native identities and access snapshots.
+Temporary-file receipts also bind mode, modification time, size, and content digest.
+Publication checks the destination against its original receipt before replacing it.
+
+Recovery removes a temporary file only when its complete ownership receipt still matches.
+It never removes the accepted destination. A hard-linked accepted destination survives removal of its temporary name.
+Changed files, incomplete receipts, and unknown files remain preserved. Unknown files do not establish ownership through their names.
+
+Recovery scans at most 4,096 metadata entries in batches of 128. Each journal permits three events within 65,536 bytes.
+Each record permits at most 64 MiB. Exceeding a limit stops recovery without inferring ownership.
+A visible publication with an unconfirmed flush or cleanup returns `PublicationError`.
+Native Linux and Windows execution remains subject to the CSP5 qualification gate.
+
+### Runtime and discovery records
+
+Runtime startup recovers source, provider, binding, publication-input, and pin records before loading retained layers.
+Recovery runs under the runtime directory owner and each record writer lock. Passive file inspection does not start recovery.
+The file manifest reports private receipt directories and temporary records without exposing their contents or adopting unrelated operator files.
+
+GitHub source construction recovers its local discovery records without contacting the network.
+The runtime supplies its caller context through `github.NewContext`. The existing `github.New` wrapper uses a background context.
+Cancellation before construction creates no state. Cancellation during recovery preserves unfinished records for a later attempt.
+
+Each verified refresh compares the previously read state bytes under the shared writer lock before publishing the next state.
+An absent state and an empty file remain distinct comparison inputs. A conflicting refresh returns a retryable conflict and preserves the newer record.
+Retry reads the current replay floor, ETag, and accepted release reference before checking the channel again.
+
+Runtime migration refuses pending private record receipts during source inspection. Copying those receipts would invalidate their native file identities.
+The check applies only to declared runtime and discovery paths. Unrelated directories with the same metadata name remain operator-owned migration input.
+
+Recover in the original directory before retrying migration. Inspection preserves the source files and does not create recovery metadata.
+Migration can copy inactive writer metadata after recovery. A new publication binds its new native identities.
+
+### Repeated provider inventories
+
+Before a new acquisition exceeds the retained history limit, the runtime compacts histories that contain only provider observations and no resets.
+Compaction removes intermediate successful inventories only when their payload bytes and complete binding declarations match the first and latest successful inventories.
+The first inventory preserves original model change times. The latest inventory preserves current source evidence.
+It also retains distinct inventories, partial results, and equal-time evidence.
+
+It combines retained provider observations into one replay batch without changing the original payloads or receipts.
+An omitted offering therefore keeps the original inventory that contains it.
+
+The publication transaction installs the compacted history only after catalog acceptance. Failure preserves the accepted history.
+Other histories use bounded checkpoints that share payload bytes and preserve original replay boundaries.
+If necessary evidence still exceeds a history limit, publication returns a conflict and preserves the accepted catalog.
+Compaction does not delete immutable observation files or catalog generations. Their collection requires the separate retention contract.
+
+### History checkpoints
+
+When another acquisition would exceed a linked-record or byte limit, the runtime can replace the proposed history with one version 4 checkpoint.
+The checkpoint stores each distinct payload once. Separate tables retain original receipts and the ordered observations and reset scopes of every batch.
+Sharing payload bytes does not replace source identities, split aggregate receipts, or discard reset exclusions.
+Preview and publication use the same history preparation. Only an accepted catalog transaction installs the checkpoint as the retained head.
+
+A checkpoint has no parent and cannot contain ordinary batch fields. Later ordinary batches can reference it as their parent.
+Recovery validates payloads, receipts, reference indices, reset scopes, and replacement evidence before applying retained inputs.
+Duplicate or unused table entries, invalid indices, and incompatible record versions cause refusal.
+The 64 MiB encoded limit and 65,536-reference limit bound each checkpoint. History loading also accounts for later linked records.
+
+A checkpoint preserves the original payloads needed for replay against a replacement baseline or changed source configuration.
+It does not collect its predecessor files or catalog generations. Collection must preserve accepted references, pending publication, pins, and active readers.
+If distinct required data cannot fit within the limits, publication preserves the accepted head and returns a conflict.
+The runtime still needs to reduce superseded distinct inventories. Full CSP5 qualification remains open.
+
+### Immutable payload cache
+
+Each immutable catalog retains its validated encoded payload after the first successful encoding.
+The cache belongs to that catalog and expires with it. Its data uses the existing 32 MiB payload limit.
+Mutable builders always encode their current records.
+
+Every encoding call returns bytes that belong to the caller. Warm calls allocate one output byte slice.
+Concurrent readers share the immutable cached bytes through an atomic pointer. Calls use the initialization lock until the first encoding completes.
+Failed encoding leaves the cache empty. Payload validation, schema selection, and canonical bytes retain their existing contracts.
+
+Provenance serialization avoids repeated decoding for built-in scalars and generic JSON containers.
+Custom marshalers and source structs still pass through canonical normalization. Unsupported values and cycles still fail during encoding.
+This cache reduces catalog serialization work. It does not establish Starport inference latency or complete runtime-suite qualification.
+
+Catalog construction also snapshots nested provenance values and rejection records. Source structs use the generic JSON shape that restored evidence already uses.
+Provenance reads return independent nested values. Caller changes cannot alter published catalog facts or make those facts disagree with cached payload bytes.
+Unsupported custom values and cyclic provenance cause construction to fail.
+
+### Generation retention
+
+`RetainingStore` adds explicit collection and generation read leases to the catalog store contract.
+`Memory` and `Filesystem` implement this contract. Object collection and shared coordination remain incomplete.
+Existing catalog store implementations remain compatible. This interface does not enable automatic collection.
+
+Each collection request names the expected current generation, required generations, and positive generation and byte limits.
+Baseline, candidate, and rollback owners supply their required IDs. Every required generation must exist.
+The store also protects its current generation and every active read lease.
+Callers must coordinate changes to their required IDs with collection.
+
+Collection removes the oldest generated content first. Generation IDs break equal-time ties.
+Protected generations remain available even when they exceed the requested limits. The report then sets `OverLimit`.
+This policy uses generation timestamps, not activation order.
+
+The default scan permits 4,096 entries. An explicit scan can permit up to 100,000 entries.
+Invalid limits, stale current state, missing requirements, and incomplete scans preserve all generations.
+Memory collection coordinates reads, leases, and publication under one lock.
+
+Reports count manifest and payload bytes. They exclude filesystem overhead, journals, and backend replication.
+A dry run returns candidates and projected usage without deletion. Actual usage remains unchanged in its `After` field.
+A normal pass reports the generations it removed and the resulting usage.
+
+`AcquireGeneration` returns independent generation bytes and an idempotent release function.
+The lease protects stored content until release, even after current changes or the acquisition context ends.
+Each successful caller must release its lease. Repeated release cannot end another caller's lease.
+Ordinary `Get` returns independent bytes without retaining the stored generation after the call completes.
+
+An empty filesystem store needs no collection. Missing generation leases and missing requirements return the catalog not-found error.
+A nonempty expected head conflicts with an absent store. These outcomes do not require a prior catalog publication.
+
+### Filesystem retention and read leases
+
+Filesystem collection holds the existing `.commit.lock` while it scans, selects generations, and completes retirement.
+Ordinary generation and authority reads use independent shared handles for that lock. They cannot observe a partially removed generation.
+Each explicit generation lease holds a separate shared `.read.lock` inside that generation directory.
+
+Multiple callers own independent handles. Publication can proceed while a generation lease remains active.
+An ended process releases its native locks. No lease expiry clock controls deletion.
+
+A collection scan includes generation entries and retention metadata. Unknown names or contents stop collection and remain preserved.
+Dry runs do not create generation lease files. Pending retirement or record recovery requires a normal collection pass.
+
+Capacity reports count encoded manifests and payloads. They exclude lock files, journals, and other filesystem overhead.
+A failed pass reports only the deletions that completed before the error.
+
+Before retirement, the collector records native identities, access policy, file metadata, and content digests in a `.retirement-<token>.json` journal.
+The generation directory moves atomically to `.retired-<token>` before any file deletion. Each completed removal synchronizes directory metadata.
+Journal publication uses the existing recoverable private-record writer under `generations/.record-publications`.
+Collection recovers that writer before it processes retirement journals.
+
+Recovery removes only remaining files that match the journal. Changed entries and unknown files preserve the retired directory and journal.
+An interruption before the directory move leaves the original generation available. Recovery cancels that preparation and makes a new retention decision.
+
+This permits a new reader or pin to protect the generation before the next pass.
+An interruption after the move resumes checked cleanup. A changed writer lock or parent directory prevents that cleanup.
+
+This API does not enable automatic collection. Runtime owners still must supply every baseline, candidate, and rollback requirement before adopting collection.
+Native platform qualification, object storage, and observation-file collection remain part of CSP5.
+
+### Object inventory and conditional deletion
+
+`ObjectCollectionBackend` adds bounded inventory pages and conditional current-object deletion.
+The reference memory backend and S3 adapter implement these operations. The minimum `ObjectBackend` interface remains unchanged.
+These operations do not implement generation collection or protect pins and readers. The collector must coordinate publication before using them.
+
+Each list request requires a nonempty prefix. Its page limit permits 1 through 1,000 entries.
+
+Returned entries contain the object key, conditional validator, and current byte size.
+Pass a nonempty continuation cursor unchanged with the same prefix. Pages do not form a snapshot across requests.
+Concurrent mutations can change later pages. A collector cannot infer safe deletion from an inventory alone.
+
+The S3 adapter uses `ListObjectsV2` with URL encoding and no delimiter. It bounds each response body to 8 MiB.
+It rejects incomplete pagination metadata, mismatched namespaces, duplicate keys, invalid sizes, and missing validators.
+Malformed or excessive responses return an error without a partial page.
+
+S3 deletion sends one exact quoted ETag through `DeleteObject` with `If-Match`.
+Wildcard and multiple validators fail before network access. Conditional conflicts, missing objects, and service failures retain their error classifications.
+The adapter does not retry an unsupported condition as an unconditional deletion.
+
+Validators can repeat when object bytes repeat. They do not replace a publication fence or a generation retirement protocol.
+Bucket versioning can retain historical versions after current-object deletion. Inventory byte totals therefore do not measure total bucket storage.
+The adapter does not bypass retention rules or permanently remove historical versions.
+See the AWS [listing contract](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html) and [deletion contract](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObject.html).
+
+Object generation collection, runtime integration, and live service qualification remain incomplete.
+
+### Runtime pin read leases
+
+`GenerationLeaser` separates generation read leases from publication and collection.
+`GenerationLeaseProvider` lets a store wrapper forward that optional capability.
+The authority publisher forwards a read-only value. That value does not expose the underlying publication store.
+
+The root client exposes `CanLeaseGenerations` and `AcquireGeneration` for explicit reads.
+Capability inspection reads no storage. Successful acquisition returns independent bytes and an idempotent release function.
+Acquisition preserves the configured store's read checks and verifies that its result matches the protected generation.
+Failed reads or validation release protection and preserve both read and release errors.
+
+A missing stored embedded generation uses the verified compiled artifact without creating a storage record.
+That fallback also preserves configured read checks and rejects a different artifact.
+
+During pin startup, the runtime leases the original selected generation when the store supports leases.
+An authority origin can then publish the same payload under a new generation without making the original selection eligible for collection.
+Failed startup releases the lease. Shutdown releases it after runtime-owned work stops and includes release errors in its result.
+
+Memory and filesystem stores support these leases. Minimum store implementations retain their existing read behavior.
+This change does not enable object generation collection or automatic runtime collection.
+Collectors still must include configured pins and other persistent requirements in their retention requests, including after a runtime closes.
+Complete runtime collection and shared-store coordination remain open.
+
+
+### Checked removal of private input records
+
+Private record removal now shares the native writer lock used by `PublishFileContext`.
+It compares expected content and checks file identity, access, and directory ownership before deletion.
+Changed content, active publication, unsafe paths, and replaced directories cause refusal.
+
+A successful result distinguishes a newly removed file from an already absent file.
+A directory synchronization failure after deletion reports the visible removal through `PublicationError`.
+Retry after reopen synchronizes the directory without recreating the file.
+
+The runtime collector identifies unreachable input records before calling this operation.
+It holds publication ownership while tracing accepted history and pending publication references.
+The removal primitive does not establish reachability or enable automatic collection. Object-store coordination remains separate work.
+
+### Runtime input collection
+
+`Runtime.CollectRetainedInputs` collects immutable files under `catalog-runtime/publication-inputs` in the configured local state directory.
+It preserves the current manual history, its ancestors and observations, and every input referenced by a pending publication.
+Checkpoint records carry their original payloads and receipts internally. Collection preserves those records without retaining obsolete external copies.
+The collector uses exact stored references, including legacy filenames whose bytes differ from current encoding.
+
+`InputCollectionRequest.MaxEntries` bounds directory entries, including unknown files and publication metadata.
+It must be positive and cannot exceed `storage.MaxRetentionScanEntries`.
+`MaxBytes` bounds captured raw records, including the manual head and publication journal.
+This byte limit excludes temporary decoder allocations and repeated filesystem validation work.
+`DryRun` validates references and reports candidates without removing files.
+
+Missing or invalid required references cause refusal before deletion. A changed accepted head also causes refusal unless a pending publication explains it.
+Unknown names, unsupported schemas, unsafe files, and content mismatches remain available for inspection.
+The collector can remove an unreachable batch with valid structure even when its referenced inputs are already absent.
+This rule permits retry after a partial cleanup. Required history still passes the complete receipt and reference checks.
+
+Collection joins runtime operation ownership, cancellation, and shutdown. It serializes with catalog publication and retained provider writes.
+It works in offline and pinned modes without acquiring a shared lease or reading a catalog source.
+The serving catalog stays unchanged in memory. Collection adds no filesystem work to catalog queries.
+
+The report separates protected inputs, preserved entries, deletion candidates, and visible removals.
+An error after deletion retains the partial removal report, including unconfirmed directory synchronization.
+
+This API explicitly cleans local inputs. Automatic invocation, retention configuration, and complete catalog generation collection remain part of CSP5.
+
+### Current provider review evidence
+
+Manual replay retains one current unresolved-model review per provider, binding revision, opaque model ID, and review code.
+Different accounts and binding revisions keep separate entries. An omitted offering keeps its last review until replacement evidence or an authorized operation changes it.
+Direct provider evidence outranks stale fallback. A later direct observation can replace the review for a record it reports, including during a partial reply.
+Metadata-source reviews retain their existing selection rules.
+
+Each selected provider review must match its original observation ID, revision, and evidence checksum.
+The selected review keeps that original receipt. Superseded duplicate reviews no longer keep obsolete receipts in the effective generation.
+Other current fields, membership records, and unresolved offerings can still require those receipts.
+Durable acquisition history and previously committed generations remain unchanged.
+
+This selection also preserves review evidence when a replacement baseline no longer defines a formerly known model.
+Repeated-inventory compaction must produce the same current review set as complete replay under that baseline.
+CSP5 retains its full qualification requirement.
+
+### Automatic runtime collection
+
+The connected runtime schedules collection independently of source refresh and acquisition.
+Manual source mode, offline mode, and generation pins still permit local cleanup.
+The first pass follows the configured startup spread. Later passes follow a stable hourly phase by default.
+Shutdown cancels the worker and waits for cleanup to finish before releasing directory ownership.
+
+The default targets are 32 generations and 512 MiB of manifest and payload bytes.
+Required generations remain available when they exceed either target. Readiness then reports `required_content_exceeds_limit` with `over_limit: true`.
+This diagnostic does not make an otherwise usable catalog unavailable.
+
+Each scan permits 4,096 entries by default. The input snapshot permits 256 MiB of raw retained records.
+These scan limits bound maintenance work, rather than total disk usage. Decoder memory and filesystem overhead remain additional costs.
+An incomplete scan refuses deletion within that collector. Unknown input files remain available for operator inspection.
+
+Collection shares runtime publication ownership. A pending publication blocks the automatic pass before deletion.
+The client collector also serializes with explicit client updates and protects its served catalog and stored embedded baseline.
+The runtime supplies its configured generation pin as a required ID. Hosts must preserve that setting across restarts.
+Explicit collection callers supply other required generation IDs through `RetentionRequest.RequiredGenerationIDs`.
+
+The six `catalog_retention_*` settings use the canonical environment, CLI, and YAML configuration paths.
+See the [settings reference](CATALOG_SETTINGS.md#catalog-retention-enabled) for their defaults and validation rules.
+Set `catalog_retention_enabled: false` to disable automatic maintenance. Explicit client and input collection remain available.
+Numeric limits require positive values even when operators disable scheduling.
+
+The readiness response exposes retention settings, capability, timestamps, byte counts, protected content, and removal counts under `runtime.retention`.
+These diagnostics read runtime memory. They do not scan storage or query a source.
+
+Automatic generation collection currently requires a supported local catalog store without a shared lease configuration.
+A configured shared lease reports `shared_coordination_required`. A store without collection support reports `unsupported`.
+These cases preserve catalog generations while still permitting checked local input cleanup.
+Shared and object collection require their remaining coordination work before CSP5 can complete.

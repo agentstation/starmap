@@ -173,7 +173,7 @@ func writeS3Error(response http.ResponseWriter, status int, code string) {
 	_, _ = fmt.Fprintf(response, "<Error><Code>%s</Code><Message>request failed</Message></Error>", code)
 }
 
-func newTestBackend(t *testing.T, service *protocolServer) (*Backend, *httptest.Server) {
+func newTestBackend(t *testing.T, service http.Handler) (*Backend, *httptest.Server) {
 	t.Helper()
 	httpServer := httptest.NewServer(service)
 	t.Cleanup(httpServer.Close)

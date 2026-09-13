@@ -110,7 +110,8 @@ func (r *Runtime) initializeAuthority() error {
 	}
 	r.mu.Lock()
 	r.permissions = p
-	r.activateAuthorityLocked(r.layers.source)
+	r.activateAuthorityLocked(r.selectedAuthoritySource())
+	r.permissionInitialized = true
 	r.mu.Unlock()
 	return nil
 }

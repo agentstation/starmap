@@ -45,7 +45,12 @@ type statusSecurity func(context.Context, dcerpc.Conn) ([]dcerpc.Option, error)
 // It closes the stream and native security handles before returning.
 // Unsupported hosts refuse the query before sending any RPC bytes.
 func QueryStatus(ctx context.Context, raw net.Conn) (*w32t.StatusInfo, error) {
-	security, cleanup, err := newStatusSecurity()
+	return queryAuthenticatedStatus(ctx, raw, newStatusSecurity)
+}
+
+// queryAuthenticatedStatus owns native security setup and stream cleanup before the RPC exchange.
+func queryAuthenticatedStatus(ctx context.Context, raw net.Conn, createSecurity func() (statusSecurity, func(), error)) (*w32t.StatusInfo, error) {
+	security, cleanup, err := createSecurity()
 	if err != nil {
 		if raw != nil {
 			_ = raw.Close()

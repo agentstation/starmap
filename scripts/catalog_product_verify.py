@@ -79,6 +79,27 @@ def select_checks(args, roster):
     return sorted(item for group in roster["required_subcases"].values() for item in group)
 
 
+def validate_registry(registry, roster, checks):
+    if registry.get("schema_version") != 1 or not set(registry["checks"]) <= checks:
+        raise ValueError("Invalid behavior-check registry.")
+    components = registry.get("task_component_checks", {})
+    if not isinstance(components, dict) or set(components) - {"CSP5"}:
+        raise ValueError("Only CSP5 has an approved producer component contract.")
+    for task, entries in components.items():
+        allowed = set(roster["required_subcases"]["A22"] + roster["required_subcases"]["A23"])
+        if not isinstance(entries, dict) or not set(entries) <= allowed.intersection(roster["task_checks"][task]):
+            raise ValueError("Producer component checks exceed their approved task contract.")
+
+
+def registered_check(args, registry, identity):
+    # CSP5 checks the producer controls. CSP8 and qualification require consumer evidence.
+    if args.task == "CSP5" and not (args.gate or args.released_assets or args.recipes or args.backends):
+        components = registry.get("task_component_checks", {}).get(args.task, {})
+        if identity in components:
+            return components[identity], "producer_component"
+    return registry["checks"].get(identity), "product"
+
+
 def run_check(identity, entry, roots):
     if entry is None:
         return {"status": "UNVERIFIED", "reason": "No behavior check is registered."}
@@ -564,7 +585,9 @@ def reviewed_performance_profile(entry, roots):
 def aggregate(roster, selected, results, qualification_required):
     cases = []
     for case, group in roster["required_subcases"].items():
-        states = [results.get(item, {"status": "UNVERIFIED"})["status"] for item in group]
+        evidence = [results.get(item, {"status": "UNVERIFIED"}) for item in group]
+        states = ["UNVERIFIED" if result["status"] == "PASS" and result.get("evidence_scope") == "producer_component"
+                  else result["status"] for result in evidence]
         status = "FAIL" if "FAIL" in states else "UNVERIFIED" if "UNVERIFIED" in states else "PASS"
         cases.append({"id": case, "condition": "CSP-V" + case[1:], "status": status, "required_subcases": len(group)})
     passed = sum(case["status"] == "PASS" for case in cases)
@@ -595,11 +618,14 @@ def main():
     try:
         roster, registry = read_json(ROSTER), read_json(REGISTRY)
         checks = validate_roster(roster)
-        if registry.get("schema_version") != 1 or not set(registry["checks"]) <= checks:
-            raise ValueError("Invalid behavior-check registry.")
+        validate_registry(registry, roster, checks)
         selected = select_checks(args, roster)
         roots = {"starmap": ROOT, "starport": args.starport_root.resolve()}
-        results = {item: run_check(item, registry["checks"].get(item), roots) for item in selected}
+        results = {}
+        for item in selected:
+            entry, scope = registered_check(args, registry, item)
+            results[item] = run_check(item, entry, roots)
+            results[item]["evidence_scope"] = scope
         publication_cases = set(roster["qualification"]["requires_published_assets"])
         qualification_required = bool(
             args.gate or args.released_assets or args.recipes or args.backends

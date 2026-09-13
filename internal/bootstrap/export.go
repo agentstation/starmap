@@ -27,11 +27,12 @@ const (
 	baselinePayloadName   = "catalog.json"
 )
 
-// ExportResult identifies the installed baseline export and whether this call created it.
+// ExportResult identifies the installed baseline export and its recovery outcomes.
 type ExportResult struct {
-	GenerationID string `json:"generation_id"`
-	Directory    string `json:"directory"`
-	Created      bool   `json:"created"`
+	GenerationID string           `json:"generation_id"`
+	Directory    string           `json:"directory"`
+	Created      bool             `json:"created"`
+	Recovery     BaselineRecovery `json:"recovery"`
 }
 
 // Export writes the installed generation as an immutable inspectable baseline.
@@ -78,13 +79,22 @@ func exportBaseline(ctx context.Context, directory string, checkpoint func(strin
 		return result, err
 	}
 	defer func() { _ = root.Close() }()
+	recovery, err := openBaselineRecovery(ctx, root, directory)
+	if err != nil {
+		return result, err
+	}
+	defer func() { resultErr = stderrors.Join(resultErr, recovery.close()) }()
+	result.Recovery, err = recovery.recover(ctx, checkpoint)
+	if err != nil {
+		return result, err
+	}
 	if _, err := root.Lstat(name); err == nil {
 		return result, verifyAndSyncBaseline(root, name, generation)
 	} else if !stderrors.Is(err, fs.ErrNotExist) {
 		return result, err
 	}
-	stage := ".baseline-" + rand.Text()
-	if err := root.Mkdir(stage, baselineDirectoryMode); err != nil {
+	stage := baselineStagePrefix + rand.Text()
+	if err := privatefiles.CreateChild(root, stage); err != nil {
 		return result, err
 	}
 	staging, err := openBaselineStage(root, stage)
@@ -92,8 +102,11 @@ func exportBaseline(ctx context.Context, directory string, checkpoint func(strin
 		return result, err
 	}
 	defer func() {
-		resultErr = stderrors.Join(resultErr, staging.cleanup(), staging.close())
+		resultErr = stderrors.Join(resultErr, staging.cleanup(context.Background(), nil), staging.close())
 	}()
+	if err := recovery.newJournal(ctx, staging, name); err != nil {
+		return result, err
+	}
 	check := func(point string) error {
 		if err := ctx.Err(); err != nil {
 			return err
@@ -106,26 +119,7 @@ func exportBaseline(ctx context.Context, directory string, checkpoint func(strin
 	if err := check("created"); err != nil {
 		return result, err
 	}
-	manifest, err := json.MarshalIndent(generation.Manifest, "", "  ")
-	if err != nil {
-		return result, err
-	}
-	if err := staging.write(baselineManifestName, append(manifest, '\n')); err != nil {
-		return result, err
-	}
-	if err := check("manifest-written"); err != nil {
-		return result, err
-	}
-	if err := staging.write(baselinePayloadName, generation.Payload); err != nil {
-		return result, err
-	}
-	if err := check("payload-written"); err != nil {
-		return result, err
-	}
-	if err := staging.validate(); err != nil {
-		return result, err
-	}
-	if err := syncBaselineDirectory(staging.root); err != nil {
+	if err := staging.writeGeneration(ctx, generation, check); err != nil {
 		return result, err
 	}
 	if err := ctx.Err(); err != nil {
@@ -230,4 +224,36 @@ func readBaselineFile(root *os.Root, name string, size int) ([]byte, error) {
 		return nil, &errors.ConflictError{Resource: "embedded baseline export", Message: "file size changed during verification"}
 	}
 	return data, nil
+}
+
+func (staging *baselineStage) writeGeneration(ctx context.Context, generation catalogs.Generation, check func(string) error) error {
+	manifest, err := json.MarshalIndent(generation.Manifest, "", "  ")
+	if err != nil {
+		return err
+	}
+	if err := staging.write(baselineManifestName, append(manifest, '\n')); err != nil {
+		return err
+	}
+	if err := staging.journal.save(ctx, staging, baselineJournalWriting); err != nil {
+		return err
+	}
+	if err := check("manifest-written"); err != nil {
+		return err
+	}
+	if err := staging.write(baselinePayloadName, generation.Payload); err != nil {
+		return err
+	}
+	if err := staging.journal.save(ctx, staging, baselineJournalWriting); err != nil {
+		return err
+	}
+	if err := check("payload-written"); err != nil {
+		return err
+	}
+	if err := staging.validate(); err != nil {
+		return err
+	}
+	if err := syncBaselineDirectory(staging.root); err != nil {
+		return err
+	}
+	return nil
 }

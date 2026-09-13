@@ -22,7 +22,7 @@ const (
 // Unknown roles return an error without selecting a default policy.
 func ForRole(role string) (string, error) {
 	switch role {
-	case "configuration", "dotenv", "catalog-store", "catalog-migration-lock",
+	case "configuration", "dotenv", "catalog-store", "catalog-migration-lock", "baseline-recovery",
 		"runtime-owner", "runtime-lock", "runtime-seed", "runtime-evidence", "runtime-record-staging",
 		"migration-pending", "migration-receipt", "migration-completed", "migration-retired", "migration-journal", "runtime-migration",
 		"github-discovery", "workspace-preparing", "admin-identities", "admin-audit", "admin-operations",

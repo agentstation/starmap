@@ -53,7 +53,8 @@ func TestSourceResetHistoryVersions(t *testing.T) {
 		{name: "v3", version: 3, resets: []ObservationReset{{SourceID: sources.ModelsDevHTTPID}}, valid: true},
 		{name: "v2-metadata-reset", version: 2, resets: []ObservationReset{{SourceID: sources.ModelsDevHTTPID}}},
 		{name: "wrong-source", version: 3, resets: []ObservationReset{{SourceID: sources.ModelsDevGitID}}},
-		{name: "future", version: 4},
+		{name: "v4", version: 4, resets: []ObservationReset{{SourceID: sources.ModelsDevHTTPID}}, valid: true},
+		{name: "future", version: 5},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			store, err := newLayerStore(privateRuntimeDirectory(t))

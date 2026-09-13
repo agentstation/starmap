@@ -1770,6 +1770,171 @@
           "test": "TestCacheDeliveryRechecksCatalogPermission"
         }
       ]
+    },
+    "A19.verified_rollback": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestGenerationPinRejectsInvalidRetainedArtifacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestOriginGenerationPinPublishesPriorPayloadAtNewRevision"
+        }
+      ]
+    },
+    "A19.pin_restart": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestGenerationPinRetainsSelectionAcrossRebuildAndUnpin"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestGenerationPinRecordsOneAcceptanceAcrossRestart"
+        }
+      ]
+    },
+    "A19.poll_cannot_unpin": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestAutomaticConfigurationRunsScheduledWorkAcrossRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./pkg/catalogs/config",
+          "test": "TestPinnedConfigurationBlocksPollingAcrossRestart"
+        }
+      ]
+    },
+    "A19.permission_withdrawal_not_bypassed": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestGenerationPinKeepsPermissionWithdrawalEffective"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./runtime",
+          "test": "TestGenerationPinBindsPermissionToSelectedArtifact"
+        }
+      ]
+    }
+  },
+  "task_component_checks": {
+    "CSP5": {
+      "A22.startup_poll_stream_manual": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./pkg/catalogs/config",
+            "test": "TestOfflineConfigurationStopsExplicitCatalogNetwork"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./pkg/catalogs/config",
+            "test": "TestOfflineConfigurationGuardsScheduledWorkAcrossRestart"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./pkg/catalogs/config",
+            "test": "TestAutomaticConfigurationRunsScheduledWorkAcrossRestart"
+          }
+        ]
+      },
+      "A22.lazy_secret_resolution": {
+        "kind": "go_test",
+        "repository": "starmap",
+        "package": "./acquisition",
+        "test": "TestOfflineManualAcquisitionDoesNotResolveCredentials"
+      },
+      "A22.local_import_allowed": {
+        "kind": "go_test",
+        "repository": "starmap",
+        "package": "./runtime",
+        "test": "TestOfflineVerifiedLocalImportSurvivesRestart"
+      },
+      "A22.inference_separate_egress": {
+        "kind": "go_test",
+        "repository": "starmap",
+        "package": "./pkg/catalogs/config",
+        "test": "TestOfflineCatalogLeavesCallerInferenceTransportAvailable"
+      },
+      "A23.manual_source_with_acquisition": {
+        "kind": "go_test",
+        "repository": "starmap",
+        "package": "./pkg/catalogs/config",
+        "test": "TestManualSourceConfigurationKeepsAcquisitionAcrossRestart"
+      },
+      "A23.pin_blocks_all_activation": {
+        "kind": "go_test",
+        "repository": "starmap",
+        "package": "./runtime",
+        "test": "TestGenerationPinBlocksEveryCatalogMutation"
+      },
+      "A23.explicit_refresh": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./pkg/catalogs/config",
+            "test": "TestManualSourceConfigurationDoesNotSubscribe"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./runtime",
+            "test": "TestRuntimeRefreshMethodsChangeDistinctLayers"
+          }
+        ]
+      },
+      "A23.restart_watcher_guards": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./pkg/catalogs/config",
+            "test": "TestManualSourceConfigurationKeepsAcquisitionAcrossRestart"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./pkg/catalogs/config",
+            "test": "TestPinnedConfigurationBlocksPollingAcrossRestart"
+          }
+        ]
+      }
     }
   }
 }

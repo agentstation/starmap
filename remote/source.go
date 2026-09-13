@@ -56,7 +56,6 @@ type Source struct {
 
 	startMu sync.Mutex
 	started bool
-	cancel  context.CancelFunc
 
 	mu                sync.Mutex
 	lastGenerationID  string
@@ -66,6 +65,7 @@ type Source struct {
 // The cascaded source fills the reactive runtime source roles.
 var (
 	_ source.Source              = (*Source)(nil)
+	_ source.ManualReader        = (*Source)(nil)
 	_ source.PermissionReader    = (*Source)(nil)
 	_ source.AuthorityObservable = (*Source)(nil)
 	_ source.Watcher             = (*Source)(nil)
@@ -116,14 +116,17 @@ func (s *Source) Close() error {
 	if s == nil {
 		return nil
 	}
-	s.startMu.Lock()
-	cancel := s.cancel
-	s.cancel = nil
-	s.startMu.Unlock()
-	if cancel != nil {
-		cancel()
-	}
 	return s.subscriber.Close()
+}
+
+// Shutdown cancels the subscriber and waits until its worker exits or ctx ends.
+// A runtime uses a live context to retain directory ownership after its close timeout.
+// Close remains the bounded standalone shutdown operation.
+func (s *Source) Shutdown(ctx context.Context) error {
+	if s == nil {
+		return nil
+	}
+	return s.subscriber.shutdown(ctx)
 }
 
 // Changes reports each upstream publication the subscriber activated. The
@@ -152,6 +155,24 @@ func (s *Source) Read(ctx context.Context) (source.Read, error) {
 	if err := s.start(ctx); err != nil {
 		return source.Read{}, err
 	}
+	return s.readCurrent(ctx)
+}
+
+// ReadOnce verifies one upstream generation and its source chain without an event stream.
+// Close cancels the complete read. Each later call fetches the current generation again.
+func (s *Source) ReadOnce(ctx context.Context) (source.Read, error) {
+	readCtx, finish, err := s.subscriber.startManualRead(ctx)
+	if err != nil {
+		return source.Read{}, err
+	}
+	defer finish()
+	if err := s.subscriber.catchUp(readCtx); err != nil {
+		return source.Read{}, err
+	}
+	return s.readCurrent(readCtx)
+}
+
+func (s *Source) readCurrent(ctx context.Context) (source.Read, error) {
 	chain, chainErr := s.subscriber.protocol.FetchSourceChain(ctx)
 	// An upstream that serves no chain answers with a status, and an origin
 	// answers with a not-found status. Both stay readable without disclosure.
@@ -227,17 +248,23 @@ func (s *Source) Read(ctx context.Context) (source.Read, error) {
 // next read opens the lifecycle again. The runtime poll recovers on its own
 // after an operator rotates the key, and it recovers when the upstream returns.
 func (s *Source) start(ctx context.Context) error {
+	if ctx == nil {
+		return &errors.ValidationError{Field: "remote.context", Message: "is required"}
+	}
 	s.startMu.Lock()
 	defer s.startMu.Unlock()
 	if s.started {
+		s.subscriber.mu.Lock()
+		state := s.subscriber.state
+		s.subscriber.mu.Unlock()
+		if state != stateRunning {
+			return &errors.ConflictError{Resource: "remote catalog source", Expected: "running", Actual: state.String(), Message: "the source lifecycle has ended"}
+		}
 		return nil
 	}
-	lifetime, cancel := context.WithCancel(context.WithoutCancel(ctx))
-	if err := s.subscriber.Start(lifetime); err != nil {
-		cancel()
+	if err := s.subscriber.start(ctx, context.WithoutCancel(ctx)); err != nil {
 		return err
 	}
-	s.cancel = cancel
 	s.started = true
 	return nil
 }

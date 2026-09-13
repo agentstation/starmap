@@ -234,15 +234,15 @@ func (b *Backend) classifyError(operation, key, expected string, err error) erro
 		status = responseError.HTTPStatusCode()
 	}
 	switch {
-	case operation == "fetch" && (code == "NoSuchKey" || code == "NotFound" ||
+	case (operation == "fetch" || operation == "delete") && (code == "NoSuchKey" || code == "NotFound" ||
 		(status == 404 && code == "")):
 		return &errors.NotFoundError{Resource: "S3 object", ID: key}
-	case operation == "write" && (status == 409 || status == 412 ||
+	case (operation == "write" || operation == "delete") && (status == 409 || status == 412 ||
 		code == "ConditionalRequestConflict" || code == "PreconditionFailed"):
 		return &errors.ConflictError{
 			Resource: "S3 object",
 			Expected: expected,
-			Message:  "conditional write was rejected",
+			Message:  "conditional operation was rejected",
 		}
 	default:
 		return resourceError(operation, key, err)

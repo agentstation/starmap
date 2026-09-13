@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	stderrors "errors"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -107,13 +108,7 @@ func TestConcurrentBaselineExportPublishesOneCompleteGeneration(t *testing.T) {
 	if count != 1 {
 		t.Fatalf("published %d baseline directories, want one", count)
 	}
-	files, err := os.ReadDir(directory)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(files) != 1 {
-		t.Fatal("completed exports left staging files")
-	}
+	assertBaselineRecoveryIdle(t, directory, 1)
 	if _, err := Export(t.Context(), directory); err != nil {
 		t.Fatal(err)
 	}
@@ -184,15 +179,34 @@ func TestBaselineExportRecoversAfterProcessInterruption(t *testing.T) {
 			if result.Created == (point == "promoted") {
 				t.Fatal("recovery did not distinguish staged and published state")
 			}
-			// Recovery does not collect a staging directory whose owner it cannot verify.
+			// Recovery collects the interrupted writer's recorded stage.
 			for _, entry := range before {
 				if strings.HasPrefix(entry.Name(), ".baseline-") {
-					if _, err := os.Stat(filepath.Join(directory, entry.Name())); err != nil {
-						t.Fatal("recovery removed an unowned staging directory")
+					if _, err := os.Stat(filepath.Join(directory, entry.Name())); !os.IsNotExist(err) {
+						t.Fatal("recovery retained the exited writer's staging directory")
 					}
 				}
 			}
 		})
+	}
+}
+
+func TestBaselineRecoveryPreservesUnrecordedStage(t *testing.T) {
+	directory := filepath.Join(t.TempDir(), "baseline")
+	stage := filepath.Join(directory, ".baseline-unknown")
+	if err := os.MkdirAll(stage, baselineDirectoryMode); err != nil {
+		t.Fatal(err)
+	}
+	file := filepath.Join(stage, "operator.txt")
+	if err := os.WriteFile(file, []byte("preserve"), baselineFileMode); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Export(t.Context(), directory); err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(file)
+	if err != nil || string(data) != "preserve" {
+		t.Fatalf("recovery changed unrecorded staging: %v", err)
 	}
 }
 
@@ -203,6 +217,14 @@ func TestBaselineExportCrashChild(t *testing.T) {
 	}
 	point := os.Getenv("STARMAP_BASELINE_TEST_POINT")
 	_, err := exportBaseline(t.Context(), directory, func(at string) error {
+		if point == "held" && at == "created" {
+			if _, err := io.WriteString(os.Stdout, "baseline-ready\n"); err != nil {
+				return err
+			}
+			var release [1]byte
+			_, err := io.ReadFull(os.Stdin, release[:])
+			return err
+		}
 		if at == point {
 			os.Exit(86)
 		}
@@ -210,6 +232,9 @@ func TestBaselineExportCrashChild(t *testing.T) {
 	})
 	if err != nil {
 		t.Fatal(err)
+	}
+	if point == "held" {
+		return
 	}
 	t.Fatal("child missed its interruption checkpoint")
 }

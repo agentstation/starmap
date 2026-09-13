@@ -28,6 +28,14 @@ type Source interface {
 	Read(ctx context.Context) (Read, error)
 }
 
+// ManualReader reads one upstream generation without starting a background lifecycle.
+// The context bounds every request. Return ends all work that the call starts.
+// Reactive sources must provide this capability for manual source mode.
+type ManualReader interface {
+	Source
+	ReadOnce(context.Context) (Read, error)
+}
+
 // Watcher is an optional Source that reports an upstream change as it
 // arrives. A reactive source, such as one Starmap cascaded onto another,
 // learns of a publication on its own stream. The runtime then refreshes on

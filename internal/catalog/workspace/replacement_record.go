@@ -2,7 +2,7 @@ package workspace
 
 import (
 	"bytes"
-	"crypto/rand"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -13,18 +13,21 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/agentstation/starmap/internal/filepublish"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
 type replacementRecord struct {
-	Version   int              `json:"version"`
-	Target    string           `json:"target"`
-	Candidate string           `json:"candidate"`
-	Backup    string           `json:"backup"`
-	Old       treeSnapshot     `json:"old"`
-	New       treeSnapshot     `json:"new"`
-	Marker    projectionMarker `json:"marker"`
+	LockIdentity  string            `json:"lock_identity"`
+	Version       int               `json:"version"`
+	Target        string            `json:"target"`
+	Candidate     string            `json:"candidate"`
+	Backup        string            `json:"backup"`
+	Old           treeSnapshot      `json:"old"`
+	New           treeSnapshot      `json:"new"`
+	Marker        projectionMarker  `json:"marker"`
+	OldIdentities map[string]string `json:"old_identities"`
+	NewIdentities map[string]string `json:"new_identities"`
+	journal       workspaceRecordState
 }
 
 func replacementJournalPath(target string) string {
@@ -46,6 +49,9 @@ func (r replacementRecord) validate(target string) error {
 	if r.Version == 1 {
 		return &errors.ValidationError{Field: "workspace_replacement.version", Message: "journal predates access snapshots. Preserve the workspace, candidate, and backup for explicit recovery"}
 	}
+	if r.Version == 2 {
+		return &errors.ValidationError{Field: "workspace_replacement.version", Message: "journal predates child identity snapshots. Preserve the workspace, candidate, and backup for explicit recovery"}
+	}
 	base := filepath.Base(target)
 	prefix := "." + base + ".candidate-"
 	suffix := strings.TrimPrefix(r.Candidate, prefix)
@@ -54,16 +60,38 @@ func (r replacementRecord) validate(target string) error {
 		!replacementChildName(r.Backup) || r.Old.ID == r.New.ID {
 		return invalidReplacement("record")
 	}
+	if r.LockIdentity == "" || len(r.LockIdentity) > replacementIdentityMax {
+		return invalidReplacement("writer_identity")
+	}
 	if err := r.Old.validate(); err != nil {
 		return err
 	}
 	if err := r.New.validate(); err != nil {
 		return err
 	}
+	if err := validateReplacementIdentities(r.Old, r.OldIdentities); err != nil {
+		return err
+	}
+	if err := validateReplacementIdentities(r.New, r.NewIdentities); err != nil {
+		return err
+	}
 	if r.Marker.Version != markerVersion || strings.TrimSpace(r.Marker.GenerationID) == "" ||
 		!replacementCatalogDigest(r.Marker.PayloadChecksum) || !replacementCatalogDigest(r.Marker.WorkspaceChecksum) ||
 		!replacementCatalogDigest(r.Marker.EndpointChecksum) {
 		return invalidReplacement("marker")
+	}
+	return nil
+}
+
+func validateReplacementIdentities(tree treeSnapshot, identities map[string]string) error {
+	if len(identities) != len(tree.Entries) || identities["."] != tree.ID {
+		return invalidReplacement("identities")
+	}
+	for _, entry := range tree.Entries {
+		id := identities[entry.Path]
+		if id == "" || len(id) > replacementIdentityMax {
+			return invalidReplacement("identities")
+		}
 	}
 	return nil
 }
@@ -133,7 +161,7 @@ func invalidReplacement(field string) error {
 	return &errors.ValidationError{Field: "workspace_replacement." + field, Message: "invalid replacement journal"}
 }
 
-func writeReplacementRecord(root *os.Root, record replacementRecord) (bool, error) {
+func writeReplacementRecord(ctx context.Context, root *os.Root, record *replacementRecord, hooks workspaceRecordWriter) (bool, error) {
 	if err := record.validate(record.Target); err != nil {
 		return false, err
 	}
@@ -146,69 +174,15 @@ func writeReplacementRecord(root *os.Root, record replacementRecord) (bool, erro
 	}
 	data = append(data, '\n')
 	name := filepath.Base(replacementJournalPath(record.Target))
-	temporary := "." + name + "." + rand.Text()
-	if err := writeReplacementBytes(root, temporary, data); err != nil {
-		return false, err
-	}
-	defer func() { _ = root.Remove(temporary) }()
-	if err := root.Link(temporary, name); err != nil {
-		return false, err
-	}
-	return true, filepublish.SyncDirectory(root)
-}
-
-func writeReplacementBytes(root *os.Root, name string, data []byte) error {
-	file, err := root.OpenFile(name, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fileMode)
-	if err != nil {
-		return err
-	}
-	defer func() { _ = file.Close() }()
-	complete := false
-	defer func() {
-		if !complete {
-			_ = root.Remove(name)
-		}
-	}()
-	if _, err := file.Write(data); err != nil {
-		return err
-	}
-	if err := file.Sync(); err != nil {
-		return err
-	}
-	if err := file.Close(); err != nil {
-		return err
-	}
-	complete = true
-	return nil
+	record.journal, err = hooks.publish(ctx, root, name, data, recordPublication{})
+	return record.journal.identity != "", err
 }
 
 func readReplacementRecord(root *os.Root, target string) (replacementRecord, error) {
 	name := filepath.Base(replacementJournalPath(target))
-	info, err := root.Lstat(name)
+	data, state, err := readWorkspaceRecord(root, name, replacementJournalMax)
 	if err != nil {
 		return replacementRecord{}, err
-	}
-	if !info.Mode().IsRegular() || info.Size() > replacementJournalMax {
-		return replacementRecord{}, invalidReplacement("file")
-	}
-	file, err := root.Open(name)
-	if err != nil {
-		return replacementRecord{}, err
-	}
-	defer func() { _ = file.Close() }()
-	opened, err := file.Stat()
-	if err != nil {
-		return replacementRecord{}, err
-	}
-	if !os.SameFile(info, opened) {
-		return replacementRecord{}, invalidReplacement("identity")
-	}
-	data, err := io.ReadAll(io.LimitReader(file, replacementJournalMax+1))
-	if err != nil {
-		return replacementRecord{}, err
-	}
-	if len(data) > replacementJournalMax {
-		return replacementRecord{}, replacementLimit("journal")
 	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
@@ -219,5 +193,10 @@ func readReplacementRecord(root *os.Root, target string) (replacementRecord, err
 	if decoder.Decode(&struct{}{}) != io.EOF {
 		return replacementRecord{}, invalidReplacement("trailing_data")
 	}
-	return record, record.validate(target)
+	if err := record.validate(target); err != nil {
+		return replacementRecord{}, err
+	}
+	record.Old.identities, record.New.identities = record.OldIdentities, record.NewIdentities
+	record.journal = state
+	return record, nil
 }

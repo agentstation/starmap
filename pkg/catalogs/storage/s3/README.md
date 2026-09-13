@@ -16,7 +16,9 @@ The caller owns the S3 client, including endpoint selection, credentials, retrie
 
 - [type Backend](<#Backend>)
   - [func New\(client \*awss3.Client, config Config\) \(\*Backend, error\)](<#New>)
+  - [func \(b \*Backend\) Delete\(ctx context.Context, key, version string\) error](<#Backend.Delete>)
   - [func \(b \*Backend\) Get\(ctx context.Context, key string\) \(storage.ObjectValue, error\)](<#Backend.Get>)
+  - [func \(b \*Backend\) List\(ctx context.Context, request storage.ObjectListRequest\) \(storage.ObjectPage, error\)](<#Backend.List>)
   - [func \(b \*Backend\) Put\(ctx context.Context, key string, data \[\]byte, condition storage.ObjectPutCondition\) \(storage.ObjectValue, error\)](<#Backend.Put>)
 - [type Config](<#Config>)
 
@@ -45,6 +47,15 @@ New creates an inert S3\-compatible object backend.
 
 The caller must configure client with its credentials, region, endpoint, transport, and retry policy before calling New. New does not access the network.
 
+<a name="Backend.Delete"></a>
+### func \(\*Backend\) [Delete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/collection.go#L100>)
+
+```go
+func (b *Backend) Delete(ctx context.Context, key, version string) error
+```
+
+Delete conditionally removes the current object through DeleteObject If\-Match. It does not delete historical bucket versions or bypass object retention rules.
+
 <a name="Backend.Get"></a>
 ### func \(\*Backend\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L73>)
 
@@ -53,6 +64,15 @@ func (b *Backend) Get(ctx context.Context, key string) (storage.ObjectValue, err
 ```
 
 Get fetches one object and returns its opaque ETag as Version.
+
+<a name="Backend.List"></a>
+### func \(\*Backend\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/collection.go#L24>)
+
+```go
+func (b *Backend) List(ctx context.Context, request storage.ObjectListRequest) (storage.ObjectPage, error)
+```
+
+List returns one bounded page through ListObjectsV2 without a delimiter. The service must return explicit completeness and matching namespace metadata.
 
 <a name="Backend.Put"></a>
 ### func \(\*Backend\) [Put](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/s3/backend.go#L117-L122>)

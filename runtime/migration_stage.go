@@ -3,7 +3,6 @@ package runtime
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	stderrors "errors"
@@ -64,7 +63,7 @@ func stageMigrationOperation(ctx context.Context, operation *directoryMigration,
 	if operation.journal.phase != migrationPrepared && operation.journal.phase != migrationCopied && operation.journal.phase != migrationVerified {
 		return nil, migrationJournalConflict("operation already passed staging")
 	}
-	stage, err := operation.openStage(ctx)
+	stage, err := operation.openStage(ctx, checkpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +81,7 @@ func stageMigrationOperation(ctx context.Context, operation *directoryMigration,
 	}
 	if operation.journal.phase == migrationPrepared {
 		for _, file := range operation.manifest.Files {
-			if err := copyMigrationFile(ctx, operation.source, stage.root, file, checkpoint); err != nil {
+			if err := copyMigrationFile(ctx, operation.source, stage, file, checkpoint); err != nil {
 				return nil, err
 			}
 		}
@@ -124,7 +123,7 @@ func (s *directoryMigrationStage) Close() error {
 	return stderrors.Join(rootErr, lockErr)
 }
 
-func (m *directoryMigration) openStage(ctx context.Context) (_ *directoryMigrationStage, resultErr error) {
+func (m *directoryMigration) openStage(ctx context.Context, checkpoint migrationCheckpoint) (_ *directoryMigrationStage, resultErr error) {
 	encoded, err := m.manifest.encode()
 	if err != nil {
 		return nil, err
@@ -144,11 +143,7 @@ func (m *directoryMigration) openStage(ctx context.Context) (_ *directoryMigrati
 		return nil, err
 	}
 	defer func() { _ = parent.Close() }()
-	if _, err := parent.Lstat(name); os.IsNotExist(err) {
-		if err := m.initializeStage(ctx, parent, name, encoded); err != nil && !os.IsExist(err) {
-			return nil, err
-		}
-	} else if err != nil {
+	if err := m.initializeStage(ctx, parent, name, encoded, checkpoint); err != nil {
 		return nil, err
 	}
 	info, err := parent.Lstat(name)
@@ -176,39 +171,4 @@ func (m *directoryMigration) openStage(ctx context.Context) (_ *directoryMigrati
 		return nil, err
 	}
 	return &directoryMigrationStage{root: root, lock: lock, directory: directory}, nil
-}
-
-func (m *directoryMigration) initializeStage(ctx context.Context, parent *os.Root, name string, encoded []byte) error {
-	temporary := ".migration-build-" + rand.Text()
-	if err := createPrivateRuntimeChild(parent, temporary); err != nil {
-		return err
-	}
-	defer func() { _ = parent.RemoveAll(temporary) }()
-	root, err := parent.OpenRoot(temporary)
-	if err != nil {
-		return err
-	}
-	defer func() { _ = root.Close() }()
-	if err := writeOwnerFile(ctx, root, migrationPendingName, encoded); err != nil {
-		return err
-	}
-	if err := bindDirectoryOwner(ctx, filepath.Join(parent.Name(), temporary), m.manifest.Owner, m.manifest.SourceIdentity); err != nil {
-		return err
-	}
-	if err := root.Mkdir(migrationWorkDirectory, runtimeDirectoryMode); err != nil {
-		return err
-	}
-	if err := syncMigrationDirectory(root); err != nil {
-		return err
-	}
-	if err := root.Close(); err != nil {
-		return err
-	}
-	if err := ctx.Err(); err != nil {
-		return err
-	}
-	if err := publishMigrationDirectory(parent, temporary, name); err != nil {
-		return err
-	}
-	return syncMigrationDirectory(parent)
 }

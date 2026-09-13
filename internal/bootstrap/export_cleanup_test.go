@@ -91,6 +91,18 @@ func TestBaselineExportPreservesChangedStaging(t *testing.T) {
 					if _, err := os.Stat(result.Directory); !os.IsNotExist(err) {
 						t.Fatalf("changed staging reached publication: %v", err)
 					}
+					recovered, err := Export(t.Context(), directory)
+					if err != nil || len(recovered.Recovery.PreservedPaths) == 0 {
+						t.Fatalf("recovery did not report the changed stage: %+v, %v", recovered, err)
+					}
+					actual, err = os.ReadFile(sentinel)
+					if err != nil || string(actual) != string(expected) {
+						t.Fatalf("recovery changed operator content: %v", err)
+					}
+					after, err = os.Stat(sentinel)
+					if err != nil || !os.SameFile(original, after) {
+						t.Fatalf("recovery replaced the changed file: %v", err)
+					}
 				})
 			}
 		})
@@ -134,10 +146,7 @@ func TestBaselineExportCleansOnlyUnchangedOwnedStage(t *testing.T) {
 			if !stderrors.Is(err, context.Canceled) {
 				t.Fatalf("export lost cancellation: %v", err)
 			}
-			entries, err := os.ReadDir(directory)
-			if err != nil || len(entries) != 0 {
-				t.Fatalf("owned stage remains: %v, %v", entries, err)
-			}
+			assertBaselineRecoveryIdle(t, directory, 0)
 		})
 	}
 }
@@ -155,10 +164,7 @@ func TestBaselineExportCancellationAfterStagingPreventsPublication(t *testing.T)
 	if !stderrors.Is(err, context.Canceled) || result.Created {
 		t.Errorf("canceled export reached publication: %+v, %v", result, err)
 	}
-	entries, err := os.ReadDir(directory)
-	if err != nil || len(entries) != 0 {
-		t.Fatalf("canceled export retained files: %v, %v", entries, err)
-	}
+	assertBaselineRecoveryIdle(t, directory, 0)
 }
 
 func baselineStagePath(t *testing.T, directory string) string {

@@ -26,18 +26,20 @@ type treeEntry struct {
 }
 
 type treeSnapshot struct {
-	ID      string      `json:"id"`
-	Digest  string      `json:"digest"`
-	Entries []treeEntry `json:"entries"`
+	ID         string      `json:"id"`
+	Digest     string      `json:"digest"`
+	Entries    []treeEntry `json:"entries"`
+	identities map[string]string
 }
 
 type treeScanner struct {
-	ctx       context.Context
-	root      *os.Root
-	entries   []treeEntry
-	seen      int
-	nameBytes int
-	bytes     int64
+	ctx        context.Context
+	root       *os.Root
+	entries    []treeEntry
+	seen       int
+	nameBytes  int
+	bytes      int64
+	identities map[string]string
 }
 
 func snapshotTree(ctx context.Context, target string) (treeSnapshot, error) {
@@ -78,7 +80,7 @@ func snapshotTreeAt(ctx context.Context, parent *os.Root, target string) (treeSn
 	if err != nil {
 		return treeSnapshot{}, err
 	}
-	scanner := treeScanner{ctx: ctx, root: root, seen: 1}
+	scanner := treeScanner{ctx: ctx, root: root, seen: 1, identities: make(map[string]string)}
 	if err := scanner.visit("."); err != nil {
 		return treeSnapshot{}, err
 	}
@@ -94,7 +96,7 @@ func snapshotTreeAt(ctx context.Context, parent *os.Root, target string) (treeSn
 	if err != nil {
 		return treeSnapshot{}, err
 	}
-	return treeSnapshot{ID: id, Digest: digest, Entries: scanner.entries}, nil
+	return treeSnapshot{ID: id, Digest: digest, Entries: scanner.entries, identities: scanner.identities}, nil
 }
 
 func (s *treeScanner) visit(name string) error {
@@ -178,6 +180,13 @@ func (s *treeScanner) entry(name string) (treeEntry, error) {
 	if !os.SameFile(info, opened) || info.Mode().Type() != opened.Mode().Type() {
 		return treeEntry{}, replacementConflict(name, "file changed before inspection")
 	}
+	if s.identities != nil {
+		id, err := entryIdentity(file)
+		if err != nil {
+			return treeEntry{}, err
+		}
+		s.identities[name] = id
+	}
 	entry.AccessSHA256, err = entryAccessDigest(file)
 	if err != nil {
 		return treeEntry{}, err
@@ -186,9 +195,13 @@ func (s *treeScanner) entry(name string) (treeEntry, error) {
 		return entry, s.checkEntryAccess(name, file, info, entry.AccessSHA256)
 	}
 	hash := sha256.New()
-	n, err := io.CopyN(hash, snapshotReader{ctx: s.ctx, file: file}, info.Size()+1)
-	if err != nil && !stderrors.Is(err, io.EOF) {
-		return treeEntry{}, err
+	var n int64
+	// Windows rejects reads within a held lock, including reads past an empty file.
+	if info.Size() != 0 {
+		n, err = io.CopyN(hash, snapshotReader{ctx: s.ctx, file: file}, info.Size()+1)
+		if err != nil && !stderrors.Is(err, io.EOF) {
+			return treeEntry{}, err
+		}
 	}
 	if n != info.Size() {
 		return treeEntry{}, replacementConflict(name, "file size changed during inspection")

@@ -104,12 +104,12 @@ func TestJournalRecoveryRestoresOldTreeWhenCandidateIsMissing(t *testing.T) {
 	if err := os.RemoveAll(filepath.Join(filepath.Dir(f.path), f.record.Candidate)); err != nil {
 		t.Fatal(err)
 	}
-	release, err := acquireWriterLock(f.path)
+	writer, err := acquireWorkspaceWriter(f.path)
 	if err != nil {
 		t.Fatal(err)
 	}
-	recovered, err := recoverReplacement(t.Context(), f.path)
-	release()
+	recovered, err := recoverWorkspace(t.Context(), f.path, writer)
+	writer.close()
 	if err != nil || !recovered {
 		t.Fatalf("restore: %v, %v", recovered, err)
 	}

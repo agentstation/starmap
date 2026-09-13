@@ -99,7 +99,20 @@ var _ sources.Source = (*Source)(nil)
 
 // New builds one GitHub catalog source. It requires a state directory,
 // because replay rejection and the rollback target must survive a restart.
+// Use NewContext to supply caller cancellation during construction and recovery.
 func New(opts ...Option) (*Source, error) {
+	return NewContext(context.Background(), opts...)
+}
+
+// NewContext builds a GitHub source and recovers local discovery state with ctx.
+// It starts no network work. Cancellation stops construction and recovery.
+func NewContext(ctx context.Context, opts ...Option) (*Source, error) {
+	if ctx == nil {
+		return nil, sourceValidation("context", nil, "is required")
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	config := defaultConfig()
 	for _, opt := range opts {
 		if opt != nil {
@@ -113,8 +126,11 @@ func New(opts ...Option) (*Source, error) {
 	if err != nil {
 		return nil, err
 	}
-	store, err := newStateStore(config)
+	store, err := newStateStore(ctx, config)
 	if err != nil {
+		return nil, err
+	}
+	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
 	return &Source{config: config, client: restClient, state: store}, nil
@@ -203,7 +219,7 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	state, err := s.state.load()
+	state, previous, err := s.state.loadSnapshot()
 	if err != nil {
 		return Release{}, err
 	}
@@ -240,7 +256,7 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 	}
 
 	now := s.config.Now().UTC()
-	if err := s.state.save(State{
+	if err := s.state.saveSnapshot(ctx, State{
 		Repository:  s.config.Repository,
 		Channel:     s.config.Channel,
 		ChannelETag: answer.etag(),
@@ -252,7 +268,7 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 			VerifiedAt:    now,
 		},
 		UpdatedAt: now,
-	}); err != nil {
+	}, previous); err != nil {
 		return Release{}, err
 	}
 	return release, nil

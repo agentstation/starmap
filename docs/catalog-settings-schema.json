@@ -222,6 +222,92 @@
       "anchor": "catalog-source-token"
     },
     {
+      "description": "Selects automatic source refresh or explicit manual reads. Manual mode suppresses startup reads, polling, and source watchers.",
+      "allowed_values": [
+        "automatic",
+        "manual"
+      ],
+      "id": "catalog.source.refresh.mode",
+      "name": "STARMAP_CATALOG_SOURCE_REFRESH_MODE",
+      "key": "catalog_source_refresh_mode",
+      "flag": "catalog-source-refresh-mode",
+      "environment": [
+        "STARMAP_CATALOG_SOURCE_REFRESH_MODE"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "automatic",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-source-refresh-mode"
+    },
+    {
+      "description": "Selects a retained generation and blocks catalog changes. Permission observation continues. An empty value clears the pin.",
+      "id": "catalog.generation.pin",
+      "name": "STARMAP_CATALOG_GENERATION_PIN",
+      "key": "catalog_generation_pin",
+      "flag": "catalog-generation-pin",
+      "environment": [
+        "STARMAP_CATALOG_GENERATION_PIN"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "",
+      "default_meaning": "no generation pin",
+      "allow_empty": true,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-generation-pin"
+    },
+    {
+      "description": "Controls catalog network acquisition. Offline mode preserves local imports and does not change inference or selected storage access.",
+      "allowed_values": [
+        "configured",
+        "offline"
+      ],
+      "id": "catalog.network.mode",
+      "name": "STARMAP_CATALOG_NETWORK_MODE",
+      "key": "catalog_network_mode",
+      "flag": "catalog-network-mode",
+      "environment": [
+        "STARMAP_CATALOG_NETWORK_MODE"
+      ],
+      "type": "string",
+      "unit": "",
+      "default": "configured",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-network-mode"
+    },
+    {
       "description": "Sets the period between automatic catalog checks. Zero disables periodic catalog checks.",
       "id": "catalog.source.poll.interval",
       "name": "STARMAP_CATALOG_SOURCE_POLL_INTERVAL",
@@ -962,6 +1048,162 @@
       "introduced": 1,
       "compatibility": "supported",
       "anchor": "catalog-permission-clock-windows-source-uncertainty"
+    },
+    {
+      "description": "Enables automatic retention maintenance. Offline mode and generation pins still permit local cleanup.",
+      "id": "catalog.retention.enabled",
+      "name": "STARMAP_CATALOG_RETENTION_ENABLED",
+      "key": "catalog_retention_enabled",
+      "flag": "catalog-retention-enabled",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_ENABLED"
+      ],
+      "type": "boolean",
+      "unit": "",
+      "default": "true",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-enabled"
+    },
+    {
+      "description": "Sets the positive automatic collection interval. Disable scheduling with catalog_retention_enabled.",
+      "id": "catalog.retention.interval",
+      "name": "STARMAP_CATALOG_RETENTION_INTERVAL",
+      "key": "catalog_retention_interval",
+      "flag": "catalog-retention-interval",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_INTERVAL"
+      ],
+      "type": "duration",
+      "unit": "duration",
+      "default": "1h0m0s",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-interval"
+    },
+    {
+      "description": "Sets the retained generation count target. Required generations can exceed this limit.",
+      "id": "catalog.retention.max.generations",
+      "name": "STARMAP_CATALOG_RETENTION_MAX_GENERATIONS",
+      "key": "catalog_retention_max_generations",
+      "flag": "catalog-retention-max-generations",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_MAX_GENERATIONS"
+      ],
+      "type": "integer",
+      "unit": "generations",
+      "default": "32",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-max-generations"
+    },
+    {
+      "description": "Sets the retained generation byte target. Required generations can exceed this limit.",
+      "id": "catalog.retention.max.bytes",
+      "name": "STARMAP_CATALOG_RETENTION_MAX_BYTES",
+      "key": "catalog_retention_max_bytes",
+      "flag": "catalog-retention-max-bytes",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_MAX_BYTES"
+      ],
+      "type": "integer",
+      "unit": "bytes",
+      "default": "536870912",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-max-bytes"
+    },
+    {
+      "description": "Bounds one collection scan to at most 100000 entries. An incomplete scan refuses deletion.",
+      "id": "catalog.retention.scan.entries",
+      "name": "STARMAP_CATALOG_RETENTION_SCAN_ENTRIES",
+      "key": "catalog_retention_scan_entries",
+      "flag": "catalog-retention-scan-entries",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_SCAN_ENTRIES"
+      ],
+      "type": "integer",
+      "unit": "entries",
+      "default": "4096",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-scan-entries"
+    },
+    {
+      "description": "Bounds raw retained input bytes captured during one scan. It excludes decoder and filesystem overhead.",
+      "id": "catalog.retention.input.max.bytes",
+      "name": "STARMAP_CATALOG_RETENTION_INPUT_MAX_BYTES",
+      "key": "catalog_retention_input_max_bytes",
+      "flag": "catalog-retention-input-max-bytes",
+      "environment": [
+        "STARMAP_CATALOG_RETENTION_INPUT_MAX_BYTES"
+      ],
+      "type": "integer",
+      "unit": "bytes",
+      "default": "268435456",
+      "default_meaning": "",
+      "allow_empty": false,
+      "allow_zero": false,
+      "sensitive": false,
+      "scope": "deployment",
+      "source_binding": "",
+      "applicability": [
+        "all"
+      ],
+      "mutability": "runtime-replacement",
+      "introduced": 1,
+      "compatibility": "supported",
+      "anchor": "catalog-retention-input-max-bytes"
     }
   ]
 }

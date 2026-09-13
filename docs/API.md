@@ -44,8 +44,12 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [type Client](<#Client>)
   - [func New\(opts ...Option\) \(\*Client, error\)](<#New>)
   - [func NewContext\(ctx context.Context, opts ...Option\) \(\*Client, error\)](<#NewContext>)
+  - [func \(c \*Client\) AcquireGeneration\(ctx context.Context, id string\) \(catalogs.Generation, func\(\) error, error\)](<#Client.AcquireGeneration>)
   - [func \(c \*Client\) Activate\(ctx context.Context, generation catalogs.Generation\) \(Publication, error\)](<#Client.Activate>)
+  - [func \(c \*Client\) CanCollectGenerations\(\) bool](<#Client.CanCollectGenerations>)
+  - [func \(c \*Client\) CanLeaseGenerations\(\) bool](<#Client.CanLeaseGenerations>)
   - [func \(c \*Client\) Catalog\(\) \*catalogs.Catalog](<#Client.Catalog>)
+  - [func \(c \*Client\) CollectGenerations\(ctx context.Context, request storage.RetentionRequest\) \(storage.RetentionReport, error\)](<#Client.CollectGenerations>)
   - [func \(c \*Client\) CurrentAuthorityHead\(\) catalogs.CatalogAuthorityHead](<#Client.CurrentAuthorityHead>)
   - [func \(c \*Client\) CurrentCatalogState\(\) CatalogState](<#Client.CurrentCatalogState>)
   - [func \(c \*Client\) CurrentGeneration\(ctx context.Context\) \(catalogs.Generation, error\)](<#Client.CurrentGeneration>)
@@ -257,14 +261,41 @@ func NewContext(ctx context.Context, opts ...Option) (*Client, error)
 
 NewContext creates a Client with the given options. The caller\-owned context bounds reads from caller\-supplied storage and must be non\-nil. Construction never repairs or creates a workspace. Use RepairWorkspace for explicit repair, or open the connected runtime for application startup.
 
+<a name="Client.AcquireGeneration"></a>
+### func \(\*Client\) [AcquireGeneration](<https://github.com/agentstation/starmap/blob/main/generation_leases.go#L33>)
+
+```go
+func (c *Client) AcquireGeneration(ctx context.Context, id string) (catalogs.Generation, func() error, error)
+```
+
+AcquireGeneration reads and protects a stored generation until release. The selected store must support read leases. A missing embedded generation returns the verified compiled artifact. Compiled bytes need no storage lease. The caller must release every successful acquisition, even after cancellation.
+
 <a name="Client.Activate"></a>
-### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L167>)
+### func \(\*Client\) [Activate](<https://github.com/agentstation/starmap/blob/main/update.go#L170>)
 
 ```go
 func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (Publication, error)
 ```
 
 Activate validates, durably commits, and atomically activates an immutable generation obtained by an explicit trusted distribution adapter.
+
+<a name="Client.CanCollectGenerations"></a>
+### func \(\*Client\) [CanCollectGenerations](<https://github.com/agentstation/starmap/blob/main/generation_collection.go#L13>)
+
+```go
+func (c *Client) CanCollectGenerations() bool
+```
+
+CanCollectGenerations reports whether the selected store supports coordinated collection. It reads no storage and starts no work.
+
+<a name="Client.CanLeaseGenerations"></a>
+### func \(\*Client\) [CanLeaseGenerations](<https://github.com/agentstation/starmap/blob/main/generation_leases.go#L17>)
+
+```go
+func (c *Client) CanLeaseGenerations() bool
+```
+
+CanLeaseGenerations reports whether the selected store supports generation read leases. It reads no storage and starts no background work.
 
 <a name="Client.Catalog"></a>
 ### func \(\*Client\) [Catalog](<https://github.com/agentstation/starmap/blob/main/client.go#L21>)
@@ -274,6 +305,15 @@ func (c *Client) Catalog() *catalogs.Catalog
 ```
 
 Catalog returns the current immutable canonical catalog. It returns nil when called on a nil Client. After New or NewContext succeeds, Catalog is non\-failing, non\-nil, O\(1\), allocation\-free, and safe to retain across goroutines.
+
+<a name="Client.CollectGenerations"></a>
+### func \(\*Client\) [CollectGenerations](<https://github.com/agentstation/starmap/blob/main/generation_collection.go#L29>)
+
+```go
+func (c *Client) CollectGenerations(ctx context.Context, request storage.RetentionRequest) (storage.RetentionReport, error)
+```
+
+CollectGenerations applies explicit retention without changing the served catalog. It serializes with client updates and protects served and stored embedded generations. The caller supplies other required IDs and the expected stored generation. Collection remains available when a publication guard prevents catalog changes.
 
 <a name="Client.CurrentAuthorityHead"></a>
 ### func \(\*Client\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/authority_head.go#L9>)
@@ -589,7 +629,7 @@ func WithEmbeddedBootstrapMaxSizeBytes(maxSizeBytes int64) Option
 WithEmbeddedBootstrapMaxSizeBytes fails readiness while the active embedded bootstrap canonical payload exceeds maxSizeBytes.
 
 <a name="WithPublicationGuard"></a>
-### func [WithPublicationGuard](<https://github.com/agentstation/starmap/blob/main/publication_guard.go#L16>)
+### func [WithPublicationGuard](<https://github.com/agentstation/starmap/blob/main/publication_guard.go#L17>)
 
 ```go
 func WithPublicationGuard(guard PublicationGuard) Option
@@ -612,9 +652,9 @@ type Publication struct {
 ```
 
 <a name="PublicationGuard"></a>
-## type [PublicationGuard](<https://github.com/agentstation/starmap/blob/main/publication_guard.go#L12>)
+## type [PublicationGuard](<https://github.com/agentstation/starmap/blob/main/publication_guard.go#L13>)
 
-PublicationGuard authorizes a mutation before candidate work or activation. A hosting runtime can reserve publication while exposing the client for reads and hooks. Guards can run concurrently and must not mutate the client.
+PublicationGuard authorizes a mutation before candidate work or activation. A hosting runtime can reserve publication while exposing the client for reads and hooks. A queued operation checks guards again after entering its mutation transaction. Guards can run concurrently and must not mutate the client.
 
 ```go
 type PublicationGuard func(context.Context) error

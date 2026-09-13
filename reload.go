@@ -26,6 +26,9 @@ func (c *Client) Reload(ctx context.Context, check func(catalogs.Generation) err
 		return Publication{}, err
 	}
 	defer release()
+	if err := c.authorizePublication(ctx); err != nil {
+		return Publication{}, err
+	}
 
 	generation, err := c.options.catalogStore.Current(ctx)
 	if err != nil {
