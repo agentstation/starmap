@@ -19,7 +19,14 @@ The two corrected cases pass four events on each supported Go toolchain.
 All 28 workflow race events pass. Both Windows test binaries compile. Native execution remains UNVERIFIED for this correction.
 Policy and lint report no findings. The prose check passes 1,689 files without diagnostics.
 
-Required cross-lab review runs in session `27821` on committed source.
-The selected profile uses Sol at xhigh and Opus at high, with the configured P0 threshold.
-The retained review directory records its terminal result when available.
-Publication, native qualification, merge, and shared cleanup remain required. CSP5 remains incomplete.
+Required cross-lab review passed all six sections with zero findings at the configured P0 threshold.
+Sol at xhigh and Opus at high reviewed the committed source. The review finished at 04:14 UTC on September 13.
+The verification record retains its terminal result and transcripts.
+
+[PR #154](https://github.com/agentstation/starmap/pull/154) now publishes `71a1af619`.
+[Workflow 34737726813](https://github.com/agentstation/starmap/actions/runs/34737726813) checks this source on native runners.
+The [publication capture](native-test-repair-2026-09-13/publication.json) records the exact head and pending checks.
+Native qualification, merge, and shared cleanup remain required. CSP5 remains incomplete.
+
+The PR spans 277 files. This large change increased review time and repeated CI costs.
+The next delivery will keep shared-storage cleanup in a separate PR. CSP5 completion still requires the full task contract.

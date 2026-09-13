@@ -358,6 +358,31 @@
       "path": "fail-before/windows-amd64-tests.jsonl.gz",
       "sha256": "9e92e0c15b7f033ee2cbbebfb051498da3e54dbc9425a94ee3900e68d6876132",
       "decoded_sha256": "00089edfcf5ad97289977c1c50ca213f784ef8c81204399be8463f25c1e58b08"
+    },
+    {
+      "path": "review/verification.json.gz",
+      "sha256": "26a778f037148b2b5ff663c41afb95f512895e8bd079ecf090c1dd96137f7054",
+      "decoded_sha256": "01776db8b56137793e6cd5407164dc094d058dd351638250cc35b5e0fc1ab668"
+    },
+    {
+      "path": "review/result.json.gz",
+      "sha256": "46dc7b8e85c25d97d41b2e3c5f4dbaf18ee5184d342634155c03638597156780",
+      "decoded_sha256": "26886835876bc56385644da5331fe0bfad98657bbaa7c9295ca491670f225a01"
+    },
+    {
+      "path": "review/result.txt.gz",
+      "sha256": "42b47d6a859e11cdc46a0964ee0a45cbceabf135b85956b2b5bfef3354f54e96",
+      "decoded_sha256": "4a5b5faf916e95044a1318fd54fe4caacd308fc0b912fad6641f5c4895f61e8a"
+    },
+    {
+      "path": "review/stdout.log.gz",
+      "sha256": "30f2c8112dace41e4d13cf1406e2acf04659c257d56a919be83b879f0f646978",
+      "decoded_sha256": "e4ac4ca08749c16b8236f88a82d72bc1b5fe7af34edea9ba27331033b5e24312"
+    },
+    {
+      "path": "review/stderr.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   ],
   "fail_before_windows_amd64": {
@@ -373,12 +398,12 @@
     "artifact": "fail-before/windows-amd64-tests.jsonl.gz"
   },
   "limits": [
-    "Windows test binaries compile but native execution is unverified for this correction.",
-    "Required pre-PR review, publication, native qualification, merge, and shared catalog cleanup remain required."
+    "Windows test binaries compile but native qualification remains unverified for this correction.",
+    "Required review passed and PR #154 now publishes the correction. Native qualification, merge, and shared catalog cleanup remain required."
   ],
   "review": {
     "session_id": 27821,
-    "state": "running",
+    "state": "passed",
     "result_directory": ".tmp/csp5-update-controls/native-final-review",
     "source": "71a1af61927bd4251fb3cf3a3cba82baf86cc472",
     "command": [
@@ -391,7 +416,15 @@
       "cross-lab",
       "--thinking",
       "codex=xhigh"
-    ]
+    ],
+    "exit_code": 0,
+    "finished_at": "2026-09-13T04:14:51.651411+00:00",
+    "profile": "cross-lab",
+    "threshold": "P0",
+    "sections": 6,
+    "findings": 0,
+    "base": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "result": "review/result.json.gz"
   },
   "ci_parent": {
     "conclusion": "",
@@ -1769,5 +1802,51 @@
     "artifact_digests": 22,
     "protected_sections_unchanged": 5,
     "resume_words": 250
+  },
+  "publication": "publication.json",
+  "publication_plan_validation": {
+    "valid_local_links": 160,
+    "pre_existing_broken_history_links": [
+      {
+        "file": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-verification-cache.html",
+        "href": "csp5/verification-cache-2026-09-12/verification.json",
+        "state": "pre-existing broken history link; unchanged by this update"
+      },
+      {
+        "file": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-verification-cache.html",
+        "href": "csp5/verification-cache-2026-09-12/verification.json",
+        "state": "pre-existing broken history link; unchanged by this update"
+      },
+      {
+        "file": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-verification-cache.html",
+        "href": "csp5/verification-cache-2026-09-12/verification.json",
+        "state": "pre-existing broken history link; unchanged by this update"
+      },
+      {
+        "file": "docs/plans/proof/starport-production-catalog/execution-history-2026-09-12-verification-cache.html",
+        "href": "csp5/verification-cache-2026-09-12/verification.json",
+        "state": "pre-existing broken history link; unchanged by this update"
+      }
+    ],
+    "artifact_digests": 27,
+    "protected_sections_unchanged": 6,
+    "ledger_rows": 38,
+    "done": 10,
+    "active": "CSP5",
+    "resume_words": 221,
+    "prose_files": 1517,
+    "prose_diagnostics": 0,
+    "prose_exit_code": 0,
+    "diff_check_exit_code": 0,
+    "prior_check_failures": [
+      {
+        "check": "full history link check",
+        "result": "Four existing history links use the same incorrect relative path. They remain unchanged."
+      },
+      {
+        "check": "technical-writing-check",
+        "result": "One nominalization diagnostic in the updated overview. The corrected prose passes the complete check."
+      }
+    ]
   }
 }
