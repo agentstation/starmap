@@ -1,0 +1,32 @@
+{
+  "observed_at": "2026-09-13 02:26:49 UTC",
+  "repository": "agentstation/starmap",
+  "read_only": true,
+  "checks": [
+    {
+      "command": "gh api repos/agentstation/starmap/rules/branches/main",
+      "exit_code": 0,
+      "output": "[]"
+    },
+    {
+      "command": "gh api repos/agentstation/starmap/branches/main/protection/required_status_checks",
+      "exit_code": 0,
+      "output": "{\"url\":\"https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks\",\"strict\":true,\"contexts\":[\"Security & Reliability\",\"Verification Gate\"],\"contexts_url\":\"https://api.github.com/repos/agentstation/starmap/branches/main/protection/required_status_checks/contexts\",\"checks\":[{\"context\":\"Security & Reliability\",\"app_id\":15368},{\"context\":\"Verification Gate\",\"app_id\":15368}]}"
+    },
+    {
+      "command": "gh secret list --repo agentstation/starmap --json name",
+      "exit_code": 0,
+      "output": "[{\"name\":\"ANTHROPIC_API_KEY\"},{\"name\":\"CEREBRAS_API_KEY\"},{\"name\":\"DASHSCOPE_API_KEY\"},{\"name\":\"DEEPSEEK_API_KEY\"},{\"name\":\"FIREWORKS_API_KEY\"},{\"name\":\"GOOGLE_API_KEY\"},{\"name\":\"GROQ_API_KEY\"},{\"name\":\"HETZNER_API_KEY\"},{\"name\":\"HOMEBREW_TAP_DEPLOY_KEY\"},{\"name\":\"MISTRAL_API_KEY\"},{\"name\":\"MOONSHOT_API_KEY\"},{\"name\":\"OPENAI_API_KEY\"}]\n"
+    },
+    {
+      "command": "gh variable list --repo agentstation/starmap --json name",
+      "exit_code": 0,
+      "output": "[]\n"
+    }
+  ],
+  "limits": [
+    "Secret queries request names only.",
+    "No repository-level GitHub App settings appear in these secret or variable names. Organization or external app configuration is not established by this inspection.",
+    "The branch requires current Security & Reliability and Verification Gate checks from app 15368. Controlled bot promotion has not been tested."
+  ]
+}

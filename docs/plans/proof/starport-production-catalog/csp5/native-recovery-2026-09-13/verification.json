@@ -5,7 +5,7 @@
   "source_binding_kind": "commit",
   "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
   "base_commit": "d15c6ef4cbb21827007f6400a8996bed09967535",
-  "observed_at": "2026-09-13T01:52:46.549755+00:00",
+  "observed_at": "2026-09-13T02:21:38.285063+00:00",
   "source_files": [
     {
       "path": ".github/workflows/pr.yaml",
@@ -461,6 +461,45 @@
         "internal/catalog/workspace/record_read_lock_test.go"
       ]
     },
+    "pre-pr-review": {
+      "command": [
+        "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+        "--gate",
+        "pre-pr",
+        "--mode",
+        "auto",
+        "--profile",
+        "cross-lab",
+        "--thinking",
+        "codex=xhigh",
+        "--stream-engine-output",
+        "--json-output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-recovery-pre-pr-8dj8qvsf/review.json",
+        "--output",
+        "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-recovery-pre-pr-8dj8qvsf/review.txt"
+      ],
+      "toolchain": "go1.26.6",
+      "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
+      "started_at": "2026-09-13T01:48:10.751088+00:00",
+      "finished_at": "2026-09-13T02:13:36.108958+00:00",
+      "exit_code": 1,
+      "artifact": "blobs/33f5cc3d7b2383a310aa932041da2747695c8064026106b029d27f1210411bf7.gz",
+      "test_event_counts": {},
+      "exact_source_files": [
+        ".github/workflows/pr.yaml",
+        "internal/catalog/workspace/preparation_cleanup_test.go",
+        "internal/catalog/workspace/record_read.go",
+        "internal/catalog/workspace/record_read_lock_test.go",
+        "internal/catalog/workspace/tree_snapshot.go",
+        "internal/catalog/workspace/writer_identity_test.go",
+        "internal/privatefiles/record_recovery_test.go",
+        "internal/test/filemutation/rename.go",
+        "internal/test/filemutation/rename_other.go",
+        "internal/test/filemutation/rename_windows.go"
+      ],
+      "comment_only_files": [],
+      "different_source_files": []
+    },
     "prose-final": {
       "command": [
         "make",
@@ -617,10 +656,10 @@
   },
   "running_checks": [
     {
-      "name": "Required pre-PR review",
-      "session_id": 52394,
+      "name": "Required pre-PR review retry",
+      "session_id": 97629,
       "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
-      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-recovery-checks/pre-pr-review.json"
+      "result_path": "/Users/jack/src/github.com/agentstation/starmap-catalog-update-controls-qualification/.tmp/csp5-update-controls/native-recovery-checks/pre-pr-review-retry.json"
     }
   ],
   "comment_only_change": {
@@ -1416,6 +1455,13 @@
     "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
     "session_id": 52394
   },
+  "review_retry": {
+    "output_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-recovery-review-retry-33j9utwk",
+    "source_commit": "9e278107cdf00e6fc843e5a8fdd835f27b860e6a",
+    "base_commit": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "session_id": 97629,
+    "reason": "The first review ended after the Claude engine failed during section four. No final verdict was produced."
+  },
   "limits": [
     "Both native Windows jobs failed on the parent correction. This commit requires new native execution.",
     "Required review and CI must pass before the existing PR can merge.",
@@ -1532,6 +1578,11 @@
       "path": "blobs/d5901f3bf326b0978093d6d4d0b27b0e75599ac7f8854b227f99b4584d6bf043.gz",
       "sha256": "89798bfcf98a42a9cfb78c9ae2fe5aecf926324f248081eef8421d8a86e106b3",
       "decoded_sha256": "d5901f3bf326b0978093d6d4d0b27b0e75599ac7f8854b227f99b4584d6bf043"
+    },
+    {
+      "path": "blobs/33f5cc3d7b2383a310aa932041da2747695c8064026106b029d27f1210411bf7.gz",
+      "sha256": "89da2a0da52c54696ed6952a35815245bd1326d3b50ff9f93242e8b071565e1a",
+      "decoded_sha256": "33f5cc3d7b2383a310aa932041da2747695c8064026106b029d27f1210411bf7"
     },
     {
       "path": "blobs/0be2e03c16960ccacb93bb41932bca148079005530625e1244cf8487ec0a500a.gz",

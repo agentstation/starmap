@@ -33,7 +33,10 @@ The corrected callback passes. A later change affects one comment sentence only.
 
 ## Remaining work
 
-Required review runs in session `52394` on the committed correction. No verdict is available yet.
+Required review `52394` ended with status 1 after the Claude engine failed during section four.
+It produced no final verdict. The complete captured output remains in the verification record.
+Retry `97629` reviews the unchanged correction with the same profile and threshold.
+
 PR #154 still publishes the parent correction. Fresh native CI and merge remain required.
 Shared catalog cleanup and its coordinator decision remain required for CSP5 completion.
 
