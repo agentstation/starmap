@@ -1,5 +1,53 @@
 # Current pull request queue
 
+Updated 2026-09-14 UTC. Starmap has one open PR. Starport has none.
+The [current queue evidence](queue-status-2026-09-14.json) records exact heads, the current main commit, checks, review threads, ancestry, and local work.
+Thirty-two campaign PRs merged. Ten tasks are complete.
+
+| PR | Owner | Disposition and next action |
+| --- | --- | --- |
+| [Starmap #153](https://github.com/agentstation/starmap/pull/153) | Go policy tooling change author and catalog queue executor | Keep. Head `8a97c596` includes current main and preserves the five-file tooling delta. Both reviewers pass. Qualify current-head CI, then merge after required and native checks pass. |
+
+[PR #154 merged](../../csp5/pr154-merged-2026-09-14.json) at `10717ec3f64e1dd18aaa1e334cd86b2b521e09bd` after fifteen successful checks.
+Its tree exactly matches reviewed `71a1af619`. All six native jobs pass.
+CSP5 still needs shared cleanup and the coordinator decision. Its local implementation merged.
+
+The [PR #153 parent qualification](pr153-parent-2026-09-14.json) records module verification, shell syntax, zero Go policy findings, and 1663 files with no prose diagnostics.
+Sol and Opus each report zero findings. The updated branch now runs CI. Automatic merge waits for native qualification.
+
+CSP6 now uses `codex/catalog-publication-promotion-main` at `9aff3fac5` in the same publication worktree.
+Its eight commits follow merged main. The prior branch preserves the original source and evidence.
+
+The public GitHub publisher uses public source data and existing API keys. Its checkpoint needs no separate encryption key or private object store.
+Keys stay in Actions secrets. Private enterprise catalogs keep their separate deployment storage.
+
+## Superseded queue state: 2026-09-13 at 14:00 UTC
+
+The following capture predates the merge and parent integration.
+
+Updated 2026-09-13 at 14:00 UTC. Starmap has two open PRs. Starport has none.
+
+The [current queue evidence](queue-status-2026-09-13-1400.json) records heads, bases, checks, review threads, ancestry, and local work.
+Both PRs retain required work. Both changed within seven days. GitHub reports no review threads.
+Thirty-one campaign PRs merged, and ten tasks are complete.
+
+| PR | Owner | Disposition and next action |
+| --- | --- | --- |
+| [Starmap #154](https://github.com/agentstation/starmap/pull/154) | CSP5 executor | Keep. Head `71a1af619` passes both required checks. Qualify Intel macOS retry `103735022905`, verify the head and base again, then merge after all native checks pass. |
+| [Starmap #153](https://github.com/agentstation/starmap/pull/153) | Go policy tooling change author | Keep. Head `6ea9a497` still has its known verification timeout. After #154 merges, integrate current main and qualify the updated head. |
+
+PR #154's full Verification Gate passed. Its original Intel macOS tests passed, but artifact upload failed with `ENOTFOUND`.
+The queue maintenance task retried the failed job after the workflow finished. Only that job runs again, on the unchanged reviewed head.
+Automatic merge remains disabled until native qualification passes. Branch protection remains unchanged.
+
+CSP5 shared cleanup and its coordinator decision remain open after this PR.
+CSP6 preserves 24 changed or untracked files at `528b5890b` in its publication worktree.
+Its complete publication flow remains unpublished. Preserve the planning worktree's unrelated tooling edits.
+
+## Superseded queue state: 2026-09-13 before final native correction
+
+The following capture predates the latest head and retry. Its next actions are historical.
+
 Updated 2026-09-13 UTC. Starmap has two open PRs. Starport has none.
 The [current queue evidence](queue-status-2026-09-13-native.json) records exact heads, bases, checks, review threads, ancestry, and implementation worktrees.
 Neither PR can merge yet. Thirty-one campaign PRs merged, and ten tasks are complete.

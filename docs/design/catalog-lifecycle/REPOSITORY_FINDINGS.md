@@ -34,6 +34,22 @@ The affected packages also passed on Go 1.25.12.
 These changes remain uncommitted. They do not establish Starport adoption or released-pair qualification.
 The findings below retain their original revision scope.
 
+## Public publisher clarification: 2026-09-14
+
+The owner confirmed that the scheduled Starmap publisher uses provider accounts with public models.
+Its public checkpoint can reside on GitHub. This profile needs no checkpoint encryption key or private object store.
+Provider API keys remain GitHub Actions secrets. Enterprise publishers retain their own private storage policy.
+
+Local CSP6 source `9aff3fac5` defines the checkpoint in `internal/catalog/publication/state.go`.
+The encoder stores the baseline, accepted artifact, observation receipts, and retained catalog payloads.
+It does not serialize the credential resolver or raw diagnostic messages.
+Observation receipts retain source binding selectors, so a private enterprise profile still needs restricted storage.
+Restore checks a separately trusted digest, canonical encoding, and retained-input replay.
+
+These observations describe local implementation, not completed publication support.
+GitHub checkpoint retention, channel receipt verification, checked promotion, and final qualification remain open under CSP6.
+The [engineering specification](ENGINEERING_SPEC.md#53-public-publisher-checkpoints) records the accepted storage scope.
+
 ## Verified current behavior
 
 | ID | Finding | Evidence |

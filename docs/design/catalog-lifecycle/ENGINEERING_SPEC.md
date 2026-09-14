@@ -861,6 +861,24 @@ The four-hour schedule remains the target. Delays and failed admission can exten
 Unchanged facts do not require an empty bot commit.
 Record bot setup and publication authority before CSP6 exercises external writes.
 
+### 5.3 Public publisher checkpoints
+
+The owner confirmed the public publisher scope on 2026-09-14.
+Its configured provider accounts expose public models. API keys remain in GitHub Actions secrets.
+The checkpoint contains the baseline, accepted artifact, source observations, and retained model data.
+It lets later runs retain accepted evidence after a source failure.
+Saved run records support exact publication retries.
+
+Store these public checkpoints on GitHub alongside the publication records.
+This workflow requires no additional encryption key or private object store.
+The encoder must exclude credential values and raw diagnostic messages.
+Restore must verify a separately trusted checkpoint digest and validate the retained evidence before reuse.
+Public access does not remove integrity or provenance checks.
+
+Enterprise publishers can collect private models and account selectors.
+Those publishers use their deployment's configured private storage and access policy.
+Their storage requirements do not apply to the public GitHub profile.
+
 ## 6. Sources, reconciliation, and deletion
 
 One configured source kind selects the distribution base. Existing kinds are

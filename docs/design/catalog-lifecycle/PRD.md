@@ -56,6 +56,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D28 | A model absent from a complete accepted provider inventory remains visible but is excluded from automatic routing for the affected provider/account. | User confirmed on 2026-09-10 |
 | D29 | Explicit removal affects only the selected provider/account entry by default. Canonical removal across providers is a separate action. | User confirmed on 2026-09-10 |
 | D30 | A former canonical model ID remains an alias until an operator or replacement baseline explicitly removes it. Aliases have no automatic expiry. | User confirmed on 2026-09-10 |
+| D31 | The scheduled public Starmap publisher stores public catalog checkpoints on GitHub. API keys remain Actions secrets. No checkpoint encryption service is required. | User clarified public-only source scope on 2026-09-14 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
@@ -64,6 +65,9 @@ D6 preserves the requested inspectable baseline manifest and payload on disk.
 Explicit remote storage reads may create transport workers. Default construction remains offline and starts no refresh scheduler.
 Manual source refresh remains distinct from a pin that freezes the effective catalog.
 D3 retains four-hour publication and default-branch promotion.
+
+D31 applies to the public publisher, whose configured provider accounts expose public models.
+Its checkpoint retains source data across failed requests and retries. Enterprise publishers keep private catalogs in their own configured storage.
 
 ## Problem and outcomes
 

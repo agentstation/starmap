@@ -1,0 +1,225 @@
+{
+  "captured_at": "2026-09-14T14:02:24.513111+00:00",
+  "premerge": {
+    "baseRefName": "main",
+    "baseRefOid": "f9951ee6a3644986a3bb7a3b302649cce790068e",
+    "headRefOid": "71a1af61927bd4251fb3cf3a3cba82baf86cc472",
+    "isDraft": false,
+    "mergeStateStatus": "CLEAN",
+    "number": 154,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:28:05Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737724880/job/103671990159",
+        "name": "Analyze (actions)",
+        "startedAt": "2026-09-13T04:27:17Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:28:03Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023188",
+        "name": "Constructor Network Passivity",
+        "startedAt": "2026-09-13T04:27:36Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:25:10Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737724880/job/103671990074",
+        "name": "Analyze (go)",
+        "startedAt": "2026-09-13T04:22:51Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:23:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737724880/job/103671990187",
+        "name": "Analyze (python)",
+        "startedAt": "2026-09-13T04:22:48Z",
+        "status": "COMPLETED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:24:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023298",
+        "name": "Offline Server Persistence",
+        "startedAt": "2026-09-13T04:22:52Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T06:07:47Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023301",
+        "name": "Verification Gate",
+        "startedAt": "2026-09-13T04:22:54Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:30:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735022926",
+        "name": "Security & Reliability",
+        "startedAt": "2026-09-13T04:27:37Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:27:49Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023715",
+        "name": "Action Pin Provenance",
+        "startedAt": "2026-09-13T04:27:36Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T05:10:31Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023279",
+        "name": "Runtime windows-2025",
+        "startedAt": "2026-09-13T04:27:36Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T05:04:07Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735035357",
+        "name": "Runtime windows-11-arm",
+        "startedAt": "2026-09-13T04:27:36Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:36:19Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023327",
+        "name": "Runtime ubuntu-24.04",
+        "startedAt": "2026-09-13T04:22:46Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:37:47Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023231",
+        "name": "Runtime ubuntu-24.04-arm",
+        "startedAt": "2026-09-13T04:27:39Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T14:34:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735022905",
+        "name": "Runtime macos-15-intel",
+        "startedAt": "2026-09-13T14:02:19Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:45:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/34737726813/job/103735023224",
+        "name": "Runtime macos-15",
+        "startedAt": "2026-09-13T04:27:44Z",
+        "status": "COMPLETED",
+        "workflowName": "Pull Request"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-09-13T04:23:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/agentstation/starmap/runs/103672156842",
+        "name": "CodeQL",
+        "startedAt": "2026-09-13T04:23:48Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "Enforce catalog update controls and retain local state"
+  },
+  "merge_command": [
+    "gh",
+    "pr",
+    "merge",
+    "154",
+    "--repo",
+    "agentstation/starmap",
+    "--squash",
+    "--match-head-commit",
+    "71a1af61927bd4251fb3cf3a3cba82baf86cc472",
+    "--subject",
+    "Enforce catalog update controls and retain local state (#154)",
+    "--body-file",
+    ".tmp/csp5-update-controls/pr154-merge-body.txt"
+  ],
+  "merge_exit_code": 0,
+  "merge_stdout": "",
+  "merge_stderr": "",
+  "merged": {
+    "baseRefName": "main",
+    "headRefOid": "71a1af61927bd4251fb3cf3a3cba82baf86cc472",
+    "mergeCommit": {
+      "oid": "10717ec3f64e1dd18aaa1e334cd86b2b521e09bd"
+    },
+    "mergedAt": "2026-09-14T14:02:23Z",
+    "state": "MERGED",
+    "url": "https://github.com/agentstation/starmap/pull/154"
+  },
+  "source_tree": "cdd839604d4f95ca980f38f3955af9fe7d08b4b9",
+  "merge_tree": "cdd839604d4f95ca980f38f3955af9fe7d08b4b9",
+  "exact_tree_match": true,
+  "required_review_record": {
+    "command": [
+      "/Users/jack/.agents/skills/autoreview/scripts/autoreview",
+      "--gate",
+      "pre-pr",
+      "--mode",
+      "auto",
+      "--profile",
+      "cross-lab",
+      "--thinking",
+      "codex=xhigh",
+      "--stream-engine-output",
+      "--json-output",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-test-review-2rk00q7_/review.json",
+      "--output",
+      "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/csp5-native-test-review-2rk00q7_/review.txt"
+    ],
+    "started_at": "2026-09-13T03:50:10.950324+00:00",
+    "base_commit": "71a1af61927bd4251fb3cf3a3cba82baf86cc472",
+    "source_files": {},
+    "exit_code": 0,
+    "finished_at": "2026-09-13T04:14:51.651411+00:00"
+  },
+  "required_review_report": {
+    "findings": [],
+    "overall_correctness": "patch is correct",
+    "overall_explanation": "Chunked review complete. chunk 1/6: 0 finding(s), chunk 2/6: 0 finding(s), chunk 3/6: 0 finding(s), chunk 4/6: 0 finding(s), chunk 5/6: 0 finding(s), chunk 6/6: 0 finding(s).",
+    "overall_confidence": 0.99
+  }
+}
