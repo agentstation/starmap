@@ -8,6 +8,10 @@ Provider API keys stay in Actions secrets. GitHub stores public catalog data and
 The [public profile](../.github/catalog-publication.yaml) selects models.dev and twelve public provider scopes.
 The [preparation command](../cmd/starmap-catalog-publish/README.md) documents admission, credential scope, and retained evidence.
 
+The public profile permits models.dev record quarantine. Valid records can publish while rejected records retain their last accepted values.
+The run receipt reports degraded source status, record counts, affected identifiers, and reason codes.
+Adapter corrections use structured acquisition logs. A complete repaired update clears current quarantine while historical receipts preserve earlier failures.
+
 ## Publication sequence
 
 The workflow executes trusted code from the default branch. A promotion PR can change only the embedded catalog.
@@ -64,7 +68,7 @@ Required review appears as `awaiting_review` in the job summary with the PR link
 
 The App installation and controlled bot-PR qualification remain deployment prerequisites.
 The workflow refuses missing App configuration before acquisition or public publication.
-The refresh step has a 75-minute limit. The complete job has a 90-minute limit.
+Each catalog transfer allows 60 minutes. The refresh step allows 75 minutes, and the complete job allows 90 minutes.
 
 ## Stored files and identities
 

@@ -164,10 +164,23 @@ func sameReplayRound(left, right []manualObservation) bool {
 func sameReplayInput(left, right manualObservation) bool {
 	a, b := left.Receipt, right.Receipt
 	return a.Link.Source == b.Link.Source && a.Link.Revision == b.Link.Revision &&
-		a.Link.Completeness == sources.ObservationCompletenessComplete && b.Link.Completeness == a.Link.Completeness &&
-		a.Link.Status == sources.ObservationStatusSucceeded && b.Link.Status == a.Link.Status &&
-		len(a.Issues) == 0 && len(b.Issues) == 0 && a.Records == b.Records &&
+		a.Link.Completeness == b.Link.Completeness && a.Link.Status == b.Link.Status &&
+		repeatableReplayQuality(a) && slices.Equal(a.Issues, b.Issues) && a.Records == b.Records &&
 		reflect.DeepEqual(a.ProviderBinding, b.ProviderBinding) && bytes.Equal(left.Payload, right.Payload)
+}
+
+func repeatableReplayQuality(receipt sources.ObservationReceipt) bool {
+	if receipt.Link.Completeness == sources.ObservationCompletenessComplete && receipt.Link.Status == sources.ObservationStatusSucceeded && len(receipt.Issues) == 0 {
+		return true
+	}
+	if receipt.Link.Completeness != sources.ObservationCompletenessPartial || receipt.Link.Status != sources.ObservationStatusDegraded {
+		return false
+	}
+	report := evidence.RecordQuarantine{Records: receipt.Records}
+	for _, issue := range receipt.Issues {
+		report.Issues = append(report.Issues, evidence.QuarantinedRecord{Scope: issue.Scope, Code: issue.Code, Subject: issue.Subject})
+	}
+	return report.Valid()
 }
 
 // Current metadata reviews retain the latest original evidence for each unresolved offering.

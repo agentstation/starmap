@@ -1,7 +1,7 @@
 // Package github observes the attested public catalog channel of one GitHub
 // repository.
 //
-// Discovery reads the channel document from the mutable `catalog/v1` branch
+// Discovery reads the channel document from the mutable `catalog/v2` branch
 // through the repository contents endpoint. The request carries the stored
 // validator, so an unchanged channel costs one request and no body.
 // Verification runs before

@@ -1,10 +1,11 @@
 # Public catalog publication policy. API keys remain in Actions secrets.
-policy_version: starmap-public-v1
+policy_version: starmap-public-v2
 scopes:
   - source: models_dev_http
     required: true
     enabled: true
     allow_missing: false
+    allow_record_quarantine: true
     max_retained_age: 24h
     disabled_action: preserve
 

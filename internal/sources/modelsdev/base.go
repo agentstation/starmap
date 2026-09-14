@@ -1,6 +1,7 @@
 package modelsdev
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"strings"
@@ -9,11 +10,13 @@ import (
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // processFetch handles the common logic for fetching models from models.dev API.
 func processFetch(
+	ctx context.Context,
 	catalog *catalogs.Builder,
 	api *API,
 	providers catalogs.ProvidersReader,
@@ -34,6 +37,7 @@ func processFetch(
 	for _, providerKey := range providerKeys {
 		mdProvider := (*api)[providerKey]
 		providerAdded, providerIssues, limitExceeded, err := processModelsDevProvider(
+			ctx,
 			catalog,
 			&mdProvider,
 			providers,
@@ -54,6 +58,7 @@ func processFetch(
 }
 
 func processModelsDevProvider(
+	ctx context.Context,
 	catalog *catalogs.Builder,
 	mdProvider *Provider,
 	providers catalogs.ProvidersReader,
@@ -81,7 +86,7 @@ func processModelsDevProvider(
 		provider.Models = make(map[string]*catalogs.Model)
 	}
 
-	added, modelIssues, limitExceeded := addModelsDevModels(&provider, mdProvider, remaining)
+	added, modelIssues, limitExceeded := addModelsDevModels(ctx, &provider, mdProvider, remaining)
 	issues = append(issues, modelIssues...)
 	if len(provider.Models) > 0 {
 		if err := catalog.SetProvider(provider); err != nil {
@@ -111,6 +116,7 @@ func modelsDevProviderIssues(
 }
 
 func addModelsDevModels(
+	ctx context.Context,
 	provider *catalogs.Provider,
 	mdProvider *Provider,
 	remaining int,
@@ -135,6 +141,13 @@ func addModelsDevModels(
 			continue
 		}
 		if err := validateModelsDevModelIdentity(modelKey, &mdModel); err != nil {
+			event := logging.FromContext(ctx).Warn().
+				Str("provider_id", string(provider.ID)).Str("model_id", modelKey).
+				Str("code", string(sources.ObservationIssueCodeInvalidRecord))
+			if validation, ok := err.(*errors.ValidationError); ok {
+				event.Str("field", validation.Field).Str("reason", validation.Message)
+			}
+			event.Msg("Quarantined models.dev record")
 			issues = append(issues, modelsDevRecordIssue(provider.ID, modelKey, err))
 			continue
 		}
@@ -146,6 +159,12 @@ func addModelsDevModels(
 				errors.WrapResource("convert", "model", mdModel.ID, err),
 			))
 			continue
+		}
+		if model.Name != mdModel.Name {
+			logging.FromContext(ctx).Info().
+				Str("provider_id", string(provider.ID)).Str("model_id", model.ID).
+				Str("code", "display_name_whitespace_trimmed").
+				Msg("Normalized models.dev display name")
 		}
 		provider.Models[model.ID] = model
 		added++
@@ -207,7 +226,7 @@ func validateModelsDevModelIdentity(mapKey string, model *Model) error {
 	if strings.TrimSpace(model.Name) == "" {
 		return &errors.ValidationError{Field: "model.name", Value: model.Name, Message: "is required"}
 	}
-	if strings.IndexFunc(model.Name, unicode.IsControl) >= 0 {
+	if strings.IndexFunc(strings.TrimSpace(model.Name), unicode.IsControl) >= 0 {
 		return &errors.ValidationError{Field: "model.name", Value: model.Name, Message: "must not contain control characters"}
 	}
 	return nil

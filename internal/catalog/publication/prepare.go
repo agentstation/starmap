@@ -202,7 +202,7 @@ func retainedForProfile(profile Profile, history []sources.Observation) ([]sourc
 	for _, observation := range history {
 		scope := Scope{Source: observation.SourceID, Binding: observation.ProviderBinding}
 		policy, selected := policies[scope.key()]
-		if !selected || !policy.Scope.equal(scope) || !complete(observation) {
+		if !selected || !policy.Scope.equal(scope) || !usableEvidence(policy, observation) {
 			continue
 		}
 		prior, found := latest[scope.key()]

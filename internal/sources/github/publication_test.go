@@ -12,6 +12,43 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 )
 
+func TestGitHubSourceDefaultsToPublicationChannelAndReadsExplicitLegacy(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		name := "default-publication"
+		if legacy {
+			name = "explicit-legacy"
+		}
+		t.Run(name, func(t *testing.T) {
+			server := newFixtureServer(t)
+			published := publishCatalog(t, server, "default-channel", testChannelSequence)
+			recorder := &recordingAttester{}
+			opts := []Option{WithAPIBaseURL(server.url()), WithStateDirectory(t.TempDir()), WithRepository(testRepository), WithAttester(recorder.attest())}
+			if legacy {
+				opts = append(opts, WithChannel(artifact.ChannelName))
+			} else {
+				channel, receipt := publicationFixture(t, published)
+				publishRun(t, server, channel, receipt)
+			}
+			source, err := New(opts...)
+			if err != nil {
+				t.Fatal(err)
+			}
+			release, err := source.ReadChannel(t.Context())
+			if err != nil {
+				t.Fatal(err)
+			}
+			if release.GenerationID != published.Generation.Manifest.GenerationID || (release.Publication == nil) != legacy {
+				t.Fatal("channel selection lost its verified catalog or publication receipt")
+			}
+			before := server.requestCount()
+			again, err := source.Changed(t.Context())
+			if err != nil || again.Changed || server.requestCount()-before != 1 {
+				t.Fatal("unchanged channel did not use one conditional request", err)
+			}
+		})
+	}
+}
+
 func TestGitHubPublicationVerifiesReceiptBeforeStateAdvance(t *testing.T) {
 	server := newFixtureServer(t)
 	published := publishCatalog(t, server, "generation-publication", 0)

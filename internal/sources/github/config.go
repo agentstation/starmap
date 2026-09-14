@@ -16,7 +16,7 @@ const (
 	DefaultRepository = "agentstation/starmap"
 
 	// DefaultChannel is the public discovery channel branch.
-	DefaultChannel = artifact.ChannelName
+	DefaultChannel = artifact.PublicationChannelName
 
 	// DefaultSignerWorkflow is the repository-relative path of the workflow
 	// that signs every published catalog release.

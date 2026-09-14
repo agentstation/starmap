@@ -17,6 +17,7 @@ func TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion(t *testin
 				Env  map[string]string `yaml:"env"`
 				Run  string            `yaml:"run"`
 				Uses string            `yaml:"uses"`
+				With map[string]string `yaml:"with"`
 			} `yaml:"steps"`
 		} `yaml:"jobs"`
 	}
@@ -34,6 +35,14 @@ func TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion(t *testin
 			t.Fatal("publisher step names must identify one operation")
 		}
 		positions[step.Name] = index
+		if strings.HasPrefix(step.Uses, "actions/checkout@") && step.With["persist-credentials"] != "false" {
+			t.Fatal("publisher checkout retains acquisition credentials")
+		}
+		for name := range step.Env {
+			if strings.HasSuffix(name, "_API_KEY") && step.Name != "Refresh candidate catalog" {
+				t.Fatal("provider credentials reached a publication or promotion step")
+			}
+		}
 		if _, overridden := step.Env["CATALOG_PUBLICATION_DIRECTORY"]; overridden {
 			t.Fatal("publisher phase overrides its shared preparation directory")
 		}
@@ -50,9 +59,15 @@ func TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion(t *testin
 				t.Fatal("publisher phases do not preserve preparation and promotion order")
 			}
 			operations = operations[1:]
+			if (strings.Contains(step.Run, "catalog_publication.py prepare ") || strings.Contains(step.Run, "catalog_publication.py validate ")) && step.If != "steps.publication.outputs.acquire == 'true'" {
+				t.Fatal("recovery can reacquire or replace its retained preparation")
+			}
 		}
 		if step.Name == "Retain preparation before public writes" && !strings.HasPrefix(step.Uses, "actions/upload-artifact@") {
 			t.Fatal("publisher does not retain its original preparation through an immutable workflow artifact")
+		}
+		if step.Name == "Retain preparation before public writes" && step.With["retention-days"] != "90" {
+			t.Fatal("publisher recovery input does not retain the declared 90-day lifetime")
 		}
 		if strings.Contains(step.Name, "channels") && step.If != "steps.promotion.outputs.ready == 'true'" {
 			t.Fatal("channel publication does not require a verified promotion")

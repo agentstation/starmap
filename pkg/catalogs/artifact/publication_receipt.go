@@ -44,13 +44,14 @@ type PublicationBinding struct {
 
 // PublicationScopePolicy records the admission policy for one exact source scope.
 type PublicationScopePolicy struct {
-	Source         evidence.SourceID   `json:"source"`
-	Binding        *PublicationBinding `json:"binding"`
-	Required       bool                `json:"required"`
-	Enabled        bool                `json:"enabled"`
-	AllowMissing   bool                `json:"allow_missing"`
-	MaxRetainedAge time.Duration       `json:"max_retained_age_ns"`
-	DisabledAction string              `json:"disabled_action"`
+	Source                evidence.SourceID   `json:"source"`
+	Binding               *PublicationBinding `json:"binding"`
+	Required              bool                `json:"required"`
+	Enabled               bool                `json:"enabled"`
+	AllowMissing          bool                `json:"allow_missing"`
+	AllowRecordQuarantine bool                `json:"allow_record_quarantine,omitempty"`
+	MaxRetainedAge        time.Duration       `json:"max_retained_age_ns"`
+	DisabledAction        string              `json:"disabled_action"`
 }
 
 // PublicationSourceReceipt distinguishes a source attempt from its admitted evidence.
@@ -60,6 +61,7 @@ type PublicationSourceReceipt struct {
 	Attempt      string                          `json:"attempt"`
 	EvidenceKind string                          `json:"evidence_kind"`
 	Observation  *catalogs.SourceObservationLink `json:"observation"`
+	Quarantine   *evidence.RecordQuarantine      `json:"quarantine,omitempty"`
 }
 
 // PublicationReceipt records admitted evidence for one verified catalog artifact.
@@ -82,6 +84,11 @@ type PublicationReceipt struct {
 func (r PublicationReceipt) Copy() PublicationReceipt {
 	r.Sources = slices.Clone(r.Sources)
 	for i := range r.Sources {
+		if r.Sources[i].Quarantine != nil {
+			report := *r.Sources[i].Quarantine
+			report.Issues = slices.Clone(report.Issues)
+			r.Sources[i].Quarantine = &report
+		}
 		if r.Sources[i].Policy.Binding != nil {
 			binding := *r.Sources[i].Policy.Binding
 			r.Sources[i].Policy.Binding = &binding

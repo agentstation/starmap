@@ -1316,7 +1316,7 @@ command flag that carries the same grammar and the same value.
 | `STARMAP_CATALOG_SOURCE_URL` | `--catalog-source-url` | empty |
 | `STARMAP_CATALOG_SOURCE_API_KEY` | `--catalog-source-api-key` | empty |
 | `STARMAP_CATALOG_SOURCE_REPOSITORY` | `--catalog-source-repository` | `agentstation/starmap` |
-| `STARMAP_CATALOG_SOURCE_CHANNEL` | `--catalog-source-channel` | `catalog/v1` |
+| `STARMAP_CATALOG_SOURCE_CHANNEL` | `--catalog-source-channel` | `catalog/v2` |
 | `STARMAP_CATALOG_SOURCE_SIGNER_WORKFLOW` | `--catalog-source-signer-workflow` | `.github/workflows/catalog-generation.yaml` |
 | `STARMAP_CATALOG_SOURCE_TOKEN` | `--catalog-source-token` | empty |
 | `STARMAP_CATALOG_SOURCE_POLL_INTERVAL` | `--catalog-source-poll-interval` | `1h` |

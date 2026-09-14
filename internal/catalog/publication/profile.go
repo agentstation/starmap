@@ -22,13 +22,14 @@ func ParseProfile(data []byte) (Profile, error) {
 	var wire struct {
 		Version string `yaml:"policy_version"`
 		Scopes  []struct {
-			Source         sources.ID                          `yaml:"source"`
-			Binding        *sources.ProviderAcquisitionBinding `yaml:"binding"`
-			Required       *bool                               `yaml:"required"`
-			Enabled        *bool                               `yaml:"enabled"`
-			AllowMissing   *bool                               `yaml:"allow_missing"`
-			MaxRetainedAge string                              `yaml:"max_retained_age"`
-			DisabledAction DisabledAction                      `yaml:"disabled_action"`
+			Source                sources.ID                          `yaml:"source"`
+			Binding               *sources.ProviderAcquisitionBinding `yaml:"binding"`
+			Required              *bool                               `yaml:"required"`
+			Enabled               *bool                               `yaml:"enabled"`
+			AllowMissing          *bool                               `yaml:"allow_missing"`
+			AllowRecordQuarantine bool                                `yaml:"allow_record_quarantine"`
+			MaxRetainedAge        string                              `yaml:"max_retained_age"`
+			DisabledAction        DisabledAction                      `yaml:"disabled_action"`
 		} `yaml:"scopes"`
 	}
 	decoder := yaml.NewDecoder(bytes.NewReader(data), yaml.Strict())
@@ -51,7 +52,7 @@ func ParseProfile(data []byte) (Profile, error) {
 		if err != nil {
 			return Profile{}, admissionError("profile.max_retained_age", "requires an explicit duration")
 		}
-		profile.Scopes = append(profile.Scopes, ScopePolicy{Scope: Scope{Source: scope.Source, Binding: scope.Binding}, Required: *scope.Required, Enabled: *scope.Enabled, AllowMissing: *scope.AllowMissing, MaxRetainedAge: age, DisabledAction: scope.DisabledAction})
+		profile.Scopes = append(profile.Scopes, ScopePolicy{Scope: Scope{Source: scope.Source, Binding: scope.Binding}, Required: *scope.Required, Enabled: *scope.Enabled, AllowMissing: *scope.AllowMissing, AllowRecordQuarantine: scope.AllowRecordQuarantine, MaxRetainedAge: age, DisabledAction: scope.DisabledAction})
 	}
 	if _, err := validateProfile(profile); err != nil {
 		return Profile{}, err

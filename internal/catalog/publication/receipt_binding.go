@@ -65,8 +65,9 @@ func BindReceipt(ctx context.Context, profile Profile, run Run, runID, expectedC
 		receipt.Sources = append(receipt.Sources, artifact.PublicationSourceReceipt{
 			Policy: artifact.PublicationScopePolicy{Source: policy.Scope.Source, Binding: binding,
 				Required: policy.Required, Enabled: policy.Enabled, AllowMissing: policy.AllowMissing,
-				MaxRetainedAge: policy.MaxRetainedAge, DisabledAction: string(policy.DisabledAction)},
-			Attempt: string(result.Attempt), EvidenceKind: string(result.EvidenceKind), Observation: result.Evidence,
+				AllowRecordQuarantine: policy.AllowRecordQuarantine,
+				MaxRetainedAge:        policy.MaxRetainedAge, DisabledAction: string(policy.DisabledAction)},
+			Attempt: string(result.Attempt), EvidenceKind: string(result.EvidenceKind), Observation: result.Evidence, Quarantine: result.Quarantine,
 		})
 	}
 	data, err := artifact.EncodePublicationReceipt(receipt)

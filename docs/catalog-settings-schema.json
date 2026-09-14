@@ -151,7 +151,7 @@
       ],
       "type": "string",
       "unit": "",
-      "default": "catalog/v1",
+      "default": "catalog/v2",
       "default_meaning": "",
       "allow_empty": false,
       "allow_zero": false,

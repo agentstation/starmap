@@ -50,7 +50,8 @@ The output root restricts access to its owner. Checkpoints, receipts, and retry 
 Checkpoints retain the scope selectors and model data from their configured sources.
 
 The [public GitHub profile](../../.github/catalog-publication.yaml) selects models.dev over HTTP and twelve provider APIs.
-models.dev must supply complete evidence from this run or the previous 24 hours.
+models.dev must supply eligible evidence from this run or the previous 24 hours.
+The public profile permits isolated invalid records through `allow_record_quarantine: true`.
 A provider failure does not stop publication. The receipt reports missing credentials, failure, and retained evidence separately.
 Evidence older than 24 hours cannot satisfy source admission, but its catalog facts remain until an explicit removal.
 
@@ -67,6 +68,24 @@ Enterprise profiles can contain private models or account selectors. Store those
 Retry records stay in the local work directory.
 The receipt excludes credential values and raw provider errors.
 Its binding checksum does not authenticate the publisher.
+
+## Record quality and corrections
+
+The models.dev adapter trims surrounding whitespace from display names. It preserves exact model IDs and the original source bytes.
+Each correction logs `display_name_whitespace_trimmed` with its run, source, provider, and model identity.
+Source formatting rules belong in the adapter. Individual model names do not require YAML exceptions.
+
+Unresolved invalid records remain quarantined. A source policy can permit their valid siblings with `allow_record_quarantine: true`.
+This setting defaults to false. It requires accepted records and only classified record failures.
+Transport failures, truncation, stale fallback, and source schema failures still require eligible retained evidence.
+
+The run receipt records the partial attempt, degraded observation, accepted and rejected counts, and each rejected record's identifier and reason code.
+It excludes raw diagnostic messages. The checkpoint retains the original observation evidence for replay.
+Invalid records preserve their last accepted catalog values. An incomplete provider inventory never establishes model absence.
+
+A repaired source update clears its current quarantine report. Historical immutable receipts retain the earlier report.
+An outage preserves the retained report and its original observation time within the configured age limit.
+Operators inspect the current receipt for source quality and the acquisition logs for correction and rejection details.
 
 ## Resume and retry
 
@@ -140,8 +159,10 @@ The output directory remains private. Public publication requires the separate w
 ## Verify
 
 ```sh
-go test -race ./internal/catalog/publication ./cmd/starmap-catalog-publish
+go test -race -timeout=30m ./internal/catalog/publication ./cmd/starmap-catalog-publish
 ```
 
 These tests use a local provider HTTP server and exercise acquisition, retention, checkpoint validation, artifact staging, and restart retries.
+The full public-profile capacity test replays eight scheduled runs, including an outage and checkpoint recovery.
+Race instrumentation needs the explicit timeout for this full-size test. Short test runs omit its capacity qualification.
 The native CI matrix runs the same command tests on Linux, macOS, and Windows.

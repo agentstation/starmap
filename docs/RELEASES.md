@@ -81,14 +81,22 @@ application release.
 | `catalog-<catalog-digest>` | `canonical` | The current immutable release namespace |
 | `catalog-semantic-<digest>` | `legacy-semantic` | A retired facts-digest namespace |
 | `catalog-payload-<digest>` | `legacy-payload` | The first retired payload namespace |
-| `catalog/v1` | none | A branch, not a tag. The mutable discovery channel |
+| `catalog-run-<receipt-digest>` | publication receipt | Immutable run receipt and publisher checkpoint |
+| `catalog/v2` | none | Default discovery branch with publication receipts |
+| `catalog/v1` | none | Compatibility discovery branch for legacy consumers |
 
-The `catalog/v1` branch carries the attested channel document `channel.json`
-with the media type
-`application/vnd.agentstation.starmap.catalog-channel.v1+json`. The document
-advances its sequence and its `channel_updated_at` value after every successful
-verification. A consumer therefore grades origin freshness even when the
-catalog facts did not change.
+The `catalog/v2` branch carries the attested `channel.json` document with media type `application/vnd.agentstation.starmap.catalog-channel.v2+json`.
+It binds the selected artifact, current publication receipt, checkpoint, and promoted source commit.
+The receipt preserves source observation times when a run retains older evidence.
+The channel update time confirms publication. It does not prove fresh provider acquisition.
+
+The publisher also advances `catalog/v1` with the same artifact and the v1 document format.
+Legacy release tags remain readable. To select this channel explicitly, set `STARMAP_CATALOG_SOURCE_CHANNEL=catalog/v1` or use `--catalog-source-channel=catalog/v1`.
+The new default does not fall back to v1 when v2 is unavailable.
+An unpinned runtime retains its accepted catalog until it verifies a replacement.
+
+A generation pin retains its source channel binding.
+Keep v1 explicitly configured while using a pin accepted from v1. Release that pin before changing its channel.
 
 The pointer lives on a branch because this repository enables immutable
 releases. GitHub freezes an immutable release at creation. It accepts no asset

@@ -384,6 +384,11 @@ scopes:
             final = {name: checked.read_branch(name, "channel.json") for name in channel_state}
             self.assertTrue(publication.completed(record, final))
             self.assertEqual(checked.emitted["source_commit"], final["catalog/v2"]["document"]["publication"]["source_commit"])
+            self.assertEqual(2, final["catalog/v2"]["document"]["schema_version"])
+            self.assertEqual(1, final["catalog/v1"]["document"]["schema_version"])
+            self.assertNotIn("publication", final["catalog/v1"]["document"])
+            self.assertEqual({record["artifact_tag"]}, {value["document"]["tag"] for value in final.values()})
+            self.assertEqual({record["artifact_tag"], record["receipt_tag"]}, set(platform["releases"]))
             self.assertEqual("published", checked.emitted["status"])
             self.assertEqual(1, platform["creates"])
             self.assertEqual(1, platform["merges"])

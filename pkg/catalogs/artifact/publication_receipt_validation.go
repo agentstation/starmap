@@ -112,7 +112,7 @@ func (s PublicationSourceReceipt) validate(startedAt, completedAt time.Time) err
 		return publicationReceiptError("source.attempt", "must agree with the configured enabled state")
 	}
 	if s.EvidenceKind == "none" {
-		if s.Observation != nil || s.Attempt == "succeeded" || (s.Policy.Enabled && (s.Policy.Required || !s.Policy.AllowMissing)) {
+		if s.Observation != nil || s.Quarantine != nil || s.Attempt == "succeeded" || (s.Policy.Enabled && (s.Policy.Required || !s.Policy.AllowMissing)) {
 			return publicationReceiptError("source.observation", "cannot omit required or successful source evidence")
 		}
 		return nil
@@ -124,13 +124,16 @@ func (s PublicationSourceReceipt) validate(startedAt, completedAt time.Time) err
 	if err := observation.Validate(); err != nil {
 		return publicationReceiptError("source.observation", "must contain a valid observation receipt")
 	}
-	if observation.Source != s.Policy.Source || observation.Completeness != evidence.ObservationCompletenessComplete || observation.Status != evidence.ObservationStatusSucceeded {
-		return publicationReceiptError("source.observation", "must contain complete successful evidence for the declared source")
+	complete := observation.Completeness == evidence.ObservationCompletenessComplete && observation.Status == evidence.ObservationStatusSucceeded
+	quarantined := s.Policy.AllowRecordQuarantine && s.Quarantine != nil && s.Quarantine.Valid() &&
+		observation.Completeness == evidence.ObservationCompletenessPartial && observation.Status == evidence.ObservationStatusDegraded
+	if observation.Source != s.Policy.Source || (!complete && !quarantined) || (complete && s.Quarantine != nil) {
+		return publicationReceiptError("source.observation", "requires complete evidence or explicitly permitted record quarantine for the declared source")
 	}
 	switch s.EvidenceKind {
 	case "fresh":
-		if s.Attempt != "succeeded" || observation.ObservedAt.Before(startedAt) || observation.ObservedAt.After(completedAt) {
-			return publicationReceiptError("source.observed_at", "fresh evidence requires a successful observation within the run interval")
+		if (complete && s.Attempt != "succeeded") || (quarantined && s.Attempt != "partial") || observation.ObservedAt.Before(startedAt) || observation.ObservedAt.After(completedAt) {
+			return publicationReceiptError("source.observed_at", "fresh evidence requires an eligible observation within the run interval")
 		}
 	case "retained":
 		if s.Attempt == "succeeded" || observation.ObservedAt.After(startedAt) || s.Policy.MaxRetainedAge == 0 || completedAt.Sub(observation.ObservedAt) > s.Policy.MaxRetainedAge {

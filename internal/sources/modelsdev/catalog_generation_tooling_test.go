@@ -55,7 +55,7 @@ func TestCatalogGenerationToolingPromotesPayloadWithQuarantinedRecord(t *testing
 			if !ok || name == "" || strings.TrimSpace(name) != name || !idOK || id != modelKey || strings.TrimSpace(id) == "" {
 				continue
 			}
-			model["name"] = name + "\t"
+			model["name"] = name + "\ninvalid"
 			mutated = true
 			break
 		}

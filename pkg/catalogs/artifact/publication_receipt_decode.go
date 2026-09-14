@@ -11,6 +11,35 @@ import (
 
 type publicationReceiptHeader PublicationReceipt
 
+// UnmarshalJSON bounds quarantine records before decoding their fields.
+func (s *PublicationSourceReceipt) UnmarshalJSON(data []byte) error {
+	type sourceHeader PublicationSourceReceipt
+	var header sourceHeader
+	wire := struct {
+		*sourceHeader
+		Quarantine json.RawMessage `json:"quarantine"`
+	}{sourceHeader: &header}
+	if err := decodeStrictJSON(data, &wire); err != nil {
+		return publicationReceiptError("source", "requires known source fields")
+	}
+	if len(wire.Quarantine) != 0 {
+		var report struct {
+			Records evidence.ObservationRecordCounts `json:"records"`
+			Issues  json.RawMessage                  `json:"issues"`
+		}
+		if err := decodeStrictJSON(wire.Quarantine, &report); err != nil {
+			return publicationReceiptError("source.quarantine", "requires classified record diagnostics")
+		}
+		issues, err := decodePublicationArray[evidence.QuarantinedRecord](report.Issues, "source.quarantine.issues")
+		if err != nil {
+			return err
+		}
+		header.Quarantine = &evidence.RecordQuarantine{Records: report.Records, Issues: issues}
+	}
+	*s = PublicationSourceReceipt(header)
+	return nil
+}
+
 func decodePublicationReceipt(data []byte) (PublicationReceipt, error) {
 	var header publicationReceiptHeader
 	wire := struct {

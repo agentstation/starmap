@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
+	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -27,12 +28,13 @@ const (
 
 // ScopePolicy declares evidence requirements without inferring them from credentials.
 type ScopePolicy struct {
-	Scope          Scope
-	Required       bool
-	Enabled        bool
-	AllowMissing   bool
-	MaxRetainedAge time.Duration
-	DisabledAction DisabledAction
+	Scope                 Scope
+	Required              bool
+	Enabled               bool
+	AllowMissing          bool
+	AllowRecordQuarantine bool
+	MaxRetainedAge        time.Duration
+	DisabledAction        DisabledAction
 }
 
 // Profile records the policy revision and every selected source scope.
@@ -79,9 +81,9 @@ type Run struct {
 type EvidenceKind string
 
 const (
-	// FreshEvidence identifies complete evidence observed during this run.
+	// FreshEvidence identifies eligible evidence observed during this run.
 	FreshEvidence EvidenceKind = "fresh"
-	// RetainedEvidence identifies complete evidence from an earlier accepted run.
+	// RetainedEvidence identifies eligible evidence from an earlier accepted run.
 	RetainedEvidence EvidenceKind = "retained"
 	// NoEvidence reports that the scope supplies no input for this publication.
 	NoEvidence EvidenceKind = "none"
@@ -96,6 +98,7 @@ type ScopeResult struct {
 	Evidence     *catalogs.SourceObservationLink
 	Allowed      bool
 	Remove       bool
+	Quarantine   *evidence.RecordQuarantine
 }
 
 // Decision contains the complete admission result in profile order.
@@ -109,7 +112,7 @@ type Decision struct {
 	Removals         []Scope
 }
 
-// Admit validates inputs and selects only complete evidence within each scope.
+// Admit selects complete evidence or explicitly permitted record quarantine within each scope.
 // It makes no network requests and leaves catalog facts and publication heads unchanged.
 func Admit(profile Profile, run Run) (Decision, error) {
 	input, err := validateInputs(profile, run)
@@ -137,6 +140,7 @@ func Admit(profile Profile, run Run) (Decision, error) {
 			} else {
 				link := observation.Link()
 				row.Evidence = &link
+				row.Quarantine = quarantinedRecords(*observation)
 				decision.Inputs = append(decision.Inputs, cloneObservation(*observation))
 				if kind == FreshEvidence && policy.Scope.Source != sources.EmbeddedCatalogID && policy.Scope.Source != sources.ReleaseArtifactID {
 					decision.FreshAcquisition = true
@@ -154,10 +158,10 @@ func Admit(profile Profile, run Run) (Decision, error) {
 }
 
 func selectEvidence(policy ScopePolicy, attempt Attempt, retained *sources.Observation, now time.Time) (*sources.Observation, EvidenceKind) {
-	if attempt.Outcome == Succeeded {
+	if attempt.Outcome == Succeeded || (attempt.Outcome == Partial && attempt.Observation != nil && usableEvidence(policy, *attempt.Observation)) {
 		return attempt.Observation, FreshEvidence
 	}
-	if retained != nil && complete(*retained) && policy.MaxRetainedAge > 0 && now.Sub(retained.ObservedAt) <= policy.MaxRetainedAge {
+	if retained != nil && usableEvidence(policy, *retained) && policy.MaxRetainedAge > 0 && now.Sub(retained.ObservedAt) <= policy.MaxRetainedAge {
 		return retained, RetainedEvidence
 	}
 	return nil, NoEvidence
