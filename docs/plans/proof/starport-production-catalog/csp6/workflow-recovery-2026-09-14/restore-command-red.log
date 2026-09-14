@@ -1,0 +1,20 @@
+flag provided but not defined: -restore-receipt
+Usage of starmap-catalog-publish:
+  -baseline-embedded
+    	apply the verified compiled baseline when resuming a checkpoint
+  -output-dir string
+    	private directory for prepared publication outputs
+  -profile string
+    	explicit publication source policy YAML
+  -publisher-id string
+    	stable identity that owns this publisher's source scopes
+  -run-id string
+    	stable run identity reused by retries
+  -state string
+    	previous accepted publication checkpoint
+  -state-checksum string
+    	trusted checksum of the accepted checkpoint
+  -workspace string
+    	explicit local source workspace
+flag provided but not defined: -restore-receipt
+exit status 1

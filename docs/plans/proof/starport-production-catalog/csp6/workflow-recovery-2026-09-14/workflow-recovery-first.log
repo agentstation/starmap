@@ -1,0 +1,18 @@
+test_concurrent_branch_change_rejects_stale_publication (__main__.GitPublicationTests.test_concurrent_branch_change_rejects_stale_publication) ... ok
+setUpClass (__main__.PublicationRecoveryTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (__main__.PublicationRecoveryTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/scripts/test_catalog_publication.py", line 114, in setUpClass
+    verified = json.loads(publication.command([release_tool, "--verify-dir", stage]).stdout)
+                          ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/scripts/catalog_publication.py", line 42, in command
+    raise PublicationError(f"{args[0]} {args[1]} failed with exit status {result.returncode}")
+catalog_publication.PublicationError: /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-publication-tests-1f_yccbg/release --verify-dir failed with exit status 1
+
+----------------------------------------------------------------------
+Ran 1 test in 25.887s
+
+FAILED (errors=1)

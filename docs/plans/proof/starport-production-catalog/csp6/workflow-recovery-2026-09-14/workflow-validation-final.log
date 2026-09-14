@@ -1,0 +1,15 @@
+test_concurrent_branch_change_rejects_stale_publication (__main__.GitPublicationTests.test_concurrent_branch_change_rejects_stale_publication) ... ok
+test_ambiguous_publish_response_reuses_uploaded_assets (__main__.PublicationRecoveryTests.test_ambiguous_publish_response_reuses_uploaded_assets) ... ok
+test_authenticator_refusal_stops_before_staging (__main__.PublicationRecoveryTests.test_authenticator_refusal_stops_before_staging) ... ok
+test_changed_public_asset_stops_without_overwrite (__main__.PublicationRecoveryTests.test_changed_public_asset_stops_without_overwrite) ... ok
+test_interrupted_promotion_merges_exact_artifact_before_both_channels (__main__.PublicationRecoveryTests.test_interrupted_promotion_merges_exact_artifact_before_both_channels) ... ok
+test_partial_draft_asset_recovers_without_replacing_uploaded_data (__main__.PublicationRecoveryTests.test_partial_draft_asset_recovers_without_replacing_uploaded_data) ... ok
+test_pending_completion_requires_both_channels_and_exact_checkpoint (__main__.PublicationRecoveryTests.test_pending_completion_requires_both_channels_and_exact_checkpoint) ... ok
+test_pending_schema_and_duplicate_fields_refuse_ambiguous_inputs (__main__.PublicationRecoveryTests.test_pending_schema_and_duplicate_fields_refuse_ambiguous_inputs) ... ok
+test_public_checkpoint_survives_loss_of_original_working_directory (__main__.PublicationRecoveryTests.test_public_checkpoint_survives_loss_of_original_working_directory) ... ok
+test_recover_from_retained_workflow_without_new_acquisition (__main__.PublicationRecoveryTests.test_recover_from_retained_workflow_without_new_acquisition) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 11.144s
+
+OK

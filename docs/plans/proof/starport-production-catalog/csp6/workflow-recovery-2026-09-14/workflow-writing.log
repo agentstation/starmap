@@ -1,0 +1,7 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/GLOSSARY.md (82 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+missing: OCI (docs/CATALOG_ARTIFACT_FORMAT.md, docs/CATALOG_DISTRIBUTION_TRUST.md, docs/REMOTE_CATALOG_PROTOCOL.md)
+missing: PR (CONTRIBUTING.md, docs/CATALOG_ARTIFACT_FORMAT.md, docs/RELEASES.md)
+FAIL: 2 candidate term(s) are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/GLOSSARY.md
+make: *** [technical-writing-check] Error 1

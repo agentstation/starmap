@@ -1,0 +1,353 @@
+{
+  "date": "2026-09-14T17:28:41.222676+00:00",
+  "task": "CSP6",
+  "work_commit": "96127f40aad4417516d4afbbf890c2ba205d4306",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "branch": "codex/catalog-publication-promotion-main",
+  "integrated_main": "176516abaae5b544dd1b830b0c09f50c87e9be5d",
+  "integration_commit": "b8649eabf478353b158dc0a15beb3ef2947d5a0b",
+  "task_complete": false,
+  "pull_request": null,
+  "source_changes": [
+    {
+      "status": "M",
+      "path": ".github/workflows/catalog-generation.yaml",
+      "sha256": "9dcaff5387895f3cd46e0d8ab98fba8884b86cbb2851cb34ebe04c5fcfec6a15"
+    },
+    {
+      "status": "M",
+      "path": "GLOSSARY.md",
+      "sha256": "6ee5b7b92734bdf0a9257f9cf0dc828c8235910f405646c37e36b16f9cf44469"
+    },
+    {
+      "status": "M",
+      "path": "Makefile",
+      "sha256": "a32715c1f45469a57495ce7b3c18c4b443017db73008c3b289f9d04429859b9c"
+    },
+    {
+      "status": "M",
+      "path": "cmd/starmap-catalog-publish/README.md",
+      "sha256": "a14cd3d89d1759989364a5e9723250b4183a5dcda12a6af2835b8359edcde4d3"
+    },
+    {
+      "status": "M",
+      "path": "cmd/starmap-catalog-publish/main.go",
+      "sha256": "e82a643c884dfd5176f4519927b6fbc8b13507f153aa9cd365a5a690f5189462"
+    },
+    {
+      "status": "A",
+      "path": "cmd/starmap-catalog-publish/restore.go",
+      "sha256": "a50fa56a7cb612b78f23af0b22f17d79a09b825044048fbf46d571b658129c83"
+    },
+    {
+      "status": "A",
+      "path": "cmd/starmap-catalog-publish/restore_test.go",
+      "sha256": "935fb57a4c4e33d7bef77446ad55781724302a641c110abc9f1c4091042d62e3"
+    },
+    {
+      "status": "A",
+      "path": "cmd/starmap-catalog-publish/testdata/workflow-state/main.go",
+      "sha256": "a0db12d321f5005d436b8518198ae02a87ab6227b5eb69f7af04553789a6e36d"
+    },
+    {
+      "status": "M",
+      "path": "docs/SCHEDULED_CATALOG_GENERATION.md",
+      "sha256": "b41659bc4868ac0cf9639604a530842976dd9b84c3667133424b62023ebcb902"
+    },
+    {
+      "status": "D",
+      "path": "internal/ciworkflow/catalog_generation_store_test.go",
+      "sha256": null
+    },
+    {
+      "status": "M",
+      "path": "internal/ciworkflow/catalog_generation_workflow_test.go",
+      "sha256": "594646ae855dac1f3c95533381d1da1d760c60c7ea6113dbe6f8b4c59891fb01"
+    },
+    {
+      "status": "A",
+      "path": "internal/ciworkflow/catalog_publication_workflow_test.go",
+      "sha256": "09b1bf2f3ae46548621c979b5bb16e383ffccbf7804844996d2ff8e587789d24"
+    },
+    {
+      "status": "M",
+      "path": "internal/ciworkflow/current_actions_test.go",
+      "sha256": "59c5fb3abe2ae28e57faf04597f564e75021f9e8d2e5c243800e0ab31935b726"
+    },
+    {
+      "status": "A",
+      "path": "scripts/catalog_publication.py",
+      "sha256": "f60323bec9fe5b6414f4325d1f3e99e631c2e267492a46602500c6a8ef638321"
+    },
+    {
+      "status": "A",
+      "path": "scripts/test_catalog_publication.py",
+      "sha256": "7708cecdce08ae15bbbe7df7172f17d47429d448f41a2c92bbeb5e63ed1f5e50"
+    }
+  ],
+  "artifacts": {
+    "restore-command-red.log": {
+      "sha256": "f463ed9955bc8968a4c506b6a60f676a05b53edd563a021f9918246aedd56a45",
+      "bytes": 712
+    },
+    "restore-command-flow.jsonl": {
+      "sha256": "dc491266025e50baf13a48c31cd49fa9e568276e01987df1537a3ef7a489143b",
+      "bytes": 5154
+    },
+    "workflow-recovery-first.log": {
+      "sha256": "7183cf2c4ae8ec069072b086b5ae488a6f7894a44d4c477605122a4d3398a524",
+      "bytes": 1281
+    },
+    "workflow-command-packages.jsonl": {
+      "sha256": "e686fa674b3839a79f6ce8ae297cc73dc9ce67f8d9d728210e2ba8cc66c376f1",
+      "bytes": 56969
+    },
+    "workflow-recovery-assets.log": {
+      "sha256": "76dced3ecba37c6b61cd18728b137e86d7a134265c467aacf3d4632929139d35",
+      "bytes": 108
+    },
+    "workflow-complete-flow.log": {
+      "sha256": "d90e13a59c5446202bc904407f840ab777e60b661f351fc0f9a7eebf890bdbf5",
+      "bytes": 1736
+    },
+    "workflow-small-complete-flow.log": {
+      "sha256": "6bf16e519b943711b2e9f1cbbaf83bccb13bace8f1a4826e82083895ff1bb31f",
+      "bytes": 2931
+    },
+    "workflow-small-normalized.log": {
+      "sha256": "84f8a64807591ebed87499fbcd7ebb790d3344d784cf01ed8cc354b2be60f6ab",
+      "bytes": 1735
+    },
+    "workflow-validation-final.log": {
+      "sha256": "af57a302dcf8a8edc046de1e99832d40d4950173b2f4a56fa38134d58139faff",
+      "bytes": 1735
+    },
+    "workflow-minimum-final.log": {
+      "sha256": "8ca1858bc7647ec42d302ed93952c69b8edc26cb1193626de042f11ff455e486",
+      "bytes": 1735
+    },
+    "workflow-command-final.jsonl": {
+      "sha256": "6bb03714f340deac18f71cbedfd8136d58401cf2828f5e1d17b7fa90092fcc19",
+      "bytes": 56686
+    },
+    "workflow-restore-minimum.jsonl": {
+      "sha256": "0681e396789e6b88ac2c824a53e1e65a565e374c0732b53e757f14b60a928dd9",
+      "bytes": 13978
+    },
+    "workflow-goago-final.json": {
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289
+    },
+    "workflow-writing.log": {
+      "sha256": "45fca16e628ed627e47f7d0f850be53ec42408b05ef9fb37e3a880f316ca86f5",
+      "bytes": 676
+    },
+    "workflow-writing-final.log": {
+      "sha256": "3bc7e9b0295cd76863027552b24fd61ed09060ceb4dad1abc2c724c7356dd21f",
+      "bytes": 804
+    },
+    "workflow-writing-qualified.log": {
+      "sha256": "20d922a5468ebdcf1d3f730b1d0265efc5abe6ab55775509108e573d577ddedb",
+      "bytes": 576
+    },
+    "promotion-rules-current.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "promotion-classic-protection-current.json": {
+      "sha256": "18a37bd0068de9b531a6e6b0170c2cefe1d3c1a14c1981566fd59bbdae55ba3c",
+      "bytes": 885
+    },
+    "app-token-tag.json": {
+      "sha256": "93f60c1b1187cf06b1c43a6f224e14c773667c829012c1136b1a110f8ec6acf2",
+      "bytes": 363
+    },
+    "full-catalog-draft-source/catalog-generation.yaml": {
+      "sha256": "8f606fd28c35ebcaa10cf72a5489d4ddd261b671cb21c76e610257def63f5b10",
+      "bytes": 9771
+    },
+    "full-catalog-draft-source/catalog_publication.py": {
+      "sha256": "c193b753321d73eb1529c18a333f51e0bf35b49530be95ff3c3bedfdf0f11d14",
+      "bytes": 33720
+    },
+    "full-catalog-draft-source/test_catalog_publication.py": {
+      "sha256": "2e116c0b3d20da110734c29387a3b95904944b83bcf73a378468330503db3b0f",
+      "bytes": 21854
+    },
+    "canonical-writing-before-fix.log": {
+      "sha256": "a05fb077035e6b1f2dcd3faecc7e02443f2fe1c60a9893e9f56357707f7d749a",
+      "bytes": 976
+    },
+    "canonical-writing-final.log": {
+      "sha256": "00e0ad3c4044cd5c300dd87386b12d1cb0d8976755b52189e7f5611c176108a9",
+      "bytes": 558
+    }
+  },
+  "behavior": [
+    "Restore exact artifacts from a trusted public checkpoint and receipt without provider acquisition.",
+    "Retain and authenticate pending publication before public writes.",
+    "Retry incomplete drafts without overwriting uploaded assets.",
+    "Recover a pushed promotion branch before PR creation.",
+    "Require strict main checks, exact-head GitHub Actions results, native checks, and required review before merge.",
+    "Verify exact merged embedding before advancing both channels.",
+    "Restore catalog validation, budget reporting, and optional OCI mirror behavior."
+  ],
+  "checks": {
+    "go_race": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOWORK=off go test -race -json -count=1 -timeout 5m ./internal/ciworkflow ./cmd/starmap-catalog-publish",
+      "result": {
+        "passed_tests": [
+          "TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope",
+          "TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion",
+          "TestActiveWorkflowsUseReviewedCurrentActions",
+          "TestGitAcquisitionQualificationRequiresNativeTools",
+          "TestPullRequestWorkflowPinsToolchainActionsToolsAndRequiredJobs",
+          "TestPullRequestWorkflowIsTheOnlyActivePRWorkflow",
+          "TestMakeVerifyUsesCanonicalVerificationScript",
+          "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/normal",
+          "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/review",
+          "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/missing_rationale",
+          "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/durable_rationale",
+          "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/hard_limit_ignores_rationale",
+          "TestGoFileSizeVerificationEnforcesReviewAndHardLimits/generated_excluded",
+          "TestGoFileSizeVerificationEnforcesReviewAndHardLimits",
+          "TestExternalReadOnlyConsumerUsesCanonicalCatalogDX",
+          "TestReadOnlyConsumerDependencyBudgetIsPlatformIndependent",
+          "TestExternalStoreConsumerUsesCallerOwnedAdapter",
+          "TestPinnedArtifactConsumerIsOfflineAndDependencyBounded",
+          "TestExternalServerStorageMatrixStaysOptional",
+          "TestPureGoAndRaceVerificationHaveSeparateCgoModes",
+          "TestGolangCILintVersionIsConsistentAcrossVerificationSurfaces",
+          "TestLocalBuildVersionIgnoresCatalogGenerationTags",
+          "TestOpenAPICheckPinsSelfContainedGenerator",
+          "TestReleaseWorkflowPinsToolchainPublisherAndVerification",
+          "TestReleaseConfigurationPinsInputsAndBuildsSupportedTargets",
+          "TestReleaseBinaryVerificationPinsPortableTargetMatrix",
+          "TestWorkspaceIgnoresHostedWorkflowCheckouts",
+          "TestCatalogGenerationWorkflowNestsTimeoutLimits",
+          "TestPublicationCommandSelectsCompiledBaselineAndBindsRetry",
+          "TestPublicationCommandRetryAfterStagingFailure",
+          "TestPublicationCommandHelpAndCancellation",
+          "TestPublicationCommandCollectsStagesRestartsAndRetries",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/receipt-digest",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/checkpoint-digest",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/run-id",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/publisher-id",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/profile",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/baseline",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/canceled",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition"
+        ],
+        "failed_tests": [],
+        "passed_packages": [
+          "github.com/agentstation/starmap/internal/ciworkflow",
+          "github.com/agentstation/starmap/cmd/starmap-catalog-publish"
+        ]
+      },
+      "scope_note": "The later current_actions_test.go change only separates inline version comments with one blank line."
+    },
+    "minimum_go_restore": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOWORK=off go test -race -json -count=1 -timeout 3m ./cmd/starmap-catalog-publish -run TestPublicationCommandRestores",
+      "result": {
+        "passed_tests": [
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/receipt-digest",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/checkpoint-digest",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/run-id",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/publisher-id",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/profile",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/baseline",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition/canceled",
+          "TestPublicationCommandRestoresExactInputsWithoutAcquisition"
+        ],
+        "failed_tests": [],
+        "passed_packages": [
+          "github.com/agentstation/starmap/cmd/starmap-catalog-publish"
+        ]
+      }
+    },
+    "python_flow": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOWORK=off python3 scripts/test_catalog_publication.py -v",
+      "passed": 10,
+      "failed": 0,
+      "seconds": 11.144
+    },
+    "minimum_go_flow": {
+      "command": "GOTOOLCHAIN=go1.25.12 GOWORK=off python3 scripts/test_catalog_publication.py -v",
+      "passed": 10,
+      "failed": 0,
+      "seconds": 21.935
+    },
+    "full_catalog_draft": {
+      "passed": 10,
+      "seconds": 381.973,
+      "source": "full-catalog-draft-source/",
+      "scope_note": "Earlier controller source. Real compiled catalog, Git, and catalog tools. GitHub responses simulated. Later source adds candidate validation and uses a small normalized fixture."
+    },
+    "goago": {
+      "command": "GOTOOLCHAIN=go1.26.6 GOWORK=off go tool goago -stale-ignores -format json ./...",
+      "exit_code": 0,
+      "findings": 0
+    },
+    "technical_writing": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "files": 1740,
+      "diagnostics": 0,
+      "glossary_terms": 84
+    }
+  },
+  "preserved_failures": [
+    "Restore flag absent before implementation.",
+    "Restore staging initially created a non-private output root.",
+    "Release verifier refused receipt/checkpoint files mixed with three archive assets.",
+    "Workflow rewrite omitted the existing optional ORAS action.",
+    "Small unnormalized fixture could not round-trip through the embedded workspace.",
+    "Prose checks initially required OCI and PR glossary terms and separate version-comment paragraphs."
+  ],
+  "limits": [
+    "GitHub transport, check results, PR review, and validation-command outcomes use fixtures. Git operations and catalog codecs are real.",
+    "Actual GitHub App installation, workflow triggering, provenance, native CI, and controlled bot promotion remain UNVERIFIED.",
+    "The required full task commands and pre-PR review remain open. No CSP6 PR exists.",
+    "Mixed authored edits to previously promoted acquisition fields still require implementation and qualification.",
+    "Actual public source capacity and v1/v2 default adoption remain open.",
+    "Public acquisition profile admission remains an explicit draft engineering default, not an owner-confirmed decision."
+  ],
+  "canonical_documents": {
+    "technical_writing": {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "files": 1521,
+      "diagnostics": 0,
+      "glossary_terms": 81
+    },
+    "structure": {
+      "ledger_rows": 38,
+      "done_rows": 10,
+      "active_task": "CSP6",
+      "current_log_rows": 10,
+      "archived_rows": 1,
+      "archive_verbatim": true,
+      "protected_sections": 6,
+      "local_links": "pass",
+      "table_cells": "balanced"
+    },
+    "source_files": [
+      "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+      "docs/design/catalog-lifecycle/REPOSITORY_FINDINGS.md",
+      "docs/plans/starport-production-catalog-plan.html"
+    ],
+    "preserved_unrelated_changes": [
+      "AGENTS.md",
+      "Makefile",
+      "go.mod",
+      "go.sum",
+      "scripts/verify.sh"
+    ],
+    "diff_check": {
+      "maintained_documents_exit_code": 0,
+      "whole_commit_exit_code": 2,
+      "raw_log_indentation_findings": 8,
+      "disposition": "Preserve the original Go flag output in restore-command-red.log byte-for-byte."
+    }
+  }
+}

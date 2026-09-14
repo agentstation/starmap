@@ -1,0 +1,8 @@
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check
+PASS: /Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/GLOSSARY.md (84 term(s), 0 error(s))
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check
+PASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/GLOSSARY.md
+/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text
+/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/internal/ciworkflow/current_actions_test.go:13:1: error long_sentence: sentence has 28 words; limit is 25
+FAIL: 1740 file(s), 1 diagnostic(s)
+make: *** [technical-writing-check] Error 1

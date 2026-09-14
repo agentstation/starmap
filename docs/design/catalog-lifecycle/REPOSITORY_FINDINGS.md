@@ -2964,3 +2964,20 @@ Starport stores these catalog records in KV. Its object-storage backend owns upl
 Starmap's optional object catalog adapter has a separate collection boundary.
 CSP8 must protect accepted and candidate heads, readers, shared chunks, and pending writes during retention.
 The passing diagnostic supplies no acceptance credit. Valkey and concurrent deletion remain unverified.
+
+## Scheduled publication recovery implementation, 2026-09-14
+
+Starmap commit `96127f40aad4417516d4afbbf890c2ba205d4306` connects public checkpoint recovery, pending publication, checked promotion, and channel advancement.
+The [workflow proof](../../plans/proof/starport-production-catalog/csp6/workflow-recovery-2026-09-14/verification.json) owns source hashes, test counts, preserved failures, and qualification limits.
+It also records the main-branch protection response and the pinned GitHub App token action.
+
+The public checkpoint stores public model data without encryption or a private object store.
+The dedicated App key authenticates GitHub PR operations. Provider API keys remain confined to acquisition.
+The implementation restores the existing candidate checks, budget report, and optional OCI mirror.
+
+Recovery tests use real Git repositories and catalog tools with simulated GitHub responses.
+The full-catalog draft and the smaller normalized fixture both pass their recorded checks.
+Fixture responses do not qualify App installation, actual workflow triggering, remote provenance, or hosted promotion.
+
+CSP6 remains incomplete until mixed authored-baseline selection, public-profile capacity, channel defaults, full checks, required review, and merge complete.
+The canonical plan's current resume state owns the next action.

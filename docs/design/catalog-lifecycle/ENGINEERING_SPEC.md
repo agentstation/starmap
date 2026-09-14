@@ -847,7 +847,10 @@ Do not alter historical manifest bytes to attach newer observation times.
 ### 5.2 Publisher identity and checks
 
 The proposed bot uses a GitHub App installed only on the publishing repository.
-Its installation token needs the narrowly scoped contents and pull-request permissions for promotion.
+Its installation token needs contents and pull-request write access for promotion.
+Read access to administration, actions, attestations, and checks supports branch-rule and provenance verification.
+The App key authenticates GitHub operations. It is not a checkpoint encryption key or a provider API key.
+
 The release owner must verify the actual branch rules and required check identities.
 The bot must not approve its own changes or bypass required reviews.
 
@@ -899,6 +902,15 @@ Qualify this case together with explicit source removal before enabling automati
 Finish any pending artifact promotion and channel advancement before starting acquisition against a later baseline.
 A runner failure after the default-branch merge must resume the same verified artifact, receipt, and checkpoint.
 It must not treat that unpublished promotion as a new authored baseline.
+
+A pending publication record must survive loss of the original runner before any public release write.
+Bind it to the original workflow run, source commit, source profile, artifact, receipt, and checkpoint digests.
+Retained Actions artifacts can recover incomplete initial publication. Public receipt and checkpoint releases provide later recovery without provider credentials.
+
+An interrupted branch push followed by PR creation must reuse the verified branch.
+Check results must belong to the exact proposed commit and the expected GitHub Actions app.
+A newer incomplete result must prevent an older successful result from qualifying the same check.
+Validate the proposed embedded catalog before publishing its immutable assets. Keep the existing generation checks and budget policy.
 
 The channel must bind the exact accepted checkpoint, current run receipt, and promoted source commit.
 Consumers retain the current receipt separately from the immutable catalog artifact.
