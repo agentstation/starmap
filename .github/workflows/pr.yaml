@@ -175,7 +175,7 @@ jobs:
   native-runtime:
     name: Runtime ${{ matrix.runner }}
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 60
+    timeout-minutes: ${{ matrix.os == 'windows' && 120 || 60 }}
     strategy:
       fail-fast: false
       matrix:
