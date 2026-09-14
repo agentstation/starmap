@@ -49,7 +49,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0 // indirect
-	github.com/agentstation/ago v0.2.0 // indirect
+	github.com/agentstation/goago v0.3.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.20 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.20.2 // indirect
@@ -192,4 +192,4 @@ require (
 	k8s.io/klog/v2 v2.140.0 // indirect
 )
 
-tool github.com/agentstation/ago/cmd/ago
+tool github.com/agentstation/goago/cmd/goago

@@ -40,8 +40,8 @@ github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0 h1:Nljr4q1GRA/
 github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0/go.mod h1:Y33QHnf0FfdVewFFISOGe20mkZbxX4H839o955/PoeI=
 github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERoyfY=
 github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
-github.com/agentstation/ago v0.2.0 h1:Ly4F7u1YtijATpaXfdShWzo35XqAMudIRnHhIXpxdGI=
-github.com/agentstation/ago v0.2.0/go.mod h1:GKAc2H/0+OUQdbBrojfK1LPNgJYsjxvFjEdkXfB65fY=
+github.com/agentstation/goago v0.3.0 h1:lfi+PjrFeylLbGsbxE4PSdYgIogX8MVN3VVqPjze2X0=
+github.com/agentstation/goago v0.3.0/go.mod h1:FNP28m7GD8v1GfFNman38X3m4J6+16wuql2KszSYsHc=
 github.com/agentstation/utc v0.2.0 h1:zKeYoUA65am9lL9k70iKDci17hXlt9l+N9OCAJvD/Wk=
 github.com/agentstation/utc v0.2.0/go.mod h1:6/sYtnBRR4MhH8Oj9JTG9buSeBgWA9c1ppctsY1nFa8=
 github.com/alessio/shellescape v1.4.1 h1:V7yhSDDn8LP4lc4jS8pFkt0zCnzVJlG5JXy9BVKJUX0=

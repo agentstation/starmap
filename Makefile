@@ -36,7 +36,7 @@ GOGET=$(GOCMD) get
 GOMOD=$(GOCMD) mod
 GOFMT=$(GOCMD) fmt
 GOVET=$(GOCMD) vet
-AGO=$(GOCMD) tool ago
+GOAGO=$(GOCMD) tool goago
 GOBIN?=$(shell go env GOPATH)/bin
 GOMARKDOC=$(GOBIN)/gomarkdoc
 GOLANGCI_LINT_VERSION=2.12.2
@@ -194,11 +194,11 @@ test-integration: ## Run integration tests
 test-all: test test-race test-integration ## Run all tests
 	@echo "$(GREEN)All tests completed!$(NC)"
 
-lint: ## Run golangci-lint and ago
+lint: ## Run golangci-lint and goago
 	@echo "$(BLUE)Running linters...$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
 	$(RUN_PREFIX) golangci-lint run
-	$(AGO) -stale-ignores ./...
+	$(GOAGO) -stale-ignores ./...
 	$(MAKE) technical-writing-check
 	@echo "$(GREEN)Linting complete$(NC)"
 
@@ -216,7 +216,7 @@ fmt: ## Format Go code with gofmt only
 check: ## Run all checks: vet + linters + test (no fixes)
 	@echo "$(BLUE)Running checks: go vet, linters, and tests...$(NC)"
 	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
-	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(AGO) -stale-ignores ./... && $(GOTEST) ./...
+	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(GOAGO) -stale-ignores ./... && $(GOTEST) ./...
 	$(MAKE) technical-writing-check
 	@echo "$(GREEN)All checks passed$(NC)"
 

@@ -19,13 +19,13 @@ This file provides Codex with project-specific guidance for working in this repo
 - **Defer cleanup** - Always close resources properly
 - **Godoc everything exported** - Clear documentation on public APIs
 
-### Modern Go and ago
+### Modern Go and goago
 
 - Use Go 1.25 language and library features when they improve directness.
 - Use `sync.WaitGroup.Go` for goroutines whose lifetimes match the group.
-- Run `go tool ago -list -format json` before you interpret the active restrictions.
-- Run `go tool ago -stale-ignores -format json ./...` after each Go change.
-- The built-in ago defaults apply because this repository has no policy file.
+- Run `go tool goago -list -format json` before you interpret the active restrictions.
+- Run `go tool goago -stale-ignores -format json ./...` after each Go change.
+- The built-in goago defaults apply because this repository has no policy file.
 - Do not change the policy or add a suppression only to pass the linter.
 
 ### Technical writing
@@ -399,7 +399,7 @@ make all            # Full cycle: clean, fix, lint, test, build
 make build          # Build binary
 make install        # Install to $GOPATH/bin
 make fix            # Format and tidy
-make lint           # Run golangci-lint and ago
+make lint           # Run golangci-lint and goago
 ```
 
 ### Testing
@@ -414,7 +414,7 @@ go test ./... -race -short                 # All packages with race detector
 
 ```bash
 make verify                                     # scripts/verify.sh runs every automated gate
-go tool ago -stale-ignores -format json ./...   # Run the pinned restriction linter
+go tool goago -stale-ignores -format json ./...   # Run the pinned restriction linter
 bash scripts/verify-live-providers.sh           # Manual only: calls live provider APIs
 bash scripts/verify-provider-fixture-drift.sh   # Manual only: calls live provider APIs
 ```
