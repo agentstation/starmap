@@ -899,6 +899,13 @@ When authors modify a previously promoted catalog, distinguish their edits from 
 Those unchanged results must not become permanent authored fields merely because another field changed.
 Qualify this case together with explicit source removal before enabling automatic baseline selection in the workflow.
 
+Apply field differences and explicit removals to the separate original baseline.
+Treat membership scopes, removal policies, and alias records as complete records.
+New authored records retain required IDs and references. Required display names fall back to exact IDs when no name change exists.
+
+An active alias retains its required terminal definition. An unrelated edit must not retain an acquired unresolved review.
+An initial checkpoint without publication or acquisition history retains the exact explicitly selected baseline.
+
 Finish any pending artifact promotion and channel advancement before starting acquisition against a later baseline.
 A runner failure after the default-branch merge must resume the same verified artifact, receipt, and checkpoint.
 It must not treat that unpublished promotion as a new authored baseline.

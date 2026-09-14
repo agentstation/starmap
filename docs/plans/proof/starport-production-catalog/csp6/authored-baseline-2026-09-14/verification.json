@@ -1,0 +1,327 @@
+{
+  "date": "2026-09-14T18:20:14.179289+00:00",
+  "task": "CSP6",
+  "work_commit": "1b8633769ff3011c91a83984fbeac6a81c2b86b3",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "branch": "codex/catalog-publication-promotion-main",
+  "task_complete": false,
+  "pull_request": null,
+  "changes": [
+    "Apply authored field differences against the last published catalog to the separate original baseline.",
+    "Retain exact IDs, canonical references, and required alias targets for newly authored records. Required names fall back to exact IDs.",
+    "Keep membership, removal, and alias records complete. Preserve authored additions and explicit removals through checkpoint restore.",
+    "Retain baseline evidence and explicit review edits. Unchanged acquired fields and reviews stay outside the baseline.",
+    "Preserve the exact replacement baseline for an initial checkpoint with no publication or acquisition history."
+  ],
+  "source_files": [
+    {
+      "path": "docs/SCHEDULED_CATALOG_GENERATION.md",
+      "sha256": "882f38a4da446472d96ce6e52563b60078a1d2b9761c4ac2dde920d1099296be"
+    },
+    {
+      "path": "internal/catalog/publication/authored_baseline.go",
+      "sha256": "8a35b0ad6077d73f4a277c072f720e907cc21e270292f61f5d527131c2012818"
+    },
+    {
+      "path": "internal/catalog/publication/authored_baseline_test.go",
+      "sha256": "5d0485761d253ab7fbc1d2b52244dae2a170a9bbc43c17d8dc4c90c5e1c1968b"
+    },
+    {
+      "path": "internal/catalog/publication/authored_evidence.go",
+      "sha256": "505aa3a683e4414446239da3f45710851a49c535a9ec304a94eadebbd26ec6b8"
+    },
+    {
+      "path": "internal/catalog/publication/authored_identity.go",
+      "sha256": "15572fae1705ad80cb616d31f22935e0061e734cf53c3bcfe31cb26ce6df9800"
+    },
+    {
+      "path": "internal/catalog/publication/authored_policy_test.go",
+      "sha256": "a47335a5705d4cec2ace6af87caf23c4416f9a3ba352df8efbb74de736cfebf6"
+    },
+    {
+      "path": "internal/catalog/publication/baseline.go",
+      "sha256": "80f44c112c5fc7f10c00b5eab7a5ca1e5769354bfa4cb9e216f4d4293dab05b1"
+    }
+  ],
+  "qualification": {
+    "toolchain": "go1.26.6 darwin/arm64",
+    "race_checks": [
+      {
+        "artifact": "authored-publication-final.jsonl",
+        "events": {
+          "pass": 124,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": [
+          {
+            "name": "github.com/agentstation/starmap/internal/catalog/publication",
+            "elapsed_seconds": 21.782
+          }
+        ]
+      },
+      {
+        "artifact": "authored-cli-baseline-fixed.jsonl",
+        "events": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": [
+          {
+            "name": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+            "elapsed_seconds": 148.249
+          }
+        ]
+      },
+      {
+        "artifact": "authored-cli-workflow-final.jsonl",
+        "events": {
+          "pass": 39,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": [
+          {
+            "name": "github.com/agentstation/starmap/internal/ciworkflow",
+            "elapsed_seconds": 1.7650000000000001
+          },
+          {
+            "name": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+            "elapsed_seconds": 11.854
+          }
+        ]
+      }
+    ],
+    "coverage": "Three complete packages use disjoint selections. The final CLI selection excludes the one compiled-baseline test covered by its separate passing run.",
+    "minimum_go": {
+      "toolchain": "go1.25.12",
+      "check": {
+        "artifact": "authored-minimum-final.jsonl",
+        "events": {
+          "pass": 20,
+          "fail": 0,
+          "skip": 0
+        },
+        "packages": [
+          {
+            "name": "github.com/agentstation/starmap/internal/catalog/publication",
+            "elapsed_seconds": 2.789
+          }
+        ]
+      }
+    },
+    "controller": {
+      "command": "GOTOOLCHAIN=go1.26.6 python3 scripts/test_catalog_publication.py",
+      "tests": 10,
+      "artifact": "authored-release-controller.log",
+      "github_responses": "simulated"
+    },
+    "goago": {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+      "exit_status": 0,
+      "artifact": "authored-goago-release-final.json"
+    },
+    "prose": {
+      "command": "make technical-writing-check",
+      "exit_status": 0,
+      "files": 1745,
+      "diagnostics": 0,
+      "glossary_terms": 84,
+      "artifact": "authored-writing-final.log"
+    },
+    "maintained_diff_check": {
+      "command": "git diff --cached --check",
+      "exit_status": 0
+    },
+    "default_toolchain": "The host default reported go1.27.0. Qualification uses explicit Go versions."
+  },
+  "preserved_failures": [
+    {
+      "artifacts": [
+        "authored-baseline-red.jsonl",
+        "authored-baseline-behavior-red.jsonl"
+      ],
+      "classification": "Invalid fixture or compile failure. These do not prove the behavior defect."
+    },
+    {
+      "artifact": "authored-baseline-valid-input-red.jsonl",
+      "classification": "Four valid edits retained acquired context limits and membership scopes after explicit source removal."
+    },
+    {
+      "artifact": "authored-new-identity-red.jsonl",
+      "classification": "An edit to an acquired offering lacked its required provider identity."
+    },
+    {
+      "artifact": "authored-review-red.jsonl",
+      "classification": "The provider-only edit lacked a required empty model group. This masked the review regression."
+    },
+    {
+      "artifact": "authored-review-valid-input-red.jsonl",
+      "classification": "An unrelated authored edit retained an unresolved review after explicit source removal."
+    },
+    {
+      "artifact": "authored-policy-red.jsonl",
+      "classification": "Invalid fixture. Acquisition cannot supply canonical rename authority."
+    },
+    {
+      "artifact": "authored-policy-valid-input-red.jsonl",
+      "classification": "A new alias lacked its required terminal definition after source removal."
+    },
+    {
+      "artifacts": [
+        "authored-integration-race.jsonl",
+        "authored-release-toolchain.jsonl"
+      ],
+      "classification": "The full CLI test rejected a changed initial baseline identity. The final disjoint runs repair and cover this failure."
+    },
+    {
+      "artifact": "authored-writing.log",
+      "classification": "One paragraph exceeded the six-sentence limit. A paragraph break fixes the final check."
+    },
+    {
+      "artifact": "canonical-writing-red.log",
+      "classification": "One specification paragraph had seven sentences. The final check passes after a paragraph break."
+    }
+  ],
+  "remaining": [
+    "Full public-profile capacity qualification.",
+    "Receipt-channel defaults with explicit v1 compatibility.",
+    "Full CSP6 verification and required pre-PR review.",
+    "GitHub App setup and controlled hosted qualification.",
+    "PR publication and merge."
+  ],
+  "artifacts": {
+    "authored-baseline-behavior-red.jsonl": {
+      "sha256": "f9c7d0773ec4f237bc0c5b22ab7bf7156087c90f0db9c3e03b9c795d012b869d",
+      "bytes": 7850
+    },
+    "authored-baseline-first.jsonl": {
+      "sha256": "9979d5946d6adb492d0cd8fd96a677514a4af29b42db14752b1f7f9990dba932",
+      "bytes": 15732
+    },
+    "authored-baseline-red.jsonl": {
+      "sha256": "7bf6aed680f36cafd892a993819d33bc860899880ebdb0e8f1ccfe514be411e0",
+      "bytes": 2127
+    },
+    "authored-baseline-valid-input-red.jsonl": {
+      "sha256": "08b61cf8c44df7f93758a0f9fdf2f27d578154dd7a41943b85bd0cdd6614dace",
+      "bytes": 8923
+    },
+    "authored-cli-baseline-fixed.jsonl": {
+      "sha256": "a4ed8fc282847acccf4f078252e0dbc34bb0559c2884d679b82cdfa03d9e5af7",
+      "bytes": 1650
+    },
+    "authored-cli-workflow-final.jsonl": {
+      "sha256": "0bd7aaa40b0c5d4d97c1010fb3d57c4363723f6f9fc6e77f32e4d5d78e71c6b1",
+      "bytes": 55689
+    },
+    "authored-controller-tests.log": {
+      "sha256": "4a7a11b586f42daeaffd0bfa2d5c4afb7fa965e1bb50aeb11620cf233ca8f01d",
+      "bytes": 110
+    },
+    "authored-evidence-first.jsonl": {
+      "sha256": "eaee27c9d7dbda83e1a609adf007fd0f907d05577f51056349d1bf759877f2df",
+      "bytes": 19566
+    },
+    "authored-goago-final.json": {
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289
+    },
+    "authored-goago-release-final.json": {
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289
+    },
+    "authored-goago.json": {
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289
+    },
+    "authored-identity-first.jsonl": {
+      "sha256": "ed89428ed412b0171df882dd67e51f0ed1ab4c4b8b257456c2aedc3ed3aff338",
+      "bytes": 17108
+    },
+    "authored-integration-race.jsonl": {
+      "sha256": "0c7fc7f95cc3dd0f39d1f9ee6d67d9209220afccb04a427683b9283a4c9f0dc8",
+      "bytes": 58791
+    },
+    "authored-minimum-final.jsonl": {
+      "sha256": "afb5563667f25fcd9365350d5c93cc671aa4a243280c3548f8f0283afa78b879",
+      "bytes": 26277
+    },
+    "authored-minimum-go.jsonl": {
+      "sha256": "d616a4a4d9500036afd437e0baec8e5f13abe28dc2870cc6b0c6f17d347bad17",
+      "bytes": 26280
+    },
+    "authored-new-identity-red.jsonl": {
+      "sha256": "7303605bac67642eab81ca6bb189f1c60e0a99eb06ad7be8f36dcff6e1514d4f",
+      "bytes": 2368
+    },
+    "authored-policy-red.jsonl": {
+      "sha256": "692653a2e8246bebb97bcb6002029f5fe4ee352e54e43699d25b1fd9726c0a1a",
+      "bytes": 19077
+    },
+    "authored-policy-valid-input-red.jsonl": {
+      "sha256": "2799c540226052fa989020b8928e8ccf5a138ef6567b7e8f4b0745a2373259c6",
+      "bytes": 5226
+    },
+    "authored-policy.json": {
+      "sha256": "16baaa571b87aa21501669fe6da001a10afa3993b865fd79e93cbfb7e421ae04",
+      "bytes": 11882
+    },
+    "authored-publication-final.jsonl": {
+      "sha256": "a1fd703444a4f70685660d726f64abd65fa3aaf5b942a8e42a8e613c7e632082",
+      "bytes": 403878
+    },
+    "authored-publication-full.jsonl": {
+      "sha256": "ede83e57668ad1aa1e8e8149d5784f74cc1867a9c315930b15c51947bded431e",
+      "bytes": 409106
+    },
+    "authored-release-controller.log": {
+      "sha256": "434535dee1b64de919dd35c55eef230c05d3c80d7b57356cb71a59abd8e8a8d1",
+      "bytes": 110
+    },
+    "authored-release-toolchain.jsonl": {
+      "sha256": "bf681823a8b29d295f6c24eab524864f501d0320d4664fe4980accff58c8f1d0",
+      "bytes": 460903
+    },
+    "authored-review-red.jsonl": {
+      "sha256": "b12d21e7bf775962a52a8eddb6859d90f251794369bcd50ae89efb01004bc840",
+      "bytes": 2831
+    },
+    "authored-review-valid-input-red.jsonl": {
+      "sha256": "0725d12091c74efb0624785326054b5c654ddad0475b44a6406f3e2694710f20",
+      "bytes": 2916
+    },
+    "authored-writing-final.log": {
+      "sha256": "ad30b666e480c6b42ede5630e8cc93c355e2e481363883bd9cc7267e432a3c8c",
+      "bytes": 576
+    },
+    "authored-writing.log": {
+      "sha256": "4d84639539bad61799708350bfa53fe7d2596c8247447283fb600e209b3f3d8e",
+      "bytes": 801
+    },
+    "canonical-writing-red.log": {
+      "sha256": "d289d1b53d9cc590fdc49b8a38a6c8bdbc14cb41a7f0efb47c9df1291a52ecfd",
+      "bytes": 788
+    },
+    "canonical-writing-final.log": {
+      "sha256": "453c650447213e8f4acfe58273df27532debf3d3f7b9a20c1ae630f1297b63e9",
+      "bytes": 558
+    }
+  },
+  "canonical_verification": {
+    "prose_exit_status": 0,
+    "prose_files": 1522,
+    "prose_diagnostics": 0,
+    "glossary_terms": 81,
+    "protected_sections": 6,
+    "ledger_rows": 38,
+    "done_rows": 10,
+    "active_rows": 1,
+    "execution_rows": 10,
+    "resume_words": 268,
+    "missing_plan_links": 0,
+    "plan_bytes": 112479,
+    "plan_source_words": 10402
+  }
+}

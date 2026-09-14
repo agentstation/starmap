@@ -1,0 +1,8 @@
+{"Time":"2026-09-14T13:15:34.852596-05:00","Action":"start","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish"}
+{"Time":"2026-09-14T13:15:35.3937-05:00","Action":"run","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish","Test":"TestPublicationCommandSelectsCompiledBaselineAndBindsRetry"}
+{"Time":"2026-09-14T13:15:35.393783-05:00","Action":"output","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish","Test":"TestPublicationCommandSelectsCompiledBaselineAndBindsRetry","Output":"=== RUN   TestPublicationCommandSelectsCompiledBaselineAndBindsRetry\n"}
+{"Time":"2026-09-14T13:18:02.050861-05:00","Action":"output","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish","Test":"TestPublicationCommandSelectsCompiledBaselineAndBindsRetry","Output":"--- PASS: TestPublicationCommandSelectsCompiledBaselineAndBindsRetry (146.66s)\n"}
+{"Time":"2026-09-14T13:18:02.051027-05:00","Action":"pass","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish","Test":"TestPublicationCommandSelectsCompiledBaselineAndBindsRetry","Elapsed":146.66}
+{"Time":"2026-09-14T13:18:02.051041-05:00","Action":"output","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish","Output":"PASS\n"}
+{"Time":"2026-09-14T13:18:03.101515-05:00","Action":"output","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish","Output":"ok  \tgithub.com/agentstation/starmap/cmd/starmap-catalog-publish\t148.249s\n"}
+{"Time":"2026-09-14T13:18:03.101568-05:00","Action":"pass","Package":"github.com/agentstation/starmap/cmd/starmap-catalog-publish","Elapsed":148.249}

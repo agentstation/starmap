@@ -2981,3 +2981,17 @@ Fixture responses do not qualify App installation, actual workflow triggering, r
 
 CSP6 remains incomplete until mixed authored-baseline selection, public-profile capacity, channel defaults, full checks, required review, and merge complete.
 The canonical plan's current resume state owns the next action.
+
+## Authored publication baseline implementation, 2026-09-14
+
+Starmap commit `1b8633769ff3011c91a83984fbeac6a81c2b86b3` separates authored edits from unchanged acquired results.
+The [authored baseline proof](../../plans/proof/starport-production-catalog/csp6/authored-baseline-2026-09-14/verification.json) records seven files, source hashes, preserved failures, and final qualification.
+The changes retain explicit edits, additions, removals, required identities, and alias targets across checkpoint restore.
+An explicit source removal can still discard acquired limits, scopes, and unresolved reviews.
+
+The final Go 1.26.6 checks cover three complete packages through disjoint selections, with 164 passing race test events.
+The minimum Go version passes twenty focused events. All ten controller recovery tests pass.
+Policy and strict prose pass. An initial-baseline identity regression failed the first full CLI check and passes after repair.
+The proof preserves that failure and distinguishes invalid fixtures from valid behavior failures.
+
+This commit remains local. Public-profile capacity, channel defaults, full CSP6 verification, required review, hosted qualification, and merge remain open.
