@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-14T22:59:44.167243+00:00",
+  "updated_at": "2026-09-14T23:27:46.437328+00:00",
   "prior_head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
   "repair_commit": "399ec27c0190f9028309eb3ca1149f1146ff3075",
   "pull_request": 160,
@@ -53,27 +53,12 @@
           "conclusion": ""
         },
         {
-          "name": "Runtime macos-15-intel",
-          "status": "in_progress",
-          "conclusion": ""
-        },
-        {
-          "name": "Offline Server Persistence",
+          "name": "Runtime windows-2025",
           "status": "completed",
           "conclusion": "success"
         },
         {
-          "name": "Runtime macos-15",
-          "status": "completed",
-          "conclusion": "success"
-        },
-        {
-          "name": "Security & Reliability",
-          "status": "completed",
-          "conclusion": "success"
-        },
-        {
-          "name": "Action Pin Provenance",
+          "name": "Runtime windows-11-arm",
           "status": "completed",
           "conclusion": "success"
         },
@@ -83,26 +68,23 @@
           "conclusion": "success"
         },
         {
-          "name": "Constructor Network Passivity",
-          "status": "completed",
-          "conclusion": "success"
-        },
-        {
-          "name": "Runtime windows-11-arm",
-          "status": "in_progress",
-          "conclusion": ""
-        },
-        {
           "name": "Runtime ubuntu-24.04-arm",
           "status": "completed",
           "conclusion": "success"
         },
         {
-          "name": "Runtime windows-2025",
-          "status": "in_progress",
-          "conclusion": ""
+          "name": "Runtime macos-15-intel",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "completed",
+          "conclusion": "success"
         }
-      ]
+      ],
+      "native_jobs_pass": 6,
+      "verification_gate": "in_progress"
     }
   },
   "merged": false,
@@ -196,9 +178,32 @@
       "archive": "csp6-native-run-checkpoint.json.gz",
       "sha256": "b80b08b69d2dc875fcbe198efdeca4d55f02817e22e2f30e7ddae4f93441f0da",
       "archive_sha256": "872c8febfc448c722a359cf875fb1e1d2273e39fc11a4318049b974e39340451"
+    },
+    "csp6-native-current-qualification.json": {
+      "archive": "csp6-native-current-qualification.json.gz",
+      "sha256": "e410be5ed8d13b1471055ce139e0d6a98f690d5bf746cff4c6ca6f012a37c857",
+      "archive_sha256": "c85e4b45f499165876bdbf3e341518e835142f052535844ece107812f20349d6"
+    },
+    "csp6-final-native-status.json": {
+      "archive": "csp6-final-native-status.json.gz",
+      "sha256": "383e1ce2922b611c3eb02e981c47ae76121425d8c151ed93ff1d57a71932d517",
+      "archive_sha256": "8e837c42961f11c2761c405fa5d35456fd2feff517c7df9e59c902a98b8f65ce"
+    },
+    "csp6-publisher-verification-current.json": {
+      "archive": "csp6-publisher-verification-current.json.gz",
+      "sha256": "72a1322a5aef6786327fbb08a1a4dbd45be690f64a30de49b6224a27b2c66069",
+      "archive_sha256": "02ab31e3a9023cd262edbf9f4b98163f790d1f4f3da20e45c0d89f6e939f9cfb"
     }
   },
   "draft_lookup_repair_commit": "567691400acdce5b96710ffdf0150f7939d4ab3f",
   "code_published": true,
-  "live_catalog_published": false
+  "live_catalog_published": false,
+  "publisher_configuration": {
+    "observed_at": "2026-09-14T23:21:40.484783+00:00",
+    "catalog_app_private_key_configured": false,
+    "catalog_app_client_id_configured": false,
+    "provider_key_names_present": 11,
+    "values_read": false,
+    "app_setup_authorized": false
+  }
 }

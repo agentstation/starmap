@@ -1573,10 +1573,9 @@ It adds gateway storage, routing, accounts, authentication, and operational poli
 It does not inherit the standalone Starmap server's listener, authentication,
 filesystem roots, or administration rights.
 
-Starmap must publish one versioned catalog settings contract usable by Go consumers.
-The current canonical settings package is internal. Starport cannot import it
-and currently repeats settings and translation. The new public contract must
-define semantic IDs, types, units, defaults, validation, and runtime options.
+Starmap publishes its versioned catalog settings contract in `pkg/catalogs/config`.
+Starport still repeats settings and translation. CSP8 must adopt this public contract.
+The contract must define semantic IDs, types, units, defaults, validation, and runtime options.
 Environment parsing stays in application composition, outside passive library reads.
 
 Each setting descriptor must also name its configuration key, environment aliases,

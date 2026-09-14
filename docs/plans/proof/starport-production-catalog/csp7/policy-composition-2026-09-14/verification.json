@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated_at": "2026-09-14T22:59:44.167243+00:00",
-  "status": "native_ci_in_progress",
+  "status": "superseded_by_dependency_integration",
   "branch": "codex/catalog-acquisition-credentials",
   "base_commit": "a996b863dcb4e4edfc54d749a07240614d849574",
   "work_commit": "4ef4d2ad42476c16f7bb696c9da382444b391632",
@@ -1252,6 +1252,11 @@
       "archive": "csp7-published-plan-writing-repaired.log.gz",
       "sha256": "055fc0f0bd63d191a3b199cfcffcc5b550c4848386697fbc7318298e38827a13",
       "archive_sha256": "f4a535cc031f523b5947d2d969e6ed93e17fd86bfde6a3194510bbc8ec0d5b0d"
+    },
+    "dependency-batch-prior-run.json": {
+      "archive": "dependency-batch-prior-run.json.gz",
+      "sha256": "518ff197a83ac683c24f640444ce35182077f126090a7a4dc0cbcce46782a6aa",
+      "archive_sha256": "8cb068eaba75fdf5bbee1b38aca27ac5627aa1d61fd76a19fd6224f054bb1089"
     }
   },
   "qualification": {
@@ -1261,7 +1266,7 @@
     "product_cases": "A11 and A12 UNVERIFIED",
     "repository_full": "PASS: 6838 test events, eight explicit skips before the S3 module update",
     "pre_pr_review": "PASS: Sol xhigh and Opus high; zero findings",
-    "native_ci": "queued",
+    "native_ci": "cancelled",
     "merged": false,
     "pinned_lint": "PASS",
     "goago": "PASS",
@@ -1336,15 +1341,7 @@
     "Verify the guarded merge and record CSP7 completion only after its acceptance criteria hold.",
     "Starport CSP9 must compose its role namespace and shared authority."
   ],
-  "running": [
-    {
-      "kind": "github_actions",
-      "run_id": 34905866209,
-      "url": "https://github.com/agentstation/starmap/actions/runs/34905866209",
-      "head": "d464119584953a95a995c65f783d6db552f6209b",
-      "status": "queued"
-    }
-  ],
+  "running": [],
   "source_inventory": "operator-final-inputs.json.gz",
   "source_inventory_note": "The full repository run uses the unchanged Go source from operator-final-inputs.json. Only native workflow selection and generated source documentation changed during that run.",
   "integration_commit": "d464119584953a95a995c65f783d6db552f6209b",
@@ -1369,5 +1366,13 @@
     ],
     "cold_resume": "PASS: current task, source, CI run, merge conditions, pending authorization, and consumer limitations remain explicit.",
     "size_exception": "The existing task and completion contracts require the retained plan size. Current state and task proof provide the bounded execution path."
+  },
+  "superseded_by": "../dependency-batch-2026-09-14/verification.json",
+  "prior_native_run": {
+    "conclusion": "cancelled",
+    "databaseId": 34905866209,
+    "headSha": "d464119584953a95a995c65f783d6db552f6209b",
+    "status": "completed",
+    "url": "https://github.com/agentstation/starmap/actions/runs/34905866209"
   }
 }

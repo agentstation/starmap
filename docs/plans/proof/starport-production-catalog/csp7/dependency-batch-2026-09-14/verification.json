@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-14T23:27:46.436353+00:00",
+  "status": "native_ci_in_progress",
+  "prior_reviewed_head": "d464119584953a95a995c65f783d6db552f6209b",
+  "integration_commit": "1918356b28a619b620a82e701c7c46aa923837f3",
+  "base_commit": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials",
+  "branch": "codex/catalog-acquisition-credentials",
+  "pull_request": 161,
+  "integrated_prs": {
+    "156": "9508eeef83a500709049bb83871f30be1a64b97e",
+    "158": "1cef4e8b49c9e0c07b60b427e8b053e9530d6270",
+    "159": "c407942ba6410d2c35231b967515e51d5e1dc0d8"
+  },
+  "changed_module_files": [
+    "go.mod",
+    "go.sum",
+    "testdata/consumers/pinned-artifact/go.mod",
+    "testdata/consumers/pinned-artifact/go.sum",
+    "testdata/consumers/read-only/go.mod",
+    "testdata/consumers/read-only/go.sum",
+    "testdata/consumers/remote-subscriber/go.mod",
+    "testdata/consumers/remote-subscriber/go.sum",
+    "testdata/consumers/server-embed/go.mod",
+    "testdata/consumers/server-embed/go.sum",
+    "testdata/consumers/server-storage/go.mod",
+    "testdata/consumers/server-storage/go.sum",
+    "testdata/consumers/store-only/go.mod",
+    "testdata/consumers/store-only/go.sum"
+  ],
+  "code_changes": false,
+  "decision": "Integrate related credential SDK and file-lock updates in the existing CSP7 PR. One reviewed native run replaces serial current-base qualification after each dependency merge. Close superseded PRs only after the integrated merge.",
+  "merge_conflict": "Preserved configuration SDK transitive versions and the incoming Secrets Manager v1.49.0 checksums. An initial octopus merge refused the adjacent go.sum conflict without changing the worktree. Sequential merges retained all upstream commits.",
+  "versions": {
+    "aws_config": "v1.33.4",
+    "aws_secretsmanager": "v1.49.0",
+    "flock": "v0.13.1"
+  },
+  "checks": {
+    "go_mod_tidy_diff": {
+      "exit_code": 0,
+      "output": ".tmp/csp7/dependency-batch-tidy.log"
+    },
+    "task_race": {
+      "exit_code": 0,
+      "pass_events": 386,
+      "fail_events": 0,
+      "skip_events": 0,
+      "packages": 4
+    },
+    "process_locks": {
+      "exit_code": 0,
+      "tests": 11,
+      "pass_events": 14,
+      "fail_events": 0,
+      "skip_events": 0,
+      "packages": 4
+    },
+    "consumer_dependencies": {
+      "exit_code": 0,
+      "profiles": 6
+    },
+    "goago": {
+      "exit_code": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "pinned_lint": {
+      "exit_code": 0,
+      "issues": 0
+    },
+    "component_gate": {
+      "exit_code": 0,
+      "selected_subcases": [
+        "A11.acquisition_role_matrix",
+        "A12.each_supported_backend",
+        "A12.rotation_complete_version",
+        "A12.expired_revoked",
+        "A12.backend_outage",
+        "A12.no_secret_disclosure"
+      ],
+      "status": "PASS",
+      "product_cases": "A11 and A12 UNVERIFIED",
+      "output_format": "text"
+    },
+    "required_review": {
+      "exit_code": 0,
+      "status": "PASS",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:claude-opus-5:high"
+      ],
+      "attestation_reused": true,
+      "reason": "The substantive Go source diff and review contract are unchanged. Module changes received fresh local qualification.",
+      "secret_scan": "clean"
+    },
+    "pr_body_prose": {
+      "exit_code": 0,
+      "files": 1,
+      "diagnostics": 0
+    },
+    "canonical_prose": {
+      "exit_code": 0,
+      "files": 1530,
+      "diagnostics": 0,
+      "prior_failure": "One passive-voice diagnostic in the current resume state, repaired without changing the contract."
+    },
+    "final_documents": {
+      "exit_code": 0,
+      "files": 1530,
+      "diagnostics": 0
+    }
+  },
+  "running": [
+    {
+      "kind": "github_actions",
+      "run_id": 34908225001,
+      "url": "https://github.com/agentstation/starmap/actions/runs/34908225001",
+      "head": "1918356b28a619b620a82e701c7c46aa923837f3",
+      "status": "in_progress"
+    }
+  ],
+  "remaining": [
+    "Pass integrated native CI and required checks, then merge PR161.",
+    "Verify the merged module versions before closing superseded PRs156,158,159.",
+    "Mark CSP7 done only after its producer acceptance and merge proof. Product cases A11 and A12 still require Starport."
+  ],
+  "evidence": {
+    "dependency-batch-task.jsonl": {
+      "archive": "dependency-batch-task.jsonl.gz",
+      "sha256": "a8654b7e677d95a089a2cb69f610c27d9cb6d97226a422ae46714c19eab1cb8b",
+      "archive_sha256": "bfcd15a28dcb23e1766a49a18fa864faeecc21f0d546c2592b4d48f58af477e9"
+    },
+    "dependency-batch-locks.jsonl": {
+      "archive": "dependency-batch-locks.jsonl.gz",
+      "sha256": "6ce07663da63eb865e48f874c7774f89f69e9fead11dfe09e5c0efe4dfaae606",
+      "archive_sha256": "721bcf65d3a29b482ec400692517c17b0ef178cc020af0682629d95df032e1e4"
+    },
+    "dependency-batch-consumers.log": {
+      "archive": "dependency-batch-consumers.log.gz",
+      "sha256": "5f5dee65b5d5d825cda31696ec186b36e38432d114d164549d9a8cb79debab9c",
+      "archive_sha256": "4f858c3d30710b4af573f0c4389ae23be77fc93f5e2cd4dc41d4e77a4ef70653"
+    },
+    "dependency-batch-tidy.log": {
+      "archive": "dependency-batch-tidy.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "dependency-batch-goago.json": {
+      "archive": "dependency-batch-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "archive_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "dependency-batch-lint.log": {
+      "archive": "dependency-batch-lint.log.gz",
+      "sha256": "1ea61485496ffbe67bd8f16fb400e6c7045c7e739071b1d32149bddfec6b2536",
+      "archive_sha256": "635a23a4e5543c07d0eed90f7d6ce3d877da188c0ce87394246379031ecac3f6"
+    },
+    "dependency-batch-product.log": {
+      "archive": "dependency-batch-product.log.gz",
+      "sha256": "7982b992ad20be6f69674b0f079fe22518842e4a94881f8916d52c8e80129c7a",
+      "archive_sha256": "9aed5c08382235ac1d12c39aa1ae5f8673c8713f3d79d9088096206d587e5647"
+    },
+    "dependency-batch-review.log": {
+      "archive": "dependency-batch-review.log.gz",
+      "sha256": "b739f448477f771ce459e5017eb0450962d8f4bfbf43521b690f76f225e0a748",
+      "archive_sha256": "32704da37bbce55a90860e7ef7b8bb949cb92b69648a23b5327af48840998be3"
+    },
+    "dependency-batch-pr.json": {
+      "archive": "dependency-batch-pr.json.gz",
+      "sha256": "249e6815e2d73d3f59ba37daed5b2cdb15624b8512614acfbe4291d12483e21b",
+      "archive_sha256": "80f965b18e785688465872df9fbb3d9a600a7583512b9587ee06877a3e6be52b"
+    },
+    "dependency-batch-runs.json": {
+      "archive": "dependency-batch-runs.json.gz",
+      "sha256": "022e451bde62365f854bbc38d7e9291b9d83c0cf5d5282b7c371554ce032f7a4",
+      "archive_sha256": "ca66656b2d56624702de9957bbfc297026d972cffd8e3a39fa68d6c446c8ce02"
+    },
+    "dependency-batch-native.json": {
+      "archive": "dependency-batch-native.json.gz",
+      "sha256": "f2fd6f2a624133510dcfd1c2b759f94f809d946e553a6f535407b9a5ac5708b2",
+      "archive_sha256": "a36b1a67417b2a2eeaa815b732f3664b61ce313b3ea0792d53cd675f532948ec"
+    },
+    "pull-request-body.md": {
+      "archive": "pull-request-body.md.gz",
+      "sha256": "3ea8c94db351d674db5c23c9b51196d091e9bd4aa0e70ddcdfe31c22b87a4344",
+      "archive_sha256": "9f238ba1b6069b89c803495e2ca421a93a1f9d1c1bb32ee06bc9d1ab91122d50"
+    },
+    "pr156-batch-cancelled.json": {
+      "archive": "pr156-batch-cancelled.json.gz",
+      "sha256": "b161220a122d5f643f4c395cee2a7ee833397fd966a7df7c4bd28a930d52917e",
+      "archive_sha256": "c97e03a613b593581c59cde416f93cf31462bb7484e6022e7bcbbbcf680197a9"
+    },
+    "pr158-batch-cancelled.json": {
+      "archive": "pr158-batch-cancelled.json.gz",
+      "sha256": "5e8d60ac933ed0318bdcfeb5c78e93a95dc92cecb49164774b4f740b31cee08d",
+      "archive_sha256": "f434cb200c382460645ea2d2d4facf2c80193b2f53a4066a4bc057fd79f9632d"
+    },
+    "pr159-batch-cancelled.json": {
+      "archive": "pr159-batch-cancelled.json.gz",
+      "sha256": "9fa7c9a3ca2e08df25be720ddfabb9100a29d0d547b3386a3f308853e6231ff9",
+      "archive_sha256": "7345f176c64f3100427e5da684cc428a382d5e87aafccda34a19e2698cfc0df7"
+    },
+    "dependency-refresh-plan-writing.log": {
+      "archive": "dependency-refresh-plan-writing.log.gz",
+      "sha256": "8577388948a3506c42ff13d5303150e396f8de3800d33f2bc0383263e41a63f8",
+      "archive_sha256": "a5cde8dbe8807a79f4f060aca92b495ad3dc5d60eac04431b001ece46f66a2e3"
+    },
+    "dependency-batch-plan-writing.log": {
+      "archive": "dependency-batch-plan-writing.log.gz",
+      "sha256": "7e5ae51af71bb247720f4660e2a81839acd6bab8e77383201c2488a3cfeea618",
+      "archive_sha256": "47eb7b97b62a2c3367398ca841cfe81757b50e11ae6b50020e38c82ae20adf98"
+    },
+    "dependency-batch-plan-writing-repaired.log": {
+      "archive": "dependency-batch-plan-writing-repaired.log.gz",
+      "sha256": "8577388948a3506c42ff13d5303150e396f8de3800d33f2bc0383263e41a63f8",
+      "archive_sha256": "a5cde8dbe8807a79f4f060aca92b495ad3dc5d60eac04431b001ece46f66a2e3"
+    },
+    "dependency-batch-native-current.json": {
+      "archive": "dependency-batch-native-current.json.gz",
+      "sha256": "4a827407782e1b61178e60dea3833205761922b94f6271b6fe396235bb7b6a8e",
+      "archive_sha256": "e94f71f17c319ed27a02fb93bb9a10196fc3fb7392317a0f38aedb80d0026ef4"
+    },
+    "dependency-batch-documents-final.log": {
+      "archive": "dependency-batch-documents-final.log.gz",
+      "sha256": "8577388948a3506c42ff13d5303150e396f8de3800d33f2bc0383263e41a63f8",
+      "archive_sha256": "a5cde8dbe8807a79f4f060aca92b495ad3dc5d60eac04431b001ece46f66a2e3"
+    }
+  },
+  "published": true,
+  "auto_merge_enabled": true,
+  "redundant_ci_cancellation": {
+    "reason": "The new integrated run replaces these separate dependency qualification runs.",
+    "requested_run_ids": [
+      34904147088,
+      34904148015,
+      34903996972
+    ],
+    "confirmed_terminal": true,
+    "results": [
+      {
+        "conclusion": "cancelled",
+        "databaseId": 34904147088,
+        "headSha": "9508eeef83a500709049bb83871f30be1a64b97e",
+        "status": "completed",
+        "url": "https://github.com/agentstation/starmap/actions/runs/34904147088"
+      },
+      {
+        "conclusion": "cancelled",
+        "databaseId": 34904148015,
+        "headSha": "1cef4e8b49c9e0c07b60b427e8b053e9530d6270",
+        "status": "completed",
+        "url": "https://github.com/agentstation/starmap/actions/runs/34904148015"
+      },
+      {
+        "conclusion": "cancelled",
+        "databaseId": 34903996972,
+        "headSha": "c407942ba6410d2c35231b967515e51d5e1dc0d8",
+        "status": "completed",
+        "url": "https://github.com/agentstation/starmap/actions/runs/34903996972"
+      }
+    ]
+  },
+  "plan_maintenance": {
+    "protected_sections": 6,
+    "ledger_rows": 38,
+    "done": 10,
+    "active": "CSP7",
+    "execution_entries": 10,
+    "archived_entry_unchanged": true,
+    "resume_words": 264,
+    "plan_words": 10250,
+    "plan_bytes": 112021,
+    "cold_resume": "PASS: the plan identifies current source, native run, merge guard, dependency supersession, and the publisher authorization boundary.",
+    "size_exception": "All required task and completion contracts remain unchanged. The resume and current task proof provide the bounded execution path."
+  },
+  "documentation_correction": {
+    "file": "docs/design/catalog-lifecycle/ENGINEERING_SPEC.md",
+    "section": "7.4 Shared catalog configuration contract",
+    "finding": "The prior text incorrectly called the canonical settings package internal. Starmap now exposes pkg/catalogs/config. Starport still repeats Settings and translation, so CSP8 retains adoption.",
+    "starmap_head": "1918356b28a619b620a82e701c7c46aa923837f3",
+    "starport_head": "ba9b0d8e880ef6538774b735343c5315b17c1b9d",
+    "behavior_qualification": false
+  }
+}

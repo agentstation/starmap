@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-09-14T22:59:44.167243+00:00",
+  "observed_at": "2026-09-14T23:21:40.484783+00:00",
   "scope": "Reviewed Starmap PR157 merge, superseded PR155 closure, and PR159 branch refresh with guarded auto-merge. Preserve the earlier Starport PR374 merge and unresolved dependency findings. No branch deletion.",
   "pull_requests": [
     {
@@ -43,29 +43,87 @@
     {
       "repo": "starmap",
       "number": 156,
-      "result": "Consumer module needs tidy. Windows ARM package setup failed on Go proxy HTTP/2 INTERNAL_ERROR. Linux TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease failed writing permission.json with context canceled. Consumer repair and runtime failure assessment remain required."
+      "result": "Integrated into CSP7 PR161 at 1918356b28a619b620a82e701c7c46aa923837f3. The combined dependency set passes 386 task race events, 14 process-lock events, six consumer profiles, and required review. Separate CI cancellation was requested. Keep this PR open until the integrated merge and module-version check.",
+      "history": [
+        {
+          "observed_at": "2026-09-14T22:59:44.167243+00:00",
+          "result": "Consumer module needs tidy. Windows ARM package setup failed on Go proxy HTTP/2 INTERNAL_ERROR. Linux TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease failed writing permission.json with context canceled. Consumer repair and runtime failure assessment remain required."
+        },
+        {
+          "observed_at": "2026-09-14T23:09:00.116331+00:00",
+          "result": "The bot refreshed the module-only PR after the S3 merge. All six external consumer profiles pass without module edits. Credential tests pass 78 race events. The required review gate skips two module-only files. Guarded squash auto-merge is enabled; remaining native and verification checks must pass."
+        }
+      ],
+      "head": "9508eeef83a500709049bb83871f30be1a64b97e",
+      "base": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
+      "state": "OPEN",
+      "auto_merge_enabled": false,
+      "merged": false,
+      "local_verification": {
+        "toolchain": "go1.26.6",
+        "consumer_exit_code": 0,
+        "consumer_profiles": 6,
+        "auth_exit_code": 0,
+        "auth_pass_events": 78,
+        "auth_fail_events": 0,
+        "auth_skip_events": 0,
+        "autoreview_exit_code": 0,
+        "autoreview": "SKIP: module-only diff",
+        "worktree_removed_after_clean_check": true
+      }
     },
     {
       "repo": "starmap",
       "number": 158,
-      "result": "Consumer module needs tidy. No runtime failure found in this run."
+      "result": "Integrated into CSP7 PR161 at 1918356b28a619b620a82e701c7c46aa923837f3. The combined dependency set passes 386 task race events, 14 process-lock events, six consumer profiles, and required review. Separate CI cancellation was requested. Keep this PR open until the integrated merge and module-version check.",
+      "history": [
+        {
+          "observed_at": "2026-09-14T22:59:44.167243+00:00",
+          "result": "Consumer module needs tidy. No runtime failure found in this run."
+        },
+        {
+          "observed_at": "2026-09-14T23:09:00.116331+00:00",
+          "result": "The bot refreshed the module-only PR after the S3 merge. All six external consumer profiles pass without module edits. Credential tests pass 78 race events. The required review gate skips two module-only files. Guarded squash auto-merge is enabled; remaining native and verification checks must pass."
+        }
+      ],
+      "head": "1cef4e8b49c9e0c07b60b427e8b053e9530d6270",
+      "base": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
+      "state": "OPEN",
+      "auto_merge_enabled": false,
+      "merged": false,
+      "local_verification": {
+        "toolchain": "go1.26.6",
+        "consumer_exit_code": 0,
+        "consumer_profiles": 6,
+        "auth_exit_code": 0,
+        "auth_pass_events": 78,
+        "auth_fail_events": 0,
+        "auth_skip_events": 0,
+        "autoreview_exit_code": 0,
+        "autoreview": "SKIP: module-only diff",
+        "worktree_removed_after_clean_check": true
+      }
     },
     {
       "repo": "starmap",
       "number": 159,
       "head": "c407942ba6410d2c35231b967515e51d5e1dc0d8",
-      "result": "The unchanged-head retry passed, yielding 11 passing checks and neutral CodeQL. GitHub then required the new main branch. Updated with a merge commit, verified the module-only diff, and enabled squash auto-merge under required checks. Fresh CI remains active.",
+      "result": "Integrated into CSP7 PR161 at 1918356b28a619b620a82e701c7c46aa923837f3. The combined dependency set passes 386 task race events, 14 process-lock events, six consumer profiles, and required review. Separate CI cancellation was requested. Keep this PR open until the integrated merge and module-version check.",
       "retry_command": "gh run rerun 34867290745 --repo agentstation/starmap --job 104054205697",
       "retry_exit_code": 0,
       "history": [
         {
           "observed_at": "2026-09-14T20:10:00Z",
           "result": "Verification failed on sum.golang.org HTTP/2 INTERNAL_ERROR. Retried only that job on the unchanged head. Retry outcome remains pending."
+        },
+        {
+          "observed_at": "2026-09-14T23:09:00.116331+00:00",
+          "result": "The unchanged-head retry passed, yielding 11 passing checks and neutral CodeQL. GitHub then required the new main branch. Updated with a merge commit, verified the module-only diff, and enabled squash auto-merge under required checks. Fresh CI remains active."
         }
       ],
       "prior_head": "d3561be40fac745548e64d971a806ce688d4c5dd",
       "base": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
-      "auto_merge_enabled": true,
+      "auto_merge_enabled": false,
       "merged": false
     }
   ],
@@ -303,6 +361,78 @@
       "archive": "pr159-latest-qualification.json.gz",
       "sha256": "ea600767eca1eccc3f33f7e15a15007cc707cd48072f0acdaf0a959116f0e415",
       "archive_sha256": "0bfb2ed77545dc0bdf623728e31ab8cdc2ed8097106fc0c2b1662a980516de47"
+    },
+    {
+      "source": "pr156-current-review.json",
+      "archive": "pr156-current-review.json.gz",
+      "sha256": "0dab4af50476be2610a63c9275775a6b5db94f4b37fd16daceeeff8378cfca3e",
+      "archive_sha256": "6b8886a8437a6a42be7d88e0aad021847bbdc4f56baff5b8930a9db742702941"
+    },
+    {
+      "source": "pr156-current-review.diff",
+      "archive": "pr156-current-review.diff.gz",
+      "sha256": "98c89876f66aa8d7b53a40136e241202448fbaf17f6de07d9644173fea3fa831",
+      "archive_sha256": "556c2bcb6cf4b1c84735f70f287b814ee58f560d063ffb39979b2387e1c205c0"
+    },
+    {
+      "source": "pr156-current-consumers.log",
+      "archive": "pr156-current-consumers.log.gz",
+      "sha256": "97a47cd0c39ac1853c50d839da259ebdab74990d4922458c82f3d37864cb1a39",
+      "archive_sha256": "1dd17679300bcd20e54e8093f997de07701e652ee3926ae1fc07246bf27b4a8c"
+    },
+    {
+      "source": "pr156-current-auth.jsonl",
+      "archive": "pr156-current-auth.jsonl.gz",
+      "sha256": "2420dfe5d7c5a696645f10609a7b77a149f6d6ec9d245316b693dbc7425f1c01",
+      "archive_sha256": "7cbca0fa7cea1bc11601a6dcb2e3605a4ad31a48c3e510c841c75ecbb6267968"
+    },
+    {
+      "source": "pr156-current-autoreview.log",
+      "archive": "pr156-current-autoreview.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "archive_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    {
+      "source": "pr156-qualified-auto-merge.json",
+      "archive": "pr156-qualified-auto-merge.json.gz",
+      "sha256": "1ee05b2a195ab69c5f4c77cb42ca00bf019ee980b8888e1fab7309e6ea1ed509",
+      "archive_sha256": "5be03568d020b7410fc3662f36c35c185850cdf4bc0dc2bb83a0b4331fe157e9"
+    },
+    {
+      "source": "pr158-current-review.json",
+      "archive": "pr158-current-review.json.gz",
+      "sha256": "eca5de5819c823c8725e5daabbd7447a467e89c73fdc414386414dd592a751a8",
+      "archive_sha256": "268ed68794cb3e1ce1c1502de1fc02c5a46571927b5c286895c2e9db5fa41c9d"
+    },
+    {
+      "source": "pr158-current-review.diff",
+      "archive": "pr158-current-review.diff.gz",
+      "sha256": "229b894c9c8b717bd350aa8666d5d752295f2154143751f60d76406f18878c28",
+      "archive_sha256": "e151bbc4415b8333202636cf854064861fdb3811c926b234d23335375a8d5b4d"
+    },
+    {
+      "source": "pr158-current-consumers.log",
+      "archive": "pr158-current-consumers.log.gz",
+      "sha256": "e46e61e2068de345b95a16c88769303b2578aaca75a372459ec8768fb0c2c591",
+      "archive_sha256": "0984f613a43d3ae53a8519d12f3bb3c966eccd579baffbf78b1c13a0a475a6be"
+    },
+    {
+      "source": "pr158-current-auth.jsonl",
+      "archive": "pr158-current-auth.jsonl.gz",
+      "sha256": "9cf2164fc512d83cee030bb7bc9635dbd64b9593bcf232118f275d467b62483a",
+      "archive_sha256": "63deef6fc4ab83be40b2b4a1619531ba987766b06a9013781461f7ed3971ca9a"
+    },
+    {
+      "source": "pr158-current-autoreview.log",
+      "archive": "pr158-current-autoreview.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "archive_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    {
+      "source": "pr158-qualified-auto-merge.json",
+      "archive": "pr158-qualified-auto-merge.json.gz",
+      "sha256": "8ee41639304757e7f19ef4f2e6d5ffb1cae012a165d9cd9d8ed3e660de742d72",
+      "archive_sha256": "d082d528c4d36b2d66f50fd01872b38b3d495665bf33426914be014499a512ac"
     }
   ],
   "permission_diagnostic": {
@@ -312,5 +442,7 @@
     "exit_code": 0,
     "observation": "The test supplies a one-second context to the follower permission refresh. Local success does not establish the native failure cause."
   },
-  "merge_method_note": "GitHub refused the merge-commit method. Squash merge then succeeded without bypassing required checks."
+  "merge_method_note": "GitHub refused the merge-commit method. Squash merge then succeeded without bypassing required checks.",
+  "current_wait": "PR161 owns native run34908225001 for the combined dependencies. PRs156,158,159 keep their branches and await verified supersession after that merge.",
+  "permission_diagnostic_current": "The earlier one-second permission-refresh fixture failure remains historical evidence. The refreshed Linux native job passes. No runtime fix or root-cause resolution is claimed."
 }
