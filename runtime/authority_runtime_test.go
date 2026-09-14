@@ -258,8 +258,11 @@ func TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease(t *test
 	if err := r.Close(); err != nil {
 		t.Fatal(err)
 	}
+	cancel()
 	follower := openTestRuntime(t, append(options, WithLeaseStore(&stubLeaseStore{refuseAll: true}))...)
-	if err := follower.RefreshPermission(ctx); err != nil {
+	followerCtx, cancelFollower := context.WithTimeout(t.Context(), time.Second)
+	defer cancelFollower()
+	if err := follower.RefreshPermission(followerCtx); err != nil {
 		t.Fatalf("lease follower cannot learn permission: %v", err)
 	}
 	if follower.AllowsNewAttempt() {

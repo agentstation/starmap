@@ -25,6 +25,9 @@ func (r *Runtime) RefreshPermission(ctx context.Context) error {
 	if !r.requiresAuthority() {
 		return &errors.ConfigError{Component: "catalog authority", Message: "require_authority is not selected"}
 	}
+	if r.config.updatePolicy.NetworkMode == NetworkOffline {
+		return offlineCatalogOperation("authority permission reads")
+	}
 	run, owner, err := r.permissionRuns.start(ctx, r.ctx, runKindPermission, "permission", 0)
 	if err != nil {
 		return err
@@ -88,7 +91,7 @@ func (r *Runtime) readPermission(ctx context.Context) error {
 	next, err = r.permissions.confirmRetention(receipt)
 	if err == nil {
 		r.permissions = next
-		r.activateAuthorityLocked(r.layers.source)
+		r.activateAuthorityLocked(r.selectedAuthoritySource())
 	}
 	r.mu.Unlock()
 	return err
@@ -161,7 +164,7 @@ func (r *Runtime) bindSourceAuthority() error {
 }
 
 func (r *Runtime) startPermissionSchedule() {
-	if !r.requiresAuthority() {
+	if !r.requiresAuthority() || r.config.updatePolicy.NetworkMode == NetworkOffline {
 		return
 	}
 	r.work.Go(func() {

@@ -12,23 +12,30 @@ import (
 
 const (
 	manualHistoryName            = "manual.json"
-	manualHistoryVersion         = 3
+	manualHistoryVersion         = 4
+	manualHistoryResetVersion    = 3
 	manualHistoryProviderVersion = 2
 	manualHistoryLegacyVersion   = 1
-	// Histories remain bounded until compaction replaces superseded evidence.
+	// maxManualHistoryBatches bounds linked records between checkpoints.
 	maxManualHistoryBatches = 4096
 )
 
+var manualHistoryCapacity = invalidInputPublication("manual history requires compaction before another batch")
+
 // manualBatch is an immutable accepted-input node. Parents precede their children.
 type manualBatch struct {
-	reference    string
-	parent       *manualBatch
-	observations []manualObservation
-	resets       []ObservationReset
+	reference       string
+	parent          *manualBatch
+	observations    []manualObservation
+	resets          []ObservationReset
+	checkpoint      *manualCheckpoint
+	checkpointBytes int
+	packed          []*manualBatch
 }
 
 type manualBatchRecord struct {
 	Version      int                `json:"version"`
+	Checkpoint   *manualCheckpoint  `json:"checkpoint,omitempty"`
 	Parent       string             `json:"parent,omitempty"`
 	Observations []string           `json:"observations"`
 	Resets       []ObservationReset `json:"resets,omitempty"`
@@ -40,6 +47,12 @@ type manualHistoryHead struct {
 }
 
 func (s *layerStore) stageManualBatch(ctx context.Context, batch *manualBatch) (string, error) {
+	if err := ctx.Err(); err != nil {
+		return "", err
+	}
+	if batch.checkpoint != nil {
+		return s.stageInput(ctx, manualBatchRecord{Version: manualHistoryVersion, Checkpoint: batch.checkpoint})
+	}
 	record := manualBatchRecord{Version: manualHistoryVersion, Resets: batch.resets}
 	if batch.parent != nil {
 		if batch.parent.reference == "" {
@@ -134,6 +147,13 @@ func selectManualObservations(ctx context.Context, history *manualBatch, input [
 			return nil, err
 		}
 		batches++
+		if batch.checkpoint != nil {
+			bytesRetained += batch.checkpointBytes
+			for _, observation := range batch.checkpoint.Observations {
+				seen[observation.Receipt.Link.ObservationID] = true
+			}
+			continue
+		}
 		size, err := observationResetBytes(batch.resets)
 		if err != nil {
 			return nil, err
@@ -169,7 +189,7 @@ func selectManualObservations(ctx context.Context, history *manualBatch, input [
 		selected = append(selected, observation)
 	}
 	if len(selected) != 0 && (batches >= maxManualHistoryBatches || bytesRetained > maxLayerBytes) {
-		return nil, invalidInputPublication("manual history requires compaction before another batch")
+		return selected, manualHistoryCapacity
 	}
 	return selected, nil
 }
@@ -179,15 +199,20 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 	if err := s.readInput(directory, reference, &record); err != nil {
 		return nil, "", err
 	}
-	if !supportedManualHistoryVersion(record.Version) || len(record.Observations) == 0 || (record.Version == manualHistoryLegacyVersion && len(record.Resets) > 0) {
-		return nil, "", invalidInputPublication("invalid manual observation batch")
+	if err := validateManualBatchShape(record); err != nil {
+		return nil, "", err
 	}
-	if record.Version == manualHistoryProviderVersion {
-		for _, reset := range record.Resets {
-			if reset.SourceID != "" {
-				return nil, "", invalidInputPublication("metadata resets require manual history version 3")
-			}
+	if record.Checkpoint != nil {
+		batch, err := restoreManualCheckpoint(ctx, record.Checkpoint)
+		if err != nil {
+			return nil, "", err
 		}
+		*bytesRead += batch.checkpointBytes
+		if *bytesRead > maxLayerBytes {
+			return nil, "", invalidInputPublication("manual history exceeds the retained checkpoint byte bound")
+		}
+		batch.reference = reference
+		return batch, "", nil
 	}
 	resets, err := prepareObservationResets(record.Resets)
 	if err != nil {
@@ -202,15 +227,10 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 		return nil, "", invalidInputPublication("manual history exceeds the retained byte bound")
 	}
 	batch := &manualBatch{reference: reference, resets: resets}
-	seen := make(map[string]bool, len(record.Observations))
 	for _, reference := range record.Observations {
 		if err := ctx.Err(); err != nil {
 			return nil, "", err
 		}
-		if seen[reference] {
-			return nil, "", invalidInputPublication("manual batch contains duplicate observations")
-		}
-		seen[reference] = true
 		var observation manualObservation
 		if err := s.readInput(directory, reference, &observation); err != nil {
 			return nil, "", err
@@ -234,17 +254,60 @@ func (s *layerStore) readManualBatch(ctx context.Context, directory *privatefile
 	return batch, record.Parent, nil
 }
 
+// validateManualBatchShape validates a record without requiring its referenced files.
+// Unreachable batches can remain after collection removes some of their inputs.
+func validateManualBatchShape(record manualBatchRecord) error {
+	if record.Checkpoint != nil {
+		if record.Version != manualHistoryVersion || record.Parent != "" || len(record.Observations) != 0 || len(record.Resets) != 0 {
+			return invalidInputPublication("checkpoint requires an exclusive version 4 record")
+		}
+		return nil
+	}
+	if !supportedManualHistoryVersion(record.Version) || len(record.Observations) == 0 || (record.Version == manualHistoryLegacyVersion && len(record.Resets) > 0) {
+		return invalidInputPublication("invalid manual observation batch")
+	}
+	if record.Parent != "" && !validInputReference(record.Parent) {
+		return invalidInputPublication("invalid input reference")
+	}
+	if record.Version == manualHistoryProviderVersion {
+		for _, reset := range record.Resets {
+			if reset.SourceID != "" {
+				return invalidInputPublication("metadata resets require manual history version 3")
+			}
+		}
+	}
+	seen := make(map[string]bool, len(record.Observations))
+	for _, reference := range record.Observations {
+		if !validInputReference(reference) {
+			return invalidInputPublication("invalid input reference")
+		}
+		if seen[reference] {
+			return invalidInputPublication("manual batch contains duplicate observations")
+		}
+		seen[reference] = true
+	}
+	return nil
+}
+
 func manualBatches(history *manualBatch) []*manualBatch {
 	var batches []*manualBatch
 	for batch := history; batch != nil; batch = batch.parent {
 		batches = append(batches, batch)
 	}
 	slices.Reverse(batches)
-	return batches
+	var ordered []*manualBatch
+	for _, batch := range batches {
+		if batch.checkpoint != nil {
+			ordered = append(ordered, batch.packed...)
+		} else {
+			ordered = append(ordered, batch)
+		}
+	}
+	return ordered
 }
 
 func validateManualHistory(history *manualBatch, policy *providerBindingPolicy) error {
-	for batch := history; batch != nil; batch = batch.parent {
+	for _, batch := range manualBatches(history) {
 		if err := policy.validateManual(batch.observations, false); err != nil {
 			return errors.WrapResource("validate", "manual history", batch.reference, err)
 		}
@@ -297,9 +360,35 @@ func (l *layerSet) prepareManualInputs(ctx context.Context, input []manualObserv
 	if err != nil {
 		return nil, err
 	}
-	return selectManualObservations(ctx, l.manual, input, resets)
+	selected, err := selectManualObservations(ctx, l.manual, input, resets)
+	if err != nil && err != manualHistoryCapacity {
+		return nil, err
+	}
+	history := l.manual
+	if err == manualHistoryCapacity {
+		history, err = compactProviderHistory(ctx, history)
+		if err != nil {
+			return nil, err
+		}
+		selected, err = selectManualObservations(ctx, history, input, resets)
+		if err != nil && err != manualHistoryCapacity {
+			return nil, err
+		}
+	}
+	if len(selected) == 0 {
+		return selected, err
+	}
+	candidate := &manualBatch{parent: history, observations: selected, resets: resets}
+	if err == manualHistoryCapacity {
+		candidate, err = checkpointManualHistory(ctx, candidate)
+		if err != nil {
+			return nil, err
+		}
+	}
+	l.manual = candidate
+	return selected, nil
 }
 
 func supportedManualHistoryVersion(version int) bool {
-	return version == manualHistoryLegacyVersion || version == manualHistoryProviderVersion || version == manualHistoryVersion
+	return version == manualHistoryLegacyVersion || version == manualHistoryProviderVersion || version == manualHistoryResetVersion || version == manualHistoryVersion
 }

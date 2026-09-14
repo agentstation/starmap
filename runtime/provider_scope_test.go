@@ -147,6 +147,10 @@ func TestProviderScopeSelectorsNeverNameFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if len(entries) != 2 || entries[0].Name() != ".record-publications" || !entries[0].IsDir() {
+		t.Fatalf("unexpected publication metadata: %+v", entries)
+	}
+	entries = entries[1:]
 	if len(entries) != 1 || len(entries[0].Name()) != 69 || !strings.HasSuffix(entries[0].Name(), ".json") {
 		t.Fatalf("unexpected scoped filenames: %+v", entries)
 	}

@@ -5,12 +5,14 @@ import (
 	stderrors "errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/runtime"
@@ -127,8 +129,21 @@ func TestBoundAcquirerRuntimeRetainsIndependentScopesAfterFailureAndRestart(t *t
 		t.Fatal("one scope replaced its failed sibling")
 	}
 	records, err := os.ReadDir(filepath.Join(directory, "catalog-runtime", "providers", "bindings"))
-	if err != nil || len(records) != 2 {
-		t.Fatalf("retained binding records: %d, %v", len(records), err)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bindingRecords := 0
+	for _, entry := range records {
+		if entry.Name() == privatefiles.PublicationDirectoryName && entry.IsDir() {
+			continue
+		}
+		if !entry.Type().IsRegular() || !strings.HasSuffix(entry.Name(), ".json") {
+			t.Fatalf("unexpected binding entry: %s", entry.Name())
+		}
+		bindingRecords++
+	}
+	if bindingRecords != 2 {
+		t.Fatalf("retained binding records: %d, %v", bindingRecords, records)
 	}
 	if err := connected.Close(); err != nil {
 		t.Fatal(err)

@@ -52,6 +52,9 @@ func (r *Runtime) hasAcquisition() bool {
 // Independent source groups share the same operation and lease.
 // A slow metadata source does not hold completed provider publication windows.
 func (r *Runtime) acquire(ctx context.Context, report *RefreshReport, providers []catalogs.ProviderID, epoch uint64) error {
+	if r.config.updatePolicy.NetworkMode == NetworkOffline {
+		return offlineCatalogOperation("source and provider acquisition")
+	}
 	if r.config.sourceAcquirer == nil || !r.config.acquisitionSources.permitsMetadata() {
 		err := r.acquireProviders(ctx, report, providers, epoch)
 		r.recordAcquisition(report.Acquisition, err)

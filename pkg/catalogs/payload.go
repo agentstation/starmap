@@ -29,6 +29,13 @@ type CatalogPayload struct {
 
 // EncodeCatalogPayload deterministically encodes a readable catalog.
 func EncodeCatalogPayload(reader Reader) ([]byte, error) {
+	if catalog, ok := reader.(*Catalog); ok && catalog != nil && catalog.payloadCache != nil {
+		return catalog.payloadCache.encode(catalog)
+	}
+	return encodeCatalogPayload(reader)
+}
+
+func encodeCatalogPayload(reader Reader) ([]byte, error) {
 	payload, err := catalogPayload(reader)
 	if err != nil {
 		return nil, err

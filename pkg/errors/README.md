@@ -510,6 +510,9 @@ validation failed for field api_key: API key cannot be empty
   - [func NewProcessError\(operation, command, output string, err error\) \*ProcessError](<#NewProcessError>)
   - [func \(e \*ProcessError\) Error\(\) string](<#ProcessError.Error>)
   - [func \(e \*ProcessError\) Unwrap\(\) error](<#ProcessError.Unwrap>)
+- [type PublicationError](<#PublicationError>)
+  - [func \(e \*PublicationError\) Error\(\) string](<#PublicationError.Error>)
+  - [func \(e \*PublicationError\) Unwrap\(\) error](<#PublicationError.Unwrap>)
 - [type ResourceError](<#ResourceError>)
   - [func NewResourceError\(operation, resource, id string, err error\) \*ResourceError](<#NewResourceError>)
   - [func \(e \*ResourceError\) Error\(\) string](<#ResourceError.Error>)
@@ -1077,6 +1080,37 @@ func (e *ProcessError) Unwrap() error
 ```
 
 Unwrap implements errors.Unwrap.
+
+<a name="PublicationError"></a>
+## type [PublicationError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/publication.go#L8-L12>)
+
+PublicationError reports visible publication whose durability remains unconfirmed. Resource and ID identify the published record. Callers must not infer rollback. Retry the same content and identity after resolving the underlying failure.
+
+```go
+type PublicationError struct {
+    Resource string
+    ID       string
+    Err      error
+}
+```
+
+<a name="PublicationError.Error"></a>
+### func \(\*PublicationError\) [Error](<https://github.com/agentstation/starmap/blob/main/pkg/errors/publication.go#L15>)
+
+```go
+func (e *PublicationError) Error() string
+```
+
+Error identifies the publication and its durability failure.
+
+<a name="PublicationError.Unwrap"></a>
+### func \(\*PublicationError\) [Unwrap](<https://github.com/agentstation/starmap/blob/main/pkg/errors/publication.go#L20>)
+
+```go
+func (e *PublicationError) Unwrap() error
+```
+
+Unwrap preserves the underlying filesystem error.
 
 <a name="ResourceError"></a>
 ## type [ResourceError](<https://github.com/agentstation/starmap/blob/main/pkg/errors/errors.go#L376-L382>)

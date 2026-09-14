@@ -170,6 +170,9 @@ func canonicalDynamicJSON(value any) (json.RawMessage, error) {
 	if err != nil {
 		return nil, err
 	}
+	if hasCanonicalJSONShape(value) {
+		return encoded, nil
+	}
 	decoder := json.NewDecoder(bytes.NewReader(encoded))
 	decoder.UseNumber()
 	var normalized any
@@ -177,6 +180,34 @@ func canonicalDynamicJSON(value any) (json.RawMessage, error) {
 		return nil, err
 	}
 	return json.Marshal(normalized)
+}
+
+// hasCanonicalJSONShape recognizes values that need no further normalization.
+// The encoder must reject cycles before this function inspects containers.
+func hasCanonicalJSONShape(value any) bool {
+	switch value := value.(type) {
+	case nil, bool, string, json.Number,
+		int, int8, int16, int32, int64,
+		uint, uint8, uint16, uint32, uint64, uintptr,
+		float32, float64:
+		return true
+	case map[string]any:
+		for _, child := range value {
+			if !hasCanonicalJSONShape(child) {
+				return false
+			}
+		}
+		return true
+	case []any:
+		for _, child := range value {
+			if !hasCanonicalJSONShape(child) {
+				return false
+			}
+		}
+		return true
+	default:
+		return false
+	}
 }
 
 // Rejection records why a higher-authority field observation did not win.

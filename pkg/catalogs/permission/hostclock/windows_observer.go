@@ -53,14 +53,19 @@ func (o *WindowsObserver) Observe(ctx context.Context) (permission.ClockReading,
 	if err := ctx.Err(); err != nil {
 		return permission.ClockReading{}, err
 	}
-	sample, err := readWindowsEvidence(ctx)
+	return observeWindowsEvidence(ctx, o.profile, readWindowsEvidence)
+}
+
+// observeWindowsEvidence keeps validation with the observer and delegates native evidence acquisition.
+func observeWindowsEvidence(ctx context.Context, profile WindowsProfile, read func(context.Context) (windowsEvidence, error)) (permission.ClockReading, error) {
+	sample, err := read(ctx)
 	if err != nil {
 		return permission.ClockReading{}, err
 	}
 	if err := ctx.Err(); err != nil {
 		return permission.ClockReading{}, err
 	}
-	return windowsReading(o.profile, sample)
+	return windowsReading(profile, sample)
 }
 
 type windowsEvidence struct {

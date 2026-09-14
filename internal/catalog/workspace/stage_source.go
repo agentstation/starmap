@@ -2,11 +2,9 @@ package workspace
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
-	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func (s *workspaceStage) readSource(ctx context.Context, target string, expected *treeSnapshot) error {
@@ -44,33 +42,48 @@ func (s *workspaceStage) copySource(ctx context.Context) error {
 	if s.source == nil {
 		return nil
 	}
-	render, err := s.private.OpenRoot("render")
-	if err != nil {
-		return err
-	}
-	defer func() { _ = render.Close() }()
+	render := s.trees["render"]
 	for _, entry := range s.original.Entries {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		if entry.Path == "." {
+		if entry.Path == "." || managedWorkspaceRecord(entry.Path, entry.Directory) {
 			continue
 		}
-		name := filepath.FromSlash(entry.Path)
+		if existing, present := render.entries[entry.Path]; present {
+			if existing.Directory != entry.Directory {
+				return replacementConflict(entry.Path, "operator entry conflicts with a generated record")
+			}
+			continue
+		}
 		if entry.Directory {
-			if err := render.Mkdir(name, directoryMode); err != nil {
+			if err := render.directory(ctx, entry.Path); err != nil {
 				return err
 			}
 			continue
 		}
-		if err := copyRecordedSourceFile(ctx, s.source, render, entry); err != nil {
+		if err := copyOwnedSourceFile(ctx, s.source, render, entry); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func copyRecordedSourceFile(ctx context.Context, source, destination *os.Root, entry treeEntry) error {
+func managedWorkspaceRecord(name string, directory bool) bool {
+	if !directory {
+		switch name {
+		case "providers.yaml", "authors.yaml", "endpoints.yaml", "provenance.yaml", "canonical-aliases.yaml":
+			return true
+		}
+	}
+	parts := strings.Split(name, "/")
+	if len(parts) < 3 || (parts[0] != "providers" && parts[0] != "authors") || parts[2] != "models" {
+		return false
+	}
+	return (directory && len(parts) == 3) || (!directory && strings.HasSuffix(name, ".yaml"))
+}
+
+func copyOwnedSourceFile(ctx context.Context, source *os.Root, destination *preparationTree, entry treeEntry) error {
 	name := filepath.FromSlash(entry.Path)
 	info, err := source.Lstat(name)
 	if err != nil {
@@ -91,18 +104,5 @@ func copyRecordedSourceFile(ctx context.Context, source, destination *os.Root, e
 	if !os.SameFile(info, actual) {
 		return replacementConflict(name, "source file identity changed before copy")
 	}
-	output, err := createStagedFile(destination, name)
-	if err != nil {
-		return err
-	}
-	defer func() { _ = output.Close() }()
-	hash := sha256.New()
-	_, err = io.CopyN(io.MultiWriter(output, hash), snapshotReader{ctx: ctx, file: input}, entry.Size)
-	if err != nil {
-		return err
-	}
-	if hex.EncodeToString(hash.Sum(nil)) != entry.SHA256 {
-		return replacementConflict(name, "source file changed during copy")
-	}
-	return nil
+	return destination.writeFrom(ctx, entry.Path, snapshotReader{ctx: ctx, file: input}, entry.Size, entry.SHA256, nil)
 }

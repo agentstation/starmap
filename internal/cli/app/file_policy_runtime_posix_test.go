@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -16,7 +17,7 @@ import (
 )
 
 func TestFileRolePolicyMatchesRuntimeEnforcement(t *testing.T) {
-	for _, role := range []string{"configuration", "dotenv", "catalog-store", "runtime-lock", "workspace"} {
+	for _, role := range []string{"configuration", "dotenv", "catalog-store", "runtime-lock", "workspace", "baseline-recovery"} {
 		t.Run(role, func(t *testing.T) {
 			root := t.TempDir()
 			if err := os.Chmod(root, 0o700); err != nil {
@@ -24,6 +25,12 @@ func TestFileRolePolicyMatchesRuntimeEnforcement(t *testing.T) {
 			}
 			target := root
 			kind := "directory"
+			if role == "baseline-recovery" {
+				target = filepath.Join(root, ".starmap-baseline")
+				if err := os.Mkdir(target, 0o700); err != nil {
+					t.Fatal(err)
+				}
+			}
 			if role == "configuration" || role == "dotenv" || role == "runtime-lock" {
 				name := "config"
 				if role == "runtime-lock" {
@@ -44,6 +51,9 @@ func TestFileRolePolicyMatchesRuntimeEnforcement(t *testing.T) {
 			}
 			access := func() error {
 				switch role {
+				case "baseline-recovery":
+					_, err := bootstrap.Export(t.Context(), root)
+					return err
 				case "configuration", "dotenv":
 					_, err := readPrivateInput(target, role)
 					return err

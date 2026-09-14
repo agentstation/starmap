@@ -23,6 +23,11 @@ func selectCurrentProviderEvidence(ctx context.Context, builder *catalogs.Builde
 	if err := ctx.Err(); err != nil {
 		return err
 	}
+	reviews, err := selectCurrentProviderReviews(ctx, observations, collected.ReviewCandidates)
+	if err != nil {
+		return err
+	}
+	collected.ReviewCandidates = reviews
 	referenced := make(map[string]bool)
 	for _, entries := range builder.Provenance().Map() {
 		if err := ctx.Err(); err != nil {

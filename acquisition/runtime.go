@@ -82,9 +82,9 @@ func (s *Syncer) syncRuntime(ctx context.Context, effective []pkgsync.Option, pa
 	}
 	var state starmap.CatalogState
 	if parsed.DryRun {
-		state, err = s.connected.PreviewAcquisition(ctx, prepare)
+		state, err = s.connected.PreviewAcquisition(ctx, prepare, parsed.Sources...)
 	} else {
-		state, err = s.connected.UpdateAcquisition(ctx, prepare)
+		state, err = s.connected.UpdateAcquisition(ctx, prepare, parsed.Sources...)
 	}
 	if err != nil {
 		return nil, preparedActivityError(prepared, err)

@@ -21,6 +21,9 @@ func NewCatalog(source Reader) (*Catalog, error) {
 	if err != nil {
 		return nil, errors.WrapResource("create", "immutable catalog", "", err)
 	}
+	if err := snapshotProvenance(builder); err != nil {
+		return nil, err
+	}
 	return buildCatalog(builder)
 }
 
@@ -45,6 +48,9 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 	builder, err := NewBuilderFrom(source)
 	if err != nil {
 		return nil, errors.WrapResource("create", "immutable catalog observation", "", err)
+	}
+	if err := snapshotProvenance(builder); err != nil {
+		return nil, err
 	}
 	if err := validateCatalogIdentities(builder); err != nil {
 		return nil, errors.WrapResource("validate", "catalog observation identities", "", err)
@@ -82,6 +88,7 @@ func NewObservationCatalog(source Reader) (*Catalog, error) {
 		}
 	}
 	return &Catalog{
+		payloadCache:               &catalogPayloadCache{},
 		source:                     builder,
 		membership:                 indexMembershipScopes(builder.MembershipScopes()),
 		providerIDs:                indexProviderIdentities(providers),
@@ -100,6 +107,7 @@ var _ Reader = (*Catalog)(nil)
 // Catalog is Starmap's immutable canonical catalog. Read methods provide the only
 // access to its private state. Callers can retain it across goroutines.
 type Catalog struct {
+	payloadCache               *catalogPayloadCache
 	payloadSchemaVersion       uint64
 	source                     Reader
 	membership                 map[MembershipScopeKey]membershipScopeIndex
@@ -172,6 +180,7 @@ func buildCatalog(source Reader) (*Catalog, error) {
 	)
 
 	return &Catalog{
+		payloadCache:               &catalogPayloadCache{},
 		source:                     source,
 		removals:                   removals,
 		canonicalAliases:           canonicalAliases,
@@ -444,18 +453,32 @@ func (r authorsReader) FormatYAML() string                      { return r.sourc
 
 type provenanceReader struct{ source ProvenanceReader }
 
-func (r provenanceReader) Map() provenance.Map { return r.source.Map() }
-func (r provenanceReader) Len() int            { return r.source.Len() }
+func (r provenanceReader) Map() provenance.Map {
+	records := r.source.Map()
+	for key, entries := range records {
+		records[key] = copySnapshotProvenance(entries)
+	}
+	return records
+}
+func (r provenanceReader) Len() int { return r.source.Len() }
 func (r provenanceReader) FindByField(resourceType evidence.ResourceType, resourceID, field string) []provenance.Entry {
-	return r.source.FindByField(resourceType, resourceID, field)
+	return copySnapshotProvenance(r.source.FindByField(resourceType, resourceID, field))
 }
 func (r provenanceReader) FindByResource(resourceType evidence.ResourceType, resourceID string) map[string][]provenance.Entry {
-	return r.source.FindByResource(resourceType, resourceID)
+	records := r.source.FindByResource(resourceType, resourceID)
+	for key, entries := range records {
+		records[key] = copySnapshotProvenance(entries)
+	}
+	return records
 }
 func (r provenanceReader) FindModelField(providerID ProviderID, modelID, field string) []provenance.Entry {
-	return r.source.FindModelField(providerID, modelID, field)
+	return copySnapshotProvenance(r.source.FindModelField(providerID, modelID, field))
 }
 func (r provenanceReader) FindModel(providerID ProviderID, modelID string) map[string][]provenance.Entry {
-	return r.source.FindModel(providerID, modelID)
+	records := r.source.FindModel(providerID, modelID)
+	for key, entries := range records {
+		records[key] = copySnapshotProvenance(entries)
+	}
+	return records
 }
 func (r provenanceReader) FormatYAML() string { return r.source.FormatYAML() }

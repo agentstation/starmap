@@ -151,6 +151,9 @@ func (c *Client) Update(ctx context.Context, update UpdateFunc) (Publication, er
 		return Publication{}, err
 	}
 	defer release()
+	if err := c.authorizePublication(ctx); err != nil {
+		return Publication{}, err
+	}
 
 	candidate, err := update(ctx, c.Catalog())
 	if err != nil {
@@ -195,6 +198,9 @@ func (c *Client) Activate(ctx context.Context, generation catalogs.Generation) (
 		return Publication{}, err
 	}
 	defer release()
+	if err := c.authorizePublication(ctx); err != nil {
+		return Publication{}, err
+	}
 
 	published, err := catalogs.DecodeCatalogGeneration(generation)
 	if err != nil {
