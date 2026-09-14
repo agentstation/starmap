@@ -155,6 +155,46 @@ class Publisher:
             raise PublicationError("GitHub API operation failed")
         return json.loads(result.stdout) if result.stdout.strip() else None
 
+    def graphql(self, query, variables):
+        args = ["gh", "api", "graphql", "-f", f"query={query}"]
+        for name, value in variables.items():
+            args.extend(("-f", f"{name}={value}"))
+        result = command(args, check=False, timeout=120)
+        if result.returncode:
+            raise PublicationError("GitHub GraphQL operation failed")
+        try:
+            document = json.loads(result.stdout, object_pairs_hook=unique_object)
+        except (ValueError, UnicodeError) as error:
+            raise PublicationError("GitHub GraphQL response is invalid") from error
+        if not isinstance(document, dict) or document.get("errors") or not isinstance(document.get("data"), dict):
+            raise PublicationError("GitHub GraphQL response has no usable data")
+        return document["data"]
+
+    def find_release(self, tag):
+        release = self.api(f"releases/tags/{tag}", missing=True)
+        if release is not None:
+            return release
+        owner, name = self.repository.split("/", 1)
+        data = self.graphql("""query($owner: String!, $name: String!, $tag: String!) {
+            repository(owner: $owner, name: $name) {
+                release(tagName: $tag) { databaseId tagName }
+            }
+        }""", {"owner": owner, "name": name, "tag": tag})
+        repository = data.get("repository")
+        if not isinstance(repository, dict) or "release" not in repository:
+            raise PublicationError("release lookup did not identify the repository")
+        selected = repository["release"]
+        if selected is None:
+            return None
+        if (not isinstance(selected, dict) or type(selected.get("databaseId")) is not int
+                or selected["databaseId"] < 1 or selected.get("tagName") != tag):
+            raise PublicationError("release lookup returned an invalid identity")
+        release = self.api(f"releases/{selected['databaseId']}")
+        if (not isinstance(release, dict) or type(release.get("id")) is not int
+                or release["id"] != selected["databaseId"] or release.get("tag_name") != tag):
+            raise PublicationError("release response differs from its selected identity")
+        return release
+
     def attest(self, path):
         self.gh("attestation", "verify", path, "--signer-workflow", f"{self.repository}/{WORKFLOW}",
                 "--source-ref", "refs/heads/main", "--deny-self-hosted-runners")
@@ -373,13 +413,15 @@ class Publisher:
         self.push_document(PENDING_BRANCH, "pending.json", path, current["commit"])
 
     def publish_release(self, tag, filenames, record):
-        release = self.api(f"releases/tags/{tag}", missing=True)
+        release = self.find_release(tag)
         if release is None:
             notes = self.root / "release-notes.md"
             notes.write_text(f"Public catalog publication {record['run_id']}.\nCatalog digest: {record['catalog_checksum']}.\n", encoding="utf-8")
             self.gh("release", "create", tag, "--draft", "--prerelease", "--target", record["preparation_commit"],
                     "--title", tag, "--notes-file", notes)
-            release = self.api(f"releases/tags/{tag}")
+            release = self.find_release(tag)
+            if release is None:
+                raise PublicationError("created draft release is not yet visible")
         existing = {asset["name"] for asset in release["assets"] if asset.get("state") == "uploaded"}
         for asset in release["assets"]:
             if release["draft"] and asset["name"] in filenames and asset.get("state") == "starter":

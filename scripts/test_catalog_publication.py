@@ -44,14 +44,24 @@ class ReleaseFixture(publication.Publisher):
                 release["assets"] = [asset for asset in release["assets"] if asset["id"] != identity]
             self.events.append(("delete-starter", identity))
             return None
+        if endpoint.startswith("releases/") and not endpoint.startswith("releases/tags/"):
+            identity = int(endpoint.removeprefix("releases/"))
+            return copy.deepcopy(next(release for release in self.cloud.values() if release["id"] == identity))
         if not endpoint.startswith("releases/tags/"):
             raise AssertionError(endpoint)
         tag = endpoint.removeprefix("releases/tags/")
-        if tag not in self.cloud:
+        if tag not in self.cloud or self.cloud[tag]["draft"]:
             if missing:
                 return None
             raise publication.PublicationError("fixture release is missing")
         return copy.deepcopy(self.cloud[tag])
+
+    def graphql(self, query, variables):
+        if "release(tagName: $tag)" not in query:
+            raise AssertionError(query)
+        release = self.cloud.get(variables["tag"])
+        node = None if release is None else {"databaseId": release["id"], "tagName": release["tag_name"]}
+        return {"repository": {"release": node}}
 
     def gh(self, *args, **options):
         self.events.append(tuple(str(value) for value in args[:3]))
@@ -59,7 +69,10 @@ class ReleaseFixture(publication.Publisher):
             target = Path(args[args.index("--dir") + 1])
             shutil.copytree(self.fixture["stage"], target, dirs_exist_ok=True)
         elif args[:2] == ("release", "create"):
-            self.cloud[args[2]] = {"draft": True, "assets": [], "data": {}, "published_at": None}
+            if args[2] in self.cloud:
+                raise AssertionError("controller attempted to recreate an existing release")
+            self.cloud[args[2]] = {"id": len(self.cloud) + 1, "tag_name": args[2],
+                "draft": True, "assets": [], "data": {}, "published_at": None}
         elif args[:2] == ("release", "upload"):
             tag, path = args[2], Path(args[3])
             release = self.cloud[tag]
@@ -133,6 +146,71 @@ class PromotionFixture(ReleaseFixture):
         if args[:2] == ("pr", "view"):
             return subprocess.CompletedProcess(args, 0, json.dumps(self.platform["pulls"][0]), "")
         return super().gh(*args, **options)
+
+
+class ReleaseLookupTransportTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="starmap-release-lookup-")
+        self.addCleanup(self.temporary.cleanup)
+        self.publisher = publication.Publisher(self.temporary.name, "agentstation/starmap", 42)
+        self.tag = "catalog-" + "a" * 64
+
+    def response(self, args, body, code=0, error=""):
+        return subprocess.CompletedProcess(args, code, json.dumps(body), error)
+
+    def test_draft_lookup_uses_graphql_then_rest_identity(self):
+        calls = []
+        release = {"id": 7, "tag_name": self.tag, "draft": True, "assets": []}
+
+        def transport(args, **options):
+            calls.append(args)
+            self.assertEqual(options["timeout"], 120)
+            if args[-1] == f"repos/agentstation/starmap/releases/tags/{self.tag}":
+                return self.response(args, {}, 1, "gh: Not Found (HTTP 404)")
+            if args[1:3] == ["api", "graphql"]:
+                self.assertIn("owner=agentstation", args)
+                self.assertIn("name=starmap", args)
+                self.assertIn(f"tag={self.tag}", args)
+                return self.response(args, {"data": {"repository": {"release": {"databaseId": 7, "tagName": self.tag}}}})
+            self.assertEqual(args[-1], "repos/agentstation/starmap/releases/7")
+            return self.response(args, release)
+
+        with patch.object(publication, "command", side_effect=transport):
+            self.assertEqual(self.publisher.find_release(self.tag), release)
+        self.assertEqual(len(calls), 3)
+
+    def test_lookup_rejects_errors_and_ambiguous_identity(self):
+        for body in [
+            {"errors": [{"message": "private refusal"}], "data": {"repository": {"release": None}}},
+            {"data": {"repository": None}},
+            {"data": {"repository": {}}},
+            {"data": {"repository": {"release": {"databaseId": True, "tagName": self.tag}}}},
+            {"data": {"repository": {"release": {"databaseId": 7, "tagName": "other"}}}},
+        ]:
+            with self.subTest(body=body), patch.object(publication, "command", side_effect=[
+                self.response([], {}, 1, "gh: Not Found (HTTP 404)"), self.response([], body),
+            ]) as transport:
+                with self.assertRaises(publication.PublicationError) as raised:
+                    self.publisher.find_release(self.tag)
+                self.assertNotIn("private refusal", str(raised.exception))
+                self.assertEqual(transport.call_count, 2)
+
+    def test_lookup_distinguishes_absence_from_changed_rest_identity(self):
+        for node, rest, missing in [
+            (None, None, True),
+            ({"databaseId": 7, "tagName": self.tag}, {"id": 8, "tag_name": self.tag}, False),
+            ({"databaseId": 7, "tagName": self.tag}, {"id": 7, "tag_name": "other"}, False),
+        ]:
+            replies = [self.response([], {}, 1, "gh: Not Found (HTTP 404)"),
+                       self.response([], {"data": {"repository": {"release": node}}})]
+            if rest is not None:
+                replies.append(self.response([], rest))
+            with self.subTest(node=node, rest=rest), patch.object(publication, "command", side_effect=replies):
+                if missing:
+                    self.assertIsNone(self.publisher.find_release(self.tag))
+                else:
+                    with self.assertRaises(publication.PublicationError):
+                        self.publisher.find_release(self.tag)
 
 
 class PublicationRecoveryTests(unittest.TestCase):
@@ -227,7 +305,7 @@ scopes:
         client = self.client()
         self.copy_stage(client)
         record = self.fixture["record"]
-        client.cloud[record["receipt_tag"]] = {"draft": True, "data": {}, "published_at": None,
+        client.cloud[record["receipt_tag"]] = {"id": 1, "tag_name": record["receipt_tag"], "draft": True, "data": {}, "published_at": None,
             "assets": [{"id": 27, "name": publication.RECEIPT, "state": "starter"}]}
         client.publish_release(record["receipt_tag"], (publication.RECEIPT, publication.CHECKPOINT), record)
         self.assertIn(("delete-starter", 27), client.events)
