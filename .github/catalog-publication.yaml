@@ -1,0 +1,225 @@
+# Public catalog publication policy. API keys remain in Actions secrets.
+policy_version: starmap-public-v1
+scopes:
+  - source: models_dev_http
+    required: true
+    enabled: true
+    allow_missing: false
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-alibaba
+      revision: public-v1
+      provider_id: alibaba
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-anthropic
+      revision: public-v1
+      provider_id: anthropic
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-cerebras
+      revision: public-v1
+      provider_id: cerebras
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-deepinfra
+      revision: public-v1
+      provider_id: deepinfra
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: public
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-deepseek
+      revision: public-v1
+      provider_id: deepseek
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-fireworks-ai
+      revision: public-v1
+      provider_id: fireworks-ai
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-google-ai-studio
+      revision: public-v1
+      provider_id: google-ai-studio
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-groq
+      revision: public-v1
+      provider_id: groq
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-hetzner
+      revision: public-v1
+      provider_id: hetzner
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-mistral
+      revision: public-v1
+      provider_id: mistral
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-moonshot-ai
+      revision: public-v1
+      provider_id: moonshot-ai
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve
+
+  - source: providers
+    binding:
+      schema_version: 2
+      id: public-openai
+      revision: public-v1
+      provider_id: openai
+      public: true
+      region: default-endpoint
+      api_surface: models
+      membership_authority: scope
+      credential_role: catalog_acquisition
+      credential_profile_id: api-key
+    required: false
+    enabled: true
+    allow_missing: true
+    max_retained_age: 24h
+    disabled_action: preserve

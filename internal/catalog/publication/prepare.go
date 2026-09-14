@@ -16,7 +16,7 @@ import (
 	catalogruntime "github.com/agentstation/starmap/runtime"
 )
 
-// State retains the original baseline and accepted observation history.
+// State retains the selected baseline and accepted observation history.
 // A prepared successor does not change this state. The publisher adopts it after promotion succeeds.
 type State struct {
 	baseline    catalogs.Generation
@@ -70,15 +70,46 @@ func (s *State) Generation() catalogs.Generation {
 // Prepare collects declared sources and prepares a complete artifact and receipt.
 // No branch, channel, accepted state, or external catalog store changes here.
 func (p *Producer) Prepare(ctx context.Context, state *State, runID string, opts ...pkgsync.Option) (PreparedPublication, error) {
+	return p.prepare(ctx, state, nil, runID, opts...)
+}
+
+// PrepareWithBaseline applies an explicitly trusted authored baseline before source acquisition.
+// A promoted copy of this publisher's accepted catalog does not replace its original baseline.
+// Failed admission leaves the supplied state unchanged.
+func (p *Producer) PrepareWithBaseline(ctx context.Context, state *State, baseline catalogs.Generation, runID string, opts ...pkgsync.Option) (PreparedPublication, error) {
+	return p.prepare(ctx, state, &baseline, runID, opts...)
+}
+
+func (p *Producer) prepare(ctx context.Context, state *State, baseline *catalogs.Generation, runID string, opts ...pkgsync.Option) (PreparedPublication, error) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	if err := ctx.Err(); err != nil {
+		return PreparedPublication{}, err
+	}
 	if p == nil || state == nil || !validRunID(runID) {
 		return PreparedPublication{}, admissionError("preparation", "requires a producer, accepted state, and a run identity")
 	}
-	if _, _, err := publicationHistory(p.profile, state.history, nil); err != nil {
+	history, bindings, err := publicationHistory(p.profile, state.history, nil)
+	if err != nil {
 		return PreparedPublication{}, err
 	}
 	current, err := catalogs.DecodeCatalogGeneration(state.current)
 	if err != nil {
 		return PreparedPublication{}, err
+	}
+	if baseline != nil {
+		selected, changed, err := selectPublicationBaseline(state, *baseline)
+		if err != nil {
+			return PreparedPublication{}, err
+		}
+		state = selected
+		if changed {
+			current, err = publicationCollectionBaseline(ctx, state, bindings, history, runID)
+			if err != nil {
+				return PreparedPublication{}, err
+			}
+		}
 	}
 	retained, err := retainedForProfile(p.profile, state.history)
 	if err != nil {

@@ -42,16 +42,26 @@ The JSON success report has status `prepared` and names these outputs:
 | --- | --- |
 | `artifacts/catalog-generations/<generation directory>/` | Immutable catalog archive, detached checksum, and statement. |
 | `receipt-<digest>.json` | Run outcome, admitted source evidence, and exact artifact binding. |
-| `state-<digest>.json` | Original baseline, retained source observations, and accepted artifact. |
+| `state-<digest>.json` | Selected baseline, retained source observations, and accepted artifact. |
 | `prepared-<run digest>.json` | Private retry record written before artifact staging. |
 | `rejected-<digest>.json` | Private admission result for a rejected acquisition. |
 
 The output root restricts access to its owner. Checkpoints, receipts, and retry records use the private file policy.
 Checkpoints retain the scope selectors and model data from their configured sources.
 
-The scheduled public GitHub profile uses public model data and basic provider API keys.
+The [public GitHub profile](../../.github/catalog-publication.yaml) selects models.dev over HTTP and twelve provider APIs.
+models.dev must supply complete evidence from this run or the previous 24 hours.
+A provider failure does not stop publication. The receipt reports missing credentials, failure, and retained evidence separately.
+Evidence older than 24 hours cannot satisfy source admission, but its catalog facts remain until an explicit removal.
+
+The public profile uses public model data and basic provider API keys.
 Its checkpoints can live on GitHub without encryption or a private object store.
 The API keys stay in Actions secrets. The checkpoint encoder does not serialize credential values.
+
+Public bindings contain no account or project selectors.
+Each binding limits membership changes to its own scope and uses the provider's default catalog endpoint.
+The `default-endpoint` region identifies that endpoint selection, not every region the provider supports.
+DeepInfra uses its declared public acquisition profile and needs no API key for catalog reads.
 
 Enterprise profiles can contain private models or account selectors. Store those checkpoints in the deployment's configured private storage.
 Retry records stay in the local work directory.
@@ -76,6 +86,15 @@ Read the digest from accepted publisher state or verified publisher provenance.
 Do not use the checkpoint's own digest as proof of trust.
 The decoder validates original observation receipts and replays their payloads before accepting the checkpoint.
 
+Add `-baseline-embedded` when the resumed publication must apply authored changes from the current compiled catalog.
+The command validates model and alias state before acquisition and binds that baseline to the saved run request.
+An embedded copy of the publisher's own accepted output keeps the existing acquisition baseline.
+This prevents published provider facts from becoming permanent when an operator later removes their source scope.
+Alias removal keeps its historical rename record with the removed state.
+
+The scheduled workflow must finish a pending promotion before it starts another publication against a changed baseline.
+This command does not identify pending GitHub promotions or authorize a source commit.
+
 Retry with the same arguments, run identity, and output directory after a staging failure.
 A saved preparation reuses its exact bytes without another source request.
 A changed profile, baseline, checkpoint, publisher, or workspace requires a new run identity.
@@ -92,7 +111,9 @@ An explicit disabled-source removal discards that scope's local input history. I
 Replay currently accepts at most 4096 observations and 64 MiB of retained payloads.
 The checkpoint byte limit is 256 MiB.
 Capacity errors preserve the previous accepted state and require operator recovery.
-The command does not compact history or automatically adopt a prepared checkpoint.
+Replay compacts repeated equivalent evidence when the smaller history preserves catalog bytes and current reviews.
+Distinct source changes can still reach the capacity limits.
+The command does not automatically adopt a prepared checkpoint.
 
 ## Verify
 

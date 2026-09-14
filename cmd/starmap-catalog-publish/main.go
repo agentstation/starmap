@@ -27,7 +27,10 @@ import (
 	pkgsync "github.com/agentstation/starmap/pkg/sync"
 )
 
-type prepareOptions struct{ profile, state, stateChecksum, publisher, output, runID, workspace string }
+type prepareOptions struct {
+	profile, state, stateChecksum, publisher, output, runID, workspace string
+	baselineEmbedded                                                   bool
+}
 
 type preparedRecord struct {
 	RequestChecksum string                    `json:"request_checksum"`
@@ -68,6 +71,7 @@ func run(ctx context.Context, args []string, output io.Writer) error {
 	flags.StringVar(&options.output, "output-dir", "", "private directory for prepared publication outputs")
 	flags.StringVar(&options.runID, "run-id", "", "stable run identity reused by retries")
 	flags.StringVar(&options.workspace, "workspace", "", "explicit local source workspace")
+	flags.BoolVar(&options.baselineEmbedded, "baseline-embedded", false, "apply the verified compiled baseline when resuming a checkpoint")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -123,7 +127,24 @@ func prepare(ctx context.Context, options prepareOptions) (prepareReport, error)
 	if err != nil {
 		return prepareReport{}, err
 	}
-	requestBytes, err := json.Marshal(struct{ RunID, Publisher, Profile, State, Workspace string }{options.runID, options.publisher, digest(raw), initial.Checksum, options.workspace})
+	var baseline *catalogs.Generation
+	baselineChecksum := ""
+	if options.baselineEmbedded {
+		selected, err := bootstrap.Generation()
+		if err != nil {
+			return prepareReport{}, err
+		}
+		baseline = &selected
+		encoded, err := json.Marshal(selected)
+		if err != nil {
+			return prepareReport{}, err
+		}
+		baselineChecksum = digest(encoded)
+	}
+	requestBytes, err := json.Marshal(struct {
+		RunID, Publisher, Profile, State, Workspace string
+		Baseline                                    string `json:",omitempty"`
+	}{options.runID, options.publisher, digest(raw), initial.Checksum, options.workspace, baselineChecksum})
 	if err != nil {
 		return prepareReport{}, err
 	}
@@ -149,7 +170,12 @@ func prepare(ctx context.Context, options prepareOptions) (prepareReport, error)
 		if options.workspace != "" {
 			sourceOptions = append(sourceOptions, pkgsync.WithCatalogPath(options.workspace))
 		}
-		candidate, err := producer.Prepare(ctx, state, options.runID, sourceOptions...)
+		var candidate publication.PreparedPublication
+		if baseline != nil {
+			candidate, err = producer.PrepareWithBaseline(ctx, state, *baseline, options.runID, sourceOptions...)
+		} else {
+			candidate, err = producer.Prepare(ctx, state, options.runID, sourceOptions...)
+		}
 		if err != nil {
 			if len(candidate.Decision.Scopes) != 0 && !candidate.Decision.Allowed {
 				path, recordErr := recordRejection(ctx, root, absolute, requestChecksum, candidate.Decision)
