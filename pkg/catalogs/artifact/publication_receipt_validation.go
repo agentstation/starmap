@@ -6,6 +6,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -50,7 +51,31 @@ func (r PublicationReceipt) Validate() error {
 	if r.FreshAcquisition != fresh {
 		return publicationReceiptError("fresh_acquisition", "must agree with the admitted source observations")
 	}
-	return nil
+	return r.validateReviews()
+}
+
+func (r PublicationReceipt) validateReviews() error {
+	if len(r.Reviews) == 0 && len(r.ReviewObservations) == 0 {
+		return nil
+	}
+	if len(r.Reviews) > maxPublicationScopes || len(r.ReviewObservations) > maxPublicationScopes {
+		return publicationReceiptError("reviews", "exceeds the review evidence count limit")
+	}
+	referenced := make(map[string]bool, len(r.Reviews))
+	for _, review := range r.Reviews {
+		referenced[review.SourceObservationID] = true
+	}
+	seen := make(map[string]bool, len(r.ReviewObservations))
+	for _, observation := range r.ReviewObservations {
+		if err := observation.Validate(); err != nil {
+			return err
+		}
+		if !referenced[observation.ObservationID] || seen[observation.ObservationID] || observation.ObservedAt.After(r.CompletedAt) {
+			return publicationReceiptError("review_observations", "requires unique referenced evidence no later than the run completion")
+		}
+		seen[observation.ObservationID] = true
+	}
+	return catalogs.ValidateReviewCandidates(r.Reviews, r.ReviewObservations)
 }
 
 func (p PublicationScopePolicy) validate() error {

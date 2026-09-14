@@ -34,6 +34,7 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [func EmbeddedGeneration\(\) \(catalogs.Generation, error\)](<#EmbeddedGeneration>)
 - [type Candidate](<#Candidate>)
   - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence, opts ...CandidateOption\) \(\*Candidate, error\)](<#NewCandidate>)
+  - [func \(c \*Candidate\) Generation\(runID string, generatedAt time.Time\) \(catalogs.Generation, error\)](<#Candidate.Generation>)
 - [type CandidateEvidence](<#CandidateEvidence>)
 - [type CandidateOption](<#CandidateOption>)
   - [func WithCandidateGenerationID\(id string\) CandidateOption](<#WithCandidateGenerationID>)
@@ -145,6 +146,15 @@ func NewCandidate(catalog *catalogs.Catalog, evidence CandidateEvidence, opts ..
 ```
 
 NewCandidate validates and returns a publication candidate. Custom acquisition can omit evidence. Client.Update records a deterministic custom\-update observation in that case.
+
+<a name="Candidate.Generation"></a>
+### func \(\*Candidate\) [Generation](<https://github.com/agentstation/starmap/blob/main/generation.go#L247>)
+
+```go
+func (c *Candidate) Generation(runID string, generatedAt time.Time) (catalogs.Generation, error)
+```
+
+Generation builds deterministic generation bytes without publishing or reading storage. The candidate requires an explicit generation identity. The caller owns the run identity and timestamp.
 
 <a name="CandidateEvidence"></a>
 ## type [CandidateEvidence](<https://github.com/agentstation/starmap/blob/main/update.go#L16-L19>)
@@ -379,7 +389,7 @@ func (c *Client) HookStats() HookDeliveryStats
 HookStats returns a lock\-free snapshot of callback delivery health.
 
 <a name="Client.NextID"></a>
-### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L326>)
+### func \(\*Client\) [NextID](<https://github.com/agentstation/starmap/blob/main/generation.go#L339>)
 
 ```go
 func (c *Client) NextID() (string, error)

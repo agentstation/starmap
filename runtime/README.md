@@ -53,6 +53,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 ## Index
 
 - [Constants](<#constants>)
+- [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
 - [func VerifyDirectoryMigrationPublication\(ctx context.Context, request DirectoryMigrationRequest\) error](<#VerifyDirectoryMigrationPublication>)
 - [type Acquirer](<#Acquirer>)
@@ -390,6 +391,15 @@ const (
     DefaultAcquisitionInterval = 4 * time.Hour
 )
 ```
+
+<a name="ReplayAcquisition"></a>
+## func [ReplayAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_replay.go#L19>)
+
+```go
+func ReplayAcquisition(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation) (*starmap.Candidate, error)
+```
+
+ReplayAcquisition rebuilds an ordered observation history above an explicit baseline. The caller authenticates the baseline and observations, and selects the active bindings. The baseline can contain this publisher's prior scopes but cannot carry enterprise authority. This function reads no sources or storage and starts no runtime workers.
 
 <a name="ValidateDirectoryPermissions"></a>
 ## func [ValidateDirectoryPermissions](<https://github.com/agentstation/starmap/blob/main/runtime/directory_permissions.go#L24>)

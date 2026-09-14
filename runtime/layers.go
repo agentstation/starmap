@@ -115,6 +115,12 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 	if err != nil {
 		return starmap.CatalogState{}, err
 	}
+	return l.buildOnBaseline(ctx, selected, baseline.Sequence)
+}
+
+// buildOnBaseline applies local evidence to an already validated baseline.
+func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.CatalogState, sequence uint64) (starmap.CatalogState, error) {
+	var err error
 	base := selected.Catalog
 	state := starmap.CatalogState{
 		GenerationID: selected.GenerationID,
@@ -165,7 +171,7 @@ func (l *layerSet) build(ctx context.Context, baseline starmap.CatalogState) (st
 	l.sequence++
 	state.Catalog = catalog
 	state.PayloadChecksum = catalogs.DescribeCatalogPayload(payload).Checksum
-	state.Sequence = baseline.Sequence + l.sequence
+	state.Sequence = sequence + l.sequence
 	// Receipts and review evidence are immutable generation content even when
 	// another source supplies every selected catalog field.
 	identityChecksum, err := effectiveEvidenceChecksum(state.PayloadChecksum, l.buildEvidence)

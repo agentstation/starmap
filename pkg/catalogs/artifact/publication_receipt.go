@@ -70,6 +70,9 @@ type PublicationReceipt struct {
 	Artifact         PublicationArtifact        `json:"artifact"`
 	FreshAcquisition bool                       `json:"fresh_acquisition"`
 	Sources          []PublicationSourceReceipt `json:"sources"`
+	// Reviews report current unresolved offerings independently of the reused artifact.
+	Reviews            []evidence.ReviewCandidate       `json:"reviews,omitempty"`
+	ReviewObservations []catalogs.SourceObservationLink `json:"review_observations,omitempty"`
 }
 
 // EncodePublicationReceipt validates and returns deterministic receipt bytes.
