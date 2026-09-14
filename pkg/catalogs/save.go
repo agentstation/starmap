@@ -52,7 +52,16 @@ func (cat *Builder) saveTo(basePath string) error {
 		}
 		return os.WriteFile(fullPath, data, resourcepolicy.FileMode)
 	}
+	return cat.WriteYAML(writeFile)
+}
 
+// WriteYAML sends catalog records and logo sidecars to writeFile.
+// It does not read, create, or remove filesystem entries.
+// Each callback receives a relative path with native platform separators.
+func (cat *Builder) WriteYAML(writeFile func(string, []byte) error) error {
+	if writeFile == nil {
+		return &errors.ValidationError{Field: "catalog.write_yaml", Message: "a file writer is required"}
+	}
 	if err := cat.saveIndexFiles(writeFile); err != nil {
 		return err
 	}

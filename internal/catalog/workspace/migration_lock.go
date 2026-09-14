@@ -10,7 +10,15 @@ import (
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-func acquireLegacyStoreLock(ctx context.Context, legacy string) (func(), error) {
+type legacyStoreLease struct {
+	lock    *flock.Flock
+	info    os.FileInfo
+	path    string
+	cleanup func()
+	closed  bool
+}
+
+func acquireLegacyStoreLease(ctx context.Context, legacy string) (*legacyStoreLease, error) {
 	original := filepath.Join(legacy, ".commit.lock")
 	before, err := readTargetInfo(original)
 	if err != nil {
@@ -23,6 +31,11 @@ func acquireLegacyStoreLock(ctx context.Context, legacy string) (func(), error) 
 	if err != nil {
 		return nil, errors.WrapIO("prepare lock", original, err)
 	}
+	return lockLegacyStore(ctx, legacy, path, before, cleanup)
+}
+
+func lockLegacyStore(ctx context.Context, legacy, path string, before os.FileInfo, cleanup func()) (*legacyStoreLease, error) {
+	original := filepath.Join(legacy, ".commit.lock")
 	lock := flock.New(path, flock.SetFlag(os.O_RDWR))
 	release := func() { _ = lock.Close(); cleanup() }
 	locked, err := lock.TryLockContext(ctx, lockRetryDelay)
@@ -53,7 +66,33 @@ func acquireLegacyStoreLock(ctx context.Context, legacy string) (func(), error) 
 			return nil, migrationLockConflict(name)
 		}
 	}
-	return release, nil
+	return &legacyStoreLease{lock: lock, info: opened, path: path, cleanup: cleanup}, nil
+}
+
+func (l *legacyStoreLease) close() {
+	if l != nil && !l.closed {
+		l.closed = true
+		_ = l.lock.Close()
+		l.cleanup()
+	}
+}
+
+func (l *legacyStoreLease) check(store string) error {
+	if l == nil || l.closed || l.lock == nil || !l.lock.Locked() {
+		return migrationLockConflict(store)
+	}
+	opened, err := l.lock.Stat()
+	if err != nil {
+		return err
+	}
+	current, err := readTargetInfo(filepath.Join(store, ".commit.lock"))
+	if err != nil {
+		return err
+	}
+	if !opened.Mode().IsRegular() || !current.Mode().IsRegular() || !os.SameFile(l.info, opened) || !os.SameFile(opened, current) {
+		return migrationLockConflict(store)
+	}
+	return nil
 }
 
 func migrationLockConflict(path string) error {

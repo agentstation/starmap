@@ -121,7 +121,7 @@ func validateObservationReplacement(ctx context.Context, resets []ObservationRes
 	if len(resets) == 0 {
 		return nil
 	}
-	matched := make(map[observationResetKey]bool, len(resets))
+	restored := make([]sources.Observation, 0, len(observations))
 	for _, retained := range observations {
 		if err := ctx.Err(); err != nil {
 			return err
@@ -130,11 +130,25 @@ func validateObservationReplacement(ctx context.Context, resets []ObservationRes
 		if err != nil {
 			return err
 		}
+		restored = append(restored, observation)
+	}
+	return validateRestoredObservationReplacement(ctx, resets, restored)
+}
+
+func validateRestoredObservationReplacement(ctx context.Context, resets []ObservationReset, observations []sources.Observation) error {
+	if len(resets) == 0 {
+		return nil
+	}
+	matched := make(map[observationResetKey]bool, len(resets))
+	for _, observation := range observations {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		if observation.Status != sources.ObservationStatusSucceeded || observation.Completeness != sources.ObservationCompletenessComplete {
 			return invalidObservationReset("replacement observations must be complete and successful")
 		}
 		for _, reset := range resets {
-			if !reset.matches(retained.Receipt) {
+			if !reset.matches(sources.ObservationReceipt{Link: observation.Link(), ProviderBinding: observation.ProviderBinding}) {
 				continue
 			}
 			if _, exists := observation.Catalog.Providers().Get(reset.ProviderID); exists || reset.SourceID != "" {

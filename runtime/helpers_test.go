@@ -307,6 +307,7 @@ func openTestRuntime(t *testing.T, opts ...Option) *Runtime {
 		WithStartupSpread(0),
 		WithAcquisitionEnabled(false),
 		WithSourcePollInterval(0),
+		WithRetentionEnabled(false),
 	}
 	runtime, err := Open(context.Background(), append(base, opts...)...)
 	if err != nil {

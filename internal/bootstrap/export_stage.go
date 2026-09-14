@@ -2,16 +2,18 @@ package bootstrap
 
 import (
 	"bytes"
+	"context"
 	stderrors "errors"
 	"io"
 	"os"
 
 	"github.com/agentstation/starmap/internal/filepublish"
+	"github.com/agentstation/starmap/internal/privatefiles"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
-// baselineStage retains creation identities until publication or local cleanup.
-// It never adopts staging files from another export or an earlier process.
+// baselineStage retains creation identities until publication or cleanup.
+// Recovery restores earlier identities only after it verifies the private journal and file contents.
 type baselineStage struct {
 	parent    *os.Root
 	root      *os.Root
@@ -19,6 +21,7 @@ type baselineStage struct {
 	identity  os.FileInfo
 	files     []*baselineStageFile
 	published bool
+	journal   *baselineJournal
 }
 
 type baselineStageFile struct {
@@ -45,7 +48,7 @@ func openBaselineStage(parent *os.Root, name string) (*baselineStage, error) {
 }
 
 func (s *baselineStage) write(name string, contents []byte) (result error) {
-	file, err := s.root.OpenFile(name, os.O_RDWR|os.O_CREATE|os.O_EXCL, baselineFileMode)
+	file, err := privatefiles.CreateFile(s.root, name)
 	if err != nil {
 		return err
 	}
@@ -152,19 +155,43 @@ func (r *baselineStageFile) validate(root *os.Root) (result error) {
 	return nil
 }
 
-func (s *baselineStage) cleanup() error {
+func (s *baselineStage) cleanup(ctx context.Context, checkpoint func(string) error) error {
 	if s.published {
+		if s.journal != nil && s.journal.raw != nil {
+			return s.journal.remove(ctx)
+		}
 		return nil
+	}
+	if err := ctx.Err(); err != nil {
+		return err
 	}
 	if err := s.validate(); err != nil {
 		return err
 	}
+	if s.journal != nil && s.journal.raw != nil {
+		if err := s.journal.save(ctx, s, baselineJournalCollect); err != nil {
+			return err
+		}
+	}
+	if checkpoint != nil {
+		if err := checkpoint("recovery-collecting"); err != nil {
+			return err
+		}
+	}
 	for _, record := range s.files {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		if err := record.validate(s.root); err != nil {
 			return err
 		}
 		if err := s.root.Remove(record.name); err != nil {
 			return err
+		}
+		if checkpoint != nil {
+			if err := checkpoint("recovery-file-removed"); err != nil {
+				return err
+			}
 		}
 	}
 	if err := s.validateLocation(); err != nil {
@@ -181,7 +208,18 @@ func (s *baselineStage) cleanup() error {
 	if err := s.parent.Remove(s.name); err != nil {
 		return err
 	}
-	return filepublish.SyncDirectory(s.parent)
+	if err := filepublish.SyncDirectory(s.parent); err != nil {
+		return err
+	}
+	if checkpoint != nil {
+		if err := checkpoint("recovery-stage-removed"); err != nil {
+			return err
+		}
+	}
+	if s.journal != nil && s.journal.raw != nil {
+		return s.journal.remove(ctx)
+	}
+	return nil
 }
 
 func (s *baselineStage) close() error {

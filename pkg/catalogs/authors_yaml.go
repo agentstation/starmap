@@ -37,14 +37,11 @@ func formatAuthorsYAML(authors []Author) (string, error) {
 		return authors[i].ID < authors[j].ID
 	})
 
-	// Create comment map for proper headers
+	// Keep the file header outside the comment map. Root and first-entry comments
+	// share an encoder position and can overwrite each other in map iteration order.
+	const header = "# Known model authors and organizations with their metadata and social links\n" +
+		"# This file contains the complete author information that can be loaded at runtime\n\n"
 	commentMap := yaml.CommentMap{}
-
-	// Add header comment using root path
-	commentMap["$"] = []*yaml.Comment{
-		yaml.HeadComment(" Known model authors and organizations with their metadata and social links"),
-		yaml.HeadComment(" This file contains the complete author information that can be loaded at runtime"),
-	}
 
 	// Add comments above each author entry using their name
 	for i, author := range authors {
@@ -71,7 +68,7 @@ func formatAuthorsYAML(authors []Author) (string, error) {
 
 	// Post-process to filter unwanted fields and add spacing between authors
 	filtered := filterUnwantedFields(string(yamlData))
-	return addBlankLinesBetweenAuthors(filtered), nil
+	return header + addBlankLinesBetweenAuthors(filtered), nil
 }
 
 // filterUnwantedFields removes unwanted YAML fields from authors.

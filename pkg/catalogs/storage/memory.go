@@ -12,6 +12,7 @@ type Memory struct {
 	mu          sync.RWMutex
 	currentID   string
 	generations map[string]catalogs.Generation
+	readLeases  map[string]int
 }
 
 // NewMemory creates an empty in-memory catalog store.

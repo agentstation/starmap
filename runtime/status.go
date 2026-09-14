@@ -25,6 +25,7 @@ const (
 // report. Every field comes from runtime-owned work, so Status reaches no
 // external system.
 type statusState struct {
+	retention RetentionStatus
 	startedAt time.Time
 
 	sourceCheckedAt time.Time
@@ -65,8 +66,10 @@ func (r *Runtime) Status() Status {
 	r.mu.RUnlock()
 
 	report := Status{
+		Retention:                  r.retentionStatus(state.retention),
 		Usable:                     effective.Catalog != nil,
 		GenerationID:               effective.GenerationID,
+		GenerationPin:              r.config.generationPin,
 		PayloadChecksum:            effective.PayloadChecksum,
 		SourceHealth:               orUnknown(state.sourceHealth),
 		SourceReason:               state.sourceReason,

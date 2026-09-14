@@ -99,9 +99,12 @@ type Acquirer interface {
 // observations, and rebuilds one immutable effective catalog from those
 // layers. Reads reach no external system.
 type Runtime struct {
-	client *starmap.Client
-	config options
-	source Source
+	client       *starmap.Client
+	config       options
+	source       Source
+	pinnedSource *sourceLayer
+	pinRecord    *generationPinRecord
+	pinRelease   func() error
 
 	// providerRetentionMu serializes observation selection and durable provider writes.
 	providerRetentionMu sync.Mutex
@@ -110,15 +113,16 @@ type Runtime struct {
 	publicationMu sync.Mutex
 
 	// mu guards the retained layers and the published effective state.
-	mu                 sync.RWMutex
-	layers             layerSet
-	effective          starmap.CatalogState
-	report             statusState
-	permissions        authorityPermissions
-	originFollowed     bool
-	permissionRuns     runGroup
-	permissionIO       sync.Mutex
-	authorityObservers authorityObservationGroup
+	mu                    sync.RWMutex
+	layers                layerSet
+	effective             starmap.CatalogState
+	report                statusState
+	permissions           authorityPermissions
+	permissionInitialized bool
+	originFollowed        bool
+	permissionRuns        runGroup
+	permissionIO          sync.Mutex
+	authorityObservers    authorityObservationGroup
 
 	instanceSeed string
 	directory    *flock.Flock
@@ -145,12 +149,36 @@ type Runtime struct {
 // before the first upstream reply, so Catalog and State never wait for the
 // network. Open starts the source and acquisition schedules and returns.
 // An authoritative stored catalog requires origin configuration or require_authority.
-func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
+func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error) {
 	if ctx == nil {
 		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
 	}
-	config, err := defaults().apply(opts...)
-	if err != nil {
+	config := defaults()
+	var directory *flock.Flock
+	var partial *Runtime
+	opened := false
+	defer func() {
+		if opened {
+			return
+		}
+		if partial != nil {
+			err = stderrors.Join(err, partial.Close())
+			return
+		}
+		if config.ownedSource != nil || directory != nil {
+			err = stderrors.Join(err, joinRuntimeShutdown(func() error {
+				var shutdownErr error
+				if config.ownedSource != nil {
+					shutdownErr = config.ownedSource.Shutdown(context.Background())
+				}
+				if directory != nil {
+					shutdownErr = stderrors.Join(shutdownErr, directory.Close())
+				}
+				return shutdownErr
+			}))
+		}
+	}()
+	if _, err := config.apply(opts...); err != nil {
 		return nil, err
 	}
 	config.resolve()
@@ -161,16 +189,10 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 	if err != nil {
 		return nil, err
 	}
-	directory, err := acquireDirectory(ctx, config.stateDirectory)
+	directory, err = acquireDirectory(ctx, config.stateDirectory)
 	if err != nil {
 		return nil, err
 	}
-	opened := false
-	defer func() {
-		if !opened && directory != nil {
-			_ = directory.Close()
-		}
-	}()
 	if err := refusePendingMigration(config.stateDirectory); err != nil {
 		return nil, err
 	}
@@ -213,38 +235,16 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		updates:      make(chan starmap.CatalogState, updatesBuffer),
 	}
 	runtime.ctx, runtime.cancel = context.WithCancel(context.WithoutCancel(ctx))
+	partial = runtime
 
 	// Source selection is terminal. A configured custom source never falls
 	// back to the public channel, so a selection failure fails Open.
-	runtime.source, err = runtime.selectSource()
+	runtime.source, err = runtime.selectSource(ctx)
 	if err != nil {
-		runtime.cancel()
 		return nil, err
 	}
 
-	runtime.store, err = newLayerStore(runtime.config.stateDirectory)
-	if err != nil {
-		runtime.cancel()
-		return nil, err
-	}
-	if err := runtime.store.recoverInputPublication(ctx, client.CurrentCatalogState()); err != nil {
-		runtime.cancel()
-		return nil, err
-	}
-	if err := runtime.loadRetainedLayers(ctx); err != nil {
-		runtime.cancel()
-		return nil, err
-	}
-	if err := runtime.initializeEffective(ctx); err != nil {
-		runtime.cancel()
-		return nil, err
-	}
-	if err := runtime.initializeAuthority(); err != nil {
-		runtime.cancel()
-		return nil, err
-	}
-	if err := runtime.initializeSchedule(); err != nil {
-		runtime.cancel()
+	if err := runtime.initializeRetainedState(ctx); err != nil {
 		return nil, err
 	}
 	runtime.adoptSourceIdentity()
@@ -254,33 +254,25 @@ func Open(ctx context.Context, opts ...Option) (*Runtime, error) {
 		runtime.config.now,
 	)
 	if err := runtime.lease.start(runtime.ctx, &runtime.work, runtime.onLeaseLost, !runtime.originFollowed); err != nil {
-		runtime.cancel()
 		return nil, err
 	}
 
 	if err := runtime.publishAcquisitionPolicyStartup(ctx); err != nil {
-		runtime.abort()
 		return nil, errors.WrapResource("publish", "active binding catalog", "", err)
 	}
 
+	if err := runtime.finishPinRelease(ctx); err != nil {
+		return nil, err
+	}
 	if err := runtime.startPermissionClock(); err != nil {
-		runtime.abort()
 		return nil, err
 	}
 	if err := runtime.prepareSourceStartup(ctx); err != nil {
-		runtime.abort()
 		return nil, err
 	}
 	runtime.startSchedules()
 	opened = true
 	return runtime, nil
-}
-
-// abort releases what a failed Open already started. It cancels runtime-owned
-// work and returns the lease, so a failed Open leaves no holder behind.
-func (r *Runtime) abort() {
-	r.cancel()
-	r.lease.stop()
 }
 
 // Catalog returns the current immutable effective catalog. It reaches no
@@ -336,33 +328,29 @@ func (r *Runtime) Close() error {
 		active := r.runs.close()
 		permissionActive := r.permissionRuns.close()
 		r.cancel()
-		joined := make(chan error, 1)
-		go func() {
+		r.closeErr = joinRuntimeShutdown(func() error {
+			var err error
+			if r.config.ownedSource != nil {
+				err = r.config.ownedSource.Shutdown(context.Background())
+			}
 			<-active
 			<-permissionActive
 			r.authorityObservers.active.Wait()
 			r.work.Wait()
 			r.lease.stop()
-			var err error
 			sealContext, sealCancel := context.WithTimeout(context.Background(), closeJoinTimeout)
-			err = r.sealAuthority(sealContext)
+			if r.permissionInitialized {
+				err = stderrors.Join(err, r.sealAuthority(sealContext))
+			}
 			sealCancel()
+			if r.pinRelease != nil {
+				err = stderrors.Join(err, r.pinRelease())
+			}
 			if r.directory != nil {
 				err = stderrors.Join(err, r.directory.Close())
 			}
-			joined <- err
-		}()
-		timer := time.NewTimer(closeJoinTimeout)
-		defer timer.Stop()
-		select {
-		case err := <-joined:
-			r.closeErr = err
-		case <-timer.C:
-			r.closeErr = &errors.TimeoutError{
-				Operation: "close starmap runtime",
-				Duration:  closeJoinTimeout.String(),
-			}
-		}
+			return err
+		})
 		r.updatesMu.Lock()
 		r.updatesClosed = true
 		close(r.updates)
@@ -380,6 +368,9 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	baseline := r.client.EmbeddedCatalogState()
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.config.generationPin != "" {
+		return r.initializeGenerationPin(ctx)
+	}
 	r.layers.embedded = baseline
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
@@ -430,7 +421,7 @@ func (r *Runtime) commitOrdinary(ctx context.Context, state starmap.CatalogState
 		// effective catalog stays correct. It does not survive a restart.
 		return state, nil
 	}
-	if restored, err := r.restoreAcquisitionPolicyGeneration(ctx, state, epoch); err != nil {
+	if restored, err := r.restoreRetainedGeneration(ctx, state, epoch); err != nil {
 		return starmap.CatalogState{}, err
 	} else if restored {
 		return r.client.CurrentCatalogState(), nil

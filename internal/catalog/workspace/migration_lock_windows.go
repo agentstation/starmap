@@ -1,6 +1,7 @@
 package workspace
 
 import (
+	"context"
 	"crypto/rand"
 	"os"
 	"path/filepath"
@@ -18,11 +19,24 @@ func prepareLegacyLockPath(original string, before os.FileInfo) (string, func(),
 	if err := os.Link(original, alias); err != nil {
 		return "", nil, err
 	}
+	parent, err := os.OpenRoot(filepath.Dir(alias))
+	if err != nil {
+		return "", nil, err
+	}
+	receipt, err := optionalWorkspaceRecord(context.Background(), parent, filepath.Base(alias))
+	_ = parent.Close()
+	if err != nil {
+		return "", nil, err
+	}
 	cleanup := func() {
-		selected, err := readTargetInfo(alias)
-		if err == nil && selected.Mode().IsRegular() && os.SameFile(before, selected) {
-			_ = os.Remove(alias)
+		parent, err := os.OpenRoot(filepath.Dir(alias))
+		if err != nil {
+			return
 		}
+		defer func() { _ = parent.Close() }()
+		ctx, cancel := context.WithTimeout(context.Background(), workspaceCleanupTimeout)
+		defer cancel()
+		_ = receipt.cleanup(ctx, parent)
 	}
 	return alias, cleanup, nil
 }

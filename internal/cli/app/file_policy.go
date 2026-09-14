@@ -49,6 +49,8 @@ func managedFilePolicy(id string) (productpaths.FilePolicy, error) {
 		policy = makePolicy([]string{catalogconfig.Source, catalogconfig.SourceURL}, "Explicit file catalog source.", "operator", "Preserve until all consumers select another source or retain a permitted generation.")
 	case "baseline":
 		policy = makePolicy(data, "Verified embedded catalog export on persistent startup.", "reproducible", "Remove only if the same binary can reproduce the baseline. Never remove an active export.")
+	case "baseline-recovery":
+		policy = makePolicy(data, "Private journals and exclusive ownership for baseline export recovery.", "recovery", "Preserve changed or unrecognized stages. Keep the writer lock for the lifetime of the baseline directory.")
 	case "catalog-store":
 		policy = makePolicy(append(slices.Clone(state), "STARMAP_CATALOG_STORE_PATH"), "Filesystem catalog store selected by the standalone application.", "durable", "Preserve the current pointer and referenced generations. Use a consistent backup before replacement.")
 	case "runtime-owner", "runtime-lock", "runtime-seed":
@@ -56,7 +58,7 @@ func managedFilePolicy(id string) (productpaths.FilePolicy, error) {
 	case "migration-pending", "migration-receipt", "migration-completed", "migration-retired":
 		policy = makePolicy(runtime, "Runtime migration and legacy-root acknowledgement.", "recovery", "Keep until the migration procedure permits removal. Retirement records must still fence old runtime starts.")
 	case "runtime-evidence":
-		policy = makePolicy(runtime, "Permitted retained source and provider evidence.", "durable", "Preserve evidence required for retained startup and authority enforcement. This state is not a disposable source cache.")
+		policy = makePolicy(runtime, "Retained catalog evidence and operator recovery records.", "durable", "Preserve evidence required for retained startup and authority enforcement. This state is not a disposable source cache.")
 	case "runtime-record-staging":
 		policy = makePolicy(runtime, "Temporary owner and migration record writes.", "recovery", "Remove only after proving operation ownership and completing or abandoning the interrupted write.")
 	case "github-discovery":

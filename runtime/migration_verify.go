@@ -67,12 +67,13 @@ func verifyMigrationStageLayout(ctx context.Context, root *os.Root, manifest dir
 		files[file.Target] = true
 		if !complete {
 			files[migrationPartialName(file.Target)] = true
+			files[migrationPartialName(file.Target)+".json"] = true
 		}
 		for parent := path.Dir(file.Target); parent != "."; parent = path.Dir(parent) {
 			directories[parent] = true
 		}
 	}
-	return fs.WalkDir(root.FS(), ".", func(name string, entry fs.DirEntry, walkErr error) error {
+	return walkMigrationTree(ctx, root, len(files)+len(directories), func(name string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
 		}

@@ -13,6 +13,7 @@ import (
 )
 
 func TestAcceptedSourcesSurviveFailureAndRespectRestartPolicy(t *testing.T) {
+	t.Parallel()
 	directory := privateRuntimeDirectory(t)
 	store := &retentionRejectingStore{Memory: storage.NewMemory()}
 	calls := 0

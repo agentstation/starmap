@@ -44,6 +44,8 @@ Package permission prepares authority generations, orders their publication, and
   - [func \(p \*Publisher\) Commit\(ctx context.Context, generation catalogs.Generation, expected string\) error](<#Publisher.Commit>)
   - [func \(p \*Publisher\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Publisher.Current>)
   - [func \(p \*Publisher\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Publisher.CurrentAuthorityHead>)
+  - [func \(p \*Publisher\) GenerationCollector\(\) \(storage.GenerationCollector, bool\)](<#Publisher.GenerationCollector>)
+  - [func \(p \*Publisher\) GenerationLeaser\(\) \(storage.GenerationLeaser, bool\)](<#Publisher.GenerationLeaser>)
   - [func \(p \*Publisher\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Publisher.Get>)
   - [func \(p \*Publisher\) PrepareCatalog\(ctx context.Context, input catalogs.Generation, expected string\) \(catalogs.Generation, error\)](<#Publisher.PrepareCatalog>)
   - [func \(p \*Publisher\) PublishCatalog\(ctx context.Context, input catalogs.Generation, expected string\) \(catalogs.Generation, error\)](<#Publisher.PublishCatalog>)
@@ -339,6 +341,24 @@ func (p *Publisher) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogA
 ```
 
 CurrentAuthorityHead observes independent current metadata when the underlying store supports that guarantee. It validates the selected authority identity but retains unknown positive permission versions for refusal diagnostics.
+
+<a name="Publisher.GenerationCollector"></a>
+### func \(\*Publisher\) [GenerationCollector](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/generation_collection.go#L12>)
+
+```go
+func (p *Publisher) GenerationCollector() (storage.GenerationCollector, bool)
+```
+
+GenerationCollector forwards collection while checking the current authority identity. The underlying collector still protects current, required, and leased generations atomically.
+
+<a name="Publisher.GenerationLeaser"></a>
+### func \(\*Publisher\) [GenerationLeaser](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/generation_leases.go#L11>)
+
+```go
+func (p *Publisher) GenerationLeaser() (storage.GenerationLeaser, bool)
+```
+
+GenerationLeaser forwards optional read leases without exposing an unguarded writer.
 
 <a name="Publisher.Get"></a>
 ### func \(\*Publisher\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/permission/publication.go#L47>)

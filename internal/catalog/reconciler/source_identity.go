@@ -8,8 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/goccy/go-yaml"
-
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/authority"
 	catalogevidence "github.com/agentstation/starmap/pkg/catalogs/evidence"
@@ -293,21 +291,8 @@ func semanticValueEqual(field string, left, right any) bool {
 }
 
 func normalizedSemanticValue(field string, value any) (any, error) {
-	representation := value
-	switch value.(type) {
-	case map[string]any, []any, json.Number:
-		// Dynamic JSON evidence must retain numeric types and exact integers.
-	default:
-		yamlData, err := yaml.Marshal(value)
-		if err != nil {
-			return nil, err
-		}
-		representation = nil
-		if err := yaml.Unmarshal(yamlData, &representation); err != nil {
-			return nil, err
-		}
-	}
-	jsonData, err := json.Marshal(representation)
+	// Compare typed values through the same representation as catalog payloads.
+	jsonData, err := json.Marshal(value)
 	if err != nil {
 		return nil, err
 	}

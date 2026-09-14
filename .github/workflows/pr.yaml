@@ -94,7 +94,7 @@ jobs:
       - name: Test minimum supported Go version
         env:
           GOTOOLCHAIN: local
-        run: go test ./...
+        run: go test ./... -timeout=30m -p=1 -count=1
 
       - name: Test minimum supported external consumer
         env:
@@ -175,7 +175,7 @@ jobs:
   native-runtime:
     name: Runtime ${{ matrix.runner }}
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -245,6 +245,12 @@ jobs:
           STARMAP_WINDOWS_CLOCK_PRIVILEGE_PROBE: '1'
         run: |
           go test -json -count=1 -timeout=2m -run '^TestWindowsTimeServicePreparedPrivilege$' ./pkg/catalogs/permission/hostclock/internal/w32timerpc > native-evidence/windows-clock-privilege-probe.jsonl
+      - name: Test native filesystem recovery before the full suite
+        timeout-minutes: 10
+        shell: bash
+        run: |
+          mkdir -p native-evidence
+          go test -json -count=1 -timeout=5m -run '^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent|LegacyRollbackPreservesOperatorSidecars|RelocationPreparationClosesHandlesAfterCleanupConflict)$' ./internal/privatefiles ./internal/catalog/workspace > native-evidence/filesystem-preflight.jsonl
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:
@@ -263,7 +269,7 @@ jobs:
             native_packages+=(./internal/test/windowstoken)
           fi
           # The complete runtime suite uses the repository verification limit.
-          go test -json -count=1 -timeout=20m "${native_packages[@]}" > native-evidence/tests.jsonl
+          go test -json -count=1 -timeout=30m -p=1 "${native_packages[@]}" > native-evidence/tests.jsonl
       - name: Test real Git acquisition and mandatory tools
         shell: bash
         run: |

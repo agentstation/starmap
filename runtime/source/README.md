@@ -16,6 +16,7 @@ The package is a leaf. It implements no source and opens no connection. A packag
 
 - [type AuthorityObservable](<#AuthorityObservable>)
 - [type IdentityAdopter](<#IdentityAdopter>)
+- [type ManualReader](<#ManualReader>)
 - [type PermissionReader](<#PermissionReader>)
 - [type Read](<#Read>)
 - [type Source](<#Source>)
@@ -23,7 +24,7 @@ The package is a leaf. It implements no source and opens no connection. A packag
 
 
 <a name="AuthorityObservable"></a>
-## type [AuthorityObservable](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L68-L71>)
+## type [AuthorityObservable](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L76-L79>)
 
 AuthorityObservable reports verified requirements before source payload processing. Binding starts no acquisition. A source must refuse binding after manifest requests start.
 
@@ -35,7 +36,7 @@ type AuthorityObservable interface {
 ```
 
 <a name="IdentityAdopter"></a>
-## type [IdentityAdopter](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L51-L56>)
+## type [IdentityAdopter](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L59-L64>)
 
 IdentityAdopter is an optional Source that takes the fleet instance identity of its runtime. The source and the runtime then spread their work on one identity, so a replica keeps one stable phase for every controller it owns. Open hands the identity over before the first read.
 
@@ -48,8 +49,20 @@ type IdentityAdopter interface {
 }
 ```
 
+<a name="ManualReader"></a>
+## type [ManualReader](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L34-L37>)
+
+ManualReader reads one upstream generation without starting a background lifecycle. The context bounds every request. Return ends all work that the call starts. Reactive sources must provide this capability for manual source mode.
+
+```go
+type ManualReader interface {
+    Source
+    ReadOnce(context.Context) (Read, error)
+}
+```
+
 <a name="PermissionReader"></a>
-## type [PermissionReader](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L61-L64>)
+## type [PermissionReader](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L69-L72>)
 
 PermissionReader reads authenticated authority receipts independently of catalog compatibility. A receipt read must not depend on a catalog fetch or an active event stream. The configured transport proves publisher trust. The runtime checks authority identity, replay, retention, and permission validity.
 
@@ -61,7 +74,7 @@ type PermissionReader interface {
 ```
 
 <a name="Read"></a>
-## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L74-L93>)
+## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L82-L101>)
 
 Read is one upstream observation.
 
@@ -106,7 +119,7 @@ type Source interface {
 ```
 
 <a name="Watcher"></a>
-## type [Watcher](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L40-L45>)
+## type [Watcher](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L48-L53>)
 
 Watcher is an optional Source that reports an upstream change as it arrives. A reactive source, such as one Starmap cascaded onto another, learns of a publication on its own stream. The runtime then refreshes on that wake and waits for no poll boundary. A delta crosses a cascade in seconds instead of in one poll interval.
 

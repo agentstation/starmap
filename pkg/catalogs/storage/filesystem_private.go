@@ -16,20 +16,15 @@ import (
 )
 
 func readPrivateStoreFile(path string) ([]byte, error) {
+	limit, err := filesystemRecordLimit(filepath.Base(path))
+	if err != nil {
+		return nil, err
+	}
 	directory, err := privatefiles.ExistingDirectory(filepath.Dir(path))
 	if err != nil {
 		return nil, err
 	}
-	root, err := directory.Open()
-	if err != nil {
-		return nil, err
-	}
-	info, err := root.Lstat(filepath.Base(path))
-	_ = root.Close()
-	if err != nil {
-		return nil, err
-	}
-	return directory.ReadFile(filepath.Base(path), info.Size())
+	return directory.ReadFile(filepath.Base(path), limit)
 }
 
 func (s *Filesystem) prepareCommitLock() error {
@@ -69,11 +64,7 @@ func (s *Filesystem) validateCommitLock() error {
 	return nil
 }
 
-func (s *Filesystem) writeGeneration(ctx context.Context, generation catalogs.Generation) error {
-	manifest, err := marshalManifest(generation.Manifest)
-	if err != nil {
-		return err
-	}
+func (s *Filesystem) writeGeneration(ctx context.Context, generation catalogs.Generation, manifest []byte) error {
 	directory, err := privatefiles.ExistingDirectory(filepath.Join(s.root, "generations"))
 	if err != nil {
 		return err

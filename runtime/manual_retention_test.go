@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"bytes"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"testing"
@@ -74,18 +75,20 @@ func TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart(t *testi
 	if err != nil || len(generation.Manifest.SourceObservations) != 2 {
 		t.Fatalf("manual receipts = %d, error = %v", len(generation.Manifest.SourceObservations), err)
 	}
-	entries, err := os.ReadDir(filepath.Join(connected.store.root, inputPublicationDirectory))
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, entry := range entries {
-		raw, err := os.ReadFile(filepath.Join(connected.store.root, inputPublicationDirectory, entry.Name()))
+	if err := filepath.WalkDir(filepath.Join(connected.store.root, inputPublicationDirectory), func(path string, entry fs.DirEntry, walkErr error) error {
+		if walkErr != nil || entry.IsDir() {
+			return walkErr
+		}
+		raw, err := os.ReadFile(path)
 		if err != nil {
-			t.Fatal(err)
+			return err
 		}
 		if bytes.Contains(raw, []byte("private manual diagnostic sentinel")) {
 			t.Fatal("manual retention persisted diagnostic text")
 		}
+		return nil
+	}); err != nil {
+		t.Fatal(err)
 	}
 	if err := connected.Close(); err != nil {
 		t.Fatal(err)

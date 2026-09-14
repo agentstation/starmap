@@ -32,7 +32,11 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 		add("source-file", paths.SourceFile, "file", "available", "Operator-supplied file catalog source.", "Preserve the selected catalog payload and its access policy.")
 	}
 	add("baseline", paths.Baselines, "tree", "available", "Persistent application startup.", "Preserve or reproduce from the same binary.", "*/manifest.json", "*/catalog.json", ".baseline-*/**")
-	add("catalog-store", paths.CatalogStore, "tree", "available", "Accepted catalog publication.", "Preserve generations and the current pointer through a consistent backup.", "current", ".commit.lock", "generations/*/manifest.json", "generations/*/catalog.json", "generations/.candidate-*/**", ".current-*")
+	add("baseline-recovery", child(paths.Baselines, ".starmap-baseline"), "tree", "available", "Baseline export and interrupted-stage recovery.", "Preserve journals and the writer lock until verified recovery completes.", ".owner.lock", "*.json", ".record-*")
+	add("catalog-store", paths.CatalogStore, "tree", "available", "Catalog publication, generation pins, and retention.", "Preserve the current pointer, generations, read locks, and retirement records through coordinated recovery and consistent backups.",
+		"current", ".commit.lock", "generations/*/manifest.json", "generations/*/catalog.json", "generations/*/authority.json", "generations/*/.authority-*", "generations/*/.read.lock",
+		"generations/.retirement-*.json", "generations/.retirement-write-*", "generations/.record-publications/.owner.lock", "generations/.record-publications/*.jsonl",
+		"generations/.candidate-*/**", ".current-*")
 	for _, item := range []struct{ id, name, creation, recovery string }{
 		{"runtime-owner", "owner.json", "Persistent runtime initialization.", "Preserve the product, deployment, and instance binding."},
 		{"runtime-lock", ".owner.lock", "Runtime directory ownership.", "A lock file alone does not prove active ownership."},
@@ -44,13 +48,13 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	} {
 		add(item.id, child(paths.Runtime, item.name), "file", "available", item.creation, item.recovery)
 	}
-	add("runtime-evidence", child(paths.Runtime, "catalog-runtime"), "tree", "available", "Source refresh, provider acquisition, or manual publication.", "Preserve accepted history and recovery inputs with the catalog state.", "source.json", "source.json.tmp", "manual.json", "publication.json", ".layer-*", "providers/*.json", "providers/*.json.tmp", "providers/.layer-*", "providers/bindings/*.json", "providers/bindings/.layer-*", "publication-inputs/*.json", "publication-inputs/.layer-*")
+	add("runtime-evidence", child(paths.Runtime, "catalog-runtime"), "tree", "available", "Source refresh, provider acquisition, manual publication, or generation pin acceptance.", "Preserve accepted history, operator removals, pin receipts, and recovery inputs with the catalog state.", "source.json", "source.json.tmp", "manual.json", "publication.json", "removals.json", "generation-pin.json", ".layer-*", "providers/*.json", "providers/*.json.tmp", "providers/.layer-*", "providers/bindings/*.json", "providers/bindings/.layer-*", "publication-inputs/*.json", "publication-inputs/.layer-*", "publication-inputs/.input-*", ".record-publications/.owner.lock", ".record-publications/*.jsonl", "providers/.record-publications/.owner.lock", "providers/.record-publications/*.jsonl", "providers/bindings/.record-publications/.owner.lock", "providers/bindings/.record-publications/*.jsonl", "publication-inputs/.record-publications/.owner.lock", "publication-inputs/.record-publications/*.jsonl")
 	add("runtime-record-staging", paths.Runtime, "patterns", "available", "Atomic owner or migration record writes.", "Remove only after ownership and interrupted-write checks.", ".owner-*")
-	add("github-discovery", child(paths.Runtime, "github-catalog-source"), "tree", "available", "Configured GitHub source initialization and refresh.", "Preserve replay floors and accepted release references.", "*.json", ".state-*")
+	add("github-discovery", child(paths.Runtime, "github-catalog-source"), "tree", "available", "Configured GitHub source initialization and refresh.", "Preserve replay floors and accepted release references.", "*.json", ".state-*", ".record-publications/.owner.lock", ".record-publications/*.jsonl")
 	add("source-http", paths.SourceCache, "tree", "available", "Explicit models.dev HTTP acquisition.", "Rebuild through permitted source access. Accepted evidence lives elsewhere.", "api.json", "api.json.metadata.json", ".starmap-cache-*")
 	add("source-checkout", paths.SourceCheckout, "tree", "available", "Explicit pinned models.dev Git acquisition.", "Preserve operator-selected content. Rebuild managed input only through permitted acquisition.", "**")
 	addWorkspaceFiles(&report, paths)
-	add("migration-journal", child(paths.Roots[productpaths.State], "migrations"), "tree", "available", "An explicit runtime migration, unless its journal root is overridden.", "Preserve until the deployment recovery procedure permits removal.", "*/manifest.json", "*/journal.ndjson", "*/journal.partial-*", "*/.owner.lock", "*/.owner-*")
+	add("migration-journal", child(paths.Roots[productpaths.State], "migrations"), "tree", "available", "An explicit runtime migration, unless its journal root is overridden.", "Preserve until the deployment recovery procedure permits removal.", "*/manifest.json", "*/stage-initialization.json", "*/journal.ndjson", "*/journal.partial-*", "*/.owner.lock", "*/.owner-*")
 	for _, item := range []struct {
 		id       string
 		root     productpaths.Root

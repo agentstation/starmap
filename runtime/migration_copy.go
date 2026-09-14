@@ -17,7 +17,8 @@ func migrationPartialName(target string) string {
 	return migrationWorkDirectory + "/" + hex.EncodeToString(digest[:]) + ".partial"
 }
 
-func copyMigrationFile(ctx context.Context, source, stage *os.Root, expected directoryMigrationFile, checkpoint migrationCheckpoint) error {
+func copyMigrationFile(ctx context.Context, source *os.Root, owned *directoryMigrationStage, expected directoryMigrationFile, checkpoint migrationCheckpoint) error {
+	stage := owned.root
 	partial := filepath.FromSlash(migrationPartialName(expected.Target))
 	if present, err := migrationFilePresent(ctx, stage, expected); err != nil {
 		return err
@@ -25,7 +26,7 @@ func copyMigrationFile(ctx context.Context, source, stage *os.Root, expected dir
 		if err := syncMigrationParent(stage, path.Dir(expected.Target)); err != nil {
 			return err
 		}
-		return removeMigrationPartial(stage, partial)
+		return owned.removePartial(ctx, source, expected, checkpoint)
 	}
 	if err := makeMigrationDirectories(stage, path.Dir(expected.Target)); err != nil {
 		return err
@@ -35,10 +36,10 @@ func copyMigrationFile(ctx context.Context, source, stage *os.Root, expected dir
 		return err
 	}
 	defer func() { _ = input.Close() }()
-	if err := removeMigrationPartial(stage, partial); err != nil {
+	if err := owned.removePartial(ctx, source, expected, checkpoint); err != nil {
 		return err
 	}
-	output, err := stage.OpenFile(partial, os.O_CREATE|os.O_EXCL|os.O_WRONLY, ownerRecordMode)
+	output, err := owned.createPartial(ctx, expected)
 	if err != nil {
 		return err
 	}
@@ -72,7 +73,7 @@ func copyMigrationFile(ctx context.Context, source, stage *os.Root, expected dir
 	if err := migrationReached(checkpoint, "file-published", expected.Target); err != nil {
 		return err
 	}
-	return removeMigrationPartial(stage, partial)
+	return owned.removePartial(ctx, source, expected, checkpoint)
 }
 
 func openMigrationInput(root *os.Root, name string) (_ *os.File, resultErr error) {
@@ -100,23 +101,6 @@ func openMigrationInput(root *os.Root, name string) (_ *os.File, resultErr error
 		return nil, invalidMigrationIntent("changed_source")
 	}
 	return file, nil
-}
-
-func removeMigrationPartial(root *os.Root, name string) error {
-	info, err := root.Lstat(name)
-	if os.IsNotExist(err) {
-		return nil
-	}
-	if err != nil {
-		return err
-	}
-	if !info.Mode().IsRegular() {
-		return invalidMigrationIntent("partial_file")
-	}
-	if err := root.Remove(name); err != nil {
-		return err
-	}
-	return syncMigrationParent(root, migrationWorkDirectory)
 }
 
 func makeMigrationDirectories(root *os.Root, directory string) error {

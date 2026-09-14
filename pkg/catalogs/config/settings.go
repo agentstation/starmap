@@ -43,6 +43,15 @@ const (
 	// token.
 	SourceToken = Prefix + "CATALOG_SOURCE_TOKEN"
 
+	// SourceRefreshMode selects automatic or explicit-only source refresh.
+	SourceRefreshMode = Prefix + "CATALOG_SOURCE_REFRESH_MODE"
+
+	// GenerationPin selects one retained catalog until the configuration changes.
+	GenerationPin = Prefix + "CATALOG_GENERATION_PIN"
+
+	// NetworkMode controls outbound catalog acquisition independently of inference.
+	NetworkMode = Prefix + "CATALOG_NETWORK_MODE"
+
 	// SourcePollInterval is the conditional channel check period.
 	SourcePollInterval = Prefix + "CATALOG_SOURCE_POLL_INTERVAL"
 
@@ -140,6 +149,15 @@ type Config struct {
 	// SourceKind is the selected upstream source. The default is public.
 	SourceKind runtime.SourceKind
 
+	// GenerationPin names the retained generation selected by configuration.
+	GenerationPin string
+
+	// SourceRefreshMode selects automatic or manual source reads.
+	SourceRefreshMode runtime.SourceRefreshMode
+
+	// NetworkMode selects configured or offline catalog acquisition.
+	NetworkMode runtime.NetworkMode
+
 	// SourceURL is the safe endpoint or file identity of a custom source.
 	SourceURL string
 
@@ -194,7 +212,7 @@ type Config struct {
 // table returns every canonical setting in its documented order. The order is
 // stable, so a report and a test read one sequence.
 func table() []setting {
-	return append([]setting{
+	return append(append([]setting{
 		{name: AuthorityOrigin, flag: "catalog-authority-origin", capture: captureAuthorityOrigin},
 		{
 			name: Source, flag: "catalog-source", capture: captureSourceKind,
@@ -224,6 +242,18 @@ func table() []setting {
 		{
 			name: SourceToken, flag: "catalog-source-token",
 			apply: stringOption(runtime.WithSourceToken),
+		},
+		{
+			name: SourceRefreshMode, flag: "catalog-source-refresh-mode",
+			apply: stringOption(runtime.WithSourceRefreshMode), capture: captureSourceRefreshMode,
+		},
+		{
+			name: GenerationPin, flag: "catalog-generation-pin",
+			apply: stringOption(runtime.WithGenerationPin), capture: func(value string, c *Config) error { c.GenerationPin = value; return nil },
+		},
+		{
+			name: NetworkMode, flag: "catalog-network-mode",
+			apply: stringOption(runtime.WithCatalogNetworkMode), capture: captureNetworkMode,
 		},
 		{
 			name: SourcePollInterval, flag: "catalog-source-poll-interval",
@@ -306,7 +336,7 @@ func table() []setting {
 			capture: captureSchedulerIdentity,
 			apply:   stringOption(runtime.WithSchedulerIdentity),
 		},
-	}, clockSettings()...)
+	}, clockSettings()...), retentionSettings()...)
 }
 
 // Names returns every canonical catalog setting name in documented order.
@@ -355,7 +385,7 @@ func Load(lookup Lookup) (Config, error) {
 			Field: "settings.lookup", Message: "is required",
 		}
 	}
-	config := Config{SourceKind: runtime.SourcePublic, values: make(map[string]string)}
+	config := Config{SourceKind: runtime.SourcePublic, SourceRefreshMode: runtime.SourceRefreshAutomatic, NetworkMode: runtime.NetworkConfigured, values: make(map[string]string)}
 	for _, entry := range table() {
 		value, found := lookup(entry.name)
 		value = strings.TrimSpace(value)
@@ -551,4 +581,16 @@ func intOption(
 		}
 		return option(parsed), nil
 	}
+}
+
+func captureSourceRefreshMode(value string, config *Config) error {
+	mode, err := runtime.ParseSourceRefreshMode(value)
+	config.SourceRefreshMode = mode
+	return err
+}
+
+func captureNetworkMode(value string, config *Config) error {
+	mode, err := runtime.ParseNetworkMode(value)
+	config.NetworkMode = mode
+	return err
 }

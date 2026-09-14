@@ -28,6 +28,8 @@ type scheduler struct {
 	acquisitionOffset time.Duration
 	acceptedPhase     time.Duration
 	acceptedOffset    time.Duration
+	retentionPhase    time.Duration
+	retentionOffset   time.Duration
 }
 
 // initializeSchedule derives the instance identity and the stable phases.
@@ -82,7 +84,14 @@ func (r *Runtime) initializeSchedule() error {
 			return err
 		}
 	}
-	return nil
+	retentionIdentity := sourceIdentity
+	retentionIdentity.Controller = "retention"
+	r.schedule.retentionPhase, err = fleet.StablePhase(retentionIdentity, r.config.retention.Interval)
+	if err != nil {
+		return err
+	}
+	r.schedule.retentionOffset, err = fleet.StartupOffset(retentionIdentity, r.config.startupSpread)
+	return err
 }
 
 // instanceIdentity binds the seed to the recorded owner. Listen addresses do not define identity.
@@ -128,6 +137,10 @@ func (r *Runtime) sourceChanges() <-chan struct{} {
 // runtime without an acquirer runs source refresh only.
 func (r *Runtime) startSchedules() {
 	r.startPermissionSchedule()
+	r.startRetentionSchedule()
+	if r.config.generationPin != "" {
+		return
+	}
 	if r.config.origin != nil && r.config.leaseStore != nil {
 		r.work.Go(func() {
 			r.runSchedule(controllerAccepted, originAcceptedPollInterval, r.schedule.acceptedOffset, r.schedule.acceptedPhase, false, nil, func(ctx context.Context) {
@@ -141,8 +154,11 @@ func (r *Runtime) startSchedules() {
 		})
 	}
 	interval := r.config.source.PollInterval
-	wake := r.sourceChanges()
-	if r.source != nil && (interval > 0 || wake != nil) {
+	var wake <-chan struct{}
+	if r.automaticSourceReads() {
+		wake = r.sourceChanges()
+	}
+	if r.automaticSourceReads() && r.source != nil && (interval > 0 || wake != nil) {
 		offset := r.schedule.sourceOffset
 		phase := r.schedule.sourcePhase
 		startup := r.sourceNeedsStartupPass()
@@ -154,7 +170,7 @@ func (r *Runtime) startSchedules() {
 			})
 		})
 	}
-	if r.config.acquisition.Enabled && r.hasAcquisition() {
+	if r.config.updatePolicy.NetworkMode != NetworkOffline && r.config.acquisition.Enabled && r.hasAcquisition() {
 		interval := r.config.acquisition.Interval
 		offset := r.schedule.acquisitionOffset
 		phase := r.schedule.acquisitionPhase

@@ -12,25 +12,38 @@ Package storage provides durable generation\-oriented catalog storage.
 
 ## Index
 
+- [Constants](<#constants>)
 - [type AuthorityHeadReader](<#AuthorityHeadReader>)
 - [type CurrentObjectReader](<#CurrentObjectReader>)
 - [type Filesystem](<#Filesystem>)
   - [func NewFilesystem\(path string\) \(\*Filesystem, error\)](<#NewFilesystem>)
+  - [func \(s \*Filesystem\) AcquireGeneration\(ctx context.Context, id string\) \(catalogs.Generation, func\(\) error, error\)](<#Filesystem.AcquireGeneration>)
+  - [func \(s \*Filesystem\) Collect\(ctx context.Context, request RetentionRequest\) \(RetentionReport, error\)](<#Filesystem.Collect>)
   - [func \(s \*Filesystem\) Commit\(ctx context.Context, generation catalogs.Generation, expectedGenerationID string\) error](<#Filesystem.Commit>)
   - [func \(s \*Filesystem\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Filesystem.Current>)
   - [func \(s \*Filesystem\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Filesystem.CurrentAuthorityHead>)
   - [func \(s \*Filesystem\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Filesystem.Get>)
   - [func \(s \*Filesystem\) Root\(\) string](<#Filesystem.Root>)
+- [type GenerationCollectionProvider](<#GenerationCollectionProvider>)
+- [type GenerationCollector](<#GenerationCollector>)
+  - [func GenerationCollectorFor\(store Store\) \(GenerationCollector, bool\)](<#GenerationCollectorFor>)
+- [type GenerationLeaseProvider](<#GenerationLeaseProvider>)
+- [type GenerationLeaser](<#GenerationLeaser>)
+  - [func GenerationLeaserFor\(store Store\) \(GenerationLeaser, bool\)](<#GenerationLeaserFor>)
 - [type Memory](<#Memory>)
   - [func NewMemory\(\) \*Memory](<#NewMemory>)
+  - [func \(s \*Memory\) AcquireGeneration\(ctx context.Context, id string\) \(catalogs.Generation, func\(\) error, error\)](<#Memory.AcquireGeneration>)
+  - [func \(s \*Memory\) Collect\(ctx context.Context, request RetentionRequest\) \(RetentionReport, error\)](<#Memory.Collect>)
   - [func \(s \*Memory\) Commit\(ctx context.Context, generation catalogs.Generation, expectedGenerationID string\) error](<#Memory.Commit>)
   - [func \(s \*Memory\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#Memory.Current>)
   - [func \(s \*Memory\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Memory.CurrentAuthorityHead>)
   - [func \(s \*Memory\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Memory.Get>)
 - [type MemoryObjectBackend](<#MemoryObjectBackend>)
   - [func NewMemoryObjectBackend\(\) \*MemoryObjectBackend](<#NewMemoryObjectBackend>)
+  - [func \(b \*MemoryObjectBackend\) Delete\(ctx context.Context, key, version string\) error](<#MemoryObjectBackend.Delete>)
   - [func \(b \*MemoryObjectBackend\) Get\(ctx context.Context, key string\) \(ObjectValue, error\)](<#MemoryObjectBackend.Get>)
   - [func \(b \*MemoryObjectBackend\) GetCurrent\(ctx context.Context, key string\) \(ObjectValue, error\)](<#MemoryObjectBackend.GetCurrent>)
+  - [func \(b \*MemoryObjectBackend\) List\(ctx context.Context, request ObjectListRequest\) \(ObjectPage, error\)](<#MemoryObjectBackend.List>)
   - [func \(b \*MemoryObjectBackend\) Put\(ctx context.Context, key string, data \[\]byte, condition ObjectPutCondition\) \(ObjectValue, error\)](<#MemoryObjectBackend.Put>)
 - [type Object](<#Object>)
   - [func NewObject\(backend ObjectBackend, prefix string\) \(\*Object, error\)](<#NewObject>)
@@ -39,10 +52,50 @@ Package storage provides durable generation\-oriented catalog storage.
   - [func \(s \*Object\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#Object.CurrentAuthorityHead>)
   - [func \(s \*Object\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#Object.Get>)
 - [type ObjectBackend](<#ObjectBackend>)
+- [type ObjectCollectionBackend](<#ObjectCollectionBackend>)
+- [type ObjectEntry](<#ObjectEntry>)
+- [type ObjectListRequest](<#ObjectListRequest>)
+  - [func \(r ObjectListRequest\) Validate\(\) error](<#ObjectListRequest.Validate>)
+- [type ObjectPage](<#ObjectPage>)
 - [type ObjectPutCondition](<#ObjectPutCondition>)
 - [type ObjectValue](<#ObjectValue>)
+- [type RetainingStore](<#RetainingStore>)
+- [type RetentionReport](<#RetentionReport>)
+- [type RetentionRequest](<#RetentionRequest>)
+- [type RetentionUsage](<#RetentionUsage>)
 - [type Store](<#Store>)
 
+
+## Constants
+
+<a name="DefaultRetentionScanEntries"></a>
+
+```go
+const (
+    // DefaultRetentionScanEntries bounds a collection pass unless the caller overrides it.
+    DefaultRetentionScanEntries = 4096
+    // MaxRetentionScanEntries bounds an explicit collection scan.
+    MaxRetentionScanEntries = 100000
+)
+```
+
+<a name="MaxFilesystemManifestBytes"></a>MaxFilesystemManifestBytes bounds one stored manifest before reading or publication. It matches the catalog distribution envelope limit.
+
+```go
+const MaxFilesystemManifestBytes = 64 << 20
+```
+
+<a name="MaxFilesystemPayloadBytes"></a>MaxFilesystemPayloadBytes bounds a stored payload before reading or publication.
+
+```go
+const MaxFilesystemPayloadBytes = resourcepolicy.MaxPayloadBytes
+```
+
+<a name="MaxObjectListEntries"></a>MaxObjectListEntries bounds one object inventory page.
+
+```go
+const MaxObjectListEntries = 1000
+```
 
 <a name="AuthorityHeadReader"></a>
 ## type [AuthorityHeadReader](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/authority.go#L17-L19>)
@@ -67,7 +120,7 @@ type CurrentObjectReader interface {
 ```
 
 <a name="Filesystem"></a>
-## type [Filesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L29-L35>)
+## type [Filesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L30-L38>)
 
 Filesystem stores immutable generation directories and an atomically replaced current pointer beneath one root directory.
 
@@ -78,7 +131,7 @@ type Filesystem struct {
 ```
 
 <a name="NewFilesystem"></a>
-### func [NewFilesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L39>)
+### func [NewFilesystem](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L42>)
 
 ```go
 func NewFilesystem(path string) (*Filesystem, error)
@@ -86,17 +139,35 @@ func NewFilesystem(path string) (*Filesystem, error)
 
 NewFilesystem configures a filesystem catalog store without accessing or creating its root. Operations require private access to existing store entries and never change their permissions.
 
+<a name="Filesystem.AcquireGeneration"></a>
+### func \(\*Filesystem\) [AcquireGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention_locks.go#L20>)
+
+```go
+func (s *Filesystem) AcquireGeneration(ctx context.Context, id string) (catalogs.Generation, func() error, error)
+```
+
+AcquireGeneration returns independent bytes while a native shared lock retains the generation. Each acquisition owns its lock. Release remains available after context cancellation.
+
+<a name="Filesystem.Collect"></a>
+### func \(\*Filesystem\) [Collect](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention_filesystem.go#L25>)
+
+```go
+func (s *Filesystem) Collect(ctx context.Context, request RetentionRequest) (RetentionReport, error)
+```
+
+Collect removes obsolete generations through checked, recoverable retirement. The publication lock serializes each pass with publishers and ordinary reads. Unknown entries and changed receipts stop cleanup without deleting those entries.
+
 <a name="Filesystem.Commit"></a>
-### func \(\*Filesystem\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L92>)
+### func \(\*Filesystem\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L107>)
 
 ```go
 func (s *Filesystem) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error
 ```
 
-Commit writes an immutable generation before atomically replacing current.
+Commit writes an immutable generation before atomically replacing current. PublicationError identifies a visible current pointer with unconfirmed durability. An identical retry confirms directory durability without replacing the pointer.
 
 <a name="Filesystem.Current"></a>
-### func \(\*Filesystem\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L62>)
+### func \(\*Filesystem\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L65>)
 
 ```go
 func (s *Filesystem) Current(ctx context.Context) (catalogs.Generation, error)
@@ -114,7 +185,7 @@ func (s *Filesystem) CurrentAuthorityHead(ctx context.Context) (catalogs.Catalog
 CurrentAuthorityHead reads the current pointer and its independent immutable permission record. This guarantee requires a local filesystem with the documented atomic publication semantics. The read does not load catalog data or repair missing metadata.
 
 <a name="Filesystem.Get"></a>
-### func \(\*Filesystem\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L79>)
+### func \(\*Filesystem\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L87>)
 
 ```go
 func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, error)
@@ -123,7 +194,7 @@ func (s *Filesystem) Get(ctx context.Context, id string) (catalogs.Generation, e
 Get returns an immutable generation by ID.
 
 <a name="Filesystem.Root"></a>
-### func \(\*Filesystem\) [Root](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L54>)
+### func \(\*Filesystem\) [Root](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/filesystem.go#L57>)
 
 ```go
 func (s *Filesystem) Root() string
@@ -131,8 +202,70 @@ func (s *Filesystem) Root() string
 
 Root returns the configured filesystem root without creating it.
 
+<a name="GenerationCollectionProvider"></a>
+## type [GenerationCollectionProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L35-L37>)
+
+GenerationCollectionProvider forwards a wrapper's optional guarded collection capability.
+
+```go
+type GenerationCollectionProvider interface {
+    GenerationCollector() (GenerationCollector, bool)
+}
+```
+
+<a name="GenerationCollector"></a>
+## type [GenerationCollector](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L30-L32>)
+
+GenerationCollector removes unprotected generations under a bounded retention request.
+
+```go
+type GenerationCollector interface {
+    Collect(context.Context, RetentionRequest) (RetentionReport, error)
+}
+```
+
+<a name="GenerationCollectorFor"></a>
+### func [GenerationCollectorFor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L40>)
+
+```go
+func GenerationCollectorFor(store Store) (GenerationCollector, bool)
+```
+
+GenerationCollectorFor resolves direct collection or a wrapper's explicit forwarding.
+
+<a name="GenerationLeaseProvider"></a>
+## type [GenerationLeaseProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L56-L58>)
+
+GenerationLeaseProvider forwards a wrapper's optional read\-lease capability. It exposes no publication or collection operation from the underlying store.
+
+```go
+type GenerationLeaseProvider interface {
+    GenerationLeaser() (GenerationLeaser, bool)
+}
+```
+
+<a name="GenerationLeaser"></a>
+## type [GenerationLeaser](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L50-L52>)
+
+GenerationLeaser protects stored generation bytes until the caller releases them. Each acquisition returns independent bytes and an idempotent release function.
+
+```go
+type GenerationLeaser interface {
+    AcquireGeneration(context.Context, string) (catalogs.Generation, func() error, error)
+}
+```
+
+<a name="GenerationLeaserFor"></a>
+### func [GenerationLeaserFor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L61>)
+
+```go
+func GenerationLeaserFor(store Store) (GenerationLeaser, bool)
+```
+
+GenerationLeaserFor resolves direct support or a wrapper's explicit forwarding.
+
 <a name="Memory"></a>
-## type [Memory](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L11-L15>)
+## type [Memory](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L11-L16>)
 
 Memory implements Store in process for tests and simple deployments.
 
@@ -143,7 +276,7 @@ type Memory struct {
 ```
 
 <a name="NewMemory"></a>
-### func [NewMemory](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L18>)
+### func [NewMemory](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L19>)
 
 ```go
 func NewMemory() *Memory
@@ -151,8 +284,26 @@ func NewMemory() *Memory
 
 NewMemory creates an empty in\-memory catalog store.
 
+<a name="Memory.AcquireGeneration"></a>
+### func \(\*Memory\) [AcquireGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention_memory.go#L14>)
+
+```go
+func (s *Memory) AcquireGeneration(ctx context.Context, id string) (catalogs.Generation, func() error, error)
+```
+
+AcquireGeneration copies a generation and protects its stored form until release. The release function is idempotent and does not depend on the request context.
+
+<a name="Memory.Collect"></a>
+### func \(\*Memory\) [Collect](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention_memory.go#L46>)
+
+```go
+func (s *Memory) Collect(ctx context.Context, request RetentionRequest) (RetentionReport, error)
+```
+
+Collect applies one bounded retention decision under the publication lock. Missing requirements, stale current, and incomplete scans preserve all content.
+
 <a name="Memory.Commit"></a>
-### func \(\*Memory\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L51>)
+### func \(\*Memory\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L52>)
 
 ```go
 func (s *Memory) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error
@@ -161,7 +312,7 @@ func (s *Memory) Commit(ctx context.Context, generation catalogs.Generation, exp
 Commit validates and atomically activates generation when current matches expectedGenerationID.
 
 <a name="Memory.Current"></a>
-### func \(\*Memory\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L23>)
+### func \(\*Memory\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L24>)
 
 ```go
 func (s *Memory) Current(ctx context.Context) (catalogs.Generation, error)
@@ -179,7 +330,7 @@ func (s *Memory) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuth
 CurrentAuthorityHead returns the selected authority head under the publication lock without copying its payload.
 
 <a name="Memory.Get"></a>
-### func \(\*Memory\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L36>)
+### func \(\*Memory\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/memory.go#L37>)
 
 ```go
 func (s *Memory) Get(ctx context.Context, id string) (catalogs.Generation, error)
@@ -207,6 +358,15 @@ func NewMemoryObjectBackend() *MemoryObjectBackend
 
 NewMemoryObjectBackend creates an empty reference object backend.
 
+<a name="MemoryObjectBackend.Delete"></a>
+### func \(\*MemoryObjectBackend\) [Delete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection_memory.go#L59>)
+
+```go
+func (b *MemoryObjectBackend) Delete(ctx context.Context, key, version string) error
+```
+
+Delete removes an object only when its current validator matches version.
+
 <a name="MemoryObjectBackend.Get"></a>
 ### func \(\*MemoryObjectBackend\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L55>)
 
@@ -224,6 +384,15 @@ func (b *MemoryObjectBackend) GetCurrent(ctx context.Context, key string) (Objec
 ```
 
 GetCurrent returns the object selected under the same lock as conditional writes.
+
+<a name="MemoryObjectBackend.List"></a>
+### func \(\*MemoryObjectBackend\) [List](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection_memory.go#L12>)
+
+```go
+func (b *MemoryObjectBackend) List(ctx context.Context, request ObjectListRequest) (ObjectPage, error)
+```
+
+List returns one ordered page of current objects beneath the requested prefix.
 
 <a name="MemoryObjectBackend.Put"></a>
 ### func \(\*MemoryObjectBackend\) [Put](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L70>)
@@ -304,6 +473,68 @@ type ObjectBackend interface {
 }
 ```
 
+<a name="ObjectCollectionBackend"></a>
+## type [ObjectCollectionBackend](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L55-L59>)
+
+ObjectCollectionBackend adds inventory and conditional deletion to ObjectBackend. Pages need not form a snapshot across calls. The caller must coordinate publication and retention before deleting an object. These operations alone do not protect generations, pins, or readers.
+
+Delete requires an exact nonempty validator. A missing object can return success, a typed not\-found error, or a conditional conflict. Versioned backends can retain historical versions after current\-object deletion.
+
+```go
+type ObjectCollectionBackend interface {
+    ObjectBackend
+    List(context.Context, ObjectListRequest) (ObjectPage, error)
+    Delete(context.Context, string, string) error
+}
+```
+
+<a name="ObjectEntry"></a>
+## type [ObjectEntry](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L34-L38>)
+
+ObjectEntry describes one current object without reading its payload. Version is its conditional validator, not a monotonic fencing token.
+
+```go
+type ObjectEntry struct {
+    Key     string
+    Version string
+    Size    int64
+}
+```
+
+<a name="ObjectListRequest"></a>
+## type [ObjectListRequest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L15-L19>)
+
+ObjectListRequest selects one bounded page beneath a nonempty prefix. Cursor is opaque. Reuse a returned cursor with the same prefix.
+
+```go
+type ObjectListRequest struct {
+    Prefix string
+    Cursor string
+    Limit  int
+}
+```
+
+<a name="ObjectListRequest.Validate"></a>
+### func \(ObjectListRequest\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L22>)
+
+```go
+func (r ObjectListRequest) Validate() error
+```
+
+Validate rejects unbounded inventories and empty namespaces.
+
+<a name="ObjectPage"></a>
+## type [ObjectPage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object_collection.go#L42-L45>)
+
+ObjectPage contains at most the requested number of objects. A nonempty Next cursor requires another page.
+
+```go
+type ObjectPage struct {
+    Objects []ObjectEntry
+    Next    string
+}
+```
+
 <a name="ObjectPutCondition"></a>
 ## type [ObjectPutCondition](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L24-L27>)
 
@@ -325,6 +556,64 @@ ObjectValue is one versioned object returned by an ObjectBackend.
 type ObjectValue struct {
     Data    []byte
     Version string
+}
+```
+
+<a name="RetainingStore"></a>
+## type [RetainingStore](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L23-L27>)
+
+RetainingStore coordinates collection with publication and generation read leases. AcquireGeneration returns independent bytes and an idempotent release function. The lease protects stored content until release, including after current changes. Callers must release every successful acquisition. Ordinary Get returns bytes without retaining the stored generation after the call completes.
+
+```go
+type RetainingStore interface {
+    Store
+    GenerationLeaser
+    GenerationCollector
+}
+```
+
+<a name="RetentionReport"></a>
+## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L94-L102>)
+
+RetentionReport describes a complete collection decision and its applied changes. Candidates names generations in eviction order. Removed names actual deletions. Dry runs leave After equal to Before. Projected describes the proposed result. OverLimit means protected content alone exceeds at least one requested limit.
+
+```go
+type RetentionReport struct {
+    Before     RetentionUsage
+    After      RetentionUsage
+    Projected  RetentionUsage
+    Protected  RetentionUsage
+    Candidates []string
+    Removed    []string
+    OverLimit  bool
+}
+```
+
+<a name="RetentionRequest"></a>
+## type [RetentionRequest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L74-L81>)
+
+RetentionRequest selects limits for one explicit collection pass. ExpectedGenerationID binds the request to current, including an empty store. RequiredGenerationIDs names baseline, candidate, and rollback generations. Every required ID must exist. The store also protects current and active leases. Callers must coordinate changes to their required IDs with collection.
+
+```go
+type RetentionRequest struct {
+    ExpectedGenerationID  string
+    RequiredGenerationIDs []string
+    MaxGenerations        int
+    MaxBytes              int64
+    ScanEntries           int
+    DryRun                bool
+}
+```
+
+<a name="RetentionUsage"></a>
+## type [RetentionUsage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L85-L88>)
+
+RetentionUsage counts generations and their manifest plus payload bytes. Bytes exclude filesystem overhead, journal files, and backend replication.
+
+```go
+type RetentionUsage struct {
+    Generations int
+    Bytes       int64
 }
 ```
 

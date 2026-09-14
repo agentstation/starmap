@@ -112,18 +112,6 @@ func EncodeEndpointProjection(catalog *catalogs.Catalog, identity Identity) ([]b
 	return data, nil
 }
 
-func writeEndpointProjection(path string, catalog *catalogs.Catalog, identity Identity) (string, error) {
-	data, err := EncodeEndpointProjection(catalog, identity)
-	if err != nil {
-		return "", err
-	}
-	target := filepath.Join(path, endpointProjectionFilename)
-	if err := os.WriteFile(target, data, fileMode); err != nil {
-		return "", errors.WrapIO("write", target, err)
-	}
-	return endpointProjectionChecksum(data), nil
-}
-
 func readEndpointProjectionChecksum(path string) (string, error) {
 	data, err := os.ReadFile( //nolint:gosec // Validated workspace path plus fixed managed filename.
 		filepath.Join(path, endpointProjectionFilename),

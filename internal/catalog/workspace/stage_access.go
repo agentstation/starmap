@@ -3,10 +3,10 @@ package workspace
 import (
 	"context"
 	"crypto/rand"
-	"crypto/sha256"
-	"encoding/hex"
-	"io"
+	stderrors "errors"
+	"maps"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/agentstation/starmap/internal/filepublish"
@@ -16,15 +16,61 @@ import (
 )
 
 type workspaceStage struct {
-	parent    *os.Root
-	private   *os.Root
-	name      string
-	candidate string
-	source    *os.Root
-	original  treeSnapshot
+	parent     *os.Root
+	private    *os.Root
+	name       string
+	candidate  string
+	source     *os.Root
+	original   treeSnapshot
+	published  treeSnapshot
+	enclosure  treeSnapshot
+	trees      map[string]*preparationTree
+	journal    *preparationJournal
+	handoff    *preparationHandoff
+	record     *preparationRecord
+	relocation *relocationInventory
 }
 
-func prepareWorkspaceStage(target string) (*workspaceStage, error) {
+func prepareWorkspaceStage(ctx context.Context, target string, writer *workspaceWriter) (result *workspaceStage, resultErr error) {
+	s, err := prepareWorkspaceEnclosure(ctx, target, writer)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		if resultErr != nil {
+			resultErr = stderrors.Join(resultErr, s.close(ctx))
+		}
+	}()
+	if _, err := s.createTree(ctx, "render"); err != nil {
+		return nil, err
+	}
+	// The empty candidate inherits the selected parent before entering private staging.
+	if err := s.parent.Mkdir(s.candidate, directoryMode); err != nil {
+		return nil, err
+	}
+	empty, err := snapshotTreeAt(ctx, s.parent, s.candidate)
+	if err != nil {
+		return nil, err
+	}
+	if len(empty.Entries) != 1 {
+		return nil, replacementConflict(s.candidate, "new candidate is not empty")
+	}
+	if err := filepublish.DirectoryBetweenRootsNoReplace(s.parent, s.candidate, s.private, "tree"); err != nil {
+		return nil, stderrors.Join(err, cleanupWorkspaceTreeAt(ctx, s.parent, s.candidate, empty))
+	}
+	if _, err := s.trackTree("tree"); err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+func prepareWorkspaceEnclosure(ctx context.Context, target string, writer *workspaceWriter) (result *workspaceStage, resultErr error) {
+	if err := writer.check(); err != nil {
+		return nil, err
+	}
+	if writer.target != target {
+		return nil, writerConflict(target)
+	}
 	if err := policy.Require("workspace-preparing", policy.OwnerOnly); err != nil {
 		return nil, err
 	}
@@ -33,7 +79,7 @@ func prepareWorkspaceStage(target string) (*workspaceStage, error) {
 		return nil, err
 	}
 	suffix := rand.Text()
-	s := &workspaceStage{parent: parent, name: "." + filepath.Base(target) + ".preparing-" + suffix, candidate: "." + filepath.Base(target) + ".candidate-" + suffix}
+	s := &workspaceStage{parent: parent, name: "." + filepath.Base(target) + ".preparing-" + suffix, candidate: "." + filepath.Base(target) + ".candidate-" + suffix, trees: make(map[string]*preparationTree)}
 	if err := privatefiles.CreateChild(parent, s.name); err != nil {
 		_ = parent.Close()
 		return nil, err
@@ -41,7 +87,7 @@ func prepareWorkspaceStage(target string) (*workspaceStage, error) {
 	complete := false
 	defer func() {
 		if !complete {
-			s.close()
+			resultErr = stderrors.Join(resultErr, s.close(ctx))
 		}
 	}()
 	s.private, err = parent.OpenRoot(s.name)
@@ -67,59 +113,58 @@ func prepareWorkspaceStage(target string) (*workspaceStage, error) {
 	if err := privatefiles.ValidateACL(s.private, ".", info, "workspace staging"); err != nil {
 		return nil, err
 	}
-	if err := s.private.Mkdir("render", directoryMode); err != nil {
+	container, err := trackPreparationTree(s.private)
+	if err != nil {
 		return nil, err
 	}
-	// The empty candidate inherits the selected parent before entering private staging.
-	if err := parent.Mkdir(s.candidate, directoryMode); err != nil {
+	s.enclosure, err = container.snapshot()
+	if err != nil {
 		return nil, err
 	}
-	if err := filepublish.DirectoryBetweenRootsNoReplace(parent, s.candidate, s.private, "tree"); err != nil {
-		_ = parent.Remove(s.candidate)
+	s.journal, err = newPreparationJournal(s, writer)
+	if err != nil {
 		return nil, err
 	}
 	complete = true
 	return s, nil
 }
 
-func (s *workspaceStage) close() {
-	if s.source != nil {
-		_ = s.source.Close()
-	}
-	if s.private != nil {
-		_ = s.private.Close()
-	}
-	_ = os.RemoveAll(filepath.Join(s.parent.Name(), s.name))
-	_ = s.parent.Close()
-}
-
 func (s *workspaceStage) renderPath() string { return filepath.Join(s.private.Name(), "render") }
 
 func (s *workspaceStage) finish(ctx context.Context, target string, beforeRestore func(string) error) (string, error) {
-	rendered, err := snapshotTree(ctx, s.renderPath())
+	rendered, err := s.trees["render"].snapshot()
 	if err != nil {
 		return "", err
 	}
-	render, err := s.private.OpenRoot("render")
+	currentRender, err := snapshotTreeAt(ctx, s.private, "render")
 	if err != nil {
 		return "", err
 	}
-	defer func() { _ = render.Close() }()
-	output, err := s.private.OpenRoot("tree")
-	if err != nil {
-		return "", err
+	if !sameTree(currentRender, rendered) || !maps.Equal(currentRender.identities, rendered.identities) {
+		return "", replacementConflict(s.renderPath(), "rendered workspace changed before assembly")
 	}
-	defer func() { _ = output.Close() }()
-	a := workspaceAssembler{ctx: ctx, source: s.source, render: render, output: output, entries: make(map[string]treeEntry, len(rendered.Entries)), beforeRestore: beforeRestore}
+	render := s.trees["render"].root
+	output := s.trees["tree"].root
+	a := workspaceAssembler{ctx: ctx, source: s.source, render: render, output: output, owned: s.trees["tree"], entries: make(map[string]treeEntry, len(rendered.Entries)), children: make(map[string]int), beforeRestore: beforeRestore}
 	for _, entry := range rendered.Entries {
 		a.entries[entry.Path] = entry
+		if entry.Path != "." {
+			a.children[path.Dir(entry.Path)]++
+		}
 	}
 	if err := a.directory("."); err != nil {
+		return "", err
+	}
+	owned, err := s.trees["tree"].snapshot()
+	if err != nil {
 		return "", err
 	}
 	actual, err := snapshotTree(ctx, filepath.Join(s.private.Name(), "tree"))
 	if err != nil {
 		return "", err
+	}
+	if !sameTree(actual, owned) || !maps.Equal(actual.identities, owned.identities) {
+		return "", replacementConflict(target, "assembled workspace ownership changed before publication")
 	}
 	if len(actual.Entries) != len(rendered.Entries) {
 		return "", replacementConflict(target, "staged workspace entries changed")
@@ -140,12 +185,23 @@ func (s *workspaceStage) finish(ctx context.Context, target string, beforeRestor
 	if (current.ID != "" || s.original.ID != "") && !sameTree(current, s.original) {
 		return "", replacementConflict(target, "workspace changed before candidate publication")
 	}
+	if err := output.Close(); err != nil {
+		return "", err
+	}
+	s.trees["tree"].root = nil
+	if err := s.recordHandoff(actual); err != nil {
+		return "", err
+	}
+	if err := s.checkWriter(); err != nil {
+		return "", err
+	}
 	if err := filepublish.DirectoryBetweenRootsNoReplace(s.private, "tree", s.parent, s.candidate); err != nil {
 		return "", err
 	}
+	delete(s.trees, "tree")
+	s.published = actual
 	path := filepath.Join(s.parent.Name(), s.candidate)
 	if err := filepublish.SyncDirectory(s.parent); err != nil {
-		_ = os.RemoveAll(path)
 		return "", err
 	}
 	return path, nil
@@ -155,6 +211,8 @@ type workspaceAssembler struct {
 	ctx                    context.Context
 	source, render, output *os.Root
 	entries                map[string]treeEntry
+	children               map[string]int
+	owned                  *preparationTree
 	beforeRestore          func(string) error
 }
 
@@ -211,12 +269,12 @@ func (a workspaceAssembler) restore(name string, destination *os.File) error {
 	return nil
 }
 
-func (a workspaceAssembler) directory(name string) error {
+func (a workspaceAssembler) directory(name string) (resultErr error) {
 	if err := a.ctx.Err(); err != nil {
 		return err
 	}
 	if name != "." {
-		if err := a.output.Mkdir(filepath.FromSlash(name), directoryMode); err != nil {
+		if err := a.owned.directory(a.ctx, name); err != nil {
 			return err
 		}
 	}
@@ -226,6 +284,9 @@ func (a workspaceAssembler) directory(name string) error {
 	}
 	defer func() { _ = file.Close() }()
 	if err := a.restore(name, file); err != nil {
+		return err
+	}
+	if err := a.owned.rememberAccess(name, file); err != nil {
 		return err
 	}
 	info, err := file.Stat()
@@ -241,27 +302,49 @@ func (a workspaceAssembler) directory(name string) error {
 	if err != nil {
 		return err
 	}
+	if err := a.owned.rememberAccess(name, file); err != nil {
+		return err
+	}
 	restored := false
 	defer func() {
 		if !restored {
-			_ = restoreAccess()
+			if err := a.owned.check(context.WithoutCancel(a.ctx), name); err != nil {
+				resultErr = stderrors.Join(resultErr, err)
+				return
+			}
+			err := restoreAccess()
+			if err == nil {
+				err = file.Chmod(mode)
+			}
+			if err == nil {
+				err = a.owned.rememberAccess(name, file)
+			}
+			resultErr = stderrors.Join(resultErr, err)
 		}
 	}()
 	if err := file.Chmod(mode | privatefiles.DirectoryMode); err != nil {
+		return err
+	}
+	if err := a.owned.rememberAccess(name, file); err != nil {
 		return err
 	}
 	dir, err := a.render.Open(filepath.FromSlash(name))
 	if err != nil {
 		return err
 	}
-	children, err := dir.ReadDir(-1)
+	scanner := treeScanner{ctx: a.ctx, root: a.render, seen: replacementMaxEntries - a.children[name]}
+	children, err := scanner.readChildren(dir, name)
 	_ = dir.Close()
 	if err != nil {
 		return err
 	}
 	for _, child := range children {
-		relative := filepath.ToSlash(filepath.Join(name, child.Name()))
-		if child.IsDir() {
+		relative := path.Join(name, child)
+		entry, present := a.entries[relative]
+		if !present {
+			return replacementConflict(relative, "unrecognized rendered entry")
+		}
+		if entry.Directory {
 			err = a.directory(relative)
 		} else {
 			err = a.file(relative)
@@ -284,6 +367,9 @@ func (a workspaceAssembler) directory(name string) error {
 	if actual != access {
 		return replacementConflict(name, "directory access changed during assembly")
 	}
+	if err := a.owned.rememberAccess(name, file); err != nil {
+		return err
+	}
 	return file.Sync()
 }
 
@@ -291,27 +377,18 @@ func (a workspaceAssembler) file(name string) error {
 	if err := a.ctx.Err(); err != nil {
 		return err
 	}
-	want := a.entries[name]
-	input, err := a.render.Open(filepath.FromSlash(name))
+	want, exists := a.entries[name]
+	if !exists || want.Directory {
+		return replacementConflict(name, "unrecognized rendered file")
+	}
+	info, err := a.render.Lstat(filepath.FromSlash(name))
+	if err != nil {
+		return err
+	}
+	input, err := openSnapshotEntry(a.render, filepath.FromSlash(name), info)
 	if err != nil {
 		return err
 	}
 	defer func() { _ = input.Close() }()
-	output, err := createStagedFile(a.output, filepath.FromSlash(name))
-	if err != nil {
-		return err
-	}
-	defer func() { _ = output.Close() }()
-	hash := sha256.New()
-	written, err := io.CopyN(io.MultiWriter(output, hash), snapshotReader{ctx: a.ctx, file: input}, want.Size)
-	if err != nil {
-		return err
-	}
-	if written != want.Size || hex.EncodeToString(hash.Sum(nil)) != want.SHA256 {
-		return replacementConflict(name, "rendered content changed during copy")
-	}
-	if err := a.restore(name, output); err != nil {
-		return err
-	}
-	return output.Sync()
+	return a.owned.writeFrom(a.ctx, name, snapshotReader{ctx: a.ctx, file: input}, want.Size, want.SHA256, func(output *os.File) error { return a.restore(name, output) })
 }
