@@ -3060,3 +3060,16 @@ Published release verification still uses the public tag lookup.
 Commit `567691400acdce5b96710ffdf0150f7939d4ab3f` contains the repair. Thirteen publisher and transport tests report success.
 The [repair proof](../../plans/proof/starport-production-catalog/csp6/windows-job-budget-2026-09-14/verification.json) retains the accepted finding, failed regression, and current review state.
 Hosted publication remains unverified and requires the pending owner authorization.
+
+
+## Credential PR qualification, 2026-09-14
+
+[PR #161](https://github.com/agentstation/starmap/pull/161) contains the integrated Starmap credential policy and public acquisition resolver.
+Implementation commit `4ef4d2ad4` precedes integration commit `d46411958`, which includes the merged S3 module update.
+The full repository suite passes 6,838 events with eight explicit skips before the module update.
+Final auth, acquisition, and S3 suites pass 268 race events after integration.
+
+Six producer subcases, external consumers, generated documentation, strict prose, lint, and Go policy pass.
+Sol and Opus report no actionable findings in the required review. The PR uses guarded auto-merge and awaits native CI.
+The [credential proof](../../plans/proof/starport-production-catalog/csp7/policy-composition-2026-09-14/verification.json) owns source hashes, preserved failures, and exact results.
+CSP7 remains in progress. Product cases A11 and A12 still require Starport integration.

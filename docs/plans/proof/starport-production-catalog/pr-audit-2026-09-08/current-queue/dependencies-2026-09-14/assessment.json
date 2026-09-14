@@ -1,12 +1,21 @@
 {
-  "observed_at": "2026-09-14T20:10:00Z",
-  "scope": "Dependency PR assessment, one unchanged-head CI retry, and reviewed Starport PR 374 merge. No branch deletion.",
+  "observed_at": "2026-09-14T22:59:44.167243+00:00",
+  "scope": "Reviewed Starmap PR157 merge, superseded PR155 closure, and PR159 branch refresh with guarded auto-merge. Preserve the earlier Starport PR374 merge and unresolved dependency findings. No branch deletion.",
   "pull_requests": [
     {
       "repo": "starmap",
       "number": 157,
       "head": "b1bab6d65037bdc6f0f8f81402c98bfe8116dd54",
-      "result": "11 successful checks and neutral CodeQL. Four module files include the server-storage consumer. S3 update also advances the AWS core version requested by PR 155. Final merge review remains required."
+      "result": "Merged after 11 passing checks and neutral CodeQL. Automatic review skipped the four module-only files. The merged tree exactly matches the reviewed head.",
+      "history": [
+        {
+          "observed_at": "2026-09-14T20:10:00Z",
+          "result": "11 successful checks and neutral CodeQL. Four module files include the server-storage consumer. S3 update also advances the AWS core version requested by PR 155. Final merge review remains required."
+        }
+      ],
+      "merge_commit": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
+      "merged_at": "2026-09-14T22:23:16Z",
+      "tree_comparison_exit_code": 0
     },
     {
       "repo": "starport",
@@ -21,7 +30,15 @@
     {
       "repo": "starmap",
       "number": 155,
-      "result": "Linux package setup failed on Go proxy HTTP/2 INTERNAL_ERROR. Windows x64 job was cancelled. Reassess necessity after PR 157, which includes the core update."
+      "result": "Closed as superseded. The merged PR157 includes AWS core v1.47.0 in both root and server-storage consumer modules. GitHub already marked this PR closed when the close command ran.",
+      "history": [
+        {
+          "observed_at": "2026-09-14T20:10:00Z",
+          "result": "Linux package setup failed on Go proxy HTTP/2 INTERNAL_ERROR. Windows x64 job was cancelled. Reassess necessity after PR 157, which includes the core update."
+        }
+      ],
+      "state": "CLOSED",
+      "closed_at": "2026-09-14T22:25:21Z"
     },
     {
       "repo": "starmap",
@@ -36,10 +53,20 @@
     {
       "repo": "starmap",
       "number": 159,
-      "head": "d3561be40fac745548e64d971a806ce688d4c5dd",
-      "result": "Verification failed on sum.golang.org HTTP/2 INTERNAL_ERROR. Retried only that job on the unchanged head. Retry outcome remains pending.",
+      "head": "c407942ba6410d2c35231b967515e51d5e1dc0d8",
+      "result": "The unchanged-head retry passed, yielding 11 passing checks and neutral CodeQL. GitHub then required the new main branch. Updated with a merge commit, verified the module-only diff, and enabled squash auto-merge under required checks. Fresh CI remains active.",
       "retry_command": "gh run rerun 34867290745 --repo agentstation/starmap --job 104054205697",
-      "retry_exit_code": 0
+      "retry_exit_code": 0,
+      "history": [
+        {
+          "observed_at": "2026-09-14T20:10:00Z",
+          "result": "Verification failed on sum.golang.org HTTP/2 INTERNAL_ERROR. Retried only that job on the unchanged head. Retry outcome remains pending."
+        }
+      ],
+      "prior_head": "d3561be40fac745548e64d971a806ce688d4c5dd",
+      "base": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
+      "auto_merge_enabled": true,
+      "merged": false
     }
   ],
   "artifacts": [
@@ -156,6 +183,126 @@
       "archive": "starport374-merged.json.gz",
       "sha256": "4af34e58b95b38d577a7261b3b091f26f63a1e5120195e31ae1fee5e835e296b",
       "archive_sha256": "a5e4820a3edb8b236004f7a1b6c77a3565712ada20b17ac7ef84fd651b6b646f"
+    },
+    {
+      "source": "starmap-open-prs-2026-09-14-current.json",
+      "archive": "starmap-open-prs-2026-09-14-current.json.gz",
+      "sha256": "0568babc9bbd517c1508a429bfeb1067dba263441781cce8cc543e7e3cd531cb",
+      "archive_sha256": "3af09c4809e1dbcd5ceb2c192f7027e15e55c9832053cbe76238b0c4438aef53"
+    },
+    {
+      "source": "starport-open-prs-2026-09-14-current.json",
+      "archive": "starport-open-prs-2026-09-14-current.json.gz",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "archive_sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80"
+    },
+    {
+      "source": "pr157-review-current.json",
+      "archive": "pr157-review-current.json.gz",
+      "sha256": "395a0251c7400a96bf3da888896c24303437bbd259496b4c58d2e6539c9f621b",
+      "archive_sha256": "2549e143cfdf2cdd22758fd30a8ddfe19c0748e9e76fa46fa8e671201236ea30"
+    },
+    {
+      "source": "pr157-review-current.diff",
+      "archive": "pr157-review-current.diff.gz",
+      "sha256": "24fb97eab4cf1fa23c8dd67b39a39a0e71bd0196b7e9c376c7c8fd71ad19a69d",
+      "archive_sha256": "6e847d1005d90a81c806de4d9bf6fe8e84a9bbe7e824ba46d8996ef43fc066d3"
+    },
+    {
+      "source": "pr157-checks-before-merge.json",
+      "archive": "pr157-checks-before-merge.json.gz",
+      "sha256": "8d338e2d4f34b6ae2304ff27bd83a890ef5424898998a2ea859ecf4f60845e2d",
+      "archive_sha256": "13fd05126ccd3b133c6e379ef03a920f57833f60676f712b59c214c0e96a53ad"
+    },
+    {
+      "source": "pr157-autoreview.log",
+      "archive": "pr157-autoreview.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "archive_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    {
+      "source": "pr157-merged.json",
+      "archive": "pr157-merged.json.gz",
+      "sha256": "dad346f71ae0106aaac9e6d29a1c2d07d3dde4995c012f30b72cdc6065fc5305",
+      "archive_sha256": "33b83fc6fdb5d40dc75d456c587f70e308cf6ae73c9700dbde2f7cf248d1a33a"
+    },
+    {
+      "source": "pr157-merged-module.json",
+      "archive": "pr157-merged-module.json.gz",
+      "sha256": "b5ebab261acbc67f2d0449e631bd2d4096c96d0335d681e9b2e478a2038817cb",
+      "archive_sha256": "2bce29df5c5dbf953b64ba02d41f7e890e8ee637fea2f2b5f65b5e9cea8c8db1"
+    },
+    {
+      "source": "pr157-merged-consumer-module.json",
+      "archive": "pr157-merged-consumer-module.json.gz",
+      "sha256": "3f0e73c49c7ea0e4b33cae6c332d30d914a523263178c68082f53c0df962e8bf",
+      "archive_sha256": "cd06d0c1f3d882320ae7c336272abdd63b989b8ff0fafcf35ffdc2ea29aa1808"
+    },
+    {
+      "source": "pr155-superseded.diff",
+      "archive": "pr155-superseded.diff.gz",
+      "sha256": "0f60cd899a6b65741322ab357346588097214e26e61c370e3bc8c3f9883f0853",
+      "archive_sha256": "237df14e306c6b546092f5bdf2eed800347fc570b829a6f17044474c53dc80aa"
+    },
+    {
+      "source": "pr155-closed.json",
+      "archive": "pr155-closed.json.gz",
+      "sha256": "e5e86938ea958e87ea97cad6caaf3705524ccdb67685a73c3b65e570e08de671",
+      "archive_sha256": "2756bf142f3da90f16d0f3fae205b2c1c2c1473a93d1e7b62f0b42156b0cbc44"
+    },
+    {
+      "source": "pr159-review-current.json",
+      "archive": "pr159-review-current.json.gz",
+      "sha256": "14de308ca622a27360f8d4b96ba9046b574183da37ad53c8215631718d92011d",
+      "archive_sha256": "b33587c47aa4eab8d83e7ce863e466409ea7924c789a1bd2a03d820f00bbe40f"
+    },
+    {
+      "source": "pr159-review-current.diff",
+      "archive": "pr159-review-current.diff.gz",
+      "sha256": "769854436b7de32d1333bdd1b0615d0ec1c24b8ba3e1114ac860fdce0454c5be",
+      "archive_sha256": "3777a550613268a52ee72f78992918eb17ac6735fa835ef0620894a97749cc9c"
+    },
+    {
+      "source": "pr159-checks-before-merge.json",
+      "archive": "pr159-checks-before-merge.json.gz",
+      "sha256": "2c10a0bb010217545db1a9c3ef14eb59a00265ce1e2e360d620e66cdd6865681",
+      "archive_sha256": "bb040fcf081dccda97f4606d161a60c071fc03237059dd3d01449fd477eb19cd"
+    },
+    {
+      "source": "pr159-autoreview.log",
+      "archive": "pr159-autoreview.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "archive_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    {
+      "source": "pr159-after-pr157.json",
+      "archive": "pr159-after-pr157.json.gz",
+      "sha256": "d989138553a8dfe1321a2520236810e815e2e292052d5fa50ed60c176751249c",
+      "archive_sha256": "f24c4ac0ff6818c51956820596e8f7d84d79fe69f8c9cb0fe02f701dc50035a4"
+    },
+    {
+      "source": "pr159-updated.json",
+      "archive": "pr159-updated.json.gz",
+      "sha256": "b35c1855138687486da49af6c7bc47c24ff3db4998006a903600594ab3caef13",
+      "archive_sha256": "dfdbffc2d56d3208e7a5dce46659353843384b3a2031a3d79cfebc46b494d174"
+    },
+    {
+      "source": "pr159-updated-autoreview.log",
+      "archive": "pr159-updated-autoreview.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "archive_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    {
+      "source": "pr159-auto-merge-verified.json",
+      "archive": "pr159-auto-merge-verified.json.gz",
+      "sha256": "da26338c2a6b8a167cbf7ce73ddecc6fffc78375b6acfe2699b4f697efdacf80",
+      "archive_sha256": "3bb72d8c0566c64085ed778fd89c555124190b0e1e1c3b75dfb1cbb172ec3414"
+    },
+    {
+      "source": "pr159-latest-qualification.json",
+      "archive": "pr159-latest-qualification.json.gz",
+      "sha256": "ea600767eca1eccc3f33f7e15a15007cc707cd48072f0acdaf0a959116f0e415",
+      "archive_sha256": "0bfb2ed77545dc0bdf623728e31ab8cdc2ed8097106fc0c2b1662a980516de47"
     }
   ],
   "permission_diagnostic": {

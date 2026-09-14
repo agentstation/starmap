@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-14T22:18:38.276871+00:00",
-  "status": "candidate_in_progress",
+  "updated_at": "2026-09-14T22:59:44.167243+00:00",
+  "status": "native_ci_in_progress",
   "branch": "codex/catalog-acquisition-credentials",
   "base_commit": "a996b863dcb4e4edfc54d749a07240614d849574",
-  "work_commit": null,
+  "work_commit": "4ef4d2ad42476c16f7bb696c9da382444b391632",
   "source_files": {
+    ".github/workflows/pr.yaml": "3e4e978142e0a1625b3c4e1d55ddc23f576d5e9d3a8eca34330a6687762512c5",
     "docs/ARCHITECTURE.md": "d121e8ab83db3503ded00dbc669bd3a27ffd396a33161b7d2246c158fab73560",
     "internal/auth/checker.go": "1eacf53f24cfcca7f39a4095cffb1afe1e38ba4094579899f0e502dcdcd9c596",
     "internal/auth/lifecycle_contract_test.go": "b3ca2d374f0ecf8510fc88ae227e54f6fea72716b8d411904ec37ccc46ad8f1b",
@@ -18,6 +19,7 @@
     "internal/cli/table/models.go": "cea01d04a3ba6d3c6b92505d6e8c027fae47ca74aac23d1bd18c0c64b2adee9c",
     "internal/cli/table/models_test.go": "2e0ef87fb519abbf17d41ae90def2d1f62c1218c2b89f8e0601e6192ec93be34",
     "pkg/productpaths/policy/access.go": "10e99ebdbe0666209c636f3e125653f287637d034954bc6ecd56d526369ed199",
+    "pkg/sources/README.md": "3482904f22ae89c710a8726afeb1edee57b5e0fb26d6cc551a205bd4efff376f",
     "scripts/catalog-product-checks.json": "dc9ec2e2885d4ec85a5c77c423e35480078eb63ed8a16314bdb80ee0b8a90842",
     "scripts/catalog_product_verify.py": "22b2afe3ab80ade99d811011da0bd086fa82b37ca54f222efaf17e08b9130a83",
     "scripts/test_catalog_component_checks.py": "1a465493f12ee1f4aed4fd51f42292f2fbae2887ad85c7750ddb7ce438305592",
@@ -1093,6 +1095,163 @@
       "sha256": "9bd35075e54ec924acefc7071065c78561c39d1d053a327b5ee6840549ffe9d1",
       "exit_code": 0,
       "meaning": "Plan structure and protected contract validation before the final task-result refresh."
+    },
+    "native-actionlint-before.log": {
+      "source": "native-actionlint-before.log",
+      "archive": "native-actionlint-before.log.gz",
+      "sha256": "8d56de18666686f473423291060c3baf0e979b64c3ec4acebb0e5e1f7b440997",
+      "archive_sha256": "06b284db2415c37053cd144e905cfdaa7b521e0b32db5d8dc50a08ad752d7270",
+      "exit_code": 1,
+      "meaning": "Existing intentional output-redirection warning."
+    },
+    "native-actionlint-after.log": {
+      "source": "native-actionlint-after.log",
+      "archive": "native-actionlint-after.log.gz",
+      "sha256": "8d56de18666686f473423291060c3baf0e979b64c3ec4acebb0e5e1f7b440997",
+      "archive_sha256": "06b284db2415c37053cd144e905cfdaa7b521e0b32db5d8dc50a08ad752d7270",
+      "exit_code": 1,
+      "meaning": "Identical warning after native auth coverage and Windows budget changes."
+    },
+    "native-actionlint-comparison.json": {
+      "source": "native-actionlint-comparison.json",
+      "archive": "native-actionlint-comparison.json.gz",
+      "sha256": "53723aceff1ed7a7103748aee223cef4bbd5efecf23236131e0024e24f68b5bd",
+      "archive_sha256": "079ab7457273a37da2fd8cd464aef2402a641e6f6f65c9bd60671507db17f9c8",
+      "exit_code": 0,
+      "meaning": "Before and after diagnostics are identical."
+    },
+    "native-action-pins.log": {
+      "source": "native-action-pins.log",
+      "archive": "native-action-pins.log.gz",
+      "sha256": "d638a819b2813297a4abb5c7711841b1dbc6a8c0ff577cb8399f664425517638",
+      "archive_sha256": "5c91ab2a4c9c6ee24fc6898929a7c0ce8debf4d8773fd9108b9a83ff0a428482",
+      "exit_code": 0,
+      "meaning": "Nine action references match their advertised tags."
+    },
+    "native-auth-preflight.jsonl": {
+      "source": "native-auth-preflight.jsonl",
+      "archive": "native-auth-preflight.jsonl.gz",
+      "sha256": "df65526ad1f5217232ad28a57e16b0ebcab472f12b42e4da5a4ab907d9b22f73",
+      "archive_sha256": "be48f310bdac709b8050a453e894e66716668ebe38c46405db5dd9950decace1",
+      "exit_code": 0,
+      "meaning": "Native job command passes locally with minimum Go and CGO disabled.",
+      "test_events": {
+        "pass": 120,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "operator-docs-check-first.log": {
+      "source": "operator-docs-check-first.log",
+      "archive": "operator-docs-check-first.log.gz",
+      "sha256": "b65b157c1d9829b5970a1b570d873ac5a885e6eef6416428ece1c2384937f4da",
+      "archive_sha256": "081ba29ac6dca1a9ea31525fcee6bdbf354df0a315a2f00340ae1248720f65ba",
+      "exit_code": 2,
+      "meaning": "Generated source credential reference is stale."
+    },
+    "operator-docs-check-final.log": {
+      "source": "operator-docs-check-final.log",
+      "archive": "operator-docs-check-final.log.gz",
+      "sha256": "b3edf2b408c66fe55f52b742bef9d6989904ffed4e6e1df27c63b0bcbd3ed596",
+      "archive_sha256": "7ae5b35d22aa02dc605ff5e80b2fa5ab60c8f8272fb86b23fff18a1e2876d787",
+      "exit_code": 0,
+      "meaning": "OpenAPI and generated reference checks pass after regeneration."
+    },
+    "operator-writing-generated.log": {
+      "source": "operator-writing-generated.log",
+      "archive": "operator-writing-generated.log.gz",
+      "sha256": "4af9e597dc774452e780e7d1dab44140b579392585f21228e77c1eec68e14d5c",
+      "archive_sha256": "75ad81ec5a4a79044afaf6daeba95daf83818230bc96bea6ece11ca263ee7e53",
+      "exit_code": 0,
+      "meaning": "Final strict prose passes all 1689 files."
+    },
+    "operator-repository-final.jsonl": {
+      "archive": "operator-repository-final.jsonl.gz",
+      "sha256": "89beb4875cbbc0cb28d360857265de12d617e027c7e24c24cdf46f8e0c37d928",
+      "exit_code": 0,
+      "meaning": "Complete repository suite before S3 integration. Go source stayed unchanged; separate final checks cover native workflow and generated documentation.",
+      "test_events": {
+        "pass": 6838,
+        "fail": 0,
+        "skip": 8
+      }
+    },
+    "merged-sdk-task.jsonl": {
+      "archive": "merged-sdk-task.jsonl.gz",
+      "sha256": "ad6de22d44d6c00bb9d03be87d80d82a1e3c8afaee81cf3509d9dd87c977aa99",
+      "exit_code": 0,
+      "meaning": "Integrated auth, acquisition, and S3 race suites pass after the four module-file changes.",
+      "test_events": {
+        "pass": 268,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "merged-sdk-consumers.log": {
+      "archive": "merged-sdk-consumers.log.gz",
+      "sha256": "d67548197a1466e6925539d9d6f3648931cf401605a7dca6123c55b59c2697d7",
+      "exit_code": 0,
+      "meaning": "External consumer closure, compile, lifecycle, and storage checks pass after S3 integration."
+    },
+    "merged-sdk-goago.json": {
+      "archive": "merged-sdk-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "exit_code": 0,
+      "meaning": "Integrated Go policy passes."
+    },
+    "merged-sdk-lint.log": {
+      "archive": "merged-sdk-lint.log.gz",
+      "sha256": "1ea61485496ffbe67bd8f16fb400e6c7045c7e739071b1d32149bddfec6b2536",
+      "exit_code": 0,
+      "meaning": "Integrated pinned lint passes."
+    },
+    "merged-sdk-product.json": {
+      "archive": "merged-sdk-product.json.gz",
+      "sha256": "2bbbbee51dcc1b08966bd9f5cd52c75eb7435bc0eea28053e69ea99e73224745",
+      "exit_code": 0,
+      "meaning": "All six Starmap producer component subcases pass after S3 integration; full product acceptance remains unverified."
+    },
+    "pre-pr-review.log": {
+      "archive": "pre-pr-review.log.gz",
+      "sha256": "4d08132f97d6fd035fd6b8a62b5d526a2164266e25bf16ea8968ac48ac3efb08"
+    },
+    "published-pr-current.json": {
+      "archive": "published-pr-current.json.gz",
+      "sha256": "105e93e38b90aa820c32716176fe2d6958e3523adfa81cda60e4809c82456bd9"
+    },
+    "initial-ci-runs.json": {
+      "archive": "initial-ci-runs.json.gz",
+      "sha256": "4c5d64b863056912a3a3245f05e34dbb575ad36abddea2114463896672d86a1c"
+    },
+    "initial-native-run.json": {
+      "archive": "initial-native-run.json.gz",
+      "sha256": "d7b1e89c3a984491e4d6274a56e333dd6e80250be6015b4f459dbe9eb9e71a3d"
+    },
+    "pull-request-body.md": {
+      "archive": "pull-request-body.md.gz",
+      "sha256": "7b6b7bb2a5faa81e2982251648f743a802ac6745621e04e6045b67abc87c257f"
+    },
+    "pr161-current.json": {
+      "source": "pr161-current.json",
+      "archive": "pr161-current.json.gz",
+      "sha256": "f7a3e77414c5bbc624747380ce08aa34bc8e28047fb49c7195b6351f451db24c",
+      "archive_sha256": "3d2732074839de61482b13aee2e03e825656bd30655b83c6ceb4d42f8aa8e419"
+    },
+    "native-run-checkpoint.json": {
+      "source": "native-run-checkpoint.json",
+      "archive": "native-run-checkpoint.json.gz",
+      "sha256": "1271b122928598faead32d1737d9138dc542738de45ea3579d77917b72669419",
+      "archive_sha256": "d7705621d4419119326812f85aca03584569efffb31a229c30d0f5d472cfb50d"
+    },
+    "csp7-published-plan-writing.log": {
+      "archive": "csp7-published-plan-writing.log.gz",
+      "sha256": "8685d11e4849517401a5b23a086a6957fba8c2a3295cc940fe99a9d3cc619bba",
+      "archive_sha256": "1c6c9c6194eefd247df4dad8e805cf82248c7c33474fd699f7dfb3d43ca0a603"
+    },
+    "csp7-published-plan-writing-repaired.log": {
+      "archive": "csp7-published-plan-writing-repaired.log.gz",
+      "sha256": "055fc0f0bd63d191a3b199cfcffcc5b550c4848386697fbc7318298e38827a13",
+      "archive_sha256": "f4a535cc031f523b5947d2d969e6ed93e17fd86bfde6a3194510bbc8ec0d5b0d"
     }
   },
   "qualification": {
@@ -1100,29 +1259,115 @@
     "producer_pass": 6,
     "producer_test_events": 76,
     "product_cases": "A11 and A12 UNVERIFIED",
-    "repository_full": "running after diagnostic repair",
-    "pre_pr_review": "not_started",
-    "native_ci": "not_started",
+    "repository_full": "PASS: 6838 test events, eight explicit skips before the S3 module update",
+    "pre_pr_review": "PASS: Sol xhigh and Opus high; zero findings",
+    "native_ci": "queued",
     "merged": false,
     "pinned_lint": "PASS",
     "goago": "PASS",
     "strict_prose": "PASS",
     "final_task_test_events": 227,
-    "canonical_prose": "PASS: 1528 files, zero diagnostics"
+    "canonical_prose": "PASS: 1529 files, zero diagnostics after two prose repairs",
+    "generated_documentation": "PASS",
+    "native_job_preflight": "PASS on local darwin/arm64 only; hosted platforms remain UNVERIFIED",
+    "final_integrated_task_test_events": 268,
+    "consumer_dependencies": "PASS",
+    "native_jobs": [
+      {
+        "name": "Constructor Network Passivity",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime windows-2025",
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      {
+        "name": "Security & Reliability",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime macos-15",
+        "status": "queued",
+        "conclusion": ""
+      },
+      {
+        "name": "Runtime ubuntu-24.04",
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      {
+        "name": "Runtime macos-15-intel",
+        "status": "queued",
+        "conclusion": ""
+      },
+      {
+        "name": "Runtime windows-11-arm",
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      {
+        "name": "Verification Gate",
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      {
+        "name": "Offline Server Persistence",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Runtime ubuntu-24.04-arm",
+        "status": "in_progress",
+        "conclusion": ""
+      },
+      {
+        "name": "Action Pin Provenance",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
   },
   "remaining": [
-    "Finish the full repository suite on the recorded source.",
-    "Complete required pre-PR review, publish one integrated CSP7 PR, run native CI, and merge.",
+    "Qualify hosted CI for PR161 and assess failures before any repair.",
+    "Keep the branch current after dependency merges and retain mandatory review and required checks.",
+    "Verify the guarded merge and record CSP7 completion only after its acceptance criteria hold.",
     "Starport CSP9 must compose its role namespace and shared authority."
   ],
   "running": [
     {
-      "session_id": 23143,
-      "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 -timeout=30m -p=1 -json ./...",
-      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials",
-      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials/.tmp/csp7/operator-repository-final.jsonl",
-      "source_inventory": "operator-final-inputs.json.gz"
+      "kind": "github_actions",
+      "run_id": 34905866209,
+      "url": "https://github.com/agentstation/starmap/actions/runs/34905866209",
+      "head": "d464119584953a95a995c65f783d6db552f6209b",
+      "status": "queued"
     }
   ],
-  "source_inventory": "operator-final-inputs.json.gz"
+  "source_inventory": "operator-final-inputs.json.gz",
+  "source_inventory_note": "The full repository run uses the unchanged Go source from operator-final-inputs.json. Only native workflow selection and generated source documentation changed during that run.",
+  "integration_commit": "d464119584953a95a995c65f783d6db552f6209b",
+  "integration_base": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
+  "pull_request": 161,
+  "pull_request_url": "https://github.com/agentstation/starmap/pull/161",
+  "auto_merge_enabled": true,
+  "plan_maintenance": {
+    "protected_sections_unchanged": 6,
+    "ledger_rows": 38,
+    "done": 10,
+    "active": "CSP7",
+    "execution_entries": 10,
+    "archive_rows_preserved": 3,
+    "archive_local_links_valid": 7,
+    "resume_words": 269,
+    "required_resume_read_words": 3341,
+    "required_read_path": [
+      "docs/plans/starport-production-catalog-plan.html#current-resume",
+      "docs/plans/starport-production-catalog-plan.html#task-CSP7",
+      "docs/plans/proof/starport-production-catalog/csp7/policy-composition-2026-09-14/verification.json"
+    ],
+    "cold_resume": "PASS: current task, source, CI run, merge conditions, pending authorization, and consumer limitations remain explicit.",
+    "size_exception": "The existing task and completion contracts require the retained plan size. Current state and task proof provide the bounded execution path."
+  }
 }

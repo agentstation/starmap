@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-09-14T22:10:55.400793+00:00",
+  "updated_at": "2026-09-14T22:59:44.167243+00:00",
   "prior_head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
   "repair_commit": "399ec27c0190f9028309eb3ca1149f1146ff3075",
   "pull_request": 160,
@@ -21,14 +21,16 @@
       "diagnostic": "SC2024 for intentional runner-owned output redirection."
     },
     "required_review": {
-      "status": "RUNNING",
-      "session_id": 42183,
+      "status": "PASS",
       "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-draft-lookup-review.log",
       "head": "567691400acdce5b96710ffdf0150f7939d4ab3f",
       "reviewers": [
         "codex:gpt-5.6-sol:xhigh",
         "claude:claude-opus-5:high"
-      ]
+      ],
+      "exit_code": 0,
+      "sections": 3,
+      "accepted_remaining_findings": 0
     },
     "prior_required_review": {
       "status": "FAIL",
@@ -37,9 +39,72 @@
       "finding": "REST release lookup by tag does not return drafts. The original fixture masked this behavior.",
       "assessment": "Use the GitHub CLI draft lookup strategy, then verify the REST release identity. Preserve the final published-tag lookup.",
       "primary_source": "https://github.com/cli/cli/blob/trunk/pkg/cmd/release/shared/fetch.go"
+    },
+    "fresh_native_ci": {
+      "status": "in_progress",
+      "run_id": 34903583463,
+      "head": "567691400acdce5b96710ffdf0150f7939d4ab3f",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34903583463",
+      "base_refresh_required": "After the reviewed dependency queue merges, refresh PR160 from main and retain strict merge requirements.",
+      "jobs": [
+        {
+          "name": "Verification Gate",
+          "status": "in_progress",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime macos-15-intel",
+          "status": "in_progress",
+          "conclusion": ""
+        },
+        {
+          "name": "Offline Server Persistence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Runtime macos-15",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Security & Reliability",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Action Pin Provenance",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Runtime ubuntu-24.04",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Constructor Network Passivity",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Runtime windows-11-arm",
+          "status": "in_progress",
+          "conclusion": ""
+        },
+        {
+          "name": "Runtime ubuntu-24.04-arm",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Runtime windows-2025",
+          "status": "in_progress",
+          "conclusion": ""
+        }
+      ]
     }
   },
-  "published": false,
   "merged": false,
   "evidence": {
     "native-run.json": {
@@ -95,7 +160,45 @@
       "sha256": "603210c7deb5155b03caa3a0af222199617d77598434e35f4ca290afcc3709d0",
       "exit_code": 0,
       "meaning": "Strict prose passes 1754 files with no diagnostics."
+    },
+    "csp6-draft-lookup-review.log": {
+      "source": "csp6-draft-lookup-review.log",
+      "archive": "csp6-draft-lookup-review.log.gz",
+      "sha256": "888ba6267270a7cad85c829fa3e12af5bfcf9e5f3e687a6e07b9d68132735907",
+      "archive_sha256": "34d9aa6eec026d15ea6625ef3c10fb2ee6fe7bad49027716efe697422f4ad9df"
+    },
+    "csp6-pr160-fresh-runs.json": {
+      "source": "csp6-pr160-fresh-runs.json",
+      "archive": "csp6-pr160-fresh-runs.json.gz",
+      "sha256": "0891d4d63ed3ae480490855aa886351247fe97847a05e0618c94731018d5cbce",
+      "archive_sha256": "218132604bdfcc478085b6b23d65cd7b0fa28a102b2b8c7bafe03eba7137ab98"
+    },
+    "csp6-pr160-live-run.json": {
+      "source": "csp6-pr160-live-run.json",
+      "archive": "csp6-pr160-live-run.json.gz",
+      "sha256": "d275c6332114c55a8ae312fc9fedca999867cacd68f7761d8e20d7958e51daf7",
+      "archive_sha256": "1202104898e11def1cb16188d865c52f807a95208a854b5063f6dba71af752af"
+    },
+    "csp6-pr160-updated-body.md": {
+      "source": "csp6-pr160-updated-body.md",
+      "archive": "csp6-pr160-updated-body.md.gz",
+      "sha256": "6189b55fd4ca470117c773f47b308056649f8318190bbd63b73073cd665b4a4c",
+      "archive_sha256": "96790b4268ff686933e1c88be5e955f9e8b1b42267a03872183958e008cfe9c0"
+    },
+    "csp6-pr160-live-pr.json": {
+      "source": "csp6-pr160-live-pr.json",
+      "archive": "csp6-pr160-live-pr.json.gz",
+      "sha256": "5ea428c52c98f575ad3b62bde30b39d2c0e23ed1c92d43b6947c2623ae126649",
+      "archive_sha256": "e1b9b2ebfa07adb9e40bb4fe230ffd368ed90519f1d7b3d81c5c86a1c8758634"
+    },
+    "csp6-native-run-checkpoint.json": {
+      "source": "csp6-native-run-checkpoint.json",
+      "archive": "csp6-native-run-checkpoint.json.gz",
+      "sha256": "b80b08b69d2dc875fcbe198efdeca4d55f02817e22e2f30e7ddae4f93441f0da",
+      "archive_sha256": "872c8febfc448c722a359cf875fb1e1d2273e39fc11a4318049b974e39340451"
     }
   },
-  "draft_lookup_repair_commit": "567691400acdce5b96710ffdf0150f7939d4ab3f"
+  "draft_lookup_repair_commit": "567691400acdce5b96710ffdf0150f7939d4ab3f",
+  "code_published": true,
+  "live_catalog_published": false
 }
