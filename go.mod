@@ -15,7 +15,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.47.0
 	github.com/aws/aws-sdk-go-v2/config v1.33.2
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.113.0
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.48.0
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.49.0
 	github.com/aws/smithy-go v1.28.1
 	github.com/ebitengine/purego v0.11.0
 	github.com/goccy/go-yaml v1.19.2
