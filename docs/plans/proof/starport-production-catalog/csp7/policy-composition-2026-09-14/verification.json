@@ -1,0 +1,1128 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-14T22:18:38.276871+00:00",
+  "status": "candidate_in_progress",
+  "branch": "codex/catalog-acquisition-credentials",
+  "base_commit": "a996b863dcb4e4edfc54d749a07240614d849574",
+  "work_commit": null,
+  "source_files": {
+    "docs/ARCHITECTURE.md": "d121e8ab83db3503ded00dbc669bd3a27ffd396a33161b7d2246c158fab73560",
+    "internal/auth/checker.go": "1eacf53f24cfcca7f39a4095cffb1afe1e38ba4094579899f0e502dcdcd9c596",
+    "internal/auth/lifecycle_contract_test.go": "b3ca2d374f0ecf8510fc88ae227e54f6fea72716b8d411904ec37ccc46ad8f1b",
+    "internal/auth/resolver.go": "4f75938c7657c4720523b3ce56deddbd736bdcd95654a20511cce0b9fcf6d09b",
+    "internal/cli/app/app.go": "898a0da9d13cb9b8abcc9de103861b596af114d86b70326438651e4b6beec260",
+    "internal/cli/app/catalog_runtime.go": "95a238577ff8b96ec5d2b524a9f9fcccee8e158ffc71e3cec87fda21ec55154e",
+    "internal/cli/app/file_manifest.go": "9fbde83fc7481f7ba759ce5306cecca0ad7d1c99c82f853357d4f50d2d67c5e5",
+    "internal/cli/app/file_policy.go": "272e965f7ade609e26f31599f66252b02170bde933257d503da5fa6e1e9b82ba",
+    "internal/cli/app/product_paths.go": "af0c8b5b90e94ec9be4f32693a83686068d27a92d6f1ed7b83ec6d2a56a8abcd",
+    "internal/cli/table/models.go": "cea01d04a3ba6d3c6b92505d6e8c027fae47ca74aac23d1bd18c0c64b2adee9c",
+    "internal/cli/table/models_test.go": "2e0ef87fb519abbf17d41ae90def2d1f62c1218c2b89f8e0601e6192ec93be34",
+    "pkg/productpaths/policy/access.go": "10e99ebdbe0666209c636f3e125653f287637d034954bc6ecd56d526369ed199",
+    "scripts/catalog-product-checks.json": "dc9ec2e2885d4ec85a5c77c423e35480078eb63ed8a16314bdb80ee0b8a90842",
+    "scripts/catalog_product_verify.py": "22b2afe3ab80ade99d811011da0bd086fa82b37ca54f222efaf17e08b9130a83",
+    "scripts/test_catalog_component_checks.py": "1a465493f12ee1f4aed4fd51f42292f2fbae2887ad85c7750ddb7ce438305592",
+    "acquisition/credentials.go": "8491c8182cadb123aba69f2f1126a44fedee219a6c9e44966d36c556f5a84190",
+    "acquisition/credentials_test.go": "b22271ec6166386e7b84c2d4347d9099e43163827c2936163af5fe25540302e7",
+    "docs/ACQUISITION_CREDENTIALS.md": "9f691078993b0a2fca49e6f123553030f77f4103ea2eb739553c3b6444412e2d",
+    "internal/auth/policy_inputs.go": "dd5e5891a17e11d34db789c4d5b443c4d1dffc783d12f77052a6b9b50334c208",
+    "internal/auth/policy_migration.go": "0abe9c88992b64e67804ad8c1cc25279d3eab2eb3cacdd835fb81a98e9015904",
+    "internal/auth/policy_migration_test.go": "c6f2e2c0e9b1701f7d101b5ac098cd5ac7e26e1f012afa6806117d538afd669f",
+    "internal/auth/policy_store.go": "6e66b5ac94bded4dd61ebbe3fbedd62f54b1c7150daa90e1aeb3682a0d4463c1",
+    "internal/cli/app/credential_policy.go": "25651a683f96cb223db90bff6043f96b757691fe383ecb804518d466426c7f9e",
+    "internal/cli/app/credential_policy_test.go": "1476bc59737b24110b0f9e16caba1c10cfb8907964fd6f3ddcf6271ff4fd7ab4"
+  },
+  "behavior": [
+    "Persistent policy compares complete old and new handles from shared input responses.",
+    "Fresh standalone startup records current precedence before catalog writes.",
+    "Passive application construction does not create policy storage.",
+    "Canonical owner-bound records reject corruption and ambiguous keys.",
+    "Public acquisition composition exposes explicit references and optional caller-selected policy state.",
+    "Expired material cannot return after policy acceptance.",
+    "Producer qualification never grants Starport or released-pair acceptance.",
+    "Provider diagnostics report selected safe origin names instead of only catalog-declared names.",
+    "Empty selected values and expired handles report invalid or unavailable, rather than absent."
+  ],
+  "evidence": {
+    "policy-migration-first.jsonl": {
+      "archive": "policy-migration-first.jsonl.gz",
+      "sha256": "5055d0171d7f1bdf7a8b754dec306a0d664a1f005d3f253be46781dabe50bf15",
+      "exit_code": 1,
+      "meaning": "Initial test build rejects an incorrect typed-error field. This is not behavior evidence.",
+      "test_events": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "fail",
+          "Elapsed": 0.001
+        }
+      ]
+    },
+    "policy-migration-second.jsonl": {
+      "archive": "policy-migration-second.jsonl.gz",
+      "sha256": "b5a04ee6862f3eee96275977782bbc4f209315b4c7ebd3c6960618a3215908ad",
+      "exit_code": 0,
+      "meaning": "First persistent migration cases.",
+      "test_events": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 1.6760000000000002
+        }
+      ]
+    },
+    "policy-app-first.jsonl": {
+      "archive": "policy-app-first.jsonl.gz",
+      "sha256": "47e8fc58815839417f7277d64107216c2d0f3fd654cdbc90126a6b74bff998b7",
+      "exit_code": 1,
+      "meaning": "Initial integration creates private state during passive construction. The later repair removes that side effect.",
+      "test_events": {
+        "pass": 471,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 2.171
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths",
+          "Action": "pass",
+          "Elapsed": 1.204
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "Action": "pass",
+          "Elapsed": 1.325
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "fail",
+          "Elapsed": 342.311
+        }
+      ]
+    },
+    "policy-passive-startup-repaired.jsonl": {
+      "archive": "policy-passive-startup-repaired.jsonl.gz",
+      "sha256": "1a89fbf31cedf21bde6a727cbad12a3175888673200b62ba11e6b313ca251784",
+      "exit_code": 0,
+      "meaning": "Passive startup regression after repair.",
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 10.894
+        }
+      ]
+    },
+    "policy-expiry-red.jsonl": {
+      "archive": "policy-expiry-red.jsonl.gz",
+      "sha256": "348502047e07435f05a57596816300b04b8a33057f089350d5be6585c5cce4e9",
+      "exit_code": 1,
+      "meaning": "Migration returns material that expires during policy acceptance.",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "fail",
+          "Elapsed": 1.416
+        }
+      ]
+    },
+    "policy-integration-focused.jsonl": {
+      "archive": "policy-integration-focused.jsonl.gz",
+      "sha256": "db7481b6b654d20955971de7cfc649aa00f54bd0af03aea8389589da49fee1de",
+      "exit_code": 0,
+      "meaning": "Expiry and initial application integration repairs.",
+      "test_events": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 2.757
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 11.066
+        }
+      ]
+    },
+    "policy-record-red.jsonl": {
+      "archive": "policy-record-red.jsonl.gz",
+      "sha256": "cb2d7958ed92e7882cee9989c601aabee66d211d9a3e8272e6bd6ec548069f1c",
+      "exit_code": 1,
+      "meaning": "Ambiguous policy records are accepted before canonical validation.",
+      "test_events": {
+        "pass": 0,
+        "fail": 4,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "fail",
+          "Elapsed": 0.483
+        }
+      ]
+    },
+    "policy-integration-final.jsonl": {
+      "archive": "policy-integration-final.jsonl.gz",
+      "sha256": "9b42d3f5dff22a29465b16d7275a41324bf904d77a276403af2a10c53e3d1bb6",
+      "exit_code": 0,
+      "meaning": "Startup, persistent migration, concurrency, expiry, ownership, and ambiguous records.",
+      "test_events": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 2.799
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 11.269
+        }
+      ]
+    },
+    "public-composition-first.jsonl": {
+      "archive": "public-composition-first.jsonl.gz",
+      "sha256": "2d98d731f87ce0d2db6abfa41beead8a6ddcaa0044647d06e65474d09afbb756",
+      "exit_code": 0,
+      "meaning": "Public API source passivity, persistent selection, redaction, and preflight validation.",
+      "test_events": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Action": "pass",
+          "Elapsed": 1.6179999999999999
+        }
+      ]
+    },
+    "component-registry-red.log": {
+      "archive": "component-registry-red.log.gz",
+      "sha256": "17dd4bea8565eaf4388eec9b057a50df2540b0dcdbaace2e90e2c11476557e94",
+      "exit_code": 1,
+      "meaning": "The previous verifier does not permit the CSP7 producer contract."
+    },
+    "component-registry-tests.log": {
+      "archive": "component-registry-tests.log.gz",
+      "sha256": "d9effd98f231e9d426072985a74ed2606c7e2a8a4981ded00d950b82d745bc22",
+      "exit_code": 0,
+      "meaning": "Ninety verifier tests preserve producer and consumer qualification boundaries."
+    },
+    "backend-recovery.jsonl": {
+      "archive": "backend-recovery.jsonl.gz",
+      "sha256": "a3e02c446152819aa9eb4e1f71db7dc4ff25e1975f6252a8db764f41a483e670",
+      "exit_code": 0,
+      "meaning": "Backend outage and denial refuse stale material and permit later recovery.",
+      "test_events": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 1.391
+        }
+      ]
+    },
+    "policy-composition-full.jsonl": {
+      "archive": "policy-composition-full.jsonl.gz",
+      "sha256": "c2688968618c1595dc6ee0dc65480ecd2ed31b9c2aac50178a5fc526a8f0c9c5",
+      "exit_code": 0,
+      "meaning": "Six complete package suites. The later backend recovery test is separate. Production Go files remain unchanged.",
+      "test_events": {
+        "pass": 714,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "Action": "pass",
+          "Elapsed": 1.176
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths",
+          "Action": "pass",
+          "Elapsed": 1.333
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 3.695
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/sources",
+          "Action": "pass",
+          "Elapsed": 2.048
+        },
+        {
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Action": "pass",
+          "Elapsed": 235.977
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 357.169
+        }
+      ]
+    },
+    "policy-composition-minimum.jsonl": {
+      "archive": "policy-composition-minimum.jsonl.gz",
+      "sha256": "e91d3c3a406516c045472aa7f4fc546210d0d43b2a3cc3abd1caa22a00030b33",
+      "exit_code": 0,
+      "meaning": "Initial minimum-Go migration and public API checks.",
+      "test_events": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Action": "pass",
+          "Elapsed": 1.909
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 3.9699999999999998
+        }
+      ]
+    },
+    "policy-composition-minimum-final.jsonl": {
+      "archive": "policy-composition-minimum-final.jsonl.gz",
+      "sha256": "a821ab043442416d229e9d6cdf858302bca1b275100969b49cd3ba6b1ab990dc",
+      "exit_code": 0,
+      "meaning": "Minimum-Go role, migration, application startup, and public API cases.",
+      "test_events": {
+        "pass": 38,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Action": "pass",
+          "Elapsed": 1.6360000000000001
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 3.43
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 11.607
+        }
+      ]
+    },
+    "policy-composition-task-final.jsonl": {
+      "archive": "policy-composition-task-final.jsonl.gz",
+      "sha256": "2ccfe3b66c0cbb9e7bb9a03bd4dcecf8b9ca2c572413414bec5bfa65cdc97791",
+      "exit_code": 0,
+      "meaning": "Complete auth and acquisition race suites on final production source.",
+      "test_events": {
+        "pass": 226,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 3.5460000000000003
+        },
+        {
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Action": "pass",
+          "Elapsed": 214.865
+        }
+      ]
+    },
+    "policy-composition-product.json": {
+      "archive": "policy-composition-product.json.gz",
+      "sha256": "b2308ff6a17940d0237db1230d8487f15aad6d8e6380873b8a0421587e09c089",
+      "exit_code": 0,
+      "meaning": "Six CSP7 producer component cases pass. Product cases A11 and A12 remain UNVERIFIED."
+    },
+    "policy-composition-goago-final.json": {
+      "archive": "policy-composition-goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "exit_code": 0,
+      "meaning": "Whole-module Go policy check reports no findings, errors, or stale ignores."
+    },
+    "policy-composition-writing-architecture.log": {
+      "archive": "policy-composition-writing-architecture.log.gz",
+      "sha256": "4af9e597dc774452e780e7d1dab44140b579392585f21228e77c1eec68e14d5c",
+      "exit_code": 0,
+      "meaning": "Strict prose passes for 1,689 files."
+    },
+    "policy-composition-lint.log": {
+      "archive": "policy-composition-lint.log.gz",
+      "sha256": "1ea61485496ffbe67bd8f16fb400e6c7045c7e739071b1d32149bddfec6b2536",
+      "exit_code": 0,
+      "meaning": "Pinned golangci-lint 2.12.2 reports zero issues."
+    },
+    "policy-repository-full.jsonl": {
+      "archive": "policy-repository-full.jsonl.gz",
+      "sha256": "25556effa9355e372931af8461295168a48db380277eb5c27c66d32e95f4a44a",
+      "exit_code": 1,
+      "meaning": "Initial full repository run: one missing-credential fixture failure. Source changed after that failure, so this run does not qualify the final source.",
+      "test_events": {
+        "pass": 6834,
+        "fail": 1,
+        "skip": 8
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap",
+          "Action": "pass",
+          "Elapsed": 284.079
+        },
+        {
+          "Package": "github.com/agentstation/starmap/acquisition",
+          "Action": "pass",
+          "Elapsed": 79.239
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-bootstrap-manifest",
+          "Action": "pass",
+          "Elapsed": 12.448
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+          "Action": "pass",
+          "Elapsed": 31.244
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-embedded-budget",
+          "Action": "pass",
+          "Elapsed": 2.303
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-modelsdev-promote",
+          "Action": "pass",
+          "Elapsed": 0.449
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-openapi-presence",
+          "Action": "pass",
+          "Elapsed": 0.167
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/architecture",
+          "Action": "pass",
+          "Elapsed": 0.27
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/attestation",
+          "Action": "pass",
+          "Elapsed": 0.267
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 1.767
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/bootstrap",
+          "Action": "pass",
+          "Elapsed": 30.272
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/bootstrap/budget",
+          "Action": "pass",
+          "Elapsed": 3.858
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/bootstrap/manifest",
+          "Action": "pass",
+          "Elapsed": 0.199
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/pipeline",
+          "Action": "pass",
+          "Elapsed": 3.598
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/query",
+          "Action": "pass",
+          "Elapsed": 0.194
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/reconciler",
+          "Action": "pass",
+          "Elapsed": 1.546
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/settings",
+          "Action": "pass",
+          "Elapsed": 7.352
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "Action": "pass",
+          "Elapsed": 313.891
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Action": "pass",
+          "Elapsed": 0.254
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/alerts",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 230
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/auth",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/authors",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/completion",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/config",
+          "Action": "pass",
+          "Elapsed": 0.307
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/deps",
+          "Action": "pass",
+          "Elapsed": 1.829
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/embed",
+          "Action": "pass",
+          "Elapsed": 0.251
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/migrate",
+          "Action": "pass",
+          "Elapsed": 0.399
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/models",
+          "Action": "pass",
+          "Elapsed": 0.286
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/providers",
+          "Action": "pass",
+          "Elapsed": 0.457
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/serve",
+          "Action": "pass",
+          "Elapsed": 0.424
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/update",
+          "Action": "pass",
+          "Elapsed": 0.426
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/commands/validate",
+          "Action": "pass",
+          "Elapsed": 0.296
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/completion",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/constants",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/convert",
+          "Action": "pass",
+          "Elapsed": 0.174
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/embed",
+          "Action": "pass",
+          "Elapsed": 0.144
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/emoji",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/filter",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/format",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/globals",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/hints",
+          "Action": "pass",
+          "Elapsed": 0.268
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/notify",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/provider",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/table",
+          "Action": "fail",
+          "Elapsed": 0.313
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/constants",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/deploymentdocs",
+          "Action": "pass",
+          "Elapsed": 0.158
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/deps",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/embedded",
+          "Action": "pass",
+          "Elapsed": 1.842
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/embedded/openapi",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/filepublish",
+          "Action": "pass",
+          "Elapsed": 0.202
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/fleet",
+          "Action": "pass",
+          "Elapsed": 0.152
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/privatefiles",
+          "Action": "pass",
+          "Elapsed": 3.669
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/providers/anthropic",
+          "Action": "pass",
+          "Elapsed": 1.5390000000000001
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/providers/clients",
+          "Action": "pass",
+          "Elapsed": 0.292
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/providers/google",
+          "Action": "pass",
+          "Elapsed": 0.272
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/providers/openai",
+          "Action": "pass",
+          "Elapsed": 1.48
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/runtimeacl/windows",
+          "Action": "pass",
+          "Elapsed": 0.159
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server",
+          "Action": "pass",
+          "Elapsed": 115.633
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/cache",
+          "Action": "pass",
+          "Elapsed": 0.441
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/handlers",
+          "Action": "pass",
+          "Elapsed": 2.732
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/middleware",
+          "Action": "pass",
+          "Elapsed": 0.397
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/openrouter",
+          "Action": "pass",
+          "Elapsed": 1.865
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/operations",
+          "Action": "pass",
+          "Elapsed": 0.181
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/params",
+          "Action": "pass",
+          "Elapsed": 0.188
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/response",
+          "Action": "pass",
+          "Elapsed": 0.186
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/server/sse",
+          "Action": "pass",
+          "Elapsed": 0.225
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/embedded",
+          "Action": "pass",
+          "Elapsed": 0.194
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/github",
+          "Action": "pass",
+          "Elapsed": 1.159
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/local",
+          "Action": "pass",
+          "Elapsed": 0.212
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "Action": "pass",
+          "Elapsed": 6.933
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/sources/providers",
+          "Action": "pass",
+          "Elapsed": 0.371
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/test/catalog",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/test/channel",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/test/filemutation",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/test/gitfixture",
+          "Action": "pass",
+          "Elapsed": 0.389
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/test/logging",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/test/providerfixture",
+          "Action": "pass",
+          "Elapsed": 0.224
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/transport",
+          "Action": "pass",
+          "Elapsed": 0.297
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs",
+          "Action": "pass",
+          "Elapsed": 19.856
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 0.223
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/authority",
+          "Action": "pass",
+          "Elapsed": 0.158
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/config",
+          "Action": "pass",
+          "Elapsed": 8.594
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/evidence",
+          "Action": "pass",
+          "Elapsed": 0.156
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/internal/resourcepolicy",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/permission",
+          "Action": "pass",
+          "Elapsed": 0.367
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock",
+          "Action": "pass",
+          "Elapsed": 0.163
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/internal/w32timerpc",
+          "Action": "pass",
+          "Elapsed": 0.202
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/permission/hostclock/profile",
+          "Action": "pass",
+          "Elapsed": 0.153
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/projection",
+          "Action": "pass",
+          "Elapsed": 0.141
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/remote",
+          "Action": "pass",
+          "Elapsed": 0.537
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "pass",
+          "Elapsed": 7.428
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/s3",
+          "Action": "pass",
+          "Elapsed": 0.366
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/differ",
+          "Action": "pass",
+          "Elapsed": 0.172
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/errors",
+          "Action": "pass",
+          "Elapsed": 0.168
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/logging",
+          "Action": "pass",
+          "Elapsed": 0.147
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths",
+          "Action": "pass",
+          "Elapsed": 0.168
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths/policy",
+          "Action": "pass",
+          "Elapsed": 0.141
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/provenance",
+          "Action": "pass",
+          "Elapsed": 0.159
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/sources",
+          "Action": "pass",
+          "Elapsed": 0.204
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/sources/payload",
+          "Action": "pass",
+          "Elapsed": 0.172
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/sync",
+          "Action": "pass",
+          "Elapsed": 0.18
+        },
+        {
+          "Package": "github.com/agentstation/starmap/remote",
+          "Action": "pass",
+          "Elapsed": 8.274000000000001
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 416.586
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime/source",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/runtime/status",
+          "Action": "skip",
+          "Elapsed": 0
+        },
+        {
+          "Package": "github.com/agentstation/starmap/server",
+          "Action": "pass",
+          "Elapsed": 5.099
+        }
+      ]
+    },
+    "operator-diagnostics-red.jsonl": {
+      "archive": "operator-diagnostics-red.jsonl.gz",
+      "sha256": "0e5e8318b3c672fcbf2d9761249e2c046e83e20a7fc1883531a658c54c7b1e9b",
+      "exit_code": 1,
+      "meaning": "Three diagnostic regressions fail before origin, empty-value, and expiry reporting repairs.",
+      "test_events": {
+        "pass": 2,
+        "fail": 3,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/table",
+          "Action": "fail",
+          "Elapsed": 0.381
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "fail",
+          "Elapsed": 0.713
+        }
+      ]
+    },
+    "operator-diagnostics-green.jsonl": {
+      "archive": "operator-diagnostics-green.jsonl.gz",
+      "sha256": "6feffeb2865d7ba1fcc36921651d20a4b77761595d2f4920acdb65159a92a967",
+      "exit_code": 0,
+      "meaning": "Complete auth and table race suites after diagnostic repairs.",
+      "test_events": {
+        "pass": 124,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/table",
+          "Action": "pass",
+          "Elapsed": 1.38
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 3.779
+        }
+      ]
+    },
+    "operator-diagnostics-minimum.jsonl": {
+      "archive": "operator-diagnostics-minimum.jsonl.gz",
+      "sha256": "0725be5515198aa683a9bff4660f6094b5c1537e87409fd815cb9f081dcfbe6e",
+      "exit_code": null,
+      "meaning": "Minimum Go auth and table race suites. Both package success events are present; the original session exit was not retained.",
+      "test_events": {
+        "pass": 124,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/table",
+          "Action": "pass",
+          "Elapsed": 2.011
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/auth",
+          "Action": "pass",
+          "Elapsed": 3.716
+        }
+      ]
+    },
+    "operator-diagnostics-product.json": {
+      "archive": "operator-diagnostics-product.json.gz",
+      "sha256": "ac293da48ea96dcb1334263bae9ab171d3fb4aa5f45ab82e10ba14aed81ea20e",
+      "exit_code": 0,
+      "meaning": "Six producer component subcases after diagnostic additions. Full product acceptance remains unverified."
+    },
+    "operator-goago-final.json": {
+      "archive": "operator-goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "exit_code": 0,
+      "meaning": "Whole-module policy check on the frozen final candidate."
+    },
+    "operator-lint-final.log": {
+      "archive": "operator-lint-final.log.gz",
+      "sha256": "1ea61485496ffbe67bd8f16fb400e6c7045c7e739071b1d32149bddfec6b2536",
+      "exit_code": 0,
+      "meaning": "Pinned golangci-lint 2.12.2 on the frozen final candidate."
+    },
+    "operator-writing-final.log": {
+      "archive": "operator-writing-final.log.gz",
+      "sha256": "4af9e597dc774452e780e7d1dab44140b579392585f21228e77c1eec68e14d5c",
+      "exit_code": 0,
+      "meaning": "Strict prose passes 1689 files with no diagnostics."
+    },
+    "operator-final-inputs.json": {
+      "archive": "operator-final-inputs.json.gz",
+      "sha256": "feca13172e81502558a5c2f58b5132b1840ff6aefe052eb495131e3efdec8446",
+      "exit_code": 0,
+      "meaning": "Hashes for all 24 task-owned source files before final repository qualification."
+    },
+    "operator-task-final.jsonl": {
+      "archive": "operator-task-final.jsonl.gz",
+      "sha256": "1dd8dbfce3cecc361d1b28f0b5ddc96bf9640f9a3b98fc0f4197ecb7c26e0d83",
+      "exit_code": 0,
+      "meaning": "Final complete auth and acquisition task race suites on the frozen source.",
+      "test_events": {
+        "pass": 227,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "csp7-policy-plan-writing-final.log": {
+      "archive": "csp7-policy-plan-writing-final.log.gz",
+      "sha256": "22688cb7864319ac6fbd899c05bd599ced5426f91550db6b4f7ec1cf0c088aa3",
+      "exit_code": 2,
+      "meaning": "Canonical prose check reports one paragraph-format defect in the resume section."
+    },
+    "csp7-policy-plan-writing-repaired.log": {
+      "archive": "csp7-policy-plan-writing-repaired.log.gz",
+      "sha256": "e59091b6d8c723af1c228506a053db4df99d26e6f519447ad96567e9c5f1c749",
+      "exit_code": 0,
+      "meaning": "Canonical prose passes after paragraph separation."
+    },
+    "csp7-policy-plan-targeted.log": {
+      "archive": "csp7-policy-plan-targeted.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "exit_code": 0,
+      "meaning": "Plan and findings pass after the review-state clarification."
+    },
+    "csp7-policy-plan-writing-commit.log": {
+      "archive": "csp7-policy-plan-writing-commit.log.gz",
+      "sha256": "e59091b6d8c723af1c228506a053db4df99d26e6f519447ad96567e9c5f1c749",
+      "exit_code": 0,
+      "meaning": "Final canonical prose check passes all 1528 files."
+    },
+    "csp7-policy-plan-validation-final.json": {
+      "archive": "csp7-policy-plan-validation-final.json.gz",
+      "sha256": "9bd35075e54ec924acefc7071065c78561c39d1d053a327b5ee6840549ffe9d1",
+      "exit_code": 0,
+      "meaning": "Plan structure and protected contract validation before the final task-result refresh."
+    }
+  },
+  "qualification": {
+    "producer_subcases": 6,
+    "producer_pass": 6,
+    "producer_test_events": 76,
+    "product_cases": "A11 and A12 UNVERIFIED",
+    "repository_full": "running after diagnostic repair",
+    "pre_pr_review": "not_started",
+    "native_ci": "not_started",
+    "merged": false,
+    "pinned_lint": "PASS",
+    "goago": "PASS",
+    "strict_prose": "PASS",
+    "final_task_test_events": 227,
+    "canonical_prose": "PASS: 1528 files, zero diagnostics"
+  },
+  "remaining": [
+    "Finish the full repository suite on the recorded source.",
+    "Complete required pre-PR review, publish one integrated CSP7 PR, run native CI, and merge.",
+    "Starport CSP9 must compose its role namespace and shared authority."
+  ],
+  "running": [
+    {
+      "session_id": 23143,
+      "command": "GOTOOLCHAIN=go1.26.6 go test -count=1 -timeout=30m -p=1 -json ./...",
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials",
+      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials/.tmp/csp7/operator-repository-final.jsonl",
+      "source_inventory": "operator-final-inputs.json.gz"
+    }
+  ],
+  "source_inventory": "operator-final-inputs.json.gz"
+}

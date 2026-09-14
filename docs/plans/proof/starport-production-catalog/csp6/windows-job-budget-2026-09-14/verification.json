@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-14T22:10:55.400793+00:00",
+  "prior_head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
+  "repair_commit": "399ec27c0190f9028309eb3ca1149f1146ff3075",
+  "pull_request": 160,
+  "native_run": 34890300375,
+  "job": 104131010431,
+  "finding": "Windows x64 exceeded the complete job limit of 60 minutes after its native runtime test step passed.",
+  "change": "Windows job limit is 120 minutes. Other job limits and individual Go test deadlines are unchanged.",
+  "checks": {
+    "action_pins": {
+      "status": "PASS",
+      "references": 10
+    },
+    "actionlint": {
+      "status": "BASELINE_WARNING",
+      "before_exit": 1,
+      "after_exit": 1,
+      "identical": true,
+      "diagnostic": "SC2024 for intentional runner-owned output redirection."
+    },
+    "required_review": {
+      "status": "RUNNING",
+      "session_id": 42183,
+      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-draft-lookup-review.log",
+      "head": "567691400acdce5b96710ffdf0150f7939d4ab3f",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:claude-opus-5:high"
+      ]
+    },
+    "prior_required_review": {
+      "status": "FAIL",
+      "head": "399ec27c0190f9028309eb3ca1149f1146ff3075",
+      "accepted_findings": 1,
+      "finding": "REST release lookup by tag does not return drafts. The original fixture masked this behavior.",
+      "assessment": "Use the GitHub CLI draft lookup strategy, then verify the REST release identity. Preserve the final published-tag lookup.",
+      "primary_source": "https://github.com/cli/cli/blob/trunk/pkg/cmd/release/shared/fetch.go"
+    }
+  },
+  "published": false,
+  "merged": false,
+  "evidence": {
+    "native-run.json": {
+      "archive": "native-run.json.gz",
+      "sha256": "d89e08e483c957668e8a1b0218860c71f5e5b5a941583d5a2ea8e1f2eccfad39"
+    },
+    "native-timeout.json": {
+      "archive": "native-timeout.json.gz",
+      "sha256": "3e41214c9535f5af07a5ec628463ba1b22a950a7414fadc1f10ad4cf93f15535"
+    },
+    "actionlint-before.log": {
+      "archive": "actionlint-before.log.gz",
+      "sha256": "9111d62ae9f5d4a18cb8a439ede7c09dac156a0f0f101eb8becc0a4db326ee23"
+    },
+    "actionlint-after.log": {
+      "archive": "actionlint-after.log.gz",
+      "sha256": "9111d62ae9f5d4a18cb8a439ede7c09dac156a0f0f101eb8becc0a4db326ee23"
+    },
+    "actionlint-verification.json": {
+      "archive": "actionlint-verification.json.gz",
+      "sha256": "428f67d17b8800491c1f2869e863828aba2b9cd69363c68899c12fb1eaa8c8e1"
+    },
+    "action-pins.log": {
+      "archive": "action-pins.log.gz",
+      "sha256": "c358df63043ee050d3b581e716c1ca4d4e5990c881b26566c1557894d8666b4c"
+    },
+    "csp6-windows-budget-review.log": {
+      "archive": "csp6-windows-budget-review.log.gz",
+      "sha256": "f3761767ec6a5b958970736d4d5911b0e364e908474d9866aebc85b2e8782e3b",
+      "exit_code": 1,
+      "meaning": "Required review at 399ec27c0 found one accepted draft-release lookup defect."
+    },
+    "csp6-draft-lookup-red.log": {
+      "archive": "csp6-draft-lookup-red.log.gz",
+      "sha256": "b9075297dbc64e20ec812dc77ada7f20186d7c1aabf18556e04869aedbd5535a",
+      "exit_code": 1,
+      "meaning": "Existing recovery test reproduces draft lookup failure after the fixture matches GitHub behavior."
+    },
+    "csp6-draft-lookup-recovery.log": {
+      "archive": "csp6-draft-lookup-recovery.log.gz",
+      "sha256": "a596112f8329667388b94d02202270b123f0393a78e3c702e97a955c16ab4cc4",
+      "exit_code": 0,
+      "meaning": "Ten recovery tests pass after the publisher repair."
+    },
+    "csp6-draft-lookup-final.log": {
+      "archive": "csp6-draft-lookup-final.log.gz",
+      "sha256": "f0a5efb09c346392c41147e41dcfd934d7a2dfd0fd566176ae2a879de77f8edc",
+      "exit_code": null,
+      "meaning": "Thirteen publisher and transport tests report OK. The original tool session exit was not retained."
+    },
+    "csp6-draft-lookup-writing.log": {
+      "archive": "csp6-draft-lookup-writing.log.gz",
+      "sha256": "603210c7deb5155b03caa3a0af222199617d77598434e35f4ca290afcc3709d0",
+      "exit_code": 0,
+      "meaning": "Strict prose passes 1754 files with no diagnostics."
+    }
+  },
+  "draft_lookup_repair_commit": "567691400acdce5b96710ffdf0150f7939d4ab3f"
+}

@@ -1,0 +1,13 @@
+{
+  "internal/cli/app/app.go": "f0aa85ba1dd861c7edc844bd708853eb77cd5e0207021776ab5a67f50ff76c01",
+  "internal/cli/app/catalog_runtime.go": "95a238577ff8b96ec5d2b524a9f9fcccee8e158ffc71e3cec87fda21ec55154e",
+  "internal/cli/app/file_manifest.go": "9fbde83fc7481f7ba759ce5306cecca0ad7d1c99c82f853357d4f50d2d67c5e5",
+  "internal/cli/app/file_policy.go": "272e965f7ade609e26f31599f66252b02170bde933257d503da5fa6e1e9b82ba",
+  "internal/cli/app/product_paths.go": "af0c8b5b90e94ec9be4f32693a83686068d27a92d6f1ed7b83ec6d2a56a8abcd",
+  "pkg/productpaths/policy/access.go": "10e99ebdbe0666209c636f3e125653f287637d034954bc6ecd56d526369ed199",
+  "internal/auth/policy_inputs.go": "dd5e5891a17e11d34db789c4d5b443c4d1dffc783d12f77052a6b9b50334c208",
+  "internal/auth/policy_migration.go": "1be40ba7c3da39649834a5aa2c8615d61e5c543e96a0432bf6e98ad8d2b1701f",
+  "internal/auth/policy_migration_test.go": "3615bbd9bcd40a68cb843227ce6c97e716088c08a7bc82bf690bc108de060cfa",
+  "internal/auth/policy_store.go": "7a14ddf59b6451dbb34f114aad0e35afa8f688b3af656974f275113a2aaf0cd4",
+  "internal/cli/app/credential_policy.go": "25651a683f96cb223db90bff6043f96b757691fe383ecb804518d466426c7f9e"
+}

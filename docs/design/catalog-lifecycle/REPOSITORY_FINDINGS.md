@@ -3005,6 +3005,7 @@ The owner approved isolated record quarantine and required visible status and re
 
 The adapter trims surrounding display-name whitespace. It preserves model IDs, internal control-character checks, and exact original source bytes.
 HTTP and Git regression tests cover all four names and their structured correction events.
+One adapter rule handles all four records. YAML controls quarantine admission and retention policy, without model-specific repair entries.
 
 The publication policy permits valid siblings while preserving rejected records' prior facts.
 Receipts retain degraded source status, counts, identifiers, and reason codes. Recovery clears current quarantine without changing historical receipts.
@@ -3023,3 +3024,39 @@ Generation and all 68 distribution checks pass. Sol and Opus pass required revie
 [Draft PR #160](https://github.com/agentstation/starmap/pull/160) contains the integrated flow and native timeout adjustment.
 Native CI, hosted qualification, and merge remain open.
 The canonical plan's current resume state owns exact active commands and next actions.
+
+## Acquisition policy and Go composition, 2026-09-14
+
+The local CSP7 implementation adds persistent credential selection history and a public acquisition resolver factory.
+Fresh standalone startup records current precedence before catalog writes. Legacy installations compare complete selections before accepting each provider migration.
+The first application regression exposed a policy write during passive construction. The repair keeps passive catalog access free of that write.
+
+A separate regression exposed expiry during policy acceptance. The resolver now checks material again before returning it.
+
+`acquisition.OpenCredentialResolver` supports explicit source references and optional private policy storage.
+It reads no credential source during construction. The embedding host owns installation classification and state selection.
+The factory keeps Starmap's ambient order. Starport role integration remains under CSP9.
+
+The [CSP7 proof](../../plans/proof/starport-production-catalog/csp7/policy-composition-2026-09-14/verification.json) records 714 package race events and 226 final task race events.
+Minimum Go passes 38 focused events. Ninety verifier tests and six producer component cases pass.
+The final component cases contain 76 passing test events. They do not qualify product cases A11 or A12.
+
+The initial full repository run passes 6,834 events, fails one fixture, and skips eight.
+The fixture sets an empty variable while expecting absence. Its repair retains the missing-credential assertion with an absent variable.
+Three further regressions cover selected origins, empty credentials, and expired credentials.
+Both supported Go toolchains pass all 124 auth and table race events after repair.
+
+Final pinned package lint, Go policy, and strict prose pass. The frozen full repository suite and required publication review remain open.
+The canonical plan owns the current source and running commands.
+
+
+## Draft publication recovery review, 2026-09-14
+
+A required publication review found that REST lookup by tag cannot locate draft releases.
+The original test fixture returned drafts and concealed the failure. The corrected fixture reproduces the recovery failure.
+The repair uses GitHub CLI's draft lookup strategy and verifies the selected release ID before reuse.
+Published release verification still uses the public tag lookup.
+
+Commit `567691400acdce5b96710ffdf0150f7939d4ab3f` contains the repair. Thirteen publisher and transport tests report success.
+The [repair proof](../../plans/proof/starport-production-catalog/csp6/windows-job-budget-2026-09-14/verification.json) retains the accepted finding, failed regression, and current review state.
+Hosted publication remains unverified and requires the pending owner authorization.

@@ -1,0 +1,20 @@
+{
+  "head": "a996b863dcb4e4edfc54d749a07240614d849574",
+  "files": {
+    "acquisition/credentials.go": "8491c8182cadb123aba69f2f1126a44fedee219a6c9e44966d36c556f5a84190",
+    "acquisition/credentials_test.go": "b22271ec6166386e7b84c2d4347d9099e43163827c2936163af5fe25540302e7",
+    "internal/auth/policy_inputs.go": "dd5e5891a17e11d34db789c4d5b443c4d1dffc783d12f77052a6b9b50334c208",
+    "internal/auth/policy_migration.go": "0abe9c88992b64e67804ad8c1cc25279d3eab2eb3cacdd835fb81a98e9015904",
+    "internal/auth/policy_migration_test.go": "c6f2e2c0e9b1701f7d101b5ac098cd5ac7e26e1f012afa6806117d538afd669f",
+    "internal/auth/policy_store.go": "6e66b5ac94bded4dd61ebbe3fbedd62f54b1c7150daa90e1aeb3682a0d4463c1",
+    "internal/auth/resolver.go": "4f75938c7657c4720523b3ce56deddbd736bdcd95654a20511cce0b9fcf6d09b",
+    "internal/cli/app/app.go": "898a0da9d13cb9b8abcc9de103861b596af114d86b70326438651e4b6beec260",
+    "internal/cli/app/catalog_runtime.go": "95a238577ff8b96ec5d2b524a9f9fcccee8e158ffc71e3cec87fda21ec55154e",
+    "internal/cli/app/credential_policy.go": "25651a683f96cb223db90bff6043f96b757691fe383ecb804518d466426c7f9e",
+    "internal/cli/app/credential_policy_test.go": "1476bc59737b24110b0f9e16caba1c10cfb8907964fd6f3ddcf6271ff4fd7ab4",
+    "internal/cli/app/file_manifest.go": "9fbde83fc7481f7ba759ce5306cecca0ad7d1c99c82f853357d4f50d2d67c5e5",
+    "internal/cli/app/file_policy.go": "272e965f7ade609e26f31599f66252b02170bde933257d503da5fa6e1e9b82ba",
+    "internal/cli/app/product_paths.go": "af0c8b5b90e94ec9be4f32693a83686068d27a92d6f1ed7b83ec6d2a56a8abcd",
+    "pkg/productpaths/policy/access.go": "10e99ebdbe0666209c636f3e125653f287637d034954bc6ecd56d526369ed199"
+  }
+}

@@ -892,3 +892,19 @@ Required original context can still exceed the history byte limit. The runtime p
 
 The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
 Full CSP5 verification, review, native CI, and merge remain open.
+
+## Acquisition policy state, 2026-09-14
+
+The local CSP7 implementation stores standalone selection history under `<state>/credentials/<deployment-id>/<instance-id>/`.
+`policy.json` retains the installation default. Immutable provider records retain accepted precedence migrations.
+Records bind the product, deployment, instance, schema, and provider identity. Each canonical record has a 4,096-byte limit.
+The provider filename hashes its ID. Neither the records nor their diagnostics retain credential values or value hashes.
+
+The files require owner-only access and the existing private-file publication journal.
+They belong in deployment backups and filesystem migration inventories. They are not disposable caches.
+`starmap config paths` reports their location, selectors, access policy, and retention rule.
+An embedding host explicitly selects policy storage through the acquisition Go API.
+
+This change does not move catalog generations, inference credentials, or relational records into another storage service.
+Starport's storage authority and credential integration remain under CSP9.
+The [CSP7 proof](../../plans/proof/starport-production-catalog/csp7/policy-composition-2026-09-14/verification.json) records local behavior, preserved regressions, and remaining qualification.

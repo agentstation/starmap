@@ -330,6 +330,7 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Owner | Root and path | Creation, lifetime, and recovery |
 | --- | --- | --- |
 | Starmap configuration | `<config>/config.yaml` | Explicit setup or operator input. Preserve settings and secret access. |
+| Acquisition selection policy | `<state>/credentials/<deployment-id>/<instance-id>/{policy.json,provider-<provider-id-sha256>.json}` | Starmap startup creates owner-only policy state before catalog writes. Preserve through backup and migration. Each canonical record is limited to 4,096 bytes and contains no credential material. |
 | Starport configuration | `<config>/config.env` | Persistent setup and local edits. Shared mode retains bootstrap values only as authority. |
 | Application baseline | `<data>/catalog/baseline/<generation-id-hash>/{manifest.json,catalog.json}` | Persistent startup creates an inspectable export. Preserve identity, or reproduce from the exact installed binary. |
 | Baseline recovery | `<data>/catalog/baseline/.starmap-baseline/{.owner.lock,<operation-id>.json}` | Owner-only writer lock and versioned recovery records. Keep the lock for the directory lifetime. Remove only verified operation records after recovery. Preserve unknown or changed entries. |
@@ -1523,6 +1524,22 @@ Ephemeral sessions have no persisted migration history and must show their selec
 
 Tests must cover upgrades, fresh installs, explicit references, identical values,
 multi-field credentials, terminal reference errors, and configuration changes after migration.
+
+#### Starmap policy storage and embedding
+
+Starmap initializes its policy before persistent catalog startup creates installation evidence.
+An existing catalog pointer, instance seed, or baseline directory without a policy record selects legacy migration.
+Passive library construction and catalog reads do not create policy files.
+Accepted provider migrations use immutable per-provider records under the canonical state root.
+The private-file publication protocol owns crash recovery and concurrent creation.
+Owner mismatch, ambiguous encoding, or corrupt records cause refusal without resetting the policy.
+
+`acquisition.OpenCredentialResolver` exposes the acquisition sources and explicit references to Go hosts.
+The host can select policy storage with product, deployment, and instance ownership.
+It must classify an installation without a policy record from its own retained deployment state.
+An omitted state selection creates an ephemeral resolver. Construction reads no credential source.
+
+The Starmap ambient order still applies. Starport namespace integration and shared authority remain CSP9 requirements.
 
 ### 7.3 Secret managers and rotation
 
