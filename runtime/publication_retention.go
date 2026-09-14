@@ -75,6 +75,10 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 		owned := *source
 		owned.Payload = bytes.Clone(source.Payload)
 		owned.Chain = slices.Clone(source.Chain)
+		if source.Publication != nil {
+			publication := source.Publication.Copy()
+			owned.Publication = &publication
+		}
 		if source.Manifest != nil {
 			manifest := source.Manifest.Copy()
 			owned.Manifest = &manifest

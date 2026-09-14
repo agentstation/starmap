@@ -62,7 +62,7 @@ func run(ctx context.Context, args []string, output io.Writer) error {
 	flags.SetOutput(output)
 	var options prepareOptions
 	flags.StringVar(&options.profile, "profile", "", "explicit publication source policy YAML")
-	flags.StringVar(&options.state, "state", "", "previous accepted private publication checkpoint")
+	flags.StringVar(&options.state, "state", "", "previous accepted publication checkpoint")
 	flags.StringVar(&options.stateChecksum, "state-checksum", "", "trusted checksum of the accepted checkpoint")
 	flags.StringVar(&options.publisher, "publisher-id", "", "stable identity that owns this publisher's source scopes")
 	flags.StringVar(&options.output, "output-dir", "", "private directory for prepared publication outputs")

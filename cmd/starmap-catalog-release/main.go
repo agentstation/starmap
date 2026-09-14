@@ -77,6 +77,15 @@ func run(args []string, output io.Writer) error {
 	channelUpdatedAt := flags.String("channel-updated-at", "", "RFC 3339 channel verification time; the default is now")
 	channelCurrent := flags.String("channel-current", "", "current channel document; omit only for the first publication")
 	channelOut := flags.String("channel-out", "", "path that receives the canonical channel document")
+	var channelPublication channelPublicationOptions
+	flags.StringVar(&channelPublication.receiptPath, "channel-receipt", "", "verified publication run receipt")
+	flags.StringVar(&channelPublication.receiptChecksum, "channel-receipt-checksum", "", "verified run receipt checksum")
+	flags.StringVar(&channelPublication.checkpointPath, "channel-checkpoint", "", "verified publisher checkpoint")
+	flags.StringVar(&channelPublication.checkpointChecksum, "channel-checkpoint-checksum", "", "verified publisher checkpoint checksum")
+	flags.StringVar(&channelPublication.sourceCommit, "channel-source-commit", "", "merged default-branch source commit")
+	flags.StringVar(&channelPublication.repository, "channel-promoted-repository", "", "clean checkout of the merged source commit")
+	flags.BoolVar(&channelPublication.receiptAttested, "channel-receipt-attestation-verified", false, "the run receipt provenance passed verification")
+	flags.BoolVar(&channelPublication.checkpointAttested, "channel-checkpoint-attestation-verified", false, "the checkpoint provenance passed verification")
 	channelAttested := flags.Bool(
 		"channel-attestation-verified",
 		false,
@@ -113,6 +122,9 @@ func run(args []string, output io.Writer) error {
 	}
 	if err := validatePromotionMode(mode, *promotionReleaseDir); err != nil {
 		return err
+	}
+	if channelPublication.requested() && mode != "channel-release-dir" {
+		return channelFlagError("publication", "requires channel-release-dir")
 	}
 	if mode != "" && (outputDirExplicit || strings.TrimSpace(*generationStore) != "") {
 		return &pkgerrors.ValidationError{
@@ -156,6 +168,7 @@ func run(args []string, output io.Writer) error {
 			previousDirectory:   *previousReleaseDir,
 			outputPath:          *channelOut,
 			attestationVerified: *channelAttested,
+			publication:         channelPublication,
 		})
 		if err != nil {
 			return err

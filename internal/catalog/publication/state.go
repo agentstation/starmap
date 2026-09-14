@@ -12,8 +12,8 @@ import (
 	catalogruntime "github.com/agentstation/starmap/runtime"
 )
 
-// MaxPublicationStateBytes bounds a private publisher checkpoint, including retained source payloads.
-const MaxPublicationStateBytes = 256 << 20
+// MaxPublicationStateBytes bounds a publisher checkpoint, including retained source payloads.
+const MaxPublicationStateBytes = artifact.MaxPublicationCheckpointBytes
 
 const publicationStateVersion = 1
 
@@ -31,8 +31,9 @@ type publicationStateRecord struct {
 	Inputs      []retainedInput     `json:"inputs"`
 }
 
-// EncodeState returns a private checkpoint and its exact digest.
-// It excludes credential values and diagnostic messages. Binding selectors remain private.
+// EncodeState returns a checkpoint and its exact digest.
+// It excludes credential values and diagnostic messages but retains source binding selectors.
+// Callers store the checkpoint with the same access scope as its source data.
 func EncodeState(state *State) (ReceiptRecord, error) {
 	if state == nil {
 		return ReceiptRecord{}, admissionError("state", "is required")
@@ -69,7 +70,7 @@ func EncodeState(state *State) (ReceiptRecord, error) {
 	return ReceiptRecord{Data: raw, Checksum: receiptChecksum(raw)}, nil
 }
 
-// RestoreState verifies a private checkpoint against a separately trusted digest.
+// RestoreState verifies a checkpoint against a separately trusted digest.
 // The digest must come from accepted publisher state or verified publisher provenance, never from the supplied bytes.
 // Original observation identities, payloads, and binding selectors must survive validation and replay.
 func RestoreState(ctx context.Context, data []byte, expectedChecksum string) (*State, error) {

@@ -3,6 +3,7 @@ package artifact
 import (
 	"bytes"
 	"encoding/json"
+	"slices"
 	"time"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -16,8 +17,10 @@ const (
 	PublicationReceiptFilename = "starmap-catalog-run.json"
 	// PublicationReceiptMediaType identifies the receipt's canonical JSON format.
 	PublicationReceiptMediaType = "application/vnd.agentstation.starmap.catalog-run.v1+json"
+	// MaxPublicationReceiptBytes bounds a canonical run receipt.
+	MaxPublicationReceiptBytes = 4 << 20
 
-	maxPublicationReceiptBytes = 4 << 20
+	maxPublicationReceiptBytes = MaxPublicationReceiptBytes
 	maxPublicationScopes       = 4096
 	maxPublicationBindingID    = 4096
 )
@@ -73,6 +76,24 @@ type PublicationReceipt struct {
 	// Reviews report current unresolved offerings independently of the reused artifact.
 	Reviews            []evidence.ReviewCandidate       `json:"reviews,omitempty"`
 	ReviewObservations []catalogs.SourceObservationLink `json:"review_observations,omitempty"`
+}
+
+// Copy returns an independent receipt, including every source policy and observation.
+func (r PublicationReceipt) Copy() PublicationReceipt {
+	r.Sources = slices.Clone(r.Sources)
+	for i := range r.Sources {
+		if r.Sources[i].Policy.Binding != nil {
+			binding := *r.Sources[i].Policy.Binding
+			r.Sources[i].Policy.Binding = &binding
+		}
+		if r.Sources[i].Observation != nil {
+			observation := *r.Sources[i].Observation
+			r.Sources[i].Observation = &observation
+		}
+	}
+	r.Reviews = slices.Clone(r.Reviews)
+	r.ReviewObservations = slices.Clone(r.ReviewObservations)
+	return r
 }
 
 // EncodePublicationReceipt validates and returns deterministic receipt bytes.

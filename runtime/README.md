@@ -53,6 +53,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 ## Index
 
 - [Constants](<#constants>)
+- [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
 - [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
 - [func VerifyDirectoryMigrationPublication\(ctx context.Context, request DirectoryMigrationRequest\) error](<#VerifyDirectoryMigrationPublication>)
@@ -156,6 +157,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type ProviderLayer](<#ProviderLayer>)
   - [func NewProviderLayer\(id catalogs.ProviderID, observation sources.Observation\) \(ProviderLayer, error\)](<#NewProviderLayer>)
 - [type ProviderObservationReset](<#ProviderObservationReset>)
+- [type PublicationStatus](<#PublicationStatus>)
 - [type Random](<#Random>)
 - [type RefreshReport](<#RefreshReport>)
 - [type RetentionPolicy](<#RetentionPolicy>)
@@ -190,6 +192,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) UpdateAcquisition\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(ObservationUpdate, error\), requestedSources ...sources.ID\) \(starmap.CatalogState, error\)](<#Runtime.UpdateAcquisition>)
   - [func \(r \*Runtime\) UpdateObservations\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(\[\]sources.Observation, error\), resets ...ObservationReset\) \(starmap.CatalogState, error\)](<#Runtime.UpdateObservations>)
   - [func \(r \*Runtime\) Updates\(\) \<\-chan starmap.CatalogState](<#Runtime.Updates>)
+  - [func \(r \*Runtime\) UpstreamPublication\(\) \*SourcePublication](<#Runtime.UpstreamPublication>)
 - [type Source](<#Source>)
 - [type SourceAcquirer](<#SourceAcquirer>)
 - [type SourceAcquisitionRequest](<#SourceAcquisitionRequest>)
@@ -204,6 +207,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func DefaultSourcePolicy\(\) SourcePolicy](<#DefaultSourcePolicy>)
   - [func \(p SourcePolicy\) SafeIdentity\(\) string](<#SourcePolicy.SafeIdentity>)
   - [func \(p SourcePolicy\) Validate\(\) error](<#SourcePolicy.Validate>)
+- [type SourcePublication](<#SourcePublication>)
 - [type SourceRead](<#SourceRead>)
 - [type SourceRefreshMode](<#SourceRefreshMode>)
   - [func ParseSourceRefreshMode\(value string\) \(SourceRefreshMode, error\)](<#ParseSourceRefreshMode>)
@@ -391,6 +395,15 @@ const (
     DefaultAcquisitionInterval = 4 * time.Hour
 )
 ```
+
+<a name="PrepareAcquisitionReplay"></a>
+## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L20>)
+
+```go
+func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation, runID string, completedAt time.Time) (catalogs.Generation, []sources.Observation, error)
+```
+
+PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay. It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact. Current metadata reviews retain their latest original observation. Omission preserves the last review. The caller authenticates the baseline and inputs. This function reads no sources or storage.
 
 <a name="ReplayAcquisition"></a>
 ## func [ReplayAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_replay.go#L19>)
@@ -708,7 +721,7 @@ func (o DirectoryOwner) Validate() error
 Validate checks the ownership identity without creating files.
 
 <a name="Freshness"></a>
-## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L48>)
+## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L54>)
 
 Freshness is the evaluated age of one observed timestamp.
 
@@ -771,7 +784,7 @@ type GenerationPinAcceptance struct {
 ```
 
 <a name="Health"></a>
-## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L51>)
+## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L57>)
 
 Health is the operator\-facing state of one runtime component.
 
@@ -1557,6 +1570,15 @@ ProviderObservationReset retains the provider\-oriented spelling of ObservationR
 type ProviderObservationReset = ObservationReset
 ```
 
+<a name="PublicationStatus"></a>
+## type [PublicationStatus](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L39>)
+
+PublicationStatus summarizes one retained upstream publication.
+
+```go
+type PublicationStatus = status.Publication
+```
+
 <a name="Random"></a>
 ## type [Random](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L97>)
 
@@ -1632,7 +1654,7 @@ func (p RetentionPolicy) Validate() error
 Validate rejects unbounded or invalid retention settings, including when operators disable scheduling.
 
 <a name="RetentionStatus"></a>
-## type [RetentionStatus](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L39>)
+## type [RetentionStatus](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L45>)
 
 RetentionStatus is the last observed catalog collection outcome.
 
@@ -1896,6 +1918,15 @@ func (r *Runtime) Updates() <-chan starmap.CatalogState
 
 Updates returns the channel that carries every published effective catalog state. The runtime buffers the channel. A reader that falls behind loses intermediate states and always observes the newest one.
 
+<a name="Runtime.UpstreamPublication"></a>
+### func \(\*Runtime\) [UpstreamPublication](<https://github.com/agentstation/starmap/blob/main/runtime/source_publication.go#L16>)
+
+```go
+func (r *Runtime) UpstreamPublication() *SourcePublication
+```
+
+UpstreamPublication returns a caller\-owned copy of the accepted source run record. It returns nil when the source supplies no run receipt. The artifact manifest stays unchanged.
+
 <a name="Source"></a>
 ## type [Source](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L20>)
 
@@ -1945,7 +1976,7 @@ type SourceDescriber interface {
 ```
 
 <a name="SourceHop"></a>
-## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L42>)
+## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L48>)
 
 SourceHop is one sanitized entry in an upstream source chain.
 
@@ -1963,7 +1994,7 @@ type SourceIdentityAdopter = source.IdentityAdopter
 ```
 
 <a name="SourceKind"></a>
-## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L45>)
+## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L51>)
 
 SourceKind names one supported upstream catalog source.
 
@@ -1981,7 +2012,7 @@ func ParseSourceKind(name string) (SourceKind, error)
 ParseSourceKind converts one configured name into a source kind. It rejects every unknown name with a typed validation error, so a typo never selects a silent default.
 
 <a name="SourceKinds"></a>
-### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L103>)
+### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L109>)
 
 ```go
 func SourceKinds() []SourceKind
@@ -2071,6 +2102,15 @@ func (p SourcePolicy) Validate() error
 ```
 
 Validate checks the policy fields that the runtime depends on.
+
+<a name="SourcePublication"></a>
+## type [SourcePublication](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L36>)
+
+SourcePublication is the verified upstream run receipt and promotion identity.
+
+```go
+type SourcePublication = source.Publication
+```
 
 <a name="SourceRead"></a>
 ## type [SourceRead](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L33>)
@@ -2227,7 +2267,7 @@ func (p StartupPolicy) Valid() bool
 Valid reports whether the policy is one of the accepted names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L36>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L42>)
 
 Status is the operator\-facing state of one connected runtime.
 

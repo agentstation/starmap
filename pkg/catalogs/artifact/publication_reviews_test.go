@@ -90,3 +90,22 @@ func TestPublicationReceiptBoundsReviewDecodeAllocations(t *testing.T) {
 		})
 	}
 }
+
+func TestPublicationReceiptCopyOwnsNestedEvidence(t *testing.T) {
+	original := reviewReceiptFixture(t)
+	// A binding here tests ownership independently of source admission validation.
+	original.Sources[0].Policy.Binding = &PublicationBinding{ID: "binding", Revision: "1", ProviderID: "provider", Checksum: "sha256:" + strings.Repeat("a", 64)}
+	before, err := json.Marshal(original)
+	if err != nil {
+		t.Fatal(err)
+	}
+	copied := original.Copy()
+	copied.Sources[0].Policy.Binding.ID = "changed"
+	copied.Sources[0].Observation.ObservationID = "changed"
+	copied.Reviews[0].Reason = "changed"
+	copied.ReviewObservations[0].ObservationID = "changed"
+	after, err := json.Marshal(original)
+	if err != nil || string(before) != string(after) {
+		t.Fatal("copy changed original nested evidence")
+	}
+}

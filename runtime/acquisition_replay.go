@@ -17,6 +17,10 @@ import (
 // The baseline can contain this publisher's prior scopes but cannot carry enterprise authority.
 // This function reads no sources or storage and starts no runtime workers.
 func ReplayAcquisition(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation) (*starmap.Candidate, error) {
+	return replayAcquisition(ctx, baseline, publisherID, bindings, observations, false)
+}
+
+func replayAcquisition(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation, currentReviews bool) (*starmap.Candidate, error) {
 	if ctx == nil {
 		return nil, &errors.ValidationError{Field: "context", Message: "is required"}
 	}
@@ -74,6 +78,12 @@ func ReplayAcquisition(ctx context.Context, baseline catalogs.Generation, publis
 	}
 	if err := preserveReplayReviews(state.Catalog, baseline.Manifest, &layers.buildEvidence); err != nil {
 		return nil, err
+	}
+	if currentReviews {
+		layers.buildEvidence.ReviewCandidates, err = currentReplayReviews(catalogs.GenerationManifest{SourceObservations: layers.buildEvidence.SourceObservations, ReviewCandidates: layers.buildEvidence.ReviewCandidates})
+		if err != nil {
+			return nil, err
+		}
 	}
 	identity, err := effectiveEvidenceChecksum(state.PayloadChecksum, layers.buildEvidence)
 	if err != nil {

@@ -27,7 +27,7 @@ type State struct {
 }
 
 // PreparedPublication contains one admitted candidate, its artifact, and its run receipt.
-// The next state remains private until the caller adopts the successful publication.
+// The next state stays provisional until the caller adopts the successful publication.
 type PreparedPublication struct {
 	Bundle         artifact.Bundle
 	Receipt        ReceiptRecord
@@ -112,11 +112,7 @@ func preparePublication(ctx context.Context, state *State, profile Profile, run 
 	if err != nil {
 		return PreparedPublication{}, err
 	}
-	candidate, err := catalogruntime.ReplayAcquisition(ctx, state.baseline, state.publisherID, bindings, history)
-	if err != nil {
-		return PreparedPublication{}, err
-	}
-	generation, err := candidate.Generation(runID, run.CompletedAt)
+	generation, history, err := catalogruntime.PrepareAcquisitionReplay(ctx, state.baseline, state.publisherID, bindings, history, runID, run.CompletedAt)
 	if err != nil {
 		return PreparedPublication{}, err
 	}

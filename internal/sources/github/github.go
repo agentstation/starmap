@@ -53,9 +53,24 @@ type Release struct {
 	// generation manifest records.
 	CatalogDigest string
 
+	// ArchiveChecksum binds the verified archive bytes.
+	ArchiveChecksum string
+
 	// PublishedAt is the publication time the channel recorded. It is zero
 	// for a release that a caller read by tag.
 	PublishedAt time.Time
+
+	// ChannelUpdatedAt is the last verified channel confirmation time.
+	ChannelUpdatedAt time.Time
+
+	// Publication is the verified run receipt, when the channel names one.
+	Publication *artifact.PublicationReceipt
+
+	// PublicationChecksum identifies the exact verified run receipt bytes.
+	PublicationChecksum string
+
+	// SourceCommit is the promotion revision named by the attested channel.
+	SourceCommit string
 
 	// Sequence is the channel sequence that selected the release. It is zero
 	// for a release that a caller read by tag.
@@ -240,11 +255,15 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 			Message:  "the channel sequence moved backwards",
 		}
 	}
+	if document.Sequence == state.Sequence && state.ChannelChecksum != "" && state.ChannelChecksum != digestHex(body) {
+		return Release{}, sourceValidation("channel.sequence", nil, "cannot replace accepted channel bytes at the same sequence")
+	}
 	release, err := s.readRelease(ctx, refresh, document.Tag, document.Assets)
 	if err != nil {
 		return Release{}, err
 	}
 	release.PublishedAt = document.PublishedAt
+	release.ChannelUpdatedAt = document.ChannelUpdatedAt
 	release.Sequence = document.Sequence
 	if release.GenerationID != document.GenerationID {
 		return Release{}, sourceValidation("release.generation_id", release.GenerationID,
@@ -254,13 +273,24 @@ func (s *Source) ReadChannel(ctx context.Context) (Release, error) {
 		return Release{}, sourceValidation("release.catalog_digest", release.Tag,
 			"does not match the catalog digest the channel selects")
 	}
+	if document.Publication != nil {
+		receipt, err := s.readPublicationReceipt(ctx, refresh, document, release)
+		if err != nil {
+			return Release{}, err
+		}
+		release.Publication = &receipt
+		release.PublicationChecksum = document.Publication.Receipt.Checksum
+		release.SourceCommit = document.Publication.SourceCommit
+	}
+	release.Budget = refresh.budgetResult()
 
 	now := s.config.Now().UTC()
 	if err := s.state.saveSnapshot(ctx, State{
-		Repository:  s.config.Repository,
-		Channel:     s.config.Channel,
-		ChannelETag: answer.etag(),
-		Sequence:    document.Sequence,
+		Repository:      s.config.Repository,
+		Channel:         s.config.Channel,
+		ChannelETag:     answer.etag(),
+		ChannelChecksum: digestHex(body),
+		Sequence:        document.Sequence,
 		Verified: ReleaseRef{
 			Tag:           release.Tag,
 			GenerationID:  release.GenerationID,
@@ -298,7 +328,14 @@ func (s *Source) readChannelDocument(
 		return artifact.Channel{}, errors.WrapResource(
 			"verify", "catalog channel document", s.config.Channel, err)
 	}
-	return artifact.DecodeChannel(body)
+	document, err := artifact.DecodeChannel(body)
+	if err != nil {
+		return artifact.Channel{}, err
+	}
+	if (s.config.Channel == artifact.PublicationChannelName || s.config.Channel == artifact.ChannelName) && document.Name != s.config.Channel {
+		return artifact.Channel{}, sourceValidation("channel.schema", nil, "does not match the configured channel")
+	}
+	return document, nil
 }
 
 // readRelease downloads and verifies one immutable release. A non-empty
@@ -333,12 +370,13 @@ func (s *Source) readRelease(
 		return Release{}, err
 	}
 	return Release{
-		Tag:           tag,
-		GenerationID:  generation.Manifest.GenerationID,
-		CatalogDigest: digest,
-		Generation:    generation,
-		Provenance:    verifier.result,
-		Budget:        refresh.budgetResult(),
+		Tag:             tag,
+		GenerationID:    generation.Manifest.GenerationID,
+		CatalogDigest:   digest,
+		ArchiveChecksum: artifact.ChecksumPrefix + digestHex(assets[artifact.Filename]),
+		Generation:      generation,
+		Provenance:      verifier.result,
+		Budget:          refresh.budgetResult(),
 	}, nil
 }
 

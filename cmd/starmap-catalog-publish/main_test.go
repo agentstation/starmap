@@ -86,11 +86,12 @@ func TestPublicationCommandHelpAndCancellation(t *testing.T) {
 }
 
 func TestPublicationCommandCollectsStagesRestartsAndRetries(t *testing.T) {
+	const acquisitionKey = "test-only-public-catalog-acquisition-secret"
 	var requests atomic.Int32
 	var failed atomic.Bool
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		requests.Add(1)
-		if r.Header.Get("Authorization") != "Bearer fixture" {
+		if r.Header.Get("Authorization") != "Bearer "+acquisitionKey {
 			t.Error("provider request missed the configured acquisition credential")
 		}
 		w.Header().Set("Content-Type", "application/json")
@@ -102,7 +103,7 @@ func TestPublicationCommandCollectsStagesRestartsAndRetries(t *testing.T) {
 		_, _ = w.Write([]byte(`{"object":"list","data":[{"id":"one","object":"model"}]}`))
 	}))
 	defer server.Close()
-	t.Setenv("PUBLICATION_FIXTURE_KEY", "fixture")
+	t.Setenv("PUBLICATION_FIXTURE_KEY", acquisitionKey)
 	root := t.TempDir()
 	profilePath, statePath, stateChecksum := commandInputs(t, root, server.URL)
 	destination := filepath.Join(root, "prepared")
@@ -110,6 +111,11 @@ func TestPublicationCommandCollectsStagesRestartsAndRetries(t *testing.T) {
 	first := commandResult(t, arguments)
 	if first.Status != "prepared" || requests.Load() != 1 {
 		t.Fatalf("status=%s requests=%d", first.Status, requests.Load())
+	}
+	for _, path := range []string{first.StatePath, first.ReceiptPath} {
+		if strings.Contains(mustRead(t, path), acquisitionKey) {
+			t.Fatal("publication output exposed the acquisition credential")
+		}
 	}
 	receipt := commandReceipt(t, first)
 	if !receipt.FreshAcquisition {

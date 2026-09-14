@@ -41,13 +41,14 @@ type ReleaseRef struct {
 // the conditional-request validator, the replay floor, and the release that
 // verification last accepted.
 type State struct {
-	SchemaVersion uint64     `json:"schema_version"`
-	Repository    string     `json:"repository"`
-	Channel       string     `json:"channel"`
-	ChannelETag   string     `json:"channel_etag"`
-	Sequence      uint64     `json:"sequence"`
-	Verified      ReleaseRef `json:"verified"`
-	UpdatedAt     time.Time  `json:"updated_at"`
+	SchemaVersion   uint64     `json:"schema_version"`
+	Repository      string     `json:"repository"`
+	Channel         string     `json:"channel"`
+	ChannelETag     string     `json:"channel_etag"`
+	ChannelChecksum string     `json:"channel_checksum,omitempty"`
+	Sequence        uint64     `json:"sequence"`
+	Verified        ReleaseRef `json:"verified"`
+	UpdatedAt       time.Time  `json:"updated_at"`
 }
 
 // Empty reports whether the reference names no release.

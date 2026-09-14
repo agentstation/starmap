@@ -46,6 +46,7 @@ type sourceLayer struct {
 	Payload          []byte                       `json:"payload"`
 	PublishedAt      time.Time                    `json:"published_at"`
 	ChannelUpdatedAt time.Time                    `json:"channel_updated_at"`
+	Publication      *SourcePublication           `json:"publication,omitempty"`
 	ObservedAt       time.Time                    `json:"observed_at"`
 	Chain            []SourceHop                  `json:"chain,omitempty"`
 }

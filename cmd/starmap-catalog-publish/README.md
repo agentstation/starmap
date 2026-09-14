@@ -1,6 +1,6 @@
 # Catalog publication preparation
 
-This command collects configured sources and prepares one catalog artifact, run receipt, and private replay checkpoint.
+This command collects configured sources and prepares one catalog artifact, run receipt, and replay checkpoint.
 It does not advance a public channel or merge an embedded catalog update.
 The scheduled workflow still needs the separate promotion integration.
 
@@ -47,7 +47,14 @@ The JSON success report has status `prepared` and names these outputs:
 | `rejected-<digest>.json` | Private admission result for a rejected acquisition. |
 
 The output root restricts access to its owner. Checkpoints, receipts, and retry records use the private file policy.
-Checkpoints and retry records contain private scope selectors. Do not publish them with the catalog assets.
+Checkpoints retain the scope selectors and model data from their configured sources.
+
+The scheduled public GitHub profile uses public model data and basic provider API keys.
+Its checkpoints can live on GitHub without encryption or a private object store.
+The API keys stay in Actions secrets. The checkpoint encoder does not serialize credential values.
+
+Enterprise profiles can contain private models or account selectors. Store those checkpoints in the deployment's configured private storage.
+Retry records stay in the local work directory.
 The receipt excludes credential values and raw provider errors.
 Its binding checksum does not authenticate the publisher.
 
@@ -60,12 +67,12 @@ go run ./cmd/starmap-catalog-publish \
   -profile publication.yaml \
   -publisher-id starmap-public \
   -run-id example-002 \
-  -state /private/state-ACCEPTED_DIGEST.json \
+  -state ./state-ACCEPTED_DIGEST.json \
   -state-checksum sha256:ACCEPTED_DIGEST \
   -output-dir ./publication-output
 ```
 
-Read the digest from accepted private state or verified publisher provenance.
+Read the digest from accepted publisher state or verified publisher provenance.
 Do not use the checkpoint's own digest as proof of trust.
 The decoder validates original observation receipts and replays their payloads before accepting the checkpoint.
 
@@ -76,6 +83,7 @@ A changed profile, baseline, checkpoint, publisher, or workspace requires a new 
 Failed or partial provider replies can use retained complete evidence within the profile's age limit.
 The receipt preserves the original observation time and reports retention.
 An unchanged semantic catalog can reuse its artifact while receiving a new run receipt.
+
 The run receipt carries current review candidates and their original observation evidence.
 Consumers must use that receipt for current review results instead of treating historical artifact reviews as current.
 Complete omission preserves the visible offering and records absence within its provider account scope.

@@ -32,6 +32,12 @@ type SourceIdentityAdopter = source.IdentityAdopter
 // SourceRead is one upstream observation.
 type SourceRead = source.Read
 
+// SourcePublication is the verified upstream run receipt and promotion identity.
+type SourcePublication = source.Publication
+
+// PublicationStatus summarizes one retained upstream publication.
+type PublicationStatus = status.Publication
+
 // Status is the operator-facing state of one connected runtime.
 type Status = status.Status
 

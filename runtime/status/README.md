@@ -18,6 +18,7 @@ The package is a leaf. It reads no catalog source and opens no connection. A ser
   - [func \(f Freshness\) String\(\) string](<#Freshness.String>)
 - [type Health](<#Health>)
   - [func \(h Health\) String\(\) string](<#Health.String>)
+- [type Publication](<#Publication>)
 - [type RetentionStatus](<#RetentionStatus>)
 - [type SourceHop](<#SourceHop>)
 - [type SourceKind](<#SourceKind>)
@@ -99,6 +100,24 @@ func (h Health) String() string
 ```
 
 String returns the wire value of the health state.
+
+<a name="Publication"></a>
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/runtime/status/publication.go#L6-L15>)
+
+Publication summarizes verified run evidence without copying source or review lists.
+
+```go
+type Publication struct {
+    RunID            string
+    ReceiptChecksum  string
+    SourceCommit     string
+    GenerationID     string
+    CompletedAt      time.Time
+    FreshAcquisition bool
+    SourceCount      int
+    ReviewCount      int
+}
+```
 
 <a name="RetentionStatus"></a>
 ## type [RetentionStatus](<https://github.com/agentstation/starmap/blob/main/runtime/status/retention.go#L7-L28>)
@@ -214,12 +233,14 @@ func (k SourceKind) Valid() bool
 Valid reports whether the kind is one of the accepted source names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L242>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/status/status.go#L118-L244>)
 
 Status is the operator\-facing state of one connected runtime. It keeps usability, freshness, fallback, direct source health, and upstream\-reported health as five independent values, so a warning on one never hides another.
 
 ```go
 type Status struct {
+    // UpstreamPublication summarizes run evidence independently of catalog and channel age.
+    UpstreamPublication *Publication
     // Retention reports collection capability, bounded usage, and the last maintenance outcome.
     Retention RetentionStatus
 
