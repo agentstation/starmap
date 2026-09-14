@@ -29,6 +29,7 @@ import (
 
 type prepareOptions struct {
 	profile, state, stateChecksum, publisher, output, runID, workspace string
+	restoreReceipt, restoreReceiptChecksum                             string
 	baselineEmbedded                                                   bool
 }
 
@@ -72,14 +73,26 @@ func run(ctx context.Context, args []string, output io.Writer) error {
 	flags.StringVar(&options.runID, "run-id", "", "stable run identity reused by retries")
 	flags.StringVar(&options.workspace, "workspace", "", "explicit local source workspace")
 	flags.BoolVar(&options.baselineEmbedded, "baseline-embedded", false, "apply the verified compiled baseline when resuming a checkpoint")
+	flags.StringVar(&options.restoreReceipt, "restore-receipt", "", "restore an existing publication with its verified run receipt")
+	flags.StringVar(&options.restoreReceiptChecksum, "restore-receipt-checksum", "", "trusted checksum of the restored run receipt")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	if flags.NArg() != 0 || options.profile == "" || options.publisher == "" || options.output == "" || options.runID == "" {
-		return invalid("arguments", "requires profile, publisher-id, output-dir, and run-id without positional arguments")
+	if flags.NArg() != 0 || options.publisher == "" || options.output == "" || options.runID == "" {
+		return invalid("arguments", "requires publisher-id, output-dir, and run-id without positional arguments")
 	}
 	if (options.state == "") != (options.stateChecksum == "") {
 		return invalid("state", "state and state-checksum must be supplied together")
+	}
+	if options.restoreReceipt != "" || options.restoreReceiptChecksum != "" {
+		report, err := restorePublication(ctx, options)
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(output).Encode(report)
+	}
+	if options.profile == "" {
+		return invalid("profile", "preparation requires an explicit source profile")
 	}
 	record, err := prepare(ctx, options)
 	if err != nil {
@@ -251,11 +264,11 @@ func stagePrepared(ctx context.Context, output string, selected preparedRecord) 
 	if _, err := artifact.VerifyPublicationReceipt(selected.Receipt.Data, selected.Receipt.Checksum, expected); err != nil {
 		return prepareReport{}, err
 	}
-	assets, err := artifact.StageReleaseAssets(filepath.Join(output, "artifacts"), bundle)
+	root, err := privatefiles.NewDirectory(output)
 	if err != nil {
 		return prepareReport{}, err
 	}
-	root, err := privatefiles.NewDirectory(output)
+	assets, err := artifact.StageReleaseAssets(filepath.Join(output, "artifacts"), bundle)
 	if err != nil {
 		return prepareReport{}, err
 	}

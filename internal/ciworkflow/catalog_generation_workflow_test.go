@@ -12,7 +12,7 @@ func TestCatalogGenerationWorkflowUsesFourHourAcquisitionCredentialScope(t *test
 	}
 
 	refreshStart := strings.Index(workflow, "- name: Refresh candidate catalog")
-	refreshEnd := strings.Index(workflow, "- name: Classify candidate catalog generation")
+	refreshEnd := strings.Index(workflow, "- name: Validate candidate before publication")
 	if refreshStart < 0 || refreshEnd <= refreshStart {
 		t.Fatal("catalog generation workflow does not contain the bounded refresh step")
 	}

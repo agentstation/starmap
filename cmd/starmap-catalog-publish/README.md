@@ -2,7 +2,7 @@
 
 This command collects configured sources and prepares one catalog artifact, run receipt, and replay checkpoint.
 It does not advance a public channel or merge an embedded catalog update.
-The scheduled workflow still needs the separate promotion integration.
+The [scheduled publisher](../../docs/SCHEDULED_CATALOG_GENERATION.md) owns promotion and channel updates.
 
 ## Prepare a catalog
 
@@ -114,6 +114,28 @@ Capacity errors preserve the previous accepted state and require operator recove
 Replay compacts repeated equivalent evidence when the smaller history preserves catalog bytes and current reviews.
 Distinct source changes can still reach the capacity limits.
 The command does not automatically adopt a prepared checkpoint.
+
+## Restore an interrupted publication
+
+Use the accepted run receipt and checkpoint to recover exact publication assets in a new working directory:
+
+```sh
+go run ./cmd/starmap-catalog-publish \
+  -publisher-id starmap-public \
+  -run-id example-002 \
+  -restore-receipt ./starmap-catalog-run.json \
+  -restore-receipt-checksum sha256:TRUSTED_RECEIPT_DIGEST \
+  -state ./starmap-catalog-state.json \
+  -state-checksum sha256:TRUSTED_CHECKPOINT_DIGEST \
+  -output-dir ./recovered-publication
+```
+
+The success report has status `restored`. The restored archive, receipt, and checkpoint preserve the original bytes.
+This operation makes no source or provider request and needs no provider API key.
+It rejects a changed publisher, run identity, digest, source profile, workspace, or baseline selection.
+Both digests must come from accepted state or verified publisher provenance.
+
+The output directory remains private. Public publication requires the separate workflow checks and verified promotion.
 
 ## Verify
 

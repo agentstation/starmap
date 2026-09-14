@@ -1,96 +1,113 @@
-# Scheduled Catalog Generation
+# Scheduled catalog generation
 
-The repository-owned Catalog Generation workflow is a distribution producer,
-not a scheduler embedded in ordinary Starmap consumers. It requests a run every
-four hours at minute 17 and supports manual dispatch. One non-cancelling
-concurrency group serializes publisher runs.
+Starmap's public publisher collects catalog evidence, publishes verified assets, and promotes the same catalog into the default branch.
+It requests a run every four hours at minute 17. Manual dispatch and completed promotion-PR checks can also resume publication.
+One concurrency group serializes runs without cancelling an active publisher.
 
-The workflow bounds each run with nested limits. The catalog transfer bound is
-60 minutes. The refresh step limit is 75 minutes. The job limit is 90 minutes.
+Provider API keys stay in Actions secrets. GitHub stores public catalog data and source observations without checkpoint encryption or a private object store.
+The [public profile](../.github/catalog-publication.yaml) selects models.dev and twelve public provider scopes.
+The [preparation command](../cmd/starmap-catalog-publish/README.md) documents admission, credential scope, and retained evidence.
 
-The workflow runs these gates in order:
+## Publication sequence
 
-1. refresh source and catalog candidates through the checked generation script.
-2. canonicalize the catalog and calculate separate facts-only semantic and
-   exact evidence-payload checksums.
-3. derive a new logical generation only when catalog facts change.
-4. run catalog-generation and embedded age/size/coverage gates.
-5. stage the validated deterministic archive and checksum assets.
-6. create and verify repository/workflow-bound provenance.
-7. publish an immutable GitHub prerelease keyed by the catalog digest while the
-   artifact remains bound to its exact evidence payload.
-8. download the three public assets and reopen the archive and detached
-   statement. Verify the checksum and exact repository and workflow provenance.
-   Compare the downloaded bytes with the staged publication set.
-9. when a prior catalog prerelease exists, download and reopen it with the same
-   identity checks. Verify its checksum, detached statement, repository, and
-   workflow so the rollback target remains readable.
-10. advance the stable channel over the verified immutable release. Attest,
-    publish, and read back the channel document.
+The workflow executes trusted code from the default branch. A promotion PR can change only the embedded catalog.
+Provider credentials enter only the acquisition step. The publisher verifies the archive, run receipt, checkpoint, and discovery documents against repository and workflow provenance.
 
-Manual execution cannot force an unchanged publication. If the immutable
-release already exists, the workflow downloads all three assets and verifies the
-archive, checksum, detached statement, and facts-only digest. It then advances
-the channel without creating a second release. Exact payload checksums remain
-the integrity and evidence identity inside each generation. Observation times
-can therefore change audit evidence without manufacturing a second release for
-identical catalog facts.
+1. Read both accepted channels and the pending publication record through Git.
+2. Recover unfinished publication before collecting new evidence.
+3. Prepare an artifact, run receipt, and checkpoint when no unfinished publication exists.
+4. Validate the proposed embedded catalog with the existing generation and budget checks.
+5. Attest the exact preparation and retain its files as an Actions artifact.
+6. Persist the attested pending record before publishing release assets.
+7. Publish and download the immutable receipt, checkpoint, and catalog assets. Verify their exact bytes.
+8. Create or resume the promotion PR. Wait for checks and any required review.
+9. Merge the verified PR and compare its committed embedded catalog with the published artifact.
+10. Stage, attest, publish, and read back both discovery channels.
 
-## Canonical names
+Publication completes only after both channels select the intended catalog and the modern channel binds its receipt and checkpoint.
+A public release alone does not change the accepted catalog.
+A source checkout contains the latest completed default-branch promotion. Existing binaries and pinned modules retain their embedded bytes until rebuilt.
 
-The immutable release tag joins `catalog-` to the full facts-only SHA-256 hex
-digest. The release title joins `Catalog ` to the generation identifier. Both
-are distribution identities, not Starmap binary versions.
-GitHub holds two retired namespaces, `catalog-semantic-*` and
-`catalog-payload-*`. The release command still reads them, so every historical
-release remains a rollback target. New publication uses the canonical namespace
-alone.
+## Publisher setup
 
-## Stable channel
+Install a dedicated GitHub App on this repository. Configure `CATALOG_APP_CLIENT_ID` as a repository variable and `CATALOG_APP_PRIVATE_KEY` as an Actions secret.
+The App key authenticates catalog PR operations to GitHub. It is separate from provider credentials and is not a checkpoint encryption key.
 
-The stable channel is the `catalog/v1` branch. It carries one attested file,
-`channel.json`. The document names the selected immutable release, its assets,
-and their checksums. Consumers read the channel to discover the current
-catalog.
+The installation token requests these repository permissions:
 
-The channel is a branch because this repository enables immutable releases.
-GitHub freezes an immutable release at creation, so it never replaces a
-published asset. The pointer stays mutable on a branch, and the content stays
-immutable in a `catalog-<digest>` release.
+| Permission | Access | Purpose |
+| --- | --- | --- |
+| Contents | Write | Push the catalog branch and merge its checked PR. |
+| Pull requests | Write | Create and inspect promotion PRs. |
+| Administration | Read | Verify existing branch protection. |
+| Actions | Read | Inspect workflow evidence. |
+| Attestations | Read | Verify publication provenance. |
+| Checks | Read | Verify results for the exact proposed commit. |
 
-The workflow reads the branch through `git fetch` and `git show`, never through
-the raw content host, because that host caches a changed file for minutes. It
-commits the document with `git commit-tree` against a private index, so the
-publish leaves the checked-out source tree untouched. The first run writes a
-root commit that carries no source history, plus a short `README.md` that names
-the branch as a machine-written pointer.
+The workflow creates the installation token after acquisition because these tokens expire after one hour.
+It derives the bot's author identity from the installed App.
+The repository token handles public releases, pending records, and discovery channels.
+[GitHub App token action](https://github.com/actions/create-github-app-token)
 
-The workflow advances the channel sequence and `channel_updated_at` after every
-successful run. An unchanged catalog therefore proves freshness without a new
-generation and without a new immutable release. The `published_at` and
-`generation_id` fields change only when the channel selects a different release.
+Main must require strict `Security & Reliability` and `Verification Gate` checks from the GitHub Actions app.
+Promotion also requires successful native jobs for Ubuntu x64 and ARM, macOS ARM and Intel, and Windows x64 and ARM.
+A newer incomplete check prevents an older successful result from qualifying its name.
+The publisher never bypasses protection, supplies its own approval, or force-pushes a publication branch.
+Required review appears as `awaiting_review` in the job summary with the PR link.
 
-The channel never selects a release before that release verifies. The release
-assets must be present, the checksums must match, and the attestation must
-verify. `Channel.Advance` in `pkg/catalogs/artifact` rejects any other order
-with a typed validation error.
+The App installation and controlled bot-PR qualification remain deployment prerequisites.
+The workflow refuses missing App configuration before acquisition or public publication.
+The refresh step has a 75-minute limit. The complete job has a 90-minute limit.
 
-## Operational notes
+## Stored files and identities
 
-The workflow sets `STARMAP_GENERATION_STORE_PATH` once for acquisition and staging.
-An initialization step writes the path to `GITHUB_ENV` before refresh.
-The generation script forwards it as `--catalog-store-path` to the update command.
-A relative value resolves from the directory that invokes the script.
-Acquisition writes that store. Manifest generation and release staging read the same store.
+| Location | Contents and lifetime |
+| --- | --- |
+| Runner temporary directory, `catalog-publication/` | Private preparation, verification, and checkout files for one job. |
+| Actions artifact, `catalog-publication-<run ID>` | Exact prepared files retained for 90 days before public publication. |
+| Branch `catalog/publication`, file `pending.json` | Attested identity of the latest preparation and its original workflow run. |
+| Release `catalog-run-<receipt digest>` | Immutable `starmap-catalog-run.json` and `starmap-catalog-state.json`. |
+| Release `catalog-<semantic digest>` | Archive, detached checksum, and statement. |
+| Branch `catalog/promotion/<receipt digest>` | The proposed embedded catalog and its checked PR. |
+| Branches `catalog/v2` and `catalog/v1`, file `channel.json` | Attested accepted publication pointers. |
 
-Retained source observations allow up to 512 providers. Canonical generation payloads retain their 100-provider limit.
-Source aliases and upstream records can remain in evidence without becoming canonical providers.
+The modern channel binds the artifact, receipt, checkpoint, and promoted source commit.
+The legacy channel retains catalog discovery compatibility. Both advance only after verified promotion.
+Consumers use public releases and channels. Expiring Actions artifacts are publisher recovery inputs, not runtime catalog sources.
 
-The workflow injects provider credentials only into the refresh step. It uses
-noninteractive dependency policy, and any refresh, typed validation, budget,
-attestation, identity verification, or release command failure stops the run.
-Expiring Actions artifacts are never used as the runtime catalog source.
+An unchanged semantic catalog reuses its immutable artifact. A new run receipt reports current source outcomes and original observation ages.
+Channel confirmation does not claim that every provider supplied fresh evidence.
+Historical release namespaces remain readable by the release tooling for rollback.
+New publications use the canonical names above.
 
-Deployments that invoke acquisition on their own cadence own any cross-process
-lease, retry policy, and durable run records above the explicit operation.
-This repository publication workflow does not define those concerns.
+## Recovery
+
+Run the workflow again after a failed job. A pending publication selects its original run, artifact, receipt, and checkpoint before any new acquisition.
+The publisher first restores public receipt and checkpoint assets. If those assets are incomplete, it restores the original Actions artifact.
+A later job can reconstruct the exact archive without provider credentials.
+
+An interrupted release upload can leave an unfinished draft asset. The publisher can remove that unfinished asset and upload its expected bytes again.
+It never overwrites an uploaded asset. A byte mismatch stops recovery.
+A lost response after successful publication reuses the verified release.
+
+An interruption between the promotion branch push and PR creation reuses the existing branch after checking its catalog and changed paths.
+Required checks and reviews keep the previous channels active.
+An operator-closed promotion stops the pending publication. Resolve that disposition before resuming it.
+An authored catalog change that conflicts with a pending promotion also requires resolution.
+
+Channel commits use the previously read parent and a normal Git push.
+A concurrent branch update rejects the stale push instead of overwriting it.
+The workflow publishes v2 first. If v1 publication fails, the next run completes the same publication before acquiring again.
+The pending branch remains as the last publication record. Completion requires both channel bindings to match it.
+
+An optional OCI mirror retains the existing opt-in behavior after channel publication.
+Set `STARMAP_CATALOG_OCI_MIRROR=true` and optionally `STARMAP_CATALOG_OCI_REPOSITORY`.
+The mirror uses the archive digest, downloads the result, and checks its exact bytes.
+It does not replace GitHub catalog authority.
+
+## Verification boundary
+
+`scripts/test_catalog_publication.py` uses real catalog tools and isolated Git repositories with simulated GitHub responses.
+It checks recovery, immutable bytes, conditional branch updates, and checked promotion ordering.
+These tests do not qualify GitHub App permissions, actual workflow triggering, or hosted provenance.
+Controlled repository qualification must verify those contracts before enabling scheduled promotion.
