@@ -50,6 +50,28 @@ These observations describe local implementation, not completed publication supp
 GitHub checkpoint retention, channel receipt verification, checked promotion, and final qualification remain open under CSP6.
 The [engineering specification](ENGINEERING_SPEC.md#53-public-publisher-checkpoints) records the accepted storage scope.
 
+## Public publisher integration: 2026-09-14
+
+The [local integration proof](../../plans/proof/starport-production-catalog/csp6/publication-integration-2026-09-14.json) records receipt retention, promotion checks, and replay compaction.
+Channel v2 binds a current run receipt, public checkpoint metadata, and the promoted source commit.
+The release command validates local checkpoint replay and exact promoted catalog files before it stages the channel.
+The workflow must still verify provenance and confirm the default-branch merge.
+
+Runtime source retention keeps current run evidence separate from the original immutable catalog artifact.
+Restart tests preserve the accepted receipt and original observation times.
+Status exposes a fixed-size summary. An explicit accessor returns a copy of the full receipt.
+
+The first capacity regression retained eight full observations after eight unchanged polls.
+The corrected provider, metadata, and unresolved-metadata fixtures retain two observations.
+A thirteen-run test compares compacted state against all original observations.
+It covers field changes, scoped absence, return, explicit account removal, and checkpoint restore after every run.
+Large public profiles and distinct input changes still need sustained capacity qualification.
+
+The proof distinguishes final focused checks from earlier integration checks.
+Both broader runtime attempts reached their five-minute test deadline after 250 passing test events across six selected packages.
+Those attempts do not qualify the complete runtime suite.
+CSP6 still requires workflow integration, controlled bot promotion, final checks, review, and merge.
+
 ## Verified current behavior
 
 | ID | Finding | Evidence |
@@ -2922,4 +2944,3 @@ Starport stores these catalog records in KV. Its object-storage backend owns upl
 Starmap's optional object catalog adapter has a separate collection boundary.
 CSP8 must protect accepted and candidate heads, readers, shared chunks, and pending writes during retention.
 The passing diagnostic supplies no acceptance credit. Valkey and concurrent deletion remain unverified.
-

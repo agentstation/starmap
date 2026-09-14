@@ -13,10 +13,12 @@ Its tree exactly matches reviewed `71a1af619`. All six native jobs pass.
 CSP5 still needs shared cleanup and the coordinator decision. Its local implementation merged.
 
 The [PR #153 parent qualification](pr153-parent-2026-09-14.json) records module verification, shell syntax, zero Go policy findings, and 1663 files with no prose diagnostics.
-Sol and Opus each report zero findings. The updated branch now runs CI. Automatic merge waits for native qualification.
+Sol and Opus each report zero findings. The [later CI capture](pr153-native-passed-2026-09-14.json) records all six native jobs passing.
+Verification Gate remains active. Keep automatic merge disabled until the final required check passes.
 
-CSP6 now uses `codex/catalog-publication-promotion-main` at `9aff3fac5` in the same publication worktree.
-Its eight commits follow merged main. The prior branch preserves the original source and evidence.
+CSP6 now uses `codex/catalog-publication-promotion-main` at `40e2bfe52` in the same publication worktree.
+The [local integration proof](../../csp6/publication-integration-2026-09-14.json) records receipt retention, checkpoint checks, and replay compaction.
+Workflow integration and qualification remain open. No CSP6 PR exists.
 
 The public GitHub publisher uses public source data and existing API keys. Its checkpoint needs no separate encryption key or private object store.
 Keys stay in Actions secrets. Private enterprise catalogs keep their separate deployment storage.

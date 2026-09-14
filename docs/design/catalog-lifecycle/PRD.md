@@ -68,6 +68,8 @@ D3 retains four-hour publication and default-branch promotion.
 
 D31 applies to the public publisher, whose configured provider accounts expose public models.
 Its checkpoint retains source data across failed requests and retries. Enterprise publishers keep private catalogs in their own configured storage.
+Repeated unchanged source results must not make active checkpoint state grow on every scheduled run.
+Compaction must preserve catalog facts, availability, and the original evidence for current results.
 
 ## Problem and outcomes
 

@@ -875,6 +875,24 @@ The encoder must exclude credential values and raw diagnostic messages.
 Restore must verify a separately trusted checkpoint digest and validate the retained evidence before reuse.
 Public access does not remove integrity or provenance checks.
 
+The channel must bind the exact accepted checkpoint, current run receipt, and promoted source commit.
+Consumers retain the current receipt separately from the immutable catalog artifact.
+A later run must not rewrite an older artifact's source times or review evidence.
+Runtime status exposes a small summary. A separate accessor returns the full receipt for diagnostics.
+
+Repeated unchanged polls must not retain another full input copy indefinitely.
+Retain original inputs that establish current facts, availability, source changes, and unresolved model reviews.
+Accept compaction only when replay preserves catalog values, provenance, membership, and current review records.
+
+For repeated metadata reviews, retain the latest original evidence for each source, offering, and review code.
+Omission preserves the last review. Provider reviews remain separate by account scope.
+Historical publication records retain earlier evidence.
+
+Qualify retained-input capacity against the actual public source profile over repeated runs.
+Distinct changes can require additional history even when unchanged polls remain bounded.
+If required evidence exceeds a capacity limit, reject the new publication and retain the accepted catalog.
+Do not reset the baseline or remove catalog entries to recover space.
+
 Enterprise publishers can collect private models and account selectors.
 Those publishers use their deployment's configured private storage and access policy.
 Their storage requirements do not apply to the public GitHub profile.
