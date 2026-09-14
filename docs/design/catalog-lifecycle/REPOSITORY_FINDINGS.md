@@ -3019,5 +3019,7 @@ Its retained history stabilizes at 26 observations. The largest checkpoint measu
 
 The full runtime suite passes 1,192 race events with an explicit thirty-minute timeout.
 Final publication/artifact checks pass 264 race events. The source suite passes 80, and minimum Go passes 28.
-Generation and all 68 distribution checks pass. Required review, hosted qualification, and merge remain open.
+Generation and all 68 distribution checks pass. Sol and Opus pass required review at P0.
+[Draft PR #160](https://github.com/agentstation/starmap/pull/160) contains the integrated flow and native timeout adjustment.
+Native CI, hosted qualification, and merge remain open.
 The canonical plan's current resume state owns exact active commands and next actions.

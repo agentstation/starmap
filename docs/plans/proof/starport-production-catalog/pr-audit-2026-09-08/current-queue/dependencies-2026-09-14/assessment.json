@@ -1,0 +1,140 @@
+{
+  "observed_at": "2026-09-14T19:52:00Z",
+  "scope": "Read-only dependency PR assessment plus one unchanged-head CI retry. No merges or branch deletions.",
+  "pull_requests": [
+    {
+      "repo": "starmap",
+      "number": 157,
+      "head": "b1bab6d65037bdc6f0f8f81402c98bfe8116dd54",
+      "result": "11 successful checks and neutral CodeQL. Four module files include the server-storage consumer. S3 update also advances the AWS core version requested by PR 155. Final merge review remains required."
+    },
+    {
+      "repo": "starport",
+      "number": 374,
+      "head": "b05bdfedc5bfa7df8558f14c6375ec9f1c535a51",
+      "result": "10 successful checks. Only root module files change. Final merge review remains required."
+    },
+    {
+      "repo": "starmap",
+      "number": 155,
+      "result": "Linux package setup failed on Go proxy HTTP/2 INTERNAL_ERROR. Windows x64 job was cancelled. Reassess necessity after PR 157, which includes the core update."
+    },
+    {
+      "repo": "starmap",
+      "number": 156,
+      "result": "Consumer module needs tidy. Windows ARM package setup failed on Go proxy HTTP/2 INTERNAL_ERROR. Linux TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease failed writing permission.json with context canceled. Consumer repair and runtime failure assessment remain required."
+    },
+    {
+      "repo": "starmap",
+      "number": 158,
+      "result": "Consumer module needs tidy. No runtime failure found in this run."
+    },
+    {
+      "repo": "starmap",
+      "number": 159,
+      "head": "d3561be40fac745548e64d971a806ce688d4c5dd",
+      "result": "Verification failed on sum.golang.org HTTP/2 INTERNAL_ERROR. Retried only that job on the unchanged head. Retry outcome remains pending.",
+      "retry_command": "gh run rerun 34867290745 --repo agentstation/starmap --job 104054205697",
+      "retry_exit_code": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "starmap-open-pr-checks.json",
+      "archive": "starmap-open-pr-checks.json.gz",
+      "sha256": "2d7c871dd60a19e9f80e7ad0643392421c87cdfd2a2619495bd2232e11a5d89a",
+      "archive_sha256": "a55ea17f82e648a20adc7d51746d3b50292a2411ee1b8cb994c9c839bdca5376"
+    },
+    {
+      "source": "starport-open-pr-checks.json",
+      "archive": "starport-open-pr-checks.json.gz",
+      "sha256": "a70bd28f2e02539708e9d1de96dd1fb9ee18e67093995ff3d3694aa69652c31b",
+      "archive_sha256": "1d14bb4bcdc0d89e2df0b9251e8e92863c46a8c93809e86c6b78a925fb0b2077"
+    },
+    {
+      "source": "pr157-review-input.json",
+      "archive": "pr157-review-input.json.gz",
+      "sha256": "3d0eafe5afaf1df3698b602f6ab4c624acd227a67346aca4b7d80e3ac6d76a43",
+      "archive_sha256": "82c5dd826e72b2f13ab0d0e8e2aa2bccca8ba55b326250411c2048b179736612"
+    },
+    {
+      "source": "pr374-review-input.json",
+      "archive": "pr374-review-input.json.gz",
+      "sha256": "331b6564ceee2c9108c705678373a5683aae279c27ef8ea14ce89ce2e14b28e7",
+      "archive_sha256": "62750ea45b44e0a9c43426f3f59fa3af9ba48b6054c1c69817c833dfb9d1d2aa"
+    },
+    {
+      "source": "pr157.patch",
+      "archive": "pr157.patch.gz",
+      "sha256": "70e5045934ce1cd96e3a864bcd2723dff9870ced989e299b2bc7f39ea40f9023",
+      "archive_sha256": "02af84a054c5f10956713bab2862a26edf416294b70d40e8f7a962c22a6d99db"
+    },
+    {
+      "source": "pr374.patch",
+      "archive": "pr374.patch.gz",
+      "sha256": "38044c295641245c41ba95cb7e21114e3c1dc7a1e08771d847d2a325137cd73d",
+      "archive_sha256": "c174b030a61c0c850b0b376d2d2f17447767431cfa776aefb95e74e50f7dc652"
+    },
+    {
+      "source": "recent-dependency-runs.json",
+      "archive": "recent-dependency-runs.json.gz",
+      "sha256": "e112691ec4e2a31153e1ebbfc4f51f42fa4a1c38b4d4adbdb9992fd87c8f399e",
+      "archive_sha256": "16402ad3c0a1cd6ae9fdc07e9a2384fef0f8bd18287a4ec1f26d5505338196b1"
+    },
+    {
+      "source": "dependency-run-34867517619-failed.log",
+      "archive": "dependency-run-34867517619-failed.log.gz",
+      "sha256": "d59877ab575361a2204c7ce12cae2dead4f91cdc10d4b647b48d5d97a685bafc",
+      "archive_sha256": "7ddfdfa3fe0d90a3d8c30975c310a175975f679958e2688c951d75121baf112f"
+    },
+    {
+      "source": "dependency-run-34867440905-failed.log",
+      "archive": "dependency-run-34867440905-failed.log.gz",
+      "sha256": "87eca0b90bd1c2fd3c6c36744113043a3fcc16cdbec1ebf9c67e76db317b13fe",
+      "archive_sha256": "4502f3f87a3150de618de822235077c3bbda6d0b79585624ddc49817bff17f8d"
+    },
+    {
+      "source": "dependency-run-34867435917-failed.log",
+      "archive": "dependency-run-34867435917-failed.log.gz",
+      "sha256": "61df7b57544153ae1a177ab8704d0d99881e151cd0131cb2d96badfc3b8e0d90",
+      "archive_sha256": "27bab4d7626ca228d888224d8351a77076a3844bfa038ed42e9f764fda69fde1"
+    },
+    {
+      "source": "dependency-run-34867290745-failed.log",
+      "archive": "dependency-run-34867290745-failed.log.gz",
+      "sha256": "2cecce3ff6557eb7dde67ff0b275fdb0cf41792e38468bc9be93a4e95259649d",
+      "archive_sha256": "81812376f3d085c6c4029ca3166ad68a5a7ac4f2ec1b6315eb8553faec07295f"
+    },
+    {
+      "source": "dependency-native-156-windows/windows-clock.jsonl",
+      "archive": "dependency-native-156-windows-windows-clock.jsonl.gz",
+      "sha256": "7c34de6333bf7513b754d3cd15c11c110bd38501d7d16d81993b972b85d3922e",
+      "archive_sha256": "f6ae52a84b91fc2f10dd22f99b9d2f01360e2aa872fdb7bfb19769f1cd23a143"
+    },
+    {
+      "source": "dependency-native-156-linux/tests.jsonl",
+      "archive": "dependency-native-156-linux-tests.jsonl.gz",
+      "sha256": "2aee03b7d4e5da238da044ef2df6afcc0b07220b4d3414eed34a8ad2db0d74bc",
+      "archive_sha256": "9519294047eb7f75c15e9d2cf315d428541fab1330ad9085df4e5e911326f4a2"
+    },
+    {
+      "source": "dependency-native-155-linux/tests.jsonl",
+      "archive": "dependency-native-155-linux-tests.jsonl.gz",
+      "sha256": "b8261fd650f357185ea12ef4876254a4baedf4b91fc96179c4332da82a623cbc",
+      "archive_sha256": "42e8d49d5e58e01523b09ec4bb4b11660d03228d824cd0253fa3eb082de9aa5c"
+    },
+    {
+      "source": "dependency-permission-refresh-diagnostic.jsonl",
+      "archive": "dependency-permission-refresh-diagnostic.jsonl.gz",
+      "sha256": "08e582726bd12f2f3692269867bb119c78acb8b6214aeeee86655f7778fa205b",
+      "archive_sha256": "9a9cb426aa1e5058b798c65f8947d8cbd04e04b8ba618cd2f731fbfe322779ee"
+    }
+  ],
+  "permission_diagnostic": {
+    "head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=10 -timeout=5m -json ./runtime -run '^TestAuthorityRuntimePermissionRefreshBypassesBlockedCatalogAndLease$'",
+    "result": "10 local passes; the native failure remains unresolved.",
+    "exit_code": 0,
+    "observation": "The test supplies a one-second context to the follower permission refresh. Local success does not establish the native failure cause."
+  }
+}

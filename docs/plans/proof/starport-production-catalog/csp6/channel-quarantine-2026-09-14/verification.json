@@ -2,9 +2,9 @@
   "schema_version": 1,
   "status": "in_progress",
   "task": "CSP6",
-  "updated_at": "2026-09-14T19:40:00Z",
+  "updated_at": "2026-09-14T20:01:00Z",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
-  "head": "0ce46cd77f62436a98e7b64211e1885b4591054e",
+  "head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
   "work_commit": "0ce46cd77f62436a98e7b64211e1885b4591054e",
   "committed_inputs": {
     ".github/catalog-publication.yaml": "e8745467859cdc0e6e1c0c65718ed5666812ec76bb715eb23d98c0c4e4ff2954",
@@ -104,21 +104,14 @@
     }
   ],
   "qualification_limits": [
-    "The work commit is local and unmerged.",
+    "The work commit is published in draft PR 160 and remains unmerged.",
     "Hosted App configuration and controlled publication remain unverified.",
     "The full runtime and generation commands started before the final diagnostic logging, quarantine count validation, and slices.Equal refinements. Final focused suites cover those changed seams.",
     "Profiled capacity preceded repeatableReplayQuality. The generation gate subsequently passed full-profile capacity with that extension. Full-profile race qualification remains unverified after its ten-minute timeout.",
     "Current release and Starport UI qualification are not implied by these component results.",
     "Failed checks and timeouts remain evidence."
   ],
-  "active_commands": [
-    {
-      "session_id": 9231,
-      "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base origin/main --profile cross-lab --thinking codex=xhigh",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/integrated-pre-pr-review.log",
-      "result_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-csp6-review-n2zfeb9c"
-    }
-  ],
+  "active_commands": [],
   "artifacts": {
     "channel-default-valid-red.jsonl": {
       "meaning": "Behavior failures before v2 defaults.",
@@ -676,7 +669,142 @@
       "sha256": "658aba39c1041b281ab6ee717a4542b916794765462511fd4acd897d40573c48",
       "bytes": 576,
       "archive_sha256": "e47ebc2497246b0289b8b00233855fca6003c1427d7929cec1707d448b4f290b"
+    },
+    "native-publication-timeout-check.jsonl": {
+      "meaning": "Workflow checks after the native publication timeout adjustment.",
+      "archive": "native-publication-timeout-check.jsonl.gz",
+      "sha256": "59397d3baf10716d7a00cf9f6220f9bf866de4e32ec28f04658c617134c8ef31",
+      "bytes": 27879,
+      "archive_sha256": "12b2b20a8faaa83f8c28bc4f7a7a766385c1d8cd17c6077fefebb145e65558d4",
+      "test_events": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "action": "pass",
+          "elapsed": 1.291
+        }
+      ]
+    },
+    "integrated-pre-pr-final-review.log": {
+      "archive": "integrated-pre-pr-final-review.log.gz",
+      "sha256": "8087213240d62031b3ed5255ea3223455844e4f2f33768514281ea30366a8a62",
+      "bytes": 1511,
+      "archive_sha256": "98055a56f809d60f0a50ad2b8444881cd5b7b1e36c63cabf4b76fbad33fed7c9"
+    },
+    "final-review.json": {
+      "archive": "final-review.json.gz",
+      "sha256": "f4fb8b9e691a736b765b24e0620bdaa980e6f978e6eb03be05585b395374de9c",
+      "bytes": 224,
+      "archive_sha256": "45f9f1dc694510ba42adb38950f4b7054f8a842a63cb84791a215e538d83a078"
+    },
+    "final-review.md": {
+      "archive": "final-review.md.gz",
+      "sha256": "0eb05d94fd5958ce4854b2f933bd850b0f86c5089b78fbc5697f8ea114891bb3",
+      "bytes": 206,
+      "archive_sha256": "0504f07ea106ebd1232d012770ff0b6123ab07c7670c46be3eae97cd952480df"
+    },
+    "pr160-created.json": {
+      "archive": "pr160-created.json.gz",
+      "sha256": "f855cb67d81d4977a7649980c290e7dc7d817de2bc99dfebb51a3873b752e883",
+      "bytes": 4343,
+      "archive_sha256": "010eaebb51bad23168bb3f39efcfa857cbe034cf9f89aa28b7d89e2a9e71c0fe"
+    },
+    "pr160-runs.json": {
+      "archive": "pr160-runs.json.gz",
+      "sha256": "2116e6b144e0459811ac1e3b3788f11e381ef22b7a9530d294bc493449192aa3",
+      "bytes": 224,
+      "archive_sha256": "fcaba9fd188629f0698241fee3f06a97c00d6af6b0bdc4d0a860d788a9f6bc79"
+    },
+    "catalog-app-variable-status.json": {
+      "archive": "catalog-app-variable-status.json.gz",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "archive_sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80"
+    },
+    "catalog-app-secret-status.json": {
+      "archive": "catalog-app-secret-status.json.gz",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "archive_sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80"
+    },
+    "canonical-writing.log": {
+      "archive": "canonical-writing.log.gz",
+      "sha256": "21a1fda17c5c3c017bea800416d84ec8aacc4e56e1a40270515adeb82527bbeb",
+      "bytes": 558,
+      "archive_sha256": "6b3f299f17b3ce1a191037d4b039c2fb2031050c75159375f8cbdc5e51d6e227"
+    },
+    "plan-structure.json": {
+      "archive": "plan-structure.json.gz",
+      "sha256": "842e8f967ab00ad3d5dc56a12ffe4bce431b657adafa38a98a90f3dd7f2ff8b6",
+      "bytes": 519,
+      "archive_sha256": "67f561e0aed5e2fbd85f9f121e9119b0f888e09608f7383e86ec287f2c02ea8f"
     }
   },
-  "next_action": "Read the required review result, assess any finding against the code, and publish the integrated draft PR after the gate passes. A05 hosted cases remain unverified."
+  "next_action": "Inspect native CI run 34890300375 for draft PR 160, resolve verified failures, and finish App setup plus controlled hosted publication qualification before CSP6 completion.",
+  "additional_commits": [
+    {
+      "commit": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
+      "file": ".github/workflows/pr.yaml",
+      "sha256": "1f04a84e40801fdd94eaed3ecfd4ed1db1c58ce55257225156df466d8470f0c0",
+      "reason": "Full public-profile qualification measured 295.184 seconds, too close to the five-minute native package deadline. The native command now uses the repository thirty-minute limit.",
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json ./internal/ciworkflow",
+      "result": "PASS",
+      "log": "native-publication-timeout-check.jsonl"
+    }
+  ],
+  "review_attempts": [
+    {
+      "head": "0ce46cd77f62436a98e7b64211e1885b4591054e",
+      "result": "INVALID: native CI timeout changed after the frozen review bundle. No clean review credit.",
+      "exit_code": 1,
+      "archive": "integrated-pre-pr-review-stale.log.gz",
+      "sha256": "c6a8cb04d9a34a9f122ebae5621917515cdac3007d4dfb8ba004aa5ef61b27b0",
+      "archive_sha256": "4677d80a3ed9431aa6c4ca2a1f03107104b9a3b11c2f52242889bd6de9b0a508"
+    }
+  ],
+  "queue_assessment": "../../pr-audit-2026-09-08/current-queue/dependencies-2026-09-14/assessment.json",
+  "review": {
+    "head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
+    "base": "176516abaae5b544dd1b830b0c09f50c87e9be5d",
+    "profile": "cross-lab",
+    "reviewers": [
+      "gpt-5.6-sol xhigh",
+      "claude-opus-5 high"
+    ],
+    "priority_threshold": "P0",
+    "passes": 3,
+    "result": "clean",
+    "accepted_findings": 0,
+    "rejected_findings": 0,
+    "secret_scan": "clean",
+    "exit_code": 0,
+    "report": "final-review.json.gz",
+    "log": "integrated-pre-pr-final-review.log.gz"
+  },
+  "pull_request": {
+    "number": 160,
+    "url": "https://github.com/agentstation/starmap/pull/160",
+    "state": "OPEN",
+    "draft": true,
+    "head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd"
+  },
+  "active_runs": [
+    {
+      "conclusion": "",
+      "databaseId": 34890300375,
+      "headSha": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
+      "status": "in_progress",
+      "url": "https://github.com/agentstation/starmap/actions/runs/34890300375",
+      "workflowName": "Pull Request"
+    }
+  ],
+  "document_qualification": {
+    "prose": "PASS: 1526 files, zero diagnostics",
+    "structure": "PASS: 38 ledger rows, 10 done, CSP6 active, six protected sections unchanged, 124 links valid",
+    "resume": "278 words; required current resume, task contract, and proof summary total 6022 bytes. Required contracts retain the larger plan size."
+  }
 }
