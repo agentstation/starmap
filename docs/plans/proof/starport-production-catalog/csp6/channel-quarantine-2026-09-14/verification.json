@@ -1,0 +1,682 @@
+{
+  "schema_version": 1,
+  "status": "in_progress",
+  "task": "CSP6",
+  "updated_at": "2026-09-14T19:40:00Z",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "head": "0ce46cd77f62436a98e7b64211e1885b4591054e",
+  "work_commit": "0ce46cd77f62436a98e7b64211e1885b4591054e",
+  "committed_inputs": {
+    ".github/catalog-publication.yaml": "e8745467859cdc0e6e1c0c65718ed5666812ec76bb715eb23d98c0c4e4ff2954",
+    "cmd/starmap-catalog-publish/README.md": "d3b5818713274cb7f2ffc510a58bbfe6d1e9eebd8f3c9dd278f39a03cb701cb8",
+    "docs/ARCHITECTURE.md": "23eba7361b608be928c9e714769d8746b184117dcd384f10eab3239d9d4a805e",
+    "docs/CATALOG_SETTINGS.md": "fefa2c4f256c0224ee671461db1f63f3463156319b95cbe82b0131d8a2e090f9",
+    "docs/RELEASES.md": "f5439a14303d82bd8e21421f54ada4ee4ffd9169bcc40a7873c40088352626b2",
+    "docs/SCHEDULED_CATALOG_GENERATION.md": "37f28cd42164afd663b2d520f51bad6f60237f9816bf3beafd9928a2d78d9406",
+    "docs/catalog-settings-schema.json": "4074040373a0b295eded97ecb2fb931750e72d9cd5d744772cc0faee1000366c",
+    "internal/catalog/publication/admission.go": "bc5e1cd65c8a1efb0de518acef29aa7f1633604017b3546dede47acdda548251",
+    "internal/catalog/publication/prepare.go": "64a40b7258e465c3fe56067f1a6f983ae80398055a27b087808ea4e2b321f5c8",
+    "internal/catalog/publication/profile.go": "b4ba332ab14d7d88aea78802f33a575e20e373627b74bc72629f202ed631aa15",
+    "internal/catalog/publication/receipt_binding.go": "19e4c6bacb3ffa61a9e6c2580c26837a3e4689dbfbb18b0e542244ec85b31499",
+    "internal/ciworkflow/catalog_publication_workflow_test.go": "6c431711b98d56719bd54f78f245c28fdddabb710fcffc40e702c97885189798",
+    "internal/sources/github/config.go": "d20bc9fd9677418c76391d3cb172f985f2f18da233c73ea94d8937c66d03777e",
+    "internal/sources/github/fixture_test.go": "55265b106b6605abfd88f8fc1d895be67187645b2f66d76dc8ca8645bcafeab7",
+    "internal/sources/github/github.go": "721f8f1618bfc8238ed40ae4939f55d8a9fffdea2c9d8f8a1260e71fb2118b0c",
+    "internal/sources/github/github_test.go": "a02f20fccccd7087931697e00bcbc1d79a8553f3032064fc69067ea47bae68d2",
+    "internal/sources/github/publication_test.go": "89bb02e0a59801b39adefa8867114e17b9e4130a75ad5703961b1cae17013564",
+    "internal/sources/modelsdev/base.go": "225cf3b4074ccce503e5affbf4227ddf55058486b057ee56cd515b020dab5949",
+    "internal/sources/modelsdev/catalog_generation_tooling_test.go": "ca62e901f1f3add2631f4508230a2b16c42f3914ebb255434415f775a8084b80",
+    "internal/sources/modelsdev/git.go": "827d8695f15d6c01ba661cf9e892fd820be7dfd91d0b38e412c3740ccbcefe72",
+    "internal/sources/modelsdev/http.go": "fb83d7d2e49e299f6012a8e048ed9cdc7dde7d771c1e2edb3587c6e95ba5a8ea",
+    "internal/sources/modelsdev/observation_test.go": "a22d44eb296470d5cdcb23c6ae06d331cdc43d3f2be3a0c1eae87fcaca021bd1",
+    "internal/sources/modelsdev/parser.go": "1722f5f8d6dcb84347f2a00cbc9b25a629dbe44b47499897c98ad05ea651deb4",
+    "internal/sources/modelsdev/parser_test.go": "32a045eaa31954fc23ca4e0ddfb71716022c824df75041db8ae001ced0ba8954",
+    "internal/sources/modelsdev/schema_resilience_characterization_test.go": "5c96690e0416c2f3b0abc4e7f65262c17403402676173eaa33e692b270b7a5c6",
+    "pkg/catalogs/artifact/publication_receipt.go": "3fd03e69e80acbf73e64998715cb471219431b1e5ddaf0944ec2f89c914d040f",
+    "pkg/catalogs/artifact/publication_receipt_decode.go": "941a4d5147c6d0f1d81afdf9ad8fcc1fc8d73fe4cc65098ebc2b5c57601e7c58",
+    "pkg/catalogs/artifact/publication_receipt_validation.go": "964f6652787d5cd94751084dcc28c30efcb6bf94ea670a983a9a2979bbb97025",
+    "pkg/catalogs/artifact/scheduled_workflow_test.go": null,
+    "runtime/README.md": "9d22ebf8503ea8693c74439e2452bec99b48ba3fe9e1276109a51ee0fe0ff5d3",
+    "runtime/acquisition_compaction.go": "5e2e4a0f50ecc92e9745de59e042c453dff814da62bb08f932f41b53c54b3e44",
+    "runtime/policy.go": "811bb986d55fbe757e901564111b0766c0b3320d0e3f5e0ab8d10495b38ab097",
+    "runtime/policy_test.go": "f8b4b3ff617cd742290c5e8abc3da587481659b8c221d9c3464168c28819c107",
+    "runtime/public_catalog_acceptance_test.go": "87397425bc4292f305c6c56db4f6f7e3de45d35628ba115d20b9dc45e885cba0",
+    "scripts/catalog-product-checks.json": "e61e3c01b640a16c2dd5b7e24d7d50050dbf9370a08a9dbc42c864ca784bfe29",
+    "scripts/test_catalog_publication.py": "64a138222e17d8d433f7e6a6b3c7248d2b4826304cd9ffea749e0d0e4cf64e5f",
+    "scripts/verify-catalog-distribution.sh": "052b58d578d52635fa945b1e2dc18034adf43cee1b46be4ec05ec61dbbe08661",
+    "internal/catalog/publication/public_capacity_test.go": "4ca6ef6118e0b3b86d10d820528925b99e15bde9c4c80a9c44e059fb7781a97e",
+    "internal/catalog/publication/quarantine.go": "305d64a18c064f10c051586544a107eb3786069d05bd500a4b3e0fa2cf32e899",
+    "internal/catalog/publication/quarantine_test.go": "96940a1d526ff2441901091609bafa9ab0ed547df347733f465e98914f06f223",
+    "internal/sources/modelsdev/normalization_test.go": "7893590de3f9d05aa544fcb559eee023e61f1f7b528d8326ae08ee3d3880c99a",
+    "pkg/catalogs/artifact/publication_quarantine_test.go": "1a7a310b6ef1179d214dbdf069aa06ecf706b85094123061836c9d13d17ea887",
+    "pkg/catalogs/evidence/record_quarantine.go": "223d89146aeb6d457959afe22b175b9f72a0d492f69fae0f7d8687c6e06dc7c7"
+  },
+  "decisions": {
+    "public_checkpoint": "Public catalog data stays on GitHub; provider keys stay in Actions secrets. No checkpoint encryption service.",
+    "quarantine": "Owner permits isolated invalid records with preserved prior facts, source status, record identifiers, and reason codes.",
+    "normalization": "One models.dev adapter rule trims surrounding display-name whitespace, preserves exact IDs, and emits structured correction events."
+  },
+  "completed_commands": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make catalog-generation-check",
+      "result": "PASS",
+      "log": "channel-quarantine-generation-full.log",
+      "exit_code": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer bash scripts/verify-catalog-distribution.sh",
+      "result": "PASS: 68 pass, zero fail, zero unverified",
+      "log": "channel-quarantine-distribution-full.log",
+      "exit_code": 0
+    },
+    {
+      "command": "STARMAP_PUBLIC_FIXTURE_REQUIRED=1 GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=30m -json ./runtime",
+      "result": "PASS: 1192 test events, no skips",
+      "log": "channel-quarantine-runtime-full.jsonl",
+      "exit_code": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json ./internal/catalog/publication ./pkg/catalogs/artifact -skip '^TestPublicPublicationProfileRetainsBoundedState$'",
+      "result": "PASS: 264 test events, two packages",
+      "log": "record-quality-candidate-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json ./internal/sources/modelsdev",
+      "result": "PASS: 80 test events",
+      "log": "modelsdev-quality-diagnostics-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -json ./internal/catalog/publication ./internal/sources/modelsdev ./pkg/catalogs/artifact ./internal/sources/github ./runtime -run 'TestPublication(Quarantine|RepeatedQuarantine)|TestPublicationReceiptQuarantine|TestModelsDevDisplayNameNormalization|TestInvalidIdentityQuarantine|TestGitHubSourceDefaultsToPublicationChannelAndReadsExplicitLegacy|TestPublicSourceDefaultsToPublicationChannel'",
+      "result": "PASS: 28 test events, five packages",
+      "log": "record-quality-minimum-final.jsonl"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+      "result": "PASS: zero findings, errors, and stale ignores",
+      "log": "record-quality-goago-final.json",
+      "exit_code": 0
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "result": "PASS: 1751 files, zero diagnostics",
+      "log": "record-quality-writing-settled.log",
+      "exit_code": 0
+    }
+  ],
+  "qualification_limits": [
+    "The work commit is local and unmerged.",
+    "Hosted App configuration and controlled publication remain unverified.",
+    "The full runtime and generation commands started before the final diagnostic logging, quarantine count validation, and slices.Equal refinements. Final focused suites cover those changed seams.",
+    "Profiled capacity preceded repeatableReplayQuality. The generation gate subsequently passed full-profile capacity with that extension. Full-profile race qualification remains unverified after its ten-minute timeout.",
+    "Current release and Starport UI qualification are not implied by these component results.",
+    "Failed checks and timeouts remain evidence."
+  ],
+  "active_commands": [
+    {
+      "session_id": 9231,
+      "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base origin/main --profile cross-lab --thinking codex=xhigh",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/integrated-pre-pr-review.log",
+      "result_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-csp6-review-n2zfeb9c"
+    }
+  ],
+  "artifacts": {
+    "channel-default-valid-red.jsonl": {
+      "meaning": "Behavior failures before v2 defaults.",
+      "archive": "channel-default-valid-red.jsonl.gz",
+      "sha256": "2ccb7ef13ec65572cb1352ac19df4f38dd62b353a47a1f8df74db43691b37305",
+      "bytes": 5854,
+      "archive_sha256": "70f16baadd10a6560ce10d5a1170157df622f4213ca5f9e5b4398d7e3c87af92",
+      "test_events": {
+        "pass": 1,
+        "fail": 3,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "action": "fail",
+          "elapsed": 0.473
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "fail",
+          "elapsed": 0.786
+        }
+      ]
+    },
+    "channel-upgrade-first.jsonl": {
+      "meaning": "Captured signed v1 catalog retained when v2 is unavailable.",
+      "archive": "channel-upgrade-first.jsonl.gz",
+      "sha256": "30170762a41d090741de1eca50c0d803a952a9539867483052371c654543fbd7",
+      "bytes": 1472,
+      "archive_sha256": "10695d2be5345b9b521a4056c18d8bfadea8a2006489d86f4c212ae400b8078b",
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "pass",
+          "elapsed": 30.475
+        }
+      ]
+    },
+    "channel-source-final.jsonl": {
+      "meaning": "Complete GitHub source package after explicit legacy fixture correction.",
+      "archive": "channel-source-final.jsonl.gz",
+      "sha256": "90953dc600be588d0bd792a81d6aee41d4365ee364a38022047f9d64d78df5ba",
+      "bytes": 72880,
+      "archive_sha256": "5a5b44db836cd51f9b7551c8ad7a0d81edf9a2b9b72b6856aaf7fbe56bf3e706",
+      "test_events": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "action": "pass",
+          "elapsed": 3.484
+        }
+      ]
+    },
+    "public-profile-capacity-first.jsonl": {
+      "meaning": "Original complete-source policy rejects four captured trailing-tab display names.",
+      "archive": "public-profile-capacity-first.jsonl.gz",
+      "sha256": "1c32519d9eb2ddd8df1d80fcf17ab7f47476fcb15101cf83ad8bbd4a8167d0a0",
+      "bytes": 19772,
+      "archive_sha256": "79dcb095d24dee350e1b75964a4c08ea87428159f29471558b461804f0672179",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "fail",
+          "elapsed": 24.74
+        }
+      ]
+    },
+    "public-profile-capacity-diagnostic.jsonl": {
+      "meaning": "Invalid diagnostic format caused a build failure, not a product failure.",
+      "archive": "public-profile-capacity-diagnostic.jsonl.gz",
+      "sha256": "fdf83a958565e651e49076eb72f822a10271f5b564a5582c38f388ea634d101b",
+      "bytes": 1704,
+      "archive_sha256": "549223ef47ebe81ca3e5d5664e29b6fc75b3c0be2d0d03c4fa57846b9c56fc6a",
+      "test_events": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "fail",
+          "elapsed": 0
+        }
+      ]
+    },
+    "public-profile-capacity-diagnostic-valid.jsonl": {
+      "meaning": "Valid diagnosis identifies four Novita names and twelve successful provider scopes.",
+      "archive": "public-profile-capacity-diagnostic-valid.jsonl.gz",
+      "sha256": "1c74d64ca40a9e5ca8e84cd6755bd2ea1c99d182db1f8f73c7d022250b410bad",
+      "bytes": 28510,
+      "archive_sha256": "0132d7e35ba34f8028112b3e87b6f5e5d75b5021331c47c1563d4f2662d99cc5",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "fail",
+          "elapsed": 24.174
+        }
+      ]
+    },
+    "modelsdev-normalization-first.jsonl": {
+      "meaning": "HTTP and Git normalization plus unchanged invalid-identity quarantine.",
+      "archive": "modelsdev-normalization-first.jsonl.gz",
+      "sha256": "396f4547520511ba41f4025b60855c9c082c0b7a4d0aca44c73c9b00af91f551",
+      "bytes": 5370,
+      "archive_sha256": "af2340f87f7467215c2bf9ffb37efa8a7c235d66d0ae9be3b6c9c16956710fb9",
+      "test_events": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "action": "pass",
+          "elapsed": 1.316
+        }
+      ]
+    },
+    "modelsdev-normalization-full.jsonl": {
+      "meaning": "Earlier fixture appended a now-supported tab instead of an invalid internal control character.",
+      "archive": "modelsdev-normalization-full.jsonl.gz",
+      "sha256": "cedb1cbe6ce3a2f4e5ac540fd1d568c670ebfe59cb13e567ecc301658d9e78c2",
+      "bytes": 117028,
+      "archive_sha256": "260dcf58e33a8b3f6e1689c5095834fe0ab86809a42b340ec02319259d6d774c",
+      "test_events": {
+        "pass": 79,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "action": "fail",
+          "elapsed": 61.84
+        }
+      ]
+    },
+    "record-quarantine-first.jsonl": {
+      "meaning": "Admission, record preservation, source diagnostics, outage, and recovery.",
+      "archive": "record-quarantine-first.jsonl.gz",
+      "sha256": "9fa52aca37b1a11b4418f313e8352242583d61bc0b5f339570a8a2289e35d8fd",
+      "bytes": 15364,
+      "archive_sha256": "032a9e2811814963dc5a8bdc8206966b6f333e999c44187ed50da5ad28d83e7c",
+      "test_events": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 1.97
+        }
+      ]
+    },
+    "record-quarantine-compaction.jsonl": {
+      "meaning": "Repeated quarantine remains bounded with original evidence.",
+      "archive": "record-quarantine-compaction.jsonl.gz",
+      "sha256": "a91822b419512a0cbba180d86a677dc5f1ef383ea917dda9d05343b21d5c6405",
+      "bytes": 192589,
+      "archive_sha256": "76ee1deb6b33dbacf05c8c78b9ca46eb33ab763cae2fb342dca15ead80d297aa",
+      "test_events": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 8.277
+        }
+      ]
+    },
+    "record-quarantine-artifact-full.jsonl": {
+      "meaning": "Obsolete shell-workflow assertions failed after controller replacement.",
+      "archive": "record-quarantine-artifact-full.jsonl.gz",
+      "sha256": "1aa63fefab3b50ea53be49b304dc5068dd4a35882e5b4b668db4e11e59a9684a",
+      "bytes": 170451,
+      "archive_sha256": "28f36a7af5b6af7baebb544f1472832e5cc328e93000ebbf39d47e92e39771fa",
+      "test_events": {
+        "pass": 129,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "action": "fail",
+          "elapsed": 2.844
+        }
+      ]
+    },
+    "record-quarantine-artifact-workflow.jsonl": {
+      "meaning": "Complete artifact and structured workflow packages after test ownership update.",
+      "archive": "record-quarantine-artifact-workflow.jsonl.gz",
+      "sha256": "9d97c217d948d7b9013590ea93daa5cc0547b14000199bc55f039b95e57b3f37",
+      "bytes": 180817,
+      "archive_sha256": "b915198b02f033dbbc0ed0b309601804a441d86154efd27ef790c1d9aabdcb5f",
+      "test_events": {
+        "pass": 157,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "action": "pass",
+          "elapsed": 1.288
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "action": "pass",
+          "elapsed": 3.87
+        }
+      ]
+    },
+    "record-quarantine-source-publication.jsonl": {
+      "meaning": "Complete models.dev package and publication package excluding full-size capacity.",
+      "archive": "record-quarantine-source-publication.jsonl.gz",
+      "sha256": "d8754cd5098e9299b1963a0a09e80d5154ce6a86dafc6b9949c0332b66178970",
+      "bytes": 550729,
+      "archive_sha256": "ef9165a1de474a1ba4d8d80e76f60c94b7e605eee16ca0992ccfe0b69863eefa",
+      "test_events": {
+        "pass": 213,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 23.606
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "action": "pass",
+          "elapsed": 63.534
+        }
+      ]
+    },
+    "record-quarantine-minimum.jsonl": {
+      "meaning": "Minimum Go 1.25.12 focused race qualification across five packages.",
+      "archive": "record-quarantine-minimum.jsonl.gz",
+      "sha256": "5ebbddb34e88088148fe418b8d2c7a1a57a7b9fe864ba3913128a64ffd77998d",
+      "bytes": 52214,
+      "archive_sha256": "12031d4e21f7b64d8f4770513d26481ef930f1ee104f576f6501c0845eee4172",
+      "test_events": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "action": "pass",
+          "elapsed": 1.318
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "action": "pass",
+          "elapsed": 2.017
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "action": "pass",
+          "elapsed": 2.433
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 3.072
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "pass",
+          "elapsed": 1.576
+        }
+      ]
+    },
+    "public-profile-capacity-normalized.jsonl": {
+      "meaning": "Full-profile race qualification exceeded the default ten-minute deadline after two simulated runs.",
+      "archive": "public-profile-capacity-normalized.jsonl.gz",
+      "sha256": "8d3d7b10670fd3b71b319c176cf92029d87af74e77ad572a321fa819de1667de",
+      "bytes": 454881,
+      "archive_sha256": "4803a89ad1ba939df1419338700f3d4da3ba7f564923169a6955e930aa95d41f",
+      "test_events": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "fail",
+          "elapsed": 600.582
+        }
+      ]
+    },
+    "public-profile-capacity-profiled.jsonl": {
+      "meaning": "Eight full-profile runs pass without race instrumentation before the repeated-quarantine compaction extension.",
+      "archive": "public-profile-capacity-profiled.jsonl.gz",
+      "sha256": "b8fb5d1ba3d76b8592b1e4ec5502c2661b04a3e9cf5595a8115e094ce05845ad",
+      "bytes": 2461263,
+      "archive_sha256": "12ab9113ad673369cd99a7ff2e952d31acdb53a3583cc6206187102895b37a1b",
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 289.766
+        }
+      ]
+    },
+    "public-capacity-cpu-top.log": {
+      "meaning": "CPU profile of the eight-run public profile qualification.",
+      "archive": "public-capacity-cpu-top.log.gz",
+      "sha256": "43fefa23bf28c1e710bf8706e15429fcd56a7c886b2ebb2fdc4319207cd07178",
+      "bytes": 1175,
+      "archive_sha256": "7779a8d8765a4f71be02f09145226ca9b8dc2acf485f56b391f843e906941851"
+    },
+    "public-capacity-allocation-top.log": {
+      "meaning": "Allocation profile of the eight-run public profile qualification.",
+      "archive": "public-capacity-allocation-top.log.gz",
+      "sha256": "eccb764467e9c6cc19a10192267fe5d1391729560bbc638f4fc578b006a5af08",
+      "bytes": 1326,
+      "archive_sha256": "c8b28647bb9de9279a862933a256fa1adf6987bdfef602ba6a2a58dad8e1caff"
+    },
+    "channel-runtime-full.jsonl": {
+      "meaning": "Full runtime race qualification exceeded the default ten-minute deadline.",
+      "archive": "channel-runtime-full.jsonl.gz",
+      "sha256": "0ef891f4e6ce2c7a0bfbf8c485cbc90f75a3158d9ee8bb5469ebc42db6b68308",
+      "bytes": 2590864,
+      "archive_sha256": "1b579bad56b029905547a2e6c7084daa1b7a274dd552cd52f7f8bd07ae3b82d2",
+      "test_events": {
+        "pass": 450,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "fail",
+          "elapsed": 600.53
+        }
+      ]
+    },
+    "channel-distribution-full.log": {
+      "meaning": "Initial distribution gate: 66 pass, two failures from obsolete document and scheduler expectations.",
+      "archive": "channel-distribution-full.log.gz",
+      "sha256": "cde82d2a96cacaa75abe6962fb3c8690361d5f969e52a4b0da98ba82ee1a9659",
+      "bytes": 6630,
+      "archive_sha256": "e6edf05a5bc6e5dcaf79f03c476f4eeee80e7e455f430cff5b49374659fcc41e"
+    },
+    "channel-distribution-scheduler-failure.log": {
+      "meaning": "The old scheduler test name no longer existed, so no test ran.",
+      "archive": "channel-distribution-scheduler-failure.log.gz",
+      "sha256": "6e514cfd7590235e40e2189851228b9c012637aca5fd7493eeb6934a4d52eb67",
+      "bytes": 109,
+      "archive_sha256": "5c4f38bbd8308cde9857b976e0f5f6355c00e714b70664c00ba77244b71ace87"
+    },
+    "channel-quarantine-product-csp6.json": {
+      "meaning": "Three A05 behavior checks pass; three hosted publication cases remain unverified.",
+      "archive": "channel-quarantine-product-csp6.json.gz",
+      "sha256": "52b5ea3f55aad46f6cea96fa6d2dabab8c3827b289bb994c47e1abdc7b513ced",
+      "bytes": 250040,
+      "archive_sha256": "1d77f5f3b4570ac77f53c9f96b4418d954c9889586e586e8487e0cb70cff6d56"
+    },
+    "record-quarantine-goago.json": {
+      "meaning": "Restriction linter reports no findings, errors, or stale ignores.",
+      "archive": "record-quarantine-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289,
+      "archive_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "record-quarantine-writing.log": {
+      "meaning": "Passive-voice diagnostic, repaired afterward.",
+      "archive": "record-quarantine-writing.log.gz",
+      "sha256": "66b4a06fa8e82e0b34dd285a4c9d71a138d576f77c295f941e4c4c8167e41a79",
+      "bytes": 804,
+      "archive_sha256": "fc1edb291427c643c0d9cbf05b6cae96bd7011d2502ba7865b354aecee9c99b8"
+    },
+    "record-quarantine-writing-final.log": {
+      "meaning": "Profiler text was incorrectly named as prose; raw bytes now use log filenames.",
+      "archive": "record-quarantine-writing-final.log.gz",
+      "sha256": "00a87ff8d6312eb9e722d621a9498c039dbefbcf2b11fd7d86bd8fb4de7510e1",
+      "bytes": 1003,
+      "archive_sha256": "781b4cfdf242d24d96b890cc574be9a650737618192aa2ac49b02c4684ea44d0"
+    },
+    "record-quality-candidate-final.jsonl": {
+      "meaning": "Final publication and artifact race suites, excluding the separately tested full-profile capacity case.",
+      "archive": "record-quality-candidate-final.jsonl.gz",
+      "sha256": "d5f7669db7c3cc13c80235c92d105ddcf463cc95e930e298cc076890dea1a50e",
+      "bytes": 589491,
+      "archive_sha256": "6b2eccfa4a33455589b98ba2abe20bd393b668489e9b5d34e7f5d346ac3624cb",
+      "test_events": {
+        "pass": 264,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "action": "pass",
+          "elapsed": 3.9379999999999997
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 23.662
+        }
+      ]
+    },
+    "record-quality-minimum-final.jsonl": {
+      "meaning": "Final focused Go 1.25.12 race checks across five packages.",
+      "archive": "record-quality-minimum-final.jsonl.gz",
+      "sha256": "d2c74e03f5f6ee2fc5b1cb560f3f7387001920715cc71d8522a66c6848fdb8ff",
+      "bytes": 54232,
+      "archive_sha256": "f9d6ab1b62035ba88441b9fd1380f8b2adec2b082da4bd19eb650e7f5c6ef68e",
+      "test_events": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/github",
+          "action": "pass",
+          "elapsed": 1.5779999999999998
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "action": "pass",
+          "elapsed": 1.613
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "action": "pass",
+          "elapsed": 1.798
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "action": "pass",
+          "elapsed": 3.5869999999999997
+        },
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "pass",
+          "elapsed": 1.579
+        }
+      ]
+    },
+    "modelsdev-quality-diagnostics-final.jsonl": {
+      "meaning": "Complete models.dev race suite with correction and repair diagnostics.",
+      "archive": "modelsdev-quality-diagnostics-final.jsonl.gz",
+      "sha256": "448d1d32e49fec5e14312a2439711d975095dcf4cf8725aefb9948dba0d0b972",
+      "bytes": 116167,
+      "archive_sha256": "dfaf76f3ce51a5908915fcb433931979adad75c38bf2bf68cb516ec937b4546c",
+      "test_events": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/sources/modelsdev",
+          "action": "pass",
+          "elapsed": 61.637
+        }
+      ]
+    },
+    "channel-quarantine-runtime-full.jsonl": {
+      "meaning": "Complete runtime race suite passes with an explicit thirty-minute timeout.",
+      "archive": "channel-quarantine-runtime-full.jsonl.gz",
+      "sha256": "1d0594e16d0ff1ed46d30234e1b97b08446ea4b951a0cc1c5680dfc3a0d10024",
+      "bytes": 3629528,
+      "archive_sha256": "89717f76991942c05b94a96b172e8c37b51ebe6d21673d976ce07cfa27fb5c72",
+      "test_events": {
+        "pass": 1192,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/runtime",
+          "action": "pass",
+          "elapsed": 1537.112
+        }
+      ]
+    },
+    "channel-quarantine-generation-full.log": {
+      "meaning": "Generation gate passes, including full-profile capacity and ten real-Git controller tests.",
+      "archive": "channel-quarantine-generation-full.log.gz",
+      "sha256": "ce146b143d3408c949f300bfe02fb532ddb0b94786459dd6bada5d30c9409212",
+      "bytes": 1496,
+      "archive_sha256": "890c3b1a83f22619439d4f156ff3afef046f512eee21037ea6e8a83c278c9f15"
+    },
+    "channel-quarantine-distribution-full.log": {
+      "meaning": "Distribution gate passes all 68 checks.",
+      "archive": "channel-quarantine-distribution-full.log.gz",
+      "sha256": "4e174c77a1b6f87a1c90278fc280dad754680b36be1831c9e5936f397e6a1227",
+      "bytes": 6636,
+      "archive_sha256": "4da6b20a0e739947a488e06f60fa42ffe206059d84ca2e1864e1577f9be21557"
+    },
+    "channel-quarantine-product-verifier-tests.log": {
+      "meaning": "All 78 product verifier tests pass.",
+      "archive": "channel-quarantine-product-verifier-tests.log.gz",
+      "sha256": "d64bf4789397ace819bce0ceb735b61da3cea3ec4de0d43d84490e8327ee6885",
+      "bytes": 10180,
+      "archive_sha256": "6c329ca7afc71bcd6ac217c78620131e2a326567673c3e9e3296eef36f335e86"
+    },
+    "make-toolchain-version.log": {
+      "meaning": "The Make devbox wrapper uses the explicit Go 1.26.6 toolchain.",
+      "archive": "make-toolchain-version.log.gz",
+      "sha256": "07b7d99cef61ae6f364b0447b35c8a8b3d1105b01046fe9c9e3b13dda955069c",
+      "bytes": 334,
+      "archive_sha256": "d5a6604ac46398d49a0971e7f3796185192de408c30660810d4fc9754fc0d03d"
+    },
+    "record-quality-goago-final.json": {
+      "meaning": "Final restriction lint has zero findings, errors, and stale ignores.",
+      "archive": "record-quality-goago-final.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289,
+      "archive_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "record-quality-writing-settled.log": {
+      "meaning": "Final implementation prose check passes 1751 files with zero diagnostics.",
+      "archive": "record-quality-writing-settled.log.gz",
+      "sha256": "658aba39c1041b281ab6ee717a4542b916794765462511fd4acd897d40573c48",
+      "bytes": 576,
+      "archive_sha256": "e47ebc2497246b0289b8b00233855fca6003c1427d7929cec1707d448b4f290b"
+    }
+  },
+  "next_action": "Read the required review result, assess any finding against the code, and publish the integrated draft PR after the gate passes. A05 hosted cases remain unverified."
+}

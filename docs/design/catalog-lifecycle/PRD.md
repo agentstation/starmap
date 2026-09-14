@@ -57,6 +57,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D29 | Explicit removal affects only the selected provider/account entry by default. Canonical removal across providers is a separate action. | User confirmed on 2026-09-10 |
 | D30 | A former canonical model ID remains an alias until an operator or replacement baseline explicitly removes it. Aliases have no automatic expiry. | User confirmed on 2026-09-10 |
 | D31 | The scheduled public Starmap publisher stores public catalog checkpoints on GitHub. API keys remain Actions secrets. No checkpoint encryption service is required. | User clarified public-only source scope on 2026-09-14 |
+| D32 | Isolated invalid source records can be quarantined while valid updates publish. Preserve prior facts and record affected identifiers, reason codes, and source status. | User confirmed on 2026-09-14 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
@@ -70,6 +71,12 @@ D31 applies to the public publisher, whose configured provider accounts expose p
 Its checkpoint retains source data across failed requests and retries. Enterprise publishers keep private catalogs in their own configured storage.
 Repeated unchanged source results must not make active checkpoint state grow on every scheduled run.
 Compaction must preserve catalog facts, availability, and the original evidence for current results.
+
+D32 requires a visible record of source quality. Repaired input clears current quarantine while immutable receipts retain historical failures.
+
+Source adapters own general formatting rules. The models.dev adapter trims surrounding display-name whitespace while preserving exact model IDs.
+Structured acquisition events identify each correction. YAML controls admission policy and deliberate operator overrides, without per-model whitespace exceptions.
+Transport failures, source schema failures, truncation, and stale fallback remain distinct from isolated record quarantine.
 
 Checkpoint restore must also support later authored baseline changes, including explicit model and alias removals.
 Publishing provider results into the binary must not make those results permanent baseline facts in the publisher's retained state.

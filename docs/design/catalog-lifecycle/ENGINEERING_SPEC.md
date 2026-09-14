@@ -823,7 +823,8 @@ Missing credentials do not make a required source optional.
 | Source result | Publication verdict |
 | --- | --- |
 | Required source succeeds completely | Use its validated scoped evidence. |
-| Required source fails or is partial, with permitted retained evidence | Retain that scope within its age limit. Publish other valid changes and report retention. |
+| Source has only isolated invalid records and its policy permits quarantine | Publish valid records, preserve rejected records' prior facts, and report degraded source quality. |
+| Required source fails or has other partial evidence, with permitted retained evidence | Retain that scope within its age limit. Publish other valid changes and report retention. |
 | Required source has no permitted retained evidence | Reject publication. Keep the current branch promotion and channel. |
 | Optional source is absent or fails | Publish other valid scopes if the profile permits it. Do not invent freshness or deletions. |
 | Complete accepted provider inventory omits a model | Record observed absence. Preserve the visible catalog entry and exclude the affected provider/account from automatic routing. |
@@ -843,6 +844,23 @@ Bind the receipt to the artifact digest, source scopes, observation ages, and ad
 The channel names both the artifact and the receipt digest.
 Consumers verify both bindings. They must not substitute channel confirmation for provider freshness.
 Do not alter historical manifest bytes to attach newer observation times.
+
+The owner approved record quarantine on 2026-09-14. `allow_record_quarantine` defaults to false and applies to an explicit source scope.
+Eligible quarantine requires accepted records, rejected records, and exclusively classified record failures.
+Transport errors, schema failures, truncation, stale fallback, and wholly rejected input do not qualify.
+An incomplete provider inventory never establishes absence or removes an offering.
+
+Each admitted source receipt retains partial/degraded status, accepted and rejected counts, affected record identifiers, and reason codes.
+Raw diagnostic messages remain outside public receipts. The original checkpoint evidence retains the observation's identity and supports replay.
+Current catalog status derives source quality from the accepted run receipt. Source status exposes its own counts and diagnostics.
+CLI, API, and console surfaces must expose those results consistently under P16. Their complete presentation remains subject to the operator-interface tasks.
+
+The models.dev adapter trims surrounding whitespace from display names and preserves exact model IDs and original input bytes.
+It logs `display_name_whitespace_trimmed` with run, source, provider, and model identity. General adapter normalization does not require model-specific YAML exceptions.
+Quarantine logs identify the failed field and its validation reason.
+
+The adapter accepts successfully normalized records. Invalid identities and remaining internal control characters stay quarantined.
+A repaired update clears current quarantine. Historical receipts retain the original report, while repeated equivalent quarantine must retain bounded replay state.
 
 ### 5.2 Publisher identity and checks
 
@@ -879,8 +897,10 @@ Restore must verify a separately trusted checkpoint digest and validate the reta
 Public access does not remove integrity or provenance checks.
 
 The draft public profile selects models.dev over HTTP and twelve provider APIs.
-Its engineering default requires complete models.dev evidence from this run or the previous 24 hours.
+Its engineering default requires eligible models.dev evidence from this run or the previous 24 hours.
+The public profile enables the owner's record-quarantine policy for models.dev. Provider inventories retain their separate completeness requirements.
 Provider failures remain optional and preserve prior catalog facts. Receipts distinguish missing credentials, failed attempts, and retained evidence.
+
 Evidence older than 24 hours does not satisfy admission. Expiry alone does not remove its catalog facts.
 
 Public bindings contain no account or project selectors and grant membership authority only within their own scope.
@@ -954,7 +974,7 @@ The target contract preserves explicit false and zero values during translation.
 | --- | --- |
 | `SOURCE` | `public` for an ordinary installation |
 | `SOURCE_REPOSITORY` | `agentstation/starmap` for the public source |
-| `SOURCE_CHANNEL` | `catalog/v1` |
+| `SOURCE_CHANNEL` | `catalog/v2`. Explicit `catalog/v1` selects the legacy format. |
 | `SOURCE_URL` | Required for internal Starmap or file sources |
 | `SOURCE_POLL_INTERVAL` | `1h` |
 | `SOURCE_MAX_AGE` | `6h` warning threshold, separate from hard expiry |

@@ -2995,3 +2995,29 @@ Policy and strict prose pass. An initial-baseline identity regression failed the
 The proof preserves that failure and distinguishes invalid fixtures from valid behavior failures.
 
 This commit remains local. Public-profile capacity, channel defaults, full CSP6 verification, required review, hosted qualification, and merge remain open.
+
+
+## Public record quality and channel migration, 2026-09-14
+
+The captured models.dev input contains four Novita display names ending in a tab.
+The original adapter quarantined them and accepted 5,894 records. Required complete-source admission then rejected the whole publication.
+The owner approved isolated record quarantine and required visible status and repair evidence.
+
+The adapter trims surrounding display-name whitespace. It preserves model IDs, internal control-character checks, and exact original source bytes.
+HTTP and Git regression tests cover all four names and their structured correction events.
+
+The publication policy permits valid siblings while preserving rejected records' prior facts.
+Receipts retain degraded source status, counts, identifiers, and reason codes. Recovery clears current quarantine without changing historical receipts.
+
+Commit `0ce46cd77f62436a98e7b64211e1885b4591054e` contains these local changes in the CSP6 implementation worktree.
+The new channel default is v2 with explicit v1 compatibility. A captured signed v1 catalog survives reopening with unavailable v2 updates.
+The initial complete-source and workflow checks exposed failures that the qualification record preserves.
+The full runtime and full-profile race commands exceeded their default ten-minute deadlines. Neither timeout qualifies as a passing check.
+
+The profiled capacity run passes eight simulated runs, including an outage and checkpoint recovery.
+Its retained history stabilizes at 26 observations. The largest checkpoint measures 28,162,293 bytes.
+
+The full runtime suite passes 1,192 race events with an explicit thirty-minute timeout.
+Final publication/artifact checks pass 264 race events. The source suite passes 80, and minimum Go passes 28.
+Generation and all 68 distribution checks pass. Required review, hosted qualification, and merge remain open.
+The canonical plan's current resume state owns exact active commands and next actions.
