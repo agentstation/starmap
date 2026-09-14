@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "in_progress",
   "task": "CSP6",
-  "updated_at": "2026-09-14T20:01:00Z",
+  "updated_at": "2026-09-14T20:10:00Z",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
   "head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
   "work_commit": "0ce46cd77f62436a98e7b64211e1885b4591054e",
@@ -742,9 +742,15 @@
       "sha256": "842e8f967ab00ad3d5dc56a12ffe4bce431b657adafa38a98a90f3dd7f2ff8b6",
       "bytes": 519,
       "archive_sha256": "67f561e0aed5e2fbd85f9f121e9119b0f888e09608f7383e86ec287f2c02ea8f"
+    },
+    "pr160-current-run-20260914-2010.json": {
+      "archive": "pr160-current-run-20260914-2010.json.gz",
+      "sha256": "0103f1eb2e1f7bf28bf8d121d879c0f87ded189b262b057aa4879a89529e0f13",
+      "bytes": 29394,
+      "archive_sha256": "b233e1d29d8fdbdcf575925e6739f0ea38d0b85fcaf08e7e5d9d11edd02b96ba"
     }
   },
-  "next_action": "Inspect native CI run 34890300375 for draft PR 160, resolve verified failures, and finish App setup plus controlled hosted publication qualification before CSP6 completion.",
+  "next_action": "Inspect live native CI run 34890300375 for draft PR 160. Resolve verified failures. Await the pending admission-policy and App/publication answers before dependent deployment actions.",
   "additional_commits": [
     {
       "commit": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
@@ -806,5 +812,31 @@
     "prose": "PASS: 1526 files, zero diagnostics",
     "structure": "PASS: 38 ledger rows, 10 done, CSP6 active, six protected sections unchanged, 124 links valid",
     "resume": "278 words; required current resume, task contract, and proof summary total 6022 bytes. Required contracts retain the larger plan size."
+  },
+  "previous_turn_classification": "progress: implementation and plan commits, reviewed draft PR 160, native CI launch, and source-quality evidence.",
+  "owner_questions": [
+    {
+      "status": "pending",
+      "question": "Approve 24-hour usable models.dev evidence and optional provider APIs for public publication?",
+      "effect": "Confirms the current proposed admission defaults. Record quarantine is already approved."
+    },
+    {
+      "status": "pending",
+      "question": "Authorize a dedicated GitHub App and verified four-hour catalog publication after PR 160 passes CI?",
+      "effect": "Creates the publisher identity and permits catalog release assets, checked embedded promotion, and channel updates. No dependent external action has started."
+    }
+  ],
+  "latest_ci_observation": {
+    "observed_at": "2026-09-14T20:52:14.899593+00:00",
+    "run_id": 34890300375,
+    "source_head": "524efae26a0cf1278b2e4246bbf526f6b3ffb8fd",
+    "status": "in_progress",
+    "remaining_jobs": [
+      "Runtime windows-2025",
+      "Verification Gate"
+    ],
+    "archive": "pr160-ci-2026-09-14-2054.json.gz",
+    "sha256": "1f89f04b0a244e0b320fb77b48910e64710e1d616b05dd39ede56c3f50ce0061",
+    "archive_sha256": "8140c46a201f8ed4eaf077058a9220da831404d82afe49bf0c414873e7c15afe"
   }
 }

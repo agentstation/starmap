@@ -1,0 +1,440 @@
+{
+  "schema_version": 1,
+  "task": "CSP7",
+  "status": "in_progress",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials",
+  "branch": "codex/catalog-acquisition-credentials",
+  "base": "176516abaae5b544dd1b830b0c09f50c87e9be5d",
+  "head": "a996b863dcb4e4edfc54d749a07240614d849574",
+  "implementation_changes": true,
+  "contract": "ENGINEERING_SPEC sections 7.1 through 7.3; Starmap portions of A11 and A12. No inference or account repository enters acquisition.",
+  "observations": [
+    {
+      "path": "internal/auth/resolver.go",
+      "finding": "Ambient lookup tries declared conventional variables before the derived STARMAP name. Empty values are skipped.",
+      "source_commit": "176516abaae5b544dd1b830b0c09f50c87e9be5d",
+      "status": "Historical observation; committed core implementation addresses this finding."
+    },
+    {
+      "path": "internal/auth/resolver_test.go",
+      "finding": "TestCatalogCredentialEnvironmentPrecedence explicitly asserts the current conventional-first behavior.",
+      "source_commit": "176516abaae5b544dd1b830b0c09f50c87e9be5d",
+      "status": "Historical observation; committed core implementation addresses this finding."
+    },
+    {
+      "path": "internal/auth/reference.go",
+      "finding": "Explicit deployment references and opt-in not-configured fallback already exist.",
+      "source_commit": "176516abaae5b544dd1b830b0c09f50c87e9be5d",
+      "status": "Historical observation; committed core implementation addresses this finding."
+    },
+    {
+      "path": "internal/auth/resolver.go",
+      "finding": "Source resolution has a cache and in-flight coalescing. Multi-field version consistency still needs review.",
+      "source_commit": "176516abaae5b544dd1b830b0c09f50c87e9be5d",
+      "status": "Historical observation; committed core implementation addresses this finding."
+    }
+  ],
+  "active_commands": [],
+  "next_action": "Implement persistent precedence migration and acquisition composition. Compare complete handles from the same input snapshot. Preserve fresh-install behavior and redact conflicts. Add truthful producer qualification without granting full Starport acceptance. Complete review and merge only after integration.",
+  "updated_at": "2026-09-14T20:50:06.772776+00:00",
+  "artifacts": {
+    "goago-policy.json": {
+      "archive": "goago-policy.json.gz",
+      "sha256": "16baaa571b87aa21501669fe6da001a10afa3993b865fd79e93cbfb7e421ae04",
+      "archive_sha256": "477da586dddff350de7ce0b741f802801710c9afe0372582d6b8f2292c695f45"
+    },
+    "baseline-auth-acquisition.jsonl": {
+      "archive": "baseline-auth-acquisition.jsonl.gz",
+      "sha256": "01bf8e5bc107c5e55d743c1cfb754d5c38680e857a3d91a338d65a65c7f884c2",
+      "archive_sha256": "b915554b2fb0bf73406979f6edc3a94154fa8487eb8aeb71c632e34e248e4a6b",
+      "test_events": {
+        "pass": 182,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "pass",
+          "elapsed": 1.637
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "action": "pass",
+          "elapsed": 203.422
+        }
+      ]
+    },
+    "role-contract-red.jsonl": {
+      "archive": "role-contract-red.jsonl.gz",
+      "sha256": "871cce77b9e5dad02877b79321d4aea169bd911907acd0a04c84a6010d4d8944",
+      "archive_sha256": "3637ee53fad3228e047ce9150d7d583d7ccd381176891ccb918a5e3c28b29d5f",
+      "test_events": {
+        "pass": 1,
+        "fail": 7,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "fail",
+          "elapsed": 0.395
+        }
+      ]
+    },
+    "role-contract-final-red.jsonl": {
+      "archive": "role-contract-final-red.jsonl.gz",
+      "sha256": "29810dd6029c1f0d10d69412552c29973e26ef70c1ba214a32b8d4fd4dee4db6",
+      "archive_sha256": "636b028971002dd04ef6e4d27e1ad5173b5942642f43d719130067aaa5fe3115",
+      "test_events": {
+        "pass": 1,
+        "fail": 7,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "fail",
+          "elapsed": 0.393
+        }
+      ]
+    },
+    "role-contract-goago.json": {
+      "archive": "role-contract-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "archive_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "selection-snapshot-first.jsonl": {
+      "meaning": "Initial selection and same-response repair passes twelve race test events.",
+      "archive": "selection-snapshot-first.jsonl.gz",
+      "sha256": "17516969bd17e98f95c620b9fd381603d262d4eb3bcbdba4fc367c7f9ff786a0",
+      "archive_sha256": "d1041d916b7d868097eb65168a69ee050163e040916a594bf8f2d87265f56ced",
+      "test_events": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "pass",
+          "elapsed": 1.418
+        }
+      ]
+    },
+    "lifecycle-contract-red.jsonl": {
+      "meaning": "Three regressions prove missing read deadlines, accepted expired material, and accepted late responses.",
+      "archive": "lifecycle-contract-red.jsonl.gz",
+      "sha256": "5178527e14aaf6055ecf2bd972583343e17b16cc8d97fb1b4053a7dcc083357e",
+      "archive_sha256": "32c0fa78a435b50cedb21549572367f7fc13c11970daab61f7103cb7753dd7ba",
+      "test_events": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "fail",
+          "elapsed": 0.406
+        }
+      ]
+    },
+    "auth-origins-first.jsonl": {
+      "meaning": "The old expiry test expects expired material to succeed. The accepted contract requires refusal.",
+      "archive": "auth-origins-first.jsonl.gz",
+      "sha256": "5b624bdce73a879456c9f13aacfdfc9476c2aeaa9c14793bd80986173ac326f9",
+      "archive_sha256": "33e7c00f3ac3a9a6d7285ef1ce61554300f41139903ea94c35df7caa67178044",
+      "test_events": {
+        "pass": 214,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "fail",
+          "elapsed": 1.117
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/sources",
+          "action": "pass",
+          "elapsed": 1.2650000000000001
+        }
+      ]
+    },
+    "auth-snapshot-origins-green.jsonl": {
+      "meaning": "Five direct backends rotate complete profiles. Origin redaction and copy boundaries pass.",
+      "archive": "auth-snapshot-origins-green.jsonl.gz",
+      "sha256": "8b322f16808d886efdd389492d66e64795da33ce3ed536a971f593266d9aac8b",
+      "archive_sha256": "c4ac414f96f4d2e23225052514d736142e685ae8436fad170302ef2ddb072af5",
+      "test_events": {
+        "pass": 224,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/sources",
+          "action": "pass",
+          "elapsed": 1.589
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "pass",
+          "elapsed": 1.9260000000000002
+        }
+      ]
+    },
+    "explicit-empty-red.jsonl": {
+      "meaning": "An explicit empty environment reference incorrectly uses its permitted fallback.",
+      "archive": "explicit-empty-red.jsonl.gz",
+      "sha256": "857a9a529b0471d57291e113ee9d59a00145a14a40c78603c91d80790760b153",
+      "archive_sha256": "0f0936f2579faaf1f01c267c8927e2ac75ce10f91e94f881e828633e6e5bc22d",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "fail",
+          "elapsed": 0.37
+        }
+      ]
+    },
+    "selection-snapshot-task.jsonl": {
+      "meaning": "Final core source passes auth, acquisition, and credential material checks.",
+      "archive": "selection-snapshot-task.jsonl.gz",
+      "sha256": "7680a801ff1690f22f0320d4c7d3a8adbb11434982558210bb6df1eac4b362f6",
+      "archive_sha256": "2e93d0961b3130508140f1a2d4e57d10f21c2e7415ecd3e775111071c37c18cf",
+      "test_events": {
+        "pass": 329,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "pass",
+          "elapsed": 1.9180000000000001
+        },
+        {
+          "package": "github.com/agentstation/starmap/pkg/sources",
+          "action": "pass",
+          "elapsed": 1.254
+        },
+        {
+          "package": "github.com/agentstation/starmap/acquisition",
+          "action": "pass",
+          "elapsed": 214.364
+        }
+      ]
+    },
+    "selection-snapshot-minimum.jsonl": {
+      "meaning": "Go 1.25.12 passes auth and credential material checks.",
+      "archive": "selection-snapshot-minimum.jsonl.gz",
+      "sha256": "7566a9da093f598baf049a6229638e66658748dabcdbd6d01825579687d365d1",
+      "archive_sha256": "fbe07a8863436e1e7c4e88accca998417da8df4e198293fb7b5657832c9836ae",
+      "test_events": {
+        "pass": 225,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_results": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/sources",
+          "action": "pass",
+          "elapsed": 1.2530000000000001
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/auth",
+          "action": "pass",
+          "elapsed": 2.1189999999999998
+        }
+      ]
+    },
+    "selection-snapshot-goago.json": {
+      "meaning": "No findings, incomplete errors, or stale ignores.",
+      "archive": "selection-snapshot-goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "archive_sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1"
+    },
+    "selection-snapshot-writing.log": {
+      "meaning": "Prose check passes 1669 files with zero diagnostics.",
+      "archive": "selection-snapshot-writing.log.gz",
+      "sha256": "5d298e373a7b5e1f6267d910cae75a0290ed83ed5b2e0f8b28ae58f6b70767e9",
+      "archive_sha256": "fa95bb6d65f93fed510905063ce29672485b83777000300ed3397daa23f39eb5"
+    },
+    "selection-snapshot-inputs.json": {
+      "meaning": "Exact source hashes of the committed core change.",
+      "archive": "selection-snapshot-inputs.json.gz",
+      "sha256": "7ec823d56ea1ff83b725ab951d91bc9a7846c90169d18fab7b59f37b45ce2dd9",
+      "archive_sha256": "bbe1c5b1447b7fcb8d5e0167be83c27b3b52d11cb31cd35efa4840e5d343c8db"
+    },
+    "selection-snapshot-product.json": {
+      "meaning": "Text-form product output. An attempted JSON parse failed because this invocation omitted --json.",
+      "archive": "selection-snapshot-product.json.gz",
+      "sha256": "0cb84a848ec77ec36be5b967a89c8076adcb0162a00e7c6305299edeedfabc56",
+      "archive_sha256": "1f1532c78f9e5ceba705010a780392900adc11005e0c451a7ae13b6e0ca7cf20"
+    },
+    "selection-snapshot-product-report.json": {
+      "meaning": "The JSON product report retains six UNVERIFIED task checks. No A11/A12 product credit applies.",
+      "archive": "selection-snapshot-product-report.json.gz",
+      "sha256": "b9460376de9d1b69829d0071e8a3669b0f53c9852cb55196336948b4693a4def",
+      "archive_sha256": "6542e26dabb834d5622cb5c00fa88833f9460e66682754fcf0095bd7bc8b62c5"
+    },
+    "csp7-core-plan-writing.log": {
+      "archive": "csp7-core-plan-writing.log.gz",
+      "sha256": "193523dc73d1dd25854f493b51a2f19635ff279888de2bc9a81ae10100cc2560",
+      "archive_sha256": "b38dab9a942ea0e83ae5a6dc25ccff5b1c5dcebe160c4ddf60879d87925f9fb5"
+    },
+    "csp7-core-plan-writing-final.log": {
+      "archive": "csp7-core-plan-writing-final.log.gz",
+      "sha256": "8da68b74c6ddeafbef09ec1426711e547b37951fb4ffa2d8545c4a4bb53e904a",
+      "archive_sha256": "506b6f22c59724bbb74de32c1450f4a9eb5d2569a801a61c341aebda08485867"
+    }
+  },
+  "pending_source_archive": {
+    "archive": "role_contract_test.go.gz",
+    "sha256": "6a78c22178f0c0d14790e7bf7dbd8857290e808409e4c1f9538746fa30078cd3",
+    "archive_sha256": "dccd7006df734df44ce1d1940e67a626d7942688c75b58b739148dea2950a67c"
+  },
+  "baseline": {
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=30m -json ./internal/auth ./acquisition",
+    "exit_code": 0,
+    "result": "182 pass events across two packages, no skips."
+  },
+  "fail_before": {
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json ./internal/auth -run '^TestCatalogRole'",
+    "exit_code": 1,
+    "result": "Five behavior failures produce seven failure events; the stable-secret subcase passes.",
+    "cases": [
+      "product-specific value must precede a conventional value",
+      "explicit empty product value must block fallback",
+      "invalid selected product value must block fallback",
+      "alias collision must fail before environment reads",
+      "one credential handle must not mix versions of the same JSON secret"
+    ]
+  },
+  "implementation": {
+    "commit": "a996b863dcb4e4edfc54d749a07240614d849574",
+    "files": 15,
+    "status": "core committed; migration and composition incomplete",
+    "behavior": [
+      "product-first lookup with an explicit legacy policy for migration",
+      "alias validation before environment reads",
+      "explicit empty environment selections block fallback",
+      "one secret response per complete profile across five direct secret backends",
+      "secret-free origins and policy metadata",
+      "bounded resolution, cancellation refusal, and expired-material refusal",
+      "uncached material leaves no resolver cache entry"
+    ]
+  },
+  "verification": {
+    "race": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout=30m -json ./internal/auth ./acquisition ./pkg/sources",
+      "exit_code": 0,
+      "pass_events": 329,
+      "skips": 0
+    },
+    "minimum": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -json ./internal/auth ./pkg/sources",
+      "exit_code": 0,
+      "pass_events": 225,
+      "skips": 0
+    },
+    "goago": {
+      "exit_code": 0,
+      "findings": 0,
+      "errors": 0,
+      "stale_ignores": 0
+    },
+    "prose": {
+      "exit_code": 0,
+      "files": 1669,
+      "diagnostics": 0
+    },
+    "product": {
+      "exit_code": 1,
+      "task": "CSP7",
+      "unverified_subcases": 6,
+      "reason": "The registry has no A11/A12 behavior entries. Full role evidence still requires Starport CSP9."
+    }
+  },
+  "remaining": [
+    "Persistent policy storage, fresh/legacy detection, and explicit conflict resolution",
+    "Public acquisition credential composition for the Starport consumer",
+    "Expanded fallback, revocation, concurrent rotation, and migration integration tests",
+    "CSP7 producer verification entries without substituting component evidence for final product evidence",
+    "Final repository checks, required pre-PR review, native evidence as applicable, and merge"
+  ],
+  "baseline_test_inputs": {
+    "internal/auth/role_contract_test.go": "6a78c22178f0c0d14790e7bf7dbd8857290e808409e4c1f9538746fa30078cd3"
+  },
+  "release_limitation": "Do not publish the changed CLI default before the persistent precedence migration guard is complete.",
+  "findings": [
+    {
+      "id": "CSP7-F1",
+      "severity": "P1",
+      "owner": "CSP7",
+      "finding": "A source can return expired material that the resolver previously accepted.",
+      "evidence": "lifecycle-contract-red.jsonl.gz",
+      "resolution": "a996b863dcb4e4edfc54d749a07240614d849574"
+    },
+    {
+      "id": "CSP7-F2",
+      "severity": "P1",
+      "owner": "CSP7",
+      "finding": "A source could return successful material after caller cancellation.",
+      "evidence": "lifecycle-contract-red.jsonl.gz",
+      "resolution": "a996b863dcb4e4edfc54d749a07240614d849574"
+    },
+    {
+      "id": "CSP7-F3",
+      "severity": "P1",
+      "owner": "CSP7",
+      "finding": "Direct source reads had no resolver deadline when the caller supplied none.",
+      "evidence": "lifecycle-contract-red.jsonl.gz",
+      "resolution": "a996b863dcb4e4edfc54d749a07240614d849574"
+    },
+    {
+      "id": "CSP7-F4",
+      "severity": "P1",
+      "owner": "CSP7",
+      "finding": "An explicit empty environment reference could use ambient fallback.",
+      "evidence": "explicit-empty-red.jsonl.gz",
+      "resolution": "a996b863dcb4e4edfc54d749a07240614d849574"
+    },
+    {
+      "id": "CSP7-F5",
+      "severity": "P2",
+      "owner": "CSP7",
+      "finding": "The verifier has no producer-only credential entries. Register task-scoped producer evidence without changing full product requirements.",
+      "evidence": "selection-snapshot-product-report.json.gz",
+      "resolution": "open"
+    }
+  ],
+  "plan_maintenance": {
+    "protected_sections": 6,
+    "preserved": true,
+    "ledger_rows": 38,
+    "done": 10,
+    "active": "CSP7",
+    "execution_entries": 10,
+    "local_links_verified": 121,
+    "core_inputs_match_commit": 15,
+    "prose": {
+      "exit_code": 0,
+      "files": 1527,
+      "diagnostics": 0
+    },
+    "prior_prose": {
+      "exit_code": 2,
+      "diagnostics": 2,
+      "resolution": "Shortened the credential-contract sentence and separated execution navigation paragraphs."
+    },
+    "size_exception": "The retained task and goal contracts require a large control plane. Current resume state and the active proof own the bounded read path."
+  }
+}

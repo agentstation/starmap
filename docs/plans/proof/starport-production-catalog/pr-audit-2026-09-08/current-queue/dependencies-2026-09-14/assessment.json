@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-09-14T19:52:00Z",
-  "scope": "Read-only dependency PR assessment plus one unchanged-head CI retry. No merges or branch deletions.",
+  "observed_at": "2026-09-14T20:10:00Z",
+  "scope": "Dependency PR assessment, one unchanged-head CI retry, and reviewed Starport PR 374 merge. No branch deletion.",
   "pull_requests": [
     {
       "repo": "starmap",
@@ -12,7 +12,11 @@
       "repo": "starport",
       "number": 374,
       "head": "b05bdfedc5bfa7df8558f14c6375ec9f1c535a51",
-      "result": "10 successful checks. Only root module files change. Final merge review remains required."
+      "result": "Merged at 2355823aa78972c12df70207a1bbe8b36ad6f03c after ten passing checks and readonly module resolution with Go 1.26.6. The automatic review gate correctly skipped the two module-only files. The merged tree exactly matches the reviewed head. The branch remains.",
+      "merge_commit": "2355823aa78972c12df70207a1bbe8b36ad6f03c",
+      "merged_at": "2026-09-14T20:08:45Z",
+      "tree_comparison_command": "git diff --exit-code b05bdfedc5bfa7df8558f14c6375ec9f1c535a51 2355823aa78972c12df70207a1bbe8b36ad6f03c",
+      "tree_comparison_exit_code": 0
     },
     {
       "repo": "starmap",
@@ -128,6 +132,30 @@
       "archive": "dependency-permission-refresh-diagnostic.jsonl.gz",
       "sha256": "08e582726bd12f2f3692269867bb119c78acb8b6214aeeee86655f7778fa205b",
       "archive_sha256": "9a9cb426aa1e5058b798c65f8947d8cbd04e04b8ba618cd2f731fbfe322779ee"
+    },
+    {
+      "source": "pr374-merge-candidate.json",
+      "archive": "pr374-merge-candidate.json.gz",
+      "sha256": "ec4db8be21011fc473fa9c81c78c4978865c35ba3771c9d6c16f122f0520f5a2",
+      "archive_sha256": "34b996f81239e8f6300803616857b28a6e47c45143782adfb69d58fccffba7f7"
+    },
+    {
+      "source": "starport374-modules.log",
+      "archive": "starport374-modules.log.gz",
+      "sha256": "ffb525b2bc36e95a1fa3023e43eac318904471fe34677bc4fc6926fa21e5fdcf",
+      "archive_sha256": "23c93e43c5dc34b38344b2535f913f84e2deda19ca504e2556da101f9c9f30b0"
+    },
+    {
+      "source": "starport374-review.log",
+      "archive": "starport374-review.log.gz",
+      "sha256": "12bbf64de628b1299e17cb70dcdf7f21a4c4320237e3f2f5c15618a9d00cbac4",
+      "archive_sha256": "900d4e82d817468629b7bb5b20c4c43eec23c9302cc11b4eb0f12a9d70b2c3e4"
+    },
+    {
+      "source": "starport374-merged.json",
+      "archive": "starport374-merged.json.gz",
+      "sha256": "4af34e58b95b38d577a7261b3b091f26f63a1e5120195e31ae1fee5e835e296b",
+      "archive_sha256": "a5e4820a3edb8b236004f7a1b6c77a3565712ada20b17ac7ef84fd651b6b646f"
     }
   ],
   "permission_diagnostic": {
@@ -136,5 +164,6 @@
     "result": "10 local passes; the native failure remains unresolved.",
     "exit_code": 0,
     "observation": "The test supplies a one-second context to the follower permission refresh. Local success does not establish the native failure cause."
-  }
+  },
+  "merge_method_note": "GitHub refused the merge-commit method. Squash merge then succeeded without bypassing required checks."
 }
