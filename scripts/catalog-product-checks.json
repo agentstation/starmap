@@ -1935,6 +1935,230 @@
           }
         ]
       }
+    },
+    "CSP7": {
+      "A11.acquisition_role_matrix": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogRoleEnvironmentSelection"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogRoleRejectsAliasesBeforeEnvironmentReads"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogRoleExplicitEmptyReferenceDisablesFallback"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogPolicyMigrationPersistsSelectionAcrossRestart"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogPolicyMigrationComparesAllFields"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/cli/app",
+            "test": "TestApplicationCredentialPolicyDistinguishesFreshAndLegacyStartup"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./acquisition",
+            "test": "TestPublicCredentialCompositionMigratesAndRetainsPolicy"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestStarmapAcquisitionHasNoProviderRoster"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/cli/table",
+            "test": "TestProviderTableReportsSelectedCredentialOrigin"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/cli/table",
+            "test": "TestProviderTableReportsMissingCatalogCredentialFromSchema"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/cli/table",
+            "test": "TestProviderTableReportsEmptyCredentialAsUnavailable"
+          }
+        ]
+      },
+      "A12.each_supported_backend": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestSecretSnapshotRotatesCompleteProfilesAcrossBackends"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCredentialSourceConformance"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestGoogleDefaultChainProjectsTokenAndProjectLifecycle"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestAzureDefaultChainProjectsTokenLifecycle"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestAWSDefaultChainProjectsCredentialLifecycle"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./acquisition",
+            "test": "TestPublicCredentialCompositionDefersSecretReads"
+          }
+        ]
+      },
+      "A12.rotation_complete_version": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestSecretSnapshotRotatesCompleteProfilesAcrossBackends"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestSecretSnapshotRejectsVersionScopeConflictBeforeReads"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogPolicyMigrationSharesExplicitSecretSnapshot"
+          }
+        ]
+      },
+      "A12.expired_revoked": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogRoleRefusesExpiredSourceMaterial"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogPolicyMigrationRefusesExpiryDuringAcceptance"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogRoleBackendFailureRefusesStaleMaterialAndRecovers"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogCredentialStatusReportsExpiryAsInvalid"
+          }
+        ]
+      },
+      "A12.backend_outage": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogRoleBackendFailureRefusesStaleMaterialAndRecovers"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogRoleRequiresBoundedSourceRead"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestDirectSecretSourcesPropagateCancellationWithinBudget"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCatalogPolicyMigrationNeverFallsBackAfterReferenceError"
+          }
+        ]
+      },
+      "A12.no_secret_disclosure": {
+        "kind": "all",
+        "checks": [
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestCredentialOriginsDoNotExposeOrShareMaterial"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/auth",
+            "test": "TestDirectSecretSourceErrorsDoNotExposeReferences"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./acquisition",
+            "test": "TestPublicCredentialCompositionMigratesAndRetainsPolicy"
+          },
+          {
+            "kind": "go_test",
+            "repository": "starmap",
+            "package": "./internal/cli/table",
+            "test": "TestProviderTableDoesNotExposeCredentialFingerprint"
+          }
+        ]
+      }
     }
   }
 }

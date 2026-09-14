@@ -147,14 +147,8 @@ func (r *Resolver) ResolveCatalog(
 			return sources.ProviderCredentialMaterial{}, err
 		}
 		if configured {
-			if err := ctx.Err(); err != nil {
+			if err := validateMaterial(ctx, provider.ID, material); err != nil {
 				return sources.ProviderCredentialMaterial{}, err
-			}
-			if expiry, expires := material.ExpiresAt(); expires && !time.Now().Before(expiry) {
-				return sources.ProviderCredentialMaterial{}, &errors.AuthenticationError{
-					Provider: string(provider.ID), Method: "catalog-acquisition",
-					Message: "selected credential material has expired",
-				}
 			}
 			return material, nil
 		}
@@ -167,6 +161,19 @@ func (r *Resolver) ResolveCatalog(
 		Method:   "catalog-declared",
 		Message:  "no catalog-acquisition credential profile is configured",
 	}
+}
+
+func validateMaterial(ctx context.Context, provider catalogs.ProviderID, material sources.ProviderCredentialMaterial) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if expiry, expires := material.ExpiresAt(); expires && !time.Now().Before(expiry) {
+		return &errors.AuthenticationError{
+			Provider: string(provider), Method: "catalog-acquisition",
+			Message: "selected credential material has expired",
+		}
+	}
+	return nil
 }
 
 func (r *Resolver) resolveAmbientProfile(

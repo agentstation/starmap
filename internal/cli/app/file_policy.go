@@ -45,6 +45,8 @@ func managedFilePolicy(id string) (productpaths.FilePolicy, error) {
 	switch id {
 	case "configuration":
 		policy = makePolicy(config, "Selected configuration, including private credential settings.", "operator", "Remove only after preserving required settings and secret access.")
+	case "credential-policy":
+		policy = makePolicy(append(slices.Clone(state), "STARMAP_DEPLOYMENT_ID", "STARMAP_INSTANCE_ID"), "Persistent credential selection policy for one deployment instance.", "durable", "Preserve during backup and migration. Removing this state can change credential selection.")
 	case "source-file":
 		policy = makePolicy([]string{catalogconfig.Source, catalogconfig.SourceURL}, "Explicit file catalog source.", "operator", "Preserve until all consumers select another source or retain a permitted generation.")
 	case "baseline":

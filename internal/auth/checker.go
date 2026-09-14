@@ -47,7 +47,7 @@ func (c *Checker) CheckProvider(
 
 func credentialResolutionStatus(err error) *Status {
 	var authenticationErr *errors.AuthenticationError
-	if stderrors.As(err, &authenticationErr) {
+	if stderrors.As(err, &authenticationErr) && authenticationErr.Method == "catalog-declared" {
 		return &Status{State: StateMissing, Summary: "Catalog credentials are not configured"}
 	}
 	return &Status{State: StateInvalid, Summary: err.Error()}

@@ -76,6 +76,7 @@ type ProductPaths struct {
 	Workspace               productpaths.Path  `json:"workspace"`
 	CatalogStore            productpaths.Path  `json:"catalog_store"`
 	Runtime                 productpaths.Path  `json:"runtime"`
+	CredentialPolicy        productpaths.Path  `json:"credential_policy"`
 	Baselines               productpaths.Path  `json:"baselines"`
 	SourceCache             productpaths.Path  `json:"source_cache"`
 	SourceCheckout          productpaths.Path  `json:"source_checkout"`
@@ -223,6 +224,7 @@ func resolveProductPaths(config *Config) (ProductPaths, error) {
 	result := ProductPaths{Roots: roots, Configuration: child(productpaths.Config, "config.yaml"), Workspace: child(productpaths.Data, "catalog", "workspace"),
 		CatalogStore: child(productpaths.State, "catalog"), Runtime: child(productpaths.State, "catalog", "runtime", instance), Baselines: child(productpaths.Data, "catalog", "baseline"), InstanceID: instance, DeploymentID: deployment, SourceCache: child(productpaths.Cache, "models.dev"), SourceCheckout: child(productpaths.Cache, "sources", "models.dev-git")}
 	result.RelativePathBase, result.RelativePathBaseOrigin = base, baseOrigin
+	result.CredentialPolicy = child(productpaths.State, "credentials", deployment, instance)
 	if config != nil && config.ConfigFile != "" {
 		result.Configuration, err = selectedLegacyLeaf(config, roots[productpaths.Config], config.ConfigFile, "selected-file", "config")
 		if err != nil {
