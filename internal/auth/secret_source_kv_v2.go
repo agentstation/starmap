@@ -85,6 +85,7 @@ func kvV2SourceMaterial(
 		}
 		return sourceMaterial{
 			values: map[string]string{field: stringValue}, version: version,
+			snapshot: newKVSecretSnapshot(data),
 		}, nil
 	}
 	if len(data) != 1 {
@@ -100,6 +101,7 @@ func kvV2SourceMaterial(
 		}
 		return sourceMaterial{
 			values: map[string]string{"value": stringValue}, version: version,
+			snapshot: newKVSecretSnapshot(data),
 		}, nil
 	}
 	return sourceMaterial{}, newSourceError(SourceErrorNotConfigured, backend)

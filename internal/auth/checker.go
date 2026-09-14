@@ -38,7 +38,10 @@ func (c *Checker) CheckProvider(
 	return &Status{
 		State:   StateConfigured,
 		Summary: fmt.Sprintf("Catalog credential profile %s is configured", profile.ID),
-		Profile: &ProfileDetails{ID: profile.ID, Primitive: profile.Primitive},
+		Profile: &ProfileDetails{
+			ID: profile.ID, Primitive: profile.Primitive,
+			Origins: material.Origins(), ResolutionPolicy: material.ResolutionPolicy(),
+		},
 	}
 }
 

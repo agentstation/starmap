@@ -37,6 +37,7 @@ func scalarSecretMaterial(
 	if field == "" {
 		return sourceMaterial{
 			values: map[string]string{"value": string(payload)}, version: version,
+			snapshot: &secretSnapshot{payload: string(payload)},
 		}, nil
 	}
 	value, found, err := selectJSONStringField(payload, field)
@@ -48,6 +49,7 @@ func scalarSecretMaterial(
 	}
 	return sourceMaterial{
 		values: map[string]string{field: value}, version: version,
+		snapshot: &secretSnapshot{payload: string(payload)},
 	}, nil
 }
 

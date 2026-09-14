@@ -16,6 +16,7 @@ const maxCredentialFileBytes = 1 << 20
 
 type sourceMaterial struct {
 	values    map[string]string
+	snapshot  *secretSnapshot
 	version   string
 	expiresAt time.Time
 	lease     *sources.ProviderCredentialLease
@@ -23,6 +24,7 @@ type sourceMaterial struct {
 
 func (m sourceMaterial) copy() sourceMaterial {
 	copied := m
+	copied.snapshot = m.snapshot.copy()
 	copied.values = make(map[string]string, len(m.values))
 	for key, value := range m.values {
 		copied.values[key] = value
@@ -64,8 +66,11 @@ func (s environmentSource) Resolve(
 		return sourceMaterial{}, newSourceError(SourceErrorInvalid, s.Backend())
 	}
 	value, found := s.lookup(reference.resource)
-	if !found || value == "" {
+	if !found {
 		return sourceMaterial{}, newSourceError(SourceErrorNotConfigured, s.Backend())
+	}
+	if value == "" {
+		return sourceMaterial{}, newSourceError(SourceErrorInvalid, s.Backend())
 	}
 	return sourceMaterial{
 		values:  map[string]string{"value": value},
