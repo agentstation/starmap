@@ -875,6 +875,31 @@ The encoder must exclude credential values and raw diagnostic messages.
 Restore must verify a separately trusted checkpoint digest and validate the retained evidence before reuse.
 Public access does not remove integrity or provenance checks.
 
+The draft public profile selects models.dev over HTTP and twelve provider APIs.
+Its engineering default requires complete models.dev evidence from this run or the previous 24 hours.
+Provider failures remain optional and preserve prior catalog facts. Receipts distinguish missing credentials, failed attempts, and retained evidence.
+Evidence older than 24 hours does not satisfy admission. Expiry alone does not remove its catalog facts.
+
+Public bindings contain no account or project selectors and grant membership authority only within their own scope.
+The `default-endpoint` region identifies the configured default endpoint. It does not declare coverage of every provider region.
+DeepInfra uses its public acquisition profile. The other selected providers use their declared API-key acquisition profiles.
+The source profile and its version remain explicit reviewed inputs to each scheduled run.
+
+When restoring a checkpoint, the publisher must apply an explicitly trusted replacement baseline before collecting new evidence.
+Validate alias history before accepting that replacement. Explicit alias removal keeps its historical rename record with the removed state.
+
+Retain the separate original acquisition baseline when compiled input matches the publisher's own accepted catalog.
+Otherwise, publishing provider results would make them permanent even after explicit removal of their acquisition scope.
+Bind the selected baseline to saved run identity. Failed validation or admission must preserve the accepted checkpoint.
+
+When authors modify a previously promoted catalog, distinguish their edits from unchanged acquisition results in that catalog.
+Those unchanged results must not become permanent authored fields merely because another field changed.
+Qualify this case together with explicit source removal before enabling automatic baseline selection in the workflow.
+
+Finish any pending artifact promotion and channel advancement before starting acquisition against a later baseline.
+A runner failure after the default-branch merge must resume the same verified artifact, receipt, and checkpoint.
+It must not treat that unpublished promotion as a new authored baseline.
+
 The channel must bind the exact accepted checkpoint, current run receipt, and promoted source commit.
 Consumers retain the current receipt separately from the immutable catalog artifact.
 A later run must not rewrite an older artifact's source times or review evidence.

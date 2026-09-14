@@ -1,0 +1,390 @@
+{
+  "recorded_at": "2026-09-14T16:20:13.041225+00:00",
+  "task": "CSP6",
+  "source_commit": "bb68cc6957bc6a70b6ae621a8969211488b74dba",
+  "parent": "40e2bfe5252bc4dd47a17367492ae732cd11245e",
+  "files": {
+    ".github/catalog-publication.yaml": "9d87263bfcd3ebcbe08dd9854feb0670ef865c7322bb6f0d6d1b719bd940ac18",
+    "cmd/starmap-catalog-publish/README.md": "7396f13394172a4220b1ebb071a8a3564f0cfc32c23c933246acaad6767e08bb",
+    "cmd/starmap-catalog-publish/baseline_test.go": "ac28aaf4a03bc0dba2c610b29859470935a6773e4075c3fbceb56d1fffc315fe",
+    "cmd/starmap-catalog-publish/main.go": "fb81f7bde353449ba0b7177d5fbde491e2694e2160556ff100624e03ba74e561",
+    "internal/catalog/publication/baseline.go": "0d3acb6a5a811862bdd3236d70ef2a49d372111a029050e09a21bd6c818f775e",
+    "internal/catalog/publication/baseline_test.go": "f10aadc3b5eb8f34f72fa020e39d620b7929d8bfe23a40b399b5cf8804aec66f",
+    "internal/catalog/publication/prepare.go": "e1fff72e53722f9ea4ecf01d44280ebae133e7102022192b6ff7c3ae64a5d51d",
+    "internal/catalog/publication/public_profile_test.go": "6750fa18f10866a36e5da177f51af7b937a9a9b5fc52d4a20580ad70b3e75ff9"
+  },
+  "commands": {
+    "packages": "GOTOOLCHAIN=go1.26.6 GOWORK=off go test -race -json -count=1 -timeout 5m ./internal/catalog/publication ./cmd/starmap-catalog-publish",
+    "minimum": "GOTOOLCHAIN=go1.25.12 GOWORK=off go test -race -json -count=1 -timeout 5m ./internal/catalog/publication ./cmd/starmap-catalog-publish -run '(PublicationReplacementBaseline|PublicationOwnPromotedBaseline|PublicationCommand|PublicPublicationProfile)'",
+    "policy": "GOTOOLCHAIN=go1.26.6 GOWORK=off go tool ago -stale-ignores -format json ./...",
+    "prose": "GOTOOLCHAIN=go1.26.6 GOWORK=off make technical-writing-check"
+  },
+  "checks": [
+    {
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/public-baseline-packages.jsonl",
+      "sha256": "ed95360f27b61ee0d23e9676ca82b175b86bdc1bacd8b6268ff05eb4caecac52",
+      "toolchain": "1.26.6",
+      "selection": "",
+      "exit_code": 0,
+      "test_pass_count": 115,
+      "test_names": [
+        "TestAdmissionRequiredScopeCannotBecomeOptional/failed",
+        "TestAdmissionRequiredScopeCannotBecomeOptional/missing_credentials",
+        "TestAdmissionRequiredScopeCannotBecomeOptional/not_attempted",
+        "TestAdmissionRequiredScopeCannotBecomeOptional",
+        "TestAdmissionRetainsOriginalEvidenceWithinAgeLimit",
+        "TestAdmissionPartialReplyPreservesPriorCompleteEvidence",
+        "TestAdmissionOptionalMissingRequiresProfilePermission",
+        "TestAdmissionDisabledScopeRequiresExplicitRemoval/preserve",
+        "TestAdmissionDisabledScopeRequiresExplicitRemoval/remove",
+        "TestAdmissionDisabledScopeRequiresExplicitRemoval",
+        "TestAdmissionDoesNotReuseOtherBindingEvidence/account",
+        "TestAdmissionDoesNotReuseOtherBindingEvidence/revision",
+        "TestAdmissionDoesNotReuseOtherBindingEvidence/region",
+        "TestAdmissionDoesNotReuseOtherBindingEvidence/profile",
+        "TestAdmissionDoesNotReuseOtherBindingEvidence/membership",
+        "TestAdmissionDoesNotReuseOtherBindingEvidence",
+        "TestAdmissionEmbeddedBaselineNeedsExplicitSelection",
+        "TestAdmissionReturnsOwnedMetadata",
+        "TestAdmissionRejectsInvalidInputs/no_policy_revision",
+        "TestAdmissionRejectsInvalidInputs/unsafe_revision",
+        "TestAdmissionRejectsInvalidInputs/no_scopes",
+        "TestAdmissionRejectsInvalidInputs/duplicate_policy",
+        "TestAdmissionRejectsInvalidInputs/required_optional",
+        "TestAdmissionRejectsInvalidInputs/negative_age",
+        "TestAdmissionRejectsInvalidInputs/implicit_removal_policy",
+        "TestAdmissionRejectsInvalidInputs/unbound_provider",
+        "TestAdmissionRejectsInvalidInputs/unknown_source",
+        "TestAdmissionRejectsInvalidInputs/wrong_source_binding",
+        "TestAdmissionRejectsInvalidInputs/missing_attempt",
+        "TestAdmissionRejectsInvalidInputs/unknown_outcome",
+        "TestAdmissionRejectsInvalidInputs/wrong_scope",
+        "TestAdmissionRejectsInvalidInputs/disabled_enabled_scope",
+        "TestAdmissionRejectsInvalidInputs/attempt_on_disabled_scope",
+        "TestAdmissionRejectsInvalidInputs/missing_direct_observation",
+        "TestAdmissionRejectsInvalidInputs/evidence_with_failed_attempt",
+        "TestAdmissionRejectsInvalidInputs/mismatched_completeness",
+        "TestAdmissionRejectsInvalidInputs/forged_receipt",
+        "TestAdmissionRejectsInvalidInputs/zero_run_start",
+        "TestAdmissionRejectsInvalidInputs/reversed_run_interval",
+        "TestAdmissionRejectsInvalidInputs/fresh_evidence_before_run",
+        "TestAdmissionRejectsInvalidInputs/future_evidence",
+        "TestAdmissionRejectsInvalidInputs/future_retained_evidence",
+        "TestAdmissionRejectsInvalidInputs/duplicate_retained_evidence",
+        "TestAdmissionRejectsInvalidInputs",
+        "TestAdmissionZeroAgeDisablesRetainedEvidence",
+        "TestAdmissionRejectedRunCannotApplyOtherScopeRemovals",
+        "TestAdmissionRejectsDuplicateAttemptsAndExcessScopes",
+        "TestAdmissionRejectsInvalidRetainedReceipt",
+        "TestPublicationReplacementBaselineSurvivesCheckpointRestore",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/alias-history-loss",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/enterprise-authority",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/payload",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/canceled",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor",
+        "TestPublicationOwnPromotedBaselineDoesNotMakeLocalFactsPermanent",
+        "TestPublicationStableInputsHaveBoundedReplayHistory/providers",
+        "TestPublicationStableInputsHaveBoundedReplayHistory/models_dev_http",
+        "TestPublicationStableInputsHaveBoundedReplayHistory/unresolved_metadata",
+        "TestPublicationStableInputsHaveBoundedReplayHistory",
+        "TestPublicationCompactionPreservesChangesAbsenceReturnAndScopeRemoval",
+        "TestPreparePublicationBuildsVerifiedArtifactAndReceipt",
+        "TestPreparePublicationUsesPipelineAndRetainsFailedAccount",
+        "TestPreparePublicationRejectsMissingAndCanceledEvidenceWithoutStateChange",
+        "TestPreparePublicationPreservesDisabledScopeUntilExplicitRemoval",
+        "TestProducerPipelineRetainsOneAccountAndExcludesDisabledScopes",
+        "TestProducerRetainsRequiredEvidenceAfterCredentialFailure",
+        "TestProducerProfileOwnsSourceSelection",
+        "TestProducerKeepsPartialAndFailedAttemptsDistinct",
+        "TestProducerCancellationDiscardsCollectedInputs",
+        "TestProducerRejectsCompleteEvidenceReturnedWithSourceFailure",
+        "TestProducerAdmitsRetainedEvidenceAfterDependencyFailure",
+        "TestProducerCannotConvertUnscopedErrorsToRetainedSuccess",
+        "TestProducerRejectsUnscopedCollectionFailures",
+        "TestProducerRequiresExactProviderAttemptIdentity/missing",
+        "TestProducerRequiresExactProviderAttemptIdentity/revision",
+        "TestProducerRequiresExactProviderAttemptIdentity/provider",
+        "TestProducerRequiresExactProviderAttemptIdentity/duplicate",
+        "TestProducerRequiresExactProviderAttemptIdentity",
+        "TestPublicationProfileRequiresExplicitPolicy",
+        "TestPublicPublicationProfileUsesDeclaredPublicCredentials",
+        "TestPublicPublicationProfileSourceOutages/first-boot-without-required-source",
+        "TestPublicPublicationProfileSourceOutages/fresh-metadata-without-provider-keys",
+        "TestPublicPublicationProfileSourceOutages/retained-at-age-boundary",
+        "TestPublicPublicationProfileSourceOutages/retained-past-age-boundary",
+        "TestPublicPublicationProfileSourceOutages",
+        "TestReceiptBindingUsesExactArtifactAndSourceEvidence",
+        "TestReceiptBindingRejectsInvalidAdmissionAndArtifact/admission",
+        "TestReceiptBindingRejectsInvalidAdmissionAndArtifact/semantic",
+        "TestReceiptBindingRejectsInvalidAdmissionAndArtifact/archive",
+        "TestReceiptBindingRejectsInvalidAdmissionAndArtifact/statement",
+        "TestReceiptBindingRejectsInvalidAdmissionAndArtifact/run_identity",
+        "TestReceiptBindingRejectsInvalidAdmissionAndArtifact",
+        "TestReceiptBindingReusesArtifactWithoutChangingSourceFreshness",
+        "TestReceiptBindingCoversPrivateSelectorsWithoutPublishingThem/account",
+        "TestReceiptBindingCoversPrivateSelectorsWithoutPublishingThem/project",
+        "TestReceiptBindingCoversPrivateSelectorsWithoutPublishingThem/region",
+        "TestReceiptBindingCoversPrivateSelectorsWithoutPublishingThem/surface",
+        "TestReceiptBindingCoversPrivateSelectorsWithoutPublishingThem/credential_profile",
+        "TestReceiptBindingCoversPrivateSelectorsWithoutPublishingThem",
+        "TestReceiptBindingRejectsCancellation",
+        "TestPreparePublicationCanResumeFromItsPromotedBaseline",
+        "TestPreparePublicationRetainsBaselineReviewEvidence",
+        "TestPreparePublicationKeepsOmittedModelVisibleWithScopedAbsence",
+        "TestPreparePublicationPublishesNewReviewsWithoutChangingCatalogFacts",
+        "TestPublicationStateRoundTripKeepsOriginalEvidenceAndArtifact/checksum",
+        "TestPublicationStateRoundTripKeepsOriginalEvidenceAndArtifact/payload",
+        "TestPublicationStateRoundTripKeepsOriginalEvidenceAndArtifact/binding",
+        "TestPublicationStateRoundTripKeepsOriginalEvidenceAndArtifact/case",
+        "TestPublicationStateRoundTripKeepsOriginalEvidenceAndArtifact/duplicate",
+        "TestPublicationStateRoundTripKeepsOriginalEvidenceAndArtifact/trailing",
+        "TestPublicationStateRoundTripKeepsOriginalEvidenceAndArtifact",
+        "TestPublicationCommandSelectsCompiledBaselineAndBindsRetry",
+        "TestPublicationCommandRetryAfterStagingFailure",
+        "TestPublicationCommandHelpAndCancellation",
+        "TestPublicationCommandCollectsStagesRestartsAndRetries"
+      ],
+      "failures": [],
+      "packages": [
+        {
+          "Time": "2026-09-14T11:16:45.019248-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Elapsed": 21.405
+        },
+        {
+          "Time": "2026-09-14T11:18:52.116631-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+          "Elapsed": 148.419
+        }
+      ]
+    },
+    {
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/public-baseline-minimum.jsonl",
+      "sha256": "61f4f9bdd0693404cd313e34082d2d94ae11fd295110bfef2329ca09372b873c",
+      "toolchain": "1.25.12",
+      "selection": "(PublicationReplacementBaseline|PublicationOwnPromotedBaseline|PublicationCommand|PublicPublicationProfile)",
+      "exit_code": 0,
+      "test_pass_count": 17,
+      "test_names": [
+        "TestPublicationReplacementBaselineSurvivesCheckpointRestore",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/alias-history-loss",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/enterprise-authority",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/payload",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor/canceled",
+        "TestPublicationReplacementBaselineRejectsInvalidSuccessor",
+        "TestPublicationOwnPromotedBaselineDoesNotMakeLocalFactsPermanent",
+        "TestPublicPublicationProfileUsesDeclaredPublicCredentials",
+        "TestPublicPublicationProfileSourceOutages/first-boot-without-required-source",
+        "TestPublicPublicationProfileSourceOutages/fresh-metadata-without-provider-keys",
+        "TestPublicPublicationProfileSourceOutages/retained-at-age-boundary",
+        "TestPublicPublicationProfileSourceOutages/retained-past-age-boundary",
+        "TestPublicPublicationProfileSourceOutages",
+        "TestPublicationCommandSelectsCompiledBaselineAndBindsRetry",
+        "TestPublicationCommandRetryAfterStagingFailure",
+        "TestPublicationCommandHelpAndCancellation",
+        "TestPublicationCommandCollectsStagesRestartsAndRetries"
+      ],
+      "failures": [],
+      "packages": [
+        {
+          "Time": "2026-09-14T11:16:39.471576-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Elapsed": 14.288
+        },
+        {
+          "Time": "2026-09-14T11:18:53.199092-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+          "Elapsed": 148.015
+        }
+      ]
+    },
+    {
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/public-profile-red.jsonl",
+      "sha256": "80b21862cf1aaab7fb4efd293f5526fc88a6b4c8b1c26380c0c1887d87a7260b",
+      "toolchain": "1.26.6",
+      "selection": "^TestPublicPublicationProfile",
+      "exit_code": 1,
+      "test_pass_count": 0,
+      "test_names": [],
+      "failures": [
+        {
+          "ImportPath": "github.com/agentstation/starmap/internal/catalog/publication [github.com/agentstation/starmap/internal/catalog/publication.test]",
+          "Action": "build-output",
+          "Output": "# github.com/agentstation/starmap/internal/catalog/publication [github.com/agentstation/starmap/internal/catalog/publication.test]\n"
+        },
+        {
+          "ImportPath": "github.com/agentstation/starmap/internal/catalog/publication [github.com/agentstation/starmap/internal/catalog/publication.test]",
+          "Action": "build-output",
+          "Output": "internal/catalog/publication/public_profile_test.go:41:37: undefined: sources.ProviderAPIsID\n"
+        },
+        {
+          "ImportPath": "github.com/agentstation/starmap/internal/catalog/publication [github.com/agentstation/starmap/internal/catalog/publication.test]",
+          "Action": "build-output",
+          "Output": "internal/catalog/publication/public_profile_test.go:103:39: undefined: sources.ProviderAPIsID\n"
+        },
+        {
+          "ImportPath": "github.com/agentstation/starmap/internal/catalog/publication [github.com/agentstation/starmap/internal/catalog/publication.test]",
+          "Action": "build-fail"
+        },
+        {
+          "Time": "2026-09-14T11:14:25.450841-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Elapsed": 0.001,
+          "FailedBuild": "github.com/agentstation/starmap/internal/catalog/publication [github.com/agentstation/starmap/internal/catalog/publication.test]"
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-09-14T11:14:25.450841-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Elapsed": 0.001,
+          "FailedBuild": "github.com/agentstation/starmap/internal/catalog/publication [github.com/agentstation/starmap/internal/catalog/publication.test]"
+        }
+      ]
+    },
+    {
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/public-profile-missing-red.jsonl",
+      "sha256": "b82ac32450dbec055a64ad5f818363a61af6a4c5e69c17eb8c862fbccb6caa26",
+      "toolchain": "1.26.6",
+      "selection": "^TestPublicPublicationProfile",
+      "exit_code": 1,
+      "test_pass_count": 0,
+      "test_names": [],
+      "failures": [
+        {
+          "Time": "2026-09-14T11:14:50.959554-05:00",
+          "Action": "output",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Test": "TestPublicPublicationProfileUsesDeclaredPublicCredentials",
+          "Output": "    public_profile_test.go:28: open ../../../.github/catalog-publication.yaml: no such file or directory\n"
+        },
+        {
+          "Time": "2026-09-14T11:14:50.959592-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Test": "TestPublicPublicationProfileUsesDeclaredPublicCredentials",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-14T11:14:50.959727-05:00",
+          "Action": "output",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Test": "TestPublicPublicationProfileSourceOutages",
+          "Output": "    public_profile_test.go:62: open ../../../.github/catalog-publication.yaml: no such file or directory\n"
+        },
+        {
+          "Time": "2026-09-14T11:14:50.959752-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Test": "TestPublicPublicationProfileSourceOutages",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-09-14T11:14:50.960923-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Elapsed": 0.534
+        }
+      ],
+      "packages": [
+        {
+          "Time": "2026-09-14T11:14:50.960923-05:00",
+          "Action": "fail",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Elapsed": 0.534
+        }
+      ]
+    },
+    {
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/public-profile-flow.jsonl",
+      "sha256": "a860d16c19cb6ae2de1239fae6ae5a33ad4e440e69a283580aa9d3256e98c551",
+      "toolchain": "1.26.6",
+      "selection": "^TestPublicPublicationProfile",
+      "exit_code": 0,
+      "test_pass_count": 6,
+      "test_names": [
+        "TestPublicPublicationProfileUsesDeclaredPublicCredentials",
+        "TestPublicPublicationProfileSourceOutages/first-boot-without-required-source",
+        "TestPublicPublicationProfileSourceOutages/fresh-metadata-without-provider-keys",
+        "TestPublicPublicationProfileSourceOutages/retained-at-age-boundary",
+        "TestPublicPublicationProfileSourceOutages/retained-past-age-boundary",
+        "TestPublicPublicationProfileSourceOutages"
+      ],
+      "failures": [],
+      "packages": [
+        {
+          "Time": "2026-09-14T11:15:44.306852-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Elapsed": 13.385
+        }
+      ]
+    }
+  ],
+  "policy": {
+    "schemaVersion": 1,
+    "version": "v0.2.0",
+    "rules": [
+      "no-dot-import",
+      "no-generic-methods",
+      "no-goto",
+      "no-invalid-ignore",
+      "no-naked-return",
+      "no-new-expr",
+      "no-self-referential-constraints"
+    ],
+    "findings": [],
+    "staleIgnores": [],
+    "errors": []
+  },
+  "prose": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/GLOSSARY.md (82 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\nPASS: 1732 file(s), 0 diagnostic(s)\n",
+  "manual_audit": {
+    "state_ownership": "Accepted input remains unchanged after successful preparation and rejected baselines. Checkpoint restore preserves the selected baseline and original observations.",
+    "retry": "The compiled baseline digest enters request identity only when explicitly selected. Existing requests preserve their prior JSON encoding.",
+    "alias_removal": "Successor validation preserves alias history and explicit removal records.",
+    "public_profile": "Twelve declared provider profiles use no account or project selectors. Scope membership authority does not grant provider-wide replacement. DeepInfra uses its public credential profile.",
+    "source_default": "Required models.dev evidence has a 24-hour admission age. Providers remain optional. This is a draft engineering default, not a recorded owner answer.",
+    "prose_correction": "The command README now describes existing replay compaction and its capacity limits."
+  },
+  "limitations": [
+    "No live provider or models.dev requests ran. The public profile tests prove declared credentials and outage admission, not sustained input capacity.",
+    "Pending-promotion recovery and GitHub Actions integration remain unimplemented.",
+    "No new native qualification or pre-PR review ran for this local commit. No CSP6 PR exists.",
+    "CSP6 remains in_progress and receives no completion credit.",
+    "The initial new profile test used an incorrect Go constant. The next run captured the actual missing-profile failure before the configuration was added.",
+    "Authored edits to an already promoted catalog still need qualification. A full replacement baseline is explicit input. Workflow selection must not copy unchanged acquisition fields into permanent baseline state."
+  ],
+  "baseline_fail_before": {
+    "source_parent": "40e2bfe5252bc4dd47a17367492ae732cd11245e",
+    "command": "GOTOOLCHAIN=go1.26.6 GOWORK=off go run ./cmd/starmap-catalog-publish --baseline-embedded --help",
+    "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-promotion/baseline-selection-red.log",
+    "sha256": "255119e4f6308a25413f2122dd722d4e76f267fabb5491d70e38bb7f969f0a15",
+    "diagnostic": "flag provided but not defined: -baseline-embedded"
+  },
+  "planning_validation": {
+    "command": "GOTOOLCHAIN=go1.26.6 GOWORK=off make technical-writing-check",
+    "exit_code": 0,
+    "stdout": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (81 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\nPASS: 1517 file(s), 0 diagnostic(s)\n",
+    "sha256": "4b315c49dfb4c1a8a87a7117339e22d760c42999935fba7c7f6b97aa59c10448",
+    "earlier_prose_diagnostics": "/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary check\nPASS: /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md (81 term(s), 0 error(s))\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing glossary update --check\nPASS: no candidate terms are missing from /Users/jack/src/github.com/agentstation/starmap-catalog-requirements/GLOSSARY.md\n/Users/jack/.agents/skills/technical-writing/scripts/technical-writing lint . --mode strict --format text\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/ENGINEERING_SPEC.md:888:1: error long_paragraph: paragraph has 7 sentences; limit is 6\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/design/catalog-lifecycle/PRD.md:69:1: error long_paragraph: paragraph has 7 sentences; limit is 6\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/README.md:3:1: error long_paragraph: paragraph has 7 sentences; limit is 6\n/Users/jack/src/github.com/agentstation/starmap-catalog-requirements/docs/plans/proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/README.md:8:1: error long_paragraph: paragraph has 7 sentences; limit is 6\nFAIL: 1517 file(s), 4 diagnostic(s)\nmake: *** [technical-writing-check] Error 1\n",
+    "structure": {
+      "ledger_rows": 38,
+      "done": 10,
+      "in_progress": [
+        "CSP6"
+      ],
+      "protected_sections_preserved": 6,
+      "resume_words": 379,
+      "unique_anchors": true,
+      "local_links_exist": true,
+      "exact_archived_entry_preserved": true,
+      "cold_resume": "The current record identifies the source, pending workflow integration, source-admission default, required owner decisions, qualification gaps, and new dependency queue."
+    }
+  }
+}

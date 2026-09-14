@@ -1,5 +1,38 @@
 # Current pull request queue
 
+Updated 2026-09-14 UTC. Thirty-three campaign PRs merged. Ten tasks are complete.
+
+[PR #153 merged](pr153-merged-2026-09-14.json) at `176516abaae5b544dd1b830b0c09f50c87e9be5d` after fifteen successful checks.
+All six native jobs pass. The merge tree exactly matches the reviewed source.
+The branch remains available.
+
+Six new Dependabot PRs opened today. Their [current capture](dependency-queue-2026-09-14.json) records authors, heads, bases, and check states.
+Keep these updates for qualification. No captured PR is stale or redundant.
+
+Starmap CI continues. Starport CI passes and still needs the required code review.
+Merge qualified changes in dependency order under the existing owner permission.
+
+| PR | Change | Remaining action |
+| --- | --- | --- |
+| [Starmap #155](https://github.com/agentstation/starmap/pull/155) | AWS SDK core | Qualify CI and review alongside related SDK updates. |
+| [Starmap #156](https://github.com/agentstation/starmap/pull/156) | AWS SDK configuration | Qualify CI and review alongside related SDK updates. |
+| [Starmap #157](https://github.com/agentstation/starmap/pull/157) | S3 client | Qualify CI and review alongside related SDK updates. |
+| [Starmap #158](https://github.com/agentstation/starmap/pull/158) | Secrets Manager client | Qualify CI and review alongside related SDK updates. |
+| [Starmap #159](https://github.com/agentstation/starmap/pull/159) | Filesystem lock library | Qualify CI and review native lock behavior. |
+| [Starport #374](https://github.com/agentstation/starport/pull/374) | Eleven Go dependency updates | Review the tested dependency changes before merge. |
+
+CSP6 uses `codex/catalog-publication-promotion-main` at `bb68cc695` in the publication worktree.
+Its [latest proof](../../csp6/public-baseline-2026-09-14.json) records explicit baseline replacement and the public source profile.
+Workflow integration, actual-profile capacity, full qualification, review, and merge remain open. No CSP6 PR exists.
+
+The public publisher stores public checkpoints on GitHub. API keys stay in Actions secrets.
+No separate checkpoint encryption key or private object store applies to this profile.
+CSP5 shared cleanup still awaits its coordinator decision after PR #154 merged.
+
+## Superseded queue state: 2026-09-14 before PR #153 merged
+
+This capture predates the merge and the later dependency queue inspection.
+
 Updated 2026-09-14 UTC. Starmap has one open PR. Starport has none.
 The [current queue evidence](queue-status-2026-09-14.json) records exact heads, the current main commit, checks, review threads, ancestry, and local work.
 Thirty-two campaign PRs merged. Ten tasks are complete.

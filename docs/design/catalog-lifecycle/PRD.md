@@ -71,6 +71,9 @@ Its checkpoint retains source data across failed requests and retries. Enterpris
 Repeated unchanged source results must not make active checkpoint state grow on every scheduled run.
 Compaction must preserve catalog facts, availability, and the original evidence for current results.
 
+Checkpoint restore must also support later authored baseline changes, including explicit model and alias removals.
+Publishing provider results into the binary must not make those results permanent baseline facts in the publisher's retained state.
+
 ## Problem and outcomes
 
 The products already support embedded catalogs, remote distribution, local

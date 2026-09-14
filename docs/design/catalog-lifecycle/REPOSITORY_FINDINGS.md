@@ -72,6 +72,26 @@ Both broader runtime attempts reached their five-minute test deadline after 250 
 Those attempts do not qualify the complete runtime suite.
 CSP6 still requires workflow integration, controlled bot promotion, final checks, review, and merge.
 
+## Public baseline and source profile: 2026-09-14
+
+Local commit `bb68cc695` applies an explicitly trusted compiled baseline when the publisher restores a checkpoint.
+It preserves the separate acquisition baseline when compiled input matches the publisher's own accepted catalog.
+This prevents repeated promotion from making provider facts permanent after explicit source removal.
+Tests cover baseline model replacement, alias removal records, invalid successors, checkpoint restore, and retry identity.
+They do not yet qualify authored edits to a catalog that already contains promoted acquisition results.
+Workflow integration must preserve the distinction between those edits and unchanged acquisition fields.
+
+The checked profile selects models.dev HTTP and twelve provider APIs.
+Bindings contain no account or project selectors and limit membership changes to their own scope.
+DeepInfra uses its declared public acquisition profile. Other selected providers use API-key profiles.
+The draft source default requires models.dev evidence no older than 24 hours and permits provider outages.
+That engineering default remains distinct from the confirmed public checkpoint storage decision.
+
+The [proof](../../plans/proof/starport-production-catalog/csp6/public-baseline-2026-09-14.json) records 115 passing package race events and seventeen passing minimum-Go events.
+It preserves the initial test compilation error and the missing-profile failure before configuration existed.
+Policy and strict prose pass. No live provider request ran.
+Pending-promotion recovery, workflow integration, actual-profile capacity, native qualification, review, and merge remain open.
+
 ## Verified current behavior
 
 | ID | Finding | Evidence |
