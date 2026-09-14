@@ -37,8 +37,17 @@ func selectPublicationBaseline(state *State, baseline catalogs.Generation) (*Sta
 			return state, false, nil
 		}
 	}
+	if state.bundle == nil && len(state.history) == 0 {
+		selected := *state
+		selected.baseline = baseline.Copy()
+		return &selected, true, nil
+	}
+	merged, err := mergeAuthoredBaseline(state.baseline, state.current, baseline)
+	if err != nil {
+		return nil, false, err
+	}
 	selected := *state
-	selected.baseline = baseline.Copy()
+	selected.baseline = merged
 	return &selected, true, nil
 }
 

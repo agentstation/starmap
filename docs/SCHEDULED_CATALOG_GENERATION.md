@@ -28,6 +28,13 @@ Publication completes only after both channels select the intended catalog and t
 A public release alone does not change the accepted catalog.
 A source checkout contains the latest completed default-branch promotion. Existing binaries and pinned modules retain their embedded bytes until rebuilt.
 
+The checkpoint retains the original authored baseline separately from acquired results.
+After a manual catalog edit, the publisher applies changed fields and explicit removals to that baseline.
+Unchanged acquired fields and unresolved source reviews remain source-owned. An explicit source removal can still remove them.
+
+New authored records retain their required IDs and references. Required names use exact IDs when the edit supplies no name.
+Alias changes retain their required terminal definitions. Operator removal policies retain their complete selected targets.
+
 ## Publisher setup
 
 Install a dedicated GitHub App on this repository. Configure `CATALOG_APP_CLIENT_ID` as a repository variable and `CATALOG_APP_PRIVATE_KEY` as an Actions secret.
