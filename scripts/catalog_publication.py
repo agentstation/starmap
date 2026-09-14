@@ -22,6 +22,9 @@ PENDING_BRANCH = "catalog/publication"
 PROFILE = ".github/catalog-publication.yaml"
 HEX = re.compile(r"[0-9a-f]{64}\Z")
 COMMIT = re.compile(r"[0-9a-f]{40}\Z")
+# Retain both models.dev transports at the catalog limit of 10,000 records each.
+MAX_ACQUISITION_CORRECTIONS = 20000
+MAX_CORRECTION_ID_LENGTH = 4096
 REQUIRED_CHECKS = (
     "Security & Reliability", "Verification Gate", "Runtime ubuntu-24.04",
     "Runtime ubuntu-24.04-arm", "Runtime macos-15", "Runtime macos-15-intel",
@@ -342,7 +345,15 @@ class Publisher:
             if checksum(accepted / CHECKPOINT) != publication["checkpoint"]["checksum"]:
                 raise PublicationError("accepted checkpoint does not match the channel")
             args += ["-state", accepted / CHECKPOINT, "-state-checksum", publication["checkpoint"]["checksum"]]
-        report = json.loads(command(args, timeout=75 * 60).stdout)
+        try:
+            acquired = command(args, timeout=75 * 60, check=False)
+        except subprocess.TimeoutExpired as error:
+            self.retain_acquisition_corrections(error.stderr, "timed_out")
+            raise PublicationError("catalog acquisition exceeded its time limit") from error
+        self.retain_acquisition_corrections(acquired.stderr, "failed" if acquired.returncode else "succeeded")
+        if acquired.returncode:
+            raise PublicationError(f"catalog acquisition failed with exit status {acquired.returncode}")
+        report = json.loads(acquired.stdout)
         self.stage.mkdir(exist_ok=True, mode=0o700)
         for filename in ASSETS:
             shutil.copyfile(Path(report["artifact_directory"]) / filename, self.stage / filename)
@@ -358,6 +369,40 @@ class Publisher:
         write_json(self.stage / "pending.json", validate_pending(record))
         control["pending"] = record
         write_json(self.control, control)
+
+    def retain_acquisition_corrections(self, stderr, process_status):
+        if isinstance(stderr, bytes):
+            stderr = stderr.decode("utf-8", errors="replace")
+        corrections = []
+        count, invalid = 0, 0
+        for line in (stderr or "").splitlines():
+            try:
+                event = json.loads(line, object_pairs_hook=unique_object)
+            except (ValueError, PublicationError):
+                continue
+            if not isinstance(event, dict) or event.get("code") != "display_name_whitespace_trimmed":
+                continue
+            if event.get("source") not in ("models_dev_http", "models_dev_git"):
+                continue
+            identities = (event.get("provider_id"), event.get("model_id"))
+            if any(not isinstance(value, str) or not value or len(value) > MAX_CORRECTION_ID_LENGTH
+                   or not value.isprintable() for value in identities):
+                invalid += 1
+                continue
+            count += 1
+            if len(corrections) < MAX_ACQUISITION_CORRECTIONS:
+                corrections.append({key: event[key] for key in ("source", "provider_id", "model_id", "code")})
+        write_json(self.root / "acquisition-corrections.log", {
+            "schema_version": 1, "run_id": f"github-{self.run_id}", "process_status": process_status,
+            "correction_count": count, "omitted_count": count - len(corrections),
+            "invalid_count": invalid, "corrections": corrections,
+        })
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            with open(summary, "a", encoding="utf-8") as stream:
+                stream.write(f"### Catalog acquisition\n\nProcess: {process_status}. Correction events: {count}. "
+                             f"Omitted events: {count - len(corrections)}. Invalid events: {invalid}.\n\n"
+                             "The catalog-validation artifact contains `acquisition-corrections.log`.\n\n")
 
     def validate(self):
         record = validate_pending(read_json(self.control)["pending"])

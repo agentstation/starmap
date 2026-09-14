@@ -84,7 +84,7 @@ jobs:
         if: steps.publication.outputs.acquire == 'true'
         run: python3 scripts/catalog_publication.py validate --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
-      - name: Retain candidate validation logs
+      - name: Retain acquisition corrections and validation logs
         if: always() && steps.publication.outputs.acquire == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

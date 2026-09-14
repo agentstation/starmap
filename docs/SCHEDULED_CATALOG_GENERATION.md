@@ -10,7 +10,14 @@ The [preparation command](../cmd/starmap-catalog-publish/README.md) documents ad
 
 The public profile permits models.dev record quarantine. Valid records can publish while rejected records retain their last accepted values.
 The run receipt reports degraded source status, record counts, affected identifiers, and reason codes.
-Adapter corrections use structured acquisition logs. A complete repaired update clears current quarantine while historical receipts preserve earlier failures.
+A complete repaired update clears current quarantine while historical receipts preserve earlier failures.
+
+Adapter corrections use structured acquisition logs. The publisher retains recognized corrections in `acquisition-corrections.log`, including when acquisition fails or times out.
+The JSON report names the workflow run, process outcome, source, provider, model, and correction code.
+It excludes raw messages and unknown fields. It retains up to 20,000 corrections and reports total, omitted, and invalid-event counts.
+
+The Actions job summary shows the process outcome and counts. The `catalog-validation` artifact contains the report.
+Corrected records remain accepted. Corrections alone do not mark a source degraded.
 
 ## Publication sequence
 
@@ -76,6 +83,7 @@ Each catalog transfer allows 60 minutes. The refresh step allows 75 minutes, and
 | --- | --- |
 | Runner temporary directory, `catalog-publication/` | Private preparation, verification, and checkout files for one job. |
 | Actions artifact, `catalog-publication-<run ID>` | Exact prepared files retained for 90 days before public publication. |
+| Actions artifact, `catalog-validation-<run ID>-<attempt>` | Acquisition correction report and validation logs retained for 14 days, including failed runs. |
 | Branch `catalog/publication`, file `pending.json` | Attested identity of the latest preparation and its original workflow run. |
 | Release `catalog-run-<receipt digest>` | Immutable `starmap-catalog-run.json` and `starmap-catalog-state.json`. |
 | Release `catalog-<semantic digest>` | Archive, detached checksum, and statement. |

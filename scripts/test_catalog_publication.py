@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -211,6 +212,125 @@ class ReleaseLookupTransportTests(unittest.TestCase):
                 else:
                     with self.assertRaises(publication.PublicationError):
                         self.publisher.find_release(self.tag)
+
+
+class AcquisitionDiagnosticsTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="starmap-acquisition-diagnostics-")
+        self.addCleanup(temporary.cleanup)
+        self.publisher = publication.Publisher(temporary.name, "agentstation/starmap", 42, source=temporary.name)
+        publication.write_json(self.publisher.control, {"acquire": True, "channels": {"catalog/v2": {"document": None}}})
+        profile = self.publisher.source / publication.PROFILE
+        profile.parent.mkdir()
+        profile.write_text("policy_version: fixture\n", encoding="utf-8")
+        artifact = self.publisher.root / "artifact"
+        artifact.mkdir()
+        for name in (*publication.ASSETS, publication.RECEIPT, publication.CHECKPOINT):
+            (artifact / name).write_text("fixture\n", encoding="utf-8")
+        digest = "sha256:" + "a" * 64
+        self.result = {"artifact_directory": str(artifact), "receipt_path": str(artifact / publication.RECEIPT),
+            "state_path": str(artifact / publication.CHECKPOINT), "receipt_checksum": digest,
+            "state_checksum": digest, "archive_checksum": digest, "generation_id": "fixture-generation"}
+        self.ids = ["deepseek/deepseek-r1-turbo", "deepseek/deepseek-v3-turbo",
+                    "sao10K/l3-70b-euryale-v2.1", "sao10K/l3-8b-lunaris"]
+        self.events = [{"code": "display_name_whitespace_trimmed", "source": "models_dev_http",
+            "provider_id": "novita-ai", "model_id": identity, "run_id": "source-run-fixture",
+            "message": "private-fixture-message", "api_key": "private-fixture-credential"} for identity in self.ids]
+        self.real_command = publication.command
+        self.git_patch = patch.object(self.publisher, "git", return_value=subprocess.CompletedProcess([], 0, "b" * 40, ""))
+        self.git_patch.start()
+        self.addCleanup(self.git_patch.stop)
+        self.summary = self.publisher.root / "step-summary.md"
+        environment = patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(self.summary)})
+        environment.start()
+        self.addCleanup(environment.stop)
+
+    def execute(self, stderr, *, returncode=0):
+        def dispatch(args, **options):
+            if args[0] == self.publisher.publish_tool:
+                script = "import json,sys; p=json.load(sys.stdin); print(json.dumps(p['result'])); sys.stderr.write(p['stderr']); sys.exit(p['returncode'])"
+                return self.real_command([sys.executable, "-c", script],
+                    input=json.dumps({"result": self.result, "stderr": stderr, "returncode": returncode}),
+                    check=options.get("check", True))
+            if args[0] == self.publisher.release_tool:
+                return subprocess.CompletedProcess(args, 0, json.dumps({"semantic_checksum": "sha256:" + "a" * 64}), "")
+            raise AssertionError(args)
+        with patch.object(publication, "command", side_effect=dispatch):
+            self.publisher.prepare()
+
+    def report(self):
+        path = self.publisher.root / "acquisition-corrections.log"
+        self.assertTrue(path.is_file(), "publisher discarded acquisition correction events")
+        raw = path.read_text(encoding="utf-8")
+        for secret in ("private-fixture-message", "private-fixture-credential", "source-run-fixture"):
+            self.assertNotIn(secret, raw)
+        return json.loads(raw)
+
+    def test_prepare_retains_four_corrections_from_child_stderr(self):
+        self.execute("\n".join(json.dumps(event) for event in self.events))
+        report = self.report()
+        self.assertEqual(report["run_id"], "github-42")
+        self.assertEqual(report["process_status"], "succeeded")
+        self.assertEqual(report["correction_count"], 4)
+        self.assertEqual(report["omitted_count"], 0)
+        self.assertEqual(report["invalid_count"], 0)
+        self.assertEqual({event["model_id"] for event in report["corrections"]}, set(self.ids))
+        self.assertTrue((self.publisher.stage / "pending.json").is_file())
+        self.assertIn("Correction events: 4", self.summary.read_text(encoding="utf-8"))
+        for event in report["corrections"]:
+            self.assertEqual(set(event), {"source", "provider_id", "model_id", "code"})
+
+    def test_failed_acquisition_retains_events_without_staging(self):
+        with self.assertRaises(publication.PublicationError) as failure:
+            self.execute(json.dumps(self.events[0]) + "\nprivate-fixture-credential", returncode=7)
+        self.assertNotIn("private-fixture", str(failure.exception))
+        report = self.report()
+        self.assertEqual(report["process_status"], "failed")
+        self.assertEqual(report["correction_count"], 1)
+        self.assertIn("Process: failed", self.summary.read_text(encoding="utf-8"))
+        self.assertFalse(self.publisher.stage.exists())
+        self.assertNotIn("pending", publication.read_json(self.publisher.control))
+
+    def test_timeout_retains_complete_events_from_partial_bytes(self):
+        stderr = (json.dumps(self.events[0]) + '\n{"message":"private-fixture').encode()
+        error = subprocess.TimeoutExpired(["publish"], 4500, stderr=stderr)
+        with patch.object(publication, "command", side_effect=error):
+            with self.assertRaises(publication.PublicationError):
+                self.publisher.prepare()
+        report = self.report()
+        self.assertEqual(report["process_status"], "timed_out")
+        self.assertIn("Process: timed_out", self.summary.read_text(encoding="utf-8"))
+        self.assertEqual(report["correction_count"], 1)
+        self.assertFalse(self.publisher.stage.exists())
+
+    def test_unrecognized_and_invalid_log_fields_do_not_enter_report(self):
+        invalid = [dict(self.events[0], model_id="bad\tidentity"), dict(self.events[0], provider_id=""),
+                   dict(self.events[0], model_id="x" * 4097), dict(self.events[0], model_id=None)]
+        ignored = [dict(self.events[0], source="private-provider"), dict(self.events[0], code="unknown"),
+                   {"message": "private-fixture-credential"}, [], None]
+        git_event = dict(self.events[0], source="models_dev_git")
+        duplicate = '{"code":"display_name_whitespace_trimmed","code":"unknown"}'
+        stderr = "\n".join(json.dumps(event) for event in [git_event, *invalid, *ignored]) + "\nnot JSON\n" + duplicate
+        self.execute(stderr)
+        report = self.report()
+        self.assertEqual(report["correction_count"], 1)
+        self.assertEqual(report["invalid_count"], 4)
+        self.assertEqual(report["corrections"][0]["source"], "models_dev_git")
+
+    def test_report_bounds_preserve_total_and_omitted_counts(self):
+        with patch.object(publication, "MAX_ACQUISITION_CORRECTIONS", 2, create=True):
+            self.execute("\n".join(json.dumps(event) for event in self.events))
+        report = self.report()
+        self.assertEqual(report["correction_count"], 4)
+        self.assertEqual(len(report["corrections"]), 2)
+        self.assertEqual(report["omitted_count"], 2)
+
+    def test_recovery_without_acquisition_does_not_create_a_report(self):
+        publication.write_json(self.publisher.control, {"acquire": False})
+        with patch.object(publication, "command") as command:
+            self.publisher.prepare()
+        command.assert_not_called()
+        self.assertFalse((self.publisher.root / "acquisition-corrections.log").exists())
 
 
 class PublicationRecoveryTests(unittest.TestCase):
