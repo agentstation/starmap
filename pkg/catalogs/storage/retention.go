@@ -11,6 +11,8 @@ import (
 const (
 	// DefaultRetentionScanEntries bounds a collection pass unless the caller overrides it.
 	DefaultRetentionScanEntries = 4096
+	// DefaultRetentionInputMaxBytes bounds raw bytes read during object recovery.
+	DefaultRetentionInputMaxBytes = 256 << 20
 	// MaxRetentionScanEntries bounds an explicit collection scan.
 	MaxRetentionScanEntries = 100000
 )
@@ -77,7 +79,9 @@ type RetentionRequest struct {
 	MaxGenerations        int
 	MaxBytes              int64
 	ScanEntries           int
-	DryRun                bool
+	// InputMaxBytes bounds object recovery reads. Zero selects the default bound.
+	InputMaxBytes int64
+	DryRun        bool
 }
 
 // RetentionUsage counts generations and their manifest plus payload bytes.
@@ -104,6 +108,9 @@ type RetentionReport struct {
 func (r RetentionRequest) scanLimit() (int, error) {
 	if r.MaxGenerations <= 0 || r.MaxBytes <= 0 {
 		return 0, &errors.ValidationError{Field: "catalog_retention.limits", Message: "generation and byte limits must be positive"}
+	}
+	if r.InputMaxBytes < 0 {
+		return 0, &errors.ValidationError{Field: "catalog_retention.input_max_bytes", Message: "must not be negative"}
 	}
 	limit := r.ScanEntries
 	if limit == 0 {

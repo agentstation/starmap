@@ -28,6 +28,9 @@ func TestCatalogStoreConformance(t *testing.T) {
 func catalogStoreFactories() map[string]storeFactory {
 	return map[string]storeFactory{
 		"memory": func(*testing.T) Store { return NewMemory() },
+		"coordinated-object": func(t *testing.T) Store {
+			return coordinatedTestStore(t, NewMemoryObjectBackend(), NewMemoryObjectBackend(), nil)
+		},
 		"filesystem": func(t *testing.T) Store {
 			store, err := NewFilesystem(privateFilesystemRoot(t))
 			if err != nil {

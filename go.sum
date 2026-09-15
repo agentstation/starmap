@@ -338,6 +338,8 @@ github.com/olekukonko/ll v0.1.6 h1:lGVTHO+Qc4Qm+fce/2h2m5y9LvqaW+DCN7xW9hsU3uA=
 github.com/olekukonko/ll v0.1.6/go.mod h1:NVUmjBb/aCtUpjKk75BhWrOlARz3dqsM+OtszpY4o88=
 github.com/olekukonko/tablewriter v1.1.4 h1:ORUMI3dXbMnRlRggJX3+q7OzQFDdvgbN9nVWj1drm6I=
 github.com/olekukonko/tablewriter v1.1.4/go.mod h1:+kedxuyTtgoZLwif3P1Em4hARJs+mVnzKxmsCL/C5RY=
+github.com/onsi/gomega v1.42.1 h1:iN1rCUX+44NZ1Dc97MPoeFYbFR0vh8zxoxMFwKdyZ6I=
+github.com/onsi/gomega v1.42.1/go.mod h1:REff/hsDsodHoKlWsP2mAPhu1+5/6hVYNf9rIEBpeSg=
 github.com/openbao/openbao/api/v2 v2.6.0 h1:KvfspAaL9bab9hI8jFYkV2cgtSrwWtaG+k9AUTHWU4M=
 github.com/openbao/openbao/api/v2 v2.6.0/go.mod h1:H4IWiH+2rgF/TbrsUbsfrMyGoqojkLqxPCRLENSMnSo=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
@@ -436,6 +438,8 @@ github.com/transparency-dev/formats v0.1.1 h1:4bVHJc+KdBgpA1OJD1yjI+g0i5Z1graCpp
 github.com/transparency-dev/formats v0.1.1/go.mod h1:qtZ8goRuJ8FTBG9c9+Bj0rn2rUG7eG/AUTkr+Aw3jFw=
 github.com/transparency-dev/merkle v0.0.2 h1:Q9nBoQcZcgPamMkGn7ghV8XiTZ/kRxn1yCG81+twTK4=
 github.com/transparency-dev/merkle v0.0.2/go.mod h1:pqSy+OXefQ1EDUVmAJ8MUhHB9TXGuzVAT58PqBoHz1A=
+github.com/valkey-io/valkey-go v1.0.77 h1:0H5yQ8cOkISr5mU4NDNIgjHvA7bPs2ijgymPjBFNEoc=
+github.com/valkey-io/valkey-go v1.0.77/go.mod h1:gvC/r2m3eW4Hbj0YnjogTzNtFdPSM/D+NCqen+5OABM=
 github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 h1:ilQV1hzziu+LLM3zUTJ0trRztfwgjqKnBWNtSRkbmwM=
 github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78/go.mod h1:aL8wCCfTfSfmXjznFBSZNN13rSJjlIOI1fUNAtF7rmI=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
