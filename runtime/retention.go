@@ -91,7 +91,7 @@ func (r *Runtime) collectRetainedState(ctx context.Context) (resultErr error) {
 	}
 	state := r.client.CurrentCatalogState()
 	request := storage.RetentionRequest{ExpectedGenerationID: state.GenerationID, MaxGenerations: policy.MaxGenerations,
-		MaxBytes: policy.MaxBytes, ScanEntries: policy.ScanEntries}
+		MaxBytes: policy.MaxBytes, ScanEntries: policy.ScanEntries, InputMaxBytes: policy.InputMaxBytes}
 	if served != "" && served != state.GenerationID {
 		request.RequiredGenerationIDs = append(request.RequiredGenerationIDs, served)
 	}

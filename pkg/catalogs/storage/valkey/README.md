@@ -33,7 +33,7 @@ The client needs `EVAL`, `INFO replication`, `PTTL`, `TYPE`, `HLEN`, `HGET`, `HE
 The caller must keep credentials and transport configuration separate from stored records.
 
 This adapter alone does not add object-store collection or generation leases.
-A coordinated catalog store must bind publication, reader protection, and retirement to these records.
+The [coordinated object store](../../../../docs/COORDINATED_OBJECT_STORE.md) binds publication, reader protection, and retirement to these records.
 Automatic failover and recovery after lost coordination state require separate qualification.
 
 ## Local qualification
