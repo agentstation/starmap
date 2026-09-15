@@ -113,28 +113,9 @@ func prepare(ctx context.Context, options prepareOptions) (prepareReport, error)
 	if err != nil {
 		return prepareReport{}, err
 	}
-	var state *publication.State
-	if options.state != "" {
-		raw, err := readBounded(options.state, publication.MaxPublicationStateBytes)
-		if err != nil {
-			return prepareReport{}, err
-		}
-		state, err = publication.RestoreState(ctx, raw, options.stateChecksum)
-		if err != nil {
-			return prepareReport{}, err
-		}
-	} else {
-		baseline, err := bootstrap.Generation()
-		if err != nil {
-			return prepareReport{}, err
-		}
-		state, err = publication.NewState(baseline, options.publisher)
-		if err != nil {
-			return prepareReport{}, err
-		}
-	}
-	if state.PublisherID() != options.publisher {
-		return prepareReport{}, invalid("publisher_id", "does not match the accepted checkpoint")
+	state, err := loadPublicationState(ctx, options)
+	if err != nil {
+		return prepareReport{}, err
 	}
 	initial, err := publication.EncodeState(state)
 	if err != nil {
@@ -226,6 +207,33 @@ func prepare(ctx context.Context, options prepareOptions) (prepareReport, error)
 		return prepareReport{}, invalid("run_id", "already belongs to a different publication request")
 	}
 	return stagePrepared(ctx, absolute, selected)
+}
+
+func loadPublicationState(ctx context.Context, options prepareOptions) (*publication.State, error) {
+	var state *publication.State
+	if options.state != "" {
+		raw, err := readBounded(options.state, publication.MaxPublicationStateBytes)
+		if err != nil {
+			return nil, err
+		}
+		state, err = publication.RestoreState(ctx, raw, options.stateChecksum)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		baseline, err := bootstrap.Generation()
+		if err != nil {
+			return nil, err
+		}
+		state, err = publication.NewState(baseline, options.publisher)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if state.PublisherID() != options.publisher {
+		return nil, invalid("publisher_id", "does not match the accepted checkpoint")
+	}
+	return state, nil
 }
 
 func recordRejection(ctx context.Context, root *privatefiles.Directory, directory, requestChecksum string, decision publication.Decision) (string, error) {

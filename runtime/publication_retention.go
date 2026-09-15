@@ -72,17 +72,7 @@ func (r *Runtime) publishInputsWithRemovals(ctx context.Context, source *sourceL
 		if err := candidate.validateSourceRemovalTransition(source); err != nil {
 			return starmap.CatalogState{}, err
 		}
-		owned := *source
-		owned.Payload = bytes.Clone(source.Payload)
-		owned.Chain = slices.Clone(source.Chain)
-		if source.Publication != nil {
-			publication := source.Publication.Copy()
-			owned.Publication = &publication
-		}
-		if source.Manifest != nil {
-			manifest := source.Manifest.Copy()
-			owned.Manifest = &manifest
-		}
+		owned := source.copy()
 		source = &owned
 		candidate.source = source
 	}
@@ -155,4 +145,19 @@ func publicationCompletionContext(ctx context.Context) (context.Context, context
 		stop()
 		cancel()
 	}
+}
+
+func (s sourceLayer) copy() sourceLayer {
+	owned := s
+	owned.Payload = bytes.Clone(s.Payload)
+	owned.Chain = slices.Clone(s.Chain)
+	if s.Publication != nil {
+		publication := s.Publication.Copy()
+		owned.Publication = &publication
+	}
+	if s.Manifest != nil {
+		manifest := s.Manifest.Copy()
+		owned.Manifest = &manifest
+	}
+	return owned
 }

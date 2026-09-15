@@ -21,6 +21,16 @@ func completeAuthoredIdentities(view, edited authoredCatalogView, aliases *catal
 	if err != nil {
 		return err
 	}
+	if err := completeAuthoredAliasDefinitions(view, edited, definitions, aliases); err != nil {
+		return err
+	}
+	if err := completeAuthoredModelIdentities(view, edited, definitions, providers, authors); err != nil {
+		return err
+	}
+	return completeAuthoredOwnerIdentities(view, providers, authors)
+}
+
+func completeAuthoredAliasDefinitions(view, edited authoredCatalogView, definitions map[string]json.RawMessage, aliases *catalogs.CanonicalAliasIndex) error {
 	aliasRecords, err := authoredObject(view["canonical_aliases"])
 	if err != nil {
 		return err
@@ -45,6 +55,10 @@ func completeAuthoredIdentities(view, edited authoredCatalogView, aliases *catal
 			return err
 		}
 	}
+	return nil
+}
+
+func completeAuthoredModelIdentities(view, edited authoredCatalogView, definitions, providers, authors map[string]json.RawMessage) error {
 	for _, name := range []string{"provider_models", "author_models"} {
 		groups, err := authoredObject(view[name])
 		if err != nil {
@@ -122,6 +136,11 @@ func completeAuthoredIdentities(view, edited authoredCatalogView, aliases *catal
 			return err
 		}
 	}
+	return nil
+}
+
+func completeAuthoredOwnerIdentities(view authoredCatalogView, providers, authors map[string]json.RawMessage) error {
+	var err error
 	for name, records := range map[string]map[string]json.RawMessage{"providers": providers, "authors": authors} {
 		for key, raw := range records {
 			record, err := authoredObject(raw)

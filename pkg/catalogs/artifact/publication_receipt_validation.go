@@ -117,6 +117,10 @@ func (s PublicationSourceReceipt) validate(startedAt, completedAt time.Time) err
 		}
 		return nil
 	}
+	return s.validateObservation(startedAt, completedAt)
+}
+
+func (s PublicationSourceReceipt) validateObservation(startedAt, completedAt time.Time) error {
 	if s.Attempt == "disabled" || s.Observation == nil {
 		return publicationReceiptError("source.observation", "requires admitted evidence from an enabled scope")
 	}

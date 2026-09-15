@@ -75,12 +75,14 @@ func verifyChannelPublication(o channelPublicationOptions, release releaseReport
 func verifyPromotionCommit(ctx context.Context, repository, expected string) error {
 	ctx, cancel := context.WithTimeout(ctx, promotionGitTimeout)
 	defer cancel()
-	command := exec.CommandContext(ctx, "git", "-C", repository, "rev-parse", "--verify", "HEAD")
+	command := exec.CommandContext(ctx, "git", "rev-parse", "--verify", "HEAD")
+	command.Dir = repository
 	actual, err := command.Output()
 	if err != nil || strings.TrimSpace(string(actual)) != expected {
 		return channelFlagError("source_commit", "checkout does not match the selected source commit")
 	}
-	command = exec.CommandContext(ctx, "git", "-C", repository, "status", "--porcelain", "--untracked-files=all", "--ignored=matching", "--", "internal/embedded/catalog")
+	command = exec.CommandContext(ctx, "git", "status", "--porcelain", "--untracked-files=all", "--ignored=matching", "--", "internal/embedded/catalog")
+	command.Dir = repository
 	dirty, err := command.Output()
 	if err != nil || len(dirty) != 0 {
 		return channelFlagError("promoted_repository", "embedded input must match the clean source commit")

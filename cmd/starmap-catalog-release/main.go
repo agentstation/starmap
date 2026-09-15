@@ -181,51 +181,59 @@ func run(args []string, output io.Writer) error {
 		}
 		return json.NewEncoder(output).Encode(report)
 	}
-	if strings.TrimSpace(*generationStore) == "" {
-		return &pkgerrors.ValidationError{
+	report, err := stageCommittedRelease(*generationStore, *channelCurrent, *previousReleaseDir, *outputDir)
+	if err != nil {
+		return err
+	}
+	return json.NewEncoder(output).Encode(report)
+}
+
+func stageCommittedRelease(generationStore, channelCurrent, previousReleaseDir, outputDir string) (releaseReport, error) {
+	if strings.TrimSpace(generationStore) == "" {
+		return releaseReport{}, &pkgerrors.ValidationError{
 			Field:   "catalog_release.generation_store",
 			Message: "is required when staging release assets",
 		}
 	}
-	store, err := storage.NewFilesystem(strings.TrimSpace(*generationStore))
+	store, err := storage.NewFilesystem(strings.TrimSpace(generationStore))
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
 	generation, err := store.Current(context.Background())
 	if err != nil {
-		return pkgerrors.WrapResource(
+		return releaseReport{}, pkgerrors.WrapResource(
 			"read",
 			"committed catalog generation",
-			strings.TrimSpace(*generationStore),
+			strings.TrimSpace(generationStore),
 			err,
 		)
 	}
-	current, err := readCurrentChannel(*channelCurrent)
+	current, err := readCurrentChannel(channelCurrent)
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
-	if err := validatePublishedSuccessor(current, *previousReleaseDir, generation); err != nil {
-		return err
+	if err := validatePublishedSuccessor(current, previousReleaseDir, generation); err != nil {
+		return releaseReport{}, err
 	}
 	semanticChecksum, err := generation.SemanticChecksum()
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
 	bundle, err := artifact.Build(generation)
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
-	assets, err := artifact.StageReleaseAssets(*outputDir, bundle)
+	assets, err := artifact.StageReleaseAssets(outputDir, bundle)
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
-	return json.NewEncoder(output).Encode(releaseReport{
+	return releaseReport{
 		GenerationID:     generation.Manifest.GenerationID,
 		SemanticChecksum: semanticChecksum,
 		PayloadChecksum:  generation.Manifest.Payload.Checksum,
 		ArchiveChecksum:  assets.ArchiveChecksum,
 		Directory:        assets.Directory, Files: assets.Files,
-	})
+	}, nil
 }
 
 // selectMode returns the single selected command mode. An empty result stages a
