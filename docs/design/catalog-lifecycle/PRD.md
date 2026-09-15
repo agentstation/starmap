@@ -58,6 +58,8 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D30 | A former canonical model ID remains an alias until an operator or replacement baseline explicitly removes it. Aliases have no automatic expiry. | User confirmed on 2026-09-10 |
 | D31 | The scheduled public Starmap publisher stores public catalog checkpoints on GitHub. API keys remain Actions secrets. No checkpoint encryption service is required. | User clarified public-only source scope on 2026-09-14 |
 | D32 | Isolated invalid source records can be quarantined while valid updates publish. Preserve prior facts and record affected identifiers, reason codes, and source status. | User confirmed on 2026-09-14 |
+| D33 | Shared S3 catalog cleanup requires Valkey or Redis coordination. S3-only cleanup is outside this production recipe. | User confirmed on 2026-09-14 |
+| D34 | Public provider acquisition is best effort. Retain accepted facts after request failures and report provider failures in catalog and source status. | User reaffirmed on 2026-09-14 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
@@ -77,6 +79,9 @@ D32 requires a visible record of source quality. Repaired input clears current q
 Source adapters own general formatting rules. The models.dev adapter trims surrounding display-name whitespace while preserving exact model IDs.
 Structured acquisition events identify each correction. YAML controls admission policy and deliberate operator overrides, without per-model whitespace exceptions.
 Transport failures, source schema failures, truncation, and stale fallback remain distinct from isolated record quarantine.
+
+The scheduled publisher must retain correction diagnostics when acquisition succeeds, fails, or times out.
+Its job summary must show correction counts and identify the retained report. Corrected records alone do not mark a source degraded.
 
 Checkpoint restore must also support later authored baseline changes, including explicit model and alias removals.
 Publishing provider results into the binary must not make those results permanent baseline facts in the publisher's retained state.

@@ -1,0 +1,24 @@
+{
+  "app_name": "Starmap Catalog Publisher",
+  "app_slug": "starmap-catalog-publisher",
+  "app_id": 4946953,
+  "client_id": "Iv23liy4n6ZR3dzi4YFd",
+  "settings_url": "https://github.com/organizations/agentstation/settings/apps/starmap-catalog-publisher",
+  "private": true,
+  "webhook_active": false,
+  "created": true,
+  "installed": false,
+  "private_key_generated": false,
+  "client_id_variable_verified": true,
+  "private_key_secret_written": false,
+  "requested_repository": "agentstation/starmap",
+  "permissions": {
+    "contents": "write",
+    "pull_requests": "write",
+    "administration": "read",
+    "actions": "read",
+    "attestations": "read",
+    "checks": "read",
+    "metadata": "read"
+  }
+}

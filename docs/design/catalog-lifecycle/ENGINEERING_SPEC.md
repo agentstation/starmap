@@ -860,6 +860,11 @@ The models.dev adapter trims surrounding whitespace from display names and prese
 It logs `display_name_whitespace_trimmed` with run, source, provider, and model identity. General adapter normalization does not require model-specific YAML exceptions.
 Quarantine logs identify the failed field and its validation reason.
 
+The scheduled publisher retains recognized models.dev corrections in `acquisition-corrections.log` for each acquisition attempt, including failures and timeouts.
+The report retains the workflow run, process outcome, source, provider, model, and correction code. It excludes raw messages and unknown fields.
+The report stores at most 20,000 corrections and records total, omitted, and invalid-event counts.
+The Actions job summary shows those counts. The `catalog-validation-<run ID>-<attempt>` artifact retains the report for 14 days.
+
 The adapter accepts successfully normalized records. Invalid identities and remaining internal control characters stay quarantined.
 A repaired update clears current quarantine. Historical receipts retain the original report, while repeated equivalent quarantine must retain bounded replay state.
 
@@ -902,7 +907,9 @@ Its engineering default requires eligible models.dev evidence from this run or t
 The public profile enables the owner's record-quarantine policy for models.dev. Provider inventories retain their separate completeness requirements.
 Provider failures remain optional and preserve prior catalog facts. Receipts distinguish missing credentials, failed attempts, and retained evidence.
 
-Evidence older than 24 hours does not satisfy admission. Expiry alone does not remove its catalog facts.
+The prepared profile rejects models.dev evidence older than 24 hours. Expiry alone does not remove its catalog facts.
+The owner has not accepted that cutoff. Its choice remains separate from the approved provider failure policy and publisher setup authorization.
+Resolve that choice before live publication uses this profile.
 
 Public bindings contain no account or project selectors and grant membership authority only within their own scope.
 The `default-endpoint` region identifies the configured default endpoint. It does not declare coverage of every provider region.
@@ -3566,6 +3573,10 @@ The memory reference backend and S3 adapter implement these operations through a
 The minimum object storage interface remains unchanged.
 
 Generation retirement still requires coordinated publication and read protection. Inventory pages lack snapshot isolation, and validators can repeat.
+
+The owner selected Valkey or Redis coordination for shared S3 cleanup on 2026-09-14. S3-only cleanup requires a separate design.
+The coordinator decision permits implementation and qualification. It does not establish collection safety or complete CSP5.
+
 The [backend proof](../../plans/proof/starport-production-catalog/csp5/object-collection-2026-09-12/verification.json) records 223 passing storage race events on each Go toolchain.
 Package lint, policy, and source prose pass. Object generation collection, runtime adoption, and full CSP5 qualification remain open.
 

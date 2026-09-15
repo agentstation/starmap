@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-14T23:57:45.399354+00:00",
+  "status": "local_qualification_complete",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "branch": "codex/catalog-publication-promotion-main",
+  "commit": "3da87515ecb90dd08f49dee8a27d1935d98b5dcc",
+  "previous_commit": "567691400acdce5b96710ffdf0150f7939d4ab3f",
+  "pull_request": 160,
+  "finding": "Publisher.prepare captured acquisition stderr and discarded the structured normalization events. Receipts retained quarantine status, but correction events had no durable scheduled-run report.",
+  "changes": [
+    "Retain recognized models.dev correction metadata in a private JSON report. Exclude raw messages and unknown fields. Bound details and report omitted or invalid event counts.",
+    "Retain completed events after acquisition failure or timeout. Refuse staging on failure.",
+    "Add process outcome and counts to the Actions job summary. Retain the report with validation logs for 14 days."
+  ],
+  "checks": [
+    {
+      "command": "PYTHONPATH=scripts python3 -m unittest -v test_catalog_publication.AcquisitionDiagnosticsTests",
+      "stage": "fail-before",
+      "exit_code": 1,
+      "tests": 6,
+      "failures": 4,
+      "errors": 1
+    },
+    {
+      "command": "PYTHONPATH=scripts python3 -m unittest -v test_catalog_publication.AcquisitionDiagnosticsTests",
+      "stage": "after-report-and-summary",
+      "exit_code": 0,
+      "tests": 6
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make catalog-generation-check",
+      "exit_code": 0,
+      "go_packages_passed": 6,
+      "publisher_python_tests": 19,
+      "provider_fixture_contract": "PASS"
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "files": 1755,
+      "diagnostics": 0,
+      "earlier_failures": "Two paragraph-length failures remain in the archived logs."
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make verify-action-pins",
+      "exit_code": 0,
+      "pins_verified": 10
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "worktree": "canonical plan",
+      "command": "make technical-writing-check",
+      "exit_code": 0,
+      "files": 1532,
+      "diagnostics": 0,
+      "earlier_failures": "Paragraph separation and one passive sentence failed the first two checks. Their logs remain archived."
+    }
+  ],
+  "manual_review": "Reviewed failure publication boundaries, stderr filtering, private report permissions, known source IDs, report limits, partial timeout decoding, and Actions artifact scope. No provider key was used.",
+  "review": "Required pre-PR autoreview remains pending. Refresh from main after PR161 merges before final review and publication.",
+  "remaining": [
+    "Integrate merged PR161, complete required review, publish the existing PR160 update, and qualify its new native head.",
+    "Finish private-key generation, selected-repository App installation, secret storage, and controlled hosted publication after checks.",
+    "Resolve only the models.dev freshness cutoff. Provider best-effort policy and publisher authorization are confirmed.",
+    "Implement shared S3 cleanup with Valkey/Redis coordination and complete CSP5 qualification."
+  ],
+  "owner_decisions": "owner-decisions.json",
+  "evidence": {
+    "fail-before.log": {
+      "archive": "fail-before.log.gz",
+      "sha256": "146f82676d793dacf6eb40b739967d2ac7673cb6768302453ffc564e1b4f4b1d",
+      "archive_sha256": "2b57eafd8678341b1301f1b0ad66afbea08fa5d416f75fc68fc2c3bb01ded371"
+    },
+    "focused.log": {
+      "archive": "focused.log.gz",
+      "sha256": "ae0d828b828df3a088a196a2766f16186c126cc89892942ad583cead3165fb40",
+      "archive_sha256": "0cb81a23f68f15f09ec2c429edfc0f89ad6ce900dfa1952e71f1b062e3c5eb2a"
+    },
+    "focused-summary.log": {
+      "archive": "focused-summary.log.gz",
+      "sha256": "5174e9c94f9bd40dcb3e9b02bcbe1ba3c0ea780df99934ecf6f7cd7ef1fee43c",
+      "archive_sha256": "68ad8fabf810ea1b1c91e608a2ac1ac3d7e8e72e9427b0daacac738c6c782aa1"
+    },
+    "generation.log": {
+      "archive": "generation.log.gz",
+      "sha256": "44a46ee40decd1f6362fa4e3e41be503686bbcda161b6cf462d08aa6b70bd608",
+      "archive_sha256": "6d7e30536098260a7b864f7317a791eb8c313ca544e57586b680b8dc3c21b090"
+    },
+    "writing.log": {
+      "archive": "writing.log.gz",
+      "sha256": "c5bfcd8df5169c5426ad75ebe096cbaffb396b7bd527909e6939b8fc1c0c0a46",
+      "archive_sha256": "c716cbaea25445eb005df403cf061bb801eef7ad7180f77aae2b2e5969d0924d"
+    },
+    "writing-final.log": {
+      "archive": "writing-final.log.gz",
+      "sha256": "b379b5eb07d35f5e122dd411fc566e1d90809871f3c29adb6884b2765332c452",
+      "archive_sha256": "7e402f0213eb838e535a52b559881ca8543164e79e7251426d12fd62191cfe20"
+    },
+    "writing-pass.log": {
+      "archive": "writing-pass.log.gz",
+      "sha256": "949dcc087d31181c2ca0866b5ff6c1372bbb44d8e625de357dca009f1677ee58",
+      "archive_sha256": "31a77e5167f1fffeacd8275a7c48bcc4ca393692c94ad8bed8c140602bfad9e9"
+    },
+    "document.log": {
+      "archive": "document.log.gz",
+      "sha256": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+      "archive_sha256": "6a040ea84ee9e48e9b0c8c20b780ee6b4fe9f0843a8f498a5d902bdd915d2cdf"
+    },
+    "action-pins.log": {
+      "archive": "action-pins.log.gz",
+      "sha256": "c358df63043ee050d3b581e716c1ca4d4e5990c881b26566c1557894d8666b4c",
+      "archive_sha256": "bd8d8f7ae7ca056b43095ab6a92803bda7a85bc4d064cd64fcb95a7ddc59d310"
+    },
+    "csp7-native.json": {
+      "path": "csp7-native.json",
+      "sha256": "e6396df081c81147ca91fed6801829937bd4e6cf8c1e38c4143220a1a7ed8900"
+    },
+    "csp7-pr.json": {
+      "path": "csp7-pr.json",
+      "sha256": "3a902698762c6df9bb4cb00f45696710c3efd2e28ee149915d3a193c3c7d1f3f"
+    },
+    "pr160-native-before.json": {
+      "path": "pr160-native-before.json",
+      "sha256": "50981e832080980c076a08acf996f8533893116898805e1a64aab85922d85da0"
+    },
+    "app-setup.json": {
+      "path": "app-setup.json",
+      "sha256": "befbd891f31017cd83a5e2d9a5615b535442eb13d2b71427aa062220459cf424"
+    },
+    "csp7-pr-final.json": {
+      "path": "csp7-pr-final.json",
+      "sha256": "3a902698762c6df9bb4cb00f45696710c3efd2e28ee149915d3a193c3c7d1f3f"
+    },
+    "csp7-native-final.json": {
+      "path": "csp7-native-final.json",
+      "sha256": "0a79542b12a4c46bb9931cbd86672b3439d5190f7e33cca01df5a3b740831860"
+    },
+    "canonical-writing.log": {
+      "archive": "canonical-writing.log.gz",
+      "sha256": "3133a4215c9d478069a6610c6d3b50c9a88dd2bcfe587887c91df77aaca92196",
+      "archive_sha256": "7b07219ab4d1af4bb3dbc75d39c0413ff055b741aa7a51e1ead3e5566446f1d2"
+    },
+    "canonical-writing-final.log": {
+      "archive": "canonical-writing-final.log.gz",
+      "sha256": "3133a4215c9d478069a6610c6d3b50c9a88dd2bcfe587887c91df77aaca92196",
+      "archive_sha256": "7b07219ab4d1af4bb3dbc75d39c0413ff055b741aa7a51e1ead3e5566446f1d2"
+    },
+    "canonical-writing-pass.log": {
+      "archive": "canonical-writing-pass.log.gz",
+      "sha256": "6944e90629f2946221c3968925b9f049f73516cdabeab7299c482dbcd5be3633",
+      "archive_sha256": "c81476fa9fdbb5ee6aedf9a1cc07dccd1c07b8f298ba279f5083f203970c47ff"
+    },
+    "changed-docs-writing.log": {
+      "archive": "changed-docs-writing.log.gz",
+      "sha256": "e12ae53feccc4fff0b3f0c13af3086dd10594dd227d5a82c6e4384e72cb8a668",
+      "archive_sha256": "03ac755e03fb41d530185275e4afde066bd01a05131a816cc20a3963cb9db778"
+    },
+    "design-writing.log": {
+      "archive": "design-writing.log.gz",
+      "sha256": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+      "archive_sha256": "3a8a4461ab82bcabf697e5461b5c91a9d9b762e9b528b2e8ce4797850849e7fb"
+    }
+  },
+  "limitations": [
+    "The new report has local behavioral evidence, not a live Actions acquisition run.",
+    "Native run34903583463 covers the prior commit567691400, not this correction.",
+    "CSP7 remains active. No task receives completion credit from this report repair or App registration."
+  ],
+  "document_structure": "document-structure.json"
+}

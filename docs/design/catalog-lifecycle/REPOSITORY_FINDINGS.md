@@ -3073,3 +3073,17 @@ Six producer subcases, external consumers, generated documentation, strict prose
 Sol and Opus report no actionable findings in the required review. The PR uses guarded auto-merge and awaits native CI.
 The [credential proof](../../plans/proof/starport-production-catalog/csp7/policy-composition-2026-09-14/verification.json) owns source hashes, preserved failures, and exact results.
 CSP7 remains in progress. Product cases A11 and A12 still require Starport integration.
+
+## Scheduled correction reports and owner decisions, 2026-09-14
+
+The publisher discarded acquisition stderr after parsing its success result. That discarded the four models.dev correction events.
+Commit `3da87515ecb90dd08f49dee8a27d1935d98b5dcc` retains recognized correction metadata and adds process outcome and counts to the Actions job summary.
+The report excludes raw messages and unknown fields. Failed acquisition and timeout paths retain complete events without staging a publication.
+
+The [diagnostic proof](../../plans/proof/starport-production-catalog/csp6/acquisition-diagnostics-2026-09-14/verification.json) preserves four failing tests and one timeout error before the change.
+All six focused tests and all nineteen publisher tests pass after the change. The catalog-generation gate passes six Go packages and the provider-fixture contract.
+Required review, integration with current main, and native qualification remain open for this commit.
+
+The owner approved Valkey or Redis coordination for shared S3 cleanup. The owner also authorized App setup and checked public catalog publication.
+Public provider acquisition remains best effort with retained facts and visible failures. Only the proposed models.dev freshness cutoff remains undecided.
+The private publisher App registration and client ID variable now exist. Private-key generation, installation, secret storage, and hosted publication remain incomplete.

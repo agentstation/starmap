@@ -1,0 +1,4 @@
+{
+  "error": "The first local checker parsed a Markdown file as HTML and could not recognize the existing local-starport-pair-check heading anchor.",
+  "correction": "Check all local file targets and HTML anchors. Do not claim Markdown anchor verification."
+}

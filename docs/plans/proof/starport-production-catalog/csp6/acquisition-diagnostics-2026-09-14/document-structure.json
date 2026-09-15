@@ -1,0 +1,14 @@
+{
+  "ledger_rows": 38,
+  "done": 10,
+  "active": 1,
+  "recent_log_entries": 10,
+  "checked_local_files_and_html_anchors": 133,
+  "markdown_anchors_not_checked": 13,
+  "protected_sections": 6,
+  "unrelated_files_unchanged": 5,
+  "resume_words": 248,
+  "plan_words": 10295,
+  "plan_bytes": 112707,
+  "size_exception": "Required task, invariant, and completion contracts exceed the default plan size. The resume record links exact current proofs."
+}

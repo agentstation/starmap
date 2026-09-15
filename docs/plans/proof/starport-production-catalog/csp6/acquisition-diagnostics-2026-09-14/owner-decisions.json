@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-09-14T23:57:45.399354+00:00",
+  "source": "User-authorized side-conversation handoff received in the parent task on 2026-09-14. The ephemeral conversation does not expose turn history through read_thread.",
+  "confirmed": {
+    "shared_s3_cleanup": "Require Valkey or Redis coordination. Implementation and qualification remain necessary.",
+    "provider_acquisition": "Best effort. Retain accepted data and report failed providers in catalog and source status.",
+    "record_quarantine": "Approved. Preserve prior facts and retain visible diagnostic records.",
+    "publisher_setup_and_publication": "Dedicated private GitHub App on agentstation/starmap and the four-hour public process are authorized after required checks. Include catalog assets, checked embedding promotion, and discovery channels. Browser use is authorized."
+  },
+  "pending": [
+    "Whether models.dev evidence older than 24 hours pauses publication or permits valid provider updates with a stale-source warning."
+  ],
+  "browser_handoff": "The App registration is complete. Browser credential creation requires user handoff. Final installation must select only agentstation/starmap. No private key exists or secret was written by this turn."
+}

@@ -908,3 +908,9 @@ An embedding host explicitly selects policy storage through the acquisition Go A
 This change does not move catalog generations, inference credentials, or relational records into another storage service.
 Starport's storage authority and credential integration remain under CSP9.
 The [CSP7 proof](../../plans/proof/starport-production-catalog/csp7/policy-composition-2026-09-14/verification.json) records local behavior, preserved regressions, and remaining qualification.
+
+## Shared S3 cleanup decision, 2026-09-14
+
+The owner approved Valkey or Redis coordination for shared S3 catalog cleanup. S3-only cleanup requires a separate design.
+The decision clears the coordinator choice. CSP5 still owns publication coordination, reader and pin protection, crash recovery, and qualification.
+The [owner decision record](../../plans/proof/starport-production-catalog/csp6/acquisition-diagnostics-2026-09-14/owner-decisions.json) retains this authorization and its remaining scope.
