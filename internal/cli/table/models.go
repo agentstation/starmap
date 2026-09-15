@@ -195,7 +195,7 @@ func BuildAuthorsString(authors []catalogs.Author) string {
 
 // ProvidersToTableData converts providers to table format.
 func ProvidersToTableData(providers []*catalogs.Provider, checker *auth.Checker, supportedMap map[string]bool) Data {
-	headers := []string{"NAME", "ID", "LOCATION", "API TYPE", "ENV KEY", "KEY", "MODELS", "STATUS"}
+	headers := []string{"NAME", "ID", "LOCATION", "API TYPE", "AUTH SOURCE", "KEY", "MODELS", "STATUS"}
 
 	rows := make([][]string, 0, len(providers))
 	for _, provider := range providers {
@@ -282,10 +282,27 @@ func getStatusDisplay(state auth.State) (string, string) {
 	}
 }
 
-// getKeyVariable returns the key variable name or special message for display.
+// getKeyVariable reports selected origin names without source paths or credential values.
 func getKeyVariable(provider *catalogs.Provider, status *auth.Status) string {
 	if status.State == auth.StateUnsupported {
 		return "(no implementation)"
+	}
+	if status.State == auth.StateInvalid {
+		return "(unresolved)"
+	}
+	if status.State == auth.StateConfigured {
+		var names []string
+		if status.Profile != nil {
+			for _, origin := range status.Profile.Origins {
+				if origin.Name != "" && !slices.Contains(names, origin.Name) {
+					names = append(names, origin.Name)
+				}
+			}
+		}
+		if len(names) > 0 {
+			return strings.Join(names, ", ")
+		}
+		return "(configured source)"
 	}
 	environment, primitive, declared := catalogCredentialDisplay(provider)
 	if !declared || primitive == catalogs.ProviderAuthenticationNone {
@@ -349,6 +366,9 @@ func catalogCredentialDisplay(
 func getKeyPreview(provider *catalogs.Provider, status *auth.Status) string {
 	if status.State == auth.StateUnsupported {
 		return "(n/a)"
+	}
+	if status.State == auth.StateInvalid {
+		return "(unavailable)"
 	}
 	_, primitive, declared := catalogCredentialDisplay(provider)
 	if declared && primitive != catalogs.ProviderAuthenticationNone {

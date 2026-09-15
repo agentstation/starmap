@@ -73,11 +73,14 @@ Package sources provides public APIs for working with AI model data sources.
   - [func \(m ProviderCredentialMaterial\) ExpiresAt\(\) \(time.Time, bool\)](<#ProviderCredentialMaterial.ExpiresAt>)
   - [func \(m ProviderCredentialMaterial\) GoString\(\) string](<#ProviderCredentialMaterial.GoString>)
   - [func \(m ProviderCredentialMaterial\) Lease\(\) \(ProviderCredentialLease, bool\)](<#ProviderCredentialMaterial.Lease>)
+  - [func \(m ProviderCredentialMaterial\) Origins\(\) \[\]ProviderCredentialOrigin](<#ProviderCredentialMaterial.Origins>)
   - [func \(m ProviderCredentialMaterial\) Profile\(\) catalogs.ProviderCredentialProfile](<#ProviderCredentialMaterial.Profile>)
+  - [func \(m ProviderCredentialMaterial\) ResolutionPolicy\(\) string](<#ProviderCredentialMaterial.ResolutionPolicy>)
   - [func \(m ProviderCredentialMaterial\) String\(\) string](<#ProviderCredentialMaterial.String>)
   - [func \(m ProviderCredentialMaterial\) Value\(fieldID catalogs.ProviderCredentialFieldID\) \(string, bool\)](<#ProviderCredentialMaterial.Value>)
   - [func \(m ProviderCredentialMaterial\) Version\(\) string](<#ProviderCredentialMaterial.Version>)
 - [type ProviderCredentialMetadata](<#ProviderCredentialMetadata>)
+- [type ProviderCredentialOrigin](<#ProviderCredentialOrigin>)
 - [type ProviderCredentialResolver](<#ProviderCredentialResolver>)
 - [type ProviderCredentialResolverFunc](<#ProviderCredentialResolverFunc>)
   - [func \(f ProviderCredentialResolverFunc\) ResolveCatalog\(ctx context.Context, provider \*catalogs.Provider\) \(ProviderCredentialMaterial, error\)](<#ProviderCredentialResolverFunc.ResolveCatalog>)
@@ -815,7 +818,7 @@ type ProviderClientFactory func(*catalogs.Provider) (ProviderClient, error)
 ```
 
 <a name="ProviderCredentialLease"></a>
-## type [ProviderCredentialLease](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L30-L33>)
+## type [ProviderCredentialLease](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L39-L42>)
 
 ProviderCredentialLease describes renewable credential material.
 
@@ -838,7 +841,7 @@ type ProviderCredentialMaterial struct {
 ```
 
 <a name="NewProviderCredentialMaterial"></a>
-### func [NewProviderCredentialMaterial](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L36-L40>)
+### func [NewProviderCredentialMaterial](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L45-L49>)
 
 ```go
 func NewProviderCredentialMaterial(profile catalogs.ProviderCredentialProfile, values map[catalogs.ProviderCredentialFieldID]string, metadata ProviderCredentialMetadata) ProviderCredentialMaterial
@@ -847,7 +850,7 @@ func NewProviderCredentialMaterial(profile catalogs.ProviderCredentialProfile, v
 NewProviderCredentialMaterial creates caller\-owned credential material.
 
 <a name="ProviderCredentialMaterial.EndpointBindings"></a>
-### func \(ProviderCredentialMaterial\) [EndpointBindings](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L89>)
+### func \(ProviderCredentialMaterial\) [EndpointBindings](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L106>)
 
 ```go
 func (m ProviderCredentialMaterial) EndpointBindings() map[string]string
@@ -856,7 +859,7 @@ func (m ProviderCredentialMaterial) EndpointBindings() map[string]string
 EndpointBindings returns resolved URL\-template bindings for the profile.
 
 <a name="ProviderCredentialMaterial.ExpiresAt"></a>
-### func \(ProviderCredentialMaterial\) [ExpiresAt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L65>)
+### func \(ProviderCredentialMaterial\) [ExpiresAt](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L82>)
 
 ```go
 func (m ProviderCredentialMaterial) ExpiresAt() (time.Time, bool)
@@ -865,7 +868,7 @@ func (m ProviderCredentialMaterial) ExpiresAt() (time.Time, bool)
 ExpiresAt returns the material expiry when the selected source supplied one.
 
 <a name="ProviderCredentialMaterial.GoString"></a>
-### func \(ProviderCredentialMaterial\) [GoString](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L86>)
+### func \(ProviderCredentialMaterial\) [GoString](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L103>)
 
 ```go
 func (m ProviderCredentialMaterial) GoString() string
@@ -874,7 +877,7 @@ func (m ProviderCredentialMaterial) GoString() string
 GoString returns a secret\-free Go\-syntax material summary.
 
 <a name="ProviderCredentialMaterial.Lease"></a>
-### func \(ProviderCredentialMaterial\) [Lease](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L73>)
+### func \(ProviderCredentialMaterial\) [Lease](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L90>)
 
 ```go
 func (m ProviderCredentialMaterial) Lease() (ProviderCredentialLease, bool)
@@ -882,8 +885,17 @@ func (m ProviderCredentialMaterial) Lease() (ProviderCredentialLease, bool)
 
 Lease returns caller\-owned renewable\-material metadata when present.
 
+<a name="ProviderCredentialMaterial.Origins"></a>
+### func \(ProviderCredentialMaterial\) [Origins](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L74>)
+
+```go
+func (m ProviderCredentialMaterial) Origins() []ProviderCredentialOrigin
+```
+
+Origins returns a caller\-owned list of selected catalog credential sources.
+
 <a name="ProviderCredentialMaterial.Profile"></a>
-### func \(ProviderCredentialMaterial\) [Profile](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L49>)
+### func \(ProviderCredentialMaterial\) [Profile](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L58>)
 
 ```go
 func (m ProviderCredentialMaterial) Profile() catalogs.ProviderCredentialProfile
@@ -891,8 +903,17 @@ func (m ProviderCredentialMaterial) Profile() catalogs.ProviderCredentialProfile
 
 Profile returns a caller\-owned copy of the selected profile.
 
+<a name="ProviderCredentialMaterial.ResolutionPolicy"></a>
+### func \(ProviderCredentialMaterial\) [ResolutionPolicy](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L79>)
+
+```go
+func (m ProviderCredentialMaterial) ResolutionPolicy() string
+```
+
+ResolutionPolicy returns the policy that selected the credential origins.
+
 <a name="ProviderCredentialMaterial.String"></a>
-### func \(ProviderCredentialMaterial\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L81>)
+### func \(ProviderCredentialMaterial\) [String](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L98>)
 
 ```go
 func (m ProviderCredentialMaterial) String() string
@@ -901,7 +922,7 @@ func (m ProviderCredentialMaterial) String() string
 String returns a secret\-free material summary.
 
 <a name="ProviderCredentialMaterial.Value"></a>
-### func \(ProviderCredentialMaterial\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L54-L56>)
+### func \(ProviderCredentialMaterial\) [Value](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L63-L65>)
 
 ```go
 func (m ProviderCredentialMaterial) Value(fieldID catalogs.ProviderCredentialFieldID) (string, bool)
@@ -910,7 +931,7 @@ func (m ProviderCredentialMaterial) Value(fieldID catalogs.ProviderCredentialFie
 Value returns one exact credential or parameter value.
 
 <a name="ProviderCredentialMaterial.Version"></a>
-### func \(ProviderCredentialMaterial\) [Version](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L62>)
+### func \(ProviderCredentialMaterial\) [Version](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L71>)
 
 ```go
 func (m ProviderCredentialMaterial) Version() string
@@ -919,20 +940,35 @@ func (m ProviderCredentialMaterial) Version() string
 Version returns the resolver\-owned opaque material version.
 
 <a name="ProviderCredentialMetadata"></a>
-## type [ProviderCredentialMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L23-L27>)
+## type [ProviderCredentialMetadata](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L23-L29>)
 
 ProviderCredentialMetadata describes one resolved material lifecycle. Version is opaque and contains no source path or secret digest.
 
 ```go
 type ProviderCredentialMetadata struct {
-    Version   string
-    ExpiresAt time.Time
-    Lease     *ProviderCredentialLease
+    Version          string
+    ExpiresAt        time.Time
+    Lease            *ProviderCredentialLease
+    Origins          []ProviderCredentialOrigin
+    ResolutionPolicy string
+}
+```
+
+<a name="ProviderCredentialOrigin"></a>
+## type [ProviderCredentialOrigin](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L32-L36>)
+
+ProviderCredentialOrigin identifies a selected field source without secret material or resource paths.
+
+```go
+type ProviderCredentialOrigin struct {
+    Field catalogs.ProviderCredentialFieldID `json:"field"`
+    Kind  string                             `json:"kind"`
+    Name  string                             `json:"name,omitempty"`
 }
 ```
 
 <a name="ProviderCredentialResolver"></a>
-## type [ProviderCredentialResolver](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L112-L114>)
+## type [ProviderCredentialResolver](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L129-L131>)
 
 ProviderCredentialResolver resolves one catalog\-acquisition profile.
 
@@ -943,7 +979,7 @@ type ProviderCredentialResolver interface {
 ```
 
 <a name="ProviderCredentialResolverFunc"></a>
-## type [ProviderCredentialResolverFunc](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L117-L120>)
+## type [ProviderCredentialResolverFunc](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L134-L137>)
 
 ProviderCredentialResolverFunc adapts a function to credential resolution.
 
@@ -955,7 +991,7 @@ type ProviderCredentialResolverFunc func(
 ```
 
 <a name="ProviderCredentialResolverFunc.ResolveCatalog"></a>
-### func \(ProviderCredentialResolverFunc\) [ResolveCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L123-L126>)
+### func \(ProviderCredentialResolverFunc\) [ResolveCatalog](<https://github.com/agentstation/starmap/blob/main/pkg/sources/credentials.go#L140-L143>)
 
 ```go
 func (f ProviderCredentialResolverFunc) ResolveCatalog(ctx context.Context, provider *catalogs.Provider) (ProviderCredentialMaterial, error)

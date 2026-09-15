@@ -8,14 +8,14 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 )
 
-func TestCatalogCredentialEnvironmentPrecedence(t *testing.T) {
+func TestLegacyCatalogCredentialEnvironmentPrecedence(t *testing.T) {
 	provider := ambientCredentialProvider()
 
 	t.Run("conventional precedes product alias", func(t *testing.T) {
 		resolver := newResolver(mapEnvironment(map[string]string{
 			"OPENAI_API_KEY":         "conventional",
 			"STARMAP_OPENAI_API_KEY": "product-alias",
-		}))
+		}), WithEnvironmentPolicy(EnvironmentPolicyLegacy))
 		material, err := resolver.ResolveCatalog(context.Background(), &provider)
 		if err != nil {
 			t.Fatalf("ResolveCatalog: %v", err)
@@ -28,7 +28,7 @@ func TestCatalogCredentialEnvironmentPrecedence(t *testing.T) {
 	t.Run("product alias is the final ambient candidate", func(t *testing.T) {
 		resolver := newResolver(mapEnvironment(map[string]string{
 			"STARMAP_OPENAI_API_KEY": "product-alias",
-		}))
+		}), WithEnvironmentPolicy(EnvironmentPolicyLegacy))
 		material, err := resolver.ResolveCatalog(context.Background(), &provider)
 		if err != nil {
 			t.Fatalf("ResolveCatalog: %v", err)
@@ -48,7 +48,7 @@ func TestCatalogCredentialEnvironmentPrecedence(t *testing.T) {
 			}
 			value, exists := values[name]
 			return value, exists
-		})
+		}, WithEnvironmentPolicy(EnvironmentPolicyLegacy))
 		_, err := resolver.ResolveCatalog(context.Background(), &provider)
 		if err == nil || !strings.Contains(err.Error(), "selected value") {
 			t.Fatalf("ResolveCatalog error = %v", err)

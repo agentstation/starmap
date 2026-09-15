@@ -109,13 +109,19 @@ bindings. Compiled primitives implement API keys, bearer tokens, and three
 cloud default chains. The cloud chains support Google, Azure, and AWS. The
 primitives do not contain provider membership rules.
 
-The process-owned acquisition resolver checks one operator-selected `env:` or
-`file:` reference before ambient discovery. Ambient discovery checks each
-catalog-declared conventional environment name and then the derived
-`STARMAP_<PROVIDER_ID>_<FIELD_ID>` name. An explicit source can fall back only
+The process-owned acquisition resolver checks an operator-selected reference
+before ambient discovery. References support environment variables, files, AWS
+Secrets Manager, GCP Secret Manager, Azure Key Vault, Vault, and OpenBao.
+Ambient discovery checks the derived `STARMAP_<PROVIDER_ID>_<FIELD_ID>` name
+before catalog-declared conventional names. An explicit source can fall back only
 after a typed `not_configured` result and only when operator configuration
 permits it. Invalid, denied, unavailable, timeout, and cancellation failures
 are terminal.
+
+Persistent installations compare complete legacy and current selections before
+accepting a changed policy. Different material blocks the affected provider.
+The [credential reference](ACQUISITION_CREDENTIALS.md) defines migration, policy
+storage, and the public acquisition composition.
 
 Resolved material contains named values, one opaque version, and optional
 expiry and lease metadata. The material type keeps values private and preserves
@@ -124,7 +130,7 @@ exact source bytes. Its generic formatter omits secret values.
 The resolver owns cache and single-flight state. It rereads static files and
 detects rotation without depending on modification time. The resolver reuses
 renewable cloud material only until its refresh time. Starmap resolves material
-only when it builds a provider observation. Credential values never enter a
+during explicit provider observations or credential checks. Credential values never enter a
 catalog payload or generation.
 
 The catalog also records provider inference service facts. These facts include

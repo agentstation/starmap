@@ -250,7 +250,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p native-evidence
-          go test -json -count=1 -timeout=5m -run '^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent|LegacyRollbackPreservesOperatorSidecars|RelocationPreparationClosesHandlesAfterCleanupConflict)$' ./internal/privatefiles ./internal/catalog/workspace > native-evidence/filesystem-preflight.jsonl
+          go test -json -count=1 -timeout=5m -run '^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent|LegacyRollbackPreservesOperatorSidecars|RelocationPreparationClosesHandlesAfterCleanupConflict|RequiredBaselineWriteFailurePreventsRuntimeStartup|CredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites)$' ./internal/privatefiles ./internal/catalog/workspace ./internal/cli/app > native-evidence/filesystem-preflight.jsonl
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:
@@ -264,7 +264,7 @@ jobs:
           test "$(go env GOHOSTOS)" = "$EXPECTED_OS"
           test "$(go env GOARCH)" = "$EXPECTED_ARCH"
           test "$(go env GOHOSTARCH)" = "$EXPECTED_ARCH"
-          native_packages=(. ./runtime ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./pkg/catalogs/permission/... ./internal/catalog/workspace ./internal/test/gitfixture)
+          native_packages=(. ./runtime ./internal/auth ./internal/bootstrap ./internal/filepublish ./internal/privatefiles ./internal/runtimeacl/windows ./internal/sources/github ./internal/cli/app ./pkg/productpaths ./pkg/productpaths/policy ./pkg/catalogs/storage ./pkg/catalogs/permission/... ./internal/catalog/workspace ./internal/test/gitfixture)
           if [ "$EXPECTED_OS" = windows ]; then
             native_packages+=(./internal/test/windowstoken)
           fi

@@ -28,6 +28,7 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 		report.Files = append(report.Files, productpaths.FileEntry{ID: id, Location: location, Kind: kind, Patterns: patterns, Availability: availability, Creation: creation, Recovery: recovery})
 	}
 	add("configuration", paths.Configuration, "file", "available", "Operator-selected configuration.", "Preserve settings and required secret access.")
+	add("credential-policy", paths.CredentialPolicy, "tree", "available", "Persistent catalog startup before catalog writes.", "Preserve accepted credential policy during upgrades and recovery. Records contain no credential values.", "policy.json", "provider-*.json", ".policy-*", ".record-publications/.owner.lock", ".record-publications/*.jsonl")
 	if paths.SourceFile.Path != "" {
 		add("source-file", paths.SourceFile, "file", "available", "Operator-supplied file catalog source.", "Preserve the selected catalog payload and its access policy.")
 	}

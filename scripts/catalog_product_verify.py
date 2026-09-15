@@ -17,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ROSTER = ROOT / "docs/plans/proof/starport-production-catalog/acceptance-map.json"
 REGISTRY = ROOT / "scripts/catalog-product-checks.json"
+COMPONENT_CASES = {"CSP5": ("A22", "A23"), "CSP7": ("A11", "A12")}
 
 
 def read_json(path):
@@ -83,17 +84,17 @@ def validate_registry(registry, roster, checks):
     if registry.get("schema_version") != 1 or not set(registry["checks"]) <= checks:
         raise ValueError("Invalid behavior-check registry.")
     components = registry.get("task_component_checks", {})
-    if not isinstance(components, dict) or set(components) - {"CSP5"}:
-        raise ValueError("Only CSP5 has an approved producer component contract.")
+    if not isinstance(components, dict) or set(components) - set(COMPONENT_CASES):
+        raise ValueError("Only CSP5 and CSP7 have approved producer component contracts.")
     for task, entries in components.items():
-        allowed = set(roster["required_subcases"]["A22"] + roster["required_subcases"]["A23"])
+        allowed = {identity for case in COMPONENT_CASES[task] for identity in roster["required_subcases"][case]}
         if not isinstance(entries, dict) or not set(entries) <= allowed.intersection(roster["task_checks"][task]):
             raise ValueError("Producer component checks exceed their approved task contract.")
 
 
 def registered_check(args, registry, identity):
-    # CSP5 checks the producer controls. CSP8 and qualification require consumer evidence.
-    if args.task == "CSP5" and not (args.gate or args.released_assets or args.recipes or args.backends):
+    # Producer tasks qualify their components. Consumer tasks and release gates require product evidence.
+    if args.task in COMPONENT_CASES and not (args.gate or args.released_assets or args.recipes or args.backends):
         components = registry.get("task_component_checks", {}).get(args.task, {})
         if identity in components:
             return components[identity], "producer_component"

@@ -15,7 +15,10 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-const starmapCredentialProduct = "STARMAP"
+const (
+	starmapCredentialProduct    = "STARMAP"
+	credentialResolutionTimeout = 30 * time.Second
+)
 
 type environmentLookup func(string) (string, bool)
 
@@ -45,12 +48,13 @@ type resolutionCall struct {
 // Resolver selects catalog-declared authentication primitives and resolves
 // deployment-owned credential sources. It contains no provider roster.
 type Resolver struct {
-	lookup      environmentLookup
-	handlers    map[catalogs.ProviderAuthenticationPrimitive]profileResolver
-	references  map[CredentialFieldKey]ReferencePolicy
-	sources     map[ReferenceBackend]credentialSource
-	cloudChains map[catalogs.ProviderAuthenticationPrimitive]cloudChain
-	versionSeed maphash.Seed
+	lookup            environmentLookup
+	handlers          map[catalogs.ProviderAuthenticationPrimitive]profileResolver
+	references        map[CredentialFieldKey]ReferencePolicy
+	sources           map[ReferenceBackend]credentialSource
+	cloudChains       map[catalogs.ProviderAuthenticationPrimitive]cloudChain
+	versionSeed       maphash.Seed
+	environmentPolicy EnvironmentPolicy
 
 	mu       sync.Mutex
 	cache    map[string]sourceMaterial
@@ -64,13 +68,14 @@ func NewResolver(options ...ResolverOption) *Resolver {
 
 func newResolver(lookup environmentLookup, options ...ResolverOption) *Resolver {
 	resolver := &Resolver{
-		lookup:      lookup,
-		references:  make(map[CredentialFieldKey]ReferencePolicy),
-		sources:     make(map[ReferenceBackend]credentialSource),
-		cloudChains: defaultCloudChains(),
-		versionSeed: maphash.MakeSeed(),
-		cache:       make(map[string]sourceMaterial),
-		inflight:    make(map[string]*resolutionCall),
+		lookup:            lookup,
+		references:        make(map[CredentialFieldKey]ReferencePolicy),
+		sources:           make(map[ReferenceBackend]credentialSource),
+		cloudChains:       defaultCloudChains(),
+		versionSeed:       maphash.MakeSeed(),
+		environmentPolicy: EnvironmentPolicyCurrent,
+		cache:             make(map[string]sourceMaterial),
+		inflight:          make(map[string]*resolutionCall),
 	}
 	resolver.sources[referenceBackendEnvironment] = environmentSource{lookup: lookup}
 	resolver.sources[referenceBackendFile] = fileSource{}
@@ -103,6 +108,8 @@ func (r *Resolver) ResolveCatalog(
 	if ctx == nil {
 		ctx = context.Background()
 	}
+	ctx, cancel := context.WithTimeout(ctx, credentialResolutionTimeout)
+	defer cancel()
 	if err := ctx.Err(); err != nil {
 		return sources.ProviderCredentialMaterial{}, err
 	}
@@ -110,6 +117,9 @@ func (r *Resolver) ResolveCatalog(
 		return sources.ProviderCredentialMaterial{}, &errors.ValidationError{
 			Field: "provider.credentials", Message: "catalog credential metadata is required",
 		}
+	}
+	if err := r.validateEnvironmentAliases(provider); err != nil {
+		return sources.ProviderCredentialMaterial{}, err
 	}
 	fields := indexCredentialFields(provider.Credentials.Fields)
 	if err := r.validateReferencePolicies(provider.ID, fields); err != nil {
@@ -137,6 +147,9 @@ func (r *Resolver) ResolveCatalog(
 			return sources.ProviderCredentialMaterial{}, err
 		}
 		if configured {
+			if err := validateMaterial(ctx, provider.ID, material); err != nil {
+				return sources.ProviderCredentialMaterial{}, err
+			}
 			return material, nil
 		}
 	}
@@ -150,15 +163,32 @@ func (r *Resolver) ResolveCatalog(
 	}
 }
 
+func validateMaterial(ctx context.Context, provider catalogs.ProviderID, material sources.ProviderCredentialMaterial) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if expiry, expires := material.ExpiresAt(); expires && !time.Now().Before(expiry) {
+		return &errors.AuthenticationError{
+			Provider: string(provider), Method: "catalog-acquisition",
+			Message: "selected credential material has expired",
+		}
+	}
+	return nil
+}
+
 func (r *Resolver) resolveAmbientProfile(
 	ctx context.Context,
 	provider *catalogs.Provider,
 	profile catalogs.ProviderCredentialProfile,
 	fields map[catalogs.ProviderCredentialFieldID]catalogs.ProviderCredentialField,
 ) (sources.ProviderCredentialMaterial, bool, error) {
+	references, err := r.newReferenceResolution(provider.ID, profile)
+	if err != nil {
+		return sources.ProviderCredentialMaterial{}, false, err
+	}
 	builder := newMaterialBuilder()
 	for _, fieldID := range profile.Fields {
-		resolved, selected, err := r.resolveField(ctx, provider.ID, fields[fieldID])
+		resolved, selected, err := r.resolveField(ctx, provider.ID, fields[fieldID], references)
 		if err != nil {
 			return sources.ProviderCredentialMaterial{}, false, err
 		}
@@ -178,10 +208,14 @@ func (r *Resolver) resolveDefaultChainProfile(
 	profile catalogs.ProviderCredentialProfile,
 	fields map[catalogs.ProviderCredentialFieldID]catalogs.ProviderCredentialField,
 ) (sources.ProviderCredentialMaterial, bool, error) {
+	references, err := r.newReferenceResolution(provider.ID, profile)
+	if err != nil {
+		return sources.ProviderCredentialMaterial{}, false, err
+	}
 	builder := newMaterialBuilder()
 	missing := make(map[catalogs.ProviderCredentialFieldID]struct{})
 	for _, fieldID := range profile.Fields {
-		resolved, selected, err := r.resolveField(ctx, provider.ID, fields[fieldID])
+		resolved, selected, err := r.resolveField(ctx, provider.ID, fields[fieldID], references)
 		if err != nil {
 			return sources.ProviderCredentialMaterial{}, false, err
 		}
@@ -223,7 +257,9 @@ func (r *Resolver) resolveDefaultChainProfile(
 			}
 			resolved := chainMaterial.copy()
 			resolved.values = map[string]string{"value": value}
-			builder.add(fieldID, resolvedFieldFromSource(value, resolved))
+			field := resolvedFieldFromSource(value, resolved)
+			field.origin = sources.ProviderCredentialOrigin{Kind: "default_chain", Name: string(profile.Primitive)}
+			builder.add(fieldID, field)
 		}
 	}
 	for _, fieldID := range profile.Fields {
@@ -241,25 +277,35 @@ type resolvedField struct {
 	version   string
 	expiresAt time.Time
 	lease     *sources.ProviderCredentialLease
+	origin    sources.ProviderCredentialOrigin
 }
 
 func (r *Resolver) resolveField(
 	ctx context.Context,
 	providerID catalogs.ProviderID,
 	field catalogs.ProviderCredentialField,
+	references *referenceResolution,
 ) (resolvedField, bool, error) {
 	key := CredentialFieldKey{ProviderID: providerID, FieldID: field.ID}
 	if policy, exists := r.references[key]; exists {
-		material, err := r.resolveReference(ctx, key, policy.Reference)
+		material, err := references.resolve(ctx, key, policy.Reference)
 		if err == nil {
 			value, selectErr := referenceValue(material, policy.Reference)
 			if selectErr != nil {
+				if policy.FallbackAmbient && isSourceError(selectErr, SourceErrorNotConfigured) {
+					return r.resolveAmbientField(providerID, field)
+				}
 				return resolvedField{}, false, selectErr
 			}
 			if validateErr := validateResolvedField(field, value); validateErr != nil {
 				return resolvedField{}, false, validateErr
 			}
-			return resolvedFieldFromSource(value, material), true, nil
+			resolved := resolvedFieldFromSource(value, material)
+			resolved.origin = sources.ProviderCredentialOrigin{Kind: "reference", Name: string(policy.Reference.backend)}
+			if policy.Reference.backend == referenceBackendEnvironment {
+				resolved.origin.Name = policy.Reference.resource
+			}
+			return resolved, true, nil
 		}
 		if !policy.FallbackAmbient || !isSourceError(err, SourceErrorNotConfigured) {
 			return resolvedField{}, false, err
@@ -272,20 +318,20 @@ func (r *Resolver) resolveAmbientField(
 	providerID catalogs.ProviderID,
 	field catalogs.ProviderCredentialField,
 ) (resolvedField, bool, error) {
-	candidates := append([]string(nil), field.Environment...)
-	derived, err := catalogs.DerivedCredentialEnvironmentName(
-		starmapCredentialProduct,
-		providerID,
-		field.ID,
-	)
+	candidates, err := r.environmentCandidates(providerID, field)
 	if err != nil {
 		return resolvedField{}, false, err
 	}
-	candidates = append(candidates, derived)
 	for _, name := range candidates {
 		value, exists := r.lookup(name)
-		if !exists || value == "" {
+		if !exists || (value == "" && r.environmentPolicy == EnvironmentPolicyLegacy) {
 			continue
+		}
+		if value == "" {
+			return resolvedField{}, false, &errors.ValidationError{
+				Field: "provider.credentials.environment", Value: name,
+				Message: "explicit empty selection disables credential fallback",
+			}
 		}
 		if err := validateResolvedField(field, value); err != nil {
 			return resolvedField{}, false, &errors.ValidationError{
@@ -294,10 +340,16 @@ func (r *Resolver) resolveAmbientField(
 				Message: fmt.Sprintf("selected value does not match field %s", field.ID),
 			}
 		}
-		return resolvedField{value: value, version: name + "\x00" + value}, true, nil
+		return resolvedField{
+			value: value, version: name + "\x00" + value,
+			origin: sources.ProviderCredentialOrigin{Kind: "environment", Name: name},
+		}, true, nil
 	}
 	if field.Default != "" {
-		return resolvedField{value: field.Default, version: "default\x00" + field.Default}, true, nil
+		return resolvedField{
+			value: field.Default, version: "default\x00" + field.Default,
+			origin: sources.ProviderCredentialOrigin{Kind: "default"},
+		}, true, nil
 	}
 	return resolvedField{}, false, nil
 }
@@ -332,6 +384,9 @@ func resolvedFieldFromSource(value string, material sourceMaterial) resolvedFiel
 }
 
 func referenceValue(material sourceMaterial, reference Reference) (string, error) {
+	if material.snapshot != nil {
+		return material.snapshot.selectValue(reference)
+	}
 	if reference.field != "" {
 		value, exists := material.values[reference.field]
 		if !exists || value == "" {
@@ -395,10 +450,16 @@ func (r *Resolver) resolveSource(
 	r.mu.Unlock()
 
 	call.material, call.err = resolve(ctx)
+	if call.err == nil && ctx.Err() != nil {
+		call.material = sourceMaterial{}
+		call.err = ctx.Err()
+	}
 
 	r.mu.Lock()
-	if call.err == nil {
+	if call.err == nil && call.material.fresh(time.Now()) {
 		r.cache[identity] = call.material.copy()
+	} else {
+		delete(r.cache, identity)
 	}
 	delete(r.inflight, identity)
 	close(call.done)
@@ -449,6 +510,7 @@ func (r *Resolver) opaqueVersion(parts ...string) string {
 type materialBuilder struct {
 	values   map[catalogs.ProviderCredentialFieldID]string
 	versions map[catalogs.ProviderCredentialFieldID]string
+	origins  map[catalogs.ProviderCredentialFieldID]sources.ProviderCredentialOrigin
 	expires  time.Time
 	lease    *sources.ProviderCredentialLease
 }
@@ -457,12 +519,15 @@ func newMaterialBuilder() *materialBuilder {
 	return &materialBuilder{
 		values:   make(map[catalogs.ProviderCredentialFieldID]string),
 		versions: make(map[catalogs.ProviderCredentialFieldID]string),
+		origins:  make(map[catalogs.ProviderCredentialFieldID]sources.ProviderCredentialOrigin),
 	}
 }
 
 func (b *materialBuilder) add(fieldID catalogs.ProviderCredentialFieldID, resolved resolvedField) {
 	b.values[fieldID] = resolved.value
 	b.versions[fieldID] = resolved.version
+	resolved.origin.Field = fieldID
+	b.origins[fieldID] = resolved.origin
 	if !resolved.expiresAt.IsZero() && (b.expires.IsZero() || resolved.expiresAt.Before(b.expires)) {
 		b.expires = resolved.expiresAt
 	}
@@ -491,18 +556,22 @@ func (b *materialBuilder) build(
 	}
 	sort.Strings(fieldIDs)
 	versionParts := make([]string, 0, 3+3*len(fieldIDs))
+	origins := make([]sources.ProviderCredentialOrigin, 0, len(fieldIDs))
 	versionParts = append(versionParts, "material", string(profile.ID), string(profile.Primitive))
 	for _, fieldValue := range fieldIDs {
 		fieldID := catalogs.ProviderCredentialFieldID(fieldValue)
 		versionParts = append(versionParts, fieldValue, b.versions[fieldID], b.values[fieldID])
+		origins = append(origins, b.origins[fieldID])
 	}
 	return sources.NewProviderCredentialMaterial(
 		profile,
 		b.values,
 		sources.ProviderCredentialMetadata{
-			Version:   resolver.opaqueVersion(versionParts...),
-			ExpiresAt: b.expires,
-			Lease:     b.lease,
+			Version:          resolver.opaqueVersion(versionParts...),
+			ExpiresAt:        b.expires,
+			Lease:            b.lease,
+			Origins:          origins,
+			ResolutionPolicy: string(resolver.environmentPolicy),
 		},
 	)
 }

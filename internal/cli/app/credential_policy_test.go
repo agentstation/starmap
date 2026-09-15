@@ -1,0 +1,171 @@
+package app
+
+import (
+	"os"
+	"path/filepath"
+	"testing"
+
+	"github.com/agentstation/starmap/internal/auth"
+	"github.com/agentstation/starmap/pkg/catalogs"
+	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
+	"github.com/agentstation/starmap/pkg/errors"
+)
+
+func TestApplicationCredentialPolicyDistinguishesFreshAndLegacyStartup(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		name := "fresh"
+		if legacy {
+			name = "legacy"
+		}
+		t.Run(name, func(t *testing.T) {
+			clearCatalogEnvironment(t)
+			setTestHome(t, t.TempDir())
+			t.Setenv("STARMAP_HOME", t.TempDir())
+			t.Setenv("OPENAI_API_KEY", "old-material")
+			t.Setenv("STARMAP_OPENAI_API_KEY", "new-material")
+			makeApp := func() *App {
+				t.Helper()
+				a, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogValues: map[string]string{
+					catalogconfig.Source: "embedded", catalogconfig.SourcePollInterval: "0s", catalogconfig.AcquisitionEnabled: "false",
+				}}))
+				if err != nil {
+					t.Fatal(err)
+				}
+				return a
+			}
+			a := makeApp()
+			paths, err := a.ResolvedPaths()
+			if err != nil {
+				t.Fatal(err)
+			}
+			if legacy {
+				if err := os.MkdirAll(paths.Baselines.Path, 0o700); err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				if _, err := a.Runtime(t.Context()); err != nil {
+					t.Fatal(err)
+				}
+				if err := a.closeRuntime(); err != nil {
+					t.Fatal(err)
+				}
+			}
+			provider := catalogs.Provider{ID: "openai", Credentials: &catalogs.ProviderCredentials{
+				Fields:             []catalogs.ProviderCredentialField{{ID: "api-key", Kind: catalogs.ProviderCredentialFieldSecret, Required: true, Environment: []string{"OPENAI_API_KEY"}}},
+				Profiles:           []catalogs.ProviderCredentialProfile{{ID: "api-key", Primitive: catalogs.ProviderAuthenticationAPIKey, Fields: []catalogs.ProviderCredentialFieldID{"api-key"}}},
+				CatalogAcquisition: catalogs.ProviderCredentialPlane{Required: true, Alternatives: []catalogs.ProviderCredentialProfileID{"api-key"}},
+			}}
+			for range 2 {
+				a = makeApp()
+				resolver, err := a.CredentialResolver()
+				if err != nil {
+					t.Fatal(err)
+				}
+				material, err := resolver.ResolveCatalog(t.Context(), &provider)
+				if legacy {
+					if !errors.IsConflict(err) {
+						t.Fatalf("legacy startup error = %v", err)
+					}
+				} else {
+					if err != nil {
+						t.Fatal(err)
+					}
+					if value, _ := material.Value("api-key"); value != "new-material" {
+						t.Fatal("fresh startup selected legacy precedence")
+					}
+				}
+			}
+			if legacy {
+				t.Setenv("OPENAI_API_KEY", "new-material")
+				a = makeApp()
+				resolver, err := a.CredentialResolver()
+				if err != nil {
+					t.Fatal(err)
+				}
+				if _, err := resolver.ResolveCatalog(t.Context(), &provider); err != nil {
+					t.Fatal(err)
+				}
+			}
+			policy, err := auth.OpenFilePolicyStore(t.Context(), paths.CredentialPolicy.Path, auth.PolicyOwner{Product: "starmap", Deployment: paths.DeploymentID, Instance: paths.InstanceID}, auth.EnvironmentPolicyLegacy)
+			if err != nil {
+				t.Fatal(err)
+			}
+			selected, err := policy.Policy(t.Context(), "openai")
+			if err != nil || selected != auth.EnvironmentPolicyCurrent {
+				t.Fatal("restart did not retain the accepted current policy")
+			}
+			if filepath.Dir(paths.CredentialPolicy.Path) != filepath.Join(paths.Roots["state"].Path, "credentials", paths.DeploymentID) {
+				t.Fatal("credential policy escaped its canonical root")
+			}
+		})
+	}
+}
+
+func TestCredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites(t *testing.T) {
+	for _, name := range []string{"data-file", "baseline-file", "current-directory", "seed-directory", "baseline-file-after-current"} {
+		t.Run(name, func(t *testing.T) {
+			clearCatalogEnvironment(t)
+			setTestHome(t, t.TempDir())
+			home := t.TempDir()
+			t.Setenv("STARMAP_HOME", home)
+			a, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogValues: map[string]string{
+				catalogconfig.Source: "embedded", catalogconfig.AcquisitionEnabled: "false",
+			}}))
+			if err != nil {
+				t.Fatal(err)
+			}
+			paths, err := a.ResolvedPaths()
+			if err != nil {
+				t.Fatal(err)
+			}
+			path := filepath.Join(home, "data")
+			directory := false
+			switch name {
+			case "baseline-file", "baseline-file-after-current":
+				path = paths.Baselines.Path
+			case "current-directory":
+				path, directory = filepath.Join(paths.CatalogStore.Path, "current"), true
+			case "seed-directory":
+				path, directory = filepath.Join(paths.Runtime.Path, "instance-seed"), true
+			}
+			if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+				t.Fatal(err)
+			}
+			if directory {
+				err = os.Mkdir(path, 0o700)
+			} else {
+				err = os.WriteFile(path, []byte("preserve-operator-file"), 0o600)
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if name == "baseline-file-after-current" {
+				if err := os.MkdirAll(paths.CatalogStore.Path, 0o700); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(filepath.Join(paths.CatalogStore.Path, "current"), []byte("retained-generation"), 0o600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if _, err := a.credentialPolicy(t.Context()); err == nil {
+				t.Fatal("invalid installation marker initialized credential policy")
+			}
+			if a.policyStore != nil {
+				t.Fatal("invalid installation marker retained a policy store")
+			}
+			if _, err := os.Stat(paths.CredentialPolicy.Path); !os.IsNotExist(err) {
+				t.Fatalf("invalid installation marker wrote credential state: %v", err)
+			}
+			info, err := os.Stat(path)
+			if err != nil || info.IsDir() != directory {
+				t.Fatalf("policy initialization changed the operator entry: %v", err)
+			}
+			if !directory {
+				data, err := os.ReadFile(path)
+				if err != nil || string(data) != "preserve-operator-file" {
+					t.Fatalf("policy initialization changed the operator file: %v", err)
+				}
+			}
+		})
+	}
+}
