@@ -1,0 +1,206 @@
+{
+  "task": "CSP5",
+  "recorded_at": "2026-09-15T01:12:08.708771+00:00",
+  "source": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention",
+    "branch": "codex/catalog-object-retention",
+    "commit": "ead2bed81f4022248638fffd46ebee0432d3f187",
+    "dirty_files": []
+  },
+  "change": "Add an optional caller-owned Valkey/Redis backend for persistent primary reads and atomic conditional records. Keep it outside the passive root import graph.",
+  "checks": {
+    "valkey-qualified": {
+      "test_events": {
+        "pass": 12,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "fail",
+          "Elapsed": 0.686
+        }
+      ],
+      "output": "valkey-qualified.jsonl.gz",
+      "exit_status": 1,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:50845 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-valkey GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "redis-qualified": {
+      "test_events": {
+        "pass": 12,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "fail",
+          "Elapsed": 0.624
+        }
+      ],
+      "output": "redis-qualified.jsonl.gz",
+      "exit_status": 1,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:51131 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-redis GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "valkey-restart-ready": {
+      "test_events": {
+        "pass": 0,
+        "fail": 13,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "fail",
+          "Elapsed": 0.451
+        }
+      ],
+      "output": "valkey-restart-ready.jsonl.gz",
+      "exit_status": 1,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:50845 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-valkey GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "redis-restart-ready": {
+      "test_events": {
+        "pass": 0,
+        "fail": 13,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "fail",
+          "Elapsed": 0.28
+        }
+      ],
+      "output": "redis-restart-ready.jsonl.gz",
+      "exit_status": 1,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:51131 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-redis GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "valkey-fixed-port": {
+      "test_events": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 1.722
+        }
+      ],
+      "output": "valkey-fixed-port.jsonl.gz",
+      "exit_status": 0,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:50845 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-valkey GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "redis-fixed-port": {
+      "test_events": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 1.588
+        }
+      ],
+      "output": "redis-fixed-port.jsonl.gz",
+      "exit_status": 0,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:51131 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-redis GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "valkey-minimum-go": {
+      "test_events": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 1.72
+        }
+      ],
+      "output": "valkey-minimum-go.jsonl.gz",
+      "exit_status": 0,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:50845 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-valkey GOTOOLCHAIN=go1.25.12 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "redis-minimum-go": {
+      "test_events": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 1.577
+        }
+      ],
+      "output": "redis-minimum-go.jsonl.gz",
+      "exit_status": 0,
+      "command": "STARMAP_TEST_VALKEY_ADDRESS=127.0.0.1:51131 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=starmap-csp5-redis GOTOOLCHAIN=go1.25.12 go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey"
+    },
+    "consumers": {
+      "command": "GOTOOLCHAIN=go1.26.6 bash scripts/verify-consumer-deps.sh",
+      "exit_status": 0,
+      "profiles": 6,
+      "read_only_non_standard_packages": 37,
+      "read_only_budget": 37,
+      "pinned_non_standard_packages": 38,
+      "pinned_budget": 38,
+      "output": "consumers.log.gz"
+    },
+    "goago": {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+      "exit_status": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0,
+      "output": "goago-final.json"
+    },
+    "lint": {
+      "command": "GOTOOLCHAIN=go1.26.6 devbox run golangci-lint run",
+      "exit_status": 0,
+      "findings": 0,
+      "output": "lint-final.log.gz"
+    },
+    "prose": {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_status": 0,
+      "files": 1679,
+      "diagnostics": 0,
+      "output": "writing.log.gz"
+    }
+  },
+  "failure_assessment": "The first restart runs passed twelve events and failed one reconnect. Docker changed the dynamically assigned host ports after restart. A retry against the old addresses failed all thirteen events. Fixed published ports and a bounded readiness wait preserve the original persistence and version assertions.",
+  "qualification": {
+    "valkey_version": "7.2.14",
+    "redis_version": "7.4.11",
+    "development_go": "1.26.6",
+    "minimum_go": "1.25.12",
+    "durability": "appendonly yes; appendfsync always; maxmemory-policy noeviction",
+    "fixtures": "Two isolated task-owned Docker containers with fixed loopback ports. Both stopped and removed after qualification. No provider credentials or application storage used."
+  },
+  "manual_review": "Verified conditional-only writes, a new random version for identical content, cancellation before mutation, record-shape and size checks, caller-owned client lifetime, server-role checks, and unchanged consumer dependency budgets.",
+  "remaining": [
+    "Implement the coordinated catalog store that serializes publication, reader protection, and retirement.",
+    "Qualify object-store races, crash recovery, required-generation retention, and collection bounds.",
+    "Run required pre-PR review and publish the integrated CSP5 change after final checks.",
+    "Qualify native CI, merge, and satisfy the complete CSP5 acceptance gate."
+  ],
+  "completion": "UNVERIFIED; this component does not enable shared object cleanup or complete CSP5.",
+  "canonical_checks": {
+    "command": "make technical-writing-check",
+    "exit_status": 0,
+    "files": 1537,
+    "diagnostics": 0,
+    "output": "writing-canonical.log.gz",
+    "plan_structure": "plan-verification.json",
+    "manual_review": "Source contracts and failures remain explicit. Six protected sections, all task statuses, and five unrelated files remain unchanged. The plan keeps ten recent execution entries and a 275-word resume. Required contracts retain the documented plan-size exception."
+  }
+}

@@ -61,16 +61,67 @@
       "go_packages": 6,
       "publisher_tests": 19,
       "output": "generation-check.log.gz"
+    },
+    "packages": {
+      "test_events": {
+        "pass": 299,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+          "Action": "pass",
+          "Elapsed": 149.624
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+          "Action": "pass",
+          "Elapsed": 81.321
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Action": "fail",
+          "Elapsed": 1800.555
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 3.858
+        }
+      ],
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=30m -p=1 ./cmd/starmap-catalog-publish ./cmd/starmap-catalog-release ./internal/catalog/publication ./pkg/catalogs/artifact",
+      "exit_status": 1,
+      "output": "packages-timeout.jsonl.gz",
+      "failure": "The publication package reached its actual 30-minute timeout during TestPublicPublicationProfileRetainsBoundedState after five of eight full-catalog cycles. Three other packages passed."
+    },
+    "publication-race": {
+      "test_events": {
+        "pass": 133,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Action": "pass",
+          "Elapsed": 23.345
+        }
+      ],
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=30m -skip '^TestPublicPublicationProfileRetainsBoundedState$' ./internal/catalog/publication",
+      "exit_status": 0,
+      "output": "publication-race.jsonl.gz"
     }
   },
   "running": {
-    "session": 78797,
-    "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=30m -p=1 ./cmd/starmap-catalog-publish ./cmd/starmap-catalog-release ./internal/catalog/publication ./pkg/catalogs/artifact",
-    "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-verification-failure/packages.jsonl",
-    "status": "in_progress; exact tool handle verified live before this record"
+    "session": 86483,
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=60m -run '^TestPublicPublicationProfileRetainsBoundedState$' ./internal/catalog/publication",
+    "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-verification-failure/capacity-race.jsonl",
+    "status": "in_progress; last tool poll confirmed the existing session remains active",
+    "scope": "All eight cycles, the full catalog, and original assertions remain unchanged. This isolated run qualifies the capacity case separately from the remaining 133 passing race events."
   },
   "remaining": [
-    "Finish the running package suite.",
+    "Finish the isolated full-catalog race qualification in session 86483.",
     "Integrate qualified main after PR #161 merges.",
     "Run required review and publish the existing PR #160 update.",
     "Qualify native CI and live publication before task completion."
@@ -81,5 +132,6 @@
     "exit_status": 0,
     "output": "writing-canonical-final.log"
   },
-  "canonical_maintenance": "Preserve the probe as compressed source so Go tooling does not compile historical evidence and prose tooling does not rewrite captured code."
+  "canonical_maintenance": "Preserve the probe as compressed source so Go tooling does not compile historical evidence and prose tooling does not rewrite captured code.",
+  "followup_recorded_at": "2026-09-15T01:12:08.708771+00:00"
 }
