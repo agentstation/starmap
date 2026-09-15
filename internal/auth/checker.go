@@ -38,13 +38,16 @@ func (c *Checker) CheckProvider(
 	return &Status{
 		State:   StateConfigured,
 		Summary: fmt.Sprintf("Catalog credential profile %s is configured", profile.ID),
-		Profile: &ProfileDetails{ID: profile.ID, Primitive: profile.Primitive},
+		Profile: &ProfileDetails{
+			ID: profile.ID, Primitive: profile.Primitive,
+			Origins: material.Origins(), ResolutionPolicy: material.ResolutionPolicy(),
+		},
 	}
 }
 
 func credentialResolutionStatus(err error) *Status {
 	var authenticationErr *errors.AuthenticationError
-	if stderrors.As(err, &authenticationErr) {
+	if stderrors.As(err, &authenticationErr) && authenticationErr.Method == "catalog-declared" {
 		return &Status{State: StateMissing, Summary: "Catalog credentials are not configured"}
 	}
 	return &Status{State: StateInvalid, Summary: err.Error()}

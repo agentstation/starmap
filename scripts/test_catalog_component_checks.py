@@ -61,7 +61,7 @@ class ComponentCheckBoundaryTests(unittest.TestCase):
 
     def test_component_registry_refuses_unapproved_task_or_case(self):
         for task, identity in [('CSP8', self.identity), ('CSP22', self.identity), ('CSP5', 'A19.pin_restart'),
-                               ('CSP5', 'A99.unknown')]:
+                               ('CSP5', 'A99.unknown'), ('CSP7', self.identity)]:
             with self.subTest(task=task, identity=identity):
                 self.registry['task_component_checks'] = {task: {identity: self.producer}}
                 code, report = self.invoke('--task', 'CSP5')
@@ -74,6 +74,34 @@ class ComponentCheckBoundaryTests(unittest.TestCase):
         report = verifier.aggregate(self.roster, selected, results, False)
         self.assertEqual(report['gate_status'], 'PASS')
         self.assertEqual(next(case for case in report['cases'] if case['id'] == 'A22')['status'], 'UNVERIFIED')
+
+
+class CredentialComponentBoundaryTests(ComponentCheckBoundaryTests):
+    def setUp(self):
+        super().setUp()
+        self.credential = 'A11.acquisition_role_matrix'
+        self.registry['checks'][self.credential] = self.consumer
+        self.registry['task_component_checks']['CSP7'] = {self.credential: self.producer}
+
+    def test_credential_task_uses_producer_component(self):
+        _, report = self.invoke('--task', 'CSP7')
+        result = report['subcases'][self.credential]
+        self.assertEqual(result['repository'], 'starmap')
+        self.assertEqual(result['evidence_scope'], 'producer_component')
+        self.assertEqual(next(case for case in report['cases'] if case['id'] == 'A11')['status'], 'UNVERIFIED')
+
+    def test_credential_qualification_requires_consumer(self):
+        for arguments in [('--task', 'CSP9'), ('--case', 'A11'), ('--gate', 'candidate'),
+                          ('--gate', 'final'), ('--task', 'CSP7', '--released-assets')]:
+            with self.subTest(arguments=arguments):
+                _, report = self.invoke(*arguments)
+                result = report['subcases'][self.credential]
+                self.assertEqual(result['repository'], 'starport')
+                self.assertNotEqual(result.get('evidence_scope'), 'producer_component')
+        self.registry['checks'] = {}
+        code, report = self.invoke('--task', 'CSP9')
+        self.assertEqual(code, 1)
+        self.assertEqual(report['subcases'][self.credential]['status'], 'UNVERIFIED')
 
 
 if __name__ == '__main__':

@@ -33,8 +33,10 @@ type Status struct {
 
 // ProfileDetails identifies the selected secret-free authentication profile.
 type ProfileDetails struct {
-	ID        catalogs.ProviderCredentialProfileID
-	Primitive catalogs.ProviderAuthenticationPrimitive
+	ID               catalogs.ProviderCredentialProfileID
+	Primitive        catalogs.ProviderAuthenticationPrimitive
+	Origins          []sources.ProviderCredentialOrigin
+	ResolutionPolicy string
 }
 
 // CheckerOption configures a Checker.
