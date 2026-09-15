@@ -12,6 +12,7 @@ Package evidence defines neutral source\-observation and catalog\-review evidenc
 
 ## Index
 
+- [Constants](<#constants>)
 - [func CompareReviewCandidates\(left, right ReviewCandidate\) int](<#CompareReviewCandidates>)
 - [type ObservationCompleteness](<#ObservationCompleteness>)
 - [type ObservationIssue](<#ObservationIssue>)
@@ -21,6 +22,9 @@ Package evidence defines neutral source\-observation and catalog\-review evidenc
 - [type ObservationRevision](<#ObservationRevision>)
 - [type ObservationRevisionKind](<#ObservationRevisionKind>)
 - [type ObservationStatus](<#ObservationStatus>)
+- [type QuarantinedRecord](<#QuarantinedRecord>)
+- [type RecordQuarantine](<#RecordQuarantine>)
+  - [func \(r RecordQuarantine\) Valid\(\) bool](<#RecordQuarantine.Valid>)
 - [type ResourceType](<#ResourceType>)
   - [func \(rt ResourceType\) String\(\) string](<#ResourceType.String>)
 - [type ReviewCandidate](<#ReviewCandidate>)
@@ -30,6 +34,20 @@ Package evidence defines neutral source\-observation and catalog\-review evidenc
   - [func \(id SourceID\) IsValid\(\) bool](<#SourceID.IsValid>)
   - [func \(id SourceID\) String\(\) string](<#SourceID.String>)
 
+
+## Constants
+
+<a name="MaxQuarantineSubjectBytes"></a>MaxQuarantineSubjectBytes bounds one diagnostic record identifier.
+
+```go
+const MaxQuarantineSubjectBytes = 4096
+```
+
+<a name="MaxQuarantinedRecords"></a>MaxQuarantinedRecords bounds the diagnostic records in one publication source.
+
+```go
+const MaxQuarantinedRecords = 4096
+```
 
 <a name="CompareReviewCandidates"></a>
 ## func [CompareReviewCandidates](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/review_candidate.go#L29>)
@@ -206,6 +224,40 @@ const (
     ObservationStatusDegraded ObservationStatus = "degraded"
 )
 ```
+
+<a name="QuarantinedRecord"></a>
+## type [QuarantinedRecord](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/record_quarantine.go#L15-L19>)
+
+QuarantinedRecord identifies an invalid record without its payload or diagnostic message.
+
+```go
+type QuarantinedRecord struct {
+    Scope   ObservationIssueScope `json:"scope"`
+    Code    ObservationIssueCode  `json:"code"`
+    Subject string                `json:"subject"`
+}
+```
+
+<a name="RecordQuarantine"></a>
+## type [RecordQuarantine](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/record_quarantine.go#L22-L25>)
+
+RecordQuarantine reports isolated invalid records alongside accepted source data.
+
+```go
+type RecordQuarantine struct {
+    Records ObservationRecordCounts `json:"records"`
+    Issues  []QuarantinedRecord     `json:"issues"`
+}
+```
+
+<a name="RecordQuarantine.Valid"></a>
+### func \(RecordQuarantine\) [Valid](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/record_quarantine.go#L29>)
+
+```go
+func (r RecordQuarantine) Valid() bool
+```
+
+Valid requires useful accepted data and exclusively classified record failures. Transport, schema, truncation, and stale\-fallback failures do not qualify.
 
 <a name="ResourceType"></a>
 ## type [ResourceType](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/evidence/resource.go#L5>)
