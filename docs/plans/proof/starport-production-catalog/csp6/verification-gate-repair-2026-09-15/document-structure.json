@@ -1,0 +1,15 @@
+{
+  "protected_sections_unchanged": 6,
+  "unrelated_files_unchanged": 5,
+  "ledger_rows": 38,
+  "done": 10,
+  "active": [
+    "CSP5"
+  ],
+  "local_links_checked": 137,
+  "non_html_anchors_not_checked": 13,
+  "plan_words": 10442,
+  "plan_bytes": 114504,
+  "resume_words": 293,
+  "size_exception": "Required contracts remain in the canonical plan. Current resume links to bounded current proof."
+}

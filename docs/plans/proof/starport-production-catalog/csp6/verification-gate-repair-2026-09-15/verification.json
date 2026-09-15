@@ -1,0 +1,85 @@
+{
+  "task": "CSP6",
+  "recorded_at": "2026-09-15T00:40:25.759193+00:00",
+  "source": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+    "branch": "codex/catalog-publication-promotion-main",
+    "commit": "05401271c92dc9384c9b1be1ca00f6482936790c",
+    "published_pr_head": "567691400acdce5b96710ffdf0150f7939d4ab3f"
+  },
+  "findings": {
+    "native_run": 34903583463,
+    "job": 104175229814,
+    "complexity_findings": 5,
+    "subprocess_findings": 2,
+    "initial_local_confirmation": "lint-before.log.gz",
+    "intermediate_refactor_failure": "lint-after.log.gz"
+  },
+  "change": "Extract checkpoint loading, committed release staging, authored alias/model/owner restoration, observation validation, and source-layer copying. Use fixed Git arguments with an explicit working directory. Preserve validation order, error types, publication order, and source ownership.",
+  "checks": {
+    "runtime": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=30m -run 'Test(RejectedProviderPublicationDoesNotRetainInputs|RejectedSourcePublicationDoesNotRetainInputs|RuntimePublicationRetainsCurrentReceiptAndHistoricalArtifact|RuntimePublicationRefusesMismatchedRetainedEvidence|PublicationCompletion|SourceReportPreservesPublicationWhenRetentionFails|AcquisitionReportPreservesPublicationWhenRetentionFails|SourceReset|UpstreamScopeReceiptsSurviveDerivativePublicationAndRestart|SourceAcquisitionLeaseLossRefusesPublication|CloseRejectsLateSourcePublication|SourceLayer)' ./runtime",
+      "exit_status": 0,
+      "test_events": {
+        "pass": 51,
+        "fail": 0,
+        "skip": 0
+      },
+      "output": "runtime.jsonl.gz"
+    },
+    "minimum-go": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -json -count=1 -timeout=20m -p=1 -run 'Test(PublicationAuthored|PublicationChannelCommand|PublicationCommandHelpAndCancellation|PublicationReceipt|PublicationQuarantine)' ./cmd/starmap-catalog-publish ./cmd/starmap-catalog-release ./internal/catalog/publication ./pkg/catalogs/artifact",
+      "exit_status": 0,
+      "test_events": {
+        "pass": 108,
+        "fail": 0,
+        "skip": 0
+      },
+      "output": "minimum-go.jsonl.gz"
+    },
+    "lint": {
+      "command": "GOTOOLCHAIN=go1.26.6 devbox run golangci-lint run",
+      "exit_status": 0,
+      "findings": 0,
+      "output": "lint-final.log.gz"
+    },
+    "goago": {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+      "exit_status": 0,
+      "output": "goago-final.json"
+    },
+    "prose": {
+      "command": "GOTOOLCHAIN=go1.26.6 make technical-writing-check",
+      "exit_status": 0,
+      "files": 1755,
+      "diagnostics": 0,
+      "output": "writing.log.gz"
+    },
+    "generation": {
+      "command": "GOTOOLCHAIN=go1.26.6 make catalog-generation-check",
+      "exit_status": 0,
+      "go_packages": 6,
+      "publisher_tests": 19,
+      "output": "generation-check.log.gz"
+    }
+  },
+  "running": {
+    "session": 78797,
+    "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=30m -p=1 ./cmd/starmap-catalog-publish ./cmd/starmap-catalog-release ./internal/catalog/publication ./pkg/catalogs/artifact",
+    "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-verification-failure/packages.jsonl",
+    "status": "in_progress; exact tool handle verified live before this record"
+  },
+  "remaining": [
+    "Finish the running package suite.",
+    "Integrate qualified main after PR #161 merges.",
+    "Run required review and publish the existing PR #160 update.",
+    "Qualify native CI and live publication before task completion."
+  ],
+  "completion": "UNVERIFIED",
+  "canonical_prose": {
+    "command": "make technical-writing-check",
+    "exit_status": 0,
+    "output": "writing-canonical-final.log"
+  },
+  "canonical_maintenance": "Preserve the probe as compressed source so Go tooling does not compile historical evidence and prose tooling does not rewrite captured code."
+}

@@ -11,5 +11,13 @@
     "The probe proves an absent capability. It does not qualify a coordination protocol or prescribe automatic cleanup."
   ],
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention",
-  "branch": "codex/catalog-object-retention"
+  "branch": "codex/catalog-object-retention",
+  "probe_source": "probe.go.gz",
+  "design_questions_for_implementation": [
+    "Locate the atomic commit point shared by publication, retirement, and reader protection. A lock check before an S3 operation does not fence a delayed operation.",
+    "Assess an explicit coordinated-store mode with authoritative KV descriptors and unique object prefixes per upload attempt. Preserve the existing object mode for callers without coordination.",
+    "Prevent an old conditional delete from deleting a later upload of identical bytes with the same S3 ETag.",
+    "Preserve the until-release reader contract. Do not reclaim a paused reader through TTL alone. Define fenced recovery for abandoned owners.",
+    "Keep optional Valkey dependencies outside the passive root package and preserve its measured dependency guard."
+  ]
 }
