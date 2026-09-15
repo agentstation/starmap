@@ -116,6 +116,8 @@ type SourceHop struct {
 // usability, freshness, fallback, direct source health, and upstream-reported
 // health as five independent values, so a warning on one never hides another.
 type Status struct {
+	// UpstreamPublication summarizes run evidence independently of catalog and channel age.
+	UpstreamPublication *Publication
 	// Retention reports collection capability, bounded usage, and the last maintenance outcome.
 	Retention RetentionStatus
 

@@ -14,8 +14,10 @@ Package artifact defines the deterministic distribution format for immutable Sta
 
 - [Constants](<#constants>)
 - [func EncodeChannel\(document Channel\) \(\[\]byte, error\)](<#EncodeChannel>)
+- [func EncodePublicationReceipt\(receipt PublicationReceipt\) \(\[\]byte, error\)](<#EncodePublicationReceipt>)
 - [func IsReleaseTag\(tag string\) bool](<#IsReleaseTag>)
 - [func Open\(archive, attestation \[\]byte\) \(catalogs.Generation, error\)](<#Open>)
+- [func PublicationReceiptTag\(receiptChecksum string\) \(string, error\)](<#PublicationReceiptTag>)
 - [func ReleaseTag\(catalogDigest string\) \(string, error\)](<#ReleaseTag>)
 - [func ReleaseTitle\(generationID string\) \(string, error\)](<#ReleaseTitle>)
 - [func VerifyRelease\(ctx context.Context, release Release, verifier PublisherVerifier\) \(catalogs.Generation, error\)](<#VerifyRelease>)
@@ -30,13 +32,26 @@ Package artifact defines the deterministic distribution format for immutable Sta
 - [type Channel](<#Channel>)
   - [func DecodeChannel\(data \[\]byte\) \(Channel, error\)](<#DecodeChannel>)
   - [func \(c Channel\) Advance\(candidate Candidate, now time.Time\) \(Channel, AdvanceKind, error\)](<#Channel.Advance>)
+  - [func \(c Channel\) AdvancePublication\(candidate Candidate, promotion PublicationPromotion, now time.Time\) \(Channel, AdvanceKind, error\)](<#Channel.AdvancePublication>)
   - [func \(c Channel\) Validate\(\) error](<#Channel.Validate>)
 - [type ChannelAsset](<#ChannelAsset>)
+- [type ChannelPublication](<#ChannelPublication>)
 - [type Descriptor](<#Descriptor>)
   - [func Inspect\(archive, attestation \[\]byte\) \(Descriptor, error\)](<#Inspect>)
   - [func \(d Descriptor\) String\(\) string](<#Descriptor.String>)
 - [type DigestSet](<#DigestSet>)
 - [type FileDescriptor](<#FileDescriptor>)
+- [type PublicationArtifact](<#PublicationArtifact>)
+- [type PublicationBinding](<#PublicationBinding>)
+- [type PublicationPromotion](<#PublicationPromotion>)
+- [type PublicationReceipt](<#PublicationReceipt>)
+  - [func DecodePublicationReceipt\(data \[\]byte\) \(PublicationReceipt, error\)](<#DecodePublicationReceipt>)
+  - [func VerifyPublicationReceipt\(data \[\]byte, expectedChecksum string, expectedArtifact PublicationArtifact\) \(PublicationReceipt, error\)](<#VerifyPublicationReceipt>)
+  - [func \(r PublicationReceipt\) Copy\(\) PublicationReceipt](<#PublicationReceipt.Copy>)
+  - [func \(r PublicationReceipt\) Validate\(\) error](<#PublicationReceipt.Validate>)
+- [type PublicationScopePolicy](<#PublicationScopePolicy>)
+- [type PublicationSourceReceipt](<#PublicationSourceReceipt>)
+  - [func \(s \*PublicationSourceReceipt\) UnmarshalJSON\(data \[\]byte\) error](<#PublicationSourceReceipt.UnmarshalJSON>)
 - [type PublisherVerifier](<#PublisherVerifier>)
 - [type Release](<#Release>)
 - [type ReleaseAssets](<#ReleaseAssets>)
@@ -106,6 +121,42 @@ const (
 )
 ```
 
+<a name="PublicationChannelSchemaVersion"></a>
+
+```go
+const (
+    // PublicationChannelSchemaVersion adds run receipts and verified source promotion.
+    PublicationChannelSchemaVersion uint64 = 2
+    // PublicationChannelName separates receipt-aware discovery from the legacy channel.
+    PublicationChannelName = "catalog/v2"
+    // PublicationChannelMediaType identifies the receipt-aware channel document.
+    PublicationChannelMediaType = "application/vnd.agentstation.starmap.catalog-channel.v2+json"
+    // PublicationReceiptTagPrefix names immutable run receipt releases.
+    PublicationReceiptTagPrefix = "catalog-run-"
+    // PublicationCheckpointFilename names the retained input asset on a run release.
+    PublicationCheckpointFilename = "starmap-catalog-state.json"
+    // PublicationCheckpointMediaType identifies a publisher replay checkpoint.
+    PublicationCheckpointMediaType = "application/vnd.agentstation.starmap.catalog-checkpoint.v1+json"
+    // MaxPublicationCheckpointBytes bounds retained publisher input bytes.
+    MaxPublicationCheckpointBytes = 256 << 20
+)
+```
+
+<a name="PublicationReceiptSchemaVersion"></a>
+
+```go
+const (
+    // PublicationReceiptSchemaVersion identifies the admitted-source receipt format.
+    PublicationReceiptSchemaVersion uint64 = 1
+    // PublicationReceiptFilename names a receipt inside its separate immutable object.
+    PublicationReceiptFilename = "starmap-catalog-run.json"
+    // PublicationReceiptMediaType identifies the receipt's canonical JSON format.
+    PublicationReceiptMediaType = "application/vnd.agentstation.starmap.catalog-run.v1+json"
+    // MaxPublicationReceiptBytes bounds a canonical run receipt.
+    MaxPublicationReceiptBytes = 4 << 20
+)
+```
+
 <a name="ChecksumFilename"></a>
 
 ```go
@@ -116,7 +167,7 @@ const (
 ```
 
 <a name="EncodeChannel"></a>
-## func [EncodeChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L260>)
+## func [EncodeChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L277>)
 
 ```go
 func EncodeChannel(document Channel) ([]byte, error)
@@ -124,8 +175,17 @@ func EncodeChannel(document Channel) ([]byte, error)
 
 EncodeChannel renders one channel document as canonical indented JSON. Equal documents always encode to equal bytes.
 
+<a name="EncodePublicationReceipt"></a>
+## func [EncodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L107>)
+
+```go
+func EncodePublicationReceipt(receipt PublicationReceipt) ([]byte, error)
+```
+
+EncodePublicationReceipt validates and returns deterministic receipt bytes.
+
 <a name="IsReleaseTag"></a>
-## func [IsReleaseTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L84>)
+## func [IsReleaseTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L85>)
 
 ```go
 func IsReleaseTag(tag string) bool
@@ -142,8 +202,17 @@ func Open(archive, attestation []byte) (catalogs.Generation, error)
 
 Open verifies an archive and detached statement before returning its exact immutable catalog generation.
 
+<a name="PublicationReceiptTag"></a>
+## func [PublicationReceiptTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel_publication.go#L45>)
+
+```go
+func PublicationReceiptTag(receiptChecksum string) (string, error)
+```
+
+PublicationReceiptTag returns the immutable release tag for exact receipt bytes.
+
 <a name="ReleaseTag"></a>
-## func [ReleaseTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L90>)
+## func [ReleaseTag](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L91>)
 
 ```go
 func ReleaseTag(catalogDigest string) (string, error)
@@ -152,7 +221,7 @@ func ReleaseTag(catalogDigest string) (string, error)
 ReleaseTag returns the canonical immutable release tag for one catalog digest. It accepts a prefixed or bare SHA\-256 hex digest.
 
 <a name="ReleaseTitle"></a>
-## func [ReleaseTitle](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L99>)
+## func [ReleaseTitle](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L100>)
 
 ```go
 func ReleaseTitle(generationID string) (string, error)
@@ -170,7 +239,7 @@ func VerifyRelease(ctx context.Context, release Release, verifier PublisherVerif
 VerifyRelease checks the detached checksum, archive statement, generation compatibility, and channel\-specific publisher identity before returning the exact immutable generation. It does not activate or persist the generation.
 
 <a name="AdvanceKind"></a>
-## type [AdvanceKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L157>)
+## type [AdvanceKind](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L159>)
 
 AdvanceKind names the outcome of one successful publisher run.
 
@@ -191,7 +260,7 @@ const (
 ```
 
 <a name="AdvanceKind.CreatesGeneration"></a>
-### func \(AdvanceKind\) [CreatesGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L169>)
+### func \(AdvanceKind\) [CreatesGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L171>)
 
 ```go
 func (k AdvanceKind) CreatesGeneration() bool
@@ -254,7 +323,7 @@ func Build(generation catalogs.Generation) (Bundle, error)
 Build validates a generation and deterministically packages it for distribution. Rebuilding identical generation bytes produces identical archive and attestation bytes.
 
 <a name="Candidate"></a>
-## type [Candidate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L147-L154>)
+## type [Candidate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L149-L156>)
 
 Candidate is one immutable catalog release offered to the channel.
 
@@ -270,7 +339,7 @@ type Candidate struct {
 ```
 
 <a name="Candidate.Validate"></a>
-### func \(Candidate\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L251>)
+### func \(Candidate\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L268>)
 
 ```go
 func (c Candidate) Validate() error
@@ -279,26 +348,27 @@ func (c Candidate) Validate() error
 Validate reports whether the candidate names a complete immutable release.
 
 <a name="Channel"></a>
-## type [Channel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L120-L130>)
+## type [Channel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L121-L132>)
 
 Channel is the mutable attested discovery document that selects one immutable catalog release. The publisher commits it to the channel branch and advances its sequence and \`channel\_updated\_at\` after every successful verification run. The immutable identity fields change only when the publisher promotes a new release.
 
 ```go
 type Channel struct {
-    SchemaVersion    uint64         `json:"schema_version"`
-    Name             string         `json:"channel"`
-    Sequence         uint64         `json:"sequence"`
-    ChannelUpdatedAt time.Time      `json:"channel_updated_at"`
-    GenerationID     string         `json:"generation_id"`
-    Tag              string         `json:"tag"`
-    CatalogDigest    string         `json:"catalog_digest"`
-    PublishedAt      time.Time      `json:"published_at"`
-    Assets           []ChannelAsset `json:"assets"`
+    SchemaVersion    uint64              `json:"schema_version"`
+    Name             string              `json:"channel"`
+    Sequence         uint64              `json:"sequence"`
+    ChannelUpdatedAt time.Time           `json:"channel_updated_at"`
+    GenerationID     string              `json:"generation_id"`
+    Tag              string              `json:"tag"`
+    CatalogDigest    string              `json:"catalog_digest"`
+    PublishedAt      time.Time           `json:"published_at"`
+    Assets           []ChannelAsset      `json:"assets"`
+    Publication      *ChannelPublication `json:"publication,omitempty"`
 }
 ```
 
 <a name="DecodeChannel"></a>
-### func [DecodeChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L279>)
+### func [DecodeChannel](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L296>)
 
 ```go
 func DecodeChannel(data []byte) (Channel, error)
@@ -307,7 +377,7 @@ func DecodeChannel(data []byte) (Channel, error)
 DecodeChannel reads and validates one channel document.
 
 <a name="Channel.Advance"></a>
-### func \(Channel\) [Advance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L178>)
+### func \(Channel\) [Advance](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L180>)
 
 ```go
 func (c Channel) Advance(candidate Candidate, now time.Time) (Channel, AdvanceKind, error)
@@ -315,8 +385,17 @@ func (c Channel) Advance(candidate Candidate, now time.Time) (Channel, AdvanceKi
 
 Advance returns the channel document that follows one successful publisher run. A candidate whose digest equals the selected digest advances the sequence and \`channel\_updated\_at\` alone, so an unchanged catalog creates no generation and no immutable release. A different verified digest promotes that release. An incomplete verification returns a typed validation error.
 
+<a name="Channel.AdvancePublication"></a>
+### func \(Channel\) [AdvancePublication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel_publication.go#L55>)
+
+```go
+func (c Channel) AdvancePublication(candidate Candidate, promotion PublicationPromotion, now time.Time) (Channel, AdvanceKind, error)
+```
+
+AdvancePublication binds a verified run to its artifact and merged source revision. Unchanged catalog facts reuse the previous artifact while selecting the new receipt.
+
 <a name="Channel.Validate"></a>
-### func \(Channel\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L231>)
+### func \(Channel\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L236>)
 
 ```go
 func (c Channel) Validate() error
@@ -325,7 +404,7 @@ func (c Channel) Validate() error
 Validate reports whether the channel document is internally consistent.
 
 <a name="ChannelAsset"></a>
-## type [ChannelAsset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L108-L113>)
+## type [ChannelAsset](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L109-L114>)
 
 ChannelAsset binds one published release asset name to its exact checksum.
 
@@ -335,6 +414,20 @@ type ChannelAsset struct {
     MediaType string `json:"media_type"`
     Checksum  string `json:"checksum"`
     SizeBytes int64  `json:"size_bytes"`
+}
+```
+
+<a name="ChannelPublication"></a>
+## type [ChannelPublication](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel_publication.go#L24-L29>)
+
+ChannelPublication binds a run receipt and the source revision that embeds its catalog.
+
+```go
+type ChannelPublication struct {
+    ReceiptTag   string       `json:"receipt_tag"`
+    Receipt      ChannelAsset `json:"receipt"`
+    SourceCommit string       `json:"source_commit"`
+    Checkpoint   ChannelAsset `json:"checkpoint"`
 }
 ```
 
@@ -399,6 +492,151 @@ type FileDescriptor struct {
 }
 ```
 
+<a name="PublicationArtifact"></a>
+## type [PublicationArtifact](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L29-L34>)
+
+PublicationArtifact binds the exact artifact and its immutable catalog content.
+
+```go
+type PublicationArtifact struct {
+    GenerationID    string `json:"generation_id"`
+    CatalogChecksum string `json:"catalog_checksum"`
+    PayloadChecksum string `json:"payload_checksum"`
+    ArchiveChecksum string `json:"archive_checksum"`
+}
+```
+
+<a name="PublicationBinding"></a>
+## type [PublicationBinding](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L38-L43>)
+
+PublicationBinding identifies an acquisition binding without its private selectors. Checksum binds the complete declared binding, including its credential profile identity.
+
+```go
+type PublicationBinding struct {
+    ID         string              `json:"id"`
+    Revision   string              `json:"revision"`
+    ProviderID catalogs.ProviderID `json:"provider_id"`
+    Checksum   string              `json:"checksum"`
+}
+```
+
+<a name="PublicationPromotion"></a>
+## type [PublicationPromotion](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel_publication.go#L33-L42>)
+
+PublicationPromotion supplies verified inputs for one publication advance. The caller authenticates the receipt and verifies the merged embedded catalog.
+
+```go
+type PublicationPromotion struct {
+    Receipt                    []byte
+    ReceiptChecksum            string
+    Artifact                   PublicationArtifact
+    SourceCommit               string
+    ReceiptAttestationVerified bool
+    EmbeddingVerified          bool
+    Checkpoint                 ChannelAsset
+    CheckpointVerified         bool
+}
+```
+
+<a name="PublicationReceipt"></a>
+## type [PublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L69-L81>)
+
+PublicationReceipt records admitted evidence for one verified catalog artifact. Branch promotion and channel publication retain their separate transition records.
+
+```go
+type PublicationReceipt struct {
+    SchemaVersion    uint64                     `json:"schema_version"`
+    RunID            string                     `json:"run_id"`
+    StartedAt        time.Time                  `json:"started_at"`
+    CompletedAt      time.Time                  `json:"completed_at"`
+    PolicyVersion    string                     `json:"policy_version"`
+    Artifact         PublicationArtifact        `json:"artifact"`
+    FreshAcquisition bool                       `json:"fresh_acquisition"`
+    Sources          []PublicationSourceReceipt `json:"sources"`
+    // Reviews report current unresolved offerings independently of the reused artifact.
+    Reviews            []evidence.ReviewCandidate       `json:"reviews,omitempty"`
+    ReviewObservations []catalogs.SourceObservationLink `json:"review_observations,omitempty"`
+}
+```
+
+<a name="DecodePublicationReceipt"></a>
+### func [DecodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L124>)
+
+```go
+func DecodePublicationReceipt(data []byte) (PublicationReceipt, error)
+```
+
+DecodePublicationReceipt accepts only validated canonical receipt bytes. Canonical encoding rejects duplicate, omitted, unknown, and differently cased fields.
+
+<a name="VerifyPublicationReceipt"></a>
+### func [VerifyPublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L144>)
+
+```go
+func VerifyPublicationReceipt(data []byte, expectedChecksum string, expectedArtifact PublicationArtifact) (PublicationReceipt, error)
+```
+
+VerifyPublicationReceipt checks the receipt digest and exact artifact binding. The caller must separately verify publisher provenance and artifact bytes.
+
+<a name="PublicationReceipt.Copy"></a>
+### func \(PublicationReceipt\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L84>)
+
+```go
+func (r PublicationReceipt) Copy() PublicationReceipt
+```
+
+Copy returns an independent receipt, including every source policy and observation.
+
+<a name="PublicationReceipt.Validate"></a>
+### func \(PublicationReceipt\) [Validate](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt_validation.go#L15>)
+
+```go
+func (r PublicationReceipt) Validate() error
+```
+
+Validate checks receipt identity, admission, times, and the declared artifact binding.
+
+<a name="PublicationScopePolicy"></a>
+## type [PublicationScopePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L46-L55>)
+
+PublicationScopePolicy records the admission policy for one exact source scope.
+
+```go
+type PublicationScopePolicy struct {
+    Source                evidence.SourceID   `json:"source"`
+    Binding               *PublicationBinding `json:"binding"`
+    Required              bool                `json:"required"`
+    Enabled               bool                `json:"enabled"`
+    AllowMissing          bool                `json:"allow_missing"`
+    AllowRecordQuarantine bool                `json:"allow_record_quarantine,omitempty"`
+    MaxRetainedAge        time.Duration       `json:"max_retained_age_ns"`
+    DisabledAction        string              `json:"disabled_action"`
+}
+```
+
+<a name="PublicationSourceReceipt"></a>
+## type [PublicationSourceReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L59-L65>)
+
+PublicationSourceReceipt distinguishes a source attempt from its admitted evidence. Attempt and EvidenceKind use the publication admission outcome names.
+
+```go
+type PublicationSourceReceipt struct {
+    Policy       PublicationScopePolicy          `json:"policy"`
+    Attempt      string                          `json:"attempt"`
+    EvidenceKind string                          `json:"evidence_kind"`
+    Observation  *catalogs.SourceObservationLink `json:"observation"`
+    Quarantine   *evidence.RecordQuarantine      `json:"quarantine,omitempty"`
+}
+```
+
+<a name="PublicationSourceReceipt.UnmarshalJSON"></a>
+### func \(\*PublicationSourceReceipt\) [UnmarshalJSON](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt_decode.go#L15>)
+
+```go
+func (s *PublicationSourceReceipt) UnmarshalJSON(data []byte) error
+```
+
+UnmarshalJSON bounds quarantine records before decoding their fields.
+
 <a name="PublisherVerifier"></a>
 ## type [PublisherVerifier](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/import.go#L29-L31>)
 
@@ -449,7 +687,7 @@ func StageReleaseAssets(root string, artifact Bundle) (ReleaseAssets, error)
 StageReleaseAssets validates and atomically stages archive, attestation, and checksum assets. An exact retry is idempotent. Rebinding the same generation ID to different bytes returns a typed conflict.
 
 <a name="ReleaseVerification"></a>
-## type [ReleaseVerification](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L135-L139>)
+## type [ReleaseVerification](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L137-L141>)
 
 ReleaseVerification records the immutable release checks that the publisher completed. The channel selects a release only after every check passes, so verification always precedes promotion.
 
@@ -462,7 +700,7 @@ type ReleaseVerification struct {
 ```
 
 <a name="ReleaseVerification.Complete"></a>
-### func \(ReleaseVerification\) [Complete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L142>)
+### func \(ReleaseVerification\) [Complete](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L144>)
 
 ```go
 func (v ReleaseVerification) Complete() bool
@@ -483,7 +721,7 @@ type Subject struct {
 ```
 
 <a name="TagNamespace"></a>
-## type [TagNamespace](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L49>)
+## type [TagNamespace](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L50>)
 
 TagNamespace names the publication namespace of one catalog release tag.
 
@@ -507,7 +745,7 @@ const (
 ```
 
 <a name="ReleaseTagNamespace"></a>
-### func [ReleaseTagNamespace](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L66>)
+### func [ReleaseTagNamespace](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/channel.go#L67>)
 
 ```go
 func ReleaseTagNamespace(tag string) TagNamespace

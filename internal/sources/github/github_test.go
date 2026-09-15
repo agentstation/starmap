@@ -655,6 +655,7 @@ func TestGitHubSourceResetsTheStateWhenTheChannelChanges(t *testing.T) {
 	settled, err := New(
 		WithAPIBaseURL(server.url()),
 		WithRepository(testRepository),
+		WithChannel(artifact.ChannelName),
 		WithStateDirectory(directory),
 		WithAttester(attester.attest()),
 	)

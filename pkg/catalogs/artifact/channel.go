@@ -1,6 +1,7 @@
 package artifact
 
 import (
+	"bytes"
 	"encoding/json"
 	"math"
 	"sort"
@@ -118,15 +119,16 @@ type ChannelAsset struct {
 // verification run. The immutable identity fields change only when the
 // publisher promotes a new release.
 type Channel struct {
-	SchemaVersion    uint64         `json:"schema_version"`
-	Name             string         `json:"channel"`
-	Sequence         uint64         `json:"sequence"`
-	ChannelUpdatedAt time.Time      `json:"channel_updated_at"`
-	GenerationID     string         `json:"generation_id"`
-	Tag              string         `json:"tag"`
-	CatalogDigest    string         `json:"catalog_digest"`
-	PublishedAt      time.Time      `json:"published_at"`
-	Assets           []ChannelAsset `json:"assets"`
+	SchemaVersion    uint64              `json:"schema_version"`
+	Name             string              `json:"channel"`
+	Sequence         uint64              `json:"sequence"`
+	ChannelUpdatedAt time.Time           `json:"channel_updated_at"`
+	GenerationID     string              `json:"generation_id"`
+	Tag              string              `json:"tag"`
+	CatalogDigest    string              `json:"catalog_digest"`
+	PublishedAt      time.Time           `json:"published_at"`
+	Assets           []ChannelAsset      `json:"assets"`
+	Publication      *ChannelPublication `json:"publication,omitempty"`
 }
 
 // ReleaseVerification records the immutable release checks that the publisher
@@ -176,6 +178,9 @@ func (k AdvanceKind) CreatesGeneration() bool {
 // generation and no immutable release. A different verified digest promotes
 // that release. An incomplete verification returns a typed validation error.
 func (c Channel) Advance(candidate Candidate, now time.Time) (Channel, AdvanceKind, error) {
+	if c.SchemaVersion == PublicationChannelSchemaVersion {
+		return Channel{}, "", channelValidation("publication", nil, "requires a verified publication advance")
+	}
 	if err := candidate.Validate(); err != nil {
 		return Channel{}, "", err
 	}
@@ -229,10 +234,16 @@ func (c Channel) Advance(candidate Candidate, now time.Time) (Channel, AdvanceKi
 
 // Validate reports whether the channel document is internally consistent.
 func (c Channel) Validate() error {
-	if c.SchemaVersion != ChannelSchemaVersion {
+	if c.SchemaVersion != ChannelSchemaVersion && c.SchemaVersion != PublicationChannelSchemaVersion {
 		return channelValidation("schema_version", c.SchemaVersion, "is not the current channel schema version")
 	}
-	if c.Name != ChannelName {
+	expectedName := ChannelName
+	if c.SchemaVersion == PublicationChannelSchemaVersion {
+		expectedName = PublicationChannelName
+	} else if c.Publication != nil {
+		return channelValidation("publication", nil, "is not part of channel schema one")
+	}
+	if c.Name != expectedName {
 		return channelValidation("channel", c.Name, "is not the canonical channel name")
 	}
 	if c.Sequence < firstSequence {
@@ -244,7 +255,13 @@ func (c Channel) Validate() error {
 	if c.PublishedAt.IsZero() {
 		return channelValidation("published_at", c.PublishedAt, "is required")
 	}
-	return validateReleaseIdentity(c.GenerationID, c.Tag, c.CatalogDigest, c.Assets)
+	if err := validateReleaseIdentity(c.GenerationID, c.Tag, c.CatalogDigest, c.Assets); err != nil {
+		return err
+	}
+	if c.SchemaVersion == PublicationChannelSchemaVersion {
+		return c.validatePublication()
+	}
+	return nil
 }
 
 // Validate reports whether the candidate names a complete immutable release.
@@ -289,6 +306,25 @@ func DecodeChannel(data []byte) (Channel, error) {
 	}
 	if err := document.Validate(); err != nil {
 		return Channel{}, err
+	}
+	if document.SchemaVersion == ChannelSchemaVersion {
+		var fields map[string]json.RawMessage
+		if err := json.Unmarshal(data, &fields); err != nil {
+			return Channel{}, err
+		}
+		for name := range fields {
+			if strings.EqualFold(name, "publication") {
+				return Channel{}, channelValidation("publication", nil, "is not part of channel schema one")
+			}
+		}
+	} else {
+		canonical, err := EncodeChannel(document)
+		if err != nil {
+			return Channel{}, err
+		}
+		if !bytes.Equal(data, canonical) {
+			return Channel{}, channelValidation("document", nil, "must use canonical publication channel encoding")
+		}
 	}
 	return document, nil
 }

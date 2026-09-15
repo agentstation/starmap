@@ -53,6 +53,9 @@ func run(args []string, output io.Writer) error {
 	flags.SetOutput(io.Discard)
 	outputDir := flags.String("output-dir", "dist/catalog-release", "immutable catalog release staging root")
 	verifyDir := flags.String("verify-dir", "", "verify an existing catalog release asset directory")
+	promotionDir := flags.String("verify-promotion-dir", "", "verify embedded catalog input against an exact published generation")
+	stagePromotionDir := flags.String("stage-promotion-dir", "", "stage an exact published generation in a new catalog directory")
+	promotionReleaseDir := flags.String("promotion-release-dir", "", "verified release assets required by promotion verification or staging")
 	inspectDir := flags.String(
 		"inspect-dir",
 		"",
@@ -74,6 +77,15 @@ func run(args []string, output io.Writer) error {
 	channelUpdatedAt := flags.String("channel-updated-at", "", "RFC 3339 channel verification time; the default is now")
 	channelCurrent := flags.String("channel-current", "", "current channel document; omit only for the first publication")
 	channelOut := flags.String("channel-out", "", "path that receives the canonical channel document")
+	var channelPublication channelPublicationOptions
+	flags.StringVar(&channelPublication.receiptPath, "channel-receipt", "", "verified publication run receipt")
+	flags.StringVar(&channelPublication.receiptChecksum, "channel-receipt-checksum", "", "verified run receipt checksum")
+	flags.StringVar(&channelPublication.checkpointPath, "channel-checkpoint", "", "verified publisher checkpoint")
+	flags.StringVar(&channelPublication.checkpointChecksum, "channel-checkpoint-checksum", "", "verified publisher checkpoint checksum")
+	flags.StringVar(&channelPublication.sourceCommit, "channel-source-commit", "", "merged default-branch source commit")
+	flags.StringVar(&channelPublication.repository, "channel-promoted-repository", "", "clean checkout of the merged source commit")
+	flags.BoolVar(&channelPublication.receiptAttested, "channel-receipt-attestation-verified", false, "the run receipt provenance passed verification")
+	flags.BoolVar(&channelPublication.checkpointAttested, "channel-checkpoint-attestation-verified", false, "the checkpoint provenance passed verification")
 	channelAttested := flags.Bool(
 		"channel-attestation-verified",
 		false,
@@ -98,13 +110,21 @@ func run(args []string, output io.Writer) error {
 		}
 	})
 	mode, err := selectMode(map[string]string{
-		"inspect-dir":         *inspectDir,
-		"verify-dir":          *verifyDir,
-		"channel-release-dir": *channelReleaseDir,
-		"rollback-candidates": *rollbackCandidates,
+		"inspect-dir":          *inspectDir,
+		"verify-dir":           *verifyDir,
+		"verify-promotion-dir": *promotionDir,
+		"stage-promotion-dir":  *stagePromotionDir,
+		"channel-release-dir":  *channelReleaseDir,
+		"rollback-candidates":  *rollbackCandidates,
 	})
 	if err != nil {
 		return err
+	}
+	if err := validatePromotionMode(mode, *promotionReleaseDir); err != nil {
+		return err
+	}
+	if channelPublication.requested() && mode != "channel-release-dir" {
+		return channelFlagError("publication", "requires channel-release-dir")
 	}
 	if mode != "" && (outputDirExplicit || strings.TrimSpace(*generationStore) != "") {
 		return &pkgerrors.ValidationError{
@@ -114,6 +134,18 @@ func run(args []string, output io.Writer) error {
 		}
 	}
 	switch mode {
+	case "stage-promotion-dir":
+		report, err := stagePromotionDirectory(strings.TrimSpace(*stagePromotionDir), strings.TrimSpace(*promotionReleaseDir))
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(output).Encode(report)
+	case "verify-promotion-dir":
+		report, err := verifyPromotionDirectory(strings.TrimSpace(*promotionDir), strings.TrimSpace(*promotionReleaseDir))
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(output).Encode(report)
 	case "inspect-dir":
 		report, err := inspectReleaseDirectory(strings.TrimSpace(*inspectDir))
 		if err != nil {
@@ -136,6 +168,7 @@ func run(args []string, output io.Writer) error {
 			previousDirectory:   *previousReleaseDir,
 			outputPath:          *channelOut,
 			attestationVerified: *channelAttested,
+			publication:         channelPublication,
 		})
 		if err != nil {
 			return err
@@ -148,51 +181,59 @@ func run(args []string, output io.Writer) error {
 		}
 		return json.NewEncoder(output).Encode(report)
 	}
-	if strings.TrimSpace(*generationStore) == "" {
-		return &pkgerrors.ValidationError{
+	report, err := stageCommittedRelease(*generationStore, *channelCurrent, *previousReleaseDir, *outputDir)
+	if err != nil {
+		return err
+	}
+	return json.NewEncoder(output).Encode(report)
+}
+
+func stageCommittedRelease(generationStore, channelCurrent, previousReleaseDir, outputDir string) (releaseReport, error) {
+	if strings.TrimSpace(generationStore) == "" {
+		return releaseReport{}, &pkgerrors.ValidationError{
 			Field:   "catalog_release.generation_store",
 			Message: "is required when staging release assets",
 		}
 	}
-	store, err := storage.NewFilesystem(strings.TrimSpace(*generationStore))
+	store, err := storage.NewFilesystem(strings.TrimSpace(generationStore))
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
 	generation, err := store.Current(context.Background())
 	if err != nil {
-		return pkgerrors.WrapResource(
+		return releaseReport{}, pkgerrors.WrapResource(
 			"read",
 			"committed catalog generation",
-			strings.TrimSpace(*generationStore),
+			strings.TrimSpace(generationStore),
 			err,
 		)
 	}
-	current, err := readCurrentChannel(*channelCurrent)
+	current, err := readCurrentChannel(channelCurrent)
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
-	if err := validatePublishedSuccessor(current, *previousReleaseDir, generation); err != nil {
-		return err
+	if err := validatePublishedSuccessor(current, previousReleaseDir, generation); err != nil {
+		return releaseReport{}, err
 	}
 	semanticChecksum, err := generation.SemanticChecksum()
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
 	bundle, err := artifact.Build(generation)
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
-	assets, err := artifact.StageReleaseAssets(*outputDir, bundle)
+	assets, err := artifact.StageReleaseAssets(outputDir, bundle)
 	if err != nil {
-		return err
+		return releaseReport{}, err
 	}
-	return json.NewEncoder(output).Encode(releaseReport{
+	return releaseReport{
 		GenerationID:     generation.Manifest.GenerationID,
 		SemanticChecksum: semanticChecksum,
 		PayloadChecksum:  generation.Manifest.Payload.Checksum,
 		ArchiveChecksum:  assets.ArchiveChecksum,
 		Directory:        assets.Directory, Files: assets.Files,
-	})
+	}, nil
 }
 
 // selectMode returns the single selected command mode. An empty result stages a

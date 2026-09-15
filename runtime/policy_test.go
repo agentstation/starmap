@@ -10,8 +10,22 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/errors"
 )
+
+func TestPublicSourceDefaultsToPublicationChannel(t *testing.T) {
+	if got := DefaultSourcePolicy().Channel; got != artifact.PublicationChannelName {
+		t.Fatalf("default channel = %s, want %s", got, artifact.PublicationChannelName)
+	}
+	config, err := defaults().apply(WithSourceChannel(artifact.ChannelName))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if config.source.Channel != artifact.ChannelName {
+		t.Fatal("explicit legacy selection did not override the default")
+	}
+}
 
 // TestAcquisitionPolicyFromEnabledAndInterval proves that scheduled
 // acquisition holds exactly one switch and one period. No start-time setting

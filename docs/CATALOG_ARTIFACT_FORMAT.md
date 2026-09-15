@@ -124,6 +124,67 @@ with the exact repository, signer workflow, and hosted-runner policy before and
 after public download. See GitHub's [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 and the [`gh attestation verify` contract](https://cli.github.com/manual/gh_attestation_verify).
 
+## Publication receipts
+
+The artifact package defines a separate receipt for admitted source evidence.
+Producer and consumer workflow integration remains incomplete.
+
+`starmap-catalog-run.json` uses schema version 1 and canonical JSON.
+Each receipt binds a run ID, run interval, policy version, source policies, and exact catalog artifact identity.
+The artifact identity includes generation ID, semantic digest, payload digest, and archive digest.
+
+Source entries distinguish current attempts from fresh, retained, or absent evidence.
+Retained evidence preserves its original observation time and must remain within its declared age limit.
+Embedded or imported artifact evidence cannot establish fresh acquisition.
+Provider entries carry a digest of the complete acquisition binding instead of its private account or project selectors.
+
+`EncodePublicationReceipt` produces deterministic bytes after validation.
+`DecodePublicationReceipt` requires canonical encoding, including explicit zero and null fields.
+The format limits each receipt to 4 MiB and 4,096 source scopes.
+
+`VerifyPublicationReceipt` checks the selected receipt digest and exact artifact binding.
+Callers separately verify publisher provenance, artifact bytes, and branch promotion.
+
+Store each new receipt separately, including runs that reuse an unchanged semantic catalog.
+Keep historical catalog artifacts unchanged.
+Rejected admission and later publication failures retain their separate execution records.
+
+## Stage exact promotion input
+
+After verifying release provenance, stage its exact generation in a new directory:
+
+```bash
+go run ./cmd/starmap-catalog-release \
+  --stage-promotion-dir /absolute/path/to/new-catalog \
+  --promotion-release-dir /absolute/path/to/downloaded-assets
+```
+
+The destination parent must exist. Staging preserves the original generation identity, time, payload, and endpoint projection.
+The command validates the complete result before publishing the new directory without replacement.
+
+The command accepts an existing destination only when it verifies an unchanged exact retry. Changed or unrelated contents cause refusal without replacement.
+A failed directory flush reports uncertain publication. Retry verifies any complete destination before returning success.
+
+This command stages local source files. Artifact provenance, checked branch promotion, and channel publication remain separate required steps.
+
+## Verify embedded promotion
+
+Verify the embedded input against the exact downloaded release assets:
+
+```bash
+go run ./cmd/starmap-catalog-release \
+  --verify-promotion-dir internal/embedded/catalog \
+  --promotion-release-dir /absolute/path/to/downloaded-assets
+```
+
+The command validates the archive and compares its catalog payload with the selected YAML input.
+It also checks generation identity, generation time, schema, semantic digest, payload descriptor, and the complete endpoint projection.
+Missing or different input causes refusal without a success report. An exact retry produces the same report.
+
+The publisher must separately verify artifact provenance and bind this checkout to the selected merged revision.
+This local command does not prove a GitHub merge or advance the channel.
+The scheduled workflow still requires checked promotion integration before it can establish that complete publication contract.
+
 ## Optional OCI mirror
 
 The scheduled catalog-generation workflow can also mirror the same

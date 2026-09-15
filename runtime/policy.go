@@ -4,6 +4,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -81,7 +82,7 @@ const (
 
 	// DefaultSourceChannel is the mutable branch that names the current
 	// immutable catalog release.
-	DefaultSourceChannel = "catalog/v1"
+	DefaultSourceChannel = artifact.PublicationChannelName
 
 	// DefaultSourcePollInterval is how often the runtime checks the channel.
 	DefaultSourcePollInterval = time.Hour

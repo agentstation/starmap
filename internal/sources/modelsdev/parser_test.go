@@ -46,7 +46,7 @@ func TestSchemaDriftMutationMatrix(t *testing.T) {
 				t.Fatalf("parseAPIData: %v", err)
 			}
 			builder := catalogs.NewEmpty()
-			added, _, issues, err := processFetch(builder, api, nil)
+			added, _, issues, err := processFetch(t.Context(), builder, api, nil)
 			if err != nil {
 				t.Fatalf("processFetch: %v", err)
 			}
@@ -76,7 +76,7 @@ func TestPayloadLimitModelsDevModelCount(t *testing.T) {
 		models[id] = Model{ID: id, Name: "Model", Description: "catalog data"}
 	}
 	api := API{"provider": {ID: "provider", Name: "Provider", Models: models}}
-	added, rejected, issues, err := processFetch(catalogs.NewEmpty(), &api, nil)
+	added, rejected, issues, err := processFetch(t.Context(), catalogs.NewEmpty(), &api, nil)
 	if err != nil {
 		t.Fatalf("processFetch: %v", err)
 	}
@@ -518,7 +518,7 @@ func TestProcessFetchIncludesModelsWithNonCoreCostData(t *testing.T) {
 	}
 	catalog := catalogs.NewEmpty()
 
-	added, _, issues, err := processFetch(catalog, &api, nil)
+	added, _, issues, err := processFetch(t.Context(), catalog, &api, nil)
 	if err != nil {
 		t.Fatalf("processFetch returned error: %v", err)
 	}
@@ -599,7 +599,7 @@ func TestProcessFetchHonorsProviderFilter(t *testing.T) {
 	}
 	catalog := catalogs.NewEmpty()
 
-	added, _, issues, err := processFetch(catalog, &api, nil, sources.WithProviderFilter("selected"))
+	added, _, issues, err := processFetch(t.Context(), catalog, &api, nil, sources.WithProviderFilter("selected"))
 	if err != nil {
 		t.Fatalf("processFetch returned error: %v", err)
 	}
@@ -641,7 +641,7 @@ func TestProcessFetchResolvesConfiguredProviderAliasBeforeFiltering(t *testing.T
 	}
 	catalog := catalogs.NewEmpty()
 
-	added, rejected, issues, err := processFetch(
+	added, rejected, issues, err := processFetch(t.Context(),
 		catalog,
 		&api,
 		providers,

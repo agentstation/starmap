@@ -18,6 +18,8 @@ The package is a leaf. It implements no source and opens no connection. A packag
 - [type IdentityAdopter](<#IdentityAdopter>)
 - [type ManualReader](<#ManualReader>)
 - [type PermissionReader](<#PermissionReader>)
+- [type Publication](<#Publication>)
+  - [func \(p Publication\) Copy\(\) Publication](<#Publication.Copy>)
 - [type Read](<#Read>)
 - [type Source](<#Source>)
 - [type Watcher](<#Watcher>)
@@ -73,8 +75,30 @@ type PermissionReader interface {
 }
 ```
 
+<a name="Publication"></a>
+## type [Publication](<https://github.com/agentstation/starmap/blob/main/runtime/source/publication.go#L7-L11>)
+
+Publication binds a verified run receipt to its attested channel metadata. Source implementations verify publisher provenance before returning this record.
+
+```go
+type Publication struct {
+    Receipt      artifact.PublicationReceipt `json:"receipt"`
+    Checksum     string                      `json:"checksum"`
+    SourceCommit string                      `json:"source_commit"`
+}
+```
+
+<a name="Publication.Copy"></a>
+### func \(Publication\) [Copy](<https://github.com/agentstation/starmap/blob/main/runtime/source/publication.go#L14>)
+
+```go
+func (p Publication) Copy() Publication
+```
+
+Copy returns an independent publication record.
+
 <a name="Read"></a>
-## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L82-L101>)
+## type [Read](<https://github.com/agentstation/starmap/blob/main/runtime/source/source.go#L82-L104>)
 
 Read is one upstream observation.
 
@@ -92,6 +116,9 @@ type Read struct {
 
     // ChannelUpdatedAt is when the upstream channel last moved.
     ChannelUpdatedAt time.Time
+
+    // Publication holds verified run evidence independently of the artifact manifest.
+    Publication *Publication
 
     // Chain is the sanitized upstream source chain, nearest hop first.
     Chain []status.SourceHop
