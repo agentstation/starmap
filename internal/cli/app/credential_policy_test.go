@@ -100,3 +100,72 @@ func TestApplicationCredentialPolicyDistinguishesFreshAndLegacyStartup(t *testin
 		})
 	}
 }
+
+func TestCredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites(t *testing.T) {
+	for _, name := range []string{"data-file", "baseline-file", "current-directory", "seed-directory", "baseline-file-after-current"} {
+		t.Run(name, func(t *testing.T) {
+			clearCatalogEnvironment(t)
+			setTestHome(t, t.TempDir())
+			home := t.TempDir()
+			t.Setenv("STARMAP_HOME", home)
+			a, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogValues: map[string]string{
+				catalogconfig.Source: "embedded", catalogconfig.AcquisitionEnabled: "false",
+			}}))
+			if err != nil {
+				t.Fatal(err)
+			}
+			paths, err := a.ResolvedPaths()
+			if err != nil {
+				t.Fatal(err)
+			}
+			path := filepath.Join(home, "data")
+			directory := false
+			switch name {
+			case "baseline-file", "baseline-file-after-current":
+				path = paths.Baselines.Path
+			case "current-directory":
+				path, directory = filepath.Join(paths.CatalogStore.Path, "current"), true
+			case "seed-directory":
+				path, directory = filepath.Join(paths.Runtime.Path, "instance-seed"), true
+			}
+			if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+				t.Fatal(err)
+			}
+			if directory {
+				err = os.Mkdir(path, 0o700)
+			} else {
+				err = os.WriteFile(path, []byte("preserve-operator-file"), 0o600)
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if name == "baseline-file-after-current" {
+				if err := os.MkdirAll(paths.CatalogStore.Path, 0o700); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(filepath.Join(paths.CatalogStore.Path, "current"), []byte("retained-generation"), 0o600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if _, err := a.credentialPolicy(t.Context()); err == nil {
+				t.Fatal("invalid installation marker initialized credential policy")
+			}
+			if a.policyStore != nil {
+				t.Fatal("invalid installation marker retained a policy store")
+			}
+			if _, err := os.Stat(paths.CredentialPolicy.Path); !os.IsNotExist(err) {
+				t.Fatalf("invalid installation marker wrote credential state: %v", err)
+			}
+			info, err := os.Stat(path)
+			if err != nil || info.IsDir() != directory {
+				t.Fatalf("policy initialization changed the operator entry: %v", err)
+			}
+			if !directory {
+				data, err := os.ReadFile(path)
+				if err != nil || string(data) != "preserve-operator-file" {
+					t.Fatalf("policy initialization changed the operator file: %v", err)
+				}
+			}
+		})
+	}
+}
