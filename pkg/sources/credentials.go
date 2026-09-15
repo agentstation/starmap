@@ -21,9 +21,18 @@ type ProviderCredentialMaterial struct {
 // ProviderCredentialMetadata describes one resolved material lifecycle.
 // Version is opaque and contains no source path or secret digest.
 type ProviderCredentialMetadata struct {
-	Version   string
-	ExpiresAt time.Time
-	Lease     *ProviderCredentialLease
+	Version          string
+	ExpiresAt        time.Time
+	Lease            *ProviderCredentialLease
+	Origins          []ProviderCredentialOrigin
+	ResolutionPolicy string
+}
+
+// ProviderCredentialOrigin identifies a selected field source without secret material or resource paths.
+type ProviderCredentialOrigin struct {
+	Field catalogs.ProviderCredentialFieldID `json:"field"`
+	Kind  string                             `json:"kind"`
+	Name  string                             `json:"name,omitempty"`
 }
 
 // ProviderCredentialLease describes renewable credential material.
@@ -60,6 +69,14 @@ func (m ProviderCredentialMaterial) Value(
 
 // Version returns the resolver-owned opaque material version.
 func (m ProviderCredentialMaterial) Version() string { return m.metadata.Version }
+
+// Origins returns a caller-owned list of selected catalog credential sources.
+func (m ProviderCredentialMaterial) Origins() []ProviderCredentialOrigin {
+	return append([]ProviderCredentialOrigin(nil), m.metadata.Origins...)
+}
+
+// ResolutionPolicy returns the policy that selected the credential origins.
+func (m ProviderCredentialMaterial) ResolutionPolicy() string { return m.metadata.ResolutionPolicy }
 
 // ExpiresAt returns the material expiry when the selected source supplied one.
 func (m ProviderCredentialMaterial) ExpiresAt() (time.Time, bool) {
@@ -139,6 +156,7 @@ func copyCredentialValues(
 
 func copyCredentialMetadata(metadata ProviderCredentialMetadata) ProviderCredentialMetadata {
 	copied := metadata
+	copied.Origins = append([]ProviderCredentialOrigin(nil), metadata.Origins...)
 	if metadata.Lease != nil {
 		lease := *metadata.Lease
 		copied.Lease = &lease

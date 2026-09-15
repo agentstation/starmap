@@ -52,6 +52,8 @@ type App struct {
 
 	credentialMu       sync.Mutex
 	credentialResolver sources.ProviderCredentialResolver
+	policyMu           sync.Mutex
+	policyStore        *auth.FilePolicyStore
 }
 
 // New creates an App with the given version information. It applies functional
@@ -174,7 +176,14 @@ func (a *App) CredentialResolver() (sources.ProviderCredentialResolver, error) {
 			}
 		}
 	}
-	a.credentialResolver = auth.NewResolver(auth.WithReferencePolicies(policies))
+	store, err := a.credentialPolicy(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	a.credentialResolver, err = auth.NewMigrationResolver(auth.NewResolver(auth.WithReferencePolicies(policies)), store)
+	if err != nil {
+		return nil, err
+	}
 	return a.credentialResolver, nil
 }
 

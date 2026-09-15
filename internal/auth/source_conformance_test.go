@@ -123,8 +123,8 @@ func TestExpiredDefaultChainMaterialIsNotCachedPastExpiry(t *testing.T) {
 		chain,
 	))
 	for range 2 {
-		if _, err := resolver.ResolveCatalog(context.Background(), &provider); err != nil {
-			t.Fatalf("ResolveCatalog: %v", err)
+		if _, err := resolver.ResolveCatalog(context.Background(), &provider); err == nil {
+			t.Fatal("resolver accepted expired default-chain material")
 		}
 	}
 	if got := calls.Load(); got != 2 {

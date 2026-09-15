@@ -55,6 +55,9 @@ func (a *App) openRuntimeLocked(ctx context.Context, extra []runtime.Option) (*r
 	if err := runtime.ValidateDirectoryPermissions(ctx, paths.Runtime.Path); err != nil {
 		return nil, err
 	}
+	if _, err := a.credentialPolicy(ctx); err != nil {
+		return nil, err
+	}
 	if _, err := bootstrap.Export(ctx, paths.Baselines.Path); err != nil {
 		return nil, err
 	}
