@@ -111,17 +111,30 @@
       "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=30m -skip '^TestPublicPublicationProfileRetainsBoundedState$' ./internal/catalog/publication",
       "exit_status": 0,
       "output": "publication-race.jsonl.gz"
+    },
+    "capacity-race": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=60m -run '^TestPublicPublicationProfileRetainsBoundedState$' ./internal/catalog/publication",
+      "exit_status": 0,
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Action": "pass",
+          "Elapsed": 2819.421
+        }
+      ],
+      "output": "capacity-race.jsonl.gz",
+      "cycles": 8,
+      "payload_bytes": 31356835,
+      "scope": "The isolated run preserves all eight full-catalog cycles and original assertions. The earlier 30-minute package timeout remains failed evidence."
     }
   },
-  "running": {
-    "session": 86483,
-    "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=60m -run '^TestPublicPublicationProfileRetainsBoundedState$' ./internal/catalog/publication",
-    "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-verification-failure/capacity-race.jsonl",
-    "status": "in_progress; last tool poll confirmed the existing session remains active",
-    "scope": "All eight cycles, the full catalog, and original assertions remain unchanged. This isolated run qualifies the capacity case separately from the remaining 133 passing race events."
-  },
+  "running": null,
   "remaining": [
-    "Finish the isolated full-catalog race qualification in session 86483.",
     "Integrate qualified main after PR #161 merges.",
     "Run required review and publish the existing PR #160 update.",
     "Qualify native CI and live publication before task completion."
@@ -133,5 +146,5 @@
     "output": "writing-canonical-final.log"
   },
   "canonical_maintenance": "Preserve the probe as compressed source so Go tooling does not compile historical evidence and prose tooling does not rewrite captured code.",
-  "followup_recorded_at": "2026-09-15T01:12:08.708771+00:00"
+  "followup_recorded_at": "2026-09-15T02:12:19.209371+00:00"
 }

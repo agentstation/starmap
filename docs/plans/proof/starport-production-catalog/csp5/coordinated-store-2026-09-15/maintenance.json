@@ -1,0 +1,27 @@
+{
+  "local_targets_checked": 141,
+  "non_html_anchors_unverified": [
+    "proof/starport-production-catalog/csp3.md#local-starport-pair-check",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp3",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp8",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp10",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp101",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp102",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp121",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp17",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp18",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp20",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp21",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp22",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp24"
+  ],
+  "protected_sections_unchanged": 6,
+  "unrelated_files_unchanged": 5,
+  "plan_words": 10468,
+  "plan_bytes": 115037,
+  "resume_words": 239,
+  "execution_entries": 10,
+  "budget_exception": "Required task contracts, invariants, and the whole-plan goal remain in the plan. Resume reads current state, CSP5, and the linked current proof. Historical logs remain optional.",
+  "cold_resume": "PASS: active task, source, pending review, authority, next action, and remaining acceptance are explicit.",
+  "required_resume_bytes": 15969
+}

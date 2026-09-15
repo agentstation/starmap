@@ -2724,8 +2724,9 @@ Both products must preserve their shared semantics and configuration-authority r
 Readiness reports the last maintenance outcome without storage reads. A capacity warning does not revoke a usable catalog.
 
 The [current candidate proof](../../plans/proof/starport-production-catalog/csp5/qualification-2026-09-12.md) records local integration and pending full qualification.
-Shared and object coordination remain incomplete. The owner approved Valkey or Redis coordination for shared S3 cleanup.
-S3-only cleanup requires a separate design. Implementation and qualification remain open.
+The owner approved Valkey or Redis coordination for shared S3 cleanup. S3-only cleanup requires a separate design.
+The [coordinated-store proof](../../plans/proof/starport-production-catalog/csp5/coordinated-store-2026-09-15/verification.json) records local publication, reader protection, and process recovery at `03e2cb570`.
+Shared runtime references, full product qualification, required review, native CI, and merge remain open.
 
 Starport keeps catalog descriptors and payload chunks in its configured KV backend. Its 32-entry history index does not remove generation data.
 The [storage-boundary probe](../../plans/proof/starport-production-catalog/csp5/shared-storage-boundary-2026-09-13.md) records 33 descriptors and 33 chunks after 33 accepted generations.

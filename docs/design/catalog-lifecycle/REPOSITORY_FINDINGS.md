@@ -3087,3 +3087,16 @@ Required review, integration with current main, and native qualification remain 
 The owner approved Valkey or Redis coordination for shared S3 cleanup. The owner also authorized App setup and checked public catalog publication.
 Public provider acquisition remains best effort with retained facts and visible failures. Only the proposed models.dev freshness cutoff remains undecided.
 The private publisher App registration and client ID variable now exist. Private-key generation, installation, secret storage, and hosted publication remain incomplete.
+
+## Coordinated object retention, 2026-09-15
+
+Commit `03e2cb570480766fccb20c640b56ad661084b591` adds object publication, reader protection, and bounded collection through a separate Valkey or Redis record.
+A regression exposed a retained reader claim after an accepted write lost its response and the next read failed.
+Failed acquisition now attempts cleanup with an independent timeout. Persistent coordination failure can still require fenced owner recovery.
+
+The [current proof](../../plans/proof/starport-production-catalog/csp5/coordinated-store-2026-09-15/verification.json) records 242 storage and workflow events on each Go toolchain.
+Valkey and Redis each pass fifteen native cases per toolchain, including process exit, service restart, concurrent publication, and near-limit payload transfer.
+The helper process case skips in the parent suite and executes twice in child processes.
+
+Classification: in-scope CSP5 storage implementation. Shared runtime references, full product qualification, required review, native CI, and merge remain open.
+The fixed object-service fixture does not establish maintained production-service support.

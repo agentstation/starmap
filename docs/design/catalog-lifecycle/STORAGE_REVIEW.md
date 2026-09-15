@@ -914,3 +914,17 @@ The [CSP7 proof](../../plans/proof/starport-production-catalog/csp7/policy-compo
 The owner approved Valkey or Redis coordination for shared S3 catalog cleanup. S3-only cleanup requires a separate design.
 The decision clears the coordinator choice. CSP5 still owns publication coordination, reader and pin protection, crash recovery, and qualification.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp6/acquisition-diagnostics-2026-09-14/owner-decisions.json) retains this authorization and its remaining scope.
+
+## Coordinated object storage, 2026-09-15
+
+The local adapter at `03e2cb570` keeps generation bytes in object storage and publication state in Valkey or Redis.
+The immutable `<prefix>/current.json` binding identifies the coordination record. Unique `<prefix>/uploads/<token>` objects contain ownership metadata and complete generation bytes.
+The coordination record holds current, upload reservations, and durable reader claims. It requires persistent primary storage without expiration or eviction.
+
+Reader claims survive process exit and service restart. Operator recovery requires stopped owner processes and the exact inspected coordination revision.
+Collection retires publication rights before deleting exact object versions. Later passes recover delayed uploads and bytes left after failed deletion.
+The scan defaults to 4,096 entries and 256 MiB of inspected recovery bytes. Required content can exceed retention targets.
+
+The [qualified component proof](../../plans/proof/starport-production-catalog/csp5/coordinated-store-2026-09-15/verification.json) records both service and toolchain pairs.
+Full shared runtime retention, deployment recovery, native CI, and merge remain open.
+This adapter does not change the roles of Badger, SQLite, PostgreSQL, or MySQL.

@@ -1,0 +1,301 @@
+{
+  "task": "CSP5",
+  "recorded_at": "2026-09-15T02:12:19.194294+00:00",
+  "source": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention",
+    "branch": "codex/catalog-object-retention",
+    "commit": "03e2cb570480766fccb20c640b56ad661084b591",
+    "prior_backend_commit": "ead2bed81f4022248638fffd46ebee0432d3f187",
+    "files": {
+      ".github/workflows/pr.yaml": "9d8123956efb6f5fb264e9e2a8eee6d009aca137443e17be93b3f6f734cc6c65",
+      "GLOSSARY.md": "1ef214529cd13e277c858229c6affd4877d38490b0658e506c222deaad3682af",
+      "docs/COORDINATED_OBJECT_STORE.md": "5f6bbb3c5e055b6aed0bd01667ec96526ed31786b1ec5e1ca93f1198639571ee",
+      "pkg/catalogs/storage/conformance_test.go": "d693676a3df434fc43d6770ba6dc1ef6ee8289afb0069d928fa306aeefec395f",
+      "pkg/catalogs/storage/coordinated_object.go": "231723ba0b2084c81b69566957a361f739a49a5ef2ff582f191988db370479fe",
+      "pkg/catalogs/storage/coordinated_object_collection.go": "ae1af8fa99768ae78c9982217b6ade5113049860f4e21c0806b4910f8f47c1f7",
+      "pkg/catalogs/storage/coordinated_object_publication.go": "b0c4fd439996b4852bfa324d4e335465431888746ea77fa097949d22048b411a",
+      "pkg/catalogs/storage/coordinated_object_readers.go": "deee68a33d91344e347a2282d4dd9639c422584845ef0041164f76a9ec9b518e",
+      "pkg/catalogs/storage/coordinated_object_retry_test.go": "a8facb5729dca632d74e86bcb3802557f3acf4b4218f5e044086944bde1c264b",
+      "pkg/catalogs/storage/coordinated_object_test.go": "0d451ea6e8576cecee38538bea7519b0635ef6114e002e9d8f945075699e730b",
+      "pkg/catalogs/storage/retention.go": "ff3d3590a6e6e65bb59534a6d980630fe8d76f832916c028c195ecc79a7208bf",
+      "pkg/catalogs/storage/valkey/README.md": "63db54f871c0cf1d114fd86dce2cc214c463a6f6a934f5b7c79383b3e5a92c1b",
+      "pkg/catalogs/storage/valkey/coordinated_restart_test.go": "edbebdaed396cbe8bb06a3df747918ce49d13055392e85e7b3201cf7ac2dfe52",
+      "pkg/catalogs/storage/valkey/coordinated_test.go": "24883eb64d7ff5b8e4ca973f932ef2f5f5872340079c07d5b533ec378776221c",
+      "runtime/retention.go": "e8a4cb2c4f8e613dd9f5163ef19563563facc05bf9bf288686e7e48bb98927e4"
+    }
+  },
+  "changes": [
+    "Immutable generation blobs with publication reservations and current-head compare-and-swap in a separate coordination record.",
+    "Persistent reader claims, exact-revision fenced-owner recovery, and bounded object inventory.",
+    "Retirement precedes conditional deletion. Delayed uploads and failed deletions remain recoverable without restoring publication rights.",
+    "Failed reader acquisition attempts cleanup with an independent timeout after an ambiguous write.",
+    "Native object and coordination tests include process exit, service restart, concurrency, and a 33,554,380-byte payload.",
+    "Four CI matrix jobs cover Valkey and Redis on both supported Go toolchains."
+  ],
+  "checks": {
+    "coordinated-claim-fail-before": {
+      "output": "coordinated-claim-fail-before.jsonl.gz",
+      "test_events": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "fail",
+          "Elapsed": 0.277
+        }
+      ],
+      "exit_status": 1,
+      "skips": []
+    },
+    "coordinated-claim-fixed": {
+      "output": "coordinated-claim-fixed.jsonl.gz",
+      "test_events": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "pass",
+          "Elapsed": 1.246
+        }
+      ],
+      "exit_status": 0,
+      "skips": []
+    },
+    "coordinated-final-check": {
+      "output": "coordinated-final-check.jsonl.gz",
+      "test_events": {
+        "pass": 242,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Action": "pass",
+          "Elapsed": 1.307
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "pass",
+          "Elapsed": 14.143
+        }
+      ],
+      "exit_status": 0,
+      "skips": []
+    },
+    "coordinated-minimum-qualified": {
+      "output": "coordinated-minimum-qualified.jsonl.gz",
+      "test_events": {
+        "pass": 242,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "Action": "pass",
+          "Elapsed": 1.572
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Action": "pass",
+          "Elapsed": 14.452
+        }
+      ],
+      "exit_status": 0,
+      "skips": []
+    },
+    "coordinated-runtime-race": {
+      "output": "coordinated-runtime-race.jsonl.gz",
+      "test_events": {
+        "pass": 86,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Action": "pass",
+          "Elapsed": 93.381
+        }
+      ],
+      "exit_status": 0,
+      "skips": []
+    },
+    "native-valkey-qualified": {
+      "output": "native-valkey-qualified.jsonl.gz",
+      "test_events": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 6.975
+        }
+      ],
+      "exit_status": 0,
+      "skips": [
+        "TestCoordinatedCatalogProcess"
+      ]
+    },
+    "native-redis-qualified": {
+      "output": "native-redis-qualified.jsonl.gz",
+      "test_events": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 7.07
+        }
+      ],
+      "exit_status": 0,
+      "skips": [
+        "TestCoordinatedCatalogProcess"
+      ]
+    },
+    "native-valkey-qualified-minimum": {
+      "output": "native-valkey-qualified-minimum.jsonl.gz",
+      "test_events": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 6.796
+        }
+      ],
+      "exit_status": 0,
+      "skips": [
+        "TestCoordinatedCatalogProcess"
+      ]
+    },
+    "native-redis-qualified-minimum": {
+      "output": "native-redis-qualified-minimum.jsonl.gz",
+      "test_events": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/valkey",
+          "Action": "pass",
+          "Elapsed": 6.83
+        }
+      ],
+      "exit_status": 0,
+      "skips": [
+        "TestCoordinatedCatalogProcess"
+      ]
+    }
+  },
+  "other_checks": {
+    "consumer_profiles": {
+      "exit_status": 0,
+      "profiles": 6,
+      "dependency_budgets_changed": false,
+      "output": "coordinated-consumers-qualified.log.gz"
+    },
+    "lint": {
+      "exit_status": 0,
+      "findings": 0,
+      "output": "coordinated-lint-qualified.log.gz"
+    },
+    "goago": {
+      "exit_status": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "incomplete_errors": 0,
+      "output": "coordinated-policy-qualified.json.gz"
+    },
+    "prose": {
+      "exit_status": 0,
+      "files": 1688,
+      "diagnostics": 0,
+      "output": "coordinated-prose-qualified.log.gz"
+    }
+  },
+  "commands": {
+    "storage_release": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=15m ./pkg/catalogs/storage ./internal/ciworkflow",
+    "storage_minimum": "GOTOOLCHAIN=go1.25.12 go test -race -json -count=1 -timeout=15m ./pkg/catalogs/storage ./internal/ciworkflow",
+    "native": "STARMAP_TEST_VALKEY_ADDRESS=<dedicated-loopback> STARMAP_TEST_S3_ENDPOINT=http://127.0.0.1:59000 STARMAP_TEST_COORDINATION_SERVER_CHANGES=1 STARMAP_TEST_COORDINATION_CONTAINER=<dedicated-container> STARMAP_TEST_OBJECT_CONTAINER=starmap-csp5-minio GOTOOLCHAIN=<qualified-toolchain> go test -race -json -count=1 -timeout=5m ./pkg/catalogs/storage/valkey",
+    "consumer": "GOTOOLCHAIN=go1.26.6 make test-consumer-deps",
+    "lint": "GOTOOLCHAIN=go1.26.6 devbox run golangci-lint run",
+    "goago": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+    "prose": "GOTOOLCHAIN=go1.26.6 make technical-writing-check"
+  },
+  "services": {
+    "valkey": {
+      "version": "7.2.14",
+      "image": "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f"
+    },
+    "redis": {
+      "version": "7.4.11",
+      "image": "redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+    },
+    "objects": {
+      "version": "RELEASE.2025-09-07T16-13-09Z",
+      "image": "quay.io/minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e",
+      "scope": "Fixed compatibility fixture. The upstream repository is archived. This result is not a maintained production-service recommendation."
+    },
+    "persistence": "AOF, appendfsync always, noeviction; dedicated container storage without application data.",
+    "cleanup": "All three task-owned containers stopped and removed after tests."
+  },
+  "failure_evidence": {
+    "reader_claim": "The pre-fix test preserved a claim after an accepted write lost its reply and a subsequent read failed. The focused regression passes after cleanup repair.",
+    "lint": [
+      "coordinated-lint.log.gz",
+      "coordinated-lint-complete.log.gz"
+    ],
+    "prose": "coordinated-writing-final.log.gz"
+  },
+  "limits": [
+    "The helper process test skips in the parent suite and runs twice as a child process. This expected skip is not a skipped recovery case.",
+    "Release-toolchain native evidence precedes the final test-only endpoint validation change. Minimum-toolchain evidence includes that change.",
+    "The 86 runtime test events precede the final reader cleanup repair. The runtime forwarding change is identical.",
+    "Claims can remain after failed cleanup when coordination stays unavailable. Operator recovery requires external process fencing.",
+    "The store does not yet qualify shared runtime acquisition history, fleet-wide required references, failover, or disaster recovery.",
+    "The fixed primary-service tests do not establish complete enterprise product support."
+  ],
+  "remaining": [
+    "Complete required review, publish the task PR, qualify native CI, and merge.",
+    "Finish the shared runtime retention boundary and complete the CSP5 product acceptance command.",
+    "Qualify the released product pair under the whole-plan acceptance map."
+  ],
+  "review": {
+    "status": "in_progress",
+    "session": 97121,
+    "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention/.tmp/object-coordination/coordinated-autoreview.log",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:claude-opus-5:high"
+    ],
+    "threshold": "P0"
+  },
+  "completion": "UNVERIFIED",
+  "canonical_checks": {
+    "prose": {
+      "exit_status": 0,
+      "files": 1539,
+      "diagnostics": 0,
+      "output": "prose-canonical.log.gz"
+    },
+    "maintenance": "maintenance.json"
+  }
+}
