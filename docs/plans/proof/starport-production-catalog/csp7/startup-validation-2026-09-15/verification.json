@@ -1,0 +1,134 @@
+{
+  "task": "CSP7",
+  "recorded_at": "2026-09-15T00:24:44.233154+00:00",
+  "source": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-acquisition-credentials",
+    "branch": "codex/catalog-acquisition-credentials",
+    "commit": "d8a824c38ea098f9d8f49d52e5436200c5ac7167"
+  },
+  "finding": "Both Windows architectures wrote credential state before refusing a regular file at the data directory. Validate every installation marker and its ancestors before initializing policy. Preserve policy-before-baseline ordering.",
+  "correction": "The prior resume statement of five native passes was incorrect. Four native jobs passed; both Windows jobs failed the same startup test.",
+  "checks": {
+    "fail-before": {
+      "command": "UNVERIFIED: the original invocation is not retained. The JSONL identifies TestCredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites and its original four subcases.",
+      "exit_status": 1,
+      "test_events": {
+        "pass": 1,
+        "fail": 4,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "fail"
+        }
+      ],
+      "output": "fail-before.jsonl.gz"
+    },
+    "focused": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=10m -run '^Test(CredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites|RequiredBaselineWriteFailurePreventsRuntimeStartup|ApplicationCredentialPolicyDistinguishesFreshAndLegacyStartup|RuntimeACLRefusalPrecedesBaselineExport|RuntimePermissionRefusalPrecedesBaselineExport)$' ./internal/cli/app",
+      "exit_status": 0,
+      "test_events": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "pass"
+        }
+      ],
+      "output": "focused.jsonl.gz"
+    },
+    "minimum-go": {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -json -count=1 -timeout=10m -run '^Test(CredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites|RequiredBaselineWriteFailurePreventsRuntimeStartup|ApplicationCredentialPolicyDistinguishesFreshAndLegacyStartup|RuntimeACLRefusalPrecedesBaselineExport|RuntimePermissionRefusalPrecedesBaselineExport)$' ./internal/cli/app",
+      "exit_status": 0,
+      "test_events": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "pass"
+        }
+      ],
+      "output": "minimum-go.jsonl.gz"
+    },
+    "task": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=30m -p=1 ./internal/cli/app ./internal/auth ./acquisition",
+      "exit_status": 0,
+      "test_events": {
+        "pass": 512,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starmap/internal/auth",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starmap/acquisition",
+          "result": "pass"
+        }
+      ],
+      "output": "task.jsonl.gz"
+    },
+    "preflight": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -json -count=1 -timeout=5m -run '^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent|LegacyRollbackPreservesOperatorSidecars|RelocationPreparationClosesHandlesAfterCleanupConflict|RequiredBaselineWriteFailurePreventsRuntimeStartup|CredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites)$' ./internal/privatefiles ./internal/catalog/workspace ./internal/cli/app > native-evidence/filesystem-preflight.jsonl",
+      "exit_status": 0,
+      "test_events": {
+        "pass": 40,
+        "fail": 0,
+        "skip": 0
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starmap/internal/privatefiles",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starmap/internal/cli/app",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "result": "pass"
+        }
+      ],
+      "output": "preflight.jsonl.gz"
+    }
+  },
+  "policy": {
+    "command": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+    "exit_status": 0,
+    "output": "goago-final.json"
+  },
+  "qualification": "Required Sol xhigh and Opus 5 high pre-PR review passed at P0 with no findings. Fresh native qualification and merge remain UNVERIFIED.",
+  "limits": [
+    "Focused run predates the fifth test-only table case. Minimum-Go, task, and preflight runs include all five cases.",
+    "A11 and A12 through Starport remain UNVERIFIED.",
+    "No campaign completion credit applies."
+  ],
+  "review": {
+    "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:claude-opus-5:high",
+    "exit_status": 0,
+    "output": "autoreview.log"
+  },
+  "publication": {
+    "pull_request": 161,
+    "head": "d8a824c38ea098f9d8f49d52e5436200c5ac7167",
+    "native_run": 34913209176,
+    "state": "in_progress",
+    "evidence": "pr161-repair-published.json",
+    "progress_evidence": "repair-run-progress.json",
+    "native_preflight": "All six runners passed the early filesystem and startup regression step. Whole native jobs remain in progress."
+  }
+}

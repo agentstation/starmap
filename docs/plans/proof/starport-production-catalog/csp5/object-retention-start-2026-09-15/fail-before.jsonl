@@ -1,0 +1,10 @@
+{"Time":"2026-09-14T19:33:11.87991-05:00","Action":"start","Package":"github.com/agentstation/starmap/pkg/catalogs/storage"}
+{"Time":"2026-09-14T19:33:12.098498-05:00","Action":"run","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Test":"TestObjectRetentionCapabilityGap"}
+{"Time":"2026-09-14T19:33:12.098561-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Test":"TestObjectRetentionCapabilityGap","Output":"=== RUN   TestObjectRetentionCapabilityGap\n"}
+{"Time":"2026-09-14T19:33:12.102471-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Test":"TestObjectRetentionCapabilityGap","Output":"    object_retention_gap_test.go:25: five generations readable; collector=false; generation_leases=false\n"}
+{"Time":"2026-09-14T19:33:12.102507-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Test":"TestObjectRetentionCapabilityGap","Output":"    object_retention_gap_test.go:27: object catalog storage cannot yet coordinate collection with protected generation readers\n"}
+{"Time":"2026-09-14T19:33:12.102523-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Test":"TestObjectRetentionCapabilityGap","Output":"--- FAIL: TestObjectRetentionCapabilityGap (0.00s)\n"}
+{"Time":"2026-09-14T19:33:12.102546-05:00","Action":"fail","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Test":"TestObjectRetentionCapabilityGap","Elapsed":0}
+{"Time":"2026-09-14T19:33:12.102567-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Output":"FAIL\n"}
+{"Time":"2026-09-14T19:33:12.103304-05:00","Action":"output","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Output":"FAIL\tgithub.com/agentstation/starmap/pkg/catalogs/storage\t0.223s\n"}
+{"Time":"2026-09-14T19:33:12.103323-05:00","Action":"fail","Package":"github.com/agentstation/starmap/pkg/catalogs/storage","Elapsed":0.223}

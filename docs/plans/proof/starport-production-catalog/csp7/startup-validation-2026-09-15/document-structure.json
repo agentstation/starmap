@@ -1,0 +1,18 @@
+{
+  "protected_sections_unchanged": 6,
+  "unrelated_files_unchanged": 5,
+  "ledger_rows": 38,
+  "done_rows": 10,
+  "active": [
+    "CSP5"
+  ],
+  "plan_words": 10405,
+  "plan_bytes": 113961,
+  "resume_words": 291,
+  "size_reason": "Required task contracts and completion gates remain in the canonical plan. Resume instructions use current proof links.",
+  "blocked_native": [
+    "CSP7"
+  ],
+  "local_links_checked": 135,
+  "non_html_anchors_not_checked": 13
+}

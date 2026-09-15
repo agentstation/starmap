@@ -1,0 +1,15 @@
+{
+  "source_commit": "7e8e65a442d0b86789f26402c5ce6aa7ae9373be",
+  "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m -run ^TestObjectRetentionCapabilityGap$ ./pkg/catalogs/storage",
+  "exit_status": 1,
+  "meaning": "Current object storage retains all five generations and offers neither coordinated collection nor generation read leases. This probe records the capability gap. It does not require implicit cleanup without an explicitly selected coordinator.",
+  "next_action": "Design and implement explicit shared coordination before enabling object collection. Bind collector decisions to current and required generations, reader protection, and concurrent publication. Validate behavior with actual Valkey and Redis services.",
+  "constraints": [
+    "GenerationLeaser promises retained bytes until explicit release. An expiring distributed lock alone cannot satisfy that contract.",
+    "An in-flight S3 mutation must remain fenced if coordination is lost. Checking a lock immediately before an S3 write is insufficient.",
+    "Do not enable S3-only cleanup. Preserve the non-collecting object store for callers without an explicit coordinator.",
+    "The probe proves an absent capability. It does not qualify a coordination protocol or prescribe automatic cleanup."
+  ],
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention",
+  "branch": "codex/catalog-object-retention"
+}
