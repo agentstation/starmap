@@ -58,7 +58,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: verify-checks verify-tests help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go test-file-sizes verify-action-pins verify lint technical-writing-check fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
+.PHONY: verify-checks verify-tests help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go test-file-sizes verify-action-pins verify lint technical-writing-check fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-deps openapi-check version catalog-generation-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -555,7 +555,10 @@ testdata: ## Refresh governed provider fixtures (use PROVIDER=id to select one)
 	fi
 
 # Documentation
-openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
+openapi-deps: ## Resolve the server dependency graph before OpenAPI parsing
+	@$(GOCMD) list -deps ./internal/server > /dev/null
+
+openapi: openapi-deps ## Generate OpenAPI 3.1 documentation (embedded in binary)
 	@echo "$(BLUE)Generating OpenAPI 3.1 documentation...$(NC)"
 	@echo "$(YELLOW)Step 1/3: Generating OpenAPI 3.1 with swag v2...$(NC)"
 	@$(SWAG_RUN) init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1
@@ -584,7 +587,7 @@ godoc: ## Generate only Go documentation using go generate
 	$(RUN_PREFIX) env PATH="$(GOBIN):$$PATH" go generate ./...
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
 
-openapi-check: ## Check if embedded OpenAPI specifications match Go types
+openapi-check: openapi-deps ## Check if embedded OpenAPI specifications match Go types
 	@tmpdir="$$(mktemp -d)"; \
 	trap 'rm -rf "$$tmpdir"' EXIT HUP INT TERM; \
 	$(SWAG_RUN) init -g internal/server/docs.go -o "$$tmpdir" --parseDependency --parseInternal --v3.1 > "$$tmpdir/generator.log" 2>&1 || { result=$$?; cat "$$tmpdir/generator.log" >&2; exit $$result; }; \

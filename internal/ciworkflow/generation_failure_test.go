@@ -27,6 +27,10 @@ func TestOpenAPIGenerationRejectsPartialOutputAfterToolFailure(t *testing.T) {
 			}
 			generator := filepath.Join(root, "generator")
 			if err := os.WriteFile(generator, []byte(`#!/bin/sh
+if [ ! -f dependency-ready ]; then
+  printf 'server dependencies were not resolved before generation\n'
+  exit 77
+fi
 while [ "$#" -gt 0 ]; do
   if [ "$1" = -o ]; then shift; output="$1"; break; fi
   shift
@@ -40,7 +44,7 @@ exit 42
 				t.Fatal(err)
 			}
 			presence := filepath.Join(root, "presence")
-			if err := os.WriteFile(presence, []byte("#!/bin/sh\nprintf 'ran\\n' > presence-ran\n"), 0o700); err != nil {
+			if err := os.WriteFile(presence, []byte("#!/bin/sh\nif [ \"$1\" = list ]; then touch dependency-ready; exit 0; fi\nprintf 'ran\\n' > presence-ran\n"), 0o700); err != nil {
 				t.Fatal(err)
 			}
 			command := exec.CommandContext(t.Context(), "make", "-f", makefile, "HAS_DEVBOX=", "SWAG_RUN="+generator, "GOCMD="+presence, target)
