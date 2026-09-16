@@ -1,17 +1,17 @@
 {
   "task": "CSP14",
   "status": "in_progress",
-  "recorded_at": "2026-09-16T05:27:05.115133+00:00",
+  "recorded_at": "2026-09-16T05:44:06.257938+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
   "branch": "codex/starmap-server-administration",
-  "head": "42dd3c97add1b5e66838334477ced10e92577879",
+  "head": "e7c129e8a93de6c61af3d7ec05efb8c61ef330ad",
   "source_files": {
     ".github/workflows/pr.yaml": "cf343566fe84173dc0964cb0257c75ec86105847b917a5f59b9773d5b6aba9c3",
     "GLOSSARY.md": "fa666b52df6ae324d50ea959c9998544790898c5c3e18f01081bf8c5f08fda86",
     "README.md": "e39666023073541c0ce2bc3d7d30f429883ca242dca6c1e4a0d8ddaabb6e18c6",
     "docs/DOCKER.md": "a320774b19ce3c89aa25c5f1ea2691dfc4a6a826acd7bf7a58b1f16db1dbff05",
     "docs/REST_API.md": "b1a915c7eeb7e7532c2ffc13f4a6a08e68e2ed0b723d5c0a7ad22a53726bd0db",
-    "docs/SERVER_ADMINISTRATION.md": "712cd007dd4aa250dedaa6445907b519dd00d23dba423aaf1df66a39c37fac4f",
+    "docs/SERVER_ADMINISTRATION.md": "316059d7c4170c8f131de5b6057d4bcf74696a394b9541c3b2430e17ca628102",
     "internal/cli/app/commands.go": "bc54e1cce401d99b099ef72031c47d6e24481aec27e8baee1a263a008058a523",
     "internal/cli/app/configuration_report.go": "40127cfb9f602b91409f114bb49eaac590d14970c08deb4f9cb21b59f0a9a795",
     "internal/cli/app/configuration_report_test.go": "659b66a7668395da450e331f1f0ed53d2d5da827c00b4a514f59d227a0002e27",
@@ -45,8 +45,8 @@
     "internal/server/server.go": "eefdef31ef9507f71f614692b05bc08d530f61ed6800c2eb7602fe7f57d05f0c",
     "pkg/productpaths/policy/access.go": "cfdd4656e0dc90bf68c479fa6a76bd026be6831381c1033d4eaf77ad7689f11c",
     "runtime/administration_restore_test.go": "9f374e3fc3f84dd3c86c5f1c5a2edb8f9283979fe40db06a18ad9c7af0978dcf",
-    "scripts/catalog-product-checks.json": "75872c43c7fba1878b7b627ab77da23f34fb81a16ed53cffceb5971e4f9f9cb2",
-    "server/README.md": "38b8415e29298961a3c06213010dca43a13deb87782592d150c710a3fe6d7cc2",
+    "scripts/catalog-product-checks.json": "d4c1395cf2764827748dde33ffebc1e4f1f6e1969f12203513b561ea06856323",
+    "server/README.md": "e6ac517bd727a893612b470260bfdee3d900f643da1d08a91cda0b5d91da3e43",
     "server/administration/README.md": "37d417a59abc478826156affc602cac01ee424e87976554423225c4676591d88",
     "server/administration/audit.go": "4102bb27b9eb8b0723c762c9223e63e3469f8f589aef6cbdd6e203c91479b3d6",
     "server/administration/authentication.go": "e86b92501384b45dc16fdd75c8cab79f3c448a4441fd0b779cd9ec31d109b41a",
@@ -66,8 +66,12 @@
     "server/administration/reports.go": "7b027fc955da07141a545a66ccc450390a1f6e21d96f3bf1a6dba5b7647fe0a3",
     "server/administration/stream.go": "2c3ed43ee5e8c81edb84bfb45153e6b588ac91f95814f5cea2d187f5bfc78265",
     "server/administration/writer.go": "ac697f5ef50d67512f62e566156f958c5130fa311d1e00433cc1c2c543ecbf85",
+    "server/administration_policy.go": "7f8860634f5ddc47bb3912faa1e5b5f2acb6b937bbcf0138ccc37bf707d77cef",
+    "server/administration_policy_test.go": "3222318aef285a516c9b5a79fd8f58dd3fc58301aa8589db917f4c9e219cf625",
     "server/administration_test.go": "335b72f68e0a0dca8e2f66e2d5e344c8a50cc04655d3b1d45df8fc9bee092f49",
-    "server/server.go": "39d0663b7319cfdc7f63d1ce7d8b1ccc89ebe95eef1a157ad1c16f6c11eba5d0",
+    "server/cascade_test.go": "7e26913e0664921532430c977b407ed42448db4e6a97681757af816f6d715ab1",
+    "server/runtime_test.go": "24cef5384244949e7dd5d4ecc337023d5df129bf5448099c3d14256090375f7a",
+    "server/server.go": "c65b246ae4b1b1e51849f7333ec3b1108a4d8b974cbc191fc7173ea1a3f89ba0",
     "server/server_test.go": "168265f7c9fa400d7ab3e4f4c380e9a0c316c01769664e2ea0f131376aaf8b19",
     "testdata/consumers/server-embed/consumer.go": "446a98b4cd69647d85d2253e660c0edae2c3168a644ca040cc528f4dee5d4e87"
   },
@@ -116,15 +120,21 @@
   "static_checks": {
     "lint": "PASS, zero issues. closeout-lint.log",
     "goago": "PASS, no findings, stale ignores, or errors. closeout-goago.json",
-    "docs": "PASS. docs-check.log",
+    "docs": "PASS. docs-qualified.log",
     "consumer_profiles": "PASS after updating disabled administrator expectation to 403. consumer-deps-final.log",
     "middleware_coverage": "97.2%, above the 90% repository requirement.",
-    "prose": "PASS, 1733 files, zero diagnostics."
+    "prose": "PASS, 1735 files, zero diagnostics. all-prose-final.log",
+    "package_ownership": "13/13 PASS",
+    "dependency_direction": "8/8 PASS",
+    "acceptance_adapter_tests": "78 tests PASS",
+    "package_layout": "PASS",
+    "file_sizes": "PASS"
   },
   "failures": {
-    "task_acceptance_initial": "Four adapter builds observed a transient undefined config field. Repaired by reading the canonical Value API. Final task rerun underway.",
-    "task_race_final": "The internal/server package reached the five-minute timeout while fsync persisted the full embedded catalog workspace. The durable restart test now seeds a small real catalog store and retains all original behavior assertions. The bounded rerun is underway.",
-    "prose": "Six diagnostics repaired. Final prose check underway."
+    "task_acceptance_initial": "Four adapter builds observed a transient undefined config field. Repaired by reading the canonical Value API. All eight final adapters pass.",
+    "task_race_final": "The internal/server package reached the five-minute deadline while fsync persisted the full embedded catalog workspace. A smaller stored seed did not reduce embedded-source projection. The original fixture is restored, with all original assertions and the deadline unchanged. Native Linux qualification continues.",
+    "prose": "Initial diagnostics are repaired. The final check passes 1735 files with zero diagnostics.",
+    "linux_cascade": "The existing anonymous relay fixture conflicts with required managed readers. Repair the setup with distinct subscriber credentials and retain cascade, stream, and cycle checks."
   },
   "running": {
     "full_verification": {
@@ -156,13 +166,63 @@
     },
     "task_race_isolated": {
       "session": 31953,
+      "status": "FAIL",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-race-isolated.jsonl",
+      "exit_status": 1,
+      "reason": "The full embedded-source YAML projection exceeds the local five-minute package limit even without the full gate. No test assertion or deadline was weakened."
+    },
+    "full_verification_final": {
+      "session": 26217,
       "status": "in_progress",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-race-isolated.jsonl"
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-final.log"
+    },
+    "linux_task": {
+      "session": 51851,
+      "status": "FAIL",
+      "container": "starmap-csp14-native-20260916",
+      "image": "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36",
+      "platform": "linux/arm64",
+      "source_commit": "bc2d88727",
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/server/... ./server ./internal/cli/commands/serve",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-task-final.jsonl",
+      "stderr": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-task-final.stderr",
+      "cleanup": "After evidence capture, remove only this task-owned container and archive.",
+      "exit_status": 1,
+      "passed_test_events": 360,
+      "passed_packages": 10,
+      "reason": "TestServerCascadesVerifiedCatalogSource still constructed an anonymous internal relay. The new constructor policy rejects it. The internal/server package passes within 279.043 seconds. Managed reader setup repair is in progress."
+    },
+    "task_acceptance_embedding": {
+      "session": 80121,
+      "status": "PASS",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-acceptance-embedding.json",
+      "exit_status": 0
+    },
+    "prose_final": {
+      "session": 88392,
+      "status": "PASS",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/all-prose-final.log",
+      "exit_status": 0
+    },
+    "docs_final": {
+      "session": 71552,
+      "status": "PASS",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/docs-qualified.log",
+      "exit_status": 0
+    },
+    "linux_task_managed": {
+      "session": 73077,
+      "status": "in_progress",
+      "source_commit": "e7c129e8a93de6c61af3d7ec05efb8c61ef330ad",
+      "container": "starmap-csp14-native-20260916",
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/server/... ./server ./internal/cli/commands/serve",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-task-managed.jsonl",
+      "stderr": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-task-managed.stderr"
     }
   },
   "remaining": [
-    "Finish final tests and repository gate.",
-    "Commit intended source, integrate main 8c35fe891, complete required review.",
+    "Finish full repository and native task checks.",
+    "Complete required review of committed source against origin/main.",
     "Push and create PR, qualify native administration on six runners.",
     "Merge after required checks and record actual merge before CSP14 completion."
   ],
@@ -188,11 +248,25 @@
     "release_qualification": "Not claimed. Only CSP14 was selected."
   },
   "plan_maintenance": {
-    "prose": "1545 files, zero diagnostics.",
+    "prose": "PASS: 1545 files, zero diagnostics after paragraph repair.",
     "unrelated_files_unchanged": 5,
     "protected_sections_unchanged": 6
   },
   "work_commit": "5e9167c15",
   "clean_worktree": true,
-  "fixture_resolution": "Restored the original durable restart fixture. The proposed small seed did not reduce the embedded-source projection. Keep the existing five-minute task bound and rerun without competing full-suite filesystem work."
+  "fixture_resolution": "Restored the original durable restart fixture. The five-minute task deadline remains unchanged. Native Linux task qualification and full macOS repository verification continue.",
+  "manual_audit_repair": {
+    "commit": "bc2d88727",
+    "issue": "Go server composition also needs managed readers for an internal authority. The CLI alone previously enforced this.",
+    "checks": "TestInternalServerEmbeddingRequiresManagedReaders and existing subscriber and rotation HTTP tests pass. Lint and goago pass.",
+    "lifecycle": "Embedding hosts stop and reconstruct the server when changing authority."
+  },
+  "cascade_repair": {
+    "commit": "e7c129e8a93de6c61af3d7ec05efb8c61ef330ad",
+    "change": "Both cascade hops now require managed subscriber credentials. Stream propagation, provenance, and all three cycle assertions remain.",
+    "race": "PASS: five test events, including two parent tests.",
+    "lint": "PASS: zero issues.",
+    "goago": "PASS: zero findings, stale ignores, or errors.",
+    "prose": "PASS: 1735 files, zero diagnostics."
+  }
 }
