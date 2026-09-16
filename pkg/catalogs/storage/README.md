@@ -14,6 +14,18 @@ Package storage provides durable generation\-oriented catalog storage.
 
 - [Constants](<#constants>)
 - [type AuthorityHeadReader](<#AuthorityHeadReader>)
+- [type CoordinatedObject](<#CoordinatedObject>)
+  - [func NewCoordinatedObject\(objects ObjectCollectionBackend, coordination CoordinationBackend, config CoordinatedObjectConfig\) \(\*CoordinatedObject, error\)](<#NewCoordinatedObject>)
+  - [func \(s \*CoordinatedObject\) AcquireGeneration\(ctx context.Context, id string\) \(catalogs.Generation, func\(\) error, error\)](<#CoordinatedObject.AcquireGeneration>)
+  - [func \(s \*CoordinatedObject\) Collect\(ctx context.Context, request RetentionRequest\) \(RetentionReport, error\)](<#CoordinatedObject.Collect>)
+  - [func \(s \*CoordinatedObject\) Commit\(ctx context.Context, generation catalogs.Generation, expectedGenerationID string\) error](<#CoordinatedObject.Commit>)
+  - [func \(s \*CoordinatedObject\) Current\(ctx context.Context\) \(catalogs.Generation, error\)](<#CoordinatedObject.Current>)
+  - [func \(s \*CoordinatedObject\) CurrentAuthorityHead\(ctx context.Context\) \(catalogs.CatalogAuthorityHead, error\)](<#CoordinatedObject.CurrentAuthorityHead>)
+  - [func \(s \*CoordinatedObject\) Get\(ctx context.Context, id string\) \(catalogs.Generation, error\)](<#CoordinatedObject.Get>)
+  - [func \(s \*CoordinatedObject\) ReaderClaims\(ctx context.Context\) \(ObjectReaderClaims, error\)](<#CoordinatedObject.ReaderClaims>)
+  - [func \(s \*CoordinatedObject\) ReleaseFencedOwner\(ctx context.Context, ownerID, revision string\) error](<#CoordinatedObject.ReleaseFencedOwner>)
+- [type CoordinatedObjectConfig](<#CoordinatedObjectConfig>)
+- [type CoordinationBackend](<#CoordinationBackend>)
 - [type CurrentObjectReader](<#CurrentObjectReader>)
 - [type Filesystem](<#Filesystem>)
   - [func NewFilesystem\(path string\) \(\*Filesystem, error\)](<#NewFilesystem>)
@@ -58,6 +70,8 @@ Package storage provides durable generation\-oriented catalog storage.
   - [func \(r ObjectListRequest\) Validate\(\) error](<#ObjectListRequest.Validate>)
 - [type ObjectPage](<#ObjectPage>)
 - [type ObjectPutCondition](<#ObjectPutCondition>)
+- [type ObjectReaderClaim](<#ObjectReaderClaim>)
+- [type ObjectReaderClaims](<#ObjectReaderClaims>)
 - [type ObjectValue](<#ObjectValue>)
 - [type RetainingStore](<#RetainingStore>)
 - [type RetentionReport](<#RetentionReport>)
@@ -68,12 +82,25 @@ Package storage provides durable generation\-oriented catalog storage.
 
 ## Constants
 
+<a name="DefaultObjectWriteLifetime"></a>
+
+```go
+const (
+    // DefaultObjectWriteLifetime bounds how long an unfinished upload remains protected without another commit attempt.
+    DefaultObjectWriteLifetime = 5 * time.Minute
+    // MaxCoordinatedObjectBytes includes the payload, manifest, and ownership header.
+    MaxCoordinatedObjectBytes = MaxFilesystemPayloadBytes + MaxFilesystemManifestBytes + (1 << 20)
+)
+```
+
 <a name="DefaultRetentionScanEntries"></a>
 
 ```go
 const (
     // DefaultRetentionScanEntries bounds a collection pass unless the caller overrides it.
     DefaultRetentionScanEntries = 4096
+    // DefaultRetentionInputMaxBytes bounds raw bytes read during object recovery.
+    DefaultRetentionInputMaxBytes = 256 << 20
     // MaxRetentionScanEntries bounds an explicit collection scan.
     MaxRetentionScanEntries = 100000
 )
@@ -105,6 +132,125 @@ AuthorityHeadReader observes the current stored publication independently of cat
 ```go
 type AuthorityHeadReader interface {
     CurrentAuthorityHead(context.Context) (catalogs.CatalogAuthorityHead, error)
+}
+```
+
+<a name="CoordinatedObject"></a>
+## type [CoordinatedObject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object.go#L47-L51>)
+
+CoordinatedObject publishes immutable objects through a separate atomic registry. Readers retain stored bytes until explicit release. Expired unfinished uploads lose publication rights when collection removes their registry reservation.
+
+```go
+type CoordinatedObject struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewCoordinatedObject"></a>
+### func [NewCoordinatedObject](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object.go#L56>)
+
+```go
+func NewCoordinatedObject(objects ObjectCollectionBackend, coordination CoordinationBackend, config CoordinatedObjectConfig) (*CoordinatedObject, error)
+```
+
+NewCoordinatedObject validates local configuration without accessing storage. The first explicit commit initializes an empty namespace. Existing plain object stores require a separate namespace and explicit migration.
+
+<a name="CoordinatedObject.AcquireGeneration"></a>
+### func \(\*CoordinatedObject\) [AcquireGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_readers.go#L51>)
+
+```go
+func (s *CoordinatedObject) AcquireGeneration(ctx context.Context, id string) (catalogs.Generation, func() error, error)
+```
+
+AcquireGeneration protects stored bytes until an explicit successful release. The release function is idempotent, retryable after failure, and independent of ctx.
+
+<a name="CoordinatedObject.Collect"></a>
+### func \(\*CoordinatedObject\) [Collect](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_collection.go#L14>)
+
+```go
+func (s *CoordinatedObject) Collect(ctx context.Context, request RetentionRequest) (RetentionReport, error)
+```
+
+Collect retires unprotected generations before deleting their immutable objects. Its registry compare\-and\-swap fences expired uploads and concurrent publication. Later passes recover delayed orphan writes through their self\-contained ownership headers.
+
+<a name="CoordinatedObject.Commit"></a>
+### func \(\*CoordinatedObject\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_publication.go#L111>)
+
+```go
+func (s *CoordinatedObject) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error
+```
+
+Commit reserves one unique upload before writing bytes and atomically selects it after validation. A reservation retired by collection can never publish, even when its upload finishes later.
+
+<a name="CoordinatedObject.Current"></a>
+### func \(\*CoordinatedObject\) [Current](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_readers.go#L19>)
+
+```go
+func (s *CoordinatedObject) Current(ctx context.Context) (catalogs.Generation, error)
+```
+
+Current returns a generation that was current during this call.
+
+<a name="CoordinatedObject.CurrentAuthorityHead"></a>
+### func \(\*CoordinatedObject\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_publication.go#L221>)
+
+```go
+func (s *CoordinatedObject) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuthorityHead, error)
+```
+
+CurrentAuthorityHead reads current registry metadata without loading catalog object bytes. The method creates no protection claim and never repairs state or renews a receipt.
+
+<a name="CoordinatedObject.Get"></a>
+### func \(\*CoordinatedObject\) [Get](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_readers.go#L38>)
+
+```go
+func (s *CoordinatedObject) Get(ctx context.Context, id string) (catalogs.Generation, error)
+```
+
+Get protects stored bytes during the read and returns an independent generation.
+
+<a name="CoordinatedObject.ReaderClaims"></a>
+### func \(\*CoordinatedObject\) [ReaderClaims](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_readers.go#L159>)
+
+```go
+func (s *CoordinatedObject) ReaderClaims(ctx context.Context) (ObjectReaderClaims, error)
+```
+
+ReaderClaims reports durable readers for operator diagnosis and fenced recovery.
+
+<a name="CoordinatedObject.ReleaseFencedOwner"></a>
+### func \(\*CoordinatedObject\) [ReleaseFencedOwner](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_readers.go#L179>)
+
+```go
+func (s *CoordinatedObject) ReleaseFencedOwner(ctx context.Context, ownerID, revision string) error
+```
+
+ReleaseFencedOwner removes the inspected owner's claims after external process fencing. The caller must stop every process using ownerID before this operation. A changed coordination revision refuses recovery without removing any claim.
+
+<a name="CoordinatedObjectConfig"></a>
+## type [CoordinatedObjectConfig](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object.go#L36-L42>)
+
+CoordinatedObjectConfig selects a separate object namespace and its coordination record. OwnerID identifies this process incarnation. Now defaults to the system clock. Clock errors can cause early writer refusal but cannot bypass publication fencing.
+
+```go
+type CoordinatedObjectConfig struct {
+    Prefix          string
+    CoordinationKey string
+    OwnerID         string
+    WriteLifetime   time.Duration
+    Now             func() time.Time
+}
+```
+
+<a name="CoordinationBackend"></a>
+## type [CoordinationBackend](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object.go#L28-L31>)
+
+CoordinationBackend supplies atomic conditional records and current primary reads. Its records require durable storage without eviction or expiration.
+
+```go
+type CoordinationBackend interface {
+    ObjectBackend
+    CurrentObjectReader
 }
 ```
 
@@ -203,7 +349,7 @@ func (s *Filesystem) Root() string
 Root returns the configured filesystem root without creating it.
 
 <a name="GenerationCollectionProvider"></a>
-## type [GenerationCollectionProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L35-L37>)
+## type [GenerationCollectionProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L37-L39>)
 
 GenerationCollectionProvider forwards a wrapper's optional guarded collection capability.
 
@@ -214,7 +360,7 @@ type GenerationCollectionProvider interface {
 ```
 
 <a name="GenerationCollector"></a>
-## type [GenerationCollector](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L30-L32>)
+## type [GenerationCollector](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L32-L34>)
 
 GenerationCollector removes unprotected generations under a bounded retention request.
 
@@ -225,7 +371,7 @@ type GenerationCollector interface {
 ```
 
 <a name="GenerationCollectorFor"></a>
-### func [GenerationCollectorFor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L40>)
+### func [GenerationCollectorFor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L42>)
 
 ```go
 func GenerationCollectorFor(store Store) (GenerationCollector, bool)
@@ -234,7 +380,7 @@ func GenerationCollectorFor(store Store) (GenerationCollector, bool)
 GenerationCollectorFor resolves direct collection or a wrapper's explicit forwarding.
 
 <a name="GenerationLeaseProvider"></a>
-## type [GenerationLeaseProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L56-L58>)
+## type [GenerationLeaseProvider](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L58-L60>)
 
 GenerationLeaseProvider forwards a wrapper's optional read\-lease capability. It exposes no publication or collection operation from the underlying store.
 
@@ -245,7 +391,7 @@ type GenerationLeaseProvider interface {
 ```
 
 <a name="GenerationLeaser"></a>
-## type [GenerationLeaser](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L50-L52>)
+## type [GenerationLeaser](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L52-L54>)
 
 GenerationLeaser protects stored generation bytes until the caller releases them. Each acquisition returns independent bytes and an idempotent release function.
 
@@ -256,7 +402,7 @@ type GenerationLeaser interface {
 ```
 
 <a name="GenerationLeaserFor"></a>
-### func [GenerationLeaserFor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L61>)
+### func [GenerationLeaserFor](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L63>)
 
 ```go
 func GenerationLeaserFor(store Store) (GenerationLeaser, bool)
@@ -547,6 +693,31 @@ type ObjectPutCondition struct {
 }
 ```
 
+<a name="ObjectReaderClaim"></a>
+## type [ObjectReaderClaim](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_readers.go#L146-L150>)
+
+ObjectReaderClaim identifies one durable reader protection claim.
+
+```go
+type ObjectReaderClaim struct {
+    Token        string
+    GenerationID string
+    OwnerID      string
+}
+```
+
+<a name="ObjectReaderClaims"></a>
+## type [ObjectReaderClaims](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_readers.go#L153-L156>)
+
+ObjectReaderClaims binds an inspection to the exact coordination revision.
+
+```go
+type ObjectReaderClaims struct {
+    Revision string
+    Claims   []ObjectReaderClaim
+}
+```
+
 <a name="ObjectValue"></a>
 ## type [ObjectValue](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/object.go#L18-L21>)
 
@@ -560,7 +731,7 @@ type ObjectValue struct {
 ```
 
 <a name="RetainingStore"></a>
-## type [RetainingStore](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L23-L27>)
+## type [RetainingStore](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L25-L29>)
 
 RetainingStore coordinates collection with publication and generation read leases. AcquireGeneration returns independent bytes and an idempotent release function. The lease protects stored content until release, including after current changes. Callers must release every successful acquisition. Ordinary Get returns bytes without retaining the stored generation after the call completes.
 
@@ -573,7 +744,7 @@ type RetainingStore interface {
 ```
 
 <a name="RetentionReport"></a>
-## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L94-L102>)
+## type [RetentionReport](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L98-L106>)
 
 RetentionReport describes a complete collection decision and its applied changes. Candidates names generations in eviction order. Removed names actual deletions. Dry runs leave After equal to Before. Projected describes the proposed result. OverLimit means protected content alone exceeds at least one requested limit.
 
@@ -590,7 +761,7 @@ type RetentionReport struct {
 ```
 
 <a name="RetentionRequest"></a>
-## type [RetentionRequest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L74-L81>)
+## type [RetentionRequest](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L76-L85>)
 
 RetentionRequest selects limits for one explicit collection pass. ExpectedGenerationID binds the request to current, including an empty store. RequiredGenerationIDs names baseline, candidate, and rollback generations. Every required ID must exist. The store also protects current and active leases. Callers must coordinate changes to their required IDs with collection.
 
@@ -601,12 +772,14 @@ type RetentionRequest struct {
     MaxGenerations        int
     MaxBytes              int64
     ScanEntries           int
-    DryRun                bool
+    // InputMaxBytes bounds object recovery reads. Zero selects the default bound.
+    InputMaxBytes int64
+    DryRun        bool
 }
 ```
 
 <a name="RetentionUsage"></a>
-## type [RetentionUsage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L85-L88>)
+## type [RetentionUsage](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/retention.go#L89-L92>)
 
 RetentionUsage counts generations and their manifest plus payload bytes. Bytes exclude filesystem overhead, journal files, and backend replication.
 

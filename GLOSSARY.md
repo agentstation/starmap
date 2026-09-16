@@ -44,6 +44,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | hop | One Starmap runtime inside a source chain. |  | approved | `pkg/catalogs/remote/chain.go` |
 | HTTP | The application protocol that Starmap uses for its REST API and remote catalog service. |  | approved | `docs/REST_API.md` |
 | ID | A value that uniquely identifies a catalog entity or generation in its scope. |  | approved | `docs/CATALOG_IDENTITY.md` |
+| in-memory | Data that a process keeps in its memory for direct access. |  | approved | `README.md`, `docs/ARCHITECTURE.md`, `docs/CATALOG_STORE_CONTRACT.md` |
 | JSON | JavaScript Object Notation, the data format for Starmap API and catalog payloads. |  | approved | `docs/REST_API.md` |
 | MiB | Mebibyte, a unit of 1,048,576 bytes. |  | approved | `internal/cli/app/config.go` |
 | last-known-good | The most recent catalog generation that completed validation and activation. |  | approved | `docs/CATALOG_DISTRIBUTION_TRUST.md` |
