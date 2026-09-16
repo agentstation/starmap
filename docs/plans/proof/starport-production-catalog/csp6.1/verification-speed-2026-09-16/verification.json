@@ -16,7 +16,7 @@
     "raw_jobs_uncompressed_sha256": "8c22fbe01dfd7724f7ad214b7fc959cf99032e5fa7acd5a478d6ad041565d70f"
   },
   "source": "76fbb3b9495fb1e18c442d3c4098e3ef9a27eb6f",
-  "next": "Finish review for 76fbb3b94, push the cold-cache repair, and measure a new final-head CI run. Merge only after all required checks pass.",
+  "next": "Inspect run 35128783572, record the complete hosted verification duration, and merge PR #164 only after every required check passes.",
   "constraints": [
     "Preserve meaningful assertions, race coverage, both Go toolchains, all packages, and required platform jobs.",
     "Keep full embedded and public catalog integration coverage at explicit seams.",
@@ -269,10 +269,10 @@
   },
   "publication": {
     "pr": "https://github.com/agentstation/starmap/pull/164",
-    "head": "b01c28ef47cdf740951f75cbb20347bf5348a577",
-    "state": "pushed; CI pending",
-    "workflow_run": 35127172073,
-    "created_at": "2026-09-16T17:16:39Z"
+    "head": "76fbb3b9495fb1e18c442d3c4098e3ef9a27eb6f",
+    "workflow_run": 35128783572,
+    "created_at": "2026-09-16T17:32:07Z",
+    "state": "pushed; final-head CI pending"
   },
   "measured_source": "b01c28ef47cdf740951f75cbb20347bf5348a577",
   "cold_cache_repair": {
@@ -284,7 +284,17 @@
     "cause": "Pinned Swag wraps any go list stderr as an error, including a successful dependency download. Moving generation before tests exposed the missing server dependency cache.",
     "fix": "Both OpenAPI targets resolve the server dependency graph with go list -deps before the pinned parser. Generator failures remain fatal.",
     "checks": "48 workflow test events pass on each Go toolchain. Generated docs, vet, goago, prose, and pinned lint pass.",
-    "review": "second final-head review pending",
+    "review": "final-head Sol and Opus review passed with zero findings",
     "prior_run": "cancelled after the required gate failed, to avoid spending more compute on a superseded head"
+  },
+  "final_review": {
+    "source": "76fbb3b9495fb1e18c442d3c4098e3ef9a27eb6f",
+    "reviewers": [
+      "codex:gpt-5.6-sol:high",
+      "claude:claude-opus-5:high"
+    ],
+    "exit": 0,
+    "findings": 0,
+    "raw": "cold-review.json.gz"
   }
 }
