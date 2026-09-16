@@ -1,0 +1,123 @@
+{
+  "at": "2026-09-16T18:46:52.342222+00:00",
+  "decision": "D36",
+  "go": "1.27.1",
+  "status": "in_progress",
+  "completion_credit": false,
+  "source": {
+    "starmap": {
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+      "head": "49769647bed59aef46009bff640b1e0aa1441580",
+      "dirty_files": {}
+    },
+    "starport": {
+      "worktree": "/Users/jack/src/github.com/agentstation/starport-go-1271",
+      "head": "d9a2f1fadef7c7f1db90d11d8eaf18ac0544f849",
+      "dirty_files": {},
+      "pr": "https://github.com/agentstation/starport/pull/375"
+    }
+  },
+  "verified": [
+    "Go 1.27.1 local and Devbox runtime",
+    "Starmap workflow race tests",
+    "Starport release workflow contract, 10 Python tests",
+    "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
+  ],
+  "pending": [
+    "final reviews",
+    "Starmap six-target release snapshot qualification",
+    "final hosted qualification and Windows startup diagnosis",
+    "both reviewed merges"
+  ],
+  "running": {
+    "starmap": "final review and six-target release snapshot",
+    "starport": "PR #375 main and native workflows at reviewed d9a2f1f"
+  },
+  "starport": {
+    "go_test": {
+      "pass": 3055,
+      "skip": 39,
+      "packages_pass": 55,
+      "no_test_packages": 7
+    },
+    "checks": {
+      "vet": "pass",
+      "lint": "pass, 0 issues",
+      "gosec": "pass, 0 results",
+      "repository_shell_checks": 29,
+      "build": "pass",
+      "docker": "linux/arm64 image builds and runs offline"
+    },
+    "storage": {
+      "valkey_pass_events": 77,
+      "skip": "pre-existing manual reconnect placeholder",
+      "combined_sql": "15 pass, 2 failure events: known MySQL reset fixture defect, owned by CSP15",
+      "fresh_mysql_contracts": "pass: two events per isolated contract (read/write/migrate and rollback)"
+    },
+    "review": "pass at d9a2f1fadef7c7f1db90d11d8eaf18ac0544f849: Sol high and Opus high, zero findings",
+    "docker_build_metadata": "Go 1.27.1; CGO_ENABLED=0; linux/arm64",
+    "hosted_initial": "At 7442a3d: three OS full Go test jobs, security, release contract, release snapshot, SDKs, action pins, four Linux/macOS native startup jobs pass. Old linter and both Windows native startups fail. Startup cause was masked by verifier cleanup.",
+    "native_verifier_fix": "Preserve original failure and record final startup error with generated keys and URLs redacted. Nine regression tests pass; real local console startup remains passing. Windows cause awaits new CI.",
+    "hosted_final_runs": [
+      35136602158,
+      35136602204
+    ]
+  },
+  "starmap": {
+    "checks": "pass: complete make verify-checks on Go 1.27.1",
+    "package_budget_change": "Count product and third-party packages, retaining complete forbidden-import checks. Platform counts measured for CGO_ENABLED=0 and 1.",
+    "pure_go": "all six consumers, S3 and CLI pass",
+    "initial_failures": [
+      "stale direct-dependency inventory after tidy",
+      "negative toolchain fixture used accepted version",
+      "total dependency budgets included compiler standard-library packages"
+    ],
+    "workflow_race_events": 49,
+    "paired_go127_measurements": [
+      {
+        "cohort": "bootstrap",
+        "before_seconds": 83.00683074997505,
+        "after_seconds": 14.624420875043143,
+        "reduction_percent": 82.38166577026249,
+        "pass_events": 29,
+        "skip_events": 0
+      },
+      {
+        "cohort": "runtime",
+        "before_seconds": 129.758721042017,
+        "after_seconds": 19.50484641705407,
+        "reduction_percent": 84.96837340841374,
+        "pass_events": 6,
+        "skip_events": 0
+      },
+      {
+        "cohort": "catalogs",
+        "before_seconds": 13.894442457996774,
+        "after_seconds": 3.9906150000169873,
+        "reduction_percent": 71.27905626957893,
+        "pass_events": 9,
+        "skip_events": 0
+      }
+    ],
+    "measurement_limits": "One paired execution per cohort; identical selections, Go 1.27.1 race binaries, count=1, compilation excluded. Same final production tree with before-test overlay from 014afd1a3. No statistical performance SLO claim.",
+    "release_snapshot_initial": "Failed: local disk exhausted while compiling six platforms. Retained log; retry uses two concurrent targets after obsolete Go 1.25/1.26 cache cleanup."
+  },
+  "local_evidence_archives": {
+    "starport": {
+      "file": "starport-go127-local.json.gz",
+      "uncompressed_sha256": "c6e023835f7cd1cecc71aad277c33b69ad1e700fc62a6ca83f0b1bd2a7e6b54c"
+    },
+    "starmap": {
+      "file": "starmap-go127-local.json.gz",
+      "uncompressed_sha256": "e2f8123320d6454361425223d178d9462119f0fe6c5da0ce27b5cca66ebee444"
+    },
+    "followup": {
+      "file": "go127-followup-evidence.json.gz",
+      "uncompressed_sha256": "f9480f191ac0a092cefaf50717c52b8a166b977c1afa94739ecd108901f0bb73"
+    }
+  },
+  "tool_compatibility": {
+    "golangci_lint": "2.12.2 panicked on Linux Go 1.27 standard-library syntax. 2.13.2 passes both products on Darwin and fresh-cache Linux analysis. No lint rules disabled.",
+    "devbox": "Apple SDK 11.3 lacked SecTrustCopyCertificateChain; pinned SDK 15.5 fixes the tool link. Local Nix shell retains deployment-target warnings; release binaries disable cgo."
+  }
+}

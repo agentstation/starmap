@@ -14,7 +14,7 @@ Dated entries retain their original qualification limits. The canonical plan own
 The owner selected Go 1.27.1 for both products under D36. CSP6.1 owns the coordinated migration.
 Starmap previously declared Go 1.25.0 and selected Go 1.26.6.
 
-Its Devbox bootstrap still selected Go 1.26.5.
+At that baseline, its Devbox bootstrap selected Go 1.26.5.
 
 Starport declared Go 1.26.0 and selected Go 1.26.5 in its module and Docker builder.
 These differences require updates across modules, workflows, development tools, release tools, and maintained documentation.
@@ -23,7 +23,31 @@ Starmap run `35128783572` completed all four minimum-Go groups, covering 113 pac
 It also passed the release capacity check, four real-storage jobs, and three native jobs before the policy changed.
 The agent canceled the remaining jobs to avoid superseded execution. The complete hosted duration remains unqualified.
 The [decision proof](../../plans/proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/toolchain-decision.json) preserves these results.
-Go 1.27.1 qualification remains open.
+Final hosted Go 1.27.1 qualification remains open.
+
+The local Starport check roster passes on Go 1.27.1, including 3,055 test events and 29 shell checks.
+Its Docker builder produces a cgo-disabled Linux ARM64 binary with Go 1.27.1 metadata.
+Valkey passes 77 selected race events. The known MySQL test-reset defect remains with CSP15.
+Both MySQL contracts pass against separate fresh databases.
+
+Starmap passes its local repository checks on Go 1.27.1.
+
+The compiler adds standard-library packages, so three total-package budgets no longer represent the intended dependency boundary.
+Their replacement budgets count product and third-party packages. Forbidden-import checks still inspect every package.
+The [qualification record](../../plans/proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/go127-qualification.json) identifies the source and remaining gates.
+
+The paired Go 1.27.1 race measurements retain every selected test and assertion.
+Bootstrap falls from 83.01 to 14.62 seconds. Runtime falls from 129.76 to 19.50 seconds, and catalog concurrency from 13.89 to 3.99 seconds.
+These single paired runs exclude compilation. They do not establish a statistical latency guarantee.
+
+Initial Linux CI exposed a golangci-lint 2.12.2 parser crash on Go 1.27 syntax.
+Version 2.13.2 passes fresh-cache analysis for both products with the same enabled checks.
+
+Devbox also needed Apple SDK 15.5 for the Go 1.27 development-tool linker.
+Starport native startup passes on Linux and macOS. Both Windows jobs fail before readiness.
+
+The corrected verifier preserves that failure and redacts generated credentials. Its nine regression tests pass.
+Final native qualification and both merges remain open.
 
 ## Inspected revisions
 

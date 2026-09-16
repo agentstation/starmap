@@ -31,6 +31,9 @@ Final acceptance requires matching module and toolchain pins in both repositorie
 Repository checks, native CI, required review, and merged-source verification must pass.
 Earlier toolchain results remain historical evidence. They do not qualify Go 1.27.1.
 
+Dependency budgets count product and third-party packages. The compiler owns standard-library package counts.
+Forbidden-import checks must still inspect the complete dependency graph, including standard-library database adapters.
+
 ## 1. Ownership and composition
 
 ```mermaid
