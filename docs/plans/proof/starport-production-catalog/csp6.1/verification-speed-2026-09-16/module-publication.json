@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://proxy.golang.org/github.com/agentstation/starmap/@v/v0.16.6-0.20260916185656-71a96cee03e5.info",
+    "status": 200,
+    "sha256": "b88dd1944dec7ae62e1e6e11b8c3968bea0eea840e5565e435a5d3a14ed4ec56",
+    "body": "{\"Version\":\"v0.16.6-0.20260916185656-71a96cee03e5\",\"Time\":\"2026-09-16T18:56:56Z\",\"Origin\":{\"VCS\":\"git\",\"URL\":\"https://github.com/agentstation/starmap\",\"Hash\":\"71a96cee03e5f9cdfe7adcd9784c7463ce18d856\"}}"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/agentstation/starmap/71a96cee03e5f9cdfe7adcd9784c7463ce18d856/go.mod",
+    "status": 200,
+    "sha256": "eb6e18f228620bf03ed9537182b4ce68a01f941263f83b77f601ce7bfe8bc8b8",
+    "body": "Public Go module source retrieved"
+  }
+]

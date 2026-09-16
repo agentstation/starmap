@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-16T19:11:37.019757+00:00",
+  "at": "2026-09-16T19:29:00.598449+00:00",
   "decision": "D36",
   "go": "1.27.1",
   "status": "in_progress",
@@ -12,11 +12,8 @@
     },
     "starport": {
       "worktree": "/Users/jack/src/github.com/agentstation/starport-go-1271",
-      "head": "d9a2f1fadef7c7f1db90d11d8eaf18ac0544f849",
-      "dirty_files": {
-        "go.mod": "b7ab8d9955c21d3e47b9b51592ee9ed0752a3c8db5977b57866a32bd30deb8b4",
-        "go.sum": "797abc69134d363dd7146a8f234280be96454fd68835c09c796a03c891357996"
-      },
+      "head": "368fdee8001767c17594f5ef11e769042c0e71b6",
+      "dirty_files": {},
       "pr": "https://github.com/agentstation/starport/pull/375"
     }
   },
@@ -27,13 +24,12 @@
     "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
   ],
   "pending": [
-    "final hosted Starmap qualification",
-    "final Starport checks, review and hosted qualification",
+    "final hosted native, race, capacity and release qualification",
     "merge Starmap with its reviewed commits preserved, then merge Starport"
   ],
   "running": {
     "starmap": "hosted run 35138885986 at reviewed 71a96cee0",
-    "starport": "complete local checks against published 71a96cee0 module, before final review"
+    "starport": "Final hosted CI at reviewed 368fdee"
   },
   "starport": {
     "go_test": {
@@ -61,11 +57,24 @@
     "hosted_initial": "At 7442a3d: three OS full Go test jobs, security, release contract, release snapshot, SDKs, action pins, four Linux/macOS native startup jobs pass. Old linter and both Windows native startups fail. Startup cause was masked by verifier cleanup.",
     "native_verifier_fix": "Generated credentials and URLs remain redacted. Corrected diagnostics exposed the Starmap OWNER RIGHTS false rejection. Native Windows remains unqualified until dependency adoption.",
     "hosted_final_runs": [
-      35136602158,
-      35136602204
+      35140756480,
+      35140756656
     ],
     "dependency_integration": "3,055 test pass events and 39 skips with temporary Go workspace selecting the corrected Starmap source. Final published dependency awaits producer merge.",
-    "dependency_pin": "v0.16.6-0.20260916185656-71a96cee03e5; fetched from published module, no workspace replacement"
+    "dependency_pin": "v0.16.6-0.20260916185656-71a96cee03e5; fetched from published module, no workspace replacement",
+    "published_local_checks": {
+      "go_tests": "3055 pass events, 39 skips",
+      "vet": "pass",
+      "lint": "pass",
+      "build": "pass",
+      "contracts_initial": "four scripts pass; catalog-driven provider script reports 18 pass and one stale test name",
+      "repair": "CDP-V04 now requires TestLegacyCatalogCredentialEnvironmentPrecedence and TestCatalogRoleEnvironmentSelection in Starmap, retaining the Starport contract. Remaining roster runs against the published module.",
+      "contracts_final": "PASS all 29 scripts; initial four unchanged passes retained, corrected credential script and remaining roster rerun",
+      "valkey": "170 passing race events, one pre-existing manual reconnect skip",
+      "docker": "PASS final Linux ARM64 image build, offline execution, Go 1.27.1 metadata, CGO_ENABLED=0 and exact Starmap 71a96cee0 dependency"
+    },
+    "public_module": "PASS: canonical Go proxy version and unauthenticated GitHub source both return HTTP 200 for exact 71a96cee0. Initial negative proxy response retained as historical.",
+    "final_review": "PASS 368fdee: Sol high and Opus high, zero findings"
   },
   "starmap": {
     "checks": "pass: complete make verify-checks on Go 1.27.1",
@@ -146,6 +155,14 @@
     "final_release": {
       "file": "go127-final-release-evidence.json.gz",
       "uncompressed_sha256": "525e6e105135d23022473df407d60c572b0fcb26e6fff46b68bc167f41e42c8e"
+    },
+    "starport_published": {
+      "file": "starport-go127-published-local.json.gz",
+      "uncompressed_sha256": "260874c8238c0d9eb7996bbee28c3103e5cb17dea89e581ddad4bb3e5cfc2be8"
+    },
+    "starport_published_docker": {
+      "file": "starport-go127-published-docker.json.gz",
+      "uncompressed_sha256": "0c7f006c38c629ef864582cb9db2798206d1ad6982187d318c46eda6e3210af9"
     }
   },
   "tool_compatibility": {
