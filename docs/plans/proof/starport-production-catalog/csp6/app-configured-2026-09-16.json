@@ -1,0 +1,259 @@
+{
+  "recorded_at": "2026-09-16T12:52:05.776716+00:00",
+  "private_key": "User-generated downloaded PEM authenticated successfully to the expected App. Contents were never printed.",
+  "repository_secret": "CATALOG_APP_PRIVATE_KEY configured and present",
+  "client_id_variable": "CATALOG_APP_CLIENT_ID verified",
+  "provider_secrets_present": 11,
+  "client_secret": "Not read or used. Clipboard untouched.",
+  "authority": "acquisition-diagnostics-2026-09-14/owner-decisions.json",
+  "hosted_run": {
+    "conclusion": "failure",
+    "headSha": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+    "jobs": [
+      {
+        "completedAt": "2026-09-16T12:50:57Z",
+        "conclusion": "failure",
+        "databaseId": 104799378356,
+        "name": "generate",
+        "startedAt": "2026-09-16T12:46:36Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-16T12:46:41Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-16T12:46:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:46:47Z",
+            "conclusion": "success",
+            "name": "Checkout trusted publisher source",
+            "number": 2,
+            "startedAt": "2026-09-16T12:46:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:46:47Z",
+            "conclusion": "success",
+            "name": "Check publisher identity configuration",
+            "number": 3,
+            "startedAt": "2026-09-16T12:46:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:46:56Z",
+            "conclusion": "success",
+            "name": "Set up Go",
+            "number": 4,
+            "startedAt": "2026-09-16T12:46:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:46:56Z",
+            "conclusion": "success",
+            "name": "Select publication directory",
+            "number": 5,
+            "startedAt": "2026-09-16T12:46:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:47:57Z",
+            "conclusion": "success",
+            "name": "Restore accepted or pending publication",
+            "number": 6,
+            "startedAt": "2026-09-16T12:46:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:48:54Z",
+            "conclusion": "success",
+            "name": "Refresh candidate catalog",
+            "number": 7,
+            "startedAt": "2026-09-16T12:47:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:52Z",
+            "conclusion": "failure",
+            "name": "Validate candidate before publication",
+            "number": 8,
+            "startedAt": "2026-09-16T12:48:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "success",
+            "name": "Retain acquisition corrections and validation logs",
+            "number": 9,
+            "startedAt": "2026-09-16T12:50:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Attest exact publication inputs",
+            "number": 10,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Retain preparation before public writes",
+            "number": 11,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Record pending publication",
+            "number": 12,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Publish and verify immutable public inputs",
+            "number": 13,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Create promotion installation token",
+            "number": 14,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Select promotion bot identity",
+            "number": 15,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Promote exact input through checked pull request",
+            "number": 16,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Stage channels after verified merge",
+            "number": 17,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Attest both discovery channels",
+            "number": 18,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Publish and verify both discovery channels",
+            "number": 19,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Report publication state",
+            "number": 20,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Set up ORAS for optional catalog mirror",
+            "number": 21,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Publish and verify optional OCI catalog mirror",
+            "number": 22,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:53Z",
+            "conclusion": "skipped",
+            "name": "Post Set up Go",
+            "number": 43,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:54Z",
+            "conclusion": "success",
+            "name": "Post Checkout trusted publisher source",
+            "number": 44,
+            "startedAt": "2026-09-16T12:50:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-16T12:50:54Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 45,
+            "startedAt": "2026-09-16T12:50:54Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/agentstation/starmap/actions/runs/35097794323/job/104799378356"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/agentstation/starmap/actions/runs/35097794323"
+  },
+  "remaining": [
+    "A05.bot_required_checks",
+    "A05.each_publication_failure",
+    "A05.same_bytes_retry"
+  ],
+  "completion_credit": false,
+  "diagnosis": {
+    "failed_step": "Validate candidate before publication",
+    "operation": "release --stage-promotion-dir",
+    "exit_status": 1,
+    "public_writes": "Not reached",
+    "retained_logs": [
+      "acquisition-corrections.log",
+      "source-status.log"
+    ],
+    "log_gap": "The staging subprocess stderr was captured and discarded. Its cause is not yet known.",
+    "source_status": {
+      "fresh_successful_sources": 13,
+      "normalization_corrections": 9,
+      "invalid_corrections": 0,
+      "omitted_corrections": 0
+    },
+    "next_action": "Reproduce staging locally and retain validation diagnostics before retry."
+  },
+  "documentation_checks": {
+    "authored_plan_and_history": "strict linter passes after paragraph split",
+    "whole_repository": "failed on unchanged historical raw baseline-task.txt, which contains machine output; no policy weakened",
+    "protected_sections": "outcome, scope, promotion-gate, invariants, tasks, goal unchanged",
+    "ledger": "38 rows, 13 done, CSP8 sole in_progress",
+    "unrelated_files": "all five recorded hashes unchanged"
+  }
+}

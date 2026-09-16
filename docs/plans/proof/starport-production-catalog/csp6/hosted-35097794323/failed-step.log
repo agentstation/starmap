@@ -1,0 +1,10 @@
+generate	Validate candidate before publication	﻿2026-09-16T12:48:54.5263544Z ##[group]Run python3 scripts/catalog_publication.py validate --directory "$CATALOG_PUBLICATION_DIRECTORY"
+generate	Validate candidate before publication	2026-09-16T12:48:54.5264520Z ^[[36;1mpython3 scripts/catalog_publication.py validate --directory "$CATALOG_PUBLICATION_DIRECTORY"^[[0m
+generate	Validate candidate before publication	2026-09-16T12:48:54.5301011Z shell: /usr/bin/bash -e {0}
+generate	Validate candidate before publication	2026-09-16T12:48:54.5301425Z env:
+generate	Validate candidate before publication	2026-09-16T12:48:54.5304131Z   GH_TOKEN: ***
+generate	Validate candidate before publication	2026-09-16T12:48:54.5304514Z   GOTOOLCHAIN: local
+generate	Validate candidate before publication	2026-09-16T12:48:54.5305041Z   CATALOG_PUBLICATION_DIRECTORY: /home/runner/work/_temp/catalog-publication
+generate	Validate candidate before publication	2026-09-16T12:48:54.5305600Z ##[endgroup]
+generate	Validate candidate before publication	2026-09-16T12:50:52.7588396Z catalog publication stopped: /home/runner/work/_temp/catalog-publication/bin/release --stage-promotion-dir failed with exit status 1
+generate	Validate candidate before publication	2026-09-16T12:50:52.7667788Z ##[error]Process completed with exit code 1.

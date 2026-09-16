@@ -1,0 +1,99 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T12:52:04.873774+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "work_commit": "4b2c31a5443b91e81dca3df4e1ea7547dca52001",
+  "producer": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "source_sha256": {
+    "README.md": "2394fec093f2dbed74880b528a0584c659386ed69b41273a04fe8093476ab535",
+    "internal/app/app.go": "bd42da57c76cbd60e58597921d67995fc45c6730c573c5015f4f937edba0d98b",
+    "internal/app/development.go": "0e0a169d08917f169239b0d8ecd152ab963ac85f4e604ad4f33caf22cc1176c4",
+    "internal/app/development_catalog_test.go": "8ec65f870182dc64be0d64bf00630e4da18795105cbe88bf0be995dca850e169",
+    "internal/app/development_test.go": "a52396dcefb1632645eb315bc294b1ecbecb48e9d41c4255f05803dda80f6275",
+    "internal/config/catalog.go": "3c04347fdf08071cd67fb698b9340c5cbf9da411f352f06bb4169681eed064ca",
+    "internal/config/development.go": "785157b0f9c7ace98bbd71ed3e7b1ec637b6082cfb3c7512ddace4c5b3b8e202",
+    "internal/config/development_isolation_test.go": "5580b6712e57c3c50eb825926746eadb83398e4ab39dab3dee5a20be4795d191",
+    "internal/config/loader.go": "9bc96f2a658bf68bfcd3722835b32b87419492c33805f7feac5bdf26500ea9b5",
+    "internal/config/loader_test.go": "75838a33f881f77bac2a5b7e785687ad4f588d5d1a713c1af7f37e862ba13f85",
+    "internal/config/storage.go": "03a9d9b35f114bca47659d881ec7f2bb148467589765b80aa8261c25cccfbf7c",
+    "internal/config/storage_test.go": "983749ee97c55b5ce9d26224a4abc414cfb13c52fb4e55527a1775d03d062171"
+  },
+  "behavior": [
+    "Development rejects explicit persistent KV, SQL, blob, and catalog-state settings before store access. Errors show names without values.",
+    "Development skips primary and explicitly supplied configuration files. It keeps the existing read-only local-token contract.",
+    "Badger and SQLite use memory. The embedded baseline, catalog state, and blobs use selected session scratch paths.",
+    "Direct Go overrides pass the same storage checks. Catalog acquisition and inference network policies remain separate."
+  ],
+  "checks": {
+    "fail_before": {
+      "failed_events": 18,
+      "passed_events": 3
+    },
+    "four_package_race": {
+      "pass": 439,
+      "skip": 1,
+      "fail": 0,
+      "skip_name": "TestAppWithValkey",
+      "binding": "Before final constant extraction and comment edits."
+    },
+    "final_focused_race": {
+      "pass": 47,
+      "fail": 0,
+      "skip": 0
+    },
+    "lint": {
+      "findings": 0,
+      "exit_status": 0
+    },
+    "vet": {
+      "exit_status": 0,
+      "packages": 4
+    },
+    "authored_prose": {
+      "files": 8,
+      "diagnostics": 0
+    },
+    "broader_prose": {
+      "diagnostics": 52,
+      "result": "All 52 point to unchanged lines from 066cacffb. No rules weakened. Existing prose remains outside this change."
+    }
+  },
+  "remaining": [
+    "Owned scratch crash recovery and guarded cleanup remain required. Current os.RemoveAll cleanup is not A43 qualification.",
+    "Native Linux and Windows behavior remains UNVERIFIED.",
+    "Complete migration, diagnostics, storage, provider and non-provider acquisition, and the original CSP8 acceptance roster.",
+    "Publish compatible Starmap dependency, required review, native CI, and merge."
+  ],
+  "artifacts": {
+    "development-authored-prose.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "development-authored-prose.log.gz": "0115cc50e23e7055e762ef7b12faf37fb81b34f3e81365314340b6d2523a7870",
+    "development-fail-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "development-fail-before.jsonl.gz": "260f3d290c0220ff39000de36c1abaaee14e5df5f9603b1b4081fe8d414f5238",
+    "development-fail-before.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "development-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "development-final.jsonl.gz": "397eba598e8206e2a75e2a8452e62a7af71ef67d16b22af5d82f3e76d9259b67",
+    "development-final.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "development-inherited-prose.json.gz": "606647a27b9d8c33b5f8dc22d52de52ab92f12e68b5905091d5e203ae1cf1a8b",
+    "development-integration.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "development-integration.jsonl.gz": "7e20384aaf80d9fe9d7529b9663cae2f8a035af1a47dac941484929a2e3f70ef",
+    "development-integration.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "development-lint-repaired.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "development-lint-repaired.log.gz": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+    "development-lint.exit.gz": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "development-lint.log.gz": "15925bea0c40893b7628276c2df31b82855b6ad0cb2a9885d780162314a4cd0d",
+    "development-packages.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "development-packages.jsonl.gz": "903af79b5c281306218b302a9d6e20271a92581b608fe9f056a31637194da8c0",
+    "development-packages.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "development-prose-final.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "development-prose-final.log.gz": "1d818f24d2168a71c4a062e4c88a76e42a3241400e37a57242472d4ff35a58f5",
+    "development-prose.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "development-prose.log.gz": "81fc7c2fd47cbd22ea0d2b7db924c2e416e24290dd281f862b38caf8e5695aa9",
+    "development-refusal.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "development-refusal.jsonl.gz": "b445c5510d3159126b1f799dd32f6859c426ab825153210b1b251cbe2212fb84",
+    "development-refusal.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "development-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "development-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
