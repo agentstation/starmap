@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -127,7 +128,16 @@ func TestConfigurationReportRedactsURLCredentials(t *testing.T) {
 	clearCatalogEnvironment(t)
 	t.Setenv("STARMAP_HOME", t.TempDir())
 	t.Setenv(catalogconfig.Source, "starmap")
-	t.Setenv(catalogconfig.SourceURL, "https://user:synthetic-password@catalog.example.test/catalog?token=synthetic-query#synthetic-fragment")
+	password := "synthetic-" + t.Name()
+	sourceURL := url.URL{
+		Scheme:   "https",
+		Host:     "catalog.example.test",
+		Path:     "/catalog",
+		User:     url.UserPassword("synthetic-user", password),
+		RawQuery: "token=synthetic-query",
+		Fragment: "synthetic-fragment",
+	}
+	t.Setenv(catalogconfig.SourceURL, sourceURL.String())
 	app := NewForCommand("test", "test", "test", "test")
 	command := app.createRootCommand()
 	var output bytes.Buffer
@@ -137,7 +147,7 @@ func TestConfigurationReportRedactsURLCredentials(t *testing.T) {
 	if err := command.ExecuteContext(t.Context()); err != nil {
 		t.Fatal(err)
 	}
-	for _, marker := range []string{"synthetic-password", "synthetic-query", "synthetic-fragment"} {
+	for _, marker := range []string{password, "synthetic-query", "synthetic-fragment"} {
 		if bytes.Contains(output.Bytes(), []byte(marker)) {
 			t.Fatal("report leaked an embedded URL credential")
 		}
