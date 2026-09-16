@@ -71,6 +71,9 @@ func TestFirstAdministratorBootstrapAndRestore(t *testing.T) {
 	if _, _, err := Initialize(t.Context(), cfg, "other"); err == nil {
 		t.Fatal("initialization overwrote existing state")
 	}
+	if err := restored.Close(); err != nil {
+		t.Fatal(err)
+	}
 	if err := filepath.WalkDir(cfg.StateDirectory, func(path string, entry os.DirEntry, err error) error {
 		if err != nil || entry.IsDir() {
 			return err
