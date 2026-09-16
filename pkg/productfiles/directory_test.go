@@ -112,6 +112,36 @@ func TestDirectoryBindingRejectsReplacement(t *testing.T) {
 	}
 }
 
+func TestRecoveryIdentityAndExclusiveChild(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "private")
+	parent := newDirectory(t, path)
+	child, err := parent.CreateChild("stage")
+	if err != nil {
+		t.Fatal(err)
+	}
+	identity, err := child.Identity()
+	if err != nil || identity == "" {
+		t.Fatalf("identity = %q, %v", identity, err)
+	}
+	if _, err := parent.CreateChild("stage"); !os.IsExist(err) {
+		t.Fatalf("repeated creation = %v", err)
+	}
+	if err := os.Rename(filepath.Join(path, "stage"), filepath.Join(path, "installed")); err != nil {
+		t.Fatal(err)
+	}
+	installed, err := parent.ExistingChild("installed")
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := installed.Identity()
+	if err != nil || got != identity {
+		t.Fatalf("identity after relocation = %q, %v", got, err)
+	}
+	if _, err := productfiles.FileIdentity(nil); err == nil {
+		t.Fatal("accepted a missing native handle")
+	}
+}
+
 func TestPrivateOperationsRejectCancellation(t *testing.T) {
 	directory := newDirectory(t, filepath.Join(t.TempDir(), "private"))
 	ctx, cancel := context.WithCancel(t.Context())
@@ -135,6 +165,12 @@ func TestPrivateOperationsRejectCancellation(t *testing.T) {
 
 func TestZeroDirectoryRefusesAccess(t *testing.T) {
 	for _, directory := range []*productfiles.Directory{nil, {}} {
+		if _, err := directory.Identity(); err == nil {
+			t.Fatal("identified an unbound directory")
+		}
+		if _, err := directory.CreateChild("child"); err == nil {
+			t.Fatal("created an exclusive child without a parent")
+		}
 		if _, err := directory.Open(); err == nil {
 			t.Fatal("opened an unbound directory")
 		}

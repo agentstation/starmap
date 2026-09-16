@@ -8,6 +8,8 @@ The host selects its absolute paths through `productpaths` or explicit settings.
 `NewDirectory` creates missing private directories and validates existing access.
 `ExistingDirectory` validates an existing directory without creating paths.
 Neither operation repairs existing permissions.
+`Child` checks or creates a private child directory.
+`CreateChild` requires a new child and refuses an existing path.
 
 ```go
 directory, err := productfiles.NewDirectory(configDirectory)
@@ -19,6 +21,10 @@ return directory.CompareAndPublish(ctx, "config.env", nil, configBytes)
 ```
 
 Each directory binding retains its original filesystem identity.
+The `Identity` method exposes the native volume and directory identity for host recovery records.
+The `FileIdentity` function reads the native identity of a caller-owned open file or directory.
+It does not establish an access policy for that handle.
+
 An operation refuses a replaced directory, an unsafe ancestor, or invalid native access.
 Linux and macOS use ownership, modes, and the applicable ACL checks.
 Windows uses the native owner and DACL checks.

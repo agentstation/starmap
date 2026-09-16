@@ -4,6 +4,7 @@ package productfiles
 
 import (
 	"context"
+	stderrors "errors"
 	"math"
 	"os"
 
@@ -41,12 +42,47 @@ func (d *Directory) Open() (*os.Root, error) {
 	return d.private.Open()
 }
 
+// Identity returns the native volume and file identity of the bound directory.
+// Hosts can retain this value in a private recovery record to detect replacement.
+func (d *Directory) Identity() (identity string, resultErr error) {
+	root, err := d.Open()
+	if err != nil {
+		return "", err
+	}
+	defer func() { resultErr = stderrors.Join(resultErr, root.Close()) }()
+	file, err := root.Open(".")
+	if err != nil {
+		return "", err
+	}
+	defer func() { resultErr = stderrors.Join(resultErr, file.Close()) }()
+	return FileIdentity(file)
+}
+
+// FileIdentity returns the native volume and file identity for an open file or directory.
+// It does not establish ownership or access policy. The caller owns the handle and its validation.
+func FileIdentity(file *os.File) (string, error) {
+	if file == nil {
+		return "", &errors.ValidationError{Field: "file.identity", Message: "requires an open handle"}
+	}
+	return filepublish.Identity(file)
+}
+
 // Child checks or privately creates one direct child directory.
 func (d *Directory) Child(name string) (*Directory, error) {
 	if err := d.check(); err != nil {
 		return nil, err
 	}
 	directory, err := d.private.Child(name)
+	return bind(directory, err)
+}
+
+// CreateChild exclusively creates one private direct child directory.
+// An existing child produces an existence error without changing that child.
+func (d *Directory) CreateChild(name string) (*Directory, error) {
+	if err := d.check(); err != nil {
+		return nil, err
+	}
+	directory, err := d.private.CreateChild(name)
 	return bind(directory, err)
 }
 
