@@ -15,8 +15,8 @@
     "raw_jobs": "ci-before-jobs.json.gz",
     "raw_jobs_uncompressed_sha256": "8c22fbe01dfd7724f7ad214b7fc959cf99032e5fa7acd5a478d6ad041565d70f"
   },
-  "source": "b01c28ef47cdf740951f75cbb20347bf5348a577",
-  "next": "Inspect the final-head native CI run, fix any verified failures, record hosted duration, and merge after all required checks pass.",
+  "source": "76fbb3b9495fb1e18c442d3c4098e3ef9a27eb6f",
+  "next": "Finish review for 76fbb3b94, push the cold-cache repair, and measure a new final-head CI run. Merge only after all required checks pass.",
   "constraints": [
     "Preserve meaningful assertions, race coverage, both Go toolchains, all packages, and required platform jobs.",
     "Keep full embedded and public catalog integration coverage at explicit seams.",
@@ -211,6 +211,36 @@
       "file": "make-test.log.gz",
       "sha256": "ee1c513fd84dd379a0867cd1f65c3a9bf0ffc51a4dabfb18ab432751e014dbf3",
       "bytes": 150
+    },
+    "ci-checks-failure.log": {
+      "file": "ci-checks-failure.log.gz",
+      "sha256": "efee62750076aac6fb1ecfabb2fbbf5b0716e395741e5ba73ac12dd1f5db56c9",
+      "bytes": 59130
+    },
+    "ci-first-run.json": {
+      "file": "ci-first-run.json.gz",
+      "sha256": "5110d6e0de84423307dbeff82d9c14900aa6c954e679cc8ff7a329483ee8141f",
+      "bytes": 37696
+    },
+    "workflow-cold-after.jsonl": {
+      "file": "workflow-cold-after.jsonl.gz",
+      "sha256": "4a4f982bd0fdde1f2731cca1c3e853f449c19eb684104d3f8ca73c8a6d6075e5",
+      "bytes": 48002
+    },
+    "workflow-cold-minimum.jsonl": {
+      "file": "workflow-cold-minimum.jsonl.gz",
+      "sha256": "9bdfd79c79e5026ca0c8fb691c6b2cbfa892ccd845c2e21f1be9f435260fcd7e",
+      "bytes": 48030
+    },
+    "goago-cold.json": {
+      "file": "goago-cold.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289
+    },
+    "local-cache-second.log": {
+      "file": "local-cache-second.log.gz",
+      "sha256": "94587712841e8bd557d657af04653d9d612acaf0d2f9e2af4e779b16a344f108",
+      "bytes": 152
     }
   },
   "changes": [
@@ -243,5 +273,18 @@
     "state": "pushed; CI pending",
     "workflow_run": 35127172073,
     "created_at": "2026-09-16T17:16:39Z"
+  },
+  "measured_source": "b01c28ef47cdf740951f75cbb20347bf5348a577",
+  "cold_cache_repair": {
+    "failed_run": 35127172073,
+    "failed_job": 104898949957,
+    "verification_checks_seconds": 88,
+    "aggregate_refused": true,
+    "full_suites_skipped": true,
+    "cause": "Pinned Swag wraps any go list stderr as an error, including a successful dependency download. Moving generation before tests exposed the missing server dependency cache.",
+    "fix": "Both OpenAPI targets resolve the server dependency graph with go list -deps before the pinned parser. Generator failures remain fatal.",
+    "checks": "48 workflow test events pass on each Go toolchain. Generated docs, vet, goago, prose, and pinned lint pass.",
+    "review": "second final-head review pending",
+    "prior_run": "cancelled after the required gate failed, to avoid spending more compute on a superseded head"
   }
 }

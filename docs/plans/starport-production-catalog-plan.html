@@ -11,15 +11,17 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-16 UTC. Feature work remains paused. <a href="#CSP6.1">CSP6.1</a> is the sole active task.</p>
 
-<p id="next-action">Next: inspect hosted CI for PR #164 at <code>b01c28ef4</code> and measure the complete gate. The <a href="https://github.com/agentstation/starmap/actions/runs/35127172073">qualification run</a> started at 17:16 UTC. Use <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>, branch <code>codex/starmap-publisher-validation</code>.</p>
+<p id="next-action">Next: finish review of the cold-cache repair at <code>76fbb3b94</code>, then push PR #164 and qualify its final head. Use <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>, branch <code>codex/starmap-publisher-validation</code>.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/verification.json">speed proof</a> records passing paired race measurements. Bootstrap checks decrease from 82.8 to 14.0 seconds. Receipt checks decrease from 126.3 to 19.7 seconds. Concurrency checks decrease from 14.0 to 4.1 seconds with stronger assertions.</p>
 
-<p>The check phase passes. Final checks include generator failure handling, minimum-Go tests, full goago, 1,820 prose files, and pinned lint. The workflow keeps all 113 packages, both Go toolchains, native jobs, and capacity coverage. Hosted duration remains UNVERIFIED.</p>
+<p>The check phase passes. Final checks include generator failure handling, minimum-Go tests, full goago, 1,820 prose files, and pinned lint. The workflow keeps all 113 packages, both Go toolchains, native jobs, and capacity coverage. </p>
 
-<p>Review files are outside the implementation tree. Read <code>.tmp/verification-speed/review-directory</code>, <code>review.log</code>, and <code>review.exit</code>.</p>
+<p>The first hosted preflight rejected missing generator dependencies in 88 seconds. Full suites did not start. The repair resolves dependencies before generation. Hosted duration remains UNVERIFIED.</p>
 
-<p>Sol reports zero findings. Opus reports one conditional fixture finding. Inspection rejects it because the capacity test reads checked-in inputs. The proof retains both reviews and the disposition. PR #164 contains this commit.</p>
+<p>Review files are outside the implementation tree. Read <code>.tmp/verification-speed/cold-review-directory</code>, <code>cold-review.log</code>, and <code>cold-review.exit</code>.</p>
+
+<p>Sol reports zero findings. Opus reports one conditional fixture finding. Inspection rejects it because the capacity test reads checked-in inputs. The proof retains both reviews and the disposition. The second review includes complete fixture source files. The proof retains the first review and its rejected finding.</p>
 
 <p>After required checks pass, merge PR #164 and verify its tree. Record actual hosted duration before completing CSP6.1. Then resume CSP6 hosted publication and the three remaining A05 subcases.</p>
 
