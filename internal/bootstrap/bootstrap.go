@@ -108,6 +108,16 @@ func Generation() (catalogs.Generation, error) {
 	return generation.Copy(), nil
 }
 
+// GenerationManifest returns verified embedded evidence without copying the payload.
+// The caller owns the manifest and all its collections.
+func GenerationManifest() (catalogs.GenerationManifest, error) {
+	generation, err := embeddedGeneration()
+	if err != nil {
+		return catalogs.GenerationManifest{}, err
+	}
+	return generation.Manifest.Copy(), nil
+}
+
 func buildEmbeddedGeneration() (catalogs.Generation, error) {
 	catalog, bootstrapManifest, err := Embedded()
 	if err != nil {

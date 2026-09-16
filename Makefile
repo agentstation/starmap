@@ -486,6 +486,7 @@ catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and r
 	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh scripts/test-provider-testdata-refresh.sh
 	@$(GOCMD) test ./internal/sources/modelsdev ./cmd/starmap-modelsdev-promote -run CatalogGenerationTooling -count=1
 	@$(GOCMD) test ./internal/bootstrap/manifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
+	@$(GOCMD) test . ./runtime -run 'TestEmbeddedGenerationIsVerifiedPassiveAndIndependent|TestEmbeddedBaselineStartupPreservesGenerationEvidence|TestOpenReturnsEmbeddedStateBeforeSourceReply|TestRuntimeReadsReachNoExternalSystem' -count=1
 	@$(GOCMD) test ./internal/catalog/publication ./cmd/starmap-catalog-publish -count=1
 	@python3 scripts/test_catalog_publication.py
 	@bash scripts/test-provider-testdata-refresh.sh

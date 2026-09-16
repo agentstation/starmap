@@ -46,6 +46,11 @@ Promotion retains the complete accepted manifest in `internal/embedded/catalog/g
 Bootstrap verifies both identities and preserves the original source observations, membership evidence, reviews, and degraded status.
 Missing or mismatched evidence blocks activation. Catalogs without promoted metadata retain the legacy embedded bootstrap path when they contain no provider membership scopes.
 
+Runtime startup accepts provider evidence in the exact compiled baseline without local acquisition bindings.
+Local binding declarations control local observations. Runtime rebuilds preserve the original observations that support compiled membership scopes.
+Stored local evidence still requires its binding declarations or retained inputs.
+Candidate validation tests offline startup, explicit empty bindings, and restart against the promoted catalog.
+
 The manifest command preserves this evidence when the catalog bytes remain unchanged.
 Changed promoted catalogs require `--generation-store` with their newly committed generation.
 The command refuses to invent source evidence for edited bytes.

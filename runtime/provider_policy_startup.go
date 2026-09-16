@@ -5,9 +5,14 @@ import (
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// storedProviderPolicyRequired identifies provider facts with a recorded binding scope.
-// Startup must apply current declarations before it serves those accepted bytes.
-func storedProviderPolicyRequired(state starmap.CatalogState) bool {
+// storedProviderPolicyRequired identifies local provider facts with a recorded binding scope.
+// The exact compiled baseline carries publisher evidence independent of local declarations.
+func storedProviderPolicyRequired(state, baseline starmap.CatalogState) bool {
+	if baseline.Catalog != nil && baseline.GenerationID != "" && baseline.PayloadChecksum != "" &&
+		state.GenerationID == baseline.GenerationID && state.PayloadChecksum == baseline.PayloadChecksum &&
+		state.GeneratedAt.Equal(baseline.GeneratedAt) && state.AuthorityHead == baseline.AuthorityHead {
+		return false
+	}
 	if state.Catalog == nil {
 		return false
 	}
