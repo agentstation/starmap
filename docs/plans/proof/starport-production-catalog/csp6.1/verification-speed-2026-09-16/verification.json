@@ -15,11 +15,213 @@
     "raw_jobs": "ci-before-jobs.json.gz",
     "raw_jobs_uncompressed_sha256": "8c22fbe01dfd7724f7ad214b7fc959cf99032e5fa7acd5a478d6ad041565d70f"
   },
-  "source": "014afd1a3",
-  "next": "Profile frozen runtime race binary, reduce repeated fixture work, and separate independent CI suites with an aggregate required gate.",
+  "source": "b01c28ef47cdf740951f75cbb20347bf5348a577",
+  "next": "Finish Sol and Opus pre-PR review, push PR #164, measure native CI, and merge only after required checks pass.",
   "constraints": [
     "Preserve meaningful assertions, race coverage, both Go toolchains, all packages, and required platform jobs.",
     "Keep full embedded and public catalog integration coverage at explicit seams.",
     "Do not increase memory concurrency without measurement."
-  ]
+  ],
+  "local_verification_at": "2026-09-16T17:11:46.351302+00:00",
+  "paired_measurements": [
+    {
+      "cohort": "bootstrap",
+      "before_seconds": 82.78712520800764,
+      "after_seconds": 13.982399458007421,
+      "reduction_percent": 83.11041792685057,
+      "passing_events": 29
+    },
+    {
+      "cohort": "runtime",
+      "before_seconds": 126.29597841599025,
+      "after_seconds": 19.675034417014103,
+      "reduction_percent": 84.42148779099759,
+      "passing_events": 6
+    },
+    {
+      "cohort": "catalogs",
+      "before_seconds": 13.959603167022578,
+      "after_seconds": 4.127735000045504,
+      "reduction_percent": 70.43085716221043,
+      "passing_events": 9
+    }
+  ],
+  "machine": "Darwin arm64",
+  "measurement_notes": [
+    "Single paired executions of frozen Go 1.26.6 race binaries on the same machine. Compilation excluded.",
+    "Both sides execute the same named tests with count=1 and without short mode. Catalog concurrency assertions are stronger after the change.",
+    "The full local runtime baseline used short mode and skipped three public-fixture cases. Required hosted qualification enables the fixture and has no blanket short flag.",
+    "A prose scan overlapped part of paired timing. Results establish a large setup-cost reduction, not a statistical performance bound."
+  ],
+  "local_checks": {
+    "repository_checks_phase": "passed, including docs, structure, lint, goago, coverage, pure-Go, performance, container, and isolated CLI",
+    "final_checks": "generated docs, vet for changed workflow tests, full goago, 1820 prose files, and pinned workflow-package lint passed after generator failure fix",
+    "python_runner_tests": 7,
+    "workflow_and_generator_tests": 48,
+    "minimum_go_workflow_tests": 48,
+    "minimum_go_changed_cohort_events": 64,
+    "actionlint": "workflow validation passes; full shellcheck reports two pre-existing warnings in unchanged steps",
+    "generation_failure_before": "both Make targets accepted generator exit 42 with plausible partial output; regression failed",
+    "generation_failure_after": "both targets stop, preserve diagnostics, and do not invoke the next generator step"
+  },
+  "test_events": {
+    "runtime-before": {
+      "events": {
+        "pass": 1195,
+        "skip": 3
+      },
+      "skipped_names": [
+        "TestPublicChannelUpgradeRetainsAcceptedCatalogBeforeRefresh",
+        "TestPublicCatalogActivatesWithoutProviderCredentials",
+        "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+      ]
+    },
+    "minimum-after": {
+      "events": {
+        "pass": 64
+      },
+      "skipped_names": []
+    },
+    "workflow-after": {
+      "events": {
+        "pass": 48
+      },
+      "skipped_names": []
+    },
+    "workflow-minimum": {
+      "events": {
+        "pass": 48
+      },
+      "skipped_names": []
+    },
+    "generation-before": {
+      "events": {
+        "fail": 3
+      },
+      "skipped_names": []
+    }
+  },
+  "artifacts": {
+    "bootstrap-cohort-after.jsonl": {
+      "file": "bootstrap-cohort-after.jsonl.gz",
+      "sha256": "d7868c4bd5f6c21d9c1c21f10559e6eda0877fa05fea15b965bf62ce5087c25b",
+      "bytes": 32509
+    },
+    "catalogs-cohort-before.jsonl": {
+      "file": "catalogs-cohort-before.jsonl.gz",
+      "sha256": "2d67032ebe4f37ea99fdea0418ed5e5b8d87ef2a78b782419d3a899f24a2babb",
+      "bytes": 8602
+    },
+    "runtime-cohort-after.jsonl": {
+      "file": "runtime-cohort-after.jsonl.gz",
+      "sha256": "c4dcdd8e7894b6f387bf9e8e656dc878936d33a1500241e9252a2cd194e84f07",
+      "bytes": 10834
+    },
+    "bootstrap-cohort-before.jsonl": {
+      "file": "bootstrap-cohort-before.jsonl.gz",
+      "sha256": "92ff64530d6b14cc0dc94b81838aae71275eb2a81f93cffaa5c08c557990e7c7",
+      "bytes": 32519
+    },
+    "catalogs-cohort-after.jsonl": {
+      "file": "catalogs-cohort-after.jsonl.gz",
+      "sha256": "ec8085f0eb7db458a5ab8faf522e00f4f8fd12ac283122cc0d54d33e6415c295",
+      "bytes": 8338
+    },
+    "runtime-cohort-before.jsonl": {
+      "file": "runtime-cohort-before.jsonl.gz",
+      "sha256": "22352f505fe08424f41bca36c4505c4d6194b44ee2b7d7218c607202013f1a53",
+      "bytes": 10846
+    },
+    "runtime-before.jsonl": {
+      "file": "runtime-before.jsonl.gz",
+      "sha256": "63b2c818efd6689b9280e49bcfa5d68fec7c675012628d7e8b470d395963bbad",
+      "bytes": 3633358
+    },
+    "runtime-before.cpu": {
+      "file": "runtime-before.cpu.gz",
+      "sha256": "e60f64d4db388d902526014cd4384d37c5af994f87904bdbd853a17c6195c531",
+      "bytes": 1064371
+    },
+    "runtime-profile.log": {
+      "file": "runtime-profile.log.gz",
+      "sha256": "806d5a296242fa10876adab4795114ddebe5b0bb5a5472990e75aece39c6c4d4",
+      "bytes": 2644
+    },
+    "workflow-before.jsonl": {
+      "file": "workflow-before.jsonl.gz",
+      "sha256": "4bf1f44f43adc965bb0eaff692904ef4986c058140289102ede64edd16ff20e2",
+      "bytes": 29401
+    },
+    "workflow-after.jsonl": {
+      "file": "workflow-after.jsonl.gz",
+      "sha256": "bd0f3f1c5ed93bca3c940a7bee082748af99bbd3e706cc7f45c17e9404e26aba",
+      "bytes": 47999
+    },
+    "workflow-minimum.jsonl": {
+      "file": "workflow-minimum.jsonl.gz",
+      "sha256": "221b131076aa32ee29eb81e76f76e34ec425f16f8dd01bba368c23debab06ef2",
+      "bytes": 48010
+    },
+    "generation-before.jsonl": {
+      "file": "generation-before.jsonl.gz",
+      "sha256": "aeef927b57d04e1e09978fd2b250d3ce32c083679ac2a3c0481456e2d3677776",
+      "bytes": 6795
+    },
+    "minimum-after.jsonl": {
+      "file": "minimum-after.jsonl.gz",
+      "sha256": "0ed9c4077dbcff61c6fb4d883de7e6ece934d961ccf99b8bb5124252b9e91779",
+      "bytes": 72773
+    },
+    "checks.log": {
+      "file": "checks.log.gz",
+      "sha256": "621ac47a3880ba4fd43f2d47ee12d4e7f77269467b0a10d1d855faa815e39e2a",
+      "bytes": 60522
+    },
+    "runner-unit-before.log": {
+      "file": "runner-unit-before.log.gz",
+      "sha256": "95a01ae7f3a0278a51a98d439cf4e19e4966a47e589dea8d9934e10d1f832a11",
+      "bytes": 832
+    },
+    "runner-unit-after.log": {
+      "file": "runner-unit-after.log.gz",
+      "sha256": "e586fc0f3bb2a05f4c80f07d1b4c6171e830592f6c7aaf70d4af3b0aa3ebd072",
+      "bytes": 105
+    },
+    "writing.log": {
+      "file": "writing.log.gz",
+      "sha256": "16f0d213e10b69af8ea0961dbff90e1986f58aa9cbc84260d0eafc94d855f432",
+      "bytes": 558
+    },
+    "goago.json": {
+      "file": "goago.json.gz",
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+      "bytes": 289
+    },
+    "minimum-command.json": {
+      "file": "minimum-command.json.gz",
+      "sha256": "71f5d667fd1ddf971b23100cc6081194c4c6ff16b3ae79c36d36a22b1aaf93ee",
+      "bytes": 1239
+    },
+    "actionlint.log": {
+      "file": "actionlint.log.gz",
+      "sha256": "077a024a685c30371f40be84d000ed9ad27e1e52e65af2c6d818cf482a6c26f9",
+      "bytes": 425
+    },
+    "make-test.log": {
+      "file": "make-test.log.gz",
+      "sha256": "ee1c513fd84dd379a0867cd1f65c3a9bf0ffc51a4dabfb18ab432751e014dbf3",
+      "bytes": 150
+    }
+  },
+  "changes": [
+    "Minimal receipt fixtures preserve full embedded tests at bootstrap/startup boundaries.",
+    "Ten read-only bootstrap tests share the existing verified immutable catalog.",
+    "Bounded concurrency work replaces fixed sleeps and verifies exact writes and coherent fields.",
+    "Four exhaustive package groups cover all 113 packages; minimum ordinary and release race suites run independently.",
+    "Required Verification Gate rejects failed, cancelled, skipped, or missing prerequisite results.",
+    "Generated-output checks run first; root API docs and generator failure propagation are checked.",
+    "Make targets distinguish focused cached local runs from fresh qualification; duplicate integration-tag execution removed.",
+    "Testing documentation defines contract ownership, caching, fixtures, concurrency, platform/service qualification, and package extraction criteria."
+  ],
+  "hosted_after": "UNVERIFIED"
 }
