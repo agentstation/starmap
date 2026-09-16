@@ -263,7 +263,21 @@
       "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
       "command": "GOTOOLCHAIN=go1.26.6 make verify",
       "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-status-contract.log",
-      "source_policy": "Keep the committed source unchanged until the gate completes."
+      "source_policy": "Keep the committed source unchanged until the gate completes.",
+      "progress": {
+        "observed_at": "2026-09-16T07:16:28.740672+00:00",
+        "ordinary_suite": {
+          "passed_packages": 87,
+          "packages_without_tests": 24,
+          "failed_reports": 0
+        },
+        "pure_go": "PASS",
+        "repository_policy_checks": "PASS",
+        "current_command": "CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1 -count=1",
+        "snapshot": "full-verification-before-race-2026-09-16.log.gz",
+        "snapshot_sha256": "b4dced97755cf0e5ed75f3990df344de23bb12edde4c7e785e24e61b46e28403",
+        "full_gate": "in_progress"
+      }
     },
     "linux_status_task": {
       "session": 46721,

@@ -30,7 +30,7 @@
     }
   },
   "remaining": [
-    "Finish fresh CI and merge the reviewed implementation after required checks.",
+    "Wait for the required Verification Gate and GitHub automatic merge. Verify the actual merged tree before completion credit.",
     "Receive the user-created App key and configure the secret when the controlled hosted run is ready.",
     "Qualify the three hosted acceptance cases on main, register their verification adapters, and record task completion."
   ],
@@ -90,16 +90,28 @@
     "draft": false,
     "body_updated": true,
     "ready_for_review_at": "2026-09-16T06:54:50.394774+00:00",
-    "ready_command": "gh pr ready 160 --repo agentstation/starmap"
+    "ready_command": "gh pr ready 160 --repo agentstation/starmap",
+    "auto_merge": {
+      "enabled_at": "2026-09-16T07:14:45Z",
+      "method": "MERGE",
+      "matched_head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
+      "command": "gh pr merge 160 --repo agentstation/starmap --merge --auto --match-head-commit 7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
+      "exit_status": 0,
+      "confirmed_state": "OPEN"
+    }
   },
   "integrated_ci": {
-    "observed_at": "2026-09-16T06:53:27.145154+00:00",
+    "observed_at": "2026-09-16T07:16:28.740672+00:00",
     "head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
     "counts": {
-      "SUCCESS": 15,
-      "IN_PROGRESS": 4
+      "SUCCESS": 18,
+      "IN_PROGRESS": 1
     },
-    "status": "in_progress"
+    "status": "in_progress",
+    "remaining_check": "Verification Gate",
+    "six_native_jobs": "PASS",
+    "snapshot": "ci-auto-merge.json.gz",
+    "snapshot_sha256": "525078afd99f62edde0b414880f883dd462375c74eb768e316bcd17ff060a0f9"
   },
   "artifacts": [
     {
