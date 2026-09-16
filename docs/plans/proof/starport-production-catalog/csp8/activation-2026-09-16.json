@@ -33,5 +33,28 @@
     "ci_status": "in_progress",
     "automatic_merge": true,
     "completion_credit": false
-  }
+  },
+  "checks": {
+    "protected_sections_unchanged": 6,
+    "unrelated_files_unchanged": 5,
+    "plan_prose": {
+      "status": "PASS",
+      "files": 1555,
+      "diagnostics": 0
+    }
+  },
+  "running": {
+    "baseline_task": {
+      "session": 92560,
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
+      "log": ".tmp/csp8-shared-contract/fail-before.json"
+    },
+    "focused_fail_before": {
+      "session": 62358,
+      "worktree": "/Users/jack/src/github.com/agentstation/starport-shared-catalog",
+      "log": ".tmp/csp8/settings-fail-before.jsonl",
+      "exit_status": 1
+    }
+  },
+  "maintenance_repair": "Restored task-section whitespace after the activation edit. All six protected hashes match the prior plan."
 }
