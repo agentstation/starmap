@@ -1,0 +1,114 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T15:25:44.469019+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "work_commit": "7f6073cc51627960d1decae20525e6abe706ef7a",
+  "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "behavior": [
+    "config paths --files reports storage selection, access requirements, configuration inputs, and recovery rules without opening stores.",
+    "config paths --inspect uses the shared bounded metadata inspector and retains cancellation and access conflict reporting.",
+    "The configuration report uses the access policy selected before reading the file. Input file values cannot authorize service-managed access.",
+    "Badger, SQLite and sidecars, uploads, baseline, catalog runtime evidence, selected workspaces, TLS, local token, and onboarding roles distinguish active and disabled paths.",
+    "Shared KV, SQL, and blob selections omit connection credentials and object-store identifiers. Development reports memory stores and selected scratch paths."
+  ],
+  "checks": {
+    "test_events": {
+      "before": {
+        "fail": 2,
+        "pass": 4
+      },
+      "contracts-complete": {
+        "pass": 16
+      },
+      "race-final": {
+        "pass": 352
+      }
+    },
+    "race_command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/config ./internal/cli",
+    "race_exit": 0,
+    "lint": {
+      "exit": 0,
+      "issues": 0
+    },
+    "vet": {
+      "exit": 0
+    },
+    "authored_prose": {
+      "exit": 0,
+      "files": 3,
+      "diagnostics": 0
+    },
+    "doc_links": {
+      "exit": 0
+    },
+    "canonical_prose": {
+      "command": "make technical-writing-check",
+      "exit": 2,
+      "files": 1580,
+      "diagnostics": 2,
+      "reason": "Two unchanged raw machine-output text artifacts exceed sentence limits. Their contents remain exact. The current plan passes targeted strict lint."
+    }
+  },
+  "failures_preserved": [
+    "Two CLI behavior tests failed before implementation because the flags did not exist.",
+    "The first config fixture used two incorrect ObjectStoreConfig field names. The corrected fixture then failed validation because it omitted a region or endpoint. Added an explicit region without changing validation.",
+    "The first broad race run retained that fixture failure. The final run passes against the committed source.",
+    "The first lint pass found ten repeated-literal diagnostics. Shared role, kind, and origin constants resolve them.",
+    "The whole Operator Guide prose check found 49 diagnostics, including one newly added long paragraph. The new paragraph is fixed. Existing prose outside this change remains unchanged. Authored prose passes separately."
+  ],
+  "source_sha256": {
+    "docs/OPERATOR-GUIDE.md": "801781dfeb12826c6d5426acc860a6ec1db7d8ff1240c1bd8d83dd775ed8f3d5",
+    "internal/cli/file_manifest.go": "e2fc43dc612965858b5d6a2ecdce87708ca347a5cf928d8523f36c319a6b802c",
+    "internal/cli/file_manifest_test.go": "aa92454c6b74ae1c3e1a4a81a3d5329e8ccbed85bcc54941db837d42ee640ffe",
+    "internal/cli/inspection_commands.go": "9f3e28f54b4037fd1549842ebfb978d685e20bbbe0164a5ebb0a19785d99376e",
+    "internal/config/catalog_resolution.go": "0eea848518a52f9ab64dea2cb9f718f7c9ba237316fdac0970474b54924f4819",
+    "internal/config/config.go": "c986fff967bfa7a2848c44ae113b0103154d7128b83ac4db45179151ba3918a3",
+    "internal/config/development.go": "fef0fb7afc867e5e7c9b66d49b4efab709abf30e2919f66346032cbc7839f6d6",
+    "internal/config/file_manifest.go": "5a1f002aa44f4dc3e4d525f9331dc88db2e667dd4cf5fbade49cd808161a9c67",
+    "internal/config/file_manifest_test.go": "6516e004faec5c021989c5286aa2088c4f36da1e365198600221a3bf636a528f",
+    "internal/config/loader.go": "932066e9cb732d3ec581442e259c702f560443fff393266d1b9047bce143d9c5",
+    "internal/config/path_origins.go": "fdc4b5754d03144b68cc18483a2a3d5a659d46f90ef11038ee3eb89e7ed599fd",
+    "internal/config/paths.go": "d11598d98801739000643f7f69d7a1403d88bd65a7597cd7ebf91497913cc8e2"
+  },
+  "completion_credit": false,
+  "remaining": [
+    "Source-cache roots, adjacent engine-owned authoring artifacts, and legacy migration still require integration.",
+    "Native Windows and Linux inspection of this Starport composition remains UNVERIFIED. The POSIX mode-specific test skips Windows and does not claim DACL qualification.",
+    "Catalog acquisition and storage qualification, a compatible published Starmap module, full pre-PR checks, required review, native CI, and merge remain required."
+  ],
+  "artifacts_uncompressed_sha256": {
+    "file-manifest-authored.md.gz": "17d0ebd8d60b5bccd66a3bbdbd09a35f3fb975c9b6556d866aadc0b45a529ee6",
+    "file-manifest-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "file-manifest-before.jsonl.gz": "01f3844dbdc45bd480f3e1afa09fdb5abcb47244a46b7dd607b307f91244751c",
+    "file-manifest-contracts-complete.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-contracts-complete.jsonl.gz": "71279e886ec17cc706ac58691aa64166199f0e22a390234b3c4075f7a048e963",
+    "file-manifest-contracts-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-contracts-final.jsonl.gz": "9d4b06979537f8f9e3fac9a11c0494aa2e91a653438f8d3dfc59b5ba6dfe6220",
+    "file-manifest-contracts-retry.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "file-manifest-contracts-retry.jsonl.gz": "420295225a9949ecf667285d6fcf77d1c7b7ba3f18caf1310b3528a9fdbe0f51",
+    "file-manifest-contracts.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "file-manifest-contracts.jsonl.gz": "a4e978d64f695225dc928e0be5d476f4836b7d4c90977a2df4bfe2d8c11b5292",
+    "file-manifest-doc-links.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-doc-links.log.gz": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "file-manifest-focused.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-focused.jsonl.gz": "e05314aafeb0b10078ff973b4fe831e398a1f3705dabe4468c5cdf410c527b33",
+    "file-manifest-lint-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-lint-final.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "file-manifest-lint.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "file-manifest-lint.log.gz": "1ffe8d2e8c61d4b3220d9460eb37667758d875dbfde33422ac785eb8f53d7c45",
+    "file-manifest-prose-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-prose-final.log.gz": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+    "file-manifest-prose.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "file-manifest-prose.log.gz": "ffef4b80322b7b1c2b1ec32da9672d8c2ea6dca95605a8a3115da4c4bc332e2b",
+    "file-manifest-race-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-race-final.jsonl.gz": "2713d35ef2791bf4d9ee39c611ea280bba28fb2028a0f72fe72cb0832653b845",
+    "file-manifest-race.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "file-manifest-race.jsonl.gz": "93d3549e4d46b812b1a2b10ad0dfa7703268d00f8daeeba941e8e5f9599c70f7",
+    "file-manifest-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "file-manifest-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "csp8-file-manifest-prose.log.gz": "21e8b5a5fc334b1839d77e35ce1fbcbef75ede2e0b66855ecd14fd2417bfecc8",
+    "csp8-file-manifest-prose.exit.gz": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+  }
+}
