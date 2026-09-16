@@ -600,6 +600,8 @@ It validates component identities through handles that open reparse points witho
 The guard checks trusted symlink routes and targets, including components before `..`.
 
 Trusted ancestor principals are the process account, SYSTEM, Administrators, and TrustedInstaller.
+An OWNER RIGHTS grant refers to the descriptor's current owner. Resolve it only after that owner passes the trusted-principal check.
+Creator Owner does not identify the current owner and receives no equivalent exception.
 Shared read, traversal, and subdirectory creation grants remain valid. Other mutation grants require a trusted principal.
 
 Inheritance-only grants do not affect the current ancestor. Protected private creation excludes inherited grants from new private children.
