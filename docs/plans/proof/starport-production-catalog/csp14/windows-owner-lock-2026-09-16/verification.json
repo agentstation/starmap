@@ -60,5 +60,17 @@
     "ci_run": 35083351116,
     "automatic_merge": true,
     "review_sequence": "The automatic selector ran only Opus before push. Automatic merge was disabled until the required Sol review passed, then enabled for the same head."
+  },
+  "native_qualification_observation": {
+    "observed_at": "2026-09-16T11:33:08.121029+00:00",
+    "head": "8fbbb30431db8f776368a42add4feb7134912392",
+    "runtime_jobs": 6,
+    "runtime_jobs_succeeded": 6,
+    "pending_checks": [
+      "Verification Gate"
+    ],
+    "pr_state": "OPEN",
+    "merge_commit": null,
+    "evidence": "../../csp8/setup-preparation-2026-09-16/server-ci-observation.json"
   }
 }

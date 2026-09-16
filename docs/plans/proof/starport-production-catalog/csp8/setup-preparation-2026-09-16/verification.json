@@ -1,0 +1,275 @@
+{
+  "task": "CSP8",
+  "status": "in_progress; public setup remains guarded",
+  "recorded_at": "2026-09-16T11:33:08.121029+00:00",
+  "starmap": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+    "branch": "codex/starmap-host-files",
+    "commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+    "source_hashes": {
+      "internal/privatefiles/directory.go": "5ce635e9ce3085e30db28485768dda80c2f1c4093d2f9c9acf4fbc7f9a8e0c48",
+      "pkg/productfiles/directory.go": "f12da7172cc3ef98b33c8aa0d02138495d6aee3650a412297239e1b00e42ba15",
+      "pkg/productfiles/directory_test.go": "d61630a40173c4f8ed120430b821701e7244087f814514f8bf522e2ae4cb36d6",
+      "pkg/productfiles/README.md": "182ec74f710965756ae415b71d2fd37e85fa119f12f057d18e8c4cff20da3f9b"
+    }
+  },
+  "starport": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+    "branch": "codex/starport-product-paths",
+    "base_commit": "6179be84fe3475bbffdbcf70424935995a066bbf",
+    "state": "Six task-owned files remain uncommitted. No unrelated changes exist in this worktree.",
+    "source_hashes": {
+      "internal/setup/service.go": "f19436a3ab323ffd0818bdbaf0f4327909023f4c9254fee111c738c1d73da5c9",
+      "internal/setup/preparation.go": "59600217f724ed67ee4f116167bc630422bd1004fb76ff4fcf1ec182649053a3",
+      "internal/setup/preparation_test.go": "26caab8848e91f3b5f6f06876377d683fef5e35bf73ee7a1109fd4838564fa8c",
+      "internal/setup/receipt.go": "f12fecaaae31bddee207ba2e7fc9eb63f57ec0df500e9fbfb71cf0fa515def89",
+      "internal/setup/transaction_lock.go": "c0711c13f97798380e5ef9591f4de0894ec0201d1c00ccc7ca62e6f0f6806e88",
+      "internal/setup/product_roots_test.go": "019983d9edd90d7bfaa348c8040ce668fd70c07a647047ba7c139389cf49527e"
+    }
+  },
+  "behavior": [
+    "Public Starmap operations now expose exclusive child creation and native identities for private recovery records.",
+    "A private Starport preparation path creates an initial gateway key in a private data staging directory.",
+    "A checked native writer lock excludes concurrent setup.",
+    "The preparation journal retains config bytes and file receipts. It never retains the plaintext gateway API key.",
+    "Publication verifies the closed database receipt, moves it without replacement, syncs the data root, and publishes config last.",
+    "A data-publication interruption retains the exact journal and accepted database receipt.",
+    "Public Initialize, Inspect, and Rollback still use the original grouped layout. The three separate-root tests still fail at that guard."
+  ],
+  "failure_and_repair": {
+    "initial_evidence": "setup-preparation.jsonl.gz",
+    "failed_test_events": 5,
+    "reason": "A real Badger table has broader POSIX file modes inside its private engine directory. The private-record reader refused that file.",
+    "diagnostic_evidence": "setup-preparation-file-mode.jsonl.gz",
+    "repair": "The receipt validates the private engine directory and hashes bounded regular files through its confined root. Badger retains ownership of its internal file modes. No permission repair or global umask change occurs.",
+    "contract_reference": "ENGINEERING_SPEC.md, line 374: the product manifest records the engine directory or consistent snapshot boundary.",
+    "dependency_source": [
+      "github.com/dgraph-io/badger/v4@v4.9.6/table/table.go:247",
+      "github.com/dgraph-io/ristretto/v2@v2.4.2/z/file.go:66"
+    ]
+  },
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json ./pkg/productfiles ./internal/privatefiles ./internal/filepublish",
+      "exit": 0,
+      "passed_test_events": 149,
+      "skipped_test_events": 0,
+      "failed_tests": [],
+      "passed_packages": [
+        "github.com/agentstation/starmap/pkg/productfiles",
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles"
+      ],
+      "evidence": "host-files-identity.jsonl.gz"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -json ./pkg/productfiles ./internal/privatefiles ./internal/filepublish",
+      "exit": 0,
+      "passed_test_events": 149,
+      "skipped_test_events": 0,
+      "failed_tests": [],
+      "passed_packages": [
+        "github.com/agentstation/starmap/pkg/productfiles",
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles"
+      ],
+      "evidence": "host-files-identity-floor.jsonl.gz"
+    },
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json -run 'TestPreparedSetup|TestSetupReceipt' ./internal/setup",
+      "exit": 0,
+      "passed_test_events": 10,
+      "skipped_test_events": 0,
+      "failed_tests": [],
+      "passed_packages": [
+        "github.com/agentstation/starport/internal/setup"
+      ],
+      "evidence": "setup-preparation-final.jsonl.gz"
+    },
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json  ./internal/setup",
+      "exit": 1,
+      "passed_test_events": 26,
+      "skipped_test_events": 0,
+      "failed_tests": [
+        "TestInitializeSeparateProductRoots",
+        "TestInitializeSeparateRootsPreservesExistingData",
+        "TestRollbackSeparateProductRoots"
+      ],
+      "passed_packages": [],
+      "evidence": "setup-preparation-suite.jsonl.gz"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go vet ./pkg/productfiles ./internal/privatefiles",
+      "exit": 0,
+      "evidence": "host-files-identity-vet.log.gz"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+      "exit": 0,
+      "evidence": "host-files-identity-goago.json.gz"
+    },
+    {
+      "command": "GOOS=windows GOARCH=amd64 CGO_ENABLED=0 GOTOOLCHAIN=go1.25.12 go test -c -o .tmp/csp8/productfiles-identity-windows.test.exe ./pkg/productfiles",
+      "exit": 0,
+      "evidence": "host-files-identity-windows-compile.log.gz",
+      "limitation": "compile only; native execution remains required"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 make HAS_DEVBOX= godoc",
+      "exit": 0,
+      "evidence": "host-files-identity-docs.log.gz"
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit": 0,
+      "evidence": "host-files-identity-prose.log.gz"
+    },
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go vet ./internal/setup",
+      "exit": 0,
+      "evidence": "setup-preparation-final-vet.log.gz"
+    }
+  ],
+  "raw_artifacts": [
+    {
+      "path": "host-files-identity-docs.log.gz",
+      "bytes": 146,
+      "sha256": "00b35dbc0fd3b88eb4d37ff12acc93dadd9ef0a51ad664ca8a51978757ee2f3e"
+    },
+    {
+      "path": "host-files-identity-floor.jsonl.gz",
+      "bytes": 140464,
+      "sha256": "73dd171d6e53c74b5e6b5386c17c8324f983d69106ecf918320d1eee912b5fa7"
+    },
+    {
+      "path": "host-files-identity-floor.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-identity-goago.json.gz",
+      "bytes": 289,
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "host-files-identity-prose.log.gz",
+      "bytes": 538,
+      "sha256": "cc2af02cd9df0316dd2b2a27cd8d793729cea79d47dc6a289939ea866127e070"
+    },
+    {
+      "path": "host-files-identity-vet.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-identity-windows-compile.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-identity.jsonl.gz",
+      "bytes": 140485,
+      "sha256": "78a5423e91a177d794dede1413e52e14295e3d08315529b7d28f9dfc5f61c0b3"
+    },
+    {
+      "path": "host-files-identity.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup-preparation-file-mode.jsonl.gz",
+      "bytes": 5999,
+      "sha256": "e8b1b5a6c89250c481e5ac43df7e2e56a9f5bd9105f99dd26bf97339f7219a25"
+    },
+    {
+      "path": "setup-preparation-file-mode.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup-preparation-final-vet.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup-preparation-final.jsonl.gz",
+      "bytes": 29490,
+      "sha256": "5c39d1c8f37f06fcec4e9e80beb77661d93d26f4b144ea6b4a62b999e1d64d17"
+    },
+    {
+      "path": "setup-preparation-final.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup-preparation-repaired.jsonl.gz",
+      "bytes": 29485,
+      "sha256": "5628b1714869d0155b81114656867e66e235376708bbf807c11a05e1bccd2448"
+    },
+    {
+      "path": "setup-preparation-repaired.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup-preparation-suite.jsonl.gz",
+      "bytes": 108474,
+      "sha256": "338de75f2b5adc1347dc88c6515ca25ed2f6582696fea9c8adc71f10b0862140"
+    },
+    {
+      "path": "setup-preparation-suite.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup-preparation-vet.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup-preparation.jsonl.gz",
+      "bytes": 32987,
+      "sha256": "dd1e42ddca127424f2fe559e25004dc1b5864a1b5ee0cb46239f91a139d454fe"
+    },
+    {
+      "path": "setup-preparation.stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "next": [
+    "Implement receipt-checked rollback and recovery under the setup writer lock before changing public initialization.",
+    "Cover subprocess exits during preparation, data publication, config publication, and cleanup. Error hooks alone do not qualify process-exit recovery.",
+    "Preserve incomplete receipts, changed files, unknown entries, and conflicting writers.",
+    "Validate all selected file and database paths before access. The private preparation helper currently assumes direct children of ConfigDir and DataDir. Do not expose that assumption as silent path redirection.",
+    "Define retries when the process loses the one-time gateway key. Do not persist its plaintext in recovery records.",
+    "Integrate Inspect, public initialization, rollback, and application startup so pending setup cannot become a different store.",
+    "Complete all existing CSP8 storage, settings, migration, acquisition, native CI, stable-module, review, and merge gates."
+  ],
+  "completion_credit": false,
+  "maintenance": {
+    "protected_sections": 6,
+    "previous_log_rows_archived": 10,
+    "current_log_rows": 10,
+    "resume_words": 373,
+    "plan_bytes": 110141,
+    "bounded_read_path": [
+      "#current-resume",
+      "#task-CSP8",
+      "csp8/setup-preparation-2026-09-16/verification.json",
+      "csp8/product-paths-2026-09-16/verification.json"
+    ],
+    "size_exception": "The plan preserves all accepted task contracts. Current resume and exact proof links provide the bounded read path.",
+    "cold_resume": "The current record names the active task, six unfinished source files, tested producer commit, remaining public failures, running full verification, and next implementation action.",
+    "verified_status_rows": 38,
+    "verified_unrelated_files": 5,
+    "verified_source_files": 10,
+    "local_link_errors": 0,
+    "prose_check": {
+      "files": 2,
+      "diagnostics": 0,
+      "exit": 0
+    }
+  }
+}
