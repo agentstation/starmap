@@ -13,7 +13,6 @@ import (
 	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/reconciler"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
-	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/evidence"
 	"github.com/agentstation/starmap/pkg/differ"
@@ -175,60 +174,14 @@ func (p *Pipeline) prepare(
 	existing *catalogs.Catalog,
 	options *pkgsync.Options,
 ) (*Prepared, error) {
-	if p == nil {
-		return nil, &pkgerrors.ValidationError{
-			Field:   "pipeline",
-			Message: "is required",
-		}
-	}
-	if existing == nil {
-		return nil, &pkgerrors.ValidationError{
-			Field:   "pipeline.existing_catalog",
-			Message: "is required",
-		}
-	}
-
-	if err := options.ValidateFilesystemLayout(); err != nil {
-		return nil, err
-	}
-	inputs, err := p.loadCatalogInputs(ctx, options.CatalogPath, existing)
+	collected, err := p.collect(ctx, existing, options)
 	if err != nil {
 		return nil, err
 	}
-	validationProviders := inputs.providerConfig.Providers()
-	acquiresProviders := len(options.Sources) == 0 || slices.Contains(options.Sources, sources.ProvidersID)
-	// Metadata filters can name embedded providers without enabling their APIs.
-	if !acquiresProviders {
-		validationProviders = metadataProviderRegistry(inputs, options.ProviderID)
-	}
-	if err = options.Validate(validationProviders); err != nil {
-		return nil, err
-	}
-
-	srcs := p.createSources(options, inputs)
-	srcs, err = p.bindProviderSources(srcs, options, inputs)
-	if err != nil {
-		return nil, err
-	}
-
-	srcs, sourceFailures, err := p.resolveDependencies(ctx, srcs, options)
-	if err != nil {
-		return nil, err
-	}
-
-	defer func() {
-		cleanupCtx, cleanupCancel := context.WithTimeout(context.Background(), constants.SyncCleanupTimeout)
-		defer cleanupCancel()
-
-		if cleanupErr := p.cleanup(cleanupCtx, srcs); cleanupErr != nil {
-			logging.Warn().Err(cleanupErr).Msg("Source cleanup errors occurred")
-		}
-	}()
-
-	observations, observeErr := p.observe(ctx, srcs, options.SourceOptions())
-	if ctxErr := ctx.Err(); ctxErr != nil {
-		return nil, ctxErr
-	}
+	observations := collected.Observations
+	sourceFailures := collected.SourceFailures
+	observeErr := collected.observeErr
+	srcs := collected.configured
 	if observeErr != nil && options.RequireAllSources {
 		return nil, observeErr
 	}
@@ -299,7 +252,7 @@ func (p *Pipeline) prepare(
 			Observations:   observations,
 			SourceFailures: sourceFailures,
 			Options:        options,
-			WorkspaceInput: inputs.workspaceInput,
+			WorkspaceInput: collected.WorkspaceInput,
 		}, nil
 	}
 
@@ -310,12 +263,12 @@ func (p *Pipeline) prepare(
 		Observations:   observations,
 		SourceFailures: sourceFailures,
 		Options:        options,
-		WorkspaceInput: inputs.workspaceInput,
+		WorkspaceInput: collected.WorkspaceInput,
 		Publish: shouldPublish(
 			options,
 			result.Changeset,
 			result.ReviewCandidates,
-			inputs.workspaceInput.RequiresSeed(),
+			collected.WorkspaceInput.RequiresSeed(),
 		),
 	}, nil
 }

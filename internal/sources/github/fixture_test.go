@@ -470,6 +470,7 @@ func newTestSource(t *testing.T, server *fixtureServer, opts ...Option) *Source 
 		WithAPIBaseURL(server.url()),
 		WithStateDirectory(t.TempDir()),
 		WithRepository(testRepository),
+		WithChannel(artifact.ChannelName),
 	}
 	source, err := New(append(base, opts...)...)
 	if err != nil {

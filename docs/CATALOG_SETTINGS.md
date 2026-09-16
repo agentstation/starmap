@@ -323,7 +323,7 @@ Names the branch that holds the catalog channel document.
 | YAML key | `catalog_source_channel` |
 | Semantic ID | `catalog.source.channel` |
 | Grammar | `string` |
-| Default | `catalog/v1` |
+| Default | `catalog/v2` |
 | Explicit empty | false |
 | Explicit zero | false |
 | Sensitive | false |

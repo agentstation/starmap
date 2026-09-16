@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/constants"
+	testlogging "github.com/agentstation/starmap/internal/test/logging"
+	"github.com/agentstation/starmap/pkg/logging"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
@@ -80,7 +82,9 @@ func TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts(t *testing
 	source := NewHTTPSource()
 	source.loadAPI = func(context.Context, string) (*API, error) { return &api, nil }
 
-	observation, err := source.Observe(context.Background())
+	logger := testlogging.New(t)
+	ctx := logging.WithRunID(logging.WithLogger(t.Context(), logger.Logger), "quarantine-test")
+	observation, err := source.Observe(ctx)
 	if err != nil {
 		t.Fatalf("Observe: %v", err)
 	}
@@ -107,6 +111,23 @@ func TestInvalidIdentityQuarantineMalformedModelsDevRecordsWithCounts(t *testing
 	}
 	if observation.Records.Accepted != 1 || observation.Records.Rejected != 5 {
 		t.Fatalf("record counts = %#v, want accepted=1 rejected=5", observation.Records)
+	}
+	diagnostics := 0
+	for _, line := range logger.Lines() {
+		var event map[string]any
+		if err := json.Unmarshal([]byte(line), &event); err != nil {
+			t.Fatal(err)
+		}
+		if event["code"] != string(sources.ObservationIssueCodeInvalidRecord) {
+			continue
+		}
+		if event["provider_id"] != "provider" || event["model_id"] == nil || event["field"] == nil || event["reason"] == nil || event["run_id"] != "quarantine-test" {
+			t.Fatalf("quarantine diagnostic lacks repair details: %+v", event)
+		}
+		diagnostics++
+	}
+	if diagnostics != 5 {
+		t.Fatalf("reported %d quarantine diagnostics, want five", diagnostics)
 	}
 }
 

@@ -12,7 +12,18 @@ func (s *sourceLayer) decodeCatalog() (*catalogs.Catalog, error) {
 		if s.Manifest.GenerationID != s.GenerationID || s.Manifest.Payload.Checksum != s.Checksum {
 			return nil, &errors.ValidationError{Field: "source_layer.manifest", Message: "must match the retained generation identity and checksum"}
 		}
-		return catalogs.DecodeCatalogGeneration(catalogs.Generation{Manifest: *s.Manifest, Payload: s.Payload})
+		generation := catalogs.Generation{Manifest: *s.Manifest, Payload: s.Payload}
+		catalog, err := catalogs.DecodeCatalogGeneration(generation)
+		if err != nil {
+			return nil, err
+		}
+		if err := s.validatePublication(generation); err != nil {
+			return nil, err
+		}
+		return catalog, nil
+	}
+	if s.Publication != nil {
+		return nil, &errors.ValidationError{Field: "source_layer.publication", Message: "requires the original generation manifest"}
 	}
 	catalog, err := catalogs.DecodeCatalogPayload(s.Payload)
 	if err != nil {

@@ -443,6 +443,7 @@ func (r *Runtime) readSource(ctx context.Context, report *RefreshReport, epoch u
 		Payload:          read.Generation.Payload,
 		PublishedAt:      read.PublishedAt,
 		ChannelUpdatedAt: read.ChannelUpdatedAt,
+		Publication:      read.Publication,
 		ObservedAt:       result.CompletedAt,
 		Chain:            read.Chain,
 	}

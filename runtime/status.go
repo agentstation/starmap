@@ -60,12 +60,15 @@ func (r *Runtime) Status() Status {
 	hasSource := r.layers.source != nil
 	acceptedSources := slices.Clone(r.layers.acceptedSources)
 	var channelUpdatedAt time.Time
+	var publication *PublicationStatus
 	if hasSource {
 		channelUpdatedAt = r.layers.source.ChannelUpdatedAt
+		publication = r.layers.source.publicationStatus()
 	}
 	r.mu.RUnlock()
 
 	report := Status{
+		UpstreamPublication:        publication,
 		Retention:                  r.retentionStatus(state.retention),
 		Usable:                     effective.Catalog != nil,
 		GenerationID:               effective.GenerationID,

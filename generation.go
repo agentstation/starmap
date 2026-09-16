@@ -227,13 +227,9 @@ func (c *Client) newGeneration(
 	evidence CandidateEvidence,
 	requestedGenerationID string,
 ) (catalogs.Generation, error) {
-	payload, err := catalogs.EncodeCatalogPayload(published)
-	if err != nil {
-		return catalogs.Generation{}, err
-	}
-	descriptor := catalogs.DescribeCatalogPayload(payload)
 	generationID := requestedGenerationID
 	if generationID == "" {
+		var err error
 		generationID, err = c.NextID()
 		if err != nil {
 			return catalogs.Generation{}, err
@@ -243,7 +239,24 @@ func (c *Client) newGeneration(
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
-	generatedAt := c.currentTime()
+	return buildCandidateGeneration(published, evidence, generationID, syncRunID, c.currentTime())
+}
+
+// Generation builds deterministic generation bytes without publishing or reading storage.
+// The candidate requires an explicit generation identity. The caller owns the run identity and timestamp.
+func (c *Candidate) Generation(runID string, generatedAt time.Time) (catalogs.Generation, error) {
+	if c == nil || c.generationID == "" {
+		return catalogs.Generation{}, &errors.ValidationError{Field: "candidate.generation_id", Message: "an explicit generation identity is required"}
+	}
+	return buildCandidateGeneration(c.catalog, c.evidence, c.generationID, runID, generatedAt.UTC())
+}
+
+func buildCandidateGeneration(published *catalogs.Catalog, evidence CandidateEvidence, generationID, syncRunID string, generatedAt time.Time) (catalogs.Generation, error) {
+	payload, err := catalogs.EncodeCatalogPayload(published)
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	descriptor := catalogs.DescribeCatalogPayload(payload)
 	observations := append([]catalogs.SourceObservationLink(nil), evidence.SourceObservations...)
 	if len(observations) == 0 {
 		observations = append(observations, catalogs.SourceObservationLink{

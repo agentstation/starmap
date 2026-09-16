@@ -53,6 +53,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | manifest | The record that binds payload bytes, schema, compatibility, and source observations. |  | approved | `pkg/catalogs/generation_manifest.go` |
 | model definition | The provider-independent identity and intrinsic facts for one model. |  | approved | `docs/CATALOG_IDENTITY.md` |
 | models.dev | An external catalog source that supplies provider and model metadata. | models dev | approved | `internal/sources/modelsdev` |
+| OCI | Open Container Initiative specifications used by the optional catalog mirror. |  | approved | `docs/CATALOG_ARTIFACT_FORMAT.md` |
 | OpenAI-compatible | Implements the relevant OpenAI API contract for compatible clients. |  | approved | `docs/REST_API.md` |
 | OpenAPI | The machine-readable specification for the Starmap REST API. |  | approved | `docs/openapi.yaml` |
 | OPENAI_API_KEY | The environment name of the OpenAI provider credential that acquisition reads. |  | approved | `docs/DOCKER.md` |
@@ -60,6 +61,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | opt-in | Enabled only after an explicit configuration or API choice. |  | approved | `docs/REMOTE_CATALOG_PROTOCOL.md` |
 | payload digest | The SHA-256 digest of the exact catalog payload bytes. |  | approved | `docs/CATALOG_ARTIFACT_FORMAT.md` |
 | projection | A derived view that does not own independent catalog authority. |  | approved | `docs/CATALOG_IDENTITY.md` |
+| PR | A GitHub pull request that proposes repository changes for review and checks. |  | approved | `CONTRIBUTING.md` |
 | provider | A service that offers one or more models for inference. |  | approved | `pkg/catalogs/provider.go` |
 | provider offering | One provider's service contract for a model definition. |  | approved | `pkg/catalogs/provider_offering.go` |
 | provenance | Evidence that records the source and selection history of a catalog fact. |  | approved | `pkg/provenance/tracking.go` |

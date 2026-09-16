@@ -2006,6 +2006,58 @@
           "test": "TestConfigurationReportRedactsURLCredentials"
         }
       ]
+    },
+    "A05.required_source_absent": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/publication",
+          "test": "TestAdmissionRequiredScopeCannotBecomeOptional"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/publication",
+          "test": "TestPreparePublicationRejectsMissingAndCanceledEvidenceWithoutStateChange"
+        }
+      ]
+    },
+    "A05.partial_retained_admission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/publication",
+          "test": "TestPreparePublicationUsesPipelineAndRetainsFailedAccount"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/publication",
+          "test": "TestPublicationQuarantinePreservesRejectedRecordsAndClearsAfterRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/publication",
+          "test": "TestPublicationQuarantineRequiresExplicitPolicyAndOnlyRecordFailures"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/catalog/publication",
+          "test": "TestPublicationRepeatedQuarantineRetainsBoundedOriginalEvidence"
+        }
+      ]
+    },
+    "A05.complete_deletion_threshold": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./internal/catalog/publication",
+      "test": "TestPublicationCompactionPreservesChangesAbsenceReturnAndScopeRemoval"
     }
   },
   "task_component_checks": {

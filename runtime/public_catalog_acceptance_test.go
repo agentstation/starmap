@@ -8,12 +8,13 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap/internal/attestation"
+	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 func openPublicFixtureRuntime(t *testing.T, fixture *publicCatalogFixture, state string) *Runtime {
 	t.Helper()
-	runtime, err := Open(t.Context(), WithSourceURL(fixture.server.URL), WithStateDirectory(state), WithAcquisitionEnabled(false), WithSourcePollInterval(0))
+	runtime, err := Open(t.Context(), WithSourceURL(fixture.server.URL), WithSourceChannel(artifact.ChannelName), WithStateDirectory(state), WithAcquisitionEnabled(false), WithSourcePollInterval(0))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,6 +24,39 @@ func openPublicFixtureRuntime(t *testing.T, fixture *publicCatalogFixture, state
 		}
 	})
 	return runtime
+}
+
+func TestPublicChannelUpgradeRetainsAcceptedCatalogBeforeRefresh(t *testing.T) {
+	fixture := newPublicCatalogFixture(t)
+	state := privateRuntimeDirectory(t)
+	legacy := openPublicFixtureRuntime(t, fixture, state)
+	if _, err := legacy.RefreshSource(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	accepted := legacy.State()
+	if err := legacy.Close(); err != nil {
+		t.Fatal(err)
+	}
+	fixture.setFault("unavailable")
+	before := fixture.requestCount()
+	modern, err := Open(t.Context(), WithSourceURL(fixture.server.URL), WithStateDirectory(state), WithAcquisitionEnabled(false), WithSourcePollInterval(0))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := modern.Close(); err != nil {
+			t.Error(err)
+		}
+	}()
+	if modern.config.source.Channel != artifact.PublicationChannelName {
+		t.Fatal("upgrade did not select the new default channel")
+	}
+	if got := modern.State(); got.GenerationID != accepted.GenerationID || got.PayloadChecksum != accepted.PayloadChecksum || !modern.Status().Usable {
+		t.Fatal("channel upgrade lost its accepted catalog before a verified replacement")
+	}
+	if fixture.requestCount() != before {
+		t.Fatal("disabled refresh acquired source data during the upgrade")
+	}
 }
 
 func TestPublicCatalogActivatesWithoutProviderCredentials(t *testing.T) {

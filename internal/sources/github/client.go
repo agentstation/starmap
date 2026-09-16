@@ -293,6 +293,10 @@ func (c *cycle) bundles(ctx context.Context, digest string) ([][]byte, error) {
 // get sends one bounded request and returns the complete reply. It counts the
 // request before it sends, so a failed request still spends its budget.
 func (c *cycle) get(ctx context.Context, endpoint, accept, validator, resource string) (reply, error) {
+	return c.getBounded(ctx, endpoint, accept, validator, resource, 0)
+}
+
+func (c *cycle) getBounded(ctx context.Context, endpoint, accept, validator, resource string, maxBytes int64) (reply, error) {
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {
 		return reply{}, errors.WrapResource("build", "catalog source request", resource, err)
@@ -306,7 +310,11 @@ func (c *cycle) get(ctx context.Context, endpoint, accept, validator, resource s
 		request.Header.Set("If-None-Match", validator)
 	}
 	c.requests++
-	answer, err := c.client.transfer.Body(ctx, request, resource)
+	transfer := c.client.transfer
+	if maxBytes > 0 {
+		transfer.Policy.MaxCompressedBytes = min(transfer.Policy.MaxCompressedBytes, maxBytes)
+	}
+	answer, err := transfer.Body(ctx, request, resource)
 	if err != nil {
 		return reply{}, err
 	}

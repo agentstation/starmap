@@ -10,5 +10,15 @@ func (l *layerSet) attachMembershipScopes(builder *catalogs.Builder, membership 
 	if err != nil {
 		return err
 	}
-	return builder.SetMembershipScopes(append(builder.MembershipScopes(), records...))
+	selected := make(map[string]bool, len(records))
+	for _, record := range records {
+		selected[record.BindingID] = true
+	}
+	var scopes []catalogs.ProviderMembershipScope
+	for _, scope := range builder.MembershipScopes() {
+		if scope.PublisherID != l.publisherID || !selected[scope.BindingID] {
+			scopes = append(scopes, scope)
+		}
+	}
+	return builder.SetMembershipScopes(append(scopes, records...))
 }
