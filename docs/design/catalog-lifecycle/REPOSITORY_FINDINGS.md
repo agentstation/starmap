@@ -3137,3 +3137,20 @@ The proof preserves intermediate application failures and all nineteen initial l
 
 Classification: in-scope CSP8 implementation. Development isolation, migration, complete diagnostics, storage, acquisition, and release gates remain open.
 Required review, native CI, a compatible published Starmap module, and merge still gate completion.
+
+## Starport development scratch ownership, 2026-09-16
+
+Commit `3a2fd6b873235c09d847b93fd1b5bd602a301fa6` replaces repeated recursive path deletion with session ownership and bounded recovery.
+The original repeated-close regression deletes an operator directory that reuses the former scratch path.
+Another regression shows that failed composition deletes scratch before the caller can establish complete resource shutdown.
+
+The host now publishes its recovery record after application construction succeeds.
+Native identities, private access checks, exact record bytes, and a lifetime lock govern cleanup.
+Recovery preserves changed state and incomplete initialization. A process-kill test proves live exclusion and later recovery.
+
+The [scratch proof](../../plans/proof/starport-production-catalog/csp8/scratch-recovery-2026-09-16/verification.json) records 526 passing race events across configuration, catalog, and application packages.
+The optional Valkey test skips. Lint, vet, authored prose, and documentation links pass.
+Native Linux and Windows execution remains unverified. The local workspace still supplies the unpublished Starmap dependency.
+
+Classification: in-scope CSP8 implementation. Migration, complete diagnostics, storage, acquisition, required review, native qualification, and dependency publication remain open.
+No task receives completion credit before its acceptance checks and implementation merge.

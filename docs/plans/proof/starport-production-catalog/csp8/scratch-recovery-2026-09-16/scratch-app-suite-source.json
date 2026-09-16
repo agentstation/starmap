@@ -1,0 +1,11 @@
+{
+  "base_commit": "4b2c31a5443b91e81dca3df4e1ea7547dca52001",
+  "files": {
+    "internal/app/development.go": "024acd22117ccb7eeef4e54538e807735f6b9673dfb339a539174625adfdf789",
+    "internal/app/development_scratch.go": "e7c6e11a52bd4158e35234837985f43c4cef5b26267b133ec95ecd02d6d1ad21",
+    "internal/app/development_recovery.go": "6c9f0033d2ad8c3a81d91ab404e2da2c0ed4603c4875e606ee07bb884345cdb2",
+    "internal/app/development_ownership.go": "a3cb38c41fac92087e84495f4f98da73b3347ea11d055513aee7cff4d340d9ca",
+    "internal/app/development_scratch_lifetime_test.go": "b1f4c04bad26d19b9de4a176e3347c898efff3046f4ed2a95a68cdc986cf0662",
+    "internal/app/development_scratch_test.go": "b9e80a8790c3ea1ac2fd654bf033e5da0380ad27b3b6dda807816f3a32944815"
+  }
+}

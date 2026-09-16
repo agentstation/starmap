@@ -1,0 +1,243 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T14:42:37.612459+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "work_commit": "3a2fd6b873235c09d847b93fd1b5bd602a301fa6",
+  "base_commit": "4b2c31a5443b91e81dca3df4e1ea7547dca52001",
+  "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "fail_before": {
+    "task": "CSP8",
+    "recorded_at": "2026-09-16T14:17:35.087895+00:00",
+    "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+    "base_commit": "4b2c31a5443b91e81dca3df4e1ea7547dca52001",
+    "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+    "workspace": "/tmp/starport-csp8-files.work",
+    "phase": "fail_before",
+    "source_sha256": {
+      "internal/app/development_scratch_test.go": "b9e80a8790c3ea1ac2fd654bf033e5da0380ad27b3b6dda807816f3a32944815"
+    },
+    "test": {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json ./internal/app -run '^TestDevRepeatedClosePreservesReusedScratchPath$' -count=1",
+      "exit": 1,
+      "failed_events": 1,
+      "cause": "A second Close recursively removes a replacement directory at the former scratch path."
+    },
+    "target_contract": [
+      "One session owns its temporary root, native directory identity, bounded ownership record, and exclusive lifetime lock.",
+      "Close is idempotent and checks retained identities before removing owned state. Reused, replaced, linked, unknown, or invalid state remains untouched.",
+      "Crash recovery checks native ownership, a valid session record, and exclusive lock acquisition. A filename prefix or process identifier alone never grants deletion authority.",
+      "Runtime resources must stop before scratch cleanup. Unknown interrupted initialization remains preserved for explicit recovery.",
+      "Use the existing Starmap productfiles native checks. Keep host selection and session state in Starport."
+    ],
+    "remaining": [
+      "Implement session ownership and bounded crash recovery, then integrate all constructor rollback and close paths.",
+      "Test live-process exclusion, abrupt process exit, changed identities, malformed ownership, repeated close, constructor failure, and platform behavior.",
+      "Continue original CSP8 migration, diagnostics, acquisition, published module, required review, and native acceptance requirements."
+    ],
+    "publisher_dependency": {
+      "pull_request": 164,
+      "head": "985331d94bd79da8b4e850f2b30c1749dd065e2a",
+      "ci_run": 35106388733,
+      "state": "required native checks running; no observed failure"
+    }
+  },
+  "behavior": [
+    "A private session record binds the scratch root, fixed children, metadata files, and lifetime lock to native filesystem identities.",
+    "Repeated close is idempotent. Changed roots, replaced children, altered records, lock replacements, and unknown metadata remain preserved.",
+    "The host publishes its recovery record after successful application construction. Failed or interrupted construction without a record remains available for manual recovery.",
+    "Recovery uses an exclusive lifetime lock and bounded scans. A process-kill test proves exclusion during use and recovery after exit.",
+    "Startup warnings name preserved paths and report scan limits. Normal application resources close before scratch removal."
+  ],
+  "checks": {
+    "focused_final": {
+      "exit": 0,
+      "events": {
+        "pass": 20
+      },
+      "nonpassing_tests": [],
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 14.705
+        }
+      ]
+    },
+    "task_race": {
+      "exit": 0,
+      "events": {
+        "pass": 526,
+        "skip": 1
+      },
+      "nonpassing_tests": [
+        "TestAppWithValkey"
+      ],
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Action": "pass",
+          "Elapsed": 29.629
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 78.486
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 81.595
+        }
+      ]
+    },
+    "earlier_app_suite": {
+      "exit": 0,
+      "events": {
+        "pass": 100,
+        "skip": 1
+      },
+      "nonpassing_tests": [
+        "TestAppWithValkey"
+      ],
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 75.022
+        }
+      ]
+    },
+    "composition_fail_before": {
+      "exit": 1,
+      "events": {
+        "fail": 1
+      },
+      "nonpassing_tests": [
+        "TestDevFailedCompositionPreservesUnpublishedScratch"
+      ],
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "fail",
+          "Elapsed": 1.172
+        }
+      ]
+    },
+    "lint": {
+      "exit": 0,
+      "issues": 0
+    },
+    "vet": {
+      "exit": 0
+    },
+    "authored_prose": {
+      "exit": 0,
+      "files": 5,
+      "diagnostics": 0
+    },
+    "doc_links": {
+      "exit": 0
+    }
+  },
+  "test_command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout=5m ./internal/config ./internal/catalog ./internal/app",
+  "final_source": {
+    "base_commit": "4b2c31a5443b91e81dca3df4e1ea7547dca52001",
+    "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+    "files": {
+      "README.md": "541b6a2452db250e193053cab767c4cf2f3b35ac02ce4d71f7a10fbc0ed652f6",
+      "docs/OPERATOR-GUIDE.md": "6b0faef7e2aca3e5a6b91fddaadad3aae8d535c78fb506cbd9d8c4a99c7ef3d3",
+      "internal/app/development.go": "9c19c1decfb4b6bbf569762dc6bb9c5a5989dd5e9496f43e8f869a1dde54f912",
+      "internal/app/development_ownership.go": "a3cb38c41fac92087e84495f4f98da73b3347ea11d055513aee7cff4d340d9ca",
+      "internal/app/development_recovery.go": "9633ab30560a650ca636aa27179baf4150c6a8e430740064b70c31da600e304f",
+      "internal/app/development_recovery_test.go": "496c94b35a207f3dd9fbb650203f81e8806c13d0696bcaac5f5160bb405b376b",
+      "internal/app/development_scratch.go": "3b5e17e037b3324e86e59a06017504012df0bbd50a3a30a90e557726673dd2c8",
+      "internal/app/development_scratch_lifetime_test.go": "5120130b5602544d389f9c79dbcc2b9ff35ca238fb370b047808b934ae453894",
+      "internal/app/development_scratch_test.go": "a871397d729accc44c6fcc0a56f84b3e6ff15a6f9a66911d3658c4c5fe1104c9"
+    }
+  },
+  "limits": [
+    "Native Linux and Windows scratch behavior remains UNVERIFIED.",
+    "TestAppWithValkey did not run because no integration address was supplied. This local result does not qualify shared storage.",
+    "The initial whole-app suite predates the final construction-publication change. The final three-package suite covers the committed source.",
+    "Cleanup verifies ownership before each operation. It does not provide an atomic transaction against arbitrary concurrent same-user filesystem edits.",
+    "Failure after lifetime-lock release can leave incomplete metadata for manual recovery.",
+    "Original migration, diagnostics, catalog retention, acquisition, published dependency, pre-PR checks, review, native CI, and merge remain required."
+  ],
+  "completion_credit": false,
+  "artifacts_uncompressed_sha256": {
+    "scratch-fail-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "scratch-fail-before.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-fail-before.jsonl.gz": "4b66530ebb93934d0474ae6571605a5a91c438f063be6a6cb54ef2c48fc0ec35",
+    "scratch-composition-fail-before.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-composition-fail-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "scratch-composition-fail-before.jsonl.gz": "3ac5307a319c4f3c12fc82210a58c2aec05d1bec4766c508f375fb57f8cd470a",
+    "scratch-initial.jsonl.gz": "08fa6c4b08b74dda3a673a598de37e681df267d22ccb02270455b12fcece333f",
+    "scratch-initial.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-initial.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-build.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-build.log.gz": "87eeab6a2c006ef5baa040e7bd4fc8b60cba31b722528c690f3dc76a5b93c129",
+    "scratch-lifetime.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-lifetime.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-lifetime.jsonl.gz": "3f6b34743f8039a3a582b1e70f995c2fe71d02802bb776f29230def970fba24d",
+    "scratch-lint.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "scratch-lint.log.gz": "ba7ab78a6d5cf88961c2c85c2fa2b56a133866abac98935af355c6fe65a14edf",
+    "scratch-app-suite.jsonl.gz": "9bc3955231dd7dd1a2df42fee03c8a3dc997c953a8d17d179493fe7f6ddae289",
+    "scratch-app-suite.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-app-suite.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-final-focused.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-final-focused.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-final-focused.jsonl.gz": "9a0c9f2731f2c9f77b4c9e2a4adc3218d514db71dc64133320199c5cade7177a",
+    "scratch-final-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "scratch-final-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-edge.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-edge.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-edge.jsonl.gz": "d2c2bb937a3f7551f9de87edceb6b20f350ad811e5376483b07e5fe81ac1018c",
+    "scratch-construction.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-construction.jsonl.gz": "bf3cae6c757e3be63d0ad2b991c1081c738f134c20176d649bd0e9a71cdfdc76",
+    "scratch-construction.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-task-suite.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-task-suite.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-task-suite.jsonl.gz": "d818d04e4e73c79020d1319202a0435992d2b00f94ce960ca648ce2db2d59330",
+    "scratch-complete-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-complete-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "scratch-complete-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scratch-complete-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-doc-links.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "scratch-doc-links.log.gz": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "scratch-app-suite-source.json": "05921ead13d35a52be74b1b9c98cd21a061559e4bfdc3615e564826acf64156d",
+    "scratch-final-source.json": "8631691c289b78e03ad8c27689fcca74aa8be12a4d7cad302cb247382f34ec43"
+  },
+  "canonical_prose": {
+    "full_command": "make technical-writing-check",
+    "full_exit": 2,
+    "initial_diagnostics": 3,
+    "corrected_authored_diagnostics": 1,
+    "remaining_unchanged_machine_output_files": [
+      "docs/plans/proof/starport-production-catalog/csp6/membership-promotion-2026-09-16/pre-pr-review.txt",
+      "docs/plans/proof/starport-production-catalog/csp8/settings-2026-09-16/raw/baseline-task.txt"
+    ],
+    "changed_documents_final_exit": 0,
+    "changed_documents": 3,
+    "note": "The complete gate reads two unchanged raw evidence files as prose. Their original bytes remain preserved. No rule was weakened."
+  },
+  "maintenance": {
+    "rows": 38,
+    "complete": 13,
+    "active": 1,
+    "execution_entries": 10,
+    "whole_plan_bytes": 108853,
+    "resume_words": 262,
+    "protected_sections_preserved": [
+      "outcome",
+      "scope",
+      "invariants",
+      "goal"
+    ],
+    "cold_resume": "Current resume identifies the source, checks, remaining scope, dependency, CI lookup, and next action. Detailed historical evidence is not required for that action.",
+    "size_exception": "The ledger and task contracts retain the original acceptance scope. Current resume and the active contract form the bounded execution path."
+  }
+}

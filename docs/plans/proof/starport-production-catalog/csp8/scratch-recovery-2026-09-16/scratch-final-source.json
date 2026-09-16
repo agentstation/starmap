@@ -1,0 +1,15 @@
+{
+  "base_commit": "4b2c31a5443b91e81dca3df4e1ea7547dca52001",
+  "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "files": {
+    "README.md": "541b6a2452db250e193053cab767c4cf2f3b35ac02ce4d71f7a10fbc0ed652f6",
+    "docs/OPERATOR-GUIDE.md": "6b0faef7e2aca3e5a6b91fddaadad3aae8d535c78fb506cbd9d8c4a99c7ef3d3",
+    "internal/app/development.go": "9c19c1decfb4b6bbf569762dc6bb9c5a5989dd5e9496f43e8f869a1dde54f912",
+    "internal/app/development_ownership.go": "a3cb38c41fac92087e84495f4f98da73b3347ea11d055513aee7cff4d340d9ca",
+    "internal/app/development_recovery.go": "9633ab30560a650ca636aa27179baf4150c6a8e430740064b70c31da600e304f",
+    "internal/app/development_recovery_test.go": "496c94b35a207f3dd9fbb650203f81e8806c13d0696bcaac5f5160bb405b376b",
+    "internal/app/development_scratch.go": "3b5e17e037b3324e86e59a06017504012df0bbd50a3a30a90e557726673dd2c8",
+    "internal/app/development_scratch_lifetime_test.go": "5120130b5602544d389f9c79dbcc2b9ff35ca238fb370b047808b934ae453894",
+    "internal/app/development_scratch_test.go": "a871397d729accc44c6fcc0a56f84b3e6ff15a6f9a66911d3658c4c5fe1104c9"
+  }
+}

@@ -197,6 +197,11 @@ The error names conflicting settings and links to persistent setup. It must not 
 Inference and catalog network access still follow their separate policies.
 
 Normal shutdown removes owned scratch files. Crash cleanup validates ownership and excludes live processes before removing abandoned files.
+
+The recovery record binds native filesystem identities and the lifetime lock. The host publishes that record only after application construction succeeds.
+Failed or interrupted construction without a complete record requires manual recovery. Changed roots, children, metadata, and locks must survive cleanup.
+Recovery scans at most 16,384 temporary entries and examines at most 256 candidate sessions. Warnings name preserved paths and report scan limits.
+
 Development must not create or rotate a persistent local administrator token.
 Existing read-only local authentication grants retain their separate authorization contract.
 The current object-store and explicit catalog-state exceptions require migration diagnostics under A43.
