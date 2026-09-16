@@ -1,0 +1,25 @@
+{
+  "task": "CSP6.1",
+  "status": "in_progress",
+  "completion_credit": false,
+  "owner_request": "Pause feature work and reduce Starmap verification latency.",
+  "baseline": {
+    "workflow_run": 35106388733,
+    "head": "985331d94bd79da8b4e850f2b30c1749dd065e2a",
+    "job_seconds": 7900,
+    "minimum_go_suite_seconds": 1570,
+    "release_go_suite_seconds": 1466.41,
+    "release_race_suite_seconds": 4512.379,
+    "runtime_race_package_seconds": 1522.689,
+    "root_race_package_seconds": 668.278,
+    "raw_jobs": "ci-before-jobs.json.gz",
+    "raw_jobs_uncompressed_sha256": "8c22fbe01dfd7724f7ad214b7fc959cf99032e5fa7acd5a478d6ad041565d70f"
+  },
+  "source": "014afd1a3",
+  "next": "Profile frozen runtime race binary, reduce repeated fixture work, and separate independent CI suites with an aggregate required gate.",
+  "constraints": [
+    "Preserve meaningful assertions, race coverage, both Go toolchains, all packages, and required platform jobs.",
+    "Keep full embedded and public catalog integration coverage at explicit seams.",
+    "Do not increase memory concurrency without measurement."
+  ]
+}
