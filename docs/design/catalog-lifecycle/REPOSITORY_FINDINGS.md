@@ -3171,3 +3171,13 @@ The limited fixture omits prior models. Its degraded source status and retained 
 
 The restart test reuses a test KV adapter. It does not qualify database durability or fleet recovery.
 Native execution, real Git integration, legacy migration, remaining authoring artifacts, and published-dependency qualification remain open under CSP8.
+
+## Starport upgrade path conflicts, 2026-09-16
+
+Commit `e39c77e55b11f7c9b267c6e4ba5da41f5723cc18` prevents implicit path changes from abandoning recognized prior state.
+The failing regression opened new Badger, SQLite, and blob stores while an old database remained under the configuration directory.
+Startup and initialization now refuse before these writes. Explicit selectors remain authoritative.
+
+The [legacy path proof](../../plans/proof/starport-production-catalog/csp8/legacy-paths-2026-09-16/verification.json) records 551 passing race events and one optional Valkey skip.
+Final source passes 67 focused events. Diagnostics report previous locations without opening databases or reading their contents.
+Runtime migration, completed-receipt adoption, and native qualification remain open under CSP8.

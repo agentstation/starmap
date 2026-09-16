@@ -1,0 +1,126 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T16:06:08.400738+00:00",
+  "work_commit": "e39c77e55b11f7c9b267c6e4ba5da41f5723cc18",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "behavior": [
+    "Startup and local initialization refuse recognized legacy paths before stores or setup metadata can be created.",
+    "The loader retains previous path candidates with the selected configuration. Later process environment changes do not change that inventory.",
+    "Read-only config paths --legacy reports old and selected paths with selectors. It reads metadata, not database or secret contents.",
+    "Explicit roots and leaves remain authoritative. Development and unselected backends skip legacy storage.",
+    "Runtime detection uses known markers, so the new runtime beneath the old Linux state ancestor does not cause a false conflict."
+  ],
+  "checks": {
+    "fail_before": {
+      "failed_test_events": 1,
+      "observation": "The old code created Badger, SQLite, and blob storage at the new defaults, then refused startup because the new store had no gateway API key."
+    },
+    "broad_race": {
+      "exit": 0,
+      "pass": 551,
+      "skip": 1,
+      "skipped": [
+        "TestAppWithValkey"
+      ],
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/config ./internal/app ./internal/setup ./internal/cli",
+      "binding": "Before equivalent constant extraction and loader validation helper extraction required by lint."
+    },
+    "final_race": {
+      "exit": 0,
+      "pass": 67,
+      "skip": 0,
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 3m ./internal/config ./internal/app ./internal/setup ./internal/cli -run 'Test(Legacy|ImplicitDataRoots|Loader|PlatformPaths|ConfigFileManifest)'"
+    },
+    "lint": {
+      "exit": 0,
+      "issues": 0
+    },
+    "vet": {
+      "exit": 0,
+      "binding": "Before equivalent constant and loader helper extraction."
+    },
+    "authored_prose": {
+      "exit": 0,
+      "files": 2,
+      "diagnostics": 0
+    },
+    "doc_links": {
+      "exit": 0
+    },
+    "canonical_authored_prose": {
+      "exit": 0,
+      "files": 3,
+      "diagnostics": 0
+    },
+    "canonical_repository_prose": {
+      "exit": 2,
+      "files": 1582,
+      "diagnostics": 2,
+      "scope": "Two unchanged machine-output records. Authored prose passes."
+    },
+    "plan_structure": {
+      "exit": 0,
+      "tasks": 38,
+      "done": 13,
+      "in_progress": 1,
+      "resume_words": 322,
+      "links": 134,
+      "protected_sections_unchanged": true,
+      "unrelated_edits_preserved": true
+    }
+  },
+  "source_sha256": {
+    "docs/OPERATOR-GUIDE.md": "5076f03666217b43f62cbda17aae377993306a6794a09627e2281ac92a289e98",
+    "internal/app/app.go": "1711002650b4391be99024d380f89ef658c1940d8b0686baf71ccb15de8ca280",
+    "internal/app/legacy_paths_test.go": "40e2c586a7525cad2b2bf23615d07c9dd1b89f988d67b52f96434af275ed0e42",
+    "internal/cli/file_manifest.go": "cf1aceba8931efab1567b57447f1df49fdc0180b5dc7cbe4ecc0070dd3025d45",
+    "internal/cli/file_manifest_test.go": "43d8308e80b7e991eb22e26755e8272c65ec28dfe33ebb22a97713c58985882c",
+    "internal/cli/inspection_commands.go": "cf2a9ddd4bd16c4924515a04215ad04a5b36a7978324caf4a1b80ce51a69e8ba",
+    "internal/config/development.go": "20b8bf82ec8b46a0c511255ad9aa44a594f3774575cf236a5ce8958c655daae1",
+    "internal/config/file_manifest.go": "a3304fbd75b8ed6740fc60051d53dd9d848a5130183ebbd0a7ae865284e5c39b",
+    "internal/config/legacy_paths.go": "dc4df2ae2d30f89cd8ef99e97a79f44cf6c3b8907a34441ebd43207a9237e30b",
+    "internal/config/legacy_paths_test.go": "abc689b1c1da353eef816ffda75c4b9ae83922a7451ec2c034618881424331b6",
+    "internal/config/loader.go": "8a55833229532fc8412cd99829de5713be0cdba63d1fa2dc1860c07ea75add6a",
+    "internal/config/path_origins.go": "2cbb8bb02534415af3aba417d77a020a34fc1e6aebcf10e0e8f756a2853d26a6",
+    "internal/config/paths.go": "08c064097cb66c9314a388cd004d5e7b7efc22aef474b020dc94389cc6b77f6a",
+    "internal/setup/product_roots_test.go": "811efb9c3bee05896f7a85970ac942c278810cbd4eff43272b215c2e6afe4548",
+    "internal/setup/service.go": "ea0da0dc8f94cf697ed6420be2e212aed03ccc51d972d056abbda309c90f902c"
+  },
+  "artifacts_uncompressed_sha256": {
+    "legacy-paths-authored.md.gz": "6928ce6447b5b62994094d9d03e5596c882fc175387cbe5aca1ebfdae07e543e",
+    "legacy-paths-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "legacy-paths-before.jsonl.gz": "c9da985a953928dba9e17898693ebaffe7cf5f80dc60750758efa8c6ebfca1cd",
+    "legacy-paths-doc-links.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-paths-doc-links.log.gz": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "legacy-paths-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-paths-final.jsonl.gz": "8305b3af0e719c2b576167e92bc92779e488f3c5a8144ee3e3e571a2dbf0cad6",
+    "legacy-paths-focused.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-paths-focused.jsonl.gz": "769bbc63e1e52f633fb46a7fddcfd20ffdebb539af14f9fce98cbdaca9cd478b",
+    "legacy-paths-lint-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-paths-lint-final.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "legacy-paths-lint.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "legacy-paths-lint.log.gz": "368b15804f8039772b4c2231595513cfeb8b3d80a53bcc69b1a63ee3aae8db74",
+    "legacy-paths-prose-clean.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-paths-prose-clean.log.gz": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+    "legacy-paths-prose-final.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "legacy-paths-prose-final.log.gz": "3df4702842a5674c70cac51e5b2d55bad3959ba846ce3cef950edd6a71572d6e",
+    "legacy-paths-prose.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "legacy-paths-prose.log.gz": "74b86c5556c7658c8352ff9fe9b1216ffcb90012ae795420d87bb383c5947ce0",
+    "legacy-paths-race.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-paths-race.jsonl.gz": "8eed3ed0fda0b7508b3e6a536a0be6c9bc846403e985b683bca313efae699027",
+    "legacy-paths-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-paths-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "canonical-csp8-legacy-paths-authored-prose.log.gz": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+    "canonical-csp8-legacy-paths-full-prose.exit.gz": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "canonical-csp8-legacy-paths-full-prose.log.gz": "e79b8ff6eebb868f5649b0198d00aec9e0d5a2afe9bb0d44d9004160a2e156f0",
+    "canonical-csp8-legacy-paths-authored-prose.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "completion_credit": false,
+  "remaining": [
+    "This guard does not copy data or acknowledge a completed runtime migration. Starport migration procedure, receipt adoption, and interruption qualification remain open.",
+    "Adjacent authoring artifacts, catalog retention, complete acquisition qualification, native Windows/Linux execution, a published dependency, required pre-PR review, and merge remain open."
+  ]
+}

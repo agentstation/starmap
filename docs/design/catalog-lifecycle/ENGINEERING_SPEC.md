@@ -665,6 +665,10 @@ If old and new roots both contain data, startup reports the conflict and does
 not choose by modification time. A migration operation must copy, verify, and
 switch roots before it removes any old files.
 
+Starport now refuses recognized legacy paths before opening stores or creating local setup metadata.
+`starport config paths --legacy` reports these conflicts without changing files. Explicit root and leaf selections remain authoritative.
+The [local proof](../../plans/proof/starport-production-catalog/csp8/legacy-paths-2026-09-16/verification.json) qualifies the guard. Runtime migration and completed-receipt adoption remain open under CSP8.
+
 Each runtime migration first records an immutable source inventory under its operation ID.
 The inventory binds source and target paths, file sizes, SHA-256 digests, the source identity, and the requested owner.
 Preparation holds the source-directory lock. Operators must also stop older binaries that do not honor that lock.
