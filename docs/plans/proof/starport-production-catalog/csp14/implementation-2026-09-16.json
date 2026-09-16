@@ -1,7 +1,7 @@
 {
   "task": "CSP14",
   "status": "in_progress",
-  "recorded_at": "2026-09-16T06:45:32.378966+00:00",
+  "recorded_at": "2026-09-16T09:14:01.182520+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
   "branch": "codex/starmap-server-administration",
   "head": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
@@ -340,7 +340,7 @@
     },
     "main_integration_review": {
       "session": 71883,
-      "status": "in_progress",
+      "status": "PASS",
       "base": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
       "head": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
       "output": "/tmp/starmap-csp14-autoreview.BsAv1R/review-main.json",
@@ -349,13 +349,21 @@
         "codex:gpt-5.6-sol:xhigh",
         "claude:claude-opus-5:high"
       ],
-      "threshold": "P0"
+      "threshold": "P0",
+      "exit_status": 0,
+      "sections": 2,
+      "findings": 0,
+      "verdict": {
+        "findings": [],
+        "overall_correctness": "patch is correct",
+        "overall_explanation": "Chunked review complete. chunk 1/2: 0 finding(s), chunk 2/2: 0 finding(s).",
+        "overall_confidence": 0.98
+      }
     }
   },
   "remaining": [
-    "Finish required review session 71883.",
-    "Push the reviewed integration to PR #163 and qualify its new CI head.",
-    "Merge after all required checks and record merged-source acceptance before CSP14 completion."
+    "Qualify CI run 35077801953 against reviewed c9c09ad5a. Automatic merge is enabled.",
+    "Verify the actual merged tree and bind task acceptance before CSP14 completion."
   ],
   "dependency": {
     "task": "CSP5",
@@ -497,10 +505,30 @@
       "pr-ready.json.gz": "73f2c0bb97136e4238d185be1828a16ddf94142a49bbaa950c16dffe6ad324ef",
       "ci-initial.json.gz": "4fb7c65b8874d94084f4fce70fbd1045f494f198064395662b826bfae34267eb",
       "pre-pr-writing-final.log.gz": "a3928e8e34fcf15c7a49c07436135e66396550c0bc80f5c8a5edb5215306e149"
+    },
+    "integration": {
+      "observed_at": "2026-09-16T09:14:01.182520+00:00",
+      "push": "PASS",
+      "head": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
+      "pull_request": "https://github.com/agentstation/starmap/pull/163",
+      "auto_merge": {
+        "authorEmail": null,
+        "commitBody": null,
+        "commitHeadline": null,
+        "mergeMethod": "SQUASH",
+        "enabledAt": "2026-09-16T09:12:54Z",
+        "enabledBy": {
+          "id": "MDQ6VXNlcjU2ODc0MDY=",
+          "is_bot": false,
+          "login": "jackspirou",
+          "name": "Jack Spirou"
+        }
+      },
+      "ci_run": 35077801953
     }
   },
   "pending_publisher_integration": {
-    "status": "review_pending",
+    "status": "ci_pending",
     "probe_exit_status": 1,
     "textual_conflict": "scripts/catalog-product-checks.json",
     "semantic_conflicts": 0,
