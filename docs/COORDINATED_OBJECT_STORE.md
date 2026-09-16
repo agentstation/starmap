@@ -135,4 +135,4 @@ It removes the exited reader's claim through checked owner recovery before colle
 
 This test requires `STARMAP_TEST_COORDINATION_SERVER_CHANGES=1`, `STARMAP_TEST_COORDINATION_CONTAINER`, and `STARMAP_TEST_OBJECT_CONTAINER` in addition to the endpoint variables.
 Use dedicated Docker containers with fixed published ports. Run one suite at a time against each service pair.
-The pull-request workflow runs these tests with pinned service images on Go 1.25.12 and Go 1.26.6 for both Valkey and Redis.
+The pull-request workflow runs these tests with pinned service images on Go 1.27.1 for both Valkey and Redis.

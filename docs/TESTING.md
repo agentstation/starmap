@@ -4,6 +4,9 @@ Tests must prove a behavior that callers or operators depend on. Each test needs
 a failure that explains which contract broke. Test counts and line coverage
 cannot establish correctness alone.
 
+Starmap and Starport use Go 1.27.1. Older Go families have no current support commitment.
+Qualify future upgrades across both repositories and update their exact pins together.
+
 ## Local development
 
 Run the affected package while editing. Narrow the test name when investigating
@@ -48,16 +51,15 @@ The final suites run fresh race tests and the full-catalog capacity test.
 `make verify-checks` runs the first phase alone. `make test-all` runs both final
 suites. `make ci-test` is a compatibility alias for local verification.
 
-Hosted CI adds the minimum Go toolchain, native platforms, real storage services,
+Hosted CI adds native platforms, real storage services,
 security checks, and fuzzing. A local pass does not replace those results.
 The required `Verification Gate` checks every result in its dependency graph.
 A failed, cancelled, skipped, or absent prerequisite cannot pass that gate.
 
 | Execution | Contract |
 | --- | --- |
-| Go 1.25.12, ordinary suite | Every package and test on the supported language floor |
-| Go 1.26.6, race suite | Every package with race instrumentation, except one explicit capacity test |
-| Go 1.26.6, capacity suite | `TestPublicPublicationProfileRetainsBoundedState` with the complete corpus |
+| Go 1.27.1, race suite | Every package with race instrumentation, except one explicit capacity test |
+| Go 1.27.1, capacity suite | `TestPublicPublicationProfileRetainsBoundedState` with the complete corpus |
 | Native jobs | Linux, macOS, and Windows behavior on the configured architectures |
 | Storage jobs | Valkey and Redis behavior with a real object store and process recovery |
 
@@ -67,8 +69,7 @@ without race instrumentation. Smaller publication and ownership tests still
 exercise those contracts under the race detector.
 
 `scripts/verification_tests.py` assigns each package from `go list ./...` to
-exactly one group. New packages enter a group automatically. Each toolchain uses
-four independent hosted runners:
+exactly one group. New packages enter a group automatically. Go 1.27.1 uses four independent hosted runners:
 
 | Group | Packages |
 | --- | --- |
@@ -77,17 +78,15 @@ four independent hosted runners:
 | `application` | Commands, CLI composition, and HTTP server |
 | `contracts` | All remaining packages |
 
-Each runner uses `-p=1` to bound concurrent catalog memory. The minimum-Go suite
-and release race suite cover the same package inventory. The release race suite
-also proves ordinary behavior, so CI does not repeat the complete release suite
-without instrumentation. Coverage and pure-Go checks remain separate because
+Each runner uses `-p=1` to bound concurrent catalog memory. The release race suite covers the complete package inventory.
+It also proves ordinary behavior, so CI does not repeat that suite without instrumentation. Coverage and pure-Go checks remain separate because
 they prove different properties.
 
 Run one fresh group with retained JSON evidence:
 
 ```bash
 make verify-tests TEST_SUITE=race TEST_GROUP=runtime
-make verify-tests TEST_SUITE=regular TEST_GROUP=contracts
+make verify-tests TEST_SUITE=race TEST_GROUP=contracts
 make verify-tests TEST_SUITE=capacity
 ```
 
@@ -348,3 +347,6 @@ CLI compositions with `CGO_ENABLED=0`. It also verifies local binary linkage.
 `make verify` includes that gate, then runs the race suite separately with
 `CGO_ENABLED=1`. `make release-check` adds release-specific CLI and exact
 GoReleaser checks.
+
+Consumer dependency budgets count product and third-party packages. Standard-library package counts follow the selected compiler and do not define a product boundary.
+The forbidden-import checks still inspect every package, including standard-library database adapters.

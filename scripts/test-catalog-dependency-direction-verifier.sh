@@ -37,7 +37,7 @@ write_package() {
 	} >"$FIXTURE/$path/package.go"
 }
 
-printf 'module github.com/agentstation/starmap\n\ngo 1.25.0\n' >"$FIXTURE/go.mod"
+printf 'module github.com/agentstation/starmap\n\ngo 1.27.1\n' >"$FIXTURE/go.mod"
 write_package "internal/catalog/authority" "authority"
 write_package "internal/constants" "constants"
 write_package "internal/embedded" "embedded"

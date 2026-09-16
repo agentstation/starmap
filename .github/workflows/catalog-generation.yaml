@@ -19,6 +19,9 @@ concurrency:
   group: catalog-generation-publisher
   cancel-in-progress: false
 
+env:
+  GOTOOLCHAIN: go1.27.1
+
 jobs:
   generate:
     if: >-
@@ -53,7 +56,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: "1.26.6"
+          go-version: "1.27.1"
           cache: true
 
       - name: Select publication directory

@@ -1,3 +1,5 @@
+export GOTOOLCHAIN := go1.27.1
+
 # Starmap Makefile
 # AI Model Catalog CLI
 
@@ -45,7 +47,7 @@ TEST_SUITE?=race
 TEST_GROUP?=all
 GOBIN?=$(shell go env GOPATH)/bin
 GOMARKDOC=$(GOBIN)/gomarkdoc
-GOLANGCI_LINT_VERSION=2.12.2
+GOLANGCI_LINT_VERSION=2.13.2
 GOLANGCI_LINT_INSTALL=github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(GOLANGCI_LINT_VERSION)
 SWAG_VERSION=2.0.0-rc4
 SWAG_RUN=$(GOCMD) run github.com/swaggo/swag/v2/cmd/swag@v$(SWAG_VERSION)
@@ -201,8 +203,7 @@ test-all: ## Run fresh race and full-catalog capacity tests
 
 lint: ## Run golangci-lint and goago
 	@echo "$(BLUE)Running linters...$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
-	$(RUN_PREFIX) golangci-lint run
+	$(RUN_PREFIX) go run $(GOLANGCI_LINT_INSTALL) run
 	$(GOAGO) -stale-ignores ./...
 	$(MAKE) technical-writing-check
 	@echo "$(GREEN)Linting complete$(NC)"
@@ -220,8 +221,7 @@ fmt: ## Format Go code with gofmt only
 
 check: ## Run all checks: vet + linters + test (no fixes)
 	@echo "$(BLUE)Running checks: go vet, linters, and tests...$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
-	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(GOAGO) -stale-ignores ./... && $(GOTEST) ./...
+	$(GOVET) ./... && $(RUN_PREFIX) go run $(GOLANGCI_LINT_INSTALL) run && $(GOAGO) -stale-ignores ./... && $(GOTEST) ./...
 	$(MAKE) technical-writing-check
 	@echo "$(GREEN)All checks passed$(NC)"
 
@@ -237,8 +237,7 @@ verify-tests: ## Run fresh tests with timing evidence (TEST_SUITE and TEST_GROUP
 fix: ## Auto-fix everything: format, imports, lint issues, dependencies
 	@echo "$(BLUE)Auto-fixing: format, imports, lints, dependencies...$(NC)"
 	@$(RUN_PREFIX) which goimports > /dev/null || echo "$(YELLOW)Warning: goimports not found, skipping import fixes$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || echo "$(YELLOW)Warning: golangci-lint not found, skipping lint fixes$(NC)"
-	$(GOFMT) ./... && ($(RUN_PREFIX) goimports -w -local github.com/agentstation/starmap . 2>/dev/null || true) && ($(RUN_PREFIX) golangci-lint run --fix 2>/dev/null || true) && $(GOMOD) tidy
+	$(GOFMT) ./... && ($(RUN_PREFIX) goimports -w -local github.com/agentstation/starmap . 2>/dev/null || true) && ($(RUN_PREFIX) go run $(GOLANGCI_LINT_INSTALL) run --fix 2>/dev/null || true) && $(GOMOD) tidy
 	@echo "$(GREEN)Auto-fix complete$(NC)"
 
 vet: ## Run go vet only

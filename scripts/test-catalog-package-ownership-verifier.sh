@@ -84,7 +84,7 @@ write_module_fixture() {
 	local extra="${2:-}"
 
 	{
-		printf 'module example.com/fixture\n\ngo 1.25.0\n\nrequire (\n'
+		printf 'module example.com/fixture\n\ngo 1.27.1\n\nrequire (\n'
 		printf '\texample.com/kept %s\n' "$version"
 		printf '\texample.com/Upstream v1.0.0\n'
 		printf '\texample.com/carried v0.1.0 // indirect\n'
@@ -106,7 +106,7 @@ run_module_fixture() {
 }
 
 # Check the environment at the Go process boundary. The verifier must use
-# the caller's toolchain for both minimum-version and development checks.
+# the caller's exact toolchain or its explicit local selection.
 mkdir -p "$FIXTURE/toolchain-bin"
 cat >"$FIXTURE/toolchain-bin/go" <<'GO_PROBE'
 #!/usr/bin/env bash
@@ -115,7 +115,7 @@ exit 1
 GO_PROBE
 chmod +x "$FIXTURE/toolchain-bin/go"
 write_module_fixture v1.2.3
-for toolchain in go1.25.12 go1.26.6; do
+for toolchain in go1.27.1 local; do
 	toolchain_report="$FIXTURE/toolchain-$toolchain.txt"
 	PATH="$FIXTURE/toolchain-bin:$PATH" \
 		GOTOOLCHAIN="$toolchain" \
@@ -152,7 +152,7 @@ grep -Fq 'example.com/unapproved' "$dependency_report" || {
 }
 
 {
-	printf 'module example.com/fixture\n\ngo 1.25.0\n\nrequire (\n'
+	printf 'module example.com/fixture\n\ngo 1.27.1\n\nrequire (\n'
 	printf '\texample.com/kept v1.2.3\n'
 	printf '\texample.com/Upstream v1.0.0\n'
 	printf '\texample.com/carried v0.1.0 // indirect\n'

@@ -38,7 +38,7 @@ cleanup() {
 trap cleanup EXIT
 
 printf 'Building the server binary for linux/amd64.\n'
-if ! GOTOOLCHAIN=go1.26.6 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+if ! GOTOOLCHAIN=go1.27.1 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 	go build -trimpath -ldflags '-s -w' -o "$BUILD/starmap" ./cmd/starmap; then
 	printf 'FAIL the server binary did not build.\n'
 	exit 1

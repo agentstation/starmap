@@ -7,7 +7,7 @@ trap 'rm -rf "$TMPDIR"' EXIT
 
 # The pinned artifact digest covers compressed bytes. Use the release toolchain
 # because the standard library can change valid gzip output between Go releases.
-GOTOOLCHAIN="${STARMAP_RELEASE_GOTOOLCHAIN:-go1.26.6}"
+GOTOOLCHAIN="${STARMAP_RELEASE_GOTOOLCHAIN:-go1.27.1}"
 export GOTOOLCHAIN
 
 if git -C "$ROOT" grep -n -E '^[[:space:]]*import[[:space:]]+"C"' -- '*.go'; then

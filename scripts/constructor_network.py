@@ -91,7 +91,7 @@ def verify(root):
             profile.write_text(json.dumps(NETWORK_PROFILE))
             result["profile"] = NETWORK_PROFILE
             binary = directory / "probe"
-            environment = dict(os.environ, GOOS="linux", GOARCH=arch, CGO_ENABLED="0", GOTOOLCHAIN="go1.25.12",
+            environment = dict(os.environ, GOOS="linux", GOARCH=arch, CGO_ENABLED="0", GOTOOLCHAIN="go1.27.1",
                                GOWORK="off", GOFLAGS="")
             required(["go", "build", "-mod=readonly", "-trimpath", "-o", str(binary), "./scripts/testdata/constructor-probe"],
                      env=environment, timeout=300)

@@ -2,8 +2,10 @@ package ciworkflow
 
 import (
 	"os/exec"
+	"path/filepath"
 	"reflect"
 	"slices"
+	"strings"
 	"testing"
 
 	"github.com/goccy/go-yaml"
@@ -18,13 +20,17 @@ type verificationWorkflow struct {
 			FailFast bool `yaml:"fail-fast"`
 			Matrix   struct {
 				Group   []string
+				Go      []string
 				Suite   []string
-				Include []struct{ Suite, Go string }
+				Include []map[string]string
 			}
 		}
+		Env   map[string]string
 		Steps []struct {
-			Run string
-			Env map[string]string
+			Uses string
+			With map[string]string
+			Run  string
+			Env  map[string]string
 		}
 	}
 }
@@ -70,23 +76,18 @@ func TestVerificationGateRequiresEverySuiteEvenAfterFailure(t *testing.T) {
 	}
 }
 
-func TestVerificationMatrixPreservesToolchainsAndPackageGroups(t *testing.T) {
+func TestVerificationMatrixPreservesPackageGroupsWithoutCompilerDuplicates(t *testing.T) {
 	workflow := readVerificationWorkflow(t)
 	job := workflow.Jobs["verification-tests"]
 	if job.Needs != "verification-checks" || job.Strategy.FailFast {
 		t.Fatal("test groups must follow cheap checks and retain independent failures")
 	}
 	matrix := job.Strategy.Matrix
-	if !slices.Equal(matrix.Group, []string{"runtime", "client", "application", "contracts"}) ||
-		!slices.Equal(matrix.Suite, []string{"regular", "race"}) {
+	if !slices.Equal(matrix.Group, []string{"runtime", "client", "application", "contracts"}) {
 		t.Fatalf("incomplete package or suite matrix: %+v", matrix)
 	}
-	versions := make(map[string]string)
-	for _, entry := range matrix.Include {
-		versions[entry.Suite] = entry.Go
-	}
-	if len(matrix.Include) != 2 || versions["regular"] != "1.25.12" || versions["race"] != "1.26.6" {
-		t.Fatalf("missing supported toolchain coverage: %v", versions)
+	if len(matrix.Go) != 0 || len(matrix.Suite) != 0 || len(matrix.Include) != 0 || job.Env["TEST_SUITE"] != "race" {
+		t.Fatal("the matrix must run one complete race suite without compiler duplicates")
 	}
 	capacity := workflow.Jobs["verification-capacity"]
 	if capacity.Needs != "verification-checks" {
@@ -98,5 +99,32 @@ func TestVerificationMatrixPreservesToolchainsAndPackageGroups(t *testing.T) {
 	}
 	if !found {
 		t.Fatal("release-toolchain capacity execution is absent")
+	}
+}
+
+func TestWorkflowGoPinsMatchProductToolchain(t *testing.T) {
+	paths, err := filepath.Glob("../../.github/workflows/*.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	setups := 0
+	for _, path := range paths {
+		var workflow verificationWorkflow
+		if err := yaml.Unmarshal([]byte(readFixture(t, path)), &workflow); err != nil {
+			t.Fatal(err)
+		}
+		for _, job := range workflow.Jobs {
+			for _, step := range job.Steps {
+				if strings.HasPrefix(step.Uses, "actions/setup-go@") {
+					setups++
+					if step.With["go-version"] != "1.27.1" || step.With["go-version-file"] != "" {
+						t.Fatalf("%s selects a different Go toolchain: %v", path, step.With)
+					}
+				}
+			}
+		}
+	}
+	if setups == 0 {
+		t.Fatal("no Go setup steps found")
 	}
 }

@@ -13,7 +13,7 @@
                                                                 |_|    
 ```
 
-[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?style=flat&logo=go)](https://go.dev)
+[![Go Version](https://img.shields.io/badge/Go-1.27.1-00ADD8?style=flat&logo=go)](https://go.dev)
 [![License](https://img.shields.io/badge/License-AGPL%203.0-blue)](LICENSE)
 
 [Installation](#installation) • [Quick Start](#quick-start) • [API Reference](docs/API.md) • [Contributing](CONTRIBUTING.md)
@@ -101,8 +101,8 @@ starmap version
 
 ### Go Package
 
-The library requires Go 1.25 or newer. The project builds and verifies releases with Go
-1.26.6, while required CI also tests the latest patched Go 1.25 toolchain.
+Starmap and Starport use Go 1.27.1 for development, CI, and releases.
+Upgrade both projects together after qualification.
 Supported library, CLI, server, and remote-consumer compositions require no C
 toolchain. Release builds set `CGO_ENABLED=0` for archives and containers.
 The external offline composition also verifies a compile-time-pinned catalog

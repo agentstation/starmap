@@ -7,7 +7,7 @@ TMPDIR="$(cd "$TMPDIR" && pwd -P)"
 trap 'rm -rf "$TMPDIR"' EXIT
 VERIFY_HOME="$TMPDIR/home"
 GOLANGCI_LINT_CACHE="$TMPDIR/golangci-lint-cache"
-GOLANGCI_LINT_VERSION="2.12.2"
+GOLANGCI_LINT_VERSION="2.13.2"
 export GOLANGCI_LINT_CACHE
 
 cd "$ROOT"
@@ -33,19 +33,9 @@ require_lint_version() {
 }
 
 run_lint() {
-	if command -v devbox >/dev/null 2>&1; then
-		require_lint_version devbox run golangci-lint
-		run devbox run golangci-lint run
-		return
-	fi
-	if command -v golangci-lint >/dev/null 2>&1; then
-		require_lint_version golangci-lint
-		run golangci-lint run
-		return
-	fi
-	printf 'golangci-lint %s is required; install it with:\n' "$GOLANGCI_LINT_VERSION" >&2
-	printf '  go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v%s\n' "$GOLANGCI_LINT_VERSION" >&2
-	exit 1
+	local tool="github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
+	require_lint_version go run "$tool"
+	run go run "$tool" run
 }
 
 check_coverage() {

@@ -2,7 +2,7 @@
 
 Run `python3 scripts/cold_server.py` to verify baseline persistence through the actual Starmap HTTP server.
 The check requires Go and a Linux AMD64 or ARM64 Docker engine.
-It builds the current CLI and observer with Go 1.25.12 for the engine's native architecture.
+It builds the current CLI and observer with Go 1.27.1 for the engine's native architecture.
 
 Two fresh containers start the server against one private named volume.
 Each container has no external network, no provider credentials, a read-only root, and an unprivileged user.

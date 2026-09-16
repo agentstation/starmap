@@ -1,7 +1,7 @@
 # Native catalog qualification
 
 The catalog verifier reads recorded GitHub Actions evidence for Linux, macOS, and Windows.
-Each platform requires native AMD64 and ARM64 execution with Go 1.25.12.
+Each platform requires native AMD64 and ARM64 execution with Go 1.27.1.
 The workflow must pass before its results can qualify a subcase.
 
 After the reviewed task branch passes its workflow, capture that run:

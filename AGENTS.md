@@ -8,7 +8,7 @@ This file provides Codex with project-specific guidance for working in this repo
 
 ## Go Development Standards
 
-**Starmap supports Go 1.25 and uses Go 1.26.6 for development and releases.** Write idiomatic, thread-safe, production-ready code:
+**Starmap and Starport use Go 1.27.1 for development, CI, and releases.** Write idiomatic, thread-safe, production-ready code:
 
 - **Simplicity over cleverness** - Follow Effective Go, prioritize readability
 - **Thread safety first** - Deep copies for shared data, proper RWMutex usage
@@ -21,7 +21,7 @@ This file provides Codex with project-specific guidance for working in this repo
 
 ### Modern Go and goago
 
-- Use Go 1.25 language and library features when they improve directness.
+- Use Go 1.27 language and library features when they improve directness.
 - Use `sync.WaitGroup.Go` for goroutines whose lifetimes match the group.
 - Run `go tool goago -list -format json` before you interpret the active restrictions.
 - Run `go tool goago -stale-ignores -format json ./...` after each Go change.
@@ -55,8 +55,8 @@ make testdata PROVIDER=openai           # Refresh one governed provider fixture
 
 ## Tech Stack
 
-- **Language floor**: Go 1.25.0 (tested with Go 1.25.12)
-- **Development/release toolchain**: Go 1.26.6
+- **Module requirement**: Go 1.27.1
+- **Development/release toolchain**: Go 1.27.1
 - **Build System**: Make (see Makefile)
 - **Key Dependencies**: zerolog (logging), cobra (CLI), goccy/go-yaml (YAML)
 - **Testing**: Go testing, testdata pattern with `-update` flag

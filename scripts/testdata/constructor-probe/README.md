@@ -2,7 +2,7 @@
 
 Run `python3 scripts/constructor_network.py` from the repository to verify passive library construction.
 The command requires Go and a Linux AMD64 or ARM64 Docker engine with seccomp support.
-It builds the current source with Go `1.25.12`, without cgo, for the engine's native architecture.
+It builds the current source with Go `1.27.1`, without cgo, for the engine's native architecture.
 The temporary image starts from `scratch` and contains only the probe binary.
 
 The probe calls `New`, `NewContext`, and `NewContext` with memory or empty filesystem storage.
