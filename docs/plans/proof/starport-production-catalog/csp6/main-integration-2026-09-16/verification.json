@@ -1,10 +1,10 @@
 {
   "task": "CSP6",
-  "recorded_at": "2026-09-16T05:56:44.822074+00:00",
+  "recorded_at": "2026-09-16T06:27:08.084206+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
   "head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
   "clean_worktree": true,
-  "published_head": "31ab7ea85cf4b7307bd66c9c54ddab9864e2e3ee",
+  "published_head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
   "base": "8c35fe8919a93d776e2b1fda48ff164bfe37aeff",
   "checks": {
     "generation.log": {
@@ -30,9 +30,9 @@
     }
   },
   "remaining": [
-    "Complete required review before publishing the integrated branch.",
-    "Receive user-created App key and set the repository secret.",
-    "Complete three controlled hosted acceptance cases and merge."
+    "Receive the user-created App key and set the repository secret.",
+    "Complete fresh CI and three controlled hosted acceptance cases.",
+    "Merge after required checks and record the actual merge."
   ],
   "completion_credit": false,
   "running": {
@@ -44,6 +44,91 @@
       "passed": 68,
       "failed": 0,
       "unverified": 0
+    },
+    "required_review": {
+      "session": 37469,
+      "status": "FAIL",
+      "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --base origin/main --reviewers codex:gpt-5.6-sol:xhigh,claude:claude-opus-5:high",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-main-integration/autoreview.log",
+      "exit_status": 1,
+      "reason": "Codex engine exited without a verdict. The helper truncated its error details. No clean attestation exists for this integrated diff."
+    },
+    "required_review_retry": {
+      "session": 64835,
+      "status": "PASS",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-main-integration/autoreview-stream.log",
+      "output": "/tmp/starmap-csp6-autoreview.IA7wNf/review.json",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:claude-opus-5:high"
+      ],
+      "exit_status": 0,
+      "sections": 4,
+      "findings": 0,
+      "threshold": "P0",
+      "verdict": {
+        "findings": [],
+        "overall_correctness": "patch is correct",
+        "overall_explanation": "Chunked review complete. chunk 1/4: 0 finding(s), chunk 2/4: 0 finding(s), chunk 3/4: 0 finding(s), chunk 4/4: 0 finding(s).",
+        "overall_confidence": 0.99
+      }
     }
-  }
+  },
+  "published_ci": {
+    "head": "31ab7ea85cf4b7307bd66c9c54ddab9864e2e3ee",
+    "success": 15,
+    "other": 0,
+    "full_verification_job": "https://github.com/agentstation/starmap/actions/runs/35052605364/job/104656040899",
+    "completed_at": "2026-09-16T06:01:16Z",
+    "integrated_ci": "Fresh checks run on the reviewed integration. See integrated_ci."
+  },
+  "review_retry_setup_failure": "A proposed JSON output path inside the reviewed repository was refused before either engine ran. The active retry uses an external temporary directory.",
+  "publication": {
+    "push": "PASS",
+    "pull_request": "https://github.com/agentstation/starmap/pull/160",
+    "head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
+    "draft": true,
+    "body_updated": true
+  },
+  "integrated_ci": {
+    "observed_at": "2026-09-16T06:27:08.084206+00:00",
+    "head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
+    "counts": {
+      "IN_PROGRESS": 17,
+      "SUCCESS": 1
+    },
+    "status": "in_progress"
+  },
+  "artifacts": [
+    {
+      "path": "autoreview.log.gz",
+      "sha256": "490d10dfc4ccb9c3a16ce099239b1c7d58a7a37a3ff44fcc5d07437050cc33e4",
+      "decoded_sha256": "a409bfe14a99117702ce6e3544db1b02be614cf6d4cd05fcc7605cb027b28920"
+    },
+    {
+      "path": "autoreview-retry.log.gz",
+      "sha256": "2c3ca4ef97fd151acbfc6e98022be0347a05a9fb1a136521f2368216c7fce5b0",
+      "decoded_sha256": "b322df75d35c66e72256a9f1f7642c586b3f42555c480142b7154dda0c8c2d16"
+    },
+    {
+      "path": "autoreview-stream.log.gz",
+      "sha256": "d3d7e631b05681a32aeed01714fb3cd7c1f7921a803306aa65b30495c01353cc",
+      "decoded_sha256": "ff4a149ec0e4b6ac2e0e5cb6bd38fe0c86fe58afc655b23ce8e5670cf33aa195"
+    },
+    {
+      "path": "integrated-ci.json.gz",
+      "sha256": "22769a3b06716767dbaee2f42aebdbff827feae65624935d330bd0758e87c7ff",
+      "decoded_sha256": "e179f7b4667e85c4a7356469a42ebfc55e6d22bb80840f84dcafaabb6f40f22b"
+    },
+    {
+      "path": "pr-body.md.gz",
+      "sha256": "badf5f59ba9a52b2e77494cbe624d7810f025b213bdfbf35640e2a64872c897e",
+      "decoded_sha256": "25108f3e378f5ce8469bf911767f7feb64ead6a7f9fae4750ec298ad8ba291ce"
+    },
+    {
+      "path": "review.json.gz",
+      "sha256": "e14b808efa14a0b81f6e87e1ee6354d13cd9d7d2e44103e59d2f7cbf14da8a7b",
+      "decoded_sha256": "73a84c15e3905cfb89e35453cad49fdb15acb018229d85468e6aaa1dd823d0b3"
+    }
+  ]
 }

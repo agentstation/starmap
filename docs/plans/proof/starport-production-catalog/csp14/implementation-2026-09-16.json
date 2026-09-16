@@ -1,10 +1,10 @@
 {
   "task": "CSP14",
   "status": "in_progress",
-  "recorded_at": "2026-09-16T05:49:49.145246+00:00",
+  "recorded_at": "2026-09-16T06:22:52.759346+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
   "branch": "codex/starmap-server-administration",
-  "head": "e7c129e8a93de6c61af3d7ec05efb8c61ef330ad",
+  "head": "4b05ca342018ef99a8caf56d57dc763029acb40f",
   "source_files": {
     ".github/workflows/pr.yaml": "cf343566fe84173dc0964cb0257c75ec86105847b917a5f59b9773d5b6aba9c3",
     "GLOSSARY.md": "fa666b52df6ae324d50ea959c9998544790898c5c3e18f01081bf8c5f08fda86",
@@ -12,11 +12,14 @@
     "docs/DOCKER.md": "a320774b19ce3c89aa25c5f1ea2691dfc4a6a826acd7bf7a58b1f16db1dbff05",
     "docs/REST_API.md": "b1a915c7eeb7e7532c2ffc13f4a6a08e68e2ed0b723d5c0a7ad22a53726bd0db",
     "docs/SERVER_ADMINISTRATION.md": "316059d7c4170c8f131de5b6057d4bcf74696a394b9541c3b2430e17ca628102",
+    "internal/cli/app/catalog_dependency_test.go": "f0d818ee26dcd8bcb6f4bd6ab8dc91674e6fed0175944f489b5e672b1fbc9190",
+    "internal/cli/app/catalog_ingestion_test.go": "63922369e3ee8db8573a4d6c6a238562cf80a23cbd4f2f219352194eb602cd3f",
     "internal/cli/app/commands.go": "bc54e1cce401d99b099ef72031c47d6e24481aec27e8baee1a263a008058a523",
     "internal/cli/app/configuration_report.go": "40127cfb9f602b91409f114bb49eaac590d14970c08deb4f9cb21b59f0a9a795",
-    "internal/cli/app/configuration_report_test.go": "659b66a7668395da450e331f1f0ed53d2d5da827c00b4a514f59d227a0002e27",
+    "internal/cli/app/configuration_report_test.go": "d10557a58f883caf8074541709e2f30d7b22ea11102ffce52bfc6a7a5731785d",
     "internal/cli/app/execute.go": "5a45a7322c782b51656fa5b50bcb3a7b4550f26e73e32262ea2656a07aed0810",
     "internal/cli/app/file_manifest.go": "a8e28fdd4afb2427adb8c76fce151edaf7d0291c6265286a93acd1277d65aa7c",
+    "internal/cli/app/file_manifest_test.go": "d1ec92632382c9690d653a7164247758595d8422c60f21cbdc801c44c4dc3f02",
     "internal/cli/app/file_policy.go": "d8d6bbace4862221c44a24f3c9d98e633c323168569f76bbf72e47b4db1517aa",
     "internal/cli/commands/admin/command.go": "22336ca57543e9b69857d8f692e08a1720ac3d075b0c00365e993fcc8729a055",
     "internal/cli/commands/config/command.go": "5c4073fd32d7f6aa5ece9a1a41c787696c53cecb8ef65c2e2ecc0c0715bff441",
@@ -45,6 +48,7 @@
     "internal/server/server.go": "eefdef31ef9507f71f614692b05bc08d530f61ed6800c2eb7602fe7f57d05f0c",
     "pkg/productpaths/policy/access.go": "cfdd4656e0dc90bf68c479fa6a76bd026be6831381c1033d4eaf77ad7689f11c",
     "runtime/administration_restore_test.go": "9f374e3fc3f84dd3c86c5f1c5a2edb8f9283979fe40db06a18ad9c7af0978dcf",
+    "runtime/authority_relay_test.go": "343489ec4e2a6ad7444b3bd217f0b4c66fcae7b5597a8429d1e94de17bf53336",
     "scripts/catalog-product-checks.json": "d4c1395cf2764827748dde33ffebc1e4f1f6e1969f12203513b561ea06856323",
     "server/README.md": "e6ac517bd727a893612b470260bfdee3d900f643da1d08a91cda0b5d91da3e43",
     "server/administration/README.md": "37d417a59abc478826156affc602cac01ee424e87976554423225c4676591d88",
@@ -180,8 +184,11 @@
     },
     "full_verification_final": {
       "session": 26217,
-      "status": "in_progress",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-final.log"
+      "status": "FAIL",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-final.log",
+      "exit_status": 2,
+      "passed_packages": 84,
+      "reason": "Older CLI acquisition fixtures lacked administrator credentials. The file manifest fixture still counted implemented administration roles as planned. The TLS relay fixture lacked managed readers. A test import changed during the running Go build, which also caused a server package build failure."
     },
     "linux_task": {
       "session": 51851,
@@ -231,10 +238,25 @@
       "skips": 0,
       "container_exit_status": 0,
       "cleanup": "Removed the stopped task-owned container and source archive after evidence capture."
+    },
+    "full_verification_integrated": {
+      "session": 53060,
+      "status": "in_progress",
+      "source_commit": "4b05ca342018ef99a8caf56d57dc763029acb40f",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-integration.log",
+      "command": "GOTOOLCHAIN=go1.26.6 make verify",
+      "source_policy": "Keep the committed source unchanged until this gate completes."
+    },
+    "task_acceptance_integrated": {
+      "session": 31531,
+      "status": "PASS",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-acceptance-integrated.json",
+      "exit_status": 0,
+      "selected_subcases": 8
     }
   },
   "remaining": [
-    "Finish the full repository gate (session 26217).",
+    "Finish the fixed-source full repository gate (session 53060). All eight final task adapters pass.",
     "Complete required review of committed source against origin/main.",
     "Push and create PR, qualify native administration on six runners.",
     "Merge after required checks and record actual merge before CSP14 completion."
@@ -261,7 +283,7 @@
     "release_qualification": "Not claimed. Only CSP14 was selected."
   },
   "plan_maintenance": {
-    "prose": "PASS: 1545 files, zero diagnostics after paragraph repair.",
+    "prose": "PASS: 1546 files, zero diagnostics before the current execution entry.",
     "unrelated_files_unchanged": 5,
     "protected_sections_unchanged": 6
   },
@@ -281,5 +303,53 @@
     "lint": "PASS: zero issues.",
     "goago": "PASS: zero findings, stale ignores, or errors.",
     "prose": "PASS: 1735 files, zero diagnostics."
+  },
+  "integration_fixture_repair": {
+    "commit": "4b05ca342018ef99a8caf56d57dc763029acb40f",
+    "files_changed": 5,
+    "production_source_changed": false,
+    "race_passed_events": 9,
+    "passed_packages": 2,
+    "skips": 0,
+    "compile": "PASS: go test -run ^$ ./...; 87 test packages compiled, no test cases executed.",
+    "lint": "PASS: zero issues.",
+    "goago": "PASS: zero findings, stale ignores, or errors.",
+    "prose": "PASS: 1737 files, zero diagnostics."
+  },
+  "operator_workflow": {
+    "status": "PASS",
+    "passed": 23,
+    "checks": [
+      "CLI administrator bootstrap and subscriber creation",
+      "anonymous catalog request refused",
+      "subscriber catalog request accepted",
+      "subscriber acquisition refused",
+      "subscriber diagnostics refused",
+      "inference credential refused",
+      "CLI and API schema match",
+      "CLI and API effective configuration match",
+      "configuration report forbids caching",
+      "online subscriber creation",
+      "online subscriber can read",
+      "online subscriber rotation",
+      "rotation overlap accepts both credentials",
+      "expired credential refused",
+      "replacement remains accepted",
+      "online revocation succeeds",
+      "revoked credential refused",
+      "last administrator revocation refused",
+      "offline administrator recovery replaces credential",
+      "lost administrator credential refused after restart",
+      "recovered administrator accepted after restart",
+      "rotated subscriber survives restart",
+      "revocation survives restart"
+    ],
+    "source": "embedded",
+    "acquisition_enabled": false,
+    "source_commit": "e7c129e8a93de6c61af3d7ec05efb8c61ef330ad",
+    "binary_sha256": "0f5ad5e71a13d0276c20dba4336699f151c14c1340804647ea4cf9d93840df73",
+    "command": "python3 .tmp/csp14-identity/operator-smoke.py",
+    "exit_status": 0,
+    "cleanup": "Stopped both service instances and removed temporary state and credentials. No credential values enter this proof."
   }
 }
