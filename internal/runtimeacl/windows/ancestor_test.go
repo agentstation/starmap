@@ -68,3 +68,27 @@ func TestWindowsAncestorGrantPolicy(t *testing.T) {
 		})
 	}
 }
+
+func TestWindowsAncestorOwnerRightsUsesVerifiedOwner(t *testing.T) {
+	const account = "S-1-5-21-1-2-3-1001"
+	for _, test := range []struct {
+		name, owner, principal string
+		invalid                bool
+	}{
+		{name: "process owner", owner: account, principal: "S-1-3-4"},
+		{name: "system owner", owner: windowsSystemSID, principal: "S-1-3-4"},
+		{name: "administrators owner", owner: windowsAdministratorsSID, principal: "S-1-3-4"},
+		{name: "foreign owner", owner: "S-1-5-21-1-2-3-1002", principal: "S-1-3-4", invalid: true},
+		{name: "absent owner", principal: "S-1-3-4", invalid: true},
+		{name: "creator owner is not current owner", owner: account, principal: "S-1-3-0", invalid: true},
+		{name: "other account still refused", owner: account, principal: "S-1-5-21-1-2-3-1002", invalid: true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			entries := []Entry{{Kind: windowsACLAllow, Principal: test.principal, Rights: 0x1f01ff}}
+			err := ValidateAncestor(account, test.owner, true, false, entries, "private.ancestor")
+			if (err != nil) != test.invalid {
+				t.Fatalf("error = %v, want invalid=%v", err, test.invalid)
+			}
+		})
+	}
+}

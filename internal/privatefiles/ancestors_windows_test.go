@@ -73,7 +73,7 @@ func TestWindowsAncestorsPreserveSharedReadAndCreateDirectory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, grant := range []string{"(A;;GRGX;;;WD)", "(A;;0x4;;;WD)", "(A;OICIIO;FA;;;WD)"} {
+	for _, grant := range []string{"(A;;GRGX;;;WD)", "(A;;0x4;;;WD)", "(A;OICIIO;FA;;;WD)", "(A;OICI;FA;;;OW)"} {
 		t.Run(grant, func(t *testing.T) {
 			parent := filepath.Join(t.TempDir(), "parent")
 			if _, err := NewDirectory(parent); err != nil {
