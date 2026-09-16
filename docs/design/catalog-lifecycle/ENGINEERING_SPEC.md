@@ -828,6 +828,19 @@ revision. A release from an older branch must import and commit the selected
 catalog before it tags the module. Release tooling must not rebuild different
 embedded bytes under an existing tag.
 
+Promotion must preserve provider membership records in `membership-scopes.yaml` and the complete accepted manifest in `generation-manifest.json`.
+These files belong to the embedded catalog source directory. The bootstrap summary remains in `generation.json`.
+Bootstrap must verify their matching generation identity, payload descriptor, and original source observation links.
+It must preserve reviews and degraded status. It must not reconstruct provider evidence from model records or current time.
+
+Manifest tooling can reuse retained evidence only when the exact catalog bytes still match.
+Changed promoted input requires its newly committed generation. Missing or mismatched evidence blocks the proposed embedding.
+
+Runtime startup must accept the exact compiled baseline independently of local acquisition bindings.
+Runtime rebuilds must retain the original observations that support compiled membership scopes.
+This exception does not admit unrelated stored local evidence without its required declarations or retained inputs.
+Candidate validation must test passive access, runtime startup, explicit empty bindings, and restart against the proposed embedded catalog.
+
 Starport embeds the baseline in its pinned Starmap module. Updating Starmap's
 default branch does not update that pin. Starport's release process must select
 a Starmap module containing the desired baseline and record its generation.

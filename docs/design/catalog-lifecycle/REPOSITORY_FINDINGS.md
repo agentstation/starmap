@@ -34,6 +34,24 @@ The affected packages also passed on Go 1.25.12.
 These changes remain uncommitted. They do not establish Starport adoption or released-pair qualification.
 The findings below retain their original revision scope.
 
+## Publisher qualification findings: 2026-09-16
+
+The configured App private key authenticates successfully. The publisher does not use the OAuth client secret.
+Hosted run `35097794323` acquired thirteen fresh scopes, then failed promotion validation before any public write.
+Its original failure log omitted the staging command's diagnostics.
+
+A local capture reproduced the loss of membership scopes during YAML projection.
+Repair `f8302a033` preserves those records and staging diagnostics.
+Testing that captured catalog as embedded input then found that bootstrap replaced its original source observation links.
+Commit `931ab7528` retains and validates the complete accepted generation manifest.
+
+Runtime smoke tests then found that startup classified compiled provider evidence as undeclared local evidence.
+Commit `985331d94` distinguishes the exact compiled baseline and preserves its scope observations during rebuilds.
+Nineteen focused race events pass on each supported Go version. Six smoke events pass against the captured catalog.
+
+The [repair proof](../../plans/proof/starport-production-catalog/csp6/membership-promotion-2026-09-16/runtime-verification.json) records source identities, failures, and current verification.
+Review, merge, and all three hosted A05 subcases remain open. These findings do not grant publication qualification.
+
 ## Public publisher clarification: 2026-09-14
 
 The owner confirmed that the scheduled Starmap publisher uses provider accounts with public models.

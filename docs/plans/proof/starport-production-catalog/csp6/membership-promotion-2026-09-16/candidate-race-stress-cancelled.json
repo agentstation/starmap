@@ -1,0 +1,8 @@
+{
+  "time": "2026-09-16T13:45:13.734947+00:00",
+  "pid": 98937,
+  "parent": 98841,
+  "elapsed": "04:27",
+  "cwd": "/private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-csp6-candidate-eox14jts/source/internal/catalog/publication",
+  "disposition": "Optional full captured-catalog race stress cancelled. Focused race regressions pass on both supported Go versions. The exact workflow generation gate runs normally; no assertion or required check is skipped."
+}

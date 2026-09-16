@@ -1,0 +1,108 @@
+{
+  "recorded_at": "2026-09-16T14:02:18.496948+00:00",
+  "source": {
+    "commit": "985331d94bd79da8b4e850f2b30c1749dd065e2a",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+    "branch": "codex/starmap-publisher-validation",
+    "files": {
+      "Makefile": "fa52f2d4c010d0aed9c8ed7fa9dd9c06ec01c09aafc296e2336f7af8484c1b90",
+      "docs/SCHEDULED_CATALOG_GENERATION.md": "83a572d65cd18fd060d15706ede3d1e31491bc93511c6bc79ca2b572a3737af1",
+      "internal/bootstrap/bootstrap.go": "e8ed2c5948ae5088a26daca7593f419443ea3c467ddea1ca1245139a8131dde7",
+      "runtime/embedded_membership_test.go": "be950e1126f15240b1ad2aceef55ceda11e543f62936aa230714f37ded05986f",
+      "runtime/layers.go": "493802174e68ec04b3048efde588a2097b23e989c5007bac8ce4f4ef2157d510",
+      "runtime/migration_catalog.go": "7bd7b222bc0c0be1bc421f6224c28aeed0ae43f071bbee959c29b8932e7ec90c",
+      "runtime/provider_policy_startup.go": "d18ebe4bbe0acd281642e8cbe7261bba4c2284575314fd451c5359a79519d190",
+      "runtime/runtime.go": "18a23040dc9c0f1277730ad1422a26ed01e1f47d2e6e07e2b2cca81947729d86",
+      "runtime/source_membership.go": "db6f8d93010edae006a8efffa76db2a57ea21adae36aea8dbda172191b206f9b"
+    }
+  },
+  "checks": {
+    "candidate-bootstrap-runtime": {
+      "exit": 1,
+      "events": {
+        "pass": 1,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    "runtime-baseline-fixed": {
+      "exit": 1,
+      "events": {
+        "pass": 17,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    "runtime-baseline-final": {
+      "exit": 0,
+      "events": {
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "runtime-baseline-floor": {
+      "exit": 0,
+      "events": {
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "candidate-runtime-fixed": {
+      "exit": 1,
+      "events": {
+        "pass": 4,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    "candidate-runtime-final": {
+      "exit": 0,
+      "events": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "runtime-goago": {
+      "exit": 0
+    },
+    "runtime-lint": {
+      "exit": 0
+    },
+    "repository-verification": {
+      "exit": 2,
+      "limitations": "The broad run crossed source edits. Two packages failed compilation after new imports changed its initial package graph. This run grants no full verification credit. Final focused checks compile and pass both packages. Required native CI must verify the immutable PR head.",
+      "build_failed_packages": [
+        "cmd/starmap-bootstrap-manifest",
+        "runtime"
+      ]
+    }
+  },
+  "finding": "Compiled provider evidence triggered the local-binding startup guard. Rebuilds also omitted its original membership observations.",
+  "changes": [
+    "Accept only the exact compiled baseline without local binding declarations. Continue rejecting unbound stored local evidence.",
+    "Retain verified compiled scope observations during layer rebuilds and migration checks.",
+    "Validate runtime startup and restart against the actual promoted catalog before publication."
+  ],
+  "limitations": [
+    "The initial new test incorrectly expected an ordinary library store to persist a baseline automatically. The corrected fixture explicitly persists its baseline before restart.",
+    "Full verification began before this runtime repair. Required native CI must cover the final committed tree.",
+    "All three hosted A05 subcases remain unverified."
+  ],
+  "running": {
+    "candidate_generation_gate": {
+      "session": 2389,
+      "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-validation/candidate-generation-runtime-final.log"
+    },
+    "review": {
+      "location_file": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-validation/review-location.txt",
+      "session": 81877
+    }
+  },
+  "remaining": [
+    "Complete required review and final verification, then open the repair PR and merge after required CI passes.",
+    "Repeat controlled hosted publication and qualify A05.bot_required_checks, A05.each_publication_failure, and A05.same_bytes_retry."
+  ]
+}

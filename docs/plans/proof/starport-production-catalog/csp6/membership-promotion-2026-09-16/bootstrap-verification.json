@@ -1,0 +1,117 @@
+{
+  "recorded_at": "2026-09-16T13:47:04.196264+00:00",
+  "source": {
+    "commit": "931ab7528f32e4784dc91d64397472ab53ae5342",
+    "base": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+    "branch": "codex/starmap-publisher-validation",
+    "files": {
+      ".github/workflows/catalog-generation.yaml": "e9c135492e7ac8882bfd9d38175445b32a784335ce3ade5031b769fefae72b5c",
+      "cmd/starmap-bootstrap-manifest/committed.go": "b00b5b8484b0cd86d3e8cf764e668b0afd1baacc12c842e54884e7789dd12d38",
+      "cmd/starmap-bootstrap-manifest/main.go": "3e57c0ee2f6e155ffa1534d0ee6d6b4187e4c751825b720a46a303aa8a664c08",
+      "cmd/starmap-bootstrap-manifest/main_test.go": "02effe4a301b3a35f83bb9eab8042553d767e1ca05219fb6565b5817f2eace83",
+      "cmd/starmap-catalog-release/promotion.go": "825900e160ea61b09211c8c150f215699d10274b43085d56513199217d0ad498",
+      "cmd/starmap-catalog-release/promotion_stage.go": "8b00eac42ddbbb340d41689eaa6fdb489fb90bfafce2bd899923e5c8d1802c59",
+      "cmd/starmap-catalog-release/promotion_stage_test.go": "3df35cfdfd956f7ebed4586e6f77f5b2d9f8063ff3fe6b2fc09094750a84647e",
+      "cmd/starmap-catalog-release/promotion_test.go": "11cd9adc92258e7439c700714a9c6b418ce46c77ae80e3b4864f9edfca666ef4",
+      "docs/CATALOG_IDENTITY.md": "906026e35619299541d7c6be1d80ee3173e1adfaec905a3e5fd0a12771956594",
+      "docs/SCHEDULED_CATALOG_GENERATION.md": "5ea576f9690324a823d42f1dc0e1170181f737c05790257a498157eea58246a7",
+      "internal/bootstrap/bootstrap.go": "5c898c4b65f62eb387d11bcea5a0b547be051237fe1553dee6396fc27fa991ea",
+      "internal/bootstrap/committed_test.go": "d5afc6881e61e997b3e8d2c98d8dd43d5f6819f2a6b9b139d4ecc058e05b16bf",
+      "internal/bootstrap/manifest/manifest.go": "b8d7fd0a20d76bc8c3a6cf92f15778bee99b89e6100ffce7db2d5fdbf1795300",
+      "internal/catalog/publication/public_capacity_test.go": "c22374df2d774a522b626ccfaf4d711d05a9235822e6331edba425c1c159e18d",
+      "internal/catalog/workspace/membership_test.go": "d7c49d1d1b0632df4b8bc9f7c4b78bbbe110377fb87785f9fff21fde6fce4fc3",
+      "internal/catalog/workspace/stage_source.go": "e046f140843b7dce1cf04440aafeb34f591bfa4c489e772367ac995557a515e8",
+      "internal/ciworkflow/catalog_publication_workflow_test.go": "4e3052f688c1294f2105900a149d820ad97da653a66e11a0a120363cfec25830",
+      "pkg/catalogs/bootstrap_generation.go": "1443080fce4d46ea6d06a4aca223cfce672710ffa0cb6a4bff4bb173c977ef09",
+      "pkg/catalogs/canonical_alias_yaml.go": "493a2cc8b9156ef3b7f52610bbe392aab21d5afb1887d8dee3376a6553a3207a",
+      "pkg/catalogs/load.go": "b31a93a8ed6581d162aaf4a2bd671ca00180fa71da6fbc8f2a7ab7516c93e1db",
+      "pkg/catalogs/membership_scope.go": "be8f5f06d29bfbda6003dedc2e4b6aed8ae0bec1859ec74d8cd788e357c43170",
+      "pkg/catalogs/membership_yaml.go": "ec835c5c714c155ef6b26c30351705a0822fb03ca3e7ec5337aa501ff099bf05",
+      "pkg/catalogs/membership_yaml_test.go": "f115997b4ed39bfa2061a98e9a0a96826f40382693f5006236160e31e23eef67",
+      "pkg/catalogs/save.go": "f99ca3ea6fc3375d15a7284994cf27122bec670d1f4b844c2130bf9a24ce4a9d",
+      "pkg/catalogs/workspace_records.go": "3f875e457b14a1015014948f4baa261d31df6b4e47b2f84d3ebef22ec19c2ab1",
+      "scripts/catalog_publication.py": "c443a6f2e58f4dc07f529a0c8ae606256c19618a8e71af002714e430ca9d11f3",
+      "scripts/test_catalog_publication.py": "f01754f55b58fff2634d3ace8af8dbb90b0d674614e5da81ab7cd94012cb1357",
+      "scripts/verify-consumer-deps.sh": "7a9a119cea22e50aad01423c19faeef2c243604eb0b7f323360c470cd2962ab2"
+    }
+  },
+  "changes": [
+    "Retain the complete original generation manifest beside the bootstrap summary.",
+    "Verify exact identity, payload, membership observations, and original generation metadata during bootstrap and promotion.",
+    "Preserve or explicitly replace committed evidence through the manifest command.",
+    "Replace two fixtures that assumed the compiled catalog had no prior observations or scopes.",
+    "Use measured unchanged-main macOS dependency maxima without adding imports or relaxing forbidden-family checks."
+  ],
+  "checks": {
+    "bootstrap-fixed": {
+      "exit": 0,
+      "test_events": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "bootstrap-floor": {
+      "exit": 0,
+      "test_events": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-lint": {
+      "exit": 0
+    },
+    "final-goago": {
+      "exit": 0
+    },
+    "final-writing": {
+      "exit": 0
+    },
+    "bootstrap-consumers-final": {
+      "exit": 0
+    },
+    "candidate-generation-fixed": {
+      "exit": 2
+    },
+    "candidate-generation-final": {
+      "exit": 2
+    },
+    "candidate-capacity-final": {
+      "exit": 1
+    },
+    "candidate-generation-workflow": {
+      "exit": 0
+    },
+    "candidate-budget-workflow": {
+      "exit": 0
+    },
+    "candidate-bootstrap-runtime": {
+      "exit": 1,
+      "test_events": {
+        "pass": 1,
+        "fail": 2,
+        "skip": 0
+      },
+      "failure": "The runtime classifies compiled provider-scoped evidence as unbound local evidence at startup."
+    }
+  },
+  "remaining": [
+    "Repair compiled-baseline startup selection and retain its original scope evidence during runtime rebuilds. Verify the captured candidate and complete repository checks.",
+    "Complete required Sol and Opus review, PR/native CI, and merge.",
+    "Run controlled hosted publication and qualify the three remaining A05 subcases."
+  ],
+  "running": {
+    "52475": ".tmp/csp6-validation/verify.*"
+  },
+  "candidate_location": {
+    "worktree": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-csp6-candidate-eox14jts/source"
+  },
+  "limitations": [
+    "Full repository verification began before the final test-fixture and macOS guard edits. Production source stayed unchanged. Exact-candidate gates cover the final fixtures; native CI must test the complete committed tree.",
+    "Original captured-candidate checks retain the two fixture failures.",
+    "Optional captured-catalog race stress was cancelled; it grants no qualification. The workflow gate runs its normal command.",
+    "The captured payload exceeds the release review threshold, not a hard limit. Retain the budget result for publication review."
+  ]
+}

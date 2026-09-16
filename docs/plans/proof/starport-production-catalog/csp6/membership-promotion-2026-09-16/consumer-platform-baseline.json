@@ -1,0 +1,69 @@
+{
+  "base": "8fbbb30431db8f776368a42add4feb7134912392",
+  "matrix": [
+    {
+      "toolchain": "go1.25.12",
+      "os": "darwin",
+      "architecture": "arm64",
+      "cgo": "0",
+      "remote-subscriber": 235,
+      "server-storage": 346
+    },
+    {
+      "toolchain": "go1.25.12",
+      "os": "darwin",
+      "architecture": "arm64",
+      "cgo": "1",
+      "remote-subscriber": 236,
+      "server-storage": 347
+    },
+    {
+      "toolchain": "go1.25.12",
+      "os": "darwin",
+      "architecture": "amd64",
+      "cgo": "0",
+      "remote-subscriber": 236,
+      "server-storage": 347
+    },
+    {
+      "toolchain": "go1.25.12",
+      "os": "darwin",
+      "architecture": "amd64",
+      "cgo": "1",
+      "remote-subscriber": 237,
+      "server-storage": 348
+    },
+    {
+      "toolchain": "go1.26.6",
+      "os": "darwin",
+      "architecture": "arm64",
+      "cgo": "0",
+      "remote-subscriber": 240,
+      "server-storage": 352
+    },
+    {
+      "toolchain": "go1.26.6",
+      "os": "darwin",
+      "architecture": "arm64",
+      "cgo": "1",
+      "remote-subscriber": 241,
+      "server-storage": 353
+    },
+    {
+      "toolchain": "go1.26.6",
+      "os": "darwin",
+      "architecture": "amd64",
+      "cgo": "0",
+      "remote-subscriber": 241,
+      "server-storage": 353
+    },
+    {
+      "toolchain": "go1.26.6",
+      "os": "darwin",
+      "architecture": "amd64",
+      "cgo": "1",
+      "remote-subscriber": 242,
+      "server-storage": 354
+    }
+  ]
+}
