@@ -111,6 +111,7 @@ func testApplicationMetadataIngestion(t *testing.T, mode string, metadataSource 
 		return application
 	}
 	application := open()
+	manager, adminToken := applicationAdministrator(t, application)
 	startHTTP := func() (*server.Server, *httptest.Server) {
 		t.Helper()
 		connectedServer, err := application.Runtime(t.Context())
@@ -121,7 +122,7 @@ func testApplicationMetadataIngestion(t *testing.T, mode string, metadataSource 
 		if err != nil {
 			t.Fatal(err)
 		}
-		srv, err := server.New(connectedServer.Client(), server.Config{PathPrefix: "/api/v1"}, server.WithRuntime(connectedServer), server.WithSyncer(syncer))
+		srv, err := server.New(connectedServer.Client(), server.Config{PathPrefix: "/api/v1"}, server.WithRuntime(connectedServer), server.WithSyncer(syncer), server.WithAdministration(manager, manager.Audience()))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -148,6 +149,7 @@ func testApplicationMetadataIngestion(t *testing.T, mode string, metadataSource 
 		if err != nil {
 			t.Fatal(err)
 		}
+		request.Header.Set("Authorization", "Bearer "+adminToken)
 		response, err := client.Do(request)
 		if err != nil {
 			t.Fatal(err)
@@ -229,6 +231,7 @@ func testApplicationMetadataIngestion(t *testing.T, mode string, metadataSource 
 			if err != nil {
 				t.Fatal(err)
 			}
+			request.Header.Set("Authorization", "Bearer "+adminToken)
 			response, err := client.Do(request)
 			if err != nil {
 				t.Fatal(err)

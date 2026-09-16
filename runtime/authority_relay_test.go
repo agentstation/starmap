@@ -3,7 +3,9 @@ package runtime
 import (
 	"context"
 	"io/fs"
+	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -12,6 +14,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/remote"
 	"github.com/agentstation/starmap/server"
+	"github.com/agentstation/starmap/server/administration"
 )
 
 type permissionRelay interface {
@@ -88,13 +91,31 @@ func TestAuthorityRuntimeRelayServesWithdrawalOverVerifiedTLS(t *testing.T) {
 	if timer.waited(t, 5*time.Second) != permissionPollInterval {
 		t.Fatal("permission scheduler did not complete its initial read")
 	}
-	srv, err := server.New(r.Client(), server.DefaultConfig(), server.WithRuntime(r))
+	audience := source.receipt.Head.AuthorityID
+	manager, adminToken, err := administration.Initialize(t.Context(), administration.Config{
+		StateDirectory: filepath.Join(t.TempDir(), "administration"), Audience: audience,
+	}, "operator")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = manager.Close() })
+	actor, authenticated := manager.Authenticate(adminToken, audience)
+	if !authenticated {
+		t.Fatal("administrator bootstrap failed")
+	}
+	token, err := manager.Create(t.Context(), actor, "relay-reader", administration.Subscriber)
+	if err != nil {
+		t.Fatal(err)
+	}
+	srv, err := server.New(r.Client(), server.DefaultConfig(), server.WithRuntime(r), server.WithAdministration(manager, audience))
 	if err != nil {
 		t.Fatal(err)
 	}
 	endpoint := httptest.NewTLSServer(srv.Handler())
 	t.Cleanup(endpoint.Close)
-	client, err := remote.NewClient(endpoint.URL+"/api/v1", endpoint.Client(), catalogs.CurrentCatalogSchemaVersion)
+	httpClient := endpoint.Client()
+	httpClient.Transport = permissionRelayCredentialTransport{base: httpClient.Transport, token: token}
+	client, err := remote.NewClient(endpoint.URL+"/api/v1", httpClient, catalogs.CurrentCatalogSchemaVersion)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -179,4 +200,15 @@ func TestAuthorityRuntimeRelayRefusesUnconfirmedOrExpiredState(t *testing.T) {
 			}
 		})
 	}
+}
+
+type permissionRelayCredentialTransport struct {
+	base  http.RoundTripper
+	token string
+}
+
+func (t permissionRelayCredentialTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	authorized := request.Clone(request.Context())
+	authorized.Header.Set("Authorization", "Bearer "+t.token)
+	return t.base.RoundTrip(authorized)
 }

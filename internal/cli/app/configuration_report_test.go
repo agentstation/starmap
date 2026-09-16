@@ -251,3 +251,17 @@ func TestInternalCatalogServeRequiresInitializedAdministration(t *testing.T) {
 		t.Fatal("uninitialized internal server opened a catalog")
 	}
 }
+
+func applicationAdministrator(t *testing.T, application *App) (*administration.Manager, string) {
+	t.Helper()
+	cfg, err := application.AdministrationConfig()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manager, token, err := administration.Initialize(t.Context(), cfg, "operator")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = manager.Close() })
+	return manager, token
+}

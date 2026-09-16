@@ -37,7 +37,8 @@ func testHTTPMissingGitDependency(t *testing.T, fresh bool) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	srv, err := server.New(connected.Client(), server.Config{PathPrefix: "/api/v1"}, server.WithRuntime(connected), server.WithSyncer(syncer))
+	manager, adminToken := applicationAdministrator(t, application)
+	srv, err := server.New(connected.Client(), server.Config{PathPrefix: "/api/v1"}, server.WithRuntime(connected), server.WithSyncer(syncer), server.WithAdministration(manager, manager.Audience()))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -61,6 +62,7 @@ func testHTTPMissingGitDependency(t *testing.T, fresh bool) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		request.Header.Set("Authorization", "Bearer "+adminToken)
 		response, err := client.Do(request)
 		if err != nil {
 			t.Fatal(err)
