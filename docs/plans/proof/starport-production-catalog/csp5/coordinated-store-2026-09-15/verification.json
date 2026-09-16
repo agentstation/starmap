@@ -437,7 +437,9 @@
       "head": "ef6610855be9c52c0705e0ffa1318b0529e3f520",
       "push_exit_status": 0,
       "pr": 162,
-      "native_ci": "IN_PROGRESS; CodeQL and all four coordination matrix jobs pass."
+      "native_ci": "PASS: six native runtime jobs and all four Valkey/Redis coordination jobs. Verification Gate remains in progress.",
+      "current_checks": "native-platforms-passed.json",
+      "ready_for_review": true
     },
     "task_gate": {
       "exit_status": 0,

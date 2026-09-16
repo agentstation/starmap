@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-09-16T03:51:37.713834+00:00",
+  "task": "CSP14",
+  "status": "FAIL_BEFORE",
+  "source": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention",
+    "commit": "ef6610855be9c52c0705e0ffa1318b0529e3f520",
+    "tracked_worktree_changes": false
+  },
+  "checks": [
+    {
+      "test": "TestCSP14SubscriberCredentialCannotStartAdministrativeUpdate",
+      "exit_status": 1,
+      "observed": "The same configured API key receives 200 for catalog reads and 202 for POST update. The target requires subscriber denial.",
+      "expected": "403 Forbidden for a subscriber credential.",
+      "command": "GOTOOLCHAIN=go1.26.6 go test -overlay .tmp/csp14-readiness/overlay.json -race -count=1 -timeout 2m -json ./internal/server -run ^TestCSP14SubscriberCredentialCannotStartAdministrativeUpdate$",
+      "output": "subscriber-fail-before.jsonl.gz"
+    },
+    {
+      "test": "TestCSP14ExplicitListenerFlagsOverrideLegacyEnvironment",
+      "exit_status": 1,
+      "observed": "HTTP_HOST=127.0.0.1 and HTTP_PORT=8123 replace explicit --host localhost and --port 9876.",
+      "expected": "Explicit listener flags win over environment defaults.",
+      "command": "GOTOOLCHAIN=go1.26.6 go test -overlay .tmp/csp14-readiness/listener-overlay.json -race -count=1 -timeout 2m -json ./internal/cli/commands/serve -run ^TestCSP14ExplicitListenerFlagsOverrideLegacyEnvironment$",
+      "output": "listener-fail-before.jsonl.gz"
+    }
+  ],
+  "inputs": {
+    "subscriber_probe.txt": "da077ce0503eacf2da176395874491aca30a05fcfa78a7a6b15861f89c48db83",
+    "overlay.json": "4e31ba5287a05a8097e0bc697c103c4d090eb541e04a050554d6d384866ee98f",
+    "subscriber-fail-before.jsonl": "5ba5f158d93c7df4e753d591902e36f0abd782290012319e3bff5beceb34c8de",
+    "listener_probe.txt": "04f4a5ed1350026f434e84c0543a165d5b78101d353fadaff5c500631dc45a2a",
+    "listener-overlay.json": "3ca7bfd5c4f93dba941a3741d8cb16763d537d72c46f183a48570913e4f9f0e7",
+    "listener-fail-before.jsonl": "df47d89558f97556bbe2ff481cc45e4ab64395582f5c59f24486b954aebf553e"
+  },
+  "limits": [
+    "This preparation does not complete CSP14 or introduce its missing identity, audit, or bootstrap contracts.",
+    "The server probe exercises real routing and authentication with an in-memory application. Its Sync override returns without provider or source acquisition.",
+    "No external listener, real credential, persistent product state, or provider call is used.",
+    "The two overlays add temporary test files. They leave the PR branch source unchanged."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-09-16T04:00:08.081883+00:00",
+  "protected_sections_unchanged": [
+    "outcome",
+    "scope",
+    "promotion-gate",
+    "invariants",
+    "tasks",
+    "goal"
+  ],
+  "unrelated_files_unchanged": [
+    "AGENTS.md",
+    "Makefile",
+    "go.mod",
+    "go.sum",
+    "scripts/verify.sh"
+  ],
+  "plan_sha256": "568407c6c1f8b02c8bb6838d4e9789ec8db3c59969667257065d275c932f01ef",
+  "status_counts": {
+    "done": 11,
+    "in_progress": 1,
+    "todo": 26
+  },
+  "execution_log_entries": 10,
+  "prose": {
+    "exit_status": 0,
+    "files": 1543,
+    "diagnostics": 0,
+    "output": "prose-server-preparation-qualified.log.gz"
+  },
+  "prior_prose_failure": {
+    "exit_status": 2,
+    "diagnostics": 1,
+    "output": "prose-server-preparation-final.log.gz"
+  },
+  "resume_words": 241
+}
