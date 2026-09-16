@@ -15,6 +15,22 @@ The [storage revision](../../plans/proof/starport-production-catalog/storage-rev
 The accepted [latency target](LATENCY_REVIEW.md) adds the request-path contracts in section 8.9.
 The [latency revision](../../plans/proof/starport-production-catalog/latency-revision-2026-09-05/REVIEW_RESOLUTION.md) maps each finding to implementation tasks and tests.
 
+## Coordinated Go toolchain policy
+
+D36 selects Go 1.27.1 for both products. Each module declares `go 1.27.1`. Build commands select `GOTOOLCHAIN=go1.27.1`.
+Development environments, CI, Docker builders, and release tools must select that exact version.
+The release owner qualifies future Go upgrades across both repositories and updates their pins together.
+An actual product requirement must justify any additional supported Go family.
+
+CSP6.1 removes the Go 1.25 and Go 1.26 compatibility jobs.
+Race and native Linux, macOS, and Windows checks remain mandatory.
+Real-storage, recovery, pure-Go, capacity, and performance checks also require Go 1.27.1.
+Each behavioral or platform contract retains its own evidence. Duplicate compiler-version execution adds no support claim.
+
+Final acceptance requires matching module and toolchain pins in both repositories.
+Repository checks, native CI, required review, and merged-source verification must pass.
+Earlier toolchain results remain historical evidence. They do not qualify Go 1.27.1.
+
 ## 1. Ownership and composition
 
 ```mermaid

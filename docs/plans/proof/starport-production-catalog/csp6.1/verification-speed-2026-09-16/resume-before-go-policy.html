@@ -1,0 +1,21 @@
+<section id="current-resume"><h2>Current resume state</h2>
+<p>Updated 2026-09-16 UTC. Feature work remains paused. <a href="#CSP6.1">CSP6.1</a> is the sole active task.</p>
+
+<p id="next-action">Next: inspect the <a href="https://github.com/agentstation/starmap/actions/runs/35128783572">final-head CI run</a> for PR #164 at <code>76fbb3b94</code>. It started at 17:32 UTC. Use <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>, branch <code>codex/starmap-publisher-validation</code>.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/verification.json">speed proof</a> records passing paired race measurements. Bootstrap checks decrease from 82.8 to 14.0 seconds. Receipt checks decrease from 126.3 to 19.7 seconds. Concurrency checks decrease from 14.0 to 4.1 seconds with stronger assertions.</p>
+
+<p>The check phase passes. Final checks include generator failure handling, minimum-Go tests, full goago, 1,820 prose files, and pinned lint. The workflow keeps all 113 packages, both Go toolchains, native jobs, and capacity coverage. </p>
+
+<p>The first hosted preflight rejected missing generator dependencies in 88 seconds. Full suites did not start. The repair resolves dependencies before generation. Hosted duration remains UNVERIFIED.</p>
+
+<p>Review files are outside the implementation tree. Read <code>.tmp/verification-speed/cold-review-directory</code>, <code>cold-review.log</code>, and <code>cold-review.exit</code>.</p>
+
+<p>Final Sol and Opus review reports zero findings. PR #164 contains the repair. The proof retains the earlier conditional fixture finding and its rejected disposition.</p>
+
+<p>After required checks pass, merge PR #164 and verify its tree. Record actual hosted duration before completing CSP6.1. Then resume CSP6 hosted publication and the three remaining A05 subcases.</p>
+
+<p>CSP8 remains paused. Starport <code>starport-product-paths</code> is clean at <code>7b59be6ec</code>. Starmap <code>starmap-host-files</code> is clean at <code>e8104b5f3</code>. Local workspace <code>/tmp/starport-csp8-files.work</code> binds those implementations.</p>
+
+<p>Thirteen of 39 tasks are complete. Preserve unrelated canonical edits in <code>AGENTS.md</code>, <code>Makefile</code>, <code>go.mod</code>, <code>go.sum</code>, and <code>scripts/verify.sh</code>. The <a href="proof/starport-production-catalog/execution-history-2026-09-16-speed-local.html">archive</a> retains prior resume state.</p>
+</section>

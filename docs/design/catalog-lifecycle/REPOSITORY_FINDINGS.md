@@ -9,6 +9,22 @@ This report records source inspection and selected local tests on 2026-09-04.
 It does not certify production availability or full API compatibility.
 Dated entries retain their original qualification limits. The canonical plan owns current task status.
 
+## Toolchain policy revision: 2026-09-16
+
+The owner selected Go 1.27.1 for both products under D36. CSP6.1 owns the coordinated migration.
+Starmap previously declared Go 1.25.0 and selected Go 1.26.6.
+
+Its Devbox bootstrap still selected Go 1.26.5.
+
+Starport declared Go 1.26.0 and selected Go 1.26.5 in its module and Docker builder.
+These differences require updates across modules, workflows, development tools, release tools, and maintained documentation.
+
+Starmap run `35128783572` completed all four minimum-Go groups, covering 113 packages with 7,319 passing test events and 22 skips.
+It also passed the release capacity check, four real-storage jobs, and three native jobs before the policy changed.
+The agent canceled the remaining jobs to avoid superseded execution. The complete hosted duration remains unqualified.
+The [decision proof](../../plans/proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/toolchain-decision.json) preserves these results.
+Go 1.27.1 qualification remains open.
+
 ## Inspected revisions
 
 | Repository | Reference used | Detail |

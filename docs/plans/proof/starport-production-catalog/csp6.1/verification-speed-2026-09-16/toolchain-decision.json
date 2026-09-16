@@ -1,0 +1,26 @@
+{
+  "decision": "D36",
+  "at": "2026-09-16T18:00:43.660880+00:00",
+  "go": "1.27.1",
+  "owner_authorized": true,
+  "status": "in_progress",
+  "old_run": 35128783572,
+  "old_run_source": "76fbb3b9495fb1e18c442d3c4098e3ef9a27eb6f",
+  "historical_run": "ci-before-go-policy.json.gz",
+  "historical_run_sha256": "e35f1bfba16b0b3b21f0b0e35451d32acc23a4b1c188b9a08f021f2c2c1ffd85",
+  "reason": "Owner removed Go 1.25 and Go 1.26 support. Final qualification must use Go 1.27.1.",
+  "worktrees": {
+    "starmap": "starmap-publisher-validation",
+    "starport": "starport-go-1271"
+  },
+  "preserved_contracts": [
+    "race",
+    "Linux/macOS/Windows native",
+    "real storage",
+    "recovery",
+    "pure Go",
+    "capacity",
+    "performance"
+  ],
+  "completion_credit": false
+}
