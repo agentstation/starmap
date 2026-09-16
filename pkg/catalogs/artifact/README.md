@@ -176,7 +176,7 @@ func EncodeChannel(document Channel) ([]byte, error)
 EncodeChannel renders one channel document as canonical indented JSON. Equal documents always encode to equal bytes.
 
 <a name="EncodePublicationReceipt"></a>
-## func [EncodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L107>)
+## func [EncodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L108>)
 
 ```go
 func EncodePublicationReceipt(receipt PublicationReceipt) ([]byte, error)
@@ -539,7 +539,7 @@ type PublicationPromotion struct {
 ```
 
 <a name="PublicationReceipt"></a>
-## type [PublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L69-L81>)
+## type [PublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L70-L82>)
 
 PublicationReceipt records admitted evidence for one verified catalog artifact. Branch promotion and channel publication retain their separate transition records.
 
@@ -560,7 +560,7 @@ type PublicationReceipt struct {
 ```
 
 <a name="DecodePublicationReceipt"></a>
-### func [DecodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L124>)
+### func [DecodePublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L125>)
 
 ```go
 func DecodePublicationReceipt(data []byte) (PublicationReceipt, error)
@@ -569,7 +569,7 @@ func DecodePublicationReceipt(data []byte) (PublicationReceipt, error)
 DecodePublicationReceipt accepts only validated canonical receipt bytes. Canonical encoding rejects duplicate, omitted, unknown, and differently cased fields.
 
 <a name="VerifyPublicationReceipt"></a>
-### func [VerifyPublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L144>)
+### func [VerifyPublicationReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L145>)
 
 ```go
 func VerifyPublicationReceipt(data []byte, expectedChecksum string, expectedArtifact PublicationArtifact) (PublicationReceipt, error)
@@ -578,7 +578,7 @@ func VerifyPublicationReceipt(data []byte, expectedChecksum string, expectedArti
 VerifyPublicationReceipt checks the receipt digest and exact artifact binding. The caller must separately verify publisher provenance and artifact bytes.
 
 <a name="PublicationReceipt.Copy"></a>
-### func \(PublicationReceipt\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L84>)
+### func \(PublicationReceipt\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L85>)
 
 ```go
 func (r PublicationReceipt) Copy() PublicationReceipt
@@ -596,7 +596,7 @@ func (r PublicationReceipt) Validate() error
 Validate checks receipt identity, admission, times, and the declared artifact binding.
 
 <a name="PublicationScopePolicy"></a>
-## type [PublicationScopePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L46-L55>)
+## type [PublicationScopePolicy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L46-L56>)
 
 PublicationScopePolicy records the admission policy for one exact source scope.
 
@@ -608,13 +608,14 @@ type PublicationScopePolicy struct {
     Enabled               bool                `json:"enabled"`
     AllowMissing          bool                `json:"allow_missing"`
     AllowRecordQuarantine bool                `json:"allow_record_quarantine,omitempty"`
+    AllowStaleRetained    bool                `json:"allow_stale_retained,omitempty"`
     MaxRetainedAge        time.Duration       `json:"max_retained_age_ns"`
     DisabledAction        string              `json:"disabled_action"`
 }
 ```
 
 <a name="PublicationSourceReceipt"></a>
-## type [PublicationSourceReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L59-L65>)
+## type [PublicationSourceReceipt](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/artifact/publication_receipt.go#L60-L66>)
 
 PublicationSourceReceipt distinguishes a source attempt from its admitted evidence. Attempt and EvidenceKind use the publication admission outcome names.
 

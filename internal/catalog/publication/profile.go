@@ -28,6 +28,7 @@ func ParseProfile(data []byte) (Profile, error) {
 			Enabled               *bool                               `yaml:"enabled"`
 			AllowMissing          *bool                               `yaml:"allow_missing"`
 			AllowRecordQuarantine bool                                `yaml:"allow_record_quarantine"`
+			AllowStaleRetained    bool                                `yaml:"allow_stale_retained"`
 			MaxRetainedAge        string                              `yaml:"max_retained_age"`
 			DisabledAction        DisabledAction                      `yaml:"disabled_action"`
 		} `yaml:"scopes"`
@@ -52,7 +53,7 @@ func ParseProfile(data []byte) (Profile, error) {
 		if err != nil {
 			return Profile{}, admissionError("profile.max_retained_age", "requires an explicit duration")
 		}
-		profile.Scopes = append(profile.Scopes, ScopePolicy{Scope: Scope{Source: scope.Source, Binding: scope.Binding}, Required: *scope.Required, Enabled: *scope.Enabled, AllowMissing: *scope.AllowMissing, AllowRecordQuarantine: scope.AllowRecordQuarantine, MaxRetainedAge: age, DisabledAction: scope.DisabledAction})
+		profile.Scopes = append(profile.Scopes, ScopePolicy{Scope: Scope{Source: scope.Source, Binding: scope.Binding}, Required: *scope.Required, Enabled: *scope.Enabled, AllowMissing: *scope.AllowMissing, AllowRecordQuarantine: scope.AllowRecordQuarantine, AllowStaleRetained: scope.AllowStaleRetained, MaxRetainedAge: age, DisabledAction: scope.DisabledAction})
 	}
 	if _, err := validateProfile(profile); err != nil {
 		return Profile{}, err

@@ -77,8 +77,8 @@ func validateProfile(profile Profile) (map[scopeKey]ScopePolicy, error) {
 		if policy.Required && policy.AllowMissing {
 			return nil, admissionError("scope.allow_missing", "cannot permit missing evidence for a required source")
 		}
-		if policy.MaxRetainedAge < 0 {
-			return nil, admissionError("scope.max_retained_age", "must be nonnegative")
+		if policy.MaxRetainedAge < 0 || (policy.AllowStaleRetained && policy.MaxRetainedAge == 0) {
+			return nil, admissionError("scope.max_retained_age", "must be nonnegative and positive when stale retention is enabled")
 		}
 		if policy.DisabledAction != Preserve && policy.DisabledAction != Remove {
 			return nil, admissionError("scope.disabled_action", "requires an explicit preserve or remove policy")

@@ -2,6 +2,7 @@
 """Coordinate public catalog preparation, promotion, and channel recovery."""
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -358,6 +359,7 @@ class Publisher:
         for filename in ASSETS:
             shutil.copyfile(Path(report["artifact_directory"]) / filename, self.stage / filename)
         shutil.copyfile(report["receipt_path"], self.stage / RECEIPT)
+        self.retain_source_status()
         shutil.copyfile(report["state_path"], self.stage / CHECKPOINT)
         verified = json.loads(command([self.release_tool, "--verify-dir", report["artifact_directory"]]).stdout)
         record = {"schema_version": 1, "run_id": f"github-{self.run_id}", "workflow_run_id": self.run_id,
@@ -369,6 +371,28 @@ class Publisher:
         write_json(self.stage / "pending.json", validate_pending(record))
         control["pending"] = record
         write_json(self.control, control)
+
+    def retain_source_status(self):
+        receipt = read_json(self.stage / RECEIPT)
+        completed = datetime.fromisoformat(receipt["completed_at"])
+        statuses = []
+        for source in receipt["sources"]:
+            binding = source["policy"].get("binding") or {}
+            observation = source.get("observation")
+            observed = observation["observed_at"] if observation else None
+            statuses.append({"source": source["policy"]["source"],
+                "binding_id": binding.get("id"), "provider_id": binding.get("provider_id"), "attempt": source["attempt"],
+                "evidence_kind": source["evidence_kind"], "observed_at": observed,
+                "age_seconds": (completed - datetime.fromisoformat(observed)).total_seconds() if observed else None,
+                "stale": source["evidence_kind"] == "stale_retained"})
+        write_json(self.root / "source-status.log", {"schema_version": 1, "run_id": f"github-{self.run_id}", "sources": statuses})
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:
+            stale = [status for status in statuses if status["stale"]]
+            oldest = max((status["age_seconds"] for status in stale), default=0)
+            with open(summary, "a", encoding="utf-8") as stream:
+                stream.write(f"### Catalog source quality\n\nStale sources: {len(stale)}. Oldest stale evidence: {oldest:g} seconds.\n\n"
+                             "The catalog-validation artifact contains source identities, outcomes, and ages in `source-status.log`.\n\n")
 
     def retain_acquisition_corrections(self, stderr, process_status):
         if isinstance(stderr, bytes):

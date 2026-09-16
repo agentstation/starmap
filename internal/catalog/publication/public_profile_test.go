@@ -71,7 +71,7 @@ func TestPublicPublicationProfileSourceOutages(t *testing.T) {
 		{name: "first-boot-without-required-source"},
 		{name: "fresh-metadata-without-provider-keys", fresh: true, allowed: true},
 		{name: "retained-at-age-boundary", retained: true, age: 24 * time.Hour, allowed: true},
-		{name: "retained-past-age-boundary", retained: true, age: 24*time.Hour + time.Nanosecond},
+		{name: "retained-past-age-boundary", retained: true, age: 24*time.Hour + time.Nanosecond, allowed: true},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			run := Run{StartedAt: start, CompletedAt: start}

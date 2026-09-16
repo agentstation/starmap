@@ -50,6 +50,7 @@ type PublicationScopePolicy struct {
 	Enabled               bool                `json:"enabled"`
 	AllowMissing          bool                `json:"allow_missing"`
 	AllowRecordQuarantine bool                `json:"allow_record_quarantine,omitempty"`
+	AllowStaleRetained    bool                `json:"allow_stale_retained,omitempty"`
 	MaxRetainedAge        time.Duration       `json:"max_retained_age_ns"`
 	DisabledAction        string              `json:"disabled_action"`
 }

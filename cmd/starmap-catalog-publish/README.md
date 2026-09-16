@@ -50,10 +50,13 @@ The output root restricts access to its owner. Checkpoints, receipts, and retry 
 Checkpoints retain the scope selectors and model data from their configured sources.
 
 The [public GitHub profile](../../.github/catalog-publication.yaml) selects models.dev over HTTP and twelve provider APIs.
-models.dev must supply eligible evidence from this run or the previous 24 hours.
+models.dev requires accepted evidence before the first publication. After an outage, the publisher retains that evidence while valid provider updates continue.
 The public profile permits isolated invalid records through `allow_record_quarantine: true`.
 A provider failure does not stop publication. The receipt reports missing credentials, failure, and retained evidence separately.
-Evidence older than 24 hours cannot satisfy source admission, but its catalog facts remain until an explicit removal.
+
+The models.dev policy sets `allow_stale_retained: true` and uses 24 hours as its freshness threshold.
+Older evidence receives `stale_retained` status. Its original observation time remains unchanged.
+This option defaults to false and requires a positive `max_retained_age`. Provider scopes retain their existing 24-hour admission limit.
 
 The public profile uses public model data and basic provider API keys.
 Its checkpoints can live on GitHub without encryption or a private object store.
@@ -84,8 +87,11 @@ It excludes raw diagnostic messages. The checkpoint retains the original observa
 Invalid records preserve their last accepted catalog values. An incomplete provider inventory never establishes model absence.
 
 A repaired source update clears its current quarantine report. Historical immutable receipts retain the earlier report.
-An outage preserves the retained report and its original observation time within the configured age limit.
+An outage preserves the retained report and its original observation time under the selected retention policy.
 Operators inspect the current receipt for source quality and the acquisition logs for correction and rejection details.
+
+The scheduled workflow retains per-source outcomes, observation times, ages in seconds, and stale flags in `source-status.log`.
+Its job summary reports the stale-source count and oldest evidence age. A successful source refresh clears the current stale status.
 
 ## Resume and retry
 

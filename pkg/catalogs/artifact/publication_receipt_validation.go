@@ -79,7 +79,7 @@ func (r PublicationReceipt) validateReviews() error {
 }
 
 func (p PublicationScopePolicy) validate() error {
-	if !p.Source.IsValid() || p.MaxRetainedAge < 0 || (p.Required && p.AllowMissing) {
+	if !p.Source.IsValid() || p.MaxRetainedAge < 0 || (p.AllowStaleRetained && p.MaxRetainedAge == 0) || (p.Required && p.AllowMissing) {
 		return publicationReceiptError("source.policy", "requires a supported source and consistent evidence requirements")
 	}
 	if p.DisabledAction != "preserve" && p.DisabledAction != "remove" {
@@ -139,12 +139,16 @@ func (s PublicationSourceReceipt) validateObservation(startedAt, completedAt tim
 		if (complete && s.Attempt != "succeeded") || (quarantined && s.Attempt != "partial") || observation.ObservedAt.Before(startedAt) || observation.ObservedAt.After(completedAt) {
 			return publicationReceiptError("source.observed_at", "fresh evidence requires an eligible observation within the run interval")
 		}
-	case "retained":
-		if s.Attempt == "succeeded" || observation.ObservedAt.After(startedAt) || s.Policy.MaxRetainedAge == 0 || completedAt.Sub(observation.ObservedAt) > s.Policy.MaxRetainedAge {
-			return publicationReceiptError("source.observed_at", "retained evidence must precede the run and remain within its age limit")
+	case "retained", "stale_retained":
+		if s.Attempt == "succeeded" || observation.ObservedAt.After(startedAt) || s.Policy.MaxRetainedAge == 0 {
+			return publicationReceiptError("source.observed_at", "retained evidence must precede the run and declare a positive age limit")
+		}
+		stale := completedAt.Sub(observation.ObservedAt) > s.Policy.MaxRetainedAge
+		if stale != (s.EvidenceKind == "stale_retained") || (stale && !s.Policy.AllowStaleRetained) {
+			return publicationReceiptError("source.evidence_kind", "stale evidence requires explicit permission and an accurate age classification")
 		}
 	default:
-		return publicationReceiptError("source.evidence_kind", "must name fresh, retained, or absent evidence")
+		return publicationReceiptError("source.evidence_kind", "must name fresh, retained, stale retained, or absent evidence")
 	}
 	return nil
 }

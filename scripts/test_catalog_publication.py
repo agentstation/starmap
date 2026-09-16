@@ -227,6 +227,11 @@ class AcquisitionDiagnosticsTests(unittest.TestCase):
         artifact.mkdir()
         for name in (*publication.ASSETS, publication.RECEIPT, publication.CHECKPOINT):
             (artifact / name).write_text("fixture\n", encoding="utf-8")
+        publication.write_json(artifact / publication.RECEIPT, {"completed_at": "2026-09-16T00:00:00Z", "sources": [
+            {"policy": {"source": "models_dev_http"}, "attempt": "failed", "evidence_kind": "stale_retained",
+             "observation": {"observed_at": "2026-09-09T00:00:00Z"}},
+            {"policy": {"source": "providers", "binding": {"id": "public-openai", "provider_id": "openai"}},
+             "attempt": "missing_credentials", "evidence_kind": "none", "observation": None}]})
         digest = "sha256:" + "a" * 64
         self.result = {"artifact_directory": str(artifact), "receipt_path": str(artifact / publication.RECEIPT),
             "state_path": str(artifact / publication.CHECKPOINT), "receipt_checksum": digest,
@@ -276,6 +281,14 @@ class AcquisitionDiagnosticsTests(unittest.TestCase):
         self.assertEqual(report["invalid_count"], 0)
         self.assertEqual({event["model_id"] for event in report["corrections"]}, set(self.ids))
         self.assertTrue((self.publisher.stage / "pending.json").is_file())
+        status = publication.read_json(self.publisher.root / "source-status.log")
+        self.assertEqual(status["sources"][0]["age_seconds"], 604800)
+        self.assertTrue(status["sources"][0]["stale"])
+        self.assertEqual(status["sources"][1]["provider_id"], "openai")
+        self.assertEqual(status["sources"][1]["binding_id"], "public-openai")
+        self.assertIsNone(status["sources"][1]["age_seconds"])
+        self.assertFalse(status["sources"][1]["stale"])
+        self.assertIn("Stale sources: 1. Oldest stale evidence: 604800 seconds.", self.summary.read_text(encoding="utf-8"))
         self.assertIn("Correction events: 4", self.summary.read_text(encoding="utf-8"))
         for event in report["corrections"]:
             self.assertEqual(set(event), {"source", "provider_id", "model_id", "code"})

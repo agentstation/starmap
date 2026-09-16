@@ -33,6 +33,7 @@ type ScopePolicy struct {
 	Enabled               bool
 	AllowMissing          bool
 	AllowRecordQuarantine bool
+	AllowStaleRetained    bool
 	MaxRetainedAge        time.Duration
 	DisabledAction        DisabledAction
 }
@@ -85,6 +86,8 @@ const (
 	FreshEvidence EvidenceKind = "fresh"
 	// RetainedEvidence identifies eligible evidence from an earlier accepted run.
 	RetainedEvidence EvidenceKind = "retained"
+	// StaleRetainedEvidence identifies retained evidence beyond the configured freshness limit.
+	StaleRetainedEvidence EvidenceKind = "stale_retained"
 	// NoEvidence reports that the scope supplies no input for this publication.
 	NoEvidence EvidenceKind = "none"
 )
@@ -161,8 +164,13 @@ func selectEvidence(policy ScopePolicy, attempt Attempt, retained *sources.Obser
 	if attempt.Outcome == Succeeded || (attempt.Outcome == Partial && attempt.Observation != nil && usableEvidence(policy, *attempt.Observation)) {
 		return attempt.Observation, FreshEvidence
 	}
-	if retained != nil && usableEvidence(policy, *retained) && policy.MaxRetainedAge > 0 && now.Sub(retained.ObservedAt) <= policy.MaxRetainedAge {
-		return retained, RetainedEvidence
+	if retained != nil && usableEvidence(policy, *retained) && policy.MaxRetainedAge > 0 {
+		if now.Sub(retained.ObservedAt) <= policy.MaxRetainedAge {
+			return retained, RetainedEvidence
+		}
+		if policy.AllowStaleRetained {
+			return retained, StaleRetainedEvidence
+		}
 	}
 	return nil, NoEvidence
 }
