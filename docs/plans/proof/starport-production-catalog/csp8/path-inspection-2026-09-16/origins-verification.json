@@ -1,0 +1,74 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T15:07:54.902117+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "work_commit": "628fd3f57f45e1c3bc978ca6d742282b8707cea9",
+  "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "behavior": [
+    "Path selection records retain environment, exact input-file, permitted Starmap fallback, derived-root, and changed Go-override origins.",
+    "Path resolution and origin reporting share the same active path selections.",
+    "The loaded value is recorded before Go overrides and relative anchoring. Identical values retain their existing origin."
+  ],
+  "checks": {
+    "final_race": {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json ./internal/config ./internal/cli -count=1",
+      "exit": 0,
+      "events": {
+        "pass": 336
+      }
+    },
+    "focused_race_events": 6,
+    "lint": {
+      "exit": 0,
+      "issues": 0
+    },
+    "vet": {
+      "exit": 0,
+      "binding": "Before constant extraction and typed root values. Final lint and race checks cover the committed source."
+    },
+    "prose": {
+      "exit": 0,
+      "files": 2,
+      "diagnostics": 0
+    }
+  },
+  "failures_preserved": [
+    "Both origin regressions failed before implementation.",
+    "The first lint pass reported four repeated-literal findings. Shared root constants and one runtime-role constant resolve them."
+  ],
+  "source_sha256": {
+    "docs/OPERATOR-GUIDE.md": "acd264f7c0fad4accf8b9e8ede4b85b87f867bbb1fa854806c6433c3962dd772",
+    "internal/config/development.go": "cee1d784e987b5b3517022531c238f6f135255e3e4f6cb2b79cff6ebf723d2d8",
+    "internal/config/loader.go": "e8008822477b235b1542dfd788c3317208898ea1e0b287acf576365e9166e6cb",
+    "internal/config/path_origins.go": "8005e7e8dcd6ff36ca352d76fa9bd91d66c3672fdf36fa64ead8e062fe54ed94",
+    "internal/config/path_origins_test.go": "0f161c26b10a287862b7a8a8c74ee5d6cf417255fd57aa638286c4589e3a17a6",
+    "internal/config/paths.go": "adea879fc2085772807f6fb82e07056890826e548c49abe5232e90fd041a3b8e"
+  },
+  "completion_credit": false,
+  "remaining": [
+    "Semantic file-role inventory, source-cache roots, legacy migration, complete storage and acquisition qualification.",
+    "Compatible published Starmap module, full pre-PR checks, required review, native CI, and merge."
+  ],
+  "artifacts_uncompressed_sha256": {
+    "path-origins-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-origins-final-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "path-origins-suite.jsonl.gz": "ad01d7bee0db8f03dfac0d7eeb0ead1afd340870f9c2667738518ba4c1b1450b",
+    "path-origins.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-origins-final.jsonl.gz": "a46f4cdfb1791138190b9bbe1641cedf4b9d545748faf2134277c6573f0d646c",
+    "path-origins-suite.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-origins-final-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-origins-suite.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-origins-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-origins-lint.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "path-origins-fail-before.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-origins-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-origins.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-origins-fail-before.jsonl.gz": "304632cfaa85dc5d8c359e2497888702071934c26e31082e8af016217cc8db56",
+    "path-origins-fail-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "path-origins-lint.log.gz": "cc9348c5e50f32b9926f8f639e37d82ea336b332afa1e8f19558bc2fcfb6fd8f",
+    "path-origins-final.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-origins.jsonl.gz": "563ebe371049e558853f4c094541becf8a712de56627d6488297105da6e6c5ff"
+  }
+}
