@@ -268,38 +268,30 @@ go tool cover -html=coverage.out
 
 ### Updating Testdata
 
-Provider tests use the `-update` flag to generate testdata:
+Governed provider fixtures prove wire conversion and field mapping. Refresh a
+fixture only when its contract changes. Refresh commands need acquisition credentials:
 
 ```bash
-# Update testdata for a specific provider
-go test ./internal/providers/openai -update
-
-# Update all provider testdata
-make testdata-update
-
-# Update testdata for specific provider via make
 make testdata PROVIDER=openai
 ```
 
-**Note**: Updating testdata requires valid API keys set in environment variables.
-
 ### Integration Tests
 
-```bash
-# Run integration tests
-make test-integration
+Ordinary tests include local integration fixtures. The repository has no
+integration build tag. `make test-integration` remains an alias for `make test`.
+Real provider acquisition requires an explicit command and credentials.
 
-# Run integration tests with specific providers
-PROVIDER=openai make test-integration
-```
+See [Testing and Verification](docs/TESTING.md) for focused commands, cache rules,
+fresh CI suites, and platform or service qualification.
 
 ### Test Requirements
 
 All contributions must:
 
-- Include unit tests for new functionality
-- Maintain or improve code coverage
-- Pass all existing tests
+- Test changed behavior at its owning boundary
+- Cover rejection and recovery when the contract includes them
+- Preserve critical coverage thresholds and meaningful assertions
+- Pass affected tests and required CI checks
 - Pass race detector checks (`go test -race`)
 - Pass linting (`make lint`)
 

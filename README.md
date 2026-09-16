@@ -1382,6 +1382,7 @@ make all
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for complete development setup, testing guidelines, and contribution process.
+See [Testing and Verification](docs/TESTING.md) for focused test commands and the CI verification contract.
 
 ## Contributing
 

@@ -407,7 +407,7 @@ make lint           # Run golangci-lint and goago
 ```bash
 make test                                   # Run all tests
 go test ./pkg/catalogs -race -v            # Race detection
-go test ./... -race -short                 # All packages with race detector
+make verify-tests TEST_SUITE=race            # Fresh race suite with timing evidence
 ```
 
 ### Verification gates

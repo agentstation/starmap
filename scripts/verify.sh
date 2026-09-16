@@ -12,6 +12,12 @@ export GOLANGCI_LINT_CACHE
 
 cd "$ROOT"
 
+VERIFY_MODE="${1:-all}"
+case "$VERIFY_MODE" in
+	all|checks) ;;
+	*) printf 'usage: %s [all|checks]\n' "$0" >&2; exit 2 ;;
+esac
+
 run() {
 	printf '\n==> %s\n' "$*"
 	"$@"
@@ -89,11 +95,9 @@ if [ "${STARMAP_VERIFY_COVERAGE_ONLY:-}" = "1" ]; then
 	exit 0
 fi
 
-# Use the same package resource bounds for ordinary and race-enabled suites.
-# Large catalog fixtures must not compete across packages for memory.
-# Disable the Go test cache and its filesystem access log.
-run go test ./... -timeout=30m -p=1 -count=1
-run make test-pure-go
+# Fast structural and generated-output failures precede expensive execution.
+run make docs-check
+run git diff --check
 run make test-file-sizes
 run ./scripts/verify-package-layout.sh
 run ./scripts/test-package-layout-verifier.sh
@@ -104,21 +108,15 @@ run ./scripts/test-catalog-dependency-direction-verifier.sh
 run bash ./scripts/verify-canonical-alias-history.sh
 run python3 ./scripts/test_catalog_product_verify.py
 run python3 ./scripts/test_prepare_public_catalog_fixture.py
-# Run race-test packages serially because catalog workspaces consume substantial memory.
-# The complete runtime suite exceeds twenty minutes on the hosted Linux runner.
-# Individual test deadlines still apply.
-run env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1 -count=1
+run python3 ./scripts/test_verification_tests.py
 run go vet ./...
-run ./scripts/verify-catalog-performance.sh
-run ./scripts/verify-container-smoke.sh
 run_lint
 run go tool goago -stale-ignores ./...
-
-check_critical_coverage
-
-run make docs-check
 run make technical-writing-check
-run git diff --check
+run make test-pure-go
+run ./scripts/verify-catalog-performance.sh
+run ./scripts/verify-container-smoke.sh
+check_critical_coverage
 
 run go build -o "$TMPDIR/starmap" ./cmd/starmap
 # Each CLI check uses only the embedded catalog and operation-owned paths.
@@ -143,4 +141,11 @@ run run_cli validate catalog
 run run_cli providers
 run run_cli models list --limit 5
 
-printf '\nrepository verification passed\n'
+if [ "$VERIFY_MODE" = "all" ]; then
+	# Race execution covers ordinary behavior too. The explicit capacity test
+	# retains the full public corpus without race instrumentation.
+	run python3 ./scripts/verification_tests.py race
+	run python3 ./scripts/verification_tests.py capacity
+fi
+
+printf '\nrepository verification passed (%s)\n' "$VERIFY_MODE"

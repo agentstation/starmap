@@ -27,6 +27,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | connected runtime | The process state that `runtime.Open` returns. It reads a catalog source on a schedule. |  | approved | `runtime/runtime.go` |
 | CAS | The common abbreviation for compare-and-swap. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |
 | catch-up | The process that applies events which a subscriber missed. |  | approved | `docs/REMOTE_CATALOG_PROTOCOL.md` |
+| CI | Continuous integration, which runs repository checks for a proposed change. | | approved | `.github/workflows/pr.yaml` |
 | CLI | The command-line interface for Starmap operations. |  | approved | `docs/CLI.md` |
 | compare-and-swap | An atomic update that succeeds only when the stored value matches an expected value. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |
 | CORS | Cross-Origin Resource Sharing, an HTTP mechanism that permits selected cross-origin requests. |  | approved | `docs/DOCKER.md` |

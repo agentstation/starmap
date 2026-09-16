@@ -16,13 +16,9 @@ import (
 // operation the type system names and the data never carries is an operation
 // no consumer can exercise.
 func TestShippedRerankOfferingsCarryTheirCost(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	bases := map[catalogs.ModelRerankBasis]int{}
@@ -81,13 +77,9 @@ func TestShippedRerankOfferingsCarryTheirCost(t *testing.T) {
 }
 
 func TestRerankProviderEndpointsResolve(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	found := 0

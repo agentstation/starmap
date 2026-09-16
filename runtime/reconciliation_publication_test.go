@@ -39,7 +39,7 @@ func TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder(t *testing.T
 	one := testProviderLayer(t, "concurrent-one", "one", "One", at)
 	two := testProviderLayer(t, "concurrent-two", "two", "Two", at.Add(time.Minute))
 	store := &gatedReconciliationStore{Store: storage.NewMemory()}
-	connected := openTestRuntime(t, WithSource(testReviewedDefinitionsFromBaseline(t, nil, []ProviderLayer{one, two})), WithClientOptions(starmap.WithCatalogStore(store)))
+	connected := openTestRuntime(t, WithSource(testReviewedDefinitionsSource(t, []ProviderLayer{one, two})), WithClientOptions(starmap.WithCatalogStore(store)))
 	if _, err := connected.RefreshSource(t.Context()); err != nil {
 		t.Fatal(err)
 	}
