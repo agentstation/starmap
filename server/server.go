@@ -146,6 +146,9 @@ func New(client *starmap.Client, config Config, serverOptions ...Option) (*Serve
 	if err := config.validate(); err != nil {
 		return nil, err
 	}
+	if err := validateAdministration(client, options); err != nil {
+		return nil, err
+	}
 	implementation, err := internalserver.New(
 		&clientApplication{
 			client:  client,

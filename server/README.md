@@ -144,7 +144,7 @@ func WithAdministration(manager *administration.Manager, audience string) Option
 WithAdministration enables audience\-bound subscriber and administrator identities. The caller owns the manager and closes it after server shutdown.
 
 <a name="WithConfigurationReports"></a>
-### func [WithConfigurationReports](<https://github.com/agentstation/starmap/blob/main/server/server.go#L238>)
+### func [WithConfigurationReports](<https://github.com/agentstation/starmap/blob/main/server/server.go#L241>)
 
 ```go
 func WithConfigurationReports(reports *administration.Reports) Option
@@ -218,7 +218,7 @@ func New(client *starmap.Client, config Config, serverOptions ...Option) (*Serve
 New constructs an embeddable server for client.
 
 <a name="Server.Handler"></a>
-### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/server/server.go#L180>)
+### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/server/server.go#L183>)
 
 ```go
 func (s *Server) Handler() http.Handler
@@ -236,7 +236,7 @@ func (s *Server) Health() Health
 Health returns current server health without performing I/O.
 
 <a name="Server.Serve"></a>
-### func \(\*Server\) [Serve](<https://github.com/agentstation/starmap/blob/main/server/server.go#L198>)
+### func \(\*Server\) [Serve](<https://github.com/agentstation/starmap/blob/main/server/server.go#L201>)
 
 ```go
 func (s *Server) Serve(listener net.Listener) error
@@ -245,7 +245,7 @@ func (s *Server) Serve(listener net.Listener) error
 Serve starts server\-owned services and serves listener until Shutdown or a listener failure. A normal Shutdown returns nil.
 
 <a name="Server.Shutdown"></a>
-### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/server/server.go#L219>)
+### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/server/server.go#L222>)
 
 ```go
 func (s *Server) Shutdown(ctx context.Context) error
@@ -254,7 +254,7 @@ func (s *Server) Shutdown(ctx context.Context) error
 Shutdown drains the HTTP server used by Serve and then stops server\-owned background services within ctx. It also closes a runtime joined with WithRuntime. A caller serving Handler through its own http.Server must drain that server first.
 
 <a name="Server.Start"></a>
-### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/server/server.go#L188>)
+### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/server/server.go#L191>)
 
 ```go
 func (s *Server) Start() error

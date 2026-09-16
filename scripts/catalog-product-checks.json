@@ -1871,6 +1871,12 @@
           "repository": "starmap",
           "package": "./server/administration",
           "test": "TestInterruptedFirstAdministratorRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server",
+          "test": "TestInternalServerEmbeddingRequiresManagedReaders"
         }
       ]
     },
