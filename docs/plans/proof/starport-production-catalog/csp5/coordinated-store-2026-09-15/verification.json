@@ -274,19 +274,23 @@
     "The fixed primary-service tests do not establish complete enterprise product support."
   ],
   "remaining": [
-    "Complete required review, publish the task PR, qualify native CI, and merge.",
-    "Finish the shared runtime retention boundary and complete the CSP5 product acceptance command.",
-    "Qualify the released product pair under the whole-plan acceptance map."
+    "Finish required repair review, push PR #162, pass all native checks, and merge.",
+    "Complete the CSP5 runtime/storage race command and task verifier.",
+    "Qualify the released pair under the full acceptance map."
   ],
   "review": {
-    "status": "in_progress",
+    "status": "PASS",
     "session": 97121,
     "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention/.tmp/object-coordination/coordinated-autoreview.log",
     "reviewers": [
       "codex:gpt-5.6-sol:xhigh",
       "claude:claude-opus-5:high"
     ],
-    "threshold": "P0"
+    "threshold": "P0",
+    "exit_status": 0,
+    "findings": 0,
+    "reviewed_commit": "03e2cb570480766fccb20c640b56ad661084b591",
+    "remaining": "The integrated branch needs review against the new merged main before publication."
   },
   "completion": "UNVERIFIED",
   "canonical_checks": {
@@ -297,5 +301,156 @@
       "output": "prose-canonical.log.gz"
     },
     "maintenance": "maintenance.json"
+  },
+  "integration": {
+    "commit": "15406afb20cd676c39172b978dfcd715d78d1a5a",
+    "main_commit": "a4951c302c7d0d6653b17ac5c4569c95b0daae73",
+    "recorded_at": "2026-09-15T02:28:34.241463+00:00",
+    "checks": {
+      "packages": {
+        "output": "integrated-packages.jsonl.gz",
+        "test_passes": 568,
+        "test_skips": 0,
+        "exit_status": 0,
+        "package_verdicts": [
+          {
+            "Time": "2026-09-14T21:20:57.428536-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starmap/internal/ciworkflow",
+            "Elapsed": 2.08
+          },
+          {
+            "Time": "2026-09-14T21:21:00.966772-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starmap/pkg/catalogs/storage/s3",
+            "Elapsed": 5.619
+          },
+          {
+            "Time": "2026-09-14T21:21:13.942915-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+            "Elapsed": 18.595
+          },
+          {
+            "Time": "2026-09-14T21:26:46.30384-05:00",
+            "Action": "pass",
+            "Package": "github.com/agentstation/starmap/internal/cli/app",
+            "Elapsed": 344.621
+          }
+        ]
+      },
+      "lint": {
+        "exit_status": 0,
+        "findings": 0,
+        "output": "integrated-lint.log.gz"
+      },
+      "goago": {
+        "exit_status": 0,
+        "findings": 0,
+        "stale_ignores": 0,
+        "errors": 0,
+        "output": "integrated-goago.json.gz"
+      },
+      "prose": {
+        "exit_status": 0,
+        "files": 1705,
+        "diagnostics": 0,
+        "output": "integrated-prose.log.gz"
+      }
+    },
+    "remaining": [
+      "Finish integrated required review before publication.",
+      "Qualify native CI and merge."
+    ],
+    "review": {
+      "status": "in_progress",
+      "session": 69111,
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention/.tmp/object-coordination/integrated-autoreview.log"
+    },
+    "generated_reference_commit": "b06e09127",
+    "docs_check": {
+      "exit_status": 0,
+      "output": "coordinated-docs-check.log.gz",
+      "source": "Generated reference before main integration."
+    },
+    "prose_failure": {
+      "exit_status": 2,
+      "output": "coordinated-prose-generated.log.gz",
+      "reason": "Two sentences in the temporary PR body exceeded the prose limit. The corrected body and integrated full scan pass."
+    }
+  },
+  "ci_repair": {
+    "recorded_at": "2026-09-16T03:07:56.303615+00:00",
+    "commit": "ef6610855be9c52c0705e0ffa1318b0529e3f520",
+    "pr": 162,
+    "prior_ci_head": "15406afb20cd676c39172b978dfcd715d78d1a5a",
+    "failures": [
+      "CodeQL reported allocation size arithmetic before a direct helper bound.",
+      "CPO-V13 rejected the missing Valkey client in the approved direct module list."
+    ],
+    "repair": [
+      "Validate part sizes and combined size before allocation.",
+      "Record the optional Valkey client in the direct module baseline."
+    ],
+    "checks": {
+      "storage_go1266": {
+        "test_passes": 217,
+        "test_skips": 0,
+        "output": "codeql-size-storage.jsonl.gz"
+      },
+      "storage_go12512": {
+        "test_passes": 217,
+        "test_skips": 0,
+        "output": "codeql-size-minimum.jsonl.gz"
+      },
+      "ownership": {
+        "passed": 13,
+        "failed": 0,
+        "exit_status": 0,
+        "output": "codeql-size-ownership.log.gz"
+      },
+      "lint": "0 issues",
+      "goago": "0 findings, errors, or stale ignores",
+      "prose": "1705 files, 0 diagnostics",
+      "docs": "PASS"
+    },
+    "regression_fail_before": "codeql-size-fail-before.jsonl.gz",
+    "review": {
+      "status": "PASS",
+      "session": 96739,
+      "output": "codeql-size-autoreview.log.gz",
+      "exit_status": 0,
+      "findings": 0,
+      "threshold": "P0"
+    },
+    "task_checks": [
+      {
+        "session": 65319,
+        "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention/.tmp/object-coordination/csp5-task-race.jsonl"
+      },
+      {
+        "session": 48489,
+        "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention/.tmp/object-coordination/csp5-task-gate.json"
+      }
+    ],
+    "publication": {
+      "head": "ef6610855be9c52c0705e0ffa1318b0529e3f520",
+      "push_exit_status": 0,
+      "pr": 162,
+      "native_ci": "IN_PROGRESS; CodeQL and all four coordination matrix jobs pass."
+    },
+    "task_gate": {
+      "exit_status": 0,
+      "selected_subcases": 12,
+      "gate_status": "PASS",
+      "output": "csp5-task-gate.json.gz",
+      "scope": "A19 and the selected Starmap A22/A23 components. No Starport or released-pair qualification."
+    }
+  },
+  "ownership_clarification": {
+    "contract": "../shared-storage-boundary-2026-09-13.md",
+    "CSP5": "Starmap retention and object coordination.",
+    "CSP8": "Starport adoption and A22/A23 consumer cases.",
+    "CSP11": "Shared fleet acquisition leases and layer fencing."
   }
 }

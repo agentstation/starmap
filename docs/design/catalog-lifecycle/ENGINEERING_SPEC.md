@@ -902,14 +902,23 @@ The encoder must exclude credential values and raw diagnostic messages.
 Restore must verify a separately trusted checkpoint digest and validate the retained evidence before reuse.
 Public access does not remove integrity or provenance checks.
 
-The draft public profile selects models.dev over HTTP and twelve provider APIs.
-Its engineering default requires eligible models.dev evidence from this run or the previous 24 hours.
-The public profile enables the owner's record-quarantine policy for models.dev. Provider inventories retain their separate completeness requirements.
+The public profile selects models.dev over HTTP and twelve provider APIs.
+The owner confirmed continued provider updates during prolonged models.dev outages on 2026-09-16 UTC.
+A first publication still requires eligible models.dev evidence. Later runs can retain its last accepted evidence beyond 24 hours.
+
+The public profile enables record quarantine for models.dev. Provider inventories retain their separate completeness requirements.
 Provider failures remain optional and preserve prior catalog facts. Receipts distinguish missing credentials, failed attempts, and retained evidence.
 
-The prepared profile rejects models.dev evidence older than 24 hours. Expiry alone does not remove its catalog facts.
-The owner has not accepted that cutoff. Its choice remains separate from the approved provider failure policy and publisher setup authorization.
-Resolve that choice before live publication uses this profile.
+The models.dev scope sets `allow_stale_retained: true` with `max_retained_age: 24h`.
+The age becomes a freshness threshold for this scope. Older evidence requires `stale_retained` receipt status and preserves its original observation time.
+Other scopes retain the default age refusal unless their reviewed profile explicitly permits stale retention.
+A successful source refresh clears current staleness. Historical receipts remain unchanged.
+
+Permission-bearing enterprise baselines remain outside this public publisher contract.
+
+The scheduled workflow retains source outcomes, observation times, evidence ages in seconds, and stale flags in `source-status.log`.
+Its job summary reports stale-source count and oldest stale evidence age. The validation artifact retains the per-source report.
+CLI, API, and console source status must expose the same age and classification under P16.
 
 Public bindings contain no account or project selectors and grant membership authority only within their own scope.
 The `default-endpoint` region identifies the configured default endpoint. It does not declare coverage of every provider region.

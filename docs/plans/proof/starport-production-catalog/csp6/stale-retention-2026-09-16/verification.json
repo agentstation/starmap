@@ -1,0 +1,139 @@
+{
+  "recorded_at": "2026-09-16T03:22:28.371498+00:00",
+  "task": "CSP6",
+  "decision": "D35: continue valid provider updates with retained models.dev evidence and visible stale status and age.",
+  "source": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+    "base": "e4ed7cffc938656455767a2817e6479444845726",
+    "uncommitted_files": {
+      ".github/catalog-publication.yaml": "30fae11e08b5d27c3c0e4b2dab8b022fa282d75e0ab302f33fa97540a2307f2c",
+      "cmd/starmap-catalog-publish/README.md": "370c68b64bdd930abe5dfb19083116bd262663c61916c717554931eb829daab0",
+      "internal/catalog/publication/admission.go": "b657c02354935f975123656071609d57816d70b4857c02b60ff067ce336e42c6",
+      "internal/catalog/publication/admission_input.go": "5e1efd42ad7d9a3301bef5ffb3f6a29b7637406e64f1a6381f93b1a7a93a4576",
+      "internal/catalog/publication/profile.go": "c3e98b5c05e976015891467679f75b069a98eb62f215c1a03673d00bcfea9f39",
+      "internal/catalog/publication/public_profile_test.go": "1f747b29ee9ff2bcb21ab314674ce80adbeecb3fcb146d2e02b07b91f6b92b5b",
+      "internal/catalog/publication/receipt_binding.go": "7d5bb09c67846832c0d4ea411d6fc78b49e4af8513bcd2b7554e77f55cfc0b6d",
+      "pkg/catalogs/artifact/README.md": "9d903e9400bf1584b6df7d4f7f584bf9ef9f9762e43d4b787114e598165b2a8d",
+      "pkg/catalogs/artifact/publication_receipt.go": "c5f1ed05372e2e2011f1c16f3b9a33362b91d5b84eaad820d088316a4c60cbb4",
+      "pkg/catalogs/artifact/publication_receipt_validation.go": "25f1b07cc98d0276cd0c47764f94104663580dad1dc7b1efde8bd2f8e9c20249",
+      "scripts/catalog_publication.py": "5ad4a282f9890d801f8cdb7c0ac46191d6591399e094b714a83b293d13e9e165",
+      "scripts/test_catalog_publication.py": "656d95d6904d64709a12fb505759b2bd173c90a2e399d6d2a125da0037f2eed5",
+      "internal/catalog/publication/stale_retained_test.go": "0bc6ba2fbda39582f9f8671145580acb5b46615d63e7060c5122f67303af509b",
+      "pkg/catalogs/artifact/publication_stale_test.go": "cc27e8cee78e8bbdaf512d83c69e5cb6fb2173f627bf5e18999602d1757b3966"
+    }
+  },
+  "checks": {
+    "stale-retained-fail-before.jsonl": {
+      "output": "stale-retained-fail-before.jsonl.gz",
+      "test_events": {
+        "fail": 1
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Action": "fail",
+          "Elapsed": 0.516
+        }
+      ]
+    },
+    "stale-retained-final-focused.jsonl": {
+      "output": "stale-retained-final-focused.jsonl.gz",
+      "test_events": {
+        "pass": 137
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Action": "pass",
+          "Elapsed": 1.863
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 4.153
+        }
+      ]
+    },
+    "stale-retained-minimum.jsonl": {
+      "output": "stale-retained-minimum.jsonl.gz",
+      "test_events": {
+        "pass": 137
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Action": "pass",
+          "Elapsed": 1.721
+        },
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 3.642
+        }
+      ]
+    },
+    "stale-retained-packages.jsonl": {
+      "output": "stale-retained-packages.jsonl.gz",
+      "test_events": {
+        "pass": 284
+      },
+      "package_verdicts": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/artifact",
+          "Action": "pass",
+          "Elapsed": 5.968
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/catalog/publication",
+          "Action": "pass",
+          "Elapsed": 24.504
+        },
+        {
+          "Package": "github.com/agentstation/starmap/cmd/starmap-catalog-publish",
+          "Action": "pass",
+          "Elapsed": 149.295
+        }
+      ]
+    }
+  },
+  "other_checks": {
+    "python": {
+      "exit_status": 0,
+      "tests": 19,
+      "output": "stale-retained-python.log.gz"
+    },
+    "lint": {
+      "exit_status": 0,
+      "issues": 0,
+      "output": "stale-retained-lint.log.gz"
+    },
+    "policy": {
+      "exit_status": 0,
+      "output": "stale-retained-policy.json.gz"
+    },
+    "prose": {
+      "exit_status": 0,
+      "files": 1773,
+      "diagnostics": 0,
+      "output": "stale-retained-prose.log.gz"
+    },
+    "docs": {
+      "exit_status": 0,
+      "output": "stale-retained-docs.log.gz"
+    }
+  },
+  "pending": {
+    "generation_gate": {
+      "session": 60253,
+      "output": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-verification-failure/stale-retained-generation-gate.log"
+    },
+    "review": "Required after commit.",
+    "publication": "Update existing PR #160.",
+    "app": "Browser handoff on GitHub Confirm access. Private key and selected-repository installation remain incomplete."
+  },
+  "limits": [
+    "Package race verification excludes the separately qualified full-profile capacity case. The repository generation gate repeats capacity without the race detector.",
+    "Receipt status and scheduled reports do not qualify the future Starport operator surfaces.",
+    "No hosted publication or release evidence is claimed."
+  ]
+}

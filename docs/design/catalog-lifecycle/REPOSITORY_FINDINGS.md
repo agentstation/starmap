@@ -84,8 +84,8 @@ Workflow integration must preserve the distinction between those edits and uncha
 The checked profile selects models.dev HTTP and twelve provider APIs.
 Bindings contain no account or project selectors and limit membership changes to their own scope.
 DeepInfra uses its declared public acquisition profile. Other selected providers use API-key profiles.
-The draft source default requires models.dev evidence no older than 24 hours and permits provider outages.
-That engineering default remains distinct from the confirmed public checkpoint storage decision.
+The initial draft required models.dev evidence no older than 24 hours and permitted provider outages.
+D35 supersedes that draft cutoff with explicit stale retention and source-age reporting.
 
 The [proof](../../plans/proof/starport-production-catalog/csp6/public-baseline-2026-09-14.json) records 115 passing package race events and seventeen passing minimum-Go events.
 It preserves the initial test compilation error and the missing-profile failure before configuration existed.
@@ -3072,7 +3072,7 @@ Final auth, acquisition, and S3 suites pass 268 race events after integration.
 Six producer subcases, external consumers, generated documentation, strict prose, lint, and Go policy pass.
 Sol and Opus report no actionable findings in the required review. The PR uses guarded auto-merge and awaits native CI.
 The [credential proof](../../plans/proof/starport-production-catalog/csp7/policy-composition-2026-09-14/verification.json) owns source hashes, preserved failures, and exact results.
-CSP7 remains in progress. Product cases A11 and A12 still require Starport integration.
+CSP7 completed its Starmap contract through PR #161. Product cases A11 and A12 still require Starport integration.
 
 ## Scheduled correction reports and owner decisions, 2026-09-14
 
@@ -3085,7 +3085,7 @@ All six focused tests and all nineteen publisher tests pass after the change. Th
 Required review, integration with current main, and native qualification remain open for this commit.
 
 The owner approved Valkey or Redis coordination for shared S3 cleanup. The owner also authorized App setup and checked public catalog publication.
-Public provider acquisition remains best effort with retained facts and visible failures. Only the proposed models.dev freshness cutoff remains undecided.
+Public provider acquisition remains best effort with retained facts and visible failures. D35 resolves the models.dev freshness choice on 2026-09-16 UTC.
 The private publisher App registration and client ID variable now exist. Private-key generation, installation, secret storage, and hosted publication remain incomplete.
 
 ## Coordinated object retention, 2026-09-15

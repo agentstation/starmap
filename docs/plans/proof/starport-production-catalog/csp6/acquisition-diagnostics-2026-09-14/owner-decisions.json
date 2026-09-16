@@ -7,8 +7,10 @@
     "record_quarantine": "Approved. Preserve prior facts and retain visible diagnostic records.",
     "publisher_setup_and_publication": "Dedicated private GitHub App on agentstation/starmap and the four-hour public process are authorized after required checks. Include catalog assets, checked embedding promotion, and discovery channels. Browser use is authorized."
   },
-  "pending": [
-    "Whether models.dev evidence older than 24 hours pauses publication or permits valid provider updates with a stale-source warning."
-  ],
-  "browser_handoff": "The App registration is complete. Browser credential creation requires user handoff. Final installation must select only agentstation/starmap. No private key exists or secret was written by this turn."
+  "pending": [],
+  "browser_handoff": "The App registration is complete. Browser credential creation requires user handoff. Final installation must select only agentstation/starmap. No private key exists or secret was written by this turn.",
+  "resolved_on_2026_09_16": {
+    "models_dev_freshness": "Continue provider updates and show stale-source status. Retain the original models.dev evidence and report its age.",
+    "source": "Owner reply to the publisher freshness question in the active thread."
+  }
 }
