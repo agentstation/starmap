@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-16T19:29:00.598449+00:00",
+  "at": "2026-09-16T19:35:17.230195+00:00",
   "decision": "D36",
   "go": "1.27.1",
   "status": "in_progress",
@@ -52,7 +52,6 @@
       "combined_sql": "15 pass, 2 failure events: known MySQL reset fixture defect, owned by CSP15",
       "fresh_mysql_contracts": "pass: two events per isolated contract (read/write/migrate and rollback)"
     },
-    "review": "pass at d9a2f1fadef7c7f1db90d11d8eaf18ac0544f849: Sol high and Opus high, zero findings",
     "docker_build_metadata": "Go 1.27.1; CGO_ENABLED=0; linux/arm64",
     "hosted_initial": "At 7442a3d: three OS full Go test jobs, security, release contract, release snapshot, SDKs, action pins, four Linux/macOS native startup jobs pass. Old linter and both Windows native startups fail. Startup cause was masked by verifier cleanup.",
     "native_verifier_fix": "Generated credentials and URLs remain redacted. Corrected diagnostics exposed the Starmap OWNER RIGHTS false rejection. Native Windows remains unqualified until dependency adoption.",
@@ -60,7 +59,6 @@
       35140756480,
       35140756656
     ],
-    "dependency_integration": "3,055 test pass events and 39 skips with temporary Go workspace selecting the corrected Starmap source. Final published dependency awaits producer merge.",
     "dependency_pin": "v0.16.6-0.20260916185656-71a96cee03e5; fetched from published module, no workspace replacement",
     "published_local_checks": {
       "go_tests": "3055 pass events, 39 skips",
@@ -74,7 +72,9 @@
       "docker": "PASS final Linux ARM64 image build, offline execution, Go 1.27.1 metadata, CGO_ENABLED=0 and exact Starmap 71a96cee0 dependency"
     },
     "public_module": "PASS: canonical Go proxy version and unauthenticated GitHub source both return HTTP 200 for exact 71a96cee0. Initial negative proxy response retained as historical.",
-    "final_review": "PASS 368fdee: Sol high and Opus high, zero findings"
+    "final_review": "PASS 368fdee: Sol high and Opus high, zero findings",
+    "initial_review": "pass at d9a2f1fadef7c7f1db90d11d8eaf18ac0544f849: Sol high and Opus high, zero findings",
+    "initial_dependency_integration": "3,055 test pass events and 39 skips with temporary Go workspace selecting the corrected Starmap source. This intermediate check preceded the final published module check."
   },
   "starmap": {
     "checks": "pass: complete make verify-checks on Go 1.27.1",

@@ -27,7 +27,8 @@ Final hosted Go 1.27.1 qualification remains open.
 
 The local Starport check roster passes on Go 1.27.1, including 3,055 test events and 29 shell checks.
 Its Docker builder produces a cgo-disabled Linux ARM64 binary with Go 1.27.1 metadata.
-Valkey passes 77 selected race events. The known MySQL test-reset defect remains with CSP15.
+Initial Valkey qualification passes 77 selected race events. Final published-dependency qualification passes 170 events from a broader selection.
+The known MySQL test-reset defect remains with CSP15.
 Both MySQL contracts pass against separate fresh databases.
 
 Starmap passes its local repository checks on Go 1.27.1.
@@ -53,7 +54,8 @@ Starmap rejects this identity as foreign, although Windows resolves it to the cu
 Commit `71a96cee0` resolves the identity after validating the owner. Foreign owners and Creator Owner grants remain refused.
 
 The regression fails before the fix. Local ACL and private-file tests pass 180 race events.
-Native qualification and Starport adoption remain open. The complete Starport suite passes against the corrected source through a temporary Go workspace.
+Starport now pins published Starmap commit `71a96cee0`. Its complete local roster and Docker checks pass without a workspace override.
+Both final pre-PR reviews pass with no findings.
 
 Final native qualification and both merges remain open.
 
