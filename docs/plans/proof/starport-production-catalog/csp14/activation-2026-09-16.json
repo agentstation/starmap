@@ -1,0 +1,61 @@
+{
+  "recorded_at": "2026-09-16T04:07:09.222947+00:00",
+  "task": "CSP14",
+  "status": "in_progress",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
+  "branch": "codex/starmap-server-administration",
+  "starting_head": "ef6610855be9c52c0705e0ffa1318b0529e3f520",
+  "dependency": {
+    "pr": 162,
+    "native_jobs_passed": 6,
+    "checks_passed": 18,
+    "pending": "Verification Gate",
+    "watch_session": 6176,
+    "completion_requires_merge": true
+  },
+  "required_subcases": [
+    "A32.first_admin_bootstrap",
+    "A32.subscriber_mutation_denied",
+    "A32.rotation_overlap",
+    "A32.audit_write_failure",
+    "A32.receipt_crash_recovery",
+    "A32.authority_restore",
+    "A32.cli_effective_report",
+    "A32.admin_effective_report"
+  ],
+  "source_contract": {
+    "language": "Go 1.25.0",
+    "minimum_toolchain": "go1.25.12",
+    "development_toolchain": "go1.26.6",
+    "persistent_state": "<state>/admin/identities.json; <state>/admin/audit/events.ndjson; <state>/admin/operations/<operation-id-hash>.json",
+    "sql_required": false
+  },
+  "goal_state": "Active. No goal-level blocker or completion claim.",
+  "component_progress": {
+    "uncommitted_files": [
+      "server/administration/authentication.go",
+      "server/administration/identity.go",
+      "server/administration/identity_codec.go",
+      "server/administration/identity_test.go"
+    ],
+    "checks": {
+      "identity-race": {
+        "passed_test_events": 34,
+        "package_pass": true
+      },
+      "identity-minimum": {
+        "passed_test_events": 34,
+        "package_pass": true
+      }
+    },
+    "goago": "No findings, stale ignores, or errors.",
+    "prose": "1695 files, zero diagnostics.",
+    "limitation": "Identity component only. Persistence and HTTP integration remain open. No A32 acceptance credit."
+  },
+  "plan_maintenance": {
+    "protected_sections_unchanged": 6,
+    "unrelated_files_unchanged": 5,
+    "prose": "1544 files, zero diagnostics.",
+    "cold_resume": "PASS. The active task, worktree, dependency, pending CI, credential handoff, and remaining acceptance are explicit."
+  }
+}
