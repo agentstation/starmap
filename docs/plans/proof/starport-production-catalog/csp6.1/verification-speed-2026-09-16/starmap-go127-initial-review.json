@@ -1,0 +1,18 @@
+{
+  "findings": [
+    {
+      "title": "New Full Catalog Capacity job drops the public catalog fixture setup its predecessor required",
+      "body": "Reviewer: claude model=claude-opus-5 thinking=high\n\n`.github/workflows/pr.yaml` splits the old `verification` job into `verification-checks`, `verification-tests`, and `verification-capacity`. The old job declared `STARMAP_PUBLIC_FIXTURE_REQUIRED: '1'` and ran `python3 scripts/prepare_public_catalog_fixture.py` before executing any Go tests, including `TestPublicPublicationProfileRetainsBoundedState` (which lived in `./...`).\n\nThe new `verification-capacity` job runs only that test:\n\n```yaml\n- name: Run full public catalog capacity\n  run: python3 scripts/verification_tests.py capacity --output \"$RUNNER_TEMP/go-capacity-events.jsonl\"\n```\n\nbut it has no `env:` block and no fixture-preparation step. `verification-tests` still prepares the fixture and sets both `*_FIXTURE_REQUIRED` variables, so the asymmetry is confined to the capacity job \u2014 the one job whose stated contract (docs/TESTING.md: \"`TestPublicPublicationProfileRetainsBoundedState` with the complete corpus\") depends on the full public corpus.\n\nIf the test gates on the prepared fixture, the unset `STARMAP_PUBLIC_FIXTURE_REQUIRED` makes it skip rather than fail. `scripts/verification_tests.py::summarize` then raises `ValueError(\"the full-catalog capacity test did not pass\")` because `capacity_passed` only becomes true on an `Action == \"pass\"` record for that exact test/package, so the job exits non-zero. `verification` (`Verification Gate`, the required check) runs with `if: always()` and asserts `CAPACITY == success`, so every pull request would be blocked with no per-PR workaround.\n\nSmallest fix: add `STARMAP_PUBLIC_FIXTURE_REQUIRED: '1'` and the `Prepare verified public catalog fixture` step to `verification-capacity`, mirroring `verification-tests`.\n\nI could not execute the test from the bundle, so this is conditional on `TestPublicPublicationProfileRetainsBoundedState` actually consuming the prepared fixture; if it builds its corpus purely in-process the job is fine as written.",
+      "priority": "P0",
+      "confidence": 0.45,
+      "category": "regression",
+      "code_location": {
+        "file_path": ".github/workflows/pr.yaml",
+        "line": 235
+      }
+    }
+  ],
+  "overall_correctness": "patch is incorrect",
+  "overall_explanation": "Panel review complete. claude model=claude-opus-5 thinking=high: 1 finding(s), codex model=gpt-5.6-sol thinking=high: 0 finding(s).",
+  "overall_confidence": 0.93
+}

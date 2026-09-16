@@ -47,6 +47,14 @@ Devbox also needed Apple SDK 15.5 for the Go 1.27 development-tool linker.
 Starport native startup passes on Linux and macOS. Both Windows jobs fail before readiness.
 
 The corrected verifier preserves that failure and redacts generated credentials. Its nine regression tests pass.
+
+The Windows diagnostic identifies Python temporary directories that use the OWNER RIGHTS identity.
+Starmap rejects this identity as foreign, although Windows resolves it to the current object owner.
+Commit `71a96cee0` resolves the identity after validating the owner. Foreign owners and Creator Owner grants remain refused.
+
+The regression fails before the fix. Local ACL and private-file tests pass 180 race events.
+Native qualification and Starport adoption remain open. The complete Starport suite passes against the corrected source through a temporary Go workspace.
+
 Final native qualification and both merges remain open.
 
 ## Inspected revisions

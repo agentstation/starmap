@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-16T18:46:52.342222+00:00",
+  "at": "2026-09-16T18:58:28.209091+00:00",
   "decision": "D36",
   "go": "1.27.1",
   "status": "in_progress",
@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "49769647bed59aef46009bff640b1e0aa1441580",
+      "head": "71a96cee03e5f9cdfe7adcd9784c7463ce18d856",
       "dirty_files": {}
     },
     "starport": {
@@ -24,14 +24,14 @@
     "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
   ],
   "pending": [
-    "final reviews",
-    "Starmap six-target release snapshot qualification",
-    "final hosted qualification and Windows startup diagnosis",
+    "final Starmap review and hosted native qualification",
+    "producer merge before Starport dependency pin",
+    "final Starport checks, review and hosted qualification",
     "both reviewed merges"
   ],
   "running": {
-    "starmap": "final review and six-target release snapshot",
-    "starport": "PR #375 main and native workflows at reviewed d9a2f1f"
+    "starmap": "final release checks and Sol xhigh/Opus high review at 71a96cee0",
+    "starport": "existing CI completes at d9a2f1f; Windows awaits published Starmap fix"
   },
   "starport": {
     "go_test": {
@@ -57,11 +57,12 @@
     "review": "pass at d9a2f1fadef7c7f1db90d11d8eaf18ac0544f849: Sol high and Opus high, zero findings",
     "docker_build_metadata": "Go 1.27.1; CGO_ENABLED=0; linux/arm64",
     "hosted_initial": "At 7442a3d: three OS full Go test jobs, security, release contract, release snapshot, SDKs, action pins, four Linux/macOS native startup jobs pass. Old linter and both Windows native startups fail. Startup cause was masked by verifier cleanup.",
-    "native_verifier_fix": "Preserve original failure and record final startup error with generated keys and URLs redacted. Nine regression tests pass; real local console startup remains passing. Windows cause awaits new CI.",
+    "native_verifier_fix": "Generated credentials and URLs remain redacted. Corrected diagnostics exposed the Starmap OWNER RIGHTS false rejection. Native Windows remains unqualified until dependency adoption.",
     "hosted_final_runs": [
       35136602158,
       35136602204
-    ]
+    ],
+    "dependency_integration": "3,055 test pass events and 39 skips with temporary Go workspace selecting the corrected Starmap source. Final published dependency awaits producer merge."
   },
   "starmap": {
     "checks": "pass: complete make verify-checks on Go 1.27.1",
@@ -100,7 +101,25 @@
       }
     ],
     "measurement_limits": "One paired execution per cohort; identical selections, Go 1.27.1 race binaries, count=1, compilation excluded. Same final production tree with before-test overlay from 014afd1a3. No statistical performance SLO claim.",
-    "release_snapshot_initial": "Failed: local disk exhausted while compiling six platforms. Retained log; retry uses two concurrent targets after obsolete Go 1.25/1.26 cache cleanup."
+    "release_snapshot_initial": "Failed: local disk exhausted while compiling six platforms. Retained log; retry uses two concurrent targets after obsolete Go 1.25/1.26 cache cleanup.",
+    "review_assessment": {
+      "finding": "Capacity job needs external public fixture preparation",
+      "disposition": "rejected",
+      "evidence": "internal/catalog/publication/public_capacity_test.go reads committed internal/embedded/sources/models.dev/api.json, starts httptest.NewServer, and uses bootstrap.Generation(). It never consumes STARMAP_PUBLIC_FIXTURE_REQUIRED. Only testing.Short() can skip it, and the capacity runner never sets -short."
+    },
+    "windows_ancestor_fix": {
+      "cause": "The Windows ancestor validator treats S-1-3-4 OWNER RIGHTS as a foreign account. Python 3.13 creates private temporary directories with this identity.",
+      "references": [
+        "https://github.com/python/cpython/issues/128038",
+        "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers"
+      ],
+      "fix": "Resolve OWNER RIGHTS to the descriptor owner only after that owner passes the existing trusted-principal check. Creator Owner and foreign owners remain refused.",
+      "commit": "71a96cee03e5f9cdfe7adcd9784c7463ce18d856",
+      "local_race_pass_events": 180,
+      "native_status": "UNVERIFIED until final CI"
+    },
+    "release_snapshot": "PASS at 71a96cee0: six target archives, SBOMs, checksums, Go 1.27.1 metadata and CGO_ENABLED=0; Linux static linkage and no Windows C/C++ imports.",
+    "review_context": "Initial full capacity-test dataset was refused by the reviewer context secret scanner. A source excerpt containing only committed input setup replaces that dataset. No scanner policy changed."
   },
   "local_evidence_archives": {
     "starport": {
@@ -114,6 +133,14 @@
     "followup": {
       "file": "go127-followup-evidence.json.gz",
       "uncompressed_sha256": "f9480f191ac0a092cefaf50717c52b8a166b977c1afa94739ecd108901f0bb73"
+    },
+    "owner_rights": {
+      "file": "go127-owner-rights-evidence.json.gz",
+      "uncompressed_sha256": "68120737c4d70d551bb9d4a4a2dbc3bb0859f6c29950589df00bc532eda54aa0"
+    },
+    "final_release": {
+      "file": "go127-final-release-evidence.json.gz",
+      "uncompressed_sha256": "525e6e105135d23022473df407d60c572b0fcb26e6fff46b68bc167f41e42c8e"
     }
   },
   "tool_compatibility": {
