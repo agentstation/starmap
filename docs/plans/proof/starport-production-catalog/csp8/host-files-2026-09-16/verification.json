@@ -1,0 +1,242 @@
+{
+  "task": "CSP8",
+  "recorded_at": "2026-09-16T11:08:40.636463+00:00",
+  "status": "local implementation; task remains in progress",
+  "repository": "agentstation/starmap",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+  "branch": "codex/starmap-host-files",
+  "commit": "c974c401395a64c1474d81df7f30490209f7f0f3",
+  "base_commit": "c7188b5e49be7226a1c7514fafee3dae07786aa1",
+  "source_hashes": {
+    "pkg/productfiles/directory.go": "678a9c71bf9d15d1f556304eb5c18dd3d0394916d2417ae51718ac9c85ac0c84",
+    "pkg/productfiles/directory_test.go": "6f6a48a817a6f492f17498f5c246ab15b33d94c11ed64b8e12b273e2c9baac09",
+    "pkg/productfiles/README.md": "39d574952bfdf50d53a1f5f1c30ea0f67d1e83c8cff305efc043b22c74319c5a"
+  },
+  "behavior": [
+    "Expose existing native private directory checks and bounded file reads to hosts.",
+    "Expose conditional record publication, removal, and abandoned-record recovery.",
+    "Expose native no-replace directory movement and directory synchronization.",
+    "Preserve typed errors, including visible publication with unconfirmed durability.",
+    "Reject nil contexts, unbound directories, and invalid read bounds."
+  ],
+  "fail_before": {
+    "command": "go test -json ./pkg/productfiles",
+    "exit": 1,
+    "reason": "No non-test Go files existed for the public host package.",
+    "evidence": "host-files-fail-before.jsonl.gz"
+  },
+  "checks": [
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -json ./pkg/productfiles ./internal/privatefiles ./internal/filepublish",
+      "toolchain_selection": "explicit",
+      "exit": 0,
+      "passed_test_events": 148,
+      "passed_packages": [
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/pkg/productfiles",
+        "github.com/agentstation/starmap/internal/privatefiles"
+      ],
+      "skipped_test_events": 0,
+      "evidence": "host-files-dev.jsonl.gz",
+      "qualification": "supported toolchain"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -count=1 -json ./pkg/productfiles ./internal/privatefiles ./internal/filepublish",
+      "toolchain_selection": "explicit",
+      "exit": 0,
+      "passed_test_events": 148,
+      "passed_packages": [
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/pkg/productfiles",
+        "github.com/agentstation/starmap/internal/privatefiles"
+      ],
+      "skipped_test_events": 0,
+      "evidence": "host-files-floor.jsonl.gz",
+      "qualification": "supported toolchain"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.27.0 go test -race -count=1 -json ./pkg/productfiles ./internal/privatefiles ./internal/filepublish",
+      "toolchain_selection": "ambient, confirmed afterward by go version",
+      "exit": 0,
+      "passed_test_events": 148,
+      "passed_packages": [
+        "github.com/agentstation/starmap/pkg/productfiles",
+        "github.com/agentstation/starmap/internal/filepublish",
+        "github.com/agentstation/starmap/internal/privatefiles"
+      ],
+      "skipped_test_events": 0,
+      "evidence": "host-files-native.jsonl.gz",
+      "qualification": "supplemental host toolchain"
+    },
+    {
+      "command": "GOOS=windows GOARCH=amd64 CGO_ENABLED=0 GOTOOLCHAIN=go1.25.12 go test -c -o .tmp/csp8/productfiles-windows-amd64.test.exe ./pkg/productfiles",
+      "exit": 0,
+      "evidence": "host-files-windows-compile.log.gz",
+      "qualification": "compile only; native execution remains unverified"
+    },
+    {
+      "command": "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 GOTOOLCHAIN=go1.25.12 go test -c -o .tmp/csp8/productfiles-linux-amd64.test ./pkg/productfiles",
+      "exit": 0,
+      "evidence": "host-files-linux-compile.log.gz",
+      "qualification": "compile only; native execution remains unverified"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go vet ./pkg/productfiles",
+      "exit": 0,
+      "evidence": "host-files-dev-vet.log.gz"
+    },
+    {
+      "command": "GOTOOLCHAIN=go1.26.6 go tool goago -stale-ignores -format json ./...",
+      "exit": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0,
+      "evidence": "host-files-dev-goago.json.gz"
+    },
+    {
+      "command": "make godoc",
+      "exit": 0,
+      "generated_diff": false,
+      "evidence": "host-files-docs.log.gz"
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit": 0,
+      "evidence": "host-files-prose.log.gz"
+    }
+  ],
+  "raw_artifacts": [
+    {
+      "path": "host-files-dev-goago.json.gz",
+      "original_bytes": 289,
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "host-files-dev-version.txt.gz",
+      "original_bytes": 33,
+      "sha256": "04f9a795b7e6c803f38704cd11bd70c6ae9891706d3d3359ae01be6403373cbd"
+    },
+    {
+      "path": "host-files-dev-vet.log.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-dev.jsonl.gz",
+      "original_bytes": 139630,
+      "sha256": "cfe754e02f434dc170b6662582183ba9aee109e0cad3d3a3ae98d2f30fa905a2"
+    },
+    {
+      "path": "host-files-dev.stderr.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-docs.log.gz",
+      "original_bytes": 479,
+      "sha256": "deed2115ef1148a97a1afe647d6a24d88b57acce2d2f0746ccf9cad3a85e64e3"
+    },
+    {
+      "path": "host-files-fail-before.jsonl.gz",
+      "original_bytes": 887,
+      "sha256": "f475d282a5c9d855ba96f37503f3db0f92c97f5b706f7f8927668d019a538516"
+    },
+    {
+      "path": "host-files-fail-before.stderr.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-floor.jsonl.gz",
+      "original_bytes": 139648,
+      "sha256": "67f7b69505264c7841dceee25d766c9422c159e8c5719d13d15d4c236f289e5b"
+    },
+    {
+      "path": "host-files-floor.stderr.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-goago.json.gz",
+      "original_bytes": 289,
+      "sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "host-files-linux-compile.log.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-native.jsonl.gz",
+      "original_bytes": 145917,
+      "sha256": "8c9cf1653a848da729db4fede3e1c44c9504bb1b68967b7f510dcb1b935bbb8c"
+    },
+    {
+      "path": "host-files-native.stderr.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-prose.log.gz",
+      "original_bytes": 538,
+      "sha256": "5fd8e5aafa2724066d959b05e4704eae41a425256b720d1bab6b8b1f8040222b"
+    },
+    {
+      "path": "host-files-test.jsonl.gz",
+      "original_bytes": 4837,
+      "sha256": "f6f44ce2ab7f9f5914d26fd6be07434c976bdf6733c41352ef0edee4e408276d"
+    },
+    {
+      "path": "host-files-test.stderr.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host-files-windows-compile.log.gz",
+      "original_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "remaining": [
+    "Starport setup must consume the API and replace its grouped-layout guard with a tested transaction.",
+    "Cross-root setup, rollback, interruption recovery, and preservation of changed files remain unverified.",
+    "Native Linux and Windows execution of the public package remains unverified.",
+    "The earlier Starmap full verification remains active in the separate frozen embedding-files worktree.",
+    "Required review, publication, stable module release, Starport adoption, and all original CSP8 acceptance conditions remain required."
+  ],
+  "browser_handoff": {
+    "observed": "GitHub Confirm access is visible again. No matching publisher PEM exists in Downloads.",
+    "tool_rule": "Browser authentication credential creation requires user handoff.",
+    "action": "The owner must confirm GitHub access and generate the App private key. Repository secret configuration remains authorized."
+  },
+  "consumer_workspace": {
+    "path": "/tmp/starport-csp8-files.work",
+    "starmap": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+    "starport": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+    "status": "selected for next work; no Starport consumer result yet"
+  },
+  "maintenance": {
+    "protected_sections": 6,
+    "prior_log_rows_preserved_in_archive": 10,
+    "current_log_rows": 10,
+    "resume_words": 341,
+    "plan_bytes": 110114,
+    "bounded_read_path": [
+      "#current-resume",
+      "#task-CSP8",
+      "csp8/host-files-2026-09-16/verification.json",
+      "csp8/product-paths-2026-09-16/verification.json"
+    ],
+    "size_exception": "The plan retains the complete accepted contracts. Resume through the named current sections and proof files. Historical logs remain linked.",
+    "cold_resume": "The current record identifies source, running checks, handoff, remaining acceptance, and next implementation action.",
+    "archived_resume_format": "The previous resume HTML is an escaped code block. Decoding it restores the exact source. The full previous execution log retains its original HTML.",
+    "verified_local_links": 129,
+    "verified_unrelated_files": 5,
+    "verified_status_rows": 38,
+    "prose_check": {
+      "files": 2,
+      "diagnostics": 0,
+      "exit": 0
+    }
+  }
+}
