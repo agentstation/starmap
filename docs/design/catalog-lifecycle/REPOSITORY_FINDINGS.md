@@ -3154,3 +3154,20 @@ Native Linux and Windows execution remains unverified. The local workspace still
 
 Classification: in-scope CSP8 implementation. Migration, complete diagnostics, storage, acquisition, required review, native qualification, and dependency publication remain open.
 No task receives completion credit before its acceptance checks and implementation merge.
+
+## Starport metadata collector and source cache, 2026-09-16
+
+The previous Starport composition supplied only a provider collector. A selected models.dev source reached no collector during explicit refresh.
+It also omitted every collector with `ACQUISITION_ENABLED=false`, which prevented the independent manual behavior required by the specification.
+
+Commit `546cd6cc9208082174d23b01f90e111cf747f594` supplies both passive collectors and leaves scheduling, network access, and authority checks with Starmap.
+The application passes Starport's cache root. Development passes its private session cache.
+File diagnostics use canonical source selection and shared file-role access policy.
+
+The [acquisition proof](../../plans/proof/starport-production-catalog/csp8/source-acquisition-2026-09-16/verification.json) records 646 passing race events and one optional Valkey skip.
+All twelve ownership checks pass against the local dependency workspace.
+A controlled HTTP response reaches the real collector, creates the selected cache, and retains source observation links through acceptance and offline restart.
+The limited fixture omits prior models. Its degraded source status and retained baseline models confirm that those omissions do not delete baseline entries.
+
+The restart test reuses a test KV adapter. It does not qualify database durability or fleet recovery.
+Native execution, real Git integration, legacy migration, remaining authoring artifacts, and published-dependency qualification remain open under CSP8.

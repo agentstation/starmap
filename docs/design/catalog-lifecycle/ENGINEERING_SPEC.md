@@ -643,6 +643,14 @@ Starport must not inherit Starmap node identity settings. CSP8 owns its product-
 Deployment IDs use at most 256 UTF-8 bytes, with no control characters or surrounding whitespace.
 The product generates the record. Manual changes require an explicit ownership migration.
 
+Starport supplies its selected cache root to the metadata collector as well as its runtime directory to Starmap.
+HTTP metadata uses `<cache>/models.dev/`. Managed Git input uses `<cache>/sources/models.dev-git/`.
+Development substitutes its owned session cache. Source caches do not replace accepted evidence in runtime state or catalog generations in KV storage.
+
+Both collectors remain available with `ACQUISITION_ENABLED=false`. Explicit refresh still applies source selection, offline restrictions, and internal authority.
+An explicit empty acquisition-source set disables provider and metadata acquisition together.
+The [CSP8 acquisition proof](../../plans/proof/starport-production-catalog/csp8/source-acquisition-2026-09-16/verification.json) records local implementation and its remaining qualification limits.
+
 Persistent identity binds the seed to the recorded product, deployment, and instance. Host and port changes do not create another identity.
 Startup refuses missing or invalid seeds in existing runtime state before catalog access.
 A crash after owner creation but before initial seed creation can resume when no prior runtime state exists.

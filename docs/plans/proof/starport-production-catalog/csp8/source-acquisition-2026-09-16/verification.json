@@ -1,0 +1,158 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T15:45:44.066249+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "work_commit": "546cd6cc9208082174d23b01f90e111cf747f594",
+  "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "behavior": [
+    "OpenRuntime supplies both Starmap provider and metadata collectors. Starport previously omitted the metadata collector.",
+    "The application supplies its cache root. Development supplies its owned scratch cache. HTTP uses models.dev and Git uses sources/models.dev-git beneath that root.",
+    "Disabled automatic acquisition retains passive collectors for explicit refresh. Empty source selection, offline policy, and internal authority still govern acquisition.",
+    "The canonical acquisition source selection controls source-cache manifest entries. The selected collector validates workspace/cache separation before source acquisition."
+  ],
+  "checks": {
+    "test_events": {
+      "before-valid": {
+        "fail": 1
+      },
+      "contracts-final": {
+        "pass": 9
+      },
+      "race": {
+        "pass": 646,
+        "skip": 1
+      }
+    },
+    "race_command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/config ./internal/catalog ./internal/app ./internal/cli",
+    "race_exit": 0,
+    "race_binding": "Final implementation before a comment-only edit in internal/catalog/runtime.go. No executable code changed after this check.",
+    "ownership": {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 STARMAP_OWNERSHIP_STARMAP_ROOT=/Users/jack/src/github.com/agentstation/starmap-host-files bash scripts/verify-starmap-ownership.sh",
+      "exit": 0,
+      "passed": 12,
+      "failed": 0
+    },
+    "lint": {
+      "exit": 0,
+      "issues": 0
+    },
+    "vet": {
+      "exit": 0
+    },
+    "authored_prose": {
+      "exit": 0,
+      "files": 2,
+      "diagnostics": 0
+    },
+    "doc_links": {
+      "exit": 0
+    },
+    "canonical_authored_prose": {
+      "exit": 0,
+      "files": 3,
+      "diagnostics": 0
+    },
+    "canonical_repository_prose": {
+      "exit": 2,
+      "files": 1581,
+      "diagnostics": 2,
+      "scope": "Unchanged raw review/task records. Authored prose passes. Raw records remain unchanged."
+    },
+    "plan_structure": {
+      "exit": 0,
+      "tasks": 38,
+      "done": 13,
+      "in_progress": 1,
+      "links": 133,
+      "protected_sections_unchanged": [
+        "outcome",
+        "scope",
+        "invariants",
+        "goal"
+      ]
+    }
+  },
+  "qualified_behavior": [
+    "The real HTTP collector consumes a controlled response, writes identical cache data under the selected Starport root, and publishes source observation links.",
+    "The limited fixture intentionally omits baseline records. The source reports degraded volume-collapse evidence and retains all initial OpenAI model entries.",
+    "Acceptance preserves source links in the selected KV adapter. Reopening the same test adapter and private runtime in offline mode preserves the accepted generation without HTTP.",
+    "Offline mode and an explicit empty source selection perform no acquisition and create no source-cache directory.",
+    "Collector construction creates no directories and rejects relative cache paths and workspace/cache overlap.",
+    "Development application composition passes its scratch cache to the catalog collector."
+  ],
+  "failures_preserved": [
+    "The initial regression used SourceID instead of the actual SourceObservationLink.Source field. After correction, the executable regression failed because zero metadata requests occurred.",
+    "The first source-cache selection fixture guessed a noncanonical Git source ID. The final fixture uses the canonical exported ID.",
+    "The first fixture expected succeeded status despite omitting previously attributed baseline records. Diagnostic collection identified volume_collapse issues. The final test asserts degraded status and retention of all baseline models. No health guard changed.",
+    "The first ownership invocation omitted the workspace and explicit Starmap root. It reported four passes and eight failures against the unresolved pin. The corrected invocation passes all twelve checks."
+  ],
+  "source_sha256": {
+    "docs/OPERATOR-GUIDE.md": "7d001b3250064d884ca530a45242c8d2a454c22fe3786fefafb59ce36c734ab7",
+    "internal/app/app.go": "eba21d9d9fc8fca94aa5a7b789b95dae11b509f890934461eae34670288ad5b2",
+    "internal/app/catalog_controls_test.go": "f2ee2e6dcd4a786113f8b0b4c810132f1f15bf35ad23dbb18719e6b3ddfaef2e",
+    "internal/app/development_catalog_test.go": "6ee3da0ede40629987a03e23bb607994119975cd6379bccc4dc3790d8b5c324c",
+    "internal/catalog/attempt_permission_test.go": "e4314270d97b9cdb612e2bc2f548168cb7010862466695e06baf4bfb95391d02",
+    "internal/catalog/runtime.go": "51ed7de941fc9d375d3ff736866bbc1894e59e03ddd88b7f7ab4e69963962dd4",
+    "internal/catalog/runtime_acquisition_test.go": "bea7c63b27b16d19e1e953b13d0ec7393bc2b135cdcb56adc5b643946a1d655d",
+    "internal/catalog/settings.go": "a4f9644193dd0954ecb2e3633b7908e083e3cbed73fe33fca34da3b7b1808fb3",
+    "internal/catalog/settings_test.go": "00bc596c8d5eeacfa19b5a08b8aa85ba95d0763524f6699dcdf894a251f21398",
+    "internal/catalog/source_acquisition.go": "aa2cd0016171456223583e14bcb7e59c587885953a4a407ec920ad65c8da92c7",
+    "internal/catalog/source_acquisition_test.go": "dea01be50af799f4f6e8fa99ef977921ff503875d3bf8e52cc65da71970c254c",
+    "internal/config/catalog.go": "533903c20d08348a4326619084d876ea592aef4b7e8b278bd7734f0d19ea15a8",
+    "internal/config/file_manifest.go": "32dcaf59e5467a0c0045c944dda3df01d194874c09a078d49eb384788a4d5d03",
+    "internal/config/file_manifest_test.go": "01ae0f9a247b45fdb0dbb4b16a622fe0d1a04d132a32fde021b9d511fc84ddca"
+  },
+  "completion_credit": false,
+  "remaining": [
+    "The restart case reuses the test KV adapter. It does not qualify backend durability or fleet recovery.",
+    "Native Windows and Linux execution, real Git collector integration, local authoring artifacts, legacy migration, catalog retention, and complete acquisition qualification remain UNVERIFIED.",
+    "A compatible published Starmap module, full pre-PR checks, required review, native CI, and merge remain required."
+  ],
+  "artifacts_uncompressed_sha256": {
+    "source-acquisition-authored.md.gz": "10215f564ae5f5025a8e932418fbdcca859c8c4221c810e93035d035be7beb02",
+    "source-acquisition-before-valid.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-acquisition-before-valid.jsonl.gz": "363be871ab3766414c817e9d740d27fc9fc2c978e8539d782a563fefac647212",
+    "source-acquisition-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-acquisition-before.jsonl.gz": "e6361a76ab01cebc064921291cf9c0b3104269ff17fc18a84d9d99d9647dbfb3",
+    "source-acquisition-contracts-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-contracts-final.jsonl.gz": "db507b2a9f29de4a709bc6ce2c11e5db641126332cdd0f5c1ef114d8b6f6f0dc",
+    "source-acquisition-contracts.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-acquisition-contracts.jsonl.gz": "07e60ecfd15a34cb8e97a9cc01f1f2eebdfd273ff204e92416acbbe495757878",
+    "source-acquisition-doc-links-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-doc-links-final.log.gz": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "source-acquisition-doc-links.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-doc-links.log.gz": "6fa0ebecdeaab1b0b3742fbe25a1de216e45c21fcd2f9f1b5a87476ce9910324",
+    "source-acquisition-fixture-diagnosis.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-acquisition-fixture-diagnosis.jsonl.gz": "c547bb65470d8d500be08df9243a67c80df8e77d76755f05d5747f5bb287d4d4",
+    "source-acquisition-focused.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-focused.jsonl.gz": "a863442a13130d8afba5482c13799b9a20874c1b1d28531dcf6cdb6cb080c1d9",
+    "source-acquisition-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "source-acquisition-manual.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-manual.jsonl.gz": "59833c0cab055d28ebc4cd11e0b0bd30a63cc64b728fa211464ac2e870062a20",
+    "source-acquisition-ownership-workspace.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-ownership-workspace.log.gz": "c2006ab0841a15af0792722064ee14dae63cd3fdb0ff32a1480655cb0d5961ed",
+    "source-acquisition-ownership.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-acquisition-ownership.log.gz": "ffae06d0e4c23eb9d03f8da3e9478a1c9d7a9cdfecab7f66868feb968eb338ff",
+    "source-acquisition-prose-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-prose-final.log.gz": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+    "source-acquisition-prose.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-prose.log.gz": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+    "source-acquisition-race.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-race.jsonl.gz": "22eda8ad547762cb21e6e2684eb0171b5e2055a8f0b98feb7d0fb92569fc4860",
+    "source-acquisition-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-acquisition-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-cache-config.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-cache-config.jsonl.gz": "698d8ec46586cb9c8ba36ef1c2fb08223d8e0badcb86635bf61b92ed747ecaf4",
+    "canonical-csp8-source-acquisition-authored-prose-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "canonical-csp8-source-acquisition-authored-prose-final.log.gz": "82b28c77d96b62928674b8010193d69b9935579cbb8d2fae09e3e7a90445e618",
+    "canonical-csp8-source-acquisition-authored-prose.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "canonical-csp8-source-acquisition-authored-prose.log.gz": "a21680268c55d96ccb978a226f5f27c3aecc961d3a8de944492503a4e3735835",
+    "canonical-csp8-source-acquisition-full-prose-final.exit.gz": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "canonical-csp8-source-acquisition-full-prose-final.log.gz": "c9d2ab7891f45e5f46fa8da7c1f51b4116e197f81a909478c7c1d93808f83ffe",
+    "canonical-csp8-source-acquisition-full-prose.exit.gz": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "canonical-csp8-source-acquisition-full-prose.log.gz": "becf4141d2df53201dd5961f3506e6607b4f7e13cc563e6026a9b6532d44be22"
+  }
+}
