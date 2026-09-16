@@ -1,0 +1,63 @@
+{
+  "task": "CSP14",
+  "recorded_at": "2026-09-16T08:30:33.535222+00:00",
+  "source_before": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+  "source_after": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+  "changed_paths": [
+    "internal/cli/app/configuration_report_test.go"
+  ],
+  "production_files_changed": false,
+  "cause": {
+    "detector": "URI",
+    "file": "internal/cli/app/configuration_report_test.go",
+    "line_before": 130,
+    "verified": false,
+    "verification_error": "no such host",
+    "classification": "Synthetic userinfo fixture with a reserved test hostname."
+  },
+  "repair": "Construct the synthetic URL with net/url and a password derived from the test name. Preserve password, query, and fragment redaction assertions. No scanner suppression or policy change.",
+  "verification": {
+    "race": {
+      "passed_test_events": 13,
+      "packages": 1,
+      "failed_events": 0,
+      "skips": 0
+    },
+    "minimum_go": {
+      "version": "1.25.12",
+      "passed_test_events": 13,
+      "packages": 1,
+      "failed_events": 0,
+      "skips": 0
+    },
+    "lint_issues": 0,
+    "goago_findings": 0,
+    "goago_errors": 0,
+    "goago_stale_ignores": 0,
+    "full_repository_gate": {
+      "source": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+      "proof": "full-verification-2026-09-16.json",
+      "status": "PASS"
+    },
+    "full_gate_repeat": "Not repeated for this isolated fixture change. The affected report tests pass on both toolchains.",
+    "prose": {
+      "status": "PASS",
+      "files": 1741,
+      "diagnostics": 0
+    },
+    "required_review": "Session 20031 is running on committed source after the fixture repair."
+  },
+  "artifacts": {
+    "secret-preflight-failed.log.gz": "e47e024d344f74b0e0657706953690c4d7975bf0963c5e2893498977bbe941ed",
+    "secret-scan-diagnostics.json.gz": "c0c5997cb79079233b271ecb8948be966ce4ecbe2b5e1c5d40b093e2cead5f0e",
+    "url-fixture-race.jsonl.gz": "f25aa865ef1f8d5c68aed302f701e46e78742574f07d04fec40b45fc991759ca",
+    "url-fixture-race.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "url-fixture-minimum.jsonl.gz": "591bf3a1c6a796fd3eba1af6160ffa51f61a03799f9a27070dc131cf85bfc6b2",
+    "url-fixture-minimum.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "url-fixture-goago.json.gz": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+    "url-fixture-lint.log.gz": "0edddba8e267a838ffdba412a76ee4843c1d1ccc62dae2b5dfb428228b8e2eed",
+    "url-fixture-writing.log.gz": "5ca566009180c40d8443e6d1698b5030852faf84f89a55f4297ffe446e9145a8",
+    "url-fixture-writing-final.log.gz": "a3928e8e34fcf15c7a49c07436135e66396550c0bc80f5c8a5edb5215306e149"
+  },
+  "completion_credit": false
+}

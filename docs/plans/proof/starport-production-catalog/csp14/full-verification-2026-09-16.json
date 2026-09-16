@@ -1,0 +1,157 @@
+{
+  "task": "CSP14",
+  "recorded_at": "2026-09-16T08:25:19.598426+00:00",
+  "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+  "session": 6212,
+  "command": "GOTOOLCHAIN=go1.26.6 make verify",
+  "exit_status": 0,
+  "status": "PASS",
+  "suites": [
+    {
+      "command": "go test ./... -timeout=30m -p=1 -count=1",
+      "passed_packages": 87,
+      "packages_without_tests": 24,
+      "failed_reports": 0,
+      "individual_test_counts_and_skips": "Not reported by this non-verbose command."
+    },
+    {
+      "command": "env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1 -count=1",
+      "passed_packages": 87,
+      "packages_without_tests": 24,
+      "failed_reports": 0,
+      "individual_test_counts_and_skips": "Not reported by this non-verbose command."
+    }
+  ],
+  "coverage": [
+    {
+      "package": "./internal/catalog/pipeline",
+      "minimum_percent": 70.0,
+      "actual_percent": 86.3
+    },
+    {
+      "package": "./internal/catalog/query",
+      "minimum_percent": 75.0,
+      "actual_percent": 77.7
+    },
+    {
+      "package": "./internal/providers/clients",
+      "minimum_percent": 80.0,
+      "actual_percent": 81.0
+    },
+    {
+      "package": "./internal/sources/providers",
+      "minimum_percent": 75.0,
+      "actual_percent": 85.7
+    },
+    {
+      "package": "./internal/server/middleware",
+      "minimum_percent": 90.0,
+      "actual_percent": 97.2
+    },
+    {
+      "package": "./internal/server/openrouter",
+      "minimum_percent": 85.0,
+      "actual_percent": 88.8
+    },
+    {
+      "package": "./internal/server/params",
+      "minimum_percent": 95.0,
+      "actual_percent": 98.5
+    },
+    {
+      "package": "./internal/server/response",
+      "minimum_percent": 95.0,
+      "actual_percent": 96.6
+    },
+    {
+      "package": "./internal/server/sse",
+      "minimum_percent": 90.0,
+      "actual_percent": 92.4
+    },
+    {
+      "package": "./internal/transport",
+      "minimum_percent": 40.0,
+      "actual_percent": 89.0
+    },
+    {
+      "package": "./pkg/catalogs/authority",
+      "minimum_percent": 90.0,
+      "actual_percent": 95.6
+    },
+    {
+      "package": "./pkg/catalogs",
+      "minimum_percent": 55.0,
+      "actual_percent": 80.2
+    },
+    {
+      "package": "./pkg/errors",
+      "minimum_percent": 80.0,
+      "actual_percent": 86.7
+    },
+    {
+      "package": "./internal/catalog/reconciler",
+      "minimum_percent": 75.0,
+      "actual_percent": 90.8
+    },
+    {
+      "package": "./pkg/sources",
+      "minimum_percent": 35.0,
+      "actual_percent": 66.1
+    }
+  ],
+  "invocations": [
+    "go test ./... -timeout=30m -p=1 -count=1",
+    "make test-pure-go",
+    "make test-file-sizes",
+    "./scripts/verify-package-layout.sh",
+    "./scripts/test-package-layout-verifier.sh",
+    "./scripts/verify-catalog-package-ownership.sh",
+    "./scripts/test-catalog-package-ownership-verifier.sh",
+    "./scripts/verify-catalog-dependency-direction.sh",
+    "./scripts/test-catalog-dependency-direction-verifier.sh",
+    "bash ./scripts/verify-canonical-alias-history.sh",
+    "python3 ./scripts/test_catalog_product_verify.py",
+    "python3 ./scripts/test_prepare_public_catalog_fixture.py",
+    "env CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1 -count=1",
+    "go vet ./...",
+    "./scripts/verify-catalog-performance.sh",
+    "./scripts/verify-container-smoke.sh",
+    "devbox run golangci-lint run",
+    "go tool goago -stale-ignores ./...",
+    "coverage ./internal/catalog/pipeline >= 70%",
+    "coverage ./internal/catalog/query >= 75%",
+    "coverage ./internal/providers/clients >= 80%",
+    "coverage ./internal/sources/providers >= 75%",
+    "coverage ./internal/server/middleware >= 90%",
+    "coverage ./internal/server/openrouter >= 85%",
+    "coverage ./internal/server/params >= 95%",
+    "coverage ./internal/server/response >= 95%",
+    "coverage ./internal/server/sse >= 90%",
+    "coverage ./internal/transport >= 40%",
+    "coverage ./pkg/catalogs/authority >= 90%",
+    "coverage ./pkg/catalogs >= 55%",
+    "coverage ./pkg/errors >= 80%",
+    "coverage ./internal/catalog/reconciler >= 75%",
+    "coverage ./pkg/sources >= 35%",
+    "make docs-check",
+    "make technical-writing-check",
+    "git diff --check",
+    "go build -o /private/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-verify.vG503Y/starmap ./cmd/starmap",
+    "run_cli version",
+    "run_cli validate catalog",
+    "run_cli providers",
+    "run_cli models list --limit 5"
+  ],
+  "prose": {
+    "files": 1740,
+    "diagnostics": 0
+  },
+  "log": "full-verification-2026-09-16.log.gz",
+  "log_sha256": "f6aecb133b45bc5bb31bb7a4f3950f34acac1a3ff55fba5d6fedce7dac543d23",
+  "remaining": [
+    "Required pre-PR review",
+    "Native GitHub qualification",
+    "Merge and merged-source evidence"
+  ],
+  "completion_credit": false
+}

@@ -4,7 +4,7 @@
   "recorded_at": "2026-09-16T06:45:32.378966+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
   "branch": "codex/starmap-server-administration",
-  "head": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+  "head": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
   "source_files": {
     ".github/workflows/pr.yaml": "cf343566fe84173dc0964cb0257c75ec86105847b917a5f59b9773d5b6aba9c3",
     "GLOSSARY.md": "fa666b52df6ae324d50ea959c9998544790898c5c3e18f01081bf8c5f08fda86",
@@ -16,7 +16,7 @@
     "internal/cli/app/catalog_ingestion_test.go": "63922369e3ee8db8573a4d6c6a238562cf80a23cbd4f2f219352194eb602cd3f",
     "internal/cli/app/commands.go": "bc54e1cce401d99b099ef72031c47d6e24481aec27e8baee1a263a008058a523",
     "internal/cli/app/configuration_report.go": "40127cfb9f602b91409f114bb49eaac590d14970c08deb4f9cb21b59f0a9a795",
-    "internal/cli/app/configuration_report_test.go": "d10557a58f883caf8074541709e2f30d7b22ea11102ffce52bfc6a7a5731785d",
+    "internal/cli/app/configuration_report_test.go": "f05c4436643d7c6ea234abe1950412eb625cd27ed7f46b79674a95756479c710",
     "internal/cli/app/execute.go": "5a45a7322c782b51656fa5b50bcb3a7b4550f26e73e32262ea2656a07aed0810",
     "internal/cli/app/file_manifest.go": "a8e28fdd4afb2427adb8c76fce151edaf7d0291c6265286a93acd1277d65aa7c",
     "internal/cli/app/file_manifest_test.go": "d1ec92632382c9690d653a7164247758595d8422c60f21cbdc801c44c4dc3f02",
@@ -259,7 +259,7 @@
     },
     "full_verification_status_contract": {
       "session": 6212,
-      "status": "in_progress",
+      "status": "PASS",
       "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
       "command": "GOTOOLCHAIN=go1.26.6 make verify",
       "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-status-contract.log",
@@ -276,8 +276,10 @@
         "current_command": "CGO_ENABLED=1 go test ./... -race -short -timeout=30m -p=1 -count=1",
         "snapshot": "full-verification-before-race-2026-09-16.log.gz",
         "snapshot_sha256": "b4dced97755cf0e5ed75f3990df344de23bb12edde4c7e785e24e61b46e28403",
-        "full_gate": "in_progress"
-      }
+        "full_gate": "PASS"
+      },
+      "exit_status": 0,
+      "proof": "full-verification-2026-09-16.json"
     },
     "linux_status_task": {
       "session": 46721,
@@ -304,13 +306,34 @@
       "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
       "selected_subcases": 8,
       "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/retained-status-acceptance.json"
+    },
+    "required_review": {
+      "session": 40276,
+      "status": "FAIL",
+      "exit_status": 1,
+      "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+      "base_commit": "8c35fe8919a93d776e2b1fda48ff164bfe37aeff",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/autoreview-stream.log",
+      "reason": "The credential preflight rejected a changed value before either reviewer ran. Diagnosis is in progress. No review verdict exists."
+    },
+    "required_review_retry": {
+      "session": 20031,
+      "status": "in_progress",
+      "source_commit": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+      "base_commit": "8c35fe8919a93d776e2b1fda48ff164bfe37aeff",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:claude-opus-5:high"
+      ],
+      "threshold": "P0",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/autoreview-fixture-stream.log",
+      "output": "/tmp/starmap-csp14-autoreview.BsAv1R/review-fixture.json"
     }
   },
   "remaining": [
-    "Finish the fixed-source full repository gate, session 6212. The Linux task command and all eight task adapters pass on current source.",
-    "Complete required review against origin/main.",
-    "Push and open the CSP14 PR, qualify all six native runners, and merge after required checks.",
-    "Record the actual merge before CSP14 completion."
+    "Finish required review session 20031. Keep source unchanged during review.",
+    "Push and open the CSP14 PR after clean review. Qualify all six native runners and required CI.",
+    "Merge after required checks and record actual merged-source evidence before task completion."
   ],
   "dependency": {
     "task": "CSP5",
@@ -338,7 +361,7 @@
     "unrelated_files_unchanged": 5,
     "protected_sections_unchanged": 6
   },
-  "work_commit": "5e9167c15",
+  "work_commit": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
   "clean_worktree": true,
   "fixture_resolution": "The original durable restart fixture remains unchanged. The complete Linux task command passes within five minutes. The managed cascade setup now proves authenticated relays.",
   "manual_audit_repair": {
@@ -424,5 +447,10 @@
     "prose": "PASS: 1739 files, zero diagnostics.",
     "behavior": "Retained acquisition receipts keep the operation response shape. Interrupted receipts report terminal failed status and preserve their audit outcome under detail.retained_receipt. Other administrative actions cannot appear as catalog update operations.",
     "limits": "Execution start times, result detail, and cancellation classification remain process-local. The retained response includes only known durable evidence. No audit record format or public operation state changes."
+  },
+  "url_fixture_repair": {
+    "proof": "url-fixture-repair-2026-09-16.json",
+    "source_commit": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+    "production_files_changed": false
   }
 }
