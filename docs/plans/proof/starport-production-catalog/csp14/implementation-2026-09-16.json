@@ -1,17 +1,17 @@
 {
   "task": "CSP14",
   "status": "in_progress",
-  "recorded_at": "2026-09-16T06:22:52.759346+00:00",
+  "recorded_at": "2026-09-16T06:45:32.378966+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
   "branch": "codex/starmap-server-administration",
-  "head": "4b05ca342018ef99a8caf56d57dc763029acb40f",
+  "head": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
   "source_files": {
     ".github/workflows/pr.yaml": "cf343566fe84173dc0964cb0257c75ec86105847b917a5f59b9773d5b6aba9c3",
     "GLOSSARY.md": "fa666b52df6ae324d50ea959c9998544790898c5c3e18f01081bf8c5f08fda86",
     "README.md": "e39666023073541c0ce2bc3d7d30f429883ca242dca6c1e4a0d8ddaabb6e18c6",
     "docs/DOCKER.md": "a320774b19ce3c89aa25c5f1ea2691dfc4a6a826acd7bf7a58b1f16db1dbff05",
-    "docs/REST_API.md": "b1a915c7eeb7e7532c2ffc13f4a6a08e68e2ed0b723d5c0a7ad22a53726bd0db",
-    "docs/SERVER_ADMINISTRATION.md": "316059d7c4170c8f131de5b6057d4bcf74696a394b9541c3b2430e17ca628102",
+    "docs/REST_API.md": "b238ae1f6bf80130fb5a31ab9838e1e15236d10e22226147a92cf9d968fe9271",
+    "docs/SERVER_ADMINISTRATION.md": "b5466b2086bce9c8f5a88d21cf424890b8c0fa9426b5d0c38c51e3d56b29b624",
     "internal/cli/app/catalog_dependency_test.go": "f0d818ee26dcd8bcb6f4bd6ab8dc91674e6fed0175944f489b5e672b1fbc9190",
     "internal/cli/app/catalog_ingestion_test.go": "63922369e3ee8db8573a4d6c6a238562cf80a23cbd4f2f219352194eb602cd3f",
     "internal/cli/app/commands.go": "bc54e1cce401d99b099ef72031c47d6e24481aec27e8baee1a263a008058a523",
@@ -32,8 +32,8 @@
     "internal/server/administration_test.go": "7f649acfea29875b6a2398ff64158dcaa6563a99f2e0eea5a582808cbcb92d7f",
     "internal/server/configuration_report.go": "4e0d7f299f5eb59811dd0f9c879f67d92350f8a94b117bd5da1e4ad02c31a50a",
     "internal/server/durable_update_test.go": "79332abbae4064e8ae0426e423bdf2d416117e8d42c2789528da1b3b218b7896",
-    "internal/server/handlers/README.md": "3dfd9b737f8a0696348583e92d10129d5c01bd0b1b6bfa98f502ede6089a9fe8",
-    "internal/server/handlers/admin.go": "fe4d9f88e3dd0e4ac5fbeb6d1879eaf4c5e0d81a9e8e57cc4a1c2a8856ab5725",
+    "internal/server/handlers/README.md": "1aaec102dde152dd4534ebe963223abee802925eb219190c87f4a7e0995c23e5",
+    "internal/server/handlers/admin.go": "6c205a249489c0b1d6e330216a6682fa5e3353abe9e0c9493f45b893b093f843",
     "internal/server/handlers/admin_operations_test.go": "4c40f56648920fd0dcddfc7cbfd88d8b4c58bfb61958d5cb46ee8dd890389e62",
     "internal/server/handlers/administration_test.go": "af3ed7777f44909c2d22298b4ff69b7315a113bcb54a6a658724ca8027af4f67",
     "internal/server/handlers/handlers.go": "7b3a4c352b333fe152143b1a13624876c9386663e3b17bd4e891e46e73780397",
@@ -74,6 +74,7 @@
     "server/administration_policy_test.go": "3222318aef285a516c9b5a79fd8f58dd3fc58301aa8589db917f4c9e219cf625",
     "server/administration_test.go": "335b72f68e0a0dca8e2f66e2d5e344c8a50cc04655d3b1d45df8fc9bee092f49",
     "server/cascade_test.go": "7e26913e0664921532430c977b407ed42448db4e6a97681757af816f6d715ab1",
+    "server/operation_recovery_test.go": "a2cec2aaba013525b1291bdb0810323dd6ac359eab4d19e03d418c2657ec786e",
     "server/runtime_test.go": "24cef5384244949e7dd5d4ecc337023d5df129bf5448099c3d14256090375f7a",
     "server/server.go": "c65b246ae4b1b1e51849f7333ec3b1108a4d8b974cbc191fc7173ea1a3f89ba0",
     "server/server_test.go": "168265f7c9fa400d7ab3e4f4c380e9a0c316c01769664e2ea0f131376aaf8b19",
@@ -241,11 +242,13 @@
     },
     "full_verification_integrated": {
       "session": 53060,
-      "status": "in_progress",
+      "status": "interrupted",
       "source_commit": "4b05ca342018ef99a8caf56d57dc763029acb40f",
       "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-integration.log",
       "command": "GOTOOLCHAIN=go1.26.6 make verify",
-      "source_policy": "Keep the committed source unchanged until this gate completes."
+      "source_policy": "Keep the committed source unchanged until this gate completes.",
+      "exit_status": 130,
+      "reason": "Stopped after a separate overlay reproduced an update-status API defect after restart. The source stayed unchanged until this process terminated."
     },
     "task_acceptance_integrated": {
       "session": 31531,
@@ -253,13 +256,47 @@
       "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-acceptance-integrated.json",
       "exit_status": 0,
       "selected_subcases": 8
+    },
+    "full_verification_status_contract": {
+      "session": 6212,
+      "status": "in_progress",
+      "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+      "command": "GOTOOLCHAIN=go1.26.6 make verify",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification-status-contract.log",
+      "source_policy": "Keep the committed source unchanged until the gate completes."
+    },
+    "linux_status_task": {
+      "session": 46721,
+      "status": "PASS",
+      "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+      "container": "starmap-csp14-status-20260916",
+      "image": "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36",
+      "command": "go test -race -count=1 -timeout 5m -json ./internal/server/... ./server ./internal/cli/commands/serve",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-status-task.jsonl",
+      "stderr": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-status-task.stderr",
+      "cleanup": "Removed the stopped task-owned container and source archive after capturing terminal evidence.",
+      "exit_status": 0,
+      "passed_test_events": 369,
+      "passed_packages": 11,
+      "skips": 0,
+      "source_archive_sha256": "2e7bbe93f1a40d91e415c3d760429040562cb2b6fb1c29685efdc19f4d64d819",
+      "platform": "linux/arm64",
+      "toolchain": "go1.26.6"
+    },
+    "retained_status_acceptance": {
+      "session": 72322,
+      "status": "PASS",
+      "exit_status": 0,
+      "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+      "selected_subcases": 8,
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/retained-status-acceptance.json"
     }
   },
   "remaining": [
-    "Finish the fixed-source full repository gate (session 53060). All eight final task adapters pass.",
-    "Complete required review of committed source against origin/main.",
-    "Push and create PR, qualify native administration on six runners.",
-    "Merge after required checks and record actual merge before CSP14 completion."
+    "Finish the fixed-source full repository gate, session 6212. The Linux task command and all eight task adapters pass on current source.",
+    "Complete required review against origin/main.",
+    "Push and open the CSP14 PR, qualify all six native runners, and merge after required checks.",
+    "Record the actual merge before CSP14 completion."
   ],
   "dependency": {
     "task": "CSP5",
@@ -351,5 +388,27 @@
     "command": "python3 .tmp/csp14-identity/operator-smoke.py",
     "exit_status": 0,
     "cleanup": "Stopped both service instances and removed temporary state and credentials. No credential values enter this proof."
+  },
+  "retained_status_repair": {
+    "commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+    "problem": "After restart, the update-status route returned an audit receipt instead of its documented operation status. The response lost its operation kind. Interrupted work used a state outside the operation terminal-state set.",
+    "fail_before": {
+      "test_fail": 4,
+      "package_fail": 1
+    },
+    "race": {
+      "test_pass": 98,
+      "package_pass": 3
+    },
+    "minimum_go": {
+      "test_pass": 5,
+      "package_pass": 1
+    },
+    "lint": "PASS: zero issues.",
+    "goago": "PASS: zero findings, stale ignores, or errors.",
+    "docs": "PASS: generated documentation is current.",
+    "prose": "PASS: 1739 files, zero diagnostics.",
+    "behavior": "Retained acquisition receipts keep the operation response shape. Interrupted receipts report terminal failed status and preserve their audit outcome under detail.retained_receipt. Other administrative actions cannot appear as catalog update operations.",
+    "limits": "Execution start times, result detail, and cancellation classification remain process-local. The retained response includes only known durable evidence. No audit record format or public operation state changes."
   }
 }

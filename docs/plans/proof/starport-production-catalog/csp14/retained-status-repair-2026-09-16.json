@@ -1,0 +1,145 @@
+{
+  "task": "CSP14",
+  "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+  "recorded_at": "2026-09-16T06:41:03.944237+00:00",
+  "repair": {
+    "commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+    "problem": "After restart, the update-status route returned an audit receipt instead of its documented operation status. The response lost its operation kind. Interrupted work used a state outside the operation terminal-state set.",
+    "fail_before": {
+      "test_fail": 4,
+      "package_fail": 1
+    },
+    "race": {
+      "test_pass": 98,
+      "package_pass": 3
+    },
+    "minimum_go": {
+      "test_pass": 5,
+      "package_pass": 1
+    },
+    "lint": "PASS: zero issues.",
+    "goago": "PASS: zero findings, stale ignores, or errors.",
+    "docs": "PASS: generated documentation is current.",
+    "prose": "PASS: 1739 files, zero diagnostics.",
+    "behavior": "Retained acquisition receipts keep the operation response shape. Interrupted receipts report terminal failed status and preserve their audit outcome under detail.retained_receipt. Other administrative actions cannot appear as catalog update operations.",
+    "limits": "Execution start times, result detail, and cancellation classification remain process-local. The retained response includes only known durable evidence. No audit record format or public operation state changes."
+  },
+  "artifacts": [
+    {
+      "path": "retained-status-probe.go.gz",
+      "sha256": "440a50ce0d0faa02b567c7e81c9e41c8bda3267abaf31ed458a766cbace048d4",
+      "decoded_sha256": "04358d9d45da865ce127142beb18f6670bc5c2e34815ccf705a651f9bcdbace8"
+    },
+    {
+      "path": "retained-status-overlay.json.gz",
+      "sha256": "bf28faa49cc0566644b7216e03d8dff1532a3d0179d94037776364d4afa66c97",
+      "decoded_sha256": "64e90c4d150ce5e784981b989d049d5e838a16a6defe15faa01f7b1515263873"
+    },
+    {
+      "path": "retained-status-fail-before.jsonl.gz",
+      "sha256": "8cce70a7e44ae32ee27cf4e2e74c5d037f08b495fd37615d429715318c66c42e",
+      "decoded_sha256": "94ccdee512ed985bc6097520207f6fa564566d4b4e8b3747896a04091cbb5b81"
+    },
+    {
+      "path": "retained-status-fail-before.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "retained-status-race.jsonl.gz",
+      "sha256": "d2e5671697cd3ce49b6b69b4267de731c3816f508de0585201052cd52f4cba6e",
+      "decoded_sha256": "7b562191356d7fd2c25bcfd269fe584d82e03325782f654c4888d0e785a5cc82"
+    },
+    {
+      "path": "retained-status-race.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "retained-status-minimum.jsonl.gz",
+      "sha256": "463c3c42017605ff8ef298f236b5fef96c05523eba63b5202f2635bad3ab72a4",
+      "decoded_sha256": "b000a550b6dc7dd5014bd5cbd889ebf18503420a09445131fba34ef948a0510a"
+    },
+    {
+      "path": "retained-status-minimum.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "retained-status-lint.log.gz",
+      "sha256": "bafcb04d67f6157ff3d4a1fdf228afd2df6cc6d786c61642c1125b1fe879e728",
+      "decoded_sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+    },
+    {
+      "path": "retained-status-goago.json.gz",
+      "sha256": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+      "decoded_sha256": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d"
+    },
+    {
+      "path": "retained-status-generate.log.gz",
+      "sha256": "4a7726bb47dc39ce034e324d1c6fc5a8742cdf6ef6f3875a205f129e12f52a35",
+      "decoded_sha256": "d7f418dfd2bbb57ba63bffe79823bd1968a4d8a0ad6dbdce504d5d94949b7bf2"
+    },
+    {
+      "path": "retained-status-docs.log.gz",
+      "sha256": "5244c6d929b35f6cb633389d4c2c7410542afdb2e564e75e2c8f47ab236abb9b",
+      "decoded_sha256": "9e59cafc34bf1e8e5587ad994cd8c25bf1895da6c71889c7f56b372d90c2779c"
+    },
+    {
+      "path": "retained-status-prose.log.gz",
+      "sha256": "7e7f2d8bf074b2dc9938a400abbb80d7c35bbe8af851a20932e53157ee9297ac",
+      "decoded_sha256": "fc30f685c1243e66515545480bca9396ebcf3c87d37758129f4ed7255e14b980"
+    },
+    {
+      "path": "retained-status-acceptance.json.gz",
+      "sha256": "cf4d8313a999131cd8a9e99b9673c5cb58d28693b87c83f7986cfb843fab6558",
+      "decoded_sha256": "8b27e2485f57306eb582315b01def19a64f27a5da2f75ea9a8b2c260801056cc"
+    },
+    {
+      "path": "retained-status-acceptance.stderr.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decoded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full-verification-integration.log.gz",
+      "sha256": "a3099446717fc71db5e230b4ff52f3c6b76ccb0bfce9bb2e5537efe57556910e",
+      "decoded_sha256": "c8593f2f47fdcac8a0e110cdebfbe3724b88fb51188197e4ef8d49151f3eee49"
+    },
+    {
+      "path": "linux-status-task.jsonl.gz",
+      "sha256": "29555dd28bdba355296308af08698d72466ea20f914f14892706269b80f1066d",
+      "decoded_sha256": "178d3684aa0f3673f5dd58b6f30eabcc786e8563b1e5f59d07acd7d67b92ce23"
+    },
+    {
+      "path": "linux-status-task.stderr.gz",
+      "sha256": "aa1104bb7900a5b3085dbd8e6cbf29d9c0c48e74016efb39d8a19314bd3f7d07",
+      "decoded_sha256": "e935b4c1afc5bdd89e610842f72fc08befa82e176546fadd75203a17b5b102ee"
+    },
+    {
+      "path": "linux-status-environment.txt.gz",
+      "sha256": "2000d4622323a01786d609452e5f6b1f02957b6f9d320c3ab689a845e517dbac",
+      "decoded_sha256": "8d431890e6739e9a057f7b6953ebef5970e0ae6526d5087b68e1be2c620c3d3d"
+    },
+    {
+      "path": "linux-status-container-state.json.gz",
+      "sha256": "ca97e364e046effc9911a167bde649ad8b321dfe742b407a80fa44401a8a8bd5",
+      "decoded_sha256": "bf74eab948f28b634eeecd9bac4d08d13917190fe9aa77f79b50eb1fc2e39db3"
+    }
+  ],
+  "linux_task": {
+    "status": "PASS",
+    "source_commit": "50b305fc3cd2f887fdce5fadd9446a94301f8c1c",
+    "container": "starmap-csp14-status-20260916",
+    "image": "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36",
+    "command": "go test -race -count=1 -timeout 5m -json ./internal/server/... ./server ./internal/cli/commands/serve",
+    "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-status-task.jsonl",
+    "stderr": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-status-task.stderr",
+    "exit_status": 0,
+    "passed_test_events": 369,
+    "passed_packages": 11,
+    "skips": 0,
+    "source_archive_sha256": "2e7bbe93f1a40d91e415c3d760429040562cb2b6fb1c29685efdc19f4d64d819",
+    "platform": "linux/arm64",
+    "toolchain": "go1.26.6"
+  }
+}
