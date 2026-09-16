@@ -1,0 +1,87 @@
+{
+  "source_head": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+  "merge_head": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
+  "staged_tree": "57c3208f8d1ecee8e8b65866ce4930c4d821ec52",
+  "status": "review_pending",
+  "conflicts_remaining": [],
+  "registry_checks": 68,
+  "existing_definitions_changed": 0,
+  "checks": {
+    "task": {
+      "session": 4550,
+      "status": "PASS",
+      "selected_subcases": 8
+    },
+    "workflow": {
+      "session": 11214,
+      "status": "PASS",
+      "race_events": 28
+    },
+    "verifier": {
+      "session": 36844,
+      "status": "PASS",
+      "tests": 78
+    },
+    "docs": {
+      "session": 25642,
+      "status": "PASS"
+    },
+    "lint": {
+      "session": 33198,
+      "status": "PASS"
+    },
+    "goago": {
+      "session": 67999,
+      "status": "PASS",
+      "findings": 0,
+      "errors": 0,
+      "stale_ignores": 0
+    },
+    "prose": {
+      "session": 94932,
+      "status": "PASS",
+      "files": 1810,
+      "diagnostics": 0
+    },
+    "distribution": {
+      "session": 86724,
+      "status": "PASS",
+      "exit_status": 0,
+      "passed": 68,
+      "failed": 0,
+      "unverified": 0
+    }
+  },
+  "remaining": [
+    "Finish required review session 71883.",
+    "Push the reviewed integration to PR #163 and qualify its new CI head.",
+    "Merge after all required checks and record merged-source acceptance before CSP14 completion."
+  ],
+  "integration_commit": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
+  "source_binding": "Checks ran on the staged tree before the merge commit. The committed tree is identical.",
+  "artifacts": {
+    "main-integration-task.json.gz": "f9759abdac40caadcfbf4a09a6c2544b00cbac3670ea1e7be1e20c25a80e0e2c",
+    "main-integration-task.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "main-integration-workflow.jsonl.gz": "036ad48f1d3b545b30ee414af5cf0e26fd4edb91b5ad4b695d8ece15b4f74c89",
+    "main-integration-workflow.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "main-integration-verifier.log.gz": "bae1964256f16268325a7fa7d9e344da6dca23b7a060ccf444e930cc83f7cd73",
+    "main-integration-docs.log.gz": "5244c6d929b35f6cb633389d4c2c7410542afdb2e564e75e2c8f47ab236abb9b",
+    "main-integration-lint.log.gz": "0edddba8e267a838ffdba412a76ee4843c1d1ccc62dae2b5dfb428228b8e2eed",
+    "main-integration-goago.json.gz": "bcc91f1bd224d58de54df4b5e118e8c66afd943caf5127ed76b241de377f0de1",
+    "main-integration-writing.log.gz": "6b8068ab2f9fe2246c07bb832ddbb04a508b8e0e5ce1a0b631ded9ef93c1b452",
+    "main-integration-distribution.log.gz": "4da6b20a0e739947a488e06f60fa42ffe206059d84ca2e1864e1577f9be21557"
+  },
+  "review": {
+    "session": 71883,
+    "status": "in_progress",
+    "base": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
+    "head": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
+    "output": "/tmp/starmap-csp14-autoreview.BsAv1R/review-main.json",
+    "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/autoreview-main-stream.log",
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:claude-opus-5:high"
+    ],
+    "threshold": "P0"
+  }
+}

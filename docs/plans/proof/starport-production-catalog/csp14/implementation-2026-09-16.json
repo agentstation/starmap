@@ -4,10 +4,10 @@
   "recorded_at": "2026-09-16T06:45:32.378966+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
   "branch": "codex/starmap-server-administration",
-  "head": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+  "head": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
   "source_files": {
-    ".github/workflows/pr.yaml": "cf343566fe84173dc0964cb0257c75ec86105847b917a5f59b9773d5b6aba9c3",
-    "GLOSSARY.md": "fa666b52df6ae324d50ea959c9998544790898c5c3e18f01081bf8c5f08fda86",
+    ".github/workflows/pr.yaml": "30dff0b61c8ed0e851c6dfe5ae88980e22c404358e1376d70238fb05c8a3a60d",
+    "GLOSSARY.md": "396cc1b689faba8727da406a05cfdfafc3a040ffc729182bcbd18a18ffada535",
     "README.md": "e39666023073541c0ce2bc3d7d30f429883ca242dca6c1e4a0d8ddaabb6e18c6",
     "docs/DOCKER.md": "a320774b19ce3c89aa25c5f1ea2691dfc4a6a826acd7bf7a58b1f16db1dbff05",
     "docs/REST_API.md": "b238ae1f6bf80130fb5a31ab9838e1e15236d10e22226147a92cf9d968fe9271",
@@ -49,7 +49,7 @@
     "pkg/productpaths/policy/access.go": "cfdd4656e0dc90bf68c479fa6a76bd026be6831381c1033d4eaf77ad7689f11c",
     "runtime/administration_restore_test.go": "9f374e3fc3f84dd3c86c5f1c5a2edb8f9283979fe40db06a18ad9c7af0978dcf",
     "runtime/authority_relay_test.go": "343489ec4e2a6ad7444b3bd217f0b4c66fcae7b5597a8429d1e94de17bf53336",
-    "scripts/catalog-product-checks.json": "d4c1395cf2764827748dde33ffebc1e4f1f6e1969f12203513b561ea06856323",
+    "scripts/catalog-product-checks.json": "8458d8e1fdb76a31ffd749d39fd2bae8cf8bc18fa9d6e1f72f43f775b933b8c9",
     "server/README.md": "e6ac517bd727a893612b470260bfdee3d900f643da1d08a91cda0b5d91da3e43",
     "server/administration/README.md": "37d417a59abc478826156affc602cac01ee424e87976554423225c4676591d88",
     "server/administration/audit.go": "4102bb27b9eb8b0723c762c9223e63e3469f8f589aef6cbdd6e203c91479b3d6",
@@ -337,12 +337,25 @@
         "overall_explanation": "Chunked review complete. chunk 1/2: 0 finding(s), chunk 2/2: 0 finding(s).",
         "overall_confidence": 0.98
       }
+    },
+    "main_integration_review": {
+      "session": 71883,
+      "status": "in_progress",
+      "base": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
+      "head": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
+      "output": "/tmp/starmap-csp14-autoreview.BsAv1R/review-main.json",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/autoreview-main-stream.log",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:claude-opus-5:high"
+      ],
+      "threshold": "P0"
     }
   },
   "remaining": [
-    "Finish native and required CI for PR #163 at 35b44ecaa. Do not restart live jobs solely on an observation timeout.",
-    "After PR #160 merges, verify its tree and integrate main. Resolve the registry conflict with all 68 checks in pending_publisher_integration. Run affected integration checks and required review before pushing the update.",
-    "Merge after required checks and record actual merged-source evidence before CSP14 completion."
+    "Finish required review session 71883.",
+    "Push the reviewed integration to PR #163 and qualify its new CI head.",
+    "Merge after all required checks and record merged-source acceptance before CSP14 completion."
   ],
   "dependency": {
     "task": "CSP5",
@@ -370,7 +383,7 @@
     "unrelated_files_unchanged": 5,
     "protected_sections_unchanged": 6
   },
-  "work_commit": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+  "work_commit": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
   "clean_worktree": true,
   "fixture_resolution": "The original durable restart fixture remains unchanged. The complete Linux task command passes within five minutes. The managed cascade setup now proves authenticated relays.",
   "manual_audit_repair": {
@@ -487,7 +500,7 @@
     }
   },
   "pending_publisher_integration": {
-    "status": "UNAPPLIED",
+    "status": "review_pending",
     "probe_exit_status": 1,
     "textual_conflict": "scripts/catalog-product-checks.json",
     "semantic_conflicts": 0,
@@ -502,6 +515,10 @@
       "publisher-integration-proposal.json.gz": "586568de97f9ac5dc1920ce253e3789c618b5d9b3afb203daec8025657ad0fdb",
       "combined-checks-proposed.json.gz": "7452833e6d571e516180b591973b501a29fe3fc61b2e204ff15b7dc24602c64e"
     },
-    "condition": "Apply only after PR #160 merges, after verifying its merged tree and the unchanged server head."
+    "condition": "Apply only after PR #160 merges, after verifying its merged tree and the unchanged server head.",
+    "merge_commit": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
+    "staged_tree": "57c3208f8d1ecee8e8b65866ce4930c4d821ec52",
+    "proof": "main-integration-2026-09-16.json",
+    "integration_commit": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad"
   }
 }

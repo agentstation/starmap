@@ -1,0 +1,28 @@
+{
+  "merge_commit": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
+  "merged_at": "2026-09-16T08:48:58Z",
+  "reviewed_head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
+  "reviewed_tree": "cf163e27303b7ebcc708486fcf6c11c8b81be177",
+  "merged_tree": "cf163e27303b7ebcc708486fcf6c11c8b81be177",
+  "tree_equality": true,
+  "successful_checks": 19,
+  "ci_run": 35063671445,
+  "task_complete": false,
+  "remaining": [
+    "App key handoff",
+    "Controlled hosted qualification for three A05 subcases"
+  ],
+  "artifacts": {
+    "merged-pr.json.gz": "647d1050b629166b16059d53c003a455dc415ba139677e88a3a5e28a1246fe29",
+    "merged-ci.json.gz": "949193ddd453028845c947624997a677a43dfeb9debe0881f808adc89ba3d72f",
+    "merged-tree.json.gz": "b7ad4d2906431adfc8069cfb1c1b43f04fa2105ee3bfdcad67bcc7ba475f0385"
+  },
+  "catalog_app_private_key_present": false,
+  "matching_downloaded_keys": 0,
+  "observed_at": "2026-09-16T08:57:25.500606+00:00",
+  "remaining_cases": [
+    "A05.bot_required_checks",
+    "A05.each_publication_failure",
+    "A05.same_bytes_retry"
+  ]
+}
