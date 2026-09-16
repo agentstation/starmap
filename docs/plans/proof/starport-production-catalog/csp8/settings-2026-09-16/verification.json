@@ -1,0 +1,171 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T09:49:04.444436+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-shared-catalog",
+  "branch": "codex/starport-shared-catalog",
+  "work_commit": "34f3866c430e9d615890df12d1bb4e1af4355812",
+  "module": "github.com/agentstation/starmap@v0.16.6-0.20260916084858-c754d1c9ef8e",
+  "module_replace": false,
+  "source_binding": "The first failure and first repair used the previous module pin. Later runs used c754d1c9e. The final work commit adds only comment edits after settings-controls completed.",
+  "checks": {
+    "settings-fail-before": {
+      "test_events": {
+        "fail": 5,
+        "pass": 3
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Action": "fail",
+          "Elapsed": 0.624
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "fail",
+          "Elapsed": 10.5
+        }
+      ],
+      "failures": [
+        "TestCatalogInheritancePreservesExplicitSelections/inherit_complete_source_and_zero_interval",
+        "TestCatalogInheritancePreservesExplicitSelections/empty_product_credential_disables_fallback",
+        "TestCatalogInheritancePreservesExplicitSelections/inherited_file_setting",
+        "TestCatalogInheritancePreservesExplicitSelections",
+        "TestZeroAcquisitionIntervalRunsOnlyAtStartup"
+      ],
+      "skips": []
+    },
+    "settings-first-repair": {
+      "test_events": {
+        "pass": 8
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Action": "pass",
+          "Elapsed": 1.9060000000000001
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 11.57
+        }
+      ],
+      "failures": [],
+      "skips": []
+    },
+    "shared-contract-packages": {
+      "test_events": {
+        "pass": 441,
+        "fail": 2,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Action": "fail",
+          "Elapsed": 28.044
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 61.332
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 80.567
+        }
+      ],
+      "failures": [
+        "TestCatalogAuthoritySettingsLoadAndValidate/authority_whitespace",
+        "TestCatalogAuthoritySettingsLoadAndValidate"
+      ],
+      "skips": [
+        "TestAppWithValkey"
+      ]
+    },
+    "config-raw-values": {
+      "test_events": {
+        "pass": 195
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Action": "pass",
+          "Elapsed": 29.567
+        }
+      ],
+      "failures": [],
+      "skips": []
+    },
+    "settings-controls": {
+      "test_events": {
+        "pass": 447,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "Package": "github.com/agentstation/starport/internal/config",
+          "Action": "pass",
+          "Elapsed": 28.799
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/app",
+          "Action": "pass",
+          "Elapsed": 69.519
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/catalog",
+          "Action": "pass",
+          "Elapsed": 80.271
+        }
+      ],
+      "failures": [],
+      "skips": [
+        "TestAppWithValkey"
+      ]
+    }
+  },
+  "final_command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./internal/config ./internal/catalog ./internal/app",
+  "baseline_task": {
+    "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-shared-catalog --task CSP8",
+    "starmap_commit": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
+    "exit_code": 1,
+    "primary_cases": {
+      "UNVERIFIED": 50
+    },
+    "limitation": "The registered task commands exercise Starmap. The baseline does not qualify Starport behavior. The text output is preserved without a JSON claim."
+  },
+  "completed_behavior": [
+    "Canonical resolution preserves product precedence, source-bound credentials, explicit empty, false, and zero values.",
+    "Typed host defaults derive from the canonical descriptors.",
+    "Starport excludes inherited node identity, workspace, and authority issuance. Explicit authority issuance fails.",
+    "Application tests cover offline network refusal and explicit-only source refresh."
+  ],
+  "remaining": [
+    "Complete settings reports, descriptor parity, and explicit overrides.",
+    "Adopt native roots, private configuration readers, baseline persistence, migration, and development isolation.",
+    "Integrate catalog storage and repeat provider and non-provider acquisition through Starport.",
+    "Run full task, native, repository, and required review gates.",
+    "Complete CSP6 hosted acceptance and publish a compatible stable module before dependent merge."
+  ],
+  "support_seam": {
+    "reason": "The existing secure baseline exporter and primary configuration readers are internal Starmap APIs. Starport must reuse their native enforcement.",
+    "planned_worktree": "/Users/jack/src/github.com/agentstation/starmap-embedding-files",
+    "planned_branch": "codex/starmap-embedding-files",
+    "base": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
+    "scope": "Expose explicit host baseline export and bounded configuration reads. Preserve passive constructors and shared file-role policy.",
+    "worktree_created": true
+  },
+  "publication": {
+    "pushed": false,
+    "pr": null,
+    "completion_credit": false
+  },
+  "prose": {
+    "changed_new_files": 3,
+    "changed_existing_files": 4,
+    "diagnostics": 0
+  }
+}
