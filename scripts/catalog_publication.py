@@ -428,6 +428,21 @@ class Publisher:
                              f"Omitted events: {count - len(corrections)}. Invalid events: {invalid}.\n\n"
                              "The catalog-validation artifact contains `acquisition-corrections.log`.\n\n")
 
+    def stage_promotion(self, staged):
+        args = [self.release_tool, "--stage-promotion-dir", staged, "--promotion-release-dir", self.assets]
+        log = self.root / "promotion-staging.log"
+        try:
+            result = command(args, check=False)
+        except subprocess.TimeoutExpired as error:
+            output = []
+            for value in (error.stdout, error.stderr):
+                output.append(value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value or "")
+            log.write_text("".join(output), encoding="utf-8")
+            raise PublicationError("promotion staging exceeded its time limit; inspect its retained validation log") from error
+        log.write_text(result.stdout + result.stderr, encoding="utf-8")
+        if result.returncode:
+            raise PublicationError(f"promotion staging failed with exit status {result.returncode}; inspect its retained validation log")
+
     def validate(self):
         record = validate_pending(read_json(self.control)["pending"])
         if record["preparation_commit"] != self.git("rev-parse", "HEAD").stdout.strip():
@@ -435,7 +450,7 @@ class Publisher:
         self.restore_stage(record)
         checkout = self.promotion_checkout(record["preparation_commit"], "candidate-validation")
         staged = self.root / "validation-catalog"
-        command([self.release_tool, "--stage-promotion-dir", staged, "--promotion-release-dir", self.assets])
+        self.stage_promotion(staged)
         target = checkout / "internal/embedded/catalog"
         shutil.rmtree(target)
         shutil.copytree(staged, target)
@@ -595,7 +610,7 @@ class Publisher:
                 self.verify_promotion_head(head, main, "retained-promotion")
             elif probe.returncode == 2:
                 staged = self.root / "promotion-catalog"
-                command([self.release_tool, "--stage-promotion-dir", staged, "--promotion-release-dir", self.assets])
+                self.stage_promotion(staged)
                 target = checkout / "internal/embedded/catalog"
                 shutil.rmtree(target)
                 shutil.copytree(staged, target)

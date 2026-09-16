@@ -25,34 +25,34 @@ const (
 // MembershipInventory is the last complete accepted inventory of a declared scope.
 // An empty model list is a known empty inventory. A missing inventory is unknown.
 type MembershipInventory struct {
-	ObservationID string    `json:"observation_id"`
-	ObservedAt    time.Time `json:"observed_at"`
-	ModelIDs      []string  `json:"model_ids"`
+	ObservationID string    `json:"observation_id" yaml:"observation_id"`
+	ObservedAt    time.Time `json:"observed_at" yaml:"observed_at"`
+	ModelIDs      []string  `json:"model_ids" yaml:"model_ids"`
 }
 
 // MembershipPresence records positive evidence accepted after the complete inventory.
 type MembershipPresence struct {
-	ModelID       string    `json:"model_id"`
-	ObservationID string    `json:"observation_id"`
-	ObservedAt    time.Time `json:"observed_at"`
+	ModelID       string    `json:"model_id" yaml:"model_id"`
+	ObservationID string    `json:"observation_id" yaml:"observation_id"`
+	ObservedAt    time.Time `json:"observed_at" yaml:"observed_at"`
 }
 
 // ProviderMembershipScope carries effective membership for one publisher and binding.
 // Consumers must resolve an explicit profile link before applying its restrictions.
 // These records contain no credentials or inference routing policy.
 type ProviderMembershipScope struct {
-	PublisherID     string               `json:"publisher_id"`
-	BindingID       string               `json:"binding_id"`
-	BindingRevision string               `json:"binding_revision"`
-	ProviderID      ProviderID           `json:"provider_id"`
-	AccountID       string               `json:"account_id,omitempty"`
-	ProjectID       string               `json:"project_id,omitempty"`
-	Region          string               `json:"region"`
-	APISurface      string               `json:"api_surface"`
-	Public          bool                 `json:"public"`
-	Authority       MembershipAuthority  `json:"authority"`
-	Inventory       *MembershipInventory `json:"inventory"`
-	Additions       []MembershipPresence `json:"additions"`
+	PublisherID     string               `json:"publisher_id" yaml:"publisher_id"`
+	BindingID       string               `json:"binding_id" yaml:"binding_id"`
+	BindingRevision string               `json:"binding_revision" yaml:"binding_revision"`
+	ProviderID      ProviderID           `json:"provider_id" yaml:"provider_id"`
+	AccountID       string               `json:"account_id,omitempty" yaml:"account_id,omitempty"`
+	ProjectID       string               `json:"project_id,omitempty" yaml:"project_id,omitempty"`
+	Region          string               `json:"region" yaml:"region"`
+	APISurface      string               `json:"api_surface" yaml:"api_surface"`
+	Public          bool                 `json:"public" yaml:"public"`
+	Authority       MembershipAuthority  `json:"authority" yaml:"authority"`
+	Inventory       *MembershipInventory `json:"inventory" yaml:"inventory"`
+	Additions       []MembershipPresence `json:"additions" yaml:"additions"`
 }
 
 // Membership reports scope-local presence and whether the evidence establishes it.

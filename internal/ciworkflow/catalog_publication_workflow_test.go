@@ -63,6 +63,13 @@ func TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion(t *testin
 				t.Fatal("recovery can reacquire or replace its retained preparation")
 			}
 		}
+		if step.Name == "Retain acquisition corrections and validation logs" {
+			if step.If != "always() && steps.publication.outputs.active == 'true'" ||
+				!strings.HasPrefix(step.Uses, "actions/upload-artifact@") ||
+				step.With["path"] != "${{ env.CATALOG_PUBLICATION_DIRECTORY }}/*.log" {
+				t.Fatal("publisher does not retain validation and recovery diagnostics after failure")
+			}
+		}
 		if step.Name == "Retain preparation before public writes" && !strings.HasPrefix(step.Uses, "actions/upload-artifact@") {
 			t.Fatal("publisher does not retain its original preparation through an immutable workflow artifact")
 		}
@@ -79,7 +86,8 @@ func TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion(t *testin
 	order := []string{"Select publication directory", "Restore accepted or pending publication", "Refresh candidate catalog",
 		"Validate candidate before publication", "Attest exact publication inputs", "Retain preparation before public writes", "Record pending publication",
 		"Publish and verify immutable public inputs", "Create promotion installation token", "Promote exact input through checked pull request",
-		"Stage channels after verified merge", "Attest both discovery channels", "Publish and verify both discovery channels"}
+		"Stage channels after verified merge", "Attest both discovery channels", "Publish and verify both discovery channels",
+		"Retain acquisition corrections and validation logs"}
 	last := -1
 	for _, name := range order {
 		position, found := positions[name]

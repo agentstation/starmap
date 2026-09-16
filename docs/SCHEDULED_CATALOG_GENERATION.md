@@ -19,6 +19,9 @@ It excludes raw messages and unknown fields. It retains up to 20,000 corrections
 The Actions job summary shows the process outcome and counts. The `catalog-validation` artifact contains the report.
 Corrected records remain accepted. Corrections alone do not mark a source degraded.
 
+Promotion staging preserves command output in `promotion-staging.log`, including partial output after a timeout.
+The workflow uploads diagnostics after promotion, including recovery runs that skip acquisition.
+
 ## Publication sequence
 
 The workflow executes trusted code from the default branch. A promotion PR can change only the embedded catalog.

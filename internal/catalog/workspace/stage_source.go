@@ -72,7 +72,7 @@ func (s *workspaceStage) copySource(ctx context.Context) error {
 func managedWorkspaceRecord(name string, directory bool) bool {
 	if !directory {
 		switch name {
-		case "providers.yaml", "authors.yaml", "endpoints.yaml", "provenance.yaml", "canonical-aliases.yaml":
+		case "providers.yaml", "authors.yaml", "endpoints.yaml", "provenance.yaml", "canonical-aliases.yaml", "membership-scopes.yaml":
 			return true
 		}
 	}

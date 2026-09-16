@@ -84,15 +84,6 @@ jobs:
         if: steps.publication.outputs.acquire == 'true'
         run: python3 scripts/catalog_publication.py validate --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
-      - name: Retain acquisition corrections and validation logs
-        if: always() && steps.publication.outputs.acquire == 'true'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: catalog-validation-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ env.CATALOG_PUBLICATION_DIRECTORY }}/*.log
-          retention-days: 14
-          if-no-files-found: ignore
-
       - name: Attest exact publication inputs
         if: steps.publication.outputs.acquire == 'true'
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
@@ -169,6 +160,15 @@ jobs:
         if: steps.promotion.outputs.ready == 'true'
         id: completed
         run: python3 scripts/catalog_publication.py finish --directory "$CATALOG_PUBLICATION_DIRECTORY"
+
+      - name: Retain acquisition corrections and validation logs
+        if: always() && steps.publication.outputs.active == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: catalog-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.CATALOG_PUBLICATION_DIRECTORY }}/*.log
+          retention-days: 14
+          if-no-files-found: ignore
 
       - name: Report publication state
         if: steps.publication.outputs.active == 'true'

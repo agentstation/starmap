@@ -214,6 +214,51 @@ class ReleaseLookupTransportTests(unittest.TestCase):
                         self.publisher.find_release(self.tag)
 
 
+class ValidationDiagnosticsTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="starmap-validation-diagnostics-")
+        self.addCleanup(temporary.cleanup)
+        self.publisher = publication.Publisher(temporary.name, "agentstation/starmap", 42, source=temporary.name)
+        digest = "sha256:" + "a" * 64
+        record = {"schema_version": 1, "run_id": "github-42", "workflow_run_id": 42,
+            "preparation_commit": "b" * 40, "profile_checksum": digest, "receipt_checksum": digest,
+            "checkpoint_checksum": digest, "archive_checksum": digest, "catalog_checksum": digest,
+            "generation_id": "fixture-generation", "artifact_tag": "catalog-" + "a" * 64,
+            "receipt_tag": "catalog-run-" + "a" * 64}
+        publication.write_json(self.publisher.control, {"pending": record})
+        self.checkout = self.publisher.root / "checkout"
+        self.original = self.checkout / "internal/embedded/catalog/old.txt"
+        self.original.parent.mkdir(parents=True)
+        self.original.write_text("previous baseline\n", encoding="utf-8")
+        for name, result in (("git", subprocess.CompletedProcess([], 0, "b" * 40, "")),
+                             ("restore_stage", None), ("promotion_checkout", self.checkout)):
+            mocked = patch.object(self.publisher, name, return_value=result)
+            mocked.start()
+            self.addCleanup(mocked.stop)
+        self.real_command = publication.command
+
+    def test_failed_staging_retains_child_diagnostics_before_candidate_changes(self):
+        def dispatch(args, **options):
+            self.assertEqual(args[1], "--stage-promotion-dir")
+            script = "import sys; print('staging report'); print('projection mismatch', file=sys.stderr); sys.exit(7)"
+            return self.real_command([sys.executable, "-c", script], **options)
+        with patch.object(publication, "command", side_effect=dispatch):
+            with self.assertRaisesRegex(publication.PublicationError, "staging failed.*retained"):
+                self.publisher.validate()
+        log = self.publisher.root / "promotion-staging.log"
+        self.assertEqual(log.read_text(encoding="utf-8"), "staging report\nprojection mismatch\n")
+        self.assertEqual(self.original.read_text(encoding="utf-8"), "previous baseline\n")
+
+    def test_timed_out_staging_retains_partial_diagnostics(self):
+        timeout = subprocess.TimeoutExpired(["release"], 3600, output=b"partial report\n", stderr=b"partial error\n")
+        with patch.object(publication, "command", side_effect=timeout):
+            with self.assertRaisesRegex(publication.PublicationError, "staging exceeded.*retained"):
+                self.publisher.validate()
+        log = self.publisher.root / "promotion-staging.log"
+        self.assertEqual(log.read_text(encoding="utf-8"), "partial report\npartial error\n")
+        self.assertEqual(self.original.read_text(encoding="utf-8"), "previous baseline\n")
+
+
 class AcquisitionDiagnosticsTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(prefix="starmap-acquisition-diagnostics-")
