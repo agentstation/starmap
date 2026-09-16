@@ -48,7 +48,8 @@ func TestHandleUpdateReportsSyncFailure(t *testing.T) {
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/update", nil)
 	rec := httptest.NewRecorder()
 
-	h.HandleUpdate(rec, req)
+	authorize := administratorRequests(t, h)
+	h.HandleUpdate(rec, authorize(req))
 
 	if rec.Code != http.StatusAccepted {
 		t.Fatalf("status = %d, want %d: %s", rec.Code, http.StatusAccepted, rec.Body.String())
@@ -101,9 +102,10 @@ func TestHandleUpdateSetsNoConnectionWriteDeadline(t *testing.T) {
 		}},
 	}
 
+	authorize := administratorRequests(t, h)
 	h.HandleUpdate(
 		recorder,
-		httptest.NewRequest(http.MethodPost, "/api/v1/update", nil),
+		authorize(httptest.NewRequest(http.MethodPost, "/api/v1/update", nil)),
 	)
 
 	if recorder.Code != http.StatusAccepted {

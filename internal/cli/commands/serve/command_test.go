@@ -11,7 +11,10 @@ func TestCORSOriginAllowlistEnablesCORS(t *testing.T) {
 		t.Fatalf("set cors-origins: %v", err)
 	}
 
-	config := parseConfig(command)
+	config, err := parseConfig(command)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if !config.CORSEnabled {
 		t.Fatal("explicit CORS origin allowlist did not enable CORS")
 	}

@@ -108,18 +108,14 @@ func TestServerServesEmbeddedStateThenPullsChannel(t *testing.T) {
 }
 
 // newServer composes the embeddable server the way the serve command does.
-func newServer(t *testing.T, connected *runtime.Runtime) *server.Server {
+func newServer(t *testing.T, connected *runtime.Runtime, options ...server.Option) *server.Server {
 	t.Helper()
 	syncer, err := acquisition.New(connected.Client())
 	if err != nil {
 		t.Fatalf("acquisition.New: %v", err)
 	}
-	srv, err := server.New(
-		connected.Client(),
-		server.DefaultConfig(),
-		server.WithRuntime(connected),
-		server.WithSyncer(syncer),
-	)
+	options = append([]server.Option{server.WithRuntime(connected), server.WithSyncer(syncer)}, options...)
+	srv, err := server.New(connected.Client(), server.DefaultConfig(), options...)
 	if err != nil {
 		t.Fatalf("server.New: %v", err)
 	}

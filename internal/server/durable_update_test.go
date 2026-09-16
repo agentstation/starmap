@@ -51,7 +51,8 @@ func TestDurableServerUpdatePublishesSameGenerationAfterProcessRestart(t *testin
 	if err != nil {
 		t.Fatalf("New server: %v", err)
 	}
-	handler := server.Handler()
+	token := administrativeServer(t, server)
+	handler := authenticatedHandler(server.Handler(), token)
 	recorder := httptest.NewRecorder()
 	handler.ServeHTTP(recorder, httptest.NewRequest(
 		http.MethodPost, "/api/v1/update?source=local_catalog", nil,

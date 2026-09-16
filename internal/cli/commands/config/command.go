@@ -10,6 +10,7 @@ import (
 	"github.com/agentstation/starmap/internal/cli/format"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/productpaths"
+	"github.com/agentstation/starmap/server/administration"
 )
 
 type application interface {
@@ -82,6 +83,39 @@ effective access, runtime ownership, or an atomic snapshot.`,
 		}}
 	paths.Flags().BoolVar(&inspect, "inspect", false, "read bounded metadata without opening catalog state")
 	paths.Flags().IntVar(&limit, "max-entries", productpaths.DefaultInspectionEntries, "maximum visited entries with --inspect")
-	command.AddCommand(paths)
+	command.AddCommand(paths, reportCommand(app, "schema"), reportCommand(app, "effective"))
+	return command
+}
+
+type configurationReporter interface {
+	ConfigurationReports() (*administration.Reports, error)
+}
+
+func reportCommand(app application, name string) *cobra.Command {
+	command := &cobra.Command{Use: name, Short: "Show the versioned " + name + " configuration report", Args: cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			reporter, ok := app.(configurationReporter)
+			if !ok {
+				return &errors.ConfigError{Component: "configuration report", Message: "the host did not supply configuration reports"}
+			}
+			reports, err := reporter.ConfigurationReports()
+			if err != nil {
+				return err
+			}
+			data := reports.Schema()
+			if name == "effective" {
+				data = reports.Effective()
+			}
+			_, err = cmd.OutOrStdout().Write(append(data, '\n'))
+			return err
+		}}
+	command.Flags().String("format", "json", "report format (json)")
+	command.PreRunE = func(cmd *cobra.Command, _ []string) error {
+		value, _ := cmd.Flags().GetString("format")
+		if value != "json" {
+			return &errors.ValidationError{Field: "format", Message: "configuration reports use json"}
+		}
+		return nil
+	}
 	return command
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/productpaths"
+	filepolicy "github.com/agentstation/starmap/pkg/productpaths/policy"
 	"io/fs"
 	"os"
 	pathpkg "path"
@@ -199,6 +200,12 @@ func TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures(t *testing.T) {
 		if entry.Availability == "planned" {
 			planned++
 		}
+		switch entry.ID {
+		case "admin-identities", "admin-audit", "admin-operations", "admin-owner":
+			if entry.Availability != "available" || entry.Policy.Access != filepolicy.OwnerOnly {
+				t.Fatalf("administration role is not available private state: %+v", entry)
+			}
+		}
 		if entry.ID == "workspace" {
 			if entry.Availability != "disabled" || entry.Location.Path != "" {
 				t.Fatal("disabled workspace received a file location")
@@ -210,8 +217,13 @@ func TestFileManifestReportsDisabledWorkspaceAndPlannedFeatures(t *testing.T) {
 	if seen["catalog-migration-lock"] || seen["workspace-lock"] || seen["workspace-receipt"] || seen["workspace-journal"] || seen["workspace-backup"] || seen["workspace-staging"] {
 		t.Fatal("disabled workspace has active sibling files")
 	}
-	if planned != 6 || !seen["runtime-seed"] || !seen["migration-journal"] {
+	if planned != 3 || !seen["runtime-seed"] || !seen["migration-journal"] {
 		t.Fatalf("inventory omits planned or persistent roles: %+v", seen)
+	}
+	for _, role := range []string{"admin-identities", "admin-audit", "admin-operations", "admin-owner"} {
+		if !seen[role] {
+			t.Fatalf("inventory omits administration role: %s", role)
+		}
 	}
 	entries, err := os.ReadDir(root)
 	if err != nil || len(entries) != 0 {

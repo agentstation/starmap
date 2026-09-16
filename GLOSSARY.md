@@ -10,7 +10,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | AI | Artificial intelligence. Starmap catalogs models that AI services offer. |  | approved | `README.md` |
 | API | An application programming interface that software uses to interact with Starmap. |  | approved | `docs/REST_API.md` |
 | API key | A secret value that authenticates a client to an API. | api-key in prose | approved | `docs/DOCKER.md` |
-| API_KEY | The environment name of the server credential that `starmap serve --auth` requires. |  | approved | `docs/REST_API.md` |
+| API_KEY | The legacy reader credential for `starmap serve --auth` without managed identities. |  | approved | `docs/REST_API.md` |
 | author | A person or organization that creates a model definition. |  | approved | `docs/CATALOG_IDENTITY.md` |
 | authority policy | The field order and merge rule that select a source value for one catalog fact. |  | approved | `docs/CATALOG_AUTHORITY_POLICY.md` |
 | AWS | Amazon Web Services, which provides the S3 storage service. |  | approved | `docs/CATALOG_STORE_CONTRACT.md` |
@@ -65,6 +65,7 @@ identifiers, command names, API fields, and protocol values remain exact.
 | provider | A service that offers one or more models for inference. |  | approved | `pkg/catalogs/provider.go` |
 | provider offering | One provider's service contract for a model definition. |  | approved | `pkg/catalogs/provider_offering.go` |
 | provenance | Evidence that records the source and selection history of a catalog fact. |  | approved | `pkg/provenance/tracking.go` |
+| POST | The HTTP request method that submits data for processing by a resource. |  | approved | `internal/server/identities.go`, `docs/REST_API.md` |
 | readiness | The reported state that says whether a process serves a usable catalog now. |  | approved | `docs/REST_API.md` |
 | reconciliation | The deterministic selection of catalog facts under the authority policy. |  | approved | `internal/catalog/reconciler` |
 | read-only | Permits reads but does not permit changes. |  | approved | `docs/DOCKER.md` |

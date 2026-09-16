@@ -17,6 +17,8 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/runtime"
+	"github.com/agentstation/starmap/server"
+	"github.com/agentstation/starmap/server/administration"
 )
 
 // cascadeDeadline bounds every wait for a streamed delta. A subscriber that
@@ -53,7 +55,7 @@ func TestServerCascadesVerifiedCatalogSource(t *testing.T) {
 	}
 
 	// The middle hop consumes the origin through the composed starmap source.
-	middle := openCascadeRuntime(t, cascade{url: originAPI, identity: "middle"})
+	middle := openCascadeRuntime(t, cascade{endpoint: originAPI, identity: "middle"})
 	t.Cleanup(func() { _ = middle.Close() })
 	report, err := middle.RefreshSource(ctx)
 	if err != nil {
@@ -82,7 +84,7 @@ func TestServerCascadesVerifiedCatalogSource(t *testing.T) {
 	// The leaf hop consumes the middle. The origin channel time survives the
 	// second hop, so freshness rests on the origin and not on the last check.
 	middleAPI := serveRuntime(t, middle)
-	leaf := openCascadeRuntime(t, cascade{url: middleAPI, identity: "leaf"})
+	leaf := openCascadeRuntime(t, cascade{endpoint: middleAPI, identity: "leaf"})
 	t.Cleanup(func() { _ = leaf.Close() })
 	if _, err := leaf.RefreshSource(ctx); err != nil {
 		t.Fatalf("leaf RefreshSource: %v", err)
@@ -121,7 +123,8 @@ func TestServerCascadesVerifiedCatalogSource(t *testing.T) {
 func assertCascadeRejections(
 	t *testing.T,
 	ctx context.Context,
-	originAPI, middleAPI, originIdentity string,
+	originAPI, middleAPI cascadeEndpoint,
+	originIdentity string,
 ) {
 	t.Helper()
 	for _, test := range []struct {
@@ -131,13 +134,13 @@ func assertCascadeRejections(
 	}{
 		{
 			name:    "self reference",
-			config:  cascade{url: originAPI, identity: originIdentity},
+			config:  cascade{endpoint: originAPI, identity: originIdentity},
 			wantHop: originIdentity,
 		},
 		{
 			name: "alias of this instance",
 			config: cascade{
-				url:      originAPI,
+				endpoint: originAPI,
 				identity: "aliased",
 				aliases:  []string{"other-name", originIdentity},
 			},
@@ -145,7 +148,7 @@ func assertCascadeRejections(
 		},
 		{
 			name:    "two node cycle",
-			config:  cascade{url: middleAPI, identity: originIdentity},
+			config:  cascade{endpoint: middleAPI, identity: originIdentity},
 			wantHop: originIdentity,
 		},
 	} {
@@ -192,17 +195,38 @@ func assertStreamedDeltaReachesMiddle(
 		middle.Status().PayloadChecksum, wantChecksum)
 }
 
+// cascadeEndpoint pairs a reader credential with its upstream API.
+type cascadeEndpoint struct {
+	url, token string
+}
+
 // cascade names one downstream runtime of the test cascade.
 type cascade struct {
-	url      string
+	endpoint cascadeEndpoint
 	identity string
 	aliases  []string
 }
 
 // serveRuntime serves one runtime and returns its versioned API root.
-func serveRuntime(t *testing.T, connected *runtime.Runtime) string {
+func serveRuntime(t *testing.T, connected *runtime.Runtime) cascadeEndpoint {
 	t.Helper()
-	srv := newServer(t, connected)
+	audience := connected.Status().InstanceIdentity
+	manager, adminToken, err := administration.Initialize(t.Context(), administration.Config{
+		StateDirectory: filepath.Join(t.TempDir(), "administration"), Audience: audience,
+	}, "operator")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = manager.Close() })
+	actor, accepted := manager.Authenticate(adminToken, audience)
+	if !accepted {
+		t.Fatal("administrator bootstrap credential was rejected")
+	}
+	token, err := manager.Create(t.Context(), actor, "downstream", administration.Subscriber)
+	if err != nil {
+		t.Fatal(err)
+	}
+	srv := newServer(t, connected, server.WithAdministration(manager, audience))
 	endpoint := httptest.NewServer(srv.Handler())
 	t.Cleanup(endpoint.Close)
 	t.Cleanup(func() {
@@ -210,7 +234,7 @@ func serveRuntime(t *testing.T, connected *runtime.Runtime) string {
 		defer cancel()
 		_ = srv.Shutdown(shutdownCtx)
 	})
-	return endpoint.URL + "/api/v1"
+	return cascadeEndpoint{url: endpoint.URL + "/api/v1", token: token}
 }
 
 // openCascadeRuntime composes one downstream runtime with the starmap source
@@ -220,7 +244,8 @@ func openCascadeRuntime(t *testing.T, node cascade) *runtime.Runtime {
 	t.Helper()
 	values := map[string]string{
 		settings.Source:              string(runtime.SourceStarmap),
-		settings.SourceURL:           node.url,
+		settings.SourceURL:           node.endpoint.url,
+		settings.SourceAPIKey:        node.endpoint.token,
 		settings.SourcePollInterval:  "1h",
 		settings.SourceMaxHops:       "8",
 		settings.AcquisitionEnabled:  "false",

@@ -42,13 +42,20 @@ Package server provides HTTP server implementation for the Starmap API.
 
 ## Index
 
+- [type AdministrativeCredential](<#AdministrativeCredential>)
+- [type AdministrativeIdentityInput](<#AdministrativeIdentityInput>)
+- [type AdministrativeRotationInput](<#AdministrativeRotationInput>)
+- [type AdministrativeStatus](<#AdministrativeStatus>)
 - [type Application](<#Application>)
 - [type Config](<#Config>)
   - [func DefaultConfig\(\) Config](<#DefaultConfig>)
 - [type OperationalHealth](<#OperationalHealth>)
+- [type Option](<#Option>)
+  - [func WithAdministration\(manager \*administration.Manager, audience string\) Option](<#WithAdministration>)
+  - [func WithConfigurationReports\(reports \*administration.Reports\) Option](<#WithConfigurationReports>)
 - [type PublicationHealth](<#PublicationHealth>)
 - [type Server](<#Server>)
-  - [func New\(app Application, cfg Config\) \(\*Server, error\)](<#New>)
+  - [func New\(app Application, cfg Config, options ...Option\) \(\*Server, error\)](<#New>)
   - [func \(s \*Server\) Cache\(\) \*cache.Cache](<#Server.Cache>)
   - [func \(s \*Server\) Handler\(\) http.Handler](<#Server.Handler>)
   - [func \(s \*Server\) OperationalHealth\(\) OperationalHealth](<#Server.OperationalHealth>)
@@ -59,6 +66,55 @@ Package server provides HTTP server implementation for the Starmap API.
 - [type SourceHealth](<#SourceHealth>)
 - [type StreamHealth](<#StreamHealth>)
 
+
+<a name="AdministrativeCredential"></a>
+## type [AdministrativeCredential](<https://github.com/agentstation/starmap/blob/main/internal/server/identities.go#L32-L37>)
+
+AdministrativeCredential contains a new credential returned once to the administrator.
+
+```go
+type AdministrativeCredential struct {
+    // ID names the credential's identity.
+    ID  string `json:"id"`
+    // Credential is secret and must not enter logs or shared caches.
+    Credential string `json:"credential"`
+}
+```
+
+<a name="AdministrativeIdentityInput"></a>
+## type [AdministrativeIdentityInput](<https://github.com/agentstation/starmap/blob/main/internal/server/identities.go#L18-L23>)
+
+AdministrativeIdentityInput selects a new server identity and its role.
+
+```go
+type AdministrativeIdentityInput struct {
+    // ID names the identity within one catalog audience.
+    ID  string `json:"id"`
+    // Role selects subscriber or administrator permission.
+    Role administration.Role `json:"role"`
+}
+```
+
+<a name="AdministrativeRotationInput"></a>
+## type [AdministrativeRotationInput](<https://github.com/agentstation/starmap/blob/main/internal/server/identities.go#L26-L29>)
+
+AdministrativeRotationInput sets the bounded overlap for the previous credential.
+
+```go
+type AdministrativeRotationInput struct {
+    // Overlap is a duration between zero and 24 hours.
+    Overlap string `json:"overlap"`
+}
+```
+
+<a name="AdministrativeStatus"></a>
+## type [AdministrativeStatus](<https://github.com/agentstation/starmap/blob/main/internal/server/configuration_report.go#L13>)
+
+AdministrativeStatus is the wire report for standalone administrative readiness.
+
+```go
+type AdministrativeStatus = administration.Status
+```
 
 <a name="Application"></a>
 ## type [Application](<https://github.com/agentstation/starmap/blob/main/internal/server/application.go#L15-L24>)
@@ -147,6 +203,33 @@ type OperationalHealth struct {
 }
 ```
 
+<a name="Option"></a>
+## type [Option](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L40>)
+
+Option supplies an explicit server capability.
+
+```go
+type Option func(*Server)
+```
+
+<a name="WithAdministration"></a>
+### func [WithAdministration](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L43>)
+
+```go
+func WithAdministration(manager *administration.Manager, audience string) Option
+```
+
+WithAdministration configures the private administrative authority.
+
+<a name="WithConfigurationReports"></a>
+### func [WithConfigurationReports](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L180>)
+
+```go
+func WithConfigurationReports(reports *administration.Reports) Option
+```
+
+WithConfigurationReports supplies passive host configuration diagnostics.
+
 <a name="PublicationHealth"></a>
 ## type [PublicationHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/health.go#L62-L69>)
 
@@ -164,7 +247,7 @@ type PublicationHealth struct {
 ```
 
 <a name="Server"></a>
-## type [Server](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L21-L33>)
+## type [Server](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L22-L37>)
 
 Server holds the HTTP server state and dependencies.
 
@@ -175,16 +258,16 @@ type Server struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L36>)
+### func [New](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L48>)
 
 ```go
-func New(app Application, cfg Config) (*Server, error)
+func New(app Application, cfg Config, options ...Option) (*Server, error)
 ```
 
 New creates a new server instance with the given configuration.
 
 <a name="Server.Cache"></a>
-### func \(\*Server\) [Cache](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L142>)
+### func \(\*Server\) [Cache](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L160>)
 
 ```go
 func (s *Server) Cache() *cache.Cache
@@ -193,7 +276,7 @@ func (s *Server) Cache() *cache.Cache
 Cache returns the server's cache instance.
 
 <a name="Server.Handler"></a>
-### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L115>)
+### func \(\*Server\) [Handler](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L133>)
 
 ```go
 func (s *Server) Handler() http.Handler
@@ -202,7 +285,7 @@ func (s *Server) Handler() http.Handler
 Handler returns the configured http.Handler with middleware chain applied.
 
 <a name="Server.OperationalHealth"></a>
-### func \(\*Server\) [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L157>)
+### func \(\*Server\) [OperationalHealth](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L175>)
 
 ```go
 func (s *Server) OperationalHealth() OperationalHealth
@@ -211,7 +294,7 @@ func (s *Server) OperationalHealth() OperationalHealth
 OperationalHealth returns server, publication, and stream health without I/O.
 
 <a name="Server.SSEBroadcaster"></a>
-### func \(\*Server\) [SSEBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L147>)
+### func \(\*Server\) [SSEBroadcaster](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L165>)
 
 ```go
 func (s *Server) SSEBroadcaster() *sse.Broadcaster
@@ -220,7 +303,7 @@ func (s *Server) SSEBroadcaster() *sse.Broadcaster
 SSEBroadcaster returns the SSE broadcaster.
 
 <a name="Server.Shutdown"></a>
-### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L121>)
+### func \(\*Server\) [Shutdown](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L139>)
 
 ```go
 func (s *Server) Shutdown(ctx context.Context) error
@@ -229,7 +312,7 @@ func (s *Server) Shutdown(ctx context.Context) error
 Shutdown terminates active SSE connections. The owning HTTP server drains request handlers before calling this method.
 
 <a name="Server.Start"></a>
-### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L109>)
+### func \(\*Server\) [Start](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L127>)
 
 ```go
 func (s *Server) Start()
@@ -238,7 +321,7 @@ func (s *Server) Start()
 Start activates server\-owned services. Requests own their SSE connections, so Start does not need a background transport goroutine.
 
 <a name="Server.StartTime"></a>
-### func \(\*Server\) [StartTime](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L152>)
+### func \(\*Server\) [StartTime](<https://github.com/agentstation/starmap/blob/main/internal/server/server.go#L170>)
 
 ```go
 func (s *Server) StartTime() time.Time
