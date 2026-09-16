@@ -1,0 +1,279 @@
+{
+  "source": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+    "branch": "codex/starmap-publisher-validation",
+    "commit": "f8302a033eab7a6a52925a7a601a4d067bf5f317",
+    "base": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+    "files": {
+      ".github/workflows/catalog-generation.yaml": "e9c135492e7ac8882bfd9d38175445b32a784335ce3ade5031b769fefae72b5c",
+      "cmd/starmap-catalog-release/promotion_test.go": "f5eac77e97cc7b11ebe2c6165ad24922d88c7c4a39d89db6755b8d625e912b1f",
+      "docs/CATALOG_IDENTITY.md": "c0fc01568c06141d52185f90711a91f5da2a5030714023601b63cbcf6f0575c8",
+      "docs/SCHEDULED_CATALOG_GENERATION.md": "5e36479453005799e77d20f5b395262ea261edbde8f22eca18883adb035a6e58",
+      "internal/catalog/workspace/membership_test.go": "d7c49d1d1b0632df4b8bc9f7c4b78bbbe110377fb87785f9fff21fde6fce4fc3",
+      "internal/catalog/workspace/stage_source.go": "e046f140843b7dce1cf04440aafeb34f591bfa4c489e772367ac995557a515e8",
+      "internal/ciworkflow/catalog_publication_workflow_test.go": "4e3052f688c1294f2105900a149d820ad97da653a66e11a0a120363cfec25830",
+      "pkg/catalogs/canonical_alias_yaml.go": "493a2cc8b9156ef3b7f52610bbe392aab21d5afb1887d8dee3376a6553a3207a",
+      "pkg/catalogs/load.go": "b31a93a8ed6581d162aaf4a2bd671ca00180fa71da6fbc8f2a7ab7516c93e1db",
+      "pkg/catalogs/membership_scope.go": "be8f5f06d29bfbda6003dedc2e4b6aed8ae0bec1859ec74d8cd788e357c43170",
+      "pkg/catalogs/membership_yaml.go": "ec835c5c714c155ef6b26c30351705a0822fb03ca3e7ec5337aa501ff099bf05",
+      "pkg/catalogs/membership_yaml_test.go": "f115997b4ed39bfa2061a98e9a0a96826f40382693f5006236160e31e23eef67",
+      "pkg/catalogs/save.go": "f99ca3ea6fc3375d15a7284994cf27122bec670d1f4b844c2130bf9a24ce4a9d",
+      "pkg/catalogs/workspace_records.go": "3f875e457b14a1015014948f4baa261d31df6b4e47b2f84d3ebef22ec19c2ab1",
+      "scripts/catalog_publication.py": "c443a6f2e58f4dc07f529a0c8ae606256c19618a8e71af002714e430ca9d11f3",
+      "scripts/test_catalog_publication.py": "f01754f55b58fff2634d3ace8af8dbb90b0d674614e5da81ab7cd94012cb1357"
+    }
+  },
+  "hosted_failure": {
+    "run": 35097794323,
+    "phase": "validation",
+    "public_writes": false,
+    "subprocess_error_was_discarded": true
+  },
+  "local_reproduction": {
+    "preparation": "public profile, retained catalog capture",
+    "initial_staging_exit": 1,
+    "initial_error": "validation failed for field bootstrap_manifest.committed_payload: embedded catalog bytes do not match the committed generation",
+    "initial_payload_difference": "membership_scopes was absent after YAML projection",
+    "fixed_staging_exit": 0,
+    "fixed_report": {
+      "generation_id": "bindings-8e45633a9cf547c20ceed65e1912f4cec76c2e799306bf1fe12aa3cc25063f3e.local.f0a28a2353aa",
+      "semantic_checksum": "sha256:0e14b3317856d682f381bfc06762026bfd2a36aa5bf20d1d779b76c92e532e5b",
+      "payload_checksum": "sha256:3dceeb135b7a30d289e3bc734372c2ef64827b738cd91a1b705ac37f55e9a096",
+      "archive_checksum": "sha256:1449d2f1ad487285347a47e2042acf6e6f62219e1fabee5ae5b7c061df3cab12",
+      "catalog_directory": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-validation/live-promotion-fixed",
+      "release_directory": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-validation/prepared/artifacts/catalog-generations/416134c2a2cba2e5eacd88cdd6c8a5b77269ae29ee0f93f5ba4c5993b963a829"
+    },
+    "catalog_bytes_after_roundtrip_identical": true,
+    "archive_sha256": "1449d2f1ad487285347a47e2042acf6e6f62219e1fabee5ae5b7c061df3cab12"
+  },
+  "checks": {
+    "membership_fail_before": {
+      "events": {
+        "fail": 11
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs",
+          "result": "fail"
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+          "result": "fail"
+        }
+      ]
+    },
+    "diagnostics_fail_before": "2 checks: one failure and one uncaught timeout",
+    "diagnostics_after": "2 passed",
+    "controller_suite_before_final_Go_changes": "21 passed",
+    "final_focused_go1.26.6": {
+      "events": {
+        "pass": 26
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+          "result": "pass"
+        }
+      ]
+    },
+    "final_focused_go1.25.12": {
+      "events": {
+        "pass": 26
+      },
+      "packages": [
+        {
+          "package": "github.com/agentstation/starmap/pkg/catalogs",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/ciworkflow",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/internal/catalog/workspace",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starmap/cmd/starmap-catalog-release",
+          "result": "pass"
+        }
+      ]
+    },
+    "pinned_linter": "2.12.2, zero issues",
+    "goago_final": "exit 0",
+    "authored_prose": "15 files, zero diagnostics",
+    "vet_final": "0"
+  },
+  "earlier_attempts": {
+    "direct_yaml_encoder": "Converted null additions to an empty list; fixed through JSON-preserving YAML encoding.",
+    "initial_fixture_assertion": "Compared the pre-normalized fixture model against the established human feature-default projection. Retained that existing fixture normalization and added exact membership preservation. Release staging still verifies the complete payload.",
+    "first_broad_suite": "Contains the superseded fixture assertion. Final catalog and release suites run separately.",
+    "devbox_lint": "Cancelled dependency bootstrap. The installed 2.13.1 linter was not accepted as pinned qualification. Pinned 2.12.2 passes.",
+    "generic_record_reader": "Shares bounded strict record loading with canonical aliases without changing alias error fields."
+  },
+  "running": {
+    "52475": "full repository verification; .tmp/csp6-validation/verify.*",
+    "33226": "exact captured candidate generation gate; .tmp/csp6-validation/candidate-generation-fixed.*",
+    "55700": "consumer dependency guard; .tmp/csp6-validation/bootstrap-consumers.*",
+    "50830": "repository prose check; .tmp/csp6-validation/writing-clean.*"
+  },
+  "remaining": [
+    "Finish final checks and exact-candidate validation.",
+    "Complete required pre-PR review, native CI, and merge.",
+    "Repeat controlled hosted publication and qualify all three remaining A05 subcases."
+  ],
+  "retained_logs": [
+    "bootstrap-fixed.exit.gz",
+    "bootstrap-fixed.jsonl.gz",
+    "bootstrap-fixed.stderr.gz",
+    "bootstrap-floor.exit.gz",
+    "bootstrap-floor.jsonl.gz",
+    "bootstrap-floor.stderr.gz",
+    "bootstrap-focused.exit.gz",
+    "bootstrap-focused.jsonl.gz",
+    "bootstrap-focused.stderr.gz",
+    "bootstrap-goago.exit.gz",
+    "bootstrap-goago.json.gz",
+    "bootstrap-lint.exit.gz",
+    "bootstrap-lint.log.gz",
+    "candidate-budget.exit.gz",
+    "candidate-budget.log.gz",
+    "candidate-generation.exit.gz",
+    "candidate-generation.log.gz",
+    "complete-promotion.exit.gz",
+    "complete-promotion.json.gz",
+    "complete-promotion.stderr.gz",
+    "controller-tests.exit.gz",
+    "controller-tests.log.gz",
+    "diagnostics-green.exit.gz",
+    "diagnostics-green.log.gz",
+    "diagnostics-red.exit.gz",
+    "diagnostics-red.log.gz",
+    "embedded-release.json.gz",
+    "embedded-release.stderr.gz",
+    "floor-final.exit.gz",
+    "floor-final.jsonl.gz",
+    "floor-final.stderr.gz",
+    "floor-focused.exit.gz",
+    "floor-focused.jsonl.gz",
+    "floor-focused.stderr.gz",
+    "focused-final.exit.gz",
+    "focused-final.jsonl.gz",
+    "focused-final.stderr.gz",
+    "focused-verified.exit.gz",
+    "focused-verified.jsonl.gz",
+    "focused-verified.stderr.gz",
+    "generation-check.exit.gz",
+    "generation-check.log.gz",
+    "goago-final.exit.gz",
+    "goago-final.json.gz",
+    "goago.exit.gz",
+    "goago.json.gz",
+    "integration-green.exit.gz",
+    "integration-green.jsonl.gz",
+    "integration-green.stderr.gz",
+    "lint-local.exit.gz",
+    "lint-local.log.gz",
+    "lint-pinned.exit.gz",
+    "lint-pinned.log.gz",
+    "lint.exit.gz",
+    "lint.log.gz",
+    "live-prepare.exit.gz",
+    "live-prepare.json.gz",
+    "live-promotion-fixed.exit.gz",
+    "live-promotion-fixed.json.gz",
+    "live-promotion-fixed.stderr.gz",
+    "live-promotion.exit.gz",
+    "live-promotion.json.gz",
+    "live-promotion.stderr.gz",
+    "membership-fixed.exit.gz",
+    "membership-fixed.jsonl.gz",
+    "membership-fixed.stderr.gz",
+    "membership-green.exit.gz",
+    "membership-green.jsonl.gz",
+    "membership-green.stderr.gz",
+    "membership-red.exit.gz",
+    "membership-red.jsonl.gz",
+    "membership-red.stderr.gz",
+    "packages.exit.gz",
+    "packages.jsonl.gz",
+    "packages.stderr.gz",
+    "promotion-fixture-diff.exit.gz",
+    "promotion-fixture-diff.log.gz",
+    "records-final.exit.gz",
+    "records-final.jsonl.gz",
+    "records-final.stderr.gz",
+    "records-packages.exit.gz",
+    "records-packages.jsonl.gz",
+    "records-packages.stderr.gz",
+    "roundtrip-fixed-2.log.gz",
+    "roundtrip-fixed.log.gz",
+    "roundtrip.log.gz",
+    "vet-final.exit.gz",
+    "vet-final.log.gz",
+    "vet.exit.gz",
+    "vet.log.gz",
+    "writing.exit.gz",
+    "writing.log.gz"
+  ],
+  "bootstrap_followup": {
+    "base_commit": "f8302a033eab7a6a52925a7a601a4d067bf5f317",
+    "state": "uncommitted; final checks running",
+    "files": {
+      "cmd/starmap-bootstrap-manifest/main.go": "3e57c0ee2f6e155ffa1534d0ee6d6b4187e4c751825b720a46a303aa8a664c08",
+      "cmd/starmap-bootstrap-manifest/main_test.go": "f9bd0467863b25ea37aa36bdd9ee7caeb5c20024bf6430778cdbd3397871cce1",
+      "cmd/starmap-catalog-release/promotion.go": "825900e160ea61b09211c8c150f215699d10274b43085d56513199217d0ad498",
+      "cmd/starmap-catalog-release/promotion_stage.go": "8b00eac42ddbbb340d41689eaa6fdb489fb90bfafce2bd899923e5c8d1802c59",
+      "cmd/starmap-catalog-release/promotion_stage_test.go": "3df35cfdfd956f7ebed4586e6f77f5b2d9f8063ff3fe6b2fc09094750a84647e",
+      "cmd/starmap-catalog-release/promotion_test.go": "11cd9adc92258e7439c700714a9c6b418ce46c77ae80e3b4864f9edfca666ef4",
+      "docs/CATALOG_IDENTITY.md": "906026e35619299541d7c6be1d80ee3173e1adfaec905a3e5fd0a12771956594",
+      "docs/SCHEDULED_CATALOG_GENERATION.md": "5ea576f9690324a823d42f1dc0e1170181f737c05790257a498157eea58246a7",
+      "internal/bootstrap/bootstrap.go": "5c898c4b65f62eb387d11bcea5a0b547be051237fe1553dee6396fc27fa991ea",
+      "internal/bootstrap/manifest/manifest.go": "b8d7fd0a20d76bc8c3a6cf92f15778bee99b89e6100ffce7db2d5fdbf1795300",
+      "cmd/starmap-bootstrap-manifest/committed.go": "b00b5b8484b0cd86d3e8cf764e668b0afd1baacc12c842e54884e7789dd12d38",
+      "internal/bootstrap/committed_test.go": "d5afc6881e61e997b3e8d2c98d8dd43d5f6819f2a6b9b139d4ecc058e05b16bf",
+      "pkg/catalogs/bootstrap_generation.go": "1443080fce4d46ea6d06a4aca223cfce672710ffa0cb6a4bff4bb173c977ef09"
+    },
+    "fail_before": "Captured candidate generation check fails three tests: membership observation IDs no longer resolve after bootstrap reconstructed the manifest.",
+    "repair": "Preserve the complete committed generation manifest in generation-manifest.json, verify its exact identity, and load it during bootstrap. The manifest command preserves retained evidence or requires the new committed generation.",
+    "focused_go1.26.6": {
+      "passed_test_events": 33,
+      "failed_test_events": 0
+    },
+    "pinned_lint_exit": 0,
+    "goago_exit": 0,
+    "captured_catalog_staging_exit": 0,
+    "rendered_catalog_locations": {
+      "root": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-csp6-rendered-ootwenh8",
+      "moved": [
+        "live-promotion-fixed",
+        "roundtrip-yaml"
+      ]
+    },
+    "floor_exit": 0
+  },
+  "completed_since_initial_record": {
+    "packages": 1,
+    "records-packages": 0,
+    "generation-check": 0,
+    "writing": 2,
+    "candidate-budget": 0,
+    "candidate-generation": 2
+  },
+  "completed_since_initial_record_notes": {
+    "writing": "Only generated public catalog copies outside the excluded canonical catalog path caused the 122 diagnostics. Moved the operation-owned rendered copies outside the repository; policy unchanged.",
+    "candidate_budget": "Passed its hard gate; 25522247 payload bytes exceeds the 16777216 review threshold. Keep the measurement for publication review."
+  }
+}
