@@ -1,0 +1,431 @@
+{
+  "recorded_at": "2026-09-16T19:38:37.554752+00:00",
+  "owner": "CSP6.1",
+  "disposition": "Keep both reviewed PRs. Wait for final qualification, merge Starmap with its tested head retained, then merge Starport.",
+  "prs": [
+    {
+      "baseRefOid": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+      "headRefOid": "71a96cee03e5f9cdfe7adcd9784c7463ce18d856",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "mergeable": "MERGEABLE",
+      "number": 164,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:10:47Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138879921/job/104938090547",
+          "name": "Analyze (actions)",
+          "startedAt": "2026-09-16T19:09:56Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:11:10Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108281",
+          "name": "Coordinated Storage valkey",
+          "startedAt": "2026-09-16T19:09:59Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:12:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138879921/job/104938090117",
+          "name": "Analyze (go)",
+          "startedAt": "2026-09-16T19:09:55Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:11:24Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108215",
+          "name": "Coordinated Storage redis",
+          "startedAt": "2026-09-16T19:09:59Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:11:08Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138879921/job/104938090562",
+          "name": "Analyze (python)",
+          "startedAt": "2026-09-16T19:09:56Z",
+          "status": "COMPLETED",
+          "workflowName": "CodeQL"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:10:31Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108259",
+          "name": "Constructor Network Passivity",
+          "startedAt": "2026-09-16T19:09:58Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:11:18Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108186",
+          "name": "Offline Server Persistence",
+          "startedAt": "2026-09-16T19:10:00Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:18:25Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938107881",
+          "name": "Verification Checks",
+          "startedAt": "2026-09-16T19:09:58Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:12:46Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108176",
+          "name": "Security & Reliability",
+          "startedAt": "2026-09-16T19:09:59Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:10:12Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108393",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-16T19:09:59Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108458",
+          "name": "Runtime windows-2025",
+          "startedAt": "2026-09-16T19:09:59Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108442",
+          "name": "Runtime windows-11-arm",
+          "startedAt": "2026-09-16T19:09:59Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:26:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108459",
+          "name": "Runtime ubuntu-24.04",
+          "startedAt": "2026-09-16T19:09:59Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:26:36Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108462",
+          "name": "Runtime ubuntu-24.04-arm",
+          "startedAt": "2026-09-16T19:10:03Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108463",
+          "name": "Runtime macos-15-intel",
+          "startedAt": "2026-09-16T19:10:05Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:27:45Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104938108295",
+          "name": "Runtime macos-15",
+          "startedAt": "2026-09-16T19:10:03Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104941042151",
+          "name": "Go 1.27.1 race runtime",
+          "startedAt": "2026-09-16T19:18:27Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104941042350",
+          "name": "Go 1.27.1 race client",
+          "startedAt": "2026-09-16T19:18:27Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104941042097",
+          "name": "Go 1.27.1 race application",
+          "startedAt": "2026-09-16T19:18:27Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:30:27Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104941042083",
+          "name": "Go 1.27.1 race contracts",
+          "startedAt": "2026-09-16T19:18:28Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:26:49Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35138885986/job/104941042020",
+          "name": "Full Catalog Capacity",
+          "startedAt": "2026-09-16T19:18:27Z",
+          "status": "COMPLETED",
+          "workflowName": "Pull Request"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:10:40Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starmap/runs/104938347548",
+          "name": "CodeQL",
+          "startedAt": "2026-09-16T19:10:38Z",
+          "status": "COMPLETED",
+          "workflowName": ""
+        }
+      ],
+      "title": "fix: retain catalog evidence and qualify faster Go 1.27 verification",
+      "url": "https://github.com/agentstation/starmap/pull/164",
+      "owner": "CSP6.1",
+      "merge_method": "merge",
+      "disposition": "retain",
+      "review_threads": "none",
+      "local_state": "clean, published exact head; base is ancestor"
+    },
+    {
+      "baseRefOid": "2355823aa78972c12df70207a1bbe8b36ad6f03c",
+      "headRefOid": "368fdee8001767c17594f5ef11e769042c0e71b6",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "mergeable": "MERGEABLE",
+      "number": 375,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:31:12Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385490",
+          "name": "Lint",
+          "startedAt": "2026-09-16T19:28:24Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:33:54Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756656/job/104944386444",
+          "name": "Native windows x86_64",
+          "startedAt": "2026-09-16T19:28:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Native Release Verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:34:38Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756656/job/104944386033",
+          "name": "Native windows arm64",
+          "startedAt": "2026-09-16T19:28:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Native Release Verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:30:35Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756656/job/104944386393",
+          "name": "Native linux x86_64",
+          "startedAt": "2026-09-16T19:28:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Native Release Verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:30:16Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756656/job/104944386457",
+          "name": "Native linux arm64",
+          "startedAt": "2026-09-16T19:28:27Z",
+          "status": "COMPLETED",
+          "workflowName": "Native Release Verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:36:16Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756656/job/104944386334",
+          "name": "Native darwin x86_64",
+          "startedAt": "2026-09-16T19:28:26Z",
+          "status": "COMPLETED",
+          "workflowName": "Native Release Verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:32:15Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756656/job/104944386703",
+          "name": "Native darwin arm64",
+          "startedAt": "2026-09-16T19:28:31Z",
+          "status": "COMPLETED",
+          "workflowName": "Native Release Verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:35:09Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385467",
+          "name": "Test (ubuntu-latest)",
+          "startedAt": "2026-09-16T19:28:25Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:38:23Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385646",
+          "name": "Test (macos-latest)",
+          "startedAt": "2026-09-16T19:28:30Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385523",
+          "name": "Test (windows-latest)",
+          "startedAt": "2026-09-16T19:28:28Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:31:07Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385367",
+          "name": "Security Scan",
+          "startedAt": "2026-09-16T19:28:25Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:35:18Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385543",
+          "name": "Release Contract",
+          "startedAt": "2026-09-16T19:28:24Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:29:25Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385344",
+          "name": "OpenRouter SDK Compatibility",
+          "startedAt": "2026-09-16T19:28:25Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385496",
+          "name": "Release Snapshot",
+          "startedAt": "2026-09-16T19:28:24Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-16T19:28:34Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/agentstation/starport/actions/runs/35140756480/job/104944385174",
+          "name": "Action Pin Provenance",
+          "startedAt": "2026-09-16T19:28:25Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        }
+      ],
+      "title": "build: standardize on Go 1.27.1",
+      "url": "https://github.com/agentstation/starport/pull/375",
+      "owner": "CSP6.1",
+      "merge_method": "squash",
+      "disposition": "retain",
+      "review_threads": "none",
+      "local_state": "clean, published exact head; base is ancestor"
+    }
+  ],
+  "starport_native": {
+    "conclusion": "success",
+    "headSha": "368fdee8001767c17594f5ef11e769042c0e71b6",
+    "status": "completed",
+    "url": "https://github.com/agentstation/starport/actions/runs/35140756656"
+  },
+  "paused_local_work": {
+    "starmap-host-files": "e8104b5f3b65058da3f05f648259d29ae139b5d8; clean, preserve",
+    "starport-product-paths": "7b59be6ece0768871cd9b60ca556e9530941e05d; clean, preserve"
+  },
+  "superseded_schedule": {
+    "run": 35141185568,
+    "head": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+    "conclusion": "failure",
+    "step": "Validate candidate before publication",
+    "cancel_attempt": "Already completed before cancellation; no workflow configuration changed.",
+    "next_action": "CSP6 resumes hosted qualification after CSP6.1 merges."
+  }
+}
