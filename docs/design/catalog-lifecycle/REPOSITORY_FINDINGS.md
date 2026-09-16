@@ -50,7 +50,8 @@ Commit `985331d94` distinguishes the exact compiled baseline and preserves its s
 Nineteen focused race events pass on each supported Go version. Six smoke events pass against the captured catalog.
 
 The [repair proof](../../plans/proof/starport-production-catalog/csp6/membership-promotion-2026-09-16/runtime-verification.json) records source identities, failures, and current verification.
-Review, merge, and all three hosted A05 subcases remain open. These findings do not grant publication qualification.
+Sol and Opus report zero findings for PR #164. Required CI, merge, and all three hosted A05 subcases remain open.
+These findings do not grant publication qualification.
 
 ## Public publisher clarification: 2026-09-14
 

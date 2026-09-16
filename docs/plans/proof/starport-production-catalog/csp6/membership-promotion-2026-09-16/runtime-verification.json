@@ -78,6 +78,12 @@
         "cmd/starmap-bootstrap-manifest",
         "runtime"
       ]
+    },
+    "candidate-generation-runtime-final": {
+      "exit": 0,
+      "command": "make catalog-generation-check HAS_DEVBOX=",
+      "working_directory": "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/starmap-csp6-candidate-eox14jts/source",
+      "source": "985331d94 production files plus the captured promoted embedded catalog"
     }
   },
   "finding": "Compiled provider evidence triggered the local-binding startup guard. Rebuilds also omitted its original membership observations.",
@@ -91,18 +97,30 @@
     "Full verification began before this runtime repair. Required native CI must cover the final committed tree.",
     "All three hosted A05 subcases remain unverified."
   ],
-  "running": {
-    "candidate_generation_gate": {
-      "session": 2389,
-      "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-validation/candidate-generation-runtime-final.log"
-    },
-    "review": {
-      "location_file": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-validation/review-location.txt",
-      "session": 81877
-    }
-  },
+  "running": {},
   "remaining": [
-    "Complete required review and final verification, then open the repair PR and merge after required CI passes.",
+    "Complete required native CI for PR #164, then merge and verify the merged tree.",
     "Repeat controlled hosted publication and qualify A05.bot_required_checks, A05.each_publication_failure, and A05.same_bytes_retry."
-  ]
+  ],
+  "review": {
+    "source_commit": "985331d94bd79da8b4e850f2b30c1749dd065e2a",
+    "base_commit": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+    "gate": "pre-pr",
+    "mode": "auto",
+    "reviewers": [
+      "codex:gpt-5.6-sol:high",
+      "claude:claude-opus-5:high"
+    ],
+    "exit": 0,
+    "findings": 0,
+    "result": "pre-pr-review.json"
+  },
+  "pull_request": {
+    "number": 164,
+    "url": "https://github.com/agentstation/starmap/pull/164",
+    "head": "985331d94bd79da8b4e850f2b30c1749dd065e2a",
+    "state": "open",
+    "required_ci": "in_progress",
+    "merge": null
+  }
 }
