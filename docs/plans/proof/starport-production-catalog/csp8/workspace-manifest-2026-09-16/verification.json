@@ -1,0 +1,133 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T16:16:31.067456+00:00",
+  "completion_credit": false,
+  "behavior": [
+    "Starmap exposes WorkspaceFiles as the canonical workspace and adjacent recovery inventory. Both product manifests consume it.",
+    "Workspace origins and anchors remain intact. Disabled workspaces omit siblings. Selectors remain caller-owned.",
+    "Metadata inspection matches literal workspace names, excludes neighboring workspaces, and does not read file contents."
+  ],
+  "checks": {
+    "starmap_release_race": {
+      "exit": 0,
+      "pass": 16,
+      "skip": 0,
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 5m ./pkg/productpaths/... ./internal/cli/app -run 'Test(WorkspaceFiles|FileManifest|FileRolePolicy|ImplicitNewRoots)'"
+    },
+    "starmap_minimum_race": {
+      "exit": 0,
+      "pass": 92,
+      "skip": 0,
+      "command": "GOTOOLCHAIN=go1.25.12 go test -race -json -count=1 -timeout 3m ./pkg/productpaths/..."
+    },
+    "starport_race": {
+      "exit": 0,
+      "pass": 373,
+      "skip": 0,
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 -timeout 3m ./internal/config ./internal/cli"
+    },
+    "lint": {
+      "starmap": 0,
+      "starport": 0
+    },
+    "vet": {
+      "starmap": 0,
+      "starport": 0
+    },
+    "goago": {
+      "exit": 0,
+      "findings": 0,
+      "stale_ignores": 0,
+      "errors": 0
+    },
+    "starmap_full_prose": {
+      "exit": 0,
+      "files": 1782,
+      "diagnostics": 0
+    },
+    "starport_authored_prose": {
+      "exit": 0,
+      "files": 1,
+      "diagnostics": 0
+    },
+    "canonical_authored_prose": {
+      "exit": 0,
+      "files": 2,
+      "diagnostics": 0
+    },
+    "canonical_full_prose": {
+      "exit": 2,
+      "files": 1584,
+      "diagnostics": 2,
+      "scope": "Two unchanged historical raw outputs. Authored prose passes. No policy changes or raw-output edits."
+    },
+    "plan_structure": {
+      "exit": 0,
+      "rows": 38,
+      "done": 13,
+      "active": 1,
+      "local_links": 83,
+      "protected_sections_unchanged": true,
+      "unrelated_hashes_unchanged": true
+    }
+  },
+  "binding": "Tests precede one Starmap comment-only prose repair. No executable source changed afterward.",
+  "remaining": [
+    "Native inspection through Starport, full producer verification with current main, published dependency, full pre-PR review, and merge remain required.",
+    "Runtime migration and receipt adoption, catalog retention, and full acquisition qualification remain open under CSP8."
+  ],
+  "sources": {
+    "starmap": {
+      "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+      "commit": "e8104b5f3b65058da3f05f648259d29ae139b5d8",
+      "sha256": {
+        "internal/cli/app/file_manifest.go": "426ed6508cff231ba5d49527642886292a838bd29f592852643d4cbb342913b7",
+        "pkg/productpaths/workspace.go": "d0dc990dce142f06d0eaa2ff28a3a68d6d9ba95ffc5c3574a863921a15f032c4",
+        "pkg/productpaths/workspace_test.go": "71f04def37d62ab5aacedac5b4c39c04b26a6732839f370618a528750b75e106"
+      }
+    },
+    "starport": {
+      "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+      "commit": "32f40b40afc85530e389b45a9ad8b018cf84a926",
+      "sha256": {
+        "docs/OPERATOR-GUIDE.md": "a7e5a506ed7db0ac19308f185a73b2f9a66a84543069d7ce2f9f9abe430e7660",
+        "internal/config/file_manifest.go": "e0f9dfdba154424508c2a680cd631b7f47e8f61fd0273ba0429335bc0cf8a652",
+        "internal/config/file_manifest_test.go": "65d0e83fc4ee23bb2c99453c89e8020d688c7b3d7284e4b330a507406b92ca64"
+      }
+    }
+  },
+  "artifacts_uncompressed_sha256": {
+    "starmap-workspace-manifest-full-prose-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starmap-workspace-manifest-full-prose-final.log.gz": "8b3d7df537d8f03df87fb8d739c9450aebcddac30f23ba527539a64299038fc9",
+    "starmap-workspace-manifest-full-prose.exit.gz": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "starmap-workspace-manifest-full-prose.log.gz": "e1c70e9dbff668b2de99870aaeea20ae3084079abaa02a1b1d72e47e961da044",
+    "starmap-workspace-manifest-goago.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starmap-workspace-manifest-goago.json.gz": "c5359a93929fc915670a4ccc186c22e06294332229f805a962dbb745963f992d",
+    "starmap-workspace-manifest-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starmap-workspace-manifest-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "starmap-workspace-manifest-minimum-go.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starmap-workspace-manifest-minimum-go.jsonl.gz": "2a47597acc98e5adf5a00106ecbff3091afc0c6a62c237a11ee37ef6a796e787",
+    "starmap-workspace-manifest-race.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starmap-workspace-manifest-race.jsonl.gz": "35fb8dfbc9e586ee5dc5cd147760c43bfedea07190142d4913c828bc257ee464",
+    "starmap-workspace-manifest-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starmap-workspace-manifest-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "starport-workspace-manifest-authored.md.gz": "b3ec6d111c1efa068789046c6eb068ee9204a975b025ea6fc97fbfa6a5c51dda",
+    "starport-workspace-manifest-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "starport-workspace-manifest-before.jsonl.gz": "adb2aa34c8c2052e9c5c4f70c93538e5716fb87898ab5131541b8a50ecdbd87b",
+    "starport-workspace-manifest-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starport-workspace-manifest-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "starport-workspace-manifest-prose.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starport-workspace-manifest-prose.log.gz": "e056fea5a2c30d5370923b1e1f838eb8e810582f0df453b70a1d6fe8d874dd66",
+    "starport-workspace-manifest-race.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starport-workspace-manifest-race.jsonl.gz": "46616d78bf375411ecdd606c39dc04b420e2b9ddb993945e951cfb3695677448",
+    "starport-workspace-manifest-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "starport-workspace-manifest-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "canonical-csp8-workspace-manifest-authored-prose-final.log.gz": "56793d83f0aad87b904045acc83917bad4d29df6d9b1d37a701aa1111aec8f92",
+    "canonical-csp8-workspace-manifest-authored-prose-final.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "canonical-csp8-workspace-manifest-full-prose-final.log.gz": "bec74088dcc4de14ed39184eb9324a501da8a3f1186e9f1194fc378c0e157c8b",
+    "canonical-csp8-workspace-manifest-full-prose-final.exit.gz": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "canonical-csp8-workspace-manifest-structure.log.gz": "3419e167d27839db19b931e6766990bd1a22f6fecf2f8c7a4dc2c3286ff4e7e6",
+    "canonical-csp8-workspace-manifest-structure.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  }
+}

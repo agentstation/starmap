@@ -1,0 +1,13 @@
+{
+  "task": "CSP6",
+  "completion_credit": false,
+  "head": "985331d94bd79da8b4e850f2b30c1749dd065e2a",
+  "run_id": 35106388733,
+  "job_id": 104828591741,
+  "job_url": "https://github.com/agentstation/starmap/actions/runs/35106388733/job/104828591741",
+  "conclusion": "failure",
+  "cause": "Generated API documentation does not match current Go declarations. make docs-check fails after package, race, lint, restriction, and coverage checks.",
+  "raw_log": "verification-gate-35106388733.log.gz",
+  "raw_uncompressed_sha256": "c599cbbf165ec42ff37cd090d857f5df5cbf3c42c8f5e59de2732299c388e851",
+  "repair": "Regenerate pkg/catalogs/README.md and runtime/README.md with make godoc. Verify docs and prose, commit, run pre-PR review, push, and require all CI checks before merge."
+}

@@ -1,0 +1,39 @@
+{
+  "task": "CSP8",
+  "completion_credit": false,
+  "source_commit": "7b59be6ece0768871cd9b60ca556e9530941e05d",
+  "behavior": "Configured-storage initialization refuses implicit legacy path moves before database creation or gateway key generation.",
+  "checks": {
+    "legacy-configured-init-before": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "exit": 1
+    },
+    "legacy-configured-init-lint": {
+      "exit": 0
+    },
+    "legacy-configured-init-race": {
+      "pass": 21,
+      "fail": 0,
+      "skip": 0,
+      "exit": 0
+    }
+  },
+  "sources": {
+    "cmd/starport/run.go": "e720407ed617cf0782a0e439b9d23c9c071b0fede50159c5778ba12935eab4fa",
+    "cmd/starport/legacy_paths_test.go": "269c9406757abd8a72f62d0a5253be55c9df9caf6a9d7e89e9f9cbd6daa065c4"
+  },
+  "artifacts_uncompressed_sha256": {
+    "legacy-configured-init-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "legacy-configured-init-before.jsonl.gz": "69ac0046eca6c0071dcd70e22a7e754fcab063b76fa60ae0e0c02e57b745255b",
+    "legacy-configured-init-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-configured-init-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "legacy-configured-init-race.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "legacy-configured-init-race.jsonl.gz": "5f1bf2055ead5b6286354ca38221d68872ca0dc36b1a484ca50bb22626d91ffb"
+  },
+  "commands": {
+    "race": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json -count=1 ./cmd/starport (bounded timeout)",
+    "lint": "GOWORK=/tmp/starport-csp8-files.work golangci-lint run ./cmd/starport/..."
+  }
+}

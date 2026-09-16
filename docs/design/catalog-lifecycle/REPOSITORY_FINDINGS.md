@@ -3181,3 +3181,18 @@ Startup and initialization now refuse before these writes. Explicit selectors re
 The [legacy path proof](../../plans/proof/starport-production-catalog/csp8/legacy-paths-2026-09-16/verification.json) records 551 passing race events and one optional Valkey skip.
 Final source passes 67 focused events. Diagnostics report previous locations without opening databases or reading their contents.
 Runtime migration, completed-receipt adoption, and native qualification remain open under CSP8.
+
+## Shared workspace file inventory, 2026-09-16
+
+Starmap `e8104b5f3b65058da3f05f648259d29ae139b5d8` exposes the canonical workspace inventory through `productpaths.WorkspaceFiles`.
+Starport `32f40b40afc85530e389b45a9ad8b018cf84a926` consumes it for adjacent receipts, journals, locks, staging, and backup files.
+The [proof](../../plans/proof/starport-production-catalog/csp8/workspace-manifest-2026-09-16/verification.json) records 373 passing Starport race events and 92 minimum-Go Starmap events.
+Inspection preserves selected origins and access classes. It excludes neighboring workspaces and file contents.
+Full producer verification, native Starport inspection, dependency publication, required review, and merge remain open.
+
+## Configured initialization upgrade guard, 2026-09-16
+
+Starport `7b59be6ece0768871cd9b60ca556e9530941e05d` extends the upgrade check to `starport init --configured-storage`.
+The failing regression created a gateway key and a new store while recognized legacy data remained.
+The command now refuses before those writes. The old store remains unchanged.
+The [proof](../../plans/proof/starport-production-catalog/csp8/legacy-paths-2026-09-16/configured-init-verification.json) records 21 passing race events and a clean command-package lint check.
