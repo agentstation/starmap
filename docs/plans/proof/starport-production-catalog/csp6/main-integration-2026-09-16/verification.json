@@ -87,8 +87,10 @@
     "push": "PASS",
     "pull_request": "https://github.com/agentstation/starmap/pull/160",
     "head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
-    "draft": true,
-    "body_updated": true
+    "draft": false,
+    "body_updated": true,
+    "ready_for_review_at": "2026-09-16T06:54:50.394774+00:00",
+    "ready_command": "gh pr ready 160 --repo agentstation/starmap"
   },
   "integrated_ci": {
     "observed_at": "2026-09-16T06:53:27.145154+00:00",
