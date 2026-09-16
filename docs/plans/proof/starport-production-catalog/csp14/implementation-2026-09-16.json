@@ -1,7 +1,7 @@
 {
   "task": "CSP14",
   "status": "in_progress",
-  "recorded_at": "2026-09-16T05:44:06.257938+00:00",
+  "recorded_at": "2026-09-16T05:49:49.145246+00:00",
   "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
   "branch": "codex/starmap-server-administration",
   "head": "e7c129e8a93de6c61af3d7ec05efb8c61ef330ad",
@@ -115,6 +115,13 @@
       "passed_test_events": 15,
       "failed_events": [],
       "passed_packages": 1
+    },
+    "minimum-managed.jsonl": {
+      "toolchain": "go1.25.12",
+      "passed_test_events": 94,
+      "passed_packages": 2,
+      "skips": 0,
+      "failed_events": []
     }
   },
   "static_checks": {
@@ -212,16 +219,22 @@
     },
     "linux_task_managed": {
       "session": 73077,
-      "status": "in_progress",
+      "status": "PASS",
       "source_commit": "e7c129e8a93de6c61af3d7ec05efb8c61ef330ad",
       "container": "starmap-csp14-native-20260916",
       "command": "go test -race -count=1 -timeout 5m -json ./internal/server/... ./server ./internal/cli/commands/serve",
       "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-task-managed.jsonl",
-      "stderr": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-task-managed.stderr"
+      "stderr": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/linux-task-managed.stderr",
+      "exit_status": 0,
+      "passed_test_events": 364,
+      "passed_packages": 11,
+      "skips": 0,
+      "container_exit_status": 0,
+      "cleanup": "Removed the stopped task-owned container and source archive after evidence capture."
     }
   },
   "remaining": [
-    "Finish full repository and native task checks.",
+    "Finish the full repository gate (session 26217).",
     "Complete required review of committed source against origin/main.",
     "Push and create PR, qualify native administration on six runners.",
     "Merge after required checks and record actual merge before CSP14 completion."
@@ -254,7 +267,7 @@
   },
   "work_commit": "5e9167c15",
   "clean_worktree": true,
-  "fixture_resolution": "Restored the original durable restart fixture. The five-minute task deadline remains unchanged. Native Linux task qualification and full macOS repository verification continue.",
+  "fixture_resolution": "The original durable restart fixture remains unchanged. The complete Linux task command passes within five minutes. The managed cascade setup now proves authenticated relays.",
   "manual_audit_repair": {
     "commit": "bc2d88727",
     "issue": "Go server composition also needs managed readers for an internal authority. The CLI alone previously enforced this.",
