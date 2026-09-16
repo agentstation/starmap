@@ -75,6 +75,9 @@ func (p promotionStager) stage(path, releasePath string) (promotionReport, error
 	if err := writeStagedPromotionManifest(candidate, bootstrap); err != nil {
 		return promotionReport{}, err
 	}
+	if err := writeStagedPromotionMetadata(candidate, catalogs.BootstrapGenerationManifestFilename, generation.Manifest); err != nil {
+		return promotionReport{}, err
+	}
 	report, err := verifyPromotionDirectory(candidate, releasePath)
 	if err != nil {
 		return promotionReport{}, err
@@ -100,7 +103,11 @@ func (p promotionStager) stage(path, releasePath string) (promotionReport, error
 }
 
 func writeStagedPromotionManifest(path string, bootstrap catalogs.BootstrapManifest) error {
-	data, err := json.MarshalIndent(bootstrap, "", "  ")
+	return writeStagedPromotionMetadata(path, "generation.json", bootstrap)
+}
+
+func writeStagedPromotionMetadata(path, name string, value any) error {
+	data, err := json.MarshalIndent(value, "", "  ")
 	if err != nil {
 		return err
 	}
@@ -109,7 +116,7 @@ func writeStagedPromotionManifest(path string, bootstrap catalogs.BootstrapManif
 		return err
 	}
 	defer func() { _ = root.Close() }()
-	file, err := root.OpenFile("generation.json", os.O_WRONLY|os.O_CREATE|os.O_EXCL, constants.FilePermissions)
+	file, err := root.OpenFile(name, os.O_WRONLY|os.O_CREATE|os.O_EXCL, constants.FilePermissions)
 	if err != nil {
 		return err
 	}

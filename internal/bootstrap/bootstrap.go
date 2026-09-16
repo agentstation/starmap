@@ -2,6 +2,7 @@
 package bootstrap
 
 import (
+	stderrors "errors"
 	"io/fs"
 	"sync"
 
@@ -112,9 +113,24 @@ func buildEmbeddedGeneration() (catalogs.Generation, error) {
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
+	catalogFS, err := fs.Sub(embedded.FS, "catalog")
+	if err != nil {
+		return catalogs.Generation{}, err
+	}
+	return buildGeneration(catalogFS, catalog, bootstrapManifest)
+}
+
+func buildGeneration(catalogFS fs.FS, catalog *catalogs.Catalog, bootstrapManifest catalogs.BootstrapManifest) (catalogs.Generation, error) {
 	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		return catalogs.Generation{}, err
+	}
+	data, err := fs.ReadFile(catalogFS, catalogs.BootstrapGenerationManifestFilename)
+	if err == nil {
+		return catalogs.DecodeBootstrapGeneration(bootstrapManifest, payload, data)
+	}
+	if !stderrors.Is(err, fs.ErrNotExist) {
+		return catalogs.Generation{}, errors.WrapIO("read", catalogs.BootstrapGenerationManifestFilename, err)
 	}
 	manifest := catalogs.GenerationManifest{
 		ManifestVersion: catalogs.CurrentGenerationManifestVersion,
@@ -151,7 +167,7 @@ func buildEmbeddedGeneration() (catalogs.Generation, error) {
 		},
 	}
 	generation := catalogs.Generation{Manifest: manifest, Payload: payload}
-	if err := generation.Validate(); err != nil {
+	if _, err := catalogs.DecodeCatalogGeneration(generation); err != nil {
 		return catalogs.Generation{}, err
 	}
 	return generation, nil

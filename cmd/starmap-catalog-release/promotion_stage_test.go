@@ -7,10 +7,12 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/internal/filepublish"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/artifact"
 	"github.com/agentstation/starmap/pkg/errors"
 )
@@ -33,6 +35,14 @@ func TestArtifactReleaseCommandStagesExactPromotion(t *testing.T) {
 	verified, err := verifyPromotionDirectory(target, releasePath)
 	if err != nil || verified != report {
 		t.Fatalf("staged catalog differs from the release: %+v, %v", verified, err)
+	}
+	data, err := os.ReadFile(filepath.Join(target, catalogs.BootstrapGenerationManifestFilename))
+	if err != nil {
+		t.Fatal(err)
+	}
+	committed, err := catalogs.ParseGenerationManifestJSON(data)
+	if err != nil || !reflect.DeepEqual(committed, generation.Manifest) {
+		t.Fatalf("staging lost original generation evidence: %v", err)
 	}
 	manifestPath := filepath.Join(target, "generation.json")
 	before, err := os.Stat(manifestPath)

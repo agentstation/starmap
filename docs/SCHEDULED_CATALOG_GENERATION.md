@@ -42,6 +42,14 @@ Publication completes only after both channels select the intended catalog and t
 A public release alone does not change the accepted catalog.
 A source checkout contains the latest completed default-branch promotion. Existing binaries and pinned modules retain their embedded bytes until rebuilt.
 
+Promotion retains the complete accepted manifest in `internal/embedded/catalog/generation-manifest.json` beside the bootstrap summary in `generation.json`.
+Bootstrap verifies both identities and preserves the original source observations, membership evidence, reviews, and degraded status.
+Missing or mismatched evidence blocks activation. Catalogs without promoted metadata retain the legacy embedded bootstrap path when they contain no provider membership scopes.
+
+The manifest command preserves this evidence when the catalog bytes remain unchanged.
+Changed promoted catalogs require `--generation-store` with their newly committed generation.
+The command refuses to invent source evidence for edited bytes.
+
 The checkpoint retains the original authored baseline separately from acquired results.
 After a manual catalog edit, the publisher applies changed fields and explicit removals to that baseline.
 Unchanged acquired fields and unresolved source reviews remain source-owned. An explicit source removal can still remove them.

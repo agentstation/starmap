@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"reflect"
+	"slices"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -147,10 +149,35 @@ func TestPublicPublicationProfileRetainsBoundedState(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if len(after.MembershipScopes()) != 12 {
-			t.Fatal("checkpoint lost a configured public provider scope")
-		}
+		assertPublicCapacityScopes(t, catalog, after)
 		t.Logf("run=%d scopes=%d inputs=%d checkpoint_bytes=%d catalog_bytes=%d reused=%t", step+1, len(profile.Scopes), len(state.history), len(checkpoint.Data), len(state.Generation().Payload), prepared.ReusedArtifact)
+	}
+}
+
+func assertPublicCapacityScopes(t *testing.T, baseline, current *catalogs.Catalog) {
+	t.Helper()
+	scopes := current.MembershipScopes()
+	owned := 0
+	for _, scope := range scopes {
+		if scope.PublisherID == "public-capacity" {
+			owned++
+		}
+	}
+	if owned != 12 {
+		t.Fatalf("checkpoint retained %d configured public provider scopes; want 12", owned)
+	}
+	retained := 0
+	for _, prior := range baseline.MembershipScopes() {
+		if prior.PublisherID == "public-capacity" {
+			continue
+		}
+		retained++
+		if !slices.ContainsFunc(scopes, func(scope catalogs.ProviderMembershipScope) bool { return reflect.DeepEqual(scope, prior) }) {
+			t.Fatal("checkpoint lost or changed a baseline publisher scope")
+		}
+	}
+	if len(scopes) != owned+retained {
+		t.Fatal("checkpoint introduced an undeclared publisher scope")
 	}
 }
 

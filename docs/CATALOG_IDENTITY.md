@@ -132,6 +132,10 @@ Catalog schema 9 transports `canonical_aliases` and alias removal targets. Earli
 ## Membership records in YAML workspaces
 
 `membership-scopes.yaml` preserves accepted provider membership records during catalog projection and release promotion.
+
+Promoted embedded catalogs also retain `generation-manifest.json` with the complete accepted generation manifest.
+The bootstrap summary in `generation.json` must match its identity and payload descriptor.
+Source observations remain available to validate membership records after compilation.
 Each record retains its publisher, binding revision, provider, scope selectors, inventory, and later presence observations.
 An absent inventory means unknown membership. An explicit empty inventory means known absence within that scope.
 

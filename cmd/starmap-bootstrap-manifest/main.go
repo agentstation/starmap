@@ -13,11 +13,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/agentstation/starmap/internal/bootstrap/manifest"
 	"github.com/agentstation/starmap/internal/catalog/workspace"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs"
-	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	"github.com/agentstation/starmap/pkg/errors"
 )
 
@@ -66,41 +64,7 @@ func run(args []string, output io.Writer, now time.Time) error {
 	if err != nil {
 		return err
 	}
-	var bootstrapManifest catalogs.BootstrapManifest
-	var report manifest.Report
-	if *generationStorePath == "" {
-		bootstrapManifest, report, err = manifest.Derive(catalog, current, now)
-	} else {
-		store, storeErr := storage.NewFilesystem(*generationStorePath)
-		if storeErr != nil {
-			return storeErr
-		}
-		generation, currentErr := store.Current(context.Background())
-		if currentErr != nil {
-			if !errors.IsNotFound(currentErr) {
-				return errors.WrapResource(
-					"read",
-					"committed catalog generation",
-					*generationStorePath,
-					currentErr,
-				)
-			}
-			bootstrapManifest, report, err = manifest.Derive(catalog, current, now)
-			if err == nil && report.Changed {
-				return &errors.ValidationError{
-					Field:   "bootstrap_manifest.committed_generation",
-					Value:   *generationStorePath,
-					Message: "changed catalog has no committed generation",
-				}
-			}
-		} else {
-			bootstrapManifest, report, err = manifest.DeriveCommitted(
-				catalog,
-				generation,
-				current,
-			)
-		}
-	}
+	bootstrapManifest, report, committed, err := deriveMetadata(catalog, *catalogDir, *generationStorePath, current, now)
 	if err != nil {
 		return err
 	}
@@ -113,6 +77,9 @@ func run(args []string, output io.Writer, now time.Time) error {
 		if err != nil {
 			return err
 		}
+	}
+	if err := writeCommittedMetadata(*manifestPath, committed); err != nil {
+		return err
 	}
 	if report.Changed {
 		data, marshalErr := json.MarshalIndent(bootstrapManifest, "", "  ")

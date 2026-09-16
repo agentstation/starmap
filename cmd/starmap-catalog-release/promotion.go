@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -57,7 +58,10 @@ func verifyPromotionDirectory(catalogPath, releasePath string) (promotionReport,
 		if err != nil {
 			return err
 		}
-		return verifyPromotionMetadata(catalogPath, catalog, expected)
+		if err := verifyPromotionMetadata(catalogPath, catalog, expected); err != nil {
+			return err
+		}
+		return verifyPromotionEvidence(catalogPath, generation, expected)
 	})
 	if err != nil {
 		return promotionReport{}, err
@@ -67,6 +71,30 @@ func verifyPromotionDirectory(catalogPath, releasePath string) (promotionReport,
 		PayloadChecksum: expected.Payload.Checksum, ArchiveChecksum: release.archiveChecksum,
 		CatalogDirectory: catalogPath, ReleaseDirectory: release.directory,
 	}, nil
+}
+
+func verifyPromotionEvidence(path string, expected catalogs.Generation, bootstrap catalogs.BootstrapManifest) error {
+	name := filepath.Join(path, catalogs.BootstrapGenerationManifestFilename)
+	data, err := os.ReadFile(name) //nolint:gosec // Explicit repository input under the workspace read guard.
+	if err != nil {
+		return errors.WrapIO("read", name, err)
+	}
+	actual, err := catalogs.DecodeBootstrapGeneration(bootstrap, expected.Payload, data)
+	if err != nil {
+		return err
+	}
+	want, err := json.Marshal(expected.Manifest)
+	if err != nil {
+		return err
+	}
+	got, err := json.Marshal(actual.Manifest)
+	if err != nil {
+		return err
+	}
+	if !bytes.Equal(got, want) {
+		return &errors.ValidationError{Field: "catalog_release.promotion_evidence", Message: "does not preserve the exact published generation manifest"}
+	}
+	return nil
 }
 
 func verifyPromotionMetadata(path string, catalog *catalogs.Catalog, expected catalogs.BootstrapManifest) error {

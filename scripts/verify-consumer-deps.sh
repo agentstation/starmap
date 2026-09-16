@@ -32,6 +32,12 @@ esac
 SERVER_MAX_PACKAGES=260
 REMOTE_MAX_PACKAGES=240
 SERVER_STORAGE_MAX_PACKAGES=350
+# These totals include standard-library and native macOS loader packages.
+# The unchanged baseline reaches these maxima with Go 1.26.6, amd64, and cgo.
+if [ "$(go env GOOS)" = "darwin" ]; then
+	REMOTE_MAX_PACKAGES=242
+	SERVER_STORAGE_MAX_PACKAGES=354
+fi
 DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-deps.XXXXXX")"
 NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-non-standard-deps.XXXXXX")"
 STORE_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-store-consumer-deps.XXXXXX")"
