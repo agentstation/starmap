@@ -139,8 +139,10 @@ func (h *Handlers) HandleOperationStatus(
 			if authenticated {
 				receipt, err := h.administration.Operation(actor, id)
 				if err == nil {
-					response.OK(w, receipt)
-					return
+					if status, accepted := retainedOperationStatus(receipt); accepted {
+						response.OK(w, status)
+						return
+					}
 				}
 			}
 		}
@@ -150,6 +152,30 @@ func (h *Handlers) HandleOperationStatus(
 		return
 	}
 	response.OK(w, status)
+}
+
+// retainedOperationStatus preserves the acquisition response contract after restart or eviction.
+// An interrupted receipt reports terminal failure without inventing a provider result.
+func retainedOperationStatus(receipt administration.Receipt) (operations.Status, bool) {
+	if receipt.Action != administration.RefreshCatalog {
+		return operations.Status{}, false
+	}
+	var state operations.State
+	switch receipt.State {
+	case administration.Accepted:
+		state = operations.StateAccepted
+	case administration.Succeeded:
+		state = operations.StateSucceeded
+	case administration.Failed, administration.Interrupted:
+		state = operations.StateFailed
+	default:
+		return operations.Status{}, false
+	}
+	return operations.Status{
+		ID: receipt.ID, Kind: operations.KindCatalogUpdate, State: state,
+		AcceptedAt: receipt.AcceptedAt, CompletedAt: receipt.CompletedAt,
+		Detail: map[string]any{"retained_receipt": receipt},
+	}, true
 }
 
 // HandleOperationCancel handles DELETE /api/v1/updates/{id}.

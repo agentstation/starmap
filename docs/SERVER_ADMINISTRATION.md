@@ -120,6 +120,11 @@ outcome fails. Restart can prove an identity outcome from its recorded content
 digests. An unproved acquisition outcome becomes `interrupted` and never replays
 automatically.
 
+The update-status route preserves its operation response format after restart.
+An interrupted receipt reports terminal `failed` status. The
+`detail.retained_receipt` field preserves the durable outcome and its recorded times.
+Live execution details, including cancellation classification, remain process-local.
+
 Keep identities, audit history, receipts, and accepted catalog authority together
 in a consistent offline backup. Do not copy a live administration directory between
 writers or share it between processes.

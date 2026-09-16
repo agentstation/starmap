@@ -94,6 +94,12 @@ caller then polls `GET /api/v1/updates/{id}` and can stop the run with
 `DELETE /api/v1/updates/{id}`. The status detail carries bounded counts and
 identities only, never provider message text.
 
+After restart or memory eviction, the same status response carries the retained
+operation ID, kind, acceptance time, and completion time. Its
+`detail.retained_receipt` carries the durable audit outcome. An interrupted receipt
+reports terminal `failed` status and retains `interrupted` in that receipt.
+Live execution details, including cancellation classification, remain process-local.
+
 Model/list responses carry `X-Starmap-Generation-ID`, so a caller can associate
 derived results with the immutable catalog generation used to produce them.
 The OpenRouter routes are server-local projections over the same catalog. They
