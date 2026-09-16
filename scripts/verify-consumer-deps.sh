@@ -32,6 +32,11 @@ esac
 SERVER_MAX_PACKAGES=260
 REMOTE_MAX_PACKAGES=240
 SERVER_STORAGE_MAX_PACKAGES=350
+# macOS native ACL support imports purego, including its platform-specific loader.
+# The baseline consumer already uses 351-353 packages across architecture and cgo choices.
+if [ "$(go env GOOS)" = "darwin" ]; then
+	SERVER_STORAGE_MAX_PACKAGES=353
+fi
 DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-deps.XXXXXX")"
 NON_STANDARD_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-consumer-non-standard-deps.XXXXXX")"
 STORE_DEPS="$(mktemp "${TMPDIR:-/tmp}/starmap-store-consumer-deps.XXXXXX")"
