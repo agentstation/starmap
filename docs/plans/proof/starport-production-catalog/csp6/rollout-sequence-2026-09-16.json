@@ -1,0 +1,35 @@
+{
+  "task": "CSP6",
+  "recorded_at": "2026-09-16T06:51:32.409764+00:00",
+  "source_commit": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
+  "classification": "Correct an execution-order contradiction. Product acceptance requirements remain unchanged.",
+  "wrong_resume_instruction": "Do not merge CSP6 before the three hosted acceptance subcases.",
+  "evidence": {
+    "workflow_main_only": ".github/workflows/catalog-generation.yaml: generate job requires refs/heads/main.",
+    "provenance_main_only": "scripts/catalog_publication.py: Publisher.attest requires --source-ref refs/heads/main.",
+    "existing_rollout_owner": "csp6/verification-gate-repair-2026-09-15/verification.json records: Merge and qualify controlled hosted publication.",
+    "task_acceptance": "The CSP6 contract requires complete A05 evidence for task completion. It does not require hosted execution from a PR branch.",
+    "owner_authorization": "csp6/acquisition-diagnostics-2026-09-14/owner-decisions.json records authorized App setup and controlled public publication after required checks.",
+    "private_key_secret_present": false,
+    "preflight_order": "The workflow rejects absent App configuration before acquisition or public writes."
+  },
+  "sequence": [
+    "Complete required review and every required CI check for the exact PR head.",
+    "Merge the reviewed publisher implementation and verify the merged tree.",
+    "Retain the missing-key guard until the user supplies the App private key and the controlled hosted run is ready.",
+    "Configure the authorized secret from the user-created file without exposing its contents.",
+    "Run controlled publication on main. Verify App check identities, every required failure boundary, and retries using identical bytes.",
+    "Register and pass the remaining three A05 adapters. Mark CSP6 done only after this evidence and the actual merge."
+  ],
+  "requirements_preserved": [
+    "A05.bot_required_checks",
+    "A05.each_publication_failure",
+    "A05.same_bytes_retry"
+  ],
+  "source_files": {
+    ".github/workflows/catalog-generation.yaml": "13f3dd79fba6bf4e43ca5d0ad4bb322eadfdf1e19b6b1400a7021345e51baf03",
+    "scripts/catalog_publication.py": "8ee3862f18fea6b24b96e346c9fdf7b9c4e3347fc5f1ec6d3fd5612154e99ac6",
+    "docs/SCHEDULED_CATALOG_GENERATION.md": "4c938537511ddc2de1a329c3aa38a0fbfae605db7128e10a19446cd37ca92d2a"
+  },
+  "completion_credit": false
+}

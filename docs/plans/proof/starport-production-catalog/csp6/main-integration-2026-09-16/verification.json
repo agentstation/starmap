@@ -30,9 +30,9 @@
     }
   },
   "remaining": [
-    "Receive the user-created App key and set the repository secret.",
-    "Complete fresh CI and three controlled hosted acceptance cases.",
-    "Merge after required checks and record the actual merge."
+    "Finish fresh CI and merge the reviewed implementation after required checks.",
+    "Receive the user-created App key and configure the secret when the controlled hosted run is ready.",
+    "Qualify the three hosted acceptance cases on main, register their verification adapters, and record task completion."
   ],
   "completion_credit": false,
   "running": {
@@ -91,11 +91,11 @@
     "body_updated": true
   },
   "integrated_ci": {
-    "observed_at": "2026-09-16T06:41:03.944237+00:00",
+    "observed_at": "2026-09-16T06:53:27.145154+00:00",
     "head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
     "counts": {
-      "SUCCESS": 12,
-      "IN_PROGRESS": 7
+      "SUCCESS": 15,
+      "IN_PROGRESS": 4
     },
     "status": "in_progress"
   },
@@ -130,5 +130,6 @@
       "sha256": "e14b808efa14a0b81f6e87e1ee6354d13cd9d7d2e44103e59d2f7cbf14da8a7b",
       "decoded_sha256": "73a84c15e3905cfb89e35453cad49fdb15acb018229d85468e6aaa1dd823d0b3"
     }
-  ]
+  ],
+  "rollout_sequence_correction": "../rollout-sequence-2026-09-16.json"
 }
