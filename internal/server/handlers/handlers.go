@@ -9,10 +9,12 @@ import (
 	"github.com/agentstation/starmap/internal/server/cache"
 	"github.com/agentstation/starmap/internal/server/operations"
 	"github.com/agentstation/starmap/internal/server/sse"
+	"github.com/agentstation/starmap/server/administration"
 )
 
 // Handlers provides access to all HTTP handlers.
 type Handlers struct {
+	administration *administration.Manager
 	app            application
 	cache          *cache.Cache
 	sseBroadcaster *sse.Broadcaster
@@ -39,8 +41,9 @@ func New(
 	operationRegistry *operations.Registry,
 	logger *zerolog.Logger,
 	startTime time.Time,
+	options ...Option,
 ) *Handlers {
-	return &Handlers{
+	handler := &Handlers{
 		app:            app,
 		cache:          cache,
 		sseBroadcaster: sseBroadcaster,
@@ -48,4 +51,18 @@ func New(
 		logger:         logger,
 		startTime:      startTime,
 	}
+	for _, option := range options {
+		if option != nil {
+			option(handler)
+		}
+	}
+	return handler
+}
+
+// Option supplies an explicit handler capability.
+type Option func(*Handlers)
+
+// WithAdministration supplies durable administrative audit and receipt storage.
+func WithAdministration(manager *administration.Manager) Option {
+	return func(handler *Handlers) { handler.administration = manager }
 }

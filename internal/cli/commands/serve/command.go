@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -15,14 +16,20 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
 	"github.com/agentstation/starmap/internal/cli/emoji"
+	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
+	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/runtime"
 	"github.com/agentstation/starmap/server"
+	"github.com/agentstation/starmap/server/administration"
 )
 
 type application interface {
 	Runtime(context.Context, ...runtime.Option) (*runtime.Runtime, error)
 	Logger() *zerolog.Logger
 	CatalogAcquisition(*starmap.Client) (*acquisition.Syncer, error)
+	AdministrationConfig() (administration.Config, error)
+	ConfigurationReports() (*administration.Reports, error)
+	CatalogSettings() catalogconfig.Config
 }
 
 // NewCommand creates the serve command using app context.
@@ -106,7 +113,39 @@ comprehensive filtering, search, and real-time notification capabilities.`,
 // runServer starts the API server.
 func runServer(cmd *cobra.Command, _ []string, app application) error {
 	// Parse flags into configuration
-	cfg := parseConfig(cmd)
+	cfg, err := parseConfig(cmd)
+	if err != nil {
+		return err
+	}
+	administrationConfig, err := app.AdministrationConfig()
+	if err != nil {
+		return err
+	}
+	var manager *administration.Manager
+	if _, err := os.Lstat(filepath.Join(administrationConfig.StateDirectory, "admin")); err == nil {
+		manager, err = administration.Open(cmd.Context(), administrationConfig)
+		if err != nil {
+			return err
+		}
+		defer func() { _ = manager.Close() }()
+	} else if !os.IsNotExist(err) {
+		return err
+	}
+	settings := app.CatalogSettings()
+	if manager == nil && (settings.AuthorityOrigin.Enabled || settings.SourceKind == runtime.SourceStarmap) {
+		return &errors.ConfigError{Component: "server administration", Message: "initialize private subscriber and administrator identities with starmap admin init before serving an internal catalog"}
+	}
+	if manager != nil {
+		cfg.AuthEnabled = true
+	}
+	reports, err := app.ConfigurationReports()
+	if err != nil {
+		return err
+	}
+	serverOptions := []server.Option{server.WithConfigurationReports(reports)}
+	if manager != nil {
+		serverOptions = append(serverOptions, server.WithAdministration(manager, administrationConfig.Audience))
+	}
 	logger := app.Logger()
 
 	logger.Debug().Msg("Parsed server configuration")
@@ -142,9 +181,7 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 	srv, err := server.New(
 		connected.Client(),
 		cfg,
-		server.WithLogger(logger),
-		server.WithRuntime(connected),
-		server.WithSyncer(syncer),
+		append(serverOptions, server.WithLogger(logger), server.WithRuntime(connected), server.WithSyncer(syncer))...,
 	)
 	if err != nil {
 		return fmt.Errorf("creating server: %w", err)
@@ -186,7 +223,7 @@ func runServer(cmd *cobra.Command, _ []string, app application) error {
 }
 
 // parseConfig parses command flags into server configuration.
-func parseConfig(cmd *cobra.Command) server.Config {
+func parseConfig(cmd *cobra.Command) (server.Config, error) {
 	port := mustGetInt(cmd, "port")
 	host := mustGetString(cmd, "host")
 	corsEnabled := mustGetBool(cmd, "cors")
@@ -206,14 +243,21 @@ func parseConfig(cmd *cobra.Command) server.Config {
 	metricsEnabled := mustGetBool(cmd, "metrics")
 	pathPrefix := mustGetString(cmd, "prefix")
 
-	// Override with environment variables
-	if envPort := os.Getenv("HTTP_PORT"); envPort != "" {
-		if p, err := parsePort(envPort); err == nil {
-			port = p
-		}
+	var err error
+	host, err = listenerEnvironment(cmd, "host", "STARMAP_SERVER_HOST", "HTTP_HOST", host)
+	if err != nil {
+		return server.Config{}, err
 	}
-	if envHost := os.Getenv("HTTP_HOST"); envHost != "" {
-		host = envHost
+	portValue, err := listenerEnvironment(cmd, "port", "STARMAP_SERVER_PORT", "HTTP_PORT", strconv.Itoa(port))
+	if err != nil {
+		return server.Config{}, err
+	}
+	port, err = parsePort(portValue)
+	if err != nil {
+		return server.Config{}, &errors.ValidationError{Field: "server.port", Message: "requires a valid TCP port"}
+	}
+	if host == "" {
+		return server.Config{}, &errors.ValidationError{Field: "server.host", Message: "requires an explicit bind address"}
 	}
 
 	return server.Config{
@@ -232,7 +276,7 @@ func parseConfig(cmd *cobra.Command) server.Config {
 		SSEHeartbeatInterval: sseHeartbeatInterval,
 		SSEWriteTimeout:      sseWriteTimeout,
 		MetricsEnabled:       metricsEnabled,
-	}
+	}, nil
 }
 
 // parsePort safely parses a port string to integer.
@@ -346,4 +390,26 @@ func mustGetDuration(cmd *cobra.Command, name string) time.Duration {
 		panic(fmt.Sprintf("programming error: failed to get flag %q: %v", name, err))
 	}
 	return val
+}
+
+// listenerEnvironment preserves explicit flags and diagnoses conflicting listener variables.
+func listenerEnvironment(cmd *cobra.Command, flag, primary, legacy, fallback string) (string, error) {
+	selected, primaryPresent := os.LookupEnv(primary)
+	old, legacyPresent := os.LookupEnv(legacy)
+	if legacyPresent {
+		cmd.PrintErrln(legacy + " is deprecated; use " + primary + " or --" + flag)
+	}
+	if cmd.Flags().Changed(flag) {
+		return fallback, nil
+	}
+	if primaryPresent && legacyPresent && selected != old {
+		return "", &errors.ValidationError{Field: primary, Message: "conflicts with " + legacy + "; remove the legacy variable or set the explicit flag"}
+	}
+	if primaryPresent {
+		return selected, nil
+	}
+	if legacyPresent {
+		return old, nil
+	}
+	return fallback, nil
 }

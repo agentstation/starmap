@@ -903,8 +903,11 @@ defer srv.Shutdown(shutdownCtx)
 
 The public server is read-only by default and does not import provider clients
 or acquisition implementations. To expose `POST /api/v1/update`, explicitly
-compose an `acquisition.Syncer` and pass `server.WithSyncer(syncer)`. This keeps
-ordinary server embedding independent from provider credentials and cloud SDKs.
+compose an `acquisition.Syncer` and pass `server.WithSyncer(syncer)` together with
+`server.WithAdministration(manager, audience)`. Administrator changes use private
+identity state, audit events, and operation receipts. Follow the
+[standalone administration guide](docs/SERVER_ADMINISTRATION.md) for setup,
+rotation, and recovery. Server embedding remains independent from provider credentials and cloud SDKs.
 
 **Features:**
 - **RESTful API**: Models, providers, search endpoints with filtering

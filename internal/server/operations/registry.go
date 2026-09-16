@@ -99,6 +99,18 @@ func NewRegistry(options ...Option) *Registry {
 // Start accepts one operation and runs it in the background. It returns the
 // accepted status, so the caller reports an operation identity at once.
 func (r *Registry) Start(kind Kind, run Run) (Status, error) {
+	id, err := newIdentity()
+	if err != nil {
+		return Status{}, err
+	}
+	return r.StartIdentified(id, kind, run)
+}
+
+// StartIdentified starts an operation whose durable intent already owns its identity.
+func (r *Registry) StartIdentified(id string, kind Kind, run Run) (Status, error) {
+	if id == "" {
+		return Status{}, &errors.ValidationError{Field: "operation.id", Message: "is required"}
+	}
 	if !kind.Valid() {
 		return Status{}, &errors.ValidationError{
 			Field:   "operation.kind",
@@ -111,12 +123,11 @@ func (r *Registry) Start(kind Kind, run Run) (Status, error) {
 			Field: "operation.run", Message: "is required",
 		}
 	}
-	id, err := newIdentity()
-	if err != nil {
-		return Status{}, err
-	}
-
 	r.mu.Lock()
+	if _, exists := r.entries[id]; exists {
+		r.mu.Unlock()
+		return Status{}, &errors.ConflictError{Resource: "operation", Message: "identity already exists"}
+	}
 	if r.closed {
 		r.mu.Unlock()
 		return Status{}, &errors.ConfigError{
@@ -140,12 +151,11 @@ func (r *Registry) Start(kind Kind, run Run) (Status, error) {
 	r.countLocked(kind, StateAccepted, "")
 	r.evictLocked()
 	status := item.status.Copy()
-	r.mu.Unlock()
-
 	r.group.Go(func() {
 		defer cancel()
 		r.execute(ctx, item, run)
 	})
+	r.mu.Unlock()
 	return status, nil
 }
 

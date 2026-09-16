@@ -18,7 +18,7 @@ func TestAdminUpdateReturnsAcceptedOperation(t *testing.T) {
 	t.Run("completes", func(t *testing.T) {
 		release := make(chan struct{})
 		started := make(chan struct{})
-		handlers, registry := newOperationHandlers(t, func(
+		handlers, registry, authorize := newOperationHandlers(t, func(
 			ctx context.Context,
 		) (*pkgsync.Result, error) {
 			close(started)
@@ -33,7 +33,7 @@ func TestAdminUpdateReturnsAcceptedOperation(t *testing.T) {
 			}
 		})
 
-		accepted := postUpdate(t, handlers)
+		accepted := postUpdate(t, handlers, authorize)
 		if accepted.ID == "" {
 			t.Fatal("the accepted operation carried no identity")
 		}
@@ -66,7 +66,7 @@ func TestAdminUpdateReturnsAcceptedOperation(t *testing.T) {
 
 	t.Run("cancels", func(t *testing.T) {
 		started := make(chan struct{})
-		handlers, registry := newOperationHandlers(t, func(
+		handlers, registry, authorize := newOperationHandlers(t, func(
 			ctx context.Context,
 		) (*pkgsync.Result, error) {
 			close(started)
@@ -74,13 +74,13 @@ func TestAdminUpdateReturnsAcceptedOperation(t *testing.T) {
 			return nil, ctx.Err()
 		})
 
-		accepted := postUpdate(t, handlers)
+		accepted := postUpdate(t, handlers, authorize)
 		<-started
 
 		recorder := httptest.NewRecorder()
 		handlers.HandleOperationCancel(
 			recorder,
-			httptest.NewRequest(http.MethodDelete, "/api/v1/updates/"+accepted.ID, nil),
+			authorize(httptest.NewRequest(http.MethodDelete, "/api/v1/updates/"+accepted.ID, nil)),
 			accepted.ID,
 		)
 		if recorder.Code != http.StatusOK {
@@ -98,7 +98,7 @@ func TestAdminUpdateReturnsAcceptedOperation(t *testing.T) {
 	})
 
 	t.Run("reports an unknown operation", func(t *testing.T) {
-		handlers, _ := newOperationHandlers(t, func(
+		handlers, _, _ := newOperationHandlers(t, func(
 			context.Context,
 		) (*pkgsync.Result, error) {
 			return &pkgsync.Result{}, nil
@@ -119,7 +119,7 @@ func TestAdminUpdateReturnsAcceptedOperation(t *testing.T) {
 func newOperationHandlers(
 	t *testing.T,
 	sync func(context.Context) (*pkgsync.Result, error),
-) (*Handlers, *operations.Registry) {
+) (*Handlers, *operations.Registry, func(*http.Request) *http.Request) {
 	t.Helper()
 	registry := operations.NewRegistry()
 	t.Cleanup(func() {
@@ -136,16 +136,16 @@ func newOperationHandlers(
 			return sync(ctx)
 		}},
 	}
-	return handlers, registry
+	return handlers, registry, administratorRequests(t, handlers)
 }
 
 // postUpdate accepts one asynchronous update and returns its status.
-func postUpdate(t *testing.T, handlers *Handlers) operations.Status {
+func postUpdate(t *testing.T, handlers *Handlers, authorize func(*http.Request) *http.Request) operations.Status {
 	t.Helper()
 	recorder := httptest.NewRecorder()
 	handlers.HandleUpdate(
 		recorder,
-		httptest.NewRequest(http.MethodPost, "/api/v1/update", nil),
+		authorize(httptest.NewRequest(http.MethodPost, "/api/v1/update", nil)),
 	)
 	if recorder.Code != http.StatusAccepted {
 		t.Fatalf("status = %d, want 202: %s", recorder.Code, recorder.Body)
@@ -194,13 +194,13 @@ func TestAdminUpdateFreshSelection(t *testing.T) {
 	for _, value := range []string{"true", "false", "invalid"} {
 		t.Run(value, func(t *testing.T) {
 			received := make(chan *pkgsync.Options, 1)
-			handlers, registry := newOperationHandlers(t, func(context.Context) (*pkgsync.Result, error) { return &pkgsync.Result{}, nil })
+			handlers, registry, authorize := newOperationHandlers(t, func(context.Context) (*pkgsync.Result, error) { return &pkgsync.Result{}, nil })
 			handlers.app = &testApplication{SyncFunc: func(_ context.Context, options ...pkgsync.Option) (*pkgsync.Result, error) {
 				received <- pkgsync.Defaults().Apply(options...)
 				return &pkgsync.Result{ResetCount: 1}, nil
 			}}
 			recorder := httptest.NewRecorder()
-			handlers.HandleUpdate(recorder, httptest.NewRequest(http.MethodPost, "/api/v1/update?provider=openai&source=providers&fresh="+value, nil))
+			handlers.HandleUpdate(recorder, authorize(httptest.NewRequest(http.MethodPost, "/api/v1/update?provider=openai&source=providers&fresh="+value, nil)))
 			if value == "invalid" {
 				if recorder.Code != http.StatusBadRequest {
 					t.Fatalf("invalid fresh status = %d", recorder.Code)

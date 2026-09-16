@@ -1844,6 +1844,162 @@
           "test": "TestGenerationPinBindsPermissionToSelectedArtifact"
         }
       ]
+    },
+    "A32.first_admin_bootstrap": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestFirstAdministratorBootstrapAndRestore"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestCLIAdministrationInitializationDoesNotAcquireCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestInternalCatalogServeRequiresInitializedAdministration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestInterruptedFirstAdministratorRecovery"
+        }
+      ]
+    },
+    "A32.subscriber_mutation_denied": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./server",
+      "test": "TestSubscriberCannotStartAdministrativeUpdate"
+    },
+    "A32.rotation_overlap": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestDurableCredentialRotationAndRevocation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server",
+          "test": "TestAdministratorHTTPRotationAndRevocation"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestStreamingCredentialRevocationAndExpiryCancelRequests"
+        }
+      ]
+    },
+    "A32.audit_write_failure": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestAuditFailureRejectsMutationAndPreservesDiagnostics"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestAuditOutcomeFailureRetainsRevocationAndRecovers"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestMissingAuditDirectoryPreservesAuthenticatedDiagnostics"
+        }
+      ]
+    },
+    "A32.receipt_crash_recovery": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestAdministrationProcessCrashRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestReceiptRecoveryNeverReplaysUnknownEffects"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./server/administration",
+          "test": "TestConcurrentAdministrativeMutationsHaveOrderedDurableReceipts"
+        }
+      ]
+    },
+    "A32.authority_restore": {
+      "kind": "go_test",
+      "repository": "starmap",
+      "package": "./runtime",
+      "test": "TestOfflineRestorePreservesAdministrationAndCatalogAuthority"
+    },
+    "A32.cli_effective_report": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestConfigurationReportsCLIAndAdminParityColdAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestConfigurationReportPreservesPresenceStates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/commands/serve",
+          "test": "TestExplicitListenerFlagsOverrideLegacyEnvironment"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/commands/serve",
+          "test": "TestProductListenerEnvironmentAndConflicts"
+        }
+      ]
+    },
+    "A32.admin_effective_report": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestConfigurationReportsCLIAndAdminParityColdAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starmap",
+          "package": "./internal/cli/app",
+          "test": "TestConfigurationReportRedactsURLCredentials"
+        }
+      ]
     }
   },
   "task_component_checks": {

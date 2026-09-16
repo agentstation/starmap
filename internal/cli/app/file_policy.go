@@ -81,10 +81,10 @@ func managedFilePolicy(id string) (productpaths.FilePolicy, error) {
 		policy = makePolicy(workspace, "Workspace projection, validation, or interrupted replacement.", "recovery", "Retain until verified recovery permits cleanup. Preserve changed files and candidates referenced by a replacement journal.")
 	case "migration-journal":
 		policy = makePolicy(append(slices.Clone(state), "migrate runtime --journal-root"), "Explicit runtime migration operations.", "recovery", "Preserve until migration completion and deployment recovery no longer require the operation records.")
-	case "admin-identities":
-		policy = makePolicy(state, "Planned standalone administration setup.", "identity", "A future administration procedure must preserve identity and recovery access before removal.")
+	case "admin-identities", "admin-owner":
+		policy = makePolicy(state, "Standalone administration identities and writer ownership.", "identity", "Preserve identity and recovery access before removal.")
 	case "admin-audit", "admin-operations":
-		policy = makePolicy(state, "Planned standalone administrative audit and operation records.", "audit", "A future qualified retention procedure must satisfy the deployment audit policy before removal.")
+		policy = makePolicy(state, "Standalone administrative audit and operation records.", "audit", "Preserve complete history and operation evidence under the deployment audit policy.")
 	case "download-staging":
 		policy = makePolicy(cache, "Planned catalog download staging.", "recovery", "A future cleanup procedure must exclude active downloads and unprocessed recovery records.")
 	case "file-logs":

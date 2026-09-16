@@ -123,7 +123,8 @@ func TestWebSocketRouteIsAbsent(t *testing.T) {
 	}
 	request := httptest.NewRequest(http.MethodGet, "/api/v1/updates/ws", nil)
 	recorder := httptest.NewRecorder()
-	server.Handler().ServeHTTP(recorder, request)
+	token := administrativeServer(t, server)
+	authenticatedHandler(server.Handler(), token).ServeHTTP(recorder, request)
 	if recorder.Code != http.StatusNotFound {
 		t.Fatalf("WebSocket route status = %d, want %d", recorder.Code, http.StatusNotFound)
 	}

@@ -15,10 +15,14 @@ import (
 	"github.com/agentstation/starmap/internal/server/operations"
 	"github.com/agentstation/starmap/internal/server/sse"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/server/administration"
 )
 
 // Server holds the HTTP server state and dependencies.
 type Server struct {
+	reports        *administration.Reports
+	administration *administration.Manager
+	audience       string
 	app            Application
 	client         *starmap.Client
 	cache          *cache.Cache
@@ -32,8 +36,16 @@ type Server struct {
 	now            func() time.Time
 }
 
+// Option supplies an explicit server capability.
+type Option func(*Server)
+
+// WithAdministration configures the private administrative authority.
+func WithAdministration(manager *administration.Manager, audience string) Option {
+	return func(server *Server) { server.administration, server.audience = manager, audience }
+}
+
 // New creates a new server instance with the given configuration.
-func New(app Application, cfg Config) (*Server, error) {
+func New(app Application, cfg Config, options ...Option) (*Server, error) {
 	logger := app.Logger()
 
 	logger.Debug().Msg("Creating new server instance")
@@ -73,6 +85,12 @@ func New(app Application, cfg Config) (*Server, error) {
 		logger:    logger,
 		config:    cfg,
 		startTime: time.Now(),
+	}
+
+	for _, option := range options {
+		if option != nil {
+			option(server)
+		}
 	}
 
 	// Connect the sole post-commit publication event to SSE.
@@ -156,4 +174,9 @@ func (s *Server) StartTime() time.Time {
 // OperationalHealth returns server, publication, and stream health without I/O.
 func (s *Server) OperationalHealth() OperationalHealth {
 	return s.operationalHealth()
+}
+
+// WithConfigurationReports supplies passive host configuration diagnostics.
+func WithConfigurationReports(reports *administration.Reports) Option {
+	return func(server *Server) { server.reports = reports }
 }
