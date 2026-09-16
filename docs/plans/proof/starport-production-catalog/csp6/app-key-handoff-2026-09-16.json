@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-09-16T12:31:30.766815+00:00",
+  "app_page_authenticated": true,
+  "app_page_private_keys": 0,
+  "matching_starmap_publisher_downloads": 0,
+  "repository_app_secret_names": [],
+  "repository_secret_check": "gh secret list --repo agentstation/starmap --json name --jq filter CATALOG_APP",
+  "action": "Browser tab handed to user for Generate a private key. Save downloaded PEM to the approved repository secret without printing its contents.",
+  "restriction": "Browser credential-creation handoff remains required.",
+  "status": "blocked(app_key_handoff)"
+}
