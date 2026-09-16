@@ -1,0 +1,49 @@
+{
+  "task": "CSP6",
+  "recorded_at": "2026-09-16T05:56:44.822074+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion",
+  "head": "7ae5f9fa39560f0a38ca5fd2596aaa4916a91e9c",
+  "clean_worktree": true,
+  "published_head": "31ab7ea85cf4b7307bd66c9c54ddab9864e2e3ee",
+  "base": "8c35fe8919a93d776e2b1fda48ff164bfe37aeff",
+  "checks": {
+    "generation.log": {
+      "command": "GOTOOLCHAIN=go1.26.6 make catalog-generation-check",
+      "exit_status": 0
+    },
+    "workflow.jsonl": {
+      "command": "GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 5m -json ./internal/ciworkflow",
+      "exit_status": 0,
+      "passed_test_events": 28
+    },
+    "publication.log": {
+      "command": "python3 scripts/test_catalog_publication.py",
+      "exit_status": 0,
+      "tests": 19
+    },
+    "distribution.log": {
+      "command": "CATALOG_DISTRIBUTION_STARPORT_ROOT=/Users/jack/src/github.com/agentstation/starport-catalog-authority-consumer GOTOOLCHAIN=go1.26.6 bash scripts/verify-catalog-distribution.sh",
+      "exit_status": 0,
+      "passed": 68,
+      "failed": 0,
+      "unverified": 0
+    }
+  },
+  "remaining": [
+    "Complete required review before publishing the integrated branch.",
+    "Receive user-created App key and set the repository secret.",
+    "Complete three controlled hosted acceptance cases and merge."
+  ],
+  "completion_credit": false,
+  "running": {
+    "distribution": {
+      "session": 68286,
+      "log": "/Users/jack/src/github.com/agentstation/starmap-catalog-publication-promotion/.tmp/csp6-main-integration/distribution.log",
+      "status": "PASS",
+      "exit_status": 0,
+      "passed": 68,
+      "failed": 0,
+      "unverified": 0
+    }
+  }
+}
