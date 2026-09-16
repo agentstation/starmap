@@ -45,7 +45,15 @@
       "files": 1741,
       "diagnostics": 0
     },
-    "required_review": "Session 20031 is running on committed source after the fixture repair."
+    "required_review": {
+      "status": "PASS",
+      "session": 20031,
+      "sections": 2,
+      "findings": 0,
+      "threshold": "P0",
+      "proof": "implementation-2026-09-16.json",
+      "credential_preflight": "PASS"
+    }
   },
   "artifacts": {
     "secret-preflight-failed.log.gz": "e47e024d344f74b0e0657706953690c4d7975bf0963c5e2893498977bbe941ed",

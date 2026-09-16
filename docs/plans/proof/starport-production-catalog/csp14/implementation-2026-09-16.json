@@ -318,7 +318,7 @@
     },
     "required_review_retry": {
       "session": 20031,
-      "status": "in_progress",
+      "status": "PASS",
       "source_commit": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
       "base_commit": "8c35fe8919a93d776e2b1fda48ff164bfe37aeff",
       "reviewers": [
@@ -327,13 +327,22 @@
       ],
       "threshold": "P0",
       "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/autoreview-fixture-stream.log",
-      "output": "/tmp/starmap-csp14-autoreview.BsAv1R/review-fixture.json"
+      "output": "/tmp/starmap-csp14-autoreview.BsAv1R/review-fixture.json",
+      "exit_status": 0,
+      "sections": 2,
+      "findings": 0,
+      "verdict": {
+        "findings": [],
+        "overall_correctness": "patch is correct",
+        "overall_explanation": "Chunked review complete. chunk 1/2: 0 finding(s), chunk 2/2: 0 finding(s).",
+        "overall_confidence": 0.98
+      }
     }
   },
   "remaining": [
-    "Finish required review session 20031. Keep source unchanged during review.",
-    "Push and open the CSP14 PR after clean review. Qualify all six native runners and required CI.",
-    "Merge after required checks and record actual merged-source evidence before task completion."
+    "Finish native and required CI for PR #163 at 35b44ecaa. Do not restart live jobs solely on an observation timeout.",
+    "After PR #160 merges, verify its tree and integrate main. Resolve the registry conflict with all 68 checks in pending_publisher_integration. Run affected integration checks and required review before pushing the update.",
+    "Merge after required checks and record actual merged-source evidence before CSP14 completion."
   ],
   "dependency": {
     "task": "CSP5",
@@ -452,5 +461,47 @@
     "proof": "url-fixture-repair-2026-09-16.json",
     "source_commit": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
     "production_files_changed": false
+  },
+  "publication": {
+    "observed_at": "2026-09-16T08:41:51.459615+00:00",
+    "push": "PASS",
+    "pull_request": "https://github.com/agentstation/starmap/pull/163",
+    "number": 163,
+    "head": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+    "base": "8c35fe8919a93d776e2b1fda48ff164bfe37aeff",
+    "draft": false,
+    "ready_command": "gh pr ready 163 --repo agentstation/starmap",
+    "ci_run": {
+      "databaseId": 35074970779,
+      "headSha": "35b44ecaa1ccb746a3f64fc47d77e419d582f071",
+      "name": "Pull Request",
+      "status": "in_progress",
+      "url": "https://github.com/agentstation/starmap/actions/runs/35074970779"
+    },
+    "artifacts": {
+      "required-review.json.gz": "0475404e5a69b4c6c1422d9182d59d1593be7c7006c77f3a7cde841321bbb971",
+      "required-review.log.gz": "846305ce781d592b0ea38f6b9db9776ff26b562d6d7b08e9ff6f46874deb8692",
+      "pr-ready.json.gz": "73f2c0bb97136e4238d185be1828a16ddf94142a49bbaa950c16dffe6ad324ef",
+      "ci-initial.json.gz": "4fb7c65b8874d94084f4fce70fbd1045f494f198064395662b826bfae34267eb",
+      "pre-pr-writing-final.log.gz": "a3928e8e34fcf15c7a49c07436135e66396550c0bc80f5c8a5edb5215306e149"
+    }
+  },
+  "pending_publisher_integration": {
+    "status": "UNAPPLIED",
+    "probe_exit_status": 1,
+    "textual_conflict": "scripts/catalog-product-checks.json",
+    "semantic_conflicts": 0,
+    "base_checks": 57,
+    "server_additions": 8,
+    "publisher_additions": 3,
+    "combined_checks": 68,
+    "existing_checks_modified": 0,
+    "proposal": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/combined-checks-proposed.json",
+    "artifacts": {
+      "publisher-integration-probe.log.gz": "2ae5c7ca3cc6ae770d40655973de2ea554193ccbe18152ed9eefeb6ce4a7f8ef",
+      "publisher-integration-proposal.json.gz": "586568de97f9ac5dc1920ce253e3789c618b5d9b3afb203daec8025657ad0fdb",
+      "combined-checks-proposed.json.gz": "7452833e6d571e516180b591973b501a29fe3fc61b2e204ff15b7dc24602c64e"
+    },
+    "condition": "Apply only after PR #160 merges, after verifying its merged tree and the unchanged server head."
   }
 }
