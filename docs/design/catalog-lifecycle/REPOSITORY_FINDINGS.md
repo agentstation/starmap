@@ -3100,3 +3100,21 @@ The helper process case skips in the parent suite and executes twice in child pr
 
 Classification: in-scope CSP5 storage implementation. Shared runtime references, full product qualification, required review, native CI, and merge remain open.
 The fixed object-service fixture does not establish maintained production-service support.
+
+## Starport setup across roots, 2026-09-16
+
+Commit `066cacffb9d0bed794a07d31041034ec416b480d` replaces the grouped-directory setup transaction with publication at the selected configuration and Badger paths.
+It uses Starmap `productfiles` at `486510bc5` for native private-file operations. The change removes the old Starport rename and sync adapters.
+The temporary Go workspace supplies this unpublished dependency. The branch contains no module replacement.
+
+Ten process-exit boundaries recover through a new public initialization call.
+The database binding blocks runtime startup after an interrupted setup, including Go configuration without a primary file path.
+The runtime holds its local storage guard until its stores close.
+Changed files, malformed journals, and conflicting restore destinations remain preserved.
+
+The [setup proof](../../plans/proof/starport-production-catalog/csp8/setup-recovery-2026-09-16/verification.json) records 475 passing race events across five packages and one Valkey skip.
+Lint reports zero issues. Vet, strict prose, and Linux/Windows cross-compilation pass. Native Linux and Windows execution remains unverified.
+The proof preserves intermediate application failures and all nineteen initial lint findings.
+
+Classification: in-scope CSP8 implementation. Development isolation, migration, complete diagnostics, storage, acquisition, and release gates remain open.
+Required review, native CI, a compatible published Starmap module, and merge still gate completion.

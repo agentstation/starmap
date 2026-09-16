@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "ledger_rows": 38,
+  "done": 12,
+  "in_progress": 1,
+  "execution_entries": 10,
+  "protected_sections_unchanged": 6,
+  "unrelated_files_unchanged": 5,
+  "local_links": "all plan file targets exist",
+  "resume_words": 299,
+  "required_resume_read_bytes": 24763,
+  "plan_bytes": 109444,
+  "budget_exception": "The full plan retains the approved complete task contracts. Resume reads current-resume, CSP8, the current proof, invariants, and goal. Historical artifacts remain optional.",
+  "cold_resume": "PASS: active task, next development action, source bindings, running producer verification, required owner handoff, native limitations, and merge gates are explicit."
+}

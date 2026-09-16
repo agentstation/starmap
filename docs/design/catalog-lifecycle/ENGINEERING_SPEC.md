@@ -332,6 +332,9 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Starmap configuration | `<config>/config.yaml` | Explicit setup or operator input. Preserve settings and secret access. |
 | Acquisition selection policy | `<state>/credentials/<deployment-id>/<instance-id>/{policy.json,provider-<provider-id-sha256>.json}` | Starmap startup creates owner-only policy state before catalog writes. Preserve through backup and migration. Each canonical record is limited to 4,096 bytes and contains no credential material. |
 | Starport configuration | `<config>/config.env` | Persistent setup and local edits. Shared mode retains bootstrap values only as authority. |
+| Starport setup transaction | `<configuration-parent>/.starport-setup/{.owner.lock,transaction.json}` | Private setup lock and pending transaction. The journal includes generated configuration and must remain owner-only. Preserve until verified completion. |
+| Starport local storage guard | `<badger-parent>/.starport-setup-<badger-basename>/{.owner.lock,configuration.json}` | Exclude setup while a local gateway owns storage. The pending configuration binding survives process exit. Preserve stable locks. |
+| Starport setup database stage | `<badger-parent>/.starport-init-<uuid>/` | Private initialization or rollback state. Remove only verified receipt entries. Preserve unknown or changed content. |
 | Application baseline | `<data>/catalog/baseline/<generation-id-hash>/{manifest.json,catalog.json}` | Persistent startup creates an inspectable export. Preserve identity, or reproduce from the exact installed binary. |
 | Baseline recovery | `<data>/catalog/baseline/.starmap-baseline/{.owner.lock,<operation-id>.json}` | Owner-only writer lock and versioned recovery records. Keep the lock for the directory lifetime. Remove only verified operation records after recovery. Preserve unknown or changed entries. |
 | Human catalog workspace | `<data>/catalog/workspace/` | Optional explicit authoring. Preserve operator content. |
@@ -372,6 +375,21 @@ Generation and operation directory components use lowercase SHA-256 hashes of th
 | Backup bundle | Explicit destination containing `backup-manifest.json` and adapter outputs | Preserve store identities, checksums, references, secret recovery requirements, and authority evidence. No implicit backup directory. |
 
 Badger internal file names and SQLite sidecars belong to their engines. The product manifest records the engine directory or consistent snapshot boundary.
+
+Starport setup uses the parents of the selected configuration file and Badger directory. Explicit leaf overrides can select independent roots or filesystems.
+Each publication rename stays within one parent. Setup publishes the closed database before configuration and retains a durable startup barrier until completion.
+The private-record publisher owns `.record-publications/` beneath each directory where setup writes records.
+
+Setup limits its journal to 1 MiB. Its database receipt covers at most 64 regular files, 64 MiB each, and 128 MiB total.
+These bounds apply to initialization and rollback. They do not limit normal Badger growth.
+The plaintext initial gateway API key stays in the process result. Configuration and its journal can contain the security master key.
+
+Retrying initialization recovers matching pending work. Recovery preserves a completed configuration publication and its existing key record.
+It cannot reproduce the original one-time plaintext key. Recovery can remove unpublished verified state before issuing a replacement initial key.
+
+A nonempty preparation without a complete receipt requires operator inspection. Recovery must preserve changed files, malformed journals, and conflicting destinations.
+The local storage guard spans application construction through store shutdown. Pending setup must block KV, SQL, and blob-store initialization.
+
 Identifiers used in managed paths must reject traversal and invalid native components.
 The channel hash preserves the existing repository, NUL separator, and channel hash convention.
 

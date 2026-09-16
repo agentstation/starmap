@@ -928,3 +928,23 @@ The scan defaults to 4,096 entries and 256 MiB of inspected recovery bytes. Requ
 The [qualified component proof](../../plans/proof/starport-production-catalog/csp5/coordinated-store-2026-09-15/verification.json) records both service and toolchain pairs.
 Full shared runtime retention, deployment recovery, native CI, and merge remain open.
 This adapter does not change the roles of Badger, SQLite, PostgreSQL, or MySQL.
+
+## Local setup recovery, 2026-09-16
+
+Starport `066cacffb` supports independent configuration and data roots through Starmap's native private-file API at `486510bc5`.
+Explicit configuration and Badger leaf overrides retain their selected locations.
+Setup publishes the closed database before configuration. It keeps a durable startup barrier until the transaction settles.
+
+The configuration parent owns `.starport-setup/transaction.json` and its stable writer lock.
+The Badger parent owns `.starport-setup-<badger-basename>/`, which holds the storage lock and pending configuration binding.
+Each `.starport-init-<uuid>/` database stage stays beside its final Badger directory.
+Native record publication owns `.record-publications/` below each record-writing directory.
+
+Setup records can contain the generated security master key and require owner-only access.
+The plaintext gateway API key remains in the process result. Badger retains its engine file modes inside the private database directory.
+A runtime guard excludes initialization and rollback until local gateway stores close.
+Valkey and in-memory development do not use this local guard.
+
+The [setup proof](../../plans/proof/starport-production-catalog/csp8/setup-recovery-2026-09-16/verification.json) records ten process-exit recovery boundaries and changed-state preservation.
+Its five package suites pass 475 race events, with one Valkey skip. Native Linux/Windows execution and released-pair qualification remain unverified.
+This component does not migrate existing deployments or change SQL and shared-KV authority.

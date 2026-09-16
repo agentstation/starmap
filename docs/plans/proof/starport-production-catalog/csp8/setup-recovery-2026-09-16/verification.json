@@ -1,0 +1,504 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T12:19:53.887189+00:00",
+  "starport": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+    "branch": "codex/starport-product-paths",
+    "commit": "066cacffb9d0bed794a07d31041034ec416b480d",
+    "source_sha256": {
+      "internal/app/app.go": "f44d718cb523bc956fe129a22537cbceb8c8de509845ffdf0fab3d0a9388ec06",
+      "internal/app/catalog_storage.go": "f40316ecc0b33a816644a32e62432d226af47899de44095fab13d7b5de512b2c",
+      "internal/app/setup_storage_test.go": "5d8764d1dce1fefe6fc226afd3c3b21e1e257501a69b8a0dd3ab7ebbacde58ed",
+      "internal/config/paths.go": "edfdecf5e5ed9fe2058689d381416a3988bf67aec9d9b474e19676cee54912f0",
+      "internal/setup/README.md": "656e81b9e41a57cc89ba1441ce94d173bba031d1ae33bb144289d2855c0fd02e",
+      "internal/setup/paths.go": "eccf736273b9c5a2fe5cf5891ae2ddcf1cc33b179bf4e60af2faa12decc3b59b",
+      "internal/setup/preparation.go": "6deee7814cac03f76e7284dffafea90d56fedbd958cc28ca6442bf2507ac25a9",
+      "internal/setup/preparation_test.go": "b1611d6e70323a6a65ef3857f15998edf62e9bb82009ce41d30b60caa52f0cd6",
+      "internal/setup/product_roots_test.go": "a8928f52618a5be95c3e27e743f5f5fb1c5fda698161fdf6386561f06b01627d",
+      "internal/setup/receipt.go": "fa7b59bc4233ed9c8925684c2f76f5b51c03905b6e7a4a908b8d6b5bb119a149",
+      "internal/setup/recovery.go": "efb4af8509b340905424f8571601b4a32c61657ba11b3d8f0085847ab07026ae",
+      "internal/setup/recovery_test.go": "c5f03eaf4a4f64637d61573eea0d4b6ef904a4a3b1608eafd57089c4b3798a35",
+      "internal/setup/rename_darwin.go": null,
+      "internal/setup/rename_linux.go": null,
+      "internal/setup/rename_other.go": null,
+      "internal/setup/rename_test.go": "4be023067e30ff593e772f906a02ba00759622e21cbd3b99971face0bd97f36f",
+      "internal/setup/rename_windows.go": null,
+      "internal/setup/rollback.go": "33c1fb260879e544d9b6927609811e357b3dc3d11d803f2469bf7ef0a50ab14c",
+      "internal/setup/runtime.go": "89223e5a24a0402e4fccbec21db7be662b6c9e11f3ce067a752f607ba8b117ae",
+      "internal/setup/runtime_test.go": "eaf5443067e18cf420e2e86068127a0e6755035feb5634193c3c38b83f3f9f0e",
+      "internal/setup/service.go": "da680c078ece4b6b3bfe8a695efcf64e29c722c5a47bd4f6ab699fd0ec9460eb",
+      "internal/setup/sync_other.go": null,
+      "internal/setup/sync_unix.go": null,
+      "internal/setup/sync_windows.go": null,
+      "internal/setup/transaction_lock.go": "07a6d35d923dfe6fa2259287829a66cde2ad7d077afd80eb3fce21937ddec0c1"
+    }
+  },
+  "starmap": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+    "branch": "codex/starmap-host-files",
+    "commit": "486510bc5ffa78736b5b2185c64de75341697b82"
+  },
+  "workspace": {
+    "path": "/tmp/starport-csp8-files.work",
+    "content": "go 1.26.0\n\nuse (\n /Users/jack/src/github.com/agentstation/starport-product-paths\n /Users/jack/src/github.com/agentstation/starmap-host-files\n)\n",
+    "qualification": "temporary source integration; no module replacement committed; not released-pair evidence"
+  },
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json ./internal/setup ./internal/config ./internal/app ./internal/cli ./cmd/starport -count=1",
+      "exit": 0,
+      "evidence": "setup-qualification.jsonl.gz",
+      "events": {
+        "pass": 475,
+        "skip": 1
+      },
+      "packages": {
+        "github.com/agentstation/starport/internal/config": {
+          "pass": 219
+        },
+        "github.com/agentstation/starport/internal/setup": {
+          "pass": 68
+        },
+        "github.com/agentstation/starport/internal/cli": {
+          "pass": 89
+        },
+        "github.com/agentstation/starport/internal/app": {
+          "pass": 79,
+          "skip": 1
+        },
+        "github.com/agentstation/starport/cmd/starport": {
+          "pass": 20
+        }
+      },
+      "failed_tests": [],
+      "skipped_tests": [
+        "TestAppWithValkey"
+      ],
+      "terminal_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/cmd/starport",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/config",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/setup",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 make lint",
+      "exit": 0,
+      "issues": 0,
+      "evidence": "setup-lint-repaired.log.gz"
+    },
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go vet ./internal/setup ./internal/config ./internal/app ./internal/cli ./cmd/starport",
+      "exit": 0,
+      "evidence": "setup-qualification-vet.log.gz"
+    },
+    {
+      "command": "technical-writing lint 11 changed source/document files --format text",
+      "exit": 0,
+      "files": 11,
+      "diagnostics": 0,
+      "evidence": "setup-qualification-prose.log.gz"
+    },
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go test -c ./internal/setup",
+      "exit": 0,
+      "evidence": "setup-qualification-windows.log.gz",
+      "qualification": "compile only; native execution remains UNVERIFIED"
+    },
+    {
+      "command": "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go test -c ./internal/setup",
+      "exit": 0,
+      "evidence": "setup-qualification-linux.log.gz",
+      "qualification": "compile only; native execution remains UNVERIFIED"
+    }
+  ],
+  "behavior": [
+    "Public local initialization and rollback honor selected configuration and Badger paths across independent roots.",
+    "Private native record publication and bounded identity/content receipts preserve changed or unknown state.",
+    "Ten process-exit boundaries recover through a new public Initialize call, including publication, isolation, partial cleanup, and restoration.",
+    "An owner-only database binding blocks runtime storage opening after process exit, including Go configuration without a primary file path.",
+    "The local runtime holds the setup guard until its stores close. Valkey and in-memory development do not use this guard.",
+    "Configuration contains the generated security master key. The plaintext gateway API key remains only in the process result.",
+    "The old duplicate platform rename/sync implementations were removed. Setup uses Starmap productfiles."
+  ],
+  "preserved_failures": [
+    {
+      "evidence": "setup-integration-full.jsonl.gz",
+      "scope": "intermediate source before the database-only runtime guard repair",
+      "events": {
+        "pass": 233,
+        "fail": 22,
+        "skip": 1
+      },
+      "packages": {
+        "github.com/agentstation/starport/internal/setup": {
+          "pass": 67
+        },
+        "github.com/agentstation/starport/internal/cli": {
+          "pass": 89
+        },
+        "github.com/agentstation/starport/cmd/starport": {
+          "pass": 20
+        },
+        "github.com/agentstation/starport/internal/app": {
+          "pass": 57,
+          "fail": 22,
+          "skip": 1
+        }
+      },
+      "failed_tests": [
+        "TestProductionCompositionFailsClosed/missing_storage",
+        "TestProductionCompositionFailsClosed/missing_catalog",
+        "TestProductionCompositionFailsClosed/missing_API_key",
+        "TestProductionCompositionFailsClosed",
+        "TestRuntimeStartsWithoutOperatorCredentials",
+        "TestCompositionPassesCatalogAcquisitionThrough",
+        "TestProductionCompositionReturnsStorageOpenError/not_a_directory",
+        "TestProductionCompositionReturnsStorageOpenError/already_open",
+        "TestProductionCompositionReturnsStorageOpenError",
+        "TestNewBuildsReadyProductionDependencies",
+        "TestNewMapsExternalServerConfigurationOnce",
+        "TestRunCancellationStopsHTTPAndDependencies",
+        "TestCompositionOpensTheConfiguredByteStore",
+        "TestObjectStoreCompositionReachesNoBucket",
+        "TestCatalogWideProviderActivation",
+        "TestStartupMintsTheTokenTheCLIReads",
+        "TestASecondStartKeepsTheFirstToken",
+        "TestANetworkBindRefusesAFirstBootToken",
+        "TestANetworkBindAcceptsARotatedToken",
+        "TestLoopbackAcceptsAFirstBootToken",
+        "TestCompositionRefusesAConfigurationWithNowhereToKeepTheToken",
+        "TestStartupRefusesAnUnreadableTokenRatherThanReplacingIt"
+      ],
+      "skipped_tests": [
+        "TestAppWithValkey"
+      ],
+      "terminal_packages": [
+        {
+          "package": "github.com/agentstation/starport/internal/cli",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/cmd/starport",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/setup",
+          "result": "pass"
+        },
+        {
+          "package": "github.com/agentstation/starport/internal/app",
+          "result": "fail"
+        }
+      ]
+    },
+    {
+      "evidence": "setup-runtime-initial.jsonl.gz",
+      "reason": "first application guard referenced the unexported in-memory setting instead of the RuntimeStorage projection"
+    },
+    {
+      "evidence": "setup-app-guard.jsonl.gz",
+      "reason": "initial application fixtures explicitly skipped configuration files; repaired fixtures explicitly load generated configuration"
+    },
+    {
+      "evidence": "setup-runtime-binding.jsonl.gz",
+      "reason": "the first database guard required unrelated configuration roots and broader parent directory privacy"
+    },
+    {
+      "evidence": "setup-lint.log.gz",
+      "reason": "19 findings in setup and prior path integration; final lint has zero findings"
+    }
+  ],
+  "historical_results": "Intermediate logs preserve diagnostic runs. Only final named checks above bind the complete current source. Earlier runs do not qualify later edits.",
+  "predecessor_api_verification": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-embedding-files",
+    "commit": "c7188b5e49be7226a1c7514fafee3dae07786aa1",
+    "result": "PASS",
+    "exit": 0,
+    "evidence": "starmap-file-api-verify-remainder.log.gz",
+    "command": "GOTOOLCHAIN=go1.26.6 bash /tmp/starmap-csp8-verify-remainder.sh",
+    "scope": "Repository verification remainder after the separately recorded ordinary suite and repaired pure-Go gate. The remainder preserves every later repository check.",
+    "starport_consumer": "/Users/jack/src/github.com/agentstation/starport-shared-catalog at 34f3866c4",
+    "limitation": "This result does not bind the later productfiles producer commit 486510bc5."
+  },
+  "running_producer_verification": {
+    "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+    "commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+    "session": 73383,
+    "command": "GOTOOLCHAIN=go1.26.6 GOWORK=off make verify",
+    "output": ".tmp/csp8/host-files-verify.log",
+    "exit_path": ".tmp/csp8/host-files-verify.exit",
+    "result": "IN_PROGRESS; inspect fresh state before resuming"
+  },
+  "remaining": [
+    "Native Linux and Windows execution of the new Starport setup and producer API.",
+    "Full producer verification, required pre-PR review, publication, and merge.",
+    "Compatible published Starmap module and dependent Starport verification, review, and merge.",
+    "Remaining CSP8 migration, development isolation, complete path/file diagnostics, shared storage, acquisition, and acceptance roster in the product-path proof.",
+    "CSP6 App key handoff and three hosted A05 subcases remain open. No task completion credit."
+  ],
+  "artifacts": [
+    {
+      "path": "setup-app-guard-repaired.jsonl.gz",
+      "sha256": "a00bbee1035e8d070d8867b50547f4f1c41e41b03800bd9645bfd123a8c22475",
+      "bytes": 14874
+    },
+    {
+      "path": "setup-app-guard-repaired.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-app-guard.jsonl.gz",
+      "sha256": "7acd82ef51e3c413af76429ecb64daeb4615a1d2ffdd0896819bfc779f3faf8a",
+      "bytes": 12057
+    },
+    {
+      "path": "setup-app-guard.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-final-cleanup.jsonl.gz",
+      "sha256": "5c9ba0defc8cd447c118f9065ce5a7dc9ed7e3e8aef7f1ccbc1b4cc655628f77",
+      "bytes": 19334
+    },
+    {
+      "path": "setup-final-cleanup.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-final-path-guards.jsonl.gz",
+      "sha256": "6c526a742be429217a7b336b0fc9c391006357fa2783500c9642923c4fb899e1",
+      "bytes": 144201
+    },
+    {
+      "path": "setup-final-path-guards.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-integration-final.exit.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "setup-integration-final.jsonl.gz",
+      "sha256": "f2c26c2f428f2cfc73b1fa3251316c746fd26f9c343a0fa592775a165ad715b2",
+      "bytes": 577401
+    },
+    {
+      "path": "setup-integration-final.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-integration-full.exit.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "setup-integration-full.jsonl.gz",
+      "sha256": "897778a917ad491809b50eb07154a592ae9ddfee04840897c8ef621993d91062",
+      "bytes": 583731
+    },
+    {
+      "path": "setup-integration-full.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-integration-initial.jsonl.gz",
+      "sha256": "69266eeaa5bd97d6ca3340b73e461fbee6794daeca600ddb4e263e5b8970342a",
+      "bytes": 213722
+    },
+    {
+      "path": "setup-integration-initial.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-integration-vet-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-integration-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-lint-repaired.exit.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "setup-lint-repaired.log.gz",
+      "sha256": "a4f569f52421ae61552d5ba2a165d1a4c54a10a9064148d690e9c44e0f888a20",
+      "bytes": 40
+    },
+    {
+      "path": "setup-lint.exit.gz",
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+      "bytes": 2
+    },
+    {
+      "path": "setup-lint.log.gz",
+      "sha256": "2083e6fe89bb072ea39db315ffcf8006d9d389c60edf9028933fef5603ec7e94",
+      "bytes": 3541
+    },
+    {
+      "path": "setup-linux-compile.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-path-overrides.jsonl.gz",
+      "sha256": "4e69b7bedc41a776066890f24f8308926dec91b1744aad5c3b25dd4fdb786a10",
+      "bytes": 38905
+    },
+    {
+      "path": "setup-path-overrides.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-prose-final.log.gz",
+      "sha256": "13cd837bdffe4f0e4de7cf85a9a0966221b406a4fd150eabd7fdd37b5877ebed",
+      "bytes": 34
+    },
+    {
+      "path": "setup-prose.log.gz",
+      "sha256": "e889b6aa2e0be6071b8ff5ba8587e62ffb0a7ad495baa3235c0e4be116aaeb24",
+      "bytes": 346
+    },
+    {
+      "path": "setup-qualification-linux.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-qualification-prose.log.gz",
+      "sha256": "0b59c8f5bd29d838a41b0a821a79c1d0378ad7dbc35f5ec9807d7a3df7dd40f5",
+      "bytes": 34
+    },
+    {
+      "path": "setup-qualification-vet.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-qualification-windows.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-qualification.exit.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "setup-qualification.jsonl.gz",
+      "sha256": "3b0f721a5a7de7f8b135063e87147505f48025a2482f60805ac56c3451920a62",
+      "bytes": 809827
+    },
+    {
+      "path": "setup-qualification.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-recovery-initial.jsonl.gz",
+      "sha256": "8af5174af71f32d19e1d1340654f447e970dcba0e2cccae7e4244135b984207c",
+      "bytes": 135673
+    },
+    {
+      "path": "setup-recovery-initial.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-roots-fail-before.jsonl.gz",
+      "sha256": "8b344efdf4d88f2c32e3df1493743844c590cbe82747419ec7f1eb890b129dbd",
+      "bytes": 7043
+    },
+    {
+      "path": "setup-roots-fail-before.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-runtime-binding-repaired.jsonl.gz",
+      "sha256": "92aa7c1e10095dc928a9231c00f09a59af4a409425dd73ab365b16dcc1e9a778",
+      "bytes": 162784
+    },
+    {
+      "path": "setup-runtime-binding-repaired.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-runtime-binding.jsonl.gz",
+      "sha256": "fa3703a1d0b534c390666286e0e2a52a1ac5a5bf8273159584cc67435ba0123e",
+      "bytes": 165017
+    },
+    {
+      "path": "setup-runtime-binding.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-runtime-initial.jsonl.gz",
+      "sha256": "ea26e226174e194de3206e9c80c9570167b864765d8d1843c30946d29c4ac221",
+      "bytes": 139097
+    },
+    {
+      "path": "setup-runtime-initial.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-runtime-recovery.jsonl.gz",
+      "sha256": "15489871eb9a67e0166e94a8e06635811e1e117ec824a70d25285add7db1a94d",
+      "bytes": 111678
+    },
+    {
+      "path": "setup-runtime-recovery.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup-windows-compile.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "starmap-file-api-verify-remainder.log.gz",
+      "sha256": "45ee488efae66016db30aef594e1e7aa39dbf55b0bf5a449715119838f2a0e9b",
+      "bytes": 66528
+    },
+    {
+      "path": "starmap-file-api-verify-remainder.exit.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    }
+  ]
+}
