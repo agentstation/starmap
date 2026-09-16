@@ -274,8 +274,8 @@
     "The fixed primary-service tests do not establish complete enterprise product support."
   ],
   "remaining": [
-    "Finish required repair review, push PR #162, pass all native checks, and merge.",
-    "Complete the CSP5 runtime/storage race command and task verifier.",
+    "Qualify all native CI and merge PR #162.",
+    "Qualify Starport adoption and fleet behavior under CSP8 and CSP11.",
     "Qualify the released pair under the full acceptance map."
   ],
   "review": {
@@ -445,6 +445,46 @@
       "gate_status": "PASS",
       "output": "csp5-task-gate.json.gz",
       "scope": "A19 and the selected Starmap A22/A23 components. No Starport or released-pair qualification."
+    },
+    "task_race": {
+      "exit_status": 0,
+      "commit": "ef6610855be9c52c0705e0ffa1318b0529e3f520",
+      "output": "csp5-task-race.jsonl.gz",
+      "test_events": {
+        "pass": 1385,
+        "skip": 2
+      },
+      "package_verdicts": [
+        {
+          "Time": "2026-09-15T22:05:05.19578-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/pkg/catalogs/storage",
+          "Elapsed": 15.453
+        },
+        {
+          "Time": "2026-09-15T22:28:29.421771-05:00",
+          "Action": "pass",
+          "Package": "github.com/agentstation/starmap/runtime",
+          "Elapsed": 1419.838
+        }
+      ],
+      "skipped_tests": [
+        "TestPublicCatalogActivatesWithoutProviderCredentials",
+        "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+      ],
+      "skip_followup": {
+        "exit_status": 0,
+        "test_passes": 7,
+        "test_skips": 0,
+        "seconds": 107.324,
+        "output": "csp5-public-fixture-race.jsonl.gz",
+        "fixture": {
+          "outcome": "downloaded-and-verified",
+          "path": "/Users/jack/src/github.com/agentstation/starmap-catalog-object-retention/runtime/testdata/public-catalog-20260908/starmap-catalog.tar.gz",
+          "size_bytes": 411974
+        },
+        "command": "STARMAP_PUBLIC_FIXTURE_REQUIRED=1 GOTOOLCHAIN=go1.26.6 go test -race -count=1 -timeout 15m -json ./runtime -run '^TestPublicCatalog(ActivatesWithoutProviderCredentials|RejectsUpdatesAndRetainsAcceptedState)$'"
+      }
     }
   },
   "ownership_clarification": {
@@ -452,5 +492,20 @@
     "CSP5": "Starmap retention and object coordination.",
     "CSP8": "Starport adoption and A22/A23 consumer cases.",
     "CSP11": "Shared fleet acquisition leases and layer fencing."
+  },
+  "canonical_app_followup": {
+    "prose": {
+      "exit_status": 0,
+      "files": 1542,
+      "diagnostics": 0,
+      "output": "prose-app-install-final.log.gz"
+    },
+    "prior_prose_failure": {
+      "exit_status": 2,
+      "diagnostics": 4,
+      "output": "prose-app-install.log.gz"
+    },
+    "maintenance": "maintenance-app-install.json",
+    "native_watch_session": 6176
   }
 }

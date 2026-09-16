@@ -1,5 +1,25 @@
 # Current pull request queue
 
+Updated 2026-09-16 UTC. Starmap has two open PRs. Starport has none. Eleven plan tasks are complete.
+The [current queue capture](queue-status-2026-09-16.json) records published heads and checks.
+
+| PR | Purpose | Remaining action |
+| --- | --- | --- |
+| [Starmap #162](https://github.com/agentstation/starmap/pull/162) | Conditional storage and object retention | Keep. Reviewed `ef6610855` passes 1,385 runtime and storage test events. The public-fixture rerun passes seven events without skips. Qualify remaining native CI, then merge. |
+| [Starmap #160](https://github.com/agentstation/starmap/pull/160) | Catalog publication and checked promotion | Keep. Published `31ab7ea85` adds approved stale-source retention. Both reviewers pass. All 68 distribution checks pass. Qualify fresh CI and finish App setup before merge. |
+
+Neither open PR is stale or redundant. The credential implementation merged through PR #161.
+The prior turn closed PRs #156, #158, and #159 because that merge includes their changes.
+CSP8 owns Starport storage adoption. CSP11 owns shared fleet fencing.
+
+The publisher App installation selects `agentstation/starmap` only.
+Private-key generation still requires user handoff. The agent can then store the downloaded key in the repository secret.
+The public checkpoint needs no separate encryption key. Provider keys stay in Actions secrets.
+
+## Superseded queue state: 2026-09-14 after PR #153 merged
+
+The following capture predates the credential merge and the two current implementation PRs.
+
 Updated 2026-09-14 UTC. Thirty-three campaign PRs merged. Ten tasks are complete.
 
 [PR #153 merged](pr153-merged-2026-09-14.json) at `176516abaae5b544dd1b830b0c09f50c87e9be5d` after fifteen successful checks.

@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-09-16T03:44:25.920548+00:00",
+  "protected_sections_changed": [],
+  "unrelated_files_changed": [],
+  "duplicate_ids": [],
+  "missing_local_targets": [],
+  "local_links_checked": 139,
+  "non_html_anchors_unverified": [
+    "proof/starport-production-catalog/csp3.md#local-starport-pair-check",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp3",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp8",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp10",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp101",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp102",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp121",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp17",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp18",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp20",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp21",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp22",
+    "proof/starport-production-catalog/discovery-readiness-2026-09-07/contracts.md#csp24"
+  ],
+  "task_statuses": {
+    "done": 11,
+    "in_progress": 1,
+    "todo": 26
+  },
+  "resume_words": 221,
+  "execution_log_entries": 10,
+  "bytes": 114324,
+  "plan_sha256": "9b0c1aa42e44e0dfbe8c5d7f365d74d279e158bbcd738fc10eff237f489edfe3"
+}
