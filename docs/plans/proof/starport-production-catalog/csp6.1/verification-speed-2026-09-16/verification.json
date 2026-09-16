@@ -16,7 +16,7 @@
     "raw_jobs_uncompressed_sha256": "8c22fbe01dfd7724f7ad214b7fc959cf99032e5fa7acd5a478d6ad041565d70f"
   },
   "source": "b01c28ef47cdf740951f75cbb20347bf5348a577",
-  "next": "Finish Sol and Opus pre-PR review, push PR #164, measure native CI, and merge only after required checks pass.",
+  "next": "Inspect the final-head native CI run, fix any verified failures, record hosted duration, and merge after all required checks pass.",
   "constraints": [
     "Preserve meaningful assertions, race coverage, both Go toolchains, all packages, and required platform jobs.",
     "Keep full embedded and public catalog integration coverage at explicit seams.",
@@ -223,5 +223,25 @@
     "Make targets distinguish focused cached local runs from fresh qualification; duplicate integration-tag execution removed.",
     "Testing documentation defines contract ownership, caching, fixtures, concurrency, platform/service qualification, and package extraction criteria."
   ],
-  "hosted_after": "UNVERIFIED"
+  "hosted_after": "UNVERIFIED",
+  "review": {
+    "reviewers": [
+      "codex:gpt-5.6-sol:high",
+      "claude:claude-opus-5:high"
+    ],
+    "helper_exit": 1,
+    "findings": 1,
+    "accepted": 0,
+    "rejected": 1,
+    "reason": "The conditional missing-fixture finding refers to runtime fixture setup. The capacity test reads checked-in embedded inputs and uses local adapters. Inspection confirms no dependency on the downloaded runtime fixture.",
+    "raw": "review.json.gz",
+    "disposition": "review-disposition.json.gz"
+  },
+  "publication": {
+    "pr": "https://github.com/agentstation/starmap/pull/164",
+    "head": "b01c28ef47cdf740951f75cbb20347bf5348a577",
+    "state": "pushed; CI pending",
+    "workflow_run": 35127172073,
+    "created_at": "2026-09-16T17:16:39Z"
+  }
 }
