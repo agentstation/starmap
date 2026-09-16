@@ -1,0 +1,198 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "branch": "codex/starport-product-paths",
+  "commit": "6179be84fe3475bbffdbcf70424935995a066bbf",
+  "starmap_api_commit": "245f1f0393396dc0a4666d46cfb500e5d71dbdda",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "go_version": "go1.26.6",
+  "checks": {
+    "product-roots-fail-before": {
+      "events": {
+        "fail": 8
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "fail"
+        }
+      ],
+      "skips": []
+    },
+    "product-input-fail-before": {
+      "events": {
+        "fail": 7
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "fail"
+        }
+      ],
+      "skips": []
+    },
+    "product-paths-broad": {
+      "events": {
+        "pass": 576,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/setup",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/cli",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass"
+        }
+      ],
+      "skips": [
+        "TestAppWithValkey"
+      ]
+    },
+    "product-owner-fail-before": {
+      "events": {
+        "fail": 1
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "fail"
+        }
+      ],
+      "skips": []
+    },
+    "product-owner-repair": {
+      "events": {
+        "pass": 7
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass"
+        }
+      ],
+      "skips": []
+    },
+    "product-owner-broad": {
+      "events": {
+        "pass": 253,
+        "skip": 1
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/app",
+          "result": "pass"
+        },
+        {
+          "name": "github.com/agentstation/starport/internal/catalog",
+          "result": "pass"
+        }
+      ],
+      "skips": [
+        "TestAppWithValkey"
+      ]
+    },
+    "product-access": {
+      "events": {
+        "pass": 9
+      },
+      "packages": [
+        {
+          "name": "github.com/agentstation/starport/internal/config",
+          "result": "pass"
+        }
+      ],
+      "skips": []
+    }
+  },
+  "vet": {
+    "before_owner_guard": "PASS",
+    "owner_guard_packages": "PASS"
+  },
+  "prose": {
+    "files": 8,
+    "diagnostics": 0
+  },
+  "completion_credit": false,
+  "artifacts": {
+    "product-access.jsonl.gz": "6a0f27c4d1b089da526f8cbd95dd268dc6f5524fd5b4b650a59fcab9ca4b7159",
+    "product-access.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-baseline-behavior-fail-before.jsonl.gz": "3d6d052208a94b6d3883bca8a38106f18ebcb2d9f34b649a7aa4ca591405c884",
+    "product-baseline-behavior-fail-before.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-baseline-fail-before.jsonl.gz": "535dd47e590e17728ac0d5b3c320ddf80a25e598eb3865516ba8bdddb603133e",
+    "product-baseline-fail-before.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-baseline-first.jsonl.gz": "c3f62adbba5e48eeac3776c20d49dabe9b8d120f8a4371d5bdc61ee0948bba97",
+    "product-baseline-first.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-input-fail-before.jsonl.gz": "8e664a9cc1dd0ddcca8abeb717fc553abf8b4ed3d5bdb7a8312b20bc144e1747",
+    "product-input-fail-before.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-input-first.jsonl.gz": "560e0cb351c8dced9161bac6567701c793516e880aa0fa89774d47198340126c",
+    "product-input-first.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-input-second.jsonl.gz": "79b6d68d460d0eb8ab1a44d55b2d68fad84bbc9f4f6c27d262bdd3ab6e97fac8",
+    "product-input-second.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-input-third.jsonl.gz": "d168f43dae5394f3fd6d9e59804df589280978c459c1987a51680cf6207cedaf",
+    "product-input-third.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-owner-broad.jsonl.gz": "6d35698fa5596a02c0ab7682d5b9cc091067582cc63aefd7b17299634df9dc2e",
+    "product-owner-broad.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-owner-fail-before.jsonl.gz": "5c8cbb8fbb17906a2b4f03cf4e27bf2bee9efed6cf8ab036b68e602ff23ab910",
+    "product-owner-fail-before.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-owner-repair.jsonl.gz": "5b3fa368df8c0de2a100e3155f0d0c52d96526261bc22ee68f0f0266bb6f7e2f",
+    "product-owner-repair.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-owner-vet.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-paths-broad.jsonl.gz": "4380493d83c41857f4dad94d8a9f004ec9b55ae0dec99af53cf7865801d0b4b9",
+    "product-paths-broad.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-paths-prose.log.gz": "64831690ac5141b2b28f093403ddbc2140ff3c485ebb18aa39bb4443808ee3be",
+    "product-paths-source.json.gz": "bb10e39a099764468f2f3762356df7747e09ba9717ede341d62c43262ff50c4a",
+    "product-paths-vet.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-roots-fail-before.jsonl.gz": "97f90947e058476092313598a08efe75038ecfa3ed64c8c4598ea37e09b7fda5",
+    "product-roots-fail-before.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-roots-first.jsonl.gz": "5a61323e796ac25d24018b11b8b83be4f5674f3e82848b7bebb4fc01b28a13af",
+    "product-roots-first.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "product-roots-second.jsonl.gz": "37488e7033c14cafee34395e52bde5b85e117cf11128c9d596f065b664b6eaad",
+    "product-roots-second.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "setup-roots-fail-before.jsonl.gz": "4b9ba24d65381379067c601400b052d962ebe17b7e6d5f0efe5be4e46033daaa",
+    "setup-roots-fail-before.stderr.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  "scope": [
+    "Resolve native product roots through productpaths, retaining root specificity and explicit values.",
+    "Read bounded primary configuration and dotenv files with shared access checks.",
+    "Require explicit relative-path intent and preserve the primary-file bootstrap anchor.",
+    "Persist the embedded baseline offline and bind runtime ownership to Starport, deployment, and instance.",
+    "Refuse a conflicting owner before baseline or gateway stores open."
+  ],
+  "source_binding": "The five-package broad run preceded the ownership preflight. The final two-package race run and seven focused events cover that repair. The recorded source hashes match the work commit. Tests use a temporary workspace, not a released module.",
+  "remaining": [
+    "First-run initialization and rollback still require the old grouped layout. Implement the cross-root transaction before publication. The reflect comparison only preserves the existing refusal guard after Paths gained origin metadata.",
+    "Legacy path detection and migration qualification remain open.",
+    "Development persistent-selector refusal, owned scratch recovery, and scratch baseline remain open.",
+    "Complete effective-path diagnostics, file-role inventory, source-cache selection, settings origins, and source-file anchoring.",
+    "Finish storage and acquisition integration plus all original CSP8 acceptance cases.",
+    "Publish and pin the compatible stable Starmap module, qualify native platforms, pass required review and CI, then merge.",
+    "CSP6 hosted acceptance remains gated on the user-created App key."
+  ],
+  "setup_followup": {
+    "source": "internal/setup/product_roots_test.go",
+    "source_sha256": "3ffd604ec9e86e556d607de8d6bdd21577af707518a52a7f199a2e8b63ff9ae8",
+    "production_source_changed": false,
+    "cases": [
+      "TestInitializeSeparateProductRoots",
+      "TestInitializeSeparateRootsPreservesExistingData",
+      "TestRollbackSeparateProductRoots"
+    ],
+    "result": "3 failing test events before setup implementation. All stop at the existing grouped-layout refusal.",
+    "next": "Implement initialization and rollback across the selected configuration and data roots. Preserve preexisting paths, refuse partial publication, and qualify interruption recovery before removing the guard."
+  }
+}

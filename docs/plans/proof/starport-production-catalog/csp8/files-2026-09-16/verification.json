@@ -89,5 +89,22 @@
     "branch": "codex/starport-product-paths",
     "base": "34f3866c430e9d615890df12d1bb4e1af4355812",
     "reason": "Preserve the Starport settings snapshot used by the running Starmap verification while continuing the same CSP8 implementation."
+  },
+  "repository_verification": {
+    "first_command": "GOTOOLCHAIN=go1.26.6 make verify",
+    "first_exit": 2,
+    "ordinary_packages_passed": 88,
+    "failure": "The macOS server-storage consumer baseline needs 351 packages with arm64/cgo disabled. Its former platform-independent limit was 350.",
+    "baseline_head": "7ae5f9fa3",
+    "api_head": "245f1f0393396dc0a4666d46cfb500e5d71dbdda",
+    "packages_added_by_api": [],
+    "repair_commit": "c7188b5e49be7226a1c7514fafee3dae07786aa1",
+    "repair": "Use the measured macOS maximum of 353 across supported architecture and cgo choices. Keep Linux and Windows at 350 and preserve every forbidden-dependency check.",
+    "pure_go_repair": "PASS",
+    "remaining_command": "bash /tmp/starmap-csp8-verify-remainder.sh",
+    "remaining_session": 59387,
+    "remaining_log": "/Users/jack/src/github.com/agentstation/starmap-embedding-files/.tmp/csp8/verify-remainder.log",
+    "remaining_exit_file": "/Users/jack/src/github.com/agentstation/starmap-embedding-files/.tmp/csp8/verify-remainder.exit",
+    "method": "The temporary runner preserves scripts/verify.sh and its order, except the already passing ordinary suite and repaired pure-Go stage. Its ROOT points to the same frozen source. No other gate is omitted."
   }
 }
