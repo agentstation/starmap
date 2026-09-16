@@ -1,0 +1,183 @@
+{
+  "task": "CSP14",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T05:18:52.955635+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-server-administration",
+  "branch": "codex/starmap-server-administration",
+  "head": "ef6610855be9c52c0705e0ffa1318b0529e3f520",
+  "source_files": {
+    "docs/SERVER_ADMINISTRATION.md": "712cd007dd4aa250dedaa6445907b519dd00d23dba423aaf1df66a39c37fac4f",
+    "internal/cli/app/configuration_report.go": "40127cfb9f602b91409f114bb49eaac590d14970c08deb4f9cb21b59f0a9a795",
+    "internal/cli/app/configuration_report_test.go": "659b66a7668395da450e331f1f0ed53d2d5da827c00b4a514f59d227a0002e27",
+    "internal/cli/commands/admin/command.go": "22336ca57543e9b69857d8f692e08a1720ac3d075b0c00365e993fcc8729a055",
+    "internal/cli/commands/serve/listener_test.go": "09ae86e3e09e37178ab1b6083c6a25f8dbbd1a3a68d0bbeaf8d55337380eec01",
+    "internal/server/administration_test.go": "7f649acfea29875b6a2398ff64158dcaa6563a99f2e0eea5a582808cbcb92d7f",
+    "internal/server/configuration_report.go": "4e0d7f299f5eb59811dd0f9c879f67d92350f8a94b117bd5da1e4ad02c31a50a",
+    "internal/server/handlers/administration_test.go": "af3ed7777f44909c2d22298b4ff69b7315a113bcb54a6a658724ca8027af4f67",
+    "internal/server/identities.go": "41abf95714610284b5c431aa3a35ef767770e8181054ef074103bbe4c8591be8",
+    "internal/server/middleware/administration.go": "3422586ec4735e6c76b486bf659e178e5fcdef01e425f9439b1a6da787d0cc98",
+    "internal/server/middleware/administration_test.go": "b52233330ea1057c4f211ea78603207db27ff66bec9a51f7d92a3589d3ae3b1d",
+    "runtime/administration_restore_test.go": "9f374e3fc3f84dd3c86c5f1c5a2edb8f9283979fe40db06a18ad9c7af0978dcf",
+    "server/administration/README.md": "37d417a59abc478826156affc602cac01ee424e87976554423225c4676591d88",
+    "server/administration/audit.go": "4102bb27b9eb8b0723c762c9223e63e3469f8f589aef6cbdd6e203c91479b3d6",
+    "server/administration/authentication.go": "e86b92501384b45dc16fdd75c8cab79f3c448a4441fd0b779cd9ec31d109b41a",
+    "server/administration/authentication_runtime_test.go": "be77db739e1e18b3a2a36b40f1903354d1f12532c055c8d5ea5386dae9b75e05",
+    "server/administration/bootstrap_recovery_test.go": "2a48d1facbdd3f728c6e7934aecd12a8adaac038e9ac44ad34c228da14541c0d",
+    "server/administration/crash_test.go": "e691dda978284dcf852319679a3bbf7e3cab7253574a225ae0e5b50e634c3984",
+    "server/administration/generate.go": "0661be332d35b5beafc9bf7cb9038415775ea9c8f46040b232d877725febe38e",
+    "server/administration/identity.go": "2ba982b1b290c511251fa93386280dc4846263fccb0867ba5e2ceddb62c5955d",
+    "server/administration/identity_codec.go": "77e09f674e711ea85989d71b5c92883a04114aa6166e7d070b7f403370e26c8c",
+    "server/administration/identity_test.go": "b40e91748b79ef887ff012c70599f57d155a7657b5229cc48ec953a93d2bc2db",
+    "server/administration/local_recovery.go": "9368fce7297eb5845afb8f50857fa2e0de7f0baac9b0045a49e29421fc7d2224",
+    "server/administration/manager.go": "41a7d65faa18f56a551dc64a8b0bcfdd095559083b5f566c250c1ea16da6b083",
+    "server/administration/manager_test.go": "68e5b6b873e15f54a4382e886fb980c59157f93d3367e41e6c7919c4ba18e0f9",
+    "server/administration/mutations.go": "90969a88c5635a369ec5f9924a1af1ea3f5208b4094ec946f606f4a48fcbbbca",
+    "server/administration/operation.go": "220df69096f6f4706c21291b9498fd74763192d5262011e9d3506edc3829ea19",
+    "server/administration/recovery.go": "fb9b46d8830616db7c1dc89e363e1769976b2b747f1ce713cbf3717b5bc0e721",
+    "server/administration/reports.go": "7b027fc955da07141a545a66ccc450390a1f6e21d96f3bf1a6dba5b7647fe0a3",
+    "server/administration/stream.go": "2c3ed43ee5e8c81edb84bfb45153e6b588ac91f95814f5cea2d187f5bfc78265",
+    "server/administration/writer.go": "ac697f5ef50d67512f62e566156f958c5130fa311d1e00433cc1c2c543ecbf85",
+    "server/administration_test.go": "335b72f68e0a0dca8e2f66e2d5e344c8a50cc04655d3b1d45df8fc9bee092f49",
+    ".github/workflows/pr.yaml": "cf343566fe84173dc0964cb0257c75ec86105847b917a5f59b9773d5b6aba9c3",
+    "GLOSSARY.md": "fa666b52df6ae324d50ea959c9998544790898c5c3e18f01081bf8c5f08fda86",
+    "README.md": "e39666023073541c0ce2bc3d7d30f429883ca242dca6c1e4a0d8ddaabb6e18c6",
+    "docs/DOCKER.md": "a320774b19ce3c89aa25c5f1ea2691dfc4a6a826acd7bf7a58b1f16db1dbff05",
+    "docs/REST_API.md": "b1a915c7eeb7e7532c2ffc13f4a6a08e68e2ed0b723d5c0a7ad22a53726bd0db",
+    "internal/cli/app/commands.go": "bc54e1cce401d99b099ef72031c47d6e24481aec27e8baee1a263a008058a523",
+    "internal/cli/app/execute.go": "5a45a7322c782b51656fa5b50bcb3a7b4550f26e73e32262ea2656a07aed0810",
+    "internal/cli/app/file_manifest.go": "a8e28fdd4afb2427adb8c76fce151edaf7d0291c6265286a93acd1277d65aa7c",
+    "internal/cli/app/file_policy.go": "d8d6bbace4862221c44a24f3c9d98e633c323168569f76bbf72e47b4db1517aa",
+    "internal/cli/commands/config/command.go": "5c4073fd32d7f6aa5ece9a1a41c787696c53cecb8ef65c2e2ecc0c0715bff441",
+    "internal/cli/commands/serve/command.go": "4c21706ba486dac50f789ca490b8f45bc90860261be50722438f932dfdfc028e",
+    "internal/cli/commands/serve/command_test.go": "5442773590b453d880e830612c9585b34c51a7762cbfddd7f1c79c17a9762b1d",
+    "internal/embedded/openapi/openapi.json": "9ee258e276a48bead5b685c3e31b2a2d15ff5ff22e84aa2b6cf0edb387b50234",
+    "internal/embedded/openapi/openapi.yaml": "8791133e7549774e24e31474d4fd62e11f2f838f8e92c175881f963dd89b296a",
+    "internal/server/README.md": "a8232ad068f41e1c22b20583f805fd57d4ff76d755232873ef78bd60183f3bad",
+    "internal/server/durable_update_test.go": "97dfc53600f37fe5c2d2a181fd977f44231a0382ee464838bac8412bf7daebb9",
+    "internal/server/handlers/README.md": "3dfd9b737f8a0696348583e92d10129d5c01bd0b1b6bfa98f502ede6089a9fe8",
+    "internal/server/handlers/admin.go": "fe4d9f88e3dd0e4ac5fbeb6d1879eaf4c5e0d81a9e8e57cc4a1c2a8856ab5725",
+    "internal/server/handlers/admin_operations_test.go": "4c40f56648920fd0dcddfc7cbfd88d8b4c58bfb61958d5cb46ee8dd890389e62",
+    "internal/server/handlers/handlers.go": "7b3a4c352b333fe152143b1a13624876c9386663e3b17bd4e891e46e73780397",
+    "internal/server/handlers/handlers_test.go": "e3aaa13ba48d5cb71efe8878b26a2bdaf90e88a4f8f4de7df66f8e38eb0a37b3",
+    "internal/server/middleware/README.md": "08928c7fe9eae435055abfc6dbdd084f6b0ebdd76f17d148a0d8a41888609e95",
+    "internal/server/operations/registry.go": "9348a9bd1718176aa9d4e2b30890a6d3081efd43205850f1460aaf8cc8d8080b",
+    "internal/server/post_commit_notification_test.go": "2929f93d804aed5effb447a8eb271321228eaabd3ad4fd50a9d084c4eb08b99e",
+    "internal/server/router.go": "94f310caffe6f711c77c885536ed163f1a6566541b7bd26a3de2ade71e95a3fe",
+    "internal/server/server.go": "eefdef31ef9507f71f614692b05bc08d530f61ed6800c2eb7602fe7f57d05f0c",
+    "pkg/productpaths/policy/access.go": "cfdd4656e0dc90bf68c479fa6a76bd026be6831381c1033d4eaf77ad7689f11c",
+    "scripts/catalog-product-checks.json": "75872c43c7fba1878b7b627ab77da23f34fb81a16ed53cffceb5971e4f9f9cb2",
+    "server/README.md": "38b8415e29298961a3c06213010dca43a13deb87782592d150c710a3fe6d7cc2",
+    "server/server.go": "39d0663b7319cfdc7f63d1ce7d8b1ccc89ebe95eef1a157ad1c16f6c11eba5d0",
+    "server/server_test.go": "168265f7c9fa400d7ab3e4f4c380e9a0c316c01769664e2ea0f131376aaf8b19",
+    "testdata/consumers/server-embed/consumer.go": "446a98b4cd69647d85d2253e660c0edae2c3168a644ca040cc528f4dee5d4e87"
+  },
+  "checks": {
+    "recovery-complete.jsonl": {
+      "passed_test_events": 54,
+      "failed_events": [],
+      "passed_packages": 1
+    },
+    "final-contracts.jsonl": {
+      "passed_test_events": 91,
+      "failed_events": [],
+      "passed_packages": 2
+    },
+    "minimum-complete.jsonl": {
+      "passed_test_events": 90,
+      "failed_events": [],
+      "passed_packages": 2
+    },
+    "task-race-final.jsonl": {
+      "passed_test_events": 344,
+      "failed_events": [
+        {
+          "package": "github.com/agentstation/starmap/internal/server",
+          "test": null
+        }
+      ],
+      "passed_packages": 10
+    },
+    "task-race.jsonl": {
+      "passed_test_events": 407,
+      "failed_events": [],
+      "passed_packages": 13
+    },
+    "authority-restore.jsonl": {
+      "passed_test_events": 1,
+      "failed_events": [],
+      "passed_packages": 1
+    },
+    "cli-reports-complete.jsonl": {
+      "passed_test_events": 15,
+      "failed_events": [],
+      "passed_packages": 1
+    }
+  },
+  "static_checks": {
+    "lint": "PASS, zero issues. closeout-lint.log",
+    "goago": "PASS, no findings, stale ignores, or errors. closeout-goago.json",
+    "docs": "PASS. docs-check.log",
+    "consumer_profiles": "PASS after updating disabled administrator expectation to 403. consumer-deps-final.log",
+    "middleware_coverage": "97.2%, above the 90% repository requirement."
+  },
+  "failures": {
+    "task_acceptance_initial": "Four adapter builds observed a transient undefined config field. Repaired by reading the canonical Value API. Final task rerun underway.",
+    "task_race_final": "The internal/server package reached the five-minute timeout while fsync persisted the full embedded catalog workspace. The durable restart test now seeds a small real catalog store and retains all original behavior assertions. The bounded rerun is underway.",
+    "prose": "Six diagnostics repaired. Final prose check underway."
+  },
+  "running": {
+    "full_verification": {
+      "session": 31699,
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/full-verification.log",
+      "status": "in_progress"
+    },
+    "task_acceptance": {
+      "session": 5739,
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-acceptance-final.json",
+      "exit_status": 0
+    },
+    "task_race_bounded": {
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-race-bounded.jsonl",
+      "exit_status": 1
+    },
+    "prose": {
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/closeout-prose.log"
+    },
+    "task_race_qualified": {
+      "session": 93059,
+      "log": "/Users/jack/src/github.com/agentstation/starmap-server-administration/.tmp/csp14-identity/task-race-qualified.jsonl"
+    }
+  },
+  "remaining": [
+    "Finish final tests and repository gate.",
+    "Commit intended source, integrate main 8c35fe891, complete required review.",
+    "Push and create PR, qualify native administration on six runners.",
+    "Merge after required checks and record actual merge before CSP14 completion."
+  ],
+  "dependency": {
+    "task": "CSP5",
+    "status": "done",
+    "merge": "8c35fe8919a93d776e2b1fda48ff164bfe37aeff"
+  },
+  "completion_credit": false,
+  "acceptance": {
+    "gate_status": "PASS",
+    "selected_subcases": 8,
+    "subcases": {
+      "A32.first_admin_bootstrap": "PASS",
+      "A32.subscriber_mutation_denied": "PASS",
+      "A32.rotation_overlap": "PASS",
+      "A32.audit_write_failure": "PASS",
+      "A32.receipt_crash_recovery": "PASS",
+      "A32.authority_restore": "PASS",
+      "A32.cli_effective_report": "PASS",
+      "A32.admin_effective_report": "PASS"
+    },
+    "release_qualification": "Not claimed. Only CSP14 was selected."
+  },
+  "plan_maintenance": {
+    "prose": "1545 files, zero diagnostics.",
+    "unrelated_files_unchanged": 5,
+    "protected_sections_unchanged": 6
+  }
+}
