@@ -1,0 +1,96 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T14:57:29.799820+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+  "work_commit": "7003f055c64c9c6c46f1268a41be8e2812d68899",
+  "producer_commit": "486510bc5ffa78736b5b2185c64de75341697b82",
+  "workspace": "/tmp/starport-csp8-files.work",
+  "behavior": [
+    "The config paths command reports loaded configuration instead of independently resolved platform paths.",
+    "Text output includes process state, cache, catalog runtime, embedded baseline, database, upload, and local authentication locations.",
+    "A relative catalog file source requires STARPORT_RELATIVE_PATH_BASE=config. Resolution preserves remote URLs and does not create directories."
+  ],
+  "checks": {
+    "config_and_cli_race": {
+      "exit": 0,
+      "events": {
+        "pass": 334
+      },
+      "nonpassing_tests": []
+    },
+    "file_source_fail_before": {
+      "exit": 1,
+      "events": {
+        "fail": 1,
+        "pass": 1
+      },
+      "nonpassing_tests": [
+        "TestFileCatalogSourceRequiresExplicitRelativeAnchor"
+      ]
+    },
+    "lint": {
+      "exit": 0,
+      "issues": 0
+    },
+    "vet": {
+      "exit": 0
+    },
+    "authored_prose": {
+      "exit": 0,
+      "diagnostics": 0
+    }
+  },
+  "commands": [
+    "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go test -race -json ./internal/config ./internal/cli -count=1",
+    "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 golangci-lint run ./internal/config/... ./internal/cli/...",
+    "GOWORK=/tmp/starport-csp8-files.work GOTOOLCHAIN=go1.26.6 go vet ./internal/config ./internal/cli"
+  ],
+  "failures_preserved": [
+    "Initial path-report tests failed before the command used loaded configuration. The primary-file fixture also needed a valid-length master key and environment root selection. Explicit WithPaths overrides correctly precede file roots.",
+    "The first remote-source fixture used unsupported http source kind. The corrected fixture uses the existing starmap source and passes before the file-path repair.",
+    "The corrected file-source regression fails on unanchored relative paths before the repair."
+  ],
+  "source_sha256": {
+    "docs/OPERATOR-GUIDE.md": "302d4adb306a2fb08548593624639a8d34d5e51a29b2d4e35e0deedf255c9643",
+    "internal/cli/app_test.go": "2ac987822a9107c746a93c122220334e0e64c944c88ed811c8a2768acb529206",
+    "internal/cli/config.go": "933db98865225db6664a0edfd00c15f19844845de06c1c7a6afb81d4b97dc6a2",
+    "internal/cli/inspection_commands.go": "ff57833c7b9f3a89a3335d21df52638a0aabeb32ad5f40636f1f235c962f587b",
+    "internal/cli/path_inspection_test.go": "e2159aea004fed08ee56ff99bf5a0a0057d8148a36a9d15b4fd76a8f81bc8bd2",
+    "internal/config/loader.go": "61386859e907adcb4f239d69b41a88aa024e61f234138fb90776185bf791f4aa",
+    "internal/config/source_path_test.go": "e6292c76c3379c816c7e4bc874b5840982f2478dc4fb24bb331a8cc3bb899961"
+  },
+  "completion_credit": false,
+  "remaining": [
+    "Complete selection origins, semantic file-role inventory, source-cache roots, and legacy migration.",
+    "Qualify storage, acquisition, native platforms, and the published Starmap module.",
+    "Run full pre-PR checks and required review, then merge after required CI passes."
+  ],
+  "artifacts_uncompressed_sha256": {
+    "path-diagnostics-fail-before.jsonl.gz": "9165e8dc6bce692c10f8b2a6bc1686384433f0af7553ef0f54d560faa140edf2",
+    "path-diagnostics-fail-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "path-diagnostics-fail-before.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-diagnostics.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-diagnostics.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "path-diagnostics.jsonl.gz": "a307f72a5a5724b9266be3a1830ef5d4267beb16fe94105b34070ac7a6ea46d4",
+    "path-diagnostics-suite.jsonl.gz": "01b52fcc17351ac08552a34a824b39e713946c37826c0c17c5ea2296794a5b78",
+    "path-diagnostics-suite.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-diagnostics-suite.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "path-diagnostics-corrected.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-diagnostics-corrected.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-diagnostics-corrected.jsonl.gz": "40a22d4f4b7cb6c807fc6698459d70d4408d3cc8758e64870fe43813042d5135",
+    "path-inspection-complete.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-inspection-complete.jsonl.gz": "1b72d870daa51c60047481dfe013db7803cece712235c47b5d1f968ca74826a4",
+    "path-inspection-complete.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-inspection-lint.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "path-inspection-lint.log.gz": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+    "path-inspection-vet.log.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "path-inspection-vet.exit.gz": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-path-fail-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-path-fail-before.jsonl.gz": "0fda90495e1803477f18fba5080ed95e6b35260096f081a3888a28bf6ef44d98",
+    "source-path-fail-before.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-path-valid-fail-before.exit.gz": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "source-path-valid-fail-before.jsonl.gz": "065cc0d43123182026e6c8f8d321c554368e77162b5f81d90edf01df469e4400",
+    "source-path-valid-fail-before.stderr.gz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
