@@ -1,0 +1,37 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T09:21:04.445044+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-shared-catalog",
+  "branch": "codex/starport-shared-catalog",
+  "baseline": "2355823aa78972c12df70207a1bbe8b36ad6f03c",
+  "starmap_source": "c754d1c9ef8ed7ebe38f0169f5be34705f91761d",
+  "implementation_authority": "Local implementation uses merged prerequisite code. CSP6 hosted acceptance and a compatible stable module still gate CSP8 merge and completion.",
+  "current_behavior": [
+    "Starport duplicates catalog option translation and drops zero acquisition intervals.",
+    "PlatformPaths stores every role under the configuration directory.",
+    "The catalog state default uses XDG paths on every platform.",
+    "Generation persistence uses a separate Starport adapter."
+  ],
+  "target_behavior": [
+    "Use canonical settings resolution, explicit presence, and permitted Starmap fallback.",
+    "Use product-local native roots, file roles, private inputs, baseline export, and explicit migrations.",
+    "Use Starmap-owned catalog storage with Starport-owned backend composition.",
+    "Preserve isolated development and accepted authority semantics."
+  ],
+  "verification": "The complete CSP8 contract and discovery criteria remain unchanged. Capture fail-before evidence before production edits.",
+  "remaining": [
+    "Capture baseline failures and add focused contract tests.",
+    "Implement the complete CSP8 flow, then run its task, native, repository, and review gates.",
+    "Complete prerequisite hosted acceptance and pin a compatible stable release before dependent merge."
+  ],
+  "waiting_task": {
+    "task": "CSP14",
+    "pr": 163,
+    "head": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
+    "ci_run": 35077801953,
+    "ci_status": "in_progress",
+    "automatic_merge": true,
+    "completion_credit": false
+  }
+}
