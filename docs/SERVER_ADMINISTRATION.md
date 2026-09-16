@@ -37,7 +37,9 @@ credential against its configured audience and active identity state.
 The authority origin ID selects the audience when the server enables origin issuance.
 A configured internal source authority ID selects it for a relay.
 Otherwise, the deployment ID selects it. Changing the audience requires an explicit
-state migration. Existing credentials cannot cross that boundary. Embedding hosts
+state migration. Existing credentials cannot cross that boundary.
+
+Embedding hosts
 must stop and reconstruct the server when they change the catalog authority.
 The Go server constructor also requires managed identities for internal catalogs.
 
