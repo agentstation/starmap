@@ -115,6 +115,18 @@ func (p *Pipeline) Prepare(ctx context.Context, existing *catalogs.Catalog, opts
 		return p.prepare(ctx, existing, nil)
 	}
 	options := pkgsync.Defaults().Apply(opts...)
+	preparedPipeline, run := p.withSourceActivity(options)
+	prepared, err := preparedPipeline.prepare(ctx, existing, options)
+	report := run.snapshot()
+	if err != nil {
+		return nil, &sources.ActivityError{Activities: report, ProviderAttempts: run.providerReport(), Err: err}
+	}
+	prepared.Result.SourceActivities = report
+	prepared.Result.ProviderAttempts = run.providerReport()
+	return prepared, nil
+}
+
+func (p *Pipeline) withSourceActivity(options *pkgsync.Options) (*Pipeline, *sourceActivityRun) {
 	run := newSourceActivityRun(options)
 	preparedPipeline := *p
 	preparedPipeline.resolveDependencies = func(ctx context.Context, input []sources.Source, options *pkgsync.Options) ([]sources.Source, []error, error) {
@@ -139,12 +151,5 @@ func (p *Pipeline) Prepare(ctx context.Context, existing *catalogs.Catalog, opts
 		}
 		return p.observe(ctx, tracked, options)
 	}
-	prepared, err := preparedPipeline.prepare(ctx, existing, options)
-	report := run.snapshot()
-	if err != nil {
-		return nil, &sources.ActivityError{Activities: report, ProviderAttempts: run.providerReport(), Err: err}
-	}
-	prepared.Result.SourceActivities = report
-	prepared.Result.ProviderAttempts = run.providerReport()
-	return prepared, nil
+	return &preparedPipeline, run
 }

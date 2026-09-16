@@ -4,11 +4,16 @@ on:
   schedule:
     - cron: "17 */4 * * *"
   workflow_dispatch:
+  workflow_run:
+    workflows: [Pull Request]
+    types: [completed]
 
 permissions:
+  actions: read
   attestations: write
   contents: write
   id-token: write
+  pull-requests: read
 
 concurrency:
   group: catalog-generation-publisher
@@ -16,21 +21,34 @@ concurrency:
 
 jobs:
   generate:
+    if: >-
+      github.repository == 'agentstation/starmap' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_repository.full_name == github.repository &&
+        startsWith(github.event.workflow_run.head_branch, 'catalog/promotion/')))
     runs-on: ubuntu-latest
-    # The publisher limits nest above the 60-minute catalog transfer bound. The
-    # refresh step gets 75 minutes, and this job gets 90 minutes.
     timeout-minutes: 90
     env:
-      # The discovery channel is a branch, not a release. GitHub freezes an
-      # immutable release at creation, so a mutable pointer cannot live on one.
-      CHANNEL_BRANCH: catalog/v1
-      CHANNEL_FILE: channel.json
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Checkout
+      - name: Checkout trusted publisher source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # The channel branch push reuses this checkout credential.
-          persist-credentials: true
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check publisher identity configuration
+        env:
+          CATALOG_APP_CLIENT_ID: ${{ vars.CATALOG_APP_CLIENT_ID }}
+          CATALOG_APP_KEY_CONFIGURED: ${{ secrets.CATALOG_APP_PRIVATE_KEY != '' }}
+        run: |
+          test -n "$CATALOG_APP_CLIENT_ID" && test "$CATALOG_APP_KEY_CONFIGURED" = true || {
+            echo "::error::Configure the catalog GitHub App before enabling publication."
+            exit 1
+          }
 
       - name: Set up Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -38,51 +56,15 @@ jobs:
           go-version: "1.26.6"
           cache: true
 
-      - name: Read current catalog channel document
-        id: channel_current
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          CURRENT_DIRECTORY=$(mktemp -d "${RUNNER_TEMP}/catalog-channel-current.XXXXXX")
-          CURRENT_COMMIT=""
-          CURRENT_DOCUMENT=""
-          PREVIOUS_DIRECTORY=""
-          # A missing branch permits first publication. A failed read does not.
-          if git ls-remote --exit-code origin "refs/heads/${CHANNEL_BRANCH}" > "$CURRENT_DIRECTORY/remote.txt"; then
-            git fetch --no-tags --depth=1 origin \
-              "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}"
-            CURRENT_COMMIT=$(git rev-parse "refs/remotes/origin/${CHANNEL_BRANCH}")
-            CURRENT_DOCUMENT="${CURRENT_DIRECTORY}/${CHANNEL_FILE}"
-            git show "${CURRENT_COMMIT}:${CHANNEL_FILE}" > "$CURRENT_DOCUMENT"
-            gh attestation verify "$CURRENT_DOCUMENT" \
-              --repo "$GITHUB_REPOSITORY" \
-              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-              --deny-self-hosted-runners
-            CURRENT_TAG=$(jq -er .tag "$CURRENT_DOCUMENT")
-            [[ "$CURRENT_TAG" =~ ^catalog-[a-f0-9]{64}$ ]]
-            PREVIOUS_DIRECTORY=$(mktemp -d "${RUNNER_TEMP}/catalog-channel-predecessor.XXXXXX")
-            gh release download "$CURRENT_TAG" --pattern 'starmap-catalog*' --dir "$PREVIOUS_DIRECTORY"
-            gh attestation verify "$PREVIOUS_DIRECTORY/starmap-catalog.tar.gz" \
-              --repo "$GITHUB_REPOSITORY" \
-              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-              --deny-self-hosted-runners
-          else
-            REMOTE_STATUS=$?
-            if [ "$REMOTE_STATUS" -ne 2 ]; then
-              exit "$REMOTE_STATUS"
-            fi
-          fi
-          {
-            printf 'commit=%s\n' "$CURRENT_COMMIT"
-            printf 'document=%s\n' "$CURRENT_DOCUMENT"
-            printf 'previous_directory=%s\n' "$PREVIOUS_DIRECTORY"
-          } >> "$GITHUB_OUTPUT"
+      - name: Select publication directory
+        run: printf 'CATALOG_PUBLICATION_DIRECTORY=%s/catalog-publication\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
 
-      - name: Select catalog store
-        run: |
-          printf 'STARMAP_GENERATION_STORE_PATH=%s/starmap-catalog-generation/catalog-store\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+      - name: Restore accepted or pending publication
+        id: publication
+        run: python3 scripts/catalog_publication.py inspect --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
       - name: Refresh candidate catalog
+        if: steps.publication.outputs.acquire == 'true'
         timeout-minutes: 75
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -96,304 +78,124 @@ jobs:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          STARMAP_GENERATION_NONINTERACTIVE: "1"
-          STARMAP_GENERATION_REPORT_PATH: catalog-generation.json
-          STARMAP_GENERATION_STATE_PATH: ${{ runner.temp }}/starmap-catalog-generation
-        run: ./scripts/generate-embedded-catalog.sh
+        run: python3 scripts/catalog_publication.py prepare --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
-      - name: Classify candidate catalog generation
-        id: change
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          CHANGED=$(jq -r .changed catalog-generation.json)
-          PAYLOAD_CHECKSUM=$(jq -er .payload_checksum catalog-generation.json)
-          CATALOG_CHECKSUM=$(jq -er .semantic_checksum catalog-generation.json)
-          CATALOG_DIGEST=${CATALOG_CHECKSUM#sha256:}
-          TAG=catalog-${CATALOG_DIGEST}
-          GENERATION_ID=$(jq -er .generation_id catalog-generation.json)
-          write_output() {
-            printf '%s=%s\n' "$1" "$2" >> "$GITHUB_OUTPUT"
-          }
-          write_output changed "$CHANGED"
-          write_output payload_checksum "$PAYLOAD_CHECKSUM"
-          write_output catalog_checksum "$CATALOG_CHECKSUM"
-          write_output tag "$TAG"
-          write_output generation_id "$GENERATION_ID"
+      - name: Validate candidate before publication
+        if: steps.publication.outputs.acquire == 'true'
+        run: python3 scripts/catalog_publication.py validate --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            EXISTING=${RUNNER_TEMP}/catalog-existing-release
-            rm -rf "$EXISTING"
-            mkdir -p "$EXISTING"
-            gh release download "$TAG" --pattern 'starmap-catalog*' --dir "$EXISTING"
-            gh attestation verify \
-              "$EXISTING/starmap-catalog.tar.gz" \
-              --repo "$GITHUB_REPOSITORY" \
-              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-              --deny-self-hosted-runners
-            go run ./cmd/starmap-catalog-release \
-              --verify-dir "$EXISTING" > catalog-existing-verification.json
-            test "$(jq -er .semantic_checksum catalog-existing-verification.json)" = "$CATALOG_CHECKSUM"
-            write_output verified_directory "$EXISTING"
-            write_output published_at "$(gh release view "$TAG" --json publishedAt --jq .publishedAt)"
-            write_output publish false
-            write_output reason "immutable catalog release already published and verified"
-            exit 0
-          fi
+      - name: Retain acquisition corrections and validation logs
+        if: always() && steps.publication.outputs.acquire == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: catalog-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.CATALOG_PUBLICATION_DIRECTORY }}/*.log
+          retention-days: 14
+          if-no-files-found: ignore
 
-          gh release list --limit 100 --json tagName,isPrerelease,isDraft,publishedAt \
-            > "${RUNNER_TEMP}/catalog-release-listing.json"
-          PREVIOUS_TAG=""
-          while IFS= read -r CANDIDATE_TAG; do
-            CANDIDATE_DIRECTORY=$(mktemp -d)
-            CANDIDATE_REPORT=${RUNNER_TEMP}/catalog-compatibility-${CANDIDATE_TAG}.json
-            gh release download "$CANDIDATE_TAG" --pattern 'starmap-catalog*' --dir "$CANDIDATE_DIRECTORY"
-            gh attestation verify \
-              "$CANDIDATE_DIRECTORY/starmap-catalog.tar.gz" \
-              --repo "$GITHUB_REPOSITORY" \
-              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-              --deny-self-hosted-runners
-            go run ./cmd/starmap-catalog-release \
-              --inspect-dir "$CANDIDATE_DIRECTORY" > "$CANDIDATE_REPORT"
-            if jq -e '.supports_current_schema == true' "$CANDIDATE_REPORT" >/dev/null; then
-              PREVIOUS_TAG="$CANDIDATE_TAG"
-              break
-            fi
-          done < <(go run ./cmd/starmap-catalog-release \
-            --rollback-candidates "${RUNNER_TEMP}/catalog-release-listing.json" \
-            --exclude-tag "$TAG" | jq -r '.candidates[].tag')
-          write_output previous_tag "$PREVIOUS_TAG"
-
-          write_output publish true
-          write_output reason "the canonical immutable catalog release is not published"
-
-      - name: Validate candidate catalog
-        if: ${{ steps.change.outputs.changed == 'true' || steps.change.outputs.publish == 'true' }}
-        run: |
-          make catalog-generation-check
-          make embedded-catalog-budget-check
-
-      - name: Stage validated immutable generation
-        if: ${{ steps.change.outputs.publish == 'true' }}
-        id: assets
-        run: |
-          go run ./cmd/starmap-catalog-release \
-            --generation-store "${STARMAP_GENERATION_STORE_PATH}" \
-            --channel-current "${{ steps.channel_current.outputs.document }}" \
-            --previous-release-dir "${{ steps.channel_current.outputs.previous_directory }}" \
-            --output-dir dist/catalog-generation > catalog-release.json
-          printf 'directory=%s\n' "$(jq -er .directory catalog-release.json)" >> "$GITHUB_OUTPUT"
-
-      - name: Attest scheduled catalog generation
-        if: ${{ steps.change.outputs.publish == 'true' }}
+      - name: Attest exact publication inputs
+        if: steps.publication.outputs.acquire == 'true'
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
-          subject-path: "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz"
+          subject-path: "${{ steps.publication.outputs.directory }}/*"
 
-      - name: Verify scheduled catalog provenance
-        if: ${{ steps.change.outputs.publish == 'true' }}
+      - name: Retain preparation before public writes
+        if: steps.publication.outputs.acquire == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: catalog-publication-${{ github.run_id }}
+          path: ${{ steps.publication.outputs.directory }}
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Record pending publication
+        if: steps.publication.outputs.active == 'true'
+        run: python3 scripts/catalog_publication.py begin --directory "$CATALOG_PUBLICATION_DIRECTORY"
+
+      - name: Publish and verify immutable public inputs
+        if: steps.publication.outputs.active == 'true'
+        run: python3 scripts/catalog_publication.py publish --directory "$CATALOG_PUBLICATION_DIRECTORY"
+
+      # Mint this token after acquisition because installation tokens expire after one hour.
+      - name: Create promotion installation token
+        if: steps.publication.outputs.active == 'true'
+        id: promotion_token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.CATALOG_APP_CLIENT_ID }}
+          private-key: ${{ secrets.CATALOG_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-administration: read
+          permission-actions: read
+          permission-attestations: read
+          permission-checks: read
+
+      - name: Select promotion bot identity
+        if: steps.publication.outputs.active == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.promotion_token.outputs.token }}
+          CATALOG_APP_SLUG: ${{ steps.promotion_token.outputs.app-slug }}
         run: |
-          gh attestation verify \
-            "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz" \
-            --repo "$GITHUB_REPOSITORY" \
-            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-            --deny-self-hosted-runners
+          [[ "$CATALOG_APP_SLUG" =~ ^[a-z0-9-]+$ ]]
+          BOT_NAME="${CATALOG_APP_SLUG}[bot]"
+          BOT_ID=$(gh api "users/${BOT_NAME}" --jq .id)
+          [[ "$BOT_ID" =~ ^[0-9]+$ ]]
+          printf 'CATALOG_BOT_NAME=%s\n' "$BOT_NAME" >> "$GITHUB_ENV"
+          printf 'CATALOG_BOT_EMAIL=%s+%s@users.noreply.github.com\n' "$BOT_ID" "$BOT_NAME" >> "$GITHUB_ENV"
 
-      - name: Publish changed validated catalog generation
-        if: ${{ steps.change.outputs.publish == 'true' }}
+      - name: Promote exact input through checked pull request
+        if: steps.publication.outputs.active == 'true'
+        id: promotion
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create "${{ steps.change.outputs.tag }}" \
-            --prerelease \
-            --title "Catalog ${{ steps.change.outputs.generation_id }}" \
-            --notes "Immutable catalog ${{ steps.change.outputs.catalog_checksum }} with exact evidence payload ${{ steps.change.outputs.payload_checksum }}" \
-            "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz" \
-            "${{ steps.assets.outputs.directory }}/starmap-catalog.tar.gz.sha256" \
-            "${{ steps.assets.outputs.directory }}/starmap-catalog.intoto.json"
+          GH_TOKEN: ${{ steps.promotion_token.outputs.token }}
+        run: python3 scripts/catalog_publication.py promote --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
-      - name: Verify downloaded public catalog prerelease
-        if: ${{ steps.change.outputs.publish == 'true' }}
-        id: verified
+      - name: Stage channels after verified merge
+        if: steps.promotion.outputs.ready == 'true'
+        id: channels
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG="${{ steps.change.outputs.tag }}"
-          STAGED_DIRECTORY=$(realpath "${{ steps.assets.outputs.directory }}")
-          DOWNLOAD_DIRECTORY=${RUNNER_TEMP}/catalog-public-download
-          rm -rf "$DOWNLOAD_DIRECTORY"
-          mkdir -p "$DOWNLOAD_DIRECTORY"
+          CATALOG_PROMOTED_COMMIT: ${{ steps.promotion.outputs.source_commit }}
+          CATALOG_PROMOTED_CHECKOUT: ${{ steps.promotion.outputs.checkout }}
+        run: python3 scripts/catalog_publication.py channels --directory "$CATALOG_PUBLICATION_DIRECTORY"
 
-          test "$(gh release view "$TAG" --json isPrerelease --jq .isPrerelease)" = "true"
-          gh release download "$TAG" --pattern 'starmap-catalog*' --dir "$DOWNLOAD_DIRECTORY"
-          go run ./cmd/starmap-catalog-release --verify-dir "$DOWNLOAD_DIRECTORY" > catalog-public-verification.json
-          test "$(jq -er .generation_id catalog-public-verification.json)" = "${{ steps.change.outputs.generation_id }}"
-          test "$(jq -er .archive_checksum catalog-public-verification.json)" = "$(jq -er .archive_checksum catalog-release.json)"
-          cmp "$STAGED_DIRECTORY/starmap-catalog.tar.gz" "$DOWNLOAD_DIRECTORY/starmap-catalog.tar.gz"
-          cmp "$STAGED_DIRECTORY/starmap-catalog.tar.gz.sha256" "$DOWNLOAD_DIRECTORY/starmap-catalog.tar.gz.sha256"
-          cmp "$STAGED_DIRECTORY/starmap-catalog.intoto.json" "$DOWNLOAD_DIRECTORY/starmap-catalog.intoto.json"
-          gh attestation verify \
-            "$DOWNLOAD_DIRECTORY/starmap-catalog.tar.gz" \
-            --repo "$GITHUB_REPOSITORY" \
-            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-            --deny-self-hosted-runners
-          printf 'directory=%s\n' "$DOWNLOAD_DIRECTORY" >> "$GITHUB_OUTPUT"
-          printf 'published_at=%s\n' \
-            "$(gh release view "$TAG" --json publishedAt --jq .publishedAt)" >> "$GITHUB_OUTPUT"
-
-      - name: Verify prior catalog prerelease remains readable
-        if: ${{ steps.change.outputs.publish == 'true' && steps.change.outputs.previous_tag != '' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PREVIOUS_TAG="${{ steps.change.outputs.previous_tag }}"
-          ROLLBACK_DIRECTORY=${RUNNER_TEMP}/catalog-rollback-download
-          rm -rf "$ROLLBACK_DIRECTORY"
-          mkdir -p "$ROLLBACK_DIRECTORY"
-
-          gh release download "$PREVIOUS_TAG" --pattern 'starmap-catalog*' --dir "$ROLLBACK_DIRECTORY"
-          go run ./cmd/starmap-catalog-release --verify-dir "$ROLLBACK_DIRECTORY" > catalog-rollback-verification.json
-          test -n "$(jq -er .generation_id catalog-rollback-verification.json)"
-          gh attestation verify \
-            "$ROLLBACK_DIRECTORY/starmap-catalog.tar.gz" \
-            --repo "$GITHUB_REPOSITORY" \
-            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-            --deny-self-hosted-runners
-
-      - name: Stage attested catalog channel document
-        id: channel
-        run: |
-          VERIFIED_DIRECTORY="${{ steps.verified.outputs.directory || steps.change.outputs.verified_directory }}"
-          PUBLISHED_AT="${{ steps.verified.outputs.published_at || steps.change.outputs.published_at }}"
-          CHANNEL_DIRECTORY=${RUNNER_TEMP}/catalog-channel
-          rm -rf "$CHANNEL_DIRECTORY"
-          mkdir -p "$CHANNEL_DIRECTORY"
-
-          test -n "$VERIFIED_DIRECTORY"
-          test -n "$PUBLISHED_AT"
-          go run ./cmd/starmap-catalog-release \
-            --channel-release-dir "$VERIFIED_DIRECTORY" \
-            --channel-tag "${{ steps.change.outputs.tag }}" \
-            --channel-published-at "$PUBLISHED_AT" \
-            --channel-current "${{ steps.channel_current.outputs.document }}" \
-            --previous-release-dir "${{ steps.channel_current.outputs.previous_directory }}" \
-            --channel-out "${CHANNEL_DIRECTORY}/${CHANNEL_FILE}" \
-            --channel-attestation-verified > catalog-channel.json
-          {
-            printf 'document=%s\n' "$(jq -er .document catalog-channel.json)"
-            printf 'sequence=%s\n' "$(jq -er .sequence catalog-channel.json)"
-            printf 'outcome=%s\n' "$(jq -er .outcome catalog-channel.json)"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Attest catalog channel document
+      - name: Attest both discovery channels
+        if: steps.promotion.outputs.ready == 'true'
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
-          subject-path: "${{ steps.channel.outputs.document }}"
+          subject-path: "${{ steps.channels.outputs.directory }}/*.json"
 
-      - name: Verify catalog channel provenance
+      - name: Publish and verify both discovery channels
+        if: steps.promotion.outputs.ready == 'true'
+        id: completed
+        run: python3 scripts/catalog_publication.py finish --directory "$CATALOG_PUBLICATION_DIRECTORY"
+
+      - name: Report publication state
+        if: steps.publication.outputs.active == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLICATION_STATUS: ${{ steps.completed.outputs.status || steps.promotion.outputs.status }}
+          PUBLICATION_PULL_REQUEST: ${{ steps.promotion.outputs.pull_request }}
         run: |
-          gh attestation verify \
-            "${{ steps.channel.outputs.document }}" \
-            --repo "$GITHUB_REPOSITORY" \
-            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-            --deny-self-hosted-runners
-
-      - name: Publish catalog channel document
-        run: |
-          DOCUMENT="${{ steps.channel.outputs.document }}"
-          SEQUENCE="${{ steps.channel.outputs.sequence }}"
-          TAG="${{ steps.change.outputs.tag }}"
-          README=${RUNNER_TEMP}/catalog-channel-readme.md
-          INDEX=${RUNNER_TEMP}/catalog-channel-index
-
-          cat > "$README" <<'MARKDOWN'
-          # Catalog channel v1
-
-          This branch is a machine-written discovery pointer. The catalog
-          generation workflow is its only writer.
-
-          The file `channel.json` carries the media type
-          `application/vnd.agentstation.starmap.catalog-channel.v1+json`. It
-          names the one immutable `catalog-<digest>` release that a client
-          reads, and it carries build provenance that the client verifies
-          before it decodes the document.
-
-          Do not edit this branch by hand. A hand-written commit breaks the
-          sequence that every client uses to reject a replayed pointer.
-          MARKDOWN
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Use the predecessor whose catalog passed validation. A concurrent
-          # branch change makes the normal push fail without overwriting it.
-          PARENT="${{ steps.channel_current.outputs.commit }}"
-
-          # A private index leaves the working tree and the checked-out branch
-          # untouched, so this commit reaches the channel branch alone.
-          rm -f "$INDEX"
-          export GIT_INDEX_FILE="$INDEX"
-          if [ -n "$PARENT" ]; then
-            git read-tree "$PARENT"
-          else
-            git read-tree --empty
-            git update-index --add \
-              --cacheinfo "100644,$(git hash-object -w "$README"),README.md"
+          printf 'Catalog publication: %s\n' "$PUBLICATION_STATUS" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$PUBLICATION_PULL_REQUEST" ]; then
+            printf 'Promotion pull request: %s\n' "$PUBLICATION_PULL_REQUEST" >> "$GITHUB_STEP_SUMMARY"
           fi
-          git update-index --add \
-            --cacheinfo "100644,$(git hash-object -w "$DOCUMENT"),${CHANNEL_FILE}"
-          TREE="$(git write-tree)"
-          MESSAGE="catalog: publish channel sequence ${SEQUENCE} for ${TAG}"
-          if [ -n "$PARENT" ]; then
-            COMMIT="$(git commit-tree "$TREE" -p "$PARENT" -m "$MESSAGE")"
-          else
-            COMMIT="$(git commit-tree "$TREE" -m "$MESSAGE")"
-          fi
-          unset GIT_INDEX_FILE
-
-          if ! git push origin "${COMMIT}:refs/heads/${CHANNEL_BRANCH}"; then
-            echo "::error::The push to ${CHANNEL_BRANCH} failed. A ruleset that denies GitHub Actions, or a commit that another run pushed first, causes this. Read the branch, then run this workflow again."
-            exit 1
-          fi
-
-      - name: Verify published catalog channel document
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PUBLISHED_DIRECTORY=${RUNNER_TEMP}/catalog-channel-published
-          rm -rf "$PUBLISHED_DIRECTORY"
-          mkdir -p "$PUBLISHED_DIRECTORY"
-          git fetch --no-tags --depth=1 origin \
-            "+refs/heads/${CHANNEL_BRANCH}:refs/remotes/origin/${CHANNEL_BRANCH}"
-          git show "refs/remotes/origin/${CHANNEL_BRANCH}:${CHANNEL_FILE}" \
-            > "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}"
-          cmp "${{ steps.channel.outputs.document }}" "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}"
-          test "$(jq -er .sequence "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}")" = "${{ steps.channel.outputs.sequence }}"
-          test "$(jq -er .tag "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}")" = "${{ steps.change.outputs.tag }}"
-          gh attestation verify \
-            "${PUBLISHED_DIRECTORY}/${CHANNEL_FILE}" \
-            --repo "$GITHUB_REPOSITORY" \
-            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/catalog-generation.yaml" \
-            --deny-self-hosted-runners
 
       - name: Set up ORAS for optional catalog mirror
-        if: ${{ steps.change.outputs.publish == 'true' && vars.STARMAP_CATALOG_OCI_MIRROR == 'true' }}
+        if: ${{ steps.promotion.outputs.ready == 'true' && vars.STARMAP_CATALOG_OCI_MIRROR == 'true' }}
         uses: oras-project/setup-oras@1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d # v2.0.1
         with:
           version: 1.3.3
 
       - name: Publish and verify optional OCI catalog mirror
-        if: ${{ steps.change.outputs.publish == 'true' && vars.STARMAP_CATALOG_OCI_MIRROR == 'true' }}
+        if: ${{ steps.promotion.outputs.ready == 'true' && vars.STARMAP_CATALOG_OCI_MIRROR == 'true' }}
         env:
           OCI_REPOSITORY: ${{ vars.STARMAP_CATALOG_OCI_REPOSITORY }}
         run: |
-          DIRECTORY=$(realpath "${{ steps.assets.outputs.directory }}")
-          GENERATION_ID=$(jq -er .generation_id catalog-release.json)
-          ARCHIVE_CHECKSUM=$(jq -er .archive_checksum catalog-release.json)
+          DIRECTORY="${CATALOG_PUBLICATION_DIRECTORY}/verified-assets"
+          RECORD="${CATALOG_PUBLICATION_DIRECTORY}/stage/pending.json"
+          GENERATION_ID=$(jq -er .generation_id "$RECORD")
+          ARCHIVE_CHECKSUM=$(jq -er .archive_checksum "$RECORD")
           ARCHIVE_DIGEST=${ARCHIVE_CHECKSUM#sha256:}
           OWNER=${GITHUB_REPOSITORY_OWNER,,}
           OCI_REPOSITORY=${OCI_REPOSITORY:-ghcr.io/${OWNER}/starmap-catalog}

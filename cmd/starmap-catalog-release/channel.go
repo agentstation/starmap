@@ -30,6 +30,7 @@ type channelOptions struct {
 	previousDirectory   string
 	outputPath          string
 	attestationVerified bool
+	publication         channelPublicationOptions
 }
 
 // channelReport records the staged channel document and its outcome.
@@ -93,7 +94,7 @@ func stageChannelDocument(options channelOptions) (channelReport, error) {
 		return channelReport{}, err
 	}
 
-	next, kind, err := current.Advance(artifact.Candidate{
+	selected := artifact.Candidate{
 		GenerationID:  verified.GenerationID,
 		Tag:           tag,
 		CatalogDigest: verified.SemanticChecksum,
@@ -104,7 +105,18 @@ func stageChannelDocument(options channelOptions) (channelReport, error) {
 			ChecksumsMatch:      true,
 			AttestationVerified: options.attestationVerified,
 		},
-	}, updatedAt)
+	}
+	var next artifact.Channel
+	var kind artifact.AdvanceKind
+	if options.publication.requested() {
+		promotion, verifyErr := verifyChannelPublication(options.publication, verified)
+		if verifyErr != nil {
+			return channelReport{}, verifyErr
+		}
+		next, kind, err = current.AdvancePublication(selected, promotion, updatedAt)
+	} else {
+		next, kind, err = current.Advance(selected, updatedAt)
+	}
 	if err != nil {
 		return channelReport{}, err
 	}
@@ -117,7 +129,7 @@ func stageChannelDocument(options channelOptions) (channelReport, error) {
 		return channelReport{}, err
 	}
 	return channelReport{
-		Channel:           artifact.ChannelName,
+		Channel:           next.Name,
 		Document:          path,
 		Outcome:           string(kind),
 		CreatesGeneration: kind.CreatesGeneration(),

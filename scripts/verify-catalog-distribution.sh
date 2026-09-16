@@ -111,9 +111,13 @@ selected_engine_required() {
 		grep -qsF -- "\"$ENGINE/pkg/verify\"" internal/attestation/attestation.go
 }
 
-# Publication: declarative workflow facts (CAT-D1, CAT-D9, CAT-D10, CAT-D12).
-check CAT-V01 'the workflow publishes the catalog/v1 channel branch and no catalog-semantic tag' \
-	bash -c "grep -qsE 'CHANNEL_BRANCH: catalog/v1' '$WORKFLOW' && grep -qsF 'git push origin' '$WORKFLOW' && ! grep -qsE 'catalog-semantic-' '$WORKFLOW'"
+# Publication: workflow wiring and behavior (CAT-D1, CAT-D9, CAT-D10, CAT-D12).
+publication_channels_contract() {
+	go_test_passes "$ROOT" ./internal/ciworkflow TestCatalogGenerationWorkflowRetainsOnePublicationBeforePromotion &&
+		python3 scripts/test_catalog_publication.py PublicationRecoveryTests.test_interrupted_promotion_merges_exact_artifact_before_both_channels
+}
+check CAT-V01 'checked promotion publishes both channel schemas for one canonical catalog artifact' \
+	publication_channels_contract
 check CAT-V02 'the workflow schedule runs every four hours at minute 17' \
 	file_has "cron: *['\"]?17 \*/4 \* \* \*" "$WORKFLOW"
 # The limits nest: 60-minute transfer, 75-minute publisher step, 90-minute job.
@@ -340,8 +344,13 @@ starmap_test CAT-V65 'freshness measures the propagated channel_updated_at throu
 	./internal/server TestCascadedFreshnessPropagatesChannelUpdatedAtThroughHops
 starmap_test CAT-V66 'completed provider observations publish through one bounded coalescing window while another provider stays blocked' \
 	./acquisition/... TestSyncPublishesCompletedProvidersWhileAnotherBlocked
-starmap_test CAT-V67 'cloned state and a shared store give replicas distinct scheduler phases and a restart keeps its phase' \
-	./runtime TestSchedulerIdentityDivergesAcrossClonedState
+scheduler_ownership_contract() {
+	go_test_passes "$ROOT" ./runtime TestSchedulerRejectsClonedStateWithoutOwner &&
+		go_test_passes "$ROOT" ./runtime TestStablePhaseSurvivesRestart &&
+		go_test_passes "$ROOT" ./runtime TestRuntimeOwnerChangesRequireMigration
+}
+check CAT-V67 'unowned cloned state is refused, ownership changes require migration, and restart preserves scheduler phase' \
+	scheduler_ownership_contract
 starport_console_test CAT-V68 'the shell owns one summary query with a visible-only cadence, waits for Retry-After after a 503, stops after a 401 until the session changes, and polls admin status only while the panel is open' \
 	src/components/shell/CatalogSummary.lifecycle.test.tsx
 

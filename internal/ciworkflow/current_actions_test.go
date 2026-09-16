@@ -10,11 +10,13 @@ import (
 func TestActiveWorkflowsUseReviewedCurrentActions(t *testing.T) {
 	t.Helper()
 	approved := map[string]string{
-		"oven-sh/setup-bun":                 "0c5077e51419868618aeaa5fe8019c62421857d6", // v2
-		"actions/checkout":                  "3d3c42e5aac5ba805825da76410c181273ba90b1", // v7.0.1
-		"actions/setup-go":                  "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e", // v7.0.0
-		"actions/attest-build-provenance":   "4d101475d8b20a2381f78447822ac1eab6504dd8", // v4.2.2
-		"actions/upload-artifact":           "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a", // v7.0.1
+		"oven-sh/setup-bun":               "0c5077e51419868618aeaa5fe8019c62421857d6", // v2
+		"actions/checkout":                "3d3c42e5aac5ba805825da76410c181273ba90b1", // v7.0.1
+		"actions/setup-go":                "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e", // v7.0.0
+		"actions/attest-build-provenance": "4d101475d8b20a2381f78447822ac1eab6504dd8", // v4.2.2
+		"actions/upload-artifact":         "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a", // v7.0.1
+		"actions/create-github-app-token": "bcd2ba49218906704ab6c1aa796996da409d3eb1", // v3.2.0
+
 		"anchore/sbom-action/download-syft": "3ad7283483fc7af8ff2b4ea19663c2d5ca935e26", // v0.24.2
 		"docker/login-action":               "dbcb813823bdd20940b903addbd779551569679f", // v4.6.0
 		"goreleaser/goreleaser-action":      "f06c13b6b1a9625abc9e6e439d9c05a8f2190e94", // v7.2.3

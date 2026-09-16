@@ -119,7 +119,7 @@ func (s *GitSource) Observe(ctx context.Context, opts ...sources.Option) (source
 	}
 
 	// Process the API data using shared logic
-	added, rejected, recordIssues, err := processFetch(builder, api, s.providers, opts...)
+	added, rejected, recordIssues, err := processFetch(ctx, builder, api, s.providers, opts...)
 	if err != nil {
 		return sources.Observation{}, err
 	}

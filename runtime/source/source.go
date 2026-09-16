@@ -93,6 +93,9 @@ type Read struct {
 	// ChannelUpdatedAt is when the upstream channel last moved.
 	ChannelUpdatedAt time.Time
 
+	// Publication holds verified run evidence independently of the artifact manifest.
+	Publication *Publication
+
 	// Chain is the sanitized upstream source chain, nearest hop first.
 	Chain []status.SourceHop
 

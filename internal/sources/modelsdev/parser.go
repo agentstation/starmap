@@ -383,7 +383,7 @@ func (p *Provider) toStarmapProviderMetadata() *catalogs.Provider {
 func (m *Model) ToStarmapModel() (*catalogs.Model, error) {
 	model := &catalogs.Model{
 		ID:          m.ID,
-		Name:        m.Name,
+		Name:        strings.TrimSpace(m.Name),
 		Description: m.Description,
 		Status:      convertModelStatus(m.Status),
 	}

@@ -53,6 +53,8 @@ The default source is the attested public GitHub channel. A caller that opens th
 ## Index
 
 - [Constants](<#constants>)
+- [func PrepareAcquisitionReplay\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation, runID string, completedAt time.Time\) \(catalogs.Generation, \[\]sources.Observation, error\)](<#PrepareAcquisitionReplay>)
+- [func ReplayAcquisition\(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings \[\]sources.ProviderAcquisitionBinding, observations \[\]sources.Observation\) \(\*starmap.Candidate, error\)](<#ReplayAcquisition>)
 - [func ValidateDirectoryPermissions\(ctx context.Context, directory string\) error](<#ValidateDirectoryPermissions>)
 - [func VerifyDirectoryMigrationPublication\(ctx context.Context, request DirectoryMigrationRequest\) error](<#VerifyDirectoryMigrationPublication>)
 - [type Acquirer](<#Acquirer>)
@@ -155,6 +157,7 @@ The default source is the attested public GitHub channel. A caller that opens th
 - [type ProviderLayer](<#ProviderLayer>)
   - [func NewProviderLayer\(id catalogs.ProviderID, observation sources.Observation\) \(ProviderLayer, error\)](<#NewProviderLayer>)
 - [type ProviderObservationReset](<#ProviderObservationReset>)
+- [type PublicationStatus](<#PublicationStatus>)
 - [type Random](<#Random>)
 - [type RefreshReport](<#RefreshReport>)
 - [type RetentionPolicy](<#RetentionPolicy>)
@@ -189,6 +192,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func \(r \*Runtime\) UpdateAcquisition\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(ObservationUpdate, error\), requestedSources ...sources.ID\) \(starmap.CatalogState, error\)](<#Runtime.UpdateAcquisition>)
   - [func \(r \*Runtime\) UpdateObservations\(ctx context.Context, prepare func\(context.Context, ObservationInputs\) \(\[\]sources.Observation, error\), resets ...ObservationReset\) \(starmap.CatalogState, error\)](<#Runtime.UpdateObservations>)
   - [func \(r \*Runtime\) Updates\(\) \<\-chan starmap.CatalogState](<#Runtime.Updates>)
+  - [func \(r \*Runtime\) UpstreamPublication\(\) \*SourcePublication](<#Runtime.UpstreamPublication>)
 - [type Source](<#Source>)
 - [type SourceAcquirer](<#SourceAcquirer>)
 - [type SourceAcquisitionRequest](<#SourceAcquisitionRequest>)
@@ -203,6 +207,7 @@ The default source is the attested public GitHub channel. A caller that opens th
   - [func DefaultSourcePolicy\(\) SourcePolicy](<#DefaultSourcePolicy>)
   - [func \(p SourcePolicy\) SafeIdentity\(\) string](<#SourcePolicy.SafeIdentity>)
   - [func \(p SourcePolicy\) Validate\(\) error](<#SourcePolicy.Validate>)
+- [type SourcePublication](<#SourcePublication>)
 - [type SourceRead](<#SourceRead>)
 - [type SourceRefreshMode](<#SourceRefreshMode>)
   - [func ParseSourceRefreshMode\(value string\) \(SourceRefreshMode, error\)](<#ParseSourceRefreshMode>)
@@ -261,7 +266,7 @@ const (
 
     // DefaultSourceChannel is the mutable branch that names the current
     // immutable catalog release.
-    DefaultSourceChannel = "catalog/v1"
+    DefaultSourceChannel = artifact.PublicationChannelName
 
     // DefaultSourcePollInterval is how often the runtime checks the channel.
     DefaultSourcePollInterval = time.Hour
@@ -391,6 +396,24 @@ const (
 )
 ```
 
+<a name="PrepareAcquisitionReplay"></a>
+## func [PrepareAcquisitionReplay](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_compaction.go#L20>)
+
+```go
+func PrepareAcquisitionReplay(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation, runID string, completedAt time.Time) (catalogs.Generation, []sources.Observation, error)
+```
+
+PrepareAcquisitionReplay returns a catalog generation and the original inputs needed for later replay. It retains compacted inputs only when catalog facts, provenance, membership, and current reviews remain exact. Current metadata reviews retain their latest original observation. Omission preserves the last review. The caller authenticates the baseline and inputs. This function reads no sources or storage.
+
+<a name="ReplayAcquisition"></a>
+## func [ReplayAcquisition](<https://github.com/agentstation/starmap/blob/main/runtime/acquisition_replay.go#L19>)
+
+```go
+func ReplayAcquisition(ctx context.Context, baseline catalogs.Generation, publisherID string, bindings []sources.ProviderAcquisitionBinding, observations []sources.Observation) (*starmap.Candidate, error)
+```
+
+ReplayAcquisition rebuilds an ordered observation history above an explicit baseline. The caller authenticates the baseline and observations, and selects the active bindings. The baseline can contain this publisher's prior scopes but cannot carry enterprise authority. This function reads no sources or storage and starts no runtime workers.
+
 <a name="ValidateDirectoryPermissions"></a>
 ## func [ValidateDirectoryPermissions](<https://github.com/agentstation/starmap/blob/main/runtime/directory_permissions.go#L24>)
 
@@ -425,7 +448,7 @@ type Acquirer interface {
 ```
 
 <a name="AcquisitionPolicy"></a>
-## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L256-L264>)
+## type [AcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L257-L265>)
 
 AcquisitionPolicy configures all scheduled acquisition. The policy is exactly one switch and one period.
 
@@ -442,7 +465,7 @@ type AcquisitionPolicy struct {
 ```
 
 <a name="DefaultAcquisitionPolicy"></a>
-### func [DefaultAcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L267>)
+### func [DefaultAcquisitionPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L268>)
 
 ```go
 func DefaultAcquisitionPolicy() AcquisitionPolicy
@@ -451,7 +474,7 @@ func DefaultAcquisitionPolicy() AcquisitionPolicy
 DefaultAcquisitionPolicy returns the canonical acquisition policy.
 
 <a name="AcquisitionPolicy.Validate"></a>
-### func \(AcquisitionPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L273>)
+### func \(AcquisitionPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L274>)
 
 ```go
 func (p AcquisitionPolicy) Validate() error
@@ -698,7 +721,7 @@ func (o DirectoryOwner) Validate() error
 Validate checks the ownership identity without creating files.
 
 <a name="Freshness"></a>
-## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L48>)
+## type [Freshness](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L54>)
 
 Freshness is the evaluated age of one observed timestamp.
 
@@ -707,7 +730,7 @@ type Freshness = status.Freshness
 ```
 
 <a name="FreshnessPolicy"></a>
-## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L312-L321>)
+## type [FreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L313-L322>)
 
 FreshnessPolicy holds the age thresholds that turn observed timestamps into a freshness level.
 
@@ -725,7 +748,7 @@ type FreshnessPolicy struct {
 ```
 
 <a name="DefaultFreshnessPolicy"></a>
-### func [DefaultFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L324>)
+### func [DefaultFreshnessPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L325>)
 
 ```go
 func DefaultFreshnessPolicy() FreshnessPolicy
@@ -734,7 +757,7 @@ func DefaultFreshnessPolicy() FreshnessPolicy
 DefaultFreshnessPolicy returns the canonical freshness thresholds.
 
 <a name="FreshnessPolicy.Validate"></a>
-### func \(FreshnessPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L371>)
+### func \(FreshnessPolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L372>)
 
 ```go
 func (p FreshnessPolicy) Validate() error
@@ -761,7 +784,7 @@ type GenerationPinAcceptance struct {
 ```
 
 <a name="Health"></a>
-## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L51>)
+## type [Health](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L57>)
 
 Health is the operator\-facing state of one runtime component.
 
@@ -1547,6 +1570,15 @@ ProviderObservationReset retains the provider\-oriented spelling of ObservationR
 type ProviderObservationReset = ObservationReset
 ```
 
+<a name="PublicationStatus"></a>
+## type [PublicationStatus](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L39>)
+
+PublicationStatus summarizes one retained upstream publication.
+
+```go
+type PublicationStatus = status.Publication
+```
+
 <a name="Random"></a>
 ## type [Random](<https://github.com/agentstation/starmap/blob/main/runtime/options.go#L97>)
 
@@ -1622,7 +1654,7 @@ func (p RetentionPolicy) Validate() error
 Validate rejects unbounded or invalid retention settings, including when operators disable scheduling.
 
 <a name="RetentionStatus"></a>
-## type [RetentionStatus](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L39>)
+## type [RetentionStatus](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L45>)
 
 RetentionStatus is the last observed catalog collection outcome.
 
@@ -1886,6 +1918,15 @@ func (r *Runtime) Updates() <-chan starmap.CatalogState
 
 Updates returns the channel that carries every published effective catalog state. The runtime buffers the channel. A reader that falls behind loses intermediate states and always observes the newest one.
 
+<a name="Runtime.UpstreamPublication"></a>
+### func \(\*Runtime\) [UpstreamPublication](<https://github.com/agentstation/starmap/blob/main/runtime/source_publication.go#L16>)
+
+```go
+func (r *Runtime) UpstreamPublication() *SourcePublication
+```
+
+UpstreamPublication returns a caller\-owned copy of the accepted source run record. It returns nil when the source supplies no run receipt. The artifact manifest stays unchanged.
+
 <a name="Source"></a>
 ## type [Source](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L20>)
 
@@ -1935,7 +1976,7 @@ type SourceDescriber interface {
 ```
 
 <a name="SourceHop"></a>
-## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L42>)
+## type [SourceHop](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L48>)
 
 SourceHop is one sanitized entry in an upstream source chain.
 
@@ -1953,7 +1994,7 @@ type SourceIdentityAdopter = source.IdentityAdopter
 ```
 
 <a name="SourceKind"></a>
-## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L45>)
+## type [SourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L51>)
 
 SourceKind names one supported upstream catalog source.
 
@@ -1962,7 +2003,7 @@ type SourceKind = status.SourceKind
 ```
 
 <a name="ParseSourceKind"></a>
-### func [ParseSourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L13>)
+### func [ParseSourceKind](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L14>)
 
 ```go
 func ParseSourceKind(name string) (SourceKind, error)
@@ -1971,7 +2012,7 @@ func ParseSourceKind(name string) (SourceKind, error)
 ParseSourceKind converts one configured name into a source kind. It rejects every unknown name with a typed validation error, so a typo never selects a silent default.
 
 <a name="SourceKinds"></a>
-### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L103>)
+### func [SourceKinds](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L109>)
 
 ```go
 func SourceKinds() []SourceKind
@@ -1989,7 +2030,7 @@ type SourceManualReader = source.ManualReader
 ```
 
 <a name="SourcePolicy"></a>
-## type [SourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L105-L143>)
+## type [SourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L106-L144>)
 
 SourcePolicy selects and bounds the upstream catalog source. It holds no token and no API key, so a policy value is safe to log and to serve.
 
@@ -2036,7 +2077,7 @@ type SourcePolicy struct {
 ```
 
 <a name="DefaultSourcePolicy"></a>
-### func [DefaultSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L146>)
+### func [DefaultSourcePolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L147>)
 
 ```go
 func DefaultSourcePolicy() SourcePolicy
@@ -2045,7 +2086,7 @@ func DefaultSourcePolicy() SourcePolicy
 DefaultSourcePolicy returns the canonical public\-channel source policy.
 
 <a name="SourcePolicy.SafeIdentity"></a>
-### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L230>)
+### func \(SourcePolicy\) [SafeIdentity](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L231>)
 
 ```go
 func (p SourcePolicy) SafeIdentity() string
@@ -2054,13 +2095,22 @@ func (p SourcePolicy) SafeIdentity() string
 SafeIdentity returns the source identity that status and logs may show. It names the kind and, for a GitHub channel, the repository and the channel. It never names a custom URL, a host, or a credential.
 
 <a name="SourcePolicy.Validate"></a>
-### func \(SourcePolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L159>)
+### func \(SourcePolicy\) [Validate](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L160>)
 
 ```go
 func (p SourcePolicy) Validate() error
 ```
 
 Validate checks the policy fields that the runtime depends on.
+
+<a name="SourcePublication"></a>
+## type [SourcePublication](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L36>)
+
+SourcePublication is the verified upstream run receipt and promotion identity.
+
+```go
+type SourcePublication = source.Publication
+```
 
 <a name="SourceRead"></a>
 ## type [SourceRead](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L33>)
@@ -2156,7 +2206,7 @@ type SourceWatcher = source.Watcher
 ```
 
 <a name="StartupPolicy"></a>
-## type [StartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L27>)
+## type [StartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L28>)
 
 StartupPolicy decides what the runtime serves while the first source read is still outstanding.
 
@@ -2190,7 +2240,7 @@ const (
 ```
 
 <a name="ParseStartupPolicy"></a>
-### func [ParseStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L65>)
+### func [ParseStartupPolicy](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L66>)
 
 ```go
 func ParseStartupPolicy(name string) (StartupPolicy, error)
@@ -2199,7 +2249,7 @@ func ParseStartupPolicy(name string) (StartupPolicy, error)
 ParseStartupPolicy converts one configured name into a startup policy.
 
 <a name="StartupPolicy.String"></a>
-### func \(StartupPolicy\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L62>)
+### func \(StartupPolicy\) [String](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L63>)
 
 ```go
 func (p StartupPolicy) String() string
@@ -2208,7 +2258,7 @@ func (p StartupPolicy) String() string
 String returns the wire value of the startup policy.
 
 <a name="StartupPolicy.Valid"></a>
-### func \(StartupPolicy\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L59>)
+### func \(StartupPolicy\) [Valid](<https://github.com/agentstation/starmap/blob/main/runtime/policy.go#L60>)
 
 ```go
 func (p StartupPolicy) Valid() bool
@@ -2217,7 +2267,7 @@ func (p StartupPolicy) Valid() bool
 Valid reports whether the policy is one of the accepted names.
 
 <a name="Status"></a>
-## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L36>)
+## type [Status](<https://github.com/agentstation/starmap/blob/main/runtime/vocabulary.go#L42>)
 
 Status is the operator\-facing state of one connected runtime.
 

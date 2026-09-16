@@ -119,7 +119,10 @@ func (g *githubSource) Read(ctx context.Context) (SourceRead, error) {
 	read.Changed = true
 	read.Generation = release.Generation
 	read.PublishedAt = release.PublishedAt
-	read.ChannelUpdatedAt = release.PublishedAt
+	read.ChannelUpdatedAt = release.ChannelUpdatedAt
+	if release.Publication != nil {
+		read.Publication = &SourcePublication{Receipt: release.Publication.Copy(), Checksum: release.PublicationChecksum, SourceCommit: release.SourceCommit}
+	}
 	return read, nil
 }
 
