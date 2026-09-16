@@ -2,10 +2,29 @@ package storage
 
 import (
 	"context"
+	stderrors "errors"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/errors"
 )
+
+func TestCoordinatedObjectEncodingRejectsOversizedParts(t *testing.T) {
+	for _, part := range []string{"manifest", "payload"} {
+		t.Run(part, func(t *testing.T) {
+			var manifest, payload []byte
+			if part == "manifest" {
+				manifest = make([]byte, MaxFilesystemManifestBytes+1)
+			} else {
+				payload = make([]byte, MaxFilesystemPayloadBytes+1)
+			}
+			data, err := encodeCoordinatedObject(coordinatedRegistry{}, coordinatedGeneration{}, manifest, payload)
+			var validation *errors.ValidationError
+			if len(data) != 0 || !stderrors.As(err, &validation) || validation.Field != "catalog_coordination.object_size" {
+				t.Fatalf("oversized %s did not receive a size refusal before encoding: bytes=%d error=%v", part, len(data), err)
+			}
+		})
+	}
+}
 
 type refusedCoordinatedDeletion struct {
 	*MemoryObjectBackend

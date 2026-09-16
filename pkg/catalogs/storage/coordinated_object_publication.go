@@ -63,17 +63,20 @@ func sameCoordinatedCandidate(left, right coordinatedGeneration) bool {
 }
 
 func encodeCoordinatedObject(state coordinatedRegistry, entry coordinatedGeneration, manifest, payload []byte) ([]byte, error) {
+	if len(manifest) > MaxFilesystemManifestBytes || len(payload) > MaxFilesystemPayloadBytes {
+		return nil, coordinatedInvalid("object_size", "generation parts exceed their bounded format")
+	}
 	header, err := json.Marshal(coordinatedObjectHeader{Version: coordinatedVersion, StoreID: state.StoreID, UploadID: entry.UploadID, Manifest: manifest})
 	if err != nil {
 		return nil, err
+	}
+	if len(header) >= MaxCoordinatedObjectBytes || len(payload) > MaxCoordinatedObjectBytes-len(header)-1 {
+		return nil, coordinatedInvalid("object_size", "generation object exceeds its bounded format")
 	}
 	data := make([]byte, 0, len(header)+1+len(payload))
 	data = append(data, header...)
 	data = append(data, '\n')
 	data = append(data, payload...)
-	if len(data) > MaxCoordinatedObjectBytes {
-		return nil, coordinatedInvalid("object_size", "generation object exceeds its bounded format")
-	}
 	return data, nil
 }
 

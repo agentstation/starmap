@@ -28,6 +28,7 @@ github.com/spf13/cobra
 github.com/spf13/pflag
 github.com/spf13/viper
 github.com/stretchr/testify
+github.com/valkey-io/valkey-go
 golang.org/x/sys
 golang.org/x/text
 google.golang.org/genai

@@ -174,7 +174,7 @@ func (s *CoordinatedObject) Collect(ctx context.Context, request RetentionReques
 Collect retires unprotected generations before deleting their immutable objects. Its registry compare\-and\-swap fences expired uploads and concurrent publication. Later passes recover delayed orphan writes through their self\-contained ownership headers.
 
 <a name="CoordinatedObject.Commit"></a>
-### func \(\*CoordinatedObject\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_publication.go#L108>)
+### func \(\*CoordinatedObject\) [Commit](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_publication.go#L111>)
 
 ```go
 func (s *CoordinatedObject) Commit(ctx context.Context, generation catalogs.Generation, expectedGenerationID string) error
@@ -192,7 +192,7 @@ func (s *CoordinatedObject) Current(ctx context.Context) (catalogs.Generation, e
 Current returns a generation that was current during this call.
 
 <a name="CoordinatedObject.CurrentAuthorityHead"></a>
-### func \(\*CoordinatedObject\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_publication.go#L218>)
+### func \(\*CoordinatedObject\) [CurrentAuthorityHead](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/storage/coordinated_object_publication.go#L221>)
 
 ```go
 func (s *CoordinatedObject) CurrentAuthorityHead(ctx context.Context) (catalogs.CatalogAuthorityHead, error)
