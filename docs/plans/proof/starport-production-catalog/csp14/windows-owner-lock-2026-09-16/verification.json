@@ -44,20 +44,21 @@
       "result": "/tmp/starmap-csp14-windows-review.vjoyDS/review.json"
     },
     "sol": {
-      "status": "running",
+      "status": "PASS",
       "model": "gpt-5.6-sol",
       "effort": "xhigh",
-      "session": 80945,
-      "result": "/tmp/starmap-csp14-windows-review.vjoyDS/review-sol.json"
+      "result": "/tmp/starmap-csp14-windows-review.vjoyDS/review-sol.json",
+      "sections": 2,
+      "findings": 0
     }
   },
-  "next": "Finish the required Sol review, then enable automatic merge at the exact repair head. Verify native results and the merged tree before completion.",
+  "next": "Verify native results and the merged tree before completion.",
   "completion_credit": false,
   "publication": {
     "pushed": true,
     "pr": 163,
     "ci_run": 35083351116,
-    "automatic_merge": false,
-    "review_sequence": "The automatic selector ran only Opus before push. Automatic merge is disabled until the required Sol review also passes."
+    "automatic_merge": true,
+    "review_sequence": "The automatic selector ran only Opus before push. Automatic merge was disabled until the required Sol review passed, then enabled for the same head."
   }
 }
