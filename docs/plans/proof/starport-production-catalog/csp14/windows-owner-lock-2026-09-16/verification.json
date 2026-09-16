@@ -1,0 +1,63 @@
+{
+  "task": "CSP14",
+  "status": "blocked(ci)",
+  "reviewed_head_before_repair": "c9c09ad5aa484bf8703f1bfe5ce754545efb07ad",
+  "work_commit": "8fbbb30431db8f776368a42add4feb7134912392",
+  "ci_run": 35077801953,
+  "failed_job": 104734396200,
+  "failure": "TestFirstAdministratorBootstrapAndRestore scans the active Windows ownership lock with os.ReadFile. Windows rejects the read while the process owns the lock.",
+  "change": "Close the restored administrator manager before scanning all retained files for unhashed credentials. Preserve every credential-persistence assertion.",
+  "production_source_changed": false,
+  "checks": {
+    "current_race": {
+      "test_events": {
+        "pass": 55
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/server/administration",
+          "Action": "pass",
+          "Elapsed": 13.957
+        }
+      ]
+    },
+    "minimum_race": {
+      "test_events": {
+        "pass": 55
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/server/administration",
+          "Action": "pass",
+          "Elapsed": 13.26
+        }
+      ]
+    }
+  },
+  "review": {
+    "opus": {
+      "status": "PASS",
+      "model": "claude-opus-5",
+      "effort": "high",
+      "sections": 2,
+      "findings": 0,
+      "result": "/tmp/starmap-csp14-windows-review.vjoyDS/review.json"
+    },
+    "sol": {
+      "status": "running",
+      "model": "gpt-5.6-sol",
+      "effort": "xhigh",
+      "session": 80945,
+      "result": "/tmp/starmap-csp14-windows-review.vjoyDS/review-sol.json"
+    }
+  },
+  "next": "Finish the required Sol review, then enable automatic merge at the exact repair head. Verify native results and the merged tree before completion.",
+  "completion_credit": false,
+  "publication": {
+    "pushed": true,
+    "pr": 163,
+    "ci_run": 35083351116,
+    "automatic_merge": false,
+    "review_sequence": "The automatic selector ran only Opus before push. Automatic merge is disabled until the required Sol review also passes."
+  }
+}

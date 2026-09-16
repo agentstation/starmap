@@ -1,0 +1,93 @@
+{
+  "task": "CSP8",
+  "status": "in_progress",
+  "recorded_at": "2026-09-16T10:06:28.775255+00:00",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-embedding-files",
+  "branch": "codex/starmap-embedding-files",
+  "work_commit": "245f1f0393396dc0a4666d46cfb500e5d71dbdda",
+  "starport_commit": "34f3866c430e9d615890df12d1bb4e1af4355812",
+  "scope": [
+    "Expose ExportEmbeddedBaseline through the public root package.",
+    "Expose bounded configuration and dotenv reads through productpaths.",
+    "Route the Starmap CLI through the same native input and export implementations."
+  ],
+  "checks": {
+    "current_race": {
+      "test_events": {
+        "pass": 15
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths",
+          "Action": "pass",
+          "Elapsed": 1.6989999999999998
+        },
+        {
+          "Package": "github.com/agentstation/starmap",
+          "Action": "pass",
+          "Elapsed": 10.677
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 10.868
+        }
+      ]
+    },
+    "minimum_race": {
+      "test_events": {
+        "pass": 15
+      },
+      "package_results": [
+        {
+          "Package": "github.com/agentstation/starmap/pkg/productpaths",
+          "Action": "pass",
+          "Elapsed": 1.67
+        },
+        {
+          "Package": "github.com/agentstation/starmap",
+          "Action": "pass",
+          "Elapsed": 10.833
+        },
+        {
+          "Package": "github.com/agentstation/starmap/internal/cli/app",
+          "Action": "pass",
+          "Elapsed": 11.066
+        }
+      ]
+    },
+    "generated_docs": "PASS",
+    "new_file_prose": {
+      "files": 5,
+      "diagnostics": 0
+    }
+  },
+  "failures_preserved": [
+    "Both new public APIs were absent before implementation.",
+    "The first API edit replaced baseline.go. The original file was restored byte-for-byte and the export API moved to baseline_export.go.",
+    "The first complete package run rejected the existing trusted relative-input contract. The checked reader now preserves caller-selected paths and ancestor validation."
+  ],
+  "verification": {
+    "status": "running",
+    "session": 93896,
+    "command": "make verify",
+    "log": "/Users/jack/src/github.com/agentstation/starmap-embedding-files/.tmp/csp8/verify.log",
+    "exit_file": "/Users/jack/src/github.com/agentstation/starmap-embedding-files/.tmp/csp8/verify.exit",
+    "source_freeze": [
+      "/Users/jack/src/github.com/agentstation/starmap-embedding-files",
+      "/Users/jack/src/github.com/agentstation/starport-shared-catalog"
+    ]
+  },
+  "remaining": [
+    "Finish repository verification, review, and publication of the Starmap host API.",
+    "Integrate Starport product roots, secure file reads, baseline export, migrations, storage, and development isolation.",
+    "Complete all original CSP8 acceptance, native qualification, prerequisite publication, and stable dependency gates."
+  ],
+  "completion_credit": false,
+  "next_implementation_worktree": {
+    "path": "/Users/jack/src/github.com/agentstation/starport-product-paths",
+    "branch": "codex/starport-product-paths",
+    "base": "34f3866c430e9d615890df12d1bb4e1af4355812",
+    "reason": "Preserve the Starport settings snapshot used by the running Starmap verification while continuing the same CSP8 implementation."
+  }
+}
