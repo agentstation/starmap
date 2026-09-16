@@ -32,6 +32,9 @@ Package starmap provides immutable AI model catalog reads, explicit generation p
 - [Constants](<#constants>)
 - [func EmbeddedBuilder\(\) \(\*catalogs.Builder, error\)](<#EmbeddedBuilder>)
 - [func EmbeddedGeneration\(\) \(catalogs.Generation, error\)](<#EmbeddedGeneration>)
+- [type BaselineExport](<#BaselineExport>)
+  - [func ExportEmbeddedBaseline\(ctx context.Context, directory string\) \(BaselineExport, error\)](<#ExportEmbeddedBaseline>)
+- [type BaselineRecovery](<#BaselineRecovery>)
 - [type Candidate](<#Candidate>)
   - [func NewCandidate\(catalog \*catalogs.Catalog, evidence CandidateEvidence, opts ...CandidateOption\) \(\*Candidate, error\)](<#NewCandidate>)
   - [func \(c \*Candidate\) Generation\(runID string, generatedAt time.Time\) \(catalogs.Generation, error\)](<#Candidate.Generation>)
@@ -126,6 +129,33 @@ func EmbeddedGeneration() (catalogs.Generation, error)
 ```
 
 EmbeddedGeneration returns the verified generation compiled into this module. The caller owns its manifest and payload. This function reads no application configuration and creates no files, network connections, or runtime workers.
+
+<a name="BaselineExport"></a>
+## type [BaselineExport](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L10>)
+
+BaselineExport identifies the immutable embedded export and any recovery work.
+
+```go
+type BaselineExport = bootstrap.ExportResult
+```
+
+<a name="ExportEmbeddedBaseline"></a>
+### func [ExportEmbeddedBaseline](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L18>)
+
+```go
+func ExportEmbeddedBaseline(ctx context.Context, directory string) (BaselineExport, error)
+```
+
+ExportEmbeddedBaseline writes the binary's catalog to an explicit host directory. It preserves conflicting files and never changes an accepted catalog or starts acquisition. The directory must be absolute. Repeated calls verify the existing export.
+
+<a name="BaselineRecovery"></a>
+## type [BaselineRecovery](<https://github.com/agentstation/starmap/blob/main/baseline_export.go#L13>)
+
+BaselineRecovery reports recovered operations and preserved paths within the export directory.
+
+```go
+type BaselineRecovery = bootstrap.BaselineRecovery
+```
 
 <a name="Candidate"></a>
 ## type [Candidate](<https://github.com/agentstation/starmap/blob/main/update.go#L23-L27>)

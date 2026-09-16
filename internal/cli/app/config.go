@@ -2,6 +2,7 @@ package app
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	stderrors "errors"
 	"fmt"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/agentstation/starmap/internal/privatefiles"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/productpaths"
@@ -239,26 +239,9 @@ func readSelectedInputTarget(path, access string) ([]byte, error) {
 }
 
 func readConfigurationTarget(path, access string) ([]byte, error) {
-	if err := privatefiles.ValidateAncestors(path); err != nil {
-		return nil, err
-	}
-	resolved, err := filepath.EvalSymlinks(path)
-	if err != nil {
-		return nil, err
-	}
-	if err := privatefiles.ValidateAncestors(resolved); err != nil {
-		return nil, err
-	}
-	root, err := os.OpenRoot(filepath.Dir(resolved))
-	if err != nil {
-		return nil, err
-	}
-	reader := privatefiles.ReadFile
-	if access == policy.ServiceManaged {
-		reader = privatefiles.ReadServiceConfiguration
-	}
-	data, err := reader(root, filepath.Base(resolved), maxConfigurationFileBytes)
-	return data, stderrors.Join(err, root.Close())
+	return productpaths.ReadConfiguration(context.Background(), productpaths.ConfigurationInput{
+		Path: path, AccessPolicy: access, Explicit: true, MaxBytes: maxConfigurationFileBytes,
+	})
 }
 
 // getEnvOrDefault returns the environment variable value or the default if not set.
