@@ -1,29 +1,29 @@
 {
   "schema_version": 1,
   "channel": "catalog/v1",
-  "sequence": 37,
-  "channel_updated_at": "2026-09-15T22:58:22.07008176Z",
-  "generation_id": "catalog-20260910T063828Z-0bbbff4c5fd3.local.ceb568b2529b",
-  "tag": "catalog-9282af5652b7603dfac611531cd4f4b9118a24274547c24e25666789b12e6d59",
-  "catalog_digest": "sha256:9282af5652b7603dfac611531cd4f4b9118a24274547c24e25666789b12e6d59",
-  "published_at": "2026-09-15T22:58:05Z",
+  "sequence": 38,
+  "channel_updated_at": "2026-09-16T04:53:01.097331418Z",
+  "generation_id": "catalog-20260910T063828Z-0bbbff4c5fd3.local.8ab3eddaa42b",
+  "tag": "catalog-fded9cf543997f1ba74cc38a494ace54b77503c83c5fb0ee05ff8e0c8950591d",
+  "catalog_digest": "sha256:fded9cf543997f1ba74cc38a494ace54b77503c83c5fb0ee05ff8e0c8950591d",
+  "published_at": "2026-09-16T04:52:44Z",
   "assets": [
     {
       "name": "starmap-catalog.intoto.json",
       "media_type": "application/vnd.in-toto+json",
-      "checksum": "sha256:affe1523eabdf18e4e9791e2aba90eb2a6bb6f88159947439a0d9c6690ca2ade",
+      "checksum": "sha256:5e1745f688b60ec4d7742b004161664f9ea667ae817aea22cd9037fe98eb6708",
       "size_bytes": 785
     },
     {
       "name": "starmap-catalog.tar.gz",
       "media_type": "application/vnd.agentstation.starmap.catalog-artifact.v1+tar+gzip",
-      "checksum": "sha256:55579accc6481d7e863d2a110d0a72cf557c8dd355c3884479eca758e883543d",
-      "size_bytes": 1442291
+      "checksum": "sha256:1462a6a40892bc6b306bc29a20dc4b98cf321e34e84136833d40f27fe31d9361",
+      "size_bytes": 1442974
     },
     {
       "name": "starmap-catalog.tar.gz.sha256",
       "media_type": "text/plain",
-      "checksum": "sha256:753a13fc69b56417d36fd58969e626f4796745a0e50480637a7006e2019f5262",
+      "checksum": "sha256:75541ea99c2a65a8a5edbc648826a89a737edd5fa6609fc976da0a2e5e3f65f0",
       "size_bytes": 89
     }
   ]
