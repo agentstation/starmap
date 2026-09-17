@@ -934,6 +934,12 @@ The pipeline validates selected provider profiles before source work, emits sepa
 Strict mode requires the exact selected bindings. Dry-run previews still avoid publication.
 
 Field provenance now carries optional binding identity and revision through JSON and YAML.
+
+Publication retains original observation links for unchanged provider membership when a candidate omits those links.
+It must not use retained receipts to justify changed membership. Such changes require explicit source observations.
+A custom update records its own receipt and preserves retained review evidence. Repeated custom updates must not accumulate unrelated custom receipts.
+YAML load optimizations must preserve scalar values, cross-entry references, duplicate-key rejection, and canonical catalog digests.
+
 Volume checks compare only history from the same binding revision. They do not attribute unscoped or peer history to a selected binding.
 
 Existing unscoped payloads omit the new fields. Missing models remain in the accepted baseline. Scoped deletion remains open.
