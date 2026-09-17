@@ -937,7 +937,7 @@ Field provenance now carries optional binding identity and revision through JSON
 
 Publication retains original observation links for unchanged provider membership when a candidate omits those links.
 It must not use retained receipts to justify changed membership. Such changes require explicit source observations.
-A custom update records its own receipt and preserves retained review evidence. Repeated custom updates must not accumulate unrelated custom receipts.
+A custom update that retains membership records its own receipt and preserves retained review evidence. Repeated custom updates must not accumulate unrelated custom receipts.
 YAML load optimizations must preserve scalar values, cross-entry references, duplicate-key rejection, and canonical catalog digests.
 
 Volume checks compare only history from the same binding revision. They do not attribute unscoped or peer history to a selected binding.

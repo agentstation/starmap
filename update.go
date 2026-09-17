@@ -55,9 +55,9 @@ func WithCandidateGenerationID(id string) CandidateOption {
 
 // NewCandidate validates and returns a publication candidate. Custom acquisition
 // can omit evidence. Client.Update records a deterministic
-// custom-update observation in that case. Update also retains the current source
-// evidence when provider membership does not change. Membership changes require
-// explicit source observations.
+// custom-update observation in that case. Update also retains the receipts
+// required by unchanged provider membership. Membership changes require explicit
+// source observations.
 func NewCandidate(
 	catalog *catalogs.Catalog,
 	evidence CandidateEvidence,
