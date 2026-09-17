@@ -7,12 +7,12 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "e45145575",
+      "head": "8345fd30a6276d4cc0e2beed51304f2bbf03f1ab",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
       "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
-      "head": "773ba4568913bbbb304fc178ac5d7087f5435b04",
+      "head": "606494c23101c72391e496a0c0eeb99de9dbde1d",
       "branch": "codex/catalog-operation-billing"
     }
   },
@@ -63,9 +63,114 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Implement Starmap billing and protocol contracts with source provenance and tests.",
-    "Implement paired Starport accounting, unknown-cost behavior, and API projections.",
-    "Review and qualify both repositories before resuming CSP6 publication.",
-    "Retain the failed candidate evidence; prepare and qualify corrected catalog bytes before advancing discovery."
-  ]
+    "Complete repository qualification and review the remaining conservative accounting cases. Billing API, console views, and operator documentation now declare actual units.",
+    "Qualify provider usage presence, missing/zero dimensions, mixed cache cases, currencies, tiers, and retry accounting. Review conservative cases before publication.",
+    "Finish the full repository-owned check rosters, pre-PR review, and native CI. Real Valkey billing evidence now passes.",
+    "Publish and merge Starmap first, then update the actual Starport module pin, qualify without GOWORK, and merge Starport.",
+    "Retain the failed candidate evidence. Prepare and qualify corrected catalog bytes before advancing discovery. CSP12.2 retains atomic budget reservation and unresolved-settlement policy ownership."
+  ],
+  "implementation_evidence": {
+    "bundle": "billing-contracts-2026-09-17.json.gz",
+    "uncompressed_sha256": "58ee060da5ceccdf76a25124d5d662568b271b466f6c56a088494d87bce305fb",
+    "date": "2026-09-17",
+    "starmap": {
+      "status": "local commit, unreviewed and unmerged",
+      "schema": 10,
+      "packages_race": 2095,
+      "bootstrap_race": 3,
+      "artifact_workspace_race": 542,
+      "failures": 0,
+      "skips": 0,
+      "goago": "No findings, errors, or stale ignores",
+      "prose": "Full repository: 1847 files, zero diagnostics",
+      "generation_checksum": "sha256:86b1ce37a33932ee08ad2fc4b5abe36bd920bc3e1d901a0a54ab3b435163ec73",
+      "fixture_refresh": "UNVERIFIED: make testdata PROVIDER=google-ai-studio exits 2 because no governed Google fixture exists"
+    },
+    "starport": {
+      "status": "local commits, unreviewed and unmerged; unpublished Starmap dependency via ignored GOWORK",
+      "workspace": "/Users/jack/src/github.com/agentstation/starport-catalog-billing/.tmp/csp6-billing/go.work",
+      "combined_race": {
+        "passed": 85,
+        "failed": 0,
+        "skipped": 6,
+        "skip_reason": "Valkey backend not configured"
+      },
+      "final_accounting_race": {
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0
+      },
+      "validity_reasoning_race": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      "prose": "Seven new Go files and extracted changed comments pass. Whole changed files report 209 existing-style diagnostics and are not a passing prose claim.",
+      "optional_goago": "Starport declares no goago tool. The temporary workspace exposes Starmap\u2019s tool, which reports three pre-existing naked returns in extractThoughtSummary. No policy was added or weakened."
+    }
+  },
+  "implementation": [
+    "Starmap billing record, presence, deep copies, reconciliation, offering projection, and schema enforcement are implemented.",
+    "Eleven Gemini offerings use token billing. Three realtime-only models declare WebSocket delivery. Google actions supply delivery protocols. Prices no longer determine chat eligibility.",
+    "Starport recognition routes require declared units and usable USD rates. Measured usage survives connector conversion, extraction, and persistence.",
+    "Recognition cost includes billed thinking output and separate reasoning rates when supplied. Context tiers and call-time validity are checked.",
+    "Request-scoped capture preserves extraction charges on short recognition, later chat failure, stream completion, and cancellation.",
+    "Unknown total costs remain unknown. Aggregate known spend includes measured extraction charges and is not proof of complete settlement.",
+    "API and console offering views carry billing basis and optional input estimates with source and assumptions. Operator documentation records the pending budget reservation boundary.",
+    "Google usage presence distinguishes missing metadata from explicit zero. Console failed-recognition costs remain unknown when no measurement exists."
+  ],
+  "external_sources": [
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/document-processing",
+      "checked": "2026-09-17",
+      "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/generate-content/tokens",
+      "checked": "2026-09-17",
+      "finding": "Google bills generated thinking tokens and candidate output tokens together. Starport previously omitted thinking tokens from CompletionTokens."
+    }
+  ],
+  "view_evidence": {
+    "bundle": "billing-views-2026-09-17.json.gz",
+    "uncompressed_sha256": "2ac126421d64723080a85dba6648a1c2d75463b52d8593750ed1c1eefa21ace1",
+    "commit": "606494c23101c72391e496a0c0eeb99de9dbde1d",
+    "api_race_pass_events": 11,
+    "google_presence_race_pass_events": 20,
+    "full_go": {
+      "passed": 3088,
+      "skipped": 40,
+      "failed": 0
+    },
+    "final_billing_real_valkey_race": {
+      "passed": 124,
+      "skipped": 0,
+      "failed": 0,
+      "image_id": "9acdf6f0ae17"
+    },
+    "console": {
+      "unrestricted": {
+        "passed": 455,
+        "failed": 4,
+        "seconds": 36.16
+      },
+      "four_workers": {
+        "passed": 459,
+        "failed": 0,
+        "seconds": 20.83
+      },
+      "configured_four_workers": {
+        "passed": 459,
+        "failed": 0,
+        "seconds": 29.45
+      },
+      "note": "Unrestricted run overlapped Go tests. These measurements do not isolate concurrency as the only variable. Timeouts and follow-on DOM failures are retained."
+    },
+    "vet": "pass",
+    "lint": "pass after two source repairs",
+    "document_parser_gate": "20 pass, 0 fail",
+    "console_build": "pass",
+    "console_typecheck": "pass after build generated route tree",
+    "limitations": "Checks use ignored GOWORK. No review, native CI, publication, or merge credit."
+  }
 }

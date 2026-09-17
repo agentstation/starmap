@@ -3294,3 +3294,23 @@ The existing residual-operation test detects this change. Keep its behavioral pr
 
 CSP6.2 owns both production contracts. CSP6 retains the failed publication evidence and must prepare a corrected catalog after those contracts pass.
 No failed candidate may advance discovery channels or count as completed qualification.
+
+
+## 2026-09-17: D37 local implementation and qualification
+
+Starmap commit `8345fd30a` adds an independent recognition billing record and schema 10.
+It preserves atomic price selection and uses explicit delivery protocols for realtime eligibility.
+Eleven Google offerings now declare token billing. The repair removes their derived fixed page prices.
+
+Starport commits through `606494c` retain measured usage, selected offering prices, and recognition charges across failed and streamed requests.
+Its API and console expose billing units and label optional input estimates.
+Google usage metadata preserves the distinction between missing and explicit zero values.
+The operator guide records the incomplete reservation contract owned by CSP12.2.
+
+Local evidence includes 124 billing race events against real Valkey, with no failures or skips.
+The full Go suite passes 3,088 events and skips 40 optional cases.
+The console passes all 459 tests with four workers. The proof also retains four failures from an unrestricted concurrent run.
+The Starport checks use an ignored workspace with unpublished Starmap code.
+These results provide no native CI, review, publication, or merge credit.
+
+The [CSP6.2 proof](../../plans/proof/starport-production-catalog/csp6.2/verification.json) records commands, logs, hashes, and remaining work.
