@@ -196,7 +196,7 @@ func openIdentityRuntime(t *testing.T, store storage.Store, opts ...Option) *Run
 			testObservationLayer(t, "deepinfra", observed, "linked-model"),
 		},
 	}}
-	base := []Option{WithSource(source), WithAcquirer(acquirer)}
+	base := []Option{WithSource(source), WithAcquirer(acquirer), WithClock(func() time.Time { return observed })}
 	if store != nil {
 		base = append(base, WithClientOptions(starmap.WithCatalogStore(store)))
 	}
@@ -222,19 +222,18 @@ func TestDurableRuntimeKeepsTheDerivedEffectiveIdentity(t *testing.T) {
 	memory := openIdentityRuntime(t, nil)
 	durable := openIdentityRuntime(t, storage.NewMemory())
 
-	// An upstream generation without a local layer keeps the upstream identity.
+	// A payload baseline gains a local receipt and a derived identity.
 	for _, runtime := range []*Runtime{memory, durable} {
 		if _, err := runtime.RefreshSource(context.Background()); err != nil {
 			t.Fatalf("RefreshSource: %v", err)
 		}
 	}
-	if got := durable.State().GenerationID; got != identityUpstreamGeneration {
-		t.Fatalf("durable generation = %q, want the upstream identity %q",
-			got, identityUpstreamGeneration)
+	baselineID := memory.State().GenerationID
+	if !strings.HasPrefix(baselineID, identityUpstreamGeneration+effectiveGenerationLocalSuffix) {
+		t.Fatalf("baseline generation = %q, want a derived identity", baselineID)
 	}
-	if got := memory.State().GenerationID; got != identityUpstreamGeneration {
-		t.Fatalf("in-memory generation = %q, want the upstream identity %q",
-			got, identityUpstreamGeneration)
+	if got := durable.State().GenerationID; got != baselineID {
+		t.Fatalf("durable generation = %q, want the same baseline identity %q", got, baselineID)
 	}
 
 	// One local layer derives the identity, and the durable commit keeps it.
