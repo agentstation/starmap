@@ -496,6 +496,7 @@ catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and r
 	@$(GOCMD) test . ./runtime -run 'TestEmbeddedGenerationIsVerifiedPassiveAndIndependent|TestEmbeddedBaselineStartupPreservesGenerationEvidence|TestOpenReturnsEmbeddedStateBeforeSourceReply|TestRuntimeReadsReachNoExternalSystem' -count=1
 	@$(GOCMD) test ./internal/catalog/publication ./cmd/starmap-catalog-publish -count=1
 	@python3 scripts/test_catalog_publication.py
+	@python3 scripts/test_catalog_publication_qualification.py
 	@bash scripts/test-provider-testdata-refresh.sh
 
 embedded-catalog-budget-check: ## Report the embedded catalog release policy and measurements

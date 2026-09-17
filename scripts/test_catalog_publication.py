@@ -763,5 +763,34 @@ class GitPublicationTests(unittest.TestCase):
             self.assertEqual({"sequence": 2}, json.loads(payload))
 
 
+class PublicationResult(unittest.TextTestResult):
+    """Record completed tests and subcases for the product acceptance runner."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.passed = []
+        self.subcases = []
+
+    def addSuccess(self, test):
+        super().addSuccess(test)
+        self.passed.append(test.id())
+
+    def addSubTest(self, test, subtest, error):
+        super().addSubTest(test, subtest, error)
+        self.subcases.append({"test": test.id(), "id": subtest.id(), "passed": error is None})
+
+
 if __name__ == "__main__":
-    unittest.main()
+    if "--json" not in sys.argv:
+        unittest.main()
+    else:
+        sys.argv.remove("--json")
+        program = unittest.main(exit=False, testRunner=unittest.TextTestRunner(resultclass=PublicationResult))
+        result = program.result
+        print(json.dumps({"tests_run": result.testsRun, "passed": result.passed,
+                          "subcases": result.subcases, "skipped": [test.id() for test, _ in result.skipped],
+                          "failures": [test.id() for test, _ in result.failures],
+                          "errors": [test.id() for test, _ in result.errors],
+                          "expected_failures": [test.id() for test, _ in result.expectedFailures],
+                          "unexpected_successes": [test.id() for test in result.unexpectedSuccesses]}))
+        sys.exit(0 if result.wasSuccessful() else 1)
