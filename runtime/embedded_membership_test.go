@@ -8,7 +8,53 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
+	"github.com/agentstation/starmap/pkg/sources"
 )
+
+func TestBaselineReceiptPreservesVerifiedCatalogBoundary(t *testing.T) {
+	for _, remote := range []bool{false, true} {
+		t.Run(map[bool]string{false: "embedded alias policy", true: "unchanged remote"}[remote], func(t *testing.T) {
+			var aliases []catalogs.CanonicalAlias
+			if !remote {
+				aliases = append(aliases, activeAlias("author/old"))
+			}
+			generation := aliasGeneration(t, "selected-baseline", aliases...)
+			catalog, err := catalogs.DecodeCatalogGeneration(generation)
+			if err != nil {
+				t.Fatal(err)
+			}
+			baseline := starmap.CatalogState{Catalog: catalog, GenerationID: generation.Manifest.GenerationID,
+				PayloadChecksum: generation.Manifest.Payload.Checksum, GeneratedAt: generation.Manifest.GeneratedAt}
+			layers := layerSet{embedded: baseline, embeddedManifest: &generation.Manifest}
+			if remote {
+				layers.source = &sourceLayer{Manifest: &generation.Manifest, Identity: "remote", GenerationID: baseline.GenerationID,
+					Checksum: baseline.PayloadChecksum, Payload: generation.Payload}
+			} else {
+				layers.providerBindings = &providerBindingPolicy{}
+			}
+			state, err := layers.build(t.Context(), baseline)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if state.PayloadChecksum != baseline.PayloadChecksum || !reflect.DeepEqual(state.Catalog.CanonicalAliasRecords(), catalog.CanonicalAliasRecords()) {
+				t.Fatal("baseline rebuild changed verified catalog content")
+			}
+			if remote {
+				if state.GenerationID != baseline.GenerationID || len(layers.buildEvidence.SourceObservations) != 0 {
+					t.Fatal("unchanged remote catalog acquired local evidence or identity")
+				}
+			} else {
+				links := layers.buildEvidence.SourceObservations
+				if len(links) != 1 || links[0].Source != sources.EmbeddedCatalogID || links[0].EvidenceChecksum != baseline.PayloadChecksum {
+					t.Fatalf("compiled baseline receipt: %+v", links)
+				}
+				if err := links[0].Validate(); err != nil {
+					t.Fatal(err)
+				}
+			}
+		})
+	}
+}
 
 func TestEmbeddedBaselineStartupPreservesGenerationEvidence(t *testing.T) {
 	baseline, err := starmap.EmbeddedGeneration()
