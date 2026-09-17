@@ -3,8 +3,8 @@
   "source_commit": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
   "branch": "codex/catalog-hosted-qualification",
   "run": 35236729284,
-  "watch_session": 72149,
-  "watch_log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/publication-watch.log",
+  "watch_session": 77774,
+  "watch_log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/promotion-ci-watch.log",
   "authority": "../acquisition-diagnostics-2026-09-14/owner-decisions.json",
   "status": "in_progress",
   "completion_credit": false,
@@ -37,5 +37,20 @@
     "review": "Required pre-PR review remains pending with acceptance adapter changes.",
     "hosted_evidence_scope": "Local controller tests use real catalog tools and Git with simulated GitHub transport. They do not replace hosted publication proof."
   },
-  "latest_hosted_state": "Run 35236729284 remains active in Validate candidate before publication."
+  "latest_hosted_state": "Preparation run completed successfully with awaiting_checks. Catalog bot PR #165 is open; its Pull Request workflow is active.",
+  "promotion_pull_request": 165,
+  "promotion_head": "e228e694ac5e66f75639721c438a261015a8026f",
+  "promotion_ci_run": 35238361225,
+  "local_adapter": {
+    "head": "5ff293a56",
+    "verification": "PASS: five evidence-validation tests, one missing-repository dispatch test, real dispatch of ten recovery tests and twelve write-boundary subcases. Full reporting run passes all 22 tests.",
+    "scope": "Local controller proof only; hosted publication stays UNVERIFIED.",
+    "remaining": "Add hosted evidence verification and register the three A05 adapters after the bot merges and channels advance. Required full checks and pre-PR review remain."
+  },
+  "hosted_assets": {
+    "state": "Both releases are public, with five assets whose GitHub digests match prepared bytes.",
+    "attestations": "Four subjects verified using the main-branch Catalog Generation workflow and hosted-runner restriction.",
+    "bundle": "initial-publication-and-recovery.json.gz",
+    "uncompressed_sha256": "02149b48dbed88b089b5659ee2014db8fd2af3f59e81538116c961e0dfa8b186"
+  }
 }
