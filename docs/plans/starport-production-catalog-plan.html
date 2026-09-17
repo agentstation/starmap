@@ -12,11 +12,11 @@
 
 <p>Updated 2026-09-17 UTC. CSP6.2 is the sole active task. CSP6 awaits the paired billing and protocol repair. Fourteen of 40 tasks are complete.</p>
 
-<p id="next-action">Next: inspect <a href="https://github.com/agentstation/starmap/pull/166">Starmap PR #166</a> and <a href="https://github.com/agentstation/starmap/actions/runs/35264057009">native CI</a> at 69973bc7d. Required review passes. Resolve any failures and merge after required checks pass. Publish its module dependency before Starport qualification without GOWORK. Review the final Starport branch and merge after required checks pass.</p>
+<p id="next-action">Next: inspect <a href="https://github.com/agentstation/starmap/pull/166">Starmap PR #166</a> and <a href="https://github.com/agentstation/starmap/actions/runs/35264057009">native CI</a> at 69973bc7d. Required review passes. Resolve any failures and merge after required checks pass. Starport now qualifies the published dependency without GOWORK. Merge Starmap with a merge commit. Verify the pinned commit is an ancestor of main before Starport merges.</p>
 
 <p>Starmap: <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>, clean branch <code>codex/catalog-hosted-qualification</code> at <code>69973bc7d</code>.</p>
 
-<p>Starport: <code>/Users/jack/src/github.com/agentstation/starport-catalog-billing</code>, clean branch <code>codex/catalog-operation-billing</code> at <code>4970790</code>. Its ignored workspace uses the unpublished Starmap repair. The committed module has no local replacement.</p>
+<p>Starport: <code>/Users/jack/src/github.com/agentstation/starport-catalog-billing</code>, branch <code>codex/catalog-operation-billing</code> at <code>4970790</code>. Pending module edits select <code>v0.16.6-0.20260917191017-69973bc7dd90</code>. Qualification uses <code>GOWORK=off</code>. Test session <code>56899</code> and required-gate session <code>28622</code> run against the published module.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp6.2/verification.json">CSP6.2 proof</a> owns commands, failures, counts, source hashes, and remaining checks. Starmap session <code>88753</code> ended with exit 2. Its race run recorded 7,406 passes, 28 failures, and 24 skips. Its log is <code>.tmp/csp6-hosted/billing-full-verify.log</code>. The proof retains race events by hardlink. Capacity events use a separate persistent file.</p>
 
@@ -24,7 +24,7 @@
 
 <p>Starport <code>84142aa</code> retains measured Google usage when recognition returns no candidates. The document parser still rejects missing pages. The regression fails before the repair. Connector and proxy packages then pass 434 race events. Lint passes.</p>
 
-<p>Sol and Opus report no findings at final Starport head <code>4970790</code>. Results belong under <code>/tmp/csp62-starport-review/final-review.json</code>. The first attempt rejected a source change during execution. Final qualification still requires the published module pin.</p>
+<p>Sol and Opus report no findings at final Starport head <code>4970790</code>. Results belong under <code>/tmp/csp62-starport-review/final-review.json</code>. The first attempt rejected a source change during execution. Published-module qualification now runs against the pending pin.</p>
 
 <p>Starmap <code>18105ad43</code> preserves unchanged file receipts across restart. All 14 failed acquisition events pass after the repair. A replacement-file regression and full lint pass. The completed broad run retains the earlier failures. Capacity passed separately in 232 seconds.</p>
 

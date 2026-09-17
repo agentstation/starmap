@@ -63,9 +63,9 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Inspect Starmap PR #166 native CI run 35264057009 at 69973bc7d. Required review passes. Resolve any final-source failures and merge only after required checks pass.",
+    "Inspect Starmap PR #166 native CI run 35264057009. Qualify Starport concurrently against the published 69973bc7d module with GOWORK=off. Review and native CI remain required for the final Starport pin.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
-    "Merge Starmap first, publish the module dependency, then update the actual Starport pin and qualify without GOWORK before merging Starport.",
+    "Merge Starmap first with a merge commit, verify 69973bc7d is an ancestor of main, then merge Starport after final published-module qualification and required checks.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
   ],
   "implementation_evidence": {
@@ -373,5 +373,26 @@
     "native_run": "https://github.com/agentstation/starmap/actions/runs/35264057009",
     "native_status": "queued",
     "merged": false
+  },
+  "parallel_qualification": {
+    "starmap_pr": 166,
+    "starmap_commit": "69973bc7dd900165facdfd9bd3b5d71bf83344be",
+    "starport_module": "v0.16.6-0.20260917191017-69973bc7dd90",
+    "status": "IN_PROGRESS",
+    "sessions": {
+      "published_go_tests": 56899,
+      "published_required_gates": 28622
+    },
+    "workspace": "GOWORK=off",
+    "merge_order": "Merge Starmap PR #166 with a merge commit after required checks pass. Verify the pinned commit is an ancestor of main before merging Starport. Do not squash or rebase away the pinned commit.",
+    "rationale": "The dependency commit is published and immutable. Both repositories can qualify it concurrently without a local replacement or early completion credit.",
+    "repository_policy": {
+      "allow_merge_commit": true,
+      "required_linear_history": false
+    },
+    "download_attempts": [
+      "First attempt failed because the shared Go VCS cache shallow file changed concurrently.",
+      "Retry succeeded, followed by go mod tidy."
+    ]
   }
 }
