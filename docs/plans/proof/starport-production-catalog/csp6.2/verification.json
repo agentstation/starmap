@@ -556,16 +556,22 @@
     "repair": "Name explicitly supplied replay baselines with sources.LocalCatalogID. Preserve baseline validation and original checksum.",
     "regression": "TestReplayAcquisitionNamesExplicitBaseline fails before the repair.",
     "sessions": {
-      "publication_race": 99057,
-      "lint": 97680
+      "publication_contracts_race": 39057,
+      "capacity": 88551
     },
     "starport": "Do not publish the superseded d73dd8f dependency as qualified. Repin after the replay repair is reviewed and published.",
     "lint": "PASS: make lint; 1852 files, zero prose diagnostics",
     "publication_race_progress": {
+      "status": "publication package PASS; command package still running",
+      "command": "go test -race -json -count=1 -timeout=30m -skip='^TestPublicPublicationProfileRetainsBoundedState$' ./internal/catalog/publication ./cmd/starmap-catalog-publish"
+    },
+    "native_status": "completed: cancelled",
+    "superseded_local_run": {
       "session": 99057,
-      "passed": 104,
-      "failed": 0,
-      "status": "running; full public capacity still active; not a final count"
-    }
+      "status": "interrupted intentionally",
+      "reason": "The raw local command repeated full-volume capacity under race instrumentation, contrary to the repository-owned verification split. No passing completion claim.",
+      "log": ".tmp/csp6-hosted/replay-source-after.jsonl"
+    },
+    "capacity_command": "python3 scripts/verification_tests.py capacity --output .tmp/csp6-hosted/replay-capacity-after.jsonl"
   }
 }
