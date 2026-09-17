@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "28e28dd6f2938a5df3d6546e03ee6653b15942d4",
+      "head": "d845ee7b39089ffe0d0e531ae2edac7868715068",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
@@ -226,7 +226,8 @@
       "command": "make verify",
       "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/billing-full-verify.log",
       "race_events_retained": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/billing-full-verify-events-0.jsonl",
-      "note": "The broad run began before the final repairs. Fourteen application events failed before 18105ad43 and pass in the focused repair run. Capacity passed separately. Inspect remaining packages and preserve the failing broad result without claiming final-source success."
+      "note": "The broad run began before the final repairs. Fourteen application events failed before 18105ad43 and pass in the focused repair run. Capacity passed separately. Inspect remaining packages and preserve the failing broad result without claiming final-source success.",
+      "captured_fail_events": 17
     },
     "starmap_lint": "PASS: golangci-lint, goago, glossary, and strict prose (1849 files)",
     "starmap_capacity": {
@@ -321,5 +322,16 @@
     "failures": 0,
     "skips": 0,
     "lint": "PASS: golangci-lint, goago, strict prose across 1850 files"
+  },
+  "baseline_receipt_assertions": {
+    "commit": "d845ee7b39089ffe0d0e531ae2edac7868715068",
+    "bundle": "baseline-receipts-2026-09-17.json.gz",
+    "uncompressed_sha256": "dac8106b9b0ab7af69da545cfedb08db8081a906f6cd78ca88b0f11d17af2988",
+    "cause": "Three tests assumed payload-only baseline receipts were absent. The new explicit-baseline contract retains that receipt and derives a local generation identity.",
+    "change": "Compare complete baseline and acquisition links, including checksums, without depending on list order. Fix the observation clock when asserting equal identities for equal inputs.",
+    "race_pass_events": 5,
+    "failures": 0,
+    "skips": 0,
+    "lint": "PASS: golangci-lint, goago, and strict prose across 1850 files"
   }
 }
