@@ -9,11 +9,13 @@
 
 <h1>Starmap and Starport production catalog</h1>
 <section id="current-resume"><h2>Current resume state</h2>
-<p>CSP6.2 is the only task in progress. Starmap worktree <code>starmap-publisher-validation</code>, branch <code>codex/catalog-hosted-qualification</code>, has commit <code>d73dd8f36849187563483d602226a7ae6306e7b0</code>. Sol and Opus review pass with zero findings. PR #166 has this commit. Native run <code>35270399865</code> is in progress.</p>
+<p>CSP6.2 is the only task in progress. Starmap worktree <code>starmap-publisher-validation</code>, branch <code>codex/catalog-hosted-qualification</code>, has commit <code>d73dd8f36849187563483d602226a7ae6306e7b0</code>. Sol and Opus review pass with zero findings. PR #166 has this commit. </p>
+
+<p>Native run <code>35270399865</code> failed publication preparation and capacity. The cancellation request succeeded. A local replay-source repair is in progress.</p>
 
 <p>Starport worktree <code>starport-catalog-billing</code>, branch <code>codex/catalog-operation-billing</code>, has commit <code>ce6ae06eea2519cb09c41489740af0f0df4bbb2e</code>. Its module pin selects <code>v0.16.6-0.20260917201504-d73dd8f36849</code>. Application race tests pass 72 events with one skip. Ownership checks pass 12 cases, catalog-driven checks pass 19, and lint passes with <code>GOWORK=off</code>.</p>
 
-<p>Starport review runs in session <code>30487</code>. Read <code>/tmp/csp62-starport-review/origin-review.json</code>. Publish the Starport PR after review passes.</p>
+<p>Starport review passes with zero findings, but its dependency needs the replay-source repair. Do not publish this pin as qualified. Finish Starmap checks in sessions <code>99057</code> and <code>97680</code>, then commit, review, and publish the correction. Repin and review Starport before publication.</p>
 
 <p>The origin repair preserves complete original receipts and identity for unchanged baselines. Local policy changes retain baseline evidence and degradation. All three native origin failures pass locally with race detection. The broader cohort records 73 passes and one obsolete receipt assertion. The corrected focused cohort passes 15 events. Starport remote activation and Starmap lint pass.</p>
 

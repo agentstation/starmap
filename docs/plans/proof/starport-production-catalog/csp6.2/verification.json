@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete Starport review at ce6ae06, publish its PR, and qualify both final heads in native CI. Starmap PR #166 is published at d73dd8f36 with clean review; native run 35270399865 is running.",
+    "Finish replay-source repair checks, commit, review, and publish Starmap. Repin Starport to the correction, qualify, review, and publish. Both native runs must pass before ordered merges.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -506,7 +506,7 @@
       "confidence": 0.95
     },
     "native": {
-      "status": "running",
+      "status": "cancellation requested after publication failures",
       "run": 35270399865,
       "url": "https://github.com/agentstation/starmap/actions/runs/35270399865"
     },
@@ -533,10 +533,32 @@
       },
       "lint": "PASS",
       "review": {
-        "status": "running",
-        "session": 30487,
-        "output": "/tmp/csp62-starport-review/origin-review.json"
+        "status": "PASS",
+        "output": "/tmp/csp62-starport-review/origin-review.json",
+        "findings": 0,
+        "confidence": 0.96
       }
     }
+  },
+  "publication_replay_identity_repair": {
+    "status": "local checks running",
+    "native_run": 35270399865,
+    "jobs": {
+      "arm": 105367959712,
+      "linux": 105367959414,
+      "capacity": 105370658314
+    },
+    "native_publication_events": {
+      "passed": 93,
+      "failed": 30
+    },
+    "cause": "ReplayAcquisition constructs a selected baseline source without Identity. Policy-only evidence now requires that identity. NewState and the public capacity test reject the unnamed receipt.",
+    "repair": "Name explicitly supplied replay baselines with sources.LocalCatalogID. Preserve baseline validation and original checksum.",
+    "regression": "TestReplayAcquisitionNamesExplicitBaseline fails before the repair.",
+    "sessions": {
+      "publication_race": 99057,
+      "lint": 97680
+    },
+    "starport": "Do not publish the superseded d73dd8f dependency as qualified. Repin after the replay repair is reviewed and published."
   }
 }
