@@ -80,7 +80,8 @@ The response-barrier repair at `8ef9151` holds authority responses until startup
 
 Both focused race cases and 3,055 full-suite test results pass, with 39 existing skips.
 All 29 required shell checks, vet, lint, and build pass. Both reviewers report no findings.
-CSP6.1 remains open until this test repair merges and merged-source verification passes.
+Starport PR #376 merged at `773ba4568` after all ten CI jobs passed.
+Merged-source authority checks pass. CSP6.1 is complete, with the missed 30-minute hosted target retained in its proof.
 
 ## Inspected revisions
 

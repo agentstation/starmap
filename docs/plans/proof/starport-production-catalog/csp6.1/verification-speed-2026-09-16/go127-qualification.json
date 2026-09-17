@@ -2,8 +2,8 @@
   "at": "2026-09-17T14:16:14.256352+00:00",
   "decision": "D36",
   "go": "1.27.1",
-  "status": "in_progress",
-  "completion_credit": false,
+  "status": "done",
+  "completion_credit": true,
   "source": {
     "starmap": {
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
@@ -23,14 +23,8 @@
     "Starport release workflow contract, 10 Python tests",
     "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
   ],
-  "pending": [
-    "Wait for Starport PR #376 required checks, merge reviewed head 8ef9151, and verify merged source."
-  ],
-  "running": {
-    "starport_ci": 35234631787,
-    "watch_session": 97998,
-    "watch_log": "/Users/jack/src/github.com/agentstation/starport-go-1271/.tmp/go127/startup-ci-watch.log"
-  },
+  "pending": [],
+  "running": {},
   "starport": {
     "go_test": {
       "pass": 3055,
@@ -293,10 +287,10 @@
   },
   "merged_sources": {
     "starmap": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
-    "starport": "f5353a8b7d31860f166af10f4731886fc6e1ac59",
+    "starport": "773ba4568913bbbb304fc178ac5d7087f5435b04",
     "reviewed_tree_equivalence": "PASS for both",
     "starmap_focused_race": "PASS",
-    "starport_focused_race": "FAIL: unavailable subcase exceeds shared 10-second startup deadline; reproduced in isolation.",
+    "starport_focused_race": "PASS after reviewed startup-test repair; original failure retained.",
     "evidence": "go127-merge-and-startup-evidence.json.gz",
     "evidence_sha256": "d71c8fe1c9aeb9de004f6099a77b82b6eaa48a8d75a9cd66e94570ab766fdee9"
   },
@@ -305,13 +299,16 @@
     "changed_file": "internal/app/catalog_authority_test.go",
     "change": "Hold authority responses behind a channel until local startup returns. Use a one-minute safety deadline; do not treat local initialization under race detection as a 10-second product SLO.",
     "focused_race": "PASS: both subcases and parent; unavailable 12.54 seconds, pending 0.31 seconds.",
-    "completion": "No task completion credit until reviewed repair merges and merged-source verification passes.",
+    "completion": "PASS: PR #376 merged at 773ba4568913bbbb304fc178ac5d7087f5435b04 after all ten CI jobs passed. Reviewed and merged trees are identical.",
     "head": "8ef915179ad580ddc6ce97d75b760ff455a5e600",
     "pull_request": "https://github.com/agentstation/starport/pull/376",
     "local": "PASS: 3055 test events, 39 existing skips, 29 shell checks, vet, lint, build, focused race cases.",
     "review": "PASS: Sol high and Opus 5 high; zero findings.",
     "local_evidence": "go127-startup-repair-local.json.gz",
-    "local_evidence_sha256": "c3fb3210f4d4e03909ef6caa16ec28458beda7d24117b1c17414a9c55897d43a"
+    "local_evidence_sha256": "c3fb3210f4d4e03909ef6caa16ec28458beda7d24117b1c17414a9c55897d43a",
+    "merged_race_pass_events": 12,
+    "merged_evidence": "go127-startup-merged-evidence.json.gz",
+    "merged_evidence_sha256": "8f290a17b043399ce68252e7daab288e52cbee2ed5b290da3a9b67fba0f53ce2"
   },
   "next_task_preflight": {
     "observed_at": "2026-09-17",
@@ -329,5 +326,6 @@
       "Runtime windows-11-arm"
     ],
     "branch_protection": "Observed strict=true, enforce_admins=true; Security & Reliability and Verification Gate bound to GitHub Actions app 15368. Required approving review count is zero. Publisher additionally requires all six native checks."
-  }
+  },
+  "completion_limit": "Changed race cohorts exceed the required 50% reduction. Full Starmap hosted duration is 48m42s; the 30-minute target was missed. Distinct behavioral and platform coverage remains."
 }
