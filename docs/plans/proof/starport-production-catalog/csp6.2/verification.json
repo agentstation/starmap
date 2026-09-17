@@ -12,7 +12,7 @@
     },
     "starport": {
       "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
-      "head": "ce6ae06eea2519cb09c41489740af0f0df4bbb2e",
+      "head": "a2616b535bf3ac87276b126def1ca346f9873521",
       "branch": "codex/catalog-operation-billing"
     }
   },
@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete Starport checks in session 89900, commit the b09931c66 pin, run required review, and publish the Starport PR. Starmap native run 35274255953 is active. Qualify both final heads before ordered merges.",
+    "Complete Starport review at a2616b5 (session 53103), then push and open its PR. Starmap native run 35274255953 is active. Qualify both final heads before ordered merges.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -626,8 +626,16 @@
     },
     "starport_pin": {
       "version": "v0.16.6-0.20260917204518-b09931c66d7d",
-      "status": "local application race and lint running",
-      "session": 89900
+      "status": "committed; required review running",
+      "head": "a2616b535bf3ac87276b126def1ca346f9873521",
+      "application_race": {
+        "passed": 72,
+        "skipped": 1,
+        "failed": 0
+      },
+      "lint": "PASS",
+      "review_session": 53103,
+      "review_output": "/tmp/csp62-starport-review/replay-review.json"
     }
   }
 }
