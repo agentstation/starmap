@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete Starmap review at b09931c66 (session 29091), then push PR #166. Repin Starport, run affected checks, review, publish its PR, and qualify both final heads in native CI before ordered merges.",
+    "Complete Starport checks in session 89900, commit the b09931c66 pin, run required review, and publish the Starport PR. Starmap native run 35274255953 is active. Qualify both final heads before ordered merges.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -541,7 +541,7 @@
     }
   },
   "publication_replay_identity_repair": {
-    "status": "committed; required review running",
+    "status": "reviewed and published; native CI running",
     "native_run": 35270399865,
     "jobs": {
       "arm": 105367959712,
@@ -555,9 +555,6 @@
     "cause": "ReplayAcquisition constructs a selected baseline source without Identity. Policy-only evidence now requires that identity. NewState and the public capacity test reject the unnamed receipt.",
     "repair": "Name explicitly supplied replay baselines with sources.LocalCatalogID. Preserve baseline validation and original checksum.",
     "regression": "TestReplayAcquisitionNamesExplicitBaseline fails before the repair.",
-    "sessions": {
-      "review": 29091
-    },
     "starport": "Do not publish the superseded d73dd8f dependency as qualified. Repin after the replay repair is reviewed and published.",
     "lint": "PASS: make lint; 1852 files, zero prose diagnostics",
     "publication_race_progress": {
@@ -610,6 +607,27 @@
         "path": "replay-superseded-native-2026-09-17.json.gz",
         "uncompressed_sha256": "955f36598a448b680811f2f8beef9a683936a8cecb0809393adba4921d1815a5"
       }
+    },
+    "review": {
+      "status": "PASS",
+      "findings": 0,
+      "confidence": 0.97,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "output": "/tmp/csp62-starmap-review/replay-review.json"
+    },
+    "native": {
+      "run": 35274255953,
+      "status": "running",
+      "head": "b09931c66d7d0767f22c8b446b617e16c4046a7d",
+      "url": "https://github.com/agentstation/starmap/actions/runs/35274255953"
+    },
+    "starport_pin": {
+      "version": "v0.16.6-0.20260917204518-b09931c66d7d",
+      "status": "local application race and lint running",
+      "session": 89900
     }
   }
 }

@@ -9,13 +9,15 @@
 
 <h1>Starmap and Starport production catalog</h1>
 <section id="current-resume"><h2>Current resume state</h2>
-<p>CSP6.2 is the only task in progress. Starmap worktree <code>starmap-publisher-validation</code>, branch <code>codex/catalog-hosted-qualification</code>, has commit <code>b09931c66d7d0767f22c8b446b617e16c4046a7d</code>. Required review runs in session <code>29091</code>. Read <code>/tmp/csp62-starmap-review/replay-review.json</code>. PR #166 still has the superseded <code>d73dd8f36</code> commit. </p>
+<p>CSP6.2 is the only task in progress. Starmap worktree <code>starmap-publisher-validation</code>, branch <code>codex/catalog-hosted-qualification</code>, has commit <code>b09931c66d7d0767f22c8b446b617e16c4046a7d</code>. Sol and Opus review pass with zero findings. PR #166 has this commit. Native run <code>35274255953</code> is active. </p>
 
 <p>Native run <code>35270399865</code> failed publication preparation and capacity. The cancellation request succeeded. The replay-source repair passes 147 race events, capacity in 231 seconds, and lint. The earlier combined race and capacity command stopped. Current checks use the repository test split.</p>
 
-<p>Starport worktree <code>starport-catalog-billing</code>, branch <code>codex/catalog-operation-billing</code>, has commit <code>ce6ae06eea2519cb09c41489740af0f0df4bbb2e</code>. Its module pin selects <code>v0.16.6-0.20260917201504-d73dd8f36849</code>. Application race tests pass 72 events with one skip. Ownership checks pass 12 cases, catalog-driven checks pass 19, and lint passes with <code>GOWORK=off</code>.</p>
+<p>Starport worktree <code>starport-catalog-billing</code>, branch <code>codex/catalog-operation-billing</code>, has commit <code>ce6ae06eea2519cb09c41489740af0f0df4bbb2e</code>. Its uncommitted module pin now selects <code>v0.16.6-0.20260917204518-b09931c66d7d</code>. Application race tests and lint run in session <code>89900</code>.</p>
 
-<p>Starport review passes with zero findings, but its dependency needs the replay-source repair. Do not publish this pin as qualified. Complete Starmap review, then publish the correction. Repin and review Starport before publication.</p>
+<p>Before the final pin update, application race tests passed 72 events with one skip. Ownership checks passed 12 cases, catalog-driven checks passed 19, and lint passed with <code>GOWORK=off</code>.</p>
+
+<p>After Starport checks pass, commit the pin, complete required review, and publish its PR. Both native runs must pass before ordered merges.</p>
 
 <p>The origin repair preserves complete original receipts and identity for unchanged baselines. Local policy changes retain baseline evidence and degradation. All three native origin failures pass locally with race detection. The broader cohort records 73 passes and one obsolete receipt assertion. The corrected focused cohort passes 15 events. Starport remote activation and Starmap lint pass.</p>
 
