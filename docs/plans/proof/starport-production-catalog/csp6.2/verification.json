@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Inspect Starmap PR #166 native CI run 35264057009. Qualify Starport concurrently against the published 69973bc7d module with GOWORK=off. Review and native CI remain required for the final Starport pin.",
+    "Finish the baseline-boundary repair in Starmap, verify unchanged remote identity and compiled alias metadata, then commit, review, and update PR #166. Repin Starport to the corrected published commit before final qualification.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit, verify 69973bc7d is an ancestor of main, then merge Starport after final published-module qualification and required checks.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -378,7 +378,7 @@
     "starmap_pr": 166,
     "starmap_commit": "69973bc7dd900165facdfd9bd3b5d71bf83344be",
     "starport_module": "v0.16.6-0.20260917191017-69973bc7dd90",
-    "status": "IN_PROGRESS",
+    "status": "FAILED at 69973bc7d; repair in progress",
     "sessions": {
       "published_go_tests": 56899,
       "published_required_gates": 28622
@@ -393,6 +393,19 @@
     "download_attempts": [
       "First attempt failed because the shared Go VCS cache shallow file changed concurrently.",
       "Retry succeeded, followed by go mod tidy."
-    ]
+    ],
+    "published_go_result": {
+      "passed": 3092,
+      "failed": 1,
+      "skipped": 40,
+      "failed_test": "TestVerifiedRemoteCatalogActivatesProvider",
+      "reason": "Latest Starmap fallback evidence changed an unchanged remote generation identity."
+    },
+    "native_run": "35264057009 canceled after the paired regression to avoid superseded work",
+    "repair_sessions": {
+      "starmap_boundary_race": 3106,
+      "starport_remote_identity_race_workspace": 40686,
+      "starmap_lint": 8017
+    }
   }
 }
