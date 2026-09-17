@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-17T13:25:01.391275+00:00",
+  "at": "2026-09-17T13:48:16.390942+00:00",
   "decision": "D36",
   "go": "1.27.1",
   "status": "in_progress",
@@ -12,7 +12,7 @@
     },
     "starport": {
       "worktree": "/Users/jack/src/github.com/agentstation/starport-go-1271",
-      "head": "368fdee8001767c17594f5ef11e769042c0e71b6",
+      "head": "fff38dffa456ce068763e8b11a77953847e0d1d2",
       "dirty_files": {},
       "pr": "https://github.com/agentstation/starport/pull/375"
     }
@@ -24,11 +24,13 @@
     "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
   ],
   "pending": [
-    "Finish renewed review, push Starmap repair, update Starport public dependency and repeat final Go 1.27.1 qualification.",
-    "Merge both reviewed PRs in dependency order, then verify merged sources."
+    "Complete hosted Go 1.27.1 qualification for Starmap 334ab50cd and Starport fff38dff.",
+    "Merge Starmap PR #164 with a merge commit, then Starport PR #375 by squash. Verify merged sources before completion."
   ],
   "running": {
-    "starmap_review": "/tmp/starmap-go127-native-repair-review.json"
+    "starmap_ci": 35227913540,
+    "starport_ci": 35229196149,
+    "starport_native": 35229196234
   },
   "starport": {
     "go_test": {
@@ -74,7 +76,33 @@
     "final_review": "PASS 368fdee: Sol high and Opus high, zero findings",
     "initial_review": "pass at d9a2f1fadef7c7f1db90d11d8eaf18ac0544f849: Sol high and Opus high, zero findings",
     "initial_dependency_integration": "3,055 test pass events and 39 skips with temporary Go workspace selecting the corrected Starmap source. This intermediate check preceded the final published module check.",
-    "native_final": "PASS all six native Linux/macOS/Windows jobs at 368fdee in run 35140756656"
+    "native_final": "PASS all six native Linux/macOS/Windows jobs at 368fdee in run 35140756656",
+    "native_repair": {
+      "commit": "fff38dffa456ce068763e8b11a77953847e0d1d2",
+      "dependency": "v0.16.6-0.20260917132346-334ab50cd3fb",
+      "local_events": 3055,
+      "local_skips": 39,
+      "shell_checks": 29,
+      "valkey_race_events": 170,
+      "valkey_unverified": "Pre-existing manual reconnect test",
+      "limits": "Initial Valkey app invocation omitted the required URL scheme. Other 169 events passed; corrected application invocation passes. Public module endpoints and Docker retry pass. Native CI remains pending.",
+      "evidence": "go127-starport-native-repair-local.json.gz",
+      "uncompressed_sha256": "287dd8d6752e76148c5e0a9319309d5da7d94dffa2c77149cf6917a208ce0c2f",
+      "docker": "PASS Linux ARM64: Go 1.27.1, CGO_ENABLED=0, exact Starmap dependency, version executes without network access.",
+      "review": {
+        "status": "PASS",
+        "evidence": "go127-starport-native-repair-review.json",
+        "reviewers": [
+          "Sol high",
+          "Opus 5 high"
+        ],
+        "findings": 0
+      },
+      "hosted_runs": {
+        "ci": 35229196149,
+        "native": 35229196234
+      }
+    }
   },
   "starmap": {
     "checks": "pass: complete make verify-checks on Go 1.27.1",
@@ -128,7 +156,7 @@
       "fix": "Resolve OWNER RIGHTS to the descriptor owner only after that owner passes the existing trusted-principal check. Creator Owner and foreign owners remain refused.",
       "commit": "71a96cee03e5f9cdfe7adcd9784c7463ce18d856",
       "local_race_pass_events": 180,
-      "native_status": "UNVERIFIED until final CI"
+      "native_status": "PASS six Starmap native jobs at 71a96cee0 and six Starport native startup jobs at 368fdee. Subsequent race failure is recorded separately."
     },
     "release_snapshot": "PASS at 71a96cee0: six target archives, SBOMs, checksums, Go 1.27.1 metadata and CGO_ENABLED=0; Linux static linkage and no Windows C/C++ imports.",
     "review_context": "Initial full capacity-test dataset was refused by the reviewer context secret scanner. A source excerpt containing only committed input setup replaces that dataset. No scanner policy changed.",
@@ -186,6 +214,27 @@
     "checks": "make verify-checks and make technical-writing-check pass. Windows AMD64 lint and goago pass; Windows AMD64 and ARM64 test binaries compile.",
     "runtime_change": "Replace full embedded startup with the existing small manual-runtime fixture. Explicitly observe collector waiting before cancellation. Preserve publication and restart assertions.",
     "windows_change": "Align the 24-byte FILE_ID_INFO buffer to uint64 and keep its file alive through the native call. Preserve serialized identities. Add native API error context and a Windows AMD64 race job.",
-    "qualification": "Native execution and renewed review pending."
+    "qualification": "Native execution and renewed review pending.",
+    "release_snapshot": {
+      "status": "PASS",
+      "evidence": "go127-native-repair-release-evidence.json.gz",
+      "uncompressed_sha256": "6e641ac04020631611d2af82fdf3c29780c5d9b61c375d80eea76b1bcde0797e"
+    },
+    "review": {
+      "result": "PASS",
+      "head": "334ab50cd3fb17cb3efc576882c6ffdf19c07ca4",
+      "reviewers": [
+        "Sol xhigh",
+        "Opus 5 high"
+      ],
+      "findings": 0,
+      "evidence": "go127-native-repair-review.json"
+    },
+    "starmap_ci": {
+      "run": 35227913540,
+      "url": "https://github.com/agentstation/starmap/actions/runs/35227913540",
+      "status": "in_progress",
+      "windows_file_publication_race": "PASS"
+    }
   }
 }
