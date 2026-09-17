@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "d73dd8f36849187563483d602226a7ae6306e7b0",
+      "head": "b09931c66d7d0767f22c8b446b617e16c4046a7d",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Finish replay-source repair checks, commit, review, and publish Starmap. Repin Starport to the correction, qualify, review, and publish. Both native runs must pass before ordered merges.",
+    "Complete Starmap review at b09931c66 (session 29091), then push PR #166. Repin Starport, run affected checks, review, publish its PR, and qualify both final heads in native CI before ordered merges.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -541,7 +541,7 @@
     }
   },
   "publication_replay_identity_repair": {
-    "status": "local checks running",
+    "status": "committed; required review running",
     "native_run": 35270399865,
     "jobs": {
       "arm": 105367959712,
@@ -556,14 +556,15 @@
     "repair": "Name explicitly supplied replay baselines with sources.LocalCatalogID. Preserve baseline validation and original checksum.",
     "regression": "TestReplayAcquisitionNamesExplicitBaseline fails before the repair.",
     "sessions": {
-      "publication_contracts_race": 39057,
-      "capacity": 88551
+      "review": 29091
     },
     "starport": "Do not publish the superseded d73dd8f dependency as qualified. Repin after the replay repair is reviewed and published.",
     "lint": "PASS: make lint; 1852 files, zero prose diagnostics",
     "publication_race_progress": {
-      "status": "publication package PASS; command package still running",
-      "command": "go test -race -json -count=1 -timeout=30m -skip='^TestPublicPublicationProfileRetainsBoundedState$' ./internal/catalog/publication ./cmd/starmap-catalog-publish"
+      "status": "PASS",
+      "passed": 147,
+      "failed": 0,
+      "skipped": 0
     },
     "native_status": "completed: cancelled",
     "superseded_local_run": {
@@ -572,6 +573,17 @@
       "reason": "The raw local command repeated full-volume capacity under race instrumentation, contrary to the repository-owned verification split. No passing completion claim.",
       "log": ".tmp/csp6-hosted/replay-source-after.jsonl"
     },
-    "capacity_command": "python3 scripts/verification_tests.py capacity --output .tmp/csp6-hosted/replay-capacity-after.jsonl"
+    "capacity_command": "python3 scripts/verification_tests.py capacity --output .tmp/csp6-hosted/replay-capacity-after.jsonl",
+    "head": "b09931c66d7d0767f22c8b446b617e16c4046a7d",
+    "capacity_result": {
+      "status": "PASS",
+      "passed": 1,
+      "package_seconds": 231.476
+    },
+    "review_output": "/tmp/csp62-starmap-review/replay-review.json",
+    "retained_events": {
+      "path": "replay-source-2026-09-17.json.gz",
+      "uncompressed_sha256": "d30a481a6ec563b775d2ec84c27f4bd4495523fd014d9e225cc6f0c7db984e38"
+    }
   }
 }
