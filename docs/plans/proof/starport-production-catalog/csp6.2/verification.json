@@ -584,6 +584,32 @@
     "retained_events": {
       "path": "replay-source-2026-09-17.json.gz",
       "uncompressed_sha256": "d30a481a6ec563b775d2ec84c27f4bd4495523fd014d9e225cc6f0c7db984e38"
+    },
+    "superseded_native_arm": {
+      "run": 35270399865,
+      "head": "d73dd8f36849187563483d602226a7ae6306e7b0",
+      "runtime": {
+        "passed": 3253,
+        "skipped": 2
+      },
+      "filesystem_preflight": {
+        "passed": 40
+      },
+      "git_acquisition": {
+        "passed": 2
+      },
+      "publisher_ingestion": {
+        "passed": 4
+      },
+      "publication_preparation": {
+        "passed": 93,
+        "failed": 30
+      },
+      "qualification": "Historical only; final b09931c66 requires native qualification.",
+      "metadata": {
+        "path": "replay-superseded-native-2026-09-17.json.gz",
+        "uncompressed_sha256": "955f36598a448b680811f2f8beef9a683936a8cecb0809393adba4921d1815a5"
+      }
     }
   }
 }
