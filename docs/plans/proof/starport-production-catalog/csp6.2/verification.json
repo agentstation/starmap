@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "1da9510eaaee6117c726364f8990c357f25afc6a",
+      "head": "d73dd8f36849187563483d602226a7ae6306e7b0",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Finish the local Starmap origin-baseline repair and complete its origin, policy, and consumer checks. Commit and review before pushing PR #166. Repin Starport again before publication. Do not publish the superseded dependency as qualified.",
+    "Complete required review at Starmap d73dd8f36 and push PR #166. Repin Starport to this published commit, verify with GOWORK=off, review and publish its PR. Qualify both heads in native CI before ordered merges.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -440,7 +440,7 @@
     "run": 35266025497,
     "job": 105353306820,
     "head": "1da9510eaaee6117c726364f8990c357f25afc6a",
-    "status": "Canceled after origin recovery failures",
+    "status": "completed: cancelled",
     "native_counts": {
       "passed": 3246,
       "failed": 3,
@@ -460,5 +460,46 @@
       "lint": 43808
     },
     "known_intermediate_failure": "TestCompiledScopeEvidenceSurvivesLayerRebuild expected only the provider receipt. Its corrected assertion requires every original manifest receipt and unchanged identity. Eight related race events then pass."
+  },
+  "origin_baseline_repair": {
+    "head": "d73dd8f36849187563483d602226a7ae6306e7b0",
+    "checks": [
+      {
+        "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/baseline-evidence-verified.jsonl",
+        "sha256": "ed20f9a1a4f64f3a388af540b232638d1db10b31b8450dd8d061131c12130f63",
+        "counts": {
+          "pass": 15
+        },
+        "failed": []
+      },
+      {
+        "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/baseline-origin-after.jsonl",
+        "sha256": "3aa5194c0e873a0d94969dd1fce8af4ecd0bc3fa1dc88236372f3831ec69f334",
+        "counts": {
+          "pass": 73,
+          "fail": 1
+        },
+        "failed": [
+          "TestCompiledScopeEvidenceSurvivesLayerRebuild"
+        ]
+      },
+      {
+        "log": "/Users/jack/src/github.com/agentstation/starport-catalog-billing/.tmp/csp6-billing/baseline-evidence-final-remote.jsonl",
+        "sha256": "bdb142ea7388bca8eeb0c703efb8868fbfaa7e5f2d08b74969de3657a8400e01",
+        "counts": {
+          "pass": 1
+        },
+        "failed": []
+      }
+    ],
+    "lint": "PASS: make lint; 1851 files, zero prose diagnostics",
+    "intermediate_failure": "The origin cohort passed 73 events and failed one obsolete receipt assertion. The corrected assertion requires every original manifest receipt and unchanged identity; the final focused cohort passes 15 events.",
+    "invalid_fixture": "Two intermediate normalization checks failed during fixture decoding because the fixture omitted required source observations. The corrected fixture retains them. Validation was not weakened.",
+    "review": {
+      "status": "running",
+      "session": 10853,
+      "output": "/tmp/csp62-starmap-review/origin-review.json"
+    },
+    "native": "UNVERIFIED at this head"
   }
 }
