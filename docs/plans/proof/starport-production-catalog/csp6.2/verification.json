@@ -7,12 +7,12 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "8345fd30a6276d4cc0e2beed51304f2bbf03f1ab",
+      "head": "1f51cef4f5af4c69cc43e4192e95114c5654f219",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
       "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
-      "head": "606494c23101c72391e496a0c0eeb99de9dbde1d",
+      "head": "b206f985b28557f81be2e0d8adeab61625fec8bd",
       "branch": "codex/catalog-operation-billing"
     }
   },
@@ -63,11 +63,10 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete repository qualification and review the remaining conservative accounting cases. Billing API, console views, and operator documentation now declare actual units.",
-    "Qualify provider usage presence, missing/zero dimensions, mixed cache cases, currencies, tiers, and retry accounting. Review conservative cases before publication.",
-    "Finish the full repository-owned check rosters, pre-PR review, and native CI. Real Valkey billing evidence now passes.",
-    "Publish and merge Starmap first, then update the actual Starport module pin, qualify without GOWORK, and merge Starport.",
-    "Retain the failed candidate evidence. Prepare and qualify corrected catalog bytes before advancing discovery. CSP12.2 retains atomic budget reservation and unresolved-settlement policy ownership."
+    "Finish Starmap make verify, retain capacity events before its temporary directory is removed, and inspect all failures.",
+    "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
+    "Merge Starmap first, publish the module dependency, then update the actual Starport pin and qualify without GOWORK before merging Starport.",
+    "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
   ],
   "implementation_evidence": {
     "bundle": "billing-contracts-2026-09-17.json.gz",
@@ -172,5 +171,63 @@
     "console_build": "pass",
     "console_typecheck": "pass after build generated route tree",
     "limitations": "Checks use ignored GOWORK. No review, native CI, publication, or merge credit."
+  },
+  "qualification_evidence": {
+    "bundle": "billing-qualification-2026-09-17.json.gz",
+    "uncompressed_sha256": "d49926ff91fc184efa1a34ce0e99e2a258101d8bb84e6a8d9e4f1c9f92e933b3",
+    "starport_full_race_real_valkey": {
+      "passed": 3151,
+      "failed": 0,
+      "skipped": 2,
+      "skips": [
+        "TestValkeyPubSubReconnection",
+        "TestGatewayOverheadBenchmark"
+      ],
+      "overhead_separate": "PASS: 200 requests, p50=0ms, p99=0ms at millisecond resolution"
+    },
+    "starport_gates": {
+      "initial_passed": 24,
+      "initial_failed": 2,
+      "total": 26,
+      "ownership_rerun": "12/12 passed after selecting the correct Starmap source tree",
+      "remaining": "V01 deliberately rejects the unpublished workspace dependency. Rerun against a published module after the Starmap merge."
+    },
+    "starport_smoke": "First-run and raw HTTP, Python OpenRouter/OpenAI, TypeScript OpenRouter, and Go OpenRouter SDK checks pass",
+    "starport_lint_vet_build": "pass; build ran during the changes, fresh release build still required",
+    "google_live": {
+      "credential_found": true,
+      "exit": 0,
+      "result": [
+        {
+          "Provider": "google-ai-studio",
+          "Status": "\u2713 Success",
+          "ResponseTime": "182ms",
+          "ModelsFound": "58"
+        }
+      ],
+      "authentication_failure": false
+    },
+    "starmap_cli_regression": "Four race events pass. Structured provider matrices now return errors for failed providers. Manual matrix remains failed without acquisition configuration.",
+    "fixture_qualification": "Google live probe passes. Governed Google fixture refresh remains unavailable. Broader provider fixture drift fails without acquisition configuration.",
+    "recovery_test": {
+      "before_seconds": 223.3,
+      "after_package_seconds": 12.113,
+      "assertions": "Commit failure, concurrent reads, retained state, and retry assertions unchanged. Initial stored generation is bounded. Full embedded seeding remains separately covered."
+    },
+    "source_path_test": {
+      "before_seconds": 41.98,
+      "after_seconds": 18.38,
+      "fixture": "100 models, five providers, at least 100KB. Exact cached payload assertion rejects silent embedded fallback.",
+      "failed_attempt": "A one-model fixture triggered the source minimum-size fallback and failed the new byte assertion. Production validation was not weakened."
+    },
+    "starmap_full_verify": {
+      "status": "RUNNING",
+      "session_id": 88753,
+      "command": "make verify",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/billing-full-verify.log",
+      "race_events_retained": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/billing-full-verify-events-0.jsonl",
+      "note": "The full race command began before the final fixture and CLI repairs. Separate focused race runs qualify those changed tests. Capacity follows race in this command."
+    },
+    "starmap_lint": "PASS: golangci-lint, goago, glossary, and strict prose (1849 files)"
   }
 }
