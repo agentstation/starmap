@@ -165,6 +165,9 @@ func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.Catalog
 	if err := l.appendScopeSourceEvidence(catalog); err != nil {
 		return starmap.CatalogState{}, err
 	}
+	if err := l.appendSelectedBaselineEvidence(selected); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	if err := catalogs.ValidateMembershipEvidence(catalog.MembershipScopes(), l.buildEvidence.SourceObservations); err != nil {
 		return starmap.CatalogState{}, err
 	}

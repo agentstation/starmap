@@ -114,6 +114,10 @@ func TestRuntimePublicationRetainsEachProviderReceiptAcrossRestart(t *testing.T)
 				t.Fatal(err)
 			}
 			baselineCount := first.Catalog().Providers().Len()
+			baseline, err := store.Current(t.Context())
+			if err != nil || len(baseline.Manifest.SourceObservations) != 1 {
+				t.Fatalf("baseline receipt: generation=%+v error=%v", baseline.Manifest, err)
+			}
 			if _, err := first.publishProviders(t.Context(), layers, first.lease.epoch()); err != nil {
 				t.Fatal(err)
 			}
@@ -121,9 +125,8 @@ func TestRuntimePublicationRetainsEachProviderReceiptAcrossRestart(t *testing.T)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if len(generation.Manifest.SourceObservations) != len(layers) {
-				t.Fatalf("published links = %d", len(generation.Manifest.SourceObservations))
-			}
+			assertExactSourceReceipts(t, generation.Manifest.SourceObservations,
+				baseline.Manifest.SourceObservations[0], layers[0].Receipt.Link, layers[1].Receipt.Link)
 			for _, layer := range layers {
 				found := false
 				for _, link := range generation.Manifest.SourceObservations {

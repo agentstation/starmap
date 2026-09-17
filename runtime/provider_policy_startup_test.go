@@ -12,6 +12,7 @@ import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/server"
 )
 
@@ -91,6 +92,15 @@ func TestStartupExplicitEmptyBindingsDropsStoredScopeWithoutInputs(t *testing.T)
 	}
 	if next.State().PayloadChecksum != next.Client().CurrentCatalogState().PayloadChecksum {
 		t.Fatal("client differs from runtime")
+	}
+	accepted, err := store.Current(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	baseline := next.Client().EmbeddedCatalogState()
+	links := accepted.Manifest.SourceObservations
+	if len(links) != 1 || links[0].Source != sources.EmbeddedCatalogID || links[0].EvidenceChecksum != baseline.PayloadChecksum || !links[0].ObservedAt.Equal(baseline.GeneratedAt) {
+		t.Fatalf("withdrawal lost the selected baseline receipt: %+v", links)
 	}
 }
 

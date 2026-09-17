@@ -1,10 +1,39 @@
 package runtime
 
 import (
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
+
+// appendSelectedBaselineEvidence records a rebuild that selects only its baseline.
+// The receipt uses the baseline time, so removing local bindings is reproducible.
+func (l *layerSet) appendSelectedBaselineEvidence(selected starmap.CatalogState) error {
+	if len(l.buildEvidence.SourceObservations) != 0 {
+		return nil
+	}
+	manifest := l.embeddedManifest
+	sourceID := sources.EmbeddedCatalogID
+	if l.source != nil {
+		manifest = l.source.Manifest
+		sourceID = sources.ID(l.source.Identity)
+	}
+	if manifest == nil {
+		return nil
+	}
+	observation, err := sources.NewObservation(sourceID, selected.Catalog, sources.ObservationMetadata{
+		ObservedAt:   manifest.GeneratedAt,
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+	})
+	if err != nil {
+		return err
+	}
+	l.buildEvidence.SourceObservations = append(l.buildEvidence.SourceObservations, observation.Link())
+	return nil
+}
 
 // decodeCatalog checks retained scope evidence against its original generation.
 // Legacy payload-only layers cannot hold scopes, operator policies, or canonical aliases.
