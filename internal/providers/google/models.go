@@ -267,22 +267,6 @@ func (c *Client) applyProviderExtensions(model *catalogs.Model, genaiModel *gena
 	if len(genaiModel.SupportedActions) > 0 {
 		actions := make([]any, 0, len(genaiModel.SupportedActions))
 
-		var protocols []catalogs.ModelResponseProtocol
-		for _, action := range genaiModel.SupportedActions {
-			switch action {
-			case "generateContent", "streamGenerateContent", "embedContent":
-				if !slices.Contains(protocols, catalogs.ModelResponseProtocolHTTP) {
-					protocols = append(protocols, catalogs.ModelResponseProtocolHTTP)
-				}
-			case "bidiGenerateContent":
-				if !slices.Contains(protocols, catalogs.ModelResponseProtocolWebSocket) {
-					protocols = append(protocols, catalogs.ModelResponseProtocolWebSocket)
-				}
-			}
-		}
-		if len(protocols) > 0 {
-			model.Delivery = &catalogs.ModelDelivery{Protocols: protocols}
-		}
 		for _, action := range genaiModel.SupportedActions {
 			actions = append(actions, action)
 		}
