@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-16T19:35:17.230195+00:00",
+  "at": "2026-09-17T13:25:01.391275+00:00",
   "decision": "D36",
   "go": "1.27.1",
   "status": "in_progress",
@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "71a96cee03e5f9cdfe7adcd9784c7463ce18d856",
+      "head": "334ab50cd3fb17cb3efc576882c6ffdf19c07ca4",
       "dirty_files": {}
     },
     "starport": {
@@ -24,12 +24,11 @@
     "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
   ],
   "pending": [
-    "final hosted native, race, capacity and release qualification",
-    "merge Starmap with its reviewed commits preserved, then merge Starport"
+    "Finish renewed review, push Starmap repair, update Starport public dependency and repeat final Go 1.27.1 qualification.",
+    "Merge both reviewed PRs in dependency order, then verify merged sources."
   ],
   "running": {
-    "starmap": "hosted run 35138885986 at reviewed 71a96cee0",
-    "starport": "Final hosted CI at reviewed 368fdee"
+    "starmap_review": "/tmp/starmap-go127-native-repair-review.json"
   },
   "starport": {
     "go_test": {
@@ -170,5 +169,23 @@
     "golangci_lint": "2.12.2 panicked on Linux Go 1.27 standard-library syntax. 2.13.2 passes both products on Darwin and fresh-cache Linux analysis. No lint rules disabled.",
     "devbox": "Apple SDK 11.3 lacked SecTrustCopyCertificateChain; pinned SDK 15.5 fixes the tool link. Local Nix shell retains deployment-target warnings; release binaries disable cgo."
   },
-  "current_queue_evidence": "../../pr-audit-2026-09-08/current-queue/queue-status-2026-09-16-1938.json"
+  "current_queue_evidence": "../../pr-audit-2026-09-08/current-queue/queue-status-2026-09-16-1938.json",
+  "hosted_failure_followup": {
+    "starmap": "All six native jobs pass. Runtime race suite fails TestRuntimeInputCollectionWaitsForPublication at its ten-second barrier. Package completes in 1796.415 seconds. Aggregate gate fails.",
+    "starport": "Six native startup jobs, release snapshot, Linux/macOS race suites, lint, SDK and security pass. Windows race tests fail private permission-state publication with ERROR_NOACCESS. Build correctly skips.",
+    "uncompressed_evidence_sha256": "221768413141c179ac94800eae162f402241279aed879df8657a707f6d0b0c2d",
+    "limits": "Native startup passes do not qualify Windows race behavior. The complete Starmap hosted run took about 55 minutes, exceeding the 30-minute target."
+  },
+  "native_repair": {
+    "head": "334ab50cd3fb17cb3efc576882c6ffdf19c07ca4",
+    "local_evidence": "go127-native-repair-local-evidence.json.gz",
+    "uncompressed_sha256": "19a546b4a4f37c2dcb1cc04aeb7966f748f6aa301082d09b9caeab4a3f9755f0",
+    "runtime_collection_race_events": 15,
+    "filesystem_and_workflow_race_events": 192,
+    "collection_publication_test_seconds": 0.86,
+    "checks": "make verify-checks and make technical-writing-check pass. Windows AMD64 lint and goago pass; Windows AMD64 and ARM64 test binaries compile.",
+    "runtime_change": "Replace full embedded startup with the existing small manual-runtime fixture. Explicitly observe collector waiting before cancellation. Preserve publication and restart assertions.",
+    "windows_change": "Align the 24-byte FILE_ID_INFO buffer to uint64 and keep its file alive through the native call. Preserve serialized identities. Add native API error context and a Windows AMD64 race job.",
+    "qualification": "Native execution and renewed review pending."
+  }
 }

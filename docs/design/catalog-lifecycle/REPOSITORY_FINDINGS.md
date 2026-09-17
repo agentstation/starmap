@@ -57,7 +57,17 @@ The regression fails before the fix. Local ACL and private-file tests pass 180 r
 Starport now pins published Starmap commit `71a96cee0`. Its complete local roster and Docker checks pass without a workspace override.
 Both final pre-PR reviews pass with no findings.
 
-Final native qualification and both merges remain open.
+The six native jobs now pass in both repositories. The complete Starmap run takes about 55 minutes, above the 30-minute target.
+Starmap's runtime race group fails the ten-second publication barrier. Starport's Windows race group fails permission-state writes with `ERROR_NOACCESS`.
+Native startup results do not qualify those failing race paths.
+
+Starmap commit `334ab50cd` uses the existing small runtime fixture and explicitly observes the waiting collector before cancellation.
+Its 15 input-collection race events pass. The affected filesystem and workflow packages pass 192 race events.
+
+The same commit aligns the Windows file-identity buffer and preserves its serialized bytes.
+Windows lint and cross-compilation pass. Native execution must confirm whether this repairs `ERROR_NOACCESS`.
+The workflow adds a Windows AMD64 race check for file publication and private files.
+Renewed review, final hosted qualification, and both merges remain open.
 
 ## Inspected revisions
 
