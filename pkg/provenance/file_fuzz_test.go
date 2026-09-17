@@ -22,8 +22,8 @@ func FuzzFileYAMLDecodeNoPanic(f *testing.F) {
 		if len(data) > constants.MaxSourcePayloadBytes {
 			t.Skip()
 		}
-		var file File
-		if err := yaml.Unmarshal(data, &file); err != nil {
+		file, err := DecodeYAML(data)
+		if err != nil {
 			return
 		}
 		report := GenerateReport(file.Provenance)

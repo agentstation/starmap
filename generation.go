@@ -83,7 +83,13 @@ func (c *Client) commitAndPublish(
 	if err := c.Catalog().CanonicalAliases().ValidateSuccessor(published.CanonicalAliases()); err != nil {
 		return Publication{}, err
 	}
-	generation, err := c.newGeneration(published, evidence, generationID)
+	customUpdate := len(evidence.SourceObservations) == 0
+	var err error
+	evidence, err = c.retainMembershipEvidence(ctx, published, evidence)
+	if err != nil {
+		return Publication{}, err
+	}
+	generation, err := c.newGenerationWithEvidence(published, evidence, generationID, customUpdate)
 	if err != nil {
 		return Publication{}, err
 	}
@@ -227,6 +233,15 @@ func (c *Client) newGeneration(
 	evidence CandidateEvidence,
 	requestedGenerationID string,
 ) (catalogs.Generation, error) {
+	return c.newGenerationWithEvidence(published, evidence, requestedGenerationID, false)
+}
+
+func (c *Client) newGenerationWithEvidence(
+	published *catalogs.Catalog,
+	evidence CandidateEvidence,
+	requestedGenerationID string,
+	customUpdate bool,
+) (catalogs.Generation, error) {
 	generationID := requestedGenerationID
 	if generationID == "" {
 		var err error
@@ -239,7 +254,7 @@ func (c *Client) newGeneration(
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
-	return buildCandidateGeneration(published, evidence, generationID, syncRunID, c.currentTime())
+	return buildCandidateGeneration(published, evidence, generationID, syncRunID, c.currentTime(), customUpdate)
 }
 
 // Generation builds deterministic generation bytes without publishing or reading storage.
@@ -248,17 +263,17 @@ func (c *Candidate) Generation(runID string, generatedAt time.Time) (catalogs.Ge
 	if c == nil || c.generationID == "" {
 		return catalogs.Generation{}, &errors.ValidationError{Field: "candidate.generation_id", Message: "an explicit generation identity is required"}
 	}
-	return buildCandidateGeneration(c.catalog, c.evidence, c.generationID, runID, generatedAt.UTC())
+	return buildCandidateGeneration(c.catalog, c.evidence, c.generationID, runID, generatedAt.UTC(), false)
 }
 
-func buildCandidateGeneration(published *catalogs.Catalog, evidence CandidateEvidence, generationID, syncRunID string, generatedAt time.Time) (catalogs.Generation, error) {
+func buildCandidateGeneration(published *catalogs.Catalog, evidence CandidateEvidence, generationID, syncRunID string, generatedAt time.Time, customUpdate bool) (catalogs.Generation, error) {
 	payload, err := catalogs.EncodeCatalogPayload(published)
 	if err != nil {
 		return catalogs.Generation{}, err
 	}
 	descriptor := catalogs.DescribeCatalogPayload(payload)
 	observations := append([]catalogs.SourceObservationLink(nil), evidence.SourceObservations...)
-	if len(observations) == 0 {
+	if len(observations) == 0 || customUpdate {
 		observations = append(observations, catalogs.SourceObservationLink{
 			Source:        customUpdateSourceID,
 			ObservationID: "observation:" + syncRunID,
