@@ -24,11 +24,10 @@
     "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
   ],
   "pending": [
-    "Finish Starmap Windows AMD64 and ARM64 native qualification. All four race groups and the aggregate verification gate pass.",
-    "Merge Starmap PR #164 with a merge commit, then Starport PR #375 by squash. Verify merged sources before completion."
+    "Qualify, review, and merge the response-barrier test repair on codex/authority-startup-test; repeat merged-source verification."
   ],
   "running": {
-    "starmap_ci": 35227913540
+    "starport_local": "Full tests and required pre-PR checks for response-barrier test repair"
   },
   "starport": {
     "go_test": {
@@ -226,7 +225,7 @@
     "checks": "make verify-checks and make technical-writing-check pass. Windows AMD64 lint and goago pass; Windows AMD64 and ARM64 test binaries compile.",
     "runtime_change": "Replace full embedded startup with the existing small manual-runtime fixture. Explicitly observe collector waiting before cancellation. Preserve publication and restart assertions.",
     "windows_change": "Align the 24-byte FILE_ID_INFO buffer to uint64 and keep its file alive through the native call. Preserve serialized identities. Add native API error context and a Windows AMD64 race job.",
-    "qualification": "Native execution and renewed review pending.",
+    "qualification": "PASS: both repositories merged after all hosted jobs passed.",
     "release_snapshot": {
       "status": "PASS",
       "evidence": "go127-native-repair-release-evidence.json.gz",
@@ -245,10 +244,13 @@
     "starmap_ci": {
       "run": 35227913540,
       "url": "https://github.com/agentstation/starmap/actions/runs/35227913540",
-      "status": "in_progress",
+      "status": "completed",
       "windows_file_publication_race": "PASS",
       "runtime_race": "PASS",
-      "verification_gate": "PASS; native Windows jobs remain independently required by the task"
+      "verification_gate": "PASS; native Windows jobs remain independently required by the task",
+      "conclusion": "success",
+      "jobs_passed": 19,
+      "elapsed_seconds": 2922
     }
   },
   "remaining_timing_analysis": {
@@ -286,5 +288,21 @@
         "constraint": "A smaller selected baseline may be appropriate, but it must preserve those observable file and restart contracts."
       }
     ]
+  },
+  "merged_sources": {
+    "starmap": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
+    "starport": "f5353a8b7d31860f166af10f4731886fc6e1ac59",
+    "reviewed_tree_equivalence": "PASS for both",
+    "starmap_focused_race": "PASS",
+    "starport_focused_race": "FAIL: unavailable subcase exceeds shared 10-second startup deadline; reproduced in isolation.",
+    "evidence": "go127-merge-and-startup-evidence.json.gz",
+    "evidence_sha256": "d71c8fe1c9aeb9de004f6099a77b82b6eaa48a8d75a9cd66e94570ab766fdee9"
+  },
+  "startup_test_followup": {
+    "branch": "codex/authority-startup-test",
+    "changed_file": "internal/app/catalog_authority_test.go",
+    "change": "Hold authority responses behind a channel until local startup returns. Use a one-minute safety deadline; do not treat local initialization under race detection as a 10-second product SLO.",
+    "focused_race": "PASS: both subcases and parent; unavailable 12.54 seconds, pending 0.31 seconds.",
+    "completion": "No task completion credit until reviewed repair merges and merged-source verification passes."
   }
 }
