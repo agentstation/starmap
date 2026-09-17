@@ -2709,3 +2709,22 @@ Catalog refresh must preserve these facts without retaining obsolete or mixed pr
 CSP6.2 owns billing units, operation facts, and accounting across both products. CSP6 publication remains dependent on its qualification.
 CSP12.2 owns atomic budget reservations and must qualify both document billing bases.
 The repair must preserve atomic pricing selection, currency, validity intervals, and provenance.
+
+
+### Billing record and usage evidence
+
+Schema 10 adds `billing.recognition` as an independent catalog record.
+Its `basis` is `pages` or `tokens`. Missing billing remains unknown.
+An optional `input_page_estimate` carries `tokens`, `source`, and `assumptions`.
+This estimate describes input only and excludes output charges.
+Catalog and OpenRouter offering views retain these fields separately from fixed prices.
+
+Starport records one `extractions` entry for each fresh recognition call.
+The entry retains its start time, offering, generation, billing basis, measured tokens, and known cost or failure reason.
+Rate validity uses the call start time. A selected context tier replaces the base tier's rates.
+Settlement includes a published request fee once for that call.
+Billed thinking tokens count within output once, with a separate reasoning rate when the offering supplies one.
+
+Empty or absent usage remains unknown. Explicit zero measurements remain distinct from missing measurements.
+Known extraction charges survive partial recognition, later chat failure, stream completion, and cancellation.
+A known subtotal does not prove complete settlement. CSP12.2 owns admission, retries, and uncertain provider work.
