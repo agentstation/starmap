@@ -1,0 +1,212 @@
+{
+  "conclusion": "",
+  "createdAt": "2026-09-17T14:54:35Z",
+  "headSha": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
+  "jobs": [
+    {
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "databaseId": 105254436815,
+      "name": "generate",
+      "startedAt": "2026-09-17T14:54:39Z",
+      "status": "in_progress",
+      "steps": [
+        {
+          "completedAt": "2026-09-17T14:54:45Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-09-17T14:54:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-09-17T14:54:50Z",
+          "conclusion": "success",
+          "name": "Checkout trusted publisher source",
+          "number": 2,
+          "startedAt": "2026-09-17T14:54:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-09-17T14:54:50Z",
+          "conclusion": "success",
+          "name": "Check publisher identity configuration",
+          "number": 3,
+          "startedAt": "2026-09-17T14:54:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-09-17T14:55:00Z",
+          "conclusion": "success",
+          "name": "Set up Go",
+          "number": 4,
+          "startedAt": "2026-09-17T14:54:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-09-17T14:55:00Z",
+          "conclusion": "success",
+          "name": "Select publication directory",
+          "number": 5,
+          "startedAt": "2026-09-17T14:55:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-09-17T14:55:50Z",
+          "conclusion": "success",
+          "name": "Restore accepted or pending publication",
+          "number": 6,
+          "startedAt": "2026-09-17T14:55:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-09-17T14:56:30Z",
+          "conclusion": "success",
+          "name": "Refresh candidate catalog",
+          "number": 7,
+          "startedAt": "2026-09-17T14:55:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Validate candidate before publication",
+          "number": 8,
+          "startedAt": "2026-09-17T14:56:30Z",
+          "status": "in_progress"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Attest exact publication inputs",
+          "number": 9,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Retain preparation before public writes",
+          "number": 10,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Record pending publication",
+          "number": 11,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Publish and verify immutable public inputs",
+          "number": 12,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Create promotion installation token",
+          "number": 13,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Select promotion bot identity",
+          "number": 14,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Promote exact input through checked pull request",
+          "number": 15,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Stage channels after verified merge",
+          "number": 16,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Attest both discovery channels",
+          "number": 17,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Publish and verify both discovery channels",
+          "number": 18,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Retain acquisition corrections and validation logs",
+          "number": 19,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Report publication state",
+          "number": 20,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Set up ORAS for optional catalog mirror",
+          "number": 21,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Publish and verify optional OCI catalog mirror",
+          "number": 22,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Post Set up Go",
+          "number": 43,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "name": "Post Checkout trusted publisher source",
+          "number": 44,
+          "startedAt": "0001-01-01T00:00:00Z",
+          "status": "pending"
+        }
+      ],
+      "url": "https://github.com/agentstation/starmap/actions/runs/35236729284/job/105254436815"
+    }
+  ],
+  "status": "in_progress",
+  "url": "https://github.com/agentstation/starmap/actions/runs/35236729284"
+}

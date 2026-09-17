@@ -1,0 +1,30 @@
+{
+  "task": "CSP6",
+  "source_commit": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
+  "branch": "codex/catalog-hosted-qualification",
+  "run": 35236729284,
+  "watch_session": 72149,
+  "watch_log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/publication-watch.log",
+  "authority": "../acquisition-diagnostics-2026-09-14/owner-decisions.json",
+  "status": "in_progress",
+  "completion_credit": false,
+  "remaining": [
+    "Inspect hosted publication, bot PR identity, exact check identities and verified merge.",
+    "Qualify each transition failure and same-byte retry; register the three missing A05 adapters."
+  ],
+  "acceptance_detail_path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/acceptance-before-detail.json",
+  "acceptance_before": {
+    "exit": 1,
+    "subcases": {
+      "A05.required_source_absent": "PASS",
+      "A05.partial_retained_admission": "PASS",
+      "A05.complete_deletion_threshold": "PASS",
+      "A05.bot_required_checks": "UNVERIFIED",
+      "A05.each_publication_failure": "UNVERIFIED",
+      "A05.same_bytes_retry": "UNVERIFIED"
+    },
+    "evidence": "acceptance-before.json.gz",
+    "uncompressed_sha256": "11c7fddd261bf8a3d963d0f70b2959d40c155b702a7daa46f475cc0fa3c592f6",
+    "interpretation": "Three registered admission cases pass. Three hosted publication cases are unregistered and remain UNVERIFIED. The all-case summary does not mean 50 selected behavioral failures."
+  }
+}

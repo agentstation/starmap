@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated 2026-09-17 UTC. CSP6 is the sole active task. CSP6.1 is complete after both repository merges and merged-source qualification.</p>
 
-<p id="next-action">Next: run controlled catalog publication on Starmap main. Verify the bot pull request, required check identities, transition failures, and identical-byte retries. Register the remaining three A05 adapters before marking CSP6 complete.</p>
+<p id="next-action">Next: inspect controlled publisher run <code>35236729284</code> from Starmap main. Verify the bot pull request, required check identities, transition failures, and identical-byte retries. Register the remaining three A05 adapters before marking CSP6 complete.</p>
 
 <p>Starmap: <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>, clean branch <code>codex/catalog-hosted-qualification</code> at <code>6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934</code>. Starport: <code>/Users/jack/src/github.com/agentstation/starport-go-1271</code>, clean detached HEAD at <code>773ba4568913bbbb304fc178ac5d7087f5435b04</code>.</p>
 
@@ -19,7 +19,7 @@
 
 <p>The publisher App secret and client-ID variable are present. Branch protection requires strict GitHub Actions checks. The publisher also requires all six native checks. Existing <a href="proof/starport-production-catalog/csp6/acquisition-diagnostics-2026-09-14/owner-decisions.json">owner authorization</a> covers controlled public catalog publication.</p>
 
-<p>Use the <a href="proof/starport-production-catalog/csp6/rollout-sequence-2026-09-16.json">CSP6 rollout sequence</a>. Its missing-key step is now satisfied. Required cases remain <code>A05.bot_required_checks</code>, <code>A05.each_publication_failure</code>, and <code>A05.same_bytes_retry</code>. No command is active.</p>
+<p>Use the <a href="proof/starport-production-catalog/csp6/rollout-sequence-2026-09-16.json">CSP6 rollout sequence</a>. Its missing-key step is now satisfied. Required cases remain <code>A05.bot_required_checks</code>, <code>A05.each_publication_failure</code>, and <code>A05.same_bytes_retry</code>. The <a href="proof/starport-production-catalog/csp6/hosted-qualification-2026-09-17/verification.json">hosted qualification record</a> identifies the live workflow and local acceptance command. The workflow is at catalog acquisition.</p>
 
 <p>CSP8 remains paused at Starport <code>7b59be6ec</code> and Starmap <code>e8104b5f3</code>. Preserve unrelated canonical edits in <code>AGENTS.md</code>, <code>Makefile</code>, <code>go.mod</code>, <code>go.sum</code>, and <code>scripts/verify.sh</code>. The <a href="proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/pre-closeout-resume.html">prior resume</a> preserves history.</p>
 </section>
