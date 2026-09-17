@@ -1,0 +1,71 @@
+{
+  "status": "in_progress",
+  "completion_credit": false,
+  "decision": "D37",
+  "owner_reply": "Use actual billing units; label estimates (Recommended)",
+  "date": "2026-09-17",
+  "source": {
+    "starmap": {
+      "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+      "head": "e45145575",
+      "branch": "codex/catalog-hosted-qualification"
+    },
+    "starport": {
+      "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
+      "head": "773ba4568913bbbb304fc178ac5d7087f5435b04",
+      "branch": "codex/catalog-operation-billing"
+    }
+  },
+  "evidence": {
+    "bundle": "fail-before-and-receipt-repairs.json.gz",
+    "uncompressed_sha256": "9c932c5d1336cc9890b77ba738ced8e587c12b9f394e4c90d4c1ff2fa98401f2"
+  },
+  "passed": {
+    "origin_race": {
+      "events": 35,
+      "failures": 0,
+      "skips": 0,
+      "package_seconds": 431.03
+    },
+    "promoted_tls": {
+      "events": 3,
+      "failures": 0,
+      "skips": 0
+    },
+    "goago": "No findings, stale ignores, or errors",
+    "prose": "PRD, specification, repository findings, plan, and changed Go files pass"
+  },
+  "findings": [
+    {
+      "owner": "Starmap billing contract",
+      "evidence": "Promoted catalog loses Operations.PageInput when the atomic pricing winner supplies token rates. The current bootstrap test rejects google-ai-studio/gemini-2.5-flash.",
+      "required": "Actual billing basis and separately labeled estimates, without mixing old and new price records."
+    },
+    {
+      "owner": "Starport recognition accounting",
+      "evidence": "Google connector returns token usage. proxy.recognize discards that usage and returns text/model only; extraction cost uses pages times PagePriceFor.",
+      "required": "Preserve actual usage and selected offering rates through billing and usage persistence. Unknown usage cannot settle as zero."
+    },
+    {
+      "owner": "Starmap operation facts",
+      "evidence": "chargesForGeneratedMedia inspects operation prices. Switching three realtime models to audio token rates incorrectly enables chat completions.",
+      "required": "Explicit service facts independent of pricing. Preserve the residual-operation regression."
+    },
+    {
+      "owner": "CSP12.2",
+      "evidence": "proxy.affordable uses LowestPagePrice before route selection and allows unknown price.",
+      "required": "Atomic admission and selected-route reservation must include both D37 billing bases."
+    }
+  ],
+  "external_source": {
+    "url": "https://ai.google.dev/gemini-api/docs/document-processing",
+    "checked": "2026-09-17",
+    "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
+  },
+  "remaining": [
+    "Implement Starmap billing and protocol contracts with source provenance and tests.",
+    "Implement paired Starport accounting, unknown-cost behavior, and API projections.",
+    "Review and qualify both repositories before resuming CSP6 publication.",
+    "Retain the failed candidate evidence; prepare and qualify corrected catalog bytes before advancing discovery."
+  ]
+}

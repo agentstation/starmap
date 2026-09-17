@@ -3739,3 +3739,24 @@ Incoming reset requests still use the checkpoint path at capacity. Retirement on
 
 The [retirement proof](../../plans/proof/starport-production-catalog/csp5/provider-retirement-2026-09-12/verification.json) records source identities, commands, failures, and final results.
 Full CSP5 verification, review, native CI, and merge remain open.
+
+
+## D37: Document billing and operation facts
+
+Document recognition must declare its billing basis independently of capability and endpoint selection.
+A fixed page price applies only when the provider bills by the page.
+Token-billed recognition uses the selected offering’s token rates and the provider’s measured usage, including applicable output and modality dimensions.
+A derived per-page estimate must identify its assumptions and source rates. It must not populate a fixed-charge field or replace measured usage.
+
+Starport must retain recognition usage through routing, extraction, accounting, and persistent usage records.
+A cached document read must not charge the original provider work again.
+Missing usage or prices must remain unknown. They must not become a zero charge or a successful budget check.
+Required budget admission must use the selected route and a justified reservation. The cheapest unrelated offering is not a safe bound.
+
+Operation and protocol eligibility must not depend on pricing presence or the units used to express a price.
+An audio token rate does not prove support for chat completions. Explicit service facts must distinguish realtime-only models from chat models that support audio.
+Catalog refresh must preserve these facts without retaining obsolete or mixed pricing records.
+
+CSP6.2 owns billing units, operation facts, and accounting across both products. CSP6 publication remains dependent on its qualification.
+CSP12.2 owns atomic budget reservations and must qualify both document billing bases.
+The repair must preserve atomic pricing selection, currency, validity intervals, and provenance.

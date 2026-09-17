@@ -3270,3 +3270,27 @@ Starport `7b59be6ece0768871cd9b60ca556e9530941e05d` extends the upgrade check to
 The failing regression created a gateway key and a new store while recognized legacy data remained.
 The command now refuses before those writes. The old store remains unchanged.
 The [proof](../../plans/proof/starport-production-catalog/csp8/legacy-paths-2026-09-16/configured-init-verification.json) records 21 passing race events and a clean command-package lint check.
+
+
+## 2026-09-17: Promoted catalog exposes billing and protocol gaps
+
+The prepared catalog replaces complete pricing records as the current authority contract requires.
+This removes manually derived Google page prices when models.dev supplies a new token-price record.
+`TestEveryRecognitionOfferingCanBeBilledByThePage` fails for `google-ai-studio/gemini-2.5-flash`.
+The owner selected actual billing units and separately labeled estimates under D37.
+
+Starport’s `internal/catalog/control_plane.go` admits recognition only with `Operations.PageInput`.
+`internal/proxy/parser.go` uses page prices for admission and extraction cost.
+The Google recognition connector already returns token usage. The repair must carry that evidence into accounting instead of substituting a page estimate.
+Its cheapest-page admission estimate cannot prove that the selected route fits a required budget.
+
+Google’s [document-processing documentation](https://ai.google.dev/gemini-api/docs/document-processing) describes PDF token reporting and model-dependent resolution controls.
+A universal fixed page charge does not express that contract. This review checked the documentation on 2026-09-17.
+
+Starmap’s `pkg/catalogs/offering_views.go` also excludes chat based on nonzero media-operation prices.
+After refresh converts realtime audio pricing to token units, three realtime-only models incorrectly gain chat eligibility.
+The models are `openai/gpt-realtime-2.1`, `google-ai-studio/gemini-3.1-flash-live-preview`, and `google-ai-studio/gemini-3.5-live-translate-preview`.
+The existing residual-operation test detects this change. Keep its behavioral protection while replacing price-based capability inference with explicit service facts.
+
+CSP6.2 owns both production contracts. CSP6 retains the failed publication evidence and must prepare a corrected catalog after those contracts pass.
+No failed candidate may advance discovery channels or count as completed qualification.

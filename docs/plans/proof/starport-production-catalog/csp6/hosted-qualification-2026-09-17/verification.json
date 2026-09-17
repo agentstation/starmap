@@ -6,12 +6,11 @@
   "watch_session": 77774,
   "watch_log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/promotion-ci-watch.log",
   "authority": "../acquisition-diagnostics-2026-09-14/owner-decisions.json",
-  "status": "in_progress",
+  "status": "blocked(CSP6.2)",
   "completion_credit": false,
   "remaining": [
-    "Repair large-catalog bootstrap and inherited membership evidence at their owning seams. Preserve scalar semantics, 512MiB container limits, and45-second readiness checks. Requalify the exact candidate before hosted promotion.",
-    "Inspect hosted publication, bot PR identity, exact check identities and verified merge.",
-    "Qualify each transition failure and same-byte retry; register the three missing A05 adapters."
+    "CSP6.2 repairs actual recognition billing and operation facts across both products.",
+    "Resume checked hosted publication and same-byte retry after the paired repair qualifies."
   ],
   "acceptance_detail_path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/acceptance-before-detail.json",
   "acceptance_before": {
@@ -103,12 +102,8 @@
       "evidence": "runtime-repair-evidence.json.gz",
       "uncompressed_sha256": "042d43b3698af3dbb465ea04d9c234da1f53a137c52276ebf6938f77bbc21001"
     },
-    "running": {
-      "session": 55879,
-      "command": "GOTOOLCHAIN=go1.27.1 go test -race ./runtime -run '^TestOrigin' -count=1 -json",
-      "cwd": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/origin-contracts.jsonl",
-      "source_note": "Includes startup evidence repair. The file-source receipt helper does not affect the selected origin tests."
-    }
+    "running": {},
+    "origin_race": "PASS35 test events, zero failures/skips,431.03seconds",
+    "receipt_extension": "e45145575 handles explicitly selected payload sources. Promoted TLS rejection/import passes all three events."
   }
 }

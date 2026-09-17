@@ -62,6 +62,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D34 | Public provider acquisition is best effort. Retain accepted facts after request failures and report provider failures in catalog and source status. | User reaffirmed on 2026-09-14 |
 | D35 | After a models.dev outage exceeds 24 hours, continue valid provider updates with retained models.dev facts. Report stale status and original evidence age. | User confirmed on 2026-09-16 UTC |
 | D36 | Starmap and Starport use Go 1.27.1 for development, CI, and releases. Add another supported Go family only for an actual product requirement. | User confirmed on 2026-09-16 |
+| D37 | Document recognition uses each provider’s actual billing units. Derived per-page prices are estimates, not fixed charges. Preserve Google support. | User confirmed on 2026-09-17 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
