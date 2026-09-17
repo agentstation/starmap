@@ -38,7 +38,7 @@
     "review": "Required pre-PR review remains pending with acceptance adapter changes.",
     "hosted_evidence_scope": "Local controller tests use real catalog tools and Git with simulated GitHub transport. They do not replace hosted publication proof."
   },
-  "latest_hosted_state": "Bot PR165 cannot promote: verification checks, constructor network passivity, and offline persistence failed. Native runtime jobs are still running. Discovery channels have not advanced.",
+  "latest_hosted_state": "Run35238361225: five native jobs failed; Windows AMD64 remains in progress. Verification, constructor, and offline checks failed. Race and capacity jobs were skipped. The bot has not merged.",
   "promotion_pull_request": 165,
   "promotion_head": "e228e694ac5e66f75639721c438a261015a8026f",
   "promotion_ci_run": 35238361225,
@@ -81,7 +81,8 @@
       "Exact promoted candidate: external store-only consumer; membership race regression; Linux ARM64 constructor socket restriction and two offline server processes at existing512MiB limits.",
       "Provenance,catalogs,and bootstrap packages pass broader race checks.",
       "goago: no findings, stale ignores, or errors. Technical prose lint passes10 code/test files and the specification.",
-      "Exact promoted candidate first-run workspace seeding passes in142.802s with unchanged original membership receipts and a complete YAML round trip."
+      "Exact promoted candidate first-run workspace seeding passes in142.802s with unchanged original membership receipts and a complete YAML round trip.",
+      "Repository client race group: 380 passing test events, zero failures, zero skips across five packages on Go 1.27.1."
     ],
     "allocation_profile": "Exact promoted bootstrap cumulative allocations fell from9.77GiB to3816.37MiB, about62% lower. Canonical checksum verification passes. Peak capacity is qualified separately by unchanged container probes.",
     "failed_preserved": [
@@ -89,14 +90,25 @@
       "Embedded-only acquisition failed with missing original membership receipts; retaining them exposed an obsolete embedded-only assertion. The revised test checks each original receipt and exactly one embedded observation.",
       "An earlier full-document tokenization experiment exceeded the container memory limit. The accepted implementation scans and tokenizes bounded batches."
     ],
-    "live_checks": [
-      {
-        "session": 86125,
-        "command": "GOTOOLCHAIN=go1.27.1 python3 scripts/verification_tests.py race --group client",
-        "cwd": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-        "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/client-race-repair.log"
-      }
-    ],
-    "remaining": "Wait for client race session86125; inspect additional promoted-catalog failures. Required pre-PR review, publication, hosted native requalification, checked merge, and remaining A05 adapters are pending."
+    "live_checks": [],
+    "remaining": "Repair native failures for the promoted catalog. Review and merge the complete repair, rerun native qualification, then verify checked publication and same-byte retry."
+  },
+  "current_progress": {
+    "evidence": "qualification-progress.json.gz",
+    "uncompressed_sha256": "d7cdefea83c542395e5104bd8a5e7718f66095b22edfbad93f21dbe718f6a3d4",
+    "hosted_adapters": "Committed at3e1f40226. Seven hosted-validator tests, five capture tests, and80 dispatch tests pass. A05 has four PASS and two UNVERIFIED cases. Pre-PR review remains pending.",
+    "native_findings": "Origin startup omitted original membership receipts. The failure-diagnostic test assumed one total receipt. Unscoped-store and file-source tests inherited unrelated scoped catalog content. Explicit file replacement then exposed missing baseline-selection evidence. Runtime repairs are committed atd0010050a. Media pricing, residual-operation assertions, and remaining native failures still require assessment.",
+    "reproduction": {
+      "status": "Completed: three initial failures. After repair, three receipt/origin tests pass on the promoted catalog. The unscoped-store test passes. The file-source test passes with an explicit original-payload receipt.",
+      "evidence": "runtime-repair-evidence.json.gz",
+      "uncompressed_sha256": "042d43b3698af3dbb465ea04d9c234da1f53a137c52276ebf6938f77bbc21001"
+    },
+    "running": {
+      "session": 55879,
+      "command": "GOTOOLCHAIN=go1.27.1 go test -race ./runtime -run '^TestOrigin' -count=1 -json",
+      "cwd": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+      "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/origin-contracts.jsonl",
+      "source_note": "Includes startup evidence repair. The file-source receipt helper does not affect the selected origin tests."
+    }
   }
 }
