@@ -2058,6 +2058,20 @@
       "repository": "starmap",
       "package": "./internal/catalog/publication",
       "test": "TestPublicationCompactionPreservesChangesAbsenceReturnAndScopeRemoval"
+    },
+    "A05.bot_required_checks": {
+      "kind": "publication_hosted",
+      "repository": "starmap",
+      "proof": "docs/plans/proof/starport-production-catalog/csp6/hosted-publication"
+    },
+    "A05.same_bytes_retry": {
+      "kind": "publication_hosted",
+      "repository": "starmap",
+      "proof": "docs/plans/proof/starport-production-catalog/csp6/hosted-publication"
+    },
+    "A05.each_publication_failure": {
+      "kind": "publication_recovery",
+      "repository": "starmap"
     }
   },
   "task_component_checks": {

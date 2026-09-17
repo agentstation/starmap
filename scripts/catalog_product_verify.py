@@ -123,6 +123,18 @@ def run_check(identity, entry, roots):
             return adapter.verify(root, entry)
         except (OSError, ImportError) as error:
             return {"status": "UNVERIFIED", "reason": str(error)}
+    if entry.get("kind") == "publication_hosted":
+        root = roots.get(entry.get("repository"))
+        if root is None:
+            return {"status": "UNVERIFIED", "reason": "The publisher evidence repository is unavailable."}
+        try:
+            spec = importlib.util.spec_from_file_location(
+                "catalog_publication_capture", root / "scripts/catalog_publication_capture.py")
+            adapter = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(adapter)
+            return adapter.verify(root, entry)
+        except (OSError, ImportError) as error:
+            return {"status": "UNVERIFIED", "reason": str(error)}
     if entry.get("kind") == "publication_recovery":
         root = roots.get(entry.get("repository"))
         if root is None:
