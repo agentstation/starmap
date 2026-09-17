@@ -9,6 +9,7 @@ import (
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/internal/constants"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
+	pkgerrors "github.com/agentstation/starmap/pkg/errors"
 )
 
 func TestFileSourceRestartRetainsReceiptAndAcceptsChangedPayload(t *testing.T) {
@@ -69,5 +70,46 @@ func TestFileSourceRestartRetainsReceiptAndAcceptsChangedPayload(t *testing.T) {
 	}
 	if provider.Models["second"] == nil || provider.Models["first"] != nil {
 		t.Fatal("replacement baseline did not replace file models")
+	}
+}
+
+func TestFileSourceRetainsPendingChangeUntilRecovery(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "catalog.json")
+	if err := os.WriteFile(path, testCatalogPayload(t, "file-provider", "first", "First"), constants.SecureFilePermissions); err != nil {
+		t.Fatal(err)
+	}
+	store := &retentionRejectingStore{Memory: storage.NewMemory()}
+	options := []Option{WithStateDirectory(privateRuntimeDirectory(t)), WithCatalogSource("file"), WithSourceURL(path),
+		WithSourceStartupPolicy("require_source"), WithClientOptions(starmap.WithCatalogStore(store))}
+	connected := openTestRuntime(t, options...)
+	accepted := connected.State()
+	if err := os.WriteFile(path, testCatalogPayload(t, "file-provider", "replacement", "Replacement"), constants.SecureFilePermissions); err != nil {
+		t.Fatal(err)
+	}
+	store.reject.Store(true)
+	if _, err := connected.RefreshSource(t.Context()); err == nil {
+		t.Fatal("rejected commit succeeded")
+	}
+	if connected.State().GenerationID != accepted.GenerationID {
+		t.Fatal("failed commit changed the active generation")
+	}
+	store.reject.Store(false)
+	report, err := connected.RefreshSource(t.Context())
+	if !pkgerrors.IsConflict(err) || report.Health == HealthOK || report.Published {
+		t.Fatalf("pending file change must require journal recovery: report=%+v error=%v", report, err)
+	}
+	if err := connected.Close(); err != nil {
+		t.Fatal(err)
+	}
+	connected = openTestRuntime(t, options...)
+	if connected.State().GenerationID == accepted.GenerationID {
+		t.Fatal("startup recovery lost the uncommitted file change")
+	}
+	provider, err := connected.Catalog().Provider("file-provider")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if provider.Models["replacement"] == nil {
+		t.Fatal("retry did not activate the replacement model")
 	}
 }
