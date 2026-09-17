@@ -337,7 +337,7 @@
   "baseline_policy_repair": {
     "commit": "69973bc7dd900165facdfd9bd3b5d71bf83344be",
     "bundle": "baseline-policy-2026-09-17.json.gz",
-    "uncompressed_sha256": "8c084d64da50b8e78d6ac8b3ff6eda1ea8d1e27522c48193fe97d386b12610c9",
+    "uncompressed_sha256": "49431b3ec8ba4367cb5f617ba3dc80ffec0ee7c3558c558f5a4e4f669b51e496",
     "cause": "Removing all active provider inputs left no source receipt for the runtime baseline rebuild. Root publication correctly rejected a scope change without explicit evidence.",
     "change": "Record the selected verified baseline with its stable generation time when the rebuilt catalog has no other source receipts. Keep the root membership guard. Assert exact baseline and provider receipts in concurrent publication tests.",
     "focused_race_pass_events": 44,
@@ -352,6 +352,7 @@
     "full_race_duration_seconds": 5050.841229,
     "full_verify_exit": 2,
     "review": "IN_PROGRESS: session 93549; /tmp/csp62-starmap-review/review.json",
-    "limitations": "Earlier focused repairs cover the other broad failures. This is not a final-head full-suite pass. Native CI remains required. The run exceeds the verification-speed target."
+    "limitations": "Earlier focused repairs cover the other broad failures. This is not a final-head full-suite pass. Native CI remains required. The run exceeds the verification-speed target.",
+    "failure_repair_index_count": 28
   }
 }
