@@ -374,6 +374,13 @@ jobs:
         run: |
           mkdir -p native-evidence
           go test -json -count=1 -timeout=5m -run '^Test(WorkspaceEmptyLockedRecords|PrivateEmptyRecordReadWhileExclusivelyLocked|PrivatePublicationPreservesChangedRecords|PreparationCleanupPreservesOperatorChanges|WorkspaceWriterReplacementStopsPublication|WorkspaceWriterReplacementStopsJournalPhases|LegacyStoreLockCancellationPreservesStore|MigrateLegacyLayoutRelocatesStoreAndProjectsCurrent|LegacyRollbackPreservesOperatorSidecars|RelocationPreparationClosesHandlesAfterCleanupConflict|RequiredBaselineWriteFailurePreventsRuntimeStartup|CredentialPolicyRejectsInvalidInstallationMarkersBeforeWrites)$' ./internal/privatefiles ./internal/catalog/workspace ./internal/cli/app > native-evidence/filesystem-preflight.jsonl
+      - name: Test Windows file publication with race instrumentation
+        if: matrix.os == 'windows' && matrix.arch == 'amd64'
+        timeout-minutes: 10
+        shell: bash
+        env:
+          CGO_ENABLED: '1'
+        run: go test -race -json -count=1 -timeout=5m ./internal/filepublish ./internal/privatefiles > native-evidence/filesystem-race.jsonl
       - name: Test native runtime, configuration, and paths
         shell: bash
         env:

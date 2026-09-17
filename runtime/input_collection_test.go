@@ -356,10 +356,22 @@ func TestRuntimeInputCollectionPreservesCheckpointAndRetriesPartialRemoval(t *te
 	}
 }
 
+type collectionWaitContext struct {
+	context.Context
+	waiting func()
+}
+
+func (c collectionWaitContext) Done() <-chan struct{} {
+	c.waiting()
+	return c.Context.Done()
+}
+
 func TestRuntimeInputCollectionWaitsForPublication(t *testing.T) {
 	store := &gatedReconciliationStore{Store: storage.NewMemory()}
-	options := []Option{WithStateDirectory(privateRuntimeDirectory(t)), WithCatalogSource("embedded"), WithClientOptions(starmap.WithCatalogStore(store))}
-	r := openTestRuntime(t, options...)
+	r, options := manualTestRuntime(t, store)
+	if _, err := r.CollectRetainedInputs(t.Context(), InputCollectionRequest{MaxEntries: 64, MaxBytes: maxLayerBytes}); err != nil {
+		t.Fatal(err)
+	}
 	entered, release := make(chan struct{}), make(chan struct{})
 	releaseOnce := sync.OnceFunc(func() { close(release) })
 	defer releaseOnce()
@@ -371,19 +383,36 @@ func TestRuntimeInputCollectionWaitsForPublication(t *testing.T) {
 	go func() { _, err := r.PublishObservations(t.Context(), observation); published <- err }()
 	select {
 	case <-entered:
+	case err := <-published:
+		t.Fatalf("publication returned before the catalog store: %v", err)
 	case <-time.After(10 * time.Second):
 		t.Fatal("publication did not reach the catalog store")
 	}
 	ctx, cancel := context.WithCancel(t.Context())
+	defer cancel()
+	awaited := make(chan struct{})
+	observed := collectionWaitContext{Context: ctx, waiting: sync.OnceFunc(func() { close(awaited) })}
 	waiting := make(chan error, 1)
 	go func() {
-		_, err := r.CollectRetainedInputs(ctx, InputCollectionRequest{MaxEntries: 64, MaxBytes: maxLayerBytes})
+		_, err := r.CollectRetainedInputs(observed, InputCollectionRequest{MaxEntries: 64, MaxBytes: maxLayerBytes})
 		waiting <- err
 	}()
+	select {
+	case <-awaited:
+	case err := <-waiting:
+		t.Fatalf("collection returned while publication was pending: %v", err)
+	case <-time.After(10 * time.Second):
+		t.Fatal("collection did not wait for publication")
+	}
 	// Cancellation must unblock a collector waiting for the unfinished publisher.
 	cancel()
-	if err := <-waiting; !stderrors.Is(err, context.Canceled) {
-		t.Fatalf("waiting collector: %v", err)
+	select {
+	case err := <-waiting:
+		if !stderrors.Is(err, context.Canceled) {
+			t.Fatalf("waiting collector: %v", err)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("cancellation did not release the waiting collector")
 	}
 	releaseOnce()
 	if err := <-published; err != nil {

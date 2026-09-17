@@ -53,6 +53,10 @@ suites. `make ci-test` is a compatibility alias for local verification.
 
 Hosted CI adds native platforms, real storage services,
 security checks, and fuzzing. A local pass does not replace those results.
+
+Windows AMD64 also tests native file publication and private files with race instrumentation.
+This check covers native structure alignment in the instrumented binary. Pure-Go native startup remains separate.
+
 The required `Verification Gate` checks every result in its dependency graph.
 A failed, cancelled, skipped, or absent prerequisite cannot pass that gate.
 
