@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "18105ad4345f2edc275dc948cf5d2cd547bb5f05",
+      "head": "28e28dd6f2938a5df3d6546e03ee6653b15942d4",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Inspect the rest of Starmap verification and run its capacity suite separately after the captured race failures. Keep final-source qualification distinct from repaired cohorts.",
+    "Inspect the remaining Starmap race results. Capacity and repaired cohorts pass separately. Complete final-source native qualification before merge.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first, publish the module dependency, then update the actual Starport pin and qualify without GOWORK before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -226,9 +226,18 @@
       "command": "make verify",
       "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/billing-full-verify.log",
       "race_events_retained": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/billing-full-verify-events-0.jsonl",
-      "note": "Fourteen application test events failed before 18105ad43. All fourteen pass in the focused repair run. The broad command continues remaining packages; its failure will prevent automatic capacity execution. Run capacity separately after it finishes."
+      "note": "The broad run began before the final repairs. Fourteen application events failed before 18105ad43 and pass in the focused repair run. Capacity passed separately. Inspect remaining packages and preserve the failing broad result without claiming final-source success."
     },
-    "starmap_lint": "PASS: golangci-lint, goago, glossary, and strict prose (1849 files)"
+    "starmap_lint": "PASS: golangci-lint, goago, glossary, and strict prose (1849 files)",
+    "starmap_capacity": {
+      "status": "PASS",
+      "command": "python3 scripts/verification_tests.py capacity --output .tmp/csp6-hosted/billing-capacity-events.jsonl",
+      "pass_events": 1,
+      "failures": 0,
+      "skips": 0,
+      "test_seconds": 232.24,
+      "note": "Ran separately while the broad race suite continued. This is contract evidence, not an isolated wall-clock performance measurement."
+    }
   },
   "empty_result_repair": {
     "commit": "84142aaac3e7086ae4f28a00c664f069cb946d38",
@@ -265,13 +274,16 @@
       "confidence": 0.94,
       "final_attempt": {
         "session_id": 22295,
-        "status": "RUNNING",
+        "status": "PASS",
         "head": "497079063ffcbde80da103387eeba109d0990334",
         "directory": "/tmp/csp62-starport-review",
         "files": [
           "final-review.log",
           "final-review.json"
-        ]
+        ],
+        "findings": [],
+        "verdict": "patch is correct",
+        "confidence": 0.98
       }
     }
   },
@@ -297,5 +309,17 @@
     "console_pass_cases": 9,
     "prose": "PASS on changed comments and UI explanation",
     "initial_console_command": "Wrong working directory omitted the console alias configuration. Rerun from console passed."
+  },
+  "file_recovery_evidence": {
+    "commit": "28e28dd6f2938a5df3d6546e03ee6653b15942d4",
+    "bundle": "file-recovery-capacity-2026-09-17.json.gz",
+    "uncompressed_sha256": "d58031e3f1163c2c30ba286493393a51dd139fbfccd199391b69f345b25c2a55",
+    "before": "A file read cached its checksum before publication. After a rejected commit, the next refresh reported healthy with no change.",
+    "after": "The reader caches validation only. The runtime compares candidates with retained state. Pending journal recovery remains a conflict; restart recovery publishes the file change.",
+    "test_contract_correction": "The initial retry test expected immediate publication after clearing the store fault. The journal correctly required recovery. The final test requires that conflict, retained active state, and successful startup recovery. The journal guard was not weakened.",
+    "race_pass_events": 7,
+    "failures": 0,
+    "skips": 0,
+    "lint": "PASS: golangci-lint, goago, strict prose across 1850 files"
   }
 }
