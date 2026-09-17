@@ -500,6 +500,10 @@
       "session": 10853,
       "output": "/tmp/csp62-starmap-review/origin-review.json"
     },
-    "native": "UNVERIFIED at this head"
+    "native": "UNVERIFIED at this head",
+    "retained_events": {
+      "path": "origin-baseline-2026-09-17.json.gz",
+      "uncompressed_sha256": "965f2d70db519529b2609f16051ccb2f969260316082660896f313e012ae735f"
+    }
   }
 }
