@@ -12,7 +12,7 @@
     },
     "starport": {
       "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
-      "head": "b206f985b28557f81be2e0d8adeab61625fec8bd",
+      "head": "84142aaac3e7086ae4f28a00c664f069cb946d38",
       "branch": "codex/catalog-operation-billing"
     }
   },
@@ -229,5 +229,37 @@
       "note": "The full race command began before the final fixture and CLI repairs. Separate focused race runs qualify those changed tests. Capacity follows race in this command."
     },
     "starmap_lint": "PASS: golangci-lint, goago, glossary, and strict prose (1849 files)"
+  },
+  "empty_result_repair": {
+    "commit": "84142aaac3e7086ae4f28a00c664f069cb946d38",
+    "bundle": "recognition-empty-result-2026-09-17.json.gz",
+    "uncompressed_sha256": "c7cc503473b40534805fe360f8e194833ac132bbf92c619ba09b305e4a00d462",
+    "before": "TestGoogleRecognitionRetainsUsageWithoutCandidates fails because the connector discards measured usage when Google returns no candidates.",
+    "after": "The connector retains usage with empty pages. The document parser rejects the incomplete result and retains accounting.",
+    "verification": {
+      "race_pass_events": 434,
+      "failures": 0,
+      "skips": 0,
+      "packages": [
+        "internal/providers/connectors",
+        "internal/proxy"
+      ],
+      "lint": "PASS"
+    },
+    "review": {
+      "status": "RUNNING against 84142aa",
+      "session_id": 61090,
+      "path": "/tmp/csp62-starport-review",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "limitation": "Final review must include this repair and the published Starmap module pin.",
+      "prior_attempt": {
+        "session_id": 41128,
+        "exit": 1,
+        "reason": "Source changed after the review bundle was created. No review verdict or attestation was accepted."
+      }
+    }
   }
 }
