@@ -16,6 +16,7 @@ import (
 	"github.com/gofrs/flock"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/logging"
@@ -361,7 +362,7 @@ func (r *Runtime) Close() error {
 
 // initializeEffective selects startup state and retains the separate compiled baseline.
 // An explicit binding set always rebuilds, including when no retained evidence is active.
-// Without that set, an empty layer set keeps only unscoped accepted state.
+// Without that set, an empty layer set keeps the compiled baseline or unscoped accepted state.
 // It reaches no external system.
 func (r *Runtime) initializeEffective(ctx context.Context) error {
 	current := r.client.CurrentCatalogState()
@@ -371,7 +372,12 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if r.config.generationPin != "" {
 		return r.initializeGenerationPin(ctx)
 	}
+	manifest, err := bootstrap.GenerationManifest()
+	if err != nil {
+		return err
+	}
 	r.layers.embedded = baseline
+	r.layers.embeddedManifest = &manifest
 	r.layers.requireAuthority = r.requiresAuthority()
 	r.layers.providerBindings = r.config.providerBindings
 	r.layers.acquisitionSources = r.config.acquisitionSources
@@ -386,7 +392,7 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 		return err
 	}
 	if !r.requiresAuthority() && r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
-		if storedProviderPolicyRequired(current) {
+		if storedProviderPolicyRequired(current, baseline) {
 			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
 		}
 		r.effective = current

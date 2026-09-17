@@ -78,6 +78,9 @@ func (cat *Builder) Load() error {
 	if err := cat.loadCanonicalAliasesYAML(); err != nil {
 		return err
 	}
+	if err := cat.loadMembershipScopesYAML(); err != nil {
+		return err
+	}
 
 	// Attach logo.svg sidecar bytes to their owning provider and author records.
 	if err := cat.loadLogos(); err != nil {

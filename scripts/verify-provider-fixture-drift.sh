@@ -20,7 +20,7 @@ cd "$ROOT"
 
 status=0
 STARMAP_PROVIDER_FIXTURE_CURRENCY=1 \
-	GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.5}" \
+	GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.1}" \
 	go test ./internal/providers/openai ./internal/providers/anthropic -count=1 -v \
 	-run '^(TestOpenAICompatibleProviderFixtureCurrency|TestAnthropicProviderFixtureCurrency)$' \
 	>"$OUTPUT" 2>&1 || status=$?

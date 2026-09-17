@@ -1,6 +1,6 @@
 module github.com/agentstation/starmap-test/server-storage-consumer
 
-go 1.25.0
+go 1.27.1
 
 require (
 	github.com/agentstation/starmap v0.0.0

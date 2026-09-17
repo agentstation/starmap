@@ -437,7 +437,7 @@ func VerifyDirectoryMigrationPublication(ctx context.Context, request DirectoryM
 VerifyDirectoryMigrationPublication verifies publication before a host opens the target. It verifies the source inventory, journal, receipts, owner, and seed without starting a runtime. Journal recovery can preserve and truncate an interrupted final event.
 
 <a name="Acquirer"></a>
-## type [Acquirer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L93-L95>)
+## type [Acquirer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L94-L96>)
 
 Acquirer collects provider observations for the runtime. The root package selects no concrete provider client, so the deployment injects this role. Package acquisition supplies the built\-in composition.
 
@@ -529,7 +529,7 @@ type AcquisitionReport struct {
 ```
 
 <a name="AcquisitionRequest"></a>
-## type [AcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L55-L76>)
+## type [AcquisitionRequest](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L56-L77>)
 
 AcquisitionRequest describes one provider acquisition run.
 
@@ -559,7 +559,7 @@ type AcquisitionRequest struct {
 ```
 
 <a name="AcquisitionResult"></a>
-## type [AcquisitionResult](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L79-L88>)
+## type [AcquisitionResult](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L80-L89>)
 
 AcquisitionResult is what one acquisition run observed.
 
@@ -1529,7 +1529,7 @@ func InspectDirectoryOwnerRecord(ctx context.Context, directory string, owner Di
 InspectDirectoryOwnerRecord compares one bounded canonical record without writes or locks. It does not read the seed or verify active ownership, migration completion, or fleet fencing.
 
 <a name="ProviderLayer"></a>
-## type [ProviderLayer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L37-L52>)
+## type [ProviderLayer](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L38-L53>)
 
 ProviderLayer is one retained per\-provider observation. The runtime keeps the last\-known\-good layer of every provider, so one failing provider never removes its records from the effective catalog.
 
@@ -1663,7 +1663,7 @@ type RetentionStatus = status.RetentionStatus
 ```
 
 <a name="Runtime"></a>
-## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L101-L146>)
+## type [Runtime](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L102-L147>)
 
 Runtime is a connected Starmap. It serves the embedded catalog immediately, refreshes from one selected upstream source, retains per\-provider observations, and rebuilds one immutable effective catalog from those layers. Reads reach no external system.
 
@@ -1674,7 +1674,7 @@ type Runtime struct {
 ```
 
 <a name="Open"></a>
-### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L152>)
+### func [Open](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L153>)
 
 ```go
 func Open(ctx context.Context, opts ...Option) (connected *Runtime, err error)
@@ -1710,7 +1710,7 @@ func (r *Runtime) AllowsNewAttempt() bool
 AllowsNewAttempt checks current catalog permission using memory only. Call it for every new attempt, including retries and cached response delivery. It does not replace model, destination, account, or budget authorization.
 
 <a name="Runtime.Catalog"></a>
-### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L280>)
+### func \(\*Runtime\) [Catalog](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L281>)
 
 ```go
 func (r *Runtime) Catalog() *catalogs.Catalog
@@ -1719,7 +1719,7 @@ func (r *Runtime) Catalog() *catalogs.Catalog
 Catalog returns the current immutable effective catalog. It reaches no external system and never blocks on the source.
 
 <a name="Runtime.Client"></a>
-### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L302>)
+### func \(\*Runtime\) [Client](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L303>)
 
 ```go
 func (r *Runtime) Client() *starmap.Client
@@ -1728,7 +1728,7 @@ func (r *Runtime) Client() *starmap.Client
 Client returns the immutable publication client underneath the runtime. Use it for explicit publication, hooks, and generation retrieval.
 
 <a name="Runtime.Close"></a>
-### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L322>)
+### func \(\*Runtime\) [Close](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L323>)
 
 ```go
 func (r *Runtime) Close() error
@@ -1863,7 +1863,7 @@ func (r *Runtime) RetentionSnapshot() RetentionStatus
 RetentionSnapshot returns the configured policy and last collection result without storage reads.
 
 <a name="Runtime.State"></a>
-### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L291>)
+### func \(\*Runtime\) [State](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L292>)
 
 ```go
 func (r *Runtime) State() starmap.CatalogState
@@ -1910,7 +1910,7 @@ UpdateObservations prepares and publishes original observations under runtime ow
 Optional resets replace prior local acquisition observations within the named scopes. Each scope requires complete successful replacement evidence. The baseline and unrelated scopes remain. Resets and replacements share the catalog publication journal.
 
 <a name="Runtime.Updates"></a>
-### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L312>)
+### func \(\*Runtime\) [Updates](<https://github.com/agentstation/starmap/blob/main/runtime/runtime.go#L313>)
 
 ```go
 func (r *Runtime) Updates() <-chan starmap.CatalogState

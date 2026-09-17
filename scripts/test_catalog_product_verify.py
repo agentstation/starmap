@@ -612,7 +612,7 @@ class NativeCatalogTests(unittest.TestCase):
             self.proof["run"]["jobs"].append({"databaseId": len(self.proof["run"]["jobs"]) + 1,
                                             "name": f"Runtime {runner}", "status": "completed", "conclusion": "success"})
             prefix = f"native-runtime-{runner}/"
-            self.write(prefix + "toolchain.txt", f"go version go1.25.12 windows/{arch}\nwindows\n{arch}\nwindows\n{arch}\n0\n")
+            self.write(prefix + "toolchain.txt", f"go version go1.27.1 windows/{arch}\nwindows\n{arch}\nwindows\n{arch}\n0\n")
             events = [{"Package": self.test["package"], "Test": self.test["test"], "Action": action} for action in ("run", "pass")]
             events.append({"Package": self.test["package"], "Action": "pass"})
             self.write(prefix + "tests.jsonl", "\n".join(map(json.dumps, events)))
@@ -652,7 +652,7 @@ class NativeCatalogTests(unittest.TestCase):
     def test_cross_compiled_or_changed_toolchain_refuses(self):
         name = "native-runtime-windows-2025/toolchain.txt"
         original = (self.root / name).read_text()
-        for changed in [original.replace("1.25.12", "1.26.6"), original.replace("\nwindows\namd64\n0", "\nlinux\namd64\n0")]:
+        for changed in [original.replace("1.27.1", "1.27.2"), original.replace("\nwindows\namd64\n0", "\nlinux\namd64\n0")]:
             self.write(name, changed)
             with self.assertRaises(ValueError):
                 self.validate()
@@ -692,7 +692,7 @@ class NativeCatalogTests(unittest.TestCase):
             self.proof["run"]["jobs"].append({"databaseId": len(self.proof["run"]["jobs"]) + 1,
                                             "name": f"Runtime {runner}", "status": "completed", "conclusion": "success"})
             prefix = f"native-runtime-{runner}/"
-            self.write(prefix + "toolchain.txt", f"go version go1.25.12 linux/{arch}\nlinux\n{arch}\nlinux\n{arch}\n0\n")
+            self.write(prefix + "toolchain.txt", f"go version go1.27.1 linux/{arch}\nlinux\n{arch}\nlinux\n{arch}\n0\n")
             self.write(prefix + "tests.jsonl", events)
             self.write(prefix + "service-owner.txt", owner)
         self.assertEqual(len(native_catalog.validate_platform(self.root, self.proof, "linux", [self.test])), 2)

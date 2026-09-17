@@ -93,7 +93,7 @@ func DeriveCommitted(
 			Field: "bootstrap_manifest.catalog", Message: "is required",
 		}
 	}
-	if err := generation.Validate(); err != nil {
+	if _, err := catalogs.DecodeCatalogGeneration(generation); err != nil {
 		return catalogs.BootstrapManifest{}, Report{}, errors.WrapResource(
 			"validate",
 			"committed catalog generation",
@@ -120,7 +120,9 @@ func DeriveCommitted(
 	if current != nil &&
 		current.SchemaVersion == catalogs.CurrentCatalogSchemaVersion &&
 		current.SemanticChecksum == semanticChecksum &&
-		current.Payload == descriptor {
+		current.Payload == descriptor &&
+		current.GenerationID == generation.Manifest.GenerationID &&
+		current.GeneratedAt.Equal(generation.Manifest.GeneratedAt) {
 		return *current, unchangedReport(*current), nil
 	}
 

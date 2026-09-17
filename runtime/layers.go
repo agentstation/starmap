@@ -58,6 +58,7 @@ type layerSet struct {
 	publisherID        string
 	publisherAliases   []string
 	embedded           starmap.CatalogState
+	embeddedManifest   *catalogs.GenerationManifest
 	source             *sourceLayer
 	providers          map[providerEvidenceKey]ProviderLayer
 	manual             *manualBatch

@@ -36,7 +36,11 @@ func (s *sourceLayer) decodeCatalog() (*catalogs.Catalog, error) {
 }
 
 func (l *layerSet) appendScopeSourceEvidence(catalog *catalogs.Catalog) error {
-	if l.source == nil || l.source.Manifest == nil {
+	manifest := l.embeddedManifest
+	if l.source != nil {
+		manifest = l.source.Manifest
+	}
+	if manifest == nil {
 		return nil
 	}
 	referenced := make(map[string]bool)
@@ -55,7 +59,7 @@ func (l *layerSet) appendScopeSourceEvidence(catalog *catalogs.Catalog) error {
 	for _, link := range l.buildEvidence.SourceObservations {
 		existing[link.ObservationID] = link
 	}
-	for _, link := range l.source.Manifest.SourceObservations {
+	for _, link := range manifest.SourceObservations {
 		if !referenced[link.ObservationID] {
 			continue
 		}

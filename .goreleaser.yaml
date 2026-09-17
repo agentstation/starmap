@@ -1,5 +1,8 @@
 version: 2
 
+env:
+  - GOTOOLCHAIN=go1.27.1
+
 git:
   # Catalog releases have their own prerelease namespace. They never
   # participate in application SemVer discovery or changelog boundaries. The

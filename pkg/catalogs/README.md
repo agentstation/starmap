@@ -756,6 +756,7 @@ func main() {
   - [func \(r \*FloatRange\) UnsetValue\(field RangeField\) bool](<#FloatRange.UnsetValue>)
   - [func \(r \*FloatRange\) Value\(field RangeField\) \(float64, ValuePresence\)](<#FloatRange.Value>)
 - [type Generation](<#Generation>)
+  - [func DecodeBootstrapGeneration\(bootstrap BootstrapManifest, payload, data \[\]byte\) \(Generation, error\)](<#DecodeBootstrapGeneration>)
   - [func \(g Generation\) Copy\(\) Generation](<#Generation.Copy>)
   - [func \(g Generation\) SemanticChecksum\(\) \(string, error\)](<#Generation.SemanticChecksum>)
   - [func \(g Generation\) Validate\(\) error](<#Generation.Validate>)
@@ -1137,6 +1138,12 @@ const (
     // MaxCatalogAuthorityRecordBytes bounds stored permission metadata before decoding.
     MaxCatalogAuthorityRecordBytes = 16 << 10
 )
+```
+
+<a name="BootstrapGenerationManifestFilename"></a>BootstrapGenerationManifestFilename contains the complete manifest of a promoted generation.
+
+```go
+const BootstrapGenerationManifestFilename = "generation-manifest.json"
 ```
 
 <a name="CanonicalAliasSchemaVersion"></a>CanonicalAliasSchemaVersion is the first payload schema that retains canonical rename history.
@@ -3091,6 +3098,15 @@ type Generation struct {
 }
 ```
 
+<a name="DecodeBootstrapGeneration"></a>
+### func [DecodeBootstrapGeneration](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/bootstrap_generation.go#L11>)
+
+```go
+func DecodeBootstrapGeneration(bootstrap BootstrapManifest, payload, data []byte) (Generation, error)
+```
+
+DecodeBootstrapGeneration verifies retained generation evidence against the bootstrap identity and payload.
+
 <a name="Generation.Copy"></a>
 ### func \(Generation\) [Copy](<https://github.com/agentstation/starmap/blob/main/pkg/catalogs/generation.go#L12>)
 
@@ -3575,9 +3591,9 @@ MembershipInventory is the last complete accepted inventory of a declared scope.
 
 ```go
 type MembershipInventory struct {
-    ObservationID string    `json:"observation_id"`
-    ObservedAt    time.Time `json:"observed_at"`
-    ModelIDs      []string  `json:"model_ids"`
+    ObservationID string    `json:"observation_id" yaml:"observation_id"`
+    ObservedAt    time.Time `json:"observed_at" yaml:"observed_at"`
+    ModelIDs      []string  `json:"model_ids" yaml:"model_ids"`
 }
 ```
 
@@ -3588,9 +3604,9 @@ MembershipPresence records positive evidence accepted after the complete invento
 
 ```go
 type MembershipPresence struct {
-    ModelID       string    `json:"model_id"`
-    ObservationID string    `json:"observation_id"`
-    ObservedAt    time.Time `json:"observed_at"`
+    ModelID       string    `json:"model_id" yaml:"model_id"`
+    ObservationID string    `json:"observation_id" yaml:"observation_id"`
+    ObservedAt    time.Time `json:"observed_at" yaml:"observed_at"`
 }
 ```
 
@@ -6510,18 +6526,18 @@ ProviderMembershipScope carries effective membership for one publisher and bindi
 
 ```go
 type ProviderMembershipScope struct {
-    PublisherID     string               `json:"publisher_id"`
-    BindingID       string               `json:"binding_id"`
-    BindingRevision string               `json:"binding_revision"`
-    ProviderID      ProviderID           `json:"provider_id"`
-    AccountID       string               `json:"account_id,omitempty"`
-    ProjectID       string               `json:"project_id,omitempty"`
-    Region          string               `json:"region"`
-    APISurface      string               `json:"api_surface"`
-    Public          bool                 `json:"public"`
-    Authority       MembershipAuthority  `json:"authority"`
-    Inventory       *MembershipInventory `json:"inventory"`
-    Additions       []MembershipPresence `json:"additions"`
+    PublisherID     string               `json:"publisher_id" yaml:"publisher_id"`
+    BindingID       string               `json:"binding_id" yaml:"binding_id"`
+    BindingRevision string               `json:"binding_revision" yaml:"binding_revision"`
+    ProviderID      ProviderID           `json:"provider_id" yaml:"provider_id"`
+    AccountID       string               `json:"account_id,omitempty" yaml:"account_id,omitempty"`
+    ProjectID       string               `json:"project_id,omitempty" yaml:"project_id,omitempty"`
+    Region          string               `json:"region" yaml:"region"`
+    APISurface      string               `json:"api_surface" yaml:"api_surface"`
+    Public          bool                 `json:"public" yaml:"public"`
+    Authority       MembershipAuthority  `json:"authority" yaml:"authority"`
+    Inventory       *MembershipInventory `json:"inventory" yaml:"inventory"`
+    Additions       []MembershipPresence `json:"additions" yaml:"additions"`
 }
 ```
 

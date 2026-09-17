@@ -128,3 +128,17 @@ The baseline publisher must approve rename changes. Provider observations cannot
 Reconciliation resolves retained provider links through rename history while preserving original observation bytes.
 A stale embedded definition cannot revive a retired ID. An explicit local definition that reuses a retired ID causes a conflict.
 Catalog schema 9 transports `canonical_aliases` and alias removal targets. Earlier readers must reject that format.
+
+## Membership records in YAML workspaces
+
+`membership-scopes.yaml` preserves accepted provider membership records during catalog projection and release promotion.
+
+Promoted embedded catalogs also retain `generation-manifest.json` with the complete accepted generation manifest.
+The bootstrap summary in `generation.json` must match its identity and payload descriptor.
+Source observations remain available to validate membership records after compilation.
+Each record retains its publisher, binding revision, provider, scope selectors, inventory, and later presence observations.
+An absent inventory means unknown membership. An explicit empty inventory means known absence within that scope.
+
+The loader rejects malformed records, unknown fields, and duplicate scopes.
+A replacement catalog removes obsolete membership records while preserving unrelated workspace files.
+These records carry no credentials or independent inference permission.

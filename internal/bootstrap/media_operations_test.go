@@ -9,13 +9,9 @@ import (
 )
 
 func TestEveryPublishedMediaOperationMatchesItsDefinition(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	counts := map[catalogs.ProviderOperation]int{}
@@ -111,13 +107,9 @@ func servedThroughChat(operation catalogs.ProviderOperation) bool {
 // gave the video ones an operation, so only the realtime shape remains, and
 // holding the number here is what makes a new residual visible.
 func TestTheResidualOfferingsAreRealtimeAlone(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	video, realtime, other := 0, 0, 0
@@ -178,13 +170,9 @@ const geminiTokensPerPage = 258
 // price. A refresh can change that token price while leaving the derived page
 // price stale. This test detects that drift.
 func TestEveryRecognitionOfferingCanBeBilledByThePage(t *testing.T) {
-	builder, err := NewEmbeddedBuilder()
+	catalog, _, err := Embedded()
 	if err != nil {
-		t.Fatalf("NewEmbedded: %v", err)
-	}
-	catalog, err := builder.Build()
-	if err != nil {
-		t.Fatalf("Build: %v", err)
+		t.Fatalf("Embedded: %v", err)
 	}
 
 	checked := 0

@@ -1,3 +1,5 @@
+export GOTOOLCHAIN := go1.27.1
+
 # Starmap Makefile
 # AI Model Catalog CLI
 
@@ -37,9 +39,15 @@ GOMOD=$(GOCMD) mod
 GOFMT=$(GOCMD) fmt
 GOVET=$(GOCMD) vet
 GOAGO=$(GOCMD) tool goago
+TEST_PACKAGES?=./...
+TEST_RUN?=.
+TEST_TIMEOUT?=30m
+TEST_PARALLEL_PACKAGES?=1
+TEST_SUITE?=race
+TEST_GROUP?=all
 GOBIN?=$(shell go env GOPATH)/bin
 GOMARKDOC=$(GOBIN)/gomarkdoc
-GOLANGCI_LINT_VERSION=2.12.2
+GOLANGCI_LINT_VERSION=2.13.2
 GOLANGCI_LINT_INSTALL=github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$(GOLANGCI_LINT_VERSION)
 SWAG_VERSION=2.0.0-rc4
 SWAG_RUN=$(GOCMD) run github.com/swaggo/swag/v2/cmd/swag@v$(SWAG_VERSION)
@@ -52,7 +60,7 @@ YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-.PHONY: help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go test-file-sizes verify-action-pins verify lint technical-writing-check fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-check version catalog-generation-check embedded-catalog-budget-check
+.PHONY: verify-checks verify-tests help build install uninstall clean test test-race test-integration test-all test-coverage test-critical-coverage test-catalog-performance test-consumer-deps test-pure-go test-file-sizes verify-action-pins verify lint technical-writing-check fmt check fix vet deps tidy run update install-tools goreleaser-check release-snapshot-devbox ci-test release release-snapshot release-tag release-local testdata demo godoc openapi-deps openapi-check version catalog-generation-check embedded-catalog-budget-check
 
 # Default target  
 all: clean fix check build
@@ -153,9 +161,9 @@ clean: ## Clean build artifacts
 
 ##@ Testing & Coverage
 
-test: ## Run tests
+test: ## Run selected behavior tests (TEST_PACKAGES and TEST_RUN)
 	@echo "$(BLUE)Running tests...$(NC)"
-	$(GOTEST) -v ./...
+	$(GOTEST) -timeout=$(TEST_TIMEOUT) -p=$(TEST_PARALLEL_PACKAGES) -run '$(TEST_RUN)' $(TEST_PACKAGES)
 
 
 test-coverage: ## Run tests with coverage
@@ -183,21 +191,19 @@ test-file-sizes: ## List large authored Go files and enforce review/hard limits
 verify-action-pins: ## Verify pinned GitHub Actions resolve to their advertised release tags (network)
 	@./scripts/verify-action-pins.sh
 
-test-race: ## Run tests with race detector
+test-race: ## Run selected tests with the race detector
 	@echo "$(BLUE)Running tests with race detector...$(NC)"
-	$(GOTEST) -race -v ./...
+	$(GOTEST) -race -timeout=$(TEST_TIMEOUT) -p=$(TEST_PARALLEL_PACKAGES) -run '$(TEST_RUN)' $(TEST_PACKAGES)
 
-test-integration: ## Run integration tests
-	@echo "$(BLUE)Running integration tests...$(NC)"
-	$(GOTEST) -tags=integration -v ./...
+test-integration: test ## Alias for tests, including local integration fixtures
 
-test-all: test test-race test-integration ## Run all tests
-	@echo "$(GREEN)All tests completed!$(NC)"
+test-all: ## Run fresh race and full-catalog capacity tests
+	@$(MAKE) verify-tests TEST_SUITE=race TEST_GROUP=all
+	@$(MAKE) verify-tests TEST_SUITE=capacity TEST_GROUP=all
 
 lint: ## Run golangci-lint and goago
 	@echo "$(BLUE)Running linters...$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
-	$(RUN_PREFIX) golangci-lint run
+	$(RUN_PREFIX) go run $(GOLANGCI_LINT_INSTALL) run
 	$(GOAGO) -stale-ignores ./...
 	$(MAKE) technical-writing-check
 	@echo "$(GREEN)Linting complete$(NC)"
@@ -215,19 +221,23 @@ fmt: ## Format Go code with gofmt only
 
 check: ## Run all checks: vet + linters + test (no fixes)
 	@echo "$(BLUE)Running checks: go vet, linters, and tests...$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || (echo "$(RED)golangci-lint not found. Install with: go install $(GOLANGCI_LINT_INSTALL)$(NC)" && exit 1)
-	$(GOVET) ./... && $(RUN_PREFIX) golangci-lint run && $(GOAGO) -stale-ignores ./... && $(GOTEST) ./...
+	$(GOVET) ./... && $(RUN_PREFIX) go run $(GOLANGCI_LINT_INSTALL) run && $(GOAGO) -stale-ignores ./... && $(GOTEST) ./...
 	$(MAKE) technical-writing-check
 	@echo "$(GREEN)All checks passed$(NC)"
 
-verify: ## Run repository verification gate
+verify: ## Run checks, fresh race tests, and full-catalog capacity tests
 	@./scripts/verify.sh
+
+verify-checks: ## Check generated output, structure, tools, coverage, and CLI contracts
+	@./scripts/verify.sh checks
+
+verify-tests: ## Run fresh tests with timing evidence (TEST_SUITE and TEST_GROUP)
+	@python3 scripts/verification_tests.py $(TEST_SUITE) --group $(TEST_GROUP)
 
 fix: ## Auto-fix everything: format, imports, lint issues, dependencies
 	@echo "$(BLUE)Auto-fixing: format, imports, lints, dependencies...$(NC)"
 	@$(RUN_PREFIX) which goimports > /dev/null || echo "$(YELLOW)Warning: goimports not found, skipping import fixes$(NC)"
-	@$(RUN_PREFIX) which golangci-lint > /dev/null || echo "$(YELLOW)Warning: golangci-lint not found, skipping lint fixes$(NC)"
-	$(GOFMT) ./... && ($(RUN_PREFIX) goimports -w -local github.com/agentstation/starmap . 2>/dev/null || true) && ($(RUN_PREFIX) golangci-lint run --fix 2>/dev/null || true) && $(GOMOD) tidy
+	$(GOFMT) ./... && ($(RUN_PREFIX) goimports -w -local github.com/agentstation/starmap . 2>/dev/null || true) && ($(RUN_PREFIX) go run $(GOLANGCI_LINT_INSTALL) run --fix 2>/dev/null || true) && $(GOMOD) tidy
 	@echo "$(GREEN)Auto-fix complete$(NC)"
 
 vet: ## Run go vet only
@@ -298,10 +308,7 @@ release-snapshot-devbox: ## Create snapshot release using devbox tools
 	@$(RUN_PREFIX) goreleaser release --snapshot --clean --skip=ko,sign
 	@echo "$(GREEN)Snapshot release created in ./dist/$(NC)"
 
-ci-test: ## Run CI-equivalent tests locally
-	@echo "$(BLUE)Running CI-equivalent verification suite...$(NC)"
-	@$(MAKE) verify
-	@echo "$(GREEN)✅ CI-equivalent verification passed$(NC)"
+ci-test: verify ## Alias for local verification (hosted CI adds platform and service matrices)
 
 release: clean fix check ## Prepare for release (use: make release VERSION=x.y.z)
 	@if [ -z "$(VERSION)" ]; then \
@@ -486,6 +493,7 @@ catalog-generation-check: ## Verify safe catalog download, promotion, CLI, and r
 	@bash -n scripts/refresh-embedded-modelsdev.sh scripts/generate-embedded-catalog.sh scripts/refresh-provider-testdata.sh scripts/test-provider-testdata-refresh.sh
 	@$(GOCMD) test ./internal/sources/modelsdev ./cmd/starmap-modelsdev-promote -run CatalogGenerationTooling -count=1
 	@$(GOCMD) test ./internal/bootstrap/manifest ./cmd/starmap-bootstrap-manifest -run ScheduledGeneration -count=1
+	@$(GOCMD) test . ./runtime -run 'TestEmbeddedGenerationIsVerifiedPassiveAndIndependent|TestEmbeddedBaselineStartupPreservesGenerationEvidence|TestOpenReturnsEmbeddedStateBeforeSourceReply|TestRuntimeReadsReachNoExternalSystem' -count=1
 	@$(GOCMD) test ./internal/catalog/publication ./cmd/starmap-catalog-publish -count=1
 	@python3 scripts/test_catalog_publication.py
 	@bash scripts/test-provider-testdata-refresh.sh
@@ -546,11 +554,13 @@ testdata: ## Refresh governed provider fixtures (use PROVIDER=id to select one)
 	fi
 
 # Documentation
-openapi: ## Generate OpenAPI 3.1 documentation (embedded in binary)
+openapi-deps: ## Resolve the server dependency graph before OpenAPI parsing
+	@$(GOCMD) list -deps ./internal/server > /dev/null
+
+openapi: openapi-deps ## Generate OpenAPI 3.1 documentation (embedded in binary)
 	@echo "$(BLUE)Generating OpenAPI 3.1 documentation...$(NC)"
 	@echo "$(YELLOW)Step 1/3: Generating OpenAPI 3.1 with swag v2...$(NC)"
-	@# Note: Filtering mProfCycleWrap warning - known swag v2 issue parsing Go runtime constants
-	@$(SWAG_RUN) init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1 2>&1 | grep -v "mProfCycleWrap"
+	@$(SWAG_RUN) init -g internal/server/docs.go -o internal/embedded/openapi --parseDependency --parseInternal --v3.1
 	@echo "$(YELLOW)Step 2/3: Renaming generated files...$(NC)"
 	@$(GOCMD) run ./cmd/starmap-openapi-presence internal/embedded/openapi/swagger.json internal/embedded/openapi/swagger.yaml
 	@mv internal/embedded/openapi/swagger.json internal/embedded/openapi/openapi.json
@@ -576,10 +586,10 @@ godoc: ## Generate only Go documentation using go generate
 	$(RUN_PREFIX) env PATH="$(GOBIN):$$PATH" go generate ./...
 	@echo "$(GREEN)Go documentation generation complete$(NC)"
 
-openapi-check: ## Check if embedded OpenAPI specifications match Go types
+openapi-check: openapi-deps ## Check if embedded OpenAPI specifications match Go types
 	@tmpdir="$$(mktemp -d)"; \
 	trap 'rm -rf "$$tmpdir"' EXIT HUP INT TERM; \
-	$(SWAG_RUN) init -g internal/server/docs.go -o "$$tmpdir" --parseDependency --parseInternal --v3.1 > /dev/null 2>&1; \
+	$(SWAG_RUN) init -g internal/server/docs.go -o "$$tmpdir" --parseDependency --parseInternal --v3.1 > "$$tmpdir/generator.log" 2>&1 || { result=$$?; cat "$$tmpdir/generator.log" >&2; exit $$result; }; \
 	$(GOCMD) run ./cmd/starmap-openapi-presence "$$tmpdir/swagger.json" "$$tmpdir/swagger.yaml" || exit $$?; \
 	cmp -s "$$tmpdir/swagger.json" internal/embedded/openapi/openapi.json || { echo "$(RED)internal/embedded/openapi/openapi.json is stale; run make openapi$(NC)"; exit 1; }; \
 	cmp -s "$$tmpdir/swagger.yaml" internal/embedded/openapi/openapi.yaml || { echo "$(RED)internal/embedded/openapi/openapi.yaml is stale; run make openapi$(NC)"; exit 1; }
@@ -587,6 +597,7 @@ openapi-check: ## Check if embedded OpenAPI specifications match Go types
 docs-check: openapi-check ## Check if documentation is up to date (for CI)
 	@echo "$(BLUE)Checking if documentation is up to date...$(NC)"
 	@test -x "$(GOMARKDOC)" || (echo "$(RED)gomarkdoc not found. Install with: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@v1.1.0$(NC)" && exit 1)
+	@"$(GOMARKDOC)" -c -e -f github -o docs/API.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch main --repository.path /
 	@for pkg in $$(find ./pkg ./internal ./server ./remote ./runtime -name "generate.go" -exec dirname {} \;); do \
 		echo "Checking $$pkg..."; \
 		cd $$pkg && "$(GOMARKDOC)" -c -e -o README.md . --repository.url https://github.com/agentstation/starmap --repository.default-branch main || exit 1; \

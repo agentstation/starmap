@@ -222,26 +222,11 @@ func TestRuntimeQuarantinePublishesOriginalReviewEvidence(t *testing.T) {
 	}
 }
 
-// testReviewedDefinitionsSource keeps reviewed definitions outside provider evidence.
+// testReviewedDefinitionsSource supplies only the definitions required by the observations.
+// Full embedded-catalog integration has separate bootstrap and startup tests.
 func testReviewedDefinitionsSource(t *testing.T, layers []ProviderLayer) Source {
 	t.Helper()
-	client, err := starmap.New()
-	if err != nil {
-		t.Fatal(err)
-	}
-	return testReviewedDefinitionsFromBaseline(t, client.EmbeddedCatalogState().Catalog, layers)
-}
-
-func testReviewedDefinitionsFromBaseline(t *testing.T, baseline *catalogs.Catalog, layers []ProviderLayer) Source {
-	t.Helper()
 	builder := catalogs.NewEmpty()
-	if baseline != nil {
-		var err error
-		builder, err = catalogs.NewBuilderFrom(baseline)
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
 	for _, layer := range layers {
 		fixture, err := catalogs.DecodeCatalogPayload(layer.Payload)
 		if err != nil {

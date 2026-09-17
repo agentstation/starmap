@@ -2579,120 +2579,22 @@ graph BT
 
 ## Testing Strategy
 
-The primary deterministic verification gate is:
+[TESTING.md](TESTING.md) defines fixture ownership, local commands, fresh CI
+suites, cache use, package groups, coverage thresholds, and native qualification.
+
+Use the smallest fixture that proves a package contract. Domain tests own policy
+cases. Composition tests prove that callers connect those policies correctly.
+Full embedded-catalog tests own bootstrap integrity and capacity evidence.
 
 ```bash
+make test TEST_PACKAGES=./internal/catalog/reconciler
+make test-race TEST_PACKAGES=./pkg/catalogs
 make verify
 ```
 
-This command runs full tests, short race tests, vet, lint, documentation checks,
-whitespace checks, local CLI smoke checks, and critical boundary coverage checks.
-See [TESTING.md](TESTING.md) for the maintained verification contract and module
-thresholds.
-
-Use global coverage only as an orientation metric. Production trust needs
-coverage at critical boundaries. These include catalog ownership, sync,
-providers, queries, authority, reconciliation, transport, and event fan-out.
-
-### Unit Tests
-
-**Package-Level Tests:**
-
-```go
-// pkg/catalogs/catalog_test.go
-func TestCatalogOperations(t *testing.T) {
-    catalog := catalogs.Empty()
-
-    // Test adding models
-    err := catalog.SetModel(model)
-    assert.NoError(t, err)
-
-    // Test retrieval
-    retrieved, err := catalog.Model(model.ID)
-    assert.NoError(t, err)
-    assert.Equal(t, model.Name, retrieved.Name)
-}
-```
-
-**Command Tests with Mocks:**
-
-```go
-func TestListCommand(t *testing.T) {
-    // Create mock application
-    mock := &mockApp{
-        catalog: testCatalog,
-        logger:  testLogger,
-    }
-
-    // Create command with mock
-    cmd := list.NewCommand(mock)
-
-    // Execute and verify
-    err := cmd.Execute()
-    assert.NoError(t, err)
-}
-```
-
-### Integration Tests
-
-**Full Pipeline Tests:**
-
-```bash
-# Tag integration tests
-go test -tags=integration ./...
-
-# Run integration tests for specific package
-go test -tags=integration ./internal/catalog/reconciler -v
-```
-
-**Example Integration Test:**
-
-```go
-//go:build integration
-func TestFullSyncPipeline(t *testing.T) {
-    // Create a read-only Starmap client and the explicit acquisition adapter.
-    sm, err := starmap.New()
-    assert.NoError(t, err)
-    syncer, err := acquisition.New(sm)
-    assert.NoError(t, err)
-
-    // Perform a dry-run acquisition; no writable store is required.
-    result, err := syncer.Sync(context.Background(),
-        sync.WithProvider("openai"),
-        sync.WithDryRun(true),
-    )
-
-    assert.NoError(t, err)
-    assert.NotNil(t, result)
-}
-```
-
-### Race Detection
-
-**Always test with race detector:**
-
-```bash
-# All tests with race detector
-go test -race ./...
-
-# Specific package with race detector
-go test -race ./pkg/catalogs -v
-
-# Benchmarks with race detector
-go test -race -bench=. ./pkg/catalogs
-```
-
-### Test Coverage
-
-```bash
-# Generate coverage report
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-
-# Coverage for specific package
-go test -coverprofile=coverage.out ./pkg/catalogs
-go tool cover -func=coverage.out
-```
+`make verify` checks generated output and structure before fresh race and capacity
+execution. Hosted CI also qualifies the minimum Go toolchain, native platforms,
+and real storage services. Allocation benchmarks run without race instrumentation.
 
 ### Provider Fixture Management
 

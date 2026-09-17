@@ -71,7 +71,7 @@ def validate_platform(directory, proof, system, tests):
             raise ValueError("A required native architecture job did not pass.")
         prefix = f"native-runtime-{runner}/"
         toolchain = read_bound_file(directory, prefix + "toolchain.txt", proof["sha256"]).splitlines()
-        if toolchain != [f"go version go1.25.12 {system}/{arch}", system, arch, system, arch, "0"] and toolchain != [f"go version go1.25.12 {system}/{arch}", system, arch, system, arch, "1"]:
+        if toolchain != [f"go version go1.27.1 {system}/{arch}", system, arch, system, arch, "0"] and toolchain != [f"go version go1.27.1 {system}/{arch}", system, arch, system, arch, "1"]:
             raise ValueError("Native evidence has a different toolchain, target, or host.")
         raw = read_bound_file(directory, prefix + "tests.jsonl", proof["sha256"])
         events = [json.loads(line) for line in raw.splitlines() if line.strip()]
