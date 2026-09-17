@@ -1,0 +1,64 @@
+{
+  "at": "2026-09-17T14:16:14.256352+00:00",
+  "owner": "CSP6.1",
+  "prs": [
+    {
+      "repository": "agentstation/starmap",
+      "number": 164,
+      "head": "334ab50cd3fb17cb3efc576882c6ffdf19c07ca4",
+      "base": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+      "disposition": "retain; qualification active",
+      "checks": "All four race groups, Verification Gate and four native jobs pass. Windows AMD64 and ARM64 native jobs remain in progress.",
+      "next_action": "Wait for both Windows native jobs, verify exact head, then merge with a merge commit."
+    },
+    {
+      "repository": "agentstation/starport",
+      "number": 375,
+      "head": "fff38dffa456ce068763e8b11a77953847e0d1d2",
+      "base": "2355823aa78972c12df70207a1bbe8b36ad6f03c",
+      "disposition": "retain; qualified, waiting for upstream merge",
+      "checks": "All ten CI jobs and six native jobs pass.",
+      "next_action": "After Starmap #164 merges, verify exact head and squash merge."
+    }
+  ],
+  "review_threads": {
+    "data": {
+      "sm": {
+        "pullRequests": {
+          "totalCount": 1,
+          "nodes": [
+            {
+              "number": 164,
+              "headRefOid": "334ab50cd3fb17cb3efc576882c6ffdf19c07ca4",
+              "baseRefOid": "e7a6abdf7e419e872f090909c2c9c8ffc5056191",
+              "reviewThreads": {
+                "totalCount": 0,
+                "nodes": []
+              }
+            }
+          ]
+        }
+      },
+      "sp": {
+        "pullRequests": {
+          "totalCount": 1,
+          "nodes": [
+            {
+              "number": 375,
+              "headRefOid": "fff38dffa456ce068763e8b11a77953847e0d1d2",
+              "baseRefOid": "2355823aa78972c12df70207a1bbe8b36ad6f03c",
+              "reviewThreads": {
+                "totalCount": 0,
+                "nodes": []
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "ancestry": "Both local heads descend from their unchanged PR bases. Starport pins public Starmap commit 334ab50cd3fb.",
+  "local_work": "Both implementation worktrees are clean and published. Canonical planning updates are attributable to CSP6.1. Five unrelated file hashes remain unchanged.",
+  "stale_or_superseded": [],
+  "notification": "none; pending native qualification is non-actionable"
+}

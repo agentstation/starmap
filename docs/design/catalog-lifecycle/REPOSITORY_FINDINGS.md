@@ -65,11 +65,11 @@ Starmap commit `334ab50cd` uses the existing small runtime fixture and explicitl
 Its 15 input-collection race events pass. The affected filesystem and workflow packages pass 192 race events.
 
 The same commit aligns the Windows file-identity buffer and preserves its serialized bytes.
-Windows lint, cross-compilation, and native file-publication race checks pass. The complete consumer race suite must still confirm the repair.
+Windows lint, cross-compilation, and native file-publication race checks pass. Starport's complete Windows race suite also passes with the new dependency.
 The workflow adds a Windows AMD64 race check for file publication and private files.
 
 Both renewed reviews pass. Starport `fff38dff` pins Starmap `334ab50cd`. Its local roster, real-Valkey contracts, and Docker checks pass.
-Final hosted qualification and both merges remain open.
+Starport passes all ten CI jobs and all six native jobs. Starmap's remaining hosted jobs and both merges remain open.
 
 ## Inspected revisions
 

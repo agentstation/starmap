@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-17T13:48:16.390942+00:00",
+  "at": "2026-09-17T14:16:14.256352+00:00",
   "decision": "D36",
   "go": "1.27.1",
   "status": "in_progress",
@@ -24,12 +24,11 @@
     "Go 1.27.1 Windows runtime interrupt-time source on amd64 and arm64"
   ],
   "pending": [
-    "Complete hosted Go 1.27.1 qualification for Starmap 334ab50cd and Starport fff38dff.",
+    "Finish Starmap Windows AMD64 and ARM64 native qualification. All four race groups and the aggregate verification gate pass.",
     "Merge Starmap PR #164 with a merge commit, then Starport PR #375 by squash. Verify merged sources before completion."
   ],
   "running": {
-    "starmap_ci": 35227913540,
-    "starport_ci": 35229196149
+    "starmap_ci": 35227913540
   },
   "starport": {
     "go_test": {
@@ -107,6 +106,13 @@
         "head": "fff38dffa456ce068763e8b11a77953847e0d1d2",
         "evidence": "go127-starport-native-final.json.gz",
         "uncompressed_sha256": "21218e7ad24d3d8a4c85fc77f1c911c16690027f6b76a8a98fbe4a8d7ce14f90"
+      },
+      "ci": {
+        "status": "PASS all ten jobs",
+        "run": 35229196149,
+        "head": "fff38dffa456ce068763e8b11a77953847e0d1d2",
+        "evidence": "go127-starport-ci-final.json.gz",
+        "uncompressed_sha256": "cbfa3ab57fb13854670f956070b7257125fd790fa6c7164394a43b6ed7d57643"
       }
     }
   },
@@ -203,7 +209,7 @@
     "golangci_lint": "2.12.2 panicked on Linux Go 1.27 standard-library syntax. 2.13.2 passes both products on Darwin and fresh-cache Linux analysis. No lint rules disabled.",
     "devbox": "Apple SDK 11.3 lacked SecTrustCopyCertificateChain; pinned SDK 15.5 fixes the tool link. Local Nix shell retains deployment-target warnings; release binaries disable cgo."
   },
-  "current_queue_evidence": "../../pr-audit-2026-09-08/current-queue/queue-status-2026-09-17-1356.json",
+  "current_queue_evidence": "../../pr-audit-2026-09-08/current-queue/queue-status-2026-09-17-1416.json",
   "hosted_failure_followup": {
     "starmap": "All six native jobs pass. Runtime race suite fails TestRuntimeInputCollectionWaitsForPublication at its ten-second barrier. Package completes in 1796.415 seconds. Aggregate gate fails.",
     "starport": "Six native startup jobs, release snapshot, Linux/macOS race suites, lint, SDK and security pass. Windows race tests fail private permission-state publication with ERROR_NOACCESS. Build correctly skips.",
@@ -240,7 +246,45 @@
       "run": 35227913540,
       "url": "https://github.com/agentstation/starmap/actions/runs/35227913540",
       "status": "in_progress",
-      "windows_file_publication_race": "PASS"
+      "windows_file_publication_race": "PASS",
+      "runtime_race": "PASS",
+      "verification_gate": "PASS; native Windows jobs remain independently required by the task"
     }
+  },
+  "remaining_timing_analysis": {
+    "source_run": 35138885986,
+    "source_head": "71a96cee03e5f9cdfe7adcd9784c7463ce18d856",
+    "status": "Read-only fixture audit; no additional code changes during final qualification.",
+    "cases": [
+      {
+        "test": "TestManualHistoryRetiresSupersededDistinctInventoriesBeforeByteLimit",
+        "file": "runtime/manual_distinct_retention_test.go",
+        "linux_race_seconds": 269.24,
+        "contract": "Forty-seven distinct one-MiB observations reach the real retained-input byte bound. Tests also preserve source receipts and exact restart identity.",
+        "constraint": "Do not shrink this fixture below the production bound or remove its race coverage to reduce time."
+      },
+      {
+        "test": "TestProviderCompositeRecoveryPreservesContributions",
+        "file": "runtime/provider_composite_recovery_test.go",
+        "windows_amd64_seconds": 258.84,
+        "contract": "Twenty-one field-presence and provenance cases, each with retained and replaced variants, use actual filesystem publication and restart.",
+        "constraint": "Every field distinction and durable restart assertion must remain. The source fixture is already small; startup and repeated publication require separate profiling."
+      },
+      {
+        "test": "TestWritableStoreAllowsConfiguredMutationTriggers",
+        "file": "writable_store_test.go",
+        "linux_race_seconds": 242.12,
+        "windows_amd64_seconds": 175.44,
+        "contract": "Writable-store acceptance for manual sync, custom updates and activation. Manual sync also proves workspace projection.",
+        "constraint": "Investigate why the local-source fixture triggers costly projection before changing setup. Preserve full embedded bootstrap coverage elsewhere."
+      },
+      {
+        "test": "TestFileInspectionCoversRetainedRemovalAndPin",
+        "file": "internal/cli/app/file_manifest_retention_test.go",
+        "linux_race_seconds": 177.04,
+        "contract": "Real removal, pin acceptance, restart, read-only file inspection, private access labels and receipt redaction for both selected and canonical runtime directories.",
+        "constraint": "A smaller selected baseline may be appropriate, but it must preserve those observable file and restart contracts."
+      }
+    ]
   }
 }
