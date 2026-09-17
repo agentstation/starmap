@@ -28,6 +28,7 @@ features:
     - pdf
     output:
     - embedding
+    - text
 
   # Core capabilities
   tool_calls: false
@@ -85,11 +86,15 @@ features:
 # Model pricing
 pricing:
   tokens:
+    audio_input:
+      per_token: 0.0
+      per_1m: 6.5
     input:
+      per_token: 0.0
       per_1m: 0.2
-    output: {}
-  operations:
-    audio_input: 6.5
+    output:
+      per_token: 0.0
+      per_1m: 0.0
   currency: USD
 
 # Model limits
@@ -114,4 +119,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209081Z
-updated_at: 2026-07-30T16:49:34.880802Z
+updated_at: 2026-09-17T14:55:55.276206756Z

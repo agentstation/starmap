@@ -1,0 +1,3985 @@
+{
+  "manifest_version": 2,
+  "schema_version": 9,
+  "generation_id": "bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
+  "generated_at": "2026-09-17T14:55:58.012533392Z",
+  "payload": {
+    "checksum": "sha256:376b2b729840dd5ce756ae4b89af84aecc752a645cd24c082fa4fc1ee741d03f",
+    "size_bytes": 26391614,
+    "media_type": "application/vnd.agentstation.starmap.catalog+json"
+  },
+  "validation": {
+    "validator_version": "starmap-v1",
+    "validated_at": "2026-09-17T14:55:58.012533392Z",
+    "status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "checks": [
+      {
+        "name": "catalog_publication",
+        "status": "passed"
+      }
+    ]
+  },
+  "sync_run_id": "github-35236729284",
+  "source_observations": [
+    {
+      "source": "models_dev_http",
+      "observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "observed_at": "2026-09-17T14:55:55.796703666Z",
+      "revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:094e189bcb3f3291a890cbf262a71787a3edbe91a27251737f269af3024213ba",
+      "observed_at": "2026-09-17T14:55:55.15783564Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:71be544946b6539bbfc6e0c1fb08ea0ea76f3a1c46d4f19d7194f0875b6799f3"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:71be544946b6539bbfc6e0c1fb08ea0ea76f3a1c46d4f19d7194f0875b6799f3"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:0d166510fd27f0a2d3320b85f72040115bbd0188bfafba6df71d5f28871a3606",
+      "observed_at": "2026-09-17T14:55:55.84608266Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:3eef1a251f2c79e8aecf45ae39e0d52e2c99f55c00ee07dcaf1c8d2857a3bd3e"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:3eef1a251f2c79e8aecf45ae39e0d52e2c99f55c00ee07dcaf1c8d2857a3bd3e"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:58d5ad7f647528e032a044904e04e3c89676bd835902f12f4f33bc869fddd2e3",
+      "observed_at": "2026-09-17T14:55:55.681411598Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:1b5e6804b968a769a458eb63c650b862a3cb8002b0ff91b436cee533d5feb1de"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:1b5e6804b968a769a458eb63c650b862a3cb8002b0ff91b436cee533d5feb1de"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "observed_at": "2026-09-17T14:55:58.010202163Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "observed_at": "2026-09-17T14:55:55.276206756Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "observed_at": "2026-09-17T14:55:55.763402673Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "observed_at": "2026-09-17T14:55:55.106485672Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "observed_at": "2026-09-17T14:55:55.049042923Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:e07b50301f5d134ad02decbe3ce9a9b149b057360081f230418bf2aa206c1191",
+      "observed_at": "2026-09-17T14:55:55.390927814Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:44c3dcf80331849dcb2cf3bb63e758c9e880c8d643d06dcb73b267ca6eaf5718"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:44c3dcf80331849dcb2cf3bb63e758c9e880c8d643d06dcb73b267ca6eaf5718"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:e39f79efc2b99b6800af864094a8cc081c435e83e19715d5ec0f2ebd1621bae5",
+      "observed_at": "2026-09-17T14:55:55.742737355Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:b715983ec80b03a2ded315fb9d643215b836b26f93093b340514fd5d2b111a41"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:b715983ec80b03a2ded315fb9d643215b836b26f93093b340514fd5d2b111a41"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "observed_at": "2026-09-17T14:55:56.887135151Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+    },
+    {
+      "source": "providers",
+      "observation_id": "observation:v4:f451455bc778afa10be1dbf280ea27dfd05bd962338fc3f344d0b2d75cba4620",
+      "observed_at": "2026-09-17T14:55:54.943055575Z",
+      "revision": {
+        "kind": "content_digest",
+        "value": "sha256:76a9439c93f6223e2425cfdf5cb7b9afc5fa8670513c112a1490484c987c2261"
+      },
+      "completeness": "complete",
+      "status": "succeeded",
+      "evidence_checksum": "sha256:76a9439c93f6223e2425cfdf5cb7b9afc5fa8670513c112a1490484c987c2261"
+    }
+  ],
+  "review_candidates": [
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "deepseek-v4-flash-0731",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "deepseek-v4-flash-0731-us",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "deepseek-v4-pro-0813",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "deepseek-v4-pro-0813-us",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "deepseek-v4.1-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "glm-5.2-us",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "kimi-k3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen-flash-character",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen-image-3.0",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen-image-3.0-pro",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen-plus-character",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen3-vl-flash-2026-01-22",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen3.7-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen3.7-flash-2026-07-15",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen3.8-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen3.8-max",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "alibaba",
+      "provider_model_id": "qwen3.8-max-0902",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8e2cb3600ace66d413938d838deb99ae921be1caf31ecd9c7c134b2a0b40fa31",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a"
+      },
+      "evidence_checksum": "sha256:20fa345cc750cd561a00802d7a15b0224b787991674a851871027e12538cbb7a",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "anthropic",
+      "provider_model_id": "claude-fable-5-1",
+      "source": "providers",
+      "source_observation_id": "observation:v4:58d5ad7f647528e032a044904e04e3c89676bd835902f12f4f33bc869fddd2e3",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1b5e6804b968a769a458eb63c650b862a3cb8002b0ff91b436cee533d5feb1de"
+      },
+      "evidence_checksum": "sha256:1b5e6804b968a769a458eb63c650b862a3cb8002b0ff91b436cee533d5feb1de",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "anthropic",
+      "provider_model_id": "claude-opus-5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:58d5ad7f647528e032a044904e04e3c89676bd835902f12f4f33bc869fddd2e3",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1b5e6804b968a769a458eb63c650b862a3cb8002b0ff91b436cee533d5feb1de"
+      },
+      "evidence_checksum": "sha256:1b5e6804b968a769a458eb63c650b862a3cb8002b0ff91b436cee533d5feb1de",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-fable-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-fable-5-1",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-haiku-4-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-mythos-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-opus-4-1",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-opus-4-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-opus-4-6",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-opus-4-7",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-opus-4-8",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-opus-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-sonnet-4-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-sonnet-4-6",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "claude-sonnet-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "codestral-2501",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "codex-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "cohere-command-a",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "cohere-embed-v-4-0",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "cohere-embed-v3-english",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "cohere-embed-v3-multilingual",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "deepseek-r1",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "deepseek-v3.2",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "deepseek-v3.2-speciale",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "deepseek-v4-flash",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "deepseek-v4-pro",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-3.5-turbo-0125",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-3.5-turbo-1106",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-3.5-turbo-instruct",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-4-turbo",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-4-turbo-vision",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-4.1",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-4.1-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-4.1-nano",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-4o",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-4o-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5-codex",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5-nano",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5-pro",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.1",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.1-codex",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.1-codex-max",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.1-codex-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.2",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.2-codex",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.3-codex",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.4",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.4-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.4-nano",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.4-pro",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.6-luna",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.6-sol",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-5.6-terra",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-6-astra",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-chat-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-image-1",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-image-1.5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-image-2",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-image-2.5-flare",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "gpt-image-2.5-sunburst",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "grok-4-1-fast-non-reasoning",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "grok-4-1-fast-reasoning",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "grok-4-20-non-reasoning",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "grok-4-20-reasoning",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "grok-4.6",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "kimi-k2.5",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "kimi-k2.6",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "kimi-k2.7-code",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "llama-3.3-70b-instruct",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "llama-4-maverick-17b-128e-instruct-fp8",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "llama-4-scout-17b-16e-instruct",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "ministral-3b",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "mistral-medium-2505",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "mistral-small-2503",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "model-router",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "o1",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "o3",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "o3-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "o4-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "phi-4",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "phi-4-mini",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "phi-4-mini-reasoning",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "phi-4-multimodal",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "phi-4-reasoning",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "phi-4-reasoning-plus",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "text-embedding-3-large",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "text-embedding-3-small",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "azure-openai",
+      "provider_model_id": "text-embedding-ada-002",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "cerebras",
+      "provider_model_id": "qwen-3.8-27b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:0d166510fd27f0a2d3320b85f72040115bbd0188bfafba6df71d5f28871a3606",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:3eef1a251f2c79e8aecf45ae39e0d52e2c99f55c00ee07dcaf1c8d2857a3bd3e"
+      },
+      "evidence_checksum": "sha256:3eef1a251f2c79e8aecf45ae39e0d52e2c99f55c00ee07dcaf1c8d2857a3bd3e",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Audio8/Audio8-TTS-Preview-0.6b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "BAAI/bge-m3-multi-8k",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Bria/fibo-1.5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Bria/fibo_edit-1.5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Qwen/Qwen3-ASR-0.6B",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Qwen/Qwen3-ASR-1.7B",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Qwen/Qwen3.8-2.4T-A95B",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Qwen/Qwen3.8-27B",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Qwen/Qwen3.8-Flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "Qwen/Qwen3.8-Max",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "anthropic/claude-opus-5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "deepseek-ai/DeepSeek-V4-Pro-0813",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "google/gemini-3.7-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "google/gemma-4-31B-it-Ultra",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "google/gemma-4-E4B-it",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "google/nano-banana-2",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "google/nano-banana-2-lite",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "google/nano-banana-pro",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "ibm-granite/granite-4.2-30b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "ibm-granite/granite-4.2-3b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "ibm-granite/granite-4.2-8b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "inclusionAI/Ling-3.0-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "inclusionAI/Ling-3.0-flash-Fin",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "inclusionAI/Ling-3.0-flash-VL",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "meta-models/Muse-Glimmer-30B",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "moonshotai/Kimi-K3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "nvidia/NVIDIA-Nemotron-3.5-Lightning",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "openai/gpt-oss-120b-Ultra",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "tencent/Hy3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "thinkingmachines/Inkling",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "thinkingmachines/Inkling-Small",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "zai-org/GLM-5.3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepinfra",
+      "provider_model_id": "zai-org/GLM-5.3-Flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:aa8e5f4be8ba252c8a45d42c580aacaa6524c3f85b5690a29a1f5c4eed3028c6",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9"
+      },
+      "evidence_checksum": "sha256:52c48e005d2c5c96fa2c9d297b61f267abb4577319b9e7042e791dc7d97692b9",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "deepseek",
+      "provider_model_id": "deepseek-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:094e189bcb3f3291a890cbf262a71787a3edbe91a27251737f269af3024213ba",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:71be544946b6539bbfc6e0c1fb08ea0ea76f3a1c46d4f19d7194f0875b6799f3"
+      },
+      "evidence_checksum": "sha256:71be544946b6539bbfc6e0c1fb08ea0ea76f3a1c46d4f19d7194f0875b6799f3",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/deepseek-v4-flash-0731",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/deepseek-v4-pro-0813",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/deepseek-v4p1-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/glm-5p3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/glm-5p3-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/inkling",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/kimi-k2p7-code",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/kimi-k3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/minimax-m2p7",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/minimax-m3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/muse-glimmer-30b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/qwen3-embedding-8b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/qwen3-reranker-8b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/qwen3p7-plus",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/qwen3p8-2p4t-a95b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/models/qwen3p8-max",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/routers/glm-5p2-fast",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/routers/glm-5p3-fast",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "fireworks-ai",
+      "provider_model_id": "accounts/fireworks/routers/kimi-k3-fast",
+      "source": "providers",
+      "source_observation_id": "observation:v4:b98ae42a00e8529eaaaa44d0557c3defa614a12113e9f66303863b3861f6fad9",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d"
+      },
+      "evidence_checksum": "sha256:1f024e5b70d47f4c20e6cc6ff66e9120b8403f631204d251f5652700769a4a4d",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "antigravity-preview-09-2026",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.5-flash-lite",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.5-transcribe",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.5-transcribe-live",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.6-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.7-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.8-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.8-live",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-3.8-live-extended-thinking",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-omni-1.1-flash",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-robotics-er-2-preview",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "gemini-robotics-er-2-streaming-preview",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "lyria-3.5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "google-ai-studio",
+      "provider_model_id": "lyria-realtime-exp",
+      "source": "providers",
+      "source_observation_id": "observation:v4:8431c804c561fdf891a1b06e013fbb303cc935d776eb6a68d3352373c09c9bed",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd"
+      },
+      "evidence_checksum": "sha256:5f366c7c7f0efa10e8545d4334aff7f578cf43c646e3f54112259e78b8f8ebbd",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "groq",
+      "provider_model_id": "qwen/qwen3.8-27b",
+      "source": "providers",
+      "source_observation_id": "observation:v4:f451455bc778afa10be1dbf280ea27dfd05bd962338fc3f344d0b2d75cba4620",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:76a9439c93f6223e2425cfdf5cb7b9afc5fa8670513c112a1490484c987c2261"
+      },
+      "evidence_checksum": "sha256:76a9439c93f6223e2425cfdf5cb7b9afc5fa8670513c112a1490484c987c2261",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "codestral-2508",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "codestral-embed",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "codestral-embed-2505",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "codestral-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "codestral-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "devstral-2512",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "devstral-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "devstral-medium-2507",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "devstral-medium-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "devstral-small-2505",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "devstral-small-2507",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "labs-devstral-small-2512",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "labs-leanstral-1-5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "labs-leanstral-1-5-1",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "magistral-medium-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "magistral-medium-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "magistral-small",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "magistral-small-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-14b-2512",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-14b-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-3b-2512",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-3b-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-3b-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-8b-2512",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-8b-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "ministral-8b-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-code-fim-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-code-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-embed",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-embed",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-embed-2312",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-large-2411",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-large-2512",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-large-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-2505",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-2508",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-2604",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-2604",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-3-5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-3.5",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-medium-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-moderation-2603",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-nemo",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-ocr-2512",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-ocr-3",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-ocr-3-0",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-ocr-4",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-ocr-4-0",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-ocr-4-1",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-ocr-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-small-2506",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-small-2603",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-small-2603",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-small-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-small-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-vibe-cli-fast",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-vibe-cli-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "mistral-vibe-cli-with-tools",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "open-mistral-7b",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "open-mistral-nemo",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "open-mixtral-8x22b",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "open-mixtral-8x7b",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "pixtral-12b",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "pixtral-large-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-2602",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-realtime-2602",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-realtime-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-transcribe-realtime-2602",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-tts-2603",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-tts-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-mini-tts-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-small-2507",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-small-latest",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "voxtral-small-latest",
+      "source": "providers",
+      "source_observation_id": "observation:v4:744805e62c302ab1d5270175e983f52dc326a1158c7c8c5fc337de1ca011fe4d",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920"
+      },
+      "evidence_checksum": "sha256:0f558880d8cf7e3d96b978d289f1bde5777aca0b7e4adba3ed5f129c5e7ab920",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "mistral",
+      "provider_model_id": "zai-glm-5-2",
+      "source": "models_dev_http",
+      "source_observation_id": "observation:v2:0cf21ced0c08392f715df76ceda2e8a74c8780296648327a299c50dc35fff8d8",
+      "source_revision": {
+        "kind": "etag",
+        "value": "W/\"e39d3f7697ca10ee4eb587a04a397f64\""
+      },
+      "evidence_checksum": "sha256:92d31f81c6482f90e26928cb821dfa2f815ce7aee149e906ce8d97c6f0873258",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-6-astra",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-image-2.5-flare",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-image-2.5-flare-2026-09-08",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-image-2.5-sunburst",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-image-2.5-sunburst-2026-09-08",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-live-1",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-live-transcribe",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    },
+    {
+      "code": "unresolved_model_reference",
+      "provider_id": "openai",
+      "provider_model_id": "gpt-transcribe",
+      "source": "providers",
+      "source_observation_id": "observation:v4:ebc65e381b2049c2849146697aa36ee6d9e3d81dcafed95719e4c27033631f2e",
+      "source_revision": {
+        "kind": "content_digest",
+        "value": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1"
+      },
+      "evidence_checksum": "sha256:7216fa46fa87df769cf727daa10dac86efce1c9ebb11b593a464a3f7a36ba3c1",
+      "reason": "provider offering has no explicit canonical model reference and was quarantined",
+      "prior_reviewed_model_link": ""
+    }
+  ],
+  "completeness": "complete",
+  "degraded": false,
+  "consumer_compatibility": {
+    "min_schema_version": 9,
+    "max_schema_version": 9
+  }
+}

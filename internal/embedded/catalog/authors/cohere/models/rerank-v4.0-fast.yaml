@@ -8,6 +8,7 @@ description: Fast lane of the Rerank 4 family, billed by the search unit
 
 # Model metadata
 metadata:
+  release_date: null
   open_weights: false
   tags:
   - rerank

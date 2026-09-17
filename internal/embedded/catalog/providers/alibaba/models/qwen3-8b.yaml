@@ -80,10 +80,13 @@ features:
 pricing:
   tokens:
     input:
+      per_token: 0.0
       per_1m: 0.18
     output:
+      per_token: 0.0
       per_1m: 0.7
     reasoning:
+      per_token: 0.0
       per_1m: 2.1
   currency: USD
 
@@ -109,4 +112,4 @@ extensions:
 
 # Timestamps
 created_at: 2025-04-01T00:00:00Z
-updated_at: 2026-07-30T16:49:27.2107Z
+updated_at: 2026-09-17T14:55:55.763402673Z

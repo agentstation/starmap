@@ -13,9 +13,10 @@ metadata:
   open_weights: false
   tags:
   - chat
-  - reasoning
   - vlm
   - vision
+  - prompt_cache
+  - reasoning
 lineage:
   root: google/gemma-4-31B-it-turbo
 
@@ -83,9 +84,14 @@ features:
 # Model pricing
 pricing:
   tokens:
+    cache_read:
+      per_token: 0.0
+      per_1m: 0.05
     input:
+      per_token: 0.0
       per_1m: 0.09
     output:
+      per_token: 0.0
       per_1m: 0.34
   currency: USD
 
@@ -97,4 +103,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.090157Z
-updated_at: 2026-07-30T16:49:28.851336Z
+updated_at: 2026-09-17T14:55:55.106485672Z

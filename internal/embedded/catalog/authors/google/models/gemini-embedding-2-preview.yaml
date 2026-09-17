@@ -8,6 +8,7 @@ description: Obtain a distributed representation of multimodal content.
 
 # Model metadata
 metadata:
+  release_date: null
   tags:
   - embed
 

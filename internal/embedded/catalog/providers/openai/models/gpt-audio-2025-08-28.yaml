@@ -66,7 +66,13 @@ features:
   format_response: false
   structured_outputs: false
   streaming: true
+extensions:
+  openai:
+    fields:
+      unknown_fields:
+      - checksum: sha256:74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b
+        path: data[].shutdown_date
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2026-07-30T16:49:32.81299Z
+updated_at: 2026-09-17T14:55:56.887135151Z

@@ -19,9 +19,9 @@ lineage:
 features:
   modalities:
     input:
-    - text
     - image
     - pdf
+    - text
     output:
     - text
 
@@ -86,12 +86,16 @@ reasoning_tokens:
 pricing:
   tokens:
     cache_read:
+      per_token: 0.0
       per_1m: 0.3
     cache_write:
+      per_token: 0.0
       per_1m: 3.75
     input:
+      per_token: 0.0
       per_1m: 3.0
     output:
+      per_token: 0.0
       per_1m: 15.0
   currency: USD
 
@@ -124,4 +128,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T16:49:34.569509Z
+updated_at: 2026-09-17T14:55:55.681411598Z

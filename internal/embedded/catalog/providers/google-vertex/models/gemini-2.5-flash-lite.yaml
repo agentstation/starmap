@@ -1,7 +1,7 @@
 # gemini-2.5-flash-lite - Lean Gemini 2.5 lane for cheap multimodal traffic and quick ...
 id: gemini-2.5-flash-lite
 model: google/gemini-2.5-flash-lite
-name: gemini-2.5-flash-lite
+name: Gemini 2.5 Flash-Lite
 authors:
 - id: google
   name: Google
@@ -100,14 +100,18 @@ reasoning_tokens:
 # Model pricing
 pricing:
   tokens:
+    audio_input:
+      per_token: 0.0
+      per_1m: 0.3
     cache_read:
+      per_token: 0.0
       per_1m: 0.01
     input:
+      per_token: 0.0
       per_1m: 0.1
     output:
+      per_token: 0.0
       per_1m: 0.4
-  operations:
-    audio_input: 0.3
   currency: USD
 
 # Model limits
@@ -126,4 +130,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T18:59:51.640751Z
+updated_at: 2026-09-17T14:55:55.796703666Z

@@ -1,7 +1,7 @@
 # gemini-embedding-001 - Embedding model for semantic search, retrieval, clustering, ...
 id: gemini-embedding-001
 model: google/gemini-embedding-001
-name: gemini-embedding-001
+name: Gemini Embedding 001
 authors:
 - id: google
   name: Google
@@ -23,6 +23,7 @@ features:
     input:
     - text
     output:
+    - text
     - embedding
 
   # Core capabilities
@@ -82,8 +83,11 @@ features:
 pricing:
   tokens:
     input:
+      per_token: 0.0
       per_1m: 0.15
-    output: {}
+    output:
+      per_token: 0.0
+      per_1m: 0.0
   currency: USD
 
 # Model limits
@@ -98,4 +102,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T18:59:52.293429Z
+updated_at: 2026-09-17T14:55:55.796703666Z

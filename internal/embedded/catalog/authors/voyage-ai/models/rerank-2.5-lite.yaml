@@ -1,4 +1,4 @@
-# rerank-2.5-lite - Latency-optimized lane of the rerank-2.5 family, billed by the token
+# rerank-2.5-lite - Latency-optimized lane of the rerank-2.5 family, billed by t...
 id: rerank-2.5-lite
 name: rerank-2.5-lite
 authors:
@@ -8,6 +8,7 @@ description: Latency-optimized lane of the rerank-2.5 family, billed by the toke
 
 # Model metadata
 metadata:
+  release_date: null
   open_weights: false
   tags:
   - rerank

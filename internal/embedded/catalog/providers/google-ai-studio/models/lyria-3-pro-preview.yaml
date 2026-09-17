@@ -89,8 +89,12 @@ generation:
 # Model pricing
 pricing:
   tokens:
-    input: {}
-    output: {}
+    input:
+      per_token: 0.0
+      per_1m: 0.0
+    output:
+      per_token: 0.0
+      per_1m: 0.0
   currency: USD
 
 # Model limits

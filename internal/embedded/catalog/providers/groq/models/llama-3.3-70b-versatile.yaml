@@ -98,15 +98,12 @@ features:
 # Model pricing
 pricing:
   tokens:
-    cache_read:
-      per_1m: 0.295
     input:
+      per_token: 0.0
       per_1m: 0.59
     output:
+      per_token: 0.0
       per_1m: 0.79
-  operations:
-    request: 0.0
-    image_gen: 0.0
   currency: USD
 
 # Model limits
@@ -121,4 +118,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T17:11:22.648827Z
+updated_at: 2026-09-17T14:55:55.796703666Z

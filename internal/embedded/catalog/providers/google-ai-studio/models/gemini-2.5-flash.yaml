@@ -98,15 +98,18 @@ reasoning_tokens:
 # Model pricing
 pricing:
   tokens:
+    audio_input:
+      per_token: 0.0
+      per_1m: 1.0
     cache_read:
+      per_token: 0.0
       per_1m: 0.03
     input:
+      per_token: 0.0
       per_1m: 0.3
     output:
+      per_token: 0.0
       per_1m: 2.5
-  operations:
-    page_input: 7.74e-05
-    audio_input: 1.0
   currency: USD
 
 # Model limits
@@ -137,4 +140,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T16:49:35.44726Z
+updated_at: 2026-09-17T14:55:55.796703666Z
