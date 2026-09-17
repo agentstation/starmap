@@ -1,27 +1,58 @@
 package runtime
 
 import (
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
 	"github.com/agentstation/starmap/pkg/sources"
 )
 
-// appendEmbeddedBaselineEvidence records a rebuild from the verified compiled catalog.
-// Remote generations retain their upstream identity when no local evidence changes them.
-func (l *layerSet) appendEmbeddedBaselineEvidence() {
-	if l.source != nil || l.embeddedManifest == nil || len(l.buildEvidence.SourceObservations) != 0 {
-		return
-	}
+// retainBaselineEvidence preserves original receipts when no local selection changes them.
+// A policy-only rebuild records its verified baseline without treating it as acquisition.
+func (l *layerSet) retainBaselineEvidence() bool {
 	manifest := l.embeddedManifest
+	sourceID := sources.EmbeddedCatalogID
+	if l.source != nil {
+		manifest = l.source.Manifest
+		sourceID = sources.ID(l.source.Identity)
+		if l.source.Identity == string(SourceFile) {
+			sourceID = sources.LocalCatalogID
+		}
+	}
+	if manifest == nil {
+		return false
+	}
+	localSelection := l.providerBindings != nil || l.acquisitionSources != nil ||
+		len(l.providers) != 0 || l.manual != nil || l.removals != nil
+	if !localSelection {
+		original := manifest.Copy()
+		l.buildEvidence = starmap.CandidateEvidence{
+			SourceObservations: original.SourceObservations,
+			ReviewCandidates:   original.ReviewCandidates,
+		}
+		return true
+	}
+	if len(l.buildEvidence.SourceObservations) != 0 {
+		return false
+	}
+	completeness := sources.ObservationCompletenessComplete
+	status := sources.ObservationStatusSucceeded
+	if manifest.Completeness == catalogs.GenerationCompletenessPartial {
+		completeness = sources.ObservationCompletenessPartial
+	}
+	if manifest.Degraded {
+		status = sources.ObservationStatusDegraded
+	}
 	l.buildEvidence.SourceObservations = append(l.buildEvidence.SourceObservations, catalogs.SourceObservationLink{
-		Source:           sources.EmbeddedCatalogID,
+		Source:           sourceID,
 		ObservationID:    "baseline:" + manifest.GenerationID,
 		ObservedAt:       manifest.GeneratedAt,
 		Revision:         sources.Revision{Kind: sources.RevisionKindContentDigest, Value: manifest.Payload.Checksum},
-		Completeness:     sources.ObservationCompletenessComplete,
-		Status:           sources.ObservationStatusSucceeded,
+		Completeness:     completeness,
+		Status:           status,
 		EvidenceChecksum: manifest.Payload.Checksum,
 	})
+	return false
 }
 
 // decodeCatalog checks retained scope evidence against its original generation.

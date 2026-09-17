@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"reflect"
+	"slices"
 	"testing"
 	"time"
 
@@ -12,13 +13,32 @@ import (
 )
 
 func TestBaselineReceiptPreservesVerifiedCatalogBoundary(t *testing.T) {
-	for _, remote := range []bool{false, true} {
-		t.Run(map[bool]string{false: "embedded alias policy", true: "unchanged remote"}[remote], func(t *testing.T) {
+	for _, tc := range []struct {
+		name                                string
+		remote, policy, degraded, normalize bool
+	}{
+		{name: "unchanged embedded"},
+		{name: "unchanged remote", remote: true},
+		{name: "normalized remote payload", remote: true, normalize: true},
+		{name: "embedded alias policy", policy: true},
+		{name: "remote alias policy", remote: true, policy: true},
+		{name: "degraded remote policy", remote: true, policy: true, degraded: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
 			var aliases []catalogs.CanonicalAlias
-			if !remote {
+			if tc.policy {
 				aliases = append(aliases, activeAlias("author/old"))
 			}
 			generation := aliasGeneration(t, "selected-baseline", aliases...)
+			if tc.normalize {
+				generation.Payload = append(generation.Payload, '\n')
+				generation.Manifest.Payload = catalogs.DescribeCatalogPayload(generation.Payload)
+			}
+			if tc.degraded {
+				generation.Manifest.Completeness = catalogs.GenerationCompletenessPartial
+				generation.Manifest.Degraded = true
+				generation.Manifest.DegradationReasons = []string{"retained source"}
+			}
 			catalog, err := catalogs.DecodeCatalogGeneration(generation)
 			if err != nil {
 				t.Fatal(err)
@@ -26,27 +46,43 @@ func TestBaselineReceiptPreservesVerifiedCatalogBoundary(t *testing.T) {
 			baseline := starmap.CatalogState{Catalog: catalog, GenerationID: generation.Manifest.GenerationID,
 				PayloadChecksum: generation.Manifest.Payload.Checksum, GeneratedAt: generation.Manifest.GeneratedAt}
 			layers := layerSet{embedded: baseline, embeddedManifest: &generation.Manifest}
-			if remote {
+			if tc.remote {
 				layers.source = &sourceLayer{Manifest: &generation.Manifest, Identity: "remote", GenerationID: baseline.GenerationID,
 					Checksum: baseline.PayloadChecksum, Payload: generation.Payload}
-			} else {
+			}
+			if tc.policy {
 				layers.providerBindings = &providerBindingPolicy{}
 			}
 			state, err := layers.build(t.Context(), baseline)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if state.PayloadChecksum != baseline.PayloadChecksum || !reflect.DeepEqual(state.Catalog.CanonicalAliasRecords(), catalog.CanonicalAliasRecords()) {
+			if !tc.normalize && state.PayloadChecksum != baseline.PayloadChecksum || !reflect.DeepEqual(state.Catalog.CanonicalAliasRecords(), catalog.CanonicalAliasRecords()) {
 				t.Fatal("baseline rebuild changed verified catalog content")
 			}
-			if remote {
-				if state.GenerationID != baseline.GenerationID || len(layers.buildEvidence.SourceObservations) != 0 {
-					t.Fatal("unchanged remote catalog acquired local evidence or identity")
+			if !tc.policy {
+				assertExactSourceReceipts(t, layers.buildEvidence.SourceObservations, generation.Manifest.SourceObservations...)
+				if tc.normalize {
+					if state.GenerationID == baseline.GenerationID || state.PayloadChecksum == baseline.PayloadChecksum {
+						t.Fatal("normalized payload retained the original byte identity")
+					}
+				} else if state.GenerationID != baseline.GenerationID {
+					t.Fatal("unchanged baseline changed identity")
 				}
 			} else {
+				if state.GenerationID == baseline.GenerationID {
+					t.Fatal("changed baseline selection retained the upstream identity")
+				}
 				links := layers.buildEvidence.SourceObservations
-				if len(links) != 1 || links[0].Source != sources.EmbeddedCatalogID || links[0].EvidenceChecksum != baseline.PayloadChecksum {
-					t.Fatalf("compiled baseline receipt: %+v", links)
+				sourceID := sources.EmbeddedCatalogID
+				if tc.remote {
+					sourceID = "remote"
+				}
+				if len(links) != 1 || links[0].Source != sourceID || links[0].EvidenceChecksum != baseline.PayloadChecksum {
+					t.Fatalf("selected baseline receipt: %+v", links)
+				}
+				if tc.degraded && (links[0].Completeness != sources.ObservationCompletenessPartial || links[0].Status != sources.ObservationStatusDegraded) {
+					t.Fatal("policy rebuild concealed baseline degradation")
 				}
 				if err := links[0].Validate(); err != nil {
 					t.Fatal(err)
@@ -122,8 +158,12 @@ func TestCompiledScopeEvidenceSurvivesLayerRebuild(t *testing.T) {
 	if !reflect.DeepEqual(state.Catalog.MembershipScopes(), expected) {
 		t.Fatal("rebuild changed compiled membership scopes")
 	}
-	if !reflect.DeepEqual(layers.buildEvidence.SourceObservations, []catalogs.SourceObservationLink{observation.Link()}) {
+	assertExactSourceReceipts(t, layers.buildEvidence.SourceObservations, generation.Manifest.SourceObservations...)
+	if !slices.Contains(layers.buildEvidence.SourceObservations, observation.Link()) {
 		t.Fatal("rebuild lost the original provider observation")
+	}
+	if state.GenerationID != baseline.GenerationID {
+		t.Fatal("unchanged compiled generation changed identity")
 	}
 	layers.embeddedManifest = nil
 	if _, err := layers.build(t.Context(), baseline); err == nil {
