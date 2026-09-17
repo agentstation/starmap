@@ -114,12 +114,16 @@ func (l *layerSet) validateSourceRemovalTransition(next *sourceLayer) error {
 	return nil
 }
 
-// appendFileSourceEvidence records the operator-selected payload as a baseline.
-func (l *layerSet) appendFileSourceEvidence(base *catalogs.Catalog) error {
-	if l.source == nil || l.source.Identity != string(SourceFile) || l.source.Manifest != nil {
+// appendPayloadSourceEvidence records an explicitly selected payload baseline.
+func (l *layerSet) appendPayloadSourceEvidence(base *catalogs.Catalog) error {
+	if l.source == nil || l.source.Manifest != nil {
 		return nil
 	}
-	observation, err := sources.NewObservation(sources.LocalCatalogID, base, sources.ObservationMetadata{
+	sourceID := sources.ID(l.source.Identity)
+	if l.source.Identity == string(SourceFile) {
+		sourceID = sources.LocalCatalogID
+	}
+	observation, err := sources.NewObservation(sourceID, base, sources.ObservationMetadata{
 		ObservedAt:   l.source.ObservedAt,
 		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
 		Completeness: sources.ObservationCompletenessComplete,
