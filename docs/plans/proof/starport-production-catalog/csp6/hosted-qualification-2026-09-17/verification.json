@@ -65,6 +65,38 @@
     "profile": "Cold bootstrap allocates9.77 GiB cumulatively; goccy parser.parseMap accounts for75% cumulatively. It recursively copies remaining map entries. Provenance YAML is25,863,615 bytes.",
     "prototype": "Replacing only provenance decoding with yaml/v3 reduces cumulative allocations to1.41 GiB and preserves the promoted catalog checksum. Both unchanged Linux ARM64 container probes pass locally. No production fix accepted yet.",
     "compatibility": "A focused scalar parity probe fails: scientific notation and unquoted dates decode differently between parsers. Do not ship the parser substitution without preserving accepted semantics.",
-    "changes": "Only reproduction worktree has experimental load.go and parser_probe_test.go changes; implementation remains clean at5ff293a56."
+    "changes": "Experiments are archived. The reproduction worktree now contains the bounded-parser and membership repairs; parser_probe_test.go was removed after archival."
+  },
+  "local_repair": {
+    "head": "82d864533011c7a7a003872843a853cdd9990b03",
+    "implementation_commit": "ce2e65ec0",
+    "evidence": "catalog-repair-evidence.json.gz",
+    "membership": "Custom updates retain unchanged scope receipts and add a new custom receipt. Explicit acquisitions inherit omitted receipts only for unchanged scopes. Changed scopes still require explicit source evidence. Repeated custom updates do not accumulate unrelated custom receipts.",
+    "loader": "The existing YAML parser decodes independent generated provenance entries in bounded batches. Anchors, dependent forms, errors, and cross-batch duplicates use the original parser. No dependency or budget changes.",
+    "passed": [
+      "Focused membership and source-observation race checks, including six custom-update cases and two original-receipt cases.",
+      "Provenance race suite and whole-file parity cases;15-second parity fuzz run completed570 executions.",
+      "Six external consumer modules and all existing dependency bounds.",
+      "Catalog generation tooling: all Go checks,22 controller tests,5 qualification tests,provider-fixture refresh contract.",
+      "Exact promoted candidate: external store-only consumer; membership race regression; Linux ARM64 constructor socket restriction and two offline server processes at existing512MiB limits.",
+      "Provenance,catalogs,and bootstrap packages pass broader race checks.",
+      "goago: no findings, stale ignores, or errors. Technical prose lint passes10 code/test files and the specification.",
+      "Exact promoted candidate first-run workspace seeding passes in142.802s with unchanged original membership receipts and a complete YAML round trip."
+    ],
+    "allocation_profile": "Exact promoted bootstrap cumulative allocations fell from9.77GiB to3816.37MiB, about62% lower. Canonical checksum verification passes. Peak capacity is qualified separately by unchanged container probes.",
+    "failed_preserved": [
+      "The direct four-package race command used Go default10-minute timeout; root package timed out at601.010s. The repository-owned runner already uses30m and-p=1.",
+      "Embedded-only acquisition failed with missing original membership receipts; retaining them exposed an obsolete embedded-only assertion. The revised test checks each original receipt and exactly one embedded observation.",
+      "An earlier full-document tokenization experiment exceeded the container memory limit. The accepted implementation scans and tokenizes bounded batches."
+    ],
+    "live_checks": [
+      {
+        "session": 86125,
+        "command": "GOTOOLCHAIN=go1.27.1 python3 scripts/verification_tests.py race --group client",
+        "cwd": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+        "log": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/.tmp/csp6-hosted/client-race-repair.log"
+      }
+    ],
+    "remaining": "Wait for client race session86125; inspect additional promoted-catalog failures. Required pre-PR review, publication, hosted native requalification, checked merge, and remaining A05 adapters are pending."
   }
 }
