@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete Starport pre-PR review at 2e75ecc, publish its draft PR, and qualify native CI for both immutable commits. Starmap PR #166 run 35266025497 is active at 1da9510ea.",
+    "Finish the local Starmap origin-baseline repair and complete its origin, policy, and consumer checks. Commit and review before pushing PR #166. Repin Starport again before publication. Do not publish the superseded dependency as qualified.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -433,7 +433,32 @@
     "lint": "PASS",
     "first_run": "PASS",
     "starmap_native_run": "https://github.com/agentstation/starmap/actions/runs/35266025497",
-    "starport_review": "IN_PROGRESS session 17552; /tmp/csp62-starport-review/published-review.json",
+    "starport_review": "PASS at 2e75ecc: Sol xhigh and Opus high, zero findings, confidence 0.98. Its Starmap dependency remains superseded.",
     "merged": false
+  },
+  "native_origin_failure": {
+    "run": 35266025497,
+    "job": 105353306820,
+    "head": "1da9510eaaee6117c726364f8990c357f25afc6a",
+    "status": "Canceled after origin recovery failures",
+    "native_counts": {
+      "passed": 3246,
+      "failed": 3,
+      "skipped": 2
+    },
+    "failed_tests": [
+      "TestOriginFollowerWithMatchingInputsCanTakeOwnership",
+      "TestOriginReplicaStartupTakesLeaseWithMatchingInputs",
+      "TestOriginPublicationRetainsIdentityOnRestartAndRebuild"
+    ],
+    "cause": "An ordinary compiled baseline rebuild gained fallback evidence that origin bootstrap did not have. Rebuild and takeover identities then differed.",
+    "repair": "Preserve complete original baseline evidence and identity when no local selection changes it. Add a verified baseline receipt only for a local selection without acquisition receipts. Retain baseline degradation.",
+    "sessions": {
+      "origin_and_policy_race": 19298,
+      "exact_original_receipts_race": 36892,
+      "consumer_remote_race": 37262,
+      "lint": 43808
+    },
+    "known_intermediate_failure": "TestCompiledScopeEvidenceSurvivesLayerRebuild expected only the provider receipt. Its corrected assertion requires every original manifest receipt and unchanged identity. Eight related race events then pass."
   }
 }

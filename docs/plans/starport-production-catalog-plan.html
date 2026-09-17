@@ -12,11 +12,11 @@
 
 <p>Updated 2026-09-17 UTC. CSP6.2 is the sole active task. Fourteen of 40 tasks are complete. CSP6 awaits paired billing and protocol qualification. CSP8 remains paused.</p>
 
-<p id="next-action">Complete Starport review at <code>2e75ecc</code>, then open its draft PR. Qualify both immutable commits concurrently. Starmap PR #166 uses <a href="https://github.com/agentstation/starmap/actions/runs/35266025497">native run 35266025497</a>. Merge Starmap with a merge commit. Verify <code>1da9510ea</code> is an ancestor of main before merging Starport.</p>
+<p id="next-action">Finish Starmap origin and policy checks for the local baseline repair. Native run 35266025497 exposed three origin recovery failures. We canceled that run. Commit and review the repair before pushing PR #166. Repin Starport before publication. Preserve ordered merges and the exact dependency commit.</p>
 
-<p>Starmap worktree: <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>. Clean branch <code>codex/catalog-hosted-qualification</code> selects <code>1da9510ea</code>. Sol and Opus report zero findings. The result is <code>/tmp/csp62-starmap-review/boundary-review.json</code>.</p>
+<p>Starmap worktree: <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>. Branch <code>codex/catalog-hosted-qualification</code> selects <code>1da9510ea</code>, with local origin-baseline edits. Session <code>19298</code> runs origin and policy race checks. Eight original-receipt race events, consumer remote identity, and lint pass. The broad focused run retains one superseded receipt assertion failure.</p>
 
-<p>Starport worktree: <code>/Users/jack/src/github.com/agentstation/starport-catalog-billing</code>. Clean branch <code>codex/catalog-operation-billing</code> selects <code>2e75ecc</code>. It pins <code>v0.16.6-0.20260917193059-1da9510eaaee</code>. Review session <code>17552</code> writes <code>/tmp/csp62-starport-review/published-review.json</code>.</p>
+<p>Starport worktree: <code>/Users/jack/src/github.com/agentstation/starport-catalog-billing</code>. Clean branch <code>codex/catalog-operation-billing</code> selects <code>2e75ecc</code>. It pins <code>v0.16.6-0.20260917193059-1da9510eaaee</code>. Sol and Opus passed review at this commit. Its dependency needs the origin-baseline correction. The result is <code>/tmp/csp62-starport-review/published-review.json</code>.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp6.2/verification.json">CSP6.2 proof</a> owns exact commands, failures, counts, source hashes, and pending checks. <a href="https://github.com/agentstation/starmap/pull/166">Starmap PR #166</a> remains a draft. We canceled native run <code>35264057009</code> after a paired regression. Its successful partial jobs cannot qualify the corrected head.</p>
 
