@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "69973bc7dd900165facdfd9bd3b5d71bf83344be",
+      "head": "1da9510eaaee6117c726364f8990c357f25afc6a",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
@@ -63,9 +63,9 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Finish the baseline-boundary repair in Starmap, verify unchanged remote identity and compiled alias metadata, then commit, review, and update PR #166. Repin Starport to the corrected published commit before final qualification.",
+    "Complete review at Starmap 1da9510ea, push PR #166, repin Starport to that published commit, and rerun published-module qualification. The 69973bc7d native run is superseded.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
-    "Merge Starmap first with a merge commit, verify 69973bc7d is an ancestor of main, then merge Starport after final published-module qualification and required checks.",
+    "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
   ],
   "implementation_evidence": {
@@ -384,7 +384,7 @@
       "published_required_gates": 28622
     },
     "workspace": "GOWORK=off",
-    "merge_order": "Merge Starmap PR #166 with a merge commit after required checks pass. Verify the pinned commit is an ancestor of main before merging Starport. Do not squash or rebase away the pinned commit.",
+    "merge_order": "After qualification, merge Starmap with a merge commit and verify the corrected dependency commit is an ancestor of main before merging Starport.",
     "rationale": "The dependency commit is published and immutable. Both repositories can qualify it concurrently without a local replacement or early completion credit.",
     "repository_policy": {
       "allow_merge_commit": true,
@@ -406,6 +406,17 @@
       "starmap_boundary_race": 3106,
       "starport_remote_identity_race_workspace": 40686,
       "starmap_lint": 8017
-    }
+    },
+    "repair_status": "Focused repair passes in both repositories; review pending"
+  },
+  "baseline_boundary_repair": {
+    "commit": "1da9510eaaee6117c726364f8990c357f25afc6a",
+    "bundle": "baseline-boundary-2026-09-17.json.gz",
+    "uncompressed_sha256": "23b87a2d130834bb6513b627377ddfdf68c1c3a77281c8d30da9b16ac699d476",
+    "starmap_race_pass_events": 36,
+    "starport_race_pass_events": 1,
+    "lint": "PASS",
+    "review": "IN_PROGRESS: session 45587; /tmp/csp62-starmap-review/boundary-review.json",
+    "published_dependency": "UNVERIFIED until the reviewed correction is pushed and Starport is repinned"
   }
 }
