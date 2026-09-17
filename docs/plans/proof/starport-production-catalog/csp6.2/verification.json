@@ -496,14 +496,28 @@
     "intermediate_failure": "The origin cohort passed 73 events and failed one obsolete receipt assertion. The corrected assertion requires every original manifest receipt and unchanged identity; the final focused cohort passes 15 events.",
     "invalid_fixture": "Two intermediate normalization checks failed during fixture decoding because the fixture omitted required source observations. The corrected fixture retains them. Validation was not weakened.",
     "review": {
-      "status": "running",
-      "session": 10853,
-      "output": "/tmp/csp62-starmap-review/origin-review.json"
+      "status": "PASS",
+      "output": "/tmp/csp62-starmap-review/origin-review.json",
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "findings": 0,
+      "confidence": 0.95
     },
-    "native": "UNVERIFIED at this head",
+    "native": {
+      "status": "running",
+      "run": 35270399865,
+      "url": "https://github.com/agentstation/starmap/actions/runs/35270399865"
+    },
     "retained_events": {
       "path": "origin-baseline-2026-09-17.json.gz",
       "uncompressed_sha256": "965f2d70db519529b2609f16051ccb2f969260316082660896f313e012ae735f"
+    },
+    "starport_pin": {
+      "version": "v0.16.6-0.20260917201504-d73dd8f36849",
+      "status": "local checks running",
+      "session": 58058
     }
   }
 }
