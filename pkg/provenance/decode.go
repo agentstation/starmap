@@ -3,6 +3,8 @@ package provenance
 import (
 	"bytes"
 
+	"github.com/agentstation/starmap/pkg/errors"
+
 	"github.com/goccy/go-yaml"
 	"github.com/goccy/go-yaml/lexer"
 	"github.com/goccy/go-yaml/token"
@@ -46,7 +48,7 @@ func DecodeYAML(data []byte) (*File, error) {
 func decodeWholeFile(data []byte) (*File, error) {
 	var file File
 	if err := yaml.Unmarshal(data, &file); err != nil {
-		return nil, err
+		return nil, errors.WrapParse("yaml", "", err)
 	}
 	return &file, nil
 }

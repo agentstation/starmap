@@ -5,6 +5,9 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	stderrors "errors"
+	"github.com/agentstation/starmap/pkg/errors"
 )
 
 func wideProvenance(entries int) string {
@@ -76,4 +79,12 @@ func FuzzDecodeYAMLMatchesWholeFile(f *testing.F) {
 			t.Fatalf("batch decoding differs from whole-file decoding: %v / %v", err, wantErr)
 		}
 	})
+}
+
+func TestDecodeYAMLReturnsTypedParseError(t *testing.T) {
+	_, err := DecodeYAML([]byte("provenance: [\n"))
+	var parse *errors.ParseError
+	if !stderrors.As(err, &parse) || parse.Format != "yaml" {
+		t.Fatalf("decode error = %T %v, want YAML ParseError", err, err)
+	}
 }

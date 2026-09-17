@@ -28,7 +28,16 @@ func TestAcceptedSourcesExcludeEmptyFailedObservation(t *testing.T) {
 	if actual := r.Status().AcceptedAcquisitionSources; len(actual) != 0 {
 		t.Fatalf("failed empty source reported accepted: %v", actual)
 	}
-	if len(r.layers.buildEvidence.SourceObservations) != 1 {
-		t.Fatal("failure receipt disappeared from diagnostics")
+	matches := 0
+	for _, receipt := range r.layers.buildEvidence.SourceObservations {
+		if receipt.ObservationID == observation.ID {
+			matches++
+			if receipt != observation.Link() {
+				t.Fatal("failure receipt changed in diagnostics")
+			}
+		}
+	}
+	if matches != 1 {
+		t.Fatalf("failure receipt count = %d, want one", matches)
 	}
 }

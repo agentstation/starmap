@@ -8,9 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/productpaths"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/runtime"
 )
 
@@ -356,12 +357,16 @@ func TestFileSourceReadsReportedAnchorAcrossWorkingDirectories(t *testing.T) {
 	if err := os.Mkdir(root, 0o700); err != nil {
 		t.Fatal(err)
 	}
-	generation, err := starmap.EmbeddedGeneration()
+	catalog, err := catalogs.NewEmpty().Build()
+	if err != nil {
+		t.Fatal(err)
+	}
+	payload, err := catalogs.EncodeCatalogPayload(catalog)
 	if err != nil {
 		t.Fatal(err)
 	}
 	file := filepath.Join(root, "catalog.json")
-	if err := os.WriteFile(file, generation.Payload, 0o600); err != nil {
+	if err := os.WriteFile(file, payload, 0o600); err != nil {
 		t.Fatal(err)
 	}
 	a, err := New("test", "test", "test", "test", WithConfig(&Config{CatalogValues: map[string]string{catalogconfig.Source: "file", catalogconfig.SourceURL: "catalog.json", catalogconfig.SourcePollInterval: "0s", catalogconfig.AcquisitionEnabled: "false"}}))
@@ -395,12 +400,20 @@ func TestFileSourceReadsReportedAnchorAcrossWorkingDirectories(t *testing.T) {
 		if err != nil || report.Health != runtime.HealthOK {
 			t.Fatalf("source did not read the reported anchor: %+v %v", report, err)
 		}
+		accepted, err := connected.Client().CurrentGeneration(t.Context())
+		if err != nil {
+			t.Fatal(err)
+		}
+		links := accepted.Manifest.SourceObservations
+		if len(links) != 1 || links[0].Source != sources.LocalCatalogID || links[0].EvidenceChecksum != catalogs.DescribeCatalogPayload(payload).Checksum {
+			t.Fatal("file baseline lost its source receipt")
+		}
 	}
 	if err := a.closeRuntime(); err != nil {
 		t.Fatal(err)
 	}
 	after, err := os.ReadFile(file)
-	if err != nil || !bytes.Equal(generation.Payload, after) {
+	if err != nil || !bytes.Equal(payload, after) {
 		t.Fatal("source refresh changed operator-owned input")
 	}
 }

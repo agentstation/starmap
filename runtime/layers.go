@@ -147,6 +147,9 @@ func (l *layerSet) buildOnBaseline(ctx context.Context, selected starmap.Catalog
 		}
 	}
 
+	if err := l.appendFileSourceEvidence(base); err != nil {
+		return starmap.CatalogState{}, err
+	}
 	catalog := base
 	if builder != nil {
 		catalog, err = builder.Build()

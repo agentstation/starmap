@@ -111,3 +111,22 @@ func TestStoredScopedStateMustMatchExactCompiledBaseline(t *testing.T) {
 		t.Fatal("unknown baseline accepted stored provider scopes")
 	}
 }
+
+func TestOriginBootstrapRetainsEmbeddedEvidence(t *testing.T) {
+	baseline, err := starmap.EmbeddedGeneration()
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := openTestRuntime(t, WithCatalogSource("embedded"), WithAuthorityOrigin(storage.NewMemory(), originTestConfig()))
+	accepted, err := r.Client().CurrentGeneration(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(accepted.Manifest.SourceObservations, baseline.Manifest.SourceObservations) ||
+		!reflect.DeepEqual(accepted.Manifest.ReviewCandidates, baseline.Manifest.ReviewCandidates) {
+		t.Fatal("origin bootstrap changed the original catalog evidence")
+	}
+	if _, err := catalogs.DecodeCatalogGeneration(accepted); err != nil {
+		t.Fatalf("origin bootstrap lost membership evidence: %v", err)
+	}
+}

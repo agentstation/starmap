@@ -3,6 +3,7 @@ package runtime
 import (
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
 
 // decodeCatalog checks retained scope evidence against its original generation.
@@ -110,5 +111,23 @@ func (l *layerSet) validateSourceRemovalTransition(next *sourceLayer) error {
 	if len(previous.RemovalPolicies()) != 0 {
 		return &errors.ConflictError{Resource: "upstream removal policy", Message: "replacement format cannot express the accepted operator removal policy"}
 	}
+	return nil
+}
+
+// appendFileSourceEvidence records the operator-selected payload as a baseline.
+func (l *layerSet) appendFileSourceEvidence(base *catalogs.Catalog) error {
+	if l.source == nil || l.source.Identity != string(SourceFile) || l.source.Manifest != nil {
+		return nil
+	}
+	observation, err := sources.NewObservation(sources.LocalCatalogID, base, sources.ObservationMetadata{
+		ObservedAt:   l.source.ObservedAt,
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+	})
+	if err != nil {
+		return err
+	}
+	l.buildEvidence.SourceObservations = append(l.buildEvidence.SourceObservations, observation.Link())
 	return nil
 }
