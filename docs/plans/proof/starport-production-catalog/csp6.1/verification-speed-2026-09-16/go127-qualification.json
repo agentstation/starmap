@@ -29,8 +29,7 @@
   ],
   "running": {
     "starmap_ci": 35227913540,
-    "starport_ci": 35229196149,
-    "starport_native": 35229196234
+    "starport_ci": 35229196149
   },
   "starport": {
     "go_test": {
@@ -101,6 +100,13 @@
       "hosted_runs": {
         "ci": 35229196149,
         "native": 35229196234
+      },
+      "native": {
+        "status": "PASS all six jobs",
+        "run": 35229196234,
+        "head": "fff38dffa456ce068763e8b11a77953847e0d1d2",
+        "evidence": "go127-starport-native-final.json.gz",
+        "uncompressed_sha256": "21218e7ad24d3d8a4c85fc77f1c911c16690027f6b76a8a98fbe4a8d7ce14f90"
       }
     }
   },
@@ -197,7 +203,7 @@
     "golangci_lint": "2.12.2 panicked on Linux Go 1.27 standard-library syntax. 2.13.2 passes both products on Darwin and fresh-cache Linux analysis. No lint rules disabled.",
     "devbox": "Apple SDK 11.3 lacked SecTrustCopyCertificateChain; pinned SDK 15.5 fixes the tool link. Local Nix shell retains deployment-target warnings; release binaries disable cgo."
   },
-  "current_queue_evidence": "../../pr-audit-2026-09-08/current-queue/queue-status-2026-09-16-1938.json",
+  "current_queue_evidence": "../../pr-audit-2026-09-08/current-queue/queue-status-2026-09-17-1356.json",
   "hosted_failure_followup": {
     "starmap": "All six native jobs pass. Runtime race suite fails TestRuntimeInputCollectionWaitsForPublication at its ten-second barrier. Package completes in 1796.415 seconds. Aggregate gate fails.",
     "starport": "Six native startup jobs, release snapshot, Linux/macOS race suites, lint, SDK and security pass. Windows race tests fail private permission-state publication with ERROR_NOACCESS. Build correctly skips.",

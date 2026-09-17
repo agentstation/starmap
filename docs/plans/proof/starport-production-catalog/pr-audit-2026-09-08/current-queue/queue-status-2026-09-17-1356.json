@@ -1,0 +1,29 @@
+{
+  "at": "2026-09-17T13:56:24.982588+00:00",
+  "repos": {
+    "starmap": [
+      {
+        "baseRefName": "main",
+        "headRefName": "codex/starmap-publisher-validation",
+        "headRefOid": "334ab50cd3fb17cb3efc576882c6ffdf19c07ca4",
+        "isDraft": false,
+        "number": 164,
+        "title": "fix: retain catalog evidence and qualify faster Go 1.27 verification",
+        "updatedAt": "2026-09-17T13:34:19Z",
+        "url": "https://github.com/agentstation/starmap/pull/164"
+      }
+    ],
+    "starport": [
+      {
+        "baseRefName": "main",
+        "headRefName": "codex/go-1.27.1",
+        "headRefOid": "fff38dffa456ce068763e8b11a77953847e0d1d2",
+        "isDraft": false,
+        "number": 375,
+        "title": "build: standardize on Go 1.27.1",
+        "updatedAt": "2026-09-17T13:46:14Z",
+        "url": "https://github.com/agentstation/starport/pull/375"
+      }
+    ]
+  }
+}

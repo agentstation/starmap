@@ -67,6 +67,7 @@ Its 15 input-collection race events pass. The affected filesystem and workflow p
 The same commit aligns the Windows file-identity buffer and preserves its serialized bytes.
 Windows lint, cross-compilation, and native file-publication race checks pass. The complete consumer race suite must still confirm the repair.
 The workflow adds a Windows AMD64 race check for file publication and private files.
+
 Both renewed reviews pass. Starport `fff38dff` pins Starmap `334ab50cd`. Its local roster, real-Valkey contracts, and Docker checks pass.
 Final hosted qualification and both merges remain open.
 
