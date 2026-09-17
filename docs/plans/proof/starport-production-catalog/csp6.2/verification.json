@@ -12,7 +12,7 @@
     },
     "starport": {
       "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
-      "head": "497079063ffcbde80da103387eeba109d0990334",
+      "head": "2e75eccdbaa95dd1276b4b3d70e2939060e5b2ae",
       "branch": "codex/catalog-operation-billing"
     }
   },
@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete review at Starmap 1da9510ea, push PR #166, repin Starport to that published commit, and rerun published-module qualification. The 69973bc7d native run is superseded.",
+    "Complete Starport pre-PR review at 2e75ecc, publish its draft PR, and qualify native CI for both immutable commits. Starmap PR #166 run 35266025497 is active at 1da9510ea.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -416,7 +416,24 @@
     "starmap_race_pass_events": 36,
     "starport_race_pass_events": 1,
     "lint": "PASS",
-    "review": "IN_PROGRESS: session 45587; /tmp/csp62-starmap-review/boundary-review.json",
-    "published_dependency": "UNVERIFIED until the reviewed correction is pushed and Starport is repinned"
+    "review": "PASS: Sol xhigh and Opus high, zero findings, confidence 0.98",
+    "published_dependency": "Published as v0.16.6-0.20260917193059-1da9510eaaee and pinned by Starport 2e75ecc"
+  },
+  "corrected_published_qualification": {
+    "bundle": "published-corrected-2026-09-17.json.gz",
+    "uncompressed_sha256": "26dc09297d4497422a1eaf5352224333b67429cb78b390dfba30b1497c7264fc",
+    "starport_commit": "2e75eccdbaa95dd1276b4b3d70e2939060e5b2ae",
+    "module": "v0.16.6-0.20260917193059-1da9510eaaee",
+    "workspace": "GOWORK=off",
+    "go_pass_events": 3093,
+    "go_fail_events": 0,
+    "go_skip_events": 40,
+    "cached_packages": 30,
+    "gates": "Ownership, v1 architecture, and catalog-driven provider gates pass on the corrected published module. The other 23 repository gates passed before the boundary-only correction.",
+    "lint": "PASS",
+    "first_run": "PASS",
+    "starmap_native_run": "https://github.com/agentstation/starmap/actions/runs/35266025497",
+    "starport_review": "IN_PROGRESS session 17552; /tmp/csp62-starport-review/published-review.json",
+    "merged": false
   }
 }
