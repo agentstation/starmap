@@ -303,3 +303,28 @@ func TestMergeModelsProviderPricingAtomicallyReplacesBaseline(t *testing.T) {
 		t.Fatalf("baseline pricing tiers leaked into provider pricing: %#v", pricing.Tiers)
 	}
 }
+
+func TestBillingUnitsSurviveAtomicUpstreamPriceReplacement(t *testing.T) {
+	policies := authority.New()
+	engine := newMerger(policies, NewAuthorityStrategy(policies), nil)
+	billing := &catalogs.ModelBilling{Recognition: &catalogs.RecognitionBilling{Basis: catalogs.RecognitionBillingTokens}}
+	oldPagePrice := 0.0000774
+	input := &catalogs.ModelPricing{Currency: "EUR", Tokens: &catalogs.ModelTokenPricing{Input: &catalogs.ModelTokenCost{Per1M: 0.3}}}
+	models, _, err := engine.Models(map[sources.ID][]*catalogs.Model{
+		sources.LocalCatalogID:  {{ID: "model", Name: "Model", Billing: billing, Pricing: &catalogs.ModelPricing{Currency: "USD", Operations: &catalogs.ModelOperationPricing{PageInput: &oldPagePrice}}}},
+		sources.ModelsDevHTTPID: {{ID: "model", Name: "Model", Pricing: input}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(models) != 1 || models[0].Billing == nil || models[0].Billing.Recognition.Basis != catalogs.RecognitionBillingTokens {
+		t.Fatal("upstream price erased billing units")
+	}
+	if models[0].Pricing.Currency != "EUR" || models[0].Pricing.Operations != nil {
+		t.Fatal("merged stale page estimate into current token pricing")
+	}
+	models[0].Billing.Recognition.Basis = catalogs.RecognitionBillingPages
+	if billing.Recognition.Basis != catalogs.RecognitionBillingTokens {
+		t.Fatal("reconciled billing shares source memory")
+	}
+}

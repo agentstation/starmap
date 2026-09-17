@@ -601,6 +601,12 @@ func (merger *merger) setModelFieldValue(model *catalogs.Model, fieldPath string
 			return
 		}
 	}
+	if fieldPath == "Billing" {
+		if billing, ok := value.(*catalogs.ModelBilling); ok {
+			model.Billing = catalogs.DeepCopyModel(catalogs.Model{Billing: billing}).Billing
+			return
+		}
+	}
 	if fieldPath == "Features" {
 		if features, ok := value.(*catalogs.ModelFeatures); ok {
 			copied := *features

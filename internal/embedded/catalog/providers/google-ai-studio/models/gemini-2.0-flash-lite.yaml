@@ -93,14 +93,16 @@ generation:
     default: 0.95
 
 # Model pricing
+billing:
+  recognition:
+    basis: tokens
+
 pricing:
   tokens:
     input:
       per_1m: 0.075
     output:
       per_1m: 0.3
-  operations:
-    page_input: 1.935e-05
   currency: USD
 
 # Model limits

@@ -13,6 +13,7 @@ func MergeModels(existing, updated Model) Model {
 	mergeModelLimitsByPresence(&result, &updated)
 	mergeModelMetadataByPresence(&result, &updated)
 	mergeModelPricingAsUnit(&result, &updated)
+	mergeModelBillingAsUnit(&result, &updated)
 
 	// Use reflection to merge non-zero fields from updated model
 	existingVal := reflect.ValueOf(&result).Elem()
@@ -21,6 +22,15 @@ func MergeModels(existing, updated Model) Model {
 	mergeFields(existingVal, newVal)
 
 	return result
+}
+
+func mergeModelBillingAsUnit(result, updated *Model) {
+	selected := result.Billing
+	if updated.Billing != nil && updated.Billing.Validate() == nil {
+		selected = updated.Billing
+	}
+	result.Billing = deepCopyModelBilling(selected)
+	updated.Billing = nil
 }
 
 func mergeModelPricingAsUnit(result, updated *Model) {

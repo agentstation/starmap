@@ -60,27 +60,27 @@ func TestOfferingOperationsFollowServedOperationNotOperationPricing(t *testing.T
 			want: []ProviderOperation{ProviderOperationChatCompletions},
 		},
 		{
-			// The realtime and Live API shape: the model produces audio.
+			// A price does not establish a realtime-only protocol.
 			name: "billed audio generation",
 			model: textModel(&ModelPricing{Operations: &ModelOperationPricing{
 				AudioInput: price(32),
 				AudioGen:   price(64),
 			}}),
-			want: nil,
+			want: []ProviderOperation{ProviderOperationChatCompletions},
 		},
 		{
 			name: "billed image generation",
 			model: textModel(&ModelPricing{Operations: &ModelOperationPricing{
 				ImageGen: price(0.04),
 			}}),
-			want: nil,
+			want: []ProviderOperation{ProviderOperationChatCompletions},
 		},
 		{
 			name: "billed video generation",
 			model: textModel(&ModelPricing{Operations: &ModelOperationPricing{
 				VideoGen: price(0.1),
 			}}),
-			want: nil,
+			want: []ProviderOperation{ProviderOperationChatCompletions},
 		},
 		{
 			name:  "tagged speech to text",
@@ -115,5 +115,27 @@ func TestEmbeddingModelsServeEmbeddingsInsteadOfChatCompletions(t *testing.T) {
 	want := []ProviderOperation{ProviderOperationEmbeddings}
 	if !slices.Equal(got, want) {
 		t.Fatalf("operations = %v, want %v", got, want)
+	}
+}
+
+func TestChatEligibilityUsesProtocolsRegardlessOfPrice(t *testing.T) {
+	for _, pricing := range []*ModelPricing{nil, {Operations: &ModelOperationPricing{AudioGen: price(64)}}, {Tokens: &ModelTokenPricing{AudioOutput: &ModelTokenCost{Per1M: 64}}}} {
+		for _, test := range []struct {
+			name      string
+			protocols []ModelResponseProtocol
+			want      bool
+		}{
+			{"realtime only", []ModelResponseProtocol{ModelResponseProtocolWebSocket}, false},
+			{"HTTP and realtime", []ModelResponseProtocol{ModelResponseProtocolHTTP, ModelResponseProtocolWebSocket}, true},
+			{"HTTP", []ModelResponseProtocol{ModelResponseProtocolHTTP}, true},
+		} {
+			t.Run(test.name, func(t *testing.T) {
+				model := textModel(pricing)
+				model.Delivery = &ModelDelivery{Protocols: test.protocols}
+				if got := isChatCompletionModel(model); got != test.want {
+					t.Fatalf("chat = %v, want %v", got, test.want)
+				}
+			})
+		}
 	}
 }
