@@ -9,6 +9,7 @@
   "status": "in_progress",
   "completion_credit": false,
   "remaining": [
+    "Repair large-catalog bootstrap and inherited membership evidence at their owning seams. Preserve scalar semantics, 512MiB container limits, and45-second readiness checks. Requalify the exact candidate before hosted promotion.",
     "Inspect hosted publication, bot PR identity, exact check identities and verified merge.",
     "Qualify each transition failure and same-byte retry; register the three missing A05 adapters."
   ],
@@ -37,7 +38,7 @@
     "review": "Required pre-PR review remains pending with acceptance adapter changes.",
     "hosted_evidence_scope": "Local controller tests use real catalog tools and Git with simulated GitHub transport. They do not replace hosted publication proof."
   },
-  "latest_hosted_state": "Preparation run completed successfully with awaiting_checks. Catalog bot PR #165 is open; its Pull Request workflow is active.",
+  "latest_hosted_state": "Bot PR165 cannot promote: verification checks, constructor network passivity, and offline persistence failed. Native runtime jobs are still running. Discovery channels have not advanced.",
   "promotion_pull_request": 165,
   "promotion_head": "e228e694ac5e66f75639721c438a261015a8026f",
   "promotion_ci_run": 35238361225,
@@ -52,5 +53,18 @@
     "attestations": "Four subjects verified using the main-branch Catalog Generation workflow and hosted-runner restriction.",
     "bundle": "initial-publication-and-recovery.json.gz",
     "uncompressed_sha256": "02149b48dbed88b089b5659ee2014db8fd2af3f59e81538116c961e0dfa8b186"
+  },
+  "promotion_failure": {
+    "bundle": "promotion-failure-investigation.json.gz",
+    "candidate_commit": "e228e694ac5e66f75639721c438a261015a8026f",
+    "ci_merge_commit": "eb3949d6712a916a8c11b4716721c8f2f5a6d206",
+    "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-reproduction",
+    "consumer": "TestPublish fails: inherited membership observation IDs do not resolve in an empty CandidateEvidence publication.",
+    "constructor": "Hosted 512 MiB container OOMKilled, exit137.",
+    "cold_server": "Hosted readiness exceeds45 seconds.",
+    "profile": "Cold bootstrap allocates9.77 GiB cumulatively; goccy parser.parseMap accounts for75% cumulatively. It recursively copies remaining map entries. Provenance YAML is25,863,615 bytes.",
+    "prototype": "Replacing only provenance decoding with yaml/v3 reduces cumulative allocations to1.41 GiB and preserves the promoted catalog checksum. Both unchanged Linux ARM64 container probes pass locally. No production fix accepted yet.",
+    "compatibility": "A focused scalar parity probe fails: scientific notation and unquoted dates decode differently between parsers. Do not ship the parser substitution without preserving accepted semantics.",
+    "changes": "Only reproduction worktree has experimental load.go and parser_probe_test.go changes; implementation remains clean at5ff293a56."
   }
 }
