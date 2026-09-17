@@ -317,6 +317,17 @@
     "observed_at": "2026-09-17",
     "catalog_app_private_key_secret": "Present; updated 2026-09-16T12:46:02Z. No secret contents inspected.",
     "catalog_app_client_id_variable": "Present.",
-    "effect": "Prior missing-key setup instructions are historical. CSP6 may proceed with controlled hosted publication after CSP6.1 closes under existing authorization."
+    "effect": "Prior missing-key setup instructions are historical. CSP6 may proceed with controlled hosted publication after CSP6.1 closes under existing authorization.",
+    "promotion_required_checks": [
+      "Security & Reliability",
+      "Verification Gate",
+      "Runtime ubuntu-24.04",
+      "Runtime ubuntu-24.04-arm",
+      "Runtime macos-15",
+      "Runtime macos-15-intel",
+      "Runtime windows-2025",
+      "Runtime windows-11-arm"
+    ],
+    "branch_protection": "Observed strict=true, enforce_admins=true; Security & Reliability and Verification Gate bound to GitHub Actions app 15368. Required approving review count is zero. Publisher additionally requires all six native checks."
   }
 }
