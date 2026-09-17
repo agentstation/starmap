@@ -12,7 +12,7 @@
 
 <p>Updated 2026-09-17 UTC. CSP6.2 is the sole active task. CSP6 awaits the paired billing and protocol repair. Fourteen of 40 tasks are complete.</p>
 
-<p id="next-action">Next: complete Starmap pre-PR review at 69973bc7d. Focused repair checks pass for each captured failure. Then complete native CI and merge. Publish its module dependency before Starport qualification without GOWORK. Review the final Starport branch and merge after required checks pass.</p>
+<p id="next-action">Next: inspect <a href="https://github.com/agentstation/starmap/pull/166">Starmap PR #166</a> and <a href="https://github.com/agentstation/starmap/actions/runs/35264057009">native CI</a> at 69973bc7d. Required review passes. Resolve any failures and merge after required checks pass. Publish its module dependency before Starport qualification without GOWORK. Review the final Starport branch and merge after required checks pass.</p>
 
 <p>Starmap: <code>/Users/jack/src/github.com/agentstation/starmap-publisher-validation</code>, clean branch <code>codex/catalog-hosted-qualification</code> at <code>69973bc7d</code>.</p>
 
@@ -34,7 +34,7 @@
 
 <p>Starmap <code>d845ee7b3</code> corrects three old baseline-receipt assumptions. Five related race events pass. Tests now bind the complete receipt set and use equal observation times for identity comparisons. Lint passes. The broad run later finished with 28 failures.</p>
 
-<p>Starmap <code>69973bc7d</code> records the selected baseline when local provider evidence becomes inactive. Forty-four focused race events and full lint pass. Focused repair checks pass for each captured failure. Final-source native qualification remains required. Sol and Opus review runs in session <code>93549</code>. The race run took 84 minutes and exceeds the speed target.</p>
+<p>Starmap <code>69973bc7d</code> records the selected baseline when local provider evidence becomes inactive. Forty-four focused race events and full lint pass. Focused repair checks pass for each captured failure. Final-source native qualification remains required. Sol and Opus report zero findings at this commit. Draft PR #166 starts final native qualification. The race run took 84 minutes and exceeds the speed target.</p>
 
 <p>CSP6.1 merged on Go 1.27.1. Its <a href="proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/go127-qualification.json">proof</a> retains native results and the missed 30-minute target.</p>
 

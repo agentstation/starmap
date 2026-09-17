@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete Starmap pre-PR review at 69973bc7d. All 28 failures from the completed broad race run have focused repair evidence. Qualify the final source on native CI before merge.",
+    "Inspect Starmap PR #166 native CI run 35264057009 at 69973bc7d. Required review passes. Resolve any final-source failures and merge only after required checks pass.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first, publish the module dependency, then update the actual Starport pin and qualify without GOWORK before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -351,8 +351,27 @@
     },
     "full_race_duration_seconds": 5050.841229,
     "full_verify_exit": 2,
-    "review": "IN_PROGRESS: session 93549; /tmp/csp62-starmap-review/review.json",
+    "review": "PASS: Sol xhigh and Opus high, zero findings, confidence 0.94",
     "limitations": "Earlier focused repairs cover the other broad failures. This is not a final-head full-suite pass. Native CI remains required. The run exceeds the verification-speed target.",
     "failure_repair_index_count": 28
+  },
+  "starmap_review": {
+    "bundle": "starmap-review-2026-09-17.json.gz",
+    "uncompressed_sha256": "61e3b16cfe689cfb0944b2c0271865aa6d52118011da81fce7431a6f79ef9220",
+    "head": "69973bc7dd900165facdfd9bd3b5d71bf83344be",
+    "review": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
+      "overall_confidence": 0.94
+    },
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "pr": "https://github.com/agentstation/starmap/pull/166",
+    "native_run": "https://github.com/agentstation/starmap/actions/runs/35264057009",
+    "native_status": "queued",
+    "merged": false
   }
 }
