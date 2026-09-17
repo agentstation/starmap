@@ -7,7 +7,7 @@
   "source": {
     "starmap": {
       "path": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
-      "head": "d845ee7b39089ffe0d0e531ae2edac7868715068",
+      "head": "69973bc7dd900165facdfd9bd3b5d71bf83344be",
       "branch": "codex/catalog-hosted-qualification"
     },
     "starport": {
@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Inspect the remaining Starmap race results. Capacity and repaired cohorts pass separately. Complete final-source native qualification before merge.",
+    "Complete Starmap pre-PR review at 69973bc7d. All 28 failures from the completed broad race run have focused repair evidence. Qualify the final source on native CI before merge.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first, publish the module dependency, then update the actual Starport pin and qualify without GOWORK before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -333,5 +333,25 @@
     "failures": 0,
     "skips": 0,
     "lint": "PASS: golangci-lint, goago, and strict prose across 1850 files"
+  },
+  "baseline_policy_repair": {
+    "commit": "69973bc7dd900165facdfd9bd3b5d71bf83344be",
+    "bundle": "baseline-policy-2026-09-17.json.gz",
+    "uncompressed_sha256": "8c084d64da50b8e78d6ac8b3ff6eda1ea8d1e27522c48193fe97d386b12610c9",
+    "cause": "Removing all active provider inputs left no source receipt for the runtime baseline rebuild. Root publication correctly rejected a scope change without explicit evidence.",
+    "change": "Record the selected verified baseline with its stable generation time when the rebuilt catalog has no other source receipts. Keep the root membership guard. Assert exact baseline and provider receipts in concurrent publication tests.",
+    "focused_race_pass_events": 44,
+    "failures": 0,
+    "skips": 0,
+    "lint": "PASS",
+    "full_race": {
+      "pass": 7406,
+      "fail": 28,
+      "skip": 24
+    },
+    "full_race_duration_seconds": 5050.841229,
+    "full_verify_exit": 2,
+    "review": "IN_PROGRESS: session 93549; /tmp/csp62-starmap-review/review.json",
+    "limitations": "Earlier focused repairs cover the other broad failures. This is not a final-head full-suite pass. Native CI remains required. The run exceeds the verification-speed target."
   }
 }
