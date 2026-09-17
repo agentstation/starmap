@@ -26,5 +26,16 @@
     "evidence": "acceptance-before.json.gz",
     "uncompressed_sha256": "11c7fddd261bf8a3d963d0f70b2959d40c155b702a7daa46f475cc0fa3c592f6",
     "interpretation": "Three registered admission cases pass. Three hosted publication cases are unregistered and remain UNVERIFIED. The all-case summary does not mean 50 selected behavioral failures."
-  }
+  },
+  "local_recovery_extension": {
+    "head": "dcb913db10d61de53b8340144699c93205b3b33a",
+    "path": "scripts/test_catalog_publication.py",
+    "sha256": "5712fde5353e488b828975aab64ea693923b80e3cb4c1892203ff22eb6df072f",
+    "suite": "22 tests pass on Go 1.27.1.",
+    "new_boundary_cases": 12,
+    "channel_recovery": "Interrupt before v1 after v2 commits. Reconstruct in a fresh directory, verify the existing merge, retain exact release bytes, and complete both channels without another upload or PR.",
+    "review": "Required pre-PR review remains pending with acceptance adapter changes.",
+    "hosted_evidence_scope": "Local controller tests use real catalog tools and Git with simulated GitHub transport. They do not replace hosted publication proof."
+  },
+  "latest_hosted_state": "Run 35236729284 remains active in Validate candidate before publication."
 }
