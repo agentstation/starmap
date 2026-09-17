@@ -23,7 +23,7 @@ Starmap run `35128783572` completed all four minimum-Go groups, covering 113 pac
 It also passed the release capacity check, four real-storage jobs, and three native jobs before the policy changed.
 The agent canceled the remaining jobs to avoid superseded execution. The complete hosted duration remains unqualified.
 The [decision proof](../../plans/proof/starport-production-catalog/csp6.1/verification-speed-2026-09-16/toolchain-decision.json) preserves these results.
-Final hosted Go 1.27.1 qualification remains open.
+Final hosted Go 1.27.1 qualification passes as recorded below.
 
 The local Starport check roster passes on Go 1.27.1, including 3,055 test events and 29 shell checks.
 Its Docker builder produces a cgo-disabled Linux ARM64 binary with Go 1.27.1 metadata.
@@ -69,7 +69,18 @@ Windows lint, cross-compilation, and native file-publication race checks pass. S
 The workflow adds a Windows AMD64 race check for file publication and private files.
 
 Both renewed reviews pass. Starport `fff38dff` pins Starmap `334ab50cd`. Its local roster, real-Valkey contracts, and Docker checks pass.
-Starport passes all ten CI jobs and all six native jobs. Starmap's remaining hosted jobs and both merges remain open.
+Starport passes all ten CI jobs and all six native jobs. Starmap passes all 19 hosted jobs.
+
+Starmap PR #164 merged at `6d4bcb5e7`. Starport PR #375 merged at `f5353a8b7`.
+Both merged trees match their reviewed candidates. Starmap's final hosted run took 48m42s, above the 30-minute target.
+
+Starmap merged-source filesystem and workflow race checks pass.
+Starport merged-source verification found a repeated startup-test failure: cold local initialization under race detection exceeds its ten-second deadline.
+The response-barrier repair at `8ef9151` holds authority responses until startup returns and retains a one-minute safety deadline.
+
+Both focused race cases and 3,055 full-suite test results pass, with 39 existing skips.
+All 29 required shell checks, vet, lint, and build pass. Both reviewers report no findings.
+CSP6.1 remains open until this test repair merges and merged-source verification passes.
 
 ## Inspected revisions
 
