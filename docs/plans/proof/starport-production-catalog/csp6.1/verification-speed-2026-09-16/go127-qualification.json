@@ -27,7 +27,9 @@
     "Wait for Starport PR #376 required checks, merge reviewed head 8ef9151, and verify merged source."
   ],
   "running": {
-    "starport_pr": 376
+    "starport_ci": 35234631787,
+    "watch_session": 97998,
+    "watch_log": "/Users/jack/src/github.com/agentstation/starport-go-1271/.tmp/go127/startup-ci-watch.log"
   },
   "starport": {
     "go_test": {
@@ -310,5 +312,11 @@
     "review": "PASS: Sol high and Opus 5 high; zero findings.",
     "local_evidence": "go127-startup-repair-local.json.gz",
     "local_evidence_sha256": "c3fb3210f4d4e03909ef6caa16ec28458beda7d24117b1c17414a9c55897d43a"
+  },
+  "next_task_preflight": {
+    "observed_at": "2026-09-17",
+    "catalog_app_private_key_secret": "Present; updated 2026-09-16T12:46:02Z. No secret contents inspected.",
+    "catalog_app_client_id_variable": "Present.",
+    "effect": "Prior missing-key setup instructions are historical. CSP6 may proceed with controlled hosted publication after CSP6.1 closes under existing authorization."
   }
 }
