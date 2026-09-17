@@ -1,13 +1,14 @@
-# stepfun-ai/Step-3.7-Flash - Step 3.7 Flash is an open-source multimodal reasoning model ...
+# stepfun-ai/Step-3.7-Flash - Newer StepFun flash model for faster agents, coding, and mul...
 id: stepfun-ai/Step-3.7-Flash
 model: stepfun/step-3.7-flash
 name: stepfun-ai/Step-3.7-Flash
-description: Step 3.7 Flash is an open-source multimodal reasoning model by StepFun with 198B total parameters (11B active) using Mixture of Experts. It accepts text and image inputs and features a 256K context window, selectable reasoning effort, tool calling, and agentic capabilities for coding and search workflows, scoring 80.9% on GPQA Diamond and 56.3% on SWE-bench Pro.
+description: Newer StepFun flash model for faster agents, coding, and multimodal prompts
 
 # Model metadata
 metadata:
-  release_date: null
-  open_weights: false
+  release_date: 2026-05-29
+  open_weights: true
+  knowledge_cutoff: 2026-03-01
   tags:
   - chat
   - vlm
@@ -21,18 +22,20 @@ features:
   modalities:
     input:
     - text
+    - image
+    - video
     output:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
-  attachments: false
+  attachments: true
 
   # Reasoning & Verbosity
-  reasoning: false
+  reasoning: true
   reasoning_effort: false
   reasoning_tokens: false
   include_reasoning: false
@@ -81,10 +84,13 @@ features:
 pricing:
   tokens:
     cache_read:
+      per_token: 0.0
       per_1m: 0.04
     input:
+      per_token: 0.0
       per_1m: 0.2
     output:
+      per_token: 0.0
       per_1m: 1.15
   currency: USD
 
@@ -92,8 +98,8 @@ pricing:
 limits:
   context_window: 262144
   input_tokens: 0
-  output_tokens: 262144
+  output_tokens: 256000
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.08194Z
-updated_at: 2026-07-11T20:15:13.08194Z
+updated_at: 2026-09-17T14:55:55.106485672Z

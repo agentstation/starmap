@@ -24,6 +24,7 @@ features:
     - text
     output:
     - embedding
+    - text
 
   # Core capabilities
   tool_calls: false
@@ -82,8 +83,11 @@ features:
 pricing:
   tokens:
     input:
+      per_token: 0.0
       per_1m: 0.15
-    output: {}
+    output:
+      per_token: 0.0
+      per_1m: 0.0
   currency: USD
 
 # Model limits
@@ -108,4 +112,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T16:49:35.661103Z
+updated_at: 2026-09-17T14:55:55.276206756Z

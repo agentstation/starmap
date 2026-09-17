@@ -58,7 +58,7 @@ features:
   verbosity: false
 
   # Generation control support flags
-  temperature: true
+  temperature: false
   top_p: true
   top_k: false
   top_a: false
@@ -100,8 +100,10 @@ features:
 pricing:
   tokens:
     cache_read:
+      per_token: 0.0
       per_1m: 11.0
     input:
+      per_token: 0.0
       per_1m: 22.0
   operations:
     request: 0.0
@@ -116,4 +118,4 @@ limits:
 
 # Timestamps
 created_at: 2025-12-19T00:00:00Z
-updated_at: 2026-07-30T17:11:22.623368Z
+updated_at: 2026-09-17T14:55:54.943055575Z

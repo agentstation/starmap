@@ -80,10 +80,14 @@ features:
 # Model pricing
 pricing:
   tokens:
-    cache_read: {}
+    cache_read:
+      per_token: 0.0
+      per_1m: 0.0
     input:
+      per_token: 0.0
       per_1m: 0.5
     output:
+      per_token: 0.0
       per_1m: 1.5
   currency: USD
 
@@ -92,7 +96,13 @@ limits:
   context_window: 16385
   input_tokens: 0
   output_tokens: 4096
+extensions:
+  openai:
+    fields:
+      unknown_fields:
+      - checksum: sha256:973384eff6a5cc4532559352a57bcecf9b681e1e0023d733779dc8244be93c8f
+        path: data[].shutdown_date
 
 # Timestamps
 created_at: 2025-10-20T22:31:57Z
-updated_at: 2026-07-30T16:49:32.80182Z
+updated_at: 2026-09-17T14:55:56.887135151Z

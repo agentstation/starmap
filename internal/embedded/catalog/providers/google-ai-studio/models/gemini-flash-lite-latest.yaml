@@ -1,17 +1,17 @@
-# gemini-flash-lite-latest - Low-latency Gemini model for high-volume multimodal and agen...
+# gemini-flash-lite-latest - Fast Gemini model balancing multimodal reasoning, tool use, ...
 id: gemini-flash-lite-latest
 model: google/gemini-flash-lite-latest
 name: Gemini Flash-Lite Latest
 authors:
 - id: google
   name: Google
-description: Low-latency Gemini model for high-volume multimodal and agent workloads
+description: Fast Gemini model balancing multimodal reasoning, tool use, and cost
 
 # Model metadata
 metadata:
-  release_date: 2026-05-07
+  release_date: 2026-07-21
   open_weights: false
-  knowledge_cutoff: 2025-01-01
+  knowledge_cutoff: 2026-03-01
   tags:
   - ocr
 lineage:
@@ -106,14 +106,14 @@ reasoning_tokens:
 pricing:
   tokens:
     cache_read:
-      per_1m: 0.025
+      per_token: 0.0
+      per_1m: 0.03
     input:
-      per_1m: 0.25
+      per_token: 0.0
+      per_1m: 0.3
     output:
-      per_1m: 1.5
-  operations:
-    page_input: 6.45e-05
-    audio_input: 0.5
+      per_token: 0.0
+      per_1m: 2.5
   currency: USD
 
 # Model limits
@@ -144,4 +144,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T16:49:35.271712Z
+updated_at: 2026-09-17T14:55:55.796703666Z

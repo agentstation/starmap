@@ -22,13 +22,13 @@ features:
     - text
     - image
     output:
-    - text
     - audio
+    - text
 
   # Core capabilities
-  tool_calls: true
-  tools: true
-  tool_choice: true
+  tool_calls: false
+  tools: false
+  tool_choice: false
   web_search: false
   attachments: false
 
@@ -91,8 +91,10 @@ generation:
 pricing:
   tokens:
     input:
+      per_token: 0.0
       per_1m: 0.5
     output:
+      per_token: 0.0
       per_1m: 10.00
   currency: USD
 
@@ -114,4 +116,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T16:49:35.164203Z
+updated_at: 2026-09-17T14:55:55.796703666Z

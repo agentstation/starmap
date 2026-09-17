@@ -91,10 +91,13 @@ reasoning:
 pricing:
   tokens:
     cache_read:
+      per_token: 0.0
       per_1m: 0.018
     input:
+      per_token: 0.0
       per_1m: 0.09
     output:
+      per_token: 0.0
       per_1m: 0.18
   currency: USD
 
@@ -102,7 +105,7 @@ pricing:
 limits:
   context_window: 1048576
   input_tokens: 0
-  output_tokens: 1048576
+  output_tokens: 16384
 extensions:
   models.dev:
     fields:
@@ -117,4 +120,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-04-24T00:00:00Z
-updated_at: 2026-07-30T16:49:30.174735Z
+updated_at: 2026-09-17T14:55:55.106485672Z

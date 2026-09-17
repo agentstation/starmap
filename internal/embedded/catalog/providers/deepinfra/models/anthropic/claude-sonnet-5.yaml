@@ -82,9 +82,11 @@ features:
 pricing:
   tokens:
     input:
-      per_1m: 2.0
+      per_token: 0.0
+      per_1m: 3.0
     output:
-      per_1m: 10.00
+      per_token: 0.0
+      per_1m: 15.0
   currency: USD
 
 # Model limits
@@ -95,4 +97,4 @@ limits:
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.08888Z
-updated_at: 2026-07-11T20:15:13.08888Z
+updated_at: 2026-09-17T14:55:55.106485672Z

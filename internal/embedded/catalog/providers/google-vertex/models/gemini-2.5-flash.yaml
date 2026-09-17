@@ -1,7 +1,7 @@
 # gemini-2.5-flash - Fast Gemini model balancing multimodal reasoning, tool use, ...
 id: gemini-2.5-flash
 model: google/gemini-2.5-flash
-name: gemini-2.5-flash
+name: Gemini 2.5 Flash
 authors:
 - id: google
   name: Google
@@ -100,13 +100,17 @@ reasoning_tokens:
 # Model pricing
 pricing:
   tokens:
+    audio_input:
+      per_token: 0.0
+      per_1m: 1.0
     cache_read:
-      per_1m: 0.075
-    cache_write:
-      per_1m: 0.383
+      per_token: 0.0
+      per_1m: 0.03
     input:
+      per_token: 0.0
       per_1m: 0.3
     output:
+      per_token: 0.0
       per_1m: 2.5
   currency: USD
 
@@ -126,4 +130,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T18:59:52.280711Z
+updated_at: 2026-09-17T14:55:55.796703666Z
