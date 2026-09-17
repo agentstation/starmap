@@ -559,6 +559,13 @@
       "publication_race": 99057,
       "lint": 97680
     },
-    "starport": "Do not publish the superseded d73dd8f dependency as qualified. Repin after the replay repair is reviewed and published."
+    "starport": "Do not publish the superseded d73dd8f dependency as qualified. Repin after the replay repair is reviewed and published.",
+    "lint": "PASS: make lint; 1852 files, zero prose diagnostics",
+    "publication_race_progress": {
+      "session": 99057,
+      "passed": 104,
+      "failed": 0,
+      "status": "running; full public capacity still active; not a final count"
+    }
   }
 }
