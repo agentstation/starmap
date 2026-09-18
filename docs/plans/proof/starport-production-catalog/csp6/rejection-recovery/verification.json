@@ -95,7 +95,7 @@
     "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
   },
   "promotion_repair": {
-    "status": "performance gate coverage repair published; replacement CI pending",
+    "status": "complete scalar and container allocation repair published; replacement CI pending",
     "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
     "branch": "codex/catalog-baseline-origin-recovery",
     "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
@@ -170,20 +170,20 @@
         "source_head": "5dbfe7faf83e2795114d0685995025b37e25158a"
       }
     },
-    "next_action": "Qualify exact head e9a2f4bac in run 35404369968. Inspect superseded run 35402969808 for any reported failures. Merge PR169 only after required and native checks pass, then resume publisher for PR168.",
-    "commit": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
-    "review_session": 11727,
+    "next_action": "Qualify exact head 9932e9a26 in run 35406133578. Inspect superseded run 35404369968 for additional reported failures. Merge PR169 only after required and native checks pass, then resume publisher for PR168.",
+    "commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
+    "review_session": 80028,
     "pr": 169,
-    "ci": 35404369968,
+    "ci": 35406133578,
     "review": {
       "Sol": "zero findings",
       "Opus": "zero findings",
-      "file": "promotion-169-allocation-gate-review.json"
+      "file": "promotion-169-complete-allocation-review.json"
     },
-    "watch_session": 1632,
-    "watch_log": "/tmp/csp6-169-allocation-gate-watch.log",
-    "local_commit": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
-    "published_commit": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
+    "watch_session": 24992,
+    "watch_log": "/tmp/csp6-169-complete-allocation-watch.log",
+    "local_commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
+    "published_commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf",
     "review_extended": {
       "Sol": "zero findings",
       "Opus": "zero findings"
@@ -222,7 +222,7 @@
       "windows_amd64_failed_tests": 7,
       "remaining_unclassified_failures": 0
     },
-    "previous_reviewed_head": "f1afb8159a5832600e047cabe27550082eada4a3",
+    "previous_reviewed_head": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
     "allocation_measurement_repair": {
       "prior_run": 35401102797,
       "prior_head": "5dbfe7faf83e2795114d0685995025b37e25158a",
@@ -2408,6 +2408,26 @@
         "prose_files": 1825,
         "prose_diagnostics": 0,
         "superseded_run": 35402969808
+      },
+      "scalar_completion": {
+        "failed_run": 35404369968,
+        "failed_job": 105792736332,
+        "test": "TestCanonicalDynamicJSONScalarAllocationBound/number",
+        "observed_allocations": 3,
+        "unchanged_limit": 2,
+        "local_race_repetitions": 1000,
+        "local_failures": 23,
+        "repair": "Both scalar and container allocation tests now use !race. The existing required performance gate executes both. The same scalar and container encoding cases retain race coverage.",
+        "native_repetitions_each": 1000,
+        "native_failures": 0,
+        "native_package_pass_events": 68,
+        "race_package_pass_events": 59,
+        "performance_gate": "passed",
+        "goago": "zero findings, stale ignores, and errors",
+        "golangci": "passed",
+        "prose_files": 1825,
+        "prose_diagnostics": 0,
+        "commit": "9932e9a26b3e42c5b5fe3e0aa3c0a5929c964adf"
       }
     }
   }
