@@ -93,5 +93,58 @@
     "owner": "CSP6",
     "next_action": "Repair origin restart and candidate-dependent fixtures. Qualify source separately from the pending catalog before checked promotion.",
     "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
+  },
+  "promotion_repair": {
+    "status": "PR169 published; native CI pending",
+    "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
+    "branch": "codex/catalog-baseline-origin-recovery",
+    "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
+    "candidate_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair",
+    "candidate": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+    "fail_before": {
+      "tests": 7,
+      "failures": 7,
+      "file": "promotion-168-local-before.jsonl.gz"
+    },
+    "checks": {
+      "candidate_focused_race": {
+        "passed": 16,
+        "failed": 0,
+        "file": "promotion-168-race-after.jsonl.gz"
+      },
+      "origin_negative_race": {
+        "passed": 8,
+        "failed": 0,
+        "file": "promotion-168-origin-negative.jsonl.gz"
+      },
+      "main_focused": {
+        "passed": 24,
+        "failed": 0,
+        "file": "promotion-168-main-after.jsonl.gz"
+      },
+      "candidate_bootstrap": {
+        "passed": 93,
+        "failed": 0,
+        "file": "promotion-168-bootstrap-all.jsonl.gz"
+      },
+      "lint": "make lint passed: golangci-lint, goago, full prose checks",
+      "prose": {
+        "files": 1834,
+        "diagnostics": 0
+      },
+      "go_version": "go1.27.1 darwin/arm64"
+    },
+    "next_action": "Qualify PR169 current-head native and required checks. Merge source first, then update existing catalog PR168 and qualify its unchanged catalog.",
+    "commit": "905ec6cfacdc2fb0d7c9a3653427ce2cc53fe08e",
+    "review_session": 14512,
+    "pr": 169,
+    "ci": 35399810226,
+    "review": {
+      "Sol": "zero findings",
+      "Opus": "zero findings",
+      "result": "clean"
+    },
+    "watch_session": 35213,
+    "watch_log": "/tmp/csp6-169-watch.log"
   }
 }

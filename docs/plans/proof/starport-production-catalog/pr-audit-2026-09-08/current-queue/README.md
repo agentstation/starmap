@@ -1,3 +1,11 @@
+## Baseline restart repair
+
+Starmap #169 contains source repair `905ec6cfa`. Sol and Opus report zero findings.
+Candidate checks pass 24 race events and all 93 bootstrap tests. Main checks pass 24 events.
+
+Native CI run `35399810226` must pass before merge. CSP6 owns this repair.
+The [repair record](repair-169.json) owns the next action. Merge #169 before updating catalog PR #168.
+
 ## Replacement promotion
 
 Catalog preparation run `35395944704` passed and opened Starmap #168 at `8bbd30235`.
