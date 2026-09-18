@@ -12,7 +12,7 @@
     },
     "starport": {
       "path": "/Users/jack/src/github.com/agentstation/starport-catalog-billing",
-      "head": "a2616b535bf3ac87276b126def1ca346f9873521",
+      "head": "9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4",
       "branch": "codex/catalog-operation-billing"
     }
   },
@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Wait for Starport PR #377 CI run 35301301627. Fix actual failures if any, then merge after all required checks pass. Starmap #166 is merged and its pinned dependency commit is in main history.",
+    "Complete Starport review at 9f80f17 (session 58017), then push PR #377 and require final CI. The earlier run passed all native and release checks but failed the console date-picker timeout. Starmap #166 is merged.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -671,7 +671,7 @@
     "url": "https://github.com/agentstation/starport/pull/377",
     "head": "a2616b535bf3ac87276b126def1ca346f9873521",
     "native_run": 35301301627,
-    "status": "CI running"
+    "status": "CI failed on one console timeout; repair committed and under review"
   },
   "final_pair_storage": {
     "head": "a2616b535bf3ac87276b126def1ca346f9873521",
@@ -692,6 +692,50 @@
     "evidence": {
       "path": "starport-final-storage-2026-09-18.jsonl.gz",
       "uncompressed_sha256": "8c8e7049c864e86345422f2d150437e33638150dcf5523dcd7c1dc87ab36ef19"
+    }
+  },
+  "starport_date_field_repair": {
+    "head": "9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4",
+    "failed_run": 35301301627,
+    "failed_job": 105466642138,
+    "failure": "DateField interaction timed out at 5000ms. Console run: 458 pass, 1 fail.",
+    "native": {
+      "linux": {
+        "pass": 3093,
+        "fail": 0,
+        "skip": 40
+      },
+      "macos": {
+        "pass": 3093,
+        "fail": 0,
+        "skip": 40
+      },
+      "windows": {
+        "pass": 3089,
+        "fail": 0,
+        "skip": 44
+      }
+    },
+    "repair": "Move calendar dependency loading into beforeAll setup. Await the React update instead of a fixed 50ms sleep. Keep interaction timeout and every assertion unchanged.",
+    "focused_tests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "console_check": {
+      "build": "PASS",
+      "typecheck": "PASS",
+      "tests_passed": 459,
+      "tests_failed": 0,
+      "test_seconds": 19.81
+    },
+    "review": {
+      "status": "running",
+      "session": 58017,
+      "output": "/tmp/csp62-starport-review/date-field-review.json"
+    },
+    "evidence": {
+      "path": "starport-date-field-2026-09-18.json.gz",
+      "uncompressed_sha256": "12c98ed1a54a9331067bee59c3df184be58a5227fff3e67d31843f3df10c1ef6"
     }
   }
 }
