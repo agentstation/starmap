@@ -1,3 +1,9 @@
+## Recovery repair
+
+Starmap #167 contains the reviewed recovery change at `08ed76e4a`.
+Native CI run `35381293124` is queued. CSP6 owns its merge and controlled publication qualification.
+The [recovery capture](queue-status-2026-09-18-recovery.json) adds its disposition to the merged-pair record.
+
 ## Current queue: September 18
 
 Starport #377 merged at `d5d891eefc32d221406f059dc025a3a1e3ab4070` after all ten checks passed.
