@@ -57,7 +57,9 @@
     "promotion_head": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
     "promotion_ci": 35397268876,
     "changed_files": 380,
-    "all_changes_under": "internal/embedded/catalog/"
+    "all_changes_under": "internal/embedded/catalog/",
+    "promotion_watch_session": 77231,
+    "promotion_watch_log": "/tmp/csp6-promotion-168-watch.log"
   },
   "prior_scheduled_failure": {
     "run": 35383547608,
