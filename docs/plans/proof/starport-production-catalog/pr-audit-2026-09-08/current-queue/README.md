@@ -1,3 +1,10 @@
+## Replacement promotion
+
+Catalog preparation run `35395944704` passed and opened Starmap #168 at `8bbd30235`.
+Its 380 changed files belong to the embedded catalog. Native CI run `35397268876` started.
+CSP6 owns checked bot promotion and hosted retry qualification. Preserve #165 until replacement verification.
+The [promotion record](promotion-168.json) owns the next action.
+
 ## Controlled replacement publication
 
 Starmap #167 merged at `096a82b6d` after all 23 checks passed.

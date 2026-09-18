@@ -17,7 +17,7 @@
     "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
     "overall_confidence": 0.98
   },
-  "next_action": "Inspect controlled publisher run 35395944704. Verify replacement preserves required inputs before closing #165. Qualify bot merge, channel publication, and same-bytes hosted retry.",
+  "next_action": "Inspect PR #168 run 35397268876. Let the checked publisher complete bot merge and both channels. Capture the successful publication, rerun original preparation 35395944704 for same-bytes evidence, and qualify both hosted A05 cases. Keep #165 until preservation and replacement verification.",
   "completion_credit": false,
   "retained_remote_evidence": {
     "status": "PASS",
@@ -49,10 +49,15 @@
   "publication": {
     "run": 35395944704,
     "source": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
-    "status": "in_progress",
+    "status": "success; awaiting promotion checks",
     "step": "Validate candidate before publication",
     "watch_session": 22375,
-    "watch_log": "/tmp/csp6-replacement-publication-watch.log"
+    "watch_log": "/tmp/csp6-replacement-publication-watch.log",
+    "pull_request": 168,
+    "promotion_head": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+    "promotion_ci": 35397268876,
+    "changed_files": 380,
+    "all_changes_under": "internal/embedded/catalog/"
   },
   "prior_scheduled_failure": {
     "run": 35383547608,
