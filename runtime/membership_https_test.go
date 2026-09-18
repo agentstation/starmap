@@ -62,7 +62,9 @@ func TestHTTPSUpstreamPreservesScopedEvidence(t *testing.T) {
 				if err == nil {
 					t.Fatal("untrusted TLS publisher accepted")
 				}
-				if runtime.State().GenerationID != before.GenerationID || len(runtime.Catalog().MembershipScopes()) != 0 {
+				after := runtime.State()
+				if after.GenerationID != before.GenerationID || after.PayloadChecksum != before.PayloadChecksum ||
+					!reflect.DeepEqual(after.Catalog.MembershipScopes(), before.Catalog.MembershipScopes()) {
 					t.Fatal("untrusted TLS publisher changed active catalog")
 				}
 				return

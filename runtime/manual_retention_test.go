@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 	"time"
 
@@ -49,6 +50,10 @@ func manualTestRuntime(t *testing.T, store storage.Store) (*Runtime, []Option) {
 func TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart(t *testing.T) {
 	store := storage.NewMemory()
 	connected, options := manualTestRuntime(t, store)
+	baseline, err := store.Current(t.Context())
+	if err != nil || len(baseline.Manifest.SourceObservations) != 1 {
+		t.Fatalf("baseline receipt: generation=%+v error=%v", baseline.Manifest, err)
+	}
 	at := time.Date(2026, 9, 7, 1, 0, 0, 0, time.UTC)
 	first := manualTestObservation(t, "first", at, false)
 	second := manualTestObservation(t, "second", at.Add(time.Minute), true)
@@ -67,14 +72,16 @@ func TestManualObservationsRetainPartialHistoryAndReceiptsAcrossRestart(t *testi
 			t.Fatalf("manual history lost %s", model)
 		}
 	}
-	baseline, err := before.Catalog.Provider("baseline-provider")
-	if err != nil || baseline.Models["baseline-model"] == nil {
+	baselineProvider, err := before.Catalog.Provider("baseline-provider")
+	if err != nil || baselineProvider.Models["baseline-model"] == nil {
 		t.Fatal("manual history discarded the selected source baseline")
 	}
 	generation, err := store.Current(t.Context())
-	if err != nil || len(generation.Manifest.SourceObservations) != 2 {
-		t.Fatalf("manual receipts = %d, error = %v", len(generation.Manifest.SourceObservations), err)
+	if err != nil {
+		t.Fatal(err)
 	}
+	assertExactSourceReceipts(t, generation.Manifest.SourceObservations,
+		baseline.Manifest.SourceObservations[0], first.Link(), second.Link())
 	if err := filepath.WalkDir(filepath.Join(connected.store.root, inputPublicationDirectory), func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil || entry.IsDir() {
 			return walkErr
@@ -166,5 +173,17 @@ func TestManualSingleBatchRetainsSeparateReviewedInputs(t *testing.T) {
 	provider, err := connected.Catalog().Provider("manual-provider")
 	if err != nil || provider.Models["first"] == nil || provider.Models["second"] == nil {
 		t.Fatal("one reviewed input hid another input in the same batch")
+	}
+}
+
+func assertExactSourceReceipts(t *testing.T, got []catalogs.SourceObservationLink, want ...catalogs.SourceObservationLink) {
+	t.Helper()
+	if len(got) != len(want) {
+		t.Fatalf("source receipt count = %d, want %d", len(got), len(want))
+	}
+	for _, receipt := range want {
+		if !slices.Contains(got, receipt) {
+			t.Fatalf("missing or changed source receipt: %+v", receipt)
+		}
 	}
 }

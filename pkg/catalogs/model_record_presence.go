@@ -21,6 +21,7 @@ const (
 	ModelRecordDelivery        ModelRecord = "response"
 	ModelRecordPricing         ModelRecord = "pricing"
 	ModelRecordLimits          ModelRecord = "limits"
+	ModelRecordBilling         ModelRecord = "billing"
 )
 
 var modelRecordOrder = []ModelRecord{
@@ -38,6 +39,7 @@ var modelRecordOrder = []ModelRecord{
 	ModelRecordDelivery,
 	ModelRecordPricing,
 	ModelRecordLimits,
+	ModelRecordBilling,
 }
 
 var modelRecordBits = map[ModelRecord]uint16{
@@ -55,6 +57,7 @@ var modelRecordBits = map[ModelRecord]uint16{
 	ModelRecordDelivery:        1 << 11,
 	ModelRecordPricing:         1 << 12,
 	ModelRecordLimits:          1 << 13,
+	ModelRecordBilling:         1 << 14,
 }
 
 // PublishedModelRecords returns every optional record in published order.
@@ -92,6 +95,8 @@ func (m *Model) RecordPresence(record ModelRecord) ValuePresence {
 		value = m.Tools
 	case ModelRecordDelivery:
 		value = m.Delivery
+	case ModelRecordBilling:
+		value = m.Billing
 	case ModelRecordPricing:
 		value = m.Pricing
 	case ModelRecordLimits:
@@ -139,6 +144,8 @@ func (m *Model) SetRecordUnknown(record ModelRecord) bool {
 		m.Tools = nil
 	case ModelRecordDelivery:
 		m.Delivery = nil
+	case ModelRecordBilling:
+		m.Billing = nil
 	case ModelRecordPricing:
 		m.Pricing = nil
 	case ModelRecordLimits:

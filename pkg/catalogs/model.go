@@ -63,6 +63,7 @@ type Model struct {
 	Modes map[string]ModelMode `json:"modes,omitempty" yaml:"modes,omitempty"`
 
 	// Operational characteristics
+	Billing *ModelBilling `json:"billing,omitempty" yaml:"billing,omitempty"`
 	Pricing *ModelPricing `json:"pricing,omitempty" yaml:"pricing,omitempty"` // Optional pricing information
 	Limits  *ModelLimits  `json:"limits,omitempty" yaml:"limits,omitempty"`   // Model limits
 

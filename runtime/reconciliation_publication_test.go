@@ -44,6 +44,10 @@ func TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder(t *testing.T
 		t.Fatal(err)
 	}
 	before := connected.State()
+	baseline, err := store.Current(t.Context())
+	if err != nil || len(baseline.Manifest.SourceObservations) != 1 {
+		t.Fatalf("baseline receipt: generation=%+v error=%v", baseline.Manifest, err)
+	}
 	if before.Catalog.Providers().Len() != 0 || len(before.Catalog.AuthoredModels()) != 2 {
 		t.Fatal("publication fixture must contain two reviewed definitions without serving records")
 	}
@@ -98,7 +102,6 @@ func TestConcurrentRuntimeRebuildsPublishCompleteGenerationsInOrder(t *testing.T
 			t.Fatal("concurrent rebuild discarded a retained provider")
 		}
 	}
-	if len(current.Manifest.SourceObservations) != 2 {
-		t.Fatal("final generation lost concurrent observation receipts")
-	}
+	assertExactSourceReceipts(t, current.Manifest.SourceObservations,
+		baseline.Manifest.SourceObservations[0], one.Receipt.Link, two.Receipt.Link)
 }

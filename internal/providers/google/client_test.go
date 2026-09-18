@@ -283,3 +283,42 @@ func TestConvertAIStudioModelPreservesRESTOnlyFields(t *testing.T) {
 		t.Fatalf("supported generation methods = %#v", methods)
 	}
 }
+
+func TestObservedGenerationActionsDeclareDeliveryProtocols(t *testing.T) {
+	client := NewClient(&catalogs.Provider{ID: catalogs.ProviderIDGoogleAIStudio, Name: "Google"})
+	for _, test := range []struct {
+		name            string
+		actions         []string
+		http, websocket bool
+	}{
+		{"live", []string{"bidiGenerateContent", "countTokens"}, false, true},
+		{"both", []string{"bidiGenerateContent", "generateContent", "streamGenerateContent"}, true, true},
+		{"HTTP", []string{"generateContent"}, true, false},
+		{"unknown", []string{"futureAction"}, false, false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			model := client.convertGenAIModel(&genai.Model{Name: "models/opaque-id", SupportedActions: test.actions})
+			if !test.http && !test.websocket {
+				if model.Delivery != nil {
+					t.Fatal("unknown action invented protocols")
+				}
+				return
+			}
+			if model.Delivery == nil {
+				t.Fatal("observed action lost protocols")
+			}
+			gotHTTP, gotWebSocket := false, false
+			for _, protocol := range model.Delivery.Protocols {
+				if protocol == catalogs.ModelResponseProtocolHTTP {
+					gotHTTP = true
+				}
+				if protocol == catalogs.ModelResponseProtocolWebSocket {
+					gotWebSocket = true
+				}
+			}
+			if gotHTTP != test.http || gotWebSocket != test.websocket {
+				t.Fatalf("protocols = %v", model.Delivery.Protocols)
+			}
+		})
+	}
+}

@@ -95,3 +95,41 @@ func TestYAMLOnlyProviderCredentialJSONKeepsProgressOnStderr(t *testing.T) {
 		t.Fatalf("stderr lacks credential-test progress:\n%s", stderr.String())
 	}
 }
+
+func TestProviderCredentialMatrixStructuredFailureReturnsError(t *testing.T) {
+	const keyName = "STARMAP_MATRIX_MISSING_TEST_KEY"
+	t.Setenv(keyName, "")
+	builder := catalogs.NewEmpty()
+	if err := builder.SetProvider(catalogs.Provider{
+		ID: "matrix-test", Name: "Matrix test",
+		Credentials: testcatalog.APIKeyCredentials(keyName, "Authorization", catalogs.ProviderCredentialSchemeBearer),
+		Catalog: &catalogs.ProviderCatalog{Endpoint: catalogs.ProviderEndpoint{
+			Type: catalogs.EndpointTypeOpenAI, URL: "https://example.invalid", ProtocolOptions: testcatalog.OpenAIProtocolOptions(),
+		}},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := builder.Build()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, output := range []string{"json", "yaml"} {
+		t.Run(output, func(t *testing.T) {
+			app := testApplication{catalog: catalog, logger: zerolog.Nop(), output: output}
+			command := NewCommand(app)
+			command.Flags().Bool("verbose", false, "test root verbose flag")
+			var stdout, stderr bytes.Buffer
+			command.SetOut(&stdout)
+			command.SetErr(&stderr)
+			if err := testAllProviders(command, catalog, app); err == nil || !strings.Contains(err.Error(), "1 provider(s) failed testing") {
+				t.Fatalf("matrix error = %v, want failed provider status", err)
+			}
+			if !strings.Contains(stdout.String(), "Failed") {
+				t.Fatal("structured output omitted failed provider")
+			}
+			if output == "json" && !json.Valid(stdout.Bytes()) {
+				t.Fatal("failure corrupted structured JSON")
+			}
+		})
+	}
+}

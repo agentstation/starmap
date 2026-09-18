@@ -9,8 +9,10 @@ import (
 	"time"
 
 	"github.com/agentstation/starmap"
+	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/catalogs/storage"
 	pkgerrors "github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 	"github.com/agentstation/starmap/server"
 )
 
@@ -91,20 +93,40 @@ func TestStartupExplicitEmptyBindingsDropsStoredScopeWithoutInputs(t *testing.T)
 	if next.State().PayloadChecksum != next.Client().CurrentCatalogState().PayloadChecksum {
 		t.Fatal("client differs from runtime")
 	}
+	accepted, err := store.Current(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	baseline := next.Client().EmbeddedCatalogState()
+	links := accepted.Manifest.SourceObservations
+	if len(links) != 1 || links[0].Source != sources.EmbeddedCatalogID || links[0].EvidenceChecksum != baseline.PayloadChecksum || !links[0].ObservedAt.Equal(baseline.GeneratedAt) {
+		t.Fatalf("withdrawal lost the selected baseline receipt: %+v", links)
+	}
 }
 
 func TestStartupUnscopedStoreOnlyCatalogRemainsAvailable(t *testing.T) {
 	store := storage.NewMemory()
 	options := []Option{WithStateDirectory(privateRuntimeDirectory(t)), WithCatalogSource("embedded"), WithClientOptions(starmap.WithCatalogStore(store))}
-	first := openTestRuntime(t, options...)
-	layer := testProviderLayer(t, "provider", "model", "Model", time.Date(2026, 9, 8, 0, 0, 0, 0, time.UTC))
-	if _, err := first.publishProviders(t.Context(), []ProviderLayer{layer}, first.lease.epoch()); err != nil {
+	client, err := starmap.New(starmap.WithCatalogStore(store))
+	if err != nil {
 		t.Fatal(err)
 	}
-	accepted := first.State()
-	if err := first.Close(); err != nil {
+	catalog, err := catalogs.DecodeCatalogPayload(testCatalogPayload(t, "provider", "model", "Model"))
+	if err != nil {
 		t.Fatal(err)
 	}
+	candidate, err := starmap.NewCandidate(catalog, starmap.CandidateEvidence{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	generation, err := client.PrepareGeneration(t.Context(), candidate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := client.Activate(t.Context(), generation); err != nil {
+		t.Fatal(err)
+	}
+	accepted := client.CurrentCatalogState()
 	next := openTestRuntime(t, append(options, WithStateDirectory(privateRuntimeDirectory(t)))...)
 	if _, err := next.State().Catalog.Provider("provider"); err != nil {
 		t.Fatal("permitted unscoped catalog disappeared")

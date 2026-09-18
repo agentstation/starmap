@@ -99,6 +99,10 @@ reasoning:
   default: null
 
 # Model pricing
+billing:
+  recognition:
+    basis: tokens
+
 pricing:
   tokens:
     cache_read:
@@ -108,7 +112,6 @@ pricing:
     output:
       per_1m: 3.0
   operations:
-    page_input: 0.000129
     audio_input: 1.0
   currency: USD
 

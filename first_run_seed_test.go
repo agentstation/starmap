@@ -5,6 +5,7 @@ import (
 	stderrors "errors"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -29,6 +30,19 @@ func TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded(t *testin
 		t.Fatalf("construction created workspace: %v", err)
 	}
 	baselineLocalEvidence := localEvidenceKeys(client.Catalog())
+	baseline, err := client.CurrentGeneration(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	membershipReceipts := make(map[string]bool)
+	for _, scope := range client.Catalog().MembershipScopes() {
+		if scope.Inventory != nil {
+			membershipReceipts[scope.Inventory.ObservationID] = true
+		}
+		for _, addition := range scope.Additions {
+			membershipReceipts[addition.ObservationID] = true
+		}
+	}
 
 	result, err := client.Sync(
 		context.Background(),
@@ -52,9 +66,31 @@ func TestFirstExplicitUpdateAtomicallySeedsAbsentWorkspaceFromEmbedded(t *testin
 	if current.Manifest.GenerationID != result.GenerationID {
 		t.Fatalf("stored generation = %q, want %q", current.Manifest.GenerationID, result.GenerationID)
 	}
-	if len(current.Manifest.SourceObservations) != 1 ||
-		current.Manifest.SourceObservations[0].Source != sources.EmbeddedCatalogID {
-		t.Fatalf("first generation observations = %#v, want embedded only", current.Manifest.SourceObservations)
+	if len(current.Manifest.SourceObservations) != 1+len(membershipReceipts) {
+		t.Fatalf("first generation has %d observations, want embedded plus %d membership receipts", len(current.Manifest.SourceObservations), len(membershipReceipts))
+	}
+	embeddedObservations := 0
+	for _, link := range current.Manifest.SourceObservations {
+		if link.Source == sources.EmbeddedCatalogID {
+			embeddedObservations++
+			continue
+		}
+		matched := false
+		for _, original := range baseline.Manifest.SourceObservations {
+			if membershipReceipts[link.ObservationID] && reflect.DeepEqual(link, original) {
+				matched = true
+				break
+			}
+		}
+		if !matched {
+			t.Fatalf("first generation changed original membership receipt %q", link.ObservationID)
+		}
+	}
+	if embeddedObservations != 1 {
+		t.Fatalf("embedded observations = %d, want one", embeddedObservations)
+	}
+	if err := catalogs.ValidateMembershipEvidence(client.Catalog().MembershipScopes(), current.Manifest.SourceObservations); err != nil {
+		t.Fatal(err)
 	}
 	projected, err := catalogs.NewFromPath(path)
 	if err != nil {

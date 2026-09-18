@@ -103,6 +103,10 @@ reasoning_tokens:
   default: 0
 
 # Model pricing
+billing:
+  recognition:
+    basis: tokens
+
 pricing:
   tokens:
     cache_read:
@@ -112,7 +116,6 @@ pricing:
     output:
       per_1m: 1.5
   operations:
-    page_input: 6.45e-05
     audio_input: 0.5
   currency: USD
 

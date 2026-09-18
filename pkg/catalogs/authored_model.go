@@ -130,10 +130,10 @@ func validateAuthoredModel(authorID AuthorID, model Model) error {
 			Message: "primary author must match the containing author",
 		}
 	}
-	if model.Status != "" || model.Pricing != nil || model.Limits != nil || len(model.Modes) != 0 {
+	if model.Status != "" || model.RecordPresence(ModelRecordBilling) != ValueMissing || model.Pricing != nil || model.Limits != nil || len(model.Modes) != 0 {
 		return &errors.ValidationError{
 			Field:   "authored_model",
-			Message: "must not contain provider status, pricing, limits, or modes",
+			Message: "must not contain provider status, billing, pricing, limits, or modes",
 		}
 	}
 	for source := range model.Extensions {

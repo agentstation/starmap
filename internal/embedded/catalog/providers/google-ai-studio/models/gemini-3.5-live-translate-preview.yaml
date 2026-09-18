@@ -89,6 +89,10 @@ generation:
     default: 0.95
 
 # Model pricing
+response:
+  protocols:
+    - websocket
+
 pricing:
   tokens:
     input:

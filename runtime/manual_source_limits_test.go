@@ -12,6 +12,10 @@ import (
 func TestManualSourceProviderLimitSurvivesPublicationAndRestart(t *testing.T) {
 	store := storage.NewMemory()
 	connected, options := manualTestRuntime(t, store)
+	baseline, err := store.Current(t.Context())
+	if err != nil || len(baseline.Manifest.SourceObservations) != 1 {
+		t.Fatalf("baseline receipt: generation=%+v error=%v", baseline.Manifest, err)
+	}
 	builder := catalogs.NewEmpty()
 	for index := range 101 {
 		id := catalogs.ProviderID(fmt.Sprintf("metadata-%03d", index))
@@ -46,10 +50,8 @@ func TestManualSourceProviderLimitSurvivesPublicationAndRestart(t *testing.T) {
 		if _, err := catalogs.DecodeCatalogPayload(generation.Payload); err != nil {
 			t.Fatalf("accepted generation failed canonical validation: %v", err)
 		}
-		links := generation.Manifest.SourceObservations
-		if len(links) != 1 || links[0].ObservationID != observation.ID || links[0].EvidenceChecksum != observation.EvidenceChecksum {
-			t.Fatal("original source receipt was not retained")
-		}
+		assertExactSourceReceipts(t, generation.Manifest.SourceObservations,
+			baseline.Manifest.SourceObservations[0], observation.Link())
 	}
 	assertAccepted()
 	before := connected.State()

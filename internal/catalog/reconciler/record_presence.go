@@ -22,6 +22,7 @@ var recordPolicyPaths = map[catalogs.ModelRecord]string{
 	catalogs.ModelRecordVerbosity:       "Verbosity",
 	catalogs.ModelRecordTools:           "Tools",
 	catalogs.ModelRecordDelivery:        "Delivery",
+	catalogs.ModelRecordBilling:         "Billing",
 	catalogs.ModelRecordPricing:         "Pricing",
 	catalogs.ModelRecordLimits:          "Limits",
 }

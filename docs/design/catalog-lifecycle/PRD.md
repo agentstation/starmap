@@ -51,6 +51,18 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D23 | Explicitly selected service-managed primary configuration may use trusted administrator ownership and service read access. Untrusted writes remain forbidden. | User confirmed on 2026-09-06 |
 | D24 | A fresh manual update resets prior local acquisition results while preserving the embedded or selected upstream baseline. Internal authority remains binding. | User confirmed on 2026-09-07 |
 | D25 | Account-specific catalog removals affect only inference profiles explicitly linked to that acquisition scope. Preserve model discovery and unrelated account routes. | User confirmed on 2026-09-07 |
+| D26 | Canonical catalog payloads permit 32 MiB. Raw source payloads retain 16 MiB. Encoders and decoders enforce identical catalog limits. | Engineering default based on a verified 23,683,266-byte generation. Owner preference remains pending. |
+| D27 | Ordinary provider absence changes observed availability and preserves visible catalog entries. Explicit operator removal or a replacement Starmap baseline can remove entries. | User confirmed on 2026-09-10 |
+| D28 | A model absent from a complete accepted provider inventory remains visible but is excluded from automatic routing for the affected provider/account. | User confirmed on 2026-09-10 |
+| D29 | Explicit removal affects only the selected provider/account entry by default. Canonical removal across providers is a separate action. | User confirmed on 2026-09-10 |
+| D30 | A former canonical model ID remains an alias until an operator or replacement baseline explicitly removes it. Aliases have no automatic expiry. | User confirmed on 2026-09-10 |
+| D31 | The scheduled public Starmap publisher stores public catalog checkpoints on GitHub. API keys remain Actions secrets. No checkpoint encryption service is required. | User clarified public-only source scope on 2026-09-14 |
+| D32 | Isolated invalid source records can be quarantined while valid updates publish. Preserve prior facts and record affected identifiers, reason codes, and source status. | User confirmed on 2026-09-14 |
+| D33 | Shared S3 catalog cleanup requires Valkey or Redis coordination. S3-only cleanup is outside this production recipe. | User confirmed on 2026-09-14 |
+| D34 | Public provider acquisition is best effort. Retain accepted facts after request failures and report provider failures in catalog and source status. | User reaffirmed on 2026-09-14 |
+| D35 | After a models.dev outage exceeds 24 hours, continue valid provider updates with retained models.dev facts. Report stale status and original evidence age. | User confirmed on 2026-09-16 UTC |
+| D36 | Starmap and Starport use Go 1.27.1 for development, CI, and releases. Add another supported Go family only for an actual product requirement. | User confirmed on 2026-09-16 |
+| D37 | Document recognition uses each provider’s actual billing units. Derived per-page prices are estimates, not fixed charges. Preserve Google support. | User confirmed on 2026-09-17 |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.

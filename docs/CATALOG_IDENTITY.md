@@ -87,7 +87,8 @@ indexes.
 join. It is inspectable output, not an editable source or a third authority.
 Catalog schema version 3 introduced the `author_models` and `provider_models`
 construction-record collections. Schema version 4 adds provider credential
-profiles and plane references. The current reader accepts schemas 6 through 9. It rejects earlier schemas.
+profiles and plane references. The current reader accepts schemas 6 through 10. It rejects earlier schemas.
+Schema 10 adds [provider recognition billing units](CATALOG_RECOGNITION_BILLING.md).
 
 
 ## Canonical rename history

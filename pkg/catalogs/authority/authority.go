@@ -201,6 +201,7 @@ func defaultPolicies() []Policy {
 		policy(evidence.ResourceTypeModel, "Tools", "", providerFirst, MergeReplace, EmptyAbsent, "Provider tool controls lead upstream and human fallback."),
 		policy(evidence.ResourceTypeModel, "Delivery", "", providerFirst, MergeReplace, EmptyAbsent, "Provider delivery controls lead upstream and human fallback."),
 		policy(evidence.ResourceTypeModel, "Modes", "modes", providerFirst, MergeDeep, EmptyAbsent, "Provider service modes lead upstream and human fallback."),
+		policy(evidence.ResourceTypeModel, "Billing", "billing", providerFirst, MergeReplace, EmptyAbsent, "Provider billing units lead upstream and curated fallback independently of price selection."),
 		policy(evidence.ResourceTypeModel, "Pricing", "pricing", providerFirst, MergeReplace, EmptyAbsent, "A semantically valid provider price wins atomically for its offering."),
 		policy(evidence.ResourceTypeModel, "Extensions", "extensions", localThenModelsDev, MergeDeep, EmptyAbsent, "Namespaced source extensions merge fieldwise without replacing canonical facts."),
 		policy(evidence.ResourceTypeModel, "CreatedAt", "", providerFirst, MergeReplace, EmptyAbsent, "Creation time follows the highest-authority observation that supplies it."),

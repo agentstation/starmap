@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260910T063828Z-0bbbff4c5fd3
-catalog_digest: sha256:f52170bd409eec87ef273f2db1adeacab33f35cfbde080694b73764b54d2f083
+generation_id: catalog-20260917T165638Z-09446b361271
+catalog_digest: sha256:86b1ce37a33932ee08ad2fc4b5abe36bd920bc3e1d901a0a54ab3b435163ec73
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -2264,8 +2264,6 @@ models:
               per_1m: 0.1
             output:
               per_1m: 0.4
-          operations:
-            page_input: 2.58e-05
           currency: USD
         limits:
           context_window: 1048576
@@ -2315,8 +2313,6 @@ models:
               per_1m: 0.075
             output:
               per_1m: 0.3
-          operations:
-            page_input: 1.935e-05
           currency: USD
         limits:
           context_window: 1048576
@@ -2420,7 +2416,6 @@ models:
             output:
               per_1m: 2.5
           operations:
-            page_input: 7.74e-05
             audio_input: 1.0
           currency: USD
         limits:
@@ -2534,7 +2529,6 @@ models:
             output:
               per_1m: 0.4
           operations:
-            page_input: 2.58e-05
             audio_input: 0.3
           currency: USD
         limits:
@@ -2721,8 +2715,6 @@ models:
               per_1m: 1.25
             output:
               per_1m: 10.0
-          operations:
-            page_input: 0.0003225
           currency: USD
         limits:
           context_window: 1048576
@@ -2829,7 +2821,6 @@ models:
             output:
               per_1m: 3.0
           operations:
-            page_input: 0.000129
             audio_input: 1.0
           currency: USD
         limits:
@@ -3140,7 +3131,6 @@ models:
             output:
               per_1m: 1.5
           operations:
-            page_input: 6.45e-05
             audio_input: 0.5
           currency: USD
         limits:
@@ -3241,7 +3231,6 @@ models:
             output:
               per_1m: 1.5
           operations:
-            page_input: 6.45e-05
             audio_input: 0.5
           currency: USD
         limits:
@@ -3461,7 +3450,6 @@ models:
             output:
               per_1m: 9.0
           operations:
-            page_input: 0.000387
             audio_input: 1.5
           currency: USD
         limits:
@@ -3649,7 +3637,6 @@ models:
             output:
               per_1m: 9.0
           operations:
-            page_input: 0.000387
             audio_input: 1.5
           currency: USD
         limits:
@@ -3685,7 +3672,6 @@ models:
             output:
               per_1m: 1.5
           operations:
-            page_input: 6.45e-05
             audio_input: 0.5
           currency: USD
         limits:

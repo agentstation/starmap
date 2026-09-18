@@ -489,6 +489,48 @@ scopes:
         self.assertIn(("delete-starter", 27), client.events)
         self.assertFalse(client.cloud[record["receipt_tag"]]["draft"])
 
+    def test_each_release_write_boundary_recovers_without_duplicate_assets(self):
+        record = self.fixture["record"]
+        for kind, filenames in (("receipt", (publication.RECEIPT, publication.CHECKPOINT)),
+                                ("artifact", publication.ASSETS)):
+            for operation in ("create", "upload", "edit"):
+                for after_write in (False, True):
+                    with self.subTest(kind=kind, operation=operation, after_write=after_write):
+                        name = f"{kind}-{operation}-{after_write}"
+                        first = self.client(name)
+                        self.copy_stage(first)
+                        tag = record[f"{kind}_tag"]
+                        original_gh = first.gh
+                        interrupted = False
+
+                        def interrupt_once(*args, **options):
+                            nonlocal interrupted
+                            if not interrupted and args[:2] == ("release", operation):
+                                interrupted = True
+                                if after_write:
+                                    original_gh(*args, **options)
+                                raise publication.PublicationError("fixture interrupted release write")
+                            return original_gh(*args, **options)
+
+                        with patch.object(first, "gh", side_effect=interrupt_once):
+                            with self.assertRaisesRegex(publication.PublicationError, "interrupted release write"):
+                                first.publish_release(tag, filenames, record)
+                        self.assertTrue(interrupted)
+                        retained = copy.deepcopy(first.cloud.get(tag, {}).get("data", {}))
+                        resumed = self.client(name + "-resumed", first.cloud)
+                        self.copy_stage(resumed)
+                        resumed.publish_release(tag, filenames, record)
+                        self.assertEqual({tag}, set(resumed.cloud))
+                        self.assertFalse(resumed.cloud[tag]["draft"])
+                        self.assertEqual(set(filenames), set(resumed.cloud[tag]["data"]))
+                        for filename in filenames:
+                            self.assertEqual((resumed.stage / filename).read_bytes(), resumed.cloud[tag]["data"][filename])
+                        for filename, content in retained.items():
+                            self.assertEqual(content, resumed.cloud[tag]["data"][filename])
+                        events = first.events + resumed.events
+                        self.assertEqual(1, sum(event[:2] == ("release", "create") for event in events))
+                        self.assertEqual(len(filenames), sum(event[:2] == ("release", "upload") for event in events))
+
     def test_changed_public_asset_stops_without_overwrite(self):
         client = self.client()
         self.copy_stage(client)
@@ -636,7 +678,44 @@ scopes:
                 checked.channels()
             for path in (checked.root / "channels").iterdir():
                 checked.fixture["accepted_digests"].add(publication.checksum(path))
-            checked.finish()
+            publish_channel = checked.push_document
+
+            def interrupt_second_channel(branch, *args):
+                if branch == "catalog/v1":
+                    raise publication.PublicationError("fixture interrupted before legacy channel")
+                return publish_channel(branch, *args)
+
+            with patch.object(checked, "push_document", side_effect=interrupt_second_channel):
+                with self.assertRaisesRegex(publication.PublicationError, "before legacy channel"):
+                    checked.finish()
+            partial = {name: checked.read_branch(name, "channel.json") for name in channel_state}
+            self.assertEqual(record["artifact_tag"], partial["catalog/v2"]["document"]["tag"])
+            self.assertIsNone(partial["catalog/v1"]["document"])
+            self.assertFalse(publication.completed(record, partial))
+            self.assertNotEqual("published", checked.emitted.get("status"))
+            retained_releases = copy.deepcopy(platform["releases"])
+
+            recovered = resume("channel-recovery")
+            recovered.fixture["accepted_digests"].update(checked.fixture["accepted_digests"])
+            shutil.rmtree(recovered.stage)
+            recovered.recover(record)
+            publication.write_json(recovered.control, {
+                "pending": record, "pending_head": "", "channels": partial,
+            })
+            recovered.publish()
+            recovered.promote()
+            self.assertEqual(checked.emitted["source_commit"], recovered.emitted["source_commit"])
+            with patch.dict(os.environ, {
+                "CATALOG_PROMOTED_COMMIT": recovered.emitted["source_commit"],
+                "CATALOG_PROMOTED_CHECKOUT": str(recovered.emitted["checkout"]),
+            }):
+                recovered.channels()
+            for path in (recovered.root / "channels").iterdir():
+                recovered.fixture["accepted_digests"].add(publication.checksum(path))
+            recovered.finish()
+            self.assertEqual(retained_releases, platform["releases"])
+            self.assertFalse(any(event[:2] == ("release", "upload") for event in recovered.events))
+            checked = recovered
             final = {name: checked.read_branch(name, "channel.json") for name in channel_state}
             self.assertTrue(publication.completed(record, final))
             self.assertEqual(checked.emitted["source_commit"], final["catalog/v2"]["document"]["publication"]["source_commit"])
@@ -684,5 +763,34 @@ class GitPublicationTests(unittest.TestCase):
             self.assertEqual({"sequence": 2}, json.loads(payload))
 
 
+class PublicationResult(unittest.TextTestResult):
+    """Record completed tests and subcases for the product acceptance runner."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.passed = []
+        self.subcases = []
+
+    def addSuccess(self, test):
+        super().addSuccess(test)
+        self.passed.append(test.id())
+
+    def addSubTest(self, test, subtest, error):
+        super().addSubTest(test, subtest, error)
+        self.subcases.append({"test": test.id(), "id": subtest.id(), "passed": error is None})
+
+
 if __name__ == "__main__":
-    unittest.main()
+    if "--json" not in sys.argv:
+        unittest.main()
+    else:
+        sys.argv.remove("--json")
+        program = unittest.main(exit=False, testRunner=unittest.TextTestRunner(resultclass=PublicationResult))
+        result = program.result
+        print(json.dumps({"tests_run": result.testsRun, "passed": result.passed,
+                          "subcases": result.subcases, "skipped": [test.id() for test, _ in result.skipped],
+                          "failures": [test.id() for test, _ in result.failures],
+                          "errors": [test.id() for test, _ in result.errors],
+                          "expected_failures": [test.id() for test, _ in result.expectedFailures],
+                          "unexpected_successes": [test.id() for test in result.unexpectedSuccesses]}))
+        sys.exit(0 if result.wasSuccessful() else 1)

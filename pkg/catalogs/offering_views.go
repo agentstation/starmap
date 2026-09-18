@@ -25,6 +25,7 @@ func deriveProviderOffering(candidate providerModelCandidate) (ProviderOffering,
 		ProviderModelID: ProviderModelID(model.ID),
 		DefinitionID:    candidate.definitionID,
 		Pricing:         deepCopyModelPricing(model.Pricing),
+		Billing:         deepCopyModelBilling(model.Billing),
 		Availability:    OfferingAvailabilityUnknown,
 		Endpoints:       append([]ProviderOfferingEndpoint(nil), candidate.endpoints...),
 		Lifecycle:       lifecycle,
@@ -183,7 +184,8 @@ func isChatCompletionModel(model Model) bool {
 	if isEmbeddingModel(model) {
 		return false
 	}
-	if chargesForGeneratedMedia(model) {
+	if model.Delivery != nil && len(model.Delivery.Protocols) != 0 &&
+		!slices.Contains(model.Delivery.Protocols, ModelResponseProtocolHTTP) {
 		return false
 	}
 	if model.Metadata != nil {
@@ -199,26 +201,6 @@ func isChatCompletionModel(model Model) bool {
 	return model.Features != nil &&
 		slices.Contains(model.Features.Modalities.Input, ModelModalityText) &&
 		slices.Contains(model.Features.Modalities.Output, ModelModalityText)
-}
-
-// chargesForGeneratedMedia reports whether the model charges to generate image,
-// audio, or video output. Only the generation prices describe what a
-// model serves. A flat request fee, or an input surcharge such as audio_input,
-// describes what the model accepts and what it costs, so neither disqualifies
-// a chat model. A declared price of zero states that the provider charges
-// nothing, not that the model generates media.
-func chargesForGeneratedMedia(model Model) bool {
-	if model.Pricing == nil || model.Pricing.Operations == nil {
-		return false
-	}
-	operations := model.Pricing.Operations
-	return pricesOperation(operations.ImageGen) ||
-		pricesOperation(operations.AudioGen) ||
-		pricesOperation(operations.VideoGen)
-}
-
-func pricesOperation(price *float64) bool {
-	return price != nil && *price > 0
 }
 
 func offeringLifecycle(status ModelStatus) (OfferingLifecycle, error) {

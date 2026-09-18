@@ -336,6 +336,7 @@ func (m Model) MarshalYAML() (any, error) {
 		key   string
 		value any
 	}{
+		{key: "billing", value: m.Billing},
 		{key: "pricing", value: m.Pricing},
 		{key: "limits", value: m.Limits},
 	} {

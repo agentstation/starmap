@@ -88,6 +88,14 @@ class CatalogVerifierTests(unittest.TestCase):
     def test_missing_registration_is_unverified(self):
         self.assertEqual(verifier.run_check('A01.test', None, {})['status'], 'UNVERIFIED')
 
+    def test_publication_hosted_without_repository_is_unverified(self):
+        entry = {'kind': 'publication_hosted', 'repository': 'starmap'}
+        self.assertEqual(verifier.run_check('A05.bot_required_checks', entry, {})['status'], 'UNVERIFIED')
+
+    def test_publication_recovery_without_repository_is_unverified(self):
+        entry = {'kind': 'publication_recovery', 'repository': 'starmap'}
+        self.assertEqual(verifier.run_check('A05.each_publication_failure', entry, {})['status'], 'UNVERIFIED')
+
     def test_real_named_go_test_executes(self):
         entry = {'kind': 'go_test', 'repository': 'starmap', 'package': './pkg/errors', 'test': 'TestConflictError'}
         result = verifier.run_check('runner-fixture', entry, {'starmap': verifier.ROOT})

@@ -1,9 +1,59 @@
 package runtime
 
 import (
+	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
 	"github.com/agentstation/starmap/pkg/errors"
+	"github.com/agentstation/starmap/pkg/sources"
 )
+
+// retainBaselineEvidence preserves original receipts when no local selection changes them.
+// A policy-only rebuild records its verified baseline without treating it as acquisition.
+func (l *layerSet) retainBaselineEvidence() bool {
+	manifest := l.embeddedManifest
+	sourceID := sources.EmbeddedCatalogID
+	if l.source != nil {
+		manifest = l.source.Manifest
+		sourceID = sources.ID(l.source.Identity)
+		if l.source.Identity == string(SourceFile) {
+			sourceID = sources.LocalCatalogID
+		}
+	}
+	if manifest == nil {
+		return false
+	}
+	localSelection := l.providerBindings != nil || l.acquisitionSources != nil ||
+		len(l.providers) != 0 || l.manual != nil || l.removals != nil
+	if !localSelection {
+		original := manifest.Copy()
+		l.buildEvidence = starmap.CandidateEvidence{
+			SourceObservations: original.SourceObservations,
+			ReviewCandidates:   original.ReviewCandidates,
+		}
+		return true
+	}
+	if len(l.buildEvidence.SourceObservations) != 0 {
+		return false
+	}
+	completeness := sources.ObservationCompletenessComplete
+	status := sources.ObservationStatusSucceeded
+	if manifest.Completeness == catalogs.GenerationCompletenessPartial {
+		completeness = sources.ObservationCompletenessPartial
+	}
+	if manifest.Degraded {
+		status = sources.ObservationStatusDegraded
+	}
+	l.buildEvidence.SourceObservations = append(l.buildEvidence.SourceObservations, catalogs.SourceObservationLink{
+		Source:           sourceID,
+		ObservationID:    "baseline:" + manifest.GenerationID,
+		ObservedAt:       manifest.GeneratedAt,
+		Revision:         sources.Revision{Kind: sources.RevisionKindContentDigest, Value: manifest.Payload.Checksum},
+		Completeness:     completeness,
+		Status:           status,
+		EvidenceChecksum: manifest.Payload.Checksum,
+	})
+	return false
+}
 
 // decodeCatalog checks retained scope evidence against its original generation.
 // Legacy payload-only layers cannot hold scopes, operator policies, or canonical aliases.
@@ -110,5 +160,27 @@ func (l *layerSet) validateSourceRemovalTransition(next *sourceLayer) error {
 	if len(previous.RemovalPolicies()) != 0 {
 		return &errors.ConflictError{Resource: "upstream removal policy", Message: "replacement format cannot express the accepted operator removal policy"}
 	}
+	return nil
+}
+
+// appendPayloadSourceEvidence records an explicitly selected payload baseline.
+func (l *layerSet) appendPayloadSourceEvidence(base *catalogs.Catalog) error {
+	if l.source == nil || l.source.Manifest != nil {
+		return nil
+	}
+	sourceID := sources.ID(l.source.Identity)
+	if l.source.Identity == string(SourceFile) {
+		sourceID = sources.LocalCatalogID
+	}
+	observation, err := sources.NewObservation(sourceID, base, sources.ObservationMetadata{
+		ObservedAt:   l.source.ObservedAt,
+		Revision:     sources.Revision{Kind: sources.RevisionKindContentDigest},
+		Completeness: sources.ObservationCompletenessComplete,
+		Status:       sources.ObservationStatusSucceeded,
+	})
+	if err != nil {
+		return err
+	}
+	l.buildEvidence.SourceObservations = append(l.buildEvidence.SourceObservations, observation.Link())
 	return nil
 }

@@ -363,7 +363,7 @@ func (r *Runtime) Close() error {
 // initializeEffective selects startup state and retains the separate compiled baseline.
 // An explicit binding set always rebuilds, including when no retained evidence is active.
 // Without that set, an empty layer set keeps the compiled baseline or unscoped accepted state.
-// It reaches no external system.
+// It does not fetch from sources or providers.
 func (r *Runtime) initializeEffective(ctx context.Context) error {
 	current := r.client.CurrentCatalogState()
 	baseline := r.client.EmbeddedCatalogState()
@@ -394,6 +394,17 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	if !r.requiresAuthority() && r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
 		if storedProviderPolicyRequired(current, baseline) {
 			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
+		}
+		if r.config.origin != nil {
+			generation, err := r.client.CurrentGeneration(ctx)
+			if err != nil {
+				return err
+			}
+			manifest := generation.Manifest.Copy()
+			r.layers.buildEvidence = starmap.CandidateEvidence{
+				SourceObservations: manifest.SourceObservations,
+				ReviewCandidates:   manifest.ReviewCandidates,
+			}
 		}
 		r.effective = current
 		r.report.startedAt = r.config.now()
