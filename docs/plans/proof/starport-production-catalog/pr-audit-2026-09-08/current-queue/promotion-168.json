@@ -3,10 +3,11 @@
   "pr": 168,
   "head": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
   "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
-  "disposition": "retain; checked bot promotion",
+  "disposition": "retain; native failures require repair",
   "source_run": 35395944704,
   "ci": 35397268876,
   "files_checked": 380,
   "unexpected_paths": [],
-  "next_action": "Inspect PR #168 run 35397268876. Let the checked publisher complete bot merge and both channels. Capture the successful publication, rerun original preparation 35395944704 for same-bytes evidence, and qualify both hosted A05 cases. Keep #165 until preservation and replacement verification."
+  "next_action": "CSP6 must repair the candidate runtime and fixture failures before checked promotion. Qualify source changes against the exact pending catalog. Keep #165 until replacement verification.",
+  "queue_evidence": "queue-status-2026-09-18-promotion-failure.json"
 }

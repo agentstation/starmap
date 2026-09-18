@@ -1,9 +1,13 @@
 ## Replacement promotion
 
 Catalog preparation run `35395944704` passed and opened Starmap #168 at `8bbd30235`.
-Its 380 changed files belong to the embedded catalog. Native CI run `35397268876` started.
+Its 380 changed files belong to the embedded catalog. Native CI run `35397268876` reports Linux ARM and macOS ARM failures.
 CSP6 owns checked bot promotion and hosted retry qualification. Preserve #165 until replacement verification.
 The [promotion record](promotion-168.json) owns the next action.
+
+The [failure capture](queue-status-2026-09-18-promotion-failure.json) records exact heads, ancestry, checks, review threads, and local work.
+CSP6 must repair seven Linux ARM failures before checked promotion. No PR qualifies for merge.
+Neither open PR has review threads or reaches the seven-day threshold. Starport has no open PRs.
 
 ## Controlled replacement publication
 

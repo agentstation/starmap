@@ -80,5 +80,18 @@
       "unresolved_model_reference": 274
     },
     "interpretation": "Complete inventories do not imply admission of offerings without reviewed canonical links. Receipt preserves all 274 review items."
+  },
+  "promotion_failure": {
+    "head": "8bbd3023544f5fd23f25e4dcce403b5d3d5ce392",
+    "run": 35397268876,
+    "failed_jobs": [
+      "Runtime ubuntu-24.04-arm",
+      "Runtime macos-15"
+    ],
+    "linux_arm_failed_test_count": 7,
+    "linux_arm_test_output": "promotion-168-linux-arm-tests.jsonl.gz",
+    "owner": "CSP6",
+    "next_action": "Repair origin restart and candidate-dependent fixtures. Qualify source separately from the pending catalog before checked promotion.",
+    "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
   }
 }
