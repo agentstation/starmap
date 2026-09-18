@@ -95,7 +95,7 @@
     "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
   },
   "promotion_repair": {
-    "status": "allocation measurement repair published; replacement CI in progress",
+    "status": "performance gate coverage repair published; replacement CI pending",
     "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
     "branch": "codex/catalog-baseline-origin-recovery",
     "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
@@ -170,20 +170,20 @@
         "source_head": "5dbfe7faf83e2795114d0685995025b37e25158a"
       }
     },
-    "next_action": "Qualify exact head f1afb8159 in run 35402969808. The prior run is cancelled. Merge reviewed PR169 only after required and native checks pass, then resume publisher for PR168.",
-    "commit": "f1afb8159a5832600e047cabe27550082eada4a3",
-    "review_session": 62670,
+    "next_action": "Qualify exact head e9a2f4bac in run 35404369968. Inspect superseded run 35402969808 for any reported failures. Merge PR169 only after required and native checks pass, then resume publisher for PR168.",
+    "commit": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
+    "review_session": 11727,
     "pr": 169,
-    "ci": 35402969808,
+    "ci": 35404369968,
     "review": {
       "Sol": "zero findings",
       "Opus": "zero findings",
-      "file": "promotion-169-allocation-review.json"
+      "file": "promotion-169-allocation-gate-review.json"
     },
-    "watch_session": 8628,
-    "watch_log": "/tmp/csp6-169-allocation-watch.log",
-    "local_commit": "f1afb8159a5832600e047cabe27550082eada4a3",
-    "published_commit": "f1afb8159a5832600e047cabe27550082eada4a3",
+    "watch_session": 1632,
+    "watch_log": "/tmp/csp6-169-allocation-gate-watch.log",
+    "local_commit": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
+    "published_commit": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
     "review_extended": {
       "Sol": "zero findings",
       "Opus": "zero findings"
@@ -222,7 +222,7 @@
       "windows_amd64_failed_tests": 7,
       "remaining_unclassified_failures": 0
     },
-    "previous_reviewed_head": "5dbfe7faf83e2795114d0685995025b37e25158a",
+    "previous_reviewed_head": "f1afb8159a5832600e047cabe27550082eada4a3",
     "allocation_measurement_repair": {
       "prior_run": 35401102797,
       "prior_head": "5dbfe7faf83e2795114d0685995025b37e25158a",
@@ -2383,6 +2383,31 @@
           }
         ],
         "status": "completed"
+      },
+      "ci_coverage": {
+        "gap": "Native platform package list excludes pkg/provenance. A !race test alone was not covered by CI.",
+        "repair_commit": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
+        "owner": "scripts/verify-catalog-performance.sh, called by scripts/verify.sh checks and make verify",
+        "command": "go test ./pkg/provenance -run '^TestCanonicalDynamicJSON(Scalar|Container)AllocationBound$' -count=1",
+        "result": "passed locally; full performance gate passed",
+        "catalog_accessor_ns_per_op": [
+          10.06,
+          8.171,
+          8.155
+        ],
+        "catalog_accessor_bytes_per_op": [
+          0,
+          0,
+          0
+        ],
+        "catalog_accessor_allocs_per_op": [
+          0,
+          0,
+          0
+        ],
+        "prose_files": 1825,
+        "prose_diagnostics": 0,
+        "superseded_run": 35402969808
       }
     }
   }

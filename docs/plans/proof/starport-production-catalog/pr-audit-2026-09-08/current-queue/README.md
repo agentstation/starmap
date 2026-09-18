@@ -1,14 +1,13 @@
 ## Consolidated baseline repair
 
-Starmap #169 contains the reviewed repair at `f1afb8159`. Sol and Opus report zero findings.
-Run `35401102797` exposed an allocation comparison affected by race instrumentation.
-The repair retains the native allocation limit and verifies the same container bytes under race detection.
-All 60 native and 59 race provenance events pass. The allocation limit passes 1,000 repetitions.
+Starmap #169 contains the reviewed repair at `e9a2f4bac`. Sol and Opus report zero findings.
+The existing performance gate now runs scalar and container allocation checks without race instrumentation.
+The same container bytes remain subject to race tests. Allocation limits remain unchanged.
+The performance gate passes locally, including three catalog benchmarks with zero allocations.
 
-CSP6 owns qualification through run `35402969808` and watch session `8628`.
+CSP6 owns qualification through run `35404369968` and watch session `1632`.
 The [repair record](repair-169.json) owns the next action.
-
-The prior run ended as cancelled. Six unfinished jobs remain unverified. The replacement run is active.
+Inspect superseded run `35402969808` for any reported failures.
 Merge #169 after required and native checks pass. Then resume the checked publisher for catalog PR #168.
 Preserve #165 until replacement verification.
 

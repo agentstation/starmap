@@ -1,16 +1,16 @@
 {
   "baseRefOid": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
-  "headRefOid": "f1afb8159a5832600e047cabe27550082eada4a3",
+  "headRefOid": "e9a2f4bac3b78a19ae6acd22640238443effe5a7",
   "mergeStateStatus": "BLOCKED",
   "number": 169,
   "statusCheckRollup": [
     {
       "__typename": "CheckRun",
-      "completedAt": "2026-09-18T22:46:55Z",
+      "completedAt": "2026-09-18T23:07:22Z",
       "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35402966838/job/105786647063",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35404367978/job/105790933332",
       "name": "Analyze (actions)",
-      "startedAt": "2026-09-18T22:45:57Z",
+      "startedAt": "2026-09-18T23:06:31Z",
       "status": "COMPLETED",
       "workflowName": "CodeQL"
     },
@@ -18,9 +18,9 @@
       "__typename": "CheckRun",
       "completedAt": "0001-01-01T00:00:00Z",
       "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35402966838/job/105786647073",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35404367978/job/105790933476",
       "name": "Analyze (go)",
-      "startedAt": "2026-09-18T22:45:58Z",
+      "startedAt": "2026-09-18T23:06:31Z",
       "status": "IN_PROGRESS",
       "workflowName": "CodeQL"
     },
@@ -28,24 +28,24 @@
       "__typename": "CheckRun",
       "completedAt": "0001-01-01T00:00:00Z",
       "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35402966838/job/105786646839",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35404367978/job/105790933512",
       "name": "Analyze (python)",
-      "startedAt": "2026-09-18T22:45:57Z",
+      "startedAt": "2026-09-18T23:06:31Z",
       "status": "IN_PROGRESS",
       "workflowName": "CodeQL"
     },
     {
       "__typename": "CheckRun",
-      "completedAt": "2026-09-18T22:46:48Z",
+      "completedAt": "2026-09-18T23:07:16Z",
       "conclusion": "NEUTRAL",
-      "detailsUrl": "https://github.com/agentstation/starmap/runs/105786818994",
+      "detailsUrl": "https://github.com/agentstation/starmap/runs/105791082259",
       "name": "CodeQL",
-      "startedAt": "2026-09-18T22:46:47Z",
+      "startedAt": "2026-09-18T23:07:14Z",
       "status": "COMPLETED",
       "workflowName": ""
     }
   ],
   "owner": "CSP6",
-  "disposition": "retain; qualify allocation measurement repair",
-  "next_action": "Qualify exact head f1afb8159 in run 35402969808. The prior run is cancelled. Merge reviewed PR169 only after required and native checks pass, then resume publisher for PR168."
+  "disposition": "retain; qualify performance gate coverage repair",
+  "next_action": "Qualify exact head e9a2f4bac in run 35404369968. Inspect superseded run 35402969808 for any reported failures. Merge PR169 only after required and native checks pass, then resume publisher for PR168."
 }
