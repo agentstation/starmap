@@ -1,0 +1,77 @@
+EEEEEEEE
+======================================================================
+ERROR: test_changed_candidate_cannot_use_rejection (test_catalog_rejection.RejectionTests.test_changed_candidate_cannot_use_rejection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 40, in test_changed_candidate_cannot_use_rejection
+    self.publisher.rejected(changed, self.channels)
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+======================================================================
+ERROR: test_duplicate_rejection_is_invalid (test_catalog_rejection.RejectionTests.test_duplicate_rejection_is_invalid)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 63, in test_duplicate_rejection_is_invalid
+    self.publisher.rejected(self.record, self.channels)
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+======================================================================
+ERROR: test_either_channel_prevents_rejection (test_catalog_rejection.RejectionTests.test_either_channel_prevents_rejection) (channel='catalog/v1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 48, in test_either_channel_prevents_rejection
+    self.publisher.rejected(self.record, channels)
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+======================================================================
+ERROR: test_either_channel_prevents_rejection (test_catalog_rejection.RejectionTests.test_either_channel_prevents_rejection) (channel='catalog/v2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 48, in test_either_channel_prevents_rejection
+    self.publisher.rejected(self.record, channels)
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+======================================================================
+ERROR: test_exact_candidate_requires_retained_authenticated_inputs (test_catalog_rejection.RejectionTests.test_exact_candidate_requires_retained_authenticated_inputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 33, in test_exact_candidate_requires_retained_authenticated_inputs
+    self.assertTrue(self.publisher.rejected(self.record, self.channels))
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+======================================================================
+ERROR: test_missing_evidence_prevents_rejection (test_catalog_rejection.RejectionTests.test_missing_evidence_prevents_rejection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 53, in test_missing_evidence_prevents_rejection
+    self.publisher.rejected(self.record, self.channels)
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+======================================================================
+ERROR: test_modified_evidence_prevents_rejection (test_catalog_rejection.RejectionTests.test_modified_evidence_prevents_rejection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 58, in test_modified_evidence_prevents_rejection
+    self.publisher.rejected(self.record, self.channels)
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+======================================================================
+ERROR: test_unlisted_candidate_is_not_rejected (test_catalog_rejection.RejectionTests.test_unlisted_candidate_is_not_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jack/src/github.com/agentstation/starmap-publisher-validation/scripts/test_catalog_rejection.py", line 29, in test_unlisted_candidate_is_not_rejected
+    self.assertFalse(self.publisher.rejected(other, self.channels))
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Publisher' object has no attribute 'rejected'
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.007s
+
+FAILED (errors=8)

@@ -1,0 +1,22 @@
+{
+  "status": "reviewed and published; native qualification pending",
+  "head": "08ed76e4a0780fe5520b2763b25b855d6c4230b0",
+  "pr": 167,
+  "tests": {
+    "rejection": 9,
+    "publication_recovery": 22,
+    "qualification": 5,
+    "hosted_evidence": 7,
+    "capture": 5
+  },
+  "actionlint": "PASS",
+  "documentation_lint": "PASS",
+  "review": {
+    "findings": [],
+    "overall_correctness": "patch is correct",
+    "overall_explanation": "Panel review complete. claude model=opus thinking=high: 0 finding(s), codex model=gpt-5.6-sol thinking=xhigh: 0 finding(s).",
+    "overall_confidence": 0.98
+  },
+  "next_action": "Inspect PR #167 native CI, merge exact reviewed head after checks pass, then dispatch the controlled publisher and verify replacement before closing #165.",
+  "completion_credit": false
+}
