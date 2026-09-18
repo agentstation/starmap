@@ -100,18 +100,13 @@ func servedThroughChat(operation catalogs.ProviderOperation) bool {
 	return operation == catalogs.ProviderOperationDocumentsRecognition
 }
 
-// TestTheResidualOfferingsAreRealtimeAlone names every offering the shipped
-// catalog still leaves without an operation. MOD0 counted 63 of them, and MOD12
-// left 16: 13 that generate video and 3 that serve a realtime session. AMJ3
-// gave the video ones an operation, so only the realtime shape remains, and
-// holding the number here is what makes a new residual visible.
+// TestTheResidualOfferingsAreRealtimeAlone requires explicit WebSocket delivery
+// for each offering without a supported request operation.
 func TestTheResidualOfferingsAreRealtimeAlone(t *testing.T) {
 	catalog, _, err := Embedded()
 	if err != nil {
 		t.Fatalf("Embedded: %v", err)
 	}
-
-	video, realtime, other := 0, 0, 0
 	for _, provider := range catalog.Providers().List() {
 		offerings, err := catalog.ProviderOfferings(provider.ID)
 		if err != nil {
@@ -122,36 +117,11 @@ func TestTheResidualOfferingsAreRealtimeAlone(t *testing.T) {
 				continue
 			}
 			model := provider.Models[string(offering.ProviderModelID)]
-			if model == nil || model.Features == nil {
-				other++
-				continue
-			}
-			output := model.Features.Modalities.Output
-			switch {
-			case slices.Contains(output, catalogs.ModelModalityVideo):
-				video++
-			case slices.Contains(output, catalogs.ModelModalityAudio) &&
-				slices.Contains(output, catalogs.ModelModalityText):
-				realtime++
-			default:
-				t.Fatalf(
-					"%s/%s has no operation and no recorded reason: input %v output %v",
-					provider.ID,
-					offering.ProviderModelID,
-					model.Features.Modalities.Input,
-					output,
-				)
+			if model == nil || model.Delivery == nil ||
+				!slices.Equal(model.Delivery.Protocols, []catalogs.ModelResponseProtocol{catalogs.ModelResponseProtocolWebSocket}) {
+				t.Fatalf("%s/%s has no operation and lacks exclusive WebSocket delivery", provider.ID, offering.ProviderModelID)
 			}
 		}
-	}
-
-	if video != 0 || realtime != 3 || other != 0 {
-		t.Fatalf(
-			"residual offerings: video = %d want 0, realtime = %d want 3, unexplained = %d want 0",
-			video,
-			realtime,
-			other,
-		)
 	}
 }
 

@@ -34,7 +34,10 @@ func TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent(t *testing.T) {
 	if baseline.Catalog == nil || baseline.GenerationID == "" || baseline.PayloadChecksum == "" || baseline.GeneratedAt.IsZero() {
 		t.Fatal("incomplete embedded baseline")
 	}
-	builder := catalogs.NewEmpty()
+	builder, err := catalogs.NewBuilderFrom(baseline.Catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if err := builder.SetProvider(catalogs.Provider{ID: "stored-only-provider", Name: "Stored Provider"}); err != nil {
 		t.Fatal(err)
 	}
