@@ -1,0 +1,28 @@
+{
+  "scope": "read-only resume preflight while CSP6 hosted validation runs",
+  "starport": {
+    "worktree": "starport-product-paths",
+    "head": "7b59be6ece0768871cd9b60ca556e9530941e05d",
+    "main": "d5d891eefc32d221406f059dc025a3a1e3ab4070",
+    "clean": true,
+    "unmerged_commits": 12,
+    "merge_preview_conflicts": [
+      "go.mod",
+      "go.sum"
+    ],
+    "preview_only": true
+  },
+  "starmap": {
+    "worktree": "starmap-host-files",
+    "head": "e8104b5f3b65058da3f05f648259d29ae139b5d8",
+    "clean": true,
+    "unmerged_commits": 5,
+    "missing_from_main": [
+      "pkg/productpaths/workspace.go",
+      "pkg/productfiles/directory.go"
+    ],
+    "next_action": "Integrate and qualify saved host-file API work on current Go 1.27.1 main before publishing the dependent Starport changes."
+  },
+  "completion_credit": false,
+  "task_status": "CSP8 remains blocked(compatible_producer)"
+}
