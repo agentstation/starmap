@@ -1,22 +1,23 @@
-# deepseek-ai/DeepSeek-V3.1 - DeepSeek-V3.1 is post-trained on the top of DeepSeek-V3.1-Ba...
+# deepseek-ai/DeepSeek-V3.1 - Hybrid-reasoning DeepSeek model with thinking and non-thinki...
 id: deepseek-ai/DeepSeek-V3.1
 model: deepseek/deepseek-v3.1
 name: deepseek-ai/DeepSeek-V3.1
 authors:
 - id: deepseek
   name: deepseek
-description: DeepSeek-V3.1 is post-trained on the top of DeepSeek-V3.1-Base, which is built upon the original V3 base checkpoint through a two-phase long context extension approach, following the methodology outlined in the original DeepSeek-V3 report. We have expanded our dataset by collecting additional long documents and substantially extending both training phases. The 32K extension phase has been increased 10-fold to 630B tokens, while the 128K extension phase has been extended by 3.3x to 209B tokens. Additionally, DeepSeek-V3.1 is trained using the UE8M0 FP8 scale data format to ensure compatibility with microscaling data formats.
+description: Hybrid-reasoning DeepSeek model with thinking and non-thinking modes
 
 # Model metadata
 metadata:
-  release_date: null
-  open_weights: false
+  release_date: 2025-08-21
+  open_weights: true
   tags:
   - chat
   - prompt_cache
   - reasoning_effort
   - reasoning
 lineage:
+  family: deepseek
   root: deepseek-ai/DeepSeek-V3.1
 
 # Model features
@@ -28,9 +29,9 @@ features:
     - text
 
   # Core capabilities
-  tool_calls: false
-  tools: false
-  tool_choice: false
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: false
   attachments: false
 
@@ -77,17 +78,20 @@ features:
 
   # Response delivery
   format_response: false
-  structured_outputs: false
+  structured_outputs: true
   streaming: true
 
 # Model pricing
 pricing:
   tokens:
     cache_read:
+      per_token: 0.0
       per_1m: 0.13
     input:
+      per_token: 0.0
       per_1m: 0.25
     output:
+      per_token: 0.0
       per_1m: 0.95
   currency: USD
 
@@ -95,8 +99,13 @@ pricing:
 limits:
   context_window: 163840
   input_tokens: 0
-  output_tokens: 163840
+  output_tokens: 8192
+extensions:
+  models.dev:
+    fields:
+      reasoning_options:
+      - type: toggle
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.084472Z
-updated_at: 2026-07-30T16:49:30.992477Z
+updated_at: 2026-09-18T21:17:47.882119486Z

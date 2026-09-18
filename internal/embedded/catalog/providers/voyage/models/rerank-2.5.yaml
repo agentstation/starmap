@@ -1,4 +1,4 @@
-# rerank-2.5 - Instruction-following multilingual reranker billed by the token
+# rerank-2.5 - Instruction-following multilingual reranker billed by the to...
 id: rerank-2.5
 model: voyage-ai/rerank-2.5
 name: rerank-2.5
@@ -9,6 +9,7 @@ description: Instruction-following multilingual reranker billed by the token
 
 # Model metadata
 metadata:
+  release_date: null
   open_weights: false
   tags:
   - rerank

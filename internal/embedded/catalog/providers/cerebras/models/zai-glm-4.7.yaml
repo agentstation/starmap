@@ -76,7 +76,9 @@ pricing:
   tokens:
     cache_read:
       per_1m: 2.25
-    cache_write: {}
+    cache_write:
+      per_token: 0.0
+      per_1m: 0.0
     input:
       per_1m: 2.25
     output:

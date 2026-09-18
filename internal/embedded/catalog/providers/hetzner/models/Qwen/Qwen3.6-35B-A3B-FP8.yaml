@@ -1,16 +1,22 @@
-# Qwen/Qwen3.6-35B-A3B-FP8 - Hetzner's FP8 Qwen3.6 multimodal offering.
+# Qwen/Qwen3.6-35B-A3B-FP8 - Open multimodal Qwen MoE for local agents that need vision, ...
 id: Qwen/Qwen3.6-35B-A3B-FP8
 model: qwen/qwen3.6-35b-a3b
 name: Qwen/Qwen3.6-35B-A3B-FP8
 authors:
 - id: qwen
-  name: Qwen Team
-description: Hetzner's FP8 Qwen3.6 multimodal offering
-status: preview
+  name: qwen
+description: Open multimodal Qwen MoE for local agents that need vision, audio, and code
+status: beta
+
+# Model metadata
 metadata:
+  release_date: 2026-04-17
   open_weights: true
 lineage:
   family: qwen
+  root: /model
+
+# Model features
 features:
   modalities:
     input:
@@ -18,17 +24,23 @@ features:
     - image
     output:
     - text
-  tool_calls: null
-  tools: null
-  tool_choice: null
+
+  # Core capabilities
+  tool_calls: true
+  tools: true
+  tool_choice: true
   web_search: null
-  attachments: null
-  reasoning: null
+  attachments: true
+
+  # Reasoning & Verbosity
+  reasoning: true
   reasoning_effort: null
   reasoning_tokens: null
   include_reasoning: null
   verbosity: null
-  temperature: null
+
+  # Generation control support flags
+  temperature: true
   top_p: null
   top_k: null
   top_a: null
@@ -60,10 +72,31 @@ features:
   num_beams: null
   early_stopping: null
   diversity_penalty: null
+
+  # Response delivery
   format_response: null
-  structured_outputs: null
+  structured_outputs: true
   streaming: null
+
+# Model pricing
+pricing:
+  tokens:
+    cache_read:
+      per_token: 0.0
+      per_1m: 0.0
+    input:
+      per_token: 0.0
+      per_1m: 0.0
+    output:
+      per_token: 0.0
+      per_1m: 0.0
+  currency: USD
+
+# Model limits
 limits:
   context_window: 262144
+  output_tokens: 262144
+
+# Timestamps
 created_at: 2026-08-19T23:27:49Z
-updated_at: 2026-08-19T23:27:49Z
+updated_at: 2026-09-18T21:17:46.951479494Z

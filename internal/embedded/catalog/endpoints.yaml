@@ -1,6 +1,6 @@
 schema_version: 2
-generation_id: catalog-20260917T165638Z-09446b361271
-catalog_digest: sha256:86b1ce37a33932ee08ad2fc4b5abe36bd920bc3e1d901a0a54ab3b435163ec73
+generation_id: bindings-de02ef4fcfb68a86b119f3fa139715c1f77d4e2ee8d8af3d4eb4efab3d31ef07.local.ac6ad0483752
+catalog_digest: sha256:97f8e20ed63c2a272166f25927c64334e4fc971441023d6777e7b8fdd37d00cc
 models:
   - model: ai21/jamba-1-5-large
     endpoints:
@@ -45,6 +45,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -67,6 +68,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -88,7 +90,7 @@ models:
         provider_model_id: Wan-AI/Wan2.2-T2V-A14B
         pricing:
           operations:
-            video_gen: 0.036
+            video_gen: 0.075
           currency: USD
         availability: unknown
         lifecycle: unknown
@@ -230,12 +232,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 1.0
             cache_write:
+              per_token: 0.0
               per_1m: 12.5
             input:
+              per_token: 0.0
               per_1m: 10.0
             output:
+              per_token: 0.0
               per_1m: 50.0
           currency: USD
         limits:
@@ -257,8 +263,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 10.0
             output:
+              per_token: 0.0
               per_1m: 50.0
           currency: USD
         limits:
@@ -281,8 +289,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 5.0
           currency: USD
         limits:
@@ -305,12 +315,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             cache_write:
+              per_token: 0.0
               per_1m: 1.25
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 5.0
           currency: USD
         limits:
@@ -363,12 +377,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             cache_write:
+              per_token: 0.0
               per_1m: 6.25
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 25.0
           currency: USD
         limits:
@@ -392,12 +410,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             cache_write:
+              per_token: 0.0
               per_1m: 6.25
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 25.0
           currency: USD
         limits:
@@ -439,12 +461,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             cache_write:
+              per_token: 0.0
               per_1m: 6.25
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 25.0
           currency: USD
         limits:
@@ -484,8 +510,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 25.0
           currency: USD
         limits:
@@ -508,12 +536,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             cache_write:
+              per_token: 0.0
               per_1m: 6.25
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 25.0
           currency: USD
         limits:
@@ -535,12 +567,16 @@ models:
             pricing:
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 1.0
                 cache_write:
+                  per_token: 0.0
                   per_1m: 12.5
                 input:
+                  per_token: 0.0
                   per_1m: 10.0
                 output:
+                  per_token: 0.0
                   per_1m: 50.0
               currency: USD
             request:
@@ -553,8 +589,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 25.0
           currency: USD
         limits:
@@ -577,12 +615,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.3
             cache_write:
+              per_token: 0.0
               per_1m: 3.75
             input:
+              per_token: 0.0
               per_1m: 3.0
             output:
+              per_token: 0.0
               per_1m: 15.0
           currency: USD
         limits:
@@ -606,12 +648,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.3
             cache_write:
+              per_token: 0.0
               per_1m: 3.75
             input:
+              per_token: 0.0
               per_1m: 3.0
             output:
+              per_token: 0.0
               per_1m: 15.0
           currency: USD
         limits:
@@ -633,8 +679,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 3.0
             output:
+              per_token: 0.0
               per_1m: 15.0
           currency: USD
         limits:
@@ -657,12 +705,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.2
             cache_write:
+              per_token: 0.0
               per_1m: 2.5
             input:
+              per_token: 0.0
               per_1m: 2.0
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -684,9 +736,11 @@ models:
         pricing:
           tokens:
             input:
-              per_1m: 2.0
+              per_token: 0.0
+              per_1m: 3.0
             output:
-              per_1m: 10.0
+              per_token: 0.0
+              per_1m: 15.0
           currency: USD
         limits:
           context_window: 1000000
@@ -708,6 +762,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -730,6 +785,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -752,6 +808,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -774,6 +831,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -794,10 +852,11 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
-          context_window: 8192
+          context_window: 512
           input_tokens: 0
           output_tokens: 8192
         availability: unknown
@@ -1142,10 +1201,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.05
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 2.0
           currency: USD
         limits:
@@ -1169,16 +1231,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 3.0
           currency: USD
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 256000
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         service:
@@ -1196,16 +1261,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.02
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 256000
+          output_tokens: 32000
         availability: unknown
         lifecycle: unknown
         service:
@@ -1223,16 +1291,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 3.0
           currency: USD
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 256000
+          output_tokens: 128000
         availability: unknown
         lifecycle: unknown
         service:
@@ -1293,8 +1364,10 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 20.0
             input:
+              per_token: 0.0
               per_1m: 40.0
           operations:
             request: 0.0
@@ -1321,8 +1394,10 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 11.0
             input:
+              per_token: 0.0
               per_1m: 22.0
           operations:
             request: 0.0
@@ -1440,16 +1515,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.35
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 2.15
           currency: USD
         limits:
           context_window: 163840
           input_tokens: 0
-          output_tokens: 163840
+          output_tokens: 64000
         availability: unknown
         lifecycle: unknown
         service:
@@ -1503,14 +1581,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.32
             output:
+              per_token: 0.0
               per_1m: 0.89
           currency: USD
         limits:
           context_window: 163840
           input_tokens: 0
-          output_tokens: 163840
+          output_tokens: 8192
         availability: unknown
         lifecycle: unknown
         service:
@@ -1527,10 +1607,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.135
             input:
+              per_token: 0.0
               per_1m: 0.24
             output:
+              per_token: 0.0
               per_1m: 0.9
           currency: USD
         limits:
@@ -1554,16 +1637,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.13
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 0.95
           currency: USD
         limits:
           context_window: 163840
           input_tokens: 0
-          output_tokens: 163840
+          output_tokens: 8192
         availability: unknown
         lifecycle: unknown
         service:
@@ -1608,16 +1694,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.13
             input:
+              per_token: 0.0
               per_1m: 0.26
             output:
+              per_token: 0.0
               per_1m: 0.38
           currency: USD
         limits:
           context_window: 163840
           input_tokens: 0
-          output_tokens: 163840
+          output_tokens: 64000
         availability: unknown
         lifecycle: unknown
         service:
@@ -1657,16 +1746,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.018
             input:
+              per_token: 0.0
               per_1m: 0.09
             output:
+              per_token: 0.0
               per_1m: 0.18
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 1048576
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -1682,11 +1774,17 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.0028
+              per_token: 0.0
+              per_1m: 0.003
             input:
-              per_1m: 0.14
+              per_token: 0.0
+              per_1m: 0.15
             output:
-              per_1m: 0.28
+              per_token: 0.0
+              per_1m: 0.6
+            reasoning:
+              per_token: 0.0
+              per_1m: 0.6
           currency: USD
         limits:
           context_window: 1000000
@@ -1731,16 +1829,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             input:
+              per_token: 0.0
               per_1m: 1.3
             output:
+              per_token: 0.0
               per_1m: 2.6
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 1048576
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -1756,10 +1857,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.003625
             input:
+              per_token: 0.0
               per_1m: 0.435
             output:
+              per_token: 0.0
+              per_1m: 0.87
+            reasoning:
+              per_token: 0.0
               per_1m: 0.87
           currency: USD
         limits:
@@ -1781,18 +1888,21 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.145
+              per_token: 0.0
+              per_1m: 0.6
             input:
-              per_1m: 1.74
+              per_token: 0.0
+              per_1m: 1.2
             output:
-              per_1m: 3.48
+              per_token: 0.0
+              per_1m: 1.2
           currency: USD
         limits:
-          context_window: 1048576
+          context_window: 1000000
           input_tokens: 0
           output_tokens: 384000
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -1801,6 +1911,23 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.fireworks.ai/inference/v1/chat/completions
+        modes:
+          priority:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.6
+                input:
+                  per_token: 0.0
+                  per_1m: 1.2
+                output:
+                  per_token: 0.0
+                  per_1m: 1.2
+              currency: USD
+            request:
+              body:
+                service_tier: priority
   - model: google/alphagenome-request
     endpoints:
       - provider: google-vertex
@@ -1820,8 +1947,8 @@ models:
       - provider: google-ai-studio
         provider_model_id: antigravity-preview-05-2026
         limits:
-          context_window: 131072
-          input_tokens: 131072
+          context_window: 1048576
+          input_tokens: 1048576
           output_tokens: 65536
         availability: unknown
         lifecycle: unknown
@@ -2136,6 +2263,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.002
           currency: USD
         limits:
@@ -2388,8 +2516,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 2.5
           currency: USD
         limits:
@@ -2409,14 +2539,18 @@ models:
         provider_model_id: gemini-2.5-flash
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 1.0
             cache_read:
+              per_token: 0.0
               per_1m: 0.03
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 2.5
-          operations:
-            audio_input: 1.0
           currency: USD
         limits:
           context_window: 1048576
@@ -2442,13 +2576,17 @@ models:
         provider_model_id: gemini-2.5-flash
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 1.0
             cache_read:
-              per_1m: 0.075
-            cache_write:
-              per_1m: 0.383
+              per_token: 0.0
+              per_1m: 0.03
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 2.5
           currency: USD
         limits:
@@ -2473,10 +2611,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.075
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 30.0
           currency: USD
         limits:
@@ -2499,8 +2640,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 30.0
           currency: USD
         limits:
@@ -2522,14 +2665,18 @@ models:
         provider_model_id: gemini-2.5-flash-lite
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 0.3
             cache_read:
+              per_token: 0.0
               per_1m: 0.01
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.4
-          operations:
-            audio_input: 0.3
           currency: USD
         limits:
           context_window: 1048576
@@ -2555,14 +2702,18 @@ models:
         provider_model_id: gemini-2.5-flash-lite
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 0.3
             cache_read:
+              per_token: 0.0
               per_1m: 0.01
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.4
-          operations:
-            audio_input: 0.3
           currency: USD
         limits:
           context_window: 1048576
@@ -2589,14 +2740,7 @@ models:
           output_tokens: 8192
         availability: unknown
         lifecycle: unknown
-        service:
-          operations:
-            - chat-completions
-        service_endpoints:
-          - operation: chat-completions
-            type: google
-            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-native-audio-latest:generateContent
-            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-native-audio-latest:streamGenerateContent
+        service: {}
   - model: google/gemini-2.5-flash-native-audio-preview-09-2025
     endpoints:
       - provider: google-ai-studio
@@ -2607,14 +2751,7 @@ models:
           output_tokens: 8192
         availability: unknown
         lifecycle: unknown
-        service:
-          operations:
-            - chat-completions
-        service_endpoints:
-          - operation: chat-completions
-            type: google
-            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-native-audio-preview-09-2025:generateContent
-            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-native-audio-preview-09-2025:streamGenerateContent
+        service: {}
   - model: google/gemini-2.5-flash-native-audio-preview-12-2025
     endpoints:
       - provider: google-ai-studio
@@ -2625,14 +2762,7 @@ models:
           output_tokens: 8192
         availability: unknown
         lifecycle: unknown
-        service:
-          operations:
-            - chat-completions
-        service_endpoints:
-          - operation: chat-completions
-            type: google
-            url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-native-audio-preview-12-2025:generateContent
-            stream_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-native-audio-preview-12-2025:streamGenerateContent
+        service: {}
   - model: google/gemini-2.5-flash-preview-tts
     endpoints:
       - provider: google-ai-studio
@@ -2640,8 +2770,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -2665,8 +2797,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -2690,8 +2824,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.25
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -2765,8 +2901,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 20.0
           currency: USD
         limits:
@@ -2790,8 +2928,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 20.0
           currency: USD
         limits:
@@ -2814,14 +2954,18 @@ models:
         provider_model_id: gemini-3-flash-preview
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 1.0
             cache_read:
+              per_token: 0.0
               per_1m: 0.05
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 3.0
-          operations:
-            audio_input: 1.0
           currency: USD
         limits:
           context_window: 1048576
@@ -2847,14 +2991,18 @@ models:
         provider_model_id: gemini-3-flash-preview
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 1.0
             cache_read:
+              per_token: 0.0
               per_1m: 0.05
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 3.0
-          operations:
-            audio_input: 1.0
           currency: USD
         limits:
           context_window: 1048576
@@ -2889,8 +3037,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 2.0
             output:
+              per_token: 0.0
               per_1m: 120.0
           currency: USD
         limits:
@@ -2911,9 +3061,14 @@ models:
         provider_model_id: gemini-3-pro-image
         pricing:
           tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.2
             input:
+              per_token: 0.0
               per_1m: 2.0
             output:
+              per_token: 0.0
               per_1m: 120.0
           currency: USD
         limits:
@@ -2924,6 +3079,7 @@ models:
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google-cloud
@@ -2936,8 +3092,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 2.0
             output:
+              per_token: 0.0
               per_1m: 120.0
           currency: USD
         limits:
@@ -3019,8 +3177,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 60.0
           currency: USD
         limits:
@@ -3041,9 +3201,14 @@ models:
         provider_model_id: gemini-3.1-flash-image
         pricing:
           tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.05
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 60.0
           currency: USD
         limits:
@@ -3054,6 +3219,7 @@ models:
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: google-cloud
@@ -3066,8 +3232,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 60.0
           currency: USD
         limits:
@@ -3103,8 +3271,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 1.5
           currency: USD
         limits:
@@ -3124,14 +3294,18 @@ models:
         provider_model_id: gemini-3.1-flash-lite
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 0.5
             cache_read:
+              per_token: 0.0
               per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 1.5
-          operations:
-            audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
@@ -3157,14 +3331,18 @@ models:
         provider_model_id: gemini-3.1-flash-lite
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 0.5
             cache_read:
+              per_token: 0.0
               per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 1.5
-          operations:
-            audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
@@ -3188,8 +3366,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 30.0
           currency: USD
         limits:
@@ -3224,14 +3404,18 @@ models:
         provider_model_id: gemini-3.1-flash-lite-preview
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 0.5
             cache_read:
+              per_token: 0.0
               per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 1.5
-          operations:
-            audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
@@ -3257,14 +3441,18 @@ models:
         provider_model_id: gemini-3.1-flash-lite-preview
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 0.5
             cache_read:
+              per_token: 0.0
               per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 1.5
-          operations:
-            audio_input: 0.5
           currency: USD
         limits:
           context_window: 1048576
@@ -3287,13 +3475,18 @@ models:
         provider_model_id: gemini-3.1-flash-live-preview
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 3.0
+            audio_output:
+              per_token: 0.0
+              per_1m: 12.0
             input:
+              per_token: 0.0
               per_1m: 0.75
             output:
+              per_token: 0.0
               per_1m: 4.5
-          operations:
-            audio_input: 3.0
-            audio_gen: 12.0
           currency: USD
         limits:
           context_window: 131072
@@ -3309,8 +3502,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 20.0
           currency: USD
         limits:
@@ -3346,8 +3541,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 2.0
             output:
+              per_token: 0.0
               per_1m: 12.0
           currency: USD
         limits:
@@ -3422,8 +3619,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.5
             output:
+              per_token: 0.0
               per_1m: 9.0
           currency: USD
         limits:
@@ -3443,14 +3642,18 @@ models:
         provider_model_id: gemini-3.5-flash
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 1.5
             cache_read:
+              per_token: 0.0
               per_1m: 0.15
             input:
+              per_token: 0.0
               per_1m: 1.5
             output:
+              per_token: 0.0
               per_1m: 9.0
-          operations:
-            audio_input: 1.5
           currency: USD
         limits:
           context_window: 1048576
@@ -3476,14 +3679,18 @@ models:
         provider_model_id: gemini-3.5-flash
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 1.5
             cache_read:
+              per_token: 0.0
               per_1m: 0.15
             input:
+              per_token: 0.0
               per_1m: 1.5
             output:
+              per_token: 0.0
               per_1m: 9.0
-          operations:
-            audio_input: 1.5
           currency: USD
         limits:
           context_window: 1048576
@@ -3506,13 +3713,18 @@ models:
         provider_model_id: gemini-3.5-live-translate-preview
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 3.5
+            audio_output:
+              per_token: 0.0
+              per_1m: 21.0
             input:
+              per_token: 0.0
               per_1m: 3.5
             output:
+              per_token: 0.0
               per_1m: 21.0
-          operations:
-            audio_input: 3.5
-            audio_gen: 21.0
           currency: USD
         limits:
           context_window: 16384
@@ -3528,6 +3740,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.15
             output:
               per_token: 0.0
@@ -3551,6 +3764,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.15
             output:
               per_token: 0.0
@@ -3575,13 +3789,15 @@ models:
         provider_model_id: gemini-embedding-2
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 6.5
             input:
+              per_token: 0.0
               per_1m: 0.2
             output:
               per_token: 0.0
               per_1m: 0.0
-          operations:
-            audio_input: 6.5
           currency: USD
         limits:
           context_window: 8192
@@ -3630,14 +3846,18 @@ models:
         provider_model_id: gemini-flash-latest
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 0.75
             cache_read:
-              per_1m: 0.15
+              per_token: 0.0
+              per_1m: 0.075
             input:
-              per_1m: 1.5
+              per_token: 0.0
+              per_1m: 0.75
             output:
-              per_1m: 9.0
-          operations:
-            audio_input: 1.5
+              per_token: 0.0
+              per_1m: 3.75
           currency: USD
         limits:
           context_window: 1048576
@@ -3666,13 +3886,14 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.025
+              per_token: 0.0
+              per_1m: 0.03
             input:
-              per_1m: 0.25
+              per_token: 0.0
+              per_1m: 0.3
             output:
-              per_1m: 1.5
-          operations:
-            audio_input: 0.5
+              per_token: 0.0
+              per_1m: 2.5
           currency: USD
         limits:
           context_window: 1048576
@@ -3715,8 +3936,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.5
             output:
+              per_token: 0.0
               per_1m: 17.5
           currency: USD
         limits:
@@ -3829,8 +4052,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.05
             output:
+              per_token: 0.0
               per_1m: 0.15
           currency: USD
         limits:
@@ -3853,8 +4078,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.08
             output:
+              per_token: 0.0
               per_1m: 0.16
           currency: USD
         limits:
@@ -3877,8 +4104,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.05
             output:
+              per_token: 0.0
               per_1m: 0.1
           currency: USD
         limits:
@@ -3901,14 +4130,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.07
             output:
+              per_token: 0.0
               per_1m: 0.34
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         service:
@@ -3977,14 +4208,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.13
             output:
+              per_token: 0.0
               per_1m: 0.38
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         service:
@@ -3998,9 +4231,14 @@ models:
         provider_model_id: google/gemma-4-31B-it-turbo
         pricing:
           tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.05
             input:
+              per_token: 0.0
               per_1m: 0.09
             output:
+              per_token: 0.0
               per_1m: 0.34
           currency: USD
         limits:
@@ -4012,6 +4250,7 @@ models:
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -5338,8 +5577,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.4
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
@@ -5375,6 +5616,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -5397,6 +5639,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -5419,6 +5662,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -5441,6 +5685,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -5536,8 +5781,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.4
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
@@ -5594,8 +5841,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.02
             output:
+              per_token: 0.0
               per_1m: 0.04
           currency: USD
         limits:
@@ -5615,15 +5864,12 @@ models:
         provider_model_id: llama-3.1-8b-instant
         pricing:
           tokens:
-            cache_read:
-              per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.05
             output:
+              per_token: 0.0
               per_1m: 0.08
-          operations:
-            request: 0.0
-            image_gen: 0.0
           currency: USD
         limits:
           context_window: 131072
@@ -5634,7 +5880,6 @@ models:
         service:
           operations:
             - chat-completions
-          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -5664,14 +5909,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.32
           currency: USD
         limits:
           context_window: 131072
           input_tokens: 0
-          output_tokens: 131072
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -5685,15 +5932,12 @@ models:
         provider_model_id: llama-3.3-70b-versatile
         pricing:
           tokens:
-            cache_read:
-              per_1m: 0.295
             input:
+              per_token: 0.0
               per_1m: 0.59
             output:
+              per_token: 0.0
               per_1m: 0.79
-          operations:
-            request: 0.0
-            image_gen: 0.0
           currency: USD
         limits:
           context_window: 131072
@@ -5704,7 +5948,6 @@ models:
         service:
           operations:
             - chat-completions
-          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -5716,14 +5959,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.2
             output:
+              per_token: 0.0
               per_1m: 0.8
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 1048576
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -5740,14 +5985,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.3
           currency: USD
         limits:
           context_window: 327680
           input_tokens: 0
-          output_tokens: 327680
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -5792,8 +6039,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.18
             output:
+              per_token: 0.0
               per_1m: 0.18
           currency: USD
         limits:
@@ -5816,10 +6065,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.015
             input:
+              per_token: 0.0
               per_1m: 0.03
             output:
+              per_token: 0.0
               per_1m: 0.03
           operations:
             request: 0.0
@@ -5846,10 +6098,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.02
             input:
+              per_token: 0.0
               per_1m: 0.04
             output:
+              per_token: 0.0
               per_1m: 0.04
           operations:
             request: 0.0
@@ -5876,8 +6131,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.07
             output:
+              per_token: 0.0
               per_1m: 0.14
           currency: USD
         limits:
@@ -5900,18 +6157,21 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.05
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 1.0
           currency: USD
         limits:
           context_window: 196608
           input_tokens: 0
-          output_tokens: 196608
+          output_tokens: 131072
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -5925,10 +6185,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.07
             input:
+              per_token: 0.0
               per_1m: 0.38
             output:
+              per_token: 0.0
               per_1m: 1.7
           currency: USD
         limits:
@@ -5952,16 +6215,19 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.06
+              per_token: 0.0
+              per_1m: 0.056
             input:
-              per_1m: 0.3
+              per_token: 0.0
+              per_1m: 0.28
             output:
-              per_1m: 1.2
+              per_token: 0.0
+              per_1m: 1.1
           currency: USD
         limits:
           context_window: 524288
           input_tokens: 0
-          output_tokens: 524288
+          output_tokens: 512000
         availability: unknown
         lifecycle: unknown
         service:
@@ -5979,8 +6245,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.019
             output:
+              per_token: 0.0
               per_1m: 0.03
           currency: USD
         limits:
@@ -6003,8 +6271,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.05
             output:
+              per_token: 0.0
               per_1m: 0.08
           currency: USD
         limits:
@@ -6027,8 +6297,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.075
             output:
+              per_token: 0.0
               per_1m: 0.2
           currency: USD
         limits:
@@ -6104,18 +6376,21 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.07
             input:
+              per_token: 0.0
               per_1m: 0.45
             output:
+              per_token: 0.0
               per_1m: 2.25
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 32768
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -6171,16 +6446,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.15
             input:
+              per_token: 0.0
               per_1m: 0.75
             output:
+              per_token: 0.0
               per_1m: 3.5
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -6196,18 +6474,21 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.16
             input:
+              per_token: 0.0
               per_1m: 0.95
             output:
+              per_token: 0.0
               per_1m: 4.0
           currency: USD
         limits:
-          context_window: 262144
+          context_window: 262000
           input_tokens: 0
           output_tokens: 262000
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -6216,15 +6497,35 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.fireworks.ai/inference/v1/chat/completions
+        modes:
+          priority:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.22
+                input:
+                  per_token: 0.0
+                  per_1m: 1.5
+                output:
+                  per_token: 0.0
+                  per_1m: 6.0
+              currency: USD
+            request:
+              body:
+                service_tier: priority
       - provider: moonshot-ai
         provider_model_id: kimi-k2.6
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.16
             input:
+              per_token: 0.0
               per_1m: 0.95
             output:
+              per_token: 0.0
               per_1m: 4.0
           currency: USD
         limits:
@@ -6259,11 +6560,14 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.15
+              per_token: 0.0
+              per_1m: 0.136
             input:
-              per_1m: 0.74
+              per_token: 0.0
+              per_1m: 0.68
             output:
-              per_1m: 3.5
+              per_token: 0.0
+              per_1m: 3.4
           currency: USD
         limits:
           context_window: 262144
@@ -6284,10 +6588,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.19
             input:
+              per_token: 0.0
               per_1m: 0.95
             output:
+              per_token: 0.0
               per_1m: 4.0
           currency: USD
         limits:
@@ -6309,10 +6616,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.38
             input:
+              per_token: 0.0
               per_1m: 1.9
             output:
+              per_token: 0.0
               per_1m: 8.0
           currency: USD
         limits:
@@ -6336,10 +6646,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.3
             input:
+              per_token: 0.0
               per_1m: 3.0
             output:
+              per_token: 0.0
               per_1m: 15.0
           currency: USD
         limits:
@@ -6481,8 +6794,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 1.0
           currency: USD
         limits:
@@ -6505,8 +6820,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.7
             output:
+              per_token: 0.0
               per_1m: 0.7
           currency: USD
         limits:
@@ -6555,6 +6872,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -6577,10 +6895,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.05
             output:
+              per_token: 0.0
               per_1m: 0.2
           currency: USD
         limits:
@@ -6625,8 +6946,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.2
             output:
+              per_token: 0.0
               per_1m: 0.2
           currency: USD
         limits:
@@ -6649,8 +6972,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.085
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
@@ -6673,10 +6998,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 2.2
           currency: USD
         limits:
@@ -6759,8 +7087,10 @@ models:
               per_token: 0.0
               per_1m: 0.0
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 1.5
           currency: USD
         limits:
@@ -6882,10 +7212,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             input:
+              per_token: 0.0
               per_1m: 2.0
             output:
+              per_token: 0.0
               per_1m: 8.0
           currency: USD
         limits:
@@ -6922,10 +7255,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             input:
+              per_token: 0.0
               per_1m: 0.4
             output:
+              per_token: 0.0
               per_1m: 1.6
           currency: USD
         limits:
@@ -6962,10 +7298,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
@@ -7002,10 +7341,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 1.25
             input:
+              per_token: 0.0
               per_1m: 2.5
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -7029,8 +7371,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 15.0
           currency: USD
         limits:
@@ -7069,10 +7413,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 1.25
             input:
+              per_token: 0.0
               per_1m: 2.5
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -7096,10 +7443,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 1.25
             input:
+              per_token: 0.0
               per_1m: 2.5
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -7123,10 +7473,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.075
             input:
+              per_token: 0.0
               per_1m: 0.15
             output:
+              per_token: 0.0
               per_1m: 0.6
           currency: USD
         limits:
@@ -7319,10 +7672,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.125
             input:
+              per_token: 0.0
               per_1m: 1.25
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -7413,10 +7769,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.025
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 2.0
           currency: USD
         limits:
@@ -7453,10 +7812,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.005
             input:
+              per_token: 0.0
               per_1m: 0.05
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
@@ -7493,8 +7855,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 15.0
             output:
+              per_token: 0.0
               per_1m: 120.0
           currency: USD
         limits:
@@ -7556,10 +7920,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.125
             input:
+              per_token: 0.0
               per_1m: 1.25
             output:
+              per_token: 0.0
               per_1m: 10.0
           currency: USD
         limits:
@@ -7704,10 +8071,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.175
             input:
+              per_token: 0.0
               per_1m: 1.75
             output:
+              per_token: 0.0
               per_1m: 14.0
           currency: USD
         limits:
@@ -7744,10 +8114,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.175
             input:
+              per_token: 0.0
               per_1m: 1.75
             output:
+              per_token: 0.0
               per_1m: 14.0
           currency: USD
         limits:
@@ -7755,7 +8128,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -7798,8 +8171,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 21.0
             output:
+              per_token: 0.0
               per_1m: 168.0
           currency: USD
         limits:
@@ -7835,10 +8210,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.175
             input:
+              per_token: 0.0
               per_1m: 1.75
             output:
+              per_token: 0.0
               per_1m: 14.0
           currency: USD
         limits:
@@ -7846,7 +8224,7 @@ models:
           input_tokens: 0
           output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -7862,10 +8240,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.175
             input:
+              per_token: 0.0
               per_1m: 1.75
             output:
+              per_token: 0.0
               per_1m: 14.0
           currency: USD
         limits:
@@ -7889,30 +8270,39 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.25
             input:
+              per_token: 0.0
               per_1m: 2.5
             output:
+              per_token: 0.0
               per_1m: 15.0
           tiers:
             - type: context
               size: 272000
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 0.5
                 input:
+                  per_token: 0.0
                   per_1m: 5.0
                 output:
+                  per_token: 0.0
                   per_1m: 22.5
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 0.5
                 input:
+                  per_token: 0.0
                   per_1m: 5.0
                 output:
+                  per_token: 0.0
                   per_1m: 22.5
           currency: USD
         limits:
@@ -7934,10 +8324,13 @@ models:
             pricing:
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 0.5
                 input:
+                  per_token: 0.0
                   per_1m: 5.0
                 output:
+                  per_token: 0.0
                   per_1m: 30.0
               currency: USD
             request:
@@ -7963,10 +8356,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.075
             input:
+              per_token: 0.0
               per_1m: 0.75
             output:
+              per_token: 0.0
               per_1m: 4.5
           currency: USD
         limits:
@@ -7988,10 +8384,13 @@ models:
             pricing:
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 0.15
                 input:
+                  per_token: 0.0
                   per_1m: 1.5
                 output:
+                  per_token: 0.0
                   per_1m: 9.0
               currency: USD
             request:
@@ -8017,10 +8416,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.02
             input:
+              per_token: 0.0
               per_1m: 0.2
             output:
+              per_token: 0.0
               per_1m: 1.25
           currency: USD
         limits:
@@ -8057,24 +8459,30 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 30.0
             output:
+              per_token: 0.0
               per_1m: 180.0
           tiers:
             - type: context
               size: 272000
               tokens:
                 input:
+                  per_token: 0.0
                   per_1m: 60.0
                 output:
+                  per_token: 0.0
                   per_1m: 270.0
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 input:
+                  per_token: 0.0
                   per_1m: 60.0
                 output:
+                  per_token: 0.0
                   per_1m: 270.0
           currency: USD
         limits:
@@ -8110,30 +8518,39 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 30.0
           tiers:
             - type: context
               size: 272000
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 1.0
                 input:
+                  per_token: 0.0
                   per_1m: 10.0
                 output:
+                  per_token: 0.0
                   per_1m: 45.0
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 1.0
                 input:
+                  per_token: 0.0
                   per_1m: 10.0
                 output:
+                  per_token: 0.0
                   per_1m: 45.0
           currency: USD
         limits:
@@ -8155,10 +8572,13 @@ models:
             pricing:
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 1.25
                 input:
+                  per_token: 0.0
                   per_1m: 12.5
                 output:
+                  per_token: 0.0
                   per_1m: 75.0
               currency: USD
             request:
@@ -8184,24 +8604,30 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 30.0
             output:
+              per_token: 0.0
               per_1m: 180.0
           tiers:
             - type: context
               size: 272000
               tokens:
                 input:
+                  per_token: 0.0
                   per_1m: 60.0
                 output:
+                  per_token: 0.0
                   per_1m: 270.0
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 input:
+                  per_token: 0.0
                   per_1m: 60.0
                 output:
+                  per_token: 0.0
                   per_1m: 270.0
           currency: USD
         limits:
@@ -8237,37 +8663,49 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.1
+              per_token: 0.0
+              per_1m: 0.02
             cache_write:
-              per_1m: 1.25
+              per_token: 0.0
+              per_1m: 0.25
             input:
-              per_1m: 1.0
+              per_token: 0.0
+              per_1m: 0.2
             output:
-              per_1m: 6.0
+              per_token: 0.0
+              per_1m: 1.2
           tiers:
             - type: context
               size: 272000
               tokens:
                 cache_read:
-                  per_1m: 0.2
+                  per_token: 0.0
+                  per_1m: 0.04
                 cache_write:
-                  per_1m: 2.5
+                  per_token: 0.0
+                  per_1m: 0.5
                 input:
-                  per_1m: 2.0
+                  per_token: 0.0
+                  per_1m: 0.4
                 output:
-                  per_1m: 9.0
+                  per_token: 0.0
+                  per_1m: 1.8
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 cache_read:
-                  per_1m: 0.2
+                  per_token: 0.0
+                  per_1m: 0.04
                 cache_write:
-                  per_1m: 2.5
+                  per_token: 0.0
+                  per_1m: 0.5
                 input:
-                  per_1m: 2.0
+                  per_token: 0.0
+                  per_1m: 0.4
                 output:
-                  per_1m: 9.0
+                  per_token: 0.0
+                  per_1m: 1.8
           currency: USD
         limits:
           context_window: 1050000
@@ -8288,13 +8726,17 @@ models:
             pricing:
               tokens:
                 cache_read:
-                  per_1m: 0.2
+                  per_token: 0.0
+                  per_1m: 0.04
                 cache_write:
-                  per_1m: 2.5
+                  per_token: 0.0
+                  per_1m: 0.5
                 input:
-                  per_1m: 2.0
+                  per_token: 0.0
+                  per_1m: 0.4
                 output:
-                  per_1m: 12.0
+                  per_token: 0.0
+                  per_1m: 2.4
               currency: USD
             request:
               body:
@@ -8311,37 +8753,49 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.5
+              per_token: 0.0
+              per_1m: 0.4
             cache_write:
-              per_1m: 6.25
-            input:
+              per_token: 0.0
               per_1m: 5.0
+            input:
+              per_token: 0.0
+              per_1m: 4.0
             output:
-              per_1m: 30.0
+              per_token: 0.0
+              per_1m: 20.0
           tiers:
             - type: context
               size: 272000
               tokens:
                 cache_read:
-                  per_1m: 1.0
+                  per_token: 0.0
+                  per_1m: 0.8
                 cache_write:
-                  per_1m: 12.5
-                input:
+                  per_token: 0.0
                   per_1m: 10.0
+                input:
+                  per_token: 0.0
+                  per_1m: 8.0
                 output:
-                  per_1m: 45.0
+                  per_token: 0.0
+                  per_1m: 30.0
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 cache_read:
-                  per_1m: 1.0
+                  per_token: 0.0
+                  per_1m: 0.8
                 cache_write:
-                  per_1m: 12.5
-                input:
+                  per_token: 0.0
                   per_1m: 10.0
+                input:
+                  per_token: 0.0
+                  per_1m: 8.0
                 output:
-                  per_1m: 45.0
+                  per_token: 0.0
+                  per_1m: 30.0
           currency: USD
         limits:
           context_window: 1050000
@@ -8362,13 +8816,17 @@ models:
             pricing:
               tokens:
                 cache_read:
-                  per_1m: 1.0
+                  per_token: 0.0
+                  per_1m: 0.8
                 cache_write:
-                  per_1m: 12.5
-                input:
+                  per_token: 0.0
                   per_1m: 10.0
+                input:
+                  per_token: 0.0
+                  per_1m: 8.0
                 output:
-                  per_1m: 60.0
+                  per_token: 0.0
+                  per_1m: 40.0
               currency: USD
             request:
               body:
@@ -8385,37 +8843,49 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.25
+              per_token: 0.0
+              per_1m: 0.2
             cache_write:
-              per_1m: 3.125
-            input:
+              per_token: 0.0
               per_1m: 2.5
+            input:
+              per_token: 0.0
+              per_1m: 2.0
             output:
-              per_1m: 15.0
+              per_token: 0.0
+              per_1m: 12.0
           tiers:
             - type: context
               size: 272000
               tokens:
                 cache_read:
-                  per_1m: 0.5
+                  per_token: 0.0
+                  per_1m: 0.4
                 cache_write:
-                  per_1m: 6.25
-                input:
+                  per_token: 0.0
                   per_1m: 5.0
+                input:
+                  per_token: 0.0
+                  per_1m: 4.0
                 output:
-                  per_1m: 22.5
+                  per_token: 0.0
+                  per_1m: 18.0
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 cache_read:
-                  per_1m: 0.5
+                  per_token: 0.0
+                  per_1m: 0.4
                 cache_write:
-                  per_1m: 6.25
-                input:
+                  per_token: 0.0
                   per_1m: 5.0
+                input:
+                  per_token: 0.0
+                  per_1m: 4.0
                 output:
-                  per_1m: 22.5
+                  per_token: 0.0
+                  per_1m: 18.0
           currency: USD
         limits:
           context_window: 1050000
@@ -8436,13 +8906,17 @@ models:
             pricing:
               tokens:
                 cache_read:
-                  per_1m: 0.5
+                  per_token: 0.0
+                  per_1m: 0.4
                 cache_write:
-                  per_1m: 6.25
-                input:
+                  per_token: 0.0
                   per_1m: 5.0
+                input:
+                  per_token: 0.0
+                  per_1m: 4.0
                 output:
-                  per_1m: 30.0
+                  per_token: 0.0
+                  per_1m: 24.0
               currency: USD
             request:
               body:
@@ -8588,10 +9062,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 1.25
             input:
+              per_token: 0.0
               per_1m: 5.0
             output:
+              per_token: 0.0
               per_1m: 30.0
           currency: USD
         limits:
@@ -8628,8 +9105,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.35
             output:
+              per_token: 0.0
               per_1m: 0.75
           currency: USD
         limits:
@@ -8650,14 +9129,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.037
             output:
+              per_token: 0.0
               per_1m: 0.17
           currency: USD
         limits:
           context_window: 131072
           input_tokens: 0
-          output_tokens: 131072
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -8672,8 +9153,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.15
             output:
+              per_token: 0.0
               per_1m: 0.6
           currency: USD
         limits:
@@ -8694,10 +9177,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.015
             input:
+              per_token: 0.0
               per_1m: 0.15
             output:
+              per_token: 0.0
               per_1m: 0.6
           currency: USD
         limits:
@@ -8714,15 +9200,35 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.fireworks.ai/inference/v1/chat/completions
+        modes:
+          priority:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.018
+                input:
+                  per_token: 0.0
+                  per_1m: 0.18
+                output:
+                  per_token: 0.0
+                  per_1m: 0.72
+              currency: USD
+            request:
+              body:
+                service_tier: priority
       - provider: groq
         provider_model_id: openai/gpt-oss-120b
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.075
             input:
+              per_token: 0.0
               per_1m: 0.15
             output:
+              per_token: 0.0
               per_1m: 0.6
           operations:
             request: 0.0
@@ -8749,14 +9255,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.03
             output:
+              per_token: 0.0
               per_1m: 0.14
           currency: USD
         limits:
           context_window: 131072
           input_tokens: 0
-          output_tokens: 131072
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -8771,10 +9279,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.0375
             input:
+              per_token: 0.0
               per_1m: 0.075
             output:
+              per_token: 0.0
               per_1m: 0.3
           operations:
             request: 0.0
@@ -8801,10 +9312,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.0375
             input:
+              per_token: 0.0
               per_1m: 0.075
             output:
+              per_token: 0.0
               per_1m: 0.3
           operations:
             request: 0.0
@@ -8869,15 +9383,21 @@ models:
         provider_model_id: gpt-realtime-2.1
         pricing:
           tokens:
+            audio_input:
+              per_token: 0.0
+              per_1m: 32.0
+            audio_output:
+              per_token: 0.0
+              per_1m: 64.0
             cache_read:
+              per_token: 0.0
               per_1m: 0.4
             input:
+              per_token: 0.0
               per_1m: 4.0
             output:
+              per_token: 0.0
               per_1m: 24.0
-          operations:
-            audio_input: 32.0
-            audio_gen: 64.0
           currency: USD
         limits:
           context_window: 128000
@@ -8985,10 +9505,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 7.5
             input:
+              per_token: 0.0
               per_1m: 15.0
             output:
+              per_token: 0.0
               per_1m: 60.0
           currency: USD
         limits:
@@ -9025,10 +9548,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             input:
+              per_token: 0.0
               per_1m: 2.0
             output:
+              per_token: 0.0
               per_1m: 8.0
           currency: USD
         limits:
@@ -9065,10 +9591,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.55
             input:
+              per_token: 0.0
               per_1m: 1.1
             output:
+              per_token: 0.0
               per_1m: 4.4
           currency: USD
         limits:
@@ -9105,10 +9634,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.275
             input:
+              per_token: 0.0
               per_1m: 1.1
             output:
+              per_token: 0.0
               per_1m: 4.4
           currency: USD
         limits:
@@ -9197,6 +9729,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.13
             output:
               per_token: 0.0
@@ -9222,6 +9755,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.02
             output:
               per_token: 0.0
@@ -9247,6 +9781,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
               per_token: 0.0
@@ -9504,8 +10039,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.05
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
@@ -9634,8 +10171,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 2.46
             output:
+              per_token: 0.0
               per_1m: 7.37
           currency: USD
         limits:
@@ -9658,10 +10197,13 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.4
             output:
+              per_token: 0.0
               per_1m: 1.2
             reasoning:
+              per_token: 0.0
               per_1m: 4.0
           currency: USD
         limits:
@@ -9745,8 +10287,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.72
             output:
+              per_token: 0.0
               per_1m: 0.72
           currency: USD
         limits:
@@ -9782,8 +10326,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.36
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
@@ -9824,10 +10370,13 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.35
             output:
+              per_token: 0.0
               per_1m: 1.4
             reasoning:
+              per_token: 0.0
               per_1m: 4.2
           currency: USD
         limits:
@@ -9848,8 +10397,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.12
             output:
+              per_token: 0.0
               per_1m: 0.24
           currency: USD
         limits:
@@ -9872,10 +10423,13 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.7
             output:
+              per_token: 0.0
               per_1m: 2.8
             reasoning:
+              per_token: 0.0
               per_1m: 8.4
           currency: USD
         limits:
@@ -9909,14 +10463,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.09
             output:
+              per_token: 0.0
               per_1m: 0.55
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -9982,14 +10538,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.12
             output:
+              per_token: 0.0
               per_1m: 0.5
           currency: USD
         limits:
           context_window: 40960
           input_tokens: 0
-          output_tokens: 40960
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -10032,10 +10590,13 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.7
             output:
+              per_token: 0.0
               per_1m: 2.8
             reasoning:
+              per_token: 0.0
               per_1m: 8.4
           currency: USD
         limits:
@@ -10056,14 +10617,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.08
             output:
+              per_token: 0.0
               per_1m: 0.28
           currency: USD
         limits:
           context_window: 40960
           input_tokens: 0
-          output_tokens: 40960
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -10108,10 +10671,13 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.18
             output:
+              per_token: 0.0
               per_1m: 0.7
             reasoning:
+              per_token: 0.0
               per_1m: 2.1
           currency: USD
         limits:
@@ -10160,9 +10726,30 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.45
             output:
+              per_token: 0.0
               per_1m: 2.25
+          tiers:
+            - type: context
+              size: 32000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 0.75
+                output:
+                  per_token: 0.0
+                  per_1m: 3.75
+            - type: context
+              size: 128000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 1.2
+                output:
+                  per_token: 0.0
+                  per_1m: 6.0
           currency: USD
         limits:
           context_window: 262144
@@ -10184,9 +10771,30 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.5
             output:
+              per_token: 0.0
               per_1m: 7.5
+          tiers:
+            - type: context
+              size: 32000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 2.7
+                output:
+                  per_token: 0.0
+                  per_1m: 13.5
+            - type: context
+              size: 128000
+              tokens:
+                input:
+                  per_token: 0.0
+                  per_1m: 4.5
+                output:
+                  per_token: 0.0
+                  per_1m: 22.5
           currency: USD
         limits:
           context_window: 262144
@@ -10206,16 +10814,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 1.0
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 66536
         availability: unknown
         lifecycle: unknown
         service:
@@ -10233,8 +10844,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 1.5
           currency: USD
         limits:
@@ -10270,8 +10883,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 5.0
           currency: USD
         limits:
@@ -10320,6 +10935,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -10342,6 +10958,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.02
           currency: USD
         limits:
@@ -10364,6 +10981,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.01
           currency: USD
         limits:
@@ -10386,8 +11004,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 1.2
             output:
+              per_token: 0.0
               per_1m: 6.0
           currency: USD
         limits:
@@ -10408,16 +11028,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.24
             input:
+              per_token: 0.0
               per_1m: 1.2
             output:
+              per_token: 0.0
               per_1m: 6.0
           currency: USD
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 256000
+          output_tokens: 65536
         availability: unknown
         lifecycle: unknown
         service:
@@ -10461,10 +11084,13 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.24
             input:
+              per_token: 0.0
               per_1m: 1.2
             output:
+              per_token: 0.0
               per_1m: 6.0
           currency: USD
         limits:
@@ -10488,8 +11114,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 2.0
           currency: USD
         limits:
@@ -10510,14 +11138,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.09
             output:
+              per_token: 0.0
               per_1m: 1.1
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         service:
@@ -10534,8 +11164,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 6.0
           currency: USD
         limits:
@@ -10595,16 +11227,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.11
             input:
+              per_token: 0.0
               per_1m: 0.2
             output:
+              per_token: 0.0
               per_1m: 0.88
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         service:
@@ -10646,8 +11281,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.15
             output:
+              per_token: 0.0
               per_1m: 0.6
           currency: USD
         limits:
@@ -10796,10 +11433,13 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.2
             output:
+              per_token: 0.0
               per_1m: 1.6
             reasoning:
+              per_token: 0.0
               per_1m: 4.8
           currency: USD
         limits:
@@ -10859,8 +11499,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.4
             output:
+              per_token: 0.0
               per_1m: 3.2
           currency: USD
         limits:
@@ -10881,14 +11523,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.29
             output:
+              per_token: 0.0
               per_1m: 2.4
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 65536
         availability: unknown
         lifecycle: unknown
         service:
@@ -10905,8 +11549,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.3
             output:
+              per_token: 0.0
               per_1m: 2.4
           currency: USD
         limits:
@@ -10927,14 +11573,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.26
             output:
+              per_token: 0.0
               per_1m: 2.6
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 65536
         availability: unknown
         lifecycle: unknown
         service:
@@ -10951,8 +11599,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.25
             output:
+              per_token: 0.0
               per_1m: 2.0
           currency: USD
         limits:
@@ -10973,16 +11623,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.05
             input:
+              per_token: 0.0
               per_1m: 0.14
             output:
+              per_token: 0.0
               per_1m: 1.0
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 81920
         availability: unknown
         lifecycle: unknown
         service:
@@ -11000,8 +11653,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.6
             output:
+              per_token: 0.0
               per_1m: 3.6
           currency: USD
         limits:
@@ -11022,16 +11677,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.22
             input:
+              per_token: 0.0
               per_1m: 0.45
             output:
+              per_token: 0.0
               per_1m: 3.0
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 81920
         availability: unknown
         lifecycle: unknown
         service:
@@ -11049,14 +11707,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.15
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 65536
         availability: unknown
         lifecycle: unknown
         service:
@@ -11099,10 +11759,13 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.4
             output:
+              per_token: 0.0
               per_1m: 2.4
             reasoning:
+              per_token: 0.0
               per_1m: 2.4
           currency: USD
         limits:
@@ -11125,14 +11788,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.32
             output:
+              per_token: 0.0
               per_1m: 3.2
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 65536
         availability: unknown
         lifecycle: unknown
         service:
@@ -11147,14 +11812,14 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.3
             input:
+              per_token: 0.0
               per_1m: 0.6
             output:
+              per_token: 0.0
               per_1m: 3.0
-          operations:
-            request: 0.0
-            image_gen: 0.0
           currency: USD
         limits:
           context_window: 131072
@@ -11177,8 +11842,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.248
             output:
+              per_token: 0.0
               per_1m: 1.485
           currency: USD
         limits:
@@ -11199,14 +11866,16 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.1
             output:
+              per_token: 0.0
               per_1m: 0.95
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 81920
         availability: unknown
         lifecycle: unknown
         service:
@@ -11218,13 +11887,27 @@ models:
             url: https://api.deepinfra.com/v1/openai/chat/completions
       - provider: hetzner
         provider_model_id: Qwen/Qwen3.6-35B-A3B-FP8
+        pricing:
+          tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.0
+            input:
+              per_token: 0.0
+              per_1m: 0.0
+            output:
+              per_token: 0.0
+              per_1m: 0.0
+          currency: USD
         limits:
           context_window: 262144
+          output_tokens: 262144
         availability: unknown
         lifecycle: preview
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -11236,10 +11919,13 @@ models:
         pricing:
           tokens:
             cache_write:
+              per_token: 0.0
               per_1m: 0.234375
             input:
+              per_token: 0.0
               per_1m: 0.1875
             output:
+              per_token: 0.0
               per_1m: 1.125
           currency: USD
         limits:
@@ -11300,12 +11986,16 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             cache_write:
+              per_token: 0.0
               per_1m: 3.125
             input:
+              per_token: 0.0
               per_1m: 2.5
             output:
+              per_token: 0.0
               per_1m: 7.5
           currency: USD
         limits:
@@ -11338,16 +12028,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.5
             input:
+              per_token: 0.0
               per_1m: 2.5
             output:
+              per_token: 0.0
               per_1m: 7.5
           currency: USD
         limits:
           context_window: 256000
           input_tokens: 0
-          output_tokens: 256000
+          output_tokens: 65536
         availability: unknown
         lifecycle: unknown
         service:
@@ -11391,36 +12084,48 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.05
             cache_write:
+              per_token: 0.0
               per_1m: 0.625
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 3.0
           tiers:
             - type: context
               size: 256000
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 0.2
                 cache_write:
+                  per_token: 0.0
                   per_1m: 2.5
                 input:
+                  per_token: 0.0
                   per_1m: 2.0
                 output:
+                  per_token: 0.0
                   per_1m: 6.0
             - name: context_over_200k
               type: context
               size: 200000
               tokens:
                 cache_read:
+                  per_token: 0.0
                   per_1m: 0.2
                 cache_write:
+                  per_token: 0.0
                   per_1m: 2.5
                 input:
+                  per_token: 0.0
                   per_1m: 2.0
                 output:
+                  per_token: 0.0
                   per_1m: 6.0
           currency: USD
         limits:
@@ -11465,13 +12170,27 @@ models:
     endpoints:
       - provider: hetzner
         provider_model_id: Qwen3.8-27B
+        pricing:
+          tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.0
+            input:
+              per_token: 0.0
+              per_1m: 0.0
+            output:
+              per_token: 0.0
+              per_1m: 0.0
+          currency: USD
         limits:
           context_window: 262144
+          output_tokens: 262144
         availability: unknown
         lifecycle: preview
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -11509,8 +12228,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.04
             output:
+              per_token: 0.0
               per_1m: 0.05
           currency: USD
         limits:
@@ -11533,8 +12254,10 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.85
             output:
+              per_token: 0.0
               per_1m: 0.85
           currency: USD
         limits:
@@ -11554,6 +12277,15 @@ models:
     endpoints:
       - provider: groq
         provider_model_id: allam-2-7b
+        pricing:
+          tokens:
+            input:
+              per_token: 0.0
+              per_1m: 0.0
+            output:
+              per_token: 0.0
+              per_1m: 0.0
+          currency: USD
         limits:
           context_window: 4096
           input_tokens: 0
@@ -11574,6 +12306,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11596,6 +12329,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11618,6 +12352,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11640,6 +12375,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11662,6 +12398,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11684,6 +12421,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11706,6 +12444,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11741,6 +12480,7 @@ models:
         pricing:
           tokens:
             input:
+              per_token: 0.0
               per_1m: 0.005
           currency: USD
         limits:
@@ -11780,16 +12520,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.04
             input:
+              per_token: 0.0
               per_1m: 0.2
             output:
+              per_token: 0.0
               per_1m: 1.15
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 256000
         availability: unknown
         lifecycle: unknown
         service:
@@ -11853,16 +12596,19 @@ models:
         pricing:
           tokens:
             cache_read:
-              per_1m: 0.08
+              per_token: 0.0
+              per_1m: 0.0028
             input:
-              per_1m: 0.4
+              per_token: 0.0
+              per_1m: 0.14
             output:
-              per_1m: 2.0
+              per_token: 0.0
+              per_1m: 0.28
           currency: USD
         limits:
           context_window: 262144
           input_tokens: 0
-          output_tokens: 262144
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -11880,16 +12626,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.2
             input:
+              per_token: 0.0
               per_1m: 1.0
             output:
+              per_token: 0.0
               per_1m: 3.0
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 1048576
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -11933,16 +12682,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.1
             input:
+              per_token: 0.0
               per_1m: 0.5
             output:
+              per_token: 0.0
               per_1m: 2.0
           currency: USD
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 202752
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         service:
@@ -11988,16 +12740,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.08
             input:
+              per_token: 0.0
               per_1m: 0.4
             output:
+              per_token: 0.0
               per_1m: 1.75
           currency: USD
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 202752
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -12015,18 +12770,21 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.01
             input:
+              per_token: 0.0
               per_1m: 0.06
             output:
+              per_token: 0.0
               per_1m: 0.4
           currency: USD
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 202752
+          output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -12042,18 +12800,21 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.12
             input:
+              per_token: 0.0
               per_1m: 0.6
             output:
+              per_token: 0.0
               per_1m: 2.08
           currency: USD
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 202752
+          output_tokens: 16384
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -12080,16 +12841,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.205
             input:
+              per_token: 0.0
               per_1m: 1.05
             output:
+              per_token: 0.0
               per_1m: 3.5
           currency: USD
         limits:
           context_window: 202752
           input_tokens: 0
-          output_tokens: 202752
+          output_tokens: 16384
         availability: unknown
         lifecycle: unknown
         service:
@@ -12129,11 +12893,30 @@ models:
     endpoints:
       - provider: alibaba
         provider_model_id: glm-5.2
+        pricing:
+          tokens:
+            cache_read:
+              per_token: 0.0
+              per_1m: 0.28
+            cache_write:
+              per_token: 0.0
+              per_1m: 0.0
+            input:
+              per_token: 0.0
+              per_1m: 1.4
+            output:
+              per_token: 0.0
+              per_1m: 4.4
+          currency: USD
+        limits:
+          context_window: 1000000
+          output_tokens: 131072
         availability: unknown
         lifecycle: unknown
         service:
           operations:
             - chat-completions
+          prompt_cache: true
         service_endpoints:
           - operation: chat-completions
             type: openai
@@ -12143,16 +12926,19 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.14
             input:
+              per_token: 0.0
               per_1m: 0.75
             output:
+              per_token: 0.0
               per_1m: 2.4
           currency: USD
         limits:
           context_window: 1048576
           input_tokens: 0
-          output_tokens: 1048576
+          output_tokens: 32768
         availability: unknown
         lifecycle: unknown
         service:
@@ -12168,18 +12954,21 @@ models:
         pricing:
           tokens:
             cache_read:
+              per_token: 0.0
               per_1m: 0.14
             input:
+              per_token: 0.0
               per_1m: 1.4
             output:
+              per_token: 0.0
               per_1m: 4.4
           currency: USD
         limits:
-          context_window: 1048576
+          context_window: 1048575
           input_tokens: 0
           output_tokens: 131072
         availability: unknown
-        lifecycle: unknown
+        lifecycle: deprecated
         service:
           operations:
             - chat-completions
@@ -12188,3 +12977,20 @@ models:
           - operation: chat-completions
             type: openai
             url: https://api.fireworks.ai/inference/v1/chat/completions
+        modes:
+          priority:
+            pricing:
+              tokens:
+                cache_read:
+                  per_token: 0.0
+                  per_1m: 0.175
+                input:
+                  per_token: 0.0
+                  per_1m: 1.75
+                output:
+                  per_token: 0.0
+                  per_1m: 5.5
+              currency: USD
+            request:
+              body:
+                service_tier: priority
