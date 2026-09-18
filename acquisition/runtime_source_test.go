@@ -3,7 +3,6 @@ package acquisition_test
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -48,11 +47,22 @@ func reviewedRuntimeSource(t *testing.T, payloads ...[]byte) runtime.Source {
 	if err != nil {
 		t.Fatal(err)
 	}
-	payload, err := catalogs.EncodeCatalogPayload(catalog)
+	baseline, err := starmap.EmbeddedGeneration()
 	if err != nil {
 		t.Fatal(err)
 	}
-	at := time.Date(2026, 9, 7, 0, 0, 0, 0, time.UTC)
-	return reviewedRuntimeFixtureSource{read: runtime.SourceRead{Changed: true, Health: runtime.HealthOK, PublishedAt: at, ChannelUpdatedAt: at,
-		Generation: catalogs.Generation{Manifest: catalogs.GenerationManifest{GenerationID: "reviewed-fixture", GeneratedAt: at, Payload: catalogs.DescribeCatalogPayload(payload)}, Payload: payload}}}
+	candidate, err := starmap.NewCandidate(catalog, starmap.CandidateEvidence{
+		SourceObservations: baseline.Manifest.SourceObservations,
+		ReviewCandidates:   baseline.Manifest.ReviewCandidates,
+	}, starmap.WithCandidateGenerationID("reviewed-fixture"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	at := baseline.Manifest.GeneratedAt
+	generation, err := candidate.Generation("reviewed-fixture", at)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return reviewedRuntimeFixtureSource{read: runtime.SourceRead{Changed: true, Health: runtime.HealthOK,
+		PublishedAt: at, ChannelUpdatedAt: at, Generation: generation}}
 }
