@@ -68,5 +68,17 @@
     "failure": "Receipt restoration returned exit status 1.",
     "publication_steps": "all skipped",
     "qualification_credit": false
+  },
+  "replacement_source_review": {
+    "receipt": "replacement-receipt.json.gz",
+    "receipt_sha256": "4fdfe3829056959220dbdf0cd96c7516332c0943fc644fc63597c8168c3a8613",
+    "attestation": "PASS",
+    "sources": 13,
+    "fresh_complete_sources": 13,
+    "quarantined_offerings": 274,
+    "review_codes": {
+      "unresolved_model_reference": 274
+    },
+    "interpretation": "Complete inventories do not imply admission of offerings without reviewed canonical links. Receipt preserves all 274 review items."
   }
 }
