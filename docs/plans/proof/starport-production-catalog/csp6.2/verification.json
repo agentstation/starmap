@@ -672,5 +672,26 @@
     "head": "a2616b535bf3ac87276b126def1ca346f9873521",
     "native_run": 35301301627,
     "status": "CI running"
+  },
+  "final_pair_storage": {
+    "head": "a2616b535bf3ac87276b126def1ca346f9873521",
+    "starmap_module": "v0.16.6-0.20260917204518-b09931c66d7d",
+    "workspace": "off",
+    "toolchain": "go1.27.1",
+    "command": "go test -race -json -count=1 -timeout=15m ./internal/usage ./internal/proxy ./internal/catalog",
+    "passed": 451,
+    "failed": 0,
+    "skipped": 0,
+    "repository_contracts_by_backend": {
+      "badger": 22,
+      "valkey": 22,
+      "memory": 22
+    },
+    "valkey_image": "9acdf6f0ae17",
+    "container_cleanup": "confirmed removed",
+    "evidence": {
+      "path": "starport-final-storage-2026-09-18.jsonl.gz",
+      "uncompressed_sha256": "8c8e7049c864e86345422f2d150437e33638150dcf5523dcd7c1dc87ab36ef19"
+    }
   }
 }
