@@ -96,6 +96,7 @@ run ./scripts/test-catalog-package-ownership-verifier.sh
 run ./scripts/verify-catalog-dependency-direction.sh
 run ./scripts/test-catalog-dependency-direction-verifier.sh
 run bash ./scripts/verify-canonical-alias-history.sh
+run python3 ./scripts/test_catalog_rejection.py
 run python3 ./scripts/test_catalog_product_verify.py
 run python3 ./scripts/test_prepare_public_catalog_fixture.py
 run python3 ./scripts/test_verification_tests.py

@@ -176,9 +176,14 @@ jobs:
       - name: Report publication state
         if: steps.publication.outputs.active == 'true'
         env:
+          REJECTED_RECEIPT: ${{ steps.publication.outputs.rejected_receipt }}
+          REJECTED_PULL_REQUEST: ${{ steps.publication.outputs.rejected_pull_request }}
           PUBLICATION_STATUS: ${{ steps.completed.outputs.status || steps.promotion.outputs.status }}
           PUBLICATION_PULL_REQUEST: ${{ steps.promotion.outputs.pull_request }}
         run: |
+          if [ -n "$REJECTED_RECEIPT" ]; then
+            printf 'Rejected prior candidate: %s (PR #%s)\n' "$REJECTED_RECEIPT" "$REJECTED_PULL_REQUEST" >> "$GITHUB_STEP_SUMMARY"
+          fi
           printf 'Catalog publication: %s\n' "$PUBLICATION_STATUS" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "$PUBLICATION_PULL_REQUEST" ]; then
             printf 'Promotion pull request: %s\n' "$PUBLICATION_PULL_REQUEST" >> "$GITHUB_STEP_SUMMARY"

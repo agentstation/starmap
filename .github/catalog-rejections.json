@@ -1,0 +1,20 @@
+[
+  {
+    "pending": {
+      "archive_checksum": "sha256:b25b1cba857145b1b7944c49339dce68234430dba45fd90bbdde2766cad66906",
+      "artifact_tag": "catalog-0785c71e7167598b1f34d5150c2629f1cd5eb42466e1161aa1095fe8b518a3da",
+      "catalog_checksum": "sha256:0785c71e7167598b1f34d5150c2629f1cd5eb42466e1161aa1095fe8b518a3da",
+      "checkpoint_checksum": "sha256:f09bd428ef8a5c0f88a708abac07f80655fed90829a3c3306f516ded0400d13d",
+      "generation_id": "bindings-d0cc72f614a783e732d89376c73f46da0db4b851f2627d3f266fb74e4c6964d4.local.b015f73478ee",
+      "preparation_commit": "6d4bcb5e72ce5977d17eac92d5fda0e6d73ad934",
+      "profile_checksum": "sha256:30fae11e08b5d27c3c0e4b2dab8b022fa282d75e0ab302f33fa97540a2307f2c",
+      "receipt_checksum": "sha256:9d8a02596c354c6924fd2d170192bd9d92303cb8412e58c151a3943fda0241e2",
+      "receipt_tag": "catalog-run-9d8a02596c354c6924fd2d170192bd9d92303cb8412e58c151a3943fda0241e2",
+      "run_id": "github-35236729284",
+      "schema_version": 1,
+      "workflow_run_id": 35236729284
+    },
+    "pull_request": 165,
+    "reason": "Billing and protocol contract failures. Corrected by Starmap PR #166 and Starport PR #377."
+  }
+]
