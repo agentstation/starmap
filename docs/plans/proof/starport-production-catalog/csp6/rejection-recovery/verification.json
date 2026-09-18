@@ -53,5 +53,13 @@
     "step": "Validate candidate before publication",
     "watch_session": 22375,
     "watch_log": "/tmp/csp6-replacement-publication-watch.log"
+  },
+  "prior_scheduled_failure": {
+    "run": 35383547608,
+    "source": "54b475f71e1cc57de54c1f4d92a815351b0f7019",
+    "evidence": "prior-scheduled-failure.json",
+    "failure": "Receipt restoration returned exit status 1.",
+    "publication_steps": "all skipped",
+    "qualification_credit": false
   }
 }
