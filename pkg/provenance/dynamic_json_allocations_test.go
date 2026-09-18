@@ -28,3 +28,21 @@ func TestCanonicalDynamicJSONContainerAllocationBound(t *testing.T) {
 		}
 	}
 }
+
+func TestCanonicalDynamicJSONScalarAllocationBound(t *testing.T) {
+	for _, test := range canonicalJSONScalars() {
+		t.Run(test.name, func(t *testing.T) {
+			var encoded json.RawMessage
+			var err error
+			allocations := testing.AllocsPerRun(100, func() {
+				encoded, err = canonicalDynamicJSON(test.value)
+			})
+			if err != nil || string(encoded) != test.want {
+				t.Fatalf("scalar encoding = %s, %v; want %s", encoded, err, test.want)
+			}
+			if allocations > 2 {
+				t.Fatalf("scalar encoding allocated %.0f objects; want at most 2", allocations)
+			}
+		})
+	}
+}
