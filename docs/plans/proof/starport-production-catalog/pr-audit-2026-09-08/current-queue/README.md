@@ -1,12 +1,15 @@
 ## Consolidated baseline repair
 
-Starmap #169 contains the reviewed repair at `5dbfe7faf`. Sol and Opus report zero findings.
-Candidate checks pass 59 race events and all 93 bootstrap tests. All 119 acquisition and budget tests pass against main.
-Native CI run `35401102797` must qualify the final head. The executor asked GitHub to cancel superseded run `35399810226`.
+Starmap #169 contains the reviewed repair at `f1afb8159`. Sol and Opus report zero findings.
+Run `35401102797` exposed an allocation comparison affected by race instrumentation.
+The repair retains the native allocation limit and verifies the same container bytes under race detection.
+All 60 native and 59 race provenance events pass. The allocation limit passes 1,000 repetitions.
 
-CSP6 owns the repair. The [repair record](repair-169.json) owns the next action.
-Merge #169 after its required and native checks pass. Then resume the checked publisher for existing catalog PR #168.
-The completed prior candidate run reports no unclassified failure. Its catalog bytes remain unchanged.
+CSP6 owns qualification through run `35402969808` and watch session `8628`.
+The [repair record](repair-169.json) owns the next action.
+Inspect remaining jobs in the prior run for additional failures.
+Merge #169 after required and native checks pass. Then resume the checked publisher for catalog PR #168.
+Preserve #165 until replacement verification.
 
 ## Replacement promotion
 

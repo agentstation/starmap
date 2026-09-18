@@ -1,26 +1,16 @@
 {
   "baseRefOid": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
-  "headRefOid": "5dbfe7faf83e2795114d0685995025b37e25158a",
+  "headRefOid": "f1afb8159a5832600e047cabe27550082eada4a3",
   "mergeStateStatus": "BLOCKED",
   "number": 169,
   "statusCheckRollup": [
     {
       "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781332024",
-      "name": "Coordinated Storage valkey",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "2026-09-18T22:21:24Z",
+      "completedAt": "2026-09-18T22:46:55Z",
       "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401100024/job/105780936078",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35402966838/job/105786647063",
       "name": "Analyze (actions)",
-      "startedAt": "2026-09-18T22:20:29Z",
+      "startedAt": "2026-09-18T22:45:57Z",
       "status": "COMPLETED",
       "workflowName": "CodeQL"
     },
@@ -28,155 +18,34 @@
       "__typename": "CheckRun",
       "completedAt": "0001-01-01T00:00:00Z",
       "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781331954",
-      "name": "Coordinated Storage redis",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "2026-09-18T22:22:24Z",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401100024/job/105780936363",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35402966838/job/105786647073",
       "name": "Analyze (go)",
-      "startedAt": "2026-09-18T22:20:27Z",
-      "status": "COMPLETED",
+      "startedAt": "2026-09-18T22:45:58Z",
+      "status": "IN_PROGRESS",
       "workflowName": "CodeQL"
     },
     {
       "__typename": "CheckRun",
-      "completedAt": "2026-09-18T22:21:40Z",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401100024/job/105780936514",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35402966838/job/105786646839",
       "name": "Analyze (python)",
-      "startedAt": "2026-09-18T22:20:28Z",
-      "status": "COMPLETED",
+      "startedAt": "2026-09-18T22:45:57Z",
+      "status": "IN_PROGRESS",
       "workflowName": "CodeQL"
     },
     {
       "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781332017",
-      "name": "Constructor Network Passivity",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781332031",
-      "name": "Offline Server Persistence",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781331997",
-      "name": "Verification Checks",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781332067",
-      "name": "Security & Reliability",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "2026-09-18T22:22:21Z",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781331715",
-      "name": "Action Pin Provenance",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "COMPLETED",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781332060",
-      "name": "Runtime windows-2025",
-      "startedAt": "2026-09-18T22:22:08Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781331937",
-      "name": "Runtime windows-11-arm",
-      "startedAt": "2026-09-18T22:22:09Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781332021",
-      "name": "Runtime ubuntu-24.04",
-      "startedAt": "2026-09-18T22:22:09Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781331880",
-      "name": "Runtime ubuntu-24.04-arm",
-      "startedAt": "2026-09-18T22:22:10Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781332085",
-      "name": "Runtime macos-15-intel",
-      "startedAt": "2026-09-18T22:22:10Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "0001-01-01T00:00:00Z",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/agentstation/starmap/actions/runs/35401102797/job/105781331965",
-      "name": "Runtime macos-15",
-      "startedAt": "2026-09-18T22:22:16Z",
-      "status": "IN_PROGRESS",
-      "workflowName": "Pull Request"
-    },
-    {
-      "__typename": "CheckRun",
-      "completedAt": "2026-09-18T22:21:16Z",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/agentstation/starmap/runs/105781131294",
+      "completedAt": "2026-09-18T22:46:48Z",
+      "conclusion": "NEUTRAL",
+      "detailsUrl": "https://github.com/agentstation/starmap/runs/105786818994",
       "name": "CodeQL",
-      "startedAt": "2026-09-18T22:21:14Z",
+      "startedAt": "2026-09-18T22:46:47Z",
       "status": "COMPLETED",
       "workflowName": ""
     }
   ],
-  "url": "https://github.com/agentstation/starmap/pull/169",
   "owner": "CSP6",
-  "disposition": "retain; consolidated repair awaits final-head qualification",
-  "next_action": "Qualify exact PR169 head 5dbfe7faf through native and required CI. Merge the reviewed source first. Resume the publisher to update existing catalog PR168 with unchanged artifact bytes, then qualify promotion and hosted retry."
+  "disposition": "retain; qualify allocation measurement repair",
+  "next_action": "Qualify exact head f1afb8159 in run 35402969808. Inspect remaining old-run jobs for additional failures. Merge reviewed PR169 only after required and native checks pass, then resume publisher for PR168."
 }
