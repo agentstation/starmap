@@ -1,0 +1,15 @@
+<section id="current-resume"><h2>Current resume state</h2>
+<p>CSP6.2 is the only task in progress. Starmap PR #166 merged at <code>54b475f71e1cc57de54c1f4d92a815351b0f7019</code> on 2026-09-18 UTC. All 23 PR checks passed. Native run <code>35274255953</code> passed all 19 jobs. Its four race groups passed 7,409 events with 22 skips. All six native platforms passed.</p>
+
+<p>Starmap worktree <code>starmap-publisher-validation</code>, branch <code>codex/catalog-hosted-qualification</code>, retains qualified source <code>b09931c66d7d0767f22c8b446b617e16c4046a7d</code>. The merge has the same tree. This pinned commit is an ancestor of <code>origin/main</code>.</p>
+
+<p>Starport worktree <code>starport-catalog-billing</code>, branch <code>codex/catalog-operation-billing</code>, has commit <code>9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4</code>. It pins <code>v0.16.6-0.20260917204518-b09931c66d7d</code>. Application race tests pass 72 events with one skip. Lint and Sol/Opus review pass. PR #377 is open.</p>
+
+<p>Starport run <code>35301301627</code> passed native tests and release checks. Its final build failed on one console date-picker timeout. Commit <code>9f80f17</code> moves dependency loading into test setup and removes a fixed sleep. Build, typecheck, and all 459 console tests pass locally.</p>
+
+<p>Sol and Opus review pass with zero findings. PR #377 has the repair. Next action: inspect final CI run <code>35302653996</code>. Merge after every required check passes, then verify the pair. Each repository must pass its own native checks before merge. Do not count paired completion before both merges.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp6.2/verification.json">proof</a> owns exact counts, source hashes, failures, and limitations. The <a href="proof/starport-production-catalog/csp6.2/starmap-merge-prior-resume.html">prior resume</a> preserves earlier state. Keep Valkey reconnection and full credentialed provider checks explicitly unverified. Preserve bot PR #165 and its failed candidate. Resume CSP6 publication after the pair qualifies. CSP12.2 owns atomic reservations.</p>
+
+<p>Preserve unrelated canonical edits in <code>AGENTS.md</code>, <code>Makefile</code>, <code>go.mod</code>, <code>go.sum</code>, and <code>scripts/verify.sh</code>. No new task completion credit.</p>
+</section>

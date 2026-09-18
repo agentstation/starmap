@@ -1,6 +1,6 @@
 {
-  "status": "in_progress",
-  "completion_credit": false,
+  "status": "done",
+  "completion_credit": true,
   "decision": "D37",
   "owner_reply": "Use actual billing units; label estimates (Recommended)",
   "date": "2026-09-17",
@@ -63,10 +63,9 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Inspect Starport PR #377 CI run 35302653996 at 9f80f17. Merge after every required check passes, then verify the merged pair and complete CSP6.2. Starmap #166 is already merged.",
-    "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
-    "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
-    "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
+    "CSP6 owns safe rejection and replacement of failed catalog PR #165 and the two hosted A05 cases.",
+    "CSP12.2 owns atomic reservations, retries, and uncertain settlement.",
+    "Valkey reconnection and full credentialed provider checks remain UNVERIFIED in their owning qualification scopes."
   ],
   "implementation_evidence": {
     "bundle": "billing-contracts-2026-09-17.json.gz",
@@ -671,7 +670,7 @@
     "url": "https://github.com/agentstation/starport/pull/377",
     "head": "9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4",
     "native_run": 35302653996,
-    "status": "reviewed correction published; final CI running"
+    "status": "merged; all ten checks passed"
   },
   "final_pair_storage": {
     "head": "a2616b535bf3ac87276b126def1ca346f9873521",
@@ -726,6 +725,19 @@
     "evidence": {
       "path": "starport-date-field-2026-09-18.json.gz",
       "uncompressed_sha256": "12c98ed1a54a9331067bee59c3df184be58a5227fff3e67d31843f3df10c1ef6"
+    }
+  },
+  "starport_merge": {
+    "commit": "d5d891eefc32d221406f059dc025a3a1e3ab4070",
+    "merged_at": "2026-09-18T14:06:05Z",
+    "head": "9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4",
+    "checks_passed": 10,
+    "unresolved_threads": 0,
+    "tree_matches_qualified_head": true,
+    "starmap_pin_ancestor_of_main": true,
+    "evidence": {
+      "path": "starport-merged-native-2026-09-18.json.gz",
+      "uncompressed_sha256": "eb667ced6d2b47b84c1e830fceae78a207706677170e3dd8dc9fb097ef9ba820"
     }
   }
 }

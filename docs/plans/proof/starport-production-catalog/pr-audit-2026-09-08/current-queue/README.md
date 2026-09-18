@@ -1,3 +1,10 @@
+## Current queue: September 18
+
+Starport #377 merged at `d5d891eefc32d221406f059dc025a3a1e3ab4070` after all ten checks passed.
+CSP6.2 is complete. CSP6 owns recovery of failed Starmap candidate #165.
+Preserve its inputs and receipts before replacement or closure.
+The [current capture](queue-status-2026-09-18-merge.json) supersedes earlier queue dispositions.
+
 # Current pull request queue
 
 Updated 2026-09-16 UTC. Starmap has two open PRs. Starport has none. Eleven plan tasks are complete.
