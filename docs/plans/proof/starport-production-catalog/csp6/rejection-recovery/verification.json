@@ -38,8 +38,17 @@
       "Constructor Network Passivity",
       "Coordinated Storage redis",
       "Offline Server Persistence",
-      "Coordinated Storage valkey"
+      "Coordinated Storage valkey",
+      "Security & Reliability",
+      "Verification Checks"
     ],
-    "observed_failures": 0
+    "observed_failures": 0,
+    "watch_session": 44526,
+    "watch_log": "/tmp/csp6-rejection-ci-watch.log",
+    "active_groups": [
+      "six native platforms",
+      "four race groups",
+      "full catalog capacity"
+    ]
   }
 }
