@@ -1,11 +1,12 @@
-## Baseline restart repair
+## Consolidated baseline repair
 
-Starmap #169 contains source repair `905ec6cfa`. Sol and Opus report zero findings.
-Candidate checks pass 24 race events and all 93 bootstrap tests. Main checks pass 24 events.
+Starmap #169 contains the reviewed repair at `5dbfe7faf`. Sol and Opus report zero findings.
+Candidate checks pass 59 race events and all 93 bootstrap tests. All 119 acquisition and budget tests pass against main.
+Native CI run `35401102797` must qualify the final head. The executor asked GitHub to cancel superseded run `35399810226`.
 
-Native CI run `35399810226` covers the prior head. Local commit `766655187` repairs four later fixture failures.
-Five additional race tests pass. CSP6 must consolidate the remaining acquisition and budget repairs before another publication.
-The [repair record](repair-169.json) owns the next action. Qualify and merge the complete repair before updating catalog PR #168.
+CSP6 owns the repair. The [repair record](repair-169.json) owns the next action.
+Merge #169 after its required and native checks pass. Then resume the checked publisher for existing catalog PR #168.
+The completed prior candidate run reports no unclassified failure. Its catalog bytes remain unchanged.
 
 ## Replacement promotion
 

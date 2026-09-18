@@ -95,7 +95,7 @@
     "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
   },
   "promotion_repair": {
-    "status": "expanded candidate failures under repair; PR169 still at prior head",
+    "status": "consolidated repair published; final-head native CI in progress",
     "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
     "branch": "codex/catalog-baseline-origin-recovery",
     "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
@@ -140,22 +140,49 @@
       "extra_main": {
         "passed": 5,
         "failed": 0
+      },
+      "remaining_candidate_focused": {
+        "passed": 30,
+        "failed": 0,
+        "file": "promotion-169-fixtures-candidate-final.jsonl.gz"
+      },
+      "main_acquisition_budget_all": {
+        "passed": 119,
+        "failed": 0,
+        "file": "promotion-169-fixtures-main-all.jsonl.gz"
+      },
+      "remaining_candidate_race_session": 47725,
+      "final_prose_session": 18358,
+      "final_goago": "zero findings, stale ignores, and errors",
+      "final_golangci": "passed",
+      "remaining_candidate_race": {
+        "passed": 30,
+        "failed": 0,
+        "file": "promotion-169-fixtures-candidate-race.jsonl.gz"
+      },
+      "final_prose": {
+        "files": 1824,
+        "diagnostics": 0
+      },
+      "candidate_matches_source": {
+        "changed_files": 15,
+        "different_files": 0
       }
     },
-    "next_action": "Repair remaining acquisition fixture and budget assertions in the same source branch. Preserve missing-receipt rejection and the 16 MiB review threshold. Inspect remaining old-candidate CI failures before consolidated qualification, required review, and updating PR169. Do not merge the prior head as complete repair.",
-    "commit": "905ec6cfacdc2fb0d7c9a3653427ce2cc53fe08e",
+    "next_action": "Qualify exact PR169 head 5dbfe7faf through native and required CI. Merge the reviewed source first. Resume the publisher to update existing catalog PR168 with unchanged artifact bytes, then qualify promotion and hosted retry.",
+    "commit": "5dbfe7faf83e2795114d0685995025b37e25158a",
     "review_session": 14512,
     "pr": 169,
-    "ci": 35399810226,
+    "ci": 35401102797,
     "review": {
       "Sol": "zero findings",
       "Opus": "zero findings",
-      "result": "clean"
+      "file": "promotion-169-final-review.json"
     },
-    "watch_session": 35213,
-    "watch_log": "/tmp/csp6-169-watch.log",
-    "local_commit": "766655187",
-    "published_commit": "905ec6cfacdc2fb0d7c9a3653427ce2cc53fe08e",
+    "watch_session": 26375,
+    "watch_log": "/tmp/csp6-169-final-watch.log",
+    "local_commit": "5dbfe7faf83e2795114d0685995025b37e25158a",
+    "published_commit": "5dbfe7faf83e2795114d0685995025b37e25158a",
     "review_extended": {
       "Sol": "zero findings",
       "Opus": "zero findings"
@@ -166,6 +193,33 @@
       "official_confirmation": "https://docs.hetzner.com/general/company-and-policy/experiments/inference/",
       "observed": "free during experimental status",
       "provider_record_prices": "explicit zero input/output/cache read rates"
+    },
+    "payload_growth_review": {
+      "uncompressed_bytes": 26412465,
+      "compressed_bytes": 1031339,
+      "review_threshold_bytes": 16777216,
+      "policy_change": false,
+      "disposition": "Retain the review finding. Existing policy permits publication with this finding. Capacity evidence supports the retained checkpoint bound, not a full startup or latency claim.",
+      "capacity_job": 105771360901,
+      "cycles": 8,
+      "largest_checkpoint_bytes": 52680638,
+      "checkpoint_bound_bytes": 67108864,
+      "file": "promotion-168-capacity.jsonl.gz",
+      "request_path_limitations": "Only the already recorded baseline accessor allocation check applies. Full product latency qualification remains owned by its plan tasks."
+    },
+    "superseded_ci": {
+      "run": 35399810226,
+      "head": "905ec6cfacdc2fb0d7c9a3653427ce2cc53fe08e",
+      "action": "cancellation requested after the complete replacement head was published",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    "old_candidate_ci": {
+      "run": 35397268876,
+      "status": "completed",
+      "conclusion": "failure",
+      "windows_amd64_failed_tests": 7,
+      "remaining_unclassified_failures": 0
     }
   }
 }
