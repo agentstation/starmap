@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete Starport review at 9f80f17 (session 58017), then push PR #377 and require final CI. The earlier run passed all native and release checks but failed the console date-picker timeout. Starmap #166 is merged.",
+    "Inspect Starport PR #377 CI run 35302653996 at 9f80f17. Merge after every required check passes, then verify the merged pair and complete CSP6.2. Starmap #166 is already merged.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -669,9 +669,9 @@
   "starport_publication": {
     "pr": 377,
     "url": "https://github.com/agentstation/starport/pull/377",
-    "head": "a2616b535bf3ac87276b126def1ca346f9873521",
-    "native_run": 35301301627,
-    "status": "CI failed on one console timeout; repair committed and under review"
+    "head": "9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4",
+    "native_run": 35302653996,
+    "status": "reviewed correction published; final CI running"
   },
   "final_pair_storage": {
     "head": "a2616b535bf3ac87276b126def1ca346f9873521",
@@ -700,21 +700,10 @@
     "failed_job": 105466642138,
     "failure": "DateField interaction timed out at 5000ms. Console run: 458 pass, 1 fail.",
     "native": {
-      "linux": {
-        "pass": 3093,
-        "fail": 0,
-        "skip": 40
-      },
-      "macos": {
-        "pass": 3093,
-        "fail": 0,
-        "skip": 40
-      },
-      "windows": {
-        "pass": 3089,
-        "fail": 0,
-        "skip": 44
-      }
+      "run": 35302653996,
+      "head": "9f80f176dcc1df6cb3ba7410b3d78c9ef04ba4d4",
+      "status": "running",
+      "url": "https://github.com/agentstation/starport/actions/runs/35302653996"
     },
     "repair": "Move calendar dependency loading into beforeAll setup. Await the React update instead of a fixed 50ms sleep. Keep interaction timeout and every assertion unchanged.",
     "focused_tests": {
@@ -729,8 +718,9 @@
       "test_seconds": 19.81
     },
     "review": {
-      "status": "running",
-      "session": 58017,
+      "status": "PASS",
+      "findings": 0,
+      "confidence": 0.98,
       "output": "/tmp/csp62-starport-review/date-field-review.json"
     },
     "evidence": {
