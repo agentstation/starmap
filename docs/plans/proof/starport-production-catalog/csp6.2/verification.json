@@ -63,7 +63,7 @@
     "finding": "PDF billing includes token reporting and model-specific resolution controls. Do not encode a universal fixed page charge."
   },
   "remaining": [
-    "Complete Starport review at a2616b5 (session 53103), then push and open its PR. Starmap native run 35274255953 is active. Qualify both final heads before ordered merges.",
+    "Wait for Starport PR #377 CI run 35301301627. Fix actual failures if any, then merge after all required checks pass. Starmap #166 is merged and its pinned dependency commit is in main history.",
     "Complete pre-PR review and native CI. Keep the Valkey reconnection skip explicit; its independent recovery qualification remains required.",
     "Merge Starmap first with a merge commit. Verify the corrected Starport dependency commit is an ancestor of main before merging Starport.",
     "Retain the failed catalog candidate evidence. Prepare corrected catalog bytes only after the paired repair qualifies. CSP12.2 owns atomic reservations, retries, and uncertain settlement."
@@ -620,13 +620,13 @@
     },
     "native": {
       "run": 35274255953,
-      "status": "running",
+      "status": "PASS",
       "head": "b09931c66d7d0767f22c8b446b617e16c4046a7d",
       "url": "https://github.com/agentstation/starmap/actions/runs/35274255953"
     },
     "starport_pin": {
       "version": "v0.16.6-0.20260917204518-b09931c66d7d",
-      "status": "committed; required review running",
+      "status": "reviewed and published as PR #377",
       "head": "a2616b535bf3ac87276b126def1ca346f9873521",
       "application_race": {
         "passed": 72,
@@ -635,7 +635,42 @@
       },
       "lint": "PASS",
       "review_session": 53103,
-      "review_output": "/tmp/csp62-starport-review/replay-review.json"
+      "review_output": "/tmp/csp62-starport-review/replay-review.json",
+      "review": {
+        "status": "PASS",
+        "findings": 0,
+        "confidence": 0.96,
+        "output": "/tmp/csp62-starport-review/replay-review.json"
+      }
     }
+  },
+  "starmap_merge": {
+    "pr": 166,
+    "url": "https://github.com/agentstation/starmap/pull/166",
+    "commit": "54b475f71e1cc57de54c1f4d92a815351b0f7019",
+    "merged_at": "2026-09-18T02:57:22Z",
+    "qualified_head": "b09931c66d7d0767f22c8b446b617e16c4046a7d",
+    "merged_tree_equals_qualified_head": true,
+    "pinned_commit_ancestor_of_main": true,
+    "native_run": 35274255953,
+    "native_jobs_passed": 19,
+    "pr_checks_passed": 23,
+    "race_events": {
+      "passed": 7409,
+      "skipped": 22,
+      "failed": 0
+    },
+    "evidence": {
+      "path": "starmap-merged-native-2026-09-18.json.gz",
+      "uncompressed_sha256": "7db2cc59bef92eb5b03c9fe2d4302bdd5f753a417bb6b9ddac9b4f6e95d476e6"
+    },
+    "qualification": "Starmap component merged. Paired CSP6.2 completion waits for Starport."
+  },
+  "starport_publication": {
+    "pr": 377,
+    "url": "https://github.com/agentstation/starport/pull/377",
+    "head": "a2616b535bf3ac87276b126def1ca346f9873521",
+    "native_run": 35301301627,
+    "status": "CI running"
   }
 }
