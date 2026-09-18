@@ -21,7 +21,13 @@
       "pkg/productpaths/workspace.go",
       "pkg/productfiles/directory.go"
     ],
-    "next_action": "Integrate and qualify saved host-file API work on current Go 1.27.1 main before publishing the dependent Starport changes."
+    "next_action": "Integrate and qualify saved host-file API work on current Go 1.27.1 main before publishing the dependent Starport changes.",
+    "main": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
+    "merge_preview_conflicts": [
+      "scripts/verify-consumer-deps.sh"
+    ],
+    "preview_only": true,
+    "resolution": "Retain current main non-standard-package budgets. The old branch adjustment counts standard-library packages and predates coordinated Go 1.27.1 qualification. Requalify the resulting consumer graph."
   },
   "completion_credit": false,
   "task_status": "CSP8 remains blocked(compatible_producer)"
