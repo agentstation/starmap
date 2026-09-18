@@ -1,7 +1,7 @@
 ## Recovery repair
 
 Starmap #167 contains the reviewed recovery change at `08ed76e4a`.
-Native CI run `35381293124` is queued. CSP6 owns its merge and controlled publication qualification.
+GitHub queued native CI run `35381293124`. CSP6 owns its merge and controlled publication qualification.
 The [recovery capture](queue-status-2026-09-18-recovery.json) adds its disposition to the merged-pair record.
 
 ## Current queue: September 18
