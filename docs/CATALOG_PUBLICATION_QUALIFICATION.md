@@ -42,3 +42,27 @@ Attestations must identify the expected publisher source and run. Later channel 
 The local recovery adapter injects failures into simulated GitHub transport while using real catalog tools and Git.
 Those tests establish transition recovery. They cannot replace hosted publication evidence.
 Both adapters must pass before CSP6 is complete.
+
+## Reject a failed candidate
+
+The publisher retries a pending candidate until both channels accept it.
+Closing its promotion PR does not permit a new acquisition.
+
+To reject a candidate, submit a reviewed change to `.github/catalog-rejections.json`.
+Record its complete `pending.json`, promotion PR number, and rejection reason.
+The publisher requires an exact match with the pending record.
+It verifies the retained archive, receipt, and checkpoint against their digests and attestations.
+Missing or changed evidence stops replacement.
+
+If either channel accepts a candidate, this procedure cannot reject it.
+Complete channel recovery instead.
+
+After the rejection change merges, a scheduled run or manual dispatch can prepare a replacement.
+The replacement uses the last accepted channel checkpoint and the current embedded baseline.
+It does not use the rejected checkpoint as accepted source state.
+Workflow completion events do not start a new acquisition.
+The publication summary identifies the rejected receipt and PR.
+
+Retain the rejected release assets and the pending branch history.
+Close the old PR only after the replacement preserves the required work and evidence.
+The new candidate must pass the normal validation, review, and promotion checks.
