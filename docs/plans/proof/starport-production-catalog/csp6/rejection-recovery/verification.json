@@ -18,5 +18,28 @@
     "overall_confidence": 0.98
   },
   "next_action": "Inspect PR #167 native CI, merge exact reviewed head after checks pass, then dispatch the controlled publisher and verify replacement before closing #165.",
-  "completion_credit": false
+  "completion_credit": false,
+  "retained_remote_evidence": {
+    "status": "PASS",
+    "path": "retained-evidence.json",
+    "checks": [
+      "archive digest and attestation",
+      "receipt digest and attestation",
+      "checkpoint digest and attestation",
+      "neither channel selects rejected candidate"
+    ],
+    "remote_writes": false
+  },
+  "ci": {
+    "run": 35381293124,
+    "status": "in_progress",
+    "observed_passes": [
+      "Action Pin Provenance",
+      "Constructor Network Passivity",
+      "Coordinated Storage redis",
+      "Offline Server Persistence",
+      "Coordinated Storage valkey"
+    ],
+    "observed_failures": 0
+  }
 }
