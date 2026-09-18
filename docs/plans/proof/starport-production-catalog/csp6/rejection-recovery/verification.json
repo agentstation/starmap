@@ -49,6 +49,9 @@
   "publication": {
     "run": 35395944704,
     "source": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
-    "status": "queued"
+    "status": "in_progress",
+    "step": "Validate candidate before publication",
+    "watch_session": 22375,
+    "watch_log": "/tmp/csp6-replacement-publication-watch.log"
   }
 }
