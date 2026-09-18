@@ -1,3 +1,9 @@
+## Controlled replacement publication
+
+Starmap #167 merged at `096a82b6d` after all 23 checks passed.
+Publisher run `35395944704` uses that source. CSP6 owns replacement and hosted retry qualification.
+The [publication capture](queue-status-2026-09-18-publisher.json) supersedes prior queue dispositions.
+
 ## Recovery repair
 
 Starmap #167 contains the reviewed recovery change at `08ed76e4a`.
