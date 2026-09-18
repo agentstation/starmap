@@ -47,5 +47,5 @@
   ],
   "owner": "CSP6",
   "disposition": "retain; qualify allocation measurement repair",
-  "next_action": "Qualify exact head f1afb8159 in run 35402969808. Inspect remaining old-run jobs for additional failures. Merge reviewed PR169 only after required and native checks pass, then resume publisher for PR168."
+  "next_action": "Qualify exact head f1afb8159 in run 35402969808. The prior run is cancelled. Merge reviewed PR169 only after required and native checks pass, then resume publisher for PR168."
 }

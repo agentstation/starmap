@@ -7,7 +7,8 @@ All 60 native and 59 race provenance events pass. The allocation limit passes 1,
 
 CSP6 owns qualification through run `35402969808` and watch session `8628`.
 The [repair record](repair-169.json) owns the next action.
-Inspect remaining jobs in the prior run for additional failures.
+
+The prior run ended as cancelled. Six unfinished jobs remain unverified. The replacement run is active.
 Merge #169 after required and native checks pass. Then resume the checked publisher for catalog PR #168.
 Preserve #165 until replacement verification.
 

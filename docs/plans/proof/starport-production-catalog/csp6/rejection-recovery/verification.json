@@ -95,7 +95,7 @@
     "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
   },
   "promotion_repair": {
-    "status": "allocation measurement repair published; replacement CI pending",
+    "status": "allocation measurement repair published; replacement CI in progress",
     "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
     "branch": "codex/catalog-baseline-origin-recovery",
     "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
@@ -170,7 +170,7 @@
         "source_head": "5dbfe7faf83e2795114d0685995025b37e25158a"
       }
     },
-    "next_action": "Qualify exact head f1afb8159 in run 35402969808. Inspect remaining old-run jobs for additional failures. Merge reviewed PR169 only after required and native checks pass, then resume publisher for PR168.",
+    "next_action": "Qualify exact head f1afb8159 in run 35402969808. The prior run is cancelled. Merge reviewed PR169 only after required and native checks pass, then resume publisher for PR168.",
     "commit": "f1afb8159a5832600e047cabe27550082eada4a3",
     "review_session": 62670,
     "pr": 169,
@@ -248,7 +248,7 @@
         "promotion-169-provenance-native.jsonl.gz",
         "promotion-169-provenance-race.jsonl.gz"
       ],
-      "prior_run_disposition": "Keep running to collect remaining failures before deciding cancellation.",
+      "prior_run_disposition": "GitHub reports the superseded run completed with conclusion cancelled. Six unfinished jobs were cancelled and remain unverified; replacement run owns qualification.",
       "prior_run_snapshot": {
         "conclusion": "cancelled",
         "jobs": [
