@@ -1,0 +1,114 @@
+[
+  {
+    "job": "105771360924",
+    "group": "contracts",
+    "failures": [
+      {
+        "package": "github.com/agentstation/starmap/internal/embedded",
+        "test": "TestEmbeddedHetznerProviderContract"
+      },
+      {
+        "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+        "test": "TestAutomaticConfigurationRunsScheduledWorkAcrossRestart"
+      },
+      {
+        "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+        "test": "TestManualSourceConfigurationKeepsAcquisitionAcrossRestart"
+      },
+      {
+        "package": "github.com/agentstation/starmap/pkg/catalogs/config",
+        "test": "TestOfflineConfigurationGuardsScheduledWorkAcrossRestart"
+      }
+    ]
+  },
+  {
+    "job": "105771360934",
+    "group": "client",
+    "failures": [
+      {
+        "package": "github.com/agentstation/starmap",
+        "test": "TestEmbeddedCatalogStateAllocations"
+      },
+      {
+        "package": "github.com/agentstation/starmap",
+        "test": "TestEmbeddedCatalogStateRemainsIndependentOfStoredCurrent"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestCanonicalAliasSurvivesProviderPreviewFreshSyncAndRestart"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestAcceptedBaselineProviderSupportsManualAcquisitionWithoutWorkspace"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestArtifactImportRetainsOriginalMembershipEvidence/scope_only"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestArtifactImportRetainsOriginalMembershipEvidence/changed_facts"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestArtifactImportRetainsOriginalMembershipEvidence"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestArtifactImportPreservesExistingMembership/fact_only"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestArtifactImportPreservesExistingMembership"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestBoundAcquirerRuntimeRetainsIndependentScopesAfterFailureAndRestart"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestImportReleaseCannotReplaceOperatorPolicy"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestImportReleasePublisherFailureCannotMutateClient"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestImportReleaseRefusesSourceWorkspaceOverlapBeforePublication"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestImportReleaseVerifiesReconcilesPublishesAndRollsBack"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestAcquireOpensNoWindowWithoutLayer"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestSyncPartialFailurePublishesAndRetainsProviderLastKnownGood"
+      },
+      {
+        "package": "github.com/agentstation/starmap/acquisition",
+        "test": "TestSyncPublishesCompletedProvidersWhileAnotherBlocked"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/bootstrap",
+        "test": "TestTheResidualOfferingsAreRealtimeAlone"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/bootstrap/budget",
+        "test": "TestEmbeddedBudgetRecordsMeasurementsAndPolicy"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/bootstrap/budget",
+        "test": "TestCatalogBudgetReviewThresholdDoesNotReject"
+      },
+      {
+        "package": "github.com/agentstation/starmap/internal/bootstrap/budget",
+        "test": "TestCatalogBudgetHardGateRequiresPolicy"
+      }
+    ]
+  }
+]

@@ -3,8 +3,9 @@
 Starmap #169 contains source repair `905ec6cfa`. Sol and Opus report zero findings.
 Candidate checks pass 24 race events and all 93 bootstrap tests. Main checks pass 24 events.
 
-Native CI run `35399810226` must pass before merge. CSP6 owns this repair.
-The [repair record](repair-169.json) owns the next action. Merge #169 before updating catalog PR #168.
+Native CI run `35399810226` covers the prior head. Local commit `766655187` repairs four later fixture failures.
+Five additional race tests pass. CSP6 must consolidate the remaining acquisition and budget repairs before another publication.
+The [repair record](repair-169.json) owns the next action. Qualify and merge the complete repair before updating catalog PR #168.
 
 ## Replacement promotion
 

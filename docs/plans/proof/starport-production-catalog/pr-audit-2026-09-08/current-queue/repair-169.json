@@ -167,6 +167,7 @@
   ],
   "url": "https://github.com/agentstation/starmap/pull/169",
   "owner": "CSP6",
-  "disposition": "retain; reviewed source repair awaits native CI",
-  "next_action": "Qualify PR169 current-head native and required checks. Merge source first, then update existing catalog PR168 and qualify its unchanged catalog."
+  "disposition": "retain; expanded candidate failures need a consolidated revision",
+  "next_action": "Repair remaining acquisition fixture and budget assertions in the same source branch. Preserve missing-receipt rejection and the 16 MiB review threshold. Inspect remaining old-candidate CI failures before consolidated qualification, required review, and updating PR169. Do not merge the prior head as complete repair.",
+  "local_commit": "766655187"
 }

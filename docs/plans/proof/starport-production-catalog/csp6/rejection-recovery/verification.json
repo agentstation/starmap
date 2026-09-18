@@ -95,7 +95,7 @@
     "reproduction_worktree": "/Users/jack/src/github.com/agentstation/starmap-promotion-168-repair"
   },
   "promotion_repair": {
-    "status": "PR169 published; native CI pending",
+    "status": "expanded candidate failures under repair; PR169 still at prior head",
     "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
     "branch": "codex/catalog-baseline-origin-recovery",
     "base": "096a82b6d3ea227bdd64393cfd12663ed8b6d890",
@@ -132,9 +132,17 @@
         "files": 1834,
         "diagnostics": 0
       },
-      "go_version": "go1.27.1 darwin/arm64"
+      "go_version": "go1.27.1 darwin/arm64",
+      "extra_candidate_race": {
+        "passed": 5,
+        "failed": 0
+      },
+      "extra_main": {
+        "passed": 5,
+        "failed": 0
+      }
     },
-    "next_action": "Qualify PR169 current-head native and required checks. Merge source first, then update existing catalog PR168 and qualify its unchanged catalog.",
+    "next_action": "Repair remaining acquisition fixture and budget assertions in the same source branch. Preserve missing-receipt rejection and the 16 MiB review threshold. Inspect remaining old-candidate CI failures before consolidated qualification, required review, and updating PR169. Do not merge the prior head as complete repair.",
     "commit": "905ec6cfacdc2fb0d7c9a3653427ce2cc53fe08e",
     "review_session": 14512,
     "pr": 169,
@@ -145,6 +153,19 @@
       "result": "clean"
     },
     "watch_session": 35213,
-    "watch_log": "/tmp/csp6-169-watch.log"
+    "watch_log": "/tmp/csp6-169-watch.log",
+    "local_commit": "766655187",
+    "published_commit": "905ec6cfacdc2fb0d7c9a3653427ce2cc53fe08e",
+    "review_extended": {
+      "Sol": "zero findings",
+      "Opus": "zero findings"
+    },
+    "expanded_failures": "promotion-168-expanded-failures.json",
+    "pricing_evidence": {
+      "source": "models_dev_http",
+      "official_confirmation": "https://docs.hetzner.com/general/company-and-policy/experiments/inference/",
+      "observed": "free during experimental status",
+      "provider_record_prices": "explicit zero input/output/cache read rates"
+    }
   }
 }
