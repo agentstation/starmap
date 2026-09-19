@@ -1,0 +1,42 @@
+{
+  "source_sha256": "fc78141124fd5d6aaf6bf3331e4a5f77d08f366c9da41dd0528e650fe24d0fc8",
+  "counts": {
+    "fail": 4
+  },
+  "events": [
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/execution",
+      "Test": "TestRequestPermissionStopsRetryAndFallback/fallback",
+      "Elapsed": 0
+    },
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/execution",
+      "Test": "TestRequestPermissionStopsRetryAndFallback/retry",
+      "Elapsed": 0
+    },
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/execution",
+      "Test": "TestRequestPermissionStopsRetryAndFallback",
+      "Elapsed": 0
+    },
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/execution",
+      "Elapsed": 0.228
+    },
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/proxy",
+      "Test": "TestCachedDeliveryRetainsRequestPermission",
+      "Elapsed": 0
+    },
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/proxy",
+      "Elapsed": 0.523
+    }
+  ]
+}

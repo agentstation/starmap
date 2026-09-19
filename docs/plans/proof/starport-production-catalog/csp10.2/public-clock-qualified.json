@@ -1,0 +1,85 @@
+{
+  "source_sha256": "7282fdee3dee296ddeb03a0d3c15e2ad72ddd5c9b2dc32f5ec1d6f9d8b1c30c7",
+  "counts": {
+    "pass": 12
+  },
+  "events": [
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockUsesOneQualifiedSample",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockRefusesUnsafeSamples/unknown",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockRefusesUnsafeSamples/zero_time",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockRefusesUnsafeSamples/negative_uncertainty",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockRefusesUnsafeSamples/excessive_uncertainty",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockRefusesUnsafeSamples/expired",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockRefusesUnsafeSamples/uncertainty_consumes_lifetime",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockRefusesUnsafeSamples",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockConfigurationIsExplicitAndPassive",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockAdmissionAllocatesNoMemory",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestAuthorityClockConcurrentSamplesDoNotMixAssurance",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Test": "TestPublicPermissionClockPreservesQualifiedSample",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starmap/runtime",
+      "Elapsed": 2.873
+    }
+  ]
+}

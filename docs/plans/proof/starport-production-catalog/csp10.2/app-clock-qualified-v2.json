@@ -1,0 +1,43 @@
+{
+  "source_sha256": "9f568289ad9af31540ddcd33cd3244f1be3636a8ad21d5bec530428001c3f8c3",
+  "counts": {
+    "pass": 5
+  },
+  "events": [
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestApplicationOwnsAuthorizationFencesAndCatchup/key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestApplicationOwnsAuthorizationFencesAndCatchup/account",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestApplicationOwnsAuthorizationFencesAndCatchup/identity",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestApplicationOwnsAuthorizationFencesAndCatchup",
+      "Elapsed": 14.95
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Test": "TestApplicationAuthorizationUsesQualifiedCatalogClock",
+      "Elapsed": 0.34
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/app",
+      "Elapsed": 17.228
+    }
+  ]
+}

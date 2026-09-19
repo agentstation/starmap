@@ -1,0 +1,25 @@
+{
+  "source_sha256": "f4fe4bf8192c1363f98cc90c3f41291df53f30483e70e8057a1a2f7a0fc1bb4a",
+  "counts": {
+    "fail": 2
+  },
+  "events": [
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBudgetStorageErrorRefuses",
+      "Elapsed": 0
+    },
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTeamBudgetReadErrorRefuses",
+      "Elapsed": 0
+    },
+    {
+      "Action": "fail",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Elapsed": 0.556
+    }
+  ]
+}

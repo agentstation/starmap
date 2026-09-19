@@ -1,0 +1,3527 @@
+{
+  "source_sha256": "43acc937e16d94604f8c356fb43dc53f4cd20ce3872a5e0599334528810a05cb",
+  "counts": {
+    "pass": 579,
+    "skip": 4
+  },
+  "events": [
+    {
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/internal/server/dto",
+      "Elapsed": 0
+    },
+    {
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/internal/server/requestctx",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer/unconfigured",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer/unavailable",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer/missing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer/inactive",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer/foreign",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer/unversioned",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer/valid",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/bearer",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous/unconfigured",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous/unavailable",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous/missing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous/inactive",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous/foreign",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous/unversioned",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous/valid",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/anonymous",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session/unconfigured",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session/unavailable",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session/missing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session/inactive",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session/foreign",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session/unversioned",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session/valid",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes/session",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAdmissionAcrossCallerModes",
+      "Elapsed": 0.01
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDeletingAnAccountThatStillHoldsKeysIsRefused",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDeletingTheDefaultAccountIsRefused",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAccountUpdateIsRevisionChecked",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCreatedAccountReportsTheStrategyItRunsUnder",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAccountPlaneWithoutStorageRefusesRatherThanReportingNoAccounts",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAccountPolicyRoundTripsThroughTheWriteSurface",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityExportStreamsNDJSONMatchingStoredRecords",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityExportServesCSV",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityExportRefusesAnUnknownFormat",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityExportRequiresAuthentication",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminExportSpansKeysAndNarrowsToOne",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityExportCarriesCacheAndGuardrailColumns",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityListsOwnKeyOnly",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityFiltersAndPagination",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminActivityFiltersByKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminMetricsReflectRecordedUsage",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityByProviderAggregates",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityByProviderExcludesOtherAccounts",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestActivityResponseNamesTheCredentialSource",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminHandler_SystemInfo",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestSystemInfoNamesTheFileBackend",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestSystemInfoSaysWhenNoFileStorageExists",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminHandler_Metrics",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminHandler_ListKeys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminHandler_CreateKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminHandler_GetKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminHandler_DeleteKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminKeySetsLimitsAndExpiry",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminKeyRejectsInvalidLimits",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestKeyListPagination",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminCreateKeyReportsTheOwningAccount",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminCreateKeyRefusesAnUnknownAccount",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminCreateKeyRefusesAMalformedAccountID",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestSystemInfoReportsBuildVersion",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestSystemInfoNamesAnUnstampedBuild",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminWebhooksSummaryRedactsURL",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminWebhooksSummaryWithoutAReceiver",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminHandler_CreateKey_UUIDKeyFormat",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestKeyLifecycleRecordsTheConsoleActor",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAuditActorNamesEachCaller",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail/accounts",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail/account_templates",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail/members",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail/provider_credentials",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail/presets",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail/auth_mode",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail/keys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMutationHandlersWriteTheAuditTrail",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAuditListDegradesWithoutTrail",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAuditListServesThePage",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAuditListRejectsABadQuery",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAuthorsControllerList",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAuthorsControllerGet",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAuthorsControllerGetUnknownIs404",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestTeamReadIncludesBudgetUsage",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestTeamBudgetWithoutUsageStoreReadsUnavailable",
+      "Elapsed": 0.02
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestTeamUpdateRejectsStaleRevision",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAccountReadIncludesBudgetUsage",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogPermissionFailureUsesRetryableGatewayStatus/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogPermissionFailureUsesRetryableGatewayStatus/openrouter",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogPermissionFailureUsesRetryableGatewayStatus",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminRefreshReturnsAcceptedOperation/the_refresh_answers_202_with_the_operation_identifier",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminRefreshReturnsAcceptedOperation/an_overlapping_refresh_joins_the_run_in_flight",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminRefreshReturnsAcceptedOperation/the_run_route_reports_the_operation",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminRefreshReturnsAcceptedOperation/the_cancel_route_ends_the_run_and_records_the_actor",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminRefreshReturnsAcceptedOperation/an_unknown_run_identifier_answers_404",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminRefreshReturnsAcceptedOperation/a_gateway_with_no_catalog_operations_degrades_loudly",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAdminRefreshReturnsAcceptedOperation",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogReadRoutesServeSummaryAndChanges/the_summary_serves_the_allowlisted_view",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogReadRoutesServeSummaryAndChanges/a_summary_failure_answers_a_sanitized_503",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogReadRoutesServeSummaryAndChanges/the_changes_route_diffs_the_two_newest_generations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogReadRoutesServeSummaryAndChanges/the_admin_status_serves_the_operator_view",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCatalogReadRoutesServeSummaryAndChanges",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAnIdentityCallbackOpensASession",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAnUnconfiguredDeploymentAnswersTheOperator",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersAreListedForFirstContact",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestBeginRedirectsToTheProvider",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAFailedDanceIsRefusedAndClearsCookies",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAReplayedClaimIsRefused",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAPastedTokenOpensASession",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAWrongPasteIsRefusedWithOneMessage/an_empty_token",
+      "Elapsed": 0.25
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAWrongPasteIsRefusedWithOneMessage/no_token_field_at_all",
+      "Elapsed": 0.25
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAWrongPasteIsRefusedWithOneMessage/a_body_that_is_not_JSON",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAWrongPasteIsRefusedWithOneMessage/a_wrong_secret",
+      "Elapsed": 0.25
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAWrongPasteIsRefusedWithOneMessage",
+      "Elapsed": 0.75
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAGatewayAPIKeyIsToldWhichCredentialTheFieldWants",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestARefusedPasteClearsAStaleSession",
+      "Elapsed": 0.25
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAnUnrotatedTokenIsRefusedFromOffMachine",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestABuildWithNoLocalTokenRefusesRatherThan404s",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestTheSessionExpiresWithTheToken",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountAuthorityFailureKeepsLivenessAvailable",
+      "Elapsed": 11.92
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTwoKeysInOneAccountShareARequestAccount",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyWithNoAccountResolvesToDefault",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestUnauthenticatedRequestAccountIsDecidedInOnePlace",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountRequestLimitBindsBelowAKeyLimit",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAAccountRequestLimitCountsEveryKeyInTheAccount",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAKeyLimitStillBindsUnderAGenerousAccount",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountSpendBindsOnTheAccountTotal",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAKeyBudgetStillBindsUnderAGenerousAccount",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthenticatedRequestCarriesItsAccountCredentialStrategy",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestUnreadableAccountRefusesTheRequest",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountTemplateCRUDRoutes",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountTemplateRoutesRefuseInvalid",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAccountCreateFromTemplate",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/missing_API_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/invalid_API_key_-_not_found",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/valid_API_key_via_Bearer_token",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/valid_API_key_via_X-API-Key_header",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/reject_API_key_via_query_parameter",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/reject_API_key_via_key_query_parameter",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/disabled_API_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey/expired_API_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAPIKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/Bearer_token",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/Direct_authorization_header",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/X-API-Key_header",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/Ignore_query_parameter_api_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/Ignore_query_parameter_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/No_API_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/Prefer_Bearer_over_other_methods",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey/Ignore_query_parameters_without_headers",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestExtractAPIKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAnyScope/allowed_explicit_scope",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAnyScope/allowed_wildcard_scope",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAnyScope/denied_missing_scope",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAnyScope/denied_missing_authentication_context",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthMiddleware_RequireAnyScope",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthIntegrationWithConsole",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDisabledAuthenticationServesInferenceWithoutAKey",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDisabledAuthenticationMetersTheAnonymousKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDisabledAuthenticationIgnoresAPresentedKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDisabledAuthenticationKeepsTheAdminPlaneClosed",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDisabledAuthenticationGrantsAdminOnlyWhenNamed",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRequiredAuthenticationRefusesAKeylessRequest",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthModeRouteAnswersWithoutAKey/required",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthModeRouteAnswersWithoutAKey/disabled",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthModeRouteAnswersWithoutAKey",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousScopesExcludeAdmin",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchChangesInferenceWithoutARestart",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchClosesAnOpenGatewayWithoutAKey",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchSurvivesARestart",
+      "Elapsed": 0.08
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchRefusesANonAdminCaller",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchRefusesARemoteOrigin",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchRefusesToOpenAReachableGateway",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchRefusesAModeStatedForThisProcess/flag",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchRefusesAModeStatedForThisProcess/config",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchRefusesAModeStatedForThisProcess",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSwitchRejectsAnUnknownMode",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestModeReadAnswersTheConsoleQuestion",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCachedAuthorizationRetainsRevocationThroughDiscoveryAndAttempts",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCachedAuthorizationUnknownClockRefuses",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCachedAnonymousPermissionTracksMode",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCachedPermissionKeepsOriginalDeadline",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCachedTeamBudgetUsesAdmittedPolicy",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationWarmRequestsAvoidStableReads/memory",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationWarmRequestsAvoidStableReads/badger",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationWarmRequestsAvoidStableReads",
+      "Elapsed": 0.13
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission/memory/unavailable",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission/memory/missing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission/memory",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission/badger/unavailable",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission/badger/missing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission/badger",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAuthorizationUnknownAccountRefusesAdmission",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchBudgetUnknownRequiredStateRefuses/missing_usage",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchBudgetUnknownRequiredStateRefuses/unavailable_usage",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchBudgetUnknownRequiredStateRefuses/missing_team_reader",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchBudgetUnknownRequiredStateRefuses/unavailable_team",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchBudgetUnknownRequiredStateRefuses",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchBudgetConfirmedAbsenceNeedsNoUsageReader",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestServerRegistersTheBatchPaths",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchesCarryTheirOwnScope",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheBatchRoutes",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchCreateRefusesAMissingInputFile",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchCreateRefusesTheWrongPurpose",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchRunsToATerminalRecordThroughTheRouter",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBatchGetAnswersNotFoundForAnUnknownIdentifier",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestFileUploadRefusesTheBatchOutputPurpose",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestStatedOversizeBodyIsRefusedBeforeItIsRead",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestUnstatedOversizeBodyIsRefusedWhileItIsRead",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBodyWithinTheLimitStillReachesTheHandler",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestOversizeRefusalAnswersInTheCallerProtocol",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSpendBudgetExhaustionReturns402",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTokenBudgetExhaustionReturns402",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBudgetWithinLimitAllowsAndReportsRemaining",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBudgetStorageErrorRefuses",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestABudgetRefusalEmitsOneNamedEvent",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnAllowedRequestEmitsNothing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTeamBudgetExhaustionRefusesEveryTeamKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTeamBudgetLeavesTeamlessKeysAlone",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTeamBudgetJoinsKeyBudgetAndTightestReports",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTeamBudgetReadErrorRefuses",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBudgetMiddlewarePassesKeysWithoutBudgets",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryDeliveryRechecksViewerAndAuthority/policy_revision",
+      "Elapsed": 11.71
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryDeliveryRechecksViewerAndAuthority/key_revoked",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols//v1/chat",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols//v1/stream",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols//v1/embeddings",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols//api/v1/chat",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols//api/v1/stream",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols//api/v1/embeddings",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMissingModelReturnsNotFoundInBothInferenceProtocols",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryDeliveryRechecksViewerAndAuthority/account_revoked",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unavailable//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unavailable//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unavailable",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryDeliveryRechecksViewerAndAuthority/reader_outage",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_chat//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_chat//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_chat",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryDeliveryRechecksViewerAndAuthority/authority_withdrawal",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unsupported//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unsupported//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unsupported",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryDeliveryRechecksViewerAndAuthority/unchanged",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryDeliveryRechecksViewerAndAuthority",
+      "Elapsed": 11.89
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unavailable//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unavailable//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unavailable",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestDiscoveryPolicyIntersectsAccountAndKey",
+      "Elapsed": 0.02
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestEmbeddingsControllerOpenAIContract",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestEmbeddingsControllerOpenRouterContract",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestEmbeddingsControllerRejectsInvalidJSONInSelectedDialect",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestKeyLifecycleEmitsNamedEvents",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAFailedMutationEmitsNothing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_Live",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_Ready",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_ContentType/live_endpoint",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_ContentType/ready_endpoint",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_ContentType",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported_chat//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported_chat//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported_chat",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported_stream//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported_stream//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/unsupported_stream",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unsupported_chat//v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unsupported_chat//api/v1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership/denied_unsupported_chat",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership",
+      "Elapsed": 0.22
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestQueuedBatchLineRechecksCatalogPermission",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestHTTPCanonicalRemovalAfterSuccessfulInference",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSDKCanonicalRemovalAfterSuccessfulInference",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCatalogReaderRoutesExcludeDeniedMembership/summary",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCatalogReaderRoutesExcludeDeniedMembership/changes",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCatalogReaderRoutesExcludeDeniedMembership",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCatalogReaderRoutesRefuseDifferentGeneration",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSafeCatalogRouteProjectsAllowlistedSummaryOnly",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSafeCatalogRouteAnswersMissingCatalogWithSanitized503/the_catalog_read_failed",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSafeCatalogRouteAnswersMissingCatalogWithSanitized503/the_gateway_holds_no_catalog_surface",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSafeCatalogRouteAnswersMissingCatalogWithSanitized503",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusRequiresAdminScope/no_credential",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusRequiresAdminScope/a_reader_scope",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusRequiresAdminScope/the_admin_scope",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusRequiresAdminScope",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusReportsRouteValidationState/no_candidate_observed_yet",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusReportsRouteValidationState/a_candidate_waits_for_route_validation",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusReportsRouteValidationState/the_candidate_became_the_accepted_head",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusReportsRouteValidationState/the_candidate_did_not_become_routable",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminCatalogStatusReportsRouteValidationState",
+      "Elapsed": 0.2
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestHTTPStreamRetainsCatalogDuringRefresh//v1",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestHTTPStreamRetainsCatalogDuringRefresh//api/v1",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestHTTPStreamRetainsCatalogDuringRefresh",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/GET_/api/v1/keys/acme-key/provider-keys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/POST_/api/v1/keys/acme-key/provider-keys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/GET_/api/v1/keys/acme-key/provider-keys/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/PUT_/api/v1/keys/acme-key/provider-keys/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/DELETE_/api/v1/keys/acme-key/provider-keys/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/POST_/api/v1/keys/acme-key/provider-keys/openai/validate",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/GET_/api/v1/keys/acme-key/usage/provider-keys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone/GET_/api/v1/keys/acme-key/usage/comparison",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestKeyNestedCredentialRoutesAreGone",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_Timestamps",
+      "Elapsed": 1.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_ServiceInfo/default_values",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_ServiceInfo/custom_service_name",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_ServiceInfo/empty_values",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestHealthHandler_ServiceInfo",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestALaunchLinkOpensASessionOnce",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAnExpiredLaunchLinkOpensNothing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestALaunchLinkFromAnotherTokenOpensNothing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestARefusalClearsAStaleSession",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestARefusalNamesTheWayBackInAndNothingElse",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestAGatewayWithNoLocalTokenRefusesEveryLaunch",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestLogosControllerServesSVG",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestLogosControllerNotModified",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestLogosControllerPrefersBundledBytes",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestLogosControllerUnknownIs404",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMembersSurfaceDegradesLoudlyWithoutIdentity",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestListingUsersReportsWhoTheGatewayKnows",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestTeamLifecycleThroughTheAdminSurface",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestGrantingAnAccountThroughTheAdminSurface",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestReachableAccountsFoldDirectAndTeamGrants",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestRemovingAGrantNamesTheWholeRow",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMetricsFromSampleReportsOverheadPercentiles",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestMetricsFromSampleOverheadEmptySample",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsResolveRetainedAliasInBothProtocols/active/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsResolveRetainedAliasInBothProtocols/active/openrouter",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsResolveRetainedAliasInBothProtocols/active",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsResolveRetainedAliasInBothProtocols/removed/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsResolveRetainedAliasInBothProtocols/removed/openrouter",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsResolveRetainedAliasInBothProtocols/removed",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsResolveRetainedAliasInBothProtocols",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelDetailsPreserveLiteralPlusInPath",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelsControllerSelectsOpenAIShape",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelsControllerSelectsOpenRouterShape",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestOpenRouterModelListCarriesEveryOffering",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestModelsControllerGetsEncodedModelID",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestOpenRouterPricingMirrorsTheCatalogProjection",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestOpenRouterOfferingsMirrorTheCatalogProjection",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestOpenRouterRecognitionBillingPreservesEstimate",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/GET_/api/v1/providers/openai/credentials",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/POST_/api/v1/providers/openai/credentials",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/GET_/api/v1/providers/openai/credentials/shared-1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/PUT_/api/v1/providers/openai/credentials/shared-1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/DELETE_/api/v1/providers/openai/credentials/shared-1",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/POST_/api/v1/providers/openai/credentials/shared-1/validate",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/GET_/api/v1/accounts/acme/byok",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/GET_/api/v1/accounts/acme/byok/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/PUT_/api/v1/accounts/acme/byok/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/DELETE_/api/v1/accounts/acme/byok/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore/POST_/api/v1/accounts/acme/byok/openai/validate",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialSurfacesDegradeLoudlyWithoutAStore",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestACredentialBodyMustCarryStringFields/not_json",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestACredentialBodyMustCarryStringFields/no_credentials",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestACredentialBodyMustCarryStringFields/empty_credentials",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestACredentialBodyMustCarryStringFields/nested_value",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestACredentialBodyMustCarryStringFields/numeric_value",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestACredentialBodyMustCarryStringFields",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestASchemaRejectionIsTheCallersMistake/schema_rejection",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestASchemaRejectionIsTheCallersMistake/storage_failure",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestASchemaRejectionIsTheCallersMistake",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestACredentialResponseNeverCarriesItsSecret",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestBYOKPutHonorsTheOperatorBYOKPolicy/a_provider_outside_a_selected_policy_is_refused",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestBYOKPutHonorsTheOperatorBYOKPolicy/a_none_policy_refuses_every_provider",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestBYOKPutHonorsTheOperatorBYOKPolicy/a_provider_inside_a_selected_policy_is_stored",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestBYOKPutHonorsTheOperatorBYOKPolicy/an_account_without_a_policy_stores_any_provider",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestBYOKPutHonorsTheOperatorBYOKPolicy/a_missing_accounts_reader_does_not_block_the_write",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestBYOKPutHonorsTheOperatorBYOKPolicy",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_List/successful_provider_listing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_List/empty_provider_list",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_List/service_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_List/provider_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_List",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_CacheHeaders/cache_hit",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_CacheHeaders/cache_miss",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_CacheHeaders/no_cache_status",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_CacheHeaders",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_ErrorHandling/validation_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_ErrorHandling/no_available_provider",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_ErrorHandling/rate_limit_exceeded",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_ErrorHandling/generic_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestProvidersHandler_ErrorHandling",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatControllerOverheadHeaderNonStream",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatControllerOverheadHeaderNonStreamError",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatControllerOverheadHeaderStream",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatStreamCatalogPermissionBeforeHeaders/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatStreamCatalogPermissionBeforeHeaders/openrouter",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatStreamCatalogPermissionBeforeHeaders",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatControllerOpenAIContract",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatControllerOpenRouterRoutingContract",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestUnenforcedProviderFieldsHeader",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatControllerOpenRouterStreamErrorContract",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestChatControllerRejectsUnknownOpenAIField",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialStrategyRefusalsAreDistinguishable/a_byok_only_account_may_not_be_widened_by_its_key",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialStrategyRefusalsAreDistinguishable/byok_first_widens_byok_only_just_as_much",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialStrategyRefusalsAreDistinguishable/an_unparsable_strategy_stays_a_caller_error",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestCredentialStrategyRefusalsAreDistinguishable",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestKeyMayNarrowItsAccountStrategy",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestKeyWithoutStrategyInheritsTheAccountStrategy",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestTranscriptionUploadReachesTheCanonicalRequest",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestTranslationPathMarksTheCanonicalRequest",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestUploadedAudioReplaysAcrossAttempts",
+      "Elapsed": 0
+    },
+    {
+      "Action": "skip",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestGatewayOverheadBenchmark",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestResponsesControllerServesTheStatelessSubset",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestResponsesControllerRefusesStoredStateWithTheNamedParam",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Test": "TestResponsesControllerStreamsTheNamedEventSequence",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestOperatorAppliesASharedCredentialResolutionCanRead",
+      "Elapsed": 0.51
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialRouteRefusesANonAdmin/GET/api/v1/providers/openai/credentials",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialRouteRefusesANonAdmin/POST/api/v1/providers/openai/credentials",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialRouteRefusesANonAdmin/GET/api/v1/providers/openai/credentials/some-credential",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialRouteRefusesANonAdmin/PUT/api/v1/providers/openai/credentials/some-credential",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialRouteRefusesANonAdmin/DELETE/api/v1/providers/openai/credentials/some-credential",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialRouteRefusesANonAdmin/POST/api/v1/providers/openai/credentials/some-credential/validate",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialRouteRefusesANonAdmin",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBYOKBelongsToItsAccount/globex_GET_/api/v1/accounts/acme/byok",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBYOKBelongsToItsAccount/globex_GET_/api/v1/accounts/acme/byok/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBYOKBelongsToItsAccount/globex_PUT_/api/v1/accounts/acme/byok/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBYOKBelongsToItsAccount/globex_DELETE_/api/v1/accounts/acme/byok/openai",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBYOKBelongsToItsAccount",
+      "Elapsed": 0.26
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBYOKAndSharedCredentialsAreSeparateStores",
+      "Elapsed": 0.48
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server/controllers",
+      "Elapsed": 16.614
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNoCredentialResponseCarriesItsSecret",
+      "Elapsed": 0.37
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialListAndItemRoutes",
+      "Elapsed": 0.25
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestSharedCredentialAccessInTheBodyReachesResolution",
+      "Elapsed": 0.26
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDiscoveryRouteWithoutProviderCredentials",
+      "Elapsed": 0.08
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDiscoveryRouteAppliesCurrentAccountDisclosure",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDiscoveryRouteRequiresReadScope",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDiscoveryViewerRejectsLostAccount",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestDiscoveryViewerRevalidatesConsoleSession",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityAuthorsApplyCurrentDisclosure",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery",
+      "Elapsed": 0.06
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//v1/models",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompatibilityRoutesRequireCurrentCatalog",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrModelRequired",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrMessagesRequired",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrInvalidTemperature",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrInvalidTopP",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrInvalidMaxTokens",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrEmbeddingsModelRequired",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrInputRequired",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors/ErrInvalidEncodingFormat",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestValidationErrors",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestErrorComparison",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestServerRegistersTheFilePaths",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestFileLifecycleOverTheRoutes",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestFileRoutesCarryTheirScopes",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestUploadPastTheBoundWritesNothing",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestUploadRefusesAPurposeThisGatewayDoesNotServe",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestOneAccountCannotReadAnotherAccountsFile",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheFileRoutes",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestFileUploadIsNotBoundByTheJSONRequestLimit",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestUploadShortensItsRetentionWindow",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAFullAccountRefusesAnUploadAndSaysWhy",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestLoggingMiddleware",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestLoggingMiddlewareWithError",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestServerRegistersTheMediaPaths",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//v1/images/generations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//v1/images/edits",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//v1/audio/speech",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//v1/audio/transcriptions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//v1/audio/translations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//api/v1/images",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//api/v1/audio/speech",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes//api/v1/audio/transcriptions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMediaRoutesCarryTheirScopes",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//v1/images/generations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//v1/images/edits",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//v1/audio/speech",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//v1/audio/transcriptions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//v1/audio/translations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//api/v1/images",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//api/v1/audio/speech",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes//api/v1/audio/transcriptions",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheMediaRoutes",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMetricsRouteServesThePrometheusScrape",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMetricsRouteOffModeRemovesTheRoute",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMetricsRouteAdminModeRequiresTheAdminScope",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestBudgetRefusalAppearsOnTheScrape",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMiddlewareChain",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestClientIPIgnoresUntrustedForwardingHeaders",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestPanicRecovery",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRequestIDMiddleware",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCompressionMiddleware",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestServerRegistersTheModerationsPath",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestModerationsCarriesItsOwnScope",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheModerationsRoute",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestModerationsRefusesAnUncataloguedModel",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestModerationsAcceptsACataloguedModelName",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestPresetCRUDEndpoints",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestPresetHistoryAndRollbackEndpoints",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestChatResolvesPresetReference",
+      "Elapsed": 0.09
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestProtocolMiddlewareSelectsErrorDialect/OpenAI",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestProtocolMiddlewareSelectsErrorDialect/OpenRouter",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestProtocolMiddlewareSelectsErrorDialect",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestProtocolRoutesUseSelectedCodec",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderStatusContract",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderIncidentsContract/serves_both_provenances_for_a_known_provider",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderIncidentsContract/an_unpublished_log_still_answers",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderIncidentsContract/an_unknown_provider_is_not_found",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderIncidentsContract/a_failed_durable_read_is_a_server_error",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderIncidentsContract",
+      "Elapsed": 0.07
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderRefreshContract/reports_bounded_revisions_and_safe_changes",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderRefreshContract/propagates_request_cancellation",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderRefreshContract/redacts_internal_reconciliation_failure",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderRefreshContract",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAdminProviderRoutesRequireAuthentication",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRateLimitMiddlewareEnforcesLimitPerAPIKeyID",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRateLimitMiddlewareDisabledByDefault",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRateLimitMiddlewareRequiresAuthenticatedCaller",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestPerKeyRequestLimitOverridesGlobal",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestPerKeyRequestLimitAppliesWhenGlobalDisabled",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestServerRegistersTheRerankPaths",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankRoutesCarryTheRerankScope//v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankRoutesCarryTheRerankScope//api/v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankRoutesCarryTheRerankScope",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheRerankRoutes//v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheRerankRoutes//api/v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheRerankRoutes",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankRefusesAnUncataloguedModel//v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankRefusesAnUncataloguedModel//api/v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankRefusesAnUncataloguedModel",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankAcceptsACataloguedModelName//v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankAcceptsACataloguedModelName//api/v1/rerank",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRerankAcceptsACataloguedModelName",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNew",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNewRequiresReadyDependencies/service",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNewRequiresReadyDependencies/api_keys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNewRequiresReadyDependencies/accounts",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNewRequiresReadyDependencies/provider_keys",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNewRequiresReadyDependencies/rate_limits",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNewRequiresReadyDependencies/provider_operations",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestNewRequiresReadyDependencies",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestMiddleware",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestReadinessIgnoresProviderCredentialAvailability",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestShutdown",
+      "Elapsed": 0.13
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestShutdownDoesNotCloseApplicationStorage",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestCORSHeaders",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestASessionAuthenticatesWithNoBearerKey",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRotatingTheLocalTokenEndsALiveSession",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnExpiredSessionStopsAuthenticating",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAGatewayWithNoGateIgnoresSessionCookies",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnUnusableSessionSaysHowToOpenANewOne",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnExplicitKeyBeatsAnAmbientSession",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestRequestTimeout",
+      "Elapsed": 0.5
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestConfigurableRequestTimeout",
+      "Elapsed": 0.1
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestShutdownTimeout",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestContextPropagation",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestReleasedRouteTimeoutOutlivesTheBound/a_bounded_route_keeps_the_bound",
+      "Elapsed": 0.05
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestReleasedRouteTimeoutOutlivesTheBound/a_released_route_outlives_the_bound",
+      "Elapsed": 0.25
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestReleasedRouteTimeoutOutlivesTheBound",
+      "Elapsed": 0.3
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTracingMiddlewareStartsRequestSpanAndContinuesInboundTrace",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestTracingMiddlewareWithNilTracerLeavesHandlerUntouched",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoContentServesStarportBytes",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnExpiredVideoAssetAnswersGone",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAListedJobStatesWhetherItsBytesAreStillThere",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoContentOfAJobWithNoAssetIsNotFound",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnAccountAtItsOutstandingJobLimitReadsARefusal",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnAccountThatStatesNoOutstandingJobLimitStillHasOne",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestServerRegistersTheVideoPaths",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/GET_/api/v1/videos",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/POST_/v1/videos",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/GET_/v1/videos",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/POST_/v1/videos/absent/cancel",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/GET_/api/v1/videos/absent",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/GET_/api/v1/videos/absent/content",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/POST_/api/v1/videos/absent/cancel",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/GET_/v1/videos/absent",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/GET_/v1/videos/absent/content",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope/POST_/api/v1/videos",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoRoutesCarryTheVideoScope",
+      "Elapsed": 0.04
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestAnonymousDeploymentReachesTheVideoRoutes",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Test": "TestVideoJobOfAnotherAccountIsNotFound",
+      "Elapsed": 0.03
+    },
+    {
+      "Action": "pass",
+      "Package": "github.com/agentstation/starport/internal/server",
+      "Elapsed": 21.955
+    }
+  ]
+}

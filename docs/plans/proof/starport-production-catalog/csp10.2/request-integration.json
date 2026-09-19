@@ -1,0 +1,98 @@
+{
+  "task": "CSP10.2",
+  "status": "local request integration preparation, not merged or production-qualified",
+  "starport_commit": "568ac5f7345b547ec51ec65f0e79d1c56751093d",
+  "starmap_commit": "d3cf1bd49b11c84e79b8b2306abacb57ef8a32eb",
+  "toolchain": "Go 1.27.1",
+  "workspace": "/tmp/csp102-host-integration.work",
+  "contracts": [
+    "Application cache uses the connected Starmap runtime qualified clock. Missing, unknown, negative, or excessive uncertainty refuses admission.",
+    "Bearer, anonymous, and machine-local sessions use bounded policy memory. Warm discovery and attempt checks use the original permit.",
+    "Local key or team mutations revoke retained permits. Retries, fallback, and cached response delivery check permission.",
+    "Unknown required budget policy or usage refuses online admission. Batch budget failures use normalized retryable gateway errors. Confirmed budget absence permits admission.",
+    "HTTP team policy comes from the admitted bundle and performs no storage read."
+  ],
+  "verification": {
+    "request-admission-qualified": {
+      "evidence": "request-admission-qualified.json",
+      "pass": 889,
+      "skip": 8,
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=3m -json ./internal/authorization/... ./internal/server/... ./internal/execution ./internal/proxy",
+      "exit_code": 0
+    },
+    "app-clock-qualified-v2": {
+      "evidence": "app-clock-qualified-v2.json",
+      "pass": 5,
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=3m -json ./internal/app -run 'TestApplication(AuthorizationUsesQualifiedCatalogClock|OwnsAuthorizationFencesAndCatchup)$'",
+      "exit_code": 0
+    },
+    "budget-server-qualified": {
+      "evidence": "budget-server-qualified.json",
+      "pass": 579,
+      "skip": 4,
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=3m -json ./internal/server/...",
+      "exit_code": 0
+    },
+    "request-valkey-qualified": {
+      "evidence": "request-valkey-qualified.json",
+      "pass": 41,
+      "command": "TEST_VALKEY_URL=<temporary real Valkey> GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=3m -json ./internal/authorization/... ./internal/server -run 'TestRepositorySourceRealStoresAndLocalMutation|TestKVRevision|TestRepositoriesPublishEveryAuthorizationMutation|TestAuthorizationWarmRequestsAvoidStableReads|TestAuthorizationUnknownAccountRefusesAdmission|TestCachedTeamBudget|TestBatchBudget|TestBudgetStorageErrorRefuses|TestTeamBudgetReadErrorRefuses'",
+      "exit_code": 0
+    },
+    "budget-fail-before": {
+      "evidence": "budget-fail-before.json",
+      "fail": 2,
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -count=1 -json ./internal/server -run 'Test(BudgetStorageErrorRefuses|TeamBudgetReadErrorRefuses)$'",
+      "exit_code": 1
+    },
+    "request-guards-fail-before": {
+      "evidence": "request-guards-fail-before.json",
+      "fail": 4,
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -overlay=/tmp/csp102-request-guards-before.json -count=1 -json ./internal/execution ./internal/proxy -run 'TestRequestPermissionStopsRetryAndFallback|TestCachedDeliveryRetainsRequestPermission'",
+      "exit_code": 1
+    },
+    "public-clock-qualified": {
+      "evidence": "public-clock-qualified.json",
+      "pass": 12,
+      "command": "go test -race -count=1 -timeout=2m -json ./runtime -run 'TestPublicPermissionClock|TestAuthorityClock|TestPermissionClock'",
+      "exit_code": 0
+    }
+  },
+  "gates": {
+    "starport_lint": "0 issues, exit 0",
+    "dependency_direction": "6 passed, 0 failed",
+    "package_layout": "exit 0 with explicit GOWORK",
+    "source_writing": "7 files, 0 diagnostics",
+    "starmap_writing": "1840 files, 0 diagnostics",
+    "starmap_goago": "0 findings, 0 stale ignores, 0 errors; earlier same source",
+    "planning_writing": {
+      "exit_code": 2,
+      "scoped_plan": "1 file, 0 diagnostics",
+      "full_gate_summary": [
+        "FAIL: 1666 file(s), 67 diagnostic(s)",
+        "make: *** [technical-writing-check] Error 1"
+      ],
+      "note": "Historical proof diagnostics remain unchanged. No implementation or plan completion claim."
+    }
+  },
+  "rejected_runs": [
+    "Initial request suite failed two retry/fallback assertions because tests compared Kind method values. Corrected to Kind().",
+    "Initial application test did not compile because it used Permit.Check instead of Permit().Check. Corrected.",
+    "Package layout without GOWORK failed on the known unpublished pkg/productfiles dependency. Workspace qualification passed; published pair remains unverified.",
+    "Initial scoped writing flagged one new comment. Rewritten with unchanged behavior."
+  ],
+  "fail_before_method": "Budget tests first failed on original fail-open behavior. Guard overlay removes only added executor and cache-delivery permission checks; three leaf cases fail. Historical warm-storage baseline records 30 reads per ten requests.",
+  "limitations": [
+    "SSO identity sessions currently refuse admission under the cache. Complete user, membership, and grant projection before publication.",
+    "Default permission clock remains disabled. Normal setup, startup readiness, diagnostics and recovery must support qualified clock operation before production qualification.",
+    "Batch policy is still captured at submission. Refresh current authorization before each queued line and propagate its permit.",
+    "Budget read refusal does not implement atomic budget reservations. CSP12.2 owns that contract.",
+    "Six Valkey skips resolved by 41 real-store test events. SDK removal and overhead tests require opt-in qualification and remain unverified.",
+    "Final server tests include budget changes; earlier 889-event combined run predates those changes. Application five-event result predates budget-only changes.",
+    "Resource bounds, source record limits, full performance, operator state, native checks, published dependencies, review and merges remain open."
+  ],
+  "next_action": "Implement SSO identity grants, queued authorization and qualified-clock startup. Preserve fail-closed budgets and zero warm policy reads.",
+  "active_sessions": [],
+  "temporary_services": "Valkey container stopped and verified absent.",
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.3</td><td>Final Starport review passes across six sections with zero findings. Both source reviews are clean. Native qualification and merges remain open.</td><td><a href=\"proof/starport-production-catalog/csp10.3/review-complete.json\">Review completion</a></td></tr>"
+}
