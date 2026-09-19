@@ -1,0 +1,18 @@
+{
+  "status": "preparation; expected failures; not qualified for publication",
+  "head": "e479a078f7eb54746d8ab8fe54e98e230c7ba6ba",
+  "base": "1a6607bc32909cf8ebea3beb6ca7d8e63a9ebf5b",
+  "worktree": "starport-credential-roles",
+  "branch": "codex/starport-credential-roles",
+  "command": "GOWORK=/tmp/csp9-host-integration.work go test -json -count=1 -run '^TestAcquisitionRoleSelectionContract$' ./internal/catalog",
+  "exit_code": 1,
+  "failed_subcases": 4,
+  "findings": [
+    "Catalog-role prefix is ignored.",
+    "Starmap prefix is ignored.",
+    "Explicit empty catalog-role or gateway selections permit conventional fallback.",
+    "The shared Starmap resolver supports secret references and migration but hardcodes Starmap policy versions and ordering. Its public config has no host lookup or role policy."
+  ],
+  "next_action": "Extend the shared resolver with explicit Starport current and legacy policies, preserving standalone Starmap behavior. Then connect Starport configuration, persisted migration state, explicit references, and inference fallback. Do not change precedence without complete-handle migration checks.",
+  "completion_credit": false
+}
