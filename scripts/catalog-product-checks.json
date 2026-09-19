@@ -3546,6 +3546,30 @@
           "repository": "starport",
           "package": "./internal/router",
           "test": "TestCatalogIndexedSelectionMatchesFullCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryDoesNotCopyUndisclosedDefinitions"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryPreservesMembershipWithoutAdapter"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRechecksAuthorityBeforeReturningFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRejectsKnownAuthorityWithdrawal"
         }
       ]
     },
@@ -3605,6 +3629,12 @@
           "test": "TestCatalogCapacityRefusesBeforeAcceptance"
         }
       ]
+    },
+    "A44.embedded_catalog_profile": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestEmbeddedCatalogSelectionProfile"
     }
   },
   "task_component_checks": {
