@@ -1,0 +1,72 @@
+{
+  "starport_commit": "9cc73fab358e5866496925951a8c6dcb37a1909c",
+  "starmap_commit": "6aff4690d7db29c820e39c5a03fbaece5f64d71e",
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache",
+  "scope": [
+    "Authenticated model details in both protocol families resolve an active alias",
+    "Exact slash and plus path identity survives HTTP routing",
+    "Real serialized model-list cache hits do not rebuild the value",
+    "Replacement generation uses a separate cache entry",
+    "Removed alias returns each protocol error without target disclosure",
+    "Endpoint alias removal refuses before cache delivery",
+    "Current account restrictions hide a previously cached model"
+  ],
+  "checks": [
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/server ./internal/server/controllers",
+      "exit": 0,
+      "pass": 495,
+      "skip": 1,
+      "fail": 0
+    },
+    {
+      "command": "go vet ./internal/server ./internal/server/controllers",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/server/...",
+      "exit": 0,
+      "issues": 0
+    },
+    {
+      "command": "technical-writing lint internal/server/catalog_alias_transition_test.go --format text",
+      "exit": 0
+    }
+  ],
+  "fixture_correction": {
+    "reason": "Compatibility endpoints enumerate chat operations. The first endpoint fixture incorrectly supplied embeddings and expected a provider model ID instead of the endpoint URL.",
+    "failed_run": {
+      "pass": 494,
+      "fail": 1,
+      "skip": 1
+    },
+    "correction": "Declare chat support and assert the actual provider endpoint URL."
+  },
+  "speed": {
+    "initial_test_elapsed_seconds": 10.9,
+    "final_test_elapsed_seconds": 0.04,
+    "reason": "Explicit test registries now supply their small catalog directly. The fixture no longer initializes an unrelated embedded catalog.",
+    "scope": "Observed test event times; not a benchmark or request latency claim."
+  },
+  "writing": {
+    "existing_helper_diagnostics": 6,
+    "new_test_diagnostics": 0,
+    "changed_prose_in_helper": false
+  },
+  "production_changes": false,
+  "task_complete": false,
+  "remaining": [
+    "Canonical model removal and protocol error distinctions",
+    "SDK transition checks",
+    "Current admission for retries and queued work",
+    "Complete task acceptance and final review",
+    "Published pair, native qualification, and merge"
+  ],
+  "planning_writing": {
+    "targeted_plan_exit": 0,
+    "full_gate_exit": 2,
+    "historical_diagnostics": 67
+  }
+}
