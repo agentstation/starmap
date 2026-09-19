@@ -89,6 +89,10 @@ Missing, unexpected, and duplicate results fail verification. CI retains the sel
 
 The package timeout remains 30 minutes. Native jobs retain their complete runtime suites.
 
+Publication recovery, ingestion, and real Git acquisition run in separate native jobs on all six platforms.
+The required verification gate also requires every native publication job to pass.
+This separates sequential job costs without changing test selection or timeout limits.
+
 Each runner uses `-p=1` to bound concurrent catalog memory. The release race suite covers the complete package inventory.
 It also proves ordinary behavior, so CI does not repeat that suite without instrumentation. Coverage and pure-Go checks remain separate because
 they prove different properties.
