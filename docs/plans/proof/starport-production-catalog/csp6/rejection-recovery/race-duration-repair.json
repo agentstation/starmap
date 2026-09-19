@@ -1,6 +1,6 @@
 {
   "captured_at": "2026-09-19T02:30:31.474075+00:00",
-  "status": "reviewed and published; final-head CI pending",
+  "status": "merged after 31 successful checks",
   "owner": "CSP6",
   "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
   "branch": "codex/acquisition-coalescing-fixture",
@@ -192,9 +192,9 @@
     }
   },
   "live_sessions": {
-    "87833": "gh run watch 35415804632; /tmp/csp6-170-final-watch.log"
+    "71770": "gh run watch 35417887612; /tmp/csp6-publisher-after-170.log"
   },
-  "next_action": "Qualify PR #170 head 67dba0ea5 in run 35415804632. Merge exact reviewed head after required and native checks pass. Record merge before resuming checked publisher #168.",
+  "next_action": "Observe publisher run 35417887612. Qualify the updated head of catalog PR #168. Complete checked channel publication and the original preparation retry.",
   "source_commit": "67dba0ea554719c2329b637a1eb812c1a440e141",
   "native_intel_failure": {
     "run": 35409735768,
@@ -223,5 +223,7 @@
     "draft": false,
     "run": 35415804632,
     "review_threads": 0
-  }
+  },
+  "merge": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+  "merge_proof": "repair-170-merged.json"
 }

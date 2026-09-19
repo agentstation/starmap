@@ -1,3 +1,13 @@
+## Current disposition: repair merged, catalog promotion resumed
+
+Starmap #170 merged at `8595d5a0cf9e6515a6e1ef4abbbaec205c142520` after all 31 checks passed.
+The merged tree matches reviewed source `67dba0ea5`. Branch protection remained enforced.
+CSP6 owns publisher run `35417887612` and watch session `71770`.
+
+Qualify the publisher-updated head of #168, then complete checked publication and retry evidence.
+Preserve rejected #165 until replacement qualification. Starport has no open PRs.
+The repair alone does not complete a task. Earlier sections preserve historical dispositions.
+
 ## Current disposition: verification repair #170
 
 PR #170 contains reviewed head `67dba0ea554719c2329b637a1eb812c1a440e141` on base `b6ce2243c`.
