@@ -1,0 +1,33 @@
+{
+  "head": "077c6e389afbceaa70d93bf678ca750c8ec46e41",
+  "base": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-publisher-validation",
+  "branch": "codex/catalog-signed-promotion",
+  "pr": 172,
+  "run": 35421087212,
+  "watch_session": 5656,
+  "tests": {
+    "command": "python3 -m unittest discover -s scripts -p 'test_catalog_publication.py'",
+    "count": 26,
+    "status": "PASS"
+  },
+  "checks": {
+    "command": "make verify-checks",
+    "status": "PASS"
+  },
+  "review": {
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "findings": 0,
+    "status": "PASS"
+  },
+  "hosted_probe": {
+    "proof": "signed-promotion-hosted-probe.json",
+    "verified": true,
+    "branch_updated": false
+  },
+  "scope": "App-signed initial and base-update commits with exact tree, parent, and verification checks. Reject unsigned retained history; no automatic history rewrite.",
+  "next_action": "Qualify PR172 on native CI, merge with protection, then prepare reviewed exact-tree recovery for PR168. Obtain separate published-history rewrite authorization if required before replacing its head. Requalify signed head, checked publisher, both channels, and original same-bytes retry."
+}

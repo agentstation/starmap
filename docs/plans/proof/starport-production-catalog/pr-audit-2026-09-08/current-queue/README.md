@@ -4,7 +4,12 @@ CSP6 owns Starmap #168 at `e1d72d5d7e5f2921616b89b91b6460fefaffb62d`, based on m
 All 380 candidate files retain their original bytes. All 31 checks now pass.
 Publisher run `35420322946` failed at protected merge. All three bot commits lack verified signatures.
 
-CSP6 owns verified commit creation and recovery on branch `codex/catalog-signed-promotion`.
+CSP6 owns reviewed repair PR #172 at `077c6e389`, branch `codex/catalog-signed-promotion`.
+All 26 publisher tests and full checks pass. Both reviewers report zero findings.
+Native CI run `35421087212` uses watch session `5656`.
+The [repair proof](../../csp6/rejection-recovery/signed-promotion-repair.json) records the verified live App signing probe.
+
+Merge #172 after native qualification, then prepare exact-tree recovery for #168.
 Preserve signature protection. Qualify the repaired publisher before both catalog channels and the original preparation retry.
 The [qualification proof](../../csp6/rejection-recovery/promotion-168-qualified.json) records all native platforms and protected checks.
 
