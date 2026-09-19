@@ -1,6 +1,6 @@
 {
   "captured_at": "2026-09-19T01:29:32.278653+00:00",
-  "status": "implementation under verification",
+  "status": "migration process guard repair under verification",
   "owner": "CSP6",
   "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
   "branch": "codex/acquisition-coalescing-fixture",
@@ -59,12 +59,21 @@
       "files": 1836,
       "diagnostics": 0
     },
-    "repository_checks_proof": "race-duration-checks.log.gz"
+    "repository_checks_proof": "race-duration-checks.log.gz",
+    "runtime_shard_2": {
+      "status": "failed",
+      "package_seconds": 1191.402,
+      "failure": "Three TestPublishDirectoryMigrationRecoversProcessExit children reached the one-minute process guard.",
+      "proof": "race-duration-shard-2-failure.jsonl.gz",
+      "repair": "Run all five independent crash scenarios serially. Preserve crash points and the one-minute guard."
+    }
   },
   "live_sessions": {
-    "39454": "candidate runtime shards 2 then 3 sequentially, /tmp/csp6-runtime-shard-{2,3}.log and .jsonl"
+    "9821": "runtime shard 3, /tmp/csp6-runtime-shard-3.log and .jsonl",
+    "22762": "focused migration crash race tests against main, /tmp/csp6-migration-crash-main.jsonl",
+    "40989": "focused migration crash race tests against candidate, /tmp/csp6-migration-crash-candidate.jsonl"
   },
-  "next_action": "Observe session 39454 until runtime groups 2 and 3 finish. Verify all shard inventories form an exact partition, record counts and skips, then push reviewed head 20145bb6d and open the consolidated repair PR. Qualify native CI and merge before resuming publisher #168.",
+  "next_action": "Verify all five migration crash scenarios against both catalogs and finish shard 3. Run applicable checks for runtime/migration_publish_test.go, commit it, and repeat required autoreview. Do not rerun unchanged groups solely to replace recorded fail-before evidence; hosted CI must qualify every group at the final head. Then publish the consolidated repair PR.",
   "source_commit": "20145bb6d110765464cbeabe42ba5dde1ff00063",
   "native_intel_failure": {
     "run": 35409735768,
@@ -76,7 +85,7 @@
     "evidence": "promotion-168-intel-timeout.log.gz"
   },
   "review": {
-    "status": "pass",
+    "status": "historical pass at 20145bb6d; rerun after the migration test repair",
     "reviewers": [
       "codex:gpt-5.6-sol:xhigh",
       "claude:opus:high"

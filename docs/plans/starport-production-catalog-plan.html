@@ -15,7 +15,7 @@
 
 <p>Starport pins <code>v0.16.6-0.20260917204518-b09931c66d7d</code>. The pinned source is an ancestor of Starmap main. Paired storage checks pass 451 race events without failures or skips. Sol and Opus reviews pass without findings.</p>
 
-<p id="next-action">Next action: finish the remaining runtime race groups and publish reviewed repair <code>20145bb6d</code>. PR #168 head <code>f91908cede32e052a5dc36da12d3ec26c0e126ef</code> fails both race groups in run <code>35409735768</code>. The Intel macOS job also reaches its total time limit. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-status-2026-09-19-race-failures.json">queue capture</a> records checks, ownership, review threads, and local work. Preserve all behavioral coverage and existing timeout limits. Resume checked publication after the reviewed repair merges.</p>
+<p id="next-action">Next action: verify the migration crash test repair, finish runtime group three, and repeat review. PR #168 head <code>f91908cede32e052a5dc36da12d3ec26c0e126ef</code> fails both race groups in run <code>35409735768</code>. The Intel macOS job also reaches its total time limit. The <a href="proof/starport-production-catalog/pr-audit-2026-09-08/current-queue/queue-status-2026-09-19-race-failures.json">queue capture</a> records checks, ownership, review threads, and local work. Preserve all behavioral coverage and existing timeout limits. Resume checked publication after the reviewed repair merges.</p>
 
 <p>The <a href="proof/starport-production-catalog/csp6/rejection-recovery/promotion-169-merged.json">merge proof</a> records exact test counts, skips, and final checks. Both allocation limits remain unchanged. All four race groups pass. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/pre-repair-merge-resume.html">prior resume</a> preserves history.</p>
 
@@ -25,7 +25,9 @@
 
 <p>The repair worktree <code>starmap-baseline-origin-recovery</code> uses branch <code>codex/acquisition-coalescing-fixture</code> at <code>b6ce2243c</code>. Repair commit <code>20145bb6d</code> contains six changed files. Detached worktree <code>starmap-coalescing-candidate</code> carries the same changes against <code>f91908ced</code>. Four focused race tests pass on each catalog. </p>
 
-<p>The runtime runner now checks three disjoint inventories. Nine runner tests pass. Full repository checks and the first runtime group pass. Sol and Opus report no findings. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/race-duration-repair.json">repair record</a> identifies live sessions and remaining checks. </p>
+<p>The runtime runner now checks three disjoint inventories. Nine runner tests pass. Full repository checks and the first runtime group pass. Sol and Opus report no findings at <code>20145bb6d</code>. </p>
+
+<p>Group two later exposed three child-process guard failures. The migration test now runs its five crash points serially. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/race-duration-repair.json">repair record</a> identifies live sessions and remaining checks. </p>
 
 <p>Starport remains at qualified head <code>9f80f176d</code>. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/verification.json">publication proof</a> owns current execution details.</p>
 
