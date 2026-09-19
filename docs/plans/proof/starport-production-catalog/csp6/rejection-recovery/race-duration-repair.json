@@ -24,8 +24,10 @@
       "result": "expected failure"
     },
     "focused_acquisition": {
-      "main_pass": 3,
-      "candidate_pass": 3
+      "main_pass": 4,
+      "candidate_pass": 4,
+      "fail": 0,
+      "includes": "all four callers of reviewedRuntimeSource"
     },
     "goago": "pass, no findings or errors",
     "prose_changed_files": "pass, five files",
@@ -33,12 +35,19 @@
       139,
       130,
       168
-    ]
+    ],
+    "full_prose": {
+      "files": 1836,
+      "diagnostics": 0
+    },
+    "golangci_lint": "pass, zero issues",
+    "pure_go": "pass, Go 1.27.1 external consumer, library, pinned artifact, stores, server, remote and CLI"
   },
   "live_sessions": {
     "72305": "candidate runtime shard 1, /tmp/csp6-runtime-shard-1.log and .jsonl",
     "39454": "candidate runtime shards 2 then 3 sequentially, /tmp/csp6-runtime-shard-{2,3}.log and .jsonl",
-    "94828": "make verify-checks, /tmp/csp6-race-repair-checks.log; currently docs-check through devbox"
+    "94828": "make verify-checks, /tmp/csp6-race-repair-checks.log; pure-Go passed, performance and remaining checks active"
   },
-  "next_action": "Observe existing sessions. Finish required verification, commit the repair, run Sol xhigh and Opus high pre-PR autoreview, publish the repair PR, qualify native CI and merge. Then resume the existing catalog publisher for #168. Do not restart live tests."
+  "next_action": "Observe sessions 72305, 39454, 94828. After final checks, run Sol xhigh and Opus high pre-PR autoreview on the committed repair. Publish, qualify native CI and merge the repair. Then resume existing publisher for #168. Do not restart live tests.",
+  "source_commit": "f1e2507b76650566b6b0f734b4e1868ccd5e2dd6"
 }
