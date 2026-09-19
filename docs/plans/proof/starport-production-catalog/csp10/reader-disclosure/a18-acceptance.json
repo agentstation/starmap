@@ -1,0 +1,820 @@
+{
+  "cases": [
+    {
+      "id": "A01",
+      "condition": "CSP-V01",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A02",
+      "condition": "CSP-V02",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A03",
+      "condition": "CSP-V03",
+      "status": "UNVERIFIED",
+      "required_subcases": 16
+    },
+    {
+      "id": "A04",
+      "condition": "CSP-V04",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A05",
+      "condition": "CSP-V05",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A06",
+      "condition": "CSP-V06",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A07",
+      "condition": "CSP-V07",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A08",
+      "condition": "CSP-V08",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A09",
+      "condition": "CSP-V09",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A10",
+      "condition": "CSP-V10",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A11",
+      "condition": "CSP-V11",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A12",
+      "condition": "CSP-V12",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A13",
+      "condition": "CSP-V13",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A14",
+      "condition": "CSP-V14",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A15",
+      "condition": "CSP-V15",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A16",
+      "condition": "CSP-V16",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A17",
+      "condition": "CSP-V17",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A18",
+      "condition": "CSP-V18",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A19",
+      "condition": "CSP-V19",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A20",
+      "condition": "CSP-V20",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A21",
+      "condition": "CSP-V21",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A22",
+      "condition": "CSP-V22",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A23",
+      "condition": "CSP-V23",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A24",
+      "condition": "CSP-V24",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A25",
+      "condition": "CSP-V25",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A26",
+      "condition": "CSP-V26",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A27",
+      "condition": "CSP-V27",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A28",
+      "condition": "CSP-V28",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A29",
+      "condition": "CSP-V29",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A30",
+      "condition": "CSP-V30",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A31",
+      "condition": "CSP-V31",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A32",
+      "condition": "CSP-V32",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A33",
+      "condition": "CSP-V33",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A34",
+      "condition": "CSP-V34",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A35",
+      "condition": "CSP-V35",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A36",
+      "condition": "CSP-V36",
+      "status": "UNVERIFIED",
+      "required_subcases": 2
+    },
+    {
+      "id": "A37",
+      "condition": "CSP-V37",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A38",
+      "condition": "CSP-V38",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A39",
+      "condition": "CSP-V39",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A40",
+      "condition": "CSP-V40",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A41",
+      "condition": "CSP-V41",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A42",
+      "condition": "CSP-V42",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A43",
+      "condition": "CSP-V43",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A44",
+      "condition": "CSP-V44",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A45",
+      "condition": "CSP-V45",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A46",
+      "condition": "CSP-V46",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A47",
+      "condition": "CSP-V47",
+      "status": "UNVERIFIED",
+      "required_subcases": 22
+    },
+    {
+      "id": "A48",
+      "condition": "CSP-V48",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A49",
+      "condition": "CSP-V49",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A50",
+      "condition": "CSP-V50",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    }
+  ],
+  "subcases": {
+    "A18.consistent_counts_prices": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.inflight_and_new_attempts": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.removed_id_error": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.rename_alias_overlap": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.unauthorized_membership_redaction": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryPreservesMembershipWithoutAdapter$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:39:20.962935-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T05:39:21.532477-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryPreservesMembershipWithoutAdapter\"}\n{\"Time\":\"2026-09-19T05:39:21.532547-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryPreservesMembershipWithoutAdapter\",\"Output\":\"=== RUN   TestDiscoveryPreservesMembershipWithoutAdapter\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:39:32.086238-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryPreservesMembershipWithoutAdapter\",\"Output\":\"--- PASS: TestDiscoveryPreservesMembershipWithoutAdapter (10.55s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:39:32.086264-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryPreservesMembershipWithoutAdapter\",\"Elapsed\":10.55}\n{\"Time\":\"2026-09-19T05:39:32.086384-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:39:33.102754-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t12.140s\\n\"}\n{\"Time\":\"2026-09-19T05:39:33.102827-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":12.14}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryRequiresExplicitDisclosurePolicy$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:39:34.574626-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T05:39:35.143373-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRequiresExplicitDisclosurePolicy\"}\n{\"Time\":\"2026-09-19T05:39:35.143434-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRequiresExplicitDisclosurePolicy\",\"Output\":\"=== RUN   TestDiscoveryRequiresExplicitDisclosurePolicy\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:39:45.631378-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRequiresExplicitDisclosurePolicy\",\"Output\":\"--- PASS: TestDiscoveryRequiresExplicitDisclosurePolicy (10.49s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:39:45.631406-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRequiresExplicitDisclosurePolicy\",\"Elapsed\":10.49}\n{\"Time\":\"2026-09-19T05:39:45.631526-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:39:46.64424-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t12.069s\\n\"}\n{\"Time\":\"2026-09-19T05:39:46.644333-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":12.07}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryRefusesColdInternalAuthority$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:39:48.176902-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T05:39:48.737319-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\"}\n{\"Time\":\"2026-09-19T05:39:48.737372-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"=== RUN   TestDiscoveryRefusesColdInternalAuthority\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:39:48.767975-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"badger 2026/09/19 05:39:48 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T05:39:48.774613-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"badger 2026/09/19 05:39:48 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T05:39:48.774721-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"badger 2026/09/19 05:39:48 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.310298-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"badger 2026/09/19 05:40:02 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.316954-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"badger 2026/09/19 05:40:02 INFO: \\n\"}\n{\"Time\":\"2026-09-19T05:40:02.316984-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 383 B of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.316996-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.316999-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.317001-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.317003-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.317005-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.317007-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.317008-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T05:40:02.329841-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Output\":\"--- PASS: TestDiscoveryRefusesColdInternalAuthority (13.59s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:02.329872-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRefusesColdInternalAuthority\",\"Elapsed\":13.59}\n{\"Time\":\"2026-09-19T05:40:02.329972-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:03.357083-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t15.180s\\n\"}\n{\"Time\":\"2026-09-19T05:40:03.357109-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":15.18}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryRechecksAuthorityBeforeReturningFacts$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:40:04.717814-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T05:40:05.324813-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\"}\n{\"Time\":\"2026-09-19T05:40:05.32487-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"=== RUN   TestDiscoveryRechecksAuthorityBeforeReturningFacts\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:05.345534-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"badger 2026/09/19 05:40:05 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T05:40:05.350595-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"badger 2026/09/19 05:40:05 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T05:40:05.350673-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"badger 2026/09/19 05:40:05 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.452179-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"badger 2026/09/19 05:40:19 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458865-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"badger 2026/09/19 05:40:19 INFO: \\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458886-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 3.7 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458898-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458901-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458903-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458905-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458907-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458909-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.458911-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T05:40:19.476811-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Output\":\"--- PASS: TestDiscoveryRechecksAuthorityBeforeReturningFacts (14.15s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:19.476837-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRechecksAuthorityBeforeReturningFacts\",\"Elapsed\":14.15}\n{\"Time\":\"2026-09-19T05:40:19.476957-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:20.506712-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t15.789s\\n\"}\n{\"Time\":\"2026-09-19T05:40:20.506752-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":15.789}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryRejectsKnownAuthorityWithdrawal$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:40:22.069885-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T05:40:22.628715-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\"}\n{\"Time\":\"2026-09-19T05:40:22.628785-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"=== RUN   TestDiscoveryRejectsKnownAuthorityWithdrawal\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:22.658803-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"badger 2026/09/19 05:40:22 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T05:40:22.665432-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"badger 2026/09/19 05:40:22 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T05:40:22.665473-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"badger 2026/09/19 05:40:22 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.919492-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"badger 2026/09/19 05:40:36 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.92621-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"badger 2026/09/19 05:40:36 INFO: \\n\"}\n{\"Time\":\"2026-09-19T05:40:36.92623-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 3.7 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.926249-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.926251-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.926253-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.926257-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.926258-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.92626-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.926261-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T05:40:36.940211-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Output\":\"--- PASS: TestDiscoveryRejectsKnownAuthorityWithdrawal (14.31s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:36.940223-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestDiscoveryRejectsKnownAuthorityWithdrawal\",\"Elapsed\":14.31}\n{\"Time\":\"2026-09-19T05:40:36.94034-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:37.965597-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t15.895s\\n\"}\n{\"Time\":\"2026-09-19T05:40:37.96562-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":15.896}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestViewerProjectionsFilterOfferingFacts$",
+            "./internal/catalog/view"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:40:39.719682-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\"}\n{\"Time\":\"2026-09-19T05:40:40.277242-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestViewerProjectionsFilterOfferingFacts\"}\n{\"Time\":\"2026-09-19T05:40:40.277308-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestViewerProjectionsFilterOfferingFacts\",\"Output\":\"=== RUN   TestViewerProjectionsFilterOfferingFacts\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:50.926232-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestViewerProjectionsFilterOfferingFacts\",\"Output\":\"--- PASS: TestViewerProjectionsFilterOfferingFacts (10.65s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:50.926295-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestViewerProjectionsFilterOfferingFacts\",\"Elapsed\":10.65}\n{\"Time\":\"2026-09-19T05:40:50.926331-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:40:51.944994-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog/view\\t12.225s\\n\"}\n{\"Time\":\"2026-09-19T05:40:51.945021-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Elapsed\":12.225}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestReaderProjectionPreservesPermittedFacts$",
+            "./internal/catalog/view"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:40:53.380184-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\"}\n{\"Time\":\"2026-09-19T05:40:53.934453-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionPreservesPermittedFacts\"}\n{\"Time\":\"2026-09-19T05:40:53.934509-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionPreservesPermittedFacts\",\"Output\":\"=== RUN   TestReaderProjectionPreservesPermittedFacts\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:05.007418-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionPreservesPermittedFacts\",\"Output\":\"--- PASS: TestReaderProjectionPreservesPermittedFacts (11.07s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:05.007446-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionPreservesPermittedFacts\",\"Elapsed\":11.07}\n{\"Time\":\"2026-09-19T05:41:05.00747-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:06.022488-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog/view\\t12.642s\\n\"}\n{\"Time\":\"2026-09-19T05:41:06.022519-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Elapsed\":12.642}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestReaderProjectionRejectsDifferentGeneration$",
+            "./internal/catalog/view"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:41:07.546793-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\"}\n{\"Time\":\"2026-09-19T05:41:08.105597-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionRejectsDifferentGeneration\"}\n{\"Time\":\"2026-09-19T05:41:08.105668-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionRejectsDifferentGeneration\",\"Output\":\"=== RUN   TestReaderProjectionRejectsDifferentGeneration\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:18.591182-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionRejectsDifferentGeneration\",\"Output\":\"--- PASS: TestReaderProjectionRejectsDifferentGeneration (10.49s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:18.591216-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Test\":\"TestReaderProjectionRejectsDifferentGeneration\",\"Elapsed\":10.49}\n{\"Time\":\"2026-09-19T05:41:18.591236-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:19.604772-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog/view\\t12.058s\\n\"}\n{\"Time\":\"2026-09-19T05:41:19.604809-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog/view\",\"Elapsed\":12.058}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryCacheSeparatesDisclosureMembership$",
+            "./internal/proxy"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:41:23.335044-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/proxy\"}\n{\"Time\":\"2026-09-19T05:41:24.002983-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership\"}\n{\"Time\":\"2026-09-19T05:41:24.003094-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership\",\"Output\":\"=== RUN   TestDiscoveryCacheSeparatesDisclosureMembership\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:34.73702-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/models\"}\n{\"Time\":\"2026-09-19T05:41:34.737067-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/models\",\"Output\":\"=== RUN   TestDiscoveryCacheSeparatesDisclosureMembership/models\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:34.975061-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/models\",\"Output\":\"--- PASS: TestDiscoveryCacheSeparatesDisclosureMembership/models (0.24s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:34.975095-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/models\",\"Elapsed\":0.24}\n{\"Time\":\"2026-09-19T05:41:34.975128-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/providers\"}\n{\"Time\":\"2026-09-19T05:41:34.97513-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/providers\",\"Output\":\"=== RUN   TestDiscoveryCacheSeparatesDisclosureMembership/providers\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:34.984576-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/providers\",\"Output\":\"--- PASS: TestDiscoveryCacheSeparatesDisclosureMembership/providers (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:34.984594-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership/providers\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T05:41:34.984598-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership\",\"Output\":\"--- PASS: TestDiscoveryCacheSeparatesDisclosureMembership (10.98s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:34.984625-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheSeparatesDisclosureMembership\",\"Elapsed\":10.98}\n{\"Time\":\"2026-09-19T05:41:34.984783-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:36.000337-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/proxy\\t12.665s\\n\"}\n{\"Time\":\"2026-09-19T05:41:36.000364-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Elapsed\":12.665}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryCacheLookupRechecksAuthority$",
+            "./internal/proxy"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:41:38.848591-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/proxy\"}\n{\"Time\":\"2026-09-19T05:41:39.498538-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority\"}\n{\"Time\":\"2026-09-19T05:41:39.49861-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority\",\"Output\":\"=== RUN   TestDiscoveryCacheLookupRechecksAuthority\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:39.498651-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/models\"}\n{\"Time\":\"2026-09-19T05:41:39.498659-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/models\",\"Output\":\"=== RUN   TestDiscoveryCacheLookupRechecksAuthority/models\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:50.055689-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/models\",\"Output\":\"--- PASS: TestDiscoveryCacheLookupRechecksAuthority/models (10.56s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:50.055712-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/models\",\"Elapsed\":10.56}\n{\"Time\":\"2026-09-19T05:41:50.055756-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/providers\"}\n{\"Time\":\"2026-09-19T05:41:50.055765-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/providers\",\"Output\":\"=== RUN   TestDiscoveryCacheLookupRechecksAuthority/providers\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:50.066799-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/providers\",\"Output\":\"--- PASS: TestDiscoveryCacheLookupRechecksAuthority/providers (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:50.066817-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/providers\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T05:41:50.066822-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/endpoints\"}\n{\"Time\":\"2026-09-19T05:41:50.066825-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/endpoints\",\"Output\":\"=== RUN   TestDiscoveryCacheLookupRechecksAuthority/endpoints\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:50.077617-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/endpoints\",\"Output\":\"--- PASS: TestDiscoveryCacheLookupRechecksAuthority/endpoints (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:50.077639-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority/endpoints\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T05:41:50.077643-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority\",\"Output\":\"--- PASS: TestDiscoveryCacheLookupRechecksAuthority (10.58s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:50.077645-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestDiscoveryCacheLookupRechecksAuthority\",\"Elapsed\":10.58}\n{\"Time\":\"2026-09-19T05:41:50.077828-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:41:51.097112-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/proxy\\t12.248s\\n\"}\n{\"Time\":\"2026-09-19T05:41:51.097139-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Elapsed\":12.249}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCompatibilityDiscoveryRejectsWithdrawnAuthority$",
+            "./internal/proxy"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:41:53.367102-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/proxy\"}\n{\"Time\":\"2026-09-19T05:41:54.011238-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority\"}\n{\"Time\":\"2026-09-19T05:41:54.011294-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority\",\"Output\":\"=== RUN   TestCompatibilityDiscoveryRejectsWithdrawnAuthority\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474117-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/models\"}\n{\"Time\":\"2026-09-19T05:42:04.474135-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/models\",\"Output\":\"=== RUN   TestCompatibilityDiscoveryRejectsWithdrawnAuthority/models\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474233-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/models\",\"Output\":\"--- PASS: TestCompatibilityDiscoveryRejectsWithdrawnAuthority/models (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474244-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/models\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:42:04.474261-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/providers\"}\n{\"Time\":\"2026-09-19T05:42:04.474262-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/providers\",\"Output\":\"=== RUN   TestCompatibilityDiscoveryRejectsWithdrawnAuthority/providers\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.4743-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/providers\",\"Output\":\"--- PASS: TestCompatibilityDiscoveryRejectsWithdrawnAuthority/providers (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474309-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/providers\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:42:04.474319-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/endpoints\"}\n{\"Time\":\"2026-09-19T05:42:04.47432-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/endpoints\",\"Output\":\"=== RUN   TestCompatibilityDiscoveryRejectsWithdrawnAuthority/endpoints\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474358-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/endpoints\",\"Output\":\"--- PASS: TestCompatibilityDiscoveryRejectsWithdrawnAuthority/endpoints (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474373-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/endpoints\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:42:04.474379-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/authors\"}\n{\"Time\":\"2026-09-19T05:42:04.474388-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/authors\",\"Output\":\"=== RUN   TestCompatibilityDiscoveryRejectsWithdrawnAuthority/authors\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474425-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/authors\",\"Output\":\"--- PASS: TestCompatibilityDiscoveryRejectsWithdrawnAuthority/authors (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474431-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/authors\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:42:04.47444-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/author\"}\n{\"Time\":\"2026-09-19T05:42:04.474442-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/author\",\"Output\":\"=== RUN   TestCompatibilityDiscoveryRejectsWithdrawnAuthority/author\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474471-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/author\",\"Output\":\"--- PASS: TestCompatibilityDiscoveryRejectsWithdrawnAuthority/author (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474491-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/author\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:42:04.474513-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/logo\"}\n{\"Time\":\"2026-09-19T05:42:04.474516-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/logo\",\"Output\":\"=== RUN   TestCompatibilityDiscoveryRejectsWithdrawnAuthority/logo\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474582-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/logo\",\"Output\":\"--- PASS: TestCompatibilityDiscoveryRejectsWithdrawnAuthority/logo (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474589-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority/logo\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:42:04.474601-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority\",\"Output\":\"--- PASS: TestCompatibilityDiscoveryRejectsWithdrawnAuthority (10.46s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:04.474614-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityDiscoveryRejectsWithdrawnAuthority\",\"Elapsed\":10.46}\n{\"Time\":\"2026-09-19T05:42:04.47476-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:05.494576-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/proxy\\t12.127s\\n\"}\n{\"Time\":\"2026-09-19T05:42:05.494598-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Elapsed\":12.128}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCompatibilityProjectionRechecksAuthorityAtDelivery$",
+            "./internal/proxy"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:42:07.732895-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/proxy\"}\n{\"Time\":\"2026-09-19T05:42:08.376799-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityProjectionRechecksAuthorityAtDelivery\"}\n{\"Time\":\"2026-09-19T05:42:08.376855-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityProjectionRechecksAuthorityAtDelivery\",\"Output\":\"=== RUN   TestCompatibilityProjectionRechecksAuthorityAtDelivery\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:18.848343-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityProjectionRechecksAuthorityAtDelivery\",\"Output\":\"--- PASS: TestCompatibilityProjectionRechecksAuthorityAtDelivery (10.47s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:18.848395-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCompatibilityProjectionRechecksAuthorityAtDelivery\",\"Elapsed\":10.47}\n{\"Time\":\"2026-09-19T05:42:18.848486-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:19.856028-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/proxy\\t12.123s\\n\"}\n{\"Time\":\"2026-09-19T05:42:19.856051-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Elapsed\":12.123}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryRouteWithoutProviderCredentials$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:42:22.179226-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:42:22.783772-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\"}\n{\"Time\":\"2026-09-19T05:42:22.783833-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"=== RUN   TestDiscoveryRouteWithoutProviderCredentials\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:33.286168-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:42:33-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:42:33.328576-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/lA28pwHWTC-000001\\\",\\\"status\\\":200,\\\"bytes\\\":226125,\\\"duration\\\":14.962209,\\\"time\\\":\\\"2026-09-19T05:42:33-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:42:33.346753-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Output\":\"--- PASS: TestDiscoveryRouteWithoutProviderCredentials (10.56s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:33.346776-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteWithoutProviderCredentials\",\"Elapsed\":10.56}\n{\"Time\":\"2026-09-19T05:42:33.346879-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:34.364928-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.185s\\n\"}\n{\"Time\":\"2026-09-19T05:42:34.364958-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.186}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryRouteAppliesCurrentAccountDisclosure$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:42:36.647936-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:42:37.245825-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteAppliesCurrentAccountDisclosure\"}\n{\"Time\":\"2026-09-19T05:42:37.245918-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteAppliesCurrentAccountDisclosure\",\"Output\":\"=== RUN   TestDiscoveryRouteAppliesCurrentAccountDisclosure\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:47.69367-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteAppliesCurrentAccountDisclosure\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:42:47-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:42:47.726676-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteAppliesCurrentAccountDisclosure\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/p5K9iOLleL-000001\\\",\\\"status\\\":200,\\\"bytes\\\":69,\\\"duration\\\":3.802625,\\\"time\\\":\\\"2026-09-19T05:42:47-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:42:47.727444-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteAppliesCurrentAccountDisclosure\",\"Output\":\"--- PASS: TestDiscoveryRouteAppliesCurrentAccountDisclosure (10.48s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:47.727463-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteAppliesCurrentAccountDisclosure\",\"Elapsed\":10.48}\n{\"Time\":\"2026-09-19T05:42:47.727635-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:42:48.735662-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.087s\\n\"}\n{\"Time\":\"2026-09-19T05:42:48.735686-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.088}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryRouteRequiresReadScope$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:42:50.952583-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:42:51.556684-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteRequiresReadScope\"}\n{\"Time\":\"2026-09-19T05:42:51.556758-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteRequiresReadScope\",\"Output\":\"=== RUN   TestDiscoveryRouteRequiresReadScope\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:02.131864-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteRequiresReadScope\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:43:02-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:43:02.160026-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteRequiresReadScope\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/discovery\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/cZKSwlIdMC-000001\\\",\\\"status\\\":403,\\\"bytes\\\":107,\\\"duration\\\":0.272833,\\\"time\\\":\\\"2026-09-19T05:43:02-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:43:02.160732-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteRequiresReadScope\",\"Output\":\"--- PASS: TestDiscoveryRouteRequiresReadScope (10.60s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:02.160757-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryRouteRequiresReadScope\",\"Elapsed\":10.6}\n{\"Time\":\"2026-09-19T05:43:02.160885-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:03.170586-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.218s\\n\"}\n{\"Time\":\"2026-09-19T05:43:03.170617-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.218}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryViewerRejectsLostAccount$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:43:05.339609-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:43:05.94794-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRejectsLostAccount\"}\n{\"Time\":\"2026-09-19T05:43:05.948012-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRejectsLostAccount\",\"Output\":\"=== RUN   TestDiscoveryViewerRejectsLostAccount\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:16.441351-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRejectsLostAccount\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:43:16-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:43:16.470283-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRejectsLostAccount\",\"Output\":\"--- PASS: TestDiscoveryViewerRejectsLostAccount (10.52s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:16.470309-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRejectsLostAccount\",\"Elapsed\":10.52}\n{\"Time\":\"2026-09-19T05:43:16.470425-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:17.489491-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.150s\\n\"}\n{\"Time\":\"2026-09-19T05:43:17.489525-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.15}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryViewerRevalidatesConsoleSession$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:43:19.655799-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:43:20.257584-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRevalidatesConsoleSession\"}\n{\"Time\":\"2026-09-19T05:43:20.257642-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRevalidatesConsoleSession\",\"Output\":\"=== RUN   TestDiscoveryViewerRevalidatesConsoleSession\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:20.258734-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRevalidatesConsoleSession\",\"Output\":\"--- PASS: TestDiscoveryViewerRevalidatesConsoleSession (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:20.258749-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestDiscoveryViewerRevalidatesConsoleSession\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:43:20.258844-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:21.265146-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t1.609s\\n\"}\n{\"Time\":\"2026-09-19T05:43:21.265177-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":1.609}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCompatibilityAuthorsApplyCurrentDisclosure$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:43:23.495032-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:43:24.103678-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityAuthorsApplyCurrentDisclosure\"}\n{\"Time\":\"2026-09-19T05:43:24.103785-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityAuthorsApplyCurrentDisclosure\",\"Output\":\"=== RUN   TestCompatibilityAuthorsApplyCurrentDisclosure\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:34.622341-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityAuthorsApplyCurrentDisclosure\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:43:34-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:43:34.655102-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityAuthorsApplyCurrentDisclosure\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/authors\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/nIvLI7sbKm-000001\\\",\\\"status\\\":200,\\\"bytes\\\":15,\\\"duration\\\":4.580542,\\\"time\\\":\\\"2026-09-19T05:43:34-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:43:34.65619-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityAuthorsApplyCurrentDisclosure\",\"Output\":\"--- PASS: TestCompatibilityAuthorsApplyCurrentDisclosure (10.55s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:34.656205-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityAuthorsApplyCurrentDisclosure\",\"Elapsed\":10.55}\n{\"Time\":\"2026-09-19T05:43:34.65629-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:35.668565-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.173s\\n\"}\n{\"Time\":\"2026-09-19T05:43:35.668598-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.174}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:43:38.014933-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:43:38.610956-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery\"}\n{\"Time\":\"2026-09-19T05:43:38.611027-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery\",\"Output\":\"=== RUN   TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:49.067801-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:43:49-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:43:49.099363-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery\",\"Output\":\"--- PASS: TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery (10.49s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:49.099381-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery\",\"Elapsed\":10.49}\n{\"Time\":\"2026-09-19T05:43:49.099469-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:43:50.106008-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.091s\\n\"}\n{\"Time\":\"2026-09-19T05:43:50.106035-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.091}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCompatibilityRoutesRequireCurrentCatalog$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:43:52.355813-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:43:52.956106-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog\"}\n{\"Time\":\"2026-09-19T05:43:52.956174-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.467364-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.493731-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models\"}\n{\"Time\":\"2026-09-19T05:44:03.493756-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//v1/models\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.494551-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/v1/models\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000001\\\",\\\"status\\\":503,\\\"bytes\\\":76,\\\"duration\\\":0.598708,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.494586-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//v1/models (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.49459-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.49461-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown\"}\n{\"Time\":\"2026-09-19T05:44:03.494612-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.494926-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/v1/models/unknown\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000002\\\",\\\"status\\\":503,\\\"bytes\\\":76,\\\"duration\\\":0.278292,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.495031-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.495039-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//v1/models/unknown\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.495044-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models\"}\n{\"Time\":\"2026-09-19T05:44:03.495048-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.49541-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/models\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000003\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":0.320958,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.495421-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.495429-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.495452-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown\"}\n{\"Time\":\"2026-09-19T05:44:03.495455-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.495761-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/models/unknown\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000004\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":0.273125,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.495784-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.495792-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.495801-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints\"}\n{\"Time\":\"2026-09-19T05:44:03.495802-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.496118-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/models/unknown/endpoints\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000005\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":0.2715,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.496129-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.496141-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/models/unknown/endpoints\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.496155-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers\"}\n{\"Time\":\"2026-09-19T05:44:03.496158-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.496456-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/providers\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000006\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":0.263416,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.496473-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.496479-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/providers\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.496496-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors\"}\n{\"Time\":\"2026-09-19T05:44:03.496499-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.496806-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/authors\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000007\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":0.269083,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.496823-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.496836-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.496844-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown\"}\n{\"Time\":\"2026-09-19T05:44:03.496846-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown\",\"Output\":\"=== RUN   TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.497137-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/authors/unknown\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/NuTq1vEz44-000008\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":0.252334,\\\"time\\\":\\\"2026-09-19T05:44:03-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:03.497154-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.49716-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog//api/v1/authors/unknown\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:03.497882-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog\",\"Output\":\"--- PASS: TestCompatibilityRoutesRequireCurrentCatalog (10.54s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:03.49789-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCompatibilityRoutesRequireCurrentCatalog\",\"Elapsed\":10.54}\n{\"Time\":\"2026-09-19T05:44:03.498012-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:04.509741-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.154s\\n\"}\n{\"Time\":\"2026-09-19T05:44:04.509766-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.154}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCatalogReaderRoutesExcludeDeniedMembership$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:44:06.702761-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:44:07.306698-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership\"}\n{\"Time\":\"2026-09-19T05:44:07.30677-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership\",\"Output\":\"=== RUN   TestCatalogReaderRoutesExcludeDeniedMembership\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:17.820219-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:44:17-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:17.848355-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/summary\"}\n{\"Time\":\"2026-09-19T05:44:17.848384-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/summary\",\"Output\":\"=== RUN   TestCatalogReaderRoutesExcludeDeniedMembership/summary\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:17.852301-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/summary\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/HH9jfmEB1p-000001\\\",\\\"status\\\":200,\\\"bytes\\\":215,\\\"duration\\\":3.72675,\\\"time\\\":\\\"2026-09-19T05:44:17-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:17.852447-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/summary\",\"Output\":\"--- PASS: TestCatalogReaderRoutesExcludeDeniedMembership/summary (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:17.852453-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/summary\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:17.852476-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/changes\"}\n{\"Time\":\"2026-09-19T05:44:17.852477-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/changes\",\"Output\":\"=== RUN   TestCatalogReaderRoutesExcludeDeniedMembership/changes\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:17.855179-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/changes\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/changes\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/HH9jfmEB1p-000002\\\",\\\"status\\\":200,\\\"bytes\\\":136,\\\"duration\\\":2.656167,\\\"time\\\":\\\"2026-09-19T05:44:17-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:17.85524-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/changes\",\"Output\":\"--- PASS: TestCatalogReaderRoutesExcludeDeniedMembership/changes (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:17.855249-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership/changes\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:17.855948-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership\",\"Output\":\"--- PASS: TestCatalogReaderRoutesExcludeDeniedMembership (10.55s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:17.855953-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesExcludeDeniedMembership\",\"Elapsed\":10.55}\n{\"Time\":\"2026-09-19T05:44:17.856107-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:18.875281-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.172s\\n\"}\n{\"Time\":\"2026-09-19T05:44:18.875307-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.173}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCatalogReaderRoutesRefuseDifferentGeneration$",
+            "./internal/server"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:44:21.076676-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server\"}\n{\"Time\":\"2026-09-19T05:44:21.67818-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration\"}\n{\"Time\":\"2026-09-19T05:44:21.678238-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration\",\"Output\":\"=== RUN   TestCatalogReaderRoutesRefuseDifferentGeneration\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:32.149932-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"mock\\\",\\\"time\\\":\\\"2026-09-19T05:44:32-05:00\\\",\\\"message\\\":\\\"registered connector\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:32.1778-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog\"}\n{\"Time\":\"2026-09-19T05:44:32.17782-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog\",\"Output\":\"=== RUN   TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:32.181009-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/0ZmHn74BzU-000001\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":3.052125,\\\"time\\\":\\\"2026-09-19T05:44:32-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:32.181047-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog\",\"Output\":\"--- PASS: TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:32.181064-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:32.181083-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes\"}\n{\"Time\":\"2026-09-19T05:44:32.181085-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes\",\"Output\":\"=== RUN   TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:32.18394-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"method\\\":\\\"GET\\\",\\\"path\\\":\\\"/api/v1/catalog/changes\\\",\\\"remote_addr\\\":\\\"192.0.2.1:1234\\\",\\\"client_ip\\\":\\\"192.0.2.1\\\",\\\"request_id\\\":\\\"Jacks-MacBook-Pro.local/0ZmHn74BzU-000002\\\",\\\"status\\\":503,\\\"bytes\\\":106,\\\"duration\\\":2.761083,\\\"time\\\":\\\"2026-09-19T05:44:32-05:00\\\",\\\"message\\\":\\\"request completed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T05:44:32.183989-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes\",\"Output\":\"--- PASS: TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:32.184002-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration//api/v1/catalog/changes\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T05:44:32.184896-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration\",\"Output\":\"--- PASS: TestCatalogReaderRoutesRefuseDifferentGeneration (10.51s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:32.184919-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Test\":\"TestCatalogReaderRoutesRefuseDifferentGeneration\",\"Elapsed\":10.51}\n{\"Time\":\"2026-09-19T05:44:32.185067-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:33.19876-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server\\t12.122s\\n\"}\n{\"Time\":\"2026-09-19T05:44:33.198782-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server\",\"Elapsed\":12.122}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryDeliveryRechecksViewerAndAuthority$",
+            "./internal/server/controllers"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:44:35.609019-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\"}\n{\"Time\":\"2026-09-19T05:44:36.206391-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority\"}\n{\"Time\":\"2026-09-19T05:44:36.206461-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority\",\"Output\":\"=== RUN   TestDiscoveryDeliveryRechecksViewerAndAuthority\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:36.206524-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/policy_revision\"}\n{\"Time\":\"2026-09-19T05:44:36.206529-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/policy_revision\",\"Output\":\"=== RUN   TestDiscoveryDeliveryRechecksViewerAndAuthority/policy_revision\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.857577-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/policy_revision\",\"Output\":\"--- PASS: TestDiscoveryDeliveryRechecksViewerAndAuthority/policy_revision (10.65s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.85761-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/policy_revision\",\"Elapsed\":10.65}\n{\"Time\":\"2026-09-19T05:44:46.857637-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/key_revoked\"}\n{\"Time\":\"2026-09-19T05:44:46.857641-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/key_revoked\",\"Output\":\"=== RUN   TestDiscoveryDeliveryRechecksViewerAndAuthority/key_revoked\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.890166-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/key_revoked\",\"Output\":\"--- PASS: TestDiscoveryDeliveryRechecksViewerAndAuthority/key_revoked (0.03s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.89019-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/key_revoked\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-19T05:44:46.890196-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/account_revoked\"}\n{\"Time\":\"2026-09-19T05:44:46.890197-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/account_revoked\",\"Output\":\"=== RUN   TestDiscoveryDeliveryRechecksViewerAndAuthority/account_revoked\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.920586-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/account_revoked\",\"Output\":\"--- PASS: TestDiscoveryDeliveryRechecksViewerAndAuthority/account_revoked (0.03s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.920625-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/account_revoked\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-19T05:44:46.920631-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/reader_outage\"}\n{\"Time\":\"2026-09-19T05:44:46.920633-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/reader_outage\",\"Output\":\"=== RUN   TestDiscoveryDeliveryRechecksViewerAndAuthority/reader_outage\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.951255-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/reader_outage\",\"Output\":\"--- PASS: TestDiscoveryDeliveryRechecksViewerAndAuthority/reader_outage (0.03s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.951277-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/reader_outage\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-19T05:44:46.951281-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/authority_withdrawal\"}\n{\"Time\":\"2026-09-19T05:44:46.951282-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/authority_withdrawal\",\"Output\":\"=== RUN   TestDiscoveryDeliveryRechecksViewerAndAuthority/authority_withdrawal\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.984561-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/authority_withdrawal\",\"Output\":\"--- PASS: TestDiscoveryDeliveryRechecksViewerAndAuthority/authority_withdrawal (0.03s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:46.984579-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/authority_withdrawal\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-19T05:44:46.984595-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/unchanged\"}\n{\"Time\":\"2026-09-19T05:44:46.984597-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/unchanged\",\"Output\":\"=== RUN   TestDiscoveryDeliveryRechecksViewerAndAuthority/unchanged\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:47.016356-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/unchanged\",\"Output\":\"--- PASS: TestDiscoveryDeliveryRechecksViewerAndAuthority/unchanged (0.03s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:47.016388-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority/unchanged\",\"Elapsed\":0.03}\n{\"Time\":\"2026-09-19T05:44:47.016392-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority\",\"Output\":\"--- PASS: TestDiscoveryDeliveryRechecksViewerAndAuthority (10.81s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:47.016394-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryDeliveryRechecksViewerAndAuthority\",\"Elapsed\":10.81}\n{\"Time\":\"2026-09-19T05:44:47.016477-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:44:48.037673-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server/controllers\\t12.428s\\n\"}\n{\"Time\":\"2026-09-19T05:44:48.037697-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Elapsed\":12.429}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDiscoveryPolicyIntersectsAccountAndKey$",
+            "./internal/server/controllers"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T05:44:50.350406-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\"}\n{\"Time\":\"2026-09-19T05:44:50.949971-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryPolicyIntersectsAccountAndKey\"}\n{\"Time\":\"2026-09-19T05:44:50.950044-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryPolicyIntersectsAccountAndKey\",\"Output\":\"=== RUN   TestDiscoveryPolicyIntersectsAccountAndKey\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:45:01.623459-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryPolicyIntersectsAccountAndKey\",\"Output\":\"--- PASS: TestDiscoveryPolicyIntersectsAccountAndKey (10.67s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:45:01.623535-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestDiscoveryPolicyIntersectsAccountAndKey\",\"Elapsed\":10.67}\n{\"Time\":\"2026-09-19T05:45:01.623585-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T05:45:02.649543-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server/controllers\\t12.299s\\n\"}\n{\"Time\":\"2026-09-19T05:45:02.649574-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Elapsed\":12.299}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    }
+  },
+  "selected_subcases": 5,
+  "summary": "Summary: 0 passed, 50 failed",
+  "unverified_cases": 50,
+  "gate_status": "FAIL",
+  "qualification": "component checks only",
+  "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+  "registry_sha256": "64a45f3646621bec14755216d0622150b017eedbdcddc823b47a132d512cf255",
+  "backend_scope": "primary"
+}

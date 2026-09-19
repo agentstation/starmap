@@ -1,0 +1,4 @@
+{
+  "exit_code": 1,
+  "output": "E\n======================================================================\nERROR: test_catalog_product_verify (unittest.loader._FailedTest.test_catalog_product_verify)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_catalog_product_verify\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/loader.py\", line 141, in loadTestsFromName\n    module = __import__(module_name)\n  File \"/Users/jack/src/github.com/agentstation/starmap-credential-roles/scripts/test_catalog_product_verify.py\", line 14, in <module>\n    import catalog_product_verify as verifier\nModuleNotFoundError: No module named 'catalog_product_verify'\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n"
+}

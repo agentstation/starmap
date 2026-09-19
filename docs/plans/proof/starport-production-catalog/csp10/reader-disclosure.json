@@ -1,0 +1,105 @@
+{
+  "status": "local preparation; CSP10 incomplete",
+  "commit": "dde50a7b23c0fcdcef84fce38c1b40c30ed966dc",
+  "results": {
+    "before": {
+      "counts": {
+        "fail": 3
+      },
+      "failures": [
+        "TestCatalogReaderRoutesExcludeDeniedMembership/summary",
+        "TestCatalogReaderRoutesExcludeDeniedMembership/changes",
+        "TestCatalogReaderRoutesExcludeDeniedMembership",
+        "github.com/agentstation/starport/internal/server"
+      ],
+      "skips": []
+    },
+    "after": {
+      "counts": {},
+      "failures": [
+        "github.com/agentstation/starport/internal/server"
+      ],
+      "skips": []
+    },
+    "fixed": {
+      "counts": {
+        "pass": 3
+      },
+      "failures": [],
+      "skips": []
+    },
+    "suite": {
+      "counts": {
+        "pass": 511,
+        "fail": 1,
+        "skip": 1
+      },
+      "failures": [
+        "TestReaderProjectionPreservesPermittedFacts",
+        "github.com/agentstation/starport/internal/catalog/view"
+      ],
+      "skips": [
+        "TestGatewayOverheadBenchmark"
+      ]
+    },
+    "final": {
+      "counts": {
+        "pass": 512,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestGatewayOverheadBenchmark"
+      ]
+    }
+  },
+  "behavior": [
+    "Reader summary counts current permitted providers with accepted offerings and permitted routable model definitions.",
+    "Reader changes filter model IDs, offerings, and prices through current membership. Historical private records do not bypass current policy.",
+    "Reader semantic equality describes the enumerated permitted changes. Discovery snapshots remain the membership reconciliation source.",
+    "Mismatched summary and change-feed generations return sanitized 503 responses with Retry-After. Middleware rechecks caller policy and authority before delivery.",
+    "The existing allowlist regression now uses a retained real catalog and a single allowed provider, asserting exact visible counts. Operator status remains protected by admin scope."
+  ],
+  "checks": {
+    "final_command": "GOWORK=/tmp/csp10-host-integration.work go test -race -json -count=1 -timeout 5m ./internal/catalog/view ./internal/server/...",
+    "lint": "0 issues",
+    "vet": "passed",
+    "new_source_writing": "3 files; 0 diagnostics",
+    "added_documentation_writing": "passed",
+    "planning_writing": "Final plan passes targeted lint. Repository check retains 67 historical evidence diagnostics.",
+    "registry_tests": "81 passed; initial unittest module invocation failed to resolve script-local imports, then the repository script invocation passed."
+  },
+  "iterations": [
+    "Initial implementation compile failed because RuntimeLeaseFromContext returns one value. Corrected to the declared interface.",
+    "Projection fixture initially permitted a canonical ID across two accepted providers. The test now explicitly restricts account access to Anthropic and asserts one provider. No production assertion was weakened."
+  ],
+  "limitations": [
+    "Not a published or released pair; review and native qualification remain required.",
+    "The complete A18 case remains unverified until each required subcase passes."
+  ],
+  "next_action": "Capture A18 registry results, then address the remaining identity, rename, removal, and concurrent-request acceptance cases.",
+  "next_identity_audit": {
+    "owner": "CSP10",
+    "finding": "Starport snapshot Names, ResolveRoute, and ResolveOperation currently compare only direct canonical and provider-scoped IDs. The model detail handler searches exact IDs from ListModels. Starmap provides a retained canonical alias index, but these consumer lookups do not read it.",
+    "evidence": [
+      "starport internal/catalog/snapshot.go: Names, ResolveRoute, ResolveOperation",
+      "starport internal/server/controllers/models.go: Get",
+      "starmap pkg/catalogs/canonical_alias.go: CanonicalAliasIndex.Lookup"
+    ],
+    "next_action": "Capture active-alias and removed-alias failures, define protocol outcomes, then resolve names within the retained catalog without bypassing current target permission."
+  },
+  "acceptance": {
+    "registry_commit": "1ef193e0d",
+    "source_commit": "dde50a7b23c0fcdcef84fce38c1b40c30ed966dc",
+    "disclosure_subcase": "PASS",
+    "registered_checks": 24,
+    "unverified_A18_subcases": [
+      "A18.consistent_counts_prices",
+      "A18.inflight_and_new_attempts",
+      "A18.removed_id_error",
+      "A18.rename_alias_overlap"
+    ],
+    "overall_gate": "FAIL",
+    "proof": "reader-disclosure/a18-acceptance.json"
+  }
+}
