@@ -1527,6 +1527,163 @@
           "test": "TestManualSourceRetainsAutomaticProviderAcquisition"
         }
       ]
+    },
+    "A43.memory_databases": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevUsesInMemoryBadger"
+        }
+      ]
+    },
+    "A43.scratch_blobs_runtime": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentExportsBaselineOnlyInScratch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevKeepsCatalogStateInScratch"
+        }
+      ]
+    },
+    "A43.persistent_installation_untouched": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentExportsBaselineOnlyInScratch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevAcceptsTheMachineTokenWithoutTouchingIt"
+        }
+      ]
+    },
+    "A43.normal_shutdown_cleanup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentDatabasesAreSessionLocal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevRemovesItsScratchFileStorageOnClose"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevRepeatedClosePreservesReusedScratchPath"
+        }
+      ]
+    },
+    "A43.crash_cleanup_ownership": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchExcludesLiveProcessAndRecoversKilledProcess"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesUnknownEntries"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesChangedOwnershipRecord"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchReplacedLockCannotAuthorizeRecovery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesReplacedRoot"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesReplacedChild"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchRecoversInterruptedCleanup"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchPreservesUnrecognizedRecords"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchRecoveryBoundsCandidates"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevelopmentScratchCancelledRecoveryPreservesState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestDevFailedCompositionPreservesUnpublishedScratch"
+        }
+      ]
     }
   }
 }

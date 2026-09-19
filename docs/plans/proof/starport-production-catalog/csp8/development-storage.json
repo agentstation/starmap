@@ -1,0 +1,68 @@
+{
+  "starport_head": "3524ed5970099be600faf83e59b2ea7d69548ee3",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "CSP8 development storage contract. Real Badger, SQLite, filesystem blobs, and subprocess recovery. Local workspace only.",
+  "prior_gap": "The prior development Badger test checked configuration and concrete adapter type. It did not verify SQLite backing files or data isolation across sessions. No production defect was observed.",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestDevelopmentDatabasesAreSessionLocal$'",
+      "result": "PASS",
+      "top_level_tests": 1,
+      "seconds": 18.047
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^Test(DevelopmentScratch.*|DevConstructorFailureRemovesOwnedScratch|DevFailedCompositionPreservesUnpublishedScratch|DevRepeatedClosePreservesReusedScratchPath|DevelopmentExportsBaselineOnlyInScratch|DevKeepsCatalogStateInScratch|DevRemovesItsScratchFileStorageOnClose)$'",
+      "result": "PASS",
+      "behavior_tests": 16,
+      "helper_functions": 1,
+      "seconds": 23.409
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^Test(DevUsesInMemoryBadger|DevAcceptsTheMachineTokenWithoutTouchingIt)$'",
+      "result": "PASS",
+      "top_level_tests": 2,
+      "seconds": 16.683
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/app",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+      "result": "PASS",
+      "tests": 73,
+      "seconds": 4.416
+    }
+  ],
+  "observations": [
+    "Both sessions use the production SQL factory. PRAGMA database_list reports no backing file.",
+    "SQL and KV reads verify real writes, then a new gateway session has neither probe record.",
+    "Filesystem blob bytes reside below the owned scratch root. Close removes the root.",
+    "Existing installation files retain their names and contents before and after both sessions.",
+    "Subprocess recovery preserves a live session and removes its owned scratch after process termination. Ownership replacement and unknown entries prevent cleanup."
+  ],
+  "registered_this_change": [
+    "A43.memory_databases",
+    "A43.scratch_blobs_runtime",
+    "A43.persistent_installation_untouched",
+    "A43.normal_shutdown_cleanup",
+    "A43.crash_cleanup_ownership"
+  ],
+  "remaining_unregistered_cases": [
+    "A22.inference_separate_egress",
+    "A23.restart_watcher_guards",
+    "A24.local_fallback",
+    "A24.scope_authority_origins",
+    "A24.generated_file_inventory",
+    "A03.starport_file_manifest",
+    "A03.shared_backend_no_local_databases"
+  ],
+  "remaining_unregistered_count": 7,
+  "remaining": [
+    "Complete remaining seven registration gaps with contract-level evidence.",
+    "Qualify the published producer dependency, full repository checks, pre-PR review, and native CI.",
+    "Merge implementation before task completion credit."
+  ],
+  "running_sessions": [],
+  "completion_credit": false
+}
