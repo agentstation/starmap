@@ -14,12 +14,6 @@
   },
   "active_checks": [
     {
-      "session_id": 52498,
-      "runner": "/tmp/csp10-repository-run.py",
-      "state": "/tmp/csp10-repository-gates/state.json",
-      "scope": "33 required AGENTS.md commands. Source started at 43e7ab0; the test-only repair 646778f precedes later full Go checks."
-    },
-    {
       "session_id": 21172,
       "output": "/tmp/csp10-complete-verifier.json",
       "scope": "All 29 CSP10 subcases. Runtime code is unchanged by the architecture fixture repair."
@@ -35,5 +29,14 @@
     "starport_open_prs": 0,
     "disposition": "Unchanged. No merge or publication performed."
   },
-  "next_action": "Collect both running checks. Verify failures at their owning boundaries. Complete required review after final checks and preserve the published-module blocker."
+  "next_action": "Collect both running checks. Verify failures at their owning boundaries. Complete required review after final checks and preserve the published-module blocker.",
+  "repository_checks": {
+    "commands": 33,
+    "initial_pass": 31,
+    "initial_fail": 2,
+    "ownership_rerun": "12 of 12 PASS",
+    "effective_passing_commands": 32,
+    "remaining": "verify-v1-architecture V01: published compatible Starmap module",
+    "source_note": "Runtime source is unchanged between 43e7ab0 and 646778f. The latter repairs an architecture fixture. The full Go suite, vet, lint, build, and SDK smoke ran after that repair."
+  }
 }

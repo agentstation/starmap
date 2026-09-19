@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-package-layout.sh",
+  "exit_code": 0,
+  "seconds": 6.91,
+  "output": "ok  \tgithub.com/agentstation/starport/internal/architecture\t0.513s\npackage-layout verification passed\n"
+}

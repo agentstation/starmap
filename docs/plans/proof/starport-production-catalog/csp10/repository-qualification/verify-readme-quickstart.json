@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-readme-quickstart.sh",
+  "exit_code": 0,
+  "seconds": 0.08,
+  "output": "PASS README quickstart and dynamic stable-release selection\n"
+}

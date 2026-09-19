@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-action-pins.sh",
+  "exit_code": 0,
+  "seconds": 5.28,
+  "output": "Homebrew/actions/setup-homebrew 2026.09.07.1 matches f8d4222eb633e65c2a0157383cf80861fc7fae7f\nactions/attest-build-provenance v4.2.2 matches 4d101475d8b20a2381f78447822ac1eab6504dd8\nactions/checkout v7.0.1 matches 3d3c42e5aac5ba805825da76410c181273ba90b1\nactions/setup-go v7.0.0 matches b7ad1dad31e06c5925ef5d2fc7ad053ef454303e\nactions/setup-node v7.0.0 matches 820762786026740c76f36085b0efc47a31fe5020\nactions/setup-python v7.0.0 matches 5fda3b95a4ea91299a34e894583c3862153e4b97\nactions/upload-artifact v7.0.1 matches 043fb46d1a93c77aae656e7c1c64a875d1fc6a0a\nanchore/sbom-action/download-syft v0.24.2 matches 3ad7283483fc7af8ff2b4ea19663c2d5ca935e26\ncodecov/codecov-action v7.0.0 matches fb8b3582c8e4def4969c97caa2f19720cb33a72f\ndocker/build-push-action v7.3.0 matches 53b7df96c91f9c12dcc8a07bcb9ccacbed38856a\ndocker/login-action v4.6.0 matches dbcb813823bdd20940b903addbd779551569679f\ndocker/setup-buildx-action v4.3.0 matches 37fe631027851001ddb9b187196cc803df7f5f0e\ngoreleaser/goreleaser-action v7.2.3 matches f06c13b6b1a9625abc9e6e439d9c05a8f2190e94\npeter-evans/create-pull-request v8.1.1 matches 5f6978faf089d4d20b00c7766989d076bb2fc7f1\naction pins: 14 reference(s) match their release tags\n"
+}

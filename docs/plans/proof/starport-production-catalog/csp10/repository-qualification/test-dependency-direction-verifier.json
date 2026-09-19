@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/test-dependency-direction-verifier.sh",
+  "exit_code": 0,
+  "seconds": 0.66,
+  "output": "Starport dependency direction verifier tests passed\n"
+}

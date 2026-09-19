@@ -1,0 +1,6 @@
+{
+  "command": "make lint",
+  "exit_code": 0,
+  "seconds": 2.69,
+  "output": "Linting code...\n0 issues.\nLint complete\n"
+}

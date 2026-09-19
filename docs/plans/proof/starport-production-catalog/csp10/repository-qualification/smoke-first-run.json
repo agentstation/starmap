@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/smoke-first-run.sh",
+  "exit_code": 0,
+  "seconds": 17.66,
+  "output": "PASS ephemeral dev, isolated init, validation, diagnosis, readiness, and authenticated model discovery\n"
+}

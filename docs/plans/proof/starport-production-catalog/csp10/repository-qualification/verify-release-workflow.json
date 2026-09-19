@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-release-workflow.sh",
+  "exit_code": 0,
+  "seconds": 6.59,
+  "output": "..\n----------------------------------------------------------------------\nRan 2 tests in 3.083s\n\nOK\n.........\n----------------------------------------------------------------------\nRan 9 tests in 0.125s\n\nOK\nPASS release workflow contract\n"
+}
