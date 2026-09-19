@@ -32,10 +32,10 @@ func migrationPublicationFixture(t *testing.T) DirectoryMigrationRequest {
 }
 
 func TestPublishDirectoryMigrationRecoversProcessExit(t *testing.T) {
-	t.Parallel()
+	// Each child decodes the compiled catalog under race instrumentation.
+	// Run crash points serially so unrelated processes do not exhaust the guard.
 	for _, stop := range []string{"renamed", "promoted", "source-retired", "receipt-written", "target-ready"} {
 		t.Run(stop, func(t *testing.T) {
-			t.Parallel()
 			request := migrationPublicationFixture(t)
 			encoded, err := json.Marshal(request)
 			if err != nil {
