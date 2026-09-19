@@ -193,6 +193,10 @@ Section 8 of the specification defines the supported architecture targets.
 | P37 | Optional cache work and advisory fleet refresh have bounded latency and memory costs. | Cache failures, full queues, long streams, and unavailable peer storage preserve timely delivery and required admission. |
 | P38 | Performance claims measure the complete gateway path and identify tested workload, topology, allocations, and timing boundaries. | Reviewed profiles verify request percentiles, stream delay, storage operations, memory, and truthful UI, documentation, and demo claims. |
 
+Under P35, SSO sessions use only granted accounts and receive no deployment-admin privileges.
+Starport selects the sole granted account automatically. Users with several granted accounts must select an active account in the console or API.
+The default account is never an implicit fallback. Queued work rechecks current policy without changing its original caller or account.
+
 Credential migration under P11 must not silently change which inference identity pays.
 Existing installations need a conflict diagnostic and explicit resolution when precedence changes select different credentials.
 Fresh installations follow the documented precedence without an unnecessary migration prompt.

@@ -2638,6 +2638,18 @@ Gateway key, account, team, and grant repositories retain their existing durable
 Each replica keeps a bounded working set of validated records for active callers.
 Do not require every tenant record to remain resident.
 
+Identity sessions use only directly granted accounts or accounts granted through team membership.
+Select the sole distinct granted account automatically. Require explicit selection when grants name several accounts.
+API requests carry that selection in `X-Starport-Account-ID`. Missing selection returns `409 account_selection_required`.
+Ungranted accounts return 403. No grant permits implicit access to the deployment's default account.
+
+Identity sessions receive account scopes without deployment-admin access.
+The console must provide an account picker and retain the selected account across its requests.
+
+Each queued batch line resolves current policy while preserving its original caller and account ownership.
+It rebuilds routing restrictions and checks required budgets before admission.
+Its original permission receipt governs retries within that line. Another line cannot renew that receipt.
+
 Each authorization bundle carries its record revisions, dependency identity, authority epoch, and validity deadline.
 Activation must reject missing or incompatible dependencies rather than combine unrelated policy versions.
 Confirmed absence is an explicit result with provenance and bounded validity.
