@@ -3351,5 +3351,6 @@ Starmap commit `7961c8281` registers the additional diagnostic regression.
 Its verifier suites pass 93 tests. Sol and Opus report zero findings for the producer branch.
 The [repository review proof](../../plans/proof/starport-production-catalog/csp9/repository-review.json) records the exact source revisions and qualification limits.
 Final acceptance passes all twelve CSP9 subcases.
+
 Sol and Opus report zero consumer findings across three review chunks.
 Published-pair checks, native CI, and merge remain required.
