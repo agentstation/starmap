@@ -1,0 +1,69 @@
+{
+  "source_commit": "336df28b611e62d058ff17029ffd274bc520fe84",
+  "run": 35414164079,
+  "scope": "Historical completed jobs. Final source 67dba0ea5 still requires qualification.",
+  "results": {
+    "/tmp/csp6-170-additional-evidence/go-tests-race-runtime-3/go-test-events.jsonl": {
+      "test_events": {
+        "pass": 429
+      },
+      "public_fixture": [
+        {
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState/channel_signature",
+          "action": "pass"
+        },
+        {
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState/archive_signature",
+          "action": "pass"
+        },
+        {
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState/checksum",
+          "action": "pass"
+        },
+        {
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState/size",
+          "action": "pass"
+        },
+        {
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState/replay",
+          "action": "pass"
+        },
+        {
+          "test": "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState",
+          "action": "pass"
+        }
+      ]
+    },
+    "/tmp/csp6-170-additional-evidence/go-tests-race-application/go-test-events.jsonl": {
+      "test_events": {
+        "pass": 871
+      },
+      "public_fixture": []
+    }
+  },
+  "successful_job_minutes": {
+    "Verification Checks": 7.9,
+    "Offline Server Persistence": 1.1,
+    "Coordinated Storage redis": 1.4,
+    "Coordinated Storage valkey": 1.4,
+    "Runtime macos-15-intel": 27.0,
+    "Constructor Network Passivity": 0.7,
+    "Security & Reliability": 2.3,
+    "Runtime macos-15": 10.8,
+    "Runtime ubuntu-24.04": 10.3,
+    "Action Pin Provenance": 0.2,
+    "Publication ubuntu-24.04": 7.4,
+    "Publication macos-15-intel": 11.5,
+    "Publication ubuntu-24.04-arm": 7.5,
+    "Publication macos-15": 9.8,
+    "Publication windows-2025": 10.1,
+    "Publication windows-11-arm": 11.0,
+    "Runtime ubuntu-24.04-arm": 10.9,
+    "Full Catalog Capacity": 7.1,
+    "Go 1.27.1 race runtime-1": 7.8,
+    "Go 1.27.1 race runtime-2": 13.8,
+    "Go 1.27.1 race application": 22.3,
+    "Go 1.27.1 race client": 17.2,
+    "Go 1.27.1 race runtime-3": 14.5
+  }
+}
