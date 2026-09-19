@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-19",
+  "work_commit": "0ece649",
+  "elapsed_implementation": "11113c4",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp102-host-integration.work",
+  "change": "The authorization repository-source test now honors TEST_AUTHORIZATION_POSTGRES_URL. Unique team IDs permit independent KV backend cases against the configured SQL service.",
+  "coverage": {
+    "postgres": "TestRepositorySourceRealStoresAndLocalMutation pairs memory, Badger, and Valkey with PostgreSQL. Revision tests also use PostgreSQL. HTTP warm-read tests retain their SQLite fixture.",
+    "sqlite": "The separate source test pairs memory, Badger, and Valkey with SQLite."
+  },
+  "commands": [
+    "TEST_VALKEY_URL=<local-service> TEST_AUTHORIZATION_POSTGRES_URL=<local-service> go test -race -count=1 -timeout 3m -json -run ^(TestRepositorySourceRealStoresAndLocalMutation|TestAuthorizationWarmRequestsAvoidStableReads|TestAuthorizationUnknownAccountRefusesAdmission|TestIdentityMutationsPublishSQLRevisions|TestSQLRevisionRollsBackWithPolicy)$ ./internal/authorization ./internal/authorization/revision ./internal/server",
+    "TEST_VALKEY_URL=<local-service> go test -race -count=1 -timeout 3m -json -run ^TestRepositorySourceRealStoresAndLocalMutation$ ./internal/authorization"
+  ],
+  "runs": {
+    "postgres": {
+      "counts": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Test": "TestSQLRevisionRollsBackWithPolicy",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization/revision",
+          "Test": "TestIdentityMutationsPublishSQLRevisions",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation/memory",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation/badger",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation/valkey",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationWarmRequestsAvoidStableReads/memory",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationWarmRequestsAvoidStableReads/badger",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationWarmRequestsAvoidStableReads/valkey",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationWarmRequestsAvoidStableReads",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/memory/unavailable",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/memory/missing",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/memory",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/badger/unavailable",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/badger/missing",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/badger",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/valkey/unavailable",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/valkey/missing",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission/valkey",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/server",
+          "Test": "TestAuthorizationUnknownAccountRefusesAdmission",
+          "Action": "pass"
+        }
+      ]
+    },
+    "sqlite": {
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "events": [
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation/memory",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation/badger",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation/valkey",
+          "Action": "pass"
+        },
+        {
+          "Package": "github.com/agentstation/starport/internal/authorization",
+          "Test": "TestRepositorySourceRealStoresAndLocalMutation",
+          "Action": "pass"
+        }
+      ]
+    }
+  },
+  "checks": {
+    "lint": "PASS: 0 issues",
+    "technical_writing": "PASS: 1 file, 0 diagnostics",
+    "diff_check": "PASS"
+  },
+  "cleanup": "Disposable Valkey 7 and PostgreSQL 16 containers stopped and removed.",
+  "limitations": [
+    "This evidence qualifies local storage combinations, not separate-process fleet enforcement or native suspend.",
+    "Three A46 subcases remain unverified. No review, publication, merge, or task completion is claimed."
+  ]
+}
