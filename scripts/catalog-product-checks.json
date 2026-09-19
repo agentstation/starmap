@@ -3949,6 +3949,200 @@
           "test": "TestIdentityMutationsPublishSQLRevisions"
         }
       ]
+    },
+    "A46.warm_no_stable_store_reads": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheWarmReadsAndCallerOwnership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestSessionProjectionWarmReadsAvoidPolicyStorage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAuthorizationWarmRequestsAvoidStableReads"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedTeamBudgetUsesAdmittedPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedAuthorizationRetainsRevocationThroughDiscoveryAndAttempts"
+        }
+      ]
+    },
+    "A46.confirmed_absence_vs_unknown": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestRepositorySourceDoesNotTreatFailureAsAbsence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestCacheExpiryDoesNotConvertFailureToAbsence"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestSessionProjectionRefusesUnknownGrantState"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestAuthorizationUnknownAccountRefusesAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchBudgetUnknownRequiredStateRefuses"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBatchBudgetConfirmedAbsenceNeedsNoUsageReader"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestBudgetMiddlewarePassesKeysWithoutBudgets"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestTeamBudgetReadErrorRefuses"
+        }
+      ]
+    },
+    "A46.cache_retry_batch_admission": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/execution",
+          "test": "TestRequestPermissionStopsRetryAndFallback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCachedDeliveryRetainsRequestPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCacheDeliveryRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestEmbeddingAndSemanticCachePermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCachedAuthorizationRetainsRevocationThroughDiscoveryAndAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedAdmissionUsesCurrentPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedAdmissionRejectsChangedOwnershipOrScope"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedAdmissionRechecksAfterRateAdmission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedBatchLineRechecksCatalogPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestQueuedBatchLineRechecksKeyPermission"
+        }
+      ]
+    },
+    "A46.missed_event_catchup": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorCatchesMissedChangeDuringOtherAuthorityOutage"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorObservationsDoNotRenewPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorEpochChangeCannotRecoverUnderOldEpoch"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRejectsRevisionRollback"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/authorization",
+          "test": "TestMonitorRetainsKnownWithdrawalAfterReadDeadline"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestApplicationOwnsAuthorizationFencesAndCatchup"
+        }
+      ]
     }
   },
   "task_component_checks": {
