@@ -19,5 +19,35 @@
   },
   "consumer_guard": "PASS: all six external consumer roles, forbidden dependencies, offline artifact activation, filesystem/S3 server and reactive restart matrix",
   "status": "local integration only; no push or merge qualification",
-  "remaining": "Full checks, review, native qualification, actual merge, published module, and Starport qualification remain required. Integrate PR #170 after its merge before full source qualification."
+  "remaining": "Full checks, review, native qualification, actual merge, published module, and Starport qualification remain required. Integrate PR #170 after its merge before full source qualification.",
+  "verification_repair_integration": {
+    "head": "4abf007e8b694fbd1fdf5f78a963971d0ea2fa9d",
+    "merged_main": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+    "conflicts": 0,
+    "checks": {
+      "command": "make verify-checks",
+      "log": "/tmp/csp8-host-final-checks.log",
+      "status": "PASS",
+      "exit_code": 0,
+      "proof": "full-checks.log.gz"
+    },
+    "next_action": "Qualify native CI run 35418281335. Keep PR #171 unmerged until CSP6 publication qualification and capture finish.",
+    "review": {
+      "status": "PASS",
+      "findings": 0,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "proof": "review.json"
+    },
+    "pull_request": {
+      "number": 171,
+      "head": "4abf007e8b694fbd1fdf5f78a963971d0ea2fa9d",
+      "base": "8595d5a0cf9e6515a6e1ef4abbbaec205c142520",
+      "run": 35418281335,
+      "session": 93011,
+      "draft": true
+    }
+  }
 }

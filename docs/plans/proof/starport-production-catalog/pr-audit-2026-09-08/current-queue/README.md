@@ -1,3 +1,16 @@
+## Current disposition: catalog qualification and host API review
+
+CSP6 owns Starmap #168 at `e1d72d5d7e5f2921616b89b91b6460fefaffb62d`, based on merged repair `8595d5a0c`.
+All 380 candidate files retain their original bytes. Publisher run `35417887612` reports `awaiting_updated_checks`.
+Qualify CI run `35418166093` through session `87951`, then complete checked publication and retry capture.
+
+CSP8 owns draft Starmap #171 at `4abf007e8b694fbd1fdf5f78a963971d0ea2fa9d` on base `8595d5a0c`.
+Full local checks and both reviews pass. Native CI run `35418281335` uses watch session `93011`.
+Keep #171 unmerged until CSP6 publication and capture finish. Then qualify the published producer before dependent Starport work.
+
+Preserve rejected #165 until replacement qualification. Starport has no open PRs.
+Earlier sections preserve historical dispositions.
+
 ## Current disposition: repair merged, catalog promotion resumed
 
 Starmap #170 merged at `8595d5a0cf9e6515a6e1ef4abbbaec205c142520` after all 31 checks passed.

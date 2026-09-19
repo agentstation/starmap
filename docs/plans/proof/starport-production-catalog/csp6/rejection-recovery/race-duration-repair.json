@@ -192,9 +192,9 @@
     }
   },
   "live_sessions": {
-    "71770": "gh run watch 35417887612; /tmp/csp6-publisher-after-170.log"
+    "87951": "gh run watch 35418166093; /tmp/csp6-168-e1-watch.log"
   },
-  "next_action": "Observe publisher run 35417887612. Qualify the updated head of catalog PR #168. Complete checked channel publication and the original preparation retry.",
+  "next_action": "Qualify catalog PR #168 head e1d72d5d7 in run 35418166093. Resume checked publisher after successful qualification, capture both channels, and retry original preparation run 35395944704.",
   "source_commit": "67dba0ea554719c2329b637a1eb812c1a440e141",
   "native_intel_failure": {
     "run": 35409735768,
