@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19</td><td>CSP10</td><td>Check bound grants before credential dispatch.</td><td><a href=\"proof/starport-production-catalog/csp10/destination-dispatch.json\">Proof</a>: <code>3e212bd</code>. Final repeated checks pass 63 events. Production selection remains incomplete. The <a href=\"proof/starport-production-catalog/csp10/destination-dispatch/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

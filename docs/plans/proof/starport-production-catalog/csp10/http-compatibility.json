@@ -1,0 +1,47 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:14:08.865420+00:00",
+  "starport_head": "763eef9bf3fa5454b56e76c6d2e805ad60bea401",
+  "starmap_head": "c382baf8354661a075707b778dc2f782c344f09b",
+  "new_test": "TestHTTPStreamRetainsCatalogDuringRefresh",
+  "behavior": [
+    "Both API prefixes serve the first event before a replacement catalog removes the model.",
+    "The old connector remains open while its stream holds a runtime lease.",
+    "A new request sees the replacement and returns JSON 404 without SSE frames.",
+    "The retained stream delivers its final content and DONE marker, then releases the old connector."
+  ],
+  "registered_checks": [
+    "A17.raw_http_both_api_families",
+    "A17.unsupported_field_contract",
+    "A17.identity_error_mapping",
+    "A17.stream_refresh"
+  ],
+  "checks": {
+    "affected_race": {
+      "pass": 683,
+      "skip": 2
+    },
+    "vet": 0,
+    "lint": 0,
+    "targeted_writing": 0,
+    "verifier_unit_tests": "88 passed"
+  },
+  "skipped_in_affected_run": [
+    "TestSDKCanonicalRemovalAfterSuccessfulInference",
+    "TestGatewayOverheadBenchmark"
+  ],
+  "limitations": [
+    "The provider stream is a controlled connector fixture. This proves gateway HTTP and runtime lifecycle behavior, not provider transport interoperability.",
+    "The ordinary affected run skips SDK and benchmark opt-in checks. Dedicated SDK evidence belongs to the A17 verifier.",
+    "Native and released-pair qualification, required review, publication, and merge remain open."
+  ],
+  "next_action": "Qualify A18 counts and prices and in-flight/new-attempt behavior, then A21 cache/retry/batch admission and stream policy diagnostics.",
+  "status": "All five A17 subcases pass for the local candidate pair",
+  "verifier": {
+    "A17.identity_error_mapping": "PASS",
+    "A17.official_sdk_roster": "PASS",
+    "A17.raw_http_both_api_families": "PASS",
+    "A17.stream_refresh": "PASS",
+    "A17.unsupported_field_contract": "PASS"
+  }
+}
