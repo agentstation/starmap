@@ -1,0 +1,58 @@
+{
+  "starport_commit": "c99fd0d5b16d88a0454e943568375ee012c4e888",
+  "starmap_commit": "6aff4690d7db29c820e39c5a03fbaece5f64d71e",
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "defect": "Missing catalog identities returned 502 for chat and 503 for streams and embeddings instead of model-not-found in both API families.",
+  "change": "After planning finds no candidate, distinguish absent catalog names from present but unavailable names. Respect explicit fallback, automatic fallback, and account overrides. Preserve the typed missing-model error before chat provider-failure normalization.",
+  "fail_before": {
+    "failing_http_cases": 6,
+    "failing_events_including_parent": 7,
+    "statuses": {
+      "chat": 502,
+      "stream": 503,
+      "embeddings": 503
+    }
+  },
+  "focused_after": {
+    "pass": 7,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/router ./internal/proxy ./internal/server ./internal/server/controllers",
+      "exit": 0,
+      "pass": 796,
+      "skip": 1,
+      "fail": 0
+    },
+    {
+      "command": "go vet ./internal/router ./internal/proxy ./internal/server ./internal/server/controllers",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/router/... ./internal/proxy/... ./internal/server/...",
+      "exit": 0,
+      "issues": 0
+    },
+    {
+      "command": "technical-writing lint internal/server/catalog_alias_transition_test.go internal/router/alias_resolution_test.go --format text",
+      "exit": 0
+    }
+  ],
+  "rejected_run": "The first broad run could not compile the new router test because New returns the ModelRouter interface. The test now uses the same concrete assertion as existing planner tests. Its final vet and race checks pass.",
+  "remaining": [
+    "Audit denied model disclosure and unavailable or unsupported operation errors",
+    "Canonical model removal across live publication",
+    "SDK transitions",
+    "Retries and queued admission",
+    "Final task gate, review, published pair, native CI, and merge"
+  ],
+  "task_complete": false,
+  "planning_writing": {
+    "full_gate_exit": 2,
+    "files": 1665,
+    "diagnostics": 67,
+    "targeted_plan_exit": 0
+  }
+}
