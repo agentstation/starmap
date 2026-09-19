@@ -1,0 +1,36 @@
+{
+  "starport_head": "69f21648471e91531d7b5bacef61551dd0e9bc3d",
+  "status": "interrupted-for-route-index-repair",
+  "checks": [
+    {
+      "command": "bash scripts/verify-starmap-ownership.sh",
+      "exit_code": 0,
+      "seconds": 66.41,
+      "log": "/tmp/csp101-repository-gates/verify-starmap-ownership.log"
+    },
+    {
+      "command": "bash scripts/verify-v1-architecture.sh",
+      "exit_code": 1,
+      "seconds": 134.64,
+      "log": "/tmp/csp101-repository-gates/verify-v1-architecture.log"
+    },
+    {
+      "command": "bash scripts/test-dependency-direction-verifier.sh",
+      "exit_code": 0,
+      "seconds": 0.66,
+      "log": "/tmp/csp101-repository-gates/test-dependency-direction-verifier.log"
+    },
+    {
+      "command": "bash scripts/verify-dependency-direction.sh",
+      "exit_code": 0,
+      "seconds": 0.65,
+      "log": "/tmp/csp101-repository-gates/verify-dependency-direction.log"
+    }
+  ],
+  "current_command": "bash scripts/verify-catalog-driven-providers.sh",
+  "reason": "Manual audit found linear ResolveRoute, ResolveOperation and Names calls in billing and usage capture. Completed checks retain their original scope. Rerun affected qualification after repair.",
+  "terminated_runner_pid": 40633,
+  "terminated_child_groups": [
+    43771
+  ]
+}

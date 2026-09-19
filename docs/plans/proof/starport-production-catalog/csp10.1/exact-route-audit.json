@@ -1,0 +1,99 @@
+{
+  "task": "CSP10.1",
+  "recorded_at": "2026-09-19T18:57:45.953171+00:00",
+  "starport_commit": "05a1ae1",
+  "starmap_commit": "c70627094",
+  "status": "extended exact-route repair complete locally; final qualification running",
+  "finding": "A44 selection tests passed, but manual call-path review found linear Names, ResolveRoute, ResolveOperation, rerank-price, and endpoint-listing work. Billing, usage capture, and operation prechecks call these methods.",
+  "changes": [
+    "Build accepted-name, exact-route, definition-route, and provider-route indexes before publication. Preserve canonical aliases, exact-route precedence, stable order, and caller ownership.",
+    "Use matching route indexes for rerank price bounds and endpoint projection.",
+    "Expand allocation coverage to membership, positive and missing routes, operation lookup, search pricing, and model endpoint routes."
+  ],
+  "regression_allocations": {
+    "before_10_vs_1000": {
+      "name": [
+        10,
+        1000
+      ],
+      "route": [
+        13,
+        1003
+      ],
+      "operation": [
+        13,
+        1003
+      ],
+      "missing": [
+        21,
+        2001
+      ],
+      "search_price": [
+        10,
+        1000
+      ]
+    },
+    "after_10_vs_1000": {
+      "name": [
+        0,
+        0
+      ],
+      "route": [
+        3,
+        3
+      ],
+      "operation": [
+        3,
+        3
+      ],
+      "missing": [
+        0,
+        0
+      ],
+      "search_price": [
+        1,
+        1
+      ],
+      "model_routes": [
+        5,
+        5
+      ]
+    }
+  },
+  "checks": {
+    "focused_route_tests": "PASS under race detection: six scaling subcases and caller ownership/order",
+    "consumer_race": "PASS: internal/catalog/view, internal/router, internal/routing, internal/proxy",
+    "vet": "PASS: internal/catalog, internal/catalog/view, internal/router, internal/proxy",
+    "writing": "Two new Go files PASS, zero diagnostics",
+    "interrupted_roster": "Session 61441 terminated deliberately before remaining checks after the manual audit found missing route-index coverage. Three commands passed. V1 architecture had 11 PASS and its known V01 published-module failure. No check interruption counts as success."
+  },
+  "live_sessions": {
+    "85321": {
+      "command": "go test -race -count=1 -timeout=5m -json ./internal/catalog",
+      "output": "/tmp/csp101-route-catalog-race.jsonl"
+    },
+    "18921": {
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-indexes --task CSP10.1 --json",
+      "output": "/tmp/csp101-a44-route-final.json"
+    },
+    "7334": {
+      "command": "python3 /tmp/csp101-repository-final-run.py",
+      "state": "/tmp/csp101-repository-final-gates/state.json",
+      "progress": "ownership check passed in 68.73 seconds; V1 architecture running"
+    }
+  },
+  "review": {
+    "starmap_prior_head": "56cbbb3ef",
+    "result": "Sol xhigh and Opus high clean, zero findings. New check bindings at c70627094 require the final helper invocation before publication.",
+    "source": "/tmp/csp101-starmap-review.json",
+    "starport": "Required Sol/Opus review remains open after final checks and any fixes."
+  },
+  "next_action": "Poll the three confirmed running sessions. Inspect every required check and preserve the expected published-module boundary. Fix failures, commit changes, then run the required final autoreview helpers. Record native qualification and actual merges before task completion.",
+  "logs": {
+    "route_fail_before": "=== RUN   TestExactRouteLookupAllocationsDoNotScale\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/name\n    route_index_test.go:64: allocations at 10/1000 offerings: 10/1000\n    route_index_test.go:65: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/catalog/route_index_test.go:65\n        \tError:      \t\"1000\" is not less than or equal to \"20\"\n        \tTest:       \tTestExactRouteLookupAllocationsDoNotScale/name\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/route\n    route_index_test.go:64: allocations at 10/1000 offerings: 13/1003\n    route_index_test.go:65: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/catalog/route_index_test.go:65\n        \tError:      \t\"1003\" is not less than or equal to \"23\"\n        \tTest:       \tTestExactRouteLookupAllocationsDoNotScale/route\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/operation\n    route_index_test.go:64: allocations at 10/1000 offerings: 13/1003\n    route_index_test.go:65: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/catalog/route_index_test.go:65\n        \tError:      \t\"1003\" is not less than or equal to \"23\"\n        \tTest:       \tTestExactRouteLookupAllocationsDoNotScale/operation\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/missing\n    route_index_test.go:64: allocations at 10/1000 offerings: 21/2001\n    route_index_test.go:65: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/catalog/route_index_test.go:65\n        \tError:      \t\"2001\" is not less than or equal to \"31\"\n        \tTest:       \tTestExactRouteLookupAllocationsDoNotScale/missing\n--- FAIL: TestExactRouteLookupAllocationsDoNotScale (0.04s)\n    --- FAIL: TestExactRouteLookupAllocationsDoNotScale/name (0.01s)\n    --- FAIL: TestExactRouteLookupAllocationsDoNotScale/route (0.01s)\n    --- FAIL: TestExactRouteLookupAllocationsDoNotScale/operation (0.01s)\n    --- FAIL: TestExactRouteLookupAllocationsDoNotScale/missing (0.01s)\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/catalog\t0.507s\nFAIL\n",
+    "price_fail_before": "=== RUN   TestExactRouteLookupAllocationsDoNotScale\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/search-price\n    route_index_test.go:68: allocations at 10/1000 offerings: 10/1000\n    route_index_test.go:69: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-indexes/internal/catalog/route_index_test.go:69\n        \tError:      \t\"1000\" is not less than or equal to \"20\"\n        \tTest:       \tTestExactRouteLookupAllocationsDoNotScale/search-price\n--- FAIL: TestExactRouteLookupAllocationsDoNotScale (0.01s)\n    --- FAIL: TestExactRouteLookupAllocationsDoNotScale/search-price (0.01s)\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/catalog\t0.477s\nFAIL\n",
+    "route_focused": "=== RUN   TestExactRouteLookupAllocationsDoNotScale\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/name\n    route_index_test.go:73: allocations at 10/1000 offerings: 0/0\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/route\n    route_index_test.go:73: allocations at 10/1000 offerings: 3/3\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/operation\n    route_index_test.go:73: allocations at 10/1000 offerings: 3/3\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/missing\n    route_index_test.go:73: allocations at 10/1000 offerings: 0/0\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/search-price\n    route_index_test.go:73: allocations at 10/1000 offerings: 1/1\n=== RUN   TestExactRouteLookupAllocationsDoNotScale/model-routes\n    route_index_test.go:73: allocations at 10/1000 offerings: 5/5\n--- PASS: TestExactRouteLookupAllocationsDoNotScale (0.22s)\n    --- PASS: TestExactRouteLookupAllocationsDoNotScale/name (0.04s)\n    --- PASS: TestExactRouteLookupAllocationsDoNotScale/route (0.04s)\n    --- PASS: TestExactRouteLookupAllocationsDoNotScale/operation (0.04s)\n    --- PASS: TestExactRouteLookupAllocationsDoNotScale/missing (0.04s)\n    --- PASS: TestExactRouteLookupAllocationsDoNotScale/search-price (0.04s)\n    --- PASS: TestExactRouteLookupAllocationsDoNotScale/model-routes (0.03s)\n=== RUN   TestIndexedRoutesRetainOrderAndCallerOwnership\n--- PASS: TestIndexedRoutesRetainOrderAndCallerOwnership (0.00s)\nPASS\nok  \tgithub.com/agentstation/starport/internal/catalog\t1.787s\n",
+    "consumer_race": "ok  \tgithub.com/agentstation/starport/internal/catalog/view\t13.259s\nok  \tgithub.com/agentstation/starport/internal/router\t15.318s\nok  \tgithub.com/agentstation/starport/internal/routing\t1.227s\nok  \tgithub.com/agentstation/starport/internal/proxy\t23.096s\n"
+  },
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify product paths and gateway authentication isolation.</td><td><a href=\"proof/starport-production-catalog/csp10/product-isolation.json\">Proof</a>: <code>2a95361</code> and <code>a653061ed</code>. All six A25 subcases pass for the local pair. The <a href=\"proof/starport-production-catalog/csp10/product-isolation/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}
