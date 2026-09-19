@@ -3233,6 +3233,29 @@
           "test": "TestApplicationUsesExplicitCredentialDestinationApproval"
         }
       ]
+    },
+    "A25.product_path_isolation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestLoaderOwnsIndependentProductRoots"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritanceExcludesNodeAndServerAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestStartupKeepsStarmapFilesAndServerSettingsIsolated"
+        }
+      ]
     }
   },
   "task_component_checks": {
