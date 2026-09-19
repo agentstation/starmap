@@ -1,0 +1,79 @@
+{
+  "starport_commit": "30801a40d78d65ee68b66820c97ed87512014faa",
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "production_repair": "Recheck current catalog permission before reserving HTTP capacity, while reserving it, and after capacity becomes available. Bind directly acquired router leases into attempt contexts. Borrowed request leases require no additional binding.",
+  "fail_before": {
+    "test": "TestDispatchRejectsCatalogWithdrawalWhileWaitingForConnection",
+    "failed_events": 3,
+    "protocols": [
+      "HTTP/1",
+      "HTTP/2"
+    ]
+  },
+  "checks": [
+    {
+      "command": "go test -race -json -count=10 -timeout 2m ./internal/providers/connectors -run ^TestDispatchRejectsCatalogWithdrawalWhileWaitingForConnection$",
+      "pass": 30,
+      "skip": 0,
+      "exit": 0
+    },
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/router ./internal/providers/connectors ./internal/providers/auth ./internal/execution",
+      "pass": 408,
+      "skip": 0,
+      "exit": 0
+    },
+    {
+      "command": "go test -race -json -count=3 -timeout 2m ./internal/catalog -run ^TestAuthorityPartitionRefusesAtPermissionExpiry$",
+      "pass": 3,
+      "skip": 0,
+      "exit": 0
+    },
+    {
+      "command": "go vet ./internal/catalog ./internal/router ./internal/providers/connectors",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/catalog/... ./internal/router/... ./internal/providers/connectors/...",
+      "exit": 0
+    },
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/catalog -run ^TestAuthority",
+      "exit": 0,
+      "pass": 36,
+      "skip": 0,
+      "fail": 0
+    },
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/proxy ./internal/server",
+      "exit": 0,
+      "pass": 510,
+      "skip": 1,
+      "fail": 0
+    }
+  ],
+  "test_repair": "The expiry test clock raced with runtime background work. Atomic nanosecond reads and writes remove that fixture race. The failed acceptance result is retained.",
+  "registration_audit": {
+    "new_subcases": [
+      "A09.revoked_scope_restart",
+      "A09.alias_cannot_restore_permission",
+      "A10.wrong_authority_refusal",
+      "A18.rename_alias_overlap",
+      "A18.removed_id_error",
+      "A21.known_withdrawal_refusal",
+      "A21.partition_validity_expiry"
+    ],
+    "first_run": "Six pass; expiry fails on the test clock race.",
+    "expiry_rerun": "PASS after fixture repair.",
+    "complete_task_rerun": "UNVERIFIED after these changes."
+  },
+  "remaining": "Complete remaining acceptance contracts, final task gate, review, published-pair native qualification and merge.",
+  "task_complete": false,
+  "starmap_commit": "5ec490f465144a18087d3a8785f2b82c0fa73a29",
+  "planning_writing": {
+    "targeted_plan_exit": 0,
+    "full_gate_exit": 2,
+    "log": "queued-authority/planning-writing.json"
+  }
+}
