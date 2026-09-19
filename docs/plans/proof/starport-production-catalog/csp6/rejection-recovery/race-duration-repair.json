@@ -139,6 +139,14 @@
         "skipped": 0,
         "proof": "ciworkflow-final-hosted.jsonl.gz"
       }
+    },
+    "final_native_publication": {
+      "platforms": 6,
+      "passed_per_platform": 154,
+      "failed": 0,
+      "skipped": 0,
+      "proof": "repair-170-final-native-publication.json",
+      "events": "repair-170-final-native-publication.tar.gz"
     }
   },
   "live_sessions": {

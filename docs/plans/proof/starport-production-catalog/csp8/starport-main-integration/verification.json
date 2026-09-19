@@ -208,5 +208,22 @@
       "proof": "path-suites.jsonl.gz"
     }
   },
-  "qualification": "Diagnostic local-pair integration only. Published dependencies, full acquisition/startup/restart/projection qualification, full checks, review, native CI, and merge remain required."
+  "qualification": "Diagnostic local-pair integration only. Published dependencies, full acquisition/startup/restart/projection qualification, full checks, review, native CI, and merge remain required.",
+  "active_runtime_check": {
+    "session": 11746,
+    "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -p 1 -json ./internal/app ./internal/catalog",
+    "output": "/tmp/csp8-starport-runtime-suites.jsonl",
+    "status": "running",
+    "scope": "Local pair only. Published-module qualification remains required."
+  },
+  "valkey_followup": {
+    "command": "GOWORK=/tmp/csp8-host-integration.work TEST_VALKEY_URL=redis://127.0.0.1:53085 go test -race -json ./internal/app -run ^TestAppWithValkey$",
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "image": "9acdf6f0ae17",
+    "container": "csp8-local-valkey",
+    "cleanup": "stopped and automatically removed after test",
+    "proof": "valkey.jsonl.gz"
+  }
 }

@@ -1,0 +1,66 @@
+{
+  "head": "67dba0ea554719c2329b637a1eb812c1a440e141",
+  "run": 35415804632,
+  "platforms": {
+    "native-publication-macos-15-intel": {
+      "events": {
+        "pass": 154
+      },
+      "streams": [
+        "publication-preparation.jsonl",
+        "publisher-ingestion.jsonl",
+        "git-acquisition.jsonl"
+      ]
+    },
+    "native-publication-macos-15": {
+      "events": {
+        "pass": 154
+      },
+      "streams": [
+        "publication-preparation.jsonl",
+        "publisher-ingestion.jsonl",
+        "git-acquisition.jsonl"
+      ]
+    },
+    "native-publication-windows-2025": {
+      "events": {
+        "pass": 154
+      },
+      "streams": [
+        "publication-preparation.jsonl",
+        "publisher-ingestion.jsonl",
+        "git-acquisition.jsonl"
+      ]
+    },
+    "native-publication-windows-11-arm": {
+      "events": {
+        "pass": 154
+      },
+      "streams": [
+        "publication-preparation.jsonl",
+        "publisher-ingestion.jsonl",
+        "git-acquisition.jsonl"
+      ]
+    },
+    "native-publication-ubuntu-24.04-arm": {
+      "events": {
+        "pass": 154
+      },
+      "streams": [
+        "publication-preparation.jsonl",
+        "publisher-ingestion.jsonl",
+        "git-acquisition.jsonl"
+      ]
+    },
+    "native-publication-ubuntu-24.04": {
+      "events": {
+        "pass": 154
+      },
+      "streams": [
+        "publication-preparation.jsonl",
+        "publisher-ingestion.jsonl",
+        "git-acquisition.jsonl"
+      ]
+    }
+  }
+}
