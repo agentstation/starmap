@@ -2670,6 +2670,45 @@ Cache hits still require current permission and the documented budget checks.
 Define clock skew, expiry, missed-event recovery, and revocation delay in the release profile.
 Warm valid reads must avoid KV, SQL, file, and external secret access for stable data.
 
+D38 assigns clock requirements to operations, independent of the configured storage backend.
+Local and replicated gateway authorization use process-local monotonic deadlines.
+The maximum disconnected permission lifetime is 60 seconds from the start of successful evidence verification.
+A delayed response consumes that lifetime. Cache access, refresh failure, and retries cannot extend it.
+
+The normal revocation-propagation target is two seconds while the owning authority is reachable.
+This target requires fleet qualification. It is not a partition guarantee.
+
+KV and SQL each retain their own epoch, revision, and mutation fence.
+Known withdrawals restrict affected new admission immediately on the observing replica.
+Failed refresh permits retained permission only within its original validity interval.
+Expiry refuses affected new requests with a retryable error. Unknown caller authorization does not disable unrelated callers.
+An admitted stream may finish under the existing stream contract.
+
+Persisted key expiry cannot discard a receipt's monotonic deadline.
+Wall-clock checks can shorten cached validity but cannot extend the original monotonic interval.
+An observed deadline failure permanently invalidates that receipt, including its copies. Recovery requires fresh evidence.
+
+Absolute key and session expiry trust a reasonably correct host clock. JWT, TLS, and cloud authentication retain their own clock requirements.
+Receipts do not survive process restart. Reload current authority evidence before admission.
+
+Internal authoritative catalogs retain their stricter qualified-UTC receipt contract.
+A local duration can replace an external absolute deadline only when that authority's contract proves a conservative conversion.
+This change does not introduce that conversion for Starmap receipts.
+Qualified UTC is also required when an external policy or chosen distributed lease protocol depends on bounded clock error.
+Loss of qualification blocks only operations dependent on that clock. Independent operations and diagnostics remain available.
+
+Readiness checks common policy fences and the catalog's current admission permission in memory.
+It reads no caller records, contacts no providers, and renews no receipt.
+An unavailable common prerequisite returns HTTP 503 with `status: not_ready` and `Retry-After: 1`.
+Liveness continues to respond. Readiness does not establish any particular caller's permission, credentials, or budget.
+
+Operator diagnostics must identify the affected authority and operation, retained permission validity, and the required recovery action.
+Do not report individual caller rejection as a gateway-wide failure.
+
+A46 qualification covers forward and backward clock changes, suspend/resume, restart, delayed responses, missed notifications, partitions, expiry, and known withdrawals.
+Test these across the actual KV/SQL ownership split. Native suspend behavior remains a required qualification case.
+Warm checks read memory without allocating or querying a time service. Refresh and required admission operations remain bounded.
+
 CSP10.2 owns authorization memory. CSP16 owns applied configuration memory and authority revisions.
 
 #### 8.9.4 Atomic limits and recoverable reservations
@@ -2725,9 +2764,12 @@ Sum priced usage components with exact decimal arithmetic, then round once per a
 Unknown price or cost bounds cannot become zero. An observed overrun records the full debt and restricts further admission until policy permits it.
 
 Bind each reservation to the applicable meter identities and fixed UTC day, ISO week, and month windows at admission.
-Use the admission authority's clock. Record its source and uncertainty in the qualified profile.
-An unknown clock or excessive skew refuses strict admission. Never let individual replica clocks select conflicting windows.
-Local admission uses the host clock under the same validity contract.
+The admission authority evaluates budget windows using its own time. Replicas cannot independently select conflicting windows.
+Atomic reservations do not require qualified UTC on each replica. Unknown budget authority state still refuses affected admission.
+
+Record the authority's time source and window semantics in the qualification profile.
+Require bounded clock error only if the selected protocol depends on it, such as a clock-dependent distributed quota lease.
+Local admission uses host time as its authority time.
 
 Late usage reconciles the original reservation windows and pricing basis, even after midnight or a catalog update.
 A retry is a new potentially charged attempt. It reserves against its own admission windows while preserving earlier reservations.

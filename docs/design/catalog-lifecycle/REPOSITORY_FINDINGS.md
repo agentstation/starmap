@@ -3354,3 +3354,21 @@ Final acceptance passes all twelve CSP9 subcases.
 
 Sol and Opus report zero consumer findings across three review chunks.
 Published-pair checks, native CI, and merge remain required.
+
+
+## September 19 operation-specific authorization clocks
+
+Starport commit `81aa42a74ce28126ae19fb7f6127c3e9823e8080` removes storage-based clock selection from gateway authorization.
+Local and shared stores use monotonic permission deadlines with a 60-second maximum.
+Starmap external authority receipts retain their qualified-time contract.
+The owner selected a two-second normal revocation-propagation target. Fleet qualification remains open.
+
+The review reproduced receipt resurrection after clock recovery. Copies now share permanent invalidation after observed expiry or clock failure.
+Corrected authorization race checks pass 103 events with four service-dependent skips.
+Real Valkey/PostgreSQL checks pass ten events without skips. Readiness and startup application tests also pass.
+
+The initial broad command failed an old test that checked an expired receipt at an earlier simulated time.
+Its allocation assertion now runs before expiry. Independent clock cases use fresh receipts.
+
+The operation-clock proof records exact test events and remaining checks.
+Native suspend/resume, authority-specific diagnostics, full A46, review, and merge remain unverified.

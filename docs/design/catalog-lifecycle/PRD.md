@@ -63,6 +63,7 @@ The [latency revision](../../plans/proof/starport-production-catalog/latency-rev
 | D35 | After a models.dev outage exceeds 24 hours, continue valid provider updates with retained models.dev facts. Report stale status and original evidence age. | User confirmed on 2026-09-16 UTC |
 | D36 | Starmap and Starport use Go 1.27.1 for development, CI, and releases. Add another supported Go family only for an actual product requirement. | User confirmed on 2026-09-16 |
 | D37 | Document recognition uses each provider’s actual billing units. Derived per-page prices are estimates, not fixed charges. Preserve Google support. | User confirmed on 2026-09-17 |
+| D38 | Clock requirements follow operations, not storage. Gateway authorization has a 60-second disconnected maximum and a 2-second normal propagation target. External authority receipts retain their qualified-time contract. | User revised the standalone-only rule and confirmed both authorization limits on 2026-09-19. |
 
 D23 permits checked, explicitly selected, administrator-owned primary configuration for service deployments. Catalog state and dotenv files retain private-access requirements.
 The [owner decision record](../../plans/proof/starport-production-catalog/csp2/owner-decisions-2026-09-06.md) defines its implementation and qualification limits.
@@ -196,6 +197,14 @@ Section 8 of the specification defines the supported architecture targets.
 Under P35, SSO sessions use only granted accounts and receive no deployment-admin privileges.
 Starport selects the sole granted account automatically. Users with several granted accounts must select an active account in the console or API.
 The default account is never an implicit fallback. Queued work rechecks current policy without changing its original caller or account.
+
+Local and replicated gateway authorization use monotonic cache expiry. Absolute key and session expiry trust a reasonably correct host clock.
+Shared storage alone does not require qualified UTC. External authority deadlines retain their explicit clock requirements.
+
+Cached gateway permission lasts at most 60 seconds from verification. Normal revocation propagation targets two seconds while the authority is reachable.
+A known withdrawal restricts affected new requests immediately on the observing replica. Admitted streams may finish.
+
+Readiness reports common admission prerequisites. Liveness remains available when admission stops.
 
 Credential migration under P11 must not silently change which inference identity pays.
 Existing installations need a conflict diagnostic and explicit resolution when precedence changes select different credentials.
