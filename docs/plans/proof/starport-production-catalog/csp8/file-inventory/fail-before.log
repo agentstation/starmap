@@ -1,0 +1,5 @@
+--- FAIL: TestFileManifestIncludesSetupArtifactsAtSelectedLeaves (0.00s)
+    file_manifest_test.go:191: missing file role setup-storage-guard
+FAIL
+FAIL	github.com/agentstation/starport/internal/config	0.481s
+FAIL

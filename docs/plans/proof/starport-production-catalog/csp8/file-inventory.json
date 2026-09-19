@@ -1,0 +1,59 @@
+{
+  "starport_head": "fc28bc970a8272acc316c71e4d4d023a48541bf6",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "CSP8 file inventory and inherited configuration. Local workspace qualification only.",
+  "defect": "The file manifest omitted setup transaction, configuration publication, storage guard, staged database, and local-token lock files.",
+  "fix": "Report these roles from the selected configuration and database leaf paths. Preserve private access policy and input origin. Shared and development modes report inactive setup artifacts.",
+  "fail_before": {
+    "test": "TestFileManifestIncludesSetupArtifactsAtSelectedLeaves",
+    "result": "FAIL",
+    "seconds": 0.481,
+    "assertion": "missing file role setup-storage-guard",
+    "log": "file-inventory/fail-before.log"
+  },
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/config ./internal/cli -run '^Test(FileManifest.*|ConfigFileManifest.*|CatalogInheritance.*|PathOriginsDistinguishFilesEnvironmentAndGoOverrides|CatalogFileOriginIdentifiesStarmapFallback)$'",
+      "result": "PASS",
+      "top_level_tests": 16,
+      "packages": {
+        "config": {
+          "tests": 11,
+          "seconds": 1.693
+        },
+        "cli": {
+          "tests": 5,
+          "seconds": 2.201
+        }
+      }
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/config ./internal/cli",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+      "result": "PASS",
+      "tests": 73
+    }
+  ],
+  "fixture_correction": "The first test explicitly disabled environment files and therefore did not read the selected primary file. Remove that fixture override. The corrected test fails against prior production code and passes against the final implementation.",
+  "registered_this_change": [
+    "A24.local_fallback",
+    "A24.scope_authority_origins",
+    "A24.generated_file_inventory",
+    "A03.starport_file_manifest"
+  ],
+  "remaining_unregistered_cases": [
+    "A22.inference_separate_egress",
+    "A23.restart_watcher_guards",
+    "A03.shared_backend_no_local_databases"
+  ],
+  "remaining_unregistered_count": 3,
+  "remaining": [
+    "Complete inference egress, restart/watcher, and real shared-storage startup evidence.",
+    "Full repository checks, published-dependency qualification, pre-PR review, native CI, and merge."
+  ],
+  "running_sessions": [],
+  "completion_credit": false
+}

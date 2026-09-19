@@ -1684,6 +1684,146 @@
           "test": "TestDevFailedCompositionPreservesUnpublishedScratch"
         }
       ]
+    },
+    "A24.local_fallback": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritancePreservesExplicitSelections"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritanceExcludesNodeAndServerAuthority"
+        }
+      ]
+    },
+    "A24.scope_authority_origins": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogInheritanceExcludesNodeAndServerAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestPathOriginsDistinguishFilesEnvironmentAndGoOverrides"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestCatalogFileOriginIdentifiesStarmapFallback"
+        }
+      ]
+    },
+    "A24.generated_file_inventory": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesWorkspaceRecoveryArtifacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesSetupArtifactsAtSelectedLeaves"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSourceCachesFollowCanonicalSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestReportsSelectedStorageWithoutOpeningIt"
+        }
+      ]
+    },
+    "A03.starport_file_manifest": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesWorkspaceRecoveryArtifacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestIncludesSetupArtifactsAtSelectedLeaves"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestUsesConfigurationReadPolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestReportsOnlySelectedConfigurationFiles"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSharedBackendsOmitCredentialsAndLocalSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestDevelopmentDisablesPersistentStores"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/config",
+          "test": "TestFileManifestSourceCachesFollowCanonicalSelection"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestReportsSelectedStorageWithoutOpeningIt"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestInspectionHasABoundAndReadsNoContents"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestRejectsInvalidInspectionBeforeLoading"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/cli",
+          "test": "TestConfigFileManifestInspectionPreservesCancellation"
+        }
+      ]
     }
   }
 }

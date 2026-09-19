@@ -1,0 +1,18 @@
+--- FAIL: TestFileManifestIncludesSetupArtifactsAtSelectedLeaves (0.00s)
+    file_manifest_test.go:192: 
+        	Error Trace:	/Users/jack/src/github.com/agentstation/starport-product-paths/internal/config/file_manifest_test.go:192
+        	Error:      	Not equal: 
+        	            	expected: "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestFileManifestIncludesSetupArtifactsAtSelectedLeaves4013286610/001/custom-data/.starport-setup-records[local]"
+        	            	actual  : "/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestFileManifestIncludesSetupArtifactsAtSelectedLeaves4013286610/001/defaults/data/.starport-setup-badger"
+        	            	
+        	            	Diff:
+        	            	--- Expected
+        	            	+++ Actual
+        	            	@@ -1 +1 @@
+        	            	-/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestFileManifestIncludesSetupArtifactsAtSelectedLeaves4013286610/001/custom-data/.starport-setup-records[local]
+        	            	+/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestFileManifestIncludesSetupArtifactsAtSelectedLeaves4013286610/001/defaults/data/.starport-setup-badger
+        	Test:       	TestFileManifestIncludesSetupArtifactsAtSelectedLeaves
+FAIL
+FAIL	github.com/agentstation/starport/internal/config	0.716s
+ok  	github.com/agentstation/starport/internal/cli	1.651s
+FAIL
