@@ -2,8 +2,10 @@
 """Run complete, disjoint Go test groups and retain their timing evidence."""
 
 import argparse
+import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -55,11 +57,46 @@ def test_command(suite, packages):
     return args + packages
 
 
-def summarize(path, suite, packages):
+def select_tests(events, packages, shard):
+    """Partition top-level tests, examples, and fuzz seeds without omissions."""
+    if shard not in (1, 2, 3):
+        raise ValueError("runtime shard must be 1, 2, or 3")
+    inventory = set()
+    completed = set()
+    for event in events:
+        package = event.get("Package")
+        if event.get("Action") == "fail":
+            raise ValueError("test inventory failed")
+        if event.get("Action") in ("pass", "skip") and not event.get("Test"):
+            if package in completed:
+                raise ValueError("duplicate inventory package completion")
+            completed.add(package)
+        name = event.get("Output", "").strip()
+        if event.get("Action") == "output" and re.fullmatch(r"(?:Test|Example|Fuzz)\w*", name):
+            key = (package, name)
+            if package not in packages or key in inventory:
+                raise ValueError("invalid or duplicate test inventory entry")
+            inventory.add(key)
+    if completed != set(packages) or not inventory:
+        raise ValueError("test inventory is incomplete")
+    # The same name in different packages must select the same global -run filter.
+    selected = {key for key in inventory
+                if int.from_bytes(hashlib.sha256(key[1].encode()).digest()[:8], "big") % 3 == shard - 1}
+    if not selected:
+        raise ValueError("selected runtime shard is empty")
+    return selected
+
+
+def shard_filter(tests):
+    return "-run=^(" + "|".join(re.escape(name) for name in sorted({name for _, name in tests})) + ")$"
+
+
+def summarize(path, suite, packages, expected_tests=None):
     counts = {"pass": 0, "fail": 0, "skip": 0}
     slow = []
     capacity_passed = False
     completed = set()
+    completed_tests = set()
     failed = False
     with path.open(encoding="utf-8") as stream:
         for line in stream:
@@ -70,6 +107,11 @@ def summarize(path, suite, packages):
                 if package in completed:
                     raise ValueError("duplicate package completion in test evidence")
                 completed.add(package)
+            if name and "/" not in name and action in counts:
+                key = (package, name)
+                if key in completed_tests:
+                    raise ValueError("duplicate test completion")
+                completed_tests.add(key)
             if name and action in counts:
                 counts[action] += 1
                 if "/" not in name and action != "skip":
@@ -82,6 +124,8 @@ def summarize(path, suite, packages):
         raise ValueError("test evidence contains a failure")
     if completed != set(packages):
         raise ValueError("test evidence does not complete every selected package")
+    if expected_tests is not None and completed_tests != expected_tests:
+        raise ValueError("test evidence differs from the selected shard inventory")
     if counts["pass"] == 0:
         raise ValueError("test evidence contains no passing tests")
     if suite == "capacity" and not capacity_passed:
@@ -94,9 +138,12 @@ def main():
     parser.add_argument("suite", choices=("regular", "race", "capacity"))
     parser.add_argument("--group", choices=("all",) + GROUPS, default="all")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--shard", type=int, choices=(0, 1, 2, 3), default=0)
     args = parser.parse_args()
     if args.suite == "capacity" and args.group != "all":
         parser.error("capacity runs as one complete test")
+    if args.shard and (args.group != "runtime" or args.suite != "race"):
+        parser.error("shards apply only to the runtime race group")
     inventory = subprocess.run(["go", "list", "./..."], cwd=ROOT, check=True,
                                capture_output=True, text=True, timeout=120).stdout.splitlines()
     packages = select_packages(inventory, args.group)
@@ -104,12 +151,21 @@ def main():
     environment = os.environ.copy()
     if args.suite == "race":
         environment["CGO_ENABLED"] = "1"
+    expected_tests = None
+    if args.shard:
+        listing = subprocess.run(["go", "test", "-race", "-json", "-list", ".", *packages],
+                                 cwd=ROOT, env=environment, capture_output=True, text=True,
+                                 check=True, timeout=600)
+        expected_tests = select_tests([json.loads(line) for line in listing.stdout.splitlines()], packages, args.shard)
+        selected.insert(2, shard_filter(expected_tests))
     path = args.output
     if path is None:
         descriptor, name = tempfile.mkstemp(prefix="starmap-tests-", suffix=".jsonl")
         os.close(descriptor)
         path = Path(name)
     path.parent.mkdir(parents=True, exist_ok=True)
+    if expected_tests is not None:
+        path.with_suffix(".inventory.json").write_text(json.dumps(sorted(expected_tests), indent=2) + "\n", encoding="utf-8")
     print("Running:", " ".join(selected), flush=True)
     print("Test events:", path, flush=True)
     with path.open("w", encoding="utf-8") as output:
@@ -118,7 +174,7 @@ def main():
         # Preserve Go's diagnostics and exit status, including package build failures.
         print(path.read_text(encoding="utf-8"), file=sys.stderr)
         return result.returncode
-    summarize(path, args.suite, [CAPACITY_PACKAGE] if args.suite == "capacity" else packages)
+    summarize(path, args.suite, [CAPACITY_PACKAGE] if args.suite == "capacity" else packages, expected_tests)
     return 0
 
 

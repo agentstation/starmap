@@ -4,6 +4,7 @@
 import contextlib
 import io
 import json
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -48,12 +49,44 @@ class TestVerification(unittest.TestCase):
         with self.assertRaises(ValueError):
             verification.test_command("unrecognized", [])
 
-    def summarize(self, events, suite="capacity", packages=None):
+    def summarize(self, events, suite="capacity", packages=None, expected_tests=None):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "events.jsonl"
             path.write_text("".join(json.dumps(event) + "\n" for event in events), encoding="utf-8")
             with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                verification.summarize(path, suite, packages or [verification.CAPACITY_PACKAGE])
+                verification.summarize(path, suite, packages or [verification.CAPACITY_PACKAGE], expected_tests)
+
+    def test_shards_cover_tests_examples_and_fuzz_seeds_exactly_once(self):
+        packages = [verification.MODULE + "/runtime", verification.MODULE + "/runtime/future"]
+        names = [prefix + str(i) for prefix in ("TestCase", "ExampleCase", "FuzzCase") for i in range(20)]
+        names += ["Test日本語", "ExampleÉ", "FuzzΩ"]
+        inventory = {(package, name) for package in packages for name in names}
+        events = [{"Package": package, "Action": "output", "Output": name + "\n"}
+                  for package, name in sorted(inventory)]
+        events += [{"Package": package, "Action": "pass"} for package in packages]
+        shards = [verification.select_tests(events, packages, shard) for shard in (1, 2, 3)]
+        self.assertEqual(inventory, set.union(*shards))
+        self.assertEqual(len(inventory), sum(map(len, shards)))
+        for selected in shards:
+            self.assertEqual(selected, verification.select_tests(list(reversed(events)), packages, shards.index(selected) + 1))
+            pattern = verification.shard_filter(selected).removeprefix("-run=")
+            actual = {key for key in inventory if re.fullmatch(pattern, key[1])}
+            self.assertEqual(selected, actual)
+        for broken in (events[:-1], events + [events[0]], events + [{"Action": "fail"}], []):
+            with self.subTest(broken=broken[-1:]), self.assertRaises(ValueError):
+                verification.select_tests(broken, packages, 1)
+
+    def test_shard_evidence_rejects_omitted_extra_and_duplicate_tests(self):
+        package = verification.MODULE + "/runtime"
+        expected = {(package, "TestA"), (package, "ExampleB")}
+        events = [{"Package": package, "Test": "TestA", "Action": "pass"},
+                  {"Package": package, "Test": "ExampleB", "Action": "skip"},
+                  {"Package": package, "Action": "pass"}]
+        self.summarize(events, "race", [package], expected)
+        for broken in (events[1:], events + [events[0]],
+                       events + [dict(events[0], Test="FuzzUnexpected")]):
+            with self.subTest(broken=broken), self.assertRaises(ValueError):
+                self.summarize(broken, "race", [package], expected)
 
     def test_capacity_needs_the_exact_passing_test(self):
         success = {"Package": verification.CAPACITY_PACKAGE, "Test": verification.CAPACITY_TEST, "Action": "pass"}

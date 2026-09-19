@@ -177,20 +177,27 @@ jobs:
         run: make verify-checks
 
   verification-tests:
-    name: Go 1.27.1 race ${{ matrix.group }}
+    name: Go 1.27.1 race ${{ matrix.label }}
     needs: verification-checks
     runs-on: ubuntu-latest
     timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
-        group: [runtime, client, application, contracts]
+        include:
+          - {group: runtime, shard: 1, label: runtime-1}
+          - {group: runtime, shard: 2, label: runtime-2}
+          - {group: runtime, shard: 3, label: runtime-3}
+          - {group: client, shard: 0, label: client}
+          - {group: application, shard: 0, label: application}
+          - {group: contracts, shard: 0, label: contracts}
     env:
       GOTOOLCHAIN: local
       CATALOG_GIT_FIXTURE_REQUIRED: '1'
       STARMAP_PUBLIC_FIXTURE_REQUIRED: '1'
       TEST_SUITE: 'race'
       TEST_GROUP: ${{ matrix.group }}
+      TEST_SHARD: ${{ matrix.shard }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -210,7 +217,7 @@ jobs:
         timeout-minutes: 2
         run: python3 scripts/prepare_public_catalog_fixture.py
       - name: Run complete selected test group
-        run: python3 scripts/verification_tests.py "$TEST_SUITE" --group "$TEST_GROUP" --output "$RUNNER_TEMP/go-test-events.jsonl"
+        run: python3 scripts/verification_tests.py "$TEST_SUITE" --group "$TEST_GROUP" --shard "$TEST_SHARD" --output "$RUNNER_TEMP/go-test-events.jsonl"
       - name: Test pure-Go external consumer
         if: matrix.group == 'client'
         env:
@@ -220,8 +227,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: go-tests-race-${{ matrix.group }}
-          path: ${{ runner.temp }}/go-test-events.jsonl
+          name: go-tests-race-${{ matrix.label }}
+          path: ${{ runner.temp }}/go-test-events.*
           if-no-files-found: error
 
   verification-capacity:
