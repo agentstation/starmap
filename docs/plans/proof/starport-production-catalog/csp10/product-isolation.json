@@ -1,0 +1,33 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:08:11.515679+00:00",
+  "starport_head": "2a95361c475c350bca2d10d1aebc17a93c27a0e4",
+  "starmap_head": "a653061eddb08b0ef3a297056241ff0a1c27435e",
+  "test": "TestStartupKeepsStarmapFilesAndServerSettingsIsolated",
+  "behavior": [
+    "The real application starts with Badger, SQLite, and an embedded catalog under an explicit Starport home.",
+    "Starmap roots, workspace, port, and administrator token are present in configuration input and process environment. The Starmap directory and sentinel contents remain unchanged.",
+    "The gateway rejects the Starmap administrator token with HTTP 401 and accepts its own stored API key with HTTP 200.",
+    "The Starport catalog runtime directory contains persistent state."
+  ],
+  "checks": {
+    "vet": 0,
+    "lint": 0,
+    "targeted_writing": 0,
+    "verifier_unit_tests": "88 passed"
+  },
+  "limitations": [
+    "Local qualification uses an unpublished workspace pair. Required native qualification, published dependency, review, and merge remain open.",
+    "CSP10 is not complete. Other primary cases and required subcases remain unverified."
+  ],
+  "next_action": "Continue A17 raw HTTP contracts for both API families, unsupported fields, identity errors, and streaming through catalog refresh.",
+  "verifier": {
+    "A25.approved_local_exception": "PASS",
+    "A25.byok_shared_stream_override": "PASS",
+    "A25.credential_placement_changes": "PASS",
+    "A25.inference_origin_changes": "PASS",
+    "A25.product_path_isolation": "PASS",
+    "A25.source_token_replacement": "PASS"
+  },
+  "status": "All six A25 subcases pass for the local candidate pair; released-pair qualification remains open"
+}
