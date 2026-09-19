@@ -1,0 +1,27 @@
+{
+  "scope": "Internal KV checkpoint for runtime migration. The operator workflow remains incomplete.",
+  "starport_head": "15ffeb1dcd7c4d93fa53ffa9ad58d1e66e295a02",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^Test(MigrationStoreBinding|RuntimeDirectoryMigrationPreservesAcceptedCatalog|RuntimeMigrationRefusesUnpublishedTargetBeforeStorage)$'",
+  "result": "PASS",
+  "top_level_tests": 3,
+  "subtests": 2,
+  "duration_seconds": 16.622,
+  "vet": "PASS: GOWORK=/tmp/csp8-host-integration.work go vet ./internal/catalog",
+  "coverage": [
+    "Original KV stores an immutable operation request and accepted generation checksum.",
+    "Retries preserve the original checkpoint.",
+    "Changed operation paths fail verification.",
+    "Replacement refuses a nonempty store without the operation checkpoint, even with the same catalog.",
+    "Cold original stores without an accepted head remain valid.",
+    "Valid forward catalog updates pass and rollback fails.",
+    "Malformed checkpoint fails closed."
+  ],
+  "remaining": [
+    "Bind the host operation journal to the saved KV selector and configuration digest. A repeated prepare against another store must not create a second valid binding.",
+    "Retain the checkpoint generation through catalog garbage collection.",
+    "CLI wiring and saved configuration verification before and after completion.",
+    "Native interrupted-process tests and final published-module qualification."
+  ],
+  "completion_credit": false
+}
