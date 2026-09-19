@@ -2867,6 +2867,155 @@
           "test": "TestEncryptionService_DifferentKeys"
         }
       ]
+    },
+    "A18.unauthorized_membership_redaction": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryPreservesMembershipWithoutAdapter"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRequiresExplicitDisclosurePolicy"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRefusesColdInternalAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRechecksAuthorityBeforeReturningFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestDiscoveryRejectsKnownAuthorityWithdrawal"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestViewerProjectionsFilterOfferingFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestReaderProjectionPreservesPermittedFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestReaderProjectionRejectsDifferentGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheSeparatesDisclosureMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestDiscoveryCacheLookupRechecksAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCompatibilityDiscoveryRejectsWithdrawnAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/proxy",
+          "test": "TestCompatibilityProjectionRechecksAuthorityAtDelivery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteWithoutProviderCredentials"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteAppliesCurrentAccountDisclosure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryRouteRequiresReadScope"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryViewerRejectsLostAccount"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestDiscoveryViewerRevalidatesConsoleSession"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCompatibilityAuthorsApplyCurrentDisclosure"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCompatibilityDisclosureRefusesPolicyChangeBeforeDelivery"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCompatibilityRoutesRequireCurrentCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesExcludeDeniedMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesRefuseDifferentGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestDiscoveryDeliveryRechecksViewerAndAuthority"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestDiscoveryPolicyIntersectsAccountAndKey"
+        }
+      ]
     }
   },
   "task_component_checks": {
