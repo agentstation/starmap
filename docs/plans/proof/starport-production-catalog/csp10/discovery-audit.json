@@ -1,0 +1,35 @@
+{
+  "status": "discovery audit; implementation not complete",
+  "starport_commit": "c651009c4209b423b4c96702be171892d031ecbe",
+  "starmap_commit": "50f071ef2a68604c29f97563e11b8632f1e9d607",
+  "findings": [
+    {
+      "requirement": "Permitted catalog membership remains visible without operator credentials or a ready adapter.",
+      "observed": "Models uses RoutableSnapshot.Definitions, which iterates routable routes. The existing generation-retention test expects an empty model list after adapter removal.",
+      "source": [
+        "internal/catalog/view/models.go:Models",
+        "internal/catalog/snapshot.go:Definitions",
+        "internal/proxy/proxy.go:ListModels",
+        "internal/proxy/catalog_facts_test.go:TestModelDiscoveryRetainsOneCatalogGeneration"
+      ],
+      "evidence": "Two existing discovery tests pass under race detection. These tests confirm current behavior; they do not prove the revised discovery requirement.",
+      "next_action": "Add a regression for permitted discovery with no ready adapter and after adapter removal. Separate discovery membership from routing readiness while preserving current permission checks."
+    }
+  ],
+  "acceptance_inventory": {
+    "selected_subcases": 29,
+    "registered": 5,
+    "unregistered": 24,
+    "interpretation": "Missing registration is missing evidence, not proof of a runtime defect."
+  },
+  "reviewed_branches_modified": false,
+  "acceptance_result": {
+    "exit_code": 1,
+    "gate_status": "FAIL",
+    "subcases": {
+      "PASS": 5,
+      "UNVERIFIED": 24
+    },
+    "qualification": "Local workspace only; not released-pair evidence"
+  }
+}

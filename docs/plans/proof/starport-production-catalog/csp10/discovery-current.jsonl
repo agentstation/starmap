@@ -1,0 +1,12 @@
+{"Time":"2026-09-19T04:45:20.762718-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/proxy"}
+{"Time":"2026-09-19T04:45:21.306473-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestSnapshotOnlyDiscovery"}
+{"Time":"2026-09-19T04:45:21.30655-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestSnapshotOnlyDiscovery","Output":"=== RUN   TestSnapshotOnlyDiscovery\n","OutputType":"frame"}
+{"Time":"2026-09-19T04:45:32.182363-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestSnapshotOnlyDiscovery","Output":"--- PASS: TestSnapshotOnlyDiscovery (10.88s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T04:45:32.182748-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestSnapshotOnlyDiscovery","Elapsed":10.88}
+{"Time":"2026-09-19T04:45:32.182808-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestModelDiscoveryRetainsOneCatalogGeneration"}
+{"Time":"2026-09-19T04:45:32.182816-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestModelDiscoveryRetainsOneCatalogGeneration","Output":"=== RUN   TestModelDiscoveryRetainsOneCatalogGeneration\n","OutputType":"frame"}
+{"Time":"2026-09-19T04:45:32.623423-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestModelDiscoveryRetainsOneCatalogGeneration","Output":"--- PASS: TestModelDiscoveryRetainsOneCatalogGeneration (0.44s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T04:45:32.623471-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/proxy","Test":"TestModelDiscoveryRetainsOneCatalogGeneration","Elapsed":0.44}
+{"Time":"2026-09-19T04:45:32.623821-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/proxy","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-09-19T04:45:33.635994-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/proxy","Output":"ok  \tgithub.com/agentstation/starport/internal/proxy\t12.873s\n"}
+{"Time":"2026-09-19T04:45:33.636043-05:00","Action":"pass","Package":"github.com/agentstation/starport/internal/proxy","Elapsed":12.873}

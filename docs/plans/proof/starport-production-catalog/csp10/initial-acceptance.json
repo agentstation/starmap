@@ -1,0 +1,759 @@
+{
+  "cases": [
+    {
+      "id": "A01",
+      "condition": "CSP-V01",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A02",
+      "condition": "CSP-V02",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A03",
+      "condition": "CSP-V03",
+      "status": "UNVERIFIED",
+      "required_subcases": 16
+    },
+    {
+      "id": "A04",
+      "condition": "CSP-V04",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A05",
+      "condition": "CSP-V05",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A06",
+      "condition": "CSP-V06",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A07",
+      "condition": "CSP-V07",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A08",
+      "condition": "CSP-V08",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A09",
+      "condition": "CSP-V09",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A10",
+      "condition": "CSP-V10",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A11",
+      "condition": "CSP-V11",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A12",
+      "condition": "CSP-V12",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A13",
+      "condition": "CSP-V13",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A14",
+      "condition": "CSP-V14",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A15",
+      "condition": "CSP-V15",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A16",
+      "condition": "CSP-V16",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A17",
+      "condition": "CSP-V17",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A18",
+      "condition": "CSP-V18",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A19",
+      "condition": "CSP-V19",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A20",
+      "condition": "CSP-V20",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A21",
+      "condition": "CSP-V21",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A22",
+      "condition": "CSP-V22",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A23",
+      "condition": "CSP-V23",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A24",
+      "condition": "CSP-V24",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A25",
+      "condition": "CSP-V25",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A26",
+      "condition": "CSP-V26",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A27",
+      "condition": "CSP-V27",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A28",
+      "condition": "CSP-V28",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A29",
+      "condition": "CSP-V29",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A30",
+      "condition": "CSP-V30",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A31",
+      "condition": "CSP-V31",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A32",
+      "condition": "CSP-V32",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A33",
+      "condition": "CSP-V33",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A34",
+      "condition": "CSP-V34",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A35",
+      "condition": "CSP-V35",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A36",
+      "condition": "CSP-V36",
+      "status": "UNVERIFIED",
+      "required_subcases": 2
+    },
+    {
+      "id": "A37",
+      "condition": "CSP-V37",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A38",
+      "condition": "CSP-V38",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A39",
+      "condition": "CSP-V39",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A40",
+      "condition": "CSP-V40",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A41",
+      "condition": "CSP-V41",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A42",
+      "condition": "CSP-V42",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A43",
+      "condition": "CSP-V43",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A44",
+      "condition": "CSP-V44",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A45",
+      "condition": "CSP-V45",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A46",
+      "condition": "CSP-V46",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A47",
+      "condition": "CSP-V47",
+      "status": "UNVERIFIED",
+      "required_subcases": 22
+    },
+    {
+      "id": "A48",
+      "condition": "CSP-V48",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A49",
+      "condition": "CSP-V49",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A50",
+      "condition": "CSP-V50",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    }
+  ],
+  "subcases": {
+    "A25.source_token_replacement": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestSourceReplacementDoesNotBorrowTransportCredentials$",
+            "./pkg/catalogs/config"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-credential-roles",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:44:02.764716-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-19T04:44:03.212847-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementDoesNotBorrowTransportCredentials\"}\n{\"Time\":\"2026-09-19T04:44:03.212962-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementDoesNotBorrowTransportCredentials\",\"Output\":\"=== RUN   TestSourceReplacementDoesNotBorrowTransportCredentials\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:03.213802-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementDoesNotBorrowTransportCredentials\",\"Output\":\"--- PASS: TestSourceReplacementDoesNotBorrowTransportCredentials (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:03.213816-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementDoesNotBorrowTransportCredentials\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:44:03.213849-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:04.219789-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t1.455s\\n\"}\n{\"Time\":\"2026-09-19T04:44:04.219814-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":1.455}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestSourceReplacementRequiresACompleteApplicableGroup$",
+            "./pkg/catalogs/config"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-credential-roles",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:44:05.179824-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-19T04:44:05.625243-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementRequiresACompleteApplicableGroup\"}\n{\"Time\":\"2026-09-19T04:44:05.625308-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementRequiresACompleteApplicableGroup\",\"Output\":\"=== RUN   TestSourceReplacementRequiresACompleteApplicableGroup\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:05.626523-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementRequiresACompleteApplicableGroup\",\"Output\":\"--- PASS: TestSourceReplacementRequiresACompleteApplicableGroup (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:05.626549-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementRequiresACompleteApplicableGroup\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:44:05.626567-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:06.63033-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t1.450s\\n\"}\n{\"Time\":\"2026-09-19T04:44:06.630375-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":1.451}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestApplicationSourceReplacementClearsFileCredentials$",
+            "./internal/cli/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-credential-roles",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:44:10.655836-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-19T04:44:11.236806-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestApplicationSourceReplacementClearsFileCredentials\"}\n{\"Time\":\"2026-09-19T04:44:11.236865-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestApplicationSourceReplacementClearsFileCredentials\",\"Output\":\"=== RUN   TestApplicationSourceReplacementClearsFileCredentials\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:11.238869-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestApplicationSourceReplacementClearsFileCredentials\",\"Output\":\"--- PASS: TestApplicationSourceReplacementClearsFileCredentials (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:11.238889-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestApplicationSourceReplacementClearsFileCredentials\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:44:11.239058-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:12.24468-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t1.589s\\n\"}\n{\"Time\":\"2026-09-19T04:44:12.244717-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":1.589}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCommandDotenvSourceReplacementPreservesAuthority$",
+            "./internal/cli/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-credential-roles",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:44:13.691963-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\"}\n{\"Time\":\"2026-09-19T04:44:14.272224-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority\"}\n{\"Time\":\"2026-09-19T04:44:14.272307-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority\",\"Output\":\"=== RUN   TestCommandDotenvSourceReplacementPreservesAuthority\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:14.272351-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\"}\n{\"Time\":\"2026-09-19T04:44:14.272353-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\",\"Output\":\"=== RUN   TestCommandDotenvSourceReplacementPreservesAuthority/false\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:14.283627-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"setting\\\":\\\"STARMAP_CATALOG_SOURCE_URL\\\",\\\"replaced_file\\\":\\\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse2972248314/002/.env\\\",\\\"selected_file\\\":\\\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse2972248314/002/.env.local\\\",\\\"time\\\":\\\"2026-09-19T04:44:14-05:00\\\",\\\"message\\\":\\\"explicit dotenv files contain different values\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.283671-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\",\"Output\":\"starmap test\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.293243-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"setting\\\":\\\"STARMAP_CATALOG_SOURCE_URL\\\",\\\"replaced_file\\\":\\\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse2972248314/002/.env\\\",\\\"selected_file\\\":\\\"/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestCommandDotenvSourceReplacementPreservesAuthorityfalse2972248314/002/.env.local\\\",\\\"time\\\":\\\"2026-09-19T04:44:14-05:00\\\",\\\"message\\\":\\\"explicit dotenv files contain different values\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.293286-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\",\"Output\":\"starmap test\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.293876-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\",\"Output\":\"--- PASS: TestCommandDotenvSourceReplacementPreservesAuthority/false (0.02s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:14.293883-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/false\",\"Elapsed\":0.02}\n{\"Time\":\"2026-09-19T04:44:14.293952-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\"}\n{\"Time\":\"2026-09-19T04:44:14.293956-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\",\"Output\":\"=== RUN   TestCommandDotenvSourceReplacementPreservesAuthority/true\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:14.304208-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"settings\\\":[\\\"REMOTE_SERVER_API_KEY\\\",\\\"REMOTE_SERVER_URL\\\"],\\\"time\\\":\\\"2026-09-19T04:44:14-05:00\\\",\\\"message\\\":\\\"legacy remote-server settings are deprecated. Use the catalog source group\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.304261-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\",\"Output\":\"starmap test\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.313103-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"settings\\\":[\\\"REMOTE_SERVER_API_KEY\\\",\\\"REMOTE_SERVER_URL\\\"],\\\"time\\\":\\\"2026-09-19T04:44:14-05:00\\\",\\\"message\\\":\\\"legacy remote-server settings are deprecated. Use the catalog source group\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.31315-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\",\"Output\":\"starmap test\\n\"}\n{\"Time\":\"2026-09-19T04:44:14.31374-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\",\"Output\":\"--- PASS: TestCommandDotenvSourceReplacementPreservesAuthority/true (0.02s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:14.313746-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority/true\",\"Elapsed\":0.02}\n{\"Time\":\"2026-09-19T04:44:14.313764-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority\",\"Output\":\"--- PASS: TestCommandDotenvSourceReplacementPreservesAuthority (0.04s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:14.31378-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Test\":\"TestCommandDotenvSourceReplacementPreservesAuthority\",\"Elapsed\":0.04}\n{\"Time\":\"2026-09-19T04:44:14.31389-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:15.320146-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/internal/cli/app\\t1.628s\\n\"}\n{\"Time\":\"2026-09-19T04:44:15.320189-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/internal/cli/app\",\"Elapsed\":1.6280000000000001}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestSourceReplacementPreservesIndependentBasePolicy$",
+            "./pkg/catalogs/config"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starmap-credential-roles",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:44:16.323826-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\"}\n{\"Time\":\"2026-09-19T04:44:16.771306-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementPreservesIndependentBasePolicy\"}\n{\"Time\":\"2026-09-19T04:44:16.771384-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementPreservesIndependentBasePolicy\",\"Output\":\"=== RUN   TestSourceReplacementPreservesIndependentBasePolicy\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:30.34411-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementPreservesIndependentBasePolicy\",\"Output\":\"--- PASS: TestSourceReplacementPreservesIndependentBasePolicy (13.57s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:30.34414-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Test\":\"TestSourceReplacementPreservesIndependentBasePolicy\",\"Elapsed\":13.57}\n{\"Time\":\"2026-09-19T04:44:30.344171-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:31.365068-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Output\":\"ok  \\tgithub.com/agentstation/starmap/pkg/catalogs/config\\t15.041s\\n\"}\n{\"Time\":\"2026-09-19T04:44:31.365093-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starmap/pkg/catalogs/config\",\"Elapsed\":15.041}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A25.product_path_isolation": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A25.inference_origin_changes": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A25.credential_placement_changes": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A25.byok_shared_stream_override": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A25.approved_local_exception": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A09.excluded_membership": {
+      "status": "PASS",
+      "reason": "The named behavior test passed in this invocation.",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout",
+        "5m",
+        "-json",
+        "-run",
+        "^TestAuthorityCatalogExcludesEmbeddedMembership$",
+        "./internal/catalog"
+      ],
+      "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+      "exit_code": 0,
+      "stdout": "{\"Time\":\"2026-09-19T04:44:34.093745-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T04:44:34.665186-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\"}\n{\"Time\":\"2026-09-19T04:44:34.665252-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"=== RUN   TestAuthorityCatalogExcludesEmbeddedMembership\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:34.695439-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"badger 2026/09/19 04:44:34 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:44:34.701594-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"badger 2026/09/19 04:44:34 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:44:34.701686-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"badger 2026/09/19 04:44:34 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.328104-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"badger 2026/09/19 04:44:52 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.358169-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"badger 2026/09/19 04:44:52 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:44:52.3582-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 1.4 MiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.358204-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.358206-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.358208-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.35821-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.358211-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.358213-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.358215-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:44:52.371809-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Output\":\"--- PASS: TestAuthorityCatalogExcludesEmbeddedMembership (17.71s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:52.371831-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityCatalogExcludesEmbeddedMembership\",\"Elapsed\":17.71}\n{\"Time\":\"2026-09-19T04:44:52.37195-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:53.396865-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t19.303s\\n\"}\n{\"Time\":\"2026-09-19T04:44:53.396896-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":19.303}\n",
+      "stderr": "",
+      "evidence_scope": "product"
+    },
+    "A09.revoked_scope_restart": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A09.authority_change": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A09.alias_cannot_restore_permission": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A10.cold_owner_refusal": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthorityColdStartupRefusesWithoutAcceptedOwner$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:44:56.134526-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T04:44:56.703185-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\"}\n{\"Time\":\"2026-09-19T04:44:56.703259-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"=== RUN   TestAuthorityColdStartupRefusesWithoutAcceptedOwner\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:44:56.729747-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"badger 2026/09/19 04:44:56 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:44:56.737081-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"badger 2026/09/19 04:44:56 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:44:56.737124-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"badger 2026/09/19 04:44:56 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.514359-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"error\\\":\\\"file does not exist\\\",\\\"controller\\\":\\\"permission\\\",\\\"time\\\":\\\"2026-09-19T04:45:10-05:00\\\",\\\"message\\\":\\\"Scheduled runtime work failed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.583388-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"badger 2026/09/19 04:45:10 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589154-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"badger 2026/09/19 04:45:10 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589184-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 382 B of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589192-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589194-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589196-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589198-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589199-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589202-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.589203-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:45:10.601691-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Output\":\"--- PASS: TestAuthorityColdStartupRefusesWithoutAcceptedOwner (13.90s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:10.601716-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityColdStartupRefusesWithoutAcceptedOwner\",\"Elapsed\":13.9}\n{\"Time\":\"2026-09-19T04:45:10.601804-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:11.620112-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t15.485s\\n\"}\n{\"Time\":\"2026-09-19T04:45:11.620135-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":15.486}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestConfiguredAuthorityColdStartupKeepsDiagnostics$",
+            "./internal/app"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:45:18.651007-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/app\"}\n{\"Time\":\"2026-09-19T04:45:19.68905-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics\"}\n{\"Time\":\"2026-09-19T04:45:19.689107-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics\",\"Output\":\"=== RUN   TestConfiguredAuthorityColdStartupKeepsDiagnostics\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:19.689211-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\"}\n{\"Time\":\"2026-09-19T04:45:19.689221-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"=== RUN   TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:19.725366-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"badger 2026/09/19 04:45:19 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:45:19.730563-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"badger 2026/09/19 04:45:19 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:45:19.73061-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"badger 2026/09/19 04:45:19 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.873272-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"badger 2026/09/19 04:45:33 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.87875-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"badger 2026/09/19 04:45:33 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:45:33.87877-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 383 B of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.878773-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.878775-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.878778-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.878779-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.87878-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.878784-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.878785-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.892897-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Output\":\"--- PASS: TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable (14.20s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:33.892908-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/unavailable\",\"Elapsed\":14.2}\n{\"Time\":\"2026-09-19T04:45:33.892945-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\"}\n{\"Time\":\"2026-09-19T04:45:33.892949-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"=== RUN   TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:33.909925-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"badger 2026/09/19 04:45:33 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.91448-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"badger 2026/09/19 04:45:33 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:45:33.914571-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"badger 2026/09/19 04:45:33 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.36343-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"badger 2026/09/19 04:45:34 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369052-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"badger 2026/09/19 04:45:34 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369069-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 382 B of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369072-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369073-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369075-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369076-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369078-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369079-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.369081-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:45:34.382892-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Output\":\"--- PASS: TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending (0.49s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:34.382908-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics/pending\",\"Elapsed\":0.49}\n{\"Time\":\"2026-09-19T04:45:34.382913-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics\",\"Output\":\"--- PASS: TestConfiguredAuthorityColdStartupKeepsDiagnostics (14.69s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:34.382933-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Test\":\"TestConfiguredAuthorityColdStartupKeepsDiagnostics\",\"Elapsed\":14.69}\n{\"Time\":\"2026-09-19T04:45:34.383032-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:35.411447-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/app\\t16.760s\\n\"}\n{\"Time\":\"2026-09-19T04:45:35.411476-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/app\",\"Elapsed\":16.76}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCatalogPermissionFailureUsesRetryableGatewayStatus$",
+            "./internal/server/controllers"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:45:39.21396-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\"}\n{\"Time\":\"2026-09-19T04:45:39.809414-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus\"}\n{\"Time\":\"2026-09-19T04:45:39.809521-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus\",\"Output\":\"=== RUN   TestCatalogPermissionFailureUsesRetryableGatewayStatus\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:39.809569-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openai\"}\n{\"Time\":\"2026-09-19T04:45:39.809571-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openai\",\"Output\":\"=== RUN   TestCatalogPermissionFailureUsesRetryableGatewayStatus/openai\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:39.809977-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openai\",\"Output\":\"--- PASS: TestCatalogPermissionFailureUsesRetryableGatewayStatus/openai (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:39.809984-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openai\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:45:39.810186-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openrouter\"}\n{\"Time\":\"2026-09-19T04:45:39.810254-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openrouter\",\"Output\":\"=== RUN   TestCatalogPermissionFailureUsesRetryableGatewayStatus/openrouter\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:39.810289-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openrouter\",\"Output\":\"--- PASS: TestCatalogPermissionFailureUsesRetryableGatewayStatus/openrouter (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:39.8103-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus/openrouter\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:45:39.810319-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus\",\"Output\":\"--- PASS: TestCatalogPermissionFailureUsesRetryableGatewayStatus (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:39.810325-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestCatalogPermissionFailureUsesRetryableGatewayStatus\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:45:39.810422-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:40.815779-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server/controllers\\t1.602s\\n\"}\n{\"Time\":\"2026-09-19T04:45:40.81581-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Elapsed\":1.6019999999999999}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestChatStreamCatalogPermissionBeforeHeaders$",
+            "./internal/server/controllers"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:45:43.014771-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\"}\n{\"Time\":\"2026-09-19T04:45:43.605093-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders\"}\n{\"Time\":\"2026-09-19T04:45:43.605166-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders\",\"Output\":\"=== RUN   TestChatStreamCatalogPermissionBeforeHeaders\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:43.605297-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openai\"}\n{\"Time\":\"2026-09-19T04:45:43.605306-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openai\",\"Output\":\"=== RUN   TestChatStreamCatalogPermissionBeforeHeaders/openai\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:43.606213-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openai\",\"Output\":\"{\\\"level\\\":\\\"error\\\",\\\"error\\\":\\\"Catalog permission is unavailable.\\\",\\\"request_id\\\":\\\"\\\",\\\"provider\\\":\\\"\\\",\\\"provider_status\\\":0,\\\"provider_message\\\":\\\"\\\",\\\"time\\\":\\\"2026-09-19T04:45:43-05:00\\\",\\\"message\\\":\\\"chat stream admission failed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:45:43.606376-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openai\",\"Output\":\"--- PASS: TestChatStreamCatalogPermissionBeforeHeaders/openai (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:43.606403-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openai\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:45:43.606414-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openrouter\"}\n{\"Time\":\"2026-09-19T04:45:43.606416-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openrouter\",\"Output\":\"=== RUN   TestChatStreamCatalogPermissionBeforeHeaders/openrouter\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:43.606995-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openrouter\",\"Output\":\"{\\\"level\\\":\\\"error\\\",\\\"error\\\":\\\"Catalog permission is unavailable.\\\",\\\"request_id\\\":\\\"\\\",\\\"provider\\\":\\\"\\\",\\\"provider_status\\\":0,\\\"provider_message\\\":\\\"\\\",\\\"time\\\":\\\"2026-09-19T04:45:43-05:00\\\",\\\"message\\\":\\\"chat stream admission failed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:45:43.607107-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openrouter\",\"Output\":\"--- PASS: TestChatStreamCatalogPermissionBeforeHeaders/openrouter (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:43.607114-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders/openrouter\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:45:43.607203-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders\",\"Output\":\"--- PASS: TestChatStreamCatalogPermissionBeforeHeaders (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:43.607209-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Test\":\"TestChatStreamCatalogPermissionBeforeHeaders\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:45:43.60726-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:44.61576-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/server/controllers\\t1.601s\\n\"}\n{\"Time\":\"2026-09-19T04:45:44.615811-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/server/controllers\",\"Elapsed\":1.601}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A10.cold_follower_refusal": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A10.warm_retained_authority": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:45:46.158841-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T04:45:46.727926-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\"}\n{\"Time\":\"2026-09-19T04:45:46.728007-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"=== RUN   TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:45:46.76111-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"badger 2026/09/19 04:45:46 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:45:46.765197-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"badger 2026/09/19 04:45:46 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:45:46.765281-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"badger 2026/09/19 04:45:46 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.421902-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.4281-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428128-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 3.7 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428131-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428133-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428142-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428144-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428146-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428148-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.428149-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.442704-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\"}\n{\"Time\":\"2026-09-19T04:46:01.442754-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"=== RUN   TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:01.453377-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: All 1 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.458469-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.458552-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: Set nextTxnTs to 8\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.631872-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"error\\\":\\\"context canceled\\\",\\\"controller\\\":\\\"retention\\\",\\\"time\\\":\\\"2026-09-19T04:46:01-05:00\\\",\\\"message\\\":\\\"Scheduled runtime work failed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.732487-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741101-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741121-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level 0 [ ]: NumTables: 02. Size: 4.0 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741137-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741139-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741141-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741143-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741144-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741146-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.741147-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.763649-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Output\":\"--- PASS: TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching (0.32s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:01.763734-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/matching\",\"Elapsed\":0.32}\n{\"Time\":\"2026-09-19T04:46:01.763789-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\"}\n{\"Time\":\"2026-09-19T04:46:01.763794-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"=== RUN   TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:01.768477-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: All 2 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.774519-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.774558-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: Set nextTxnTs to 10\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.774905-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"badger 2026/09/19 04:46:01 INFO: Deleting empty file: /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner1809882456/001/000001.vlog\\n\"}\n{\"Time\":\"2026-09-19T04:46:01.943191-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"error\\\":\\\"context canceled\\\",\\\"controller\\\":\\\"retention\\\",\\\"time\\\":\\\"2026-09-19T04:46:01-05:00\\\",\\\"message\\\":\\\"Scheduled runtime work failed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.055131-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.061962-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:02.061996-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level 0 [ ]: NumTables: 03. Size: 4.4 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.062003-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.062014-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.062019-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.062022-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.062026-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.062029-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.062032-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.079144-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Output\":\"--- PASS: TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority (0.32s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:02.079179-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_authority\",\"Elapsed\":0.32}\n{\"Time\":\"2026-09-19T04:46:02.079263-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\"}\n{\"Time\":\"2026-09-19T04:46:02.079269-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"=== RUN   TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:02.085908-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: All 3 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.090402-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.090467-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: Set nextTxnTs to 12\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.090793-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: Deleting empty file: /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner1809882456/001/000002.vlog\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.226675-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"{\\\"level\\\":\\\"warn\\\",\\\"error\\\":\\\"context canceled\\\",\\\"controller\\\":\\\"retention\\\",\\\"time\\\":\\\"2026-09-19T04:46:02-05:00\\\",\\\"message\\\":\\\"Scheduled runtime work failed\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.311008-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315569-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"badger 2026/09/19 04:46:02 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315581-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level 0 [ ]: NumTables: 04. Size: 4.8 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315594-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315595-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315597-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315599-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.3156-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315609-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.315615-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:02.328036-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Output\":\"--- PASS: TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy (0.25s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:02.328085-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner/different_policy\",\"Elapsed\":0.25}\n{\"Time\":\"2026-09-19T04:46:02.332624-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Output\":\"--- PASS: TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner (15.60s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:02.33265-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityWarmStartupUsesOnlyRetainedMatchingOwner\",\"Elapsed\":15.6}\n{\"Time\":\"2026-09-19T04:46:02.332727-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:03.362656-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t17.203s\\n\"}\n{\"Time\":\"2026-09-19T04:46:03.362683-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":17.204}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:46:06.999559-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T04:46:07.575857-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\"}\n{\"Time\":\"2026-09-19T04:46:07.575938-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"=== RUN   TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:07.606412-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:07 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:07.621597-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:07 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:07.621651-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:07 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.181479-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:18 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188886-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:18 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188909-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 1.7 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188915-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188917-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188921-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188922-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188925-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.188926-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.21045-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:18 INFO: All 1 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.215221-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:18 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.215255-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:18 INFO: Set nextTxnTs to 4\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.21697-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:18 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217501-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"badger 2026/09/19 04:46:18 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217506-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 1.7 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217509-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217511-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217512-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217514-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217525-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217532-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.217534-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:18.230199-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Output\":\"--- PASS: TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart (10.65s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:18.230209-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthoritySnapshotRetainsHeadAcrossAvailabilityAndRestart\",\"Elapsed\":10.65}\n{\"Time\":\"2026-09-19T04:46:18.230311-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:19.255983-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t12.256s\\n\"}\n{\"Time\":\"2026-09-19T04:46:19.256017-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":12.256}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A10.wrong_authority_refusal": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.consistent_counts_prices": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.rename_alias_overlap": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.removed_id_error": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.unauthorized_membership_redaction": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A18.inflight_and_new_attempts": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A21.mixed_schema_permission_envelope": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestAuthorityFutureSchemaPermissionEnvelope$",
+            "./internal/catalog"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:46:20.759619-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/catalog\"}\n{\"Time\":\"2026-09-19T04:46:21.325161-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope\"}\n{\"Time\":\"2026-09-19T04:46:21.325224-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope\",\"Output\":\"=== RUN   TestAuthorityFutureSchemaPermissionEnvelope\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:21.325278-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\"}\n{\"Time\":\"2026-09-19T04:46:21.325284-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"=== RUN   TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:21.345687-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"badger 2026/09/19 04:46:21 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:21.349989-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"badger 2026/09/19 04:46:21 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:21.350048-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"badger 2026/09/19 04:46:21 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.824983-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"badger 2026/09/19 04:46:35 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831726-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"badger 2026/09/19 04:46:35 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831737-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 3.7 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831747-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831749-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831751-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831753-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831755-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831756-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.831757-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.845762-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Output\":\"--- PASS: TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission (14.52s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:35.845777-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/unchanged_permission\",\"Elapsed\":14.52}\n{\"Time\":\"2026-09-19T04:46:35.845805-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\"}\n{\"Time\":\"2026-09-19T04:46:35.84582-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"=== RUN   TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:35.861395-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"badger 2026/09/19 04:46:35 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.866244-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"badger 2026/09/19 04:46:35 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:35.866283-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"badger 2026/09/19 04:46:35 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.793823-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"badger 2026/09/19 04:46:36 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.79946-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"badger 2026/09/19 04:46:36 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:46:36.79948-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 3.7 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.799484-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.799485-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.799487-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.799489-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.799492-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.799494-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.799495-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:46:36.812539-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Output\":\"--- PASS: TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission (0.97s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:36.812557-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope/withdrawn_permission\",\"Elapsed\":0.97}\n{\"Time\":\"2026-09-19T04:46:36.812561-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope\",\"Output\":\"--- PASS: TestAuthorityFutureSchemaPermissionEnvelope (15.49s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:36.812564-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Test\":\"TestAuthorityFutureSchemaPermissionEnvelope\",\"Elapsed\":15.49}\n{\"Time\":\"2026-09-19T04:46:36.812706-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:37.842106-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/catalog\\t17.082s\\n\"}\n{\"Time\":\"2026-09-19T04:46:37.842158-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/catalog\",\"Elapsed\":17.082}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestRouterRechecksCatalogPermissionBeforeAttempts$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:46:39.877827-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T04:46:40.346445-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts\"}\n{\"Time\":\"2026-09-19T04:46:40.346508-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts\",\"Output\":\"=== RUN   TestRouterRechecksCatalogPermissionBeforeAttempts\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.346574-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/selection\"}\n{\"Time\":\"2026-09-19T04:46:40.346579-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/selection\",\"Output\":\"=== RUN   TestRouterRechecksCatalogPermissionBeforeAttempts/selection\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.347879-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/selection\",\"Output\":\"--- PASS: TestRouterRechecksCatalogPermissionBeforeAttempts/selection (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.34789-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/selection\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:46:40.347904-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_first_attempt\"}\n{\"Time\":\"2026-09-19T04:46:40.347906-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_first_attempt\",\"Output\":\"=== RUN   TestRouterRechecksCatalogPermissionBeforeAttempts/chat_first_attempt\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.348789-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_first_attempt\",\"Output\":\"--- PASS: TestRouterRechecksCatalogPermissionBeforeAttempts/chat_first_attempt (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.348909-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_first_attempt\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:46:40.349113-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_first_attempt\"}\n{\"Time\":\"2026-09-19T04:46:40.349119-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_first_attempt\",\"Output\":\"=== RUN   TestRouterRechecksCatalogPermissionBeforeAttempts/stream_first_attempt\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.349731-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_first_attempt\",\"Output\":\"--- PASS: TestRouterRechecksCatalogPermissionBeforeAttempts/stream_first_attempt (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.349738-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_first_attempt\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:46:40.349741-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_retry\"}\n{\"Time\":\"2026-09-19T04:46:40.349743-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_retry\",\"Output\":\"=== RUN   TestRouterRechecksCatalogPermissionBeforeAttempts/chat_retry\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.350347-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_retry\",\"Output\":\"--- PASS: TestRouterRechecksCatalogPermissionBeforeAttempts/chat_retry (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.350353-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/chat_retry\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:46:40.350372-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_retry\"}\n{\"Time\":\"2026-09-19T04:46:40.350374-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_retry\",\"Output\":\"=== RUN   TestRouterRechecksCatalogPermissionBeforeAttempts/stream_retry\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.350957-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_retry\",\"Output\":\"--- PASS: TestRouterRechecksCatalogPermissionBeforeAttempts/stream_retry (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.350972-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts/stream_retry\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:46:40.351018-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts\",\"Output\":\"--- PASS: TestRouterRechecksCatalogPermissionBeforeAttempts (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:40.35103-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestRouterRechecksCatalogPermissionBeforeAttempts\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:46:40.351093-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:41.358605-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.481s\\n\"}\n{\"Time\":\"2026-09-19T04:46:41.358648-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.4809999999999999}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestCacheDeliveryRechecksCatalogPermission$",
+            "./internal/proxy"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:46:43.592036-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/proxy\"}\n{\"Time\":\"2026-09-19T04:46:44.146412-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission\"}\n{\"Time\":\"2026-09-19T04:46:44.146466-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission\",\"Output\":\"=== RUN   TestCacheDeliveryRechecksCatalogPermission\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:44.146506-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\"}\n{\"Time\":\"2026-09-19T04:46:44.146513-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\",\"Output\":\"=== RUN   TestCacheDeliveryRechecksCatalogPermission/chat_lookup\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.762447-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"stream\\\":false,\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletion called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.76312-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache miss for chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.763469-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"stream\\\":false,\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletion called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.76373-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache hit for chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.763818-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\",\"Output\":\"--- PASS: TestCacheDeliveryRechecksCatalogPermission/chat_lookup (10.62s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.763841-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/chat_lookup\",\"Elapsed\":10.62}\n{\"Time\":\"2026-09-19T04:46:54.763922-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\"}\n{\"Time\":\"2026-09-19T04:46:54.763978-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\",\"Output\":\"=== RUN   TestCacheDeliveryRechecksCatalogPermission/stream_lookup\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.775233-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"stream\\\":false,\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletion called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.775349-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache miss for chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.775447-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletionStream called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.775713-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache hit for streaming chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.775745-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\",\"Output\":\"--- PASS: TestCacheDeliveryRechecksCatalogPermission/stream_lookup (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.775782-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_lookup\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T04:46:54.775792-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\"}\n{\"Time\":\"2026-09-19T04:46:54.775798-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\",\"Output\":\"=== RUN   TestCacheDeliveryRechecksCatalogPermission/stream_first_read\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.786455-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"stream\\\":false,\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletion called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.786577-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache miss for chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.786668-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletionStream called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.786928-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache hit for streaming chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.787-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\",\"Output\":\"--- PASS: TestCacheDeliveryRechecksCatalogPermission/stream_first_read (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.787018-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/stream_first_read\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T04:46:54.787041-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\"}\n{\"Time\":\"2026-09-19T04:46:54.787047-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\",\"Output\":\"=== RUN   TestCacheDeliveryRechecksCatalogPermission/admitted_stream\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.797554-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"stream\\\":false,\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletion called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.797673-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache miss for chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.79784-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_enabled\\\":true,\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"CachedService.ProcessChatCompletionStream called\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.798102-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"model\\\":\\\"openai/gpt-4.1\\\",\\\"cache_key\\\":\\\"responsecache:v6:chat:97a0b99161acb0567d7d42703414e26f0cd5163e1af1ccba3a59da2c4118289f\\\",\\\"time\\\":\\\"2026-09-19T04:46:54-05:00\\\",\\\"message\\\":\\\"cache hit for streaming chat completion\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:46:54.798152-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\",\"Output\":\"--- PASS: TestCacheDeliveryRechecksCatalogPermission/admitted_stream (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.798171-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission/admitted_stream\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T04:46:54.798188-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission\",\"Output\":\"--- PASS: TestCacheDeliveryRechecksCatalogPermission (10.65s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:54.798193-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Test\":\"TestCacheDeliveryRechecksCatalogPermission\",\"Elapsed\":10.65}\n{\"Time\":\"2026-09-19T04:46:54.798379-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:46:55.810325-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/proxy\\t12.218s\\n\"}\n{\"Time\":\"2026-09-19T04:46:55.810364-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/proxy\",\"Elapsed\":12.218}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A21.known_withdrawal_refusal": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A21.partition_validity_expiry": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A21.cache_retry_batch_admission": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A21.stream_policy_diagnostic": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A17.raw_http_both_api_families": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A17.official_sdk_roster": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A17.unsupported_field_contract": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A17.identity_error_mapping": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    },
+    "A17.stream_refresh": {
+      "status": "UNVERIFIED",
+      "reason": "No behavior check is registered.",
+      "evidence_scope": "product"
+    }
+  },
+  "selected_subcases": 29,
+  "summary": "Summary: 0 passed, 50 failed",
+  "unverified_cases": 50,
+  "gate_status": "FAIL",
+  "qualification": "component checks only",
+  "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+  "registry_sha256": "30cd06bcd9a5dd2597155369e3327b262e766a889b1f2fd2a8be4a4a40dc39a7",
+  "backend_scope": "primary"
+}
