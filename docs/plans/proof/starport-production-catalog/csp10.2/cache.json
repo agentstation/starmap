@@ -1,0 +1,44 @@
+{
+  "task": "CSP10.2",
+  "commit": "7f6616925aad476d6515820664806914dc57a593",
+  "status": "bounded cache passes component checks; production integration remains disabled",
+  "contracts": [
+    "Warm Resolve uses memory and allocates zero in the component test. Record-copy accessors allocate caller-owned collections separately.",
+    "Cold loads coalesce per identity. Caller cancellation does not cancel another waiter.",
+    "Explicit limits bound entries, encoded policy bytes, bundle bytes, global loads, tenant loads, and load timeout.",
+    "Unknown tenants share the unresolved tenant bucket until the source proves account ownership. Tenant identity must come from trusted routing.",
+    "Candidate validation checks key identity, account ownership, revisions, and required team identity.",
+    "Source errors never become cached absence. A nil team is valid only for a teamless key.",
+    "Load publication rechecks validity after source loading and serialization. Mutations reject in-flight stale results.",
+    "Key expiry shortens effective validity without rewriting the original authority receipt.",
+    "Close cancels workers, waits for them, and revokes retained receipts."
+  ],
+  "verification": {
+    "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=2m -json ./internal/authorization",
+    "exit_code": 0,
+    "pass_events": 39,
+    "failed_events": 0,
+    "skipped_events": 0,
+    "lint_command": "GOWORK=/tmp/csp102-host-integration.work make lint",
+    "lint_exit_code": 0,
+    "lint_output": "Linting code...\n0 issues.\nLint complete\n",
+    "writing": "All five authorization files pass with zero diagnostics."
+  },
+  "limitations": [
+    "The cache is not wired into admission. The server warm-read regression remains red.",
+    "Controlled sources prove the cache contract. Real KV/SQL authority qualification remains required.",
+    "Encoded policy bytes are not a heap-size measurement. The source must separately bound fetched records.",
+    "User membership and account-grant projections still need integration.",
+    "No full A46 acceptance, native qualification, review, or merge completion claim."
+  ],
+  "repository_audit": [
+    "API key Create/Delete atomically update a collection record, but Update does not update that collection revision. It cannot serve as an authorization catch-up cursor yet.",
+    "Account records have per-record revisions but no deletion cursor.",
+    "User/team updates use revision-guarded SQL statements. Membership/grant removals have no revision cursor.",
+    "User deletion currently removes grants and the user in separate statements. Durable authorization sequence evidence must commit atomically with these effects.",
+    "SQL storage exposes BeginTx and dialect binding. KV storage exposes CompareAndSwapBatch. These are the existing mutation boundaries to extend."
+  ],
+  "next_action": "Implement atomic authorization revision evidence in the KV and SQL owning repositories, plus local mutation hooks. Then implement coherent Source loading and connect the cache to admission, retries, cache delivery, and batch work.",
+  "active_sessions": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.1</td><td>Repository checks finish with 32 PASS and the known published-module failure. Build and SDK smoke pass. Final Starport Sol/Opus review runs.</td><td><a href=\"proof/starport-production-catalog/csp10.1/repository-qualification.json\">Repository qualification</a></td></tr>"
+}
