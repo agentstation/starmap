@@ -3020,6 +3020,18 @@
           "repository": "starport",
           "package": "./internal/proxy",
           "test": "TestEndpointLookupDoesNotRevealDeniedMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPAliasRemovalWithSerializedDiscoveryCache"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestInferenceErrorsDoNotDiscloseDeniedCatalogMembership"
         }
       ]
     }
