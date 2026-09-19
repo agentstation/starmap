@@ -324,10 +324,10 @@ func (r *Resolver) resolveAmbientField(
 	}
 	for _, name := range candidates {
 		value, exists := r.lookup(name)
-		if !exists || (value == "" && r.environmentPolicy == EnvironmentPolicyLegacy) {
+		if !exists || r.environmentPolicy.skipsEmpty(value) {
 			continue
 		}
-		if value == "" {
+		if r.environmentPolicy.empty(value) {
 			return resolvedField{}, false, &errors.ValidationError{
 				Field: "provider.credentials.environment", Value: name,
 				Message: "explicit empty selection disables credential fallback",
