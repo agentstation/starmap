@@ -1,0 +1,32 @@
+{
+  "commit": "9b6542a",
+  "status": "local dispatch repair; production qualification incomplete",
+  "change": "The provider transport reserves a Go 1.27.1 ClientConn slot before checking credential validity. The reservation removes connection and stream capacity waits after that check.",
+  "checks": {
+    "connector_and_auth_pass_events": 273,
+    "skips": 0,
+    "failures": 0,
+    "protocol_regression_pass_events": 8,
+    "repository_lint": "pass",
+    "changed_source_prose": "pass"
+  },
+  "observations": [
+    "Revoked and expired queued requests refuse on HTTP/1 and HTTP/2.",
+    "An accepted streamed response completes after the same credential is revoked.",
+    "Idle connections expire; closing idle connections preserves active streams.",
+    "Pinned Go ClientConn close initially panicked when Transport.MaxConnsPerHost was set. The pool now owns that limit and sets the dial transport limit to zero."
+  ],
+  "remaining": [
+    "Qualify global and per-origin idle limits, pool cancellation and shutdown races, proxies, protocol failures, and retry semantics.",
+    "Measure transport and credential performance at the final code.",
+    "Finish refresh fairness, churn, disclosure, and all nine A45 registrations.",
+    "Run repository gates, structured review, published-pair and native qualification, then merge."
+  ],
+  "active_sessions": [
+    {
+      "id": 7872,
+      "command": "make technical-writing-check",
+      "output": "/tmp/csp91-dispatch-planning-writing.txt"
+    }
+  ]
+}
