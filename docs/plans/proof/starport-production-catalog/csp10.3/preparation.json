@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-09-19T19:12:36.912159+00:00",
+  "task": "CSP10.3",
+  "status": "preparation; five expected regression failures; no production changes",
+  "starport_worktree": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+  "branch": "codex/starport-advisory-exchange",
+  "commit": "b23e8f9",
+  "parent": "05a1ae10e2d46f59443b37bc8cb9cec2749906d6",
+  "starmap_worktree": "/Users/jack/src/github.com/agentstation/starmap-catalog-indexes",
+  "starmap_commit": "c70627094",
+  "workspace": "/tmp/csp103-host-integration.work",
+  "command": "GOWORK=/tmp/csp103-host-integration.work go test -race -count=1 -timeout=1m -run '^TestAdvisory(Health|Latency)CallbacksAvoidStorage$' -json ./internal/availability ./internal/router",
+  "exit_code": 1,
+  "failed_subtests": [
+    "health/refresh",
+    "health/failure",
+    "latency/cold_read",
+    "latency/all_reads",
+    "latency/record"
+  ],
+  "method": "Each callback reaches a controlled blocking store. The test records the remote call and releases it during cleanup. This proves synchronous dependency without timing a remote service.",
+  "writing_check": "2 files passed with zero diagnostics",
+  "next_action": [
+    "Move health and latency publication and peer refresh to lifecycle-owned workers with bounded concurrency, timeout, scan and payload sizes.",
+    "Keep immediate local breaker decisions and latency observations in memory. Do not copy complete shared publications on inference callbacks.",
+    "Define expiry of peer hints independently from catalog and authorization validity. Avoid republishing adopted peer observations as fresh local observations.",
+    "Bind worker start and cancellation to App.Run and App.Close. Test shutdown, reconnect, outage, queue pressure, and cold peer state.",
+    "Register and qualify every A49 subcase before task completion. Preserve published-module and native qualification requirements."
+  ],
+  "running_processes": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Report permission outcomes and verify queued batch refusal.</td><td><a href=\"proof/starport-production-catalog/csp10/permission-outcomes.json\">Proof</a>: <code>43e7ab0</code> and <code>ac3d25e7e</code>. All five A18 subcases pass. The complete CSP10 gate is active. The <a href=\"proof/starport-production-catalog/csp10/permission-outcomes/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>",
+  "resume_archive_sha256": "cd8d24c7754642cd71ffbfbfa48b9243b0bb904056486e881d870c74e974d959",
+  "resume_words_before": 1801,
+  "resume_words_after": 339,
+  "cold_resume_check": "Active task, permission boundary, source pair, failed command, zero running processes, next steps, and remaining qualification are present. Ledger statuses and acceptance contracts are unchanged."
+}
