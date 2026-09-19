@@ -125,8 +125,9 @@ func TestEmbeddedHetznerProviderContract(t *testing.T) {
 			t.Errorf("Hetzner offering %q definition = %q, want %q",
 				providerModelID, offering.DefinitionID, definitionID)
 		}
-		if offering.Pricing != nil {
-			t.Errorf("Hetzner offering %q has unpublished pricing: %#v",
+		model := provider.Models[string(providerModelID)]
+		if model == nil || !reflect.DeepEqual(offering.Pricing, model.Pricing) {
+			t.Errorf("Hetzner offering %q pricing differs from its provider record: %#v",
 				providerModelID, offering.Pricing)
 		}
 		if offering.Limits == nil || offering.Limits.ContextWindow != 262144 {

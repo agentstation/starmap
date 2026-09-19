@@ -393,7 +393,13 @@ func (r *Runtime) initializeEffective(ctx context.Context) error {
 	}
 	if !r.requiresAuthority() && r.layers.empty() && r.config.providerBindings == nil && r.config.acquisitionSources == nil {
 		if storedProviderPolicyRequired(current, baseline) {
-			return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
+			matches, err := r.storedOriginMatchesBaseline(ctx, baseline)
+			if err != nil {
+				return err
+			}
+			if !matches {
+				return &errors.ConflictError{Resource: "catalog startup policy", Message: "stored scoped evidence requires explicit provider bindings or retained input recovery"}
+			}
 		}
 		if r.config.origin != nil {
 			generation, err := r.client.CurrentGeneration(ctx)

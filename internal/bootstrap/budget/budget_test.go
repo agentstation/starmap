@@ -22,9 +22,10 @@ func TestEmbeddedBudgetRecordsMeasurementsAndPolicy(t *testing.T) {
 		report.AgeSeconds != int64((24*time.Hour)/time.Second) ||
 		report.UncompressedBytes != int64(len(generation.Payload)) || report.CompressedBytes <= 0 ||
 		report.ProviderCount <= 0 || report.ModelCount <= 0 ||
-		report.PayloadChecksum != generation.Manifest.Payload.Checksum || len(report.Findings) != 0 {
+		report.PayloadChecksum != generation.Manifest.Payload.Checksum {
 		t.Fatalf("report = %#v", report)
 	}
+	assertBudgetFindings(t, report, "")
 }
 
 func TestCatalogBudgetPolicyClassification(t *testing.T) {
@@ -66,13 +67,10 @@ func TestCatalogBudgetReviewThresholdDoesNotReject(t *testing.T) {
 	if err != nil {
 		t.Fatalf("review threshold rejected release: %v", err)
 	}
-	if !report.Passed || len(report.Findings) != 1 {
-		t.Fatalf("report = %#v, want one non-blocking finding", report)
+	if !report.Passed {
+		t.Fatalf("report = %#v, want a passing review result", report)
 	}
-	finding := report.Findings[0]
-	if finding.Code != ruleGenerationStale || finding.Classification != ClassificationReviewThreshold {
-		t.Fatalf("finding = %#v", finding)
-	}
+	assertBudgetFindings(t, report, ruleGenerationStale)
 }
 
 func TestCatalogBudgetHardGateRequiresPolicy(t *testing.T) {
@@ -109,14 +107,41 @@ func TestCatalogBudgetHardGateRequiresPolicy(t *testing.T) {
 		t.Fatalf("bootstrap.Generation: %v", err)
 	}
 	report, err := Check(generation, generation.Manifest.GeneratedAt.Add(-time.Second), DefaultPolicy())
-	if err == nil || report.Passed || len(report.Findings) != 1 {
+	if err == nil || report.Passed {
 		t.Fatalf("future generation result = %#v, %v", report, err)
 	}
-	if finding := report.Findings[0]; finding.Code != ruleGenerationFuture || finding.Classification != ClassificationHardGate {
-		t.Fatalf("finding = %#v", finding)
-	}
+	assertBudgetFindings(t, report, ruleGenerationFuture)
 	var validationError *starmaperrors.ValidationError
 	if !stderrors.As(err, &validationError) {
 		t.Fatalf("error = %T %v, want ValidationError", err, err)
+	}
+}
+
+// assertBudgetFindings checks chronology and size findings independently.
+func assertBudgetFindings(t *testing.T, report Report, chronology string) {
+	t.Helper()
+	want := map[string]Classification{}
+	if chronology != "" {
+		classification := ClassificationReviewThreshold
+		if chronology == ruleGenerationFuture {
+			classification = ClassificationHardGate
+		}
+		want[chronology] = classification
+	}
+	if report.UncompressedBytes > reviewMaxUncompressedBytes {
+		want[ruleUncompressedOversize] = ClassificationReviewThreshold
+	}
+	if report.CompressedBytes > reviewMaxCompressedBytes {
+		want[ruleCompressedOversize] = ClassificationReviewThreshold
+	}
+	for _, finding := range report.Findings {
+		classification, found := want[finding.Code]
+		if !found || classification != finding.Classification {
+			t.Fatalf("unexpected finding: %+v", finding)
+		}
+		delete(want, finding.Code)
+	}
+	if len(want) != 0 {
+		t.Fatalf("missing findings: %v", want)
 	}
 }
