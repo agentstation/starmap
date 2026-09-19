@@ -11,7 +11,7 @@
 <section id="current-resume"><h2>Current resume state</h2>
 <p>Updated September 19, 2026. <a href="#CSP6">CSP6</a> remains the only task in progress. Fifteen of 40 tasks are complete. Preparation does not count as completion.</p>
 
-<p id="next-action">Resolve the pending signed-history decision for PR #168 before publication. Meanwhile, qualify the <a href="#task-CSP10.3">CSP10.3 worker contract</a> for resource limits and fleet fault isolation.</p>
+<p id="next-action">Resolve the pending signed-history decision for PR #168 before publication. Meanwhile, finish the <a href="#task-CSP10.3">CSP10.3 worker contract</a> qualification and required review.</p>
 
 <p>PR #168 still points to <code>e1d72d5d7e5f2921616b89b91b6460fefaffb62d</code>. Signed candidate <code>45afaed5d2ea6fb3993a4abeb120657d252e9a41</code> preserves all 380 catalog files. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-recovery-after-172.json">recovery proof</a> owns its signatures and publication procedure. The owner question requests explicit permission to replace published history. Do not force-push before that answer.</p>
 
@@ -19,9 +19,11 @@
 
 <p>Reviewed CSP10.1 sources remain unchanged: <code>starport-catalog-indexes</code> at <code>05a1ae1</code> and <code>starmap-catalog-indexes</code> at <code>c70627094</code>. The <a href="proof/starport-production-catalog/csp10.1/repository-qualification.json">qualification proof</a> records 32 passing commands and one published-module failure. All eight A44 subcases pass locally. Both final reviews pass with zero findings.</p>
 
-<p>CSP10.3 preparation uses <code>starport-advisory-exchange</code>, branch <code>codex/starport-advisory-exchange</code>, at <code>a67c691</code>. Its worktree is clean. Use <code>GOWORK=/tmp/csp103-host-integration.work</code> with <code>starmap-catalog-indexes</code>. All worktrees are under <code>/Users/jack/src/github.com/agentstation</code>. The <a href="proof/starport-production-catalog/csp10.3/worker-implementation.json">worker proof</a> names the tests, source limitations, and next steps.</p>
+<p>CSP10.3 preparation uses <code>starport-advisory-exchange</code>, branch <code>codex/starport-advisory-exchange</code>, at <code>633968c</code>. Its worktree is clean. Use <code>GOWORK=/tmp/csp103-host-integration.work</code> with <code>starmap-advisory-exchange</code> at <code>de118cdb0</code>. All worktrees are under <code>/Users/jack/src/github.com/agentstation</code>. The <a href="proof/starport-production-catalog/csp10.3/worker-implementation.json">worker proof</a> names the tests, source limitations, and next steps.</p>
 
-<p>Set both Starport verifier roots to <code>starport-advisory-exchange</code>. Set both Starmap verifier roots to <code>starmap-catalog-indexes</code>. No process remains active. All five callback regressions now pass. Health and latency use lifecycle-owned workers. Expiry, local resets, cancellation, and outage recovery pass focused tests.</p>
+<p>Set both Starport verifier roots to <code>starport-advisory-exchange</code>. Set both Starmap verifier roots to <code>starmap-advisory-exchange</code>. All five callback regressions now pass. Health and latency use lifecycle-owned workers. Expiry, local resets, cancellation, and outage recovery pass focused tests.</p>
+
+<p>The <a href="proof/starport-production-catalog/csp10.3/qualification.json">qualification state</a> records three active sessions: <code>46132</code>, <code>96721</code>, and <code>48774</code>. Poll those handles before starting another verification run. Verifier unit tests pass all 89 cases.</p>
 
 <p>A compatible published Starmap module must precede dependent Starport qualification and merges. The current pin lacks <code>pkg/productfiles</code>. Never commit local replacements. Native checks, actual merge commits, and released-pair acceptance remain required.</p>
 
@@ -656,7 +658,7 @@
 
 
 
-<tr><td>2026-09-19</td><td>CSP10</td><td>Pass local candidate acceptance and start required review.</td><td><a href="proof/starport-production-catalog/csp10/candidate-acceptance.json">Proof</a>: all 29 subcases pass. Both reviews pass. Published-pair qualification and merge remain open. The <a href="proof/starport-production-catalog/csp10/candidate-acceptance/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Precomputed static candidates and exact-model indexes at <code>69a8c5d</code>. Three package race suites pass. Retention work remains open.</td><td><a href="proof/starport-production-catalog/csp10.1/indexed-selection.json">Indexed selection evidence</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Reserved runtime capacity before acceptance at <code>51c635a</code>. Registry and application race suites pass. Seven A44 checks pass. Embedded profiling remains unverified.</td><td><a href="proof/starport-production-catalog/csp10.1/generation-capacity.json">Capacity evidence</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Indexed discovery and embedded profiling use <code>69f2164</code>. All eight A44 subcases pass locally. Race checks report 430 passing test events. Repository checks run.</td><td><a href="proof/starport-production-catalog/csp10.1/discovery-and-profile.json">Discovery and profile evidence</a></td></tr>
@@ -666,4 +668,5 @@
 <tr><td>2026-09-19</td><td>CSP10.1</td><td>Final Starport review passes across five sections with zero findings. Native qualification and merge remain open.</td><td><a href="proof/starport-production-catalog/csp10.1/review-complete.json">Review completion</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.3</td><td>Five regression subtests reproduce synchronous advisory storage calls at <code>b23e8f9</code>. Preserve prior resume evidence and replace stale process instructions.</td><td><a href="proof/starport-production-catalog/csp10.3/preparation.json">Preparation proof</a></td></tr>
 <tr><td>2026-09-19</td><td>CSP10.3</td><td>Background advisory exchange at <code>a67c691</code> removes callback storage calls. Race, recovery, and lifecycle checks pass. Resource and fleet qualification remain open.</td><td><a href="proof/starport-production-catalog/csp10.3/worker-implementation.json">Worker implementation</a></td></tr>
+<tr><td>2026-09-19</td><td>CSP10.3</td><td>Resource and fleet contracts pass at <code>633968c</code>. Starmap <code>de118cdb0</code> registers all seven A49 subcases. Final qualification runs.</td><td><a href="proof/starport-production-catalog/csp10.3/qualification.json">Qualification state</a></td></tr>
 </tbody></table></section></main></body></html>

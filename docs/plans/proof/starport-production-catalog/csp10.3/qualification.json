@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-09-19T19:33:38.870342+00:00",
+  "task": "CSP10.3",
+  "starport_commit": "633968c",
+  "starmap_commit": "de118cdb0",
+  "starport_worktree": "/Users/jack/src/github.com/agentstation/starport-advisory-exchange",
+  "starmap_worktree": "/Users/jack/src/github.com/agentstation/starmap-advisory-exchange",
+  "workspace": "/tmp/csp103-host-integration.work",
+  "status": "qualification running",
+  "completed": [
+    "Health and latency scan, input byte, refresh byte, and retained-record tests pass.",
+    "The fleet fault test passes 1,000 local callbacks while a health publication blocks.",
+    "The new contract run passes availability, router, and application packages under race detection.",
+    "All seven A49 subcases have behavior test registrations.",
+    "Verifier unit tests pass: 89 tests.",
+    "New test prose passes: three files, zero diagnostics."
+  ],
+  "active_sessions": [
+    {
+      "session_id": 46132,
+      "command": "go test -race -count=1 -timeout=5m -json ./internal/availability ./internal/router ./internal/app",
+      "output": "/tmp/csp103-final-task-race.jsonl"
+    },
+    {
+      "session_id": 96721,
+      "command": "bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-advisory-exchange --task CSP10.3 --json",
+      "output": "/tmp/csp103-acceptance.json",
+      "stderr": "/tmp/csp103-acceptance.err"
+    },
+    {
+      "session_id": 48774,
+      "command": "python3 /tmp/csp103-repository-final-run.py",
+      "state": "/tmp/csp103-repository-final-gates/state.json"
+    }
+  ],
+  "next_action": "Poll the three recorded sessions. Resolve confirmed failures, then complete required Sol/Opus pre-PR review. Preserve the published-module and PR168 history boundaries. Do not count local tests as native or released-pair acceptance.",
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Pass local candidate acceptance and start required review.</td><td><a href=\"proof/starport-production-catalog/csp10/candidate-acceptance.json\">Proof</a>: all 29 subcases pass. Both reviews pass. Published-pair qualification and merge remain open. The <a href=\"proof/starport-production-catalog/csp10/candidate-acceptance/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}
