@@ -1,8 +1,10 @@
-# allam-2-7b - ALLaM-2-7b
+# allam-2-7b - ALLaM-2-7b instruction tuned model by SDAIA
 id: allam-2-7b
 model: sdaia/allam-2-7b
 name: ALLaM-2-7b
 authors:
+- id: sdaia
+  name: sdaia
 - id: alibaba
   name: alibaba
 - id: deepseek
@@ -21,9 +23,13 @@ authors:
   name: openai
 - id: playai
   name: playai
-- id: sdaia
-  name: sdaia
+description: ALLaM-2-7b instruction tuned model by SDAIA
 status: active
+
+# Model metadata
+metadata:
+  release_date: 2025-01-23
+  open_weights: true
 
 # Model features
 features:
@@ -86,6 +92,17 @@ features:
   structured_outputs: false
   streaming: true
 
+# Model pricing
+pricing:
+  tokens:
+    input:
+      per_token: 0.0
+      per_1m: 0.0
+    output:
+      per_token: 0.0
+      per_1m: 0.0
+  currency: USD
+
 # Model limits
 limits:
   context_window: 4096
@@ -98,4 +115,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T16:49:28.066678Z
+updated_at: 2026-09-18T21:17:46.863361535Z

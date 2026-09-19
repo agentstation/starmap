@@ -22,8 +22,8 @@ features:
     - text
     - image
     output:
-    - text
     - video
+    - text
 
   # Core capabilities
   tool_calls: false
@@ -94,4 +94,4 @@ extensions:
 
 # Timestamps
 created_at: null
-updated_at: 2026-07-30T16:49:34.859344Z
+updated_at: 2026-09-18T21:17:47.645556677Z
