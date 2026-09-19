@@ -13,7 +13,7 @@
 
 <p id="next-action">Publisher repair PR #172 contains reviewed <code>077c6e389</code>. All 26 publisher tests and full local checks pass. GitHub verified the App signature in a live probe without a branch change. Qualify native CI run <code>35421087212</code> through session <code>5656</code>, then merge the repair. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-promotion-repair.json">repair proof</a> owns current evidence.</p>
 
-<p>PR #168 passed all 31 checks, but its unsigned bot history prevents protected merge. Prepare exact-tree recovery after the repair merges. Preserve signature protection and request any required history-rewrite approval before replacing the head. Both hosted A05 cases remain unverified.</p>
+<p>PR #168 passed all 31 checks, but its unsigned bot history prevents protected merge. Signed recovery candidate <code>1762607ef</code> preserves the exact catalog tree. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/signed-recovery-candidate.json">candidate proof</a> records its verified signature. The owner has not yet authorized the published-history rewrite. After #172 merges, incorporate its actual merge parent before an authorized branch update. Both hosted A05 cases remain unverified.</p>
 
 <p>PR #170 merged at <code>8595d5a0cf9e6515a6e1ef4abbbaec205c142520</code> after 31 checks passed. Its tree matches reviewed source <code>67dba0ea5</code>. All six native runtime and publication platforms pass. All race groups pass. The <a href="proof/starport-production-catalog/csp6/rejection-recovery/repair-170-merged.json">merge proof</a> records checks, test counts, and conditional skips.</p>
 
@@ -21,9 +21,9 @@
 
 <p>Starmap host API preparation is at <code>11366a556</code> in <code>starmap-host-files</code>, branch <code>codex/starmap-host-files</code>. It includes merge <code>8595d5a0c</code>. The Windows test import cycle has a reviewed repair. Full checks and both Windows cross-builds pass.</p>
 
-<p>Draft PR #171 qualifies through run <code>35418891869</code>. The <a href="proof/starport-production-catalog/csp8/host-main-integration/verification.json">host proof</a> retains failure and repair evidence.</p>
+<p>Draft PR #171 passed all 31 checks in run <code>35418891869</code>. The <a href="proof/starport-production-catalog/csp8/host-main-integration/verification.json">host proof</a> retains failure and repair evidence.</p>
 
-<p>Native tests have not yet qualified the repair. Do not merge further producer changes during catalog qualification and capture.</p>
+<p>Both native Windows jobs passed the repaired test. Do not merge further producer changes during catalog qualification and capture.</p>
 
 <p>Starport preparation remains at <code>3977f481</code> in <code>starport-product-paths</code>, branch <code>codex/starport-product-paths</code>. The <a href="proof/starport-production-catalog/csp8/starport-main-integration/verification.json">local-pair proof</a> records path, application, catalog, and real-Valkey checks. No local workspace result qualifies a published dependency. The <a href="proof/starport-production-catalog/csp8/qualification-gap-audit.json">qualification audit</a> identifies 33 absent registry entries and incomplete acquisition and migration evidence. Runtime migration, retention, published-module qualification, full review, and native checks remain required.</p>
 

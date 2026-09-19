@@ -29,5 +29,15 @@
     "branch_updated": false
   },
   "scope": "App-signed initial and base-update commits with exact tree, parent, and verification checks. Reject unsigned retained history; no automatic history rewrite.",
-  "next_action": "Qualify PR172 on native CI, merge with protection, then prepare reviewed exact-tree recovery for PR168. Obtain separate published-history rewrite authorization if required before replacing its head. Requalify signed head, checked publisher, both channels, and original same-bytes retry."
+  "next_action": "Qualify PR172 on native CI, merge with protection, then prepare reviewed exact-tree recovery for PR168. Obtain separate published-history rewrite authorization if required before replacing its head. Requalify signed head, checked publisher, both channels, and original same-bytes retry.",
+  "prepared_recovery": {
+    "proof": "signed-recovery-candidate.json",
+    "commit": "1762607ef3e4e3ec44e9205c536362cf686aef4c",
+    "catalog_tree": "35912dad42dbc6b6a7e028b7617e5831adf48163",
+    "catalog_bytes_unchanged": true,
+    "verified_signature": true,
+    "branch_updated": false,
+    "authorization": "Pending explicit owner answer for rewriting published bot history. Do not replace PR168 head without it.",
+    "next_action": "After PR172 merges, incorporate the actual main merge into signed recovery ancestry while preserving catalog bytes. Then use an expected-head lease if authorized and requalify CI."
+  }
 }

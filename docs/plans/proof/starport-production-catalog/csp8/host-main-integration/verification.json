@@ -71,7 +71,14 @@
     },
     "pull_request": 171,
     "run": 35418891869,
-    "next_action": "Qualify repaired native CI. Keep unmerged until CSP6 publication and retry capture finish.",
-    "watch_session": 3266
+    "next_action": "Keep PR171 unmerged until CSP6 publication and retry capture finish. Then update its main base and qualify the exact merge head.",
+    "watch_session": 3266,
+    "native_ci": {
+      "status": "PASS",
+      "run": 35418891869,
+      "head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+      "checks_proof": "windows-cycle-qualified.json",
+      "windows_artifacts": "windows-cycle-qualified.tar.gz"
+    }
   }
 }

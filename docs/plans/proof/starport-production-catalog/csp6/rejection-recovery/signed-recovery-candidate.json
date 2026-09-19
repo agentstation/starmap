@@ -1,0 +1,11 @@
+{
+  "commit": "1762607ef3e4e3ec44e9205c536362cf686aef4c",
+  "parent": "077c6e389afbceaa70d93bf678ca750c8ec46e41",
+  "replaces_head": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+  "catalog_tree": "35912dad42dbc6b6a7e028b7617e5831adf48163",
+  "catalog_bytes_unchanged": true,
+  "branch_updated": false,
+  "pr": 168,
+  "verification": true,
+  "qualification": "Prepared recovery object only. PR172 must merge first; incorporate its actual merge parent without changing the catalog, obtain history rewrite approval, then requalify the published head."
+}

@@ -9,13 +9,15 @@ All 26 publisher tests and full checks pass. Both reviewers report zero findings
 Native CI run `35421087212` uses watch session `5656`.
 The [repair proof](../../csp6/rejection-recovery/signed-promotion-repair.json) records the verified live App signing probe.
 
-Merge #172 after native qualification, then prepare exact-tree recovery for #168.
+Merge #172 after native qualification. Signed candidate `1762607ef` preserves the exact #168 catalog tree.
+Await owner authorization before rewriting published history. Incorporate the actual #172 merge before an authorized update.
+
 Preserve signature protection. Qualify the repaired publisher before both catalog channels and the original preparation retry.
 The [qualification proof](../../csp6/rejection-recovery/promotion-168-qualified.json) records all native platforms and protected checks.
 
 CSP8 owns draft Starmap #171 at `11366a55629f21300b79bd15a4fa62c3fc00eba1` on base `8595d5a0c`.
 The Windows import-cycle repair passes full local checks and both reviews. Both Windows cross-builds pass.
-Native CI run `35418891869` must qualify the repaired head.
+All 31 checks pass in native CI run `35418891869`, including both Windows jobs.
 
 Keep #171 unmerged until CSP6 publication and capture finish. Then qualify the published producer before dependent Starport work.
 The [host proof](../../csp8/host-main-integration/verification.json) records the published repair.
