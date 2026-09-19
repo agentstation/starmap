@@ -3158,6 +3158,12 @@
           "repository": "starport",
           "package": "./internal/router",
           "test": "TestEmbeddingAndGenericAttemptsRecheckPermission"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/providers/connectors",
+          "test": "TestDispatchRejectsCatalogWithdrawalWhileWaitingForConnection"
         }
       ]
     },
