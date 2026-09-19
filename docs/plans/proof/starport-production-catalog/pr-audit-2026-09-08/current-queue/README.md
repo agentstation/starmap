@@ -8,7 +8,9 @@ CSP6 owns reviewed repair PR #172 at `077c6e389`, branch `codex/catalog-signed-p
 All 26 publisher tests and full checks pass. Both reviewers report zero findings.
 
 Native CI run `35421087212` remains unqualified. The API rate limit ended watch session `5656`.
-Resume observation after `2026-09-19T04:57:00Z`. Do not restart the CI run.
+Observation resumed at `2026-09-19T04:57:00Z`. Both Windows runtime jobs remain active.
+All completed jobs passed. Do not restart the CI run.
+
 The [repair proof](../../csp6/rejection-recovery/signed-promotion-repair.json) records the verified live App signing probe.
 
 Merge #172 after native qualification. Signed candidate `1762607ef` preserves the exact #168 catalog tree.
