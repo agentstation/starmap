@@ -3361,6 +3361,88 @@
       "repository": "starport",
       "package": "./internal/server",
       "test": "TestHTTPStreamRetainsCatalogDuringRefresh"
+    },
+    "A18.consistent_counts_prices": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestCatalogViewsKeepOneOfferingPriceRecordAcrossRefresh"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestReaderSummaryMatchesVisibleModelAndProviderLists"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog/view",
+          "test": "TestViewerProjectionsFilterOfferingFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesExcludeDeniedMembership"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestCatalogReaderRoutesRefuseDifferentGeneration"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server/controllers",
+          "test": "TestOpenRouterPricingMirrorsTheCatalogProjection"
+        },
+        {
+          "kind": "vitest",
+          "repository": "starport",
+          "files": [
+            "src/lib/modelFilter.test.ts"
+          ],
+          "tests": [
+            "provider filter uses offering providers",
+            "provider counts use distinct offering providers per model",
+            "author facet matches declared authors"
+          ]
+        }
+      ]
+    },
+    "A18.inflight_and_new_attempts": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/server",
+          "test": "TestHTTPStreamRetainsCatalogDuringRefresh"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationDrainsConnectors"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterRechecksCatalogPermissionBeforeAttempts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestSnapshotPermissionTracksWithdrawalWithoutReplacingMetadata"
+        }
+      ]
     }
   },
   "task_component_checks": {
