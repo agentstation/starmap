@@ -1,0 +1,4 @@
+{
+  "output": "{\"level\":\"info\",\"scope\":\"account:benchmark-account\",\"provider\":\"acme\",\"time\":\"2026-09-19T03:10:35-05:00\",\"message\":\"Provider key added\"}\ngoos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/providers/keyring\ncpu: Apple M2 Max\nBenchmarkManagedMaterialWarmAccount-12    \t       3\t  15177222 ns/op\t67128632 B/op\t      91 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/providers/keyring\t0.506s\n",
+  "exit_code": 0
+}

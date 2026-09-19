@@ -1,0 +1,37 @@
+{
+  "status": "fail-before captured; implementation pending",
+  "worktree": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+  "branch": "codex/starport-managed-material",
+  "commit": "47a9cb3067ed6e933c3c64cabd5817e57e33e515",
+  "workspace": "/tmp/csp91-host-integration.work",
+  "fail_before": {
+    "command": "GOWORK=/tmp/csp91-host-integration.work go test -race -count=1 -json -run '^TestManagedMaterialWarmRequestsDoNotReadRepository$' ./internal/providers/keyring",
+    "exit_code": 1,
+    "account_reads_before": 1,
+    "account_reads_after": 4,
+    "shared_reads_before": 2,
+    "shared_reads_after": 5,
+    "warm_requests_per_case": 3
+  },
+  "benchmark": {
+    "iterations": 3,
+    "warm_account_ns_per_op": 15177222,
+    "warm_account_bytes_per_op": 67128632,
+    "warm_account_allocations_per_op": 91,
+    "isolated_argon_ns_per_op": 28117125,
+    "isolated_argon_bytes_per_op": 67119448,
+    "qualification": "Small local baseline only; not a release latency claim."
+  },
+  "implementation_requirements": [
+    "Keep persisted ciphertext and Argon2 strength unchanged.",
+    "Bind managed material to owner, record revision, provider contract and encryption-key version.",
+    "Evaluate shared grants independently of the cached secret.",
+    "Fence old in-flight loads after revocation and rotation.",
+    "Bound entries, retained bytes, concurrent cold loads and per-tenant work.",
+    "Refresh outside warm requests and refuse expired material.",
+    "Use events only as hints; recover missed events through bounded validation.",
+    "Own worker start and cancellation in application lifecycle."
+  ],
+  "next_action": "Implement the managed-material lifecycle and integrate local mutation invalidation, bounded remote freshness, shared grants, and request validity. Then run A45 and full credential/router tests.",
+  "active_sessions": []
+}

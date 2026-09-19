@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19 UTC</td><td>CSP8</td><td>Added missing setup recovery file descriptors.</td><td>Starport commit <code>fc28bc9</code> follows selected configuration and database leaves. Sixteen tests pass with race detection. The <a href=\"proof/starport-production-catalog/csp8/file-inventory.json\">proof</a> records the regression and four registrations. The <a href=\"proof/starport-production-catalog/csp8/file-inventory/previous-execution.html\">archive</a> preserves the oldest entry. Three registration gaps remain.</td></tr>"
+}

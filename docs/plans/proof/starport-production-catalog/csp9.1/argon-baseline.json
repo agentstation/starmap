@@ -1,0 +1,4 @@
+{
+  "output": "goos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/providers/keyring\ncpu: Apple M2 Max\nBenchmarkKeyDerivation-12    \t       3\t  28117125 ns/op\t67119448 B/op\t      63 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/providers/keyring\t0.540s\n",
+  "exit_code": 0
+}
