@@ -1,0 +1,49 @@
+{
+  "commit": "1005bebe0aaecd576b80b88cf29c9a1fbea35088",
+  "status": "implementation checkpoint; qualification incomplete",
+  "implemented": [
+    "Managed account and account-bound shared credential selections avoid warm repository reads and Argon2.",
+    "Content-derived record identity includes revision and ciphertext, preventing reuse after delete/recreate.",
+    "Provider-contract changes reload material; immutable manager ownership binds encryption context.",
+    "Local mutations invalidate cached state and fence stale loads.",
+    "Background refresh reads current shared grants before reusing unchanged material.",
+    "Cold work coalesces and has global and per-tenant limits.",
+    "Application owns refresh cancellation and cache shutdown.",
+    "Capacity and invalidation races produce retryable gateway failures without credential-role fallback."
+  ],
+  "current_limits": {
+    "entries": 1024,
+    "secret_bytes": 16777216,
+    "concurrent_loads": 4,
+    "tenant_concurrent_loads": 2,
+    "validity_seconds": 5,
+    "load_timeout_seconds": 1,
+    "idle_seconds": 60
+  },
+  "checks": {
+    "keyring_router_pass_events": 170,
+    "final_managed_pass_events": 13,
+    "lint": "pass",
+    "vet": "pass",
+    "application_credentials": {
+      "session": 7083,
+      "output": "/tmp/csp91-application-credentials.jsonl",
+      "status": "running"
+    }
+  },
+  "benchmark": {
+    "iterations": 10000,
+    "warm_ns_per_op": 806.9,
+    "bytes_per_op": 0,
+    "allocations_per_op": 0,
+    "scope": "Local component measurement, not release overhead or capacity qualification."
+  },
+  "remaining": [
+    "Make resource and validity settings explicit in product configuration and documentation.",
+    "Prove capacity, byte limits, coalescing, tenant concurrency, idle eviction, cancellation and refresh fairness.",
+    "Qualify rotation, missed updates and outage recovery against real shared storage.",
+    "Verify admission, retries and queued attempts cannot outlive material validity.",
+    "Register and run all A45 subcases and benchmarks.",
+    "Complete repository gates, structured review, published-pair and native qualification, then merge."
+  ]
+}
