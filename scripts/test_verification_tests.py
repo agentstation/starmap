@@ -15,7 +15,7 @@ import verification_tests as verification
 class TestVerification(unittest.TestCase):
     def test_groups_cover_each_package_once_including_new_packages(self):
         packages = [verification.MODULE + suffix for suffix in (
-            "", "/runtime", "/runtime/new-child", "/acquisition", "/internal/bootstrap",
+            "", "/internal/ciworkflow", "/internal/ciworkflow/future", "/runtime", "/runtime/new-child", "/acquisition", "/internal/bootstrap",
             "/internal/bootstrap/budget", "/cmd/example", "/internal/cli/app",
             "/internal/server", "/internal/server/new-child", "/pkg/new-contract", "/new-package",
         )]

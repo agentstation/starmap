@@ -175,7 +175,15 @@ jobs:
       - name: Run verification checks before suites
         env:
           TECHNICAL_WRITING: ${{ github.workspace }}/.ci/agentstation-skills/technical-writing/scripts/technical-writing
+          STARMAP_VERIFY_EVENTS_DIR: ${{ runner.temp }}/verification-events
         run: make verify-checks
+      - name: Retain early workflow contract evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: go-tests-race-checks
+          path: ${{ runner.temp }}/verification-events/
+          if-no-files-found: warn
 
   verification-tests:
     name: Go 1.27.1 race ${{ matrix.label }}

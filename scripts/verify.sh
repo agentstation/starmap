@@ -100,6 +100,7 @@ run python3 ./scripts/test_catalog_rejection.py
 run python3 ./scripts/test_catalog_product_verify.py
 run python3 ./scripts/test_prepare_public_catalog_fixture.py
 run python3 ./scripts/test_verification_tests.py
+run python3 ./scripts/verification_tests.py race --group checks --output "${STARMAP_VERIFY_EVENTS_DIR:-$TMPDIR}/go-check-events.jsonl"
 run go vet ./...
 run_lint
 run go tool goago -stale-ignores ./...
@@ -135,7 +136,12 @@ run run_cli models list --limit 5
 if [ "$VERIFY_MODE" = "all" ]; then
 	# Race execution covers ordinary behavior too. The explicit capacity test
 	# retains the full public corpus without race instrumentation.
-	run python3 ./scripts/verification_tests.py race
+	for verification_shard in 1 2 3; do
+		run python3 ./scripts/verification_tests.py race --group runtime --shard "$verification_shard"
+	done
+	for verification_group in client application contracts; do
+		run python3 ./scripts/verification_tests.py race --group "$verification_group"
+	done
 	run python3 ./scripts/verification_tests.py capacity
 fi
 

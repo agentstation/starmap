@@ -14,7 +14,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = "github.com/agentstation/starmap"
-GROUPS = ("runtime", "client", "application", "contracts")
+GROUPS = ("checks", "runtime", "client", "application", "contracts")
 CAPACITY_PACKAGE = MODULE + "/internal/catalog/publication"
 CAPACITY_TEST = "TestPublicPublicationProfileRetainsBoundedState"
 
@@ -24,6 +24,8 @@ def group_for(package):
     if package != MODULE and not package.startswith(MODULE + "/"):
         raise ValueError("test package is outside the Starmap module")
     relative = package.removeprefix(MODULE).lstrip("/")
+    if relative == "internal/ciworkflow" or relative.startswith("internal/ciworkflow/"):
+        return "checks"
     if relative == "runtime" or relative.startswith("runtime/"):
         return "runtime"
     if relative in ("", "acquisition") or relative.startswith(("acquisition/", "internal/bootstrap/")) or relative == "internal/bootstrap":
