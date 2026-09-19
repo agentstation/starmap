@@ -1,0 +1,17 @@
+PASS CSG-V01 internal/localauth owns the grant seam
+PASS CSG-V02 the three grant kinds are named in one place
+PASS CSG-V03 a session records the grant that minted it
+PASS CSG-V04 ticket redemption goes through the registered grant
+PASS CSG-V05 the local admin token is a registered grant
+PASS CSG-V06 the paste path compares in constant time via the token
+PASS CSG-V07 the paste path obeys the token exposure rule
+PASS CSG-V08 the identity grant is registered
+PASS CSG-V09 the inert identity grant refusal is held by a contract test
+PASS CSG-V10 the console session route accepts the local token grant
+PASS CSG-V11 the route is registered
+PASS CSG-V12 the console has an auth route outside the shell
+PASS CSG-V13 the auth CLI can put the local admin token on the clipboard
+PASS CSG-V14 the page states its trust scope in the page
+PASS CSG-V15 the gateway key card no longer stands in for first contact
+PASS CSG-V16 sign-in copy belongs to the identity grant alone
+Summary: 16 passed, 0 failed

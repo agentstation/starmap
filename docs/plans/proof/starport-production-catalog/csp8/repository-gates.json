@@ -1,0 +1,171 @@
+{
+  "starport_head": "1a6607bc32909cf8ebea3beb6ca7d8e63a9ebf5b",
+  "initial_gate_head": "8878232ec77d290a4dccdc5c9ee9624b97dec214",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "CSP8 remaining repository contracts and first-run qualification. Local workspace only.",
+  "initial_results": [
+    {
+      "name": "verify-starmap-ownership",
+      "exit_code": 0,
+      "seconds": 88.19
+    },
+    {
+      "name": "verify-v1-architecture",
+      "exit_code": 1,
+      "seconds": 162.946
+    },
+    {
+      "name": "test-dependency-direction-verifier",
+      "exit_code": 0,
+      "seconds": 1.064
+    },
+    {
+      "name": "verify-catalog-driven-providers",
+      "exit_code": 0,
+      "seconds": 136.183
+    },
+    {
+      "name": "verify-readme-quickstart",
+      "exit_code": 0,
+      "seconds": 0.073
+    },
+    {
+      "name": "verify-v1-release",
+      "exit_code": 0,
+      "seconds": 0.076
+    },
+    {
+      "name": "verify-developer-experience",
+      "exit_code": 1,
+      "seconds": 1.405
+    },
+    {
+      "name": "verify-doc-links",
+      "exit_code": 0,
+      "seconds": 0.414
+    },
+    {
+      "name": "test-doc-link-verifier",
+      "exit_code": 0,
+      "seconds": 0.395
+    },
+    {
+      "name": "verify-openrouter-parity",
+      "exit_code": 0,
+      "seconds": 0.13
+    },
+    {
+      "name": "verify-console-modernization",
+      "exit_code": 0,
+      "seconds": 0.036
+    },
+    {
+      "name": "verify-auth-onboarding",
+      "exit_code": 0,
+      "seconds": 0.14
+    },
+    {
+      "name": "verify-console-session-grants",
+      "exit_code": 0,
+      "seconds": 0.395
+    },
+    {
+      "name": "verify-model-modalities",
+      "exit_code": 0,
+      "seconds": 0.295
+    },
+    {
+      "name": "verify-files-api",
+      "exit_code": 0,
+      "seconds": 0.125
+    },
+    {
+      "name": "verify-async-media-jobs",
+      "exit_code": 0,
+      "seconds": 0.185
+    },
+    {
+      "name": "verify-document-parser",
+      "exit_code": 0,
+      "seconds": 0.235
+    },
+    {
+      "name": "verify-reranking",
+      "exit_code": 0,
+      "seconds": 0.233
+    },
+    {
+      "name": "verify-catalog-performance",
+      "exit_code": 0,
+      "seconds": 0.128
+    },
+    {
+      "name": "verify-credential-sharing",
+      "exit_code": 0,
+      "seconds": 0.237
+    },
+    {
+      "name": "verify-enterprise-readiness",
+      "exit_code": 0,
+      "seconds": 0.62
+    },
+    {
+      "name": "verify-console-polish",
+      "exit_code": 0,
+      "seconds": 0.187
+    }
+  ],
+  "effective_gate_result": {
+    "pass": 21,
+    "blocked": 1,
+    "blocked_gate": "verify-v1-architecture V01 requires a published module, not a temporary workspace. Its other 11 conditions pass, including go test ./... ."
+  },
+  "repairs": [
+    {
+      "commit": "634ae49d3fb547170bd6b732dc34f86d727f70ad",
+      "problem": "DX-CFG-2 searched for UserConfigDir in Starport after canonical path ownership moved to Starmap.",
+      "change": "Require the three named path tests and execute default, override, and relative-path refusal contracts.",
+      "verification": "verify-developer-experience passes all 47 conditions."
+    },
+    {
+      "commit": "1a6607bc32909cf8ebea3beb6ca7d8e63a9ebf5b",
+      "problem": "First-run smoke clears the environment and selected only a configuration directory, leaving independent platform roots unresolved.",
+      "change": "Give each process a separate STARPORT_HOME and keep catalog network access offline. Assert that development creates neither persistent home nor configuration.",
+      "verification": "The complete first-run smoke passes."
+    }
+  ],
+  "additional_checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work make build",
+      "result": "PASS",
+      "source": "Runtime source 8878232 with the pending developer-experience verifier repair. Build metadata therefore reports dirty. No runtime source changed afterward."
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work bash scripts/benchmark-overhead.sh",
+      "result": "PASS",
+      "boundary": "Controller component only. Not whole-gateway overhead qualification.",
+      "requests": 200,
+      "controlled_upstream_ms": 20,
+      "reported_p50_ms": 0,
+      "reported_p99_ms": 0
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work bash scripts/smoke-first-run.sh",
+      "result": "PASS",
+      "source": "1a6607b"
+    },
+    {
+      "command": "bash -n scripts/verify-developer-experience.sh; bash -n scripts/smoke-first-run.sh",
+      "result": "PASS"
+    }
+  ],
+  "verification_order_correction": "The first smoke compile overlapped console asset replacement by make build. It failed on a disappearing embedded asset. Rerun after the build completed. The next run exposed the root-selection fixture failure, which the committed smoke repair fixes.",
+  "remaining": [
+    "SDK smoke and action-pin verification.",
+    "Published producer dependency and committed consumer pin, followed by exact-source qualification.",
+    "Structured pre-PR review, hosted native and shared-storage CI, and merge.",
+    "CSP6 owner answer for PR168 signed-history recovery and subsequent publication evidence."
+  ],
+  "running_sessions": [],
+  "completion_credit": false
+}

@@ -1,0 +1,2 @@
+# github.com/agentstation/starport/internal/console
+github.com/agentstation/starport/internal/console/spa.go:29:5: embed dist/.gitkeep: open internal/console/dist/.gitkeep: no such file or directory
