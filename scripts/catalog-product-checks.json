@@ -390,6 +390,12 @@
           "repository": "starmap",
           "package": "./pkg/catalogs",
           "test": "TestBuildRejectsAmbiguousAliases"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestInferenceAliasUsesTargetPermissionAndExactProviderID"
         }
       ]
     },
@@ -407,6 +413,12 @@
           "repository": "starmap",
           "package": "./pkg/catalogs",
           "test": "TestProviderOfferingsPreserveProviderSpecificFacts"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestPlanningCandidatesOwnMutableValues"
         }
       ]
     },
@@ -3511,6 +3523,86 @@
           "repository": "starport",
           "package": "./internal/providers/connectors",
           "test": "TestDispatchRejectsCatalogWithdrawalWhileWaitingForConnection"
+        }
+      ]
+    },
+    "A44.exact_model_scaling": {
+      "kind": "go_test",
+      "repository": "starport",
+      "package": "./internal/router",
+      "test": "TestCatalogExactModelAllocationScaling"
+    },
+    "A44.precomputed_static_candidates": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogExactModelAllocationScaling"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogIndexedSelectionMatchesFullCatalog"
+        }
+      ]
+    },
+    "A44.auto_fallback_semantics": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestCatalogIndexedSelectionMatchesFullCatalog"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestRouterUsesRoutableSnapshot"
+        }
+      ]
+    },
+    "A44.generation_lease_consistency": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationDrainsConnectors"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/router",
+          "test": "TestAliasRemovalKeepsAdmittedRequestAndRejectsNewAttempts"
+        }
+      ]
+    },
+    "A44.retained_generation_bounds": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationCapacityPreservesLeases"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/registry",
+          "test": "TestRuntimeGenerationCapacityReservesConcurrentPreparations"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogCapacityRefusesBeforeAcceptance"
         }
       ]
     }
