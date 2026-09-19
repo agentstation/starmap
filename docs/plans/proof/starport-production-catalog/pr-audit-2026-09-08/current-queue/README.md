@@ -1,8 +1,10 @@
 ## Current disposition: catalog qualification and host API review
 
 CSP6 owns Starmap #168 at `e1d72d5d7e5f2921616b89b91b6460fefaffb62d`, based on merged repair `8595d5a0c`.
-All 380 candidate files retain their original bytes. Publisher run `35417887612` reports `awaiting_updated_checks`.
-Qualify CI run `35418166093` through session `87951`, then complete checked publication and retry capture.
+All 380 candidate files retain their original bytes. All 31 checks now pass.
+Publisher run `35420322946` continues through watch session `11378`.
+Verify its protected merge, both catalog channels, and the original preparation retry.
+The [qualification proof](../../csp6/rejection-recovery/promotion-168-qualified.json) records all native platforms and protected checks.
 
 CSP8 owns draft Starmap #171 at `11366a55629f21300b79bd15a4fa62c3fc00eba1` on base `8595d5a0c`.
 The Windows import-cycle repair passes full local checks and both reviews. Both Windows cross-builds pass.
