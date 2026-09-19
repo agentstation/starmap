@@ -1,0 +1,45 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:02:26.012705+00:00",
+  "starport_head": "0ca721d9d8c5627c01dcf4113c22f5d6b7b59c84",
+  "starmap_head": "2bb17323e548ef7fb6a821d69e85960c75c8a769",
+  "status": "36 live transition cases pass locally; A25 remains UNVERIFIED",
+  "race_events": {
+    "pass": 143
+  },
+  "checks": {
+    "race": 0,
+    "vet": 0,
+    "lint": 0,
+    "targeted_writing": 0,
+    "verifier_unit_tests": "88 passed"
+  },
+  "scope": [
+    "Host, port, path, placement, and scheme changes require explicit approval for environment, shared, and BYOK credentials. Ordinary and streamed requests use actual HTTP connectors.",
+    "Scheme cases retain host and port while replacing trusted HTTPS with HTTP. Tests verify TLS against the fixture certificate and restore the default transport afterward.",
+    "An environment URL override cannot receive credentials until explicitly approved. The process-level override cannot redirect shared credentials or BYOK."
+  ],
+  "connection_validation_audit": {
+    "file": "internal/server/controllers/provider_credentials.go",
+    "methods": [
+      "SharedValidate",
+      "validate"
+    ],
+    "finding": "These endpoints read stored records and explicitly report that they do not test credentials against the provider. They do not decrypt credentials or make provider requests. No network connection-test surface is qualified by these tests."
+  },
+  "remaining": [
+    "A25 product-path isolation",
+    "Applied-policy diagnostics and selected-authority persistence",
+    "Future network connection-test surface must use the same destination authorization",
+    "Native and released-pair qualification, review, publication, and merge"
+  ],
+  "next_action": "Inspect and register product-path isolation evidence, then rerun A25 and continue the remaining CSP10 acceptance contracts.",
+  "verifier": {
+    "A25.approved_local_exception": "PASS",
+    "A25.byok_shared_stream_override": "PASS",
+    "A25.credential_placement_changes": "PASS",
+    "A25.inference_origin_changes": "PASS",
+    "A25.product_path_isolation": "UNVERIFIED",
+    "A25.source_token_replacement": "PASS"
+  }
+}
