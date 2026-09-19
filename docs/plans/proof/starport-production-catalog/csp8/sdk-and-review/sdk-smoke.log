@@ -1,0 +1,12 @@
+PASS raw HTTP chat
+PASS raw HTTP stream
+PASS raw HTTP models
+PASS raw HTTP embeddings
+PASS raw HTTP responses
+PASS raw HTTP responses stream
+PASS raw HTTP responses stored-state refusal
+PASS Python OpenRouter SDK
+PASS Python OpenAI SDK responses
+PASS Python OpenAI SDK responses stream
+PASS TypeScript OpenRouter SDK
+PASS Go OpenRouter SDK

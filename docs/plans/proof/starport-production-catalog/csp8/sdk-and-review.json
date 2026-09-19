@@ -1,0 +1,55 @@
+{
+  "starport_head": "1a6607bc32909cf8ebea3beb6ca7d8e63a9ebf5b",
+  "base": "d5d891eefc32d221406f059dc025a3a1e3ab4070",
+  "starmap_workspace_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work bash scripts/smoke-openrouter-sdks.sh",
+      "result": "PASS",
+      "checks": 12,
+      "log": "sdk-and-review/sdk-smoke.log"
+    },
+    {
+      "command": "bash scripts/verify-action-pins.sh",
+      "result": "PASS",
+      "references": 14,
+      "log": "sdk-and-review/action-pins.log"
+    },
+    {
+      "command": "autoreview --gate pre-pr --mode auto --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high --dry-run",
+      "result": "PASS",
+      "scope": "Input, prompt, secret scanner, temporary-root, and engine availability checks only."
+    }
+  ],
+  "review": {
+    "status": "PASS",
+    "session_id": null,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "command": "/Users/jack/.agents/skills/autoreview/scripts/autoreview --gate pre-pr --mode auto --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high --output /tmp/csp8-autoreview.txt --json-output /tmp/csp8-autoreview.json",
+    "process_log": "/tmp/csp8-autoreview-process.log",
+    "result": {
+      "findings": [],
+      "overall_correctness": "patch is correct",
+      "overall_explanation": "Chunked review complete. chunk 1/2: 0 finding(s), chunk 2/2: 0 finding(s).",
+      "overall_confidence": 0.97
+    },
+    "passes": 2,
+    "bundle_bytes": 432095
+  },
+  "remaining": [
+    "Requalify review if the substantive diff or base changes before publication.",
+    "Published Starmap dependency, exact-source qualification, hosted CI, and merge.",
+    "CSP6 signed-history recovery still awaits the pending owner answer."
+  ],
+  "completion_credit": false,
+  "resume_maintenance": {
+    "previous_bytes": 8336,
+    "previous_sha256": "44699890b73cd94ddd98e01a6d1ed2b36a996c06a6f7a95591a76701dc29d047",
+    "current_words": 367,
+    "ledger_changed": false,
+    "cold_resume": "PASS: current task, next action, authorization boundary, clean source, completed checks, absent live processes, and outstanding qualification are explicit."
+  }
+}

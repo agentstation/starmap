@@ -1,0 +1,17 @@
+autoreview target: branch
+branch: codex/starport-product-paths
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83, opus5=7.52
+reviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=opus thinking=high
+tools: on
+web_search: on
+ref: origin/main
+trufflehog: clean (4.1s)
+bundle: 432095 bytes; review passes: 2
+review pass: 1/2 (231877 prompt bytes)
+review pass: 2/2 (214529 prompt bytes)
+autoreview panel chunked clean: no accepted/actionable findings reported
+overall: patch is correct (0.97)
+Chunked review complete. chunk 1/2: 0 finding(s), chunk 2/2: 0 finding(s).

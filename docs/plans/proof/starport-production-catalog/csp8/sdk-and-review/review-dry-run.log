@@ -1,0 +1,17 @@
+autoreview target: branch
+branch: codex/starport-product-paths
+gate: pre-pr (configured cadence: pre-pr)
+profile: auto
+config: /Users/jack/.config/autoreview/config.toml
+selection: sol=7.83, opus5=7.52
+reviewers: codex model=gpt-5.6-sol thinking=xhigh, claude model=opus thinking=high
+tools: on
+web_search: on
+ref: origin/main
+bundle: constructible
+inputs: OK
+prompt: OK
+trufflehog: OK
+temporary root: OK
+engine check: codex model=gpt-5.6-sol thinking=xhigh OK
+engine check: claude model=opus thinking=high OK
