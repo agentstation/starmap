@@ -1,0 +1,3 @@
+{
+  "output": "{\"level\":\"info\",\"scope\":\"account:benchmark-account\",\"provider\":\"acme\",\"time\":\"2026-09-19T04:19:07-05:00\",\"message\":\"Provider key added\"}\ngoos: darwin\ngoarch: arm64\npkg: github.com/agentstation/starport/internal/providers/keyring\ncpu: Apple M2 Max\nBenchmarkManagedMaterialWarmAccount-12    \t   10000\t       846.9 ns/op\t     240 B/op\t       2 allocs/op\nPASS\nok  \tgithub.com/agentstation/starport/internal/providers/keyring\t0.531s\n"
+}

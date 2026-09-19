@@ -1,0 +1,948 @@
+{
+  "cases": [
+    {
+      "id": "A01",
+      "condition": "CSP-V01",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A02",
+      "condition": "CSP-V02",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A03",
+      "condition": "CSP-V03",
+      "status": "UNVERIFIED",
+      "required_subcases": 16
+    },
+    {
+      "id": "A04",
+      "condition": "CSP-V04",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A05",
+      "condition": "CSP-V05",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A06",
+      "condition": "CSP-V06",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A07",
+      "condition": "CSP-V07",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A08",
+      "condition": "CSP-V08",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A09",
+      "condition": "CSP-V09",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A10",
+      "condition": "CSP-V10",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A11",
+      "condition": "CSP-V11",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A12",
+      "condition": "CSP-V12",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A13",
+      "condition": "CSP-V13",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A14",
+      "condition": "CSP-V14",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A15",
+      "condition": "CSP-V15",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A16",
+      "condition": "CSP-V16",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A17",
+      "condition": "CSP-V17",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A18",
+      "condition": "CSP-V18",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A19",
+      "condition": "CSP-V19",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A20",
+      "condition": "CSP-V20",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A21",
+      "condition": "CSP-V21",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A22",
+      "condition": "CSP-V22",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A23",
+      "condition": "CSP-V23",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A24",
+      "condition": "CSP-V24",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A25",
+      "condition": "CSP-V25",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A26",
+      "condition": "CSP-V26",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A27",
+      "condition": "CSP-V27",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A28",
+      "condition": "CSP-V28",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A29",
+      "condition": "CSP-V29",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A30",
+      "condition": "CSP-V30",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A31",
+      "condition": "CSP-V31",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A32",
+      "condition": "CSP-V32",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A33",
+      "condition": "CSP-V33",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A34",
+      "condition": "CSP-V34",
+      "status": "UNVERIFIED",
+      "required_subcases": 6
+    },
+    {
+      "id": "A35",
+      "condition": "CSP-V35",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A36",
+      "condition": "CSP-V36",
+      "status": "UNVERIFIED",
+      "required_subcases": 2
+    },
+    {
+      "id": "A37",
+      "condition": "CSP-V37",
+      "status": "UNVERIFIED",
+      "required_subcases": 5
+    },
+    {
+      "id": "A38",
+      "condition": "CSP-V38",
+      "status": "UNVERIFIED",
+      "required_subcases": 4
+    },
+    {
+      "id": "A39",
+      "condition": "CSP-V39",
+      "status": "UNVERIFIED",
+      "required_subcases": 3
+    },
+    {
+      "id": "A40",
+      "condition": "CSP-V40",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A41",
+      "condition": "CSP-V41",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A42",
+      "condition": "CSP-V42",
+      "status": "UNVERIFIED",
+      "required_subcases": 9
+    },
+    {
+      "id": "A43",
+      "condition": "CSP-V43",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A44",
+      "condition": "CSP-V44",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A45",
+      "condition": "CSP-V45",
+      "status": "PASS",
+      "required_subcases": 9
+    },
+    {
+      "id": "A46",
+      "condition": "CSP-V46",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    },
+    {
+      "id": "A47",
+      "condition": "CSP-V47",
+      "status": "UNVERIFIED",
+      "required_subcases": 22
+    },
+    {
+      "id": "A48",
+      "condition": "CSP-V48",
+      "status": "UNVERIFIED",
+      "required_subcases": 8
+    },
+    {
+      "id": "A49",
+      "condition": "CSP-V49",
+      "status": "UNVERIFIED",
+      "required_subcases": 7
+    },
+    {
+      "id": "A50",
+      "condition": "CSP-V50",
+      "status": "UNVERIFIED",
+      "required_subcases": 10
+    }
+  ],
+  "subcases": {
+    "A45.warm_no_derivation_or_io": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialWarmRequestsDoNotReadRepository$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:21.047341-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:21.694056-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository\"}\n{\"Time\":\"2026-09-19T04:17:21.694481-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository\",\"Output\":\"=== RUN   TestManagedMaterialWarmRequestsDoNotReadRepository\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:21.694546-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/account\"}\n{\"Time\":\"2026-09-19T04:17:21.694551-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/account\",\"Output\":\"=== RUN   TestManagedMaterialWarmRequestsDoNotReadRepository/account\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:21.879366-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/account\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:21-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:22.056421-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/account\",\"Output\":\"--- PASS: TestManagedMaterialWarmRequestsDoNotReadRepository/account (0.36s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:22.056454-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/account\",\"Elapsed\":0.36}\n{\"Time\":\"2026-09-19T04:17:22.056589-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/shared\"}\n{\"Time\":\"2026-09-19T04:17:22.056598-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/shared\",\"Output\":\"=== RUN   TestManagedMaterialWarmRequestsDoNotReadRepository/shared\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:22.249019-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/shared\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"open\\\",\\\"time\\\":\\\"2026-09-19T04:17:22-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:22.423496-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/shared\",\"Output\":\"--- PASS: TestManagedMaterialWarmRequestsDoNotReadRepository/shared (0.37s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:22.423541-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository/shared\",\"Elapsed\":0.37}\n{\"Time\":\"2026-09-19T04:17:22.423548-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository\",\"Output\":\"--- PASS: TestManagedMaterialWarmRequestsDoNotReadRepository (0.73s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:22.42355-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialWarmRequestsDoNotReadRepository\",\"Elapsed\":0.73}\n{\"Time\":\"2026-09-19T04:17:22.423556-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:23.444977-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t2.397s\\n\"}\n{\"Time\":\"2026-09-19T04:17:23.445002-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":2.398}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.revision_owner_identity": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialOwnerAndEncryptionManagerIsolation$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:25.396195-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:26.124546-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOwnerAndEncryptionManagerIsolation\"}\n{\"Time\":\"2026-09-19T04:17:26.125705-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOwnerAndEncryptionManagerIsolation\",\"Output\":\"=== RUN   TestManagedMaterialOwnerAndEncryptionManagerIsolation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:26.309344-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOwnerAndEncryptionManagerIsolation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:26-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:26.512771-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOwnerAndEncryptionManagerIsolation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:b\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:26-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:27.05259-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOwnerAndEncryptionManagerIsolation\",\"Output\":\"--- PASS: TestManagedMaterialOwnerAndEncryptionManagerIsolation (0.93s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:27.052613-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOwnerAndEncryptionManagerIsolation\",\"Elapsed\":0.93}\n{\"Time\":\"2026-09-19T04:17:27.052631-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:28.077155-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t2.679s\\n\"}\n{\"Time\":\"2026-09-19T04:17:28.077176-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":2.681}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialStorageRotationRevocationAndRecreation$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:29.756286-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:30.408343-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\"}\n{\"Time\":\"2026-09-19T04:17:30.408465-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:30.408533-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\"}\n{\"Time\":\"2026-09-19T04:17:30.408538-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/memory\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:30.602652-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:30-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:30.918669-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:30-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.044843-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.176875-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.425227-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.55184-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.673833-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/memory (1.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:31.673862-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Elapsed\":1.27}\n{\"Time\":\"2026-09-19T04:17:31.673924-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\"}\n{\"Time\":\"2026-09-19T04:17:31.673949-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/badger\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:31.711269-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.716739-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.716817-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.841551-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.122305-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.252855-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.379448-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.620682-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.744637-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.876887-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:32 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.895996-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:32 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896022-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 1.3 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896025-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896027-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.89603-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896031-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896039-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896041-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896042-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.947171-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/badger (1.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:32.947191-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Elapsed\":1.27}\n{\"Time\":\"2026-09-19T04:17:32.947199-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\"}\n{\"Time\":\"2026-09-19T04:17:32.947204-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:32.952288-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"db\\\":0,\\\"cluster\\\":false,\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"connected to valkey\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.074939-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.330103-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.462589-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.597813-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.876448-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.019909-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:34-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.170663-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"time\\\":\\\"2026-09-19T04:17:34-05:00\\\",\\\"message\\\":\\\"closed valkey pubsub client\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.173826-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/valkey (1.23s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:34.173849-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Elapsed\":1.23}\n{\"Time\":\"2026-09-19T04:17:34.173853-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation (3.77s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:34.173855-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Elapsed\":3.77}\n{\"Time\":\"2026-09-19T04:17:34.173857-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:35.210012-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t5.453s\\n\"}\n{\"Time\":\"2026-09-19T04:17:35.210038-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":5.454}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialExpiryAndContractChangeRequireReload$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:36.710995-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:37.319573-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialExpiryAndContractChangeRequireReload\"}\n{\"Time\":\"2026-09-19T04:17:37.31964-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialExpiryAndContractChangeRequireReload\",\"Output\":\"=== RUN   TestManagedMaterialExpiryAndContractChangeRequireReload\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:37.320097-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialExpiryAndContractChangeRequireReload\",\"Output\":\"--- PASS: TestManagedMaterialExpiryAndContractChangeRequireReload (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:37.320117-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialExpiryAndContractChangeRequireReload\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:17:37.32016-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:38.327219-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.616s\\n\"}\n{\"Time\":\"2026-09-19T04:17:38.327296-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.616}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.shared_grant_recheck": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialRefreshRejectsExternalGrantWithdrawal$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:39.785315-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:40.390108-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\"}\n{\"Time\":\"2026-09-19T04:17:40.390183-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Output\":\"=== RUN   TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:40.516507-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:40-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:40.785775-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Output\":\"--- PASS: TestManagedMaterialRefreshRejectsExternalGrantWithdrawal (0.40s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:40.785793-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshRejectsExternalGrantWithdrawal\",\"Elapsed\":0.4}\n{\"Time\":\"2026-09-19T04:17:40.785852-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:41.803553-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t2.018s\\n\"}\n{\"Time\":\"2026-09-19T04:17:41.803578-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":2.018}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialStorageRotationRevocationAndRecreation$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:29.756286-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:30.408343-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\"}\n{\"Time\":\"2026-09-19T04:17:30.408465-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:30.408533-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\"}\n{\"Time\":\"2026-09-19T04:17:30.408538-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/memory\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:30.602652-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:30-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:30.918669-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:30-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.044843-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.176875-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.425227-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.55184-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.673833-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/memory (1.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:31.673862-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Elapsed\":1.27}\n{\"Time\":\"2026-09-19T04:17:31.673924-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\"}\n{\"Time\":\"2026-09-19T04:17:31.673949-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/badger\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:31.711269-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.716739-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.716817-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.841551-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.122305-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.252855-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.379448-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.620682-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.744637-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.876887-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:32 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.895996-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:32 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896022-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 1.3 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896025-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896027-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.89603-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896031-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896039-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896041-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896042-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.947171-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/badger (1.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:32.947191-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Elapsed\":1.27}\n{\"Time\":\"2026-09-19T04:17:32.947199-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\"}\n{\"Time\":\"2026-09-19T04:17:32.947204-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:32.952288-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"db\\\":0,\\\"cluster\\\":false,\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"connected to valkey\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.074939-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.330103-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.462589-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.597813-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.876448-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.019909-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:34-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.170663-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"time\\\":\\\"2026-09-19T04:17:34-05:00\\\",\\\"message\\\":\\\"closed valkey pubsub client\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.173826-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/valkey (1.23s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:34.173849-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Elapsed\":1.23}\n{\"Time\":\"2026-09-19T04:17:34.173853-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation (3.77s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:34.173855-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Elapsed\":3.77}\n{\"Time\":\"2026-09-19T04:17:34.173857-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:35.210012-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t5.453s\\n\"}\n{\"Time\":\"2026-09-19T04:17:35.210038-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":5.454}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.rotation_expiry_revocation": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialStorageRotationRevocationAndRecreation$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:29.756286-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:30.408343-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\"}\n{\"Time\":\"2026-09-19T04:17:30.408465-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:30.408533-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\"}\n{\"Time\":\"2026-09-19T04:17:30.408538-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/memory\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:30.602652-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:30-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:30.918669-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:30-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.044843-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.176875-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.425227-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.55184-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.673833-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/memory (1.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:31.673862-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/memory\",\"Elapsed\":1.27}\n{\"Time\":\"2026-09-19T04:17:31.673924-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\"}\n{\"Time\":\"2026-09-19T04:17:31.673949-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/badger\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:31.711269-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: All 0 tables opened in 0s\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.716739-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: Discard stats nextEmptySlot: 0\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.716817-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:31 INFO: Set nextTxnTs to 0\\n\"}\n{\"Time\":\"2026-09-19T04:17:31.841551-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:31-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.122305-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.252855-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.379448-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.620682-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.744637-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.876887-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:32 INFO: Lifetime L0 stalled for: 0s\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.895996-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"badger 2026/09/19 04:17:32 INFO: \\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896022-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 0 [ ]: NumTables: 01. Size: 1.3 KiB of 0 B. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 64 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896025-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896027-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.89603-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896031-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896039-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896041-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00-\\u003e0.00 StaleData: 0 B Target FileSize: 2.0 MiB\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.896042-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"Level Done\\n\"}\n{\"Time\":\"2026-09-19T04:17:32.947171-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/badger (1.27s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:32.947191-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/badger\",\"Elapsed\":1.27}\n{\"Time\":\"2026-09-19T04:17:32.947199-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\"}\n{\"Time\":\"2026-09-19T04:17:32.947204-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"=== RUN   TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:32.952288-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"db\\\":0,\\\"cluster\\\":false,\\\"time\\\":\\\"2026-09-19T04:17:32-05:00\\\",\\\"message\\\":\\\"connected to valkey\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.074939-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.330103-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.462589-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.597813-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:33.876448-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"access\\\":\\\"granted\\\",\\\"time\\\":\\\"2026-09-19T04:17:33-05:00\\\",\\\"message\\\":\\\"Shared provider credential added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.019909-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:34-05:00\\\",\\\"message\\\":\\\"Shared provider credential updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.170663-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"time\\\":\\\"2026-09-19T04:17:34-05:00\\\",\\\"message\\\":\\\"closed valkey pubsub client\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:34.173826-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation/valkey (1.23s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:34.173849-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation/valkey\",\"Elapsed\":1.23}\n{\"Time\":\"2026-09-19T04:17:34.173853-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Output\":\"--- PASS: TestManagedMaterialStorageRotationRevocationAndRecreation (3.77s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:34.173855-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialStorageRotationRevocationAndRecreation\",\"Elapsed\":3.77}\n{\"Time\":\"2026-09-19T04:17:34.173857-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:35.210012-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t5.453s\\n\"}\n{\"Time\":\"2026-09-19T04:17:35.210038-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":5.454}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialMutationRevokesPreviouslyReturnedHandles$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:43.175723-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:43.783862-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\"}\n{\"Time\":\"2026-09-19T04:17:43.783937-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"=== RUN   TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:43.918821-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:43-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:44.213566-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:17:44-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:17:44.357197-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Output\":\"--- PASS: TestManagedMaterialMutationRevokesPreviouslyReturnedHandles (0.57s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:44.357216-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialMutationRevokesPreviouslyReturnedHandles\",\"Elapsed\":0.57}\n{\"Time\":\"2026-09-19T04:17:44.357251-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:45.372807-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t2.197s\\n\"}\n{\"Time\":\"2026-09-19T04:17:45.37283-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":2.197}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDispatchRejectsMaterialRevokedWhileWaitingForConnection$",
+            "./internal/providers/connectors"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:47.292256-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\"}\n{\"Time\":\"2026-09-19T04:17:47.752088-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection\"}\n{\"Time\":\"2026-09-19T04:17:47.752153-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection\",\"Output\":\"=== RUN   TestDispatchRejectsMaterialRevokedWhileWaitingForConnection\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:47.752207-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http1\"}\n{\"Time\":\"2026-09-19T04:17:47.752213-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http1\",\"Output\":\"=== RUN   TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http1\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:47.754461-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http1\",\"Output\":\"--- PASS: TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http1 (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:47.75447-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http1\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:17:47.754538-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http2\"}\n{\"Time\":\"2026-09-19T04:17:47.754542-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http2\",\"Output\":\"=== RUN   TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http2\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:47.762973-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http2\",\"Output\":\"--- PASS: TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http2 (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:47.762986-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection/http2\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T04:17:47.763006-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection\",\"Output\":\"--- PASS: TestDispatchRejectsMaterialRevokedWhileWaitingForConnection (0.01s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:47.763008-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialRevokedWhileWaitingForConnection\",\"Elapsed\":0.01}\n{\"Time\":\"2026-09-19T04:17:47.763074-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:48.77091-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/connectors\\t1.478s\\n\"}\n{\"Time\":\"2026-09-19T04:17:48.770975-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Elapsed\":1.479}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestDispatchRejectsMaterialExpiredWhileWaitingForConnection$",
+            "./internal/providers/connectors"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:50.133879-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\"}\n{\"Time\":\"2026-09-19T04:17:50.590127-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection\"}\n{\"Time\":\"2026-09-19T04:17:50.590203-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection\",\"Output\":\"=== RUN   TestDispatchRejectsMaterialExpiredWhileWaitingForConnection\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:50.590238-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http1\"}\n{\"Time\":\"2026-09-19T04:17:50.590245-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http1\",\"Output\":\"=== RUN   TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http1\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:50.792142-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http1\",\"Output\":\"--- PASS: TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http1 (0.20s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:50.792172-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http1\",\"Elapsed\":0.2}\n{\"Time\":\"2026-09-19T04:17:50.79228-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http2\"}\n{\"Time\":\"2026-09-19T04:17:50.792286-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http2\",\"Output\":\"=== RUN   TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http2\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:50.997077-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http2\",\"Output\":\"--- PASS: TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http2 (0.20s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:50.997112-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection/http2\",\"Elapsed\":0.2}\n{\"Time\":\"2026-09-19T04:17:50.99712-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection\",\"Output\":\"--- PASS: TestDispatchRejectsMaterialExpiredWhileWaitingForConnection (0.41s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:50.997125-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Test\":\"TestDispatchRejectsMaterialExpiredWhileWaitingForConnection\",\"Elapsed\":0.41}\n{\"Time\":\"2026-09-19T04:17:50.997276-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:52.001925-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/connectors\\t1.868s\\n\"}\n{\"Time\":\"2026-09-19T04:17:52.001993-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/connectors\",\"Elapsed\":1.8679999999999999}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.revoked_refresh_fencing": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialInvalidationFencesInflightLoad$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:53.375625-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:53.97643-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\"}\n{\"Time\":\"2026-09-19T04:17:53.976498-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\",\"Output\":\"=== RUN   TestManagedMaterialInvalidationFencesInflightLoad\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:53.976886-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\",\"Output\":\"--- PASS: TestManagedMaterialInvalidationFencesInflightLoad (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:53.9769-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialInvalidationFencesInflightLoad\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:17:53.976953-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:54.984664-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.609s\\n\"}\n{\"Time\":\"2026-09-19T04:17:54.984705-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.609}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialRefreshCannotRestoreInvalidatedEntry$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:56.371167-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:56.976005-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshCannotRestoreInvalidatedEntry\"}\n{\"Time\":\"2026-09-19T04:17:56.976118-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshCannotRestoreInvalidatedEntry\",\"Output\":\"=== RUN   TestManagedMaterialRefreshCannotRestoreInvalidatedEntry\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:56.976457-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshCannotRestoreInvalidatedEntry\",\"Output\":\"--- PASS: TestManagedMaterialRefreshCannotRestoreInvalidatedEntry (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:56.97647-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshCannotRestoreInvalidatedEntry\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:17:56.976517-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:57.983672-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.612s\\n\"}\n{\"Time\":\"2026-09-19T04:17:57.984988-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.6139999999999999}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialLateSuccessCannotEscapeDeadline$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:17:59.360016-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:17:59.991835-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLateSuccessCannotEscapeDeadline\"}\n{\"Time\":\"2026-09-19T04:17:59.991987-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLateSuccessCannotEscapeDeadline\",\"Output\":\"=== RUN   TestManagedMaterialLateSuccessCannotEscapeDeadline\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:59.992316-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLateSuccessCannotEscapeDeadline\",\"Output\":\"--- PASS: TestManagedMaterialLateSuccessCannotEscapeDeadline (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:17:59.992333-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLateSuccessCannotEscapeDeadline\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:17:59.99236-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:00.9994-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.639s\\n\"}\n{\"Time\":\"2026-09-19T04:18:00.999443-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.639}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.cold_load_coalescing": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialColdLoadCoalescesSuccessAndFailure$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:02.367663-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:02.971717-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure\"}\n{\"Time\":\"2026-09-19T04:18:02.971853-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure\",\"Output\":\"=== RUN   TestManagedMaterialColdLoadCoalescesSuccessAndFailure\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:02.972037-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/success\"}\n{\"Time\":\"2026-09-19T04:18:02.972046-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/success\",\"Output\":\"=== RUN   TestManagedMaterialColdLoadCoalescesSuccessAndFailure/success\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:02.972567-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/success\",\"Output\":\"--- PASS: TestManagedMaterialColdLoadCoalescesSuccessAndFailure/success (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:02.972591-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/success\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:02.972659-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/failure\"}\n{\"Time\":\"2026-09-19T04:18:02.972677-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/failure\",\"Output\":\"=== RUN   TestManagedMaterialColdLoadCoalescesSuccessAndFailure/failure\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:02.973026-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/failure\",\"Output\":\"--- PASS: TestManagedMaterialColdLoadCoalescesSuccessAndFailure/failure (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:02.973032-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure/failure\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:02.973036-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure\",\"Output\":\"--- PASS: TestManagedMaterialColdLoadCoalescesSuccessAndFailure (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:02.973046-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialColdLoadCoalescesSuccessAndFailure\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:02.973121-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:03.979203-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.611s\\n\"}\n{\"Time\":\"2026-09-19T04:18:03.979233-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.612}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:05.371135-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:05.976293-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad\"}\n{\"Time\":\"2026-09-19T04:18:05.976347-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad\",\"Output\":\"=== RUN   TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:05.976828-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad\",\"Output\":\"--- PASS: TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:05.976838-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCallerCancellationDoesNotCancelSharedLoad\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:05.976891-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:06.98399-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.613s\\n\"}\n{\"Time\":\"2026-09-19T04:18:06.984065-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.613}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:08.396876-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:08.992564-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant\"}\n{\"Time\":\"2026-09-19T04:18:08.992614-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant\",\"Output\":\"=== RUN   TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:08.993066-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant\",\"Output\":\"--- PASS: TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:08.993081-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialTenantLoadLimitDoesNotBlockAnotherTenant\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:08.993144-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:10.000289-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.603s\\n\"}\n{\"Time\":\"2026-09-19T04:18:10.000369-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.603}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialLoadDeadlineReleasesCapacity$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:11.384608-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:11.985604-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLoadDeadlineReleasesCapacity\"}\n{\"Time\":\"2026-09-19T04:18:11.985662-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLoadDeadlineReleasesCapacity\",\"Output\":\"=== RUN   TestManagedMaterialLoadDeadlineReleasesCapacity\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:11.986189-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLoadDeadlineReleasesCapacity\",\"Output\":\"--- PASS: TestManagedMaterialLoadDeadlineReleasesCapacity (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:11.986215-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialLoadDeadlineReleasesCapacity\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:11.986254-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:12.993226-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.608s\\n\"}\n{\"Time\":\"2026-09-19T04:18:12.993279-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.609}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialShutdownJoinsActiveLoad$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:14.399411-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:15.005575-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialShutdownJoinsActiveLoad\"}\n{\"Time\":\"2026-09-19T04:18:15.005647-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialShutdownJoinsActiveLoad\",\"Output\":\"=== RUN   TestManagedMaterialShutdownJoinsActiveLoad\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:15.006006-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialShutdownJoinsActiveLoad\",\"Output\":\"--- PASS: TestManagedMaterialShutdownJoinsActiveLoad (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:15.006012-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialShutdownJoinsActiveLoad\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:15.006065-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:16.010107-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.610s\\n\"}\n{\"Time\":\"2026-09-19T04:18:16.01017-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.611}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.outage_validity": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialOutageCannotExtendValidity$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:17.338329-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:17.934808-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOutageCannotExtendValidity\"}\n{\"Time\":\"2026-09-19T04:18:17.93488-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOutageCannotExtendValidity\",\"Output\":\"=== RUN   TestManagedMaterialOutageCannotExtendValidity\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:17.935373-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOutageCannotExtendValidity\",\"Output\":\"--- PASS: TestManagedMaterialOutageCannotExtendValidity (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:17.935384-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialOutageCannotExtendValidity\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:17.935434-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:18.942329-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.604s\\n\"}\n{\"Time\":\"2026-09-19T04:18:18.942372-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.604}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialValkeyOutageAndRecovery$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:20.269541-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:20.869818-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\"}\n{\"Time\":\"2026-09-19T04:18:20.869913-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\",\"Output\":\"=== RUN   TestManagedMaterialValkeyOutageAndRecovery\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:20.876299-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"db\\\":0,\\\"cluster\\\":false,\\\"time\\\":\\\"2026-09-19T04:18:20-05:00\\\",\\\"message\\\":\\\"connected to valkey\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:20.99771-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:7cb3e288-b84e-4d05-a26f-fda791a5742a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:20-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:21.259616-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:7cb3e288-b84e-4d05-a26f-fda791a5742a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:21-05:00\\\",\\\"message\\\":\\\"Provider key deleted\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:21.259662-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"time\\\":\\\"2026-09-19T04:18:21-05:00\\\",\\\"message\\\":\\\"closed valkey pubsub client\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:21.260239-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\",\"Output\":\"--- PASS: TestManagedMaterialValkeyOutageAndRecovery (0.39s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:21.260258-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialValkeyOutageAndRecovery\",\"Elapsed\":0.39}\n{\"Time\":\"2026-09-19T04:18:21.260305-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:22.275079-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t2.005s\\n\"}\n{\"Time\":\"2026-09-19T04:18:22.275121-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":2.006}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback$",
+            "./internal/router"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:24.130082-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/router\"}\n{\"Time\":\"2026-09-19T04:18:24.597983-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\"}\n{\"Time\":\"2026-09-19T04:18:24.598088-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\",\"Output\":\"=== RUN   TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:24.598152-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\",\"Output\":\"--- PASS: TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:24.598164-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Test\":\"TestManagedCredentialRefusalIsRetryableWithoutCredentialFallback\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:24.598216-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:25.60501-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/router\\t1.475s\\n\"}\n{\"Time\":\"2026-09-19T04:18:25.605047-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/router\",\"Elapsed\":1.475}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.resident_secret_bounds": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialEntryLimitAndExpiryEviction$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:26.916244-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:27.526829-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialEntryLimitAndExpiryEviction\"}\n{\"Time\":\"2026-09-19T04:18:27.526904-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialEntryLimitAndExpiryEviction\",\"Output\":\"=== RUN   TestManagedMaterialEntryLimitAndExpiryEviction\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:27.527188-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialEntryLimitAndExpiryEviction\",\"Output\":\"--- PASS: TestManagedMaterialEntryLimitAndExpiryEviction (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:27.527197-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialEntryLimitAndExpiryEviction\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:27.527261-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:28.534259-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.618s\\n\"}\n{\"Time\":\"2026-09-19T04:18:28.534336-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.6179999999999999}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialSecretByteLimitAndReclamation$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:29.815409-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:30.414358-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialSecretByteLimitAndReclamation\"}\n{\"Time\":\"2026-09-19T04:18:30.414429-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialSecretByteLimitAndReclamation\",\"Output\":\"=== RUN   TestManagedMaterialSecretByteLimitAndReclamation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:30.414806-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialSecretByteLimitAndReclamation\",\"Output\":\"--- PASS: TestManagedMaterialSecretByteLimitAndReclamation (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:30.414823-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialSecretByteLimitAndReclamation\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:30.414893-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:31.421982-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.606s\\n\"}\n{\"Time\":\"2026-09-19T04:18:31.422081-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.607}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialIdleEvictionRevokesOldHandles$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:32.722537-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:33.323261-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialIdleEvictionRevokesOldHandles\"}\n{\"Time\":\"2026-09-19T04:18:33.323325-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialIdleEvictionRevokesOldHandles\",\"Output\":\"=== RUN   TestManagedMaterialIdleEvictionRevokesOldHandles\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:33.43735-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialIdleEvictionRevokesOldHandles\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:a\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:33-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:33.663853-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialIdleEvictionRevokesOldHandles\",\"Output\":\"--- PASS: TestManagedMaterialIdleEvictionRevokesOldHandles (0.34s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:33.663901-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialIdleEvictionRevokesOldHandles\",\"Elapsed\":0.34}\n{\"Time\":\"2026-09-19T04:18:33.663961-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:34.672697-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.950s\\n\"}\n{\"Time\":\"2026-09-19T04:18:34.672727-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.95}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialRefreshServesOldestScopesWithoutStarvation$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:35.942514-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:36.546861-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\"}\n{\"Time\":\"2026-09-19T04:18:36.546943-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"=== RUN   TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:36.659438-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-0\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:36-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:36.88157-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-0\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:36-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:36.987338-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-1\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:36-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:37.198905-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-1\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:37-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:37.306369-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-2\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:37-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:37.520469-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-2\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:37-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:37.627932-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-3\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:37-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:37.844366-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-3\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:37-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:37.951125-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-4\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:37-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:38.167673-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:account-4\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:38-05:00\\\",\\\"message\\\":\\\"Provider key updated\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:38.569137-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Output\":\"--- PASS: TestManagedMaterialRefreshServesOldestScopesWithoutStarvation (2.02s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:38.569158-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialRefreshServesOldestScopesWithoutStarvation\",\"Elapsed\":2.02}\n{\"Time\":\"2026-09-19T04:18:38.56919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:39.582919-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t3.640s\\n\"}\n{\"Time\":\"2026-09-19T04:18:39.582953-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":3.64}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    },
+    "A45.encryption_and_disclosure": {
+      "status": "PASS",
+      "checks": [
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestManagedMaterialCachePreservesCiphertextAndRedaction$",
+            "./internal/providers/keyring"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:40.862082-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\"}\n{\"Time\":\"2026-09-19T04:18:41.457497-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCachePreservesCiphertextAndRedaction\"}\n{\"Time\":\"2026-09-19T04:18:41.457596-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCachePreservesCiphertextAndRedaction\",\"Output\":\"=== RUN   TestManagedMaterialCachePreservesCiphertextAndRedaction\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:41.562224-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCachePreservesCiphertextAndRedaction\",\"Output\":\"{\\\"level\\\":\\\"info\\\",\\\"scope\\\":\\\"account:disclosure\\\",\\\"provider\\\":\\\"acme\\\",\\\"time\\\":\\\"2026-09-19T04:18:41-05:00\\\",\\\"message\\\":\\\"Provider key added\\\"}\\n\"}\n{\"Time\":\"2026-09-19T04:18:41.667968-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCachePreservesCiphertextAndRedaction\",\"Output\":\"--- PASS: TestManagedMaterialCachePreservesCiphertextAndRedaction (0.21s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:41.667987-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Test\":\"TestManagedMaterialCachePreservesCiphertextAndRedaction\",\"Elapsed\":0.21}\n{\"Time\":\"2026-09-19T04:18:41.66801-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:42.690175-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/providers/keyring\\t1.828s\\n\"}\n{\"Time\":\"2026-09-19T04:18:42.690242-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/providers/keyring\",\"Elapsed\":1.8279999999999998}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestEncryptionServiceSecurityProperties$",
+            "./internal/credentials"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:43.84331-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/credentials\"}\n{\"Time\":\"2026-09-19T04:18:44.30167-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionServiceSecurityProperties\"}\n{\"Time\":\"2026-09-19T04:18:44.301737-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionServiceSecurityProperties\",\"Output\":\"=== RUN   TestEncryptionServiceSecurityProperties\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:44.407158-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionServiceSecurityProperties\",\"Output\":\"--- PASS: TestEncryptionServiceSecurityProperties (0.11s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:44.40719-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionServiceSecurityProperties\",\"Elapsed\":0.11}\n{\"Time\":\"2026-09-19T04:18:44.407249-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:45.419103-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/credentials\\t1.576s\\n\"}\n{\"Time\":\"2026-09-19T04:18:45.419164-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Elapsed\":1.576}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestEncryptionService_InvalidDecryption$",
+            "./internal/credentials"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:46.504705-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/credentials\"}\n{\"Time\":\"2026-09-19T04:18:46.959557-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption\"}\n{\"Time\":\"2026-09-19T04:18:46.959612-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption\",\"Output\":\"=== RUN   TestEncryptionService_InvalidDecryption\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.959722-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/empty_string\"}\n{\"Time\":\"2026-09-19T04:18:46.959732-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/empty_string\",\"Output\":\"=== RUN   TestEncryptionService_InvalidDecryption/empty_string\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.959792-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/empty_string\",\"Output\":\"--- PASS: TestEncryptionService_InvalidDecryption/empty_string (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.959802-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/empty_string\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:46.959811-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/invalid_base64\"}\n{\"Time\":\"2026-09-19T04:18:46.959812-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/invalid_base64\",\"Output\":\"=== RUN   TestEncryptionService_InvalidDecryption/invalid_base64\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.959907-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/invalid_base64\",\"Output\":\"--- PASS: TestEncryptionService_InvalidDecryption/invalid_base64 (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.959911-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/invalid_base64\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:46.959926-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/valid_base64_but_too_short\"}\n{\"Time\":\"2026-09-19T04:18:46.959931-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/valid_base64_but_too_short\",\"Output\":\"=== RUN   TestEncryptionService_InvalidDecryption/valid_base64_but_too_short\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.959955-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/valid_base64_but_too_short\",\"Output\":\"--- PASS: TestEncryptionService_InvalidDecryption/valid_base64_but_too_short (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.959962-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/valid_base64_but_too_short\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:46.959968-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/random_valid_base64\"}\n{\"Time\":\"2026-09-19T04:18:46.959969-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/random_valid_base64\",\"Output\":\"=== RUN   TestEncryptionService_InvalidDecryption/random_valid_base64\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.960012-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/random_valid_base64\",\"Output\":\"--- PASS: TestEncryptionService_InvalidDecryption/random_valid_base64 (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.960017-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption/random_valid_base64\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:46.960034-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption\",\"Output\":\"--- PASS: TestEncryptionService_InvalidDecryption (0.00s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:46.960038-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_InvalidDecryption\",\"Elapsed\":0}\n{\"Time\":\"2026-09-19T04:18:46.960121-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:47.967157-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/credentials\\t1.462s\\n\"}\n{\"Time\":\"2026-09-19T04:18:47.967207-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Elapsed\":1.462}\n",
+          "stderr": ""
+        },
+        {
+          "status": "PASS",
+          "reason": "The named behavior test passed in this invocation.",
+          "command": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-timeout",
+            "5m",
+            "-json",
+            "-run",
+            "^TestEncryptionService_DifferentKeys$",
+            "./internal/credentials"
+          ],
+          "cwd": "/Users/jack/src/github.com/agentstation/starport-managed-material",
+          "exit_code": 0,
+          "stdout": "{\"Time\":\"2026-09-19T04:18:49.052291-05:00\",\"Action\":\"start\",\"Package\":\"github.com/agentstation/starport/internal/credentials\"}\n{\"Time\":\"2026-09-19T04:18:49.525762-05:00\",\"Action\":\"run\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_DifferentKeys\"}\n{\"Time\":\"2026-09-19T04:18:49.525821-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_DifferentKeys\",\"Output\":\"=== RUN   TestEncryptionService_DifferentKeys\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:50.170825-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_DifferentKeys\",\"Output\":\"--- PASS: TestEncryptionService_DifferentKeys (0.64s)\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:50.170946-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Test\":\"TestEncryptionService_DifferentKeys\",\"Elapsed\":0.64}\n{\"Time\":\"2026-09-19T04:18:50.171135-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Output\":\"PASS\\n\",\"OutputType\":\"frame\"}\n{\"Time\":\"2026-09-19T04:18:51.190265-05:00\",\"Action\":\"output\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Output\":\"ok  \\tgithub.com/agentstation/starport/internal/credentials\\t2.138s\\n\"}\n{\"Time\":\"2026-09-19T04:18:51.190318-05:00\",\"Action\":\"pass\",\"Package\":\"github.com/agentstation/starport/internal/credentials\",\"Elapsed\":2.138}\n",
+          "stderr": ""
+        }
+      ],
+      "evidence_scope": "product"
+    }
+  },
+  "selected_subcases": 9,
+  "summary": "Summary: 1 passed, 49 failed",
+  "unverified_cases": 49,
+  "gate_status": "PASS",
+  "qualification": "component checks only",
+  "roster_sha256": "41e51262863f6a8da36d9b0bd7f3f101029995d61bac21841374addcd7fc4391",
+  "registry_sha256": "30cd06bcd9a5dd2597155369e3327b262e766a889b1f2fd2a8be4a4a40dc39a7",
+  "backend_scope": "primary"
+}

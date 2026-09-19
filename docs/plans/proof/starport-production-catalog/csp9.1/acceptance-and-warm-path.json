@@ -1,0 +1,51 @@
+{
+  "starport_acceptance_commit": "dab7dce",
+  "starport_current_commit": "f7c2c16",
+  "starmap_registry_commit": "50f071ef2",
+  "status": "nine A45 subcases pass before final warm-path optimization; no task completion credit",
+  "acceptance": {
+    "passed_subcases": 9,
+    "failed_selected_subcases": 0,
+    "gate_status": "PASS",
+    "scope": "CSP9.1 only. The other 49 primary cases are outside this invocation."
+  },
+  "checks": {
+    "required_race_pass_events": 325,
+    "required_race_skips": 0,
+    "warm_fix_keyring_router_pass_events": 191,
+    "warm_fix_skips": 2,
+    "warm_fix_skip_reason": "Valkey service stopped after initial qualification.",
+    "allocation_guard_pass_events": 4,
+    "registry_unit_tests": 81,
+    "lint": "pass before final test-only allocation guard edit",
+    "planning_writing_historical_diagnostics": 67
+  },
+  "fixes": [
+    "Storage outages and internal source deadlines produce retryable gateway failures without implicit credential fallback.",
+    "Corrupt stored records remain invalid.",
+    "Warm selection avoids construction of escaping asynchronous loader closures."
+  ],
+  "benchmark": {
+    "before_ns": 846.9,
+    "before_bytes": 240,
+    "before_allocations": 2,
+    "after_ns": 779.9,
+    "after_bytes": 0,
+    "after_allocations": 0,
+    "iterations": 10000,
+    "scope": "Local account material resolution. Account and shared allocation guards both pass."
+  },
+  "remaining": [
+    "Repeat A45 qualification against the final implementation and registry pair.",
+    "Complete cold, rotation, expiry, and revocation benchmark profiles and full gateway performance.",
+    "Qualify HTTPS proxy tunnels, HTTP/2 protocol failures, and shutdown during dial.",
+    "Complete repository gates, structured review, published pair, native checks, and merge."
+  ],
+  "active_sessions": [
+    {
+      "id": 59872,
+      "command": "make technical-writing-check",
+      "output": "/tmp/csp91-acceptance-planning-writing.txt"
+    }
+  ]
+}
