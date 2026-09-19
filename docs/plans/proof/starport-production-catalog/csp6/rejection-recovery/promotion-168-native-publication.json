@@ -1,0 +1,77 @@
+{
+  "head": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+  "run": 35418166093,
+  "artifacts": {
+    "coordinated-storage-redis": {
+      "test_events": {
+        "pass": 15,
+        "skip": 1
+      },
+      "nonpassing": [
+        "TestCoordinatedCatalogProcess"
+      ],
+      "toolchain": null
+    },
+    "coordinated-storage-valkey": {
+      "test_events": {
+        "pass": 15,
+        "skip": 1
+      },
+      "nonpassing": [
+        "TestCoordinatedCatalogProcess"
+      ],
+      "toolchain": null
+    },
+    "go-full-catalog-capacity": {
+      "test_events": {
+        "pass": 1
+      },
+      "nonpassing": [],
+      "toolchain": null
+    },
+    "native-publication-macos-15": {
+      "test_events": {
+        "pass": 154
+      },
+      "nonpassing": [],
+      "toolchain": "go version go1.27.1 darwin/arm64\ndarwin\narm64\ndarwin\narm64\n0"
+    },
+    "native-publication-macos-15-intel": {
+      "test_events": {
+        "pass": 154
+      },
+      "nonpassing": [],
+      "toolchain": "go version go1.27.1 darwin/amd64\ndarwin\namd64\ndarwin\namd64\n0"
+    },
+    "native-publication-ubuntu-24.04": {
+      "test_events": {
+        "pass": 154
+      },
+      "nonpassing": [],
+      "toolchain": "go version go1.27.1 linux/amd64\nlinux\namd64\nlinux\namd64\n0"
+    },
+    "native-publication-ubuntu-24.04-arm": {
+      "test_events": {
+        "pass": 154
+      },
+      "nonpassing": [],
+      "toolchain": "go version go1.27.1 linux/arm64\nlinux\narm64\nlinux\narm64\n0"
+    },
+    "native-publication-windows-11-arm": {
+      "test_events": {
+        "pass": 154
+      },
+      "nonpassing": [],
+      "toolchain": "go version go1.27.1 windows/arm64\nwindows\narm64\nwindows\narm64\n0"
+    },
+    "native-publication-windows-2025": {
+      "test_events": {
+        "pass": 154
+      },
+      "nonpassing": [],
+      "toolchain": "go version go1.27.1 windows/amd64\nwindows\namd64\nwindows\namd64\n0"
+    }
+  },
+  "qualification": "Partial native publication, coordinated storage, and capacity evidence. Remaining runtime and race jobs must pass before checked promotion.",
+  "skip_reason": "TestCoordinatedCatalogProcess is a child-process fixture invoked by its parent test. Its direct top-level invocation skips by design."
+}

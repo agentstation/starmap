@@ -246,5 +246,13 @@
         "workflowName": ""
       }
     ]
+  },
+  "partial_native_qualification": {
+    "proof": "promotion-168-native-publication.json",
+    "artifacts": "promotion-168-native-publication.tar.gz",
+    "native_publication": "154 passing test events on each of six platforms, zero skips or failures",
+    "capacity": "one passing full-catalog capacity test",
+    "coordinated_storage": "15 passing events and one child-process fixture skip on each of Redis and Valkey",
+    "remaining": "Runtime and race jobs remain in progress in run 35418166093. No reported failures. Check current GitHub state before promotion."
   }
 }
