@@ -1,0 +1,54 @@
+{
+  "starport_commit": "be35b8825ddd7a7402523405735c3cc5840a09ed",
+  "starmap_commit": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "fail_before": "Starmap approved the configured replacement authority, but Starport refused acceptance as an unapproved transition.",
+  "repair": "Accept a changed authority or policy only when authority is required, the candidate exactly matches the runtime selection, and current permission authorizes its head. Same-authority order checks remain mandatory.",
+  "coverage": [
+    "Cold lease follower cannot authorize embedded membership from a permission receipt alone.",
+    "Configured authority change starts unready and accepts only a matching approved catalog.",
+    "Unselected candidate and expired approval cannot replace the accepted catalog.",
+    "The SDK evidence adapter requires the live named test and all three states for Python, TypeScript and Go. Python runs both OpenAI and OpenRouter clients.",
+    "Missing script, failed command, skipped test, missing client/state, empty output, and timeout cannot pass the adapter."
+  ],
+  "checks": [
+    {
+      "command": "go test -race -json -count=1 -timeout 5m ./internal/catalog -run TestAuthority|TestAccept",
+      "exit": 0,
+      "pass": 46,
+      "skip": 0,
+      "fail": 0
+    },
+    {
+      "command": "go vet ./internal/catalog",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/catalog/...",
+      "exit": 0
+    },
+    {
+      "command": "python3 scripts/test_catalog_product_verify.py",
+      "exit": 0,
+      "tests": 88
+    },
+    {
+      "command": "catalog_sdk.verify(starport_root)",
+      "exit": 0,
+      "status": "PASS"
+    }
+  ],
+  "remaining": "Complete the remaining CSP10 requirements, rerun the whole task gate, review, qualify the published pair on native CI, and merge.",
+  "task_complete": false,
+  "registered_subcases": {
+    "A09.authority_change": "PASS",
+    "A10.cold_follower_refusal": "PASS",
+    "A17.official_sdk_roster": "PASS"
+  },
+  "planning_writing": {
+    "targeted_plan_exit": 0,
+    "full_gate_exit": 2,
+    "log": "authority-transition/planning-writing.json"
+  }
+}
