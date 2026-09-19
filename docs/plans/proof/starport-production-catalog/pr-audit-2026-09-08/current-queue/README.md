@@ -1,3 +1,18 @@
+## Current disposition: September 19 race failures
+
+PR #168 remains at `f91908cede32e052a5dc36da12d3ec26c0e126ef` with base `b6ce2243c` in its ancestry.
+The client race test missed its publication deadline. The runtime race package reached its 30-minute timeout.
+CSP6 owns the repair. Finish and review the local fixture changes and runtime test duration repair before checked publication.
+
+Three focused race tests pass against each catalog. These results do not qualify the full suite.
+
+PR #165 remains a rejected candidate. CSP6 must verify the replacement before closing it.
+Both PRs have zero review threads. Neither reaches the seven-day disposition threshold.
+Starport has no open PRs. No merge qualifies at this checkpoint.
+
+The [queue capture](queue-status-2026-09-19-race-failures.json) records exact checks and unpublished local work.
+Earlier sections preserve historical dispositions.
+
 ## Updated catalog qualification
 
 Publisher run `35409372662` completed with `awaiting_updated_checks`.
