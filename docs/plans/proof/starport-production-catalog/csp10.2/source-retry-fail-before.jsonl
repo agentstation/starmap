@@ -1,0 +1,9 @@
+{"Time":"2026-09-19T15:47:22.011234-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/authorization"}
+{"Time":"2026-09-19T15:47:22.28123-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestCacheRetriesWholeSourceAfterObservedChange"}
+{"Time":"2026-09-19T15:47:22.281328-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestCacheRetriesWholeSourceAfterObservedChange","Output":"=== RUN   TestCacheRetriesWholeSourceAfterObservedChange\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:47:22.281399-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestCacheRetriesWholeSourceAfterObservedChange","Output":"    source_test.go:182: authorization changed during use\n","OutputType":"error"}
+{"Time":"2026-09-19T15:47:22.281432-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestCacheRetriesWholeSourceAfterObservedChange","Output":"--- FAIL: TestCacheRetriesWholeSourceAfterObservedChange (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:47:22.281441-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestCacheRetriesWholeSourceAfterObservedChange","Elapsed":0}
+{"Time":"2026-09-19T15:47:22.281456-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:47:22.281818-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Output":"FAIL\tgithub.com/agentstation/starport/internal/authorization\t0.270s\n","OutputType":"frame"}
+{"Time":"2026-09-19T15:47:22.281847-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/authorization","Elapsed":0.271}

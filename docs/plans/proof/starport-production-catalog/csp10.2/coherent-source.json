@@ -1,0 +1,42 @@
+{
+  "task": "CSP10.2",
+  "commit": "bfa5945241eccad9c669857ef0c91eea88707a40",
+  "status": "coherent repository loading implemented; production wiring remains open",
+  "contracts": [
+    "Read KV then SQL revisions before records and SQL then KV afterward. Only unchanged independent markers establish a common policy interval.",
+    "Observe every successful authoritative revision even when another authority or policy record fails. Known changes revoke retained permission.",
+    "Missing required team and unavailable team remain errors. A teamless key alone establishes no team dependency.",
+    "Cold retries reread every dependency under fresh tickets, at most three attempts within the original deadline. No stale candidate receives a fresh ticket.",
+    "Receipt lifetime starts before durable reads. Slow reads cannot extend permission. Backward or unknown clocks refuse candidates."
+  ],
+  "verification": {
+    "command": "TEST_VALKEY_URL=<temporary loopback Valkey> GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=2m -json ./internal/authorization/...",
+    "exit_code": 0,
+    "pass_events": 92,
+    "failed_events": 0,
+    "skipped_events": 0,
+    "backends": [
+      "memory",
+      "real Badger",
+      "real Valkey",
+      "real SQLite"
+    ],
+    "lint": "make lint: exit 0, zero issues. Final subsequent source changes contain comments only.",
+    "writing": "Five affected files pass with zero diagnostics.",
+    "fail_before": "Current loader with exact parent cache.go overlay fails TestCacheRetriesWholeSourceAfterObservedChange. This is a focused pre-retry behavior reproduction, not a full historical-tree test.",
+    "rejected_evidence": "Initial real-storage fixtures used an invalid key name and lacked scopes. Preserved as rejected evidence. Corrected fixture exercises unchanged production validation.",
+    "test_contract_change": "Mutation test now requires a complete second source read and the replacement restricted scope. It still forbids publication of pre-mutation policy.",
+    "planning_repository_writing": "Required make technical-writing-check failed: 68 diagnostics across 1666 files, including historical proof text and one changed paragraph. The changed paragraph was split. Scoped plan lint now passes with zero diagnostics. See coherent-source-plan-writing.log."
+  },
+  "limitations": [
+    "Production admission remains disconnected. Original server warm-read regression remains unresolved.",
+    "Periodic durable catch-up, all composition mutation hooks, user/grant projections, request/retry/cache/batch rechecks, and operator status remain open.",
+    "The loader requires authoritative linearizable revision reads. Source record size bounds and full resource qualification remain open.",
+    "This run uses SQLite for relational integration. Prior PostgreSQL revision evidence remains historical; paired production loader qualification remains open.",
+    "Full A46, task and native checks, review, compatible published dependencies, and actual merges remain required."
+  ],
+  "next_action": "Implement lifecycle-owned revision catch-up, then compose source/cache/fences with all repository writers before request-path integration.",
+  "active_sessions": [],
+  "temporary_services": "Temporary Valkey container stopped and verified absent.",
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.3</td><td>Resource and fleet contracts pass at <code>633968c</code>. Starmap <code>de118cdb0</code> registers all seven A49 subcases. Final qualification runs.</td><td><a href=\"proof/starport-production-catalog/csp10.3/qualification.json\">Qualification state</a></td></tr>"
+}
