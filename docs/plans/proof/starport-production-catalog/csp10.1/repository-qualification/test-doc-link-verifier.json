@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/test-doc-link-verifier.sh",
+  "exit_code": 0,
+  "seconds": 0.34,
+  "output": "PASS documentation link verifier edge cases\n"
+}

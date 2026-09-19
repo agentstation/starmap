@@ -1,0 +1,277 @@
+{
+  "task": "CSP10.1",
+  "recorded_at": "2026-09-19T19:04:27.162685+00:00",
+  "starport_commit": "05a1ae1",
+  "starmap_commit": "c70627094",
+  "status": "local qualification complete except published dependency; Starport review running",
+  "repository_qualification": {
+    "starport_head": "05a1ae10e2d46f59443b37bc8cb9cec2749906d6",
+    "status": "complete",
+    "checks": [
+      {
+        "command": "bash scripts/verify-starmap-ownership.sh",
+        "exit_code": 0,
+        "seconds": 68.73,
+        "log": "/tmp/csp101-repository-final-gates/verify-starmap-ownership.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-starmap-ownership.json"
+      },
+      {
+        "command": "bash scripts/verify-v1-architecture.sh",
+        "exit_code": 1,
+        "seconds": 108.04,
+        "log": "/tmp/csp101-repository-final-gates/verify-v1-architecture.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-v1-architecture.json"
+      },
+      {
+        "command": "bash scripts/test-dependency-direction-verifier.sh",
+        "exit_code": 0,
+        "seconds": 0.71,
+        "log": "/tmp/csp101-repository-final-gates/test-dependency-direction-verifier.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/test-dependency-direction-verifier.json"
+      },
+      {
+        "command": "bash scripts/verify-dependency-direction.sh",
+        "exit_code": 0,
+        "seconds": 0.71,
+        "log": "/tmp/csp101-repository-final-gates/verify-dependency-direction.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-dependency-direction.json"
+      },
+      {
+        "command": "bash scripts/verify-catalog-driven-providers.sh",
+        "exit_code": 0,
+        "seconds": 120.07,
+        "log": "/tmp/csp101-repository-final-gates/verify-catalog-driven-providers.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-catalog-driven-providers.json"
+      },
+      {
+        "command": "bash scripts/verify-package-layout.sh",
+        "exit_code": 0,
+        "seconds": 3.13,
+        "log": "/tmp/csp101-repository-final-gates/verify-package-layout.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-package-layout.json"
+      },
+      {
+        "command": "bash scripts/verify-readme-quickstart.sh",
+        "exit_code": 0,
+        "seconds": 0.07,
+        "log": "/tmp/csp101-repository-final-gates/verify-readme-quickstart.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-readme-quickstart.json"
+      },
+      {
+        "command": "bash scripts/verify-v1-release.sh",
+        "exit_code": 0,
+        "seconds": 0.07,
+        "log": "/tmp/csp101-repository-final-gates/verify-v1-release.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-v1-release.json"
+      },
+      {
+        "command": "bash scripts/verify-release-workflow.sh",
+        "exit_code": 0,
+        "seconds": 6.56,
+        "log": "/tmp/csp101-repository-final-gates/verify-release-workflow.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-release-workflow.json"
+      },
+      {
+        "command": "bash scripts/verify-developer-experience.sh",
+        "exit_code": 0,
+        "seconds": 2.53,
+        "log": "/tmp/csp101-repository-final-gates/verify-developer-experience.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-developer-experience.json"
+      },
+      {
+        "command": "bash scripts/verify-doc-links.sh",
+        "exit_code": 0,
+        "seconds": 0.34,
+        "log": "/tmp/csp101-repository-final-gates/verify-doc-links.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-doc-links.json"
+      },
+      {
+        "command": "bash scripts/test-doc-link-verifier.sh",
+        "exit_code": 0,
+        "seconds": 0.34,
+        "log": "/tmp/csp101-repository-final-gates/test-doc-link-verifier.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/test-doc-link-verifier.json"
+      },
+      {
+        "command": "bash scripts/verify-openrouter-parity.sh",
+        "exit_code": 0,
+        "seconds": 0.13,
+        "log": "/tmp/csp101-repository-final-gates/verify-openrouter-parity.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-openrouter-parity.json"
+      },
+      {
+        "command": "bash scripts/verify-console-modernization.sh",
+        "exit_code": 0,
+        "seconds": 0.04,
+        "log": "/tmp/csp101-repository-final-gates/verify-console-modernization.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-console-modernization.json"
+      },
+      {
+        "command": "bash scripts/verify-auth-onboarding.sh",
+        "exit_code": 0,
+        "seconds": 0.07,
+        "log": "/tmp/csp101-repository-final-gates/verify-auth-onboarding.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-auth-onboarding.json"
+      },
+      {
+        "command": "bash scripts/verify-console-session-grants.sh",
+        "exit_code": 0,
+        "seconds": 0.34,
+        "log": "/tmp/csp101-repository-final-gates/verify-console-session-grants.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-console-session-grants.json"
+      },
+      {
+        "command": "bash scripts/verify-model-modalities.sh",
+        "exit_code": 0,
+        "seconds": 0.23,
+        "log": "/tmp/csp101-repository-final-gates/verify-model-modalities.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-model-modalities.json"
+      },
+      {
+        "command": "bash scripts/verify-files-api.sh",
+        "exit_code": 0,
+        "seconds": 0.12,
+        "log": "/tmp/csp101-repository-final-gates/verify-files-api.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-files-api.json"
+      },
+      {
+        "command": "bash scripts/verify-async-media-jobs.sh",
+        "exit_code": 0,
+        "seconds": 0.18,
+        "log": "/tmp/csp101-repository-final-gates/verify-async-media-jobs.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-async-media-jobs.json"
+      },
+      {
+        "command": "bash scripts/verify-document-parser.sh",
+        "exit_code": 0,
+        "seconds": 0.19,
+        "log": "/tmp/csp101-repository-final-gates/verify-document-parser.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-document-parser.json"
+      },
+      {
+        "command": "bash scripts/verify-reranking.sh",
+        "exit_code": 0,
+        "seconds": 0.18,
+        "log": "/tmp/csp101-repository-final-gates/verify-reranking.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-reranking.json"
+      },
+      {
+        "command": "bash scripts/verify-catalog-performance.sh",
+        "exit_code": 0,
+        "seconds": 0.13,
+        "log": "/tmp/csp101-repository-final-gates/verify-catalog-performance.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-catalog-performance.json"
+      },
+      {
+        "command": "bash scripts/verify-credential-sharing.sh",
+        "exit_code": 0,
+        "seconds": 0.18,
+        "log": "/tmp/csp101-repository-final-gates/verify-credential-sharing.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-credential-sharing.json"
+      },
+      {
+        "command": "bash scripts/verify-enterprise-readiness.sh",
+        "exit_code": 0,
+        "seconds": 0.35,
+        "log": "/tmp/csp101-repository-final-gates/verify-enterprise-readiness.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-enterprise-readiness.json"
+      },
+      {
+        "command": "bash scripts/verify-console-polish.sh",
+        "exit_code": 0,
+        "seconds": 0.19,
+        "log": "/tmp/csp101-repository-final-gates/verify-console-polish.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-console-polish.json"
+      },
+      {
+        "command": "bash scripts/verify-action-pins.sh",
+        "exit_code": 0,
+        "seconds": 5.0,
+        "log": "/tmp/csp101-repository-final-gates/verify-action-pins.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/verify-action-pins.json"
+      },
+      {
+        "command": "bash scripts/benchmark-overhead.sh",
+        "exit_code": 0,
+        "seconds": 6.68,
+        "log": "/tmp/csp101-repository-final-gates/benchmark-overhead.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/benchmark-overhead.json"
+      },
+      {
+        "command": "bash scripts/smoke-first-run.sh",
+        "exit_code": 0,
+        "seconds": 16.96,
+        "log": "/tmp/csp101-repository-final-gates/smoke-first-run.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/smoke-first-run.json"
+      },
+      {
+        "command": "go test ./...",
+        "exit_code": 0,
+        "seconds": 28.65,
+        "log": "/tmp/csp101-repository-final-gates/go-test-.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/go-test-.json"
+      },
+      {
+        "command": "go vet ./...",
+        "exit_code": 0,
+        "seconds": 1.49,
+        "log": "/tmp/csp101-repository-final-gates/go-vet-.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/go-vet-.json"
+      },
+      {
+        "command": "make lint",
+        "exit_code": 0,
+        "seconds": 5.43,
+        "log": "/tmp/csp101-repository-final-gates/make-lint.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/make-lint.json"
+      },
+      {
+        "command": "make build",
+        "exit_code": 0,
+        "seconds": 21.49,
+        "log": "/tmp/csp101-repository-final-gates/make-build.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/make-build.json"
+      },
+      {
+        "command": "bash scripts/smoke-openrouter-sdks.sh",
+        "exit_code": 0,
+        "seconds": 33.58,
+        "log": "/tmp/csp101-repository-final-gates/smoke-openrouter-sdks.log",
+        "proof": "proof/starport-production-catalog/csp10.1/repository-qualification/smoke-openrouter-sdks.json"
+      }
+    ]
+  },
+  "counts": {
+    "pass": 32,
+    "fail": 1
+  },
+  "failure": "V01 requires a published Starmap module. The local workspace version cannot pass it. With GOWORK=off, the pinned module lacks pkg/productfiles. Preserve this failure until the producer publishes a compatible module.",
+  "completed_evidence": [
+    "All eight expanded A44 subcases pass locally.",
+    "Catalog race: 244 passing events, no failures or skips. Four consumer race suites pass.",
+    "All eleven required router benchmarks pass.",
+    "Full Go suite, vet, lint, build, first-run, and official SDK smoke checks pass.",
+    "Starmap final Sol/Opus review is clean at c70627094."
+  ],
+  "active_review": {
+    "session_id": 82461,
+    "reviewers": [
+      "codex:gpt-5.6-sol:xhigh",
+      "claude:opus:high"
+    ],
+    "report": "/tmp/csp101-starport-final-review.json",
+    "log": "/tmp/csp101-starport-final-review-process.log",
+    "command": "autoreview --gate pre-pr --mode auto --reviewers codex:gpt-5.6-sol:xhigh,claude:opus:high"
+  },
+  "next_action": "Poll Starport review session 82461. Verify actionable findings against the source. Fix and rerun only affected checks plus required review. Preserve the PR168 history decision and compatible published Starmap dependency requirement. Do not mark CSP10.1 complete before native qualification and actual merge.",
+  "terminal_sessions": [
+    7334,
+    61441,
+    85321,
+    18921,
+    80912,
+    82307,
+    6205
+  ],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10</td><td>Align catalog counts and provider facets.</td><td><a href=\"proof/starport-production-catalog/csp10/view-consistency.json\">Proof</a>: <code>35c493d</code>. Checks pass 545 race events and 460 console tests. A18 remains unverified. The <a href=\"proof/starport-production-catalog/csp10/view-consistency/previous-execution-row.json\">archive</a> preserves the oldest entry.</td></tr>"
+}

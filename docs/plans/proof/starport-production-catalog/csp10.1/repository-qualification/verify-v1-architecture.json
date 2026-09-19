@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-v1-architecture.sh",
+  "exit_code": 1,
+  "seconds": 108.04,
+  "output": "FAIL V01 published Starmap module boundary and exact Go version\nPASS V02 canonical inference contract\nPASS V03 routable snapshot generation contract\nPASS V04 deterministic route planner contract\nPASS V05 attempt state and retry budget contract\nPASS V06 versioned concept repository contracts\nPASS V07 response cache semantic identity contract\nPASS V08 production composition fail-closed contract\nPASS V09 public package boundary contract\nPASS V10 OpenAI and OpenRouter protocol contracts\nPASS V11 import graph architecture fitness\nPASS V12 full Go test suite\nSummary: 11 passed, 1 failed\n"
+}

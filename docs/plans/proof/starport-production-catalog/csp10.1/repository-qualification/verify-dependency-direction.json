@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-dependency-direction.sh",
+  "exit_code": 0,
+  "seconds": 0.71,
+  "output": "SP-D01 PASS: proxy does not import the concrete cache adapter\nSP-D02 PASS: proxy does not import the concrete provider registry\nSP-D03 PASS: proxy exposes the cache behavior contract\nSP-D04 PASS: proxy exposes the provider leasing contract\nSP-D05 PASS: app does not import Starmap source selection\nSP-D06 PASS: app does not import Starmap sync options\nSummary: 6 passed, 0 failed\n"
+}

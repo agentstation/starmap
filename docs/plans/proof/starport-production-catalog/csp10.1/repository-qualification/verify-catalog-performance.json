@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-catalog-performance.sh",
+  "exit_code": 0,
+  "seconds": 0.13,
+  "output": "PASS CPV01 authors endpoints are registered on the API router\nPASS CPV02 catalog presentation projection package exists with tests\nPASS CPV03 model projection carries a per-provider offerings table\nPASS CPV04 provider projection populates the description field\nPASS CPV05 gateway serves catalog logos on a dedicated route\nPASS CPV06 console renders identity through an EntityLogo fallback chain\nPASS CPV07 provider detail route exists in the SPA\nPASS CPV08 model detail route exists in the SPA\nPASS CPV09 author list and detail routes exist in the SPA\nPASS CPV10 global command palette component exists\nPASS CPV11 composer no longer embeds the presets popover\nPASS CPV12 composer plus button owns attachments\nPASS CPV13 every proxied response carries the overhead header\nPASS CPV14 usage surfaces the gateway overhead\nPASS CPV15 chat metadata capitalizes TTFT\nPASS CPV16 sidebar wordmark reads STARPORT\nPASS CPV17 navigation labels the keys page API keys\nPASS CPV18 Starmap pin is v0.7.0 or later\nPASS CPV19 credential state carries operator-facing detail\nPASS CPV20 streaming provider rejections normalize and empty completions stay uncached\nSummary: 20 passed, 0 failed\n"
+}

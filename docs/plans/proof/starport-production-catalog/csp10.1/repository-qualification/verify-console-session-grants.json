@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-console-session-grants.sh",
+  "exit_code": 0,
+  "seconds": 0.34,
+  "output": "PASS CSG-V01 internal/localauth owns the grant seam\nPASS CSG-V02 the three grant kinds are named in one place\nPASS CSG-V03 a session records the grant that minted it\nPASS CSG-V04 ticket redemption goes through the registered grant\nPASS CSG-V05 the local admin token is a registered grant\nPASS CSG-V06 the paste path compares in constant time via the token\nPASS CSG-V07 the paste path obeys the token exposure rule\nPASS CSG-V08 the identity grant is registered\nPASS CSG-V09 the inert identity grant refusal is held by a contract test\nPASS CSG-V10 the console session route accepts the local token grant\nPASS CSG-V11 the route is registered\nPASS CSG-V12 the console has an auth route outside the shell\nPASS CSG-V13 the auth CLI can put the local admin token on the clipboard\nPASS CSG-V14 the page states its trust scope in the page\nPASS CSG-V15 the gateway key card no longer stands in for first contact\nPASS CSG-V16 sign-in copy belongs to the identity grant alone\nSummary: 16 passed, 0 failed\n"
+}

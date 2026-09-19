@@ -1,0 +1,6 @@
+{
+  "command": "bash scripts/verify-console-modernization.sh",
+  "exit_code": 0,
+  "seconds": 0.04,
+  "output": "PASS CM-V01 console workspace exists with a package manifest\nPASS CM-V02 package manifest pins pnpm via the packageManager field\nPASS CM-V03 design tokens live in a Tailwind @theme layer\nPASS CM-V04 TanStack Router file routes directory exists\nPASS CM-V05 token layer defines the raised-surface role token\nPASS CM-V06 app shell component exists\nPASS CM-V07 overview route renders its page components\nPASS CM-V08 models route exists\nPASS CM-V09 providers route exists\nPASS CM-V10 keys route exists\nPASS CM-V11 usage route exists\nPASS CM-V12 presets route exists\nPASS CM-V13 settings route exists\nPASS CM-V14 chat route exists\nPASS CM-V15 chat composer carries the model picker\nPASS CM-V16 chat renders streaming markdown through streamdown\nPASS CM-V17 chat has a comparison mode component\nPASS CM-V18 console embeds the SPA build and serves its page fallback\nPASS CM-V19 command palette component exists\nPASS CM-V20 DESIGN.md states the one-accent law\nPASS CM-V21 legacy static console is deleted\nSummary: 21 passed, 0 failed\n"
+}
