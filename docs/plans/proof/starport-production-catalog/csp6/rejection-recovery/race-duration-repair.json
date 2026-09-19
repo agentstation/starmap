@@ -1,6 +1,6 @@
 {
   "captured_at": "2026-09-19T01:29:32.278653+00:00",
-  "status": "reviewed repair PR under native qualification; candidate runtime group three active",
+  "status": "local candidate tests complete; final-head native CI active",
   "owner": "CSP6",
   "source_worktree": "/Users/jack/src/github.com/agentstation/starmap-baseline-origin-recovery",
   "branch": "codex/acquisition-coalescing-fixture",
@@ -100,13 +100,23 @@
       ],
       "overlap": 0,
       "exact_current_inventory_match": true
-    }
+    },
+    "runtime_shard_3": {
+      "passed": 423,
+      "failed": 0,
+      "skipped": 1,
+      "package_seconds": 1308.799,
+      "skipped_tests": [
+        "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+      ],
+      "proof": "race-duration-shard-3.jsonl.gz"
+    },
+    "runtime_candidate_results": "runtime-candidate-results.json"
   },
   "live_sessions": {
-    "9821": "runtime shard 3, /tmp/csp6-runtime-shard-3.log and .jsonl",
     "71664": "gh run watch 35414164079 --interval 60 --exit-status; /tmp/csp6-170-watch.log"
   },
-  "next_action": "Observe local candidate group three through session 9821 and PR #170 CI run 35414164079 through session 71664. Capture candidate counts and exact inventory coverage. Resolve any actual failures, reuse #170, then mark ready and merge the reviewed exact head after all required and native checks pass. Record the merge before resuming the checked publisher for existing catalog #168. Preserve #165 until replacement qualification.",
+  "next_action": "Observe PR #170 final-head CI run 35414164079 through watch session 71664. Local groups one and three passed. Group two failure is preserved and all five affected crash points passed focused verification on both catalogs. Resolve actual CI failures in #170. After all required and native checks pass, mark ready and merge exact reviewed head 336df28b6. Record the merge, then resume checked publisher for #168. Preserve #165 until replacement qualification.",
   "source_commit": "336df28b611e62d058ff17029ffd274bc520fe84",
   "native_intel_failure": {
     "run": 35409735768,

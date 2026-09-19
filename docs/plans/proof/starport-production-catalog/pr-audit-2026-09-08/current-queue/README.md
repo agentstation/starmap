@@ -2,8 +2,9 @@
 
 PR #170 contains reviewed head `336df28b611e62d058ff17029ffd274bc520fe84` on base `b6ce2243c`.
 Sol and Opus report zero findings. Required local checks pass.
-CSP6 owns final-head CI run `35414164079` and the remaining local candidate runtime group.
-Watch session `71664` follows CI. Session `9821` runs the candidate group.
+CSP6 owns final-head CI run `35414164079`. Local candidate groups one and three pass.
+
+Watch session `71664` follows CI. Group two retains fail-before evidence for the repaired migration guard.
 
 Qualify all required and native checks, mark the draft ready, and merge the exact reviewed head.
 Then resume the checked publisher for existing catalog PR #168. Preserve rejected candidate #165 until replacement qualification.

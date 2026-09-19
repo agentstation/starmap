@@ -1,0 +1,91 @@
+{
+  "1": {
+    "counts": {
+      "pass": 310,
+      "fail": 0,
+      "skip": 2
+    },
+    "package_results": [
+      {
+        "Time": "2026-09-18T20:38:11.071227-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 673.975
+      },
+      {
+        "Time": "2026-09-18T20:38:11.088821-05:00",
+        "Action": "skip",
+        "Package": "github.com/agentstation/starmap/runtime/source",
+        "Elapsed": 0
+      },
+      {
+        "Time": "2026-09-18T20:38:11.088842-05:00",
+        "Action": "skip",
+        "Package": "github.com/agentstation/starmap/runtime/status",
+        "Elapsed": 0
+      }
+    ],
+    "skipped_tests": [
+      "TestPublicChannelUpgradeRetainsAcceptedCatalogBeforeRefresh",
+      "TestPublicCatalogActivatesWithoutProviderCredentials"
+    ]
+  },
+  "2": {
+    "counts": {
+      "pass": 476,
+      "fail": 4,
+      "skip": 0
+    },
+    "package_results": [
+      {
+        "Time": "2026-09-18T20:47:14.777472-05:00",
+        "Action": "fail",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 1191.402
+      },
+      {
+        "Time": "2026-09-18T20:47:14.826811-05:00",
+        "Action": "skip",
+        "Package": "github.com/agentstation/starmap/runtime/source",
+        "Elapsed": 0
+      },
+      {
+        "Time": "2026-09-18T20:47:14.826828-05:00",
+        "Action": "skip",
+        "Package": "github.com/agentstation/starmap/runtime/status",
+        "Elapsed": 0
+      }
+    ],
+    "skipped_tests": []
+  },
+  "3": {
+    "counts": {
+      "pass": 423,
+      "fail": 0,
+      "skip": 1
+    },
+    "package_results": [
+      {
+        "Time": "2026-09-18T21:09:52.922037-05:00",
+        "Action": "pass",
+        "Package": "github.com/agentstation/starmap/runtime",
+        "Elapsed": 1308.799
+      },
+      {
+        "Time": "2026-09-18T21:09:52.955908-05:00",
+        "Action": "skip",
+        "Package": "github.com/agentstation/starmap/runtime/source",
+        "Elapsed": 0
+      },
+      {
+        "Time": "2026-09-18T21:09:52.955935-05:00",
+        "Action": "skip",
+        "Package": "github.com/agentstation/starmap/runtime/status",
+        "Elapsed": 0
+      }
+    ],
+    "skipped_tests": [
+      "TestPublicCatalogRejectsUpdatesAndRetainsAcceptedState"
+    ]
+  }
+}
