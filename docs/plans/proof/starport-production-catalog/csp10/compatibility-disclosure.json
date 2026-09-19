@@ -1,0 +1,82 @@
+{
+  "status": "local preparation; CSP10 incomplete",
+  "commit": "460358ab6ae719301963ed0348612fc043465e25",
+  "producer": "50f071ef2a68604c29f97563e11b8632f1e9d607",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "results": {
+    "before": {
+      "counts": {
+        "fail": 1
+      },
+      "failures": [
+        "TestCompatibilityAuthorsApplyCurrentDisclosure",
+        "github.com/agentstation/starport/internal/server"
+      ],
+      "skips": []
+    },
+    "initial-broad": {
+      "counts": {
+        "pass": 907,
+        "fail": 2,
+        "skip": 1
+      },
+      "failures": [
+        "TestCachedServiceRetainsOneRuntimeGeneration/discovery",
+        "TestCachedServiceRetainsOneRuntimeGeneration",
+        "github.com/agentstation/starport/internal/proxy"
+      ],
+      "skips": [
+        "TestGatewayOverheadBenchmark"
+      ]
+    },
+    "focused": {
+      "counts": {
+        "pass": 27
+      },
+      "failures": [],
+      "skips": []
+    },
+    "final": {
+      "counts": {
+        "pass": 696,
+        "skip": 1
+      },
+      "failures": [],
+      "skips": [
+        "TestGatewayOverheadBenchmark"
+      ]
+    }
+  },
+  "behavior": [
+    "Compatibility model, provider, endpoint, and author routes retain one runtime lease and intersect current account and key membership.",
+    "Projection filters offerings before pricing, limits, and capability aggregation. Denied lineage IDs and author model IDs are removed.",
+    "Metadata is buffered until current identity and catalog authority are rechecked. Policy changes discard the body and return a sanitized 503.",
+    "Model and provider serialized cache hits are tested with a real proxy and differing disclosure membership. Cache identity includes a digest of permitted membership.",
+    "Trusted internal projections retain existing membership contracts; public logo routes retain their identity-mark contract."
+  ],
+  "verification": {
+    "command": "GOWORK=/tmp/csp10-host-integration.work go test -race -json -count=1 -timeout 5m ./internal/catalog/view ./internal/catalog/disclosure ./internal/proxy ./internal/server/...",
+    "lint": "0 issues",
+    "vet": "passed",
+    "new_source_prose": "4 files; 0 diagnostics",
+    "initial_failure": "The initial broad run found the prior generation-only cache-key assertion. The assertion now includes the explicit internal scope; final affected suites pass. The unchanged catalog root suite finished in the initial broad run."
+  },
+  "limitations": [
+    "No published pair, native qualification, structured review, or acceptance completion credit.",
+    "Endpoint cache serialization hit coverage remains in CSP12.1.",
+    "Catalog summary and changes routes require a separate disclosure audit.",
+    "Discovery projection and policy derivation still copy catalog data; CSP10.1 owns indexing."
+  ],
+  "next_action": "Audit catalog summary and change-feed disclosure. Then register current evidence and address remaining CSP10 acceptance cases.",
+  "follow_up_audit": {
+    "finding": "The reader change feed includes unfiltered model IDs, offering IDs, and price changes. The reader summary uses deployment-wide counts. Neither route uses the new disclosure middleware.",
+    "evidence": [
+      "internal/server/routes.go: /api/v1/catalog and /api/v1/catalog/changes",
+      "internal/server/controllers/catalog.go: Summary and Changes",
+      "internal/app/catalog_operations.go: CatalogSummary, CatalogChanges, catalogCounts",
+      "internal/catalog/freshness.go: Diff"
+    ],
+    "owner": "CSP10",
+    "next_action": "Capture fail-before reader change-feed redaction evidence and apply current caller policy while preserving generation consistency."
+  }
+}
