@@ -3314,3 +3314,22 @@ The Starport checks use an ignored workspace with unpublished Starmap code.
 These results provide no native CI, review, publication, or merge credit.
 
 The [CSP6.2 proof](../../plans/proof/starport-production-catalog/csp6.2/verification.json) records commands, logs, hashes, and remaining work.
+
+
+## 2026-09-19: CSP9 local credential qualification
+
+Starport commits `aa346d9` and `9baa216` implement persisted inference selection policy and opt-in Starmap fallback.
+The resolver rejects conflicting versions of one secret resource before reading material.
+Rotation publishes complete profiles and retains usable prior material after an unavailable refresh.
+Request-time cache reads do not read policy files or secret sources.
+
+Starmap commit `99f9db801` registers all twelve A11/A12 subcases against the local paired worktrees.
+All twelve pass. The verifier runs 65 distinct Go commands and reuses 17 duplicate references within that invocation.
+Its 81 tests pass, including missing-test, skipped-test, and producer-versus-consumer evidence boundaries.
+
+Real Valkey and PostgreSQL checks pass eight events without skips.
+Secret-manager adapter tests use controlled SDK boundaries. Live cloud account access remains untested.
+The [CSP9 qualification proof](../../plans/proof/starport-production-catalog/csp9/acceptance-registration.json) records commands and logs.
+
+These results do not qualify a published pair. Pre-PR gates, structured review, native CI, and merge remain required.
+Complete CSP6 and CSP8 before publishing this pair.

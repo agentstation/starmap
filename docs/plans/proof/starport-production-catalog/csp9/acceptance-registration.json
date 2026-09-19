@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-19T07:39:41.955342+00:00",
+  "status": "local qualification; no merge credit",
+  "starmap_commit": "99f9db8016b9565fc3eb12d0fbe5da92343cdd1c",
+  "starport_commit": "9baa216bf3e58bf8f1303a9356b69bdd823ebaaa",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "workspace": "/tmp/csp9-host-integration.work",
+  "acceptance": {
+    "command": "GOWORK=/tmp/csp9-host-integration.work bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-credential-roles --task CSP9 --json",
+    "exit_code": 0,
+    "selected_subcases": 12,
+    "result": "PASS",
+    "test_references": 82,
+    "distinct_go_commands": 65,
+    "duplicate_commands_avoided": 17
+  },
+  "real_storage": {
+    "command": "TEST_VALKEY_URL=redis://127.0.0.1:54533 TEST_POSTGRES_URL='postgres://postgres@127.0.0.1:54535/starport_test?sslmode=disable' GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 3m ./internal/credentials ./internal/app -run '^(TestProviderCredentialRepositoryContract|TestAppWithValkey|TestSharedStartupDoesNotCreateLocalDatabases)$'",
+    "exit_code": 0,
+    "pass_events": 8,
+    "skips": 0,
+    "images": [
+      "valkey/valkey@sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+      "postgres@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94"
+    ],
+    "cleanup": "Both task containers stopped and removed."
+  },
+  "regression": {
+    "before": "TestInferenceRejectsConflictingSecretVersionsBeforeReads failed before the fix.",
+    "after": "The credentials and configuration suites passed 420 events with one storage-dependent skip, qualified separately against real Valkey.",
+    "command": "GOWORK=/tmp/csp9-host-integration.work go test -json -race -count=1 -timeout 3m ./internal/credentials/... ./internal/config"
+  },
+  "verifier_unit_tests": {
+    "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+    "tests": 81,
+    "exit_code": 0
+  },
+  "checks": {
+    "starport_affected_lint": 0,
+    "starport_credentials_vet": 0,
+    "changed_source_writing": 0,
+    "git_diff_check": 0
+  },
+  "limits": [
+    "Secret-manager adapters use controlled SDK boundaries. No live cloud secret-manager account was exercised.",
+    "This workspace uses unpublished Starmap code. The committed Starport dependency does not yet provide these APIs.",
+    "Full pre-PR gates, structured review, native CI, published module qualification, and merge remain required.",
+    "CSP6 publication and CSP8 producer integration remain prerequisites."
+  ],
+  "pre_pr_checks": {
+    "state": "running",
+    "session_id": 5086,
+    "driver_pid": 59645,
+    "driver": "/tmp/csp9-pre-pr-gates.py",
+    "state_file": "/tmp/csp9-pre-pr-gates/state.json",
+    "logs": "/tmp/csp9-pre-pr-gates",
+    "instruction": "Poll the existing session. Do not restart while the driver or its child is live."
+  },
+  "writing": {
+    "maintained_plan_and_findings": "targeted strict lint passes",
+    "full_repository": {
+      "command": "make technical-writing-check",
+      "exit_code": 2,
+      "diagnostics": 68,
+      "note": "Historical proof-text findings remain. The new findings paragraph was corrected and passes the targeted check."
+    }
+  }
+}

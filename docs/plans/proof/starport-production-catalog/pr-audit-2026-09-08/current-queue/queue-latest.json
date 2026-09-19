@@ -903,19 +903,19 @@
     },
     {
       "worktree": "starmap-credential-roles",
-      "head": "bbf5284629a632a17a6380615fd0672aa76372cf",
+      "head": "99f9db8016b9565fc3eb12d0fbe5da92343cdd1c",
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
-      "next_action": "Complete inference migration and fallback, then review and qualify the published dependency."
+      "next_action": "Run pre-PR gates and structured review; qualify the published dependency and native CI before merge."
     },
     {
       "worktree": "starport-credential-roles",
-      "head": "aa346d9cde5790ff636fdf56f6beaa7493582336",
+      "head": "9baa216bf3e58bf8f1303a9356b69bdd823ebaaa",
       "status": "",
       "owner": "CSP9",
       "disposition": "unpublished preparation",
-      "next_action": "Register and qualify CSP9 acceptance cases, then review and qualify the published dependency."
+      "next_action": "Run pre-PR gates and structured review; qualify the published dependency and native CI before merge."
     }
   ],
   "seven_day_disposition_review_required": false,

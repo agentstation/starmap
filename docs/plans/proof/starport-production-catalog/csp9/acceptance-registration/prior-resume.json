@@ -1,0 +1,3 @@
+{
+  "html": "<p>CSP9 preparation uses <code>starport-credential-roles</code> at <code>aa346d9</code> and <code>starmap-credential-roles</code> at <code>bbf528462</code>. Both worktrees are clean. The <a href=\"proof/starport-production-catalog/csp9/inference-policy.json\">inference policy proof</a> records migration, fallback, startup ordering, and cache checks. Integrated race tests report 528 passing events and three service-dependent skips. Catalog and keyring tests also pass.</p>\n\n<p>No process remains active. Next, register and qualify the twelve CSP9 A11/A12 subcases, including real-storage and secret-source contracts. Review, published-dependency qualification, native CI, and merge remain required. CSP8 remains unchanged.</p>\n"
+}

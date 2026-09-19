@@ -1,0 +1,3 @@
+{
+  "html": "<tr><td>2026-09-19 UTC</td><td>CSP8</td><td>Enforced the generation pin during candidate acceptance.</td><td>Starport commit <code>2007475</code> fixes the captured pin bypass. Seven catalog tests and one application test pass with race detection. The <a href=\"proof/starport-production-catalog/csp8/policy-controls.json\">policy-control proof</a> records checks and six registrations. Twelve registration gaps remain. The <a href=\"proof/starport-production-catalog/csp8/policy-controls/previous-execution.html\">archive</a> preserves the oldest entry. No task completion credit applies.</td></tr>"
+}
