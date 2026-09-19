@@ -89,6 +89,9 @@ generation:
     min: 0.0
     max: 1.0
     default: 0.95
+response:
+  protocols:
+  - http
 
 # Model limits
 limits:
@@ -109,4 +112,4 @@ extensions:
 
 # Timestamps
 created_at: 2026-07-11T20:15:12.209065Z
-updated_at: 2026-07-30T16:49:35.108749Z
+updated_at: 2026-09-18T21:17:46.66512128Z

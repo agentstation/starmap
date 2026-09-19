@@ -5,7 +5,7 @@ name: BAAI/bge-m3-multi
 authors:
 - id: baai
   name: baai
-description: BGE-M3 is a multilingual text embedding model developed by BAAI, distinguished by its Multi-Linguality (supporting 100+ languages), Multi-Functionality (unified dense, multi-vector, and sparse retrieval), and Multi-Granularity (handling inputs from short queries to 8192-token documents). It achieves state-of-the-art retrieval performance across diverse benchmarks while maintaining a single model for multiple retrieval modes.
+description: BGE-M3 is a multilingual text embedding model developed by BAAI, distinguished by its Multi-Linguality (supporting 100+ languages), Multi-Functionality (unified dense, multi-vector, and sparse retrieval), and Multi-Granularity (handling inputs from short queries to long documents). It achieves state-of-the-art retrieval performance across diverse benchmarks while maintaining a single model for multiple retrieval modes. Inputs to this endpoint are truncated to 512 tokens.
 
 # Model metadata
 metadata:
@@ -81,15 +81,16 @@ features:
 pricing:
   tokens:
     input:
+      per_token: 0.0
       per_1m: 0.01
   currency: USD
 
 # Model limits
 limits:
-  context_window: 8192
+  context_window: 512
   input_tokens: 0
   output_tokens: 8192
 
 # Timestamps
 created_at: 2026-07-11T20:15:13.088385Z
-updated_at: 2026-07-11T20:15:13.088385Z
+updated_at: 2026-09-18T21:17:47.882119486Z

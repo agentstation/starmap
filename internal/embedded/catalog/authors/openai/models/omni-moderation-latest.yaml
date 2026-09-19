@@ -7,6 +7,7 @@ authors:
 
 # Model metadata
 metadata:
+  release_date: null
   tags:
   - moderation
 
