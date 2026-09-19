@@ -1,0 +1,23 @@
+{
+  "head": "34e34529281a0f7ea9671a69b583b6ab554acb3f",
+  "previous_head": "e8104b5f3b65058da3f05f648259d29ae139b5d8",
+  "merged_main": "b6ce2243cc606b72175a53d9af5ea79f950ba416",
+  "worktree": "/Users/jack/src/github.com/agentstation/starmap-host-files",
+  "branch": "codex/starmap-host-files",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "conflict_resolution": "Retained current main scripts/verify-consumer-deps.sh with approved non-standard package limits. Removed obsolete standard-library-inclusive limits.",
+  "tests": {
+    "files": {
+      "pass": 63
+    },
+    "baseline": {
+      "pass": 2
+    },
+    "cli": {
+      "pass": 12
+    }
+  },
+  "consumer_guard": "PASS: all six external consumer roles, forbidden dependencies, offline artifact activation, filesystem/S3 server and reactive restart matrix",
+  "status": "local integration only; no push or merge qualification",
+  "remaining": "Full checks, review, native qualification, actual merge, published module, and Starport qualification remain required. Integrate PR #170 after its merge before full source qualification."
+}

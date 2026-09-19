@@ -1,0 +1,15 @@
+External consumer toolchain: go1.27.1
+ok  	github.com/agentstation/starmap-test/read-only-consumer	1.477s
+ok  	github.com/agentstation/starmap-test/store-only-consumer	1.678s
+ok  	github.com/agentstation/starmap-test/pinned-artifact-consumer	1.520s
+ok  	github.com/agentstation/starmap-test/server-embed-consumer	1.591s
+ok  	github.com/agentstation/starmap-test/remote-subscriber-consumer	2.358s
+ok  	github.com/agentstation/starmap-test/server-storage-consumer	5.242s
+read-only consumer dependency closure: 37/37 non-standard packages (171 total on this platform); forbidden families absent
+store-only consumer: caller-owned adapter contract and publication passed; application/database implementations absent
+pinned-artifact consumer: 38/38 non-standard packages; offline verified activation passed; online/acquisition families absent
+server-embed consumer non-standard dependency closure: 60/60 packages; acquisition families absent
+server-embed consumer: external compile and lifecycle test passed
+remote-subscriber consumer non-standard dependency closure: 44/44 packages; forbidden families absent
+remote-subscriber consumer: external compile and reactive lifecycle test passed
+server-storage consumer non-standard dependency closure: 133/133 packages; filesystem/S3 server and reactive restart matrix passed
