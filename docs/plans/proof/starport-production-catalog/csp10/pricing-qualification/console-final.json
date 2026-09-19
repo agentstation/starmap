@@ -1,0 +1,236 @@
+{
+  "status": "PASS",
+  "report": {
+    "numTotalTestSuites": 1,
+    "numPassedTestSuites": 1,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 18,
+    "numPassedTests": 18,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1789839136226,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": [],
+            "fullName": "provider filter uses offering providers",
+            "status": "passed",
+            "title": "provider filter uses offering providers",
+            "duration": 0.8882079999999632,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "author facet matches declared authors",
+            "status": "passed",
+            "title": "author facet matches declared authors",
+            "duration": 0.6072920000000295,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "tag facet matches declared tags",
+            "status": "passed",
+            "title": "tag facet matches declared tags",
+            "duration": 0.109375,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "a facet with several values matches any of them",
+            "status": "passed",
+            "title": "a facet with several values matches any of them",
+            "duration": 0.16612499999996544,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "facet params round-trip through their URL form",
+            "status": "passed",
+            "title": "facet params round-trip through their URL form",
+            "duration": 0.1974999999999909,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "query matches provider model ids alongside the canonical id",
+            "status": "passed",
+            "title": "query matches provider model ids alongside the canonical id",
+            "duration": 0.22737499999993815,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "fuzzy id match accepts an in-order subsequence",
+            "status": "passed",
+            "title": "fuzzy id match accepts an in-order subsequence",
+            "duration": 0.13416700000004766,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "output facet selects a model by what it produces",
+            "status": "passed",
+            "title": "output facet selects a model by what it produces",
+            "duration": 0.13437499999997726,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "a model with no stated output modality says nothing rather than text",
+            "status": "passed",
+            "title": "a model with no stated output modality says nothing rather than text",
+            "duration": 0.15966600000001563,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "operations gather across the offerings that serve a model",
+            "status": "passed",
+            "title": "operations gather across the offerings that serve a model",
+            "duration": 0.12912500000004457,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "reasoning capability accepts include_reasoning",
+            "status": "passed",
+            "title": "reasoning capability accepts include_reasoning",
+            "duration": 0.07487500000002001,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "operation facet selects a model by what it serves",
+            "status": "passed",
+            "title": "operation facet selects a model by what it serves",
+            "duration": 0.0885000000000673,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "chattable models are the ones an offering serves through chat",
+            "status": "passed",
+            "title": "chattable models are the ones an offering serves through chat",
+            "duration": 0.09299999999996089,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "an undescribed model stays chattable",
+            "status": "passed",
+            "title": "an undescribed model stays chattable",
+            "duration": 0.06600000000003092,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "the default model is the remembered one while it still routes chat",
+            "status": "passed",
+            "title": "the default model is the remembered one while it still routes chat",
+            "duration": 0.09062500000004547,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "a stale or empty remembered model yields to the first credentialed chat model",
+            "status": "passed",
+            "title": "a stale or empty remembered model yields to the first credentialed chat model",
+            "duration": 0.06841700000006767,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "without a usable provider the first chat model stands in",
+            "status": "passed",
+            "title": "without a usable provider the first chat model stands in",
+            "duration": 0.05129099999999198,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": [],
+            "fullName": "provider counts use distinct offering providers per model",
+            "status": "passed",
+            "title": "provider counts use distinct offering providers per model",
+            "duration": 7.572875000000067,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          }
+        ],
+        "startTime": 1789839136964,
+        "endTime": 1789839136975.5728,
+        "status": "passed",
+        "message": "",
+        "name": "/Users/jack/src/github.com/agentstation/starport-catalog-routing/console/src/lib/modelFilter.test.ts"
+      }
+    ]
+  },
+  "command": [
+    "pnpm",
+    "--dir",
+    "console",
+    "test",
+    "src/lib/modelFilter.test.ts",
+    "--reporter=json",
+    "--outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-gzko2nta/results.json"
+  ],
+  "cwd": "/Users/jack/src/github.com/agentstation/starport-catalog-routing",
+  "exit_code": 0,
+  "stdout": "JSON report written to /var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-gzko2nta/results.json\n",
+  "stderr": "$ vitest run src/lib/modelFilter.test.ts --reporter=json --outputFile=/var/folders/kw/d608x5pn4cq73rz78ztl92cw0000gn/T/catalog-console-check-gzko2nta/results.json\n"
+}

@@ -1,0 +1,31 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:33:59.484330+00:00",
+  "starport_head": "cfe153f0146bf4cdefc11fdf8a8663be273c2b42",
+  "starmap_head": "75afb0fc0",
+  "status": "Local pricing and in-flight evidence recorded; final A18 run pending",
+  "changes": [
+    "Verify coherent provider pricing across refresh, known zero, unknown output price, and account disclosure.",
+    "Register A18 pricing and in-flight behavior.",
+    "Allow both .test.ts and .test.tsx console checks while retaining path validation."
+  ],
+  "checks": {
+    "initial_a18": "Four subcases PASS. consistent_counts_prices failed only because the adapter rejected .test.ts.",
+    "repaired_console": "PASS: 18 tests",
+    "verifier_unit_tests": "PASS: 89 tests",
+    "vet": "PASS: ./internal/catalog/view",
+    "lint": "PASS: Starport make lint",
+    "writing": "PASS: pricing test and changed verifier files",
+    "diff_check": "PASS"
+  },
+  "pending": {
+    "session_id": 54261,
+    "output": "/tmp/csp10-a18-verifier-final.json",
+    "command": "GOWORK=/tmp/csp10-host-integration.work bash scripts/verify-catalog-product.sh --starport-root /Users/jack/src/github.com/agentstation/starport-catalog-routing --case A18 --json"
+  },
+  "next_action": "Collect the final A18 result. Complete A21 queued batch admission and stream-policy operation diagnostics.",
+  "limitations": [
+    "Local unpublished pair only.",
+    "Full CSP10 acceptance, native checks, review, publication, and merge remain required."
+  ]
+}
