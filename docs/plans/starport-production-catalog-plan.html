@@ -57,19 +57,13 @@
 
 <p>The committed dependency still lacks the required producer APIs. Published-pair qualification, native checks, and merge remain required. Writing session 59549 ended with 67 historical diagnostics. The current plan passes its targeted prose check.</p>
 
-<p>CSP10 preparation uses <code>starport-catalog-routing</code> at <code>e50b1bd</code> and <code>starmap-credential-roles</code> at <code>9845e6cf9</code>. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
+<p>CSP10 preparation uses <code>starport-catalog-routing</code> at <code>a6db250</code> and <code>starmap-credential-roles</code> at <code>9845e6cf9</code>. Both worktrees are clean. Use <code>GOWORK=/tmp/csp10-host-integration.work</code> for this unpublished pair.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10/destination-dispatch.json">destination dispatch proof</a> records checks for bound grants. Authentication and dispatch reject unapproved destinations and revoked grants. HTTP/1 and HTTP/2 queued requests stop while admitted streams complete. The affected run passes 447 events with one Valkey skip. Final repeated checks pass 63 events.</p>
+<p>The <a href="proof/starport-production-catalog/csp10/destination-startup.json">startup approval proof</a> records production integration. Startup applies explicit approval sets or pinned installation defaults. Requests to an unapproved local target receive HTTP 503 without provider egress. Explicit approval permits ordinary and streamed inference.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10/destination-identity.json">credential identity proof</a> binds grants to source-owned material handles. Account and shared selections remain distinct. Rotation preserves the logical handle and changes its material version. The affected run passes 546 events with three Valkey skips. Nine repeated identity checks pass.</p>
+<p>Final checks pass 1,434 race events with five Valkey skips. Vet and lint pass. Source prose retains 65 existing diagnostics with none added. Policy binding and target checks use zero measured allocations.</p>
 
-<p>The <a href="proof/starport-production-catalog/csp10/destination-selection.json">approval selection proof</a> connects supplied approval sets to router credential selection. Missing and revoked approvals stop connector invocation. The declared strategy can select another approved credential role. Final checks pass 561 events with one Valkey skip. Nine repeated routing checks pass.</p>
-
-<p>The <a href="proof/starport-production-catalog/csp10/destination-template.json">path-template proof</a> covers model namespaces and job paths. Template matches retain exact request targets through dispatch. Final checks pass 584 race events with one Valkey skip. Authorization and rechecking use zero measured allocations.</p>
-
-<p>The <a href="proof/starport-production-catalog/csp10/destination-compiler.json">contract compiler proof</a> covers 13 embedded profiles, fixed tenant parameters, local overrides, and job targets. Final checks pass 622 race events with one Valkey skip. The compiler requires an approved provider record.</p>
-
-<p>Application composition does not supply approvals yet. Next, bind pinned contracts and selected explicit configuration to credential handles. Supply approvals at startup and connection tests. Then remove unbound authentication.</p>
+<p>Next, remove unbound authentication and qualify direct connector and job callers. Expose applied-policy diagnostics and complete A25. The configuration field is an internal applied-policy hook. Persistent configuration and operator mutation remain open.</p>
 
 <p>The owner removed the daily PR queue automation. PR review and merges remain part of this active goal.</p>
 
@@ -692,7 +686,7 @@
 
 
 
-<tr><td>2026-09-19</td><td>CSP10</td><td>Qualify live canonical removal with Python SDKs.</td><td><a href="proof/starport-production-catalog/csp10/canonical-removal.json">Proof</a>: <code>7034eb2</code>. Final server checks pass 529 events with one optional skip. The SDK smoke passes. The <a href="proof/starport-production-catalog/csp10/canonical-removal/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+
 <tr><td>2026-09-19</td><td>CSP10</td><td>Qualify aliases and streams across the SDK roster.</td><td><a href="proof/starport-production-catalog/csp10/sdk-roster.json">Proof</a>: <code>d3689cd</code>. Sixty SDK requests and 586 affected test events pass. The <a href="proof/starport-production-catalog/csp10/sdk-roster/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Enforce catalog permission after connection waits.</td><td><a href="proof/starport-production-catalog/csp10/queued-authority.json">Proof</a>: <code>30801a4</code> and <code>5ec490f46</code>. Seven more subcases are registered. Thirty repeated dispatch events and 408 affected events pass. The <a href="proof/starport-production-catalog/csp10/queued-authority/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Qualify configured authority changes and the SDK roster.</td><td><a href="proof/starport-production-catalog/csp10/authority-transition.json">Proof</a>: <code>be35b88</code> and <code>9845e6cf9</code>. Forty-six authority events and 88 verifier tests pass. The <a href="proof/starport-production-catalog/csp10/authority-transition/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
@@ -702,4 +696,5 @@
 <tr><td>2026-09-19</td><td>CSP10</td><td>Select approvals with routing credentials.</td><td><a href="proof/starport-production-catalog/csp10/destination-selection.json">Proof</a>: <code>52b4328</code>. Final checks pass 561 events with one skip. The <a href="proof/starport-production-catalog/csp10/destination-selection/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Scope destination grants to path templates.</td><td><a href="proof/starport-production-catalog/csp10/destination-template.json">Proof</a>: <code>5b2f749</code>. Final checks pass 584 race events with one skip. The <a href="proof/starport-production-catalog/csp10/destination-template/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 <tr><td>2026-09-19</td><td>CSP10</td><td>Compile approved inference destination contracts.</td><td><a href="proof/starport-production-catalog/csp10/destination-compiler.json">Proof</a>: <code>e50b1bd</code>. Final checks pass 622 race events with one skip. The <a href="proof/starport-production-catalog/csp10/destination-compiler/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
+<tr><td>2026-09-19</td><td>CSP10</td><td>Apply destination approvals at startup.</td><td><a href="proof/starport-production-catalog/csp10/destination-startup.json">Proof</a>: <code>a6db250</code>. Final checks pass 1,434 race events with five skips. The <a href="proof/starport-production-catalog/csp10/destination-startup/previous-execution-row.json">archive</a> preserves the oldest entry.</td></tr>
 </tbody></table></section></main></body></html>

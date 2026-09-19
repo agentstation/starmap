@@ -1,0 +1,65 @@
+{
+  "recorded_at": "2026-09-19T16:28:40.803677+00:00",
+  "task": "CSP10",
+  "status": "production startup integration verified locally; A25 remains UNVERIFIED",
+  "starport_head": "a6db25025220b2f5288e0e538e3724b0d4f4f4bd",
+  "starmap_head": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "go_version": "go1.27.1 darwin/arm64",
+  "changes": [
+    "DestinationPolicy holds an approved provider and role contract. Selection derives a value grant bound to the actual credential handle.",
+    "Grant and policy revocation share an atomic contract reference. Explicit revoked grants cannot fall back to a broader role policy.",
+    "Application startup supplies either an explicit applied approval set or defaults derived from the immutable bundled Starmap catalog.",
+    "Installation defaults exclude parameterized and private origins. The accepted runtime catalog cannot replace bundled destination rules.",
+    "Anonymous activation now supplies a stable provider-owned handle.",
+    "Performance fixtures explicitly approve their local upstream. The refusal fixture retains bundled defaults."
+  ],
+  "runtime_regression": {
+    "tests": [
+      "TestApplicationRefusesUnapprovedCredentialDestination",
+      "TestApplicationUsesExplicitCredentialDestinationApproval"
+    ],
+    "result": "The unapproved local target receives no inference request. Explicit approval permits ordinary and streamed inference.",
+    "negative_control": "Removing router.WithDestinationApprovals from application composition returns HTTP 200 instead of required HTTP 503. The controlled provider validates the fixture credential. The source was restored before final checks."
+  },
+  "checks": {
+    "affected-race": 0,
+    "vet": 0,
+    "lint": 0,
+    "writing": 1
+  },
+  "affected_test_events": {
+    "pass": 1434,
+    "fail": 0,
+    "skip": 5
+  },
+  "skipped": [
+    "TestProviderCredentialRepositoryContract/valkey",
+    "TestManagedMaterialValkeyOutageAndRecovery",
+    "TestManagedMaterialStorageRotationRevocationAndRecreation/valkey",
+    "TestAppWithValkey",
+    "TestSharedStartupDoesNotCreateLocalDatabases"
+  ],
+  "writing": "65 existing source diagnostics. A baseline comparison against e50b1bd finds no added diagnostics.",
+  "allocations": "TestDestinationPolicyBindingHasNoAllocations requires zero allocations across policy binding, authorization, and exact-target rechecking. This is not full gateway latency qualification.",
+  "limitations": [
+    "Registry.Apply still permits unbound material outside the integrated router. Remove that bypass and qualify callers.",
+    "Config.InferenceDestinationApprovals is an internal applied-policy hook. Persistent selected-authority loading, operator mutations, previews, and effective diagnostics remain open under CSP16\u2013CSP17.",
+    "Connection tests and remaining A25 scope need end-to-end qualification.",
+    "The OpenAI job URL query append issue in destination-compiler.json remains open.",
+    "Five Valkey tests skipped because no Valkey service was supplied. Native checks, the released dependency pair, review, publication, and merge remain open."
+  ],
+  "owner_decision": "The approval mutation ownership question remains pending. It does not block pure policy binding or pinned contract integration.",
+  "next_action": "Remove unbound authentication, qualify direct connector and job callers, expose applied-policy diagnostics, and complete A25. Preserve the selected configuration authority boundary.",
+  "prior_proofs": [
+    "destination-dispatch.json",
+    "destination-identity.json",
+    "destination-selection.json",
+    "destination-template.json",
+    "destination-compiler.json"
+  ],
+  "plan_checks": {
+    "targeted_writing": "PASS: 1 file, 0 diagnostics",
+    "full_writing": "exit 2; 67 historical diagnostics across 1665 files"
+  }
+}

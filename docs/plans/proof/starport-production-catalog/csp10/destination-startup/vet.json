@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "vet",
+    "./internal/app",
+    "./internal/catalog",
+    "./internal/config",
+    "./internal/credentials",
+    "./internal/providers/...",
+    "./internal/router",
+    "./internal/registry"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": ""
+}
