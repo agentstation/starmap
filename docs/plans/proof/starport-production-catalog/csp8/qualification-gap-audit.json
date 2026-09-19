@@ -1,0 +1,78 @@
+{
+  "scope": "CSP8 qualification preparation. Registry coverage and selected test-contract inspection, not full behavior qualification.",
+  "starmap_head": "4abf007e8b694fbd1fdf5f78a963971d0ea2fa9d",
+  "starport_head": "3977f481f25b2e38c87d94353f91f4b9b8885b90",
+  "required_cases": 63,
+  "unregistered_cases": [
+    "A20.starport_provider_nonprovider",
+    "A01.starport_cold_offline",
+    "A01.restart_same_baseline",
+    "A22.startup_poll_stream_manual",
+    "A22.lazy_secret_resolution",
+    "A22.local_import_allowed",
+    "A22.inference_separate_egress",
+    "A23.manual_source_with_acquisition",
+    "A23.pin_blocks_all_activation",
+    "A23.explicit_refresh",
+    "A23.restart_watcher_guards",
+    "A24.local_fallback",
+    "A24.scope_authority_origins",
+    "A03.starport_linux",
+    "A03.starport_macos",
+    "A03.starport_windows",
+    "A04.starport_linux_interruption",
+    "A04.starport_macos_interruption",
+    "A04.starport_windows_interruption",
+    "A25.product_path_isolation",
+    "A24.primary_config_file_selection",
+    "A24.bootstrap_file_location",
+    "A24.generated_file_inventory",
+    "A03.starport_file_manifest",
+    "A03.effective_path_report",
+    "A03.shared_backend_no_local_databases",
+    "A43.memory_databases",
+    "A43.scratch_blobs_runtime",
+    "A43.persistent_selectors_rejected",
+    "A43.persistent_installation_untouched",
+    "A43.normal_shutdown_cleanup",
+    "A43.crash_cleanup_ownership",
+    "A43.migration_diagnostic"
+  ],
+  "findings": [
+    {
+      "case": "A20.starport_provider_nonprovider",
+      "evidence": [
+        "internal/catalog/runtime_acquisition_test.go:TestStarmapAcquisitionPublishesRefresh",
+        "internal/catalog/source_acquisition_test.go:TestRuntimeAcquiresSelectedMetadataSource"
+      ],
+      "finding": "Provider coverage injects a recording observer whose method constructs its own acquisition resolver. Metadata coverage exercises the production metadata collector separately. These tests do not establish the required combined production provider and metadata path through startup, refresh, restart, and Starport projections.",
+      "next_action": "Add a contract test through production composition with controlled provider and metadata transports, then qualify it against the committed published module."
+    },
+    {
+      "cases": [
+        "A04.starport_linux_interruption",
+        "A04.starport_macos_interruption",
+        "A04.starport_windows_interruption"
+      ],
+      "evidence": [
+        "internal/setup/recovery_test.go:TestSetupRecoversProcessTermination",
+        "internal/catalog/product_storage.go:ValidateStorageSelection"
+      ],
+      "finding": "The inspected setup crash test proves initialization and rollback recovery. It does not prove catalog runtime directory migration and ownership handoff. The inspected CLI and catalog files contain no StageDirectoryMigration or PublishDirectoryMigration call.",
+      "next_action": "Inspect and complete the Starport migration path and interrupted native qualification. Do not use setup rollback results as a substitute."
+    },
+    {
+      "cases": [
+        "A01.starport_cold_offline",
+        "A01.restart_same_baseline"
+      ],
+      "evidence": [
+        "internal/app/catalog_product_paths_test.go:TestCatalogPersistsProductBaselineAndOwnershipOffline"
+      ],
+      "finding": "A local test checks baseline bytes, product/deployment/instance ownership, and byte-preserving restart. The acceptance registry has no entries for these two cases.",
+      "next_action": "Confirm the complete case contract and register direct behavior evidence after the published module is available."
+    }
+  ],
+  "next_action": "Map all 33 absent entries to inspected behavior tests or implementation gaps. Preserve every required case. Native and published-module evidence remain mandatory.",
+  "completion_credit": false
+}
