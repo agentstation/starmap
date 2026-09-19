@@ -4,13 +4,13 @@ CSP6 owns Starmap #168 at `e1d72d5d7e5f2921616b89b91b6460fefaffb62d`, based on m
 All 380 candidate files retain their original bytes. Publisher run `35417887612` reports `awaiting_updated_checks`.
 Qualify CI run `35418166093` through session `87951`, then complete checked publication and retry capture.
 
-CSP8 owns draft Starmap #171 at `4abf007e8b694fbd1fdf5f78a963971d0ea2fa9d` on base `8595d5a0c`.
-Full local checks and both reviews passed before native CI run `35418281335` found a Windows test import cycle.
-CSP8 owns the local test-package repair. Both Windows cross-builds pass. Native execution remains unverified.
+CSP8 owns draft Starmap #171 at `11366a55629f21300b79bd15a4fa62c3fc00eba1` on base `8595d5a0c`.
+The Windows import-cycle repair passes full local checks and both reviews. Both Windows cross-builds pass.
+Native CI run `35418891869` must qualify the repaired head.
 
-Finish checks in session `93516`. Review the repair and push it to #171.
-The [queue capture](queue-windows-cycle.json) records heads, checks, ancestry, and unpublished work.
 Keep #171 unmerged until CSP6 publication and capture finish. Then qualify the published producer before dependent Starport work.
+The [host proof](../../csp8/host-main-integration/verification.json) records the published repair.
+The [prior queue capture](queue-windows-cycle.json) preserves the failed head and local repair state.
 
 Preserve rejected #165 until replacement qualification. Starport has no open PRs.
 Earlier sections preserve historical dispositions.

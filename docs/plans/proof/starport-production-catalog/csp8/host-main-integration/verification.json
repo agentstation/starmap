@@ -49,5 +49,29 @@
       "session": 93011,
       "draft": true
     }
+  },
+  "windows_test_cycle_repair": {
+    "head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+    "failure": "Windows in-package privatefiles test imports productpaths, which now imports privatefiles. Both native Windows jobs failed setup.",
+    "repair": "Move unchanged canonical ancestor contract to external privatefiles_test package; preserve all assertions.",
+    "before": "Windows amd64 test cross-compilation exit 1, import cycle. See windows-cycle-before.log.gz.",
+    "after": "Windows amd64 and arm64 test cross-compilation exit 0. Native execution remains UNVERIFIED.",
+    "checks": {
+      "command": "make verify-checks",
+      "exit_code": 0,
+      "proof": "windows-cycle-checks.log.gz"
+    },
+    "review": {
+      "findings": 0,
+      "reviewers": [
+        "codex:gpt-5.6-sol:xhigh",
+        "claude:opus:high"
+      ],
+      "proof": "windows-cycle-review.json"
+    },
+    "pull_request": 171,
+    "run": 35418891869,
+    "next_action": "Qualify repaired native CI. Keep unmerged until CSP6 publication and retry capture finish.",
+    "watch_session": 3266
   }
 }
