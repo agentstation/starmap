@@ -3,6 +3,7 @@ package acquisition_test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/pkg/catalogs"
@@ -19,18 +20,34 @@ func (s reviewedRuntimeFixtureSource) Read(context.Context) (runtime.SourceRead,
 // reviewedRuntimeSource supplies authored definitions separately from provider observations.
 func reviewedRuntimeSource(t *testing.T, payloads ...[]byte) runtime.Source {
 	t.Helper()
-	client, err := starmap.New()
+	baseline, err := starmap.New()
 	if err != nil {
 		t.Fatal(err)
 	}
-	builder, err := catalogs.NewBuilderFrom(client.EmbeddedCatalogState().Catalog)
-	if err != nil {
-		t.Fatal(err)
-	}
+	builder := catalogs.NewEmpty()
 	for _, payload := range payloads {
 		fixture, err := catalogs.DecodeCatalogPayload(payload)
 		if err != nil {
 			t.Fatal(err)
+		}
+		for _, provider := range fixture.Providers().List() {
+			if declared, found := baseline.Catalog().Providers().Get(provider.ID); found {
+				declared.Models = nil
+				if declared.Catalog != nil && declared.Catalog.Endpoint.AuthorMapping != nil {
+					for _, id := range declared.Catalog.Endpoint.AuthorMapping.Normalized {
+						author, found := baseline.Catalog().Authors().Get(id)
+						if !found {
+							t.Fatalf("provider author %q is absent", id)
+						}
+						if err := builder.SetAuthor(*author); err != nil {
+							t.Fatal(err)
+						}
+					}
+				}
+				if err := builder.SetProvider(*declared); err != nil {
+					t.Fatal(err)
+				}
+			}
 		}
 		for _, author := range fixture.Authors().List() {
 			if err := builder.SetAuthor(author); err != nil {
@@ -47,18 +64,11 @@ func reviewedRuntimeSource(t *testing.T, payloads ...[]byte) runtime.Source {
 	if err != nil {
 		t.Fatal(err)
 	}
-	baseline, err := starmap.EmbeddedGeneration()
+	candidate, err := starmap.NewCandidate(catalog, starmap.CandidateEvidence{}, starmap.WithCandidateGenerationID("reviewed-fixture"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	candidate, err := starmap.NewCandidate(catalog, starmap.CandidateEvidence{
-		SourceObservations: baseline.Manifest.SourceObservations,
-		ReviewCandidates:   baseline.Manifest.ReviewCandidates,
-	}, starmap.WithCandidateGenerationID("reviewed-fixture"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	at := baseline.Manifest.GeneratedAt
+	at := time.Now().UTC()
 	generation, err := candidate.Generation("reviewed-fixture", at)
 	if err != nil {
 		t.Fatal(err)

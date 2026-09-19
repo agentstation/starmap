@@ -427,9 +427,8 @@ func TestAcquireOpensNoWindowWithoutLayer(t *testing.T) {
 }
 
 // publishGuard bounds one wait for runtime work that carries no timer of its
-// own. Each publication rebuilds the effective catalog over the embedded
-// baseline, and a race run on a loaded hosted runner takes several seconds per
-// rebuild. The guard catches a hang. It never decides the order under test,
+// own. The reviewed fixture supplies only the authored definitions under test.
+// The guard catches a hang. It never decides the order under test,
 // because the blocked provider answers only when the test releases it.
 const publishGuard = 30 * time.Second
 
