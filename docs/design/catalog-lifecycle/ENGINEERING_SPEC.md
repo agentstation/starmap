@@ -2736,6 +2736,12 @@ The cache holds at most 1,024 bundles and 16 MiB of encoded policy.
 Cold loads remain limited to 16 globally and four per lookup tenant, with a one-second deadline.
 Encoded byte limits are not total heap measurements. Capacity qualification must include decoded records and transient copies.
 
+The dedicated `make test-authorization-capacity` job measures concurrent tenant churn with nested metadata.
+Report retained heap after collection, sampled heap during churn, cumulative allocation, and memory after shutdown.
+Sampled heap is not a guaranteed peak or process RSS. Isolated cache measurements do not qualify whole-gateway overhead.
+Keep fast entry, byte, and load-boundary tests in the regular native suite.
+Run the capacity profile explicitly once per CI qualification, with race detection and Go 1.27.1.
+
 CSP10.2 owns authorization memory. CSP16 owns applied configuration memory and authority revisions.
 
 #### 8.9.4 Atomic limits and recoverable reservations
