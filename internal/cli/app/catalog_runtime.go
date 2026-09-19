@@ -9,7 +9,6 @@ import (
 
 	"github.com/agentstation/starmap"
 	"github.com/agentstation/starmap/acquisition"
-	"github.com/agentstation/starmap/internal/bootstrap"
 	"github.com/agentstation/starmap/internal/catalog/settings"
 	catalogconfig "github.com/agentstation/starmap/pkg/catalogs/config"
 	"github.com/agentstation/starmap/pkg/errors"
@@ -58,7 +57,7 @@ func (a *App) openRuntimeLocked(ctx context.Context, extra []runtime.Option) (*r
 	if _, err := a.credentialPolicy(ctx); err != nil {
 		return nil, err
 	}
-	if _, err := bootstrap.Export(ctx, paths.Baselines.Path); err != nil {
+	if _, err := starmap.ExportEmbeddedBaseline(ctx, paths.Baselines.Path); err != nil {
 		return nil, err
 	}
 	composition, err := a.composition(extra)

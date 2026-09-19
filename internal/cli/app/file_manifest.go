@@ -2,7 +2,6 @@ package app
 
 import (
 	"path/filepath"
-	"strings"
 
 	"github.com/agentstation/starmap/pkg/productpaths"
 	filepolicy "github.com/agentstation/starmap/pkg/productpaths/policy"
@@ -54,7 +53,9 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	add("github-discovery", child(paths.Runtime, "github-catalog-source"), "tree", "available", "Configured GitHub source initialization and refresh.", "Preserve replay floors and accepted release references.", "*.json", ".state-*", ".record-publications/.owner.lock", ".record-publications/*.jsonl")
 	add("source-http", paths.SourceCache, "tree", "available", "Explicit models.dev HTTP acquisition.", "Rebuild through permitted source access. Accepted evidence lives elsewhere.", "api.json", "api.json.metadata.json", ".starmap-cache-*")
 	add("source-checkout", paths.SourceCheckout, "tree", "available", "Explicit pinned models.dev Git acquisition.", "Preserve operator-selected content. Rebuild managed input only through permitted acquisition.", "**")
-	addWorkspaceFiles(&report, paths)
+	if err := addWorkspaceFiles(&report, paths); err != nil {
+		return productpaths.FileManifest{}, err
+	}
 	add("migration-journal", child(paths.Roots[productpaths.State], "migrations"), "tree", "available", "An explicit runtime migration, unless its journal root is overridden.", "Preserve until the deployment recovery procedure permits removal.", "*/manifest.json", "*/stage-initialization.json", "*/journal.ndjson", "*/journal.partial-*", "*/.owner.lock", "*/.owner-*")
 	add("admin-identities", child(paths.Roots[productpaths.State], "admin", "identities.json"), "file", "available", "Explicit local administrator initialization.", "Preserve identities, authority audience, and revision in an offline backup.")
 	add("admin-audit", child(paths.Roots[productpaths.State], "admin", "audit"), "tree", "available", "Administrative intent and outcome writes.", "Preserve the complete audit history. Invalid or full history blocks new mutations.", "events.ndjson", ".audit-*", ".record-publications/**")
@@ -97,32 +98,11 @@ func (a *App) FileManifest() (productpaths.FileManifest, error) {
 	return report, nil
 }
 
-func addWorkspaceFiles(report *productpaths.FileManifest, paths ProductPaths) {
-	availability := "available"
-	if paths.Workspace.Path == "" {
-		availability = "disabled"
+func addWorkspaceFiles(report *productpaths.FileManifest, paths ProductPaths) error {
+	entries, err := productpaths.WorkspaceFiles(paths.Workspace)
+	if err != nil {
+		return err
 	}
-	report.Files = append(report.Files, productpaths.FileEntry{ID: "workspace", Location: paths.Workspace, Kind: "tree", Availability: availability, Patterns: []string{"**"}, Creation: "Explicit catalog authoring or projection.", Recovery: "Preserve operator content and projection receipts."})
-	if availability == "disabled" {
-		return
-	}
-	parent := paths.Workspace
-	parent.Path = filepath.Dir(parent.Path)
-	name := filepath.Base(paths.Workspace.Path)
-	for _, item := range []struct{ id, suffix, creation, recovery string }{
-		{"workspace-receipt", ".starmap-projection.json", "Successful workspace projection.", "Preserve with the human catalog workspace."},
-		{"workspace-journal", ".starmap-replacement.json", "Windows workspace replacement records intent before either directory moves.", "Preserve with the candidate and backup. Projection repair validates and resumes the operation."},
-		{"workspace-lock", ".starmap-write.lock", "First writer creates the lock. Shared reads and exclusive writes reuse it.", "Retain while the workspace is in use. A lock file alone does not prove active ownership."},
-	} {
-		location := parent
-		location.Path = filepath.Join(parent.Path, "."+name+item.suffix)
-		report.Files = append(report.Files, productpaths.FileEntry{ID: item.id, Location: location, Kind: "file", Availability: availability, Creation: item.creation, Recovery: item.recovery})
-	}
-	patternName := strings.NewReplacer("\\", "\\\\", "*", "\\*", "?", "\\?", "[", "\\[", "]", "\\]").Replace(name)
-	report.Files = append(report.Files,
-		productpaths.FileEntry{ID: "catalog-migration-lock", Location: parent, Kind: "patterns", Availability: availability, Patterns: []string{"." + patternName + ".starmap-migration-lock-*"}, Creation: "Windows migration creates a hard link to the existing private store commit lock.", Recovery: "Completed operations remove their own alias. Stop all store writers and migrations before removing an abandoned alias."},
-		productpaths.FileEntry{ID: "workspace-preparing", Location: parent, Kind: "patterns", Availability: availability, Patterns: []string{"." + patternName + ".preparing-*"}, Creation: "Private workspace rendering and access restoration.", Recovery: "Preserve interrupted preparation until ownership checks permit cleanup."},
-		productpaths.FileEntry{ID: "workspace-staging", Location: parent, Kind: "patterns", Availability: availability, Patterns: []string{"." + patternName + ".preparing-*/**", "." + patternName + ".candidate-*/**", ".." + patternName + ".candidate-*.verify-*/**", ".." + patternName + ".starmap-projection.json.*", ".." + patternName + ".starmap-replacement.json.*"}, Creation: "Workspace copy, verification, receipt, and journal writes.", Recovery: "Preserve interrupted work until ownership and recovery checks permit cleanup."},
-		productpaths.FileEntry{ID: "workspace-backup", Location: parent, Kind: "patterns", Availability: availability, Patterns: []string{"." + patternName + ".backup-*/**"}, Creation: "Windows replacement retains the previous workspace until the new receipt is saved.", Recovery: "Retain with the replacement journal. Recovery refuses changed or unrecognized backup files."},
-	)
+	report.Files = append(report.Files, entries...)
+	return nil
 }
