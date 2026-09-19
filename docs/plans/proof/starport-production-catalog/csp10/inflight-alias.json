@@ -1,0 +1,56 @@
+{
+  "starport_commit": "7cb87bb811527ec1fc14e78e262df710c0d4e5cb",
+  "starmap_commit": "6aff4690d7db29c820e39c5a03fbaece5f64d71e",
+  "toolchain": "go1.27.1",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "test": "TestAliasRemovalKeepsAdmittedRequestAndRejectsNewAttempts",
+  "scope": [
+    "Real registry publication and request leases",
+    "Alias removal rejects a new request before provider dispatch",
+    "Canonical ID uses the replacement generation and connector",
+    "Admitted request completes with its original snapshot and connector"
+  ],
+  "checks": [
+    {
+      "command": "go test -race -count=10 -timeout 3m ./internal/router -run ^TestAliasRemovalKeepsAdmittedRequestAndRejectsNewAttempts$",
+      "exit": 0,
+      "repetitions": 10
+    },
+    {
+      "command": "go test -race -json -count=1 -timeout 3m ./internal/router",
+      "exit": 0,
+      "pass": 97,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "go vet ./internal/router",
+      "exit": 0
+    },
+    {
+      "command": "golangci-lint run ./internal/router/...",
+      "exit": 0,
+      "issues": 0
+    },
+    {
+      "command": "technical-writing lint internal/router/alias_resolution_test.go --format text",
+      "exit": 0
+    }
+  ],
+  "production_changes": false,
+  "fail_before": "Not applicable: this test qualifies existing behavior; no production repair was needed.",
+  "remaining": [
+    "Full HTTP and cache alias/removal transitions",
+    "Complete A18 and CSP10 qualification",
+    "Review, published module pair, native CI, and merge"
+  ],
+  "task_complete": false,
+  "planning_writing": {
+    "full_gate_exit": 2,
+    "diagnostics": 68,
+    "historical_evidence_diagnostics": 67,
+    "draft_plan_diagnostics": 1,
+    "draft_plan_fixed": true,
+    "final_targeted_plan_exit": 0
+  }
+}

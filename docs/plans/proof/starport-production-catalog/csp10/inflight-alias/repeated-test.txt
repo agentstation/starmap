@@ -1,0 +1,1 @@
+ok  	github.com/agentstation/starport/internal/router	1.496s
