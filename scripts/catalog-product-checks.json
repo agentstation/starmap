@@ -1443,6 +1443,90 @@
           "test": "TestCatalogPersistsProductBaselineAndOwnershipOffline"
         }
       ]
+    },
+    "A22.startup_poll_stream_manual": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/app",
+          "test": "TestCatalogConfigurationControlsRuntimeTraffic"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestOfflineRuntimeDefersAcquisitionCredentials"
+        }
+      ]
+    },
+    "A22.lazy_secret_resolution": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestOfflineRuntimeDefersAcquisitionCredentials"
+        }
+      ]
+    },
+    "A22.local_import_allowed": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestOfflineRuntimeReadsLocalFileUpdates"
+        }
+      ]
+    },
+    "A23.manual_source_with_acquisition": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestManualSourceRetainsAutomaticProviderAcquisition"
+        }
+      ]
+    },
+    "A23.pin_blocks_all_activation": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestGenerationPinBlocksAcquisitionAcrossRestart"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestAcceptRejectsStaleLeaseEpoch"
+        }
+      ]
+    },
+    "A23.explicit_refresh": {
+      "kind": "all",
+      "checks": [
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestProductionAcquisitionLifecycle"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/catalog",
+          "test": "TestManualSourceRetainsAutomaticProviderAcquisition"
+        }
+      ]
     }
   }
 }

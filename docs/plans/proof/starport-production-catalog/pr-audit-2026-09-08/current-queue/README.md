@@ -11,7 +11,7 @@ After authorization, update its existing branch with an expected-head lease and 
 
 CSP8 owns reviewed Starmap #171 at `11366a55629f21300b79bd15a4fa62c3fc00eba1`.
 Its prior 31 checks passed. Hold it until CSP6 publication and capture finish, then update and qualify against main.
-Starport has no open PRs. Local preparation is at `c25063f` in `starport-product-paths`.
+Starport has no open PRs. Local preparation is at `2007475` in `starport-product-paths`.
 
 Preserve rejected #165 until replacement qualification proves that no required work is lost.
 Both catalog channels and the original preparation retry remain unverified.

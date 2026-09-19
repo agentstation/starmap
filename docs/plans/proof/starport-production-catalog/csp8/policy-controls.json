@@ -1,0 +1,74 @@
+{
+  "starport_head": "20074755fd17c0ee5f8c82075e4cfdc13c8eaac1",
+  "starmap_head": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+  "scope": "CSP8 offline, manual refresh, and generation pin contracts. Local workspace qualification only.",
+  "defect": "Accept admitted a newer shared-store candidate with the current lease epoch despite a local generation pin. Acceptance now requires the pinned runtime selection before accessing durable candidate state.",
+  "fail_before": {
+    "test": "TestGenerationPinBlocksAcquisitionAcrossRestart",
+    "result": "FAIL",
+    "seconds": 15.684,
+    "assertion": "a newer shared-store candidate must not bypass the local generation pin",
+    "log": "policy-controls/pin-fail-before.log"
+  },
+  "checks": [
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/catalog -run '^Test(OfflineRuntime.*|ManualSourceRetainsAutomaticProviderAcquisition|GenerationPinBlocksAcquisitionAcrossRestart|RemoteRuntimeAcceptsOnlyMatchingForwardState|AcceptRejectsStaleLeaseEpoch|GenerationStoresKeepCandidateAndAcceptedPointersIndependent)$'",
+      "result": "PASS",
+      "top_level_tests": 7,
+      "seconds": 22.824
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go test -race -count=1 -timeout 3m ./internal/app -run '^TestCatalogConfigurationControlsRuntimeTraffic$'",
+      "result": "PASS",
+      "top_level_tests": 1,
+      "subtests": 2,
+      "seconds": 20.078
+    },
+    {
+      "command": "GOWORK=/tmp/csp8-host-integration.work go vet ./internal/catalog ./internal/app",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts -p test_catalog_product_verify.py",
+      "result": "PASS",
+      "tests": 73,
+      "seconds": 3.8
+    }
+  ],
+  "registered_this_change": [
+    "A22.startup_poll_stream_manual",
+    "A22.lazy_secret_resolution",
+    "A22.local_import_allowed",
+    "A23.manual_source_with_acquisition",
+    "A23.pin_blocks_all_activation",
+    "A23.explicit_refresh"
+  ],
+  "remaining_unregistered_cases": [
+    "A22.inference_separate_egress",
+    "A23.restart_watcher_guards",
+    "A24.local_fallback",
+    "A24.scope_authority_origins",
+    "A24.generated_file_inventory",
+    "A03.starport_file_manifest",
+    "A03.shared_backend_no_local_databases",
+    "A43.memory_databases",
+    "A43.scratch_blobs_runtime",
+    "A43.persistent_installation_untouched",
+    "A43.normal_shutdown_cleanup",
+    "A43.crash_cleanup_ownership"
+  ],
+  "remaining_unregistered_count": 12,
+  "coverage": [
+    "Offline acquisition resolves no credentials and makes no provider or metadata requests.",
+    "Offline local file refresh survives a real Badger close and reopen.",
+    "Manual source refresh preserves the prior file after restart while provider acquisition remains automatic.",
+    "A pin survives two real Badger restarts and rejects foreign candidates with valid epochs. The selected candidate remains acceptable."
+  ],
+  "remaining": [
+    "Published Starmap dependency qualification.",
+    "Full repository checks, pre-PR review, hosted native CI, and implementation merge.",
+    "Complete remaining registration gaps against their actual behavioral contracts."
+  ],
+  "running_sessions": [],
+  "completion_credit": false
+}
