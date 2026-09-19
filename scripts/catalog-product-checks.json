@@ -3766,6 +3766,12 @@
           "repository": "starport",
           "package": "./internal/router",
           "test": "TestLatencyEmptyPeerScanClearsOldHints"
+        },
+        {
+          "kind": "go_test",
+          "repository": "starport",
+          "package": "./internal/availability",
+          "test": "TestPeerPublicationRenewsUnchangedHealthHint"
         }
       ]
     },
