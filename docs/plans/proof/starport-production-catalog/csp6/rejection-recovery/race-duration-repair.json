@@ -41,13 +41,34 @@
       "diagnostics": 0
     },
     "golangci_lint": "pass, zero issues",
-    "pure_go": "pass, Go 1.27.1 external consumer, library, pinned artifact, stores, server, remote and CLI"
+    "pure_go": "pass, Go 1.27.1 external consumer, library, pinned artifact, stores, server, remote and CLI",
+    "repository_checks": "PASS: make verify-checks, including all coverage gates, pure-Go, container smoke, lint and catalog performance",
+    "runtime_shard_1": {
+      "passed": 310,
+      "failed": 0,
+      "skipped": 2,
+      "package_seconds": 673.975,
+      "skipped_tests": [
+        "TestPublicChannelUpgradeRetainsAcceptedCatalogBeforeRefresh",
+        "TestPublicCatalogActivatesWithoutProviderCredentials"
+      ],
+      "limitation": "Local public fixture unavailable. CI requires the fixture and cannot skip these cases."
+    },
+    "workflow": "actionlint syntax passes; two unchanged baseline ShellCheck warnings remain. Three moved commands match HEAD exactly and preserve the six-platform matrix."
   },
   "live_sessions": {
-    "72305": "candidate runtime shard 1, /tmp/csp6-runtime-shard-1.log and .jsonl",
     "39454": "candidate runtime shards 2 then 3 sequentially, /tmp/csp6-runtime-shard-{2,3}.log and .jsonl",
-    "94828": "make verify-checks, /tmp/csp6-race-repair-checks.log; pure-Go passed, performance and remaining checks active"
+    "1403": "final make technical-writing-check after native workflow documentation update"
   },
-  "next_action": "Observe sessions 72305, 39454, 94828. After final checks, run Sol xhigh and Opus high pre-PR autoreview on the committed repair. Publish, qualify native CI and merge the repair. Then resume existing publisher for #168. Do not restart live tests.",
-  "source_commit": "f1e2507b76650566b6b0f734b4e1868ccd5e2dd6"
+  "next_action": "Finish live runtime shards in session 39454 and prose check 1403. Commit the native workflow split. Run required Sol xhigh and Opus high autoreview. Publish one consolidated repair PR, qualify native CI and merge. Then resume existing catalog publisher for #168.",
+  "source_commit": "f1e2507b76650566b6b0f734b4e1868ccd5e2dd6",
+  "native_intel_failure": {
+    "run": 35409735768,
+    "job": 105806772484,
+    "runtime_package_seconds": 1325.083,
+    "native_suite_result": "all packages passed",
+    "publication_result": "job cancelled at its 60-minute bound before package completion",
+    "repair": "Move the three unchanged publication/Git acquisition commands to a separate six-platform job matrix, required by Verification Gate. Preserve all limits.",
+    "evidence": "promotion-168-intel-timeout.log.gz"
+  }
 }
