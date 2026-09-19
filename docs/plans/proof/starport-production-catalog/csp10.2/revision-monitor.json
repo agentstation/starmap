@@ -1,0 +1,84 @@
+{
+  "task": "CSP10.2",
+  "commit": "f045352c8d1e8af601b56356d35480425d4a4310",
+  "toolchain": "go1.27.1 darwin/arm64",
+  "status": "application revision ownership and local mutation hooks implemented; request cache remains disconnected",
+  "contracts": [
+    "App construction initializes both durable markers before policy repositories open. It starts no revision worker. App.Run starts one worker per authority. Shutdown withdraws fences and joins workers before storage closes.",
+    "Each authority has an independent one-second read deadline and a one-second delay after each check. A failed or slow owner cannot block observation of another owner.",
+    "API key, account, and configured identity repositories receive their authority mutation hooks. The integration test verifies immediate withdrawal when each mutation returns.",
+    "An independent repository writer has no local callback. Application polling catches its durable sequence and revokes older receipts without a notification.",
+    "Polling observes requirements without issuing or renewing receipts. Retained evidence expires at its original deadline, including during an outage or after recovery.",
+    "Unknown errors use fixed status codes. Epoch changes remain blocked under the old fence. Rollback cannot report healthy observation.",
+    "A successful authoritative read still records a known withdrawal after its deadline. The check reports deadline failure and cannot renew permission."
+  ],
+  "verification": {
+    "application_before_test_addition": {
+      "command": "GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/app",
+      "exit_code": 0,
+      "pass_events": 135,
+      "skip_events": 2,
+      "skips": [
+        "TestAppWithValkey",
+        "TestSharedStartupDoesNotCreateLocalDatabases"
+      ],
+      "source_note": "All production wiring present. Before the added application regression and later monitor deadline correction."
+    },
+    "application_and_monitor_regression": {
+      "pass_events": 9,
+      "failed_events": 0,
+      "skipped_events": 0
+    },
+    "shared_startup": {
+      "command": "TEST_VALKEY_URL=<temporary> TEST_POSTGRES_URL=<temporary> GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=3m -json ./internal/app -run '^(TestAppWithValkey|TestSharedStartupDoesNotCreateLocalDatabases)$'",
+      "exit_code": 0,
+      "pass_events": 2,
+      "skip_events": 0,
+      "note": "Resolves both service-dependent skips. Before the monitor deadline correction."
+    },
+    "shared_components": {
+      "command": "TEST_VALKEY_URL=<temporary> TEST_AUTHORIZATION_POSTGRES_URL=<isolated schemas> GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=2m -json ./internal/authorization/...",
+      "exit_code": 0,
+      "pass_events": 97,
+      "skip_events": 0,
+      "note": "Before the monitor deadline correction. Includes memory, Badger, Valkey, SQLite, and PostgreSQL."
+    },
+    "final_focused": {
+      "command": "TEST_VALKEY_URL=<temporary> TEST_AUTHORIZATION_POSTGRES_URL=<isolated schemas> GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=2m -json ./internal/authorization/... ./internal/app -run 'TestMonitor|TestApplicationOwnsAuthorizationFencesAndCatchup|TestRepositorySource|TestKVRevision|TestRepositoriesPublishEvery|TestSQLRevision|TestIdentity'",
+      "exit_code": 0,
+      "pass_events": 47,
+      "failed_events": 0,
+      "skipped_events": 0,
+      "note": "Final code after the deadline correction. Includes production application lifecycle and all affected revision-monitor contracts."
+    },
+    "lint": "Final make lint exits 0 with zero issues.",
+    "writing": "Four new source/test files pass with zero diagnostics.",
+    "planning_repository_writing": "Required make technical-writing-check exits 2 at make: 67 diagnostics in pre-existing historical proof text across 1666 scanned files. The changed plan passes scoped lint with zero diagnostics. Historical evidence remains unchanged. See revision-monitor-plan-writing.log."
+  },
+  "fail_before": [
+    {
+      "test": "TestApplicationOwnsAuthorizationFencesAndCatchup",
+      "failed_leaf_cases": [
+        "key",
+        "account",
+        "identity"
+      ],
+      "method": "Overlay removes only the three new WithAuthorizationFence arguments from current app.go. Initialization and monitor remain present. Each local mutation wrongly retains its old receipt. This is a focused hook regression, not a complete historical-tree test."
+    },
+    {
+      "test": "TestMonitorRetainsKnownWithdrawalAfterReadDeadline",
+      "method": "Test fails against the pre-correction monitor source retained in monitor-before-deadline.json. The late successful read leaves an old permit usable."
+    }
+  ],
+  "limitations": [
+    "Production HTTP authorization still reads repositories. This commit does not claim warm request latency improvement or A46 completion.",
+    "Connect a verified clock-health source before cache admission. Do not assume healthy clock status when the native source is disabled or unknown.",
+    "User/grant projections, anonymous/session policy bundles, discovery and retry/cache/batch rechecks, required team-budget errors, record-size limits, capacity/performance qualification, and operator UI remain open.",
+    "The monitor status reports local source observations only. No fleet enforcement acknowledgement or UI integration exists yet.",
+    "Native qualification, full task/repository gates, review, compatible published dependencies, and merges remain open."
+  ],
+  "next_action": "Compose the cache with verified clock health and source repositories. Route bearer, anonymous, and session admission through immutable policy and carry permits to every recheck boundary.",
+  "active_sessions": [],
+  "temporary_services": "Temporary Valkey and PostgreSQL containers stopped and verified absent.",
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.3</td><td>Repair unchanged-peer renewal at <code>1b0fc39</code>. All seven expanded A49 cases pass. Final race checks pass 320 events with two service-dependent skips. Starport review runs.</td><td><a href=\"proof/starport-production-catalog/csp10.3/renewal-completion.json\">Renewal qualification</a></td></tr>"
+}

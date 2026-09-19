@@ -1,0 +1,9 @@
+{"Time":"2026-09-19T16:02:50.831915-05:00","Action":"start","Package":"github.com/agentstation/starport/internal/authorization"}
+{"Time":"2026-09-19T16:02:51.104774-05:00","Action":"run","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestMonitorRetainsKnownWithdrawalAfterReadDeadline"}
+{"Time":"2026-09-19T16:02:51.104865-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestMonitorRetainsKnownWithdrawalAfterReadDeadline","Output":"=== RUN   TestMonitorRetainsKnownWithdrawalAfterReadDeadline\n","OutputType":"frame"}
+{"Time":"2026-09-19T16:02:51.105119-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestMonitorRetainsKnownWithdrawalAfterReadDeadline","Output":"    monitor_test.go:225: known late withdrawal ignored: \u003cnil\u003e\n","OutputType":"error"}
+{"Time":"2026-09-19T16:02:51.105228-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestMonitorRetainsKnownWithdrawalAfterReadDeadline","Output":"--- FAIL: TestMonitorRetainsKnownWithdrawalAfterReadDeadline (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-09-19T16:02:51.105246-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/authorization","Test":"TestMonitorRetainsKnownWithdrawalAfterReadDeadline","Elapsed":0}
+{"Time":"2026-09-19T16:02:51.105263-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-09-19T16:02:51.105696-05:00","Action":"output","Package":"github.com/agentstation/starport/internal/authorization","Output":"FAIL\tgithub.com/agentstation/starport/internal/authorization\t0.273s\n","OutputType":"frame"}
+{"Time":"2026-09-19T16:02:51.105735-05:00","Action":"fail","Package":"github.com/agentstation/starport/internal/authorization","Elapsed":0.274}
