@@ -1,0 +1,47 @@
+{
+  "task": "CSP10.2",
+  "commit": "e4c72c2cefb9383f79e1d0ea010af6072f30226e",
+  "status": "atomic SQL revisions implemented and tested; per-authority bundles and admission integration remain open",
+  "contracts": [
+    "User, team, membership, and grant mutations commit their authorization revision in the same SQL transaction.",
+    "Principal deletion removes the owner, its grants, and its memberships atomically. A rejected owner delete restores every dependent row.",
+    "Grant and membership insertion validate their endpoints while the revision row serializes policy writers.",
+    "Separate SQLite, PostgreSQL, and MySQL migrations define the same revision table.",
+    "Local mutation fencing is available through identity.WithAuthorizationFence. Production cache composition still needs to install it."
+  ],
+  "verification": {
+    "task_command": "TEST_VALKEY_URL=<temporary-loopback-service> GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=5m -json ./internal/authorization/... ./internal/account ./internal/apikey ./internal/identity ./internal/sqlstore ./internal/server/... -skip '^TestAuthorizationWarmRequestsAvoidStableReads$'",
+    "task_exit_code": 0,
+    "task_pass_events": 796,
+    "task_skip_events": 2,
+    "skipped_tests": [
+      "github.com/agentstation/starport/internal/server:TestSDKCanonicalRemovalAfterSuccessfulInference",
+      "github.com/agentstation/starport/internal/server/controllers:TestGatewayOverheadBenchmark"
+    ],
+    "excluded": "Server warm-read regression remains unresolved.",
+    "remote_command": "TEST_AUTHORIZATION_POSTGRES_URL=<temporary-loopback-service> TEST_VALKEY_URL=<temporary-loopback-service> GOWORK=/tmp/csp102-host-integration.work go test -race -count=1 -timeout=3m -json ./internal/authorization/revision",
+    "remote_exit_code": 0,
+    "remote_pass_events": 20,
+    "remote_skip_events": 0,
+    "fail_before": "Overlay of identity/repository.go from 2fc8651 fails SQL mutation revision publication and both failed-delete rollback cases. The old implementation removed grants despite owner deletion failure.",
+    "lint_command": "GOWORK=/tmp/csp102-host-integration.work make lint",
+    "lint_exit_code": 0,
+    "lint_output": "Linting code...\n0 issues.\nLint complete\n",
+    "writing": "Four new Go files pass with zero diagnostics."
+  },
+  "services": {
+    "postgres_image": "sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+    "valkey_image": "sha256:9acdf6f0ae1771ea63c401e127054b2d1779227b9230dcfae37fa684610eaa4f",
+    "isolation": "Temporary loopback-only containers. PostgreSQL cases use separate generated schemas. KV cases use separate generated key namespaces.",
+    "cleanup": "Both temporary containers stopped and removed after qualification."
+  },
+  "limitations": [
+    "MySQL migration behavior remains UNVERIFIED against a live MySQL server.",
+    "No production warm-cache claim.",
+    "Per-authority receipt vectors, durable catch-up, coherent loaders, fleet diagnostics, and admission/retry/cache/batch integration remain open.",
+    "Full A46, native qualification, required review, and merge remain open."
+  ],
+  "next_action": "Extend authorization bundles to preserve separate KV and SQL receipts. Qualify missing, stale, and mismatched authority requirements before implementing the coherent source adapter.",
+  "active_sessions": [],
+  "archived_execution_row": "<tr><td>2026-09-19</td><td>CSP10.3</td><td>Five regression subtests reproduce synchronous advisory storage calls at <code>b23e8f9</code>. Preserve prior resume evidence and replace stale process instructions.</td><td><a href=\"proof/starport-production-catalog/csp10.3/preparation.json\">Preparation proof</a></td></tr>"
+}
