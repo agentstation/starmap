@@ -1,0 +1,39 @@
+{
+  "task": "CSP10",
+  "recorded_at": "2026-09-19T17:52:35.695425+00:00",
+  "starport_head": "646778f",
+  "starmap_head": "ac3d25e7e",
+  "status": "Repository and task verification running; review not started",
+  "test_repair": {
+    "commit": "646778f",
+    "cause": "The primitive dispatch test omitted destination approval, so the production guard rejected it before unsupported-primitive dispatch.",
+    "change": "Assert refusal without approval, then bind an explicit fixture grant and retain the unsupported-primitive assertion.",
+    "focused_race": "Both architecture and keyring packages pass.",
+    "ownership_verifier": "12 passed, 0 failed.",
+    "writing": "PASS: zero diagnostics in the changed test."
+  },
+  "active_checks": [
+    {
+      "session_id": 52498,
+      "runner": "/tmp/csp10-repository-run.py",
+      "state": "/tmp/csp10-repository-gates/state.json",
+      "scope": "33 required AGENTS.md commands. Source started at 43e7ab0; the test-only repair 646778f precedes later full Go checks."
+    },
+    {
+      "session_id": 21172,
+      "output": "/tmp/csp10-complete-verifier.json",
+      "scope": "All 29 CSP10 subcases. Runtime code is unchanged by the architecture fixture repair."
+    }
+  ],
+  "known_failure": "verify-v1-architecture V01 requires a published compatible Starmap module. The local workspace does not satisfy that requirement.",
+  "github_recheck": {
+    "starmap_prs": {
+      "171": "11366a55629f21300b79bd15a4fa62c3fc00eba1",
+      "168": "e1d72d5d7e5f2921616b89b91b6460fefaffb62d",
+      "165": "e228e694ac5e66f75639721c438a261015a8026f"
+    },
+    "starport_open_prs": 0,
+    "disposition": "Unchanged. No merge or publication performed."
+  },
+  "next_action": "Collect both running checks. Verify failures at their owning boundaries. Complete required review after final checks and preserve the published-module blocker."
+}

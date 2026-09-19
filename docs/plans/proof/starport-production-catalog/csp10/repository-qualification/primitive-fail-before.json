@@ -1,0 +1,3 @@
+{
+  "output": "--- FAIL: TestTransportAuthenticationRegistriesUsePrimitives (0.00s)\n    catalog_runtime_test.go:101: \n        \tError Trace:\t/Users/jack/src/github.com/agentstation/starport-catalog-routing/internal/architecture/catalog_runtime_test.go:101\n        \tError:      \tShould be true\n        \tTest:       \tTestTransportAuthenticationRegistriesUsePrimitives\nFAIL\nFAIL\tgithub.com/agentstation/starport/internal/architecture\t0.376s\nok  \tgithub.com/agentstation/starport/internal/providers/keyring\t2.458s\nFAIL\n"
+}
