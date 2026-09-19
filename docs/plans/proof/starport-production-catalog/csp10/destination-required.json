@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-09-19T16:50:21.013138+00:00",
+  "task": "CSP10",
+  "status": "direct authentication and job URL regression verified locally; A25 remains UNVERIFIED",
+  "starport_head": "5004cd246ce7fcf1170b1bf726fd50a60ffcb146",
+  "starmap_head": "9845e6cf9ea3a239c90214e1eb937889ca72b129",
+  "workspace": "/tmp/csp10-host-integration.work",
+  "changes": [
+    "Authentication requires destination approval before placing credentials. Dispatch rechecks the exact approved target.",
+    "Transport fixtures supply explicit approvals. Existing mutation grants remain unchanged.",
+    "Job polling, cancellation, and content URLs preserve collection queries and escape opaque job identifiers."
+  ],
+  "checks": {
+    "affected-race": 0,
+    "vet": 0,
+    "lint": 0,
+    "writing": 1
+  },
+  "affected_test_events": {
+    "pass": 1216,
+    "fail": 0,
+    "skip": 6
+  },
+  "skipped": [
+    "TestProviderCredentialRepositoryContract/valkey",
+    "TestManagedMaterialValkeyOutageAndRecovery",
+    "TestSDKCanonicalRemovalAfterSuccessfulInference",
+    "TestManagedMaterialStorageRotationRevocationAndRecreation/valkey",
+    "TestAppWithValkey",
+    "TestSharedStartupDoesNotCreateLocalDatabases"
+  ],
+  "fail_before": "fail-before.json retains missing-approval and job-query failures. initial-affected-race.json retains the synthetic fixture failure, corrected before final verification.",
+  "writing": "37 historical diagnostics; baseline comparison finds none added.",
+  "limitations": [
+    "Six checks skipped; see affected-race.json. No native or released-pair qualification claimed.",
+    "Live catalog mutation, connection tests, operator configuration authority, effective diagnostics, review, publication, and merge remain open."
+  ],
+  "next_action": "Qualify live catalog origin and placement changes across inference credential roles and streams. Preserve approved operator overrides and selected configuration authority."
+}

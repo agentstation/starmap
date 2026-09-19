@@ -1,0 +1,16 @@
+{
+  "base": "a6db25025220b2f5288e0e538e3724b0d4f4f4bd",
+  "checks": [
+    {
+      "command": "go test ./internal/providers/auth -run ^TestRequestAuthenticationRequiresDestinationApproval$ -count=1",
+      "exit_code": 1,
+      "failure": "Expected error with inference credential destination is not approved in chain but got nil."
+    },
+    {
+      "command": "go test -race ./internal/providers/connectors -run ^TestJobRequestsPreserveApprovedQuery$ -count=1",
+      "exit_code": 1,
+      "failure": "apply provider request authentication: inference credential destination is not approved",
+      "context": "Strict authentication already applied; job URL still appended its path after the query."
+    }
+  ]
+}

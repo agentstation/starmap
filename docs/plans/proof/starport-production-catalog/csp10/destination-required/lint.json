@@ -1,0 +1,9 @@
+{
+  "command": [
+    "make",
+    "lint"
+  ],
+  "exit_code": 0,
+  "stdout": "Linting code...\n0 issues.\nLint complete\n",
+  "stderr": ""
+}
