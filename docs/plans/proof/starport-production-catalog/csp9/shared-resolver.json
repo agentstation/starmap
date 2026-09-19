@@ -1,0 +1,64 @@
+{
+  "status": "local implementation; host integration and publication incomplete",
+  "source": {
+    "worktree": "starmap-credential-roles",
+    "branch": "codex/starmap-credential-roles",
+    "head": "68a67b51a9fd3d64dd67682a752a392c5f2741f5",
+    "parent": "11366a55629f21300b79bd15a4fa62c3fc00eba1"
+  },
+  "changes": [
+    "Explicit Starport acquisition product selection and host environment lookup.",
+    "Separate current and legacy policy versions for each product.",
+    "Complete-handle migration checks, retained acceptance, and policy-family isolation.",
+    "Current Starport empty or blank values disable fallback.",
+    "Explicit environment references use the host lookup."
+  ],
+  "checks": [
+    {
+      "command": "go test -json -race -count=1 -timeout 5m ./internal/auth ./acquisition",
+      "exit": 0,
+      "passing_test_events": 240,
+      "skips": 0,
+      "note": "Before the final blank-value helper and two extra API tests; final affected checks below."
+    },
+    {
+      "command": "go test -json -race -count=1 -timeout 2m ./internal/auth",
+      "exit": 0,
+      "passing_test_events": 120,
+      "skips": 0
+    },
+    {
+      "command": "go test -json -race -count=1 -timeout 2m -run 'TestStarportCredential|TestCredentialProductValidation|TestCatalog.*Policy' ./internal/auth ./acquisition",
+      "exit": 0,
+      "passing_test_events": 33,
+      "skips": 0
+    },
+    {
+      "command": "go vet ./internal/auth ./acquisition",
+      "exit": 0
+    },
+    {
+      "command": "go tool goago -stale-ignores -format json ./...",
+      "exit": 0,
+      "findings": 0,
+      "errors": 0
+    },
+    {
+      "command": "go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2 run ./internal/auth/... ./acquisition/...",
+      "exit": 0,
+      "findings": 0
+    },
+    {
+      "command": "make technical-writing-check",
+      "exit": 0,
+      "note": "Before documentation addition; changed source and final documentation also passed targeted lint."
+    }
+  ],
+  "remaining": [
+    "Connect Starport configuration, explicit references, installation classification and durable policy state.",
+    "Qualify inference opt-in fallback and preserve BYOK isolation.",
+    "Run product acceptance verifier, review, published dependency qualification, native CI and merge."
+  ],
+  "active_processes": [],
+  "completion_credit": false
+}
